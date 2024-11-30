@@ -41,7 +41,11 @@ public:
 protected:
     void saveSettings() override;
     void loadSettings() override;
+    void loadInterfaces();
     void changeEvent(QEvent* e) override;
+
+    std::string getPreferences() const;
+    std::string getPreferencesInterfaces() const;
 
 private:
     QString toPerCent(double value) const;

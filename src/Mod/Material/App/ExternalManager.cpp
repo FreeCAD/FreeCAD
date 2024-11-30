@@ -23,13 +23,13 @@
 #ifndef _PreComp_
 #endif
 
+#include <Python.h>
 #include <QMutex>
 #include <QMutexLocker>
-#include <Python.h>
 
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
 #include <CXX/Objects.hxx>
 
 #include "Exceptions.h"
@@ -64,9 +64,20 @@ ExternalManager::~ExternalManager()
 void ExternalManager::getConfiguration()
 {
     _hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface/Material DB");
-    _moduleName = _hGrp->GetASCII("Module", "");
-    _className = _hGrp->GetASCII("Class", "");
+        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    auto current = _hGrp->GetASCII("Current", "None");
+    if (current == "None") {
+        _moduleName = "";
+        _className = "";
+    }
+    else {
+        auto groupName =
+            "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface/Interfaces/"
+            + current;
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(groupName.c_str());
+        _moduleName = hGrp->GetASCII("Module", "");
+        _className = hGrp->GetASCII("Class", "");
+    }
 }
 
 void ExternalManager::instantiate()
@@ -166,8 +177,7 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
                 auto pyReadOnly = entry.getItem(2);
                 bool readOnly = pyReadOnly.as_bool();
 
-                libList->push_back(
-                    std::tuple<QString, QString, bool>(libraryName, icon, readOnly));
+                libList->push_back(std::tuple<QString, QString, bool>(libraryName, icon, readOnly));
             }
         }
         else {
@@ -183,9 +193,7 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
     return libList;
 }
 
-void ExternalManager::createLibrary(const QString& libraryName,
-                                    const QString& icon,
-                                    bool readOnly)
+void ExternalManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
 {
     connect();
 
@@ -198,7 +206,7 @@ void ExternalManager::createLibrary(const QString& libraryName,
             args.setItem(0, Py::String(libraryName.toStdString()));
             args.setItem(1, Py::String(icon.toStdString()));
             args.setItem(2, Py::Boolean(readOnly));
-            libraries.apply(args); // No return expected
+            libraries.apply(args);  // No return expected
         }
         else {
             Base::Console().Log("\tcreateLibrary() not found\n");
@@ -280,8 +288,8 @@ void ExternalManager::addModel(const QString& libraryName,
 }
 
 void ExternalManager::migrateModel(const QString& libraryName,
-                               const QString& path,
-                               const std::shared_ptr<Model>& model)
+                                   const QString& path,
+                                   const std::shared_ptr<Model>& model)
 {
     connect();
 

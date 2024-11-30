@@ -42,13 +42,12 @@ DlgSettingsExternal::DlgSettingsExternal(QWidget* parent)
 }
 
 DlgSettingsExternal::~DlgSettingsExternal()
-{
-}
+{}
 
 void DlgSettingsExternal::saveSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath(getPreferences().c_str());
 
     ui->spinModelCacheSize->onSave();
     ui->spinMaterialCacheSize->onSave();
@@ -70,15 +69,10 @@ QString DlgSettingsExternal::toPerCent(double value) const
 
 void DlgSettingsExternal::loadSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath(getPreferences().c_str());
 
-    ui->comboInterface->clear();
-    ui->comboInterface->addItem(tr("None"));
-    ui->comboInterface->addItem(QLatin1String("MaterialDB"));
-    auto current = hGrp->GetASCII("Current", "None");
-    ui->comboInterface->setCurrentText(QString::fromStdString(current));
-    Base::Console().Log("Current '%s'\n", current.c_str());
+    loadInterfaces();
 
     bool useExternal = hGrp->GetBool("UseExternal", false);
     ui->groupExternal->setChecked(useExternal);
@@ -93,6 +87,35 @@ void DlgSettingsExternal::loadSettings()
     ui->inputModelCacheHitRate->setText(toPerCent(hitRate));
     hitRate = Materials::MaterialManager::materialHitRate();
     ui->inputMaterialCacheHitRate->setText(toPerCent(hitRate));
+}
+
+void DlgSettingsExternal::loadInterfaces()
+{
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath(getPreferencesInterfaces().c_str());
+
+    ui->comboInterface->clear();
+    ui->comboInterface->addItem(tr("None"));
+
+    for (auto& group : hGrp->GetGroups()) {
+        auto moduleName = QString::fromStdString(group->GetGroupName());
+
+        ui->comboInterface->addItem(moduleName);
+    }
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(getPreferences().c_str());
+    auto current = hGrp->GetASCII("Current", "None");
+    ui->comboInterface->setCurrentText(QString::fromStdString(current));
+}
+
+std::string DlgSettingsExternal::getPreferences() const
+{
+    return "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface";
+}
+
+std::string DlgSettingsExternal::getPreferencesInterfaces() const
+{
+    return "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface/Interfaces";
 }
 
 /**
