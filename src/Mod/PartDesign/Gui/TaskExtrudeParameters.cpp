@@ -186,10 +186,9 @@ void TaskExtrudeParameters::setupDialog()
 
     ui->listWidgetReferences->addAction(unselectShapeFaceAction);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    ui->checkBoxAllFaces->setChecked(ui->listWidgetReferences->count() == 0);
 
     connectSlots();
-
-    ui->checkBoxAllFaces->setChecked(ui->listWidgetReferences->count() == 0);
 
     this->propReferenceAxis = &(extrude->ReferenceAxis);
 

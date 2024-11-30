@@ -46,6 +46,20 @@ namespace Sketcher
 
 class SketchAnalysis;
 
+struct ExternalToAdd
+{
+    App::DocumentObject* obj;
+    std::string subname;
+    bool defining;
+    bool intersection;
+};
+enum class ExtType
+{
+    Projection,
+    Intersection,
+    Both
+};
+
 class SketcherExport SketchObject: public Part::Part2DObject
 {
     typedef Part::Part2DObject inherited;
@@ -68,6 +82,7 @@ public:
     Part ::PropertyGeometryList Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App ::PropertyLinkSubList ExternalGeometry;
+    App::PropertyIntegerList ExternalTypes;
     App ::PropertyLinkListHidden Exports;
     Part ::PropertyGeometryList ExternalGeo;
     App ::PropertyBool FullyConstrained;
@@ -231,7 +246,9 @@ public:
         return ExternalGeo.getValues();
     }
     /// rebuilds external geometry (projection onto the sketch plane)
-    void rebuildExternalGeometry(bool defining = false, bool intersection = false);
+    // It uses std::optional because this function is actually used to both recompute external
+    // geometries but also to add new external geometries. Ideally this should be refactored.
+    void rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd = std::nullopt);
     /// returns the number of external Geometry entities
     int getExternalGeometryCount() const
     {

@@ -41,7 +41,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
-#include <Gui/SoFCBoundingBox.h>
+#include <Gui/Inventor/SoFCBoundingBox.h>
 
 #include "ViewProvider2DObject.h"
 

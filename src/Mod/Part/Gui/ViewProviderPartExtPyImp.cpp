@@ -52,11 +52,10 @@ PyObject* ViewProviderPartExtPy::getCustomAttributes(const char* attr) const
         // Get the color properties
         App::PropertyColorList prop;
 
-        // v0.21 used the alpha channel to store transparency values
         std::vector<App::Color> colors = vp->ShapeAppearance.getDiffuseColors();
         std::vector<float> transparencies = vp->ShapeAppearance.getTransparencies();
         for (int i = 0; i < static_cast<int>(colors.size()); i++) {
-            colors[i].a = transparencies[i];
+            colors[i].setTransparency(transparencies[i]);
         }
 
         prop.setValues(colors);
@@ -73,13 +72,12 @@ int ViewProviderPartExtPy::setCustomAttributes(const char* attr, PyObject* obj)
         App::PropertyColorList prop;
         prop.setPyObject(obj);
 
-        // v0.21 used the alpha channel to store transparency values
         std::vector<App::Color> colors = prop.getValues();
         std::vector<float> transparencies;
         transparencies.resize(static_cast<int>(colors.size()));
         for (int i = 0; i < static_cast<int>(colors.size()); i++) {
-            transparencies[i] = colors[i].a;
-            colors[i].a = 1.0;
+            transparencies[i] = colors[i].transparency();
+            colors[i].a = 1.0F;
         }
         vp->ShapeAppearance.setDiffuseColors(colors);
         vp->ShapeAppearance.setTransparencies(transparencies);

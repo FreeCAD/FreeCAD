@@ -421,18 +421,17 @@ bool ShapeExtractor::is2dObject(const App::DocumentObject* obj)
 // just these for now
 bool ShapeExtractor::isEdgeType(const App::DocumentObject* obj)
 {
-    bool result = false;
     Base::Type t = obj->getTypeId();
     if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
-        result = true;
+        return true;
     } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
-        result = true;
+        return true;
     } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
-        result = true;
+        return true;
     } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 bool ShapeExtractor::isPointType(const App::DocumentObject* obj)

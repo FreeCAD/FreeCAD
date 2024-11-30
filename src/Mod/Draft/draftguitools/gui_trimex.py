@@ -238,8 +238,7 @@ class Trimex(gui_base_original.Modifier):
                 # situation. Setting 0 with no unit will show "0 ??" and not
                 # compute any value
                 self.ui.setRadiusValue(0)
-            self.ui.radiusValue.setFocus()
-            self.ui.radiusValue.selectAll()
+            self.ui.setFocus("radius")
             gui_tool_utils.redraw3DView()
 
         elif arg["Type"] == "SoMouseButtonEvent":

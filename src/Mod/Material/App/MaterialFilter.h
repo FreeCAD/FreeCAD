@@ -172,6 +172,14 @@ public:
     void addRequired(const QString& uuid);
     void addRequiredComplete(const QString& uuid);
 
+    /* Require that the materials have physical properties defined.
+     */
+    void requirePhysical(bool required) { _requirePhysical = required; }
+
+    /* Require that the materials have appearance properties defined.
+     */
+    void requireAppearance(bool required) { _requireAppearance = required; }
+
     /* These functions shouldn't normally be called directly. They are
      * for use by conversion methods, such as MaterialFilterPy
      */
@@ -190,6 +198,8 @@ private:
     QString _name;
     QSet<QString> _required;
     QSet<QString> _requiredComplete;
+    bool _requirePhysical;
+    bool _requireAppearance;
 };
 
 }  // namespace Materials

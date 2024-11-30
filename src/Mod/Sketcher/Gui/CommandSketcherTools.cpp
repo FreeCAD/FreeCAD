@@ -88,12 +88,13 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
     if (!subNames.empty()) {
 
         for (auto& name : subNames) {
-            // only handle non-external edges
             if (name.size() > 4 && name.substr(0, 4) == "Edge") {
                 int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
-                if (geoId >= 0) {
-                    listOfGeoIds.push_back(geoId);
-                }
+                listOfGeoIds.push_back(geoId);
+            }
+            else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
+                int geoId = -std::atoi(name.substr(12, 4000).c_str()) - 2;
+                listOfGeoIds.push_back(geoId);
             }
             else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
                 // only if it is a GeomPoint
@@ -2341,23 +2342,28 @@ void CmdSketcherOffset::activated(int iMsg)
     const std::vector<std::string>& subNames = selection[0].getSubNames();
     if (!subNames.empty()) {
         for (auto& name : subNames) {
-            // only handle non-external edges
+            int geoId;
             if (name.size() > 4 && name.substr(0, 4) == "Edge") {
-                int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
-                if (geoId >= 0) {
-                    const Part::Geometry* geo = Obj->getGeometry(geoId);
-                    if (!isPoint(*geo)
-                        && !isBSplineCurve(*geo)
-                        && !isEllipse(*geo)
-                        && !isArcOfEllipse(*geo)
-                        && !isArcOfHyperbola(*geo)
-                        && !isArcOfParabola(*geo)
-                        && !GeometryFacade::isInternalAligned(geo)) {
-                        // Currently ellipse/parabola/hyperbola/bspline are not handled correctly.
-                        // Occ engine gives offset of those as set of lines and arcs and does not seem to work consistently.
-                        listOfGeoIds.push_back(geoId);
-                    }
-                }
+                geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
+            }
+            else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
+                geoId = -std::atoi(name.substr(12, 4000).c_str()) - 2;
+            }
+            else {
+                continue;
+            }
+
+            const Part::Geometry* geo = Obj->getGeometry(geoId);
+            if (!isPoint(*geo)
+                && !isBSplineCurve(*geo)
+                && !isEllipse(*geo)
+                && !isArcOfEllipse(*geo)
+                && !isArcOfHyperbola(*geo)
+                && !isArcOfParabola(*geo)
+                && !GeometryFacade::isInternalAligned(geo)) {
+                // Currently ellipse/parabola/hyperbola/bspline are not handled correctly.
+                // Occ engine gives offset of those as set of lines and arcs and does not seem to work consistently.
+                listOfGeoIds.push_back(geoId);
             }
         }
     }

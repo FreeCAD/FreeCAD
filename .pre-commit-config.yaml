@@ -42,6 +42,9 @@ exclude: |
         src/App/ExpressionParser.tab.h|
         src/App/ExpressionParser.y|
         src/App/lex.ExpressionParser.c|
+        src/Gui/3Dconnexion/navlib|
+        src/Gui/QSint|
+        src/Gui/Quarter|
         src/Mod/Import/App/SCL|
         src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|

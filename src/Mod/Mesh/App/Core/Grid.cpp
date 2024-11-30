@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <algorithm>
+#include <cmath>
 #endif
 
 #include "Algorithm.h"
@@ -349,7 +350,7 @@ void MeshGrid::CalculateGridLength(int iCtGridPerAxis)
                 fVolumenGrid = fVolumen / static_cast<float>(iMaxGrids);
             }
 
-            float fLengthGrid = pow(fVolumenGrid, 1.0F / 3.0F);
+            float fLengthGrid = std::pow(fVolumenGrid, 1.0F / 3.0F);
 
             _ulCtGridsX = std::max(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1UL);
             _ulCtGridsY = std::max(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1UL);
@@ -367,7 +368,7 @@ void MeshGrid::CalculateGridLength(int iCtGridPerAxis)
                 fAreaGrid = fArea / static_cast<float>(iMaxGrids);
             }
 
-            auto fLengthGrid = float(sqrt(fAreaGrid));
+            auto fLengthGrid = float(std::sqrt(fAreaGrid));
 
             _ulCtGridsY =
                 std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
@@ -385,7 +386,7 @@ void MeshGrid::CalculateGridLength(int iCtGridPerAxis)
                 fAreaGrid = fArea / static_cast<float>(iMaxGrids);
             }
 
-            auto fLengthGrid = float(sqrt(fAreaGrid));
+            auto fLengthGrid = float(std::sqrt(fAreaGrid));
 
             _ulCtGridsX =
                 std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
@@ -408,7 +409,7 @@ void MeshGrid::CalculateGridLength(int iCtGridPerAxis)
                 fAreaGrid = fArea / static_cast<float>(iMaxGrids);
             }
 
-            auto fLengthGrid = float(sqrt(fAreaGrid));
+            auto fLengthGrid = float(std::sqrt(fAreaGrid));
 
             _ulCtGridsX =
                 std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);

@@ -181,7 +181,11 @@ def init_draft_statusbar_scale():
     sb = mw.statusBar()
 
     scale_widget = QtWidgets.QToolBar()
+    # prevent the widget from showing up in the toolbar area context menu:
+    scale_widget.toggleViewAction().setVisible(False)
     scale_widget.setObjectName("draft_scale_widget")
+    # WindowTitle is just in case, should not be visble in the GUI.
+    scale_widget.setWindowTitle(translate("draft", "Draft scale widget"))
 
     # get scales list according to system units
     draft_scales = get_scales()
@@ -238,7 +242,11 @@ def init_draft_statusbar_snap():
 
     # snap widget:
     snap_widget = QtWidgets.QToolBar()
+    # prevent the widget from showing up in the toolbar area context menu:
+    snap_widget.toggleViewAction().setVisible(False)
     snap_widget.setObjectName("draft_snap_widget")
+    # WindowTitle is just in case, should not be visble in the GUI.
+    snap_widget.setWindowTitle(translate("draft", "Draft snap widget"))
     snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
     snap_widget.setIconSize(QtCore.QSize(16, 16))
     sb.insertPermanentWidget(2, snap_widget)
@@ -330,9 +338,6 @@ def hide_draft_statusbar():
         scale_widget = mw.findChild(QtWidgets.QToolBar, "draft_scale_widget")
     if scale_widget:
         scale_widget.hide()
-        # prevent the widget from showing up as a blank item in the toolbar
-        # area context menu after switching to a different workbench:
-        scale_widget.toggleViewAction().setVisible(False)
 
     # hide snap widget
     snap_widget = sb.findChild(QtWidgets.QToolBar,"draft_snap_widget")
@@ -342,8 +347,5 @@ def hide_draft_statusbar():
         snap_widget = mw.findChild(QtWidgets.QToolBar,"draft_snap_widget")
     if snap_widget:
         snap_widget.hide()
-        # prevent the widget from showing up as a blank item in the toolbar
-        # area context menu after switching to a different workbench:
-        snap_widget.toggleViewAction().setVisible(False)
 
 ## @}

@@ -41,7 +41,7 @@ class Index
     FacetIndex index;
 
 public:
-    Index(FacetIndex index)
+    explicit Index(FacetIndex index)
         : index {index}
     {}
 

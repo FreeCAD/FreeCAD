@@ -44,8 +44,8 @@
 #include <Base/Stream.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/SoAxisCrossKit.h>
-#include <Gui/SoFCBoundingBox.h>
+#include <Gui/Inventor/SoAxisCrossKit.h>
+#include <Gui/Inventor/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Mod/CAM/App/FeaturePath.h>
 #include <Mod/CAM/App/PathSegmentWalker.h>

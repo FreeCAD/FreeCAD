@@ -59,9 +59,9 @@ SetOperations::SetOperations(const MeshKernel& cutMesh1,
 
 void SetOperations::Do()
 {
-    _minDistanceToPoint = 0.000001f;
+    _minDistanceToPoint = 0.000001F;
     float saveMinMeshDistance = MeshDefinitions::_fMinPointDistance;
-    MeshDefinitions::SetMinPointDistance(0.000001f);
+    MeshDefinitions::SetMinPointDistance(0.000001F);
 
     //  Base::Sequencer().start("set operation", 5);
 
@@ -117,28 +117,28 @@ void SetOperations::Do()
     float mult0 {}, mult1 {};
     switch (_operationType) {
         case Union:
-            mult0 = -1.0f;
-            mult1 = -1.0f;
+            mult0 = -1.0F;
+            mult1 = -1.0F;
             break;
         case Intersect:
-            mult0 = 1.0f;
-            mult1 = 1.0f;
+            mult0 = 1.0F;
+            mult1 = 1.0F;
             break;
         case Difference:
-            mult0 = -1.0f;
-            mult1 = 1.0f;
+            mult0 = -1.0F;
+            mult1 = 1.0F;
             break;
         case Inner:
-            mult0 = 1.0f;
-            mult1 = 0.0f;
+            mult0 = 1.0F;
+            mult1 = 0.0F;
             break;
         case Outer:
-            mult0 = -1.0f;
-            mult1 = 0.0f;
+            mult0 = -1.0F;
+            mult1 = 0.0F;
             break;
         default:
-            mult0 = 0.0f;
-            mult1 = 0.0f;
+            mult0 = 0.0F;
+            mult1 = 0.0F;
             break;
     }
 
@@ -279,15 +279,14 @@ void SetOperations::Cut(std::set<FacetIndex>& facetsCuttingEdge0,
                                             _facet2points[1][fidx2].push_back(pit.first);
                                         }
                                     }
-
-                                }  // if (f1.IntersectWithFacet(f2, p0, p1))
-                            }  // for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
-                        }  // for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
-                    }  // if (vecFacets2.size() > 0)
-                }  // if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
-            }  // for (gz1 = 0; gz1 < ctGz1; gz1++)
-        }  // for (gy1 = 0; gy1 < ctGy1; gy1++)
-    }  // for (gx1 = 0; gx1 < ctGx1; gx1++)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
@@ -387,15 +386,14 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
             // }
 
             facet.CalcNormal();
-            if ((facet.GetNormal() * f.GetNormal()) < 0.0f) {  // adjust normal
+            if ((facet.GetNormal() * f.GetNormal()) < 0.0F) {  // adjust normal
                 std::swap(facet._aclPoints[0], facet._aclPoints[1]);
                 facet.CalcNormal();
             }
 
 
             for (int j = 0; j < 3; j++) {
-                std::map<Edge, EdgeInfo>::iterator eit =
-                    _edges.find(Edge(facet._aclPoints[j], facet._aclPoints[(j + 1) % 3]));
+                auto eit = _edges.find(Edge(facet._aclPoints[j], facet._aclPoints[(j + 1) % 3]));
 
                 if (eit != _edges.end()) {
 
@@ -414,9 +412,8 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
             }
 
             _newMeshFacets[side].push_back(facet);
-
-        }  // for (i = 0; i < (out->numberoftriangles * 3); i += 3)
-    }  // for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
+        }
+    }
 }
 
 void SetOperations::CollectFacets(int side, float mult)
@@ -531,7 +528,7 @@ bool SetOperations::CollectFacetVisitor::AllowVisit(const MeshFacet& rclFacet,
                 // Vector3f dir = ocDir % normal;
                 // Vector3f dirOther = ocDirOther % normalOther;
 
-                bool match = ((ocDir * normalOther) * _mult) < 0.0f;
+                bool match = ((ocDir * normalOther) * _mult) < 0.0F;
 
                 // if (matchCounter == 1)
                 //{
@@ -625,11 +622,7 @@ bool MeshIntersection::hasIntersection() const
         return false;
     }
 
-    if (testIntersection(kernel1, kernel2)) {
-        return true;
-    }
-
-    return false;
+    return (testIntersection(kernel1, kernel2));
 }
 
 void MeshIntersection::getIntersection(std::list<MeshIntersection::Tuple>& intsct) const
@@ -661,7 +654,7 @@ void MeshIntersection::getIntersection(std::list<MeshIntersection::Tuple>& intsc
     Base::Vector3f pt1, pt2;
 
     // Iterate over the facets of the 2nd mesh and find the grid elements of the 1st mesh
-    for (MeshFacetArray::_TConstIterator it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
+    for (auto it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
         seq.next();
         std::vector<FacetIndex> elements;
         cMeshFacetGrid.Inside(boxes2[index], elements, true);
@@ -713,7 +706,7 @@ bool MeshIntersection::testIntersection(const MeshKernel& k1, const MeshKernel& 
     Base::Vector3f pt1, pt2;
 
     // Iterate over the facets of the 2nd mesh and find the grid elements of the 1st mesh
-    for (MeshFacetArray::_TConstIterator it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
+    for (auto it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
         seq.next();
         std::vector<FacetIndex> elements;
         cMeshFacetGrid.Inside(boxes2[index], elements, true);
@@ -793,7 +786,7 @@ void MeshIntersection::connectLines(bool onlyclosed,
                     bEndFirst = false;
                 }
 
-                if (fFrontMin == 0.0f || fEndMin == 0.0f) {
+                if (fFrontMin == 0.0F || fEndMin == 0.0F) {
                     break;
                 }
             }

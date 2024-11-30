@@ -391,6 +391,10 @@ TaskCheckGeometryResults::~TaskCheckGeometryResults()
 void TaskCheckGeometryResults::setupInterface()
 {
     message = new QLabel(this);
+    message->setTextFormat(Qt::RichText);
+    message->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    message->setOpenExternalLinks(false);
+    connect(message, &QLabel::linkActivated, this, &TaskCheckGeometryResults::generateReport);
     message->setText(tr("Check is running..."));
     model = new ResultModel(this);
     treeView = new QTreeView(this);
@@ -413,6 +417,8 @@ void TaskCheckGeometryResults::goCheck()
 
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     ResultEntry *theRoot = new ResultEntry();
+    reportViewStrings.clear();
+    reportViewStrings << QLatin1String("\n");
 
     std::string scopeName {tr("Boolean operation check...").toStdString()};
 #if OCC_VERSION_HEX < 0x070500
@@ -432,21 +438,44 @@ void TaskCheckGeometryResults::goCheck()
 
     for(const auto &sel :  selection) {
         selectedCount++;
+        int localInvalidShapeCount(0);
+        QString baseName;
+        QTextStream baseStream(&baseName);
+        baseStream << sel.DocName;
+        baseStream << "." << sel.FeatName;
+        std::string label = sel.pObject->Label.getValue();
+        if (sel.FeatName != label) {
+            baseStream << " (" << label.c_str() << ")";
+        }
+
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
         if (shape.IsNull()) {
+            ResultEntry *entry = new ResultEntry();
+            entry->parent = theRoot;
+            entry->name = baseName;
+            entry->type = tr("Null shape");
+            entry->error = tr("Skipped");
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
+            theRoot->children.push_back(entry);
             continue;
         }
         if (shape.Infinite()) {
+            ResultEntry *entry = new ResultEntry();
+            entry->parent = theRoot;
+            entry->name = baseName;
+            entry->type = tr("Infinite shape");
+            entry->error = tr("Skipped");
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
+            theRoot->children.push_back(entry);
             continue;
         }
         currentSeparator = Gui::Application::Instance->getViewProvider(sel.pObject)->getRoot();
         if (!currentSeparator) {
             continue;
         }
-        QString baseName;
-        QTextStream baseStream(&baseName);
-        baseStream << sel.DocName;
-        baseStream << "." << sel.FeatName;
+
         checkedCount++;
         checkedMap.Clear();
 
@@ -456,12 +485,15 @@ void TaskCheckGeometryResults::goCheck()
         if (!shapeCheck.IsValid())
         {
             invalidShapes++;
+            localInvalidShapeCount++;
             ResultEntry *entry = new ResultEntry();
             entry->parent = theRoot;
             entry->shape = shape;
             entry->name = baseName;
             entry->type = shapeEnumToString(shape.ShapeType());
             entry->error = tr("Invalid");
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
             entry->viewProviderRoot = currentSeparator;
             entry->viewProviderRoot->ref();
             goSetupResultBoundingBox(entry);
@@ -485,28 +517,51 @@ void TaskCheckGeometryResults::goCheck()
             label += "...";
 #if OCC_VERSION_HEX < 0x070500
             theProgress->NewScope(label.c_str());
-            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
+            localInvalidShapeCount += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
+            invalidShapes += localInvalidShapeCount;
             theProgress->EndScope();
             if (theProgress->UserBreak())
               break;
 #else
             Message_ProgressScope theInnerScope(theScope.Next(), TCollection_AsciiString(label.c_str()), 1);
             theInnerScope.Show();
-            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
+            localInvalidShapeCount += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
+            invalidShapes += localInvalidShapeCount;
             theInnerScope.Close();
             if (theScope.UserBreak())
               break;
 #endif
           }
         }
+        // create an entry for shapes without errors
+        if (localInvalidShapeCount == 0) {
+            ResultEntry *entry = new ResultEntry();
+            entry->parent = theRoot;
+            entry->name = baseName;
+            entry->type = shapeEnumToString(shape.ShapeType());
+            entry->error = tr("No errors");
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
+            entry->viewProviderRoot = currentSeparator;
+            entry->viewProviderRoot->ref();
+            theRoot->children.push_back(entry);
+        }
     }
     model->setResults(theRoot);
     treeView->expandAll();
     treeView->header()->resizeSections(QHeaderView::ResizeToContents);
     QString aMessage {tr("%1 processed out of %2 selected").arg(checkedCount).arg(selectedCount)};
-    aMessage += QLatin1String("\n ") + tr("%n invalid shapes.", "", invalidShapes);
+    aMessage += QLatin1String("<br/>") + tr("%n invalid shapes.", "", invalidShapes);
+    aMessage += QLatin1String(" <a href=\"#report\">") + tr("To Report view.") + QLatin1String("</a>");
     message->setText(aMessage);
 }
+
+void TaskCheckGeometryResults::generateReport()
+{
+    QString reportString = reportViewStrings.join(QLatin1String("\n"));
+    Base::Console().Message(reportString.toStdString().c_str());
+}
+
 
 void TaskCheckGeometryResults::recursiveCheck(const BRepCheck_Analyzer &shapeCheck, const TopoDS_Shape &shape,
                                               ResultEntry *parent)
@@ -524,6 +579,8 @@ void TaskCheckGeometryResults::recursiveCheck(const BRepCheck_Analyzer &shapeChe
             entry->buildEntryName();
             entry->type = shapeEnumToString(shape.ShapeType());
             entry->error = checkStatusToString(listIt.Value());
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
             entry->viewProviderRoot = currentSeparator;
             entry->viewProviderRoot->ref();
             dispatchError(entry, listIt.Value());
@@ -572,6 +629,8 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
                      entry->buildEntryName();
                      entry->type = shapeEnumToString(sub.ShapeType());
                      entry->error = checkStatusToString(itl.Value());
+                     reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                              + entry->type + QLatin1String(" | ") + entry->error);
                      entry->viewProviderRoot = currentSeparator;
                      entry->viewProviderRoot->ref();
                      dispatchError(entry, itl.Value());
@@ -724,6 +783,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   entry->name = baseName;
   entry->type = shapeEnumToString(shapeIn.ShapeType());
   entry->error = QObject::tr("Invalid");
+  reportViewStrings.append(entry->name + QLatin1String(" | ")
+                           + entry->type + QLatin1String(" | ") + entry->error);
   entry->viewProviderRoot = currentSeparator;
   entry->viewProviderRoot->ref();
   goSetupResultBoundingBox(entry);
@@ -746,6 +807,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
       faultyEntry->buildEntryName();
       faultyEntry->type = shapeEnumToString(faultyShape.ShapeType());
       faultyEntry->error = getBOPCheckString(current.GetCheckStatus());
+      reportViewStrings.append(QLatin1String("  ") + faultyEntry->name
+                               + QLatin1String(" | ") + faultyEntry->error);
       faultyEntry->viewProviderRoot = currentSeparator;
       entry->viewProviderRoot->ref();
       goSetupResultBoundingBox(faultyEntry);
@@ -841,7 +904,10 @@ void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, co
                 QString doc, object, sub;
                 if (!this->split((*stringIt), doc, object, sub))
                     continue;
-                Gui::Selection().addSelection(doc.toLatin1(), object.toLatin1(), sub.toLatin1());
+                // object might be "name (label)", so trim if necessary
+                int idx = object.indexOf(QLatin1String(" ("));
+                QString trimmed = (idx != -1) ? object.left(idx) : object;
+                Gui::Selection().addSelection(doc.toLatin1(), trimmed.toLatin1(), sub.toLatin1());
             }
         }
     }
