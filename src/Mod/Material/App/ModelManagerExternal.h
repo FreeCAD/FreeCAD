@@ -23,6 +23,7 @@
 #define MATERIAL_MODELMANAGEREXTERNAL_H
 
 #include <memory>
+#include <lru/lru.hpp>
 
 #include <Mod/Material/MaterialGlobal.h>
 
@@ -54,13 +55,17 @@ public:
                        bool readOnly = true);
 
     // Model management
+    std::shared_ptr<Model> getModel(const QString& uuid);
     void
     addModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
     void
     migrateModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
-    std::shared_ptr<Model> getModel(const QString& uuid);
 
 private:
+    static void initCache();
+
+    static QMutex _mutex;
+    static LRU::Cache<QString, std::shared_ptr<Model>> _cache;
 };
 
 }  // namespace Materials

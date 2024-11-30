@@ -23,6 +23,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <QMutexLocker>
+
 #include "Exceptions.h"
 #include "ExternalManager.h"
 #include "MaterialLibrary.h"
@@ -33,10 +35,27 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
+QMutex MaterialManagerExternal::_mutex;
+LRU::Cache<QString, std::shared_ptr<Material>> MaterialManagerExternal::_cache(100);
+
 TYPESYSTEM_SOURCE(Materials::MaterialManagerExternal, Base::BaseClass)
 
 MaterialManagerExternal::MaterialManagerExternal()
 {
+    initCache();
+}
+
+void MaterialManagerExternal::initCache()
+{
+    QMutexLocker locker(&_mutex);
+
+    // ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+    //     "User parameter:BaseApp/Preferences/Mod/Material/Database");
+    // auto cacheSize = hGrp->GetInt("MaterialCacheSize", 100);
+    // _cache.capacity(cacheSize);
+    _cache.capacity(100);
+
+    _cache.monitor();
 }
 
 void MaterialManagerExternal::cleanup()
@@ -87,13 +106,25 @@ void MaterialManagerExternal::createLibrary(const QString& libraryName,
 
 std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const QString& uuid) const
 {
-    return ExternalManager::getManager()->getMaterial(uuid);
+    if (_cache.contains(uuid)) {
+        return _cache.lookup(uuid);
+    }
+    try {
+        auto material = ExternalManager::getManager()->getMaterial(uuid);
+        _cache.emplace(uuid, material);
+        return material;
+    }
+    catch (const MaterialNotFound& e) {
+        _cache.emplace(uuid, nullptr);
+        return nullptr;
+    }
 }
 
 void MaterialManagerExternal::addMaterial(const QString& libraryName,
                                           const QString& path,
                                           const std::shared_ptr<Material>& material)
 {
+    _cache.erase(material->getUUID());
     ExternalManager::getManager()->addMaterial(libraryName, path, material);
 }
 
@@ -101,5 +132,6 @@ void MaterialManagerExternal::migrateMaterial(const QString& libraryName,
                                           const QString& path,
                                           const std::shared_ptr<Material>& material)
 {
+    _cache.erase(material->getUUID());
     ExternalManager::getManager()->migrateMaterial(libraryName, path, material);
 }

@@ -23,8 +23,11 @@
 #define MATERIAL_MATERIALMANAGEREXTERNAl_H
 
 #include <memory>
+#include <lru/lru.hpp>
 
 #include <Mod/Material/MaterialGlobal.h>
+
+#include <QMutex>
 
 #include "FolderTree.h"
 #include "Materials.h"
@@ -69,6 +72,10 @@ public:
                      const std::shared_ptr<Material>& material);
 
 private:
+    static void initCache();
+
+    static QMutex _mutex;
+    static LRU::Cache<QString, std::shared_ptr<Material>> _cache;
 };
 
 }  // namespace Materials

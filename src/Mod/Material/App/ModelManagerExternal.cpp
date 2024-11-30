@@ -23,7 +23,6 @@
 #ifndef _PreComp_
 #endif
 
-#include <QDirIterator>
 #include <QMutexLocker>
 
 #include "Model.h"
@@ -33,10 +32,27 @@
 
 using namespace Materials;
 
+QMutex ModelManagerExternal::_mutex;
+LRU::Cache<QString, std::shared_ptr<Model>> ModelManagerExternal::_cache(100);
+
 TYPESYSTEM_SOURCE(Materials::ModelManagerExternal, Base::BaseClass)
 
 ModelManagerExternal::ModelManagerExternal()
 {
+    initCache();
+}
+
+void ModelManagerExternal::initCache()
+{
+    QMutexLocker locker(&_mutex);
+
+    // ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+    //     "User parameter:BaseApp/Preferences/Mod/Material/Database");
+    // auto cacheSize = hGrp->GetInt("ModelCacheSize", 100);
+    // _cache.capacity(cacheSize);
+    _cache.capacity(100);
+
+    _cache.monitor();
 }
 
 void ModelManagerExternal::cleanup()
@@ -85,10 +101,28 @@ void ModelManagerExternal::createLibrary(const QString& libraryName,
 //
 //=====
 
+std::shared_ptr<Model> ModelManagerExternal::getModel(const QString& uuid)
+{
+    if (_cache.contains(uuid)) {
+        return _cache.lookup(uuid);
+    }
+    try
+    {
+        auto model = ExternalManager::getManager()->getModel(uuid);
+        _cache.emplace(uuid, model);
+        return model;
+    }
+    catch (const ModelNotFound& e) {
+        _cache.emplace(uuid, nullptr);
+        return nullptr;
+    }
+}
+
 void ModelManagerExternal::addModel(const QString& libraryName,
                                     const QString& path,
                                     const std::shared_ptr<Model>& model)
 {
+    _cache.erase(model->getUUID());
     ExternalManager::getManager()->addModel(libraryName, path, model);
 }
 
@@ -96,10 +130,6 @@ void ModelManagerExternal::migrateModel(const QString& libraryName,
                                     const QString& path,
                                     const std::shared_ptr<Model>& model)
 {
+    _cache.erase(model->getUUID());
     ExternalManager::getManager()->migrateModel(libraryName, path, model);
-}
-
-std::shared_ptr<Model> ModelManagerExternal::getModel(const QString& uuid)
-{
-    return ExternalManager::getManager()->getModel(uuid);
 }
