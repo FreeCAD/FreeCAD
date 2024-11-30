@@ -394,7 +394,7 @@ def _get_param_dictionary():
         "GlobalMode":                  ("bool",      False),
         "GridHideInOtherWorkbenches":  ("bool",      True),
         "HatchPatternFile":            ("string",    hatch_pattern_file),
-        "HatchPatternName":            ("string",    "Diamant"),
+        "HatchPatternName":            ("string",    "Diamond"),
         "HatchPatternResolution":      ("int",       128),  # used for SVG patterns
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
