@@ -52,6 +52,7 @@ set(MatGui_UIC_SRCS
     DlgInspectMaterial.ui
     DlgMaterial.ui
     DlgSettingsDefaultMaterial.ui
+    DlgSettingsExternal.ui
     DlgSettingsMaterial.ui
     ImageEdit.ui
     ListEdit.ui
@@ -97,6 +98,9 @@ SET(MatGui_SRCS
     DlgSettingsDefaultMaterial.cpp
     DlgSettingsDefaultMaterial.h
     DlgSettingsDefaultMaterial.ui
+    DlgSettingsExternal.cpp
+    DlgSettingsExternal.h
+    DlgSettingsExternal.ui
     DlgSettingsMaterial.cpp
     DlgSettingsMaterial.h
     DlgSettingsMaterial.ui

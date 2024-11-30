@@ -25,6 +25,8 @@
 
 #include <QMutexLocker>
 
+#include <App/Application.h>
+
 #include "Model.h"
 #include "ModelLoader.h"
 #include "ModelManagerExternal.h"
@@ -46,11 +48,10 @@ void ModelManagerExternal::initCache()
 {
     QMutexLocker locker(&_mutex);
 
-    // ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-    //     "User parameter:BaseApp/Preferences/Mod/Material/Database");
-    // auto cacheSize = hGrp->GetInt("ModelCacheSize", 100);
-    // _cache.capacity(cacheSize);
-    _cache.capacity(100);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    auto cacheSize = hGrp->GetInt("ModelCacheSize", 100);
+    _cache.capacity(cacheSize);
 
     _cache.monitor();
 }
