@@ -384,8 +384,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    // d->actionLabel->setMinimumWidth(120);
-
     d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
@@ -1200,7 +1198,6 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
         subwindow->setParent(nullptr);
 
         assert(!d->mdiArea->subWindowList().contains(subwindow));
-        // d->mdiArea->removeSubWindow(parent);
     }
 
     if(close)
@@ -1816,19 +1813,6 @@ void MainWindow::saveWindowSettings(bool canDelay)
     int minor = (QT_VERSION >> 0x08) & 0xff;
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
-
-#if 0
-    config.beginGroup(qtver);
-    config.setValue(QStringLiteral("Size"), this->size());
-    config.setValue(QStringLiteral("Position"), this->pos());
-    config.setValue(QStringLiteral("Maximized"), this->isMaximized());
-    config.setValue(QStringLiteral("MainWindowState"), this->saveState());
-    config.setValue(QStringLiteral("StatusBar"), this->statusBar()->isVisible());
-    config.endGroup();
-#else
-    // We are migrating from saving qt main window layout state in QSettings to
-    // FreeCAD parameters, for more control.
-#endif
 
     Base::ConnectionBlocker block(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
