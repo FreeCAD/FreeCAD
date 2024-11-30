@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ShapeFix_FreeBoundsPy"
+      PythonName="Part.ShapeFix.FreeBounds"
+      Twin="ShapeFix_FreeBounds"
+      TwinPointer="ShapeFix_FreeBounds"
+      Include="ShapeFix_FreeBounds.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>This class is intended to output free bounds of the shape</UserDocu>
+    </Documentation>
+    <Methode Name="closedWires">
+      <Documentation>
+        <UserDocu>Returns compound of closed wires out of free edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="openWires">
+      <Documentation>
+        <UserDocu>Returns compound of open wires out of free edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shape">
+      <Documentation>
+        <UserDocu>Returns modified source shape</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

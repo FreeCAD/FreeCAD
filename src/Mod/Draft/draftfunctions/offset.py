@@ -31,15 +31,15 @@ import math
 
 import FreeCAD as App
 import DraftVecUtils
-import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 
-from draftmake.make_copy import make_copy
-from draftmake.make_rectangle import makeRectangle
-from draftmake.make_wire import makeWire
-from draftmake.make_polygon import makePolygon
-from draftmake.make_circle import makeCircle
-from draftmake.make_bspline import makeBSpline
+from draftmake.make_rectangle import make_rectangle
+from draftmake.make_wire import make_wire
+from draftmake.make_polygon import make_polygon
+from draftmake.make_circle import make_circle
+from draftmake.make_bspline import make_bspline
 
 
 def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
@@ -73,9 +73,12 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     newwire = None
     delete = None
 
-    if utils.get_type(obj).startswith("Part::") or utils.get_type(obj).startswith("Sketcher::"):
-        copy = True
+    if (copy is False
+            and (utils.get_type(obj).startswith("Sketcher::")
+                or utils.get_type(obj).startswith("Part::")
+                or utils.get_type(obj).startswith("PartDesign::"))): # For PartDesign_SubShapeBinders which can reference sketches.
         print("the offset tool is currently unable to offset a non-Draft object directly - Creating a copy")
+        copy = True
 
     def getRect(p,obj):
         """returns length,height,placement"""
@@ -164,7 +167,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
         if sym: return None
         if utils.get_type(obj) == "Wire":
             if p:
-                newobj = makeWire(p)
+                newobj = make_wire(p)
                 newobj.Closed = obj.Closed
             elif newwire:
                 newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
@@ -174,7 +177,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
         elif utils.get_type(obj) == "Rectangle":
             if p:
                 length,height,plac = getRect(p,obj)
-                newobj = makeRectangle(length,height,plac)
+                newobj = make_rectangle(length,height,plac)
             elif newwire:
                 newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
                 newobj.Shape = newwire
@@ -182,25 +185,25 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
                 print("Draft.offset: Unable to duplicate this object")
         elif utils.get_type(obj) == "Circle":
             pl = obj.Placement
-            newobj = makeCircle(delta)
+            newobj = make_circle(delta)
             newobj.FirstAngle = obj.FirstAngle
             newobj.LastAngle = obj.LastAngle
             newobj.Placement = pl
         elif utils.get_type(obj) == "Polygon":
             pl = obj.Placement
-            newobj = makePolygon(obj.FacesNumber)
+            newobj = make_polygon(obj.FacesNumber)
             newobj.Radius = getRadius(obj,delta)
             newobj.DrawMode = obj.DrawMode
             newobj.Placement = pl
         elif utils.get_type(obj) == "BSpline":
-            newobj = makeBSpline(delta)
+            newobj = make_bspline(delta)
             newobj.Closed = obj.Closed
         else:
             # try to offset anyway
             try:
                 if p:
-                    newobj = makeWire(p)
-                    newobj.Closed = obj.Shape.isClosed()
+                    newobj = make_wire(p)
+                    newobj.Closed = DraftGeomUtils.isReallyClosed(obj.Shape)
             except Part.OCCError:
                 pass
             if (not newobj) and newwire:
@@ -236,10 +239,10 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
         elif utils.get_type(obj) == 'Part':
             print("unsupported object") # TODO
         newobj = obj
-    if copy and utils.get_param("selectBaseObjects",False):
-        gui_utils.select(newobj)
-    else:
+    if copy and params.get_param("selectBaseObjects"):
         gui_utils.select(obj)
+    else:
+        gui_utils.select(newobj)
     if delete:
         App.ActiveDocument.removeObject(delete)
     return newobj

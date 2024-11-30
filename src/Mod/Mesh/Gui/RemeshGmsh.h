@@ -20,45 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHGUI_REMESHGMSH_H
 #define MESHGUI_REMESHGMSH_H
 
 #include <memory>
 #include <QDialog>
-#include <QPointer>
 #include <QProcess>
-#include <App/DocumentObserver.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 
-namespace Mesh {
+
+namespace Mesh
+{
 class Feature;
 }
 
-namespace Gui {
+namespace Gui
+{
 class StatusWidget;
 }
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 /**
  * Non-modal dialog to remesh an existing mesh.
  * @author Werner Mayer
  */
-class MeshGuiExport GmshWidget : public QWidget
+class MeshGuiExport GmshWidget: public QWidget
 {
     Q_OBJECT
 
 public:
-    GmshWidget(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~GmshWidget();
+    explicit GmshWidget(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~GmshWidget() override;
     void accept();
     void reject();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent* e) override;
     int meshingAlgorithm() const;
     double getAngle() const;
     double getMaxSize() const;
@@ -66,12 +68,13 @@ protected:
     virtual bool writeProject(QString& inpFile, QString& outFile);
     virtual bool loadOutput();
 
-private Q_SLOTS:
+private:
+    void setupConnections();
     void started();
     void finished(int exitCode, QProcess::ExitStatus exitStatus);
     void errorOccurred(QProcess::ProcessError error);
-    void on_killButton_clicked();
-    void on_clearButton_clicked();
+    void onKillButtonClicked();
+    void onClearButtonClicked();
 
     void readyReadStandardError();
     void readyReadStandardOutput();
@@ -79,53 +82,61 @@ private Q_SLOTS:
 private:
     class Private;
     std::unique_ptr<Private> d;
+
+    Q_DISABLE_COPY_MOVE(GmshWidget)
 };
 
 /**
  * Non-modal dialog to remesh an existing mesh.
  * @author Werner Mayer
  */
-class MeshGuiExport RemeshGmsh : public GmshWidget
+class MeshGuiExport RemeshGmsh: public GmshWidget
 {
     Q_OBJECT
 
 public:
-    RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~RemeshGmsh();
+    explicit RemeshGmsh(Mesh::Feature* mesh,
+                        QWidget* parent = nullptr,
+                        Qt::WindowFlags fl = Qt::WindowFlags());
+    ~RemeshGmsh() override;
 
 protected:
-    virtual bool writeProject(QString& inpFile, QString& outFile);
-    virtual bool loadOutput();
+    bool writeProject(QString& inpFile, QString& outFile) override;
+    bool loadOutput() override;
 
 private:
     class Private;
     std::unique_ptr<Private> d;
+
+    Q_DISABLE_COPY_MOVE(RemeshGmsh)
 };
 
 /**
  * Embed the panel into a task dialog.
  */
-class TaskRemeshGmsh : public Gui::TaskView::TaskDialog
+class TaskRemeshGmsh: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskRemeshGmsh(Mesh::Feature* mesh);
-    ~TaskRemeshGmsh();
+    explicit TaskRemeshGmsh(Mesh::Feature* mesh);
 
 public:
-    void clicked(int);
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument(void) const
-    { return true; }
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Apply | QDialogButtonBox::Close;
+    }
+    bool isAllowedAlterDocument() const override
+    {
+        return true;
+    }
 
 private:
     RemeshGmsh* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_REMESHGMSH_H
+#endif  // MESHGUI_REMESHGMSH_H

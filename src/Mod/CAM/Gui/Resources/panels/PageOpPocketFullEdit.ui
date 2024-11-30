@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>398</width>
+    <height>513</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QLabel" name="toolController_label">
+        <property name="text">
+         <string>Tool Controller</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="toolController">
+        <property name="toolTip">
+         <string>The tool and its settings to be used for this operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="coolantController_label">
+        <property name="text">
+         <string>Coolant Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="coolantController">
+        <property name="toolTip">
+         <string>The tool and its settings to be used for this operation</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QWidget" name="facingWidget">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="boundaryShape_label">
+        <property name="text">
+         <string>Boundary Shape</string>
+        </property>
+       </widget>
+      </item>
+     <item row="0" column="1">
+       <widget class="QComboBox" name="boundaryShape">
+        <property name="toolTip">
+         <string>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
+
+The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QWidget" name="widget">
+     <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="cutMode_label">
+        <property name="text">
+         <string>Cut Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cutMode">
+        <property name="toolTip">
+         <string>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit's rotation and the tool's lateral movement are in the same direction</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Climb</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Conventional</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="offsetPattern_label">
+        <property name="text">
+         <string>Pattern</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="offsetPattern">
+        <property name="toolTip">
+         <string>Pattern the tool bit is moved in to clear the material</string>
+        </property>
+        <property name="currentText">
+         <string notr="true">ZigZag</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>ZigZag</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Offset</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZigZagOffset</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Line</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Grid</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Triangle</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="zigZagAngle_label">
+        <property name="text">
+         <string>Angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::InputField" name="zigZagAngle">
+        <property name="toolTip">
+         <string>Angle in which the pattern is applied</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="stepOverPercent_label">
+        <property name="text">
+         <string>Step Over Percent</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="stepOverPercent">
+        <property name="toolTip">
+         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="extraOffset_label">
+        <property name="text">
+         <string>Material Allowance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::InputField" name="extraOffset">
+        <property name="toolTip">
+         <string>The amount of material that should be left by this operation in relation to the target shape</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QWidget" name="pocketWidget">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="useStartPoint">
+        <property name="toolTip">
+         <string>Specify if this operation uses a starting point</string>
+        </property>
+        <property name="text">
+         <string>Use Start Point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="useOutline">
+        <property name="toolTip">
+         <string>If selected the operation uses the outline of the selected base geometry and ignores all holes and islands</string>
+        </property>
+        <property name="text">
+         <string>Use Outline</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="clearEdges">
+        <property name="text">
+         <string>Clear Edges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="minTravel">
+        <property name="text">
+         <string>Min Travel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="useRestMachining">
+        <property name="toolTip">
+         <string>Check to skip machining regions that have already been cleared by previous operations</string>
+        </property>
+        <property name="text">
+         <string>Use Rest Machining</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

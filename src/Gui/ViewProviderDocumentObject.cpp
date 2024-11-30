@@ -20,52 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QAction>
-# include <QByteArray>
 # include <QMenu>
-# include <qpixmap.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoFullPath.h>
-# include <Inventor/misc/SoChildList.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoDetail.h>
+# include <Inventor/misc/SoChildList.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/BoundBox.h>
-#include <App/Material.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/DocumentObserver.h>
+#include <App/Document.h>
 #include <App/Origin.h>
+#include <Base/Tools.h>
+
+#include "ViewProviderDocumentObjectPy.h"
 #include "ActionFunction.h"
 #include "Application.h"
 #include "Command.h"
 #include "Document.h"
-#include "Selection.h"
-#include "MainWindow.h"
 #include "MDIView.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "TaskView/TaskAppearance.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderExtension.h"
 #include "SoFCUnifiedSelection.h"
 #include "Tree.h"
-#include <Gui/ViewProviderDocumentObjectPy.h>
+#include "ViewProviderDocumentObject.h"
+#include "ViewProviderExtension.h"
+#include "TaskView/TaskAppearance.h"
 
-FC_LOG_LEVEL_INIT("Gui",true,true)
+
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 
@@ -73,8 +58,6 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
-  : pcObject(nullptr)
-  , pcDocument(nullptr)
 {
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
@@ -84,10 +67,10 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY_TYPE(ShowInTree, (true), dogroup, App::Prop_None, "Show the object in the tree view");
 
     ADD_PROPERTY_TYPE(SelectionStyle, ((long)0), sgroup, App::Prop_None, "Set the object selection style");
-    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
+    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",nullptr};
     SelectionStyle.setEnums(SelectionStyleEnum);
 
-    static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
+    static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",nullptr};
     ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), sgroup, App::Prop_None,
             "Enabled: Display the object on top of any other object when selected\n"
             "Object: On top only if the whole object is selected\n"
@@ -101,7 +84,7 @@ ViewProviderDocumentObject::~ViewProviderDocumentObject()
 {
     // Make sure that the property class does not destruct our string list
     DisplayMode.setContainer(nullptr);
-    DisplayMode.setEnums(0);
+    DisplayMode.setEnums(nullptr);
 }
 
 void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>& vec) const
@@ -171,7 +154,7 @@ void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
 {
     if (isAttachedToDocument()) {
         App::DocumentObject* obj = getObject();
-        App::Document* doc = obj ? obj->getDocument() : 0;
+        App::Document* doc = obj ? obj->getDocument() : nullptr;
         if (doc) {
             onBeforeChangeProperty(doc, prop);
         }
@@ -187,7 +170,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     }
     else if (prop == &Visibility) {
         // use this bit to check whether show() or hide() must be called
-        if (Visibility.testStatus(App::Property::User2) == false) {
+        if (!Visibility.testStatus(App::Property::User2)) {
             Visibility.setStatus(App::Property::User2, true);
             Visibility.getValue() ? show() : hide();
             Visibility.setStatus(App::Property::User2, false);
@@ -239,11 +222,11 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     ViewProvider::onChanged(prop);
 }
 
-void ViewProviderDocumentObject::hide(void)
+void ViewProviderDocumentObject::hide()
 {
     ViewProvider::hide();
     // use this bit to check whether 'Visibility' must be adjusted
-    if (Visibility.testStatus(App::Property::User2) == false) {
+    if (!Visibility.testStatus(App::Property::User2)) {
         Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(false);
         Visibility.setStatus(App::Property::User2, false);
@@ -286,8 +269,10 @@ void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& te
 {
     QAction* act = menu->addAction(text);
     act->setData(QVariant((int)ViewProvider::Default));
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    func->trigger(act, boost::bind(&ViewProviderDocumentObject::startDefaultEditMode, this));
+    auto func = new Gui::ActionFunction(menu);
+    func->trigger(act, [this](){
+        this->startDefaultEditMode();
+    });
 }
 
 void ViewProviderDocumentObject::setModeSwitch() {
@@ -295,7 +280,7 @@ void ViewProviderDocumentObject::setModeSwitch() {
         ViewProvider::setModeSwitch();
 }
 
-void ViewProviderDocumentObject::show(void)
+void ViewProviderDocumentObject::show()
 {
     if(TreeWidget::isObjectShowable(getObject()))
         ViewProvider::show();
@@ -307,7 +292,7 @@ void ViewProviderDocumentObject::show(void)
     }
 
     // use this bit to check whether 'Visibility' must be adjusted
-    if (Visibility.testStatus(App::Property::User2) == false) {
+    if (!Visibility.testStatus(App::Property::User2)) {
         Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(true);
         Visibility.setStatus(App::Property::User2, false);
@@ -335,8 +320,8 @@ void ViewProviderDocumentObject::updateView()
     // Hide the object temporarily to speed up the update
     bool vis = ViewProvider::isShow();
     if (vis) ViewProvider::hide();
-    for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-        updateData(it->second);
+    for (const auto & it : Map) {
+        updateData(it.second);
     }
     if (vis && Visibility.getValue()) ViewProvider::show();
 }
@@ -346,7 +331,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // save Object pointer
     pcObject = pcObj;
 
-    if(pcObj && pcObj->getNameInDocument() &&
+    if(pcObj && pcObj->isAttachedToDocument() &&
        Visibility.getValue()!=pcObj->Visibility.getValue())
         pcObj->Visibility.setValue(Visibility.getValue());
 
@@ -354,14 +339,15 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     aDisplayModesArray = this->getDisplayModes();
 
     if (aDisplayModesArray.empty())
-        aDisplayModesArray.push_back("");
+        aDisplayModesArray.emplace_back("");
 
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.
-    for (std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-        aDisplayEnumsArray.push_back( it->c_str() );
+    //for (auto it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
+    for (const auto & it : aDisplayModesArray) {
+        aDisplayEnumsArray.push_back( it.c_str() );
     }
-    aDisplayEnumsArray.push_back(0); // null termination
+    aDisplayEnumsArray.push_back(nullptr); // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));
 
     if(!isRestoring()) {
@@ -415,6 +401,18 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
     if(!pcObject)
         throw Base::RuntimeError("View provider detached");
+
+    if (!pcObject->isAttachedToDocument()) {
+        // Check if view provider is attached to a document as an annotation
+        for (auto doc : App::GetApplication().getDocuments()) {
+            auto guiDoc = Gui::Application::Instance->getDocument(doc);
+            if (guiDoc->isAnnotationViewProvider(this)) {
+                return guiDoc->getActiveView();
+            }
+        }
+        return nullptr;
+    }
+
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getActiveView();
@@ -456,7 +454,7 @@ Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
 {
     if(!pcObject)
-        return 0;
+        return nullptr;
     // first get the document this object is part of and get its GUI counterpart
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
@@ -467,8 +465,8 @@ SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) cons
 
     // search in all view providers for the node type
     std::vector<App::DocumentObject*> obj = pAppDoc->getObjects();
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-        const ViewProvider* vp = pGuiDoc->getViewProvider(*it);
+    for (auto & it : obj) {
+        const ViewProvider* vp = pGuiDoc->getViewProvider(it);
         // Ignore 'this' view provider. It could also happen that vp is 0, e.g. when
         // several objects have been added to the App::Document before notifying the
         // Gui::Document
@@ -485,7 +483,7 @@ SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) cons
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void ViewProviderDocumentObject::setActiveMode()
@@ -533,14 +531,14 @@ bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::
 int ViewProviderDocumentObject::replaceObject(
         App::DocumentObject *oldObj, App::DocumentObject *newObj)
 {
-    if(!oldObj || !oldObj->getNameInDocument()
-            || !newObj || !newObj->getNameInDocument())
+    if(!oldObj || !oldObj->isAttachedToDocument()
+            || !newObj || !newObj->isAttachedToDocument())
     {
         FC_THROWM(Base::RuntimeError,"Invalid object");
     }
 
     auto obj = getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         FC_THROWM(Base::RuntimeError,"View provider not attached");
 
     int res = ViewProvider::replaceObject(oldObj,newObj);
@@ -596,7 +594,8 @@ bool ViewProviderDocumentObject::showInTree() const {
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
-    if(!isSelectable()) return false;
+    if(!isSelectable())
+        return false;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         if(ext->extensionGetElementPicked(pp,subname))
@@ -616,9 +615,10 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
     if(idx<0 || idx+1>=path->getLength())
         return false;
     auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
-    if(!vp) return false;
+    if(!vp)
+        return false;
     auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return false;
     std::ostringstream str;
     str << obj->getNameInDocument() << '.';
@@ -640,17 +640,21 @@ bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *
 
     if(det) {
         delete det;
-        det = 0;
+        det = nullptr;
     }
 
     const char *dot = strchr(subname,'.');
-    if(!dot) return false;
+    if(!dot)
+        return false;
     auto obj = getObject();
-    if(!obj || !obj->getNameInDocument()) return false;
+    if(!obj || !obj->isAttachedToDocument())
+        return false;
     auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-    if(!sobj) return false;
+    if(!sobj)
+        return false;
     auto vp = Application::Instance->getViewProvider(sobj);
-    if(!vp) return false;
+    if(!vp)
+        return false;
 
     auto childRoot = getChildRoot();
     if(!childRoot)
@@ -684,7 +688,7 @@ ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
 {
     (void)subname;
     auto self = const_cast<ViewProviderDocumentObject*>(this);
-    if(!pcObject || !pcObject->getNameInDocument())
+    if(!pcObject || !pcObject->isAttachedToDocument())
         return self;
     auto linked = pcObject->getLinkedObject(recursive);
     if(!linked || linked == pcObject)

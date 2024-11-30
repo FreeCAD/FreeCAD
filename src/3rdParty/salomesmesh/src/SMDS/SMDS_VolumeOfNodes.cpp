@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMDS : implementaion of Salome mesh data structure
+//  SMESH SMDS : implementation of Salome mesh data structure
 //
 #ifdef _MSC_VER
 #pragma warning(disable:4786)

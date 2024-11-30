@@ -141,7 +141,7 @@ namespace
 
   //================================================================================
   /*!
-   * \brief Convertor of a pair of integers to a sole index
+   * \brief Converter of a pair of integers to a sole index
    */
   struct _Indexer
   {
@@ -152,7 +152,7 @@ namespace
   };
   //================================================================================
   /*!
-   * \brief Oriented convertor of a pair of integers to a sole index 
+   * \brief Oriented converter of a pair of integers to a sole index 
    */
   class _OrientedIndexer : public _Indexer
   {
@@ -584,7 +584,7 @@ namespace
                         const SMDS_MeshElement* cornerQuad,
                         const SMDS_MeshNode*    nCorner)
   {
-    // Find out size of block side mesured in nodes and by the way find two rows
+    // Find out size of block side measured in nodes and by the way find two rows
     // of nodes in two directions.
 
     int x, y, nbX, nbY;

@@ -45,9 +45,10 @@ using namespace Gui;
  *********************************************************************/
 
 TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
-                                                     const std::string& pixmapname, const QString& parname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()),parname,true, parent),
-      vp(vp), blockUpdate(false)
+                                             const std::string& pixmapname, const QString& parname)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()), parname, true, parent)
+    , vp(vp)
+    , blockUpdate(false)
 {
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
@@ -55,8 +56,9 @@ TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QW
 
 void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
-    if (this->vp == &Obj)
+    if (this->vp == &Obj) {
         this->vp = nullptr;
+    }
 }
 
 void TaskFeatureParameters::onUpdateView(bool on)
@@ -68,9 +70,9 @@ void TaskFeatureParameters::onUpdateView(bool on)
 void TaskFeatureParameters::recomputeFeature()
 {
     if (!blockUpdate) {
-        App::DocumentObject* obj = vp->getObject ();
+        App::DocumentObject* obj = getObject();
         assert (obj);
-        obj->getDocument()->recomputeFeature ( obj );
+        obj->getDocument()->recomputeFeature (obj);
     }
 }
 
@@ -78,39 +80,50 @@ void TaskFeatureParameters::recomputeFeature()
  *                            Task Dialog                            *
  *********************************************************************/
 TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp)
-    : TaskDialog(),vp(vp)
+    : vp(vp)
 {
     assert(vp);
 }
 
-TaskDlgFeatureParameters::~TaskDlgFeatureParameters()
+TaskDlgFeatureParameters::~TaskDlgFeatureParameters() = default;
+
+bool TaskDlgFeatureParameters::accept()
 {
-
-}
-
-bool TaskDlgFeatureParameters::accept() {
-    App::DocumentObject* feature = vp->getObject();
-
+    App::DocumentObject* feature = getObject();
+    bool isUpdateBlocked = false;
     try {
         // Iterate over parameter dialogs and apply all parameters from them
         for ( QWidget *wgt : Content ) {
             TaskFeatureParameters *param = qobject_cast<TaskFeatureParameters *> (wgt);
             if(!param)
                 continue;
-            
+
             param->saveHistory ();
             param->apply ();
+            isUpdateBlocked |= param->isUpdateBlocked();
         }
         // Make sure the feature is what we are expecting
         // Should be fine but you never know...
-        if ( !feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {
+        if ( !feature->isDerivedFrom<PartDesign::Feature>() ) {
             throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
-        Gui::cmdAppDocument(feature, "recompute()");
+        if(isUpdateBlocked){
+            Gui::cmdAppDocument(feature, "recompute()");
+        } else {
+            // object was already computed, nothing more to do with it...
+            Gui::cmdAppDocument(feature, "purgeTouched()");
+
+            // ...but touch parents to signal the change...
+            for (auto obj : feature->getInList()){
+                obj->touch();
+            }
+            // ...and recompute them
+            Gui::cmdAppDocument(feature->getDocument(), "recompute()");
+        }
 
         if (!feature->isValid()) {
-            throw Base::RuntimeError(vp->getObject()->getStatusString());
+            throw Base::RuntimeError(getObject()->getStatusString());
         }
 
         App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
@@ -129,11 +142,7 @@ bool TaskDlgFeatureParameters::accept() {
         Gui::Command::commitCommand();
     } catch (const Base::Exception& e) {
         // Generally the only thing that should fail is feature->isValid() others should be fine
-#if (QT_VERSION >= 0x050000)
         QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what());
-#else
-        QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what(), 0, QApplication::UnicodeUTF8);
-#endif
         QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
         return false;
     }
@@ -143,7 +152,7 @@ bool TaskDlgFeatureParameters::accept() {
 
 bool TaskDlgFeatureParameters::reject()
 {
-    PartDesign::Feature* feature = static_cast<PartDesign::Feature*>(vp->getObject());
+    auto feature = getObject<PartDesign::Feature>();
     App::DocumentObjectWeakPtrT weakptr(feature);
     App::Document* document = feature->getDocument();
 

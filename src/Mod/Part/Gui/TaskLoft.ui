@@ -31,7 +31,14 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="3">
+   <item row="1" column="2">
+    <widget class="QCheckBox" name="checkClosed">
+     <property name="text">
+      <string>Closed</string>
+     </property>
+    </widget>
+   </item>
+  <item row="1" column="3">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -44,14 +51,7 @@
      </property>
     </spacer>
    </item>
-   <item row="1" column="2">
-    <widget class="QCheckBox" name="checkClosed">
-     <property name="text">
-      <string>Closed</string>
-     </property>
-    </widget>
-   </item>
-  </layout>
+   </layout>
  </widget>
  <customwidgets>
   <customwidget>

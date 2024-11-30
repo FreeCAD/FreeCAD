@@ -25,42 +25,33 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepOffsetAPI_DraftAngle.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-# include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-//# include <BRepAdaptor_CompCurve.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Circ.hxx>
-# include <GeomAbs_SurfaceType.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <Geom_Plane.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <Geom_Curve.hxx>
 # include <Geom_Line.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <Geom_Plane.hxx>
+# include <GeomAPI_IntSS.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Pln.hxx>
 #endif
 
 #include <App/OriginFeature.h>
-#include <Base/Tools.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureDraft.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
 
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
 
 using namespace PartDesign;
 
@@ -73,8 +64,8 @@ Draft::Draft()
 {
     ADD_PROPERTY(Angle,(1.5));
     Angle.setConstraints(&floatAngle);
-    ADD_PROPERTY_TYPE(NeutralPlane,(0),"Draft",(App::PropertyType)(App::Prop_None),"NeutralPlane");
-    ADD_PROPERTY_TYPE(PullDirection,(0),"Draft",(App::PropertyType)(App::Prop_None),"PullDirection");
+    ADD_PROPERTY_TYPE(NeutralPlane,(nullptr),"Draft",(App::PropertyType)(App::Prop_None),"NeutralPlane");
+    ADD_PROPERTY_TYPE(PullDirection,(nullptr),"Draft",(App::PropertyType)(App::Prop_None),"PullDirection");
     ADD_PROPERTY(Reversed,(0));
 }
 
@@ -104,35 +95,41 @@ short Draft::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Draft::execute(void)
+App::DocumentObjectExecReturn *Draft::execute()
 {
     // Get parameters
     // Base shape
     Part::TopoShape TopShape;
     try {
-        TopShape = getBaseShape();
-    } catch (Base::Exception& e) {
+        TopShape = getBaseTopoShape();
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
     // Faces where draft should be applied
     // Note: Cannot be const reference currently because of BRepOffsetAPI_DraftAngle::Remove() bug, see below
     std::vector<std::string> SubVals = Base.getSubValuesStartsWith("Face");
-    if (SubVals.size() == 0)
-        return new App::DocumentObjectExecReturn("No faces specified");
+
+    //If no element is selected, then we use a copy of previous feature.
+    if (SubVals.empty()) {
+        this->positionByBaseFeature();
+        this->Shape.setValue(TopShape);
+        return App::DocumentObject::StdReturn;
+    }
 
     // Draft angle
     double angle = Base::toRadians(Angle.getValue());
 
     // Pull direction
     gp_Dir pullDirection;
-    App::DocumentObject* refDirection = PullDirection.getValue();    
-    if (refDirection != NULL) {
-        if (refDirection->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+    App::DocumentObject* refDirection = PullDirection.getValue();
+    if (refDirection) {
+        if (refDirection->isDerivedFrom<PartDesign::Line>()) {
                     PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
                     Base::Vector3d d = line->getDirection();
                     pullDirection = gp_Dir(d.x, d.y, d.z);
-        } else if (refDirection->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        } else if (refDirection->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = PullDirection.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())
                 throw Base::ValueError("No pull direction reference specified");
@@ -164,7 +161,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
     // Neutral plane
     gp_Pln neutralPlane;
     App::DocumentObject* refPlane = NeutralPlane.getValue();
-    if (refPlane == NULL) {
+    if (!refPlane) {
         // Try to guess a neutral plane from the first selected face
         // Get edges of first selected face
         TopoDS_Shape face = TopShape.getSubShape(SubVals[0].c_str());
@@ -212,14 +209,14 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         if (!found)
             throw Base::RuntimeError("No neutral plane specified and none can be guessed");
     } else {
-        if (refPlane->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+        if (refPlane->isDerivedFrom<PartDesign::Plane>()) {
             PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refPlane);
             Base::Vector3d b = plane->getBasePoint();
             Base::Vector3d n = plane->getNormal();
             neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
-        } else if (refPlane->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        } else if (refPlane->isDerivedFrom<App::Plane>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
-        } else if (refPlane->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        } else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())
                 throw Base::ValueError("No neutral plane reference specified");
@@ -238,7 +235,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
 
                 neutralPlane = adapt.Plane();
             } else if (ref.ShapeType() == TopAbs_EDGE) {
-                if (refDirection != NULL) {
+                if (refDirection) {
                     // Create neutral plane through edge normal to pull direction
                     TopoDS_Edge refEdge = TopoDS::Edge(ref);
                     if (refEdge.IsNull())
@@ -264,7 +261,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         neutralPlane.Transform(invObjLoc.Transformation());
     }
 
-    if (refDirection == NULL) {
+    if (!refDirection) {
         // Choose pull direction normal to neutral plane
         pullDirection = neutralPlane.Axis().Direction();
     }
@@ -301,7 +298,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
                 if (!mkDraft.AddDone()) {
                     // Note: the function ProblematicShape returns the face on which the error occurred
                     // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
-                    //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341
+                    //       therefore unusable. See https://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341
                     //       The only solution is to discard mkDraft and start over without the current face
                     // mkDraft.Remove(face);
                     Base::Console().Error("Adding face failed on %s. Omitted\n", it->c_str());
@@ -315,15 +312,14 @@ App::DocumentObjectExecReturn *Draft::execute(void)
 
         mkDraft.Build();
         if (!mkDraft.IsDone())
-            return new App::DocumentObjectExecReturn("Failed to create draft");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to create draft"));
 
         TopoDS_Shape shape = mkDraft.Shape();
         if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
 
-        int solidCount = countSolids(shape);
-        if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn("Fuse: Result has multiple solids. This is not supported at this time.");
+        if (!isSingleSolidRuleSatisfied(shape)) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
 
         this->Shape.setValue(getSolid(shape));

@@ -32,19 +32,19 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderPrimitive : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPrimitive);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPrimitive);
 
 public:
     /// constructor
     ViewProviderPrimitive();
     /// destructor
-    virtual ~ViewProviderPrimitive();
+    ~ViewProviderPrimitive() override;
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
-    bool setEdit(int ModNum);
-    void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
 private:
     ViewProviderAttachExtension extension;

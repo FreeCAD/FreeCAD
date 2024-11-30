@@ -7,6 +7,7 @@ endif(BUILD_GUI)
 set(Mesh_Scripts
     Init.py
     BuildRegularGeoms.py
+    MeshEnums.py
     App/MeshTestsApp.py
 )
 
@@ -46,4 +47,3 @@ INSTALL(
 
 
 INSTALL(FILES ${MeshTestDataFiles} DESTINATION Mod/Mesh/App/TestData)
-

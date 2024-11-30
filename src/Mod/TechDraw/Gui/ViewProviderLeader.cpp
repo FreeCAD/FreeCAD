@@ -29,26 +29,11 @@
 # include <QTextStream>
 #endif
 
-#include <QMessageBox>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
@@ -56,8 +41,7 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "PreferencesGui.h"
-#include "MDIViewPage.h"
-#include "QGVPage.h"
+#include "ZVALUE.h"
 #include "QGIView.h"
 #include "TaskLeaderLine.h"
 #include "ViewProviderLeader.h"
@@ -73,88 +57,55 @@ const char* ViewProviderLeader::LineStyleEnums[] = { "NoLine",
                                                   "Dot",
                                                   "DashDot",
                                                   "DashDotDot",
-                                                  NULL };
+                                                  nullptr };
 
 //**************************************************************************
 // Construction/Destruction
 
 ViewProviderLeader::ViewProviderLeader()
 {
-    sPixmap = "actions/techdraw-LeaderLine";
+    sPixmap = "actions/TechDraw_LeaderLine";
 
     static const char *group = "Line Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
+    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group, (App::PropertyType)(App::Prop_None), "Line width");
     LineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
-    ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"Color of the Markup");
-}
+    ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Line style");
+    ADD_PROPERTY_TYPE(Color, (getDefLineColor()), group, App::Prop_None, "Color of the Markup");
+    ADD_PROPERTY_TYPE(UseOldCoords, (false), group, App::Prop_None, "Set to true for older documents ");
 
-ViewProviderLeader::~ViewProviderLeader()
-{
-}
-
-void ViewProviderLeader::attach(App::DocumentObject *pcFeat)
-{
-    ViewProviderDrawingView::attach(pcFeat);
+    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
 bool ViewProviderLeader::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPL::setEdit(%d)\n",ModNum);
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgLeaderLine(this));
-        return true;
-    } else {
+//    Base::Console().Message("VPL::setEdit(%d)\n", ModNum);
+    if (ModNum != ViewProvider::Default) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
+
+    if (Gui::Control().activeDialog()) {
+         // a TaskPanel is already open!
+        return false;
+    }
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgLeaderLine(this));
     return true;
 }
 
-void ViewProviderLeader::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderLeader::doubleClicked(void)
+bool ViewProviderLeader::doubleClicked()
 {
 //    Base::Console().Message("VPL::doubleClicked()\n");
     setEdit(ViewProvider::Default);
     return true;
 }
 
-void ViewProviderLeader::updateData(const App::Property* p)
-{
-    if (!getFeature()->isRestoring())  {
-        if (p == &getFeature()->LeaderParent)  {
-            App::DocumentObject* docObj = getFeature()->LeaderParent.getValue();
-            TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(docObj);
-            if (dv != nullptr) {
-                QGIView* qgiv = getQView();
-                if (qgiv) {
-                    qgiv->onSourceChange(dv);
-                }
-            }
-        }
-    }
-    ViewProviderDrawingView::updateData(p);
-}
-
 void ViewProviderLeader::onChanged(const App::Property* p)
 {
     if ((p == &Color) ||
         (p == &LineWidth) ||
-        (p == &LineStyle)) {
+        (p == &LineStyle) ||
+        (p == &UseOldCoords)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
@@ -163,27 +114,31 @@ void ViewProviderLeader::onChanged(const App::Property* p)
     ViewProviderDrawingView::onChanged(p);
 }
 
-std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
-    // valid children of a ViewLeader are:
-    //    - Rich Annotations
-    //    - Weld Symbols
+    // Valid children of a ViewLeader are any drawing views declaring the leader line as their parent,
+    // notably Rich Annotations, Weld Symbols and Surface Finish Symbols
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getFeature()->getInList();
     try {
-       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-           if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
-                temp.push_back((*it));
-           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())) {
-                temp.push_back((*it));
+        for(auto& docobj : views) {
+            auto view = dynamic_cast<TechDraw::DrawView *>(docobj);
+            if (view && view->claimParent() == getViewObject()) {
+                // if we are the item's owner, we should add the item to our child list
+                temp.push_back(view);
+                continue;
+            }
+
+            if (docobj && docobj->isDerivedFrom<TechDraw::DrawWeldSymbol>()) {
+                // add welding symbol even if we are not the owner?
+                temp.push_back(docobj);
             }
         }
         return temp;
-    } 
+    }
     catch (...) {
-        std::vector<App::DocumentObject*> tmp;
-        return tmp;
+        return {};
     }
 }
 
@@ -197,17 +152,12 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
     return dynamic_cast<TechDraw::DrawLeaderLine*>(pcObject);
 }
 
-double ViewProviderLeader::getDefLineWeight(void)
+double ViewProviderLeader::getDefLineWeight()
 {
-    double result = 0.0;
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    result = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return result;
+    return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
-App::Color ViewProviderLeader::getDefLineColor(void)
+App::Color ViewProviderLeader::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }
@@ -244,26 +194,26 @@ void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, cons
     }
 }
 
-bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
+bool ViewProviderLeader::onDelete(const std::vector<std::string> & parameters)
 {
+    Q_UNUSED(parameters)
     // a leader line cannot be deleted if it has a child weld symbol
 
     // get childs
     auto childs = claimChildren();
 
-    if (!childs.empty()) {
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage); 
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else {
+    if (childs.empty()) {
         return true;
     }
+
+    QString bodyMessage;
+    QTextStream bodyMessageStream(&bodyMessage);
+    bodyMessageStream << qApp->translate("Std_Delete",
+        "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
+    QMessageBox::warning(Gui::getMainWindow(),
+        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+        QMessageBox::Ok);
+    return false;
 }
 
 bool ViewProviderLeader::canDelete(App::DocumentObject *obj) const

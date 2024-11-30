@@ -23,23 +23,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QCoreApplication>
-# include <QEvent>
+#include <QCoreApplication>
+#include <QEvent>
 #endif
 
 #include "Debugger.h"
 #include "Console.h"
 
+
 using namespace Base;
 
 Debugger::Debugger(QObject* parent)
-  : QObject(parent), isAttached(false)
-{
-}
+    : QObject(parent)
+{}
 
-Debugger::~Debugger()
-{
-}
+Debugger::~Debugger() = default;
 
 void Debugger::attach()
 {
@@ -53,7 +51,7 @@ void Debugger::detach()
     isAttached = false;
 }
 
-bool Debugger::eventFilter(QObject*, QEvent* event)
+bool Debugger::eventFilter(QObject* /*watched*/, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress) {
         if (loop.isRunning()) {
@@ -67,8 +65,9 @@ bool Debugger::eventFilter(QObject*, QEvent* event)
 
 int Debugger::exec()
 {
-    if (isAttached)
+    if (isAttached) {
         Base::Console().Message("TO CONTINUE PRESS ANY KEY...\n");
+    }
     return loop.exec();
 }
 

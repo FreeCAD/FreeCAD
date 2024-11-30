@@ -21,42 +21,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Precision.hxx>
-#include <TopoDS.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#endif
-
 #include "FemConstraintPlaneRotation.h"
+
 
 using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintPlaneRotation, Fem::Constraint)
 
 ConstraintPlaneRotation::ConstraintPlaneRotation()
-{
+{}
 
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintPlaneRotation",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                      "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintPlaneRotation",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                                                             "Normals where symbols are drawn");
-    Points.setValues(std::vector<Base::Vector3d>());
-    Normals.setValues(std::vector<Base::Vector3d>());
-}
-
-App::DocumentObjectExecReturn *ConstraintPlaneRotation::execute(void)
+App::DocumentObjectExecReturn* ConstraintPlaneRotation::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintPlaneRotation::getViewProviderName(void) const
+const char* ConstraintPlaneRotation::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintPlaneRotation";
 }
@@ -64,16 +46,4 @@ const char* ConstraintPlaneRotation::getViewProviderName(void) const
 void ConstraintPlaneRotation::onChanged(const App::Property* prop)
 {
     Constraint::onChanged(prop);
-
-    if (prop == &References) {
-        std::vector<Base::Vector3d> points;
-        std::vector<Base::Vector3d> normals;
-        int scale = 1; //OvG: Enforce use of scale
-        if (getPoints(points, normals, &scale)) {
-            Points.setValues(points);
-            Normals.setValues(normals);
-            Scale.setValue(scale); //OvG: Scale
-            Points.touch(); // This triggers ViewProvider::updateData()
-        }
-    }
 }

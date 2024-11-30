@@ -21,24 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
+#include <QDialog>
 #endif
 
-#include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
-#include "ui_SketcherRegularPolygonDialog.h"
 #include "SketcherRegularPolygonDialog.h"
+#include "ui_SketcherRegularPolygonDialog.h"
+
 
 using namespace SketcherGui;
 
-SketcherRegularPolygonDialog::SketcherRegularPolygonDialog(void)
-: QDialog(Gui::getMainWindow()), ui(new Ui_SketcherRegularPolygonDialog)
+SketcherRegularPolygonDialog::SketcherRegularPolygonDialog()
+    : QDialog(Gui::getMainWindow())
+    , ui(new Ui_SketcherRegularPolygonDialog)
 {
     ui->setupUi(this);
 
@@ -48,8 +45,7 @@ SketcherRegularPolygonDialog::SketcherRegularPolygonDialog(void)
 }
 
 SketcherRegularPolygonDialog::~SketcherRegularPolygonDialog()
-{
-}
+{}
 
 void SketcherRegularPolygonDialog::accept()
 {
@@ -60,7 +56,7 @@ void SketcherRegularPolygonDialog::accept()
     QDialog::accept();
 }
 
-void SketcherRegularPolygonDialog::updateValues(void)
+void SketcherRegularPolygonDialog::updateValues()
 {
     sides = ui->sidesQuantitySpinBox->value();
 }

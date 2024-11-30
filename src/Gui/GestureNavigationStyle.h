@@ -33,13 +33,13 @@ namespace Gui {
 
 class GestureNavigationStyle: public UserNavigationStyle
 {
-    typedef UserNavigationStyle superclass;
+    using superclass = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GestureNavigationStyle();
-    virtual ~GestureNavigationStyle() override;
+    ~GestureNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
 
 protected:
@@ -107,8 +107,6 @@ public: //gesture reactions
     ///Roll gesture is like: press LMB, press RMB, release LMB, release RMB.
     /// This function is called by state machine whenever it picks up roll gesture.
     void onRollGesture(int direction);
-    ///Called by state machine, when set-rotation-center gesture is detected (MMB click, or H key)
-    void onSetRotationCenter(SbVec2s cursor);
 };
 
 }

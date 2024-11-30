@@ -24,8 +24,10 @@
 #define GUI_DIALOG_DLGEXPRESSIONINPUT_H
 
 #include <QDialog>
-#include <Base/Unit.h>
+#include <QTreeWidget>
 #include <App/ObjectIdentifier.h>
+#include <Base/Type.h>
+#include <Base/Unit.h>
 #include <memory>
 
 namespace Ui {
@@ -46,14 +48,29 @@ namespace Gui {
 
 namespace Dialog {
 
+class GuiExport NumberRange
+{
+public:
+    void setRange(double minimum, double maximum);
+    void clearRange();
+    void throwIfOutOfRange(const Base::Quantity&) const;
+
+private:
+    double minimum{};
+    double maximum{};
+    bool defined{false};
+};
+
 class GuiExport DlgExpressionInput : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = 0);
-    ~DlgExpressionInput();
+    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = nullptr);
+    ~DlgExpressionInput() override;
 
+    void setRange(double minimum, double maximum);
+    void clearRange();
     std::shared_ptr<App::Expression> getExpression() const { return expression; }
 
     bool discardedFormula() const { return discarded; }
@@ -61,19 +78,35 @@ public:
     QPoint expressionPosition() const;
     void   setExpressionInputSize(int width, int height);
 
-    bool eventFilter(QObject *obj, QEvent *event);
-
 public Q_SLOTS:
     void show();
+    void accept() override;
 
 protected:
-    void showEvent(QShowEvent*);
-    void mouseReleaseEvent(QMouseEvent*);
-    void mousePressEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*) override;
+    void mousePressEvent(QMouseEvent*) override;
+
+private:
+    Base::Type getTypePath();
+    Base::Type determineTypeVarSet();
+    bool typeOkForVarSet();
+    void initializeVarSets();
+    void checkExpression(const QString& text);
+    void setupVarSets();
+    std::string getType();
+    void reportVarSetInfo(const char* message);
+    bool reportName(QTreeWidgetItem* item);
+    bool reportGroup(QString& nameGroup);
+    void updateVarSetInfo(bool checkExpr = true);
+    void acceptWithVarSet();
 
 private Q_SLOTS:
     void textChanged(const QString & text);
     void setDiscarded();
+    void onCheckVarSets(int state);
+    void onVarSetSelected(int);
+    void onTextChangedGroup(const QString&);
+    void namePropChanged(const QString&);
 
 private:
     ::Ui::DlgExpressionInput *ui;
@@ -81,8 +114,12 @@ private:
     App::ObjectIdentifier path;
     bool discarded;
     const Base::Unit impliedUnit;
+    NumberRange numberRange;
 
     int minimumWidth;
+
+    static bool varSetsVisible;
+    std::unique_ptr<QTreeWidget> treeWidget;
 };
 
 }

@@ -25,15 +25,16 @@
 # include <QMessageBox>
 #endif
 
-#include "ui_DlgAddProperty.h"
-
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include "MainWindow.h"
-#include <ViewProviderDocumentObject.h>
+#include <App/ExpressionParser.h>
+#include <Base/Tools.h>
+
 #include "DlgAddProperty.h"
+#include "ui_DlgAddProperty.h"
+#include "MainWindow.h"
+#include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;
@@ -54,9 +55,17 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
     if(defType.isBad())
         defType = App::PropertyString::getClassTypeId();
 
+    std::vector<Base::Type> proptypes;
     std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"),types);
-    for(auto type : types) {
+    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
+    std::copy_if (proptypes.begin(), proptypes.end(), std::back_inserter(types), [](const Base::Type& type) {
+        return type.canInstantiate();
+    });
+    std::sort(types.begin(), types.end(), [](Base::Type a, Base::Type b) {
+        return strcmp(a.getName(), b.getName()) < 0;
+    });
+
+    for(const auto& type : types) {
         ui->comboType->addItem(QString::fromLatin1(type.getName()));
         if(type == defType)
             ui->comboType->setCurrentIndex(ui->comboType->count()-1);
@@ -70,10 +79,7 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgAddProperty::~DlgAddProperty()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgAddProperty::~DlgAddProperty() = default;
 
 static std::string containerName(const App::PropertyContainer *c) {
     auto doc = Base::freecad_dynamic_cast<App::Document>(c);
@@ -106,8 +112,16 @@ void DlgAddProperty::accept()
     if(ui->chkAppend->isChecked())
         name = group + "_" + name;
 
+    if (App::ExpressionParser::isTokenAUnit(name) || App::ExpressionParser::isTokenAConstant(name)) {
+        QMessageBox::critical(getMainWindow(),
+            QObject::tr("Invalid name"),
+            QObject::tr("The property name is a reserved word."));
+        return;
+    }
+
     for(auto c : containers) {
-        if(c->getPropertyByName(name.c_str())) {
+        auto prop = c->getPropertyByName(name.c_str());
+        if(prop && prop->getContainer() == c) {
             QMessageBox::critical(getMainWindow(),
                 QObject::tr("Invalid name"),
                 QObject::tr("The property '%1' already exists in '%2'").arg(
@@ -127,7 +141,7 @@ void DlgAddProperty::accept()
             e.ReportException();
             for(auto it2=containers.begin();it2!=it;++it2) {
                 try {
-                    (*it)->removeDynamicProperty(name.c_str());
+                    (*it2)->removeDynamicProperty(name.c_str());
                 } catch(Base::Exception &e) {
                     e.ReportException();
                 }

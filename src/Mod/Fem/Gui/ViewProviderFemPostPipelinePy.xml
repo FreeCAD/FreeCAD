@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+          Father="ViewProviderDocumentObjectPy"
+          Name="ViewProviderFemPostPipelinePy"
+          Twin="ViewProviderFemPostPipeline"
+          TwinPointer="ViewProviderFemPostPipeline"
+          Include="Mod/Fem/Gui/ViewProviderFemPostPipeline.h"
+          Namespace="FemGui"
+          FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+          FatherNamespace="Gui"
+          Constructor="false"
+          Delete="false">
+    <Documentation>
+      <Author Licence="LGPL" Name="Uwe Stöhr" EMail="uwestoehr@lyx.org" />
+      <UserDocu>ViewProviderFemPostPipeline class</UserDocu>
+    </Documentation>
+    <Methode Name="transformField">
+      <Documentation>
+        <UserDocu>Scales values of given result mesh field by given factor</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="updateColorBars">
+      <Documentation>
+        <UserDocu>Update coloring of pipeline and its childs</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

@@ -20,18 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "HLRBRep/PolyHLRToShapePy.h"
 #include "HLRBRep/PolyHLRToShapePy.cpp"
 #include "HLRBRep/HLRBRep_PolyAlgoPy.h"
-#include <Mod/Part/App/TopoShapePy.h>
+#include "TopoShapePy.h"
+
 
 using namespace Part;
-
 
 PyObject *PolyHLRToShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
@@ -55,9 +52,9 @@ int PolyHLRToShapePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string PolyHLRToShapePy::representation(void) const
+std::string PolyHLRToShapePy::representation() const
 {
-    return std::string("<HLRBRep_PolyHLRToShape object>");
+    return {"<HLRBRep_PolyHLRToShape object>"};
 }
 
 PyObject* PolyHLRToShapePy::update(PyObject *args)

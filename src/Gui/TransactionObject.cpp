@@ -20,30 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "Application.h"
 #include "Document.h"
 #include "TransactionObject.h"
 #include "ViewProviderDocumentObject.h"
-#include <App/Document.h>
+
 
 using namespace Gui;
 
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::TransactionViewProvider, App::TransactionObject)
 
-TransactionViewProvider::TransactionViewProvider()
-{
-}
+TransactionViewProvider::TransactionViewProvider() = default;
 
-TransactionViewProvider::~TransactionViewProvider()
-{
-}
+TransactionViewProvider::~TransactionViewProvider() = default;
 
 void TransactionViewProvider::applyNew(App::Document& Doc, App::TransactionalObject* pcObj)
 {

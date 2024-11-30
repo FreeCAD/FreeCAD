@@ -21,65 +21,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <Adaptor3d_IsoCurve.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS.hxx>
-#include <BRepClass_FaceClassifier.hxx>
-#include <BRep_Tool.hxx>
-#include <Precision.hxx>
-#endif
 
 #include "FemConstraintFixed.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
 
 using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintFixed, Fem::Constraint)
 
 ConstraintFixed::ConstraintFixed()
-{
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                      "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                                                             "Normals where symbols are drawn");
-    Points.setValues(std::vector<Base::Vector3d>());
-    Normals.setValues(std::vector<Base::Vector3d>());
-}
+{}
 
-App::DocumentObjectExecReturn *ConstraintFixed::execute(void)
+App::DocumentObjectExecReturn* ConstraintFixed::execute()
 {
     return Constraint::execute();
 }
 
 void ConstraintFixed::onChanged(const App::Property* prop)
 {
-    // Note: If we call this at the end, then the symbols are not oriented correctly initially
-    // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
-
-    if (prop == &References) {
-        std::vector<Base::Vector3d> points;
-        std::vector<Base::Vector3d> normals;
-        int scale = 1; //OvG: Enforce use of scale
-        if (getPoints(points, normals, &scale)) {
-            Points.setValues(points);
-            Normals.setValues(normals);
-            Scale.setValue(scale); //OvG: Scale
-            Points.touch(); // This triggers ViewProvider::updateData()
-        }
-    }
 }

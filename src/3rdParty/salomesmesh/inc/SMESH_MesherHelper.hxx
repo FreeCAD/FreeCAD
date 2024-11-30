@@ -186,7 +186,7 @@ class SMESH_EXPORT SMESH_MesherHelper
    * \brief Count nb of sub-shapes
     * \param shape - the shape
     * \param type - the type of sub-shapes to count
-    * \param ignoreSame - if true, use map not to count same shapes, esle use explorer
+    * \param ignoreSame - if true, use map not to count same shapes, else use explorer
     * \retval int - the calculated number
    */
   static int Count(const TopoDS_Shape&    shape,
@@ -296,7 +296,7 @@ public:
 
   /*!
    * \brief To set created elements on the shape set by IsQuadraticSubMesh()
-   *        or the next methods. By defaul elements are set on the shape if
+   *        or the next methods. By default elements are set on the shape if
    *        a mesh has no shape to be meshed
    */
   bool SetElementsOnShape(bool toSet)
@@ -487,7 +487,7 @@ public:
   /*!
    * \brief Define a pointer to wrapper over a function of gp_XY class,
    *       suitable to pass as xyFunPtr to ApplyIn2D().
-   *       For exaple gp_XY_FunPtr(Added) defines pointer gp_XY_Added to function
+   *       For example gp_XY_FunPtr(Added) defines pointer gp_XY_Added to function
    *       calling gp_XY::Added(gp_XY), which is to be used like following
    *       ApplyIn2D(surf, uv1, uv2, gp_XY_Added)
    */
@@ -524,7 +524,7 @@ public:
   bool GetNodeUVneedInFaceNode(const TopoDS_Face& F = TopoDS_Face()) const;
 
   /*!
-   * \brief Return projector intitialized by given face without location, which is returned
+   * \brief Return projector initialized by given face without location, which is returned
    */
   GeomAPI_ProjectPointOnSurf& GetProjector(const TopoDS_Face& F,
                                            TopLoc_Location&   loc,
@@ -556,7 +556,7 @@ public:
     * \retval bool - true if subShape is a seam shape
     *
     * It works only if IsQuadraticSubMesh() or SetSubShape() has been called.
-    * Seam shape has two 2D alternative represenations on the face
+    * Seam shape has two 2D alternative representations on the face
    */
   bool IsSeamShape(const int subShape) const
   { return mySeamShapeIds.find( subShape ) != mySeamShapeIds.end(); }
@@ -566,7 +566,7 @@ public:
     * \retval bool - true if subShape is a seam shape
     *
     * It works only if IsQuadraticSubMesh() or SetSubShape() has been called.
-    * Seam shape has two 2D alternative represenations on the face
+    * Seam shape has two 2D alternative representations on the face
    */
   bool IsSeamShape(const TopoDS_Shape& subShape) const
   { return IsSeamShape( GetMeshDS()->ShapeToIndex( subShape )); }
@@ -702,7 +702,7 @@ public:
 
  private:
 
-  // Forbiden copy constructor
+  // Forbidden copy constructor
   SMESH_MesherHelper (const SMESH_MesherHelper& theOther);
 
   // key of a map of bi-quadratic face to it's central node

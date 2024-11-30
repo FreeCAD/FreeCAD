@@ -21,49 +21,43 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
+#include <QDialog>
 #endif
 
-#include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
-#include "ui_SketchMirrorDialog.h"
 #include "SketchMirrorDialog.h"
-#include <Mod/Sketcher/App/SketchObject.h>
+#include "ui_SketchMirrorDialog.h"
+
 
 using namespace SketcherGui;
 
-SketchMirrorDialog::SketchMirrorDialog(void)
-  : QDialog(Gui::getMainWindow())
-  , RefGeoid(-1)
-  , RefPosid(Sketcher::PointPos::none)
-  , ui(new Ui_SketchMirrorDialog)
+SketchMirrorDialog::SketchMirrorDialog()
+    : QDialog(Gui::getMainWindow())
+    , RefGeoid(-1)
+    , RefPosid(Sketcher::PointPos::none)
+    , ui(new Ui_SketchMirrorDialog)
 {
     ui->setupUi(this);
 }
 
 SketchMirrorDialog::~SketchMirrorDialog()
-{
-}
+{}
 
 void SketchMirrorDialog::accept()
 {
     if (ui->XAxisRadioButton->isChecked()) {
-        RefGeoid=Sketcher::GeoEnum::HAxis;
-        RefPosid=Sketcher::PointPos::none;
+        RefGeoid = Sketcher::GeoEnum::HAxis;
+        RefPosid = Sketcher::PointPos::none;
     }
     else if (ui->YAxisRadioButton->isChecked()) {
-        RefGeoid=Sketcher::GeoEnum::VAxis;
-        RefPosid=Sketcher::PointPos::none; 
+        RefGeoid = Sketcher::GeoEnum::VAxis;
+        RefPosid = Sketcher::PointPos::none;
     }
     else if (ui->OriginRadioButton->isChecked()) {
-        RefGeoid=Sketcher::GeoEnum::RtPnt;
-        RefPosid=Sketcher::PointPos::start; 
+        RefGeoid = Sketcher::GeoEnum::RtPnt;
+        RefPosid = Sketcher::PointPos::start;
     }
 
     QDialog::accept();

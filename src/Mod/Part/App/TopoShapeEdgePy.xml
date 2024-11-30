@@ -347,17 +347,22 @@ Part.show(s)
           </UserDocu>
         </Documentation>
       </Methode>
+      <Methode Name="countNodes" Const="true">
+      <Documentation>
+        <UserDocu>Returns the number of nodes of the 3D polygon of the edge.</UserDocu>
+      </Documentation>
+      </Methode>
       <Methode Name="split" Const="true">
         <Documentation>
           <UserDocu>Splits the edge at the given parameter values and builds a wire out of it
 split(paramval) -> Wire
 --
 Args:
-    paramval (float or int): The parameter value along the Edge at which to
+    paramval (float or list_of_floats): The parameter values along the Edge at which to
         split it e.g:
 
-        x = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
-        y = x.derivative3At(x.FirstParameter + 0.5 * (x.LastParameter - x.FirstParameter))
+        edge = Part.makeCircle(1, FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 0, 90)
+        wire = edge.split([0.5, 1.0])
 
 Returns:
     Wire: wire made up of two Edges

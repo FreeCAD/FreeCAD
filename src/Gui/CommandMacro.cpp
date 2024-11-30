@@ -20,18 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 #endif
 
 #include "Command.h"
+#include "Action.h"
 #include "Application.h"
-#include "MainWindow.h"
+#include "BitmapFactory.h"
 #include "DlgMacroExecuteImp.h"
 #include "DlgMacroRecordImp.h"
 #include "Macro.h"
+#include "MainWindow.h"
 #include "PythonDebugger.h"
+
 
 using namespace Gui;
 
@@ -56,41 +59,27 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
 void StdCmdDlgMacroRecord::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Dialog::DlgMacroRecordImp cDlg(getMainWindow());
-    cDlg.exec();
+    if (!getGuiApplication()->macroManager()->isOpen()){
+        Gui::Dialog::DlgMacroRecordImp cDlg(getMainWindow());
+        if (cDlg.exec() && getAction()) {
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("media-playback-stop"));
+            getAction()->setText(QCoreApplication::translate("StdCmdDlgMacroRecord", "S&top macro recording"));
+            getAction()->setToolTip(QCoreApplication::translate("StdCmdDlgMacroRecord", "Stop the macro recording session"));
+        }
+    }
+    else {
+        getGuiApplication()->macroManager()->commit();
+        if (getAction()) {
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("media-record"));
+            getAction()->setText(QString::fromLatin1(sMenuText));
+            getAction()->setToolTip(QString::fromLatin1(sToolTipText));
+        }
+    }
 }
 
-bool StdCmdDlgMacroRecord::isActive(void)
+bool StdCmdDlgMacroRecord::isActive()
 {
-    return ! (getGuiApplication()->macroManager()->isOpen());
-}
-
-//===========================================================================
-// Std_MacroStopRecord
-//===========================================================================
-DEF_STD_CMD_A(StdCmdMacroStopRecord)
-
-StdCmdMacroStopRecord::StdCmdMacroStopRecord()
-  : Command("Std_MacroStopRecord")
-{
-    sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("S&top macro recording");
-    sToolTipText  = QT_TR_NOOP("Stop the macro recording session");
-    sWhatsThis    = "Std_MacroStopRecord";
-    sStatusTip    = QT_TR_NOOP("Stop the macro recording session");
-    sPixmap       = "media-playback-stop";
-    eType         = 0;
-}
-
-void StdCmdMacroStopRecord::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    getGuiApplication()->macroManager()->commit();
-}
-
-bool StdCmdMacroStopRecord::isActive(void)
-{
-    return getGuiApplication()->macroManager()->isOpen();
+    return true;
 }
 
 //===========================================================================
@@ -117,7 +106,7 @@ void StdCmdDlgMacroExecute::activated(int iMsg)
     cDlg.exec();
 }
 
-bool StdCmdDlgMacroExecute::isActive(void)
+bool StdCmdDlgMacroExecute::isActive()
 {
     return ! (getGuiApplication()->macroManager()->isOpen());
 }
@@ -146,7 +135,7 @@ void StdCmdDlgMacroExecuteDirect::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Run\")");
 }
 
-bool StdCmdDlgMacroExecuteDirect::isActive(void)
+bool StdCmdDlgMacroExecuteDirect::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Run");
 }
@@ -171,7 +160,7 @@ void StdCmdMacroAttachDebugger::activated(int iMsg)
                    "RemoteDebugger.attachToRemoteDebugger()");
 }
 
-bool StdCmdMacroAttachDebugger::isActive(void)
+bool StdCmdMacroAttachDebugger::isActive()
 {
     return true;
 }
@@ -201,7 +190,7 @@ void StdCmdMacroStartDebug::activated(int iMsg)
         dbg->stepRun();
 }
 
-bool StdCmdMacroStartDebug::isActive(void)
+bool StdCmdMacroStartDebug::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("StartDebug");
 }
@@ -227,7 +216,7 @@ void StdCmdMacroStopDebug::activated(int iMsg)
     Application::Instance->macroManager()->debugger()->tryStop();
 }
 
-bool StdCmdMacroStopDebug::isActive(void)
+bool StdCmdMacroStopDebug::isActive()
 {
     static PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
     return dbg->isRunning();
@@ -240,10 +229,10 @@ StdCmdMacroStepOver::StdCmdMacroStepOver()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step over");
-    sToolTipText  = QT_TR_NOOP("Step over");
+    sToolTipText  = QT_TR_NOOP("Step to the next line in this file");
     sWhatsThis    = "Std_MacroStepOver";
-    sStatusTip    = QT_TR_NOOP("Step over");
-    sPixmap       = 0;
+    sStatusTip    = QT_TR_NOOP("Step to the next line in this file");
+    sPixmap       = nullptr;
     sAccel        = "F10";
     eType         = 0;
 }
@@ -254,7 +243,7 @@ void StdCmdMacroStepOver::activated(int iMsg)
     Application::Instance->macroManager()->debugger()->stepOver();
 }
 
-bool StdCmdMacroStepOver::isActive(void)
+bool StdCmdMacroStepOver::isActive()
 {
     static PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
     return dbg->isRunning();
@@ -267,10 +256,10 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step into");
-    sToolTipText  = QT_TR_NOOP("Step into");
-    //sWhatsThis    = "Std_MacroStepOver";
-    sStatusTip    = QT_TR_NOOP("Step into");
-    sPixmap       = 0;
+    sToolTipText  = QT_TR_NOOP("Step to the next line executed");
+    sWhatsThis    = "Std_MacroStepInto";
+    sStatusTip    = QT_TR_NOOP("Step to the next line executed");
+    sPixmap       = nullptr;
     sAccel        = "F11";
     eType         = 0;
 }
@@ -281,7 +270,7 @@ void StdCmdMacroStepInto::activated(int iMsg)
     Application::Instance->macroManager()->debugger()->stepInto();
 }
 
-bool StdCmdMacroStepInto::isActive(void)
+bool StdCmdMacroStepInto::isActive()
 {
     static PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
     return dbg->isRunning();
@@ -294,10 +283,10 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Toggle breakpoint");
-    sToolTipText  = QT_TR_NOOP("Toggle breakpoint");
+    sToolTipText  = QT_TR_NOOP("Add or remove a breakpoint at this position");
     sWhatsThis    = "Std_ToggleBreakpoint";
-    sStatusTip    = QT_TR_NOOP("Toggle breakpoint");
-    sPixmap       = 0;
+    sStatusTip    = QT_TR_NOOP("Add or remove a breakpoint at this position");
+    sPixmap       = nullptr;
     sAccel        = "F9";
     eType         = 0;
 }
@@ -308,18 +297,17 @@ void StdCmdToggleBreakpoint::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"ToggleBreakpoint\")");
 }
 
-bool StdCmdToggleBreakpoint::isActive(void)
+bool StdCmdToggleBreakpoint::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("ToggleBreakpoint");
 }
 
 namespace Gui {
 
-void CreateMacroCommands(void)
+void CreateMacroCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
     rcCmdMgr.addCommand(new StdCmdDlgMacroRecord());
-    rcCmdMgr.addCommand(new StdCmdMacroStopRecord());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecute());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecuteDirect());
     rcCmdMgr.addCommand(new StdCmdMacroAttachDebugger());

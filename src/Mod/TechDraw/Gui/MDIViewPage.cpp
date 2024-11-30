@@ -21,276 +21,133 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-    #include <QAction>
-    #include <QTimer>
-    #include <QApplication>
-    #include <QContextMenuEvent>
-    #include <QFileDialog>
-    #include <QGridLayout>
-    #include <QGroupBox>
-    #include <QListWidget>
-    #include <QMenu>
-    #include <QMessageBox>
-    #include <QPaintEngine>
-    #include <QPainter>
-    #include <QPrinter>
-    #include <QPrintDialog>
-    #include <QPrintPreviewDialog>
-    #include <boost_signals2.hpp>
-    #include <boost_bind_bind.hpp>
-
-#endif  // #ifndef _PreComp_
-
-#include <math.h>
-
-#include "MDIViewPage.h"
-
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <Base/gzstream.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
+#include <QAction>
+#include <QApplication>
+#include <QContextMenuEvent>
+#include <QMenu>
+#include <QMessageBox>
+#include <QPageLayout>
+#include <QPageSize>
+#include <QPaintEngine>
+#include <QPainter>
+#include <QPdfWriter>
+#include <QPrintDialog>
+#include <QPrintPreviewDialog>
+#include <QPrinter>
+#include <boost_signals2.hpp>
+#include <cmath>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/FileDialog.h>
-#include <Gui/WaitCursor.h>
+#include <Base/Console.h>
+#include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/Window.h>
+#include <Gui/Document.h>
+#include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-
-#include <Mod/TechDraw/App/DrawHatch.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
+#include <Gui/Window.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
-#include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawViewCollection.h>
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
-#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
-#include <Mod/TechDraw/App/DrawViewImage.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawTile.h>
-#include <Mod/TechDraw/App/DrawTileWeld.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
-#include "Rez.h"
-#include "QGIDrawingTemplate.h"
-#include "QGIView.h"
-#include "QGIViewPart.h"
-#include "QGIViewDimension.h"
-#include "QGIViewBalloon.h"
-#include "QGIViewClip.h"
-#include "QGIVertex.h"
+#include "MDIViewPage.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
-#include "ViewProviderPage.h"
-#include "QGVPage.h"
-#include "QGILeaderLine.h"
-#include "QGIRichAnno.h"
+#include "QGIVertex.h"
+#include "QGIView.h"
+#include "QGIViewDimension.h"
 #include "QGMText.h"
-#include "QGIWeldSymbol.h"
-#include "QGITile.h"
-
+#include "QGSPage.h"
+#include "QGVPage.h"
+#include "ViewProviderPage.h"
+#include "PagePrinter.h"
 
 using namespace TechDrawGui;
-namespace bp = boost::placeholders;
+using namespace TechDraw;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
 TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
 
-MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
-  : Gui::MDIView(doc, parent),
-    m_orientation(QPageLayout::Landscape),
-    m_paperSize(QPageSize::A4),
-    pagewidth(0.0),
-    pageheight(0.0),
-    m_vpPage(pageVp)
+MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* parent)
+    : Gui::MDIView(doc, parent), m_vpPage(pageVp)
 {
-
     setMouseTracking(true);
-    m_scene = new QGraphicsScene(this);
-    m_scene->setItemIndexMethod(QGraphicsScene::NoIndex); //this prevents crash when deleting dims.
-                                                          //scene(view?) indices of dirty regions gets
-                                                          //out of sync.  missing prepareGeometryChange
-                                                          //somewhere???? QTBUG-18021???
-    m_view = new QGVPage(pageVp,m_scene,this);
 
     m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
-    connect(m_toggleKeepUpdatedAction, SIGNAL(triggered()), this, SLOT(toggleKeepUpdated()));
+    connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
     m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
-    connect(m_toggleFrameAction, SIGNAL(triggered()), this, SLOT(toggleFrame()));
+    connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
-    connect(m_exportSVGAction, SIGNAL(triggered()), this, SLOT(saveSVG()));
+    connect(m_exportSVGAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveSVG));
 
     m_exportDXFAction = new QAction(tr("Export DXF"), this);
-    connect(m_exportDXFAction, SIGNAL(triggered()), this, SLOT(saveDXF()));
+    connect(m_exportDXFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveDXF));
 
     m_exportPDFAction = new QAction(tr("Export PDF"), this);
-    connect(m_exportPDFAction, SIGNAL(triggered()), this, SLOT(savePDF()));
+    connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
+
+    m_printAllAction = new QAction(tr("Print All Pages"), this);
+    connect(m_printAllAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::printAllPages));
 
     isSelectionBlocked = false;
+    isContextualMenuEnabled = true;
 
     QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
     tabText += QString::fromUtf8("[*]");
     setWindowTitle(tabText);
-    setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
 
-    m_timer = new QTimer(this);
-    m_timer->setSingleShot(true);
-    QObject::connect(m_timer,SIGNAL(timeout()),this,SLOT(onTimer()));
-
-    // Connect Signals and Slots
-    QObject::connect(
-        m_view->scene(), SIGNAL(selectionChanged()),
-        this           , SLOT  (sceneSelectionChanged())
-       );
-
+    //NOLINTBEGIN
     //get informed by App side about deleted DocumentObjects
     App::Document* appDoc = m_vpPage->getDocument()->getDocument();
-    auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, bp::_1);
+    auto bnd = std::bind(&MDIViewPage::onDeleteObject, this, sp::_1);
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
-}
+    //NOLINTEND
 
+}
 
 MDIViewPage::~MDIViewPage()
 {
     connectDeletedObject.disconnect();
 }
 
-void MDIViewPage::addChildrenToPage(void)
+void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
 {
-     // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
-     // if docobj is a featureviewcollection (ex orthogroup), add its child views. if there are ever children that have children,
-     // we'll have to make this recursive. -WF
-    const std::vector<App::DocumentObject*> &grp = m_vpPage->getDrawPage()->Views.getValues();
-    std::vector<App::DocumentObject*> childViews;
-    for (std::vector<App::DocumentObject*>::const_iterator it = grp.begin();it != grp.end(); ++it) {
-        attachView(*it);
-        TechDraw::DrawViewCollection* collect = dynamic_cast<TechDraw::DrawViewCollection *>(*it);
-        if (collect) {
-            childViews = collect->Views.getValues();
-            for (std::vector<App::DocumentObject*>::iterator itChild = childViews.begin();itChild != childViews.end(); ++itChild) {
-                attachView(*itChild);
-            }
-        }
-    }
-    //when restoring, it is possible for a Dimension to be loaded before the ViewPart it applies to
-    //therefore we need to make sure parentage of the graphics representation is set properly. bit of a kludge.
-    setDimensionGroups();
-    setBalloonGroups();
-    setLeaderGroups();
-
-    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
-    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
-    if( pageTemplate ) {
-        attachTemplate(pageTemplate);
-        matchSceneRectToTemplate();
-    }
-
-    viewAll();
-}
-
-void MDIViewPage::matchSceneRectToTemplate(void)
-{
-    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
-    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
-    if( pageTemplate ) {
-        //make sceneRect 1 pagesize bigger in every direction
-        double width  =  Rez::guiX(pageTemplate->Width.getValue());
-        double height =  Rez::guiX(pageTemplate->Height.getValue());
-        m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
-    }
-}
-
-void MDIViewPage::setDimensionGroups(void)
-{
-    const std::vector<QGIView *> &allItems = m_view->getViews();
-    std::vector<QGIView *>::const_iterator itInspect;
-    int dimItemType = QGraphicsItem::UserType + 106;
-
-    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
-        if (((*itInspect)->type() == dimItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = m_view->findParent((*itInspect));
-            if (parent) {
-                QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>((*itInspect));
-                m_view->addDimToParent(dim,parent);
-            }
-        }
-    }
-}
-
-void MDIViewPage::setBalloonGroups(void)
-{
-    const std::vector<QGIView *> &allItems = m_view->getViews();
-    std::vector<QGIView *>::const_iterator itInspect;
-    int balloonItemType = QGraphicsItem::UserType + 140;
-
-    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
-        if (((*itInspect)->type() == balloonItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = m_view->findParent((*itInspect));
-            if (parent) {
-                QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>((*itInspect));
-                m_view->addBalloonToParent(balloon,parent);
-            }
-        }
-    }
-}
-
-void MDIViewPage::setLeaderGroups(void)
-{
-//    Base::Console().Message("MDIVP::setLeaderGroups()\n");
-    const std::vector<QGIView *> &allItems = m_view->getViews();
-    std::vector<QGIView *>::const_iterator itInspect;
-    int leadItemType = QGraphicsItem::UserType + 232;
-
-    //make sure that qgileader belongs to correct parent. 
-    //quite possibly redundant
-    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
-        if (((*itInspect)->type() == leadItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = m_view->findParent((*itInspect));
-            if (parent) {
-                QGILeaderLine* lead = dynamic_cast<QGILeaderLine*>((*itInspect));
-                m_view->addLeaderToParent(lead,parent);
-            }
-        }
-    }
+    m_scene = scene;
+    setCentralWidget(viewWidget);//this makes viewWidget a Qt child of MDIViewPage
+    QObject::connect(scene, &QGSPage::selectionChanged, this, &MDIViewPage::sceneSelectionChanged);
 }
 
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
+    setObjectName(Base::Tools::fromStdString(name));
 }
 
-void MDIViewPage::setDocumentName(const std::string& name)
-{
-    m_documentName = name;
-}
+void MDIViewPage::setDocumentName(const std::string& name) { m_documentName = name; }
 
-void MDIViewPage::closeEvent(QCloseEvent* ev)
+void MDIViewPage::closeEvent(QCloseEvent* event)
 {
-    MDIView::closeEvent(ev);
-    if (!ev->isAccepted())
+    //    Base::Console().Message("MDIVP::closeEvent()\n");
+    MDIView::closeEvent(event);
+    if (!event->isAccepted()) {
         return;
+    }
     detachSelection();
 
     blockSceneSelection(true);
@@ -300,107 +157,12 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
         if (doc) {
             App::DocumentObject* obj = doc->getObject(m_objectName.c_str());
             Gui::ViewProvider* vp = _pcDocument->getViewProvider(obj);
-            if (vp)
+            if (vp) {
                 vp->hide();
+            }
         }
     }
     blockSceneSelection(false);
-}
-
-void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
-{
-    m_view->setPageTemplate(obj);
-    pagewidth  =  obj->Width.getValue();
-    pageheight =  obj->Height.getValue();
-    m_paperSize = QPageSize::id(QSizeF(pagewidth, pageheight), QPageSize::Millimeter, QPageSize::FuzzyOrientationMatch);
-    if (pagewidth > pageheight) {
-        m_orientation = QPageLayout::Landscape;
-    } else {
-        m_orientation = QPageLayout::Portrait;
-    }
-}
-
-QPointF MDIViewPage::getTemplateCenter(TechDraw::DrawTemplate *obj)
-{
-    double cx  =  Rez::guiX(obj->Width.getValue())/2.0;
-    double cy =  -Rez::guiX(obj->Height.getValue())/2.0;
-    QPointF result(cx,cy);
-    return result;
-}
-
-void MDIViewPage::centerOnPage(void)
-{
-    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
-    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
-    if( pageTemplate ) {
-        QPointF viewCenter = getTemplateCenter(pageTemplate);
-        m_view->centerOn(viewCenter);
-    }
-}
-
-bool MDIViewPage::addView(const App::DocumentObject *obj)
-{
-    return attachView(const_cast<App::DocumentObject*>(obj));
-}
-
-bool MDIViewPage::attachView(App::DocumentObject *obj)
-{
-    auto typeId(obj->getTypeId());
-
-    QGIView *qview(nullptr);
-
-    if (typeId.isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId()) ) {
-        qview = m_view->addViewSection( static_cast<TechDraw::DrawViewSection *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
-        qview = m_view->addViewPart( static_cast<TechDraw::DrawViewPart *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()) ) {
-        qview = m_view->addProjectionGroup( static_cast<TechDraw::DrawProjGroup *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId()) ) {
-        qview = m_view->addDrawView( static_cast<TechDraw::DrawViewCollection *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ) {
-        qview = m_view->addViewDimension( static_cast<TechDraw::DrawViewDimension *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()) ) {
-        qview = m_view->addViewBalloon( static_cast<TechDraw::DrawViewBalloon *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()) ) {
-        qview = m_view->addDrawViewAnnotation( static_cast<TechDraw::DrawViewAnnotation *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId()) ) {
-        qview = m_view->addDrawViewSymbol( static_cast<TechDraw::DrawViewSymbol *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId()) ) {
-        qview = m_view->addDrawViewClip( static_cast<TechDraw::DrawViewClip *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewSpreadsheet::getClassTypeId()) ) {
-        qview = m_view->addDrawViewSpreadsheet( static_cast<TechDraw::DrawViewSpreadsheet *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawViewImage::getClassTypeId()) ) {
-        qview = m_view->addDrawViewImage( static_cast<TechDraw::DrawViewImage *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) ) {
-        qview = m_view->addViewLeader( static_cast<TechDraw::DrawLeaderLine *>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId()) ) {
-        qview = m_view->addRichAnno( static_cast<TechDraw::DrawRichAnno*>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId()) ) {
-        qview = m_view->addWeldSymbol( static_cast<TechDraw::DrawWeldSymbol*>(obj) );
-
-    } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
-        //Hatch is not attached like other Views (since it isn't really a View)
-        return true;
-    //DrawGeomHatch??
-
-    } else {
-        Base::Console().Log("Logic Error - Unknown view type in MDIViewPage::attachView\n");
-    }
-
-    return (qview != nullptr);
 }
 
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
@@ -408,318 +170,174 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
     //if this page has a QView for this obj, delete it.
     blockSceneSelection(true);
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-        (void) m_view->removeQViewByName(obj.getNameInDocument());
+        (void)m_scene->removeQViewByName(obj.getNameInDocument());
     }
     blockSceneSelection(false);
 }
 
-void MDIViewPage::onTimer() {
-    fixOrphans(true);
-}
-
-void MDIViewPage::updateTemplate(bool forceUpdate)
+bool MDIViewPage::onMsg(const char* pMsg, const char**)
 {
-    App::DocumentObject *templObj = m_vpPage->getDrawPage()->Template.getValue();
-    // TODO: what if template has been deleted? templObj will be NULL. segfault?
-    if (!templObj) {
-        Base::Console().Log("INFO - MDIViewPage::updateTemplate - Page: %s has NO template!!\n",m_vpPage->getDrawPage()->getNameInDocument());
-        return;
-    }
-
-    if(m_vpPage->getDrawPage()->Template.isTouched() || templObj->isTouched()) {
-        // Template is touched so update
-
-        if(forceUpdate ||
-           (templObj && templObj->isTouched() && templObj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) ) {
-
-            QGITemplate *qItemTemplate = m_view->getTemplate();
-
-            if(qItemTemplate) {
-                TechDraw::DrawTemplate *pageTemplate = dynamic_cast<TechDraw::DrawTemplate *>(templObj);
-                qItemTemplate->setTemplate(pageTemplate);
-                qItemTemplate->updateView();
-            }
-        }
-    }
-}
-
-//this is time consuming. should only be used when there is a problem.
-//Solve the situation where a DrawView belonging to this DrawPage has no QGraphicsItem in
-//the QGScene for the DrawPage -or-
-//a QGraphics item exists in the DrawPage's QGScene, but there is no corresponding DrawView
-//in the DrawPage.
-void MDIViewPage::fixOrphans(bool force)
-{
-    if(!force) {
-        m_timer->start(100);
-        return;
-    }
-    m_timer->stop();
-
-    // get all the DrawViews for this page, including the second level ones
-    // if we ever have collections of collections, we'll need to revisit this
-    TechDraw::DrawPage* thisPage = m_vpPage->getDrawPage();
-
-    if(!thisPage->getNameInDocument())
-        return;
-
-    std::vector<App::DocumentObject*> pChildren  = thisPage->getAllViews();
-
-    // if dv doesn't have a graphic, make one
-    for (auto& dv: pChildren) {
-        if (dv->isRemoving()) {
-            continue;
-        }
-        QGIView* qv = m_view->findQViewForDocObj(dv);
-        if (qv == nullptr) {
-            attachView(dv);
-        }
-    }
-    // if qView doesn't have a Feature on this Page, delete it
-    std::vector<QGIView*> qvss = m_view->getViews();
-    // qvss may contain an item and its child item(s) and to avoid to access a deleted item a QPointer is needed
-    std::vector<QPointer<QGIView>> qvs;
-    std::for_each(qvss.begin(), qvss.end(), [&qvs](QGIView* v) {
-        qvs.emplace_back(v);
-    });
-    App::Document* doc = getAppDocument();
-    for (auto& qv: qvs) {
-        if (!qv)
-            continue; // already deleted?
-        App::DocumentObject* obj = doc->getObject(qv->getViewName());
-        if (obj == nullptr) {
-            //no DrawView anywhere in Document
-            m_view->removeQView(qv);
-        } else {
-            //DrawView exists in Document.  Does it belong to this DrawPage?
-            int numParentPages = qv->getViewObject()->countParentPages();
-            if (numParentPages == 0) {
-                //DrawView does not belong to any DrawPage
-                //remove QGItem from QGScene
-                m_view->removeQView(qv);
-            } else if (numParentPages == 1) {
-                //Does DrawView belong to this DrawPage?
-                TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
-                if (thisPage != pp) {
-                    //DrawView does not belong to this DrawPage
-                    //remove QGItem from QGScene
-                    m_view->removeQView(qv);
-                }
-            } else if (numParentPages > 1) {
-                //DrawView belongs to multiple DrawPages
-                //this is a problem - not supposed to happen
-                //check if this MDIViewPage corresponds to any parent DrawPage
-                //if not, delete the QGItem
-                Base::Console().Warning("%s belongs to multiple Pages\n", obj->getNameInDocument());
-                std::vector<TechDraw::DrawPage*> pPages = qv->getViewObject()->findAllParentPages();
-                bool found = false;
-                for (auto p: pPages) {
-                    if (thisPage == p) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    //none of the parent Pages for View correspond to this Page
-                    m_view->removeQView(qv);
-                }
-            }
-        }
-    }
-}
-
-//NOTE: this doesn't add missing views.  see fixOrphans()
-void MDIViewPage::redrawAllViews()
-{
-    const std::vector<QGIView *> &upviews = m_view->getViews();
-    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-            (*it)->updateView(true);
-    }
-}
-
-//NOTE: this doesn't add missing views.   see fixOrphans()
-void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
-{
-    std::string dvName = dv->getNameInDocument();
-    const std::vector<QGIView *> &upviews = m_view->getViews();
-    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-        std::string qgivName = (*it)->getViewName();
-        if(dvName == qgivName) {
-            (*it)->updateView(true);
-        }
-    }
-}
-
-void MDIViewPage::findMissingViews(const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing)
-{
-    for(std::vector<App::DocumentObject*>::const_iterator it = list.begin(); it != list.end(); ++it) {
-
-        if(!hasQView(*it))
-             missing.push_back(*it);
-
-        if((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
-            std::vector<App::DocumentObject*> missingChildViews;
-            TechDraw::DrawViewCollection *collection = dynamic_cast<TechDraw::DrawViewCollection *>(*it);
-            // Find Child Views recursively
-            findMissingViews(collection->Views.getValues(), missingChildViews);
-
-            // Append the views to current missing list
-            for(std::vector<App::DocumentObject*>::const_iterator it = missingChildViews.begin(); it != missingChildViews.end(); ++it) {
-                missing.push_back(*it);
-            }
-        }
-    }
-}
-
-/// Helper function
-bool MDIViewPage::hasQView(App::DocumentObject *obj)
-{
-    const std::vector<QGIView *> &views = m_view->getViews();
-    std::vector<QGIView *>::const_iterator qview = views.begin();
-
-    while(qview != views.end()) {
-        // Unsure if we can compare pointers so rely on name
-        if(strcmp((*qview)->getViewName(), obj->getNameInDocument()) == 0) {
-            return true;
-        }
-        qview++;
-    }
-
-    return false;
-}
-
-
-/// Helper function
-bool MDIViewPage::orphanExists(const char *viewName, const std::vector<App::DocumentObject*> &list)
-{
-    for(std::vector<App::DocumentObject*>::const_iterator it = list.begin(); it != list.end(); ++it) {
-
-        //Check child objects too recursively
-        if((*it)->isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
-            TechDraw::DrawViewCollection *collection = dynamic_cast<TechDraw::DrawViewCollection *>(*it);
-            if(orphanExists(viewName, collection->Views.getValues()))
-                return true;
-        }
-
-        // Unsure if we can compare pointers so rely on name
-        if(strcmp(viewName, (*it)->getNameInDocument()) == 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
-
-bool MDIViewPage::onMsg(const char *pMsg, const char **)
-{
-    Gui::Document *doc(getGuiDocument());
+    Gui::Document* doc(getGuiDocument());
 
     if (!doc) {
         return false;
-    } else if (strcmp("ViewFit", pMsg) == 0) {
+    }
+    else if (strcmp("ViewFit", pMsg) == 0) {
         viewAll();
         return true;
-    } else if (strcmp("Save", pMsg) == 0 ) {
+    }
+    else if (strcmp("Save", pMsg) == 0) {
         doc->save();
         return true;
-    } else if (strcmp("SaveAs", pMsg) == 0 ) {
+    }
+    else if (strcmp("SaveAs", pMsg) == 0) {
         doc->saveAs();
         return true;
-    } else if (strcmp("Undo", pMsg) == 0 ) {
+    }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
+        doc->saveCopy();
+        return true;
+    }
+    else if (strcmp("Undo", pMsg) == 0) {
         doc->undo(1);
         Gui::Command::updateActive();
+        fixSceneDependencies();    // check QGraphicsScene item parenting
         return true;
-    } else if (strcmp("Redo", pMsg) == 0 ) {
+    }
+    else if (strcmp("Redo", pMsg) == 0) {
         doc->redo(1);
         Gui::Command::updateActive();
         return true;
     }
+    else if (strcmp("ZoomIn", pMsg) == 0) {
+        zoomIn();
+        return true;
+    }
+    else if (strcmp("ZoomOut", pMsg) == 0) {
+        zoomOut();
+        return true;
+    }
 
     return false;
 }
-
 
 bool MDIViewPage::onHasMsg(const char* pMsg) const
 {
-    if (strcmp("ViewFit",pMsg) == 0)
+    if (strcmp("ViewFit", pMsg) == 0) {
         return true;
-    else if(strcmp("Redo", pMsg) == 0 && getAppDocument()->getAvailableRedos() > 0)
+    }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
-    else if(strcmp("Undo", pMsg) == 0 && getAppDocument()->getAvailableUndos() > 0)
+    }
+    else if (strcmp("CanPan",pMsg) == 0) {
         return true;
-    else if (strcmp("Print",pMsg) == 0)
+    }
+    else if (strcmp("Redo", pMsg) == 0 && getAppDocument()->getAvailableRedos() > 0) {
         return true;
-    else if (strcmp("Save",pMsg) == 0)
+    }
+    else if (strcmp("Undo", pMsg) == 0 && getAppDocument()->getAvailableUndos() > 0) {
         return true;
-    else if (strcmp("SaveAs",pMsg) == 0)
+    }
+    else if (strcmp("Print", pMsg) == 0) {
         return true;
-    else if (strcmp("PrintPreview",pMsg) == 0)
+    }
+    else if (strcmp("Save", pMsg) == 0) {
         return true;
-    else if (strcmp("PrintPdf",pMsg) == 0)
+    }
+    else if (strcmp("SaveAs", pMsg) == 0) {
         return true;
+    }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("PrintPreview", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("PrintPdf", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("PrintAll", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ZoomIn", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ZoomOut", pMsg) == 0) {
+        return true;
+    }
     return false;
 }
 
-//called by ViewProvider when Page feature Label changes
-void MDIViewPage::setTabText(std::string t)
+// handle a zoomIn message from the menu
+void MDIViewPage::zoomIn()
 {
-    if (!isPassive() && !t.empty()) {
-        QString cap = QString::fromLatin1("%1 [*]")
-            .arg(QString::fromUtf8(t.c_str()));
+    m_vpPage->getQGVPage()->zoomIn();
+}
+
+// handle a zoomOut message from the menu
+void MDIViewPage::zoomOut()
+{
+    m_vpPage->getQGVPage()->zoomOut();
+}
+
+// called by ViewProvider when Page feature Label changes
+void MDIViewPage::setTabText(std::string tabText)
+{
+    if (!isPassive() && !tabText.empty()) {
+        QString cap = QString::fromLatin1("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
         setWindowTitle(cap);
     }
 }
 
+// advise the page to check QGraphicsScene parent/child relationships after undo
+void MDIViewPage::fixSceneDependencies()
+{
+    if (getViewProviderPage()) {
+        getViewProviderPage()->fixSceneDependencies();
+    }
+}
+
+//**** printing routines
+
+/// MDIViewPage handles those aspects of printing that require user interaction, such
+/// as file name selection and error messages
+/// PagePrinter handles the actual printing mechanics.
+
+
+/// overrides of MDIView print methods so that they print the QGraphicsScene instead
+/// of the COIN3d scenegraph.
 void MDIViewPage::printPdf()
 {
     QStringList filter;
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page As PDF"),
-                                                  QString(), filter.join(QLatin1String(";;")));
+    QString fn =
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page As PDF"),
+                                         QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
-      return;
+        return;
     }
 
     Gui::WaitCursor wc;
+
     std::string utf8Content = fn.toUtf8().constData();
-    printPdf(utf8Content);
-}
-
-void MDIViewPage::printPdf(std::string file)
-{
-    if (file.empty()) {
-        Base::Console().Warning("MDIViewPage - no file specified\n");
-        return;
-    }
-    QString filename = QString::fromUtf8(file.data(),file.size());
-    QPrinter printer(QPrinter::HighResolution);
-    printer.setFullPage(true);
-    printer.setOutputFileName(filename);
-
-    if (m_paperSize == QPageSize::Ledger)  {
-        printer.setPageOrientation((QPageLayout::Orientation) (1 - m_orientation));  //reverse 0/1
-    } else {
-        printer.setPageOrientation(m_orientation);
-    }
-    if (m_paperSize == QPageSize::Custom) {
-        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
-    } else {
-        printer.setPageSize(QPageSize(m_paperSize));
-    }
-    print(&printer);
+    PagePrinter::printPdf(getViewProviderPage(), utf8Content);
 }
 
 void MDIViewPage::print()
 {
+    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
+
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (m_paperSize == QPageSize::Custom) {
-        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
-    } else {
-        printer.setPageSize(QPageSize(m_paperSize));
+    if (pageAttr.pageSize() == QPageSize::Custom) {
+        printer.setPageSize(
+            QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
-    printer.setPageOrientation(m_orientation);
+    else {
+        printer.setPageSize(QPageSize(pageAttr.pageSize()));
+    }
+    printer.setPageOrientation(pageAttr.orientation());
 
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -729,18 +347,21 @@ void MDIViewPage::print()
 
 void MDIViewPage::printPreview()
 {
+    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
+
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (m_paperSize == QPageSize::Custom) {
-        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
-    } else {
-        printer.setPageSize(QPageSize(m_paperSize));
+    if (pageAttr.pageSize() == QPageSize::Custom) {
+        printer.setPageSize(
+            QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
-    printer.setPageOrientation(m_orientation);
+    else {
+        printer.setPageSize(QPageSize(pageAttr.pageSize()));
+    }
+    printer.setPageOrientation(pageAttr.orientation());
 
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
     dlg.exec();
 }
 
@@ -758,7 +379,9 @@ void MDIViewPage::print(QPrinter* printer)
     //
     // When showing the preview of a print paperRect() must be used because with pageRect()
     // a certain scaling effect can be observed and the content becomes smaller.
+
     QPaintEngine::Type paintType = printer->paintEngine()->type();
+    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
     if (printer->outputFormat() == QPrinter::NativeFormat) {
         QPageSize::PageSizeId psPrtSetting = printer->pageLayout().pageSize().id();
 
@@ -766,99 +389,65 @@ void MDIViewPage::print(QPrinter* printer)
         // care if it uses wrong printer settings
         bool doPrint = paintType != QPaintEngine::Picture;
 
-        if (doPrint && printer->pageLayout().orientation() != m_orientation) {
-            int ret = QMessageBox::warning(this, tr("Different orientation"),
+        if (doPrint && printer->pageLayout().orientation() != pageAttr.orientation()) {
+            int ret = QMessageBox::warning(
+                this, tr("Different orientation"),
                 tr("The printer uses a different orientation  than the drawing.\n"
                    "Do you want to continue?"),
-                   QMessageBox::Yes | QMessageBox::No);
-            if (ret != QMessageBox::Yes)
+                QMessageBox::Yes | QMessageBox::No);
+            if (ret != QMessageBox::Yes) {
                 return;
+            }
         }
-        if (doPrint && psPrtSetting != m_paperSize) {
-            int ret = QMessageBox::warning(this, tr("Different paper size"),
+        if (doPrint && psPrtSetting != pageAttr.pageSize()) {
+            int ret = QMessageBox::warning(
+                this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
-                   QMessageBox::Yes | QMessageBox::No);
-            if (ret != QMessageBox::Yes)
+                QMessageBox::Yes | QMessageBox::No);
+            if (ret != QMessageBox::Yes) {
                 return;
+            }
         }
     }
 
-    QPainter p(printer);
-    if (!p.isActive() && !printer->outputFileName().isEmpty()) {
-        qApp->setOverrideCursor(Qt::ArrowCursor);
-        QMessageBox::critical(this, tr("Opening file failed"),
-            tr("Can not open file %1 for writing.").arg(printer->outputFileName()));
-        qApp->restoreOverrideCursor();
-        return;
-    }
+    PagePrinter::print(getViewProviderPage(), printer);
+}
 
-    QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
-
-#ifdef Q_OS_WIN32
-    // On Windows the preview looks broken when using paperRect as render area.
-    // Although the picture is scaled when using pageRect, it looks just fine.
-    if (paintType == QPaintEngine::Picture)
-        targetRect = printer->pageLayout().paintRectPixels(printer->resolution());
-#endif
-
-    //bool block =
-    static_cast<void> (blockSelection(true)); // avoid to be notified by itself
-    Gui::Selection().clearSelection();
-
-    bool saveState = m_vpPage->getFrameState();
-    m_vpPage->setFrameState(false);
-    m_vpPage->setTemplateMarkers(false);
-    m_view->refreshViews();
-
-    Gui::Selection().clearSelection();
-
-    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
-    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
-    double width  =  0.0;
-    double height =  0.0;
-    if( pageTemplate ) {
-      width  =  Rez::guiX(pageTemplate->Width.getValue());
-      height =  Rez::guiX(pageTemplate->Height.getValue());
-    }
-    QRectF sourceRect(0.0,-height,width,height);
-
-    m_view->scene()->render(&p, targetRect,sourceRect);
-
-    // Reset
-    m_vpPage->setFrameState(saveState);
-    m_vpPage->setTemplateMarkers(saveState);
-    m_view->refreshViews();
-    //bool block =
-    static_cast<void> (blockSelection(false));
+// static routine to print all pages in a document.  Used by PrintAll command in Command.cpp
+void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
+{
+    PagePrinter::printAll(printer, doc);
 }
 
 PyObject* MDIViewPage::getPyObject()
 {
-    if (!pythonObject)
+    if (!pythonObject) {
         pythonObject = new MDIViewPagePy(this);
+    }
 
     Py_INCREF(pythonObject);
     return pythonObject;
 }
 
-void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
+void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
-    QMenu menu;
-    menu.addAction(m_toggleFrameAction);
-    menu.addAction(m_toggleKeepUpdatedAction);
-    menu.addAction(m_exportSVGAction);
-    menu.addAction(m_exportDXFAction);
-    menu.addAction(m_exportPDFAction);
-    menu.exec(event->globalPos());
+    //    Base::Console().Message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
+    if (isContextualMenuEnabled) {
+        QMenu menu;
+        menu.addAction(m_toggleFrameAction);
+        menu.addAction(m_toggleKeepUpdatedAction);
+        menu.addAction(m_exportSVGAction);
+        menu.addAction(m_exportDXFAction);
+        menu.addAction(m_exportPDFAction);
+        menu.addAction(m_printAllAction);
+        menu.exec(event->globalPos());
+    }
 }
 
-void MDIViewPage::toggleFrame(void)
-{
-    m_vpPage->toggleFrameState();
-}
+void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
 
-void MDIViewPage::toggleKeepUpdated(void)
+void MDIViewPage::toggleKeepUpdated()
 {
     bool state = m_vpPage->getDrawPage()->KeepUpdated.getValue();
     m_vpPage->getDrawPage()->KeepUpdated.setValue(!state);
@@ -866,42 +455,46 @@ void MDIViewPage::toggleKeepUpdated(void)
 
 void MDIViewPage::viewAll()
 {
-    //m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
-    m_view->fitInView(m_view->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
+    m_vpPage->getQGVPage()->fitInView(m_scene->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
+
+void MDIViewPage::saveSVG(std::string filename)
+{
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        return;
+    }
+    PagePrinter::saveSVG(vpp, filename);
+}
+
 
 void MDIViewPage::saveSVG()
 {
     QStringList filter;
     filter << QObject::tr("SVG (*.svg)");
     filter << QObject::tr("All Files (*.*)");
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
-                                                  QString(), filter.join(QLatin1String(";;")));
+    QString fn =
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
+                                         QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
-      return;
-    }
-    static_cast<void> (blockSelection(true)); // avoid to be notified by itself
-
-    m_view->saveSvg(fn);
-}
-
-void MDIViewPage::saveSVG(std::string file)
-{
-    if (file.empty()) {
-        Base::Console().Warning("MDIViewPage - no file specified\n");
         return;
     }
-    QString filename = QString::fromUtf8(file.data(),file.size());
-    m_view->saveSvg(filename);
+    static_cast<void>(blockSelection(true));// avoid to be notified by itself
+    saveSVG(Base::Tools::toStdString(fn));
+    static_cast<void>(blockSelection(false));
+}
+
+void MDIViewPage::saveDXF(std::string filename)
+{
+    PagePrinter::saveDXF(getViewProviderPage(), filename);
 }
 
 void MDIViewPage::saveDXF()
 {
     QString defaultDir;
-    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File")),
-                                                   defaultDir,
-                                                   QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
+    QString fileName = Gui::FileDialog::getSaveFileName(
+        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
+        QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
     if (fileName.isEmpty()) {
         return;
     }
@@ -910,389 +503,312 @@ void MDIViewPage::saveDXF()
     saveDXF(sFileName);
 }
 
-void MDIViewPage::saveDXF(std::string fileName)
+void MDIViewPage::savePDF(std::string filename)
 {
-    TechDraw::DrawPage* page = m_vpPage->getDrawPage();
-    std::string PageName = page->getNameInDocument();
-    fileName = Base::Tools::escapeEncodeFilename(fileName);
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
-    Gui::Command::doCommand(Gui::Command::Doc,"import TechDraw");
-    Gui::Command::doCommand(Gui::Command::Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",
-                            PageName.c_str(),(const char*)fileName.c_str());
-    Gui::Command::commitCommand();
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        return;
+    }
+    PagePrinter::savePDF(vpp, filename);
 }
 
 void MDIViewPage::savePDF()
 {
-    printPdf();
+    QString defaultDir;
+    QString fileName = Gui::FileDialog::getSaveFileName(
+        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save PDF file")), defaultDir,
+        QString::fromUtf8(QT_TR_NOOP("PDF (*.pdf)")));
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    std::string sFileName = fileName.toUtf8().constData();
+    savePDF(sFileName);
 }
 
-void MDIViewPage::savePDF(std::string file)
+/// a slot for printing all the pages. just redirects to printAllPages
+void MDIViewPage::printAll()
 {
-    printPdf(file);
+    MDIViewPage::printAllPages();
+}
+
+//static routine for PrintAll command
+/// prints all the pages in the active document
+void MDIViewPage::printAllPages()
+{
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setFullPage(true);
+
+    QPrintDialog dlg(&printer, Gui::getMainWindow());
+    if (dlg.exec() == QDialog::Accepted) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (!doc) {
+            return;
+        }
+        if (printer.outputFileName().isEmpty()) {
+            PagePrinter::printAll(&printer, doc);
+        }
+        else {
+            PagePrinter::printAllPdf(&printer, doc);
+        }
+    }
 }
 
 /////////////// Selection Routines ///////////////////
 // wf: this is never executed???
 // needs a signal from Scene? hoverEvent?  Scene does not emit signal for "preselect"
 // there is no "preSelect" signal from Gui either.
-void MDIViewPage::preSelectionChanged(const QPoint &pos)
+void MDIViewPage::preSelectionChanged(const QPoint& pos)
 {
-    QObject *obj = QObject::sender();
+    QObject* obj = QObject::sender();
 
-    if(!obj)
+    if (!obj) {
         return;
+    }
 
-    auto view( dynamic_cast<QGIView *>(obj) );
-    if(!view)
-            return;
+    auto view(dynamic_cast<QGIView*>(obj));
+    if (!view) {
+        return;
+    }
 
     QGraphicsItem* parent = view->parentItem();
-    if(!parent)
+    if (!parent) {
         return;
+    }
 
-    TechDraw::DrawView *viewObj = view->getViewObject();
+    TechDraw::DrawView* viewObj = view->getViewObject();
     std::stringstream ss;
 
-    QGIFace *face   = dynamic_cast<QGIFace *>(obj);
-    QGIEdge *edge   = dynamic_cast<QGIEdge *>(obj);
-    QGIVertex *vert = dynamic_cast<QGIVertex *>(obj);
-    if(edge) {
+    QGIFace* face = dynamic_cast<QGIFace*>(obj);
+    QGIEdge* edge = dynamic_cast<QGIEdge*>(obj);
+    QGIVertex* vert = dynamic_cast<QGIVertex*>(obj);
+    if (edge) {
         ss << "Edge" << edge->getProjIndex();
         //bool accepted =
-        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
-                                     ,viewObj->getNameInDocument()
-                                     ,ss.str().c_str()
-                                     ,pos.x()
-                                     ,pos.y()
-                                     ,0));
-    } else if(vert) {
+        static_cast<void>(Gui::Selection().setPreselect(viewObj->getDocument()->getName(),
+                                                        viewObj->getNameInDocument(),
+                                                        ss.str().c_str(), pos.x(), pos.y(), 0));
+    }
+    else if (vert) {
         ss << "Vertex" << vert->getProjIndex();
         //bool accepted =
-        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
-                                     ,viewObj->getNameInDocument()
-                                     ,ss.str().c_str()
-                                     ,pos.x()
-                                     ,pos.y()
-                                     ,0));
-    } else if(face) {
-        ss << "Face" << face->getProjIndex();      //TODO: SectionFaces have ProjIndex = -1. (but aren't selectable?) Problem?
+        static_cast<void>(Gui::Selection().setPreselect(viewObj->getDocument()->getName(),
+                                                        viewObj->getNameInDocument(),
+                                                        ss.str().c_str(), pos.x(), pos.y(), 0));
+    }
+    else if (face) {
+        ss << "Face"
+           << face->getProjIndex();//TODO: SectionFaces have ProjIndex = -1. (but aren't selectable?) Problem?
         //bool accepted =
-        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
-                                     ,viewObj->getNameInDocument()
-                                     ,ss.str().c_str()
-                                     ,pos.x()
-                                     ,pos.y()
-                                     ,0));
-    } else {
+        static_cast<void>(Gui::Selection().setPreselect(viewObj->getDocument()->getName(),
+                                                        viewObj->getNameInDocument(),
+                                                        ss.str().c_str(), pos.x(), pos.y(), 0));
+    }
+    else {
         ss << "";
-        Gui::Selection().setPreselect(viewObj->getDocument()->getName()
-                                     ,viewObj->getNameInDocument()
-                                     ,ss.str().c_str()
-                                     ,pos.x()
-                                     ,pos.y()
-                                     ,0);
+        Gui::Selection().setPreselect(viewObj->getDocument()->getName(),
+                                      viewObj->getNameInDocument(), ss.str().c_str(), pos.x(),
+                                      pos.y(), 0);
     }
 }
 
 //flag to prevent selection activity within mdivp
-void MDIViewPage::blockSceneSelection(const bool state)
-{
-    isSelectionBlocked = state;
-}
+void MDIViewPage::blockSceneSelection(const bool isBlocked) { isSelectionBlocked = isBlocked; }
 
 
 //Set all QGIViews to unselected state
 void MDIViewPage::clearSceneSelection()
 {
-//    Base::Console().Message("MDIVP::clearSceneSelection()\n");
-    blockSceneSelection(true);
-    m_qgSceneSelected.clear();
+    m_orderedSceneSelection.clear();
 
-    std::vector<QGIView *> views = m_view->getViews();
+    std::vector<QGIView*> views = m_scene->getViews();
 
     // Iterate through all views and unselect all
-    for (std::vector<QGIView *>::iterator it = views.begin(); it != views.end(); ++it) {
-        QGIView *item = *it;
-        bool state = item->isSelected();
-
-        //handle oddballs
-        QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>(*it);
-        if (dim != nullptr) {
-            state = dim->getDatumLabel()->isSelected();
-        } else {
-            QGIViewBalloon* bal = dynamic_cast<QGIViewBalloon*>(*it);
-                if (bal != nullptr) {
-                    state = bal->getBalloonLabel()->isSelected();
-                }
-        }
-
-        if (state) {
+    for (std::vector<QGIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+        QGIView* item = *it;
+        if (item->getGroupSelection()) {
             item->setGroupSelection(false);
             item->updateView();
         }
     }
-
-    blockSceneSelection(false);
 }
 
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
-void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
+void MDIViewPage::selectQGIView(App::DocumentObject *obj, bool isSelected,
+                                const std::vector<std::string> &subNames)
 {
-    QGIView *view = m_view->findQViewForDocObj(obj);
-
-    blockSceneSelection(true);
-    if(view) {
-        view->setGroupSelection(isSelected);
+    QGIView* view = m_scene->findQViewForDocObj(obj);
+    if (view) {
+        view->setGroupSelection(isSelected, subNames);
         view->updateView();
     }
-    blockSceneSelection(false);
 }
 
-//! invoked by selection change made in Tree via father MDIView
+//! invoked by selection change made in Tree via father MDIView. Selects the
+//! scene item corresponding to the tree's SelectionChange
 //really "onTreeSelectionChanged"
 void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-//    Base::Console().Message("MDIVP::onSelectionChanged()\n");
-    std::vector<Gui::SelectionSingleton::SelObj> selObjs = Gui::Selection().getSelection(msg.pDocName);
-    if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+    blockSceneSelection(true);
+
+    if (msg.Type == Gui::SelectionChanges::ClrSelection || msg.Type == Gui::SelectionChanges::SetSelection) {
         clearSceneSelection();
-    } else if(msg.Type == Gui::SelectionChanges::SetSelection) {                     //replace entire selection set
-        clearSceneSelection();
-        blockSceneSelection(true);
-        for (auto& so: selObjs){
-            if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                selectQGIView(so.pObject, true);
+
+        if (msg.Type == Gui::SelectionChanges::SetSelection) {
+            std::vector<Gui::SelectionObject> selObjs = Gui::Selection().getSelectionEx(msg.pDocName);
+            for (auto &so : selObjs) {
+                App::DocumentObject *docObj = so.getObject();
+                if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+                    selectQGIView(docObj, true, so.getSubNames());
+                }
             }
         }
-        blockSceneSelection(false);
-    } else if(msg.Type == Gui::SelectionChanges::AddSelection) {
-        blockSceneSelection(true);
-        for (auto& so: selObjs){
-            if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                selectQGIView(so.pObject, true);
-            }
-        }
-        blockSceneSelection(false);
-    } else {
-        Base::Console().Log("MDIVP::onSelectionChanged - unhandled: %d\n", msg.Type);
     }
+    else if (msg.Type == Gui::SelectionChanges::AddSelection || msg.Type == Gui::SelectionChanges::RmvSelection) {
+        App::DocumentObject *docObj = msg.Object.getSubObject();
+        if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            bool isSelected = msg.Type != Gui::SelectionChanges::RmvSelection;
+            selectQGIView(docObj, isSelected, std::vector(1, std::string(msg.pSubName ? msg.pSubName : "")));
+        }
+    }
+
+    blockSceneSelection(false);
 }
 
-//! maintain QGScene selected items in selection order
+//! maintain QGScene selected items in selection order.  m_orderedSceneSelection
+//! contains a list of selected items.  The list is ordered by "time" of selection.
 void MDIViewPage::sceneSelectionManager()
 {
-//    Base::Console().Message("MDIVP::sceneSelectionManager()\n");
-    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
+    QList<QGraphicsItem*> sceneSelectedItems = m_scene->selectedItems();
 
-    if (sceneSel.isEmpty()) {
-        m_qgSceneSelected.clear(); //TODO: need to signal somebody?  Tree? handled elsewhere
-        //clearSelection
+    if (sceneSelectedItems.isEmpty()) {
+        //clear selected scene items
+        m_orderedSceneSelection.clear();//TODO: need to signal somebody?  Tree? handled elsewhere
         return;
     }
 
-    if (m_qgSceneSelected.isEmpty() &&
-        !sceneSel.isEmpty()) {
-        m_qgSceneSelected.push_back(sceneSel.front());
+    if (m_orderedSceneSelection.isEmpty() && !sceneSelectedItems.isEmpty()) {
+        // if the ordered list is empty, but we have selected items in the scene,
+        // add the first selected item to the ordered list? why only front?
+        m_orderedSceneSelection.push_back(sceneSelectedItems.front());
         return;
     }
 
-    //add to m_qgSceneSelected anything that is in q_sceneSel
-    for (auto qts: sceneSel) {
+    //add to m_orderedSceneSelection anything that is in our scene selection list
+    for (auto selectedItem : sceneSelectedItems) {
         bool found = false;
-        for (auto ms: m_qgSceneSelected) {
-            if ( qts == ms ) {
+        for (auto listItem : std::as_const(m_orderedSceneSelection)) {
+            if (selectedItem == listItem) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            m_qgSceneSelected.push_back(qts);
+            m_orderedSceneSelection.push_back(selectedItem);
             break;
         }
     }
 
-    //remove items from m_qgSceneSelected that are not in q_sceneSel
+    //remove items from m_orderedSceneSelection that are not in our scene selection list
     QList<QGraphicsItem*> m_new;
-    for (auto m: m_qgSceneSelected) {
-        for (auto q: sceneSel)  {
-            if (m == q) {
-                m_new.push_back(m);
+    for (auto listItem : std::as_const(m_orderedSceneSelection)) {
+        for (auto selectedItem : sceneSelectedItems) {
+            if (listItem == selectedItem) {
+                m_new.push_back(listItem);
                 break;
             }
         }
     }
-    m_qgSceneSelected = m_new;
+    m_orderedSceneSelection = m_new;
 }
 
-//! update Tree Selection from QGraphicsScene selection
-//triggered by m_view->scene() signal
+//! update Tree Selection from QGraphicsScene selection. on exit, the tree
+//! select and scene select should match.  Called every time an item is selected or
+//! deselected in the scene.
+// triggered by m_scene signal
 void MDIViewPage::sceneSelectionChanged()
 {
     sceneSelectionManager();
 
-//    QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
-
-    if(isSelectionBlocked)  {
+    if (isSelectionBlocked) {
         return;
     }
 
     std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
-    QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
+    // should this not be looking at m_scene->selectedItems(), ie the current state, rather than
+    // the stored state?
+    QList<QGraphicsItem*> sceneSel = m_orderedSceneSelection;
 
-    //check if really need to change selection
-    bool sameSel = compareSelections(treeSel,sceneSel);
-    if (sameSel) {
-        return;
+    bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
+    blockSceneSelection(true);
+
+    if (sceneSel.empty()) {
+        if (!treeSel.empty()) {
+            Gui::Selection().clearSelection();
+        }
+    }
+    else {
+        for (auto& sel : treeSel) {
+            // unselect the stored items
+            removeUnselectedTreeSelection(sceneSel, sel);
+        }
+
+        for (auto* item : sceneSel) {
+            addSceneItemToTreeSel(item, treeSel);
+        }
     }
 
-    setTreeToSceneSelect();
+    blockSceneSelection(false);
+    blockSelection(saveBlock);
 }
 
 //Note: Qt says: "no guarantee of selection order"!!!
-void MDIViewPage::setTreeToSceneSelect(void)
+void MDIViewPage::setTreeToSceneSelect()
 {
-    bool saveBlock = blockSelection(true); // block selectionChanged signal from Tree/Observer
+    bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
     blockSceneSelection(true);
     Gui::Selection().clearSelection();
-    QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
-    for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
-        QGIView *itemView = dynamic_cast<QGIView *>(*it);
-        if(itemView == 0) {
-            QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-            if(edge) {
-                QGraphicsItem*parent = edge->parentItem();
-                if(!parent)
-                    continue;
 
-                QGIView *viewItem = dynamic_cast<QGIView *>(parent);
-                if(!viewItem)
-                  continue;
-
-                TechDraw::DrawView *viewObj = viewItem->getViewObject();
-
-                std::stringstream ss;
-                ss << "Edge" << edge->getProjIndex();
-                //bool accepted =
-                static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
-                                              viewObj->getNameInDocument(),
-                                              ss.str().c_str()));
-                showStatusMsg(viewObj->getDocument()->getName(),
-                                              viewObj->getNameInDocument(),
-                                              ss.str().c_str());
+    for (auto* scene : m_orderedSceneSelection) {
+        auto* itemView = dynamic_cast<QGIView*>(scene);
+        if (!itemView) {
+            auto* parent = dynamic_cast<QGIView*>(scene->parentItem());
+            if (!parent) {
+                return;
+            }
+            TechDraw::DrawView* viewObj = parent->getViewObject();
+            if (!viewObj) {
                 continue;
             }
+            const char* doc_name = viewObj->getDocument()->getName();
+            const char* obj_name = viewObj->getNameInDocument();
 
-            QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
-            if(vert) {
-                QGraphicsItem*parent = vert->parentItem();
-                if(!parent)
-                    continue;
+            auto* edge = dynamic_cast<QGIEdge*>(scene);
+            auto* vert = dynamic_cast<QGIVertex*>(scene);
+            auto* face = dynamic_cast<QGIFace*>(scene);
+            if (edge || vert || face) {
+                std::string ssn = getSceneSubName(scene);
 
-                QGIView *viewItem = dynamic_cast<QGIView *>(parent);
-                if(!viewItem)
-                  continue;
-
-                TechDraw::DrawView *viewObj = viewItem->getViewObject();
-
-                std::stringstream ss;
-                ss << "Vertex" << vert->getProjIndex();
-                //bool accepted =
-                static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
-                                              viewObj->getNameInDocument(),
-                                              ss.str().c_str()));
-                showStatusMsg(viewObj->getDocument()->getName(),
-                                              viewObj->getNameInDocument(),
-                                              ss.str().c_str());
-                continue;
+                Gui::Selection().addSelection(doc_name, obj_name, ssn.c_str());
+                showStatusMsg(doc_name, obj_name, ssn.c_str());
+                return;
             }
-
-            QGIFace *face = dynamic_cast<QGIFace *>(*it);
-            if(face) {
-                QGraphicsItem*parent = face->parentItem();
-                if(!parent)
+            else if (dynamic_cast<QGIDatumLabel*>(scene) || dynamic_cast<QGMText*>(scene)) {
+                if (!obj_name) {//can happen during undo/redo if Dim is selected???
                     continue;
+                }
 
-                QGIView *viewItem = dynamic_cast<QGIView *>(parent);
-                if(!viewItem)
-                  continue;
-
-                TechDraw::DrawView *viewObj = viewItem->getViewObject();
-
-                std::stringstream ss;
-                ss << "Face" << face->getProjIndex();
-                //bool accepted =
-                static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
-                                              viewObj->getNameInDocument(),
-                                              ss.str().c_str()));
-                showStatusMsg(viewObj->getDocument()->getName(),
-                                              viewObj->getNameInDocument(),
-                                              ss.str().c_str());
-                continue;
+                Gui::Selection().addSelection(doc_name, obj_name);
             }
-
-            QGIDatumLabel *dimLabel = dynamic_cast<QGIDatumLabel*>(*it);
-            if(dimLabel) {
-                QGraphicsItem*dimParent = dimLabel->QGraphicsItem::parentItem();
-                if(!dimParent)
-                    continue;
-
-                QGIView *dimItem = dynamic_cast<QGIView *>(dimParent);
-
-                if(!dimItem)
-                  continue;
-
-                TechDraw::DrawView *dimObj = dimItem->getViewObject();
-                if (!dimObj) {
-                    continue;
-                }
-                const char* name = dimObj->getNameInDocument();
-                if (!name) {                                   //can happen during undo/redo if Dim is selected???
-                    //Base::Console().Log("INFO - MDIVP::sceneSelectionChanged - dimObj name is null!\n");
-                    continue;
-                }
-
-                //bool accepted =
-                static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(),dimObj->getNameInDocument()));
-            }
-            
-            QGMText *mText = dynamic_cast<QGMText*>(*it);
-            if(mText) {
-                QGraphicsItem* textParent = mText->QGraphicsItem::parentItem();
-                if(!textParent) {
-                    continue;
-                }
-
-                QGIView *parent = dynamic_cast<QGIView *>(textParent);
-
-                if(!parent) {
-                  continue;
-                  }
-
-                TechDraw::DrawView *parentFeat = parent->getViewObject();
-                if (!parentFeat) {
-                    continue;
-                }
-                const char* name = parentFeat->getNameInDocument();
-                if (!name) {                                   //can happen during undo/redo if Dim is selected???
-                    continue;
-                }
-
-                //bool accepted =
-                static_cast<void> (Gui::Selection().addSelection(parentFeat->getDocument()->getName(),parentFeat->getNameInDocument()));
-            }
-
-        } else {
-
-            TechDraw::DrawView *viewObj = itemView->getViewObject();
+        }
+        else {
+            TechDraw::DrawView* viewObj = itemView->getViewObject();
             if (viewObj && !viewObj->isRemoving()) {
-                std::string doc_name = viewObj->getDocument()->getName();
-                std::string obj_name = viewObj->getNameInDocument();
+                const char* doc_name = viewObj->getDocument()->getName();
+                const char* obj_name = viewObj->getNameInDocument();
 
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str());
-                showStatusMsg(doc_name.c_str(),
-                              obj_name.c_str(),
-                              "");
+                Gui::Selection().addSelection(doc_name, obj_name);
+                showStatusMsg(doc_name, obj_name, "");
             }
         }
     }
@@ -1301,60 +817,216 @@ void MDIViewPage::setTreeToSceneSelect(void)
     blockSelection(saveBlock);
 }
 
-bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel)
+std::string MDIViewPage::getSceneSubName(QGraphicsItem* scene)
 {
-    bool result = true;
+    auto* edge = dynamic_cast<QGIEdge*>(scene);
+    auto* vert = dynamic_cast<QGIVertex*>(scene);
+    auto* face = dynamic_cast<QGIFace*>(scene);
+    if (edge || vert || face) {
+        auto* viewItem = dynamic_cast<QGIView*>(scene->parentItem());
+        if (viewItem) {
+            std::stringstream ss;
+            if (edge) { ss << "Edge" << edge->getProjIndex(); }
+            else if (vert) { ss << "Vertex" << vert->getProjIndex(); }
+            else { ss << "Face" << face->getProjIndex(); }
 
+            return ss.str();
+        }
+    }
+    return "";
+}
+
+// adds scene to core selection if it's not in already.
+void MDIViewPage::addSceneItemToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vector<Gui::SelectionObject> treeSel)
+{
+    auto* itemView = dynamic_cast<QGIView*>(sn);
+    if (!itemView) {
+        auto* parent = dynamic_cast<QGIView*>(sn->parentItem());
+        if (!parent) {
+            return;
+        }
+        TechDraw::DrawView* viewObj = parent->getViewObject();
+        if (!viewObj) {
+            return;
+        }
+
+        const char* doc_name = viewObj->getDocument()->getName();
+        const char* obj_name = viewObj->getNameInDocument();
+        std::string sub_name;
+
+        if (dynamic_cast<QGIEdge*>(sn) || dynamic_cast<QGIVertex*>(sn) || dynamic_cast<QGIFace*>(sn)) {
+            sub_name = getSceneSubName(sn);
+        }
+
+        else if (dynamic_cast<QGIDatumLabel*>(sn) || dynamic_cast<QGMText*>(sn)) {
+            if (!obj_name) {//can happen during undo/redo if Dim is selected???
+                return;
+            }
+        }
+        else { // are there other cases?
+            return;
+        }
+
+        if (!Gui::Selection().isSelected(viewObj, sub_name.c_str())) {
+            Gui::Selection().addSelection(doc_name, obj_name, sub_name.c_str());
+            showStatusMsg(doc_name, obj_name, sub_name.c_str());
+        }
+    }
+    else {
+        TechDraw::DrawView* viewObj = itemView->getViewObject();
+        if (viewObj && !viewObj->isRemoving()) {
+            const char* doc_name = viewObj->getDocument()->getName();
+            const char* obj_name = viewObj->getNameInDocument();
+
+            if (!Gui::Selection().isSelected(viewObj)) {
+                Gui::Selection().addSelection(doc_name, obj_name);
+                showStatusMsg(doc_name, obj_name, "");
+            }
+        }
+    }
+}
+
+// remove tree selection if it is no longer selected in the scene
+void MDIViewPage::removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSelectedItems,
+                                                Gui::SelectionObject& treeSelection)
+{
+    std::string selDocName = treeSelection.getDocName();
+    App::DocumentObject* selObj = treeSelection.getObject();
+
+    // If the selected item is not a geometry item (vertex/edge/face) then the
+    // loop on subnames below will not handle the item and it will not be removed.
+    if (treeSelection.getSubNames().empty()) {
+        bool matchFound{false};
+        for (auto& sceneItem : sceneSelectedItems) {
+            auto* itemView = dynamic_cast<QGIView*>(sceneItem);
+            if (!itemView) {
+                continue;
+            }
+            auto itemFeature = itemView->getViewObject();
+            auto itemDocName = itemFeature->getDocument()->getName();
+            if (selDocName == itemDocName && selObj == itemFeature) {
+                matchFound = true;
+                break;
+            }
+        }
+        if (!matchFound) {
+            Gui::Selection().rmvSelection(treeSelection.getDocName(), treeSelection.getObject()->getNameInDocument());
+        }
+        return;
+    }
+
+    for (auto& sub : treeSelection.getSubNames()) {
+        bool found = false;
+        for (auto& sceneItem : sceneSelectedItems) {
+            auto* itemView = dynamic_cast<QGIView*>(sceneItem);
+            if (!itemView) {
+                auto* parent = dynamic_cast<QGIView*>(sceneItem->parentItem());
+                if (!parent) {
+                    // neither sceneItem or its parent are Views
+                    continue;
+                }
+                TechDraw::DrawView* viewObj = parent->getViewObject();
+                if (!viewObj) {
+                    continue;
+                }
+
+                const char* doc_name = viewObj->getDocument()->getName();
+                const char* obj_name = viewObj->getNameInDocument();
+                std::string sub_name;
+
+                if (dynamic_cast<QGIEdge*>(sceneItem) || dynamic_cast<QGIVertex*>(sceneItem) || dynamic_cast<QGIFace*>(sceneItem)) {
+                    sub_name = getSceneSubName(sceneItem);
+                }
+
+                else if (dynamic_cast<QGIDatumLabel*>(sceneItem) || dynamic_cast<QGMText*>(sceneItem)) {
+                    if (!obj_name) {//can happen during undo/redo if Dim is selected???
+                        continue;
+                    }
+                }
+                else { // are there other cases?
+                    continue;
+                }
+
+                if (selDocName == doc_name && selObj == viewObj && sub == sub_name) {
+                    found = true;
+                    break;
+                }
+            }
+            else {
+                TechDraw::DrawView* viewObj = itemView->getViewObject();
+                if (viewObj && !viewObj->isRemoving()) {
+                    const char* doc_name = viewObj->getDocument()->getName();
+
+                    if (selDocName == doc_name && selObj == viewObj) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!found) {
+            Gui::Selection().rmvSelection(treeSelection.getDocName(), treeSelection.getObject()->getNameInDocument());
+        }
+    }
+}
+
+bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
+                                    QList<QGraphicsItem*> sceneSel)
+{
     if (treeSel.empty() && sceneSel.empty()) {
         return true;
-    } else if (treeSel.empty() && !sceneSel.empty()) {
+    }
+    else if (treeSel.empty() && !sceneSel.empty()) {
         return false;
-    } else if (!treeSel.empty() && sceneSel.empty()) {
+    }
+    else if (!treeSel.empty() && sceneSel.empty()) {
         return false;
     }
 
     int treeCount = 0;
-    int sceneCount = 0;
     int subCount = 0;
+    int sceneCount = 0;
     int ppCount = 0;
+
     std::vector<std::string> treeNames;
     std::vector<std::string> sceneNames;
 
-    for (auto tn: treeSel) {
+    for (auto tn : treeSel) {
         if (tn.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-            int treeSubs = tn.getSubNames().size();
-            subCount += treeSubs;
             std::string s = tn.getObject()->getNameInDocument();
             treeNames.push_back(s);
+            subCount += tn.getSubNames().size();
         }
     }
-    std::sort(treeNames.begin(),treeNames.end());
+    std::sort(treeNames.begin(), treeNames.end());
     treeCount = treeNames.size();
 
-    for (auto sn:sceneSel){
-        QGIView *itemView = dynamic_cast<QGIView *>(sn);
-        if(itemView == 0) {
+    for (auto sn : sceneSel) {
+        QGIView* itemView = dynamic_cast<QGIView*>(sn);
+        if (!itemView) {
             QGIDatumLabel* dl = dynamic_cast<QGIDatumLabel*>(sn);
-            QGIPrimPath* pp = dynamic_cast<QGIPrimPath*>(sn);   //count Vertex/Edge/Face
-            if (pp != nullptr) {
+            QGIPrimPath* pp = dynamic_cast<QGIPrimPath*>(sn);//count Vertex/Edge/Face
+            if (pp) {
                 ppCount++;
-            } else if (dl != nullptr) {
+            }
+            else if (dl) {
                 //get dim associated with this label
                 QGraphicsItem* qgi = dl->parentItem();
-                if (qgi != nullptr) {
+                if (qgi) {
                     QGIViewDimension* vd = dynamic_cast<QGIViewDimension*>(qgi);
-                    if (vd != nullptr) {
+                    if (vd) {
                         std::string s = vd->getViewNameAsString();
                         sceneNames.push_back(s);
                     }
                 }
             }
-        } else {
+        }
+        else {
             std::string s = itemView->getViewNameAsString();
             sceneNames.push_back(s);
         }
     }
-    std::sort(sceneNames.begin(),sceneNames.end());
+    std::sort(sceneNames.begin(), sceneNames.end());
     sceneCount = sceneNames.size();
 
     //different # of DrawView* vs QGIV*
@@ -1362,47 +1034,48 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
         return false;
     }
 
-// even of counts match, have to check that names in scene == names in tree
+    // even of counts match, have to check that names in scene == names in tree
     auto treePtr = treeNames.begin();
-    for (auto& s: sceneNames){
+    for (auto& s : sceneNames) {
         if (s == (*treePtr)) {
             treePtr++;
             continue;
-        } else {
+        }
+        else {
             return false;
         }
     }
 
     //Objects all match, check subs
-    if (treeCount != ppCount) {
+    if (subCount != ppCount) {
         return false;
     }
 
-    return result;
+    return true;
 }
 
 ///////////////////end Selection Routines //////////////////////
 
-void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) const
+void MDIViewPage::showStatusMsg(const char* string1, const char* string2, const char* string3) const
 {
     QString msg = QString::fromLatin1("%1 %2.%3.%4 ")
-            .arg(tr("Selected:"),
-                 QString::fromUtf8(s1),
-                 QString::fromUtf8(s2),
-                 QString::fromUtf8(s3));
+                      .arg(tr("Selected:"), QString::fromUtf8(string1), QString::fromUtf8(string2),
+                           QString::fromUtf8(string3));
     if (Gui::getMainWindow()) {
-        Gui::getMainWindow()->showMessage(msg,3000);
+        Gui::getMainWindow()->showMessage(msg, 6000);
     }
 }
 
-MDIViewPage *MDIViewPage::getFromScene(const QGraphicsScene *scene)
+void MDIViewPage::setDimensionsSelectability(bool val)
 {
-    if (scene != nullptr && scene->parent() != nullptr) {
-        return dynamic_cast<MDIViewPage *>(scene->parent());
+    for (auto scene : m_scene->items()) {
+        auto* dl = dynamic_cast<QGIDatumLabel*>(scene);
+        if (dl) {
+            dl->setSelectability(val);
+        }
     }
-
-    return nullptr;
 }
+
 
 // ----------------------------------------------------------------------------
 
@@ -1415,56 +1088,54 @@ void MDIViewPagePy::init_type()
     behaviors().supportGetattr();
     behaviors().supportSetattr();
 
-    add_varargs_method("getPage", &MDIViewPagePy::getPage, "getPage() returns the page being displayed");
-    add_varargs_method("cast_to_base", &MDIViewPagePy::cast_to_base, "cast_to_base() cast to MDIView class");
+    add_varargs_method("getPage", &MDIViewPagePy::getPage,
+                       "getPage() returns the page being displayed");
+    add_varargs_method("cast_to_base", &MDIViewPagePy::cast_to_base,
+                       "cast_to_base() cast to MDIView class");
     behaviors().readyType();
 }
 
-MDIViewPagePy::MDIViewPagePy(MDIViewPage *mdi)
-  : base(mdi)
-{
-}
+MDIViewPagePy::MDIViewPagePy(MDIViewPage* mdi) : base(mdi) {}
 
-MDIViewPagePy::~MDIViewPagePy()
-{
-}
+MDIViewPagePy::~MDIViewPagePy() {}
 
 Py::Object MDIViewPagePy::repr()
 {
     std::ostringstream s_out;
-    if (!getMDIViewPagePtr())
+    if (!getMDIViewPagePtr()) {
         throw Py::RuntimeError("Cannot print representation of deleted object");
+    }
     s_out << "MDI view page";
     return Py::String(s_out.str());
 }
 
-// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// Since with PyCXX it is not possible to make a sub-class of MDIViewPy
 // a trick is to use MDIViewPy as class member and override getattr() to
 // join the attributes of both classes. This way all methods of MDIViewPy
 // appear for SheetViewPy, too.
-Py::Object MDIViewPagePy::getattr(const char * attr)
+Py::Object MDIViewPagePy::getattr(const char* attrName)
 {
     if (!getMDIViewPagePtr()) {
         std::ostringstream s_out;
-        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        s_out << "Cannot access attribute '" << attrName << "' of deleted object";
         throw Py::RuntimeError(s_out.str());
     }
-    std::string name( attr );
+    std::string name(attrName);
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
-        for (auto it : dict_base) {
+        for (const auto& it : dict_base) {
             dict_self.setItem(it.first, it.second);
         }
         return dict_self;
     }
 
     try {
-        return BaseType::getattr(attr);
+        return BaseType::getattr(attrName);
     }
     catch (Py::AttributeError& e) {
         e.clear();
-        return base.getattr(attr);
+        return base.getattr(attrName);
     }
 }
 
@@ -1475,8 +1146,9 @@ MDIViewPage* MDIViewPagePy::getMDIViewPagePtr()
 
 Py::Object MDIViewPagePy::getPage(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
     return Py::asObject(new TechDraw::DrawPagePy(getMDIViewPagePtr()->getPage()));
 }
 

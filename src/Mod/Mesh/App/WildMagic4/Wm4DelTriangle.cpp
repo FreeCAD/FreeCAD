@@ -26,9 +26,9 @@ DelTriangle<Real>::DelTriangle (int iV0, int iV1, int iV2)
     V[0] = iV0;
     V[1] = iV1;
     V[2] = iV2;
-    A[0] = 0;
-    A[1] = 0;
-    A[2] = 0;
+    A[0] = nullptr;
+    A[1] = nullptr;
+    A[2] = nullptr;
     Time = -1;
     IsComponent = false;
     OnStack = false;
@@ -84,7 +84,7 @@ bool DelTriangle<Real>::IsInsertionComponent (int i, DelTriangle* pkAdj,
             {
                 for (j = 0; j < 3; j++)
                 {
-                    if (A[j] != 0 && A[j] != pkAdj)
+                    if (A[j] && A[j] != pkAdj)
                     {
                         break;
                     }
@@ -105,12 +105,12 @@ template <class Real>
 int DelTriangle<Real>::DetachFrom (int iAdj, DelTriangle* pkAdj)
 {
     assert(0 <= iAdj && iAdj < 3 && A[iAdj] == pkAdj);
-    A[iAdj] = 0;
+    A[iAdj] = nullptr;
     for (int i = 0; i < 3; i++)
     {
         if (pkAdj->A[i] == this)
         {
-            pkAdj->A[i] = 0;
+            pkAdj->A[i] = nullptr;
             return i;
         }
     }

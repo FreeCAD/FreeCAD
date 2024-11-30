@@ -42,15 +42,17 @@ public:
     static Py::Object type();
     static Py::ExtensionObject<MainWindowPy> create(MainWindow *mw);
 
-    MainWindowPy(MainWindow *mw);
-    ~MainWindowPy();
+    explicit MainWindowPy(MainWindow *mw);
+    ~MainWindowPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object getWindows(const Py::Tuple&);
     Py::Object getWindowsOfType(const Py::Tuple&);
     Py::Object setActiveWindow(const Py::Tuple&);
     Py::Object getActiveWindow(const Py::Tuple&);
+    Py::Object addWindow(const Py::Tuple&);
+    Py::Object removeWindow(const Py::Tuple&);
 
 private:
     QPointer<MainWindow> _mw;

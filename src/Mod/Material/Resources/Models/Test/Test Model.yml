@@ -1,0 +1,159 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'Test Model'
+  UUID: '34d0583d-f999-49ba-99e6-aa40bd5c3a6b'
+  URL: ''
+  Description: 'Demonstrate the different model types'
+  DOI: ''
+  TestString:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: "A String"
+  TestURL:
+    Type: 'URL'
+    Units: ''
+    URL: ''
+    Description: "A URL"
+  TestList:
+    Type: 'List'
+    Units: ''
+    URL: ''
+    Description: "A List"
+  TestFileList:
+    Type: 'FileList'
+    Units: ''
+    URL: ''
+    Description: "A List of file paths"
+  TestImageList:
+    Type: 'ImageList'
+    Units: ''
+    URL: ''
+    Description: "A List of embedded images"
+  TestInteger:
+    Type: 'Integer'
+    Units: ''
+    URL: ''
+    Description: "A Integer"
+  TestFloat:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: "A Float"
+  TestBoolean:
+    Type: 'Boolean'
+    Units: ''
+    URL: ''
+    Description: "A Boolean"
+  TestColor:
+    Type: 'Color'
+    Units: ''
+    URL: ''
+    Description: "A Color"
+  TestFile:
+    Type: 'File'
+    Units: ''
+    URL: ''
+    Description: "A File"
+  TestSVG:
+    Type: 'SVG'
+    Units: ''
+    URL: ''
+    Description: "An SVG"
+  TestImage:
+    Type: 'Image'
+    Units: ''
+    URL: ''
+    Description: "An Image"
+  TestQuantity:
+    Type: 'Quantity'
+    Units: 'kg/m^3'
+    URL: ''
+    Description: "A Quantity"
+  TestMultiLineString:
+    Type: 'MultiLineString'
+    Units: ''
+    URL: ''
+    Description: "A string that spans multiple lines"
+  TestArray2D:
+    Type: '2DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: "Temperature"
+      Density:
+        Type: 'Quantity'
+        Units: 'kg/m^3'
+        URL: 'https://en.wikipedia.org/wiki/Density'
+        Description: "Density in [FreeCAD Density unit]"
+    URL: ''
+    Description: >
+      2 Dimensional array showing density with temperature
+  TestArray2D3Column:
+    Type: '2DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: "Temperature"
+      Density:
+        Type: 'Quantity'
+        Units: 'kg/m^3'
+        URL: 'https://en.wikipedia.org/wiki/Density'
+        Description: "Density in [FreeCAD Density unit]"
+      InitialYieldStress:
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: ''
+        Description: >
+          Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]
+    URL: ''
+    Description: >
+      2 Dimensional array showing density and initial yield stress with temperature
+  TestArray3D:
+    Type: '3DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: "Temperature"
+      Stress:
+        Type: 'Quantity'
+        Units: 'MPa'
+        URL: ''
+        Description: "Stress"
+      Strain:
+        Type: 'Quantity'
+        Units: 'MPa'
+        URL: ''
+        Description: "Strain"
+    URL: ''
+    Description: >
+      3 Dimensional array showing stress and strain as
+      a function of temperature

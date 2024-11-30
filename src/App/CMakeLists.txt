@@ -12,6 +12,10 @@ IF(RESOURCEDIR)
     add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")
 ENDIF(RESOURCEDIR)
 
+IF(LIBRARYDIR)
+    add_definitions(-DLIBRARYDIR="${LIBRARYDIR}")
+ENDIF(LIBRARYDIR)
+
 IF(DOCDIR)
     add_definitions(-DDOCDIR="${DOCDIR}")
 ENDIF(DOCDIR)
@@ -21,7 +25,7 @@ ENDIF(DOCDIR)
 
 # -----------------------------------------------------------------------------
 
-#write relevant cmake variables to a file for later access with python. Exported are all variables 
+#write relevant cmake variables to a file for later access with python. Exported are all variables
 #starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we
 #use a python list for export.
 set(_vars "const char CMakeVariables[] =\"cmake = [")
@@ -61,27 +65,17 @@ include_directories(
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
+    fmt::fmt
 )
 
-if (BUILD_QT5)
-    include_directories(
-        ${Qt5Core_INCLUDE_DIRS}
-        ${Qt5Xml_INCLUDE_DIRS}
-    )
-    list(APPEND FreeCADApp_LIBS
-         ${Qt5Core_LIBRARIES}
-         ${Qt5Xml_LIBRARIES}
-    )
-else()
-    include_directories(
-        ${QT_QTCORE_INCLUDE_DIR}
-        ${QT_QTXML_INCLUDE_DIR}
-    )
-    list(APPEND FreeCADApp_LIBS
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTXML_LIBRARY}
-    )
-endif()
+include_directories(
+    ${QtCore_INCLUDE_DIRS}
+    ${QtXml_INCLUDE_DIRS}
+)
+list(APPEND FreeCADApp_LIBS
+        ${QtCore_LIBRARIES}
+        ${QtXml_LIBRARIES}
+)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
@@ -93,13 +87,17 @@ generate_from_xml(LinkBaseExtensionPy)
 generate_from_xml(DocumentObjectGroupPy)
 generate_from_xml(GeoFeaturePy)
 generate_from_xml(GeoFeatureGroupExtensionPy)
+generate_from_xml(SuppressibleExtensionPy)
 generate_from_xml(MetadataPy)
 generate_from_xml(OriginGroupExtensionPy)
 generate_from_xml(PartPy)
+generate_from_xml(StringHasherPy)
+generate_from_xml(StringIDPy)
 
 generate_from_xml(ComplexGeoDataPy)
 generate_from_xml(PropertyContainerPy)
 generate_from_xml(MaterialPy)
+generate_from_xml(MeasureManagerPy)
 
 generate_from_py(FreeCADInit InitScript.h)
 generate_from_py(FreeCADTest TestScript.h)
@@ -116,11 +114,15 @@ SET(FreeCADApp_XML_SRCS
     GeoFeaturePy.xml
     GeoFeatureGroupExtensionPy.xml
     OriginGroupExtensionPy.xml
+    SuppressibleExtensionPy.xml
     PartPy.xml
     DocumentPy.xml
     PropertyContainerPy.xml
     ComplexGeoDataPy.xml
     MaterialPy.xml
+    MeasureManagerPy.xml
+    StringHasherPy.xml
+    StringIDPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
@@ -135,6 +137,7 @@ SET(Document_CPP_SRCS
     DocumentObjectExtensionPyImp.cpp
     ExtensionContainer.cpp
     ExtensionContainerPyImp.cpp
+    Graphviz.cpp
     GroupExtension.cpp
     GroupExtensionPyImp.cpp
     DocumentObjectFileIncluded.cpp
@@ -146,20 +149,24 @@ SET(Document_CPP_SRCS
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
     Expression.cpp
+    ExpressionTokenizer.cpp
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
     GeoFeatureGroupExtensionPyImp.cpp
     GeoFeatureGroupExtension.cpp
+    ImagePlane.cpp
     OriginGroupExtensionPyImp.cpp
     OriginGroupExtension.cpp
+    SuppressibleExtensionPyImp.cpp
+    SuppressibleExtension.cpp
     PartPyImp.cpp
     Part.cpp
     Origin.cpp
     Path.cpp
     InventorObject.cpp
-    MeasureDistance.cpp
     Placement.cpp
+    ProjectFile.cpp
     OriginFeature.cpp
     Range.cpp
     Transactions.cpp
@@ -170,6 +177,8 @@ SET(Document_CPP_SRCS
     TextDocument.cpp
     Link.cpp
     LinkBaseExtensionPyImp.cpp
+    VarSet.cpp
+    License.h
 )
 
 SET(Document_HPP_SRCS
@@ -186,6 +195,7 @@ SET(Document_HPP_SRCS
     DocumentObserverPython.h
     Expression.h
     ExpressionParser.h
+    ExpressionTokenizer.h
     ExpressionVisitors.h
     FeatureCustom.h
     FeaturePython.h
@@ -194,13 +204,15 @@ SET(Document_HPP_SRCS
     FeatureTest.h
     GeoFeature.h
     GeoFeatureGroupExtension.h
+    ImagePlane.h
     OriginGroupExtension.h
+    SuppressibleExtension.h
     Part.h
     Origin.h
     Path.h
     InventorObject.h
-    MeasureDistance.h
     Placement.h
+    ProjectFile.h
     OriginFeature.h
     Range.h
     Transactions.h
@@ -209,6 +221,7 @@ SET(Document_HPP_SRCS
     MaterialObject.h
     MergeDocuments.h
     TextDocument.h
+    VarSet.h
     Link.h
 )
 SET(Document_SRCS
@@ -258,14 +271,27 @@ SET(FreeCADApp_CPP_SRCS
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
+    CleanupProcess.cpp
+    Color.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
+    ElementMap.cpp
     Enumeration.cpp
+    IndexedName.cpp
+    MappedElement.cpp
+    MappedName.cpp
     Material.cpp
     MaterialPyImp.cpp
+    MeasureManager.cpp
+    MeasureManagerPyImp.cpp
     Metadata.cpp
     MetadataPyImp.cpp
+    ElementNamingUtils.cpp
+    SafeMode.cpp
+    StringHasher.cpp
+    StringHasherPyImp.cpp
+    StringIDPyImp.cpp
 )
 
 SET(FreeCADApp_HPP_SRCS
@@ -274,14 +300,31 @@ SET(FreeCADApp_HPP_SRCS
     Application.h
     AutoTransaction.h
     Branding.h
+    CleanupProcess.h
+    Color.h
     ColorModel.h
     ComplexGeoData.h
+    ElementMap.h
     Enumeration.h
+    IndexedName.h
+    MappedName.h
+    MappedElement.h
     Material.h
+    MeasureManager.h
     Metadata.h
+    ElementNamingUtils.h
+    StringHasher.h
 )
 
+# auto-generate resource file with all available translations
+set (FreeCADApp_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/App_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${FreeCADApp_TR_QRC} ${QM_SRCS})
+qt_add_resources(FreeCADApp_QRC_SRCS ${FreeCADApp_TR_QRC})
+
 SET(FreeCADApp_SRCS
+    ${FreeCADApp_QRC_SRCS}
     ${FreeCADApp_CPP_SRCS}
     ${FreeCADApp_HPP_SRCS}
     ${FreeCADApp_XML_SRCS}
@@ -297,8 +340,10 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
-
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADApp)
+endif()
 
 add_dependencies(FreeCADApp fc_version)
 

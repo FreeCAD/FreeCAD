@@ -24,28 +24,33 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
 
-#include <Mod/Part/App/PartFeature.h>
-
 #include "ViewProviderFemConstraint.h"
 
-namespace FemGui {
 
-class FemGuiExport ViewProviderFemConstraintOnBoundary : public FemGui::ViewProviderFemConstraint
+namespace Part
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintOnBoundary);
+class Feature;
+}
+
+namespace FemGui
+{
+
+class FemGuiExport ViewProviderFemConstraintOnBoundary: public FemGui::ViewProviderFemConstraint
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintOnBoundary);
 
 public:
     ViewProviderFemConstraintOnBoundary();
-    virtual ~ViewProviderFemConstraintOnBoundary();
+    ~ViewProviderFemConstraintOnBoundary() override;
 
     void highlightReferences(const bool on) override;
 
 private:
-    std::map< Part::Feature*, std::vector<App::Color> > originalPointColors;
-    std::map< Part::Feature*, std::vector<App::Color> > originalLineColors;
-    std::map< Part::Feature*, std::vector<App::Color> > originalFaceColors;
+    std::map<Part::Feature*, std::vector<App::Color>> originalPointColors;
+    std::map<Part::Feature*, std::vector<App::Color>> originalLineColors;
+    std::map<Part::Feature*, std::vector<App::Color>> originalFaceColors;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H

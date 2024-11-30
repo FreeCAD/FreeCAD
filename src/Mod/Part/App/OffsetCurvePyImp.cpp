@@ -20,32 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_OffsetCurve.hxx>
 #endif
 
-#include "OCCError.h"
-#include "Geometry.h"
+#include <Base/GeometryPyCXX.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+
 #include "OffsetCurvePy.h"
 #include "OffsetCurvePy.cpp"
+#include "Geometry.h"
+#include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/Vector3D.h>
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string OffsetCurvePy::representation(void) const
+std::string OffsetCurvePy::representation() const
 {
     return "<OffsetCurve object>";
 }
 
 PyObject *OffsetCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of OffsetCurvePy and the Twin object 
+    // create a new instance of OffsetCurvePy and the Twin object
     return new OffsetCurvePy(new GeomOffsetCurve);
 }
 
@@ -55,8 +55,8 @@ int OffsetCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* pGeom;
     PyObject* pDir;
     double offset;
-    if (!PyArg_ParseTuple(args, "O!dO!", 
-                            &(GeometryPy::Type), &pGeom, 
+    if (!PyArg_ParseTuple(args, "O!dO!",
+                            &(GeometryPy::Type), &pGeom,
                             &offset,
                             &(Base::VectorPy::Type),&pDir))
         return -1;
@@ -82,7 +82,7 @@ int OffsetCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-Py::Float OffsetCurvePy::getOffsetValue(void) const
+Py::Float OffsetCurvePy::getOffsetValue() const
 {
     Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
     return Py::Float(curve->Offset());
@@ -94,7 +94,7 @@ void OffsetCurvePy::setOffsetValue(Py::Float arg)
     curve->SetOffsetValue((double)arg);
 }
 
-Py::Object OffsetCurvePy::getOffsetDirection(void) const
+Py::Object OffsetCurvePy::getOffsetDirection() const
 {
     Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
     const gp_Dir& dir = curve->Direction();
@@ -121,7 +121,7 @@ void OffsetCurvePy::setOffsetDirection(Py::Object arg)
     }
 }
 
-Py::Object OffsetCurvePy::getBasisCurve(void) const
+Py::Object OffsetCurvePy::getBasisCurve() const
 {
     Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
     Handle(Geom_Curve) basis = curve->BasisCurve();
@@ -153,10 +153,10 @@ void OffsetCurvePy::setBasisCurve(Py::Object arg)
 
 PyObject *OffsetCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int OffsetCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

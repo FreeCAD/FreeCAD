@@ -25,7 +25,8 @@
 
 #include <Mod/Mesh/Gui/ViewProvider.h>
 
-namespace MeshGui {
+namespace MeshGui
+{
 class SoFCIndexedFaceSet;
 
 /**
@@ -46,33 +47,34 @@ class SoFCIndexedFaceSet;
  * For more details @see SoFCMeshNode and SoFCMeshFaceSet.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderMeshFaceSet : public ViewProviderMesh
+class MeshGuiExport ViewProviderMeshFaceSet: public ViewProviderMesh
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshFaceSet);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshFaceSet);
 
 public:
     ViewProviderMeshFaceSet();
-    virtual ~ViewProviderMeshFaceSet();
+    ~ViewProviderMeshFaceSet() override;
 
-    void attach(App::DocumentObject *pcFeat);
-    virtual void updateData(const App::Property*);
+    void attach(App::DocumentObject* obj) override;
+    void updateData(const App::Property* prop) override;
 
 protected:
-    void showOpenEdges(bool);
-    SoShape* getShapeNode() const;
-    SoNode* getCoordNode() const;
+    void showOpenEdges(bool show) override;
+    SoShape* getShapeNode() const override;
+    SoNode* getCoordNode() const override;
 
 private:
     bool directRendering;
     unsigned long triangleCount;
-    SoCoordinate3       * pcMeshCoord;
-    SoFCIndexedFaceSet  * pcMeshFaces;
-    SoFCMeshObjectNode  * pcMeshNode;
-    SoFCMeshObjectShape * pcMeshShape;
+    SoCoordinate3* pcMeshCoord;
+    SoFCIndexedFaceSet* pcMeshFaces;
+    SoFCMeshObjectNode* pcMeshNode;
+    SoFCMeshObjectShape* pcMeshShape;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshFaceSet)
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDERMESHFACESET_H
-
+#endif  // MESHGUI_VIEWPROVIDERMESHFACESET_H

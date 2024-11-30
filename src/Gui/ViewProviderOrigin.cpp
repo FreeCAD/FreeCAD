@@ -21,37 +21,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QPixmap>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/nodes/SoLightModel.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-
-#include <Base/Vector3D.h>
-#include <App/Origin.h>
-#include <App/OriginFeature.h>
 #include <App/Document.h>
+#include <App/Origin.h>
+#include "Base/Console.h"
+#include <Base/Vector3D.h>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderOrigin.h"
-#include "ViewProviderPlane.h"
-#include "ViewProviderLine.h"
 #include "Application.h"
 #include "Command.h"
-#include "BitmapFactory.h"
 #include "Document.h"
-#include "Tree.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
+#include "ViewProviderLine.h"
+#include "ViewProviderPlane.h"
 
-#include "Base/Console.h"
-
-#include <App/Origin.h>
 
 using namespace Gui;
 
@@ -72,18 +60,22 @@ ViewProviderOrigin::ViewProviderOrigin()
 
     pcGroupChildren = new SoGroup();
     pcGroupChildren->ref();
+
+    auto lm = new SoLightModel();
+    lm->model = SoLightModel::BASE_COLOR;
+    pcRoot->insertChild(lm, 0);
 }
 
 ViewProviderOrigin::~ViewProviderOrigin() {
     pcGroupChildren->unref();
-    pcGroupChildren = 0;
+    pcGroupChildren = nullptr;
 }
 
-std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren() const {
     return static_cast<App::Origin*>( getObject() )->OriginFeatures.getValues ();
 }
 
-std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren3D(void) const {
+std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren3D() const {
     return claimChildren ();
 }
 
@@ -93,7 +85,7 @@ void ViewProviderOrigin::attach(App::DocumentObject* pcObject)
     addDisplayMaskMode(pcGroupChildren, "Base");
 }
 
-std::vector<std::string> ViewProviderOrigin::getDisplayModes(void) const
+std::vector<std::string> ViewProviderOrigin::getDisplayModes() const
 {
     return { "Base" };
 }
@@ -106,7 +98,7 @@ void ViewProviderOrigin::setDisplayMode(const char* ModeName)
 }
 
 void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
-    App::Origin* origin = static_cast<App::Origin*>( getObject() );
+    auto origin = static_cast<App::Origin*>( getObject() );
 
     bool saveState = tempVisMap.empty();
 
@@ -168,7 +160,7 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
         try {
             Gui::Application *app = Gui::Application::Instance;
             Base::Vector3d sz = Size.getValue ();
-            App::Origin* origin = static_cast<App::Origin*> ( getObject() );
+            auto origin = static_cast<App::Origin*> ( getObject() );
 
             // Calculate axes and planes sizes
             double szXY = std::max ( sz.x, sz.y );
@@ -195,9 +187,9 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
             if (vpPlaneXY) { vpPlaneXY->Size.setValue ( szXY ); }
             if (vpPlaneXZ) { vpPlaneXZ->Size.setValue ( szXZ ); }
             if (vpPlaneYZ) { vpPlaneYZ->Size.setValue ( szYZ ); }
-            if (vpLineX) { vpLineX->Size.setValue ( szX ); }
-            if (vpLineY) { vpLineY->Size.setValue ( szY ); }
-            if (vpLineZ) { vpLineZ->Size.setValue ( szZ ); }
+            if (vpLineX) { vpLineX->Size.setValue ( szX * axesScaling ); }
+            if (vpLineY) { vpLineY->Size.setValue ( szY * axesScaling ); }
+            if (vpLineZ) { vpLineZ->Size.setValue ( szZ * axesScaling ); }
 
         } catch (const Base::Exception &ex) {
             // While restoring a document don't report errors if one of the lines or planes
@@ -212,7 +204,7 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
 }
 
 bool ViewProviderOrigin::onDelete(const std::vector<std::string> &) {
-    App::Origin* origin = static_cast<App::Origin*>( getObject() );
+    auto origin = static_cast<App::Origin*>( getObject() );
 
     if ( !origin->getInList().empty() ) {
         return false;

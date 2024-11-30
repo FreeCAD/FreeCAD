@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : StdMeshers_MEFISTO_2D.hxx
 //           Moved here from SMESH_MEFISTO_2D.hxx
 //  Author : Paul RASCLE, EDF
@@ -64,7 +64,7 @@ public:
   typedef std::vector< StdMeshers_FaceSidePtr > TWireVector;
 
   bool LoadPoints(TWireVector &                       wires,
-                  R2*                                 uvslf, 
+                  R_2*                                 uvslf,
                   std::vector< const SMDS_MeshNode*>& mefistoToDS,
                   double scalex, double               scaley);
 
@@ -73,7 +73,7 @@ public:
                           double& scalex,
                           double& scaley);
 
-  void StoreResult (Z nbst, R2* uvst, Z nbt, Z* nust, 
+  void StoreResult (Z nbst, R_2* uvst, Z nbt, Z* nust,
                     std::vector< const SMDS_MeshNode*>& mefistoToDS,
                     double scalex, double scaley);
                                           

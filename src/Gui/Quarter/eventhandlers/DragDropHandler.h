@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <Quarter/Basic.h>
 
 class QEvent;
@@ -46,11 +46,11 @@ class QuarterWidget;
 class QUARTER_DLL_API DragDropHandler : public QObject {
   Q_OBJECT
 public:
-  DragDropHandler(QuarterWidget * parent);
-  virtual ~DragDropHandler();
+  explicit DragDropHandler(QuarterWidget * parent);
+  ~DragDropHandler() override;
 
 protected:
-  virtual bool eventFilter(QObject *, QEvent * event);
+  bool eventFilter(QObject *, QEvent * event) override;
 
 private:
   friend class DragDropHandlerP;

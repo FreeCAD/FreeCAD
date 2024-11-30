@@ -20,35 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCINTERACTIVEELEMENT_H
 #define GUI_SOFCINTERACTIVEELEMENT_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 
 #include <QtOpenGL.h>
+#include <FCGlobal.h>
+
 
 namespace Gui {
 /**
  * @author Werner Mayer
  */
 class GuiExport SoFCInteractiveElement : public SoReplacedElement {
-  typedef SoReplacedElement inherited;
+  using inherited = SoReplacedElement;
 
   SO_ELEMENT_HEADER(SoFCInteractiveElement);
 
 public:
-  static void initClass(void);
+  static void initClass();
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, SoNode * const node, SbBool mode);
   static SbBool get(SoState * const state);
   static const SoFCInteractiveElement * getInstance(SoState * state);
 
 protected:
-  virtual ~SoFCInteractiveElement();
+  ~SoFCInteractiveElement() override;
   virtual void setElt(SbBool mode);
 
 private:
@@ -56,93 +59,93 @@ private:
 };
 
 class GuiExport SoGLWidgetElement : public SoElement {
-  typedef SoElement inherited;
+  using inherited = SoElement;
 
   SO_ELEMENT_HEADER(SoGLWidgetElement);
 
 public:
-  static void initClass(void);
+  static void initClass();
 
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo() const override;
 
   static  void set(SoState * state, QtGLWidget * window);
   static  void get(SoState * state, QtGLWidget *& window);
 
 protected:
-  virtual ~SoGLWidgetElement();
+  ~SoGLWidgetElement() override;
 
 protected:
   QtGLWidget * window;
 };
 
 class GuiExport SoGLRenderActionElement : public SoElement {
-  typedef SoElement inherited;
+  using inherited = SoElement;
 
   SO_ELEMENT_HEADER(SoGLRenderActionElement);
 
 public:
-  static void initClass(void);
+  static void initClass();
 
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo() const override;
 
   static  void set(SoState * state, SoGLRenderAction * action);
   static  void get(SoState * state, SoGLRenderAction * & action);
 
 protected:
-  virtual ~SoGLRenderActionElement();
+  ~SoGLRenderActionElement() override;
 
 protected:
   SoGLRenderAction * glRenderAction;
 };
 
 class GuiExport SoGLWidgetNode : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(SoGLWidgetNode);
 
 public:
-    static void initClass(void);
-    SoGLWidgetNode(void);
+    static void initClass();
+    SoGLWidgetNode();
 
-    QtGLWidget * window;
+    QtGLWidget * window{nullptr};
 
-    virtual void doAction(SoAction * action);
-    virtual void GLRender(SoGLRenderAction * action);
+    void doAction(SoAction * action) override;
+    void GLRender(SoGLRenderAction * action) override;
 
 protected:
-    virtual ~SoGLWidgetNode();
+    ~SoGLWidgetNode() override;
 };
 
 class GuiExport SoGLVBOActivatedElement : public SoElement {
-  typedef SoElement inherited;
+  using inherited = SoElement;
 
   SO_ELEMENT_HEADER(SoGLVBOActivatedElement);
 
 public:
-  static void initClass(void);
+  static void initClass();
 
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo() const override;
 
   static  void set(SoState * state, SbBool);
   static  void get(SoState * state, SbBool& active);
 
 protected:
-  virtual ~SoGLVBOActivatedElement();
+  ~SoGLVBOActivatedElement() override;
 
 protected:
   SbBool active;

@@ -23,12 +23,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderMultiTransform.h"
 #include "TaskMultiTransformParameters.h"
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
+#include <App/Document.h>
 #include <Gui/Command.h>
 
 using namespace PartDesignGui;
@@ -39,17 +37,23 @@ TaskDlgFeatureParameters *ViewProviderMultiTransform::getEditDialog() {
     return new TaskDlgMultiTransformParameters (this);
 }
 
-void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+const std::string & ViewProviderMultiTransform::featureName() const
 {
-    this->addDefaultAction(menu, QObject::tr("Edit %1").arg(QString::fromStdString(featureName)));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+    static const std::string name = "MultiTransform";
+    return name;
 }
 
-std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
+void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit multi-transform"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
+}
+
+std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren() const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
-    if (pcMultiTransform == NULL)
-        return std::vector<App::DocumentObject*>(); // TODO: Show error?
+    if (!pcMultiTransform)
+        return {}; // TODO: Show error?
 
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
     return transformFeatures;
@@ -61,12 +65,12 @@ bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) 
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     // if the multitransform object was deleted the transformed features must be deleted, too
-    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); ++it)
-    {
-        if ((*it) != NULL)
+    for (auto it : transformFeatures) {
+        if (it) {
             Gui::Command::doCommand(
                 Gui::Command::Doc,"App.getDocument('%s').removeObject(\"%s\")", \
-                    (*it)->getDocument()->getName(), (*it)->getNameInDocument());
+                    it->getDocument()->getName(), it->getNameInDocument());
+        }
     }
 
     // Handle Originals

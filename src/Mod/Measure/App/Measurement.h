@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013      Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,72 +23,107 @@
 #ifndef MEASURE_MEASUREMENT_H
 #define MEASURE_MEASUREMENT_H
 
-#include <Base/BaseClass.h>
-#include <Base/Vector3D.h>
+#include <gp_Pnt.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 
+#include <Base/BaseClass.h>
+#include <Base/Vector3D.h>
+#include <Mod/Measure/MeasureGlobal.h>
+
+
 class TopoDS_Shape;
 namespace Measure
 {
- enum MeasureType {
-        Volumes, // Measure the Volume(s)
-        Edges, // Measure the Edge(s)
-        Surfaces, // Measure the surface(s)
-        Points,
-        PointToPoint, // Measure between TWO points
-        PointToEdge, // Measure between ONE point and ONE edge
-        PointToSurface, // Measure between ONE point and ONE surface
-        EdgeToEdge, // Measure between TWO edges
-        Invalid
-    };
+enum class MeasureType
+{
+    Volumes,           // Measure the Volume(s)
+    Edges,             // Measure the Edge(s)
+    Line,              // One Line
+    TwoLines,          // Two lines
+    TwoParallelLines,  // Two parallel lines
+    Circle,            // One circle
+    Surfaces,          // Measure the surface(s)
+    Cylinder,          // One Cylinder
+    Cone,              // One Cone
+    Sphere,            // One Sphere
+    Torus,             // One Torus
+    Plane,             // One Plane
+    TwoPlanes,         // One Plane
+    Points,
+    PointToPoint,    // Measure between TWO points
+    PointToEdge,     // Measure between ONE point and ONE edge
+    PointToSurface,  // Measure between ONE point and ONE surface
+    EdgeToEdge,      // Measure between TWO edges
+    Invalid
+};
 
-class MeasureExport Measurement : public Base::BaseClass {
-      TYPESYSTEM_HEADER();
+class MeasureExport Measurement: public Base::BaseClass
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-
     App::PropertyLinkSubList References3D;
 
 public:
     Measurement();
-    ~Measurement();
+    ~Measurement() override;
 
     void clear();
     bool has3DReferences();
 
     /// Add a reference
     int addReference3D(App::DocumentObject* obj, const std::string& subName);
-    int addReference3D(App::DocumentObject* obj, const char *subName);
+    int addReference3D(App::DocumentObject* obj, const char* subName);
 
     MeasureType getType();
+    MeasureType findType();
 
-     // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
+    // from base class
+    PyObject* getPyObject() override;
+    virtual unsigned int getMemSize() const;
 
-public:
-  // Methods for distances (edge length, two points, edge and a point
-  double length() const;
-  Base::Vector3d delta() const;                                                 //when would client use delta??
+    // Methods for distances (edge length, two points, edge and a point
+    double length() const;
+    Base::Vector3d delta() const;  // when would client use delta??
+    double lineLineDistance() const;
+    double planePlaneDistance() const;
 
-  // Calculates the radius for an arc or circular edge
-  double radius() const;
+    // Calculates the radius for an arc or circular edge
+    double radius() const;
 
-  // Calculates the angle between two edges
-  double angle(const Base::Vector3d &param = Base::Vector3d(0,0,0)) const;      //param is never used???
+    // Calculates the angle between two edges
+    double
+    angle(const Base::Vector3d& param = Base::Vector3d(0, 0, 0)) const;  // param is never used???
 
-  // Calculate volumetric/mass properties
-  Base::Vector3d massCenter() const;
+    // Calculate the center of mass
+    Base::Vector3d massCenter() const;
+
+    // Calculate the volume of selected volumes
+    double volume() const;
+
+    // Calculate the area of selection
+    double area() const;
+
+    static Base::Vector3d toVector3d(const gp_Pnt gp)
+    {
+        return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
+    }
+
+    bool planesAreParallel() const;
+    bool linesAreParallel() const;
 
 protected:
-  TopoDS_Shape getShape(App::DocumentObject *obj , const char *subName) const;
-  MeasureType measureType;
-  Py::Object PythonObject;
+    TopoDS_Shape getShape(App::DocumentObject* obj, const char* subName) const;
+
+private:
+    MeasureType measureType;
+    Py::SmartPtr PythonObject;
 };
 
 
-} //namespace measure
+}  // namespace Measure
 
 
-#endif // MEASURE_MEASUREMENT_H
+#endif  // MEASURE_MEASUREMENT_H

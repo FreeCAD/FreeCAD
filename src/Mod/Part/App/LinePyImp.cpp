@@ -20,44 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp.hxx>
-# include <gp_Lin.hxx>
 # include <Geom_Line.hxx>
 # include <GC_MakeLine.hxx>
-# include <Precision.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
+#include "LinePy.h"
+#include "LinePy.cpp"
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/LinePy.cpp>
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string LinePy::representation(void) const
+std::string LinePy::representation() const
 {
     return "<Line object>";
 }
 
 PyObject *LinePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of LinePy and the Twin object 
+    // create a new instance of LinePy and the Twin object
     return new LinePy(new GeomLine);
 }
 
 // constructor method
 int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    
+
     if (PyArg_ParseTuple(args, "")) {
         // default line
         return 0;
@@ -106,7 +102,7 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -123,7 +119,7 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Object LinePy::getLocation(void) const
+Py::Object LinePy::getLocation() const
 {
     Handle(Geom_Line) this_curve = Handle(Geom_Line)::DownCast
         (this->getGeomLinePtr()->handle());
@@ -173,7 +169,7 @@ void LinePy::setLocation(Py::Object arg)
     }
 }
 
-Py::Object LinePy::getDirection(void) const
+Py::Object LinePy::getDirection() const
 {
     Handle(Geom_Line) this_curve = Handle(Geom_Line)::DownCast
         (this->getGeomLinePtr()->handle());
@@ -224,10 +220,10 @@ void LinePy::setDirection(Py::Object arg)
 
 PyObject *LinePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int LinePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

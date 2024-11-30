@@ -20,35 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_HELPERS_H
 #define MESH_HELPERS_H
 
 #include "Elements.h"
 
-#include <Base/Vector3D.h>
 
-namespace MeshCore {
-
+namespace MeshCore
+{
 
 /**
  * Helper class for points.
  */
 struct MeshExport MeshHelpPoint
 {
-  inline void Set (FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f &rclPt);
+    inline void Set(FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f& rclPt);
 
-  inline bool operator < (const MeshHelpPoint &rclObj) const;
-  inline bool operator == (const MeshHelpPoint &rclObj) const;
+    inline bool operator<(const MeshHelpPoint& rclObj) const;
+    inline bool operator==(const MeshHelpPoint& rclObj) const;
 
-  FacetIndex Index () const
-  { return _ulInd >> 2; }
+    FacetIndex Index() const
+    {
+        return _ulInd >> 2;
+    }
 
-  FacetIndex Corner () const
-  { return _ulInd & 3; }
+    FacetIndex Corner() const
+    {
+        return _ulInd & 3;
+    }
 
-  MeshPoint  _clPt;
-  FacetIndex _ulInd;
+    MeshPoint _clPt;
+    FacetIndex _ulInd {FACET_INDEX_MAX};
 };
 
 /**
@@ -56,7 +58,7 @@ struct MeshExport MeshHelpPoint
  */
 struct MeshPointBuilder: public std::vector<MeshHelpPoint>
 {
-  inline void Add (FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f &rclPt);
+    inline void Add(FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f& rclPt);
 };
 
 /**
@@ -64,24 +66,27 @@ struct MeshPointBuilder: public std::vector<MeshHelpPoint>
  */
 struct MeshExport MeshHelpBuilderEdge
 {
-  FacetIndex Side () const
-  { return _ulFIndex & 3; }
+    FacetIndex Side() const
+    {
+        return _ulFIndex & 3;
+    }
 
-  FacetIndex Index () const
-  { return _ulFIndex >> 2; }
+    FacetIndex Index() const
+    {
+        return _ulFIndex >> 2;
+    }
 
-  inline void Set (PointIndex ulInd1, PointIndex ulInd2,
-                   FacetIndex ulSide, FacetIndex ulFInd);
+    inline void Set(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd);
 
-  inline bool operator < (const MeshHelpBuilderEdge &rclObj) const;
+    inline bool operator<(const MeshHelpBuilderEdge& rclObj) const;
 
-  inline bool operator == (const MeshHelpBuilderEdge &rclObj) const;
-  
+    inline bool operator==(const MeshHelpBuilderEdge& rclObj) const;
 
-  inline bool operator != (const MeshHelpBuilderEdge &rclObj) const;
 
-  FacetIndex  _ulFIndex;    // facet index
-  PointIndex  _aulInd[2];   // point index
+    inline bool operator!=(const MeshHelpBuilderEdge& rclObj) const;
+
+    FacetIndex _ulFIndex;   // facet index
+    PointIndex _aulInd[2];  // point index
 };
 
 /**
@@ -89,84 +94,87 @@ struct MeshExport MeshHelpBuilderEdge
  */
 struct MeshEdgeBuilder: public std::vector<MeshHelpBuilderEdge>
 {
-  typedef std::vector<MeshHelpBuilderEdge>::iterator  _TIterator;
-  inline void Add (PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd);
+    using _TIterator = std::vector<MeshHelpBuilderEdge>::iterator;
+    inline void Add(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd);
 };
 
-inline void MeshHelpPoint::Set (FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f &rclPt)
+inline void MeshHelpPoint::Set(FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f& rclPt)
 {
-  _ulInd = (ulFacet << 2) | ulCorner;
-  _clPt  = rclPt;
+    _ulInd = (ulFacet << 2) | ulCorner;
+    _clPt = rclPt;
 }
 
-inline bool MeshHelpPoint::operator < (const MeshHelpPoint &rclObj) const
+inline bool MeshHelpPoint::operator<(const MeshHelpPoint& rclObj) const
 {
-  if (_clPt.x == rclObj._clPt.x)
-  {
-    if (_clPt.y == rclObj._clPt.y)
-      return _clPt.z < rclObj._clPt.z;
-    else
-      return _clPt.y < rclObj._clPt.y;
-  }
-  else
-    return _clPt.x < rclObj._clPt.x;
+    if (_clPt.x == rclObj._clPt.x) {
+        if (_clPt.y == rclObj._clPt.y) {
+            return _clPt.z < rclObj._clPt.z;
+        }
+        else {
+            return _clPt.y < rclObj._clPt.y;
+        }
+    }
+    else {
+        return _clPt.x < rclObj._clPt.x;
+    }
 }
 
-inline bool MeshHelpPoint::operator == (const MeshHelpPoint &rclObj) const
+inline bool MeshHelpPoint::operator==(const MeshHelpPoint& rclObj) const
 {
-  return Base::DistanceP2(_clPt, rclObj._clPt) < MeshDefinitions::_fMinPointDistanceP2;
+    return Base::DistanceP2(_clPt, rclObj._clPt) < MeshDefinitions::_fMinPointDistanceP2;
 }
 
-inline void MeshPointBuilder::Add (FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f &rclPt)
+inline void
+MeshPointBuilder::Add(FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f& rclPt)
 {
-  MeshHelpPoint  clObj;
-  clObj.Set(ulCorner, ulFacet, rclPt);
-  push_back(clObj);
+    MeshHelpPoint clObj;
+    clObj.Set(ulCorner, ulFacet, rclPt);
+    push_back(clObj);
 }
 
-inline void MeshHelpBuilderEdge::Set (PointIndex ulInd1, PointIndex ulInd2,
-                                      FacetIndex ulSide, FacetIndex ulFInd)
+inline void
+MeshHelpBuilderEdge::Set(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd)
 {
-  if (ulInd1 < ulInd2)
-  {
-    _aulInd[0] = ulInd1;
-    _aulInd[1] = ulInd2; 
-  }
-  else
-  {
-    _aulInd[0] = ulInd2;
-    _aulInd[1] = ulInd1; 
-  }
-  _ulFIndex = (ulFInd << 2) | ulSide;
+    if (ulInd1 < ulInd2) {
+        _aulInd[0] = ulInd1;
+        _aulInd[1] = ulInd2;
+    }
+    else {
+        _aulInd[0] = ulInd2;
+        _aulInd[1] = ulInd1;
+    }
+    _ulFIndex = (ulFInd << 2) | ulSide;
 }
 
-inline bool MeshHelpBuilderEdge::operator < (const MeshHelpBuilderEdge &rclObj) const
+inline bool MeshHelpBuilderEdge::operator<(const MeshHelpBuilderEdge& rclObj) const
 {
-  if (_aulInd[0] == rclObj._aulInd[0])
-    return _aulInd[1] < rclObj._aulInd[1];
-  else
-    return _aulInd[0] < rclObj._aulInd[0];
+    if (_aulInd[0] == rclObj._aulInd[0]) {
+        return _aulInd[1] < rclObj._aulInd[1];
+    }
+    else {
+        return _aulInd[0] < rclObj._aulInd[0];
+    }
 }
 
-inline bool MeshHelpBuilderEdge::operator == (const MeshHelpBuilderEdge &rclObj) const
+inline bool MeshHelpBuilderEdge::operator==(const MeshHelpBuilderEdge& rclObj) const
 {
-  return (_aulInd[0] == rclObj._aulInd[0]) && (_aulInd[1] == rclObj._aulInd[1]);
+    return (_aulInd[0] == rclObj._aulInd[0]) && (_aulInd[1] == rclObj._aulInd[1]);
 }
 
-inline bool MeshHelpBuilderEdge::operator != (const MeshHelpBuilderEdge &rclObj) const
+inline bool MeshHelpBuilderEdge::operator!=(const MeshHelpBuilderEdge& rclObj) const
 {
-  return (_aulInd[0] != rclObj._aulInd[0]) || (_aulInd[1] != rclObj._aulInd[1]);
+    return (_aulInd[0] != rclObj._aulInd[0]) || (_aulInd[1] != rclObj._aulInd[1]);
 }
 
 
-inline void MeshEdgeBuilder::Add (PointIndex ulInd1, PointIndex ulInd2,
-                                  FacetIndex ulSide, FacetIndex ulFInd)
+inline void
+MeshEdgeBuilder::Add(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd)
 {
-  MeshHelpBuilderEdge  clObj;
-  clObj.Set(ulInd1, ulInd2, ulSide, ulFInd);
-  push_back(clObj);
+    MeshHelpBuilderEdge clObj {};
+    clObj.Set(ulInd1, ulInd2, ulSide, ulFInd);
+    push_back(clObj);
 }
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
-#endif // MESH_HELPERS_H 
+#endif  // MESH_HELPERS_H

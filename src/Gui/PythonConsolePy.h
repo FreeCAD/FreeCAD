@@ -45,13 +45,13 @@ private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
-    PythonStdout(PythonConsole *pc);
-    ~PythonStdout();
+    explicit PythonStdout(PythonConsole *pc);
+    ~PythonStdout() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char *name) override;
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
     Py::Object isatty();
@@ -71,13 +71,13 @@ private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
-    PythonStderr(PythonConsole *pc);
-    ~PythonStderr();
+    explicit PythonStderr(PythonConsole *pc);
+    ~PythonStderr() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char *name) override;
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
     Py::Object isatty();
@@ -86,7 +86,7 @@ public:
 /**
  * Python class for redirection of stdout to FreeCAD's output
  * console window. This allows to report all Python output to
- * the output window which simplifies debugging scripts.
+ * the report view which simplifies debugging scripts.
  * @see PythonStdout
  * @see PythonStderr
  * @author Werner Mayer
@@ -94,13 +94,13 @@ public:
 class OutputStdout : public Py::PythonExtension<OutputStdout>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     OutputStdout();
-    ~OutputStdout();
+    ~OutputStdout() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char *name) override;
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
     Py::Object isatty();
@@ -109,7 +109,7 @@ public:
 /**
  * Python class for redirection of stderr to FreeCAD's output
  * console window. This allows to report all Python errors to
- * the output window which simplifies error tracking.
+ * the report view which simplifies error tracking.
  * @see PythonStdout
  * @see PythonStderr
  * @author Werner Mayer
@@ -117,13 +117,13 @@ public:
 class OutputStderr : public Py::PythonExtension<OutputStderr>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     OutputStderr();
-    ~OutputStderr();
+    ~OutputStderr() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char *name) override;
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
     Py::Object isatty();
@@ -139,12 +139,13 @@ private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
-    PythonStdin(PythonConsole *pc);
-    ~PythonStdin();
+    explicit PythonStdin(PythonConsole *pc);
+    ~PythonStdin() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
+    Py::Object getattr(const char *name) override;
     Py::Object readline(const Py::Tuple&);
 };
 

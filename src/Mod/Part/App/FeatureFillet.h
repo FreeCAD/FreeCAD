@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATUREFILLET_H
 #define PART_FEATUREFILLET_H
 
-#include <App/PropertyStandard.h>
 #include "PartFeature.h"
+
 
 namespace Part
 {
 
 class Fillet : public Part::FilletBase
 {
-    PROPERTY_HEADER(Part::Fillet);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Fillet);
 
 public:
     Fillet();
@@ -40,9 +39,9 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderFillet";
     }
     //@}

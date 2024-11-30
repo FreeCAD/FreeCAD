@@ -44,6 +44,8 @@
  @endcode
 */
 
+// NOLINTBEGIN
+// clang-format off
 // Based on https://stackoverflow.com/questions/1448396/how-to-use-enums-as-flags-in-c
 template<class T = void> struct enum_traits {};
 
@@ -111,16 +113,67 @@ class Flags {
     Enum i;
 
 public:
-    constexpr inline Flags(Enum f) : i(f) {}
-    constexpr bool testFlag(Enum f) {
+    // Linter seems wrong on next line, don't want explicit here forcing downstream changes
+    constexpr inline Flags(Enum f = Enum()) : i(f) {}   // NOLINT (runtime/explicit)
+    constexpr bool testFlag(Enum f) const {
         using u = typename std::underlying_type<Enum>::type;
         return (i & f) == f && (static_cast<u>(f) != 0 || i == f);
     }
-    constexpr inline void setFlag(Enum f, bool on = true)
-    {
+    constexpr inline void setFlag(Enum f, bool on = true) {
         on ? (i |= f) : (i &= ~f);
+    }
+    constexpr bool isEqual(Flags f) const {
+        using u = typename std::underlying_type<Enum>::type;
+        return static_cast<u>(i) == static_cast<u>(f.i);
+    }
+    constexpr Enum getFlags() const {
+        return i;
+    }
+    constexpr Flags<Enum> &operator|=(const Flags<Enum> &other) {
+        i |= other.i;
+        return *this;
+    }
+    constexpr Flags<Enum> &operator|=(const Enum &f) {
+        i |= f;
+        return *this;
+    }
+    constexpr Flags<Enum> operator|(const Flags<Enum> &other) const {
+        return i | other.i;
+    }
+    constexpr Flags<Enum> operator|(const Enum &f) const {
+        return i | f;
+    }
+    constexpr Flags<Enum> &operator&=(const Flags<Enum> &other) {
+        i &= other.i;
+        return *this;
+    }
+    constexpr Flags<Enum> &operator&=(const Enum &f) {
+        i &= f;
+        return *this;
+    }
+    constexpr Flags<Enum> operator&(const Flags<Enum> &other) const {
+        return i & other.i;
+    }
+    constexpr Flags<Enum> operator&(const Enum &f) const {
+        return i & f;
+    }
+    constexpr Flags<Enum> operator~() const {
+        return ~i;
+    }
+
+    constexpr bool operator!() const {
+        return !i;
+    }
+
+    explicit operator bool() const {
+        return toUnderlyingType() != 0;
+    }
+    typename std::underlying_type<Enum>::type toUnderlyingType() const {
+        return static_cast<typename std::underlying_type<Enum>::type>(i);
     }
 };
 }
+// clang-format on
+// NOLINTEND
 
 #endif

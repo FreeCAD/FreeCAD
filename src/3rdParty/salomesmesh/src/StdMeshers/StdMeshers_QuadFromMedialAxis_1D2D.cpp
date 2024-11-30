@@ -601,7 +601,7 @@ namespace
              theSinuEdges [0].size() > 0 && theSinuEdges [1].size() > 0 );
 
     // the sinuous EDGEs can be composite and C0 continuous,
-    // therefor we use a complex criterion to find TWO short non-sinuous EDGEs
+    // therefore we use a complex criterion to find TWO short non-sinuous EDGEs
     // and the rest EDGEs will be treated as sinuous.
     // A short edge should have the following features:
     // a) straight

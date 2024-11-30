@@ -9,7 +9,7 @@
 
 #include <cstddef>
 
-#include <kdtree++/node.hpp>
+#include "node.hpp"
 
 namespace KDTree
 {
@@ -27,7 +27,7 @@ namespace KDTree
       typedef std::pair<_Region,_SubVal> _CenterPt;
 
       _Region(_Acc const& __acc=_Acc(), const _Cmp& __cmp=_Cmp())
-	: _M_cmp(__acc), _M_acc(__cmp) {}
+	: _M_cmp(__cmp), _M_acc(__acc) {}
 
       template <typename Val>
       _Region(Val const& __V,

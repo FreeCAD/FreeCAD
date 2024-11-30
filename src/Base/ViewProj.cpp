@@ -26,15 +26,17 @@
 
 using namespace Base;
 
-ViewProjMethod::ViewProjMethod()
-  : hasTransform(false)
+ViewProjMethod::ViewProjMethod() = default;
+
+bool ViewProjMethod::isValid() const
 {
+    return true;
 }
 
 /*! Calculate the composed projection matrix which is a product of
  * projection matrix multiplied with input transformation matrix.
  */
-Matrix4D ViewProjMethod::getComposedProjectionMatrix (void) const
+Matrix4D ViewProjMethod::getComposedProjectionMatrix() const
 {
     Matrix4D mat = getProjectionMatrix();
 
@@ -75,14 +77,14 @@ void ViewProjMethod::transformInput(const Base::Vector3d& src, Base::Vector3d& d
 
 //-----------------------------------------------------------------------------
 
-ViewProjMatrix::ViewProjMatrix (const Matrix4D &rclMtx)
-  : _clMtx(rclMtx)
+ViewProjMatrix::ViewProjMatrix(const Matrix4D& rclMtx)
+    : _clMtx(rclMtx)
 {
     double m30 = _clMtx[3][0];
     double m31 = _clMtx[3][1];
     double m32 = _clMtx[3][2];
     double m33 = _clMtx[3][3];
-    isOrthographic = (m30 == 0 && m31 == 0 && m32 == 0 && m33 == 1);
+    isOrthographic = (m30 == 0.0 && m31 == 0.0 && m32 == 0.0 && m33 == 1.0);
 
     // Only for orthographic projection mode we can compute a single
     // matrix performing all steps.
@@ -99,11 +101,7 @@ ViewProjMatrix::ViewProjMatrix (const Matrix4D &rclMtx)
     _clMtxInv.inverseGauss();
 }
 
-ViewProjMatrix::~ViewProjMatrix()
-{
-}
-
-Matrix4D ViewProjMatrix::getProjectionMatrix (void) const
+Matrix4D ViewProjMatrix::getProjectionMatrix() const
 {
     // Return the same matrix as passed to the constructor
     Matrix4D mat(_clMtx);
@@ -122,10 +120,11 @@ void perspectiveTransform(const Base::Matrix4D& mat, Vec& pnt)
     double m31 = mat[3][1];
     double m32 = mat[3][2];
     double m33 = mat[3][3];
-    double w = (pnt.x * m30 + pnt.y * m31 + pnt.z * m32 + m33);
+    double ww = (static_cast<double>(pnt.x) * m30 + static_cast<double>(pnt.y) * m31
+                 + static_cast<double>(pnt.z) * m32 + m33);
 
     mat.multVec(pnt, pnt);
-    pnt /= w;
+    pnt /= static_cast<typename Vec::num_type>(ww);
 }
 
 Vector3f ViewProjMatrix::operator()(const Vector3f& inp) const
@@ -137,7 +136,7 @@ Vector3f ViewProjMatrix::operator()(const Vector3f& inp) const
     if (!isOrthographic) {
         dst = src;
         perspectiveTransform<Vector3f>(_clMtx, dst);
-        dst.Set(0.5*dst.x+0.5, 0.5*dst.y+0.5, 0.5*dst.z+0.5);
+        dst.Set(0.5F * dst.x + 0.5F, 0.5F * dst.y + 0.5F, 0.5F * dst.z + 0.5F);
     }
     else {
         _clMtx.multVec(src, dst);
@@ -155,7 +154,7 @@ Vector3d ViewProjMatrix::operator()(const Vector3d& inp) const
     if (!isOrthographic) {
         dst = src;
         perspectiveTransform<Vector3d>(_clMtx, dst);
-        dst.Set(0.5*dst.x+0.5, 0.5*dst.y+0.5, 0.5*dst.z+0.5);
+        dst.Set(0.5 * dst.x + 0.5, 0.5 * dst.y + 0.5, 0.5 * dst.z + 0.5);
     }
     else {
         _clMtx.multVec(src, dst);
@@ -164,11 +163,11 @@ Vector3d ViewProjMatrix::operator()(const Vector3d& inp) const
     return dst;
 }
 
-Vector3f ViewProjMatrix::inverse (const Vector3f& src) const
+Vector3f ViewProjMatrix::inverse(const Vector3f& src) const
 {
     Vector3f dst;
     if (!isOrthographic) {
-        dst.Set(2.0*src.x-1.0, 2.0*src.y-1.0, 2.0*src.z-1.0);
+        dst.Set(2.0F * src.x - 1.0F, 2.0F * src.y - 1.0F, 2.0F * src.z - 1.0F);
         perspectiveTransform<Vector3f>(_clMtxInv, dst);
     }
     else {
@@ -178,11 +177,11 @@ Vector3f ViewProjMatrix::inverse (const Vector3f& src) const
     return dst;
 }
 
-Vector3d ViewProjMatrix::inverse (const Vector3d& src) const
+Vector3d ViewProjMatrix::inverse(const Vector3d& src) const
 {
     Vector3d dst;
     if (!isOrthographic) {
-        dst.Set(2.0*src.x-1.0, 2.0*src.y-1.0, 2.0*src.z-1.0);
+        dst.Set(2.0 * src.x - 1.0, 2.0 * src.y - 1.0, 2.0 * src.z - 1.0);
         perspectiveTransform<Vector3d>(_clMtxInv, dst);
     }
     else {
@@ -194,38 +193,34 @@ Vector3d ViewProjMatrix::inverse (const Vector3d& src) const
 
 // ----------------------------------------------------------------------------
 
-ViewOrthoProjMatrix::ViewOrthoProjMatrix (const Matrix4D &rclMtx)
+ViewOrthoProjMatrix::ViewOrthoProjMatrix(const Matrix4D& rclMtx)
     : _clMtx(rclMtx)
+    , _clMtxInv(rclMtx)
 {
-    _clMtxInv = _clMtx;
     _clMtxInv.inverse();
 }
 
-ViewOrthoProjMatrix::~ViewOrthoProjMatrix()
-{
-}
-
-Matrix4D ViewOrthoProjMatrix::getProjectionMatrix (void) const
+Matrix4D ViewOrthoProjMatrix::getProjectionMatrix() const
 {
     return _clMtx;
 }
 
-Vector3f ViewOrthoProjMatrix::operator()(const Vector3f &rclPt) const
+Vector3f ViewOrthoProjMatrix::operator()(const Vector3f& rclPt) const
 {
     return Vector3f(_clMtx * rclPt);
 }
 
-Vector3d ViewOrthoProjMatrix::operator()(const Vector3d &rclPt) const
+Vector3d ViewOrthoProjMatrix::operator()(const Vector3d& rclPt) const
 {
     return Vector3d(_clMtx * rclPt);
 }
 
-Vector3f ViewOrthoProjMatrix::inverse (const Vector3f &rclPt) const
+Vector3f ViewOrthoProjMatrix::inverse(const Vector3f& rclPt) const
 {
     return Vector3f(_clMtxInv * rclPt);
 }
 
-Vector3d ViewOrthoProjMatrix::inverse (const Vector3d &rclPt) const
+Vector3d ViewOrthoProjMatrix::inverse(const Vector3d& rclPt) const
 {
     return Vector3d(_clMtxInv * rclPt);
 }

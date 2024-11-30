@@ -26,10 +26,10 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include "ViewProviderBody.h"
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
+#include "Gui/ViewProviderSuppressibleExtension.h"
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
-#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesignGui {
 
@@ -38,18 +38,20 @@ class TaskDlgFeatureParameters;
 /**
  * A common base class for all part design features view providers
  */
-class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart, PartGui::ViewProviderAttachExtension
+class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart,
+                                         Gui::ViewProviderSuppressibleExtension,
+                                         PartGui::ViewProviderAttachExtension
 {
-    typedef PartGui::ViewProviderPart inherited;
+    using inherited = PartGui::ViewProviderPart;
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);
 
 public:
     /// constructor
     ViewProvider();
     /// destructor
-    virtual ~ViewProvider();
+    ~ViewProvider() override;
 
-    virtual bool doubleClicked(void) override;
+    bool doubleClicked() override;
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
 
@@ -69,16 +71,16 @@ public:
     //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    virtual PyObject* getPyObject(void) override;
+    PyObject* getPyObject() override;
 
-    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
+    QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
 
 protected:
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    virtual bool setEdit(int ModNum) override;
-    virtual void unsetEdit(int ModNum) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
-    virtual bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
     /**
      * Returns a newly create dialog for the part to be placed in the task view
@@ -87,11 +89,11 @@ protected:
     virtual TaskDlgFeatureParameters *getEditDialog();
 
     std::string oldWb;
-    App::DocumentObject* oldTip;
-    bool isSetTipIcon;
+    App::DocumentObject* oldTip{nullptr};
+    bool isSetTipIcon{false};
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProvider> ViewProviderPython;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
 
 } // namespace PartDesignGui
 

@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # ifdef _MSC_VER
 #  define _USE_MATH_DEFINES
 #  include <cmath>
-# endif //_MSC_VER
+# endif
 # include <QAction>
 # include <QMenu>
 #endif
 
-#include "ViewProviderAttachExtension.h"
-#include "TaskAttacher.h"
-#include <Mod/Part/App/AttachExtension.h>
-
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Mod/Part/App/AttachExtension.h>
+
+#include "ViewProviderAttachExtension.h"
+#include "TaskAttacher.h"
+
 
 using namespace PartGui;
 
@@ -61,27 +61,13 @@ QIcon ViewProviderAttachExtension::extensionMergeColorfullOverlayIcons (const QI
         if (attach) {
 
             if(!attach->isAttacherActive()) {
-                QPixmap px;
+                static QPixmap px(
+                    Gui::BitmapFactory().pixmapFromSvg("Part_Detached", QSize(10, 10)));
 
-                static const char * const feature_detached_xpm[]={
-                    "9 10 3 1",
-                    ". c None",
-                    "# c #cc00cc",
-                    "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    "##aaaaa##",
-                    "##aaaaa##",
-                    "#########",
-                    "#########",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..."};
-
-                    px = QPixmap(feature_detached_xpm);
-
-                    mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomLeft);
+                mergedicon =
+                    Gui::BitmapFactoryInst::mergePixmap(mergedicon,
+                                                        px,
+                                                        Gui::BitmapFactoryInst::BottomLeft);
             }
         }
     }
@@ -91,11 +77,12 @@ QIcon ViewProviderAttachExtension::extensionMergeColorfullOverlayIcons (const QI
 
 void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
 {
-    if (getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
-        auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
+    auto obj = getExtendedViewProvider()->getObject();
+    if (obj && obj->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
+        auto* attach = obj->getExtensionByType<Part::AttachExtension>();
 
         if(attach) {
-            if( prop == &(attach->Support) ||
+            if( prop == &(attach->AttachmentSupport) ||
                 prop == &(attach->MapMode) ||
                 prop == &(attach->MapPathParameter) ||
                 prop == &(attach->MapReversed) ||
@@ -111,12 +98,17 @@ void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
 
 void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject*, const char*)
 {
-    // toggle command to display components
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Attachment editor"));
-    if (Gui::Control().activeDialog())
-        act->setDisabled(true);
-    func->trigger(act, boost::bind(&ViewProviderAttachExtension::showAttachmentEditor, this));
+    bool attach = getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId());
+    if (attach) {
+        // toggle command to display components
+        Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+        QAction* act = menu->addAction(QObject::tr("Attachment editor"));
+        if (Gui::Control().activeDialog())
+            act->setDisabled(true);
+        func->trigger(act, [this](){
+            this->showAttachmentEditor();
+        });
+    }
 }
 
 void ViewProviderAttachExtension::showAttachmentEditor()

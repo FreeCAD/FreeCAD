@@ -31,16 +31,16 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderExtrusion : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderExtrusion);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderExtrusion);
 
 public:
     /// constructor
     ViewProviderExtrusion();
     /// destructor
-    virtual ~ViewProviderExtrusion();
+    ~ViewProviderExtrusion() override;
 
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    /// grouping handling
+    std::vector<App::DocumentObject*> claimChildren() const override;
 };
 
 } // namespace PartGui

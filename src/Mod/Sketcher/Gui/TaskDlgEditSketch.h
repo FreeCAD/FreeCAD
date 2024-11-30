@@ -20,67 +20,88 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_TaskDlgEditSketch_H
 #define SKETCHERGUI_TaskDlgEditSketch_H
 
-#include <Gui/TaskView/TaskDialog.h>
-
-#include "ViewProviderSketch.h"
-#include "TaskSketcherConstraints.h"
-#include "TaskSketcherElements.h"
-#include "TaskSketcherGeneral.h"
-#include "TaskSketcherMessages.h"
-#include "TaskSketcherSolverAdvanced.h"
 #include <boost_signals2.hpp>
 
-typedef boost::signals2::connection Connection;
+#include <Gui/TaskView/TaskDialog.h>
 
-namespace SketcherGui {
+#include "TaskSketcherConstraints.h"
+#include "TaskSketcherElements.h"
+#include "TaskSketcherMessages.h"
+#include "TaskSketcherSolverAdvanced.h"
+#include "TaskSketcherTool.h"
+#include "ViewProviderSketch.h"
+
+
+using Connection = boost::signals2::connection;
+
+namespace SketcherGui
+{
 
 
 /// simulation dialog for the TaskView
-class SketcherGuiExport TaskDlgEditSketch : public Gui::TaskView::TaskDialog
+class SketcherGuiExport TaskDlgEditSketch: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgEditSketch(ViewProviderSketch *sketchView);
-    ~TaskDlgEditSketch();
+    explicit TaskDlgEditSketch(ViewProviderSketch* sketchView);
+    ~TaskDlgEditSketch() override;
     ViewProviderSketch* getSketchView() const
-    { return sketchView; }
+    {
+        return sketchView;
+    }
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
+    bool reject() override;
+    bool isAllowedAlterDocument() const override
+    {
+        return false;
+    }
+    void autoClosedOnClosedView() override;
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Close; }
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Close;
+    }
+
+    /** @brief Function used to register a slot to be triggered when the tool widget is changed. */
+    template<typename F>
+    boost::signals2::connection registerToolWidgetChanged(F&& f)
+    {
+        return ToolSettings->registerToolWidgetChanged(std::forward<F>(f));
+    }
 
 protected:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
 
+private:
+    void slotToolChanged(const std::string& toolname);
+
 protected:
-    ViewProviderSketch      *sketchView;
-    TaskSketcherConstraints *Constraints;
-    TaskSketcherElements    *Elements;
-    TaskSketcherGeneral     *General;
-    TaskSketcherMessages    *Messages;
-    TaskSketcherSolverAdvanced *SolverAdvanced;
+    ViewProviderSketch* sketchView;
+    TaskSketcherConstraints* Constraints;
+    TaskSketcherElements* Elements;
+    TaskSketcherMessages* Messages;
+    TaskSketcherSolverAdvanced* SolverAdvanced;
+    TaskSketcherTool* ToolSettings;
+
+private:
+    Connection connectionToolSettings;
 };
 
 
+}  // namespace SketcherGui
 
-} //namespace SketcherGui
-
-#endif // SKETCHERGUI_TaskDlgEditSketch_H
+#endif  // SKETCHERGUI_TaskDlgEditSketch_H

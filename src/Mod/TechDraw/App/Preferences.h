@@ -20,17 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Preferences_h_
-#define _Preferences_h_
+#ifndef Preferences_h_
+#define Preferences_h_
 
+#include <Qt>
 #include <string>
 
-//#include <QString>
-//#include <QFont>
+#include <Base/Parameter.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-//class QFont;
+
+class QColor;
 class QString;
-//class QColor;
 
 namespace App
 {
@@ -41,36 +42,118 @@ namespace TechDraw
 {
 
 //getters for parameters used in multiple places.
-class TechDrawExport Preferences {
+class TechDrawExport Preferences
+{
 
 public:
-static std::string labelFont();
-static QString     labelFontQString();
-static double      labelFontSizeMM();
-static double      dimFontSizeMM();
+    static Base::Reference<ParameterGrp> getPreferenceGroup(const char* Name);
 
-static App::Color  normalColor();
-static App::Color  selectColor();
-static App::Color  preselectColor();
-static App::Color  vertexColor();
-static double      vertexScale();
+    static std::string labelFont();
+    static QString labelFontQString();
+    static double labelFontSizeMM();
+    static double dimFontSizeMM();
+    static double dimArrowSize();
 
-static bool        useGlobalDecimals();
-static bool        keepPagesUpToDate();
+    static App::Color normalColor();
+    static App::Color selectColor();
+    static App::Color preselectColor();
+    static App::Color vertexColor();
+    static double vertexScale();
+    static int scaleType();
+    static double scale();
+    static bool useGlobalDecimals();
+    static bool keepPagesUpToDate();
 
-static int         projectionAngle();
-static int         lineGroup();
+    static int projectionAngle();
+    static bool groupAutoDistribute();
+    static double groupSpaceX();
+    static double groupSpaceY();
 
-static int         balloonArrow();
+    static int balloonArrow();
+    static double balloonKinkLength();
+    static int balloonShape();
 
-static QString     defaultTemplate();
-static QString     defaultTemplateDir();
-static std::string lineGroupFile();
+    static QString defaultTemplate();
+    static QString defaultTemplateDir();
 
+    static const double DefaultFontSizeInMM;
+    static const double DefaultArrowSize;
 
+    static std::string formatSpec();
+    static int altDecimals();
 
-static const double DefaultFontSizeInMM;
+    static int mattingStyle();
+    static bool showDetailMatting();
+    static bool showDetailHighlight();
+
+    static std::string svgFile();
+    static std::string patFile();
+
+    static QString defaultSymbolDir();
+
+    static std::string bitmapFill();
+
+    static double GapISO();
+    static double GapASME();
+
+    static bool reportProgress();
+
+    static bool lightOnDark();
+    static void lightOnDark(bool state);
+    static bool monochrome();
+    static void monochrome(bool state);
+    static App::Color lightTextColor();
+    static App::Color lightenColor(App::Color orig);
+    static App::Color getAccessibleColor(App::Color orig);
+
+    static bool autoCorrectDimRefs();
+    static int scrubCount();
+
+    static double svgHatchFactor();
+    static bool SectionUsePreviousCut();
+
+    static int lineStandard();
+    static void setLineStandard(int index);
+    static std::string lineDefinitionLocation();
+    static std::string lineElementsLocation();
+
+    static std::string lineGroupFile();
+    static int lineGroup();
+    static int SectionLineStyle();
+    static int CenterLineStyle();
+    static int HighlightLineStyle();
+    static int HiddenLineStyle();
+    static int BreakLineStyle();
+    static int LineCapStyle();
+    static int LineCapIndex();
+
+    static int LineSpacingISO();
+
+    static std::string currentLineDefFile();
+    static std::string currentElementDefFile();
+
+    static int sectionLineConvention();
+    static bool showSectionLine();
+    static bool includeCutLine();
+
+    static int BreakType();
+
+    static bool useExactMatchOnDims();
+
+    static bool useCameraDirection();
+    static bool alwaysShowLabel();
+
+    static bool SnapViews();
+    static double SnapLimitFactor();
+
+    static Qt::KeyboardModifiers multiselectModifiers();
+
+    static Qt::KeyboardModifiers balloonDragModifiers();
+    static void setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers);
+
+    static bool switchOnClick();
 };
 
-} //end namespace TechDraw
+
+}//end namespace TechDraw
 #endif

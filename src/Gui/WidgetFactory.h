@@ -27,9 +27,8 @@
 #include <vector>
 
 #include <Base/Factory.h>
-#include <Base/PyObjectBase.h>
-#include "DlgPreferencesImp.h"
 #include "DlgCustomizeImp.h"
+#include "DlgPreferencesImp.h"
 #include "PropertyPage.h"
 #include <CXX/Extensions.hxx>
 
@@ -62,8 +61,8 @@ public:
 private:
     static WidgetFactoryInst* _pcSingleton;
 
-    WidgetFactoryInst(){}
-    ~WidgetFactoryInst(){}
+    WidgetFactoryInst() = default;
+    ~WidgetFactoryInst() override = default;
 };
 
 inline WidgetFactoryInst& WidgetFactory()
@@ -91,12 +90,12 @@ public:
         WidgetFactoryInst::instance().AddProducer(cname, this);
     }
 
-    virtual ~WidgetProducer (){}
+    ~WidgetProducer () override = default;
 
     /**
      * Creates an instance of the specified widget.
      */
-    virtual void* Produce () const
+    void* Produce () const override
     {
         return (new CLASS);
     }
@@ -130,12 +129,12 @@ public:
         }
     }
 
-    virtual ~PrefPageProducer (){}
+    ~PrefPageProducer () override = default;
 
     /**
      * Creates an instance of the specified widget.
      */
-    virtual void* Produce () const
+    void* Produce () const override
     {
         return (new CLASS);
     }
@@ -153,11 +152,11 @@ public:
      * Register a special type of preference page to the WidgetFactoryInst.
      */
     PrefPageUiProducer (const char* filename, const char* group);
-    virtual ~PrefPageUiProducer ();
+    ~PrefPageUiProducer () override;
     /**
      * Creates an instance of the specified widget.
      */
-    virtual void* Produce () const;
+    void* Produce () const override;
 
 private:
     QString fn;
@@ -175,11 +174,11 @@ public:
      * Register a special type of preference page to the WidgetFactoryInst.
      */
     PrefPagePyProducer (const Py::Object&, const char* group);
-    virtual ~PrefPagePyProducer ();
+    ~PrefPagePyProducer () override;
     /**
      * Creates an instance of the specified widget.
      */
-    virtual void* Produce () const;
+    void* Produce () const override;
 
 private:
     Py::Object type;
@@ -213,12 +212,12 @@ public:
         }
     }
 
-    virtual ~CustomPageProducer (){}
+    ~CustomPageProducer () override = default;
 
     /**
      * Creates an instance of the specified widget.
      */
-    virtual void* Produce () const
+    void* Produce () const override
     {
         return (new CLASS);
     }
@@ -263,7 +262,7 @@ class ContainerDialog : public QDialog
 
 public:
     ContainerDialog( QWidget* templChild );
-    ~ContainerDialog();
+    ~ContainerDialog() override;
 
     QPushButton* buttonOk; /**< The Ok button. */
     QPushButton* buttonCancel; /**< The cancel button. */
@@ -333,12 +332,12 @@ public:
     static void init_type();    // announce properties and methods
 
     PyResource();
-    ~PyResource();
+    ~PyResource() override;
 
     void load(const char* name);
     bool connect(const char* sender, const char* signal, PyObject* cb);
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object value(const Py::Tuple&);
     Py::Object setValue(const Py::Tuple&);
@@ -362,7 +361,7 @@ class SignalConnect : public QObject
 
 public:
     SignalConnect(PyObject* res, PyObject* cb);
-    ~SignalConnect();
+    ~SignalConnect() override;
 
 public Q_SLOTS:
     void onExecute();
@@ -384,13 +383,13 @@ class GuiExport PreferencePagePython : public PreferencePage
 
 public:
     PreferencePagePython(const Py::Object& dlg, QWidget* parent = nullptr);
-    virtual ~PreferencePagePython();
+    ~PreferencePagePython() override;
 
-    void loadSettings();
-    void saveSettings();
+    void loadSettings() override;
+    void saveSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     Py::Object page;

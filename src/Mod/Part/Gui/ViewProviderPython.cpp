@@ -20,29 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <Standard_math.hxx>
 #ifndef _PreComp_
-# include <Python.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 #include <Gui/ViewProviderBuilder.h>
-#include <Mod/Part/App/PartFeature.h>
+
 #include "ViewProviderPython.h"
+
 
 using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderCustom, PartGui::ViewProviderPart)
 
-ViewProviderCustom::ViewProviderCustom()
-{
-}
+ViewProviderCustom::ViewProviderCustom() = default;
 
-ViewProviderCustom::~ViewProviderCustom()
-{
-}
+ViewProviderCustom::~ViewProviderCustom() = default;
 
 void ViewProviderCustom::onChanged(const App::Property* prop)
 {
@@ -62,12 +56,12 @@ void ViewProviderCustom::onChanged(const App::Property* prop)
 
 void ViewProviderCustom::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyComplexGeoData>()) {
         std::map<const App::Property*, Gui::ViewProvider*>::iterator it = propView.find(prop);
         if (it == propView.end()) {
             Gui::ViewProvider* view = Gui::ViewProviderBuilder::create(prop->getTypeId());
             if (view) {
-                if (view->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
+                if (view->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
                     static_cast<Gui::ViewProviderDocumentObject*>(view)->attach(this->getObject());
                     static_cast<Gui::ViewProviderDocumentObject*>(view)->setDisplayMode(this->getActiveDisplayMode().c_str());
                 }
@@ -90,13 +84,13 @@ PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderPython, PartGui::ViewProviderPart)
 /// @endcond
 
 // explicit template instantiation
-template class PartGuiExport ViewProviderPythonFeatureT<PartGui::ViewProviderPart>;
+template class PartGuiExport ViewProviderFeaturePythonT<PartGui::ViewProviderPart>;
 
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderCustomPython, PartGui::ViewProviderCustom)
 /// @endcond
 
 // explicit template instantiation
-template class PartGuiExport ViewProviderPythonFeatureT<PartGui::ViewProviderCustom>;
+template class PartGuiExport ViewProviderFeaturePythonT<PartGui::ViewProviderCustom>;
 }
 

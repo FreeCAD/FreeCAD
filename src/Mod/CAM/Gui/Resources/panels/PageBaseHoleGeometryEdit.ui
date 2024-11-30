@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>415</width>
+    <height>573</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0" colspan="3">
+      <widget class="QTableWidget" name="baseList">
+       <property name="toolTip">
+        <string>Table of hole features and the determined radius of the associated hole.
+
+You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.
+
+Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</string>
+       </property>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>Feature</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Diameter</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="addBase">
+       <property name="toolTip">
+        <string>Add selected items from 3D view to the list of base geometries</string>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+    <item row="1" column="1">
+      <widget class="QPushButton" name="deleteBase">
+       <property name="toolTip">
+        <string>Remove selected list items from the list of base geometries. The operation is no longer applied to them.</string>
+       </property>
+       <property name="text">
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="resetBase">
+       <property name="toolTip">
+        <string>Remove all list items and fill list with all eligible features from the job's base object.</string>
+       </property>
+       <property name="text">
+        <string>Reset</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" colspan="3">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>All objects will be processed using the same operation properties.</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>baseList</tabstop>
+  <tabstop>addBase</tabstop>
+  <tabstop>deleteBase</tabstop>
+  <tabstop>resetBase</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

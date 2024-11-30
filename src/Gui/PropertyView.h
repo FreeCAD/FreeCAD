@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUI_DOCKWND_PROPERTYVIEW_H
 #define GUI_DOCKWND_PROPERTYVIEW_H
 
-
 #include "DockWindow.h"
 #include "Selection.h"
-#include <boost_signals2.hpp>
+
 
 class QPixmap;
 class QTabWidget;
@@ -59,8 +56,8 @@ class PropertyView : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    PropertyView(QWidget *parent=0);
-    virtual ~PropertyView();
+    explicit PropertyView(QWidget *parent=nullptr);
+    ~PropertyView() override;
 
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;
     Gui::PropertyEditor::PropertyEditor* propertyEditorData;
@@ -81,7 +78,7 @@ protected:
 
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
-    void slotChangePropertyData(const App::DocumentObject&, const App::Property&);
+    void slotChangePropertyData(const App::Property&);
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
     void slotAppendDynamicProperty(const App::Property&);
     void slotRemoveDynamicProperty(const App::Property&);
@@ -92,12 +89,12 @@ private:
     void slotDeletedViewObject(const Gui::ViewProvider&);
     void slotDeletedObject(const App::DocumentObject&);
 
-    void checkEnable(const char *doc = 0);
+    void checkEnable(const char *doc = nullptr);
 
 private:
     struct PropInfo;
     struct PropFind;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectPropData;
     Connection connectPropView;
     Connection connectPropAppend;
@@ -109,8 +106,10 @@ private:
     Connection connectDelDocument;
     Connection connectDelObject;
     Connection connectDelViewObject;
+    Connection connectChangedDocument;
     QTabWidget* tabs;
     QTimer* timer;
+    bool updating = false;
 };
 
 namespace DockWnd {
@@ -122,8 +121,8 @@ class PropertyDockView : public Gui::DockWindow
     Q_OBJECT
 
 public:
-    PropertyDockView(Gui::Document*  pcDocument, QWidget *parent=0);
-    virtual ~PropertyDockView();
+    explicit PropertyDockView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
+    ~PropertyDockView() override;
 };
 
 } // namespace DockWnd

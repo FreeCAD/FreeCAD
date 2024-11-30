@@ -32,38 +32,34 @@
 #ifndef _PreComp_
 # include <iostream>
 # include <fstream>
-# include <string>
-# include <sstream>
 # include <cstdio>
 # include <cstdlib>
 # include <stdexcept>
 # include <vector>
 
-# include <BRepLib.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
+# include <BRepLib.hxx>
+# include <GCE2d_MakeSegment.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom2d_BezierCurve.hxx>
+# include <Geom2d_BSplineCurve.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 # include <gp_Pnt.hxx>
+# include <gp_Trsf.hxx>
 # include <gp_Vec.hxx>
+# include <Precision.hxx>
+# include <ShapeConstruct_Curve.hxx>
+# include <TColgp_Array1OfPnt2d.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TColgp_Array1OfPnt2d.hxx>
-# include <GCE2d_MakeSegment.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom2d_BezierCurve.hxx>
-# include <gp_Trsf.hxx>
-# include <Precision.hxx>
-#include <ShapeConstruct_Curve.hxx>
-#include <Geom2d_BSplineCurve.hxx>
 #endif // _PreComp
 
 #include <Base/Console.h>
-#include "TopoShape.h"
-#include "TopoShapePy.h"
-#include "TopoShapeEdgePy.h"
+#include <Base/FileInfo.h>
+
 #include "TopoShapeWirePy.h"
 
 #include <ft2build.h>
@@ -76,13 +72,15 @@
 
 #define CLOCKWISE 0
 #define ANTICLOCKWISE 1
+
+
 using namespace Part;
 
-typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
+using UNICHAR = unsigned long;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
 
 // Private function prototypes
-PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale,int charNum, double tracking);
-FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc);
+PyObject* getGlyphContours(FT_Face FTFace, UNICHAR currchar, double PenPos, double Scale,int charNum, double tracking);
+FT_Vector getKerning(FT_Face FTFace, UNICHAR lc, UNICHAR rc);
 TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
 int calcClockDir(std::vector<Base::Vector3d> points);
 
@@ -108,7 +106,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
                 const double tracking)                     // fc coords
 {
     FT_Library  FTLib;
-    FT_Face     FTFont;
+    FT_Face     FTFace;
     FT_Error    error;
     FT_Long     FaceIndex = 0;                   // some fonts have multiple faces
     FT_Vector   kern;
@@ -127,36 +125,46 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
+
+    std::ifstream fontfile;
 #ifdef FC_OS_WIN32
-    Base::FileInfo fi(FontSpec);
-    if (!fi.isReadable()) {
-        ErrorMsg << "Font file not found (Win): " << FontSpec;
-        throw std::runtime_error(ErrorMsg.str());
-    }
+    Base::FileInfo winFI(FontSpec);
+    fontfile.open(winFI.toStdWString().c_str(), std::ios::binary | std::ios::in);
 #else
-    // FT does not return an error if font file not found?
-    std::ifstream is;
-    is.open (FontSpec);
-    if (!is) {
-        ErrorMsg << "Font file not found: " << FontSpec;
+    fontfile.open(FontSpec, std::ios::binary | std::ios::in);
+#endif
+    if (!fontfile.is_open()) {
+        //get indignant
+        ErrorMsg << "Can not open font file: " << FontSpec;
         throw std::runtime_error(ErrorMsg.str());
     }
-#endif
+    fontfile.seekg (0, fontfile.end);
+    int bytesNeeded = fontfile.tellg();
+    fontfile.clear();
+    fontfile.seekg (0, fontfile.beg);
+    std::unique_ptr <char[]> buffer (new char[bytesNeeded]);
+    fontfile.read(buffer.get(), bytesNeeded);
+    if (!fontfile) {
+        //get indignant
+        ErrorMsg << "Can not read font file: " << FontSpec;
+        throw std::runtime_error(ErrorMsg.str());
+    }
+    fontfile.close();
 
-
-    error = FT_New_Face(FTLib,FontSpec,FaceIndex, &FTFont);
+    const FT_Byte* ftBuffer = reinterpret_cast<FT_Byte*>(buffer.get());
+    error = FT_New_Memory_Face(FTLib, ftBuffer, bytesNeeded, FaceIndex, &FTFace);
     if (error) {
         ErrorMsg << "FT_New_Face failed: " << error;
         throw std::runtime_error(ErrorMsg.str());
     }
 
-//TODO: check that FTFont is scalable?  only relevant for hinting etc?
+    //TODO: check that FTFace is scalable?  only relevant for hinting etc?
 
-//  FT2 blows up if char size is not set to some non-zero value.
-//  This sets size to 48 point. Magic.
-    error = FT_Set_Char_Size(FTFont,
+    //  FT2 blows up if char size is not set to some non-zero value.
+    //  This sets size to 48 point. Magic.
+    error = FT_Set_Char_Size(FTFace,
                              0,             /* char_width in 1/64th of points */
-                             48*64,         /* char_height in 1/64th of points */
+                             48*64*10,      /* char_height in 1/64th of points */ // increased 10X to preserve very small details
                              0,             /* horizontal device resolution */
                              0 );           /* vertical device resolution */
     if (error) {
@@ -164,10 +172,10 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
-    scalefactor = stringheight/float(FTFont->height);
+    scalefactor = (stringheight/float(FTFace->height))/10;  // divide scale by 10 to offset the 10X increased scale in FT_Set_Char_Size above
     for (i=0; i<length; i++) {
         currchar = PyUString[i];
-        error = FT_Load_Char(FTFont,
+        error = FT_Load_Char(FTFace,
                              currchar,
                              FTLoadFlags);
         if (error) {
@@ -175,11 +183,11 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
             throw std::runtime_error(ErrorMsg.str());
         }
 
-        cadv = FTFont->glyph->advance.x;
-        kern = getKerning(FTFont,prevchar,currchar);
+        cadv = FTFace->glyph->advance.x;
+        kern = getKerning(FTFace,prevchar,currchar);
         PenPos += kern.x;
         try {
-            Py::List WireList(getGlyphContours(FTFont, currchar, PenPos, scalefactor, i, tracking), true);
+            Py::List WireList(getGlyphContours(FTFace, currchar, PenPos, scalefactor, i, tracking), true);
             CharList.append(WireList);
         }
         catch (Py::Exception& e) {
@@ -215,7 +223,7 @@ struct FTDC_Ctx {
 // move_cb called for start of new contour. pt is xy of contour start.
 // p points to the context where we remember what happened previously (last point, etc)
 static int move_cb(const FT_Vector* pt, void* p) {
-   FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
    if (!dc->Edges.empty()){
        TopoDS_Wire newwire = edgesToWire(dc->Edges);
        dc->Wires.push_back(newwire);
@@ -225,7 +233,7 @@ static int move_cb(const FT_Vector* pt, void* p) {
    }
    dc->LastVert = *pt;
    if (dc->polyPoints.empty()) {
-        dc->polyPoints.push_back(Base::Vector3d(pt->x, pt->y, 0.0));
+        dc->polyPoints.emplace_back(pt->x, pt->y, 0.0);
    }
 
    return 0;
@@ -233,7 +241,7 @@ static int move_cb(const FT_Vector* pt, void* p) {
 
 // line_cb called for line segment in the current contour: line(LastVert -- pt)
 static int line_cb(const FT_Vector* pt, void* p) {
-   FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
    gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
    gp_Pnt2d v2(pt->x, pt->y);
    if (!v1.IsEqual(v2, Precision::Confusion())) {
@@ -241,7 +249,7 @@ static int line_cb(const FT_Vector* pt, void* p) {
        TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg , dc->surf);
        dc->Edges.push_back(edge);
        dc->LastVert = *pt;
-       dc->polyPoints.push_back(Base::Vector3d(pt->x, pt->y, 0.0));
+       dc->polyPoints.emplace_back(pt->x, pt->y, 0.0);
    }
    return 0;
 }
@@ -249,7 +257,7 @@ static int line_cb(const FT_Vector* pt, void* p) {
 // quad_cb called for quadratic (conic) BCurve segment in the current contour
 // (ie V-C-V in TTF fonts). BCurve(LastVert -- pt0 -- pt1)
 static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
-   FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
    TColgp_Array1OfPnt2d Poles(1,3);
    gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
    gp_Pnt2d c1(pt0->x, pt0->y);
@@ -269,14 +277,14 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(spline , dc->surf);
    dc->Edges.push_back(edge);
    dc->LastVert = *pt1;
-   dc->polyPoints.push_back(Base::Vector3d(pt1->x, pt1->y, 0.0));
+   dc->polyPoints.emplace_back(pt1->x, pt1->y, 0.0);
    return 0;
 }
 
 // cubic_cb called for cubic BCurve segment in the current contour (ie V-C-C-V in
 // Type 1 fonts). BCurve(LastVert -- pt0 -- pt1 -- pt2)
 static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector* pt2, void* p) {
-   FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
    TColgp_Array1OfPnt2d Poles(1,4);
    gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
    gp_Pnt2d c1(pt0->x, pt0->y);
@@ -298,7 +306,7 @@ static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector*
    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(spline , dc->surf);
    dc->Edges.push_back(edge);
    dc->LastVert = *pt2;
-   dc->polyPoints.push_back(Base::Vector3d(pt2->x, pt2->y, 0.0));
+   dc->polyPoints.emplace_back(pt2->x, pt2->y, 0.0);
    return 0;
 }
 
@@ -313,7 +321,7 @@ static FT_Outline_Funcs FTcbFuncs = {
 
 //********** FT2FC Helpers
 // get glyph outline in wires
-PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale, int charNum, double tracking) {
+PyObject* getGlyphContours(FT_Face FTFace, UNICHAR currchar, double PenPos, double Scale, int charNum, double tracking) {
    FT_Error error = 0;
    std::stringstream ErrorMsg;
    gp_Pnt origin = gp_Pnt(0.0,0.0,0.0);
@@ -322,7 +330,7 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    ctx.currchar = currchar;
    ctx.surf = new Geom_Plane(origin,gp::DZ());
 
-   error = FT_Outline_Decompose(&FTFont->glyph->outline,
+   error = FT_Outline_Decompose(&FTFace->glyph->outline,
                                 &FTcbFuncs,
                                 &ctx);
    if(error) {
@@ -340,7 +348,7 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
 //an occ outer contour has material on the left, so it must be reversed?
 
 
-   FT_Orientation ftOrient = FT_Outline_Get_Orientation(&FTFont->glyph->outline);
+   FT_Orientation ftOrient = FT_Outline_Get_Orientation(&FTFace->glyph->outline);
    bool isTTF = false;
    if (ftOrient == FT_ORIENTATION_TRUETYPE) {
         isTTF = true;
@@ -385,14 +393,14 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
 
 // get kerning values for this char pair
 //TODO: should check FT_HASKERNING flag? returns (0,0) if no kerning?
-FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc) {
+FT_Vector getKerning(FT_Face FTFace, UNICHAR lc, UNICHAR rc) {
    FT_Vector retXY;
    FT_Error error;
    std::stringstream ErrorMsg;
    FT_Vector ftKern;
-   FT_UInt lcx = FT_Get_Char_Index(FTFont, lc);
-   FT_UInt rcx = FT_Get_Char_Index(FTFont, rc);
-   error = FT_Get_Kerning(FTFont,lcx,rcx,FT_KERNING_DEFAULT,&ftKern);
+   FT_UInt lcx = FT_Get_Char_Index(FTFace, lc);
+   FT_UInt rcx = FT_Get_Char_Index(FTFace, rc);
+   error = FT_Get_Kerning(FTFace,lcx,rcx,FT_KERNING_DEFAULT,&ftKern);
    if(error) {
       ErrorMsg << "FT_Get_Kerning failed: " << error;
       throw std::runtime_error(ErrorMsg.str());

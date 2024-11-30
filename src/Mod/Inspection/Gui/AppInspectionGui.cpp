@@ -20,45 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 
 #include "ViewProviderInspection.h"
 #include "Workbench.h"
 
+
 // use a different name to CreateCommand()
-void CreateInspectionCommands(void);
+void CreateInspectionCommands();
 
 
-namespace InspectionGui {
-class Module : public Py::ExtensionModule<Module>
+namespace InspectionGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("InspectionGui")
+    Module()
+        : Py::ExtensionModule<Module>("InspectionGui")
     {
-        initialize("This module is the InspectionGui module."); // register with Python
+        initialize("This module is the InspectionGui module.");  // register with Python
     }
-
-    virtual ~Module() {}
 
 private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace InspectionGui
+}  // namespace InspectionGui
 
 
 /* Python entry */
@@ -66,14 +62,16 @@ PyMOD_INIT_FUNC(InspectionGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     // instantiating the commands
+    // clang-format off
     CreateInspectionCommands();
     InspectionGui::ViewProviderInspection       ::init();
     InspectionGui::ViewProviderInspectionGroup  ::init();
     InspectionGui::Workbench                    ::init();
+    // clang-format on
 
     // ADD YOUR CODE HERE
     //

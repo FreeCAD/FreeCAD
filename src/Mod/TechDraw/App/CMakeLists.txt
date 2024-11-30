@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppTechDraw -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H -DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
@@ -16,30 +10,30 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_QTCORE_INCLUDE_DIR}
 )
-
-if(BUILD_QT5)
-    include_directories(
-        ${Qt5XmlPatterns_INCLUDE_DIRS}
-    )
-    set(QtXmlPatternsLib ${Qt5XmlPatterns_LIBRARIES})
-else(BUILD_QT5)
-    include_directories(
-        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
-    )
-    set(QtXmlPatternsLib ${QT_QTXMLPATTERNS_LIBRARY})
-endif(BUILD_QT5)
-
-link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawLIBS
     Measure
     Part
     Spreadsheet
-    Drawing
     Import
+    PartDesign
 )
+
+include_directories(
+    ${QtConcurrent_INCLUDE_DIRS}
+    ${QtCore_INCLUDE_DIR}
+    ${QtGui_INCLUDE_DIR}
+    ${QtWidgets_INCLUDE_DIRS}
+)
+
+list(APPEND TechDrawLIBS
+    ${QtConcurrent_LIBRARIES}
+    ${QtCore_LIBRARIES}
+    ${QtWidgets_LIBRARIES}
+)
+
+link_directories(${OCC_LIBRARY_DIR})
 
 generate_from_xml(DrawPagePy)
 generate_from_xml(DrawViewPy)
@@ -68,10 +62,13 @@ generate_from_xml(DrawTilePy)
 generate_from_xml(DrawTileWeldPy)
 generate_from_xml(DrawWeldSymbolPy)
 generate_from_xml(CosmeticExtensionPy)
+generate_from_xml(DrawBrokenViewPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
     DrawPage.h
+    DrawComplexSection.cpp
+    DrawComplexSection.h
     DrawView.cpp
     DrawView.h
     DrawViewPart.cpp
@@ -102,6 +99,14 @@ SET(Draw_SRCS
     DrawViewDimExtent.h
     LandmarkDimension.cpp
     LandmarkDimension.h
+    DimensionGeometry.cpp
+    DimensionGeometry.h
+    DimensionReferences.cpp
+    DimensionReferences.h
+    DimensionFormatter.cpp
+    DimensionFormatter.h
+    DimensionAutoCorrect.cpp
+    DimensionAutoCorrect.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp
@@ -124,15 +129,17 @@ SET(Draw_SRCS
     DrawLeaderLine.h
     DrawRichAnno.cpp
     DrawRichAnno.h
-    QDomNodeModel.cpp
-    QDomNodeModel.h
     DrawTile.cpp
     DrawTile.h
     DrawTileWeld.cpp
     DrawTileWeld.h
     DrawWeldSymbol.cpp
     DrawWeldSymbol.h
-    )
+    FeatureProjection.cpp
+    FeatureProjection.h
+    DrawBrokenView.cpp
+    DrawBrokenView.h
+)
 
 SET(TechDraw_SRCS
     AppTechDraw.cpp
@@ -153,10 +160,26 @@ SET(TechDraw_SRCS
     DrawProjectSplit.h
     LineGroup.cpp
     LineGroup.h
+    LineNameEnum.cpp
+    LineNameEnum.h
     ArrowPropEnum.cpp
     ArrowPropEnum.h
+    BalloonPropEnum.cpp
+    BalloonPropEnum.h
+    MattingPropEnum.cpp
+    MattingPropEnum.h
     Preferences.cpp
     Preferences.h
+    TechDrawExport.cpp
+    TechDrawExport.h
+    ProjectionAlgos.cpp
+    ProjectionAlgos.h
+    XMLQuery.cpp
+    XMLQuery.h
+    LineGenerator.cpp
+    LineGenerator.h
+    LineFormat.cpp
+    LineFormat.h
 )
 
 SET(Geometry_SRCS
@@ -164,8 +187,14 @@ SET(Geometry_SRCS
     Geometry.h
     GeometryObject.cpp
     GeometryObject.h
+    ShapeUtils.cpp
+    ShapeUtils.h
+    CenterLine.cpp
+    CenterLine.h
     Cosmetic.cpp
     Cosmetic.h
+    CosmeticVertex.cpp
+    CosmeticVertex.h
     PropertyGeomFormatList.cpp
     PropertyGeomFormatList.h
     PropertyCenterLineList.cpp
@@ -176,6 +205,8 @@ SET(Geometry_SRCS
     PropertyCosmeticVertexList.h
     CosmeticExtension.cpp
     CosmeticExtension.h
+    GeometryMatcher.cpp
+    GeometryMatcher.h
 )
 
 SET(Python_SRCS
@@ -231,7 +262,9 @@ SET(Python_SRCS
     DrawWeldSymbolPyImp.cpp
     CosmeticExtensionPy.xml
     CosmeticExtensionPyImp.cpp
-    )
+    DrawBrokenViewPy.xml
+    DrawBrokenViewPyImp.cpp
+)
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
 SOURCE_GROUP("Features" FILES ${Draw_SRCS})
@@ -239,21 +272,25 @@ SOURCE_GROUP("Geometry" FILES ${Geometry_SRCS})
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 if(FREECAD_USE_PCH)
-    #add_definitions(-D_PreComp_)
-    #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" TechDrawCPP_SRCS ${TechDraw_SRCS} ${Draw_SRCS} )
-    #ADD_MSVC_PRECOMPILED_HEADER(TechDraw PreCompiled.h PreCompiled.cpp TechDrawCPP_SRCS)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
+                                                           ${Geometry_SRCS} ${Python_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(TechDraw PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
-target_link_libraries(TechDraw ${TechDrawLIBS};${QtXmlPatternsLib};${TechDraw})
+target_link_libraries(TechDraw ${TechDrawLIBS} ${TechDraw})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(TechDraw)
+endif()
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Patterns
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Patterns
-)   
+)
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD
@@ -267,7 +304,7 @@ ADD_CUSTOM_COMMAND(TARGET TechDraw
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Symbols
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Symbols
-)   
+)
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)

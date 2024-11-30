@@ -10,7 +10,7 @@ if (APPLE)
     set (OPENSSL_LIBRARIES ${OPENSSL_LINK_LIBRARIES})
 elseif(WIN32 AND LIBPACK_FOUND)
     SET( OPENSSL_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include)
-    SET( OPENSSL_LIBRARIES 
+    SET( OPENSSL_LIBRARIES
       optimized ${FREECAD_LIBPACK_DIR}/lib/openssl.lib debug ${FREECAD_LIBPACK_DIR}/lib/openssld.lib
       optimized ${FREECAD_LIBPACK_DIR}/lib/libssl.lib debug ${FREECAD_LIBPACK_DIR}/lib/libssld.lib
       optimized ${FREECAD_LIBPACK_DIR}/lib/libcrypto.lib debug ${FREECAD_LIBPACK_DIR}/lib/libcryptod.lib)
@@ -20,15 +20,15 @@ elseif(WIN32 AND LIBPACK_FOUND)
         SET( OPENSSL_FOUND False)
         message( FATAL_ERROR "openssl not found!" )
     endif(EXISTS ${FREECAD_LIBPACK_DIR}/lib/openssl.lib)
-    
-    if(OPENSSL_INCLUDE_DIR AND EXISTS "${OPENSSL_INCLUDE_DIR}/openssl/opensslv.h")      
+
+    if(OPENSSL_INCLUDE_DIR AND EXISTS "${OPENSSL_INCLUDE_DIR}/openssl/opensslv.h")
       file(STRINGS "${OPENSSL_INCLUDE_DIR}/openssl/opensslv.h" openssl_version_str
            REGEX "OPENSSL_VERSION_STR")
       string(REGEX MATCH "\".*"
         openssl_version_str ${openssl_version_str})
       string(REPLACE "\"" "" openssl_version_str ${openssl_version_str})
       set(OPENSSL_VERSION ${openssl_version_str})
-  endif ()   
+  endif ()
 else()
     find_package(OpenSSL REQUIRED)
 endif(APPLE)

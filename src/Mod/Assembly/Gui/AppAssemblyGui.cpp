@@ -1,100 +1,71 @@
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
-#include "Workbench.h"
+#include <Base/PyObjectBase.h>
 
-#include "ViewProvider.h"
-#include "ViewProviderProduct.h"
-#include "ViewProviderProductRef.h"
-#include "ViewProviderConstraintGroup.h"
-#include "ViewProviderConstraint.h"
+#include "ViewProviderAssembly.h"
+#include "ViewProviderAssemblyLink.h"
+#include "ViewProviderBom.h"
+#include "ViewProviderBomGroup.h"
+#include "ViewProviderJointGroup.h"
+#include "ViewProviderViewGroup.h"
 
-#include <Mod/Assembly/App/Product.h>
-#include <Mod/Assembly/App/ProductRef.h>
 
-//#include "resources/qrc_Assembly.cpp"
-
-// use a different name to CreateCommand()
-void CreateAssemblyCommands(void);
-void CreateAssemblyConstraintCommands(void);
-
-void loadAssemblyResource()
+namespace AssemblyGui
 {
-    // add resources and reloads the translators
-    Q_INIT_RESOURCE(Assembly);
-    Gui::Translator::instance()->refresh();
+extern PyObject* initModule();
 }
-
-/* registration table  */
-extern struct PyMethodDef AssemblyGui_Import_methods[];
-
-
 
 /* Python entry */
-extern "C" {
-void AssemblyGuiExport initAssemblyGui()
+PyMOD_INIT_FUNC(AssemblyGui)
 {
-    if (!Gui::Application::Instance) {
-        PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import SpreadsheetGui");
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(nullptr);
     }
 
-    static struct PyModuleDef AssemblyGuiAPIDef = {
-        PyModuleDef_HEAD_INIT,
-        "AssemblyGui", 0, -1, AssemblyGui_Import_methods,
-        NULL, NULL, NULL, NULL
-    };
-    PyModule_Create(&AssemblyGuiAPIDef);
-    Base::Console().Log("Loading GUI of Assembly module... done\n");
+    PyObject* mod = AssemblyGui::initModule();
+    Base::Console().Log("Loading AssemblyGui module... done\n");
 
-    // directly load the module for usage in commands
-    Base::Interpreter().runString("import AssemblyGui");
-    Base::Interpreter().runString("import PartGui");
 
-    // instantiating the commands
-    CreateAssemblyCommands();
-    CreateAssemblyConstraintCommands();
+    // NOTE: To finish the initialization of our own type objects we must
+    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
+    // This function is responsible for adding inherited slots from a type's base class.
 
-    AssemblyGui::Workbench::init();
+    AssemblyGui::ViewProviderAssembly::init();
+    AssemblyGui::ViewProviderAssemblyLink::init();
+    AssemblyGui::ViewProviderBom::init();
+    AssemblyGui::ViewProviderBomGroup::init();
+    AssemblyGui::ViewProviderJointGroup::init();
+    AssemblyGui::ViewProviderViewGroup::init();
 
-    AssemblyGui::ViewProviderItem        ::init();
-    AssemblyGui::ViewProviderProduct     ::init();
-    AssemblyGui::ViewProviderProductRef  ::init();
-
-    AssemblyGui::ViewProviderConstraintGroup::init();
-    AssemblyGui::ViewProviderConstraint::init();
-
-     // add resources and reloads the translators
-    loadAssemblyResource();
+    PyMOD_Return(mod);
 }
-
-} // extern "C" {

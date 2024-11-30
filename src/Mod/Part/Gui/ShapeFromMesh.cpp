@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include "ShapeFromMesh.h"
-#include "ui_ShapeFromMesh.h"
 #include <Base/UnitsApi.h>
-#include <App/DocumentObserver.h>
 #include <Gui/CommandT.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
+
+#include "ShapeFromMesh.h"
+#include "ui_ShapeFromMesh.h"
+
 
 using namespace PartGui;
 
@@ -56,10 +56,7 @@ ShapeFromMesh::ShapeFromMesh(QWidget* parent, Qt::WindowFlags fl)
     ui->doubleSpinBox->setDecimals(decimals);
 }
 
-ShapeFromMesh::~ShapeFromMesh()
-{
-
-}
+ShapeFromMesh::~ShapeFromMesh() = default;
 
 void ShapeFromMesh::perform()
 {
@@ -75,9 +72,9 @@ void ShapeFromMesh::perform()
     Gui::doCommandT(Gui::Command::Doc, "import Part");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Convert mesh"));
 
-    for (auto it = meshes.begin(); it != meshes.end(); ++it) {
-        App::Document* doc = (*it)->getDocument();
-        std::string mesh = (*it)->getNameInDocument();
+    for (auto it : meshes) {
+        App::Document* doc = it->getDocument();
+        std::string mesh = it->getNameInDocument();
         std::string name = doc->getUniqueObjectName(mesh.c_str());
 
         Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "Part::Feature",  name);

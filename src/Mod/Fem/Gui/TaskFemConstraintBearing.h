@@ -21,76 +21,74 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintBearing_H
 #define GUI_TASKVIEW_TaskFemConstraintBearing_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+#include <QObject>
+#include <memory>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintBearing.h"
 
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintBearing;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace FemGui {
+namespace FemGui
+{
 
-class TaskFemConstraintBearing : public TaskFemConstraint
+class TaskFemConstraintBearing: public TaskFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = 0,
-                             const char* pixmapname = "FEM_ConstraintBearing");
-    virtual ~TaskFemConstraintBearing();
+    explicit TaskFemConstraintBearing(ViewProviderFemConstraint* ConstraintView,
+                                      QWidget* parent = nullptr,
+                                      const char* pixmapname = "FEM_ConstraintBearing");
+    ~TaskFemConstraintBearing() override;
 
-    double getDistance(void) const;
-    virtual const std::string getReferences() const;
-    const std::string getLocationName(void) const;
-    const std::string getLocationObject(void) const;
-    bool getAxial(void) const;
+    double getDistance() const;
+    const std::string getReferences() const override;
+    const std::string getLocationName() const;
+    const std::string getLocationObject() const;
+    bool getAxial() const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void onDistanceChanged(double l);
     void onButtonLocation(const bool pressed = true);
     void onCheckAxial(bool);
 
 protected:
-    bool event(QEvent *e);
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void changeEvent(QEvent* e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 protected:
-    Ui_TaskFemConstraintBearing* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintBearing> ui;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFemConstraintBearing : public TaskDlgFemConstraint
+class TaskDlgFemConstraintBearing: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintBearing() {}
-    TaskDlgFemConstraintBearing(ViewProviderFemConstraintBearing *ConstraintView);
+    TaskDlgFemConstraintBearing() = default;
+    explicit TaskDlgFemConstraintBearing(ViewProviderFemConstraintBearing* ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-
+    bool accept() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintBearing_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintBearing_H

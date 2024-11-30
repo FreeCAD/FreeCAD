@@ -2,38 +2,104 @@
 # source:
 # - any: ['src/**/*', '!src/docs/*']
 
+# 'Mod' related labels
 
-🛤️ Path:
-- 'src/Mod/Path/**/*'
+"Mod: Core":
+- changed-files:
+  - any-glob-to-any-file: ['src/App/**/*', 'src/Base/**/*', 'src/Gui/**/*']
 
-🏛 Arch:
-- 'src/Mod/Arch/**/*'
+:octocat::
+- changed-files:
+  - any-glob-to-any-file:  ['.github/**/*']
 
-🚜 PartDesign:
-- 'src/Mod/PartDesign/**/*'
+"Mod: Addon Manager":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/AddonManager/**/*']
 
-':pencil2: Sketcher':
-- 'src/Mod/Sketcher/**/*'
+"Mod: Materials":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Material/**/*']
 
-📐 Draft:
-- 'src/Mod/Draft/**/*'
+"Mod: Measurement":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Measure/**/*']
 
-🧪 FEM:
-- 'src/Mod/Fem/**/*'
+"Mod: BIM":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/BIM/**/*']
 
-⚙ TechDraw:
-- 'src/Mod/TechDraw/**/*'
+"Mod: Assembly":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Assembly/**/*']
 
-🧱 Part:  
-- 'src/Mod/Part/**/*'
+"Mod: Draft":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Draft/**/*']
 
-🥅Mesh:
-- 'src/Mod/Mesh/**/*'
+"Mod: FEM":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Fem/**/*']
 
-Spreadsheet:
-- 'src/Mod/Spreadsheet/**/*'
+"Mod: Mesh":
+- changed-files:
+  - any-glob-to-any-file: ['src/Mod/Mesh/**/*']
 
-Core:
-- 'src/App/**/*'
-- 'src/Base/**/*'
-- 'src/Gui/**/*'
+"Mod: MeshPart":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/MeshPart/**/*']
+
+"Mod: OpenSCAD":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/OpenSCAD/**/*']
+
+"Mod: Part":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Part/**/*']
+
+"Mod: Part Design":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/PartDesign/**/*']
+
+"Mod: CAM":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/CAM/**/*']
+
+"Mod: Points":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Points/**/*']
+
+"Mod: Reverse Engineering":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/ReverseEngineering/**/*']
+
+"Mod: Sketcher":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Sketcher/**/*']
+
+"Mod: Spreadsheet":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Spreadsheet/**/*']
+
+"Mod: Surface":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Surface/**/*/']
+
+"Mod: TechDraw":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/TechDraw/**/*']
+
+"Mod: Test":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Test/**/*']
+
+# 'Packaging' related labels
+
+"Packaging/building":
+- changed-files:
+  - any-glob-to-any-file:  ['cMake/**/*']
+
+# 'Topic' related labels
+
+"Topic: Stylesheets":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Gui/Stylesheets/**/*']

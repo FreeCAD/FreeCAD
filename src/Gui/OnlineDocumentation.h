@@ -24,6 +24,8 @@
 #ifndef GUI_ONLINEDOCUMENTATION_H
 #define GUI_ONLINEDOCUMENTATION_H
 
+#include <functional>
+#include <CXX/Objects.hxx>
 #include <QObject>
 #include <QTcpServer>
 #include "Command.h"
@@ -45,11 +47,18 @@ class PythonOnlineHelp : public QObject
 
 public:
     PythonOnlineHelp();
-    ~PythonOnlineHelp();
+    ~PythonOnlineHelp() override;
 
     QByteArray loadResource(const QString& filename) const;
+
+private:
     QByteArray fileNotFound() const;
     QByteArray loadFailed(const QString& error) const;
+    QByteArray loadFavicon() const;
+    QByteArray loadIndexPage() const;
+    QByteArray loadHelpPage(const QString& filename) const;
+    QByteArray invoke(const std::function<std::string(Py::Module&)>& func) const;
+    QByteArray tryInvoke(const std::function<std::string(Py::Module&)>& func) const;
 };
 
 /**
@@ -60,9 +69,9 @@ class HttpServer : public QTcpServer
     Q_OBJECT
 
 public:
-    HttpServer(QObject* parent = 0);
+    explicit HttpServer(QObject* parent = nullptr);
 
-    void incomingConnection(qintptr socket);
+    void incomingConnection(qintptr socket) override;
     void pause();
     void resume();
 
@@ -81,12 +90,12 @@ class StdCmdPythonHelp : public Command
 {
 public:
     StdCmdPythonHelp();
-    ~StdCmdPythonHelp();
-    const char* className() const
+    ~StdCmdPythonHelp() override;
+    const char* className() const override
     { return "Gui::StdCmdPythonHelp"; }
 
 protected:
-    void activated(int iMsg);
+    void activated(int iMsg) override;
 
 private:
     HttpServer* server;

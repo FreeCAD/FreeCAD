@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,8 +23,8 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer equation object Electrostatic"
-__author__ = "Markus Hovorka"
-__url__ = "https://www.freecadweb.org"
+__author__ = "Markus Hovorka, Uwe Stöhr"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -34,8 +35,7 @@ from . import linear
 
 
 def create(doc, name="Electrostatic"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+    return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
 class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
@@ -43,37 +43,13 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
     Type = "Fem::EquationElmerElectrostatic"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyBool",
-            "CalculateElectricField",
-            "Electrostatic",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "CalculateElectricFlux",
-            "Electrostatic",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "CalculateElectricEnergy",
-            "Electrostatic",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "CalculateSurfaceCharge",
-            "Electrostatic",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "CalculateCapacitanceMatrix",
-            "Electrostatic",
-            ""
-        )
+        super().__init__(obj)
+
+        obj.addProperty("App::PropertyBool", "CalculateCapacitanceMatrix", "Electrostatic", "")
+        obj.addProperty("App::PropertyBool", "CalculateElectricEnergy", "Electrostatic", "")
+        obj.addProperty("App::PropertyBool", "CalculateElectricField", "Electrostatic", "")
+        obj.addProperty("App::PropertyBool", "CalculateElectricFlux", "Electrostatic", "")
+        obj.addProperty("App::PropertyBool", "CalculateSurfaceCharge", "Electrostatic", "")
         """
         obj.addProperty(
             "App::PropertyInteger",
@@ -82,11 +58,38 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
             ""
         )
         """
+        obj.addProperty(
+            "App::PropertyFile",
+            "CapacitanceMatrixFilename",
+            "Electrostatic",
+            (
+                "File where capacitance matrix is being saved\n"
+                "Only used if 'CalculateCapacitanceMatrix' is true"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ConstantWeights",
+            "Electrostatic",
+            "Use constant weighting for results",
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "PotentialDifference",
+            "Electrostatic",
+            (
+                "Potential difference in Volt for which capacitance is\n"
+                "calculated if 'CalculateCapacitanceMatrix' is false"
+            ),
+        )
 
+        obj.CapacitanceMatrixFilename = "cmatrix.dat"
+        obj.PotentialDifference = 0.0
         obj.Priority = 10
 
 
 class ViewProxy(linear.ViewProxy, equationbase.ElectrostaticViewProxy):
     pass
+
 
 ##  @}

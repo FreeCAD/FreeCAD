@@ -94,7 +94,7 @@ namespace KDL
         virtual int setOptPos(const JntArray &opt_pos);
 
         /**
-         *Set null psace velocity gain
+         *Set null space velocity gain
          *
          *@param alpha NUllspace velocity cgain
          *

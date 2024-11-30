@@ -24,58 +24,46 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QMenu>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "Utils.h"
-#include "ViewProviderPipe.h"
-#include "TaskPipeParameters.h"
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePipe.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Mod/PartDesign/App/FeaturePipe.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
 
+#include "ViewProviderPipe.h"
+#include "TaskPipeParameters.h"
 
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderPipe,PartDesignGui::ViewProvider)
 
-ViewProviderPipe::ViewProviderPipe()
-{
-}
+ViewProviderPipe::ViewProviderPipe() = default;
 
-ViewProviderPipe::~ViewProviderPipe()
-{
-}
+ViewProviderPipe::~ViewProviderPipe() = default;
 
-std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
 
     App::DocumentObject* sketch = pcPipe->getVerifiedSketch(true);
-    if (sketch != NULL)
+    if (sketch)
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
             temp.push_back(obj);
     }
 
     App::DocumentObject* spine = pcPipe->Spine.getValue();
-    if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (spine && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
 
     App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
-    if (auxspine != NULL && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (auxspine && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(auxspine);
 
     return temp;
@@ -153,11 +141,14 @@ void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, boo
     }
 }
 
-void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on) {
+void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on)
+{
+    if (!base)
+        return;
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
-    if (svp == nullptr)
+    if (!svp)
         return;
 
     std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
@@ -179,7 +170,7 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderPipe::getIcon(void) const {
+QIcon ViewProviderPipe::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Pipe*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)

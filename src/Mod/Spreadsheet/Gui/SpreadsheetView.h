@@ -23,11 +23,14 @@
 #ifndef SpreadsheetView_H
 #define SpreadsheetView_H
 
+#include <QHeaderView>
+
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
-#include <QHeaderView>
-#include "SheetModel.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
+
+#include "SheetModel.h"
+
 
 class QSlider;
 class QAction;
@@ -35,12 +38,14 @@ class QActionGroup;
 class QPopupMenu;
 class QToolBar;
 
-namespace App {
+namespace App
+{
 class DocumentObject;
 class Property;
-}
+}  // namespace App
 
-namespace Ui {
+namespace Ui
+{
 class Sheet;
 }
 
@@ -51,40 +56,49 @@ namespace SpreadsheetGui
 
 class SpreadsheetDelegate;
 
-class SpreadsheetGuiExport SheetView : public Gui::MDIView
+class SpreadsheetGuiExport SheetView: public Gui::MDIView
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWidget* parent);
-    ~SheetView();
+    ~SheetView() override;
 
-    const char *getName(void) const {return "SheetView";}
+    const char* getName() const override
+    {
+        return "SheetView";
+    }
 
-    bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
 
     /** @name Printing */
     //@{
-    void print();
-    void printPdf();
-    void printPreview();
-    void print(QPrinter*);
+    void print() override;
+    void printPdf() override;
+    void printPreview() override;
+    void print(QPrinter*) override;
     //@}
 
-    void updateCell(const App::Property * prop);
+    void updateCell(const App::Property* prop);
 
-    Spreadsheet::Sheet * getSheet() { return sheet; }
+    Spreadsheet::Sheet* getSheet()
+    {
+        return sheet;
+    }
 
     std::vector<App::Range> selectedRanges() const;
 
     QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexesRaw() const;
 
     void select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags);
 
-    void select(App::CellAddress topLeft, App::CellAddress bottomRight, QItemSelectionModel::SelectionFlags flags);
+    void select(App::CellAddress topLeft,
+                App::CellAddress bottomRight,
+                QItemSelectionModel::SelectionFlags flags);
 
     QModelIndex currentIndex() const;
 
@@ -92,21 +106,22 @@ public:
 
     void deleteSelection();
 
-    PyObject *getPyObject(void);
+    PyObject* getPyObject() override;
 
-    virtual void deleteSelf();
+    void deleteSelf() override;
 
 protected Q_SLOTS:
     void editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers);
     void confirmAliasChanged(const QString& text);
     void aliasChanged(const QString& text);
     void confirmContentChanged(const QString& text);
-    void currentChanged( const QModelIndex & current, const QModelIndex & previous );
+    void currentChanged(const QModelIndex& current, const QModelIndex& previous);
     void columnResized(int col, int oldSize, int newSize);
     void rowResized(int row, int oldSize, int newSize);
     void columnResizeFinished();
     void rowResizeFinished();
-    void modelUpdated(const QModelIndex & topLeft, const QModelIndex & bottomRight);
+    void modelUpdated(const QModelIndex& topLeft, const QModelIndex& bottomRight);
+
 protected:
     void updateContentLine();
     void updateAliasLine();
@@ -114,10 +129,10 @@ protected:
     void resizeColumn(int col, int newSize);
     void resizeRow(int col, int newSize);
 
-    Ui::Sheet * ui;
-    Spreadsheet::Sheet * sheet;
-    SpreadsheetDelegate * delegate;
-    SheetModel * model;
+    Ui::Sheet* ui;
+    Spreadsheet::Sheet* sheet;
+    SpreadsheetDelegate* delegate;
+    SheetModel* model;
     boost::signals2::scoped_connection columnWidthChangedConnection;
     boost::signals2::scoped_connection rowHeightChangedConnection;
     boost::signals2::scoped_connection positionChangedConnection;
@@ -126,20 +141,20 @@ protected:
     std::map<int, int> newRowSizes;
 };
 
-class SheetViewPy : public Py::PythonExtension<SheetViewPy>
+class SheetViewPy: public Py::PythonExtension<SheetViewPy>
 {
 public:
     using BaseType = Py::PythonExtension<SheetViewPy>;
     static void init_type();
 
-    SheetViewPy(SheetView *mdi);
-    ~SheetViewPy();
+    explicit SheetViewPy(SheetView* mdi);
+    ~SheetViewPy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
+    Py::Object repr() override;
+    Py::Object getattr(const char*) override;
     Py::Object getSheet(const Py::Tuple&);
     Py::Object cast_to_base(const Py::Tuple&);
-    
+
     Py::Object selectedRanges(const Py::Tuple&);
     Py::Object selectedCells(const Py::Tuple&);
     Py::Object select(const Py::Tuple&);
@@ -152,6 +167,6 @@ protected:
     Gui::MDIViewPy base;
 };
 
-} // namespace SpreadsheetModGui
+}  // namespace SpreadsheetGui
 
-#endif // SpreadsheetView_H
+#endif  // SpreadsheetView_H

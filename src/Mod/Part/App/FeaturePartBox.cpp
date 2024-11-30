@@ -20,21 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepPrimAPI_MakeBox.hxx>
 # include <Precision.hxx>
 #endif
 
-
-#include <Base/Console.h>
 #include <Base/Reader.h>
+
 #include "FeaturePartBox.h"
 
 
 using namespace Part;
-
 
 PROPERTY_SOURCE(Part::Box, Part::Primitive)
 
@@ -55,7 +52,7 @@ short Box::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Box::execute(void)
+App::DocumentObjectExecReturn *Box::execute()
 {
     double L = Length.getValue();
     double W = Width.getValue();
@@ -74,7 +71,7 @@ App::DocumentObjectExecReturn *Box::execute(void)
         // Build a box using the dimension attributes
         BRepPrimAPI_MakeBox mkBox(L, W, H);
         TopoDS_Shape ResultShape = mkBox.Shape();
-        this->Shape.setValue(ResultShape);
+        this->Shape.setValue(ResultShape, false);
         return Primitive::execute();
     }
     catch (Standard_Failure& e) {
@@ -125,7 +122,7 @@ void Box::Restore(Base::XMLReader &reader)
                 prop->setStatusValue(status.to_ulong());
         }
         if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-            if (!prop->testStatus(App::Property::Transient) 
+            if (!prop->testStatus(App::Property::Transient)
                     && !status.test(App::Property::Transient)
                     && !status.test(App::Property::PropTransient)
                     && !(getPropertyType(prop) & App::Prop_Transient))

@@ -54,7 +54,7 @@ namespace e57
 
       //! @brief This function returns the file header information
       //! @param [out] fileHeader is the main header information
-      //! @return Returns true if sucessful
+      //! @return Returns true if successful
       bool GetE57Root( E57Root &fileHeader ) const;
 
       //!@}
@@ -69,7 +69,7 @@ namespace e57
       //! @brief This function returns the image2D header and positions the cursor
       //! @param [in] imageIndex This in the index into the image2D vector
       //! @param [out] image2DHeader pointer to the Image2D structure to receive the picture information
-      //! @return Returns true if sucessful
+      //! @return Returns true if successful
       bool ReadImage2D( int64_t imageIndex, Image2D &image2DHeader ) const;
 
       //! @brief This function returns the size of the image data
@@ -81,7 +81,7 @@ namespace e57
       //! @param [out] imageSize This is the total number of bytes for the image blob.
       //! @param [out] imageMaskType This is E57_PNG_IMAGE_MASK if "imageMask" is defined in the projection
       //! @param [out] imageVisualType This is image type of the VisualReferenceRepresentation if given.
-      //! @return Returns true if sucessful
+      //! @return Returns true if successful
       bool GetImage2DSizes( int64_t imageIndex, Image2DProjection &imageProjection, Image2DType &imageType,
                             int64_t &imageWidth, int64_t &imageHeight, int64_t &imageSize, Image2DType &imageMaskType,
                             Image2DType &imageVisualType ) const;
@@ -109,7 +109,7 @@ namespace e57
       //! @brief This function returns the Data3D header
       //! @param [in] dataIndex This in the index into the images3D vector. Must be less than GetData3DCount().
       //! @param [out] data3DHeader Data3D header
-      //! @return Returns true if sucessful
+      //! @return Returns true if successful
       bool ReadData3D( int64_t dataIndex, Data3D &data3DHeader ) const;
 
       //! @brief This function returns the size of the point data
@@ -120,18 +120,18 @@ namespace e57
       //! @param [out] groupsSize This is the total number of group reocrds
       //! @param [out] countSize This is the maximum point count per group
       //! @param [out] columnIndex This indicates that the idElementName is "columnIndex"
-      //! @return Return true if sucessful, false otherwise
+      //! @return Return true if successful, false otherwise
       bool GetData3DSizes( int64_t dataIndex, int64_t &rowMax, int64_t &columnMax, int64_t &pointsSize,
                            int64_t &groupsSize, int64_t &countSize, bool &columnIndex ) const;
 
-      //! @brief This funtion reads the group data into the provided buffers.
+      //! @brief This function reads the group data into the provided buffers.
       //! @param [in] dataIndex This in the index into the images3D vector. Must be less than GetData3DCount().
       //! @param [in] groupCount size of each of the buffers given
       //! @param [out] idElementValue pointer to the buffer holding indices index for this group
       //! @param [out] startPointIndex pointer to the buffer holding Starting index in to the "points" data vector for
       //! the groups
       //! @param [out] pointCount pointer to the buffer holding size of the groups given
-      //! @return Return true if sucessful, false otherwise
+      //! @return Return true if successful, false otherwise
       bool ReadData3DGroupsData( int64_t dataIndex, int64_t groupCount, int64_t *idElementValue,
                                  int64_t *startPointIndex, int64_t *pointCount ) const;
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>519</width>
-    <height>285</height>
+    <width>693</width>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,59 +16,104 @@
   <property name="sizeGripEnabled">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout">
-   <property name="margin">
-    <number>10</number>
-   </property>
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <item row="4" column="0">
-    <widget class="QLineEdit" name="lineEdit1"/>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QTextEdit" name="textEdit1"/>
    </item>
    <item row="2" column="0">
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QCheckBox" name="checkBox1">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>Case sensitive</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <string>Validator</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox2">
-       <property name="text">
-        <string>Wildcard</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox3">
-       <property name="text">
-        <string>Minimal</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="lineEdit"/>
      </item>
     </layout>
    </item>
-   <item row="5" column="0">
+   <item row="4" column="0">
+    <widget class="QLabel" name="textLabel2">
+     <property name="text">
+      <string>Regular Expression:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Pattern options</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="caseInsensitiveOption">
+        <property name="text">
+         <string>Case insensitive</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QCheckBox" name="multilineOption">
+        <property name="text">
+         <string>Multiline</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="invertedGreedinessOption">
+        <property name="text">
+         <string>Inverted greediness</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="dotMatchesEverythingOption">
+        <property name="text">
+         <string>Dot matches everything</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="extendedPatternSyntaxOption">
+        <property name="text">
+         <string>Extended pattern syntax</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="dontCaptureOption">
+        <property name="text">
+         <string>Don't capture</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QCheckBox" name="useUnicodePropertiesOption">
+        <property name="text">
+         <string>Unicode properties</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0">
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
@@ -117,24 +162,10 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="buttonHelp">
-       <property name="text">
-        <string>&amp;Help</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="textLabel2">
-     <property name="text">
-      <string>Regular Expression:</string>
-     </property>
-    </widget>
+   <item row="5" column="0">
+    <widget class="QLineEdit" name="lineEditRegExp"/>
    </item>
    <item row="0" column="0">
     <widget class="QLabel" name="textLabel1">
@@ -143,20 +174,21 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QTextEdit" name="textEdit1"/>
-   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>textEdit1</tabstop>
-  <tabstop>checkBox1</tabstop>
-  <tabstop>checkBox2</tabstop>
-  <tabstop>checkBox3</tabstop>
-  <tabstop>lineEdit1</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>caseInsensitiveOption</tabstop>
+  <tabstop>invertedGreedinessOption</tabstop>
+  <tabstop>dotMatchesEverythingOption</tabstop>
+  <tabstop>multilineOption</tabstop>
+  <tabstop>extendedPatternSyntaxOption</tabstop>
+  <tabstop>dontCaptureOption</tabstop>
+  <tabstop>useUnicodePropertiesOption</tabstop>
+  <tabstop>lineEditRegExp</tabstop>
   <tabstop>buttonClose</tabstop>
-  <tabstop>buttonHelp</tabstop>
  </tabstops>
  <resources/>
  <connections>

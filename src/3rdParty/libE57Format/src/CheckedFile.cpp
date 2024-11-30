@@ -25,6 +25,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+// convenience for all the BSDs
+#if defined( __FreeBSD__) || defined( __NetBSD__) || defined( __OpenBSD__)
+#define __BSD
+#endif
+
 #if defined( _WIN32 )
 #if defined( _MSC_VER )
 #include <codecvt>
@@ -41,6 +46,10 @@
 #elif defined( __linux__ )
 #define _LARGEFILE64_SOURCE
 #define __LARGE64_FILES
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#elif defined(__BSD)
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -244,7 +253,7 @@ void CheckedFile::read( char *buf, size_t nRead, size_t /*bufSize*/ )
    std::vector<char> page_buffer_v( physicalPageSize );
    char *page_buffer = &page_buffer_v[0];
 
-   auto checksumMod = static_cast<const unsigned int>( std::nearbyint( 100.0 / checkSumPolicy_ ) );
+   const auto checksumMod = static_cast<unsigned int>( std::nearbyint( 100.0 / checkSumPolicy_ ) );
 
    while ( nRead > 0 )
    {
@@ -455,7 +464,7 @@ void CheckedFile::seek( uint64_t offset, OffsetMode omode )
 
 uint64_t CheckedFile::lseek64( int64_t offset, int whence )
 {
-   if ( ( fd_ < 0 ) && ( bufView_ != nullptr ) )
+   if ( ( fd_ < 0 ) && bufView_ )
    {
       const auto uoffset = static_cast<uint64_t>( offset );
 
@@ -483,7 +492,7 @@ uint64_t CheckedFile::lseek64( int64_t offset, int whence )
 #endif
 #elif defined( __linux__ )
    int64_t result = ::lseek64( fd_, offset, whence );
-#elif defined( __APPLE__ )
+#elif defined( __APPLE__ ) || defined(__BSD)
    int64_t result = ::lseek( fd_, offset, whence );
 #else
 #error "no supported OS platform defined"
@@ -652,7 +661,7 @@ void CheckedFile::close()
       fd_ = -1;
    }
 
-   if ( bufView_ != nullptr )
+   if ( bufView_ )
    {
       delete bufView_;
       bufView_ = nullptr;
@@ -746,7 +755,7 @@ void CheckedFile::readPhysicalPage( char *page_buffer, uint64_t page )
    /// Seek to start of physical page
    seek( page * physicalPageSize, Physical );
 
-   if ( ( fd_ < 0 ) && ( bufView_ != nullptr ) )
+   if ( ( fd_ < 0 ) && bufView_ )
    {
       bufView_->read( page_buffer, physicalPageSize );
       return;

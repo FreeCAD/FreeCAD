@@ -58,26 +58,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
-# include <QAction>
-# include <QActionGroup>
 # include <QApplication>
-# include <QByteArray>
-# include <QCursor>
-# include <QList>
-# include <QMenu>
-# include <QMetaObject>
-# include <QRegExp>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
+
 #include "NavigationStyle.h"
-#include "View3DInventorViewer.h"
-#include "Application.h"
-#include "MenuManager.h"
-#include "MouseSelection.h"
 #include "SoTouchEvents.h"
+#include "View3DInventorViewer.h"
+
 
 using namespace Gui;
 
@@ -96,9 +85,7 @@ MayaGestureNavigationStyle::MayaGestureNavigationStyle()
     inGesture = false;
 }
 
-MayaGestureNavigationStyle::~MayaGestureNavigationStyle()
-{
-}
+MayaGestureNavigationStyle::~MayaGestureNavigationStyle() = default;
 
 const char* MayaGestureNavigationStyle::mouseButtons(ViewerMode mode)
 {
@@ -131,7 +118,9 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
-    if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
+    if (this->isSeekMode()) {
+        return inherited::processSoEvent(ev);
+    }
     // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode()&& !this->isAnimating() && this->isViewing() )
         this->setViewing(false); // by default disable viewing mode to render the scene
@@ -194,7 +183,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     //before this block, mouse button states in NavigationStyle::buttonXdown reflected those before current event arrived.
     //track mouse button states
     if (evIsButton) {
-        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+        auto const event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press //the button was pressed (if false -> released)
                 = event->getState() == SoButtonEvent::DOWN ? true : false;
@@ -235,7 +224,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //track gestures
     if (evIsGesture) {
-        const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
+        auto gesture = static_cast<const SoGestureEvent*>(ev);
         switch(gesture->state) {
         case SoGestureEvent::SbGSStart:
             //assert(!inGesture);//start of another gesture before the first finished? Happens all the time for Pan gesture... No idea why!  --DeepSOIC
@@ -286,18 +275,14 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mode-independent keyboard handling
     if (evIsKeyboard) {
-        const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
+        auto const event = (const SoKeyboardEvent *) ev;
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
         case SoKeyboardEvent::H:
             processed = true;
-            if(!press){
-                SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
-                if(!ret){
-                    this->interactiveCountDec();
-                    Base::Console().Log(
-                        "No object under cursor! Can't set new center of rotation.\n");
-                }
+            if (!press) {
+                setupPanningPlane(viewer->getCamera());
+                lookAtPoint(event->getPosition());
             }
             break;
         default:
@@ -309,7 +294,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //mode-independent spaceball/joystick handling
     if (evIsLoc3) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
+        auto const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -319,14 +304,46 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //all mode-dependent stuff is within this switch.
     switch(curmode){
-    case NavigationStyle::IDLE:
     case NavigationStyle::SELECTION:
+        // Prevent interrupting rubber-band selection in sketcher
+        if (viewer->isEditing()) {
+            if (evIsButton) {
+                auto const event = (const SoMouseButtonEvent*)ev;
+                const SbBool press = event->getState() == SoButtonEvent::DOWN;
+                const int button = event->getButton();
+
+                if (!press && button == SoMouseButtonEvent::BUTTON1) {
+                    setViewingMode(NavigationStyle::IDLE);
+                    break;
+                }
+            }
+
+            if (this->button1down) {
+                break;
+            }
+        }
+        [[fallthrough]];
+    case NavigationStyle::IDLE:
+        // Prevent interrupting rubber-band selection in sketcher
+        if (viewer->isEditing()) {
+            if (evIsButton) {
+                auto const event = (const SoMouseButtonEvent*)ev;
+                const SbBool press = event->getState() == SoButtonEvent::DOWN;
+                const int button = event->getButton();
+
+                if (press && button == SoMouseButtonEvent::BUTTON1 && !this->altdown) {
+                    setViewingMode(NavigationStyle::SELECTION);
+                    break;
+                }
+            }
+        }
+        [[fallthrough]];
     case NavigationStyle::INTERACT: {
         //idle and interaction
 
         //keyboard
         if (evIsKeyboard) {
-            const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
+            auto const event = (const SoKeyboardEvent *) ev;
             const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
             switch(event->getKey()){
@@ -361,7 +378,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
         // Mouse Button / Spaceball Button handling
         if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            auto const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             const SbBool press //the button was pressed (if false -> released)
                     = event->getState() == SoButtonEvent::DOWN ? true : false;
@@ -376,7 +393,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         //reset/start move detection machine
                         this->mousedownPos = pos;
                         this->mouseMoveThresholdBroken = false;
-                        pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
+                        setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panningplane
                         int &cnt = this->mousedownConsumedCount;
                         this->mousedownConsumedEvents[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
                         cnt++;
@@ -410,12 +427,8 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     setViewingMode(NavigationStyle::PANNING);
                 } else if(press){
                     // if not PANNING then look at point
-                    SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
-                    if(!ret){
-                        this->interactiveCountDec();
-                        Base::Console().Log(
-                            "No object under cursor! Can't set new center of rotation.\n");
-                    }
+                    setupPanningPlane(viewer->getCamera());
+                    lookAtPoint(event->getPosition());
                 }
                 processed = true;
                 break;
@@ -435,6 +448,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
                     // start DRAGGING mode (orbit)
                     // if not pressing left mouse button then it assumes is right mouse button and starts ZOOMING mode
+                    saveCursorPosition(ev);
                     setViewingMode(this->button1down ? NavigationStyle::DRAGGING : NavigationStyle::ZOOMING);
                     processed = true;
                 } else {
@@ -454,15 +468,16 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
         //gesture start
         if (evIsGesture && /*!this->button1down &&*/ !this->button2down){//ignore gestures when mouse buttons are down. Button1down check was disabled because of wrong state after doubleclick on sketcher constraint to edit datum
-            const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
+            auto gesture = static_cast<const SoGestureEvent*>(ev);
             if (gesture->state == SoGestureEvent::SbGSStart
                     || gesture->state == SoGestureEvent::SbGSUpdate) {//even if we didn't get a start, assume the first update is a start (sort-of fail-safe).
                 if (type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())) {
-                    pan(viewer->getSoRenderManager()->getCamera());//set up panning plane
+                    setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panning plane
                     setViewingMode(NavigationStyle::PANNING);
                     processed = true;
                 } else if (type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())) {
-                    pan(viewer->getSoRenderManager()->getCamera());//set up panning plane
+                    setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panning plane
+                    saveCursorPosition(ev);
                     setViewingMode(NavigationStyle::DRAGGING);
                     processed = true;
                 } //all other gestures - ignore!
@@ -481,7 +496,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
         // Mouse Button / Spaceball Button handling
         if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            auto const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             switch(button){
                 case SoMouseButtonEvent::BUTTON1:
@@ -489,6 +504,12 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 case SoMouseButtonEvent::BUTTON3: // allows to release button3 into SELECTION mode
                     if(comboAfter & BUTTON1DOWN || comboAfter & BUTTON2DOWN) {
                         //don't leave navigation till all buttons have been released
+                        if (comboAfter & BUTTON1DOWN && comboAfter & BUTTON2DOWN) {
+                            setRotationCenter(getFocalPoint());
+                        }
+                        else {
+                            saveCursorPosition(ev);
+                        }
                         setViewingMode((comboAfter & BUTTON1DOWN) ? NavigationStyle::DRAGGING : NavigationStyle::PANNING);
                         processed = true;
                     } else { //all buttons are released
@@ -529,14 +550,14 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         //the essence part 2!
         //gesture into camera motion
         if (evIsGesture){
-            const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
+            auto gesture = static_cast<const SoGestureEvent*>(ev);
             assert(gesture);
             if (gesture->state == SoGestureEvent::SbGSEnd) {
                 setViewingMode(NavigationStyle::SELECTION);
                 processed=true;
             } else if (gesture->state == SoGestureEvent::SbGSUpdate){
                 if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
-                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent*>(ev);
+                    auto const event = static_cast<const SoGesturePinchEvent*>(ev);
                     if (this->zoomAtCursor){
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                         SbVec2f panDist = this->normalizePixelPos(event->deltaCenter.getValue());
@@ -548,7 +569,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     processed = true;
                 }
                 if(type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())){
-                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent*>(ev);
+                    auto const event = static_cast<const SoGesturePanEvent*>(ev);
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                     SbVec2f panDist = this->normalizePixelPos(event->deltaOffset);
                     NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));
@@ -558,14 +579,13 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 //shouldn't happen. Gestures are not expected to start in the middle of navigation.
                 //we'll consume it, without reacting.
                 processed=true;
-                //This does, unfortunately, happen on regular basis for pan gesture on Windows8.1+Qt4.8
             }
         }
 
     } break;//end of actual navigation
     case NavigationStyle::SEEK_WAIT_MODE:{
         if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            auto const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
             if (button == SoMouseButtonEvent::BUTTON1 && press) {

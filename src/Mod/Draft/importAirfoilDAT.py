@@ -5,8 +5,7 @@
 #
 # This module provides support for importing airfoil .dat files
 '''@package importAirfoilDAT
-\ingroup DRAFT
-\brief Airfoil (.dat) file importer
+Airfoil (.dat) file importer
 
 This module provides support for importing airfoil .dat files.
 '''
@@ -36,55 +35,27 @@ This module provides support for importing airfoil .dat files.
 
 __title__ = "FreeCAD Draft Workbench - Airfoil data importer"
 __author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
-import re, FreeCAD, Draft, Part, os
+import re
+import os
+import FreeCAD
+import Draft
+import Part
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
+from builtins import open as pyopen
 
 
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     def translate(context, txt):
         return txt
 
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
+
 
 useDraftWire = True
-
-
-def decodeName(name):
-    """Decode encoded name.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    tuple
-    (string)
-        A tuple containing the decoded `name` in 'latin1',
-        otherwise in 'utf8'.
-        If it fails it returns the original `name`.
-    """
-    try:
-        decodedName = name
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            try:
-                decodedName = (name.decode("utf8"))
-            except UnicodeDecodeError:
-                _msg = ("AirfoilDAT error: "
-                        "couldn't determine character encoding.")
-                FCC.PrintError(translate("ImportAirfoilDAT", _msg) + "\n")
-                decodedName = name
-    return decodedName
 
 
 def open(filename):
@@ -102,7 +73,7 @@ def open(filename):
     """
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decodeName(docname)
+    doc.Label = docname
     process(filename)
     doc.recompute()
 
@@ -134,7 +105,6 @@ def insert(filename, docname):
     obj = process(filename)
     if obj is not None:
         importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
-        importgroup.Label = decodeName(groupname)
         importgroup.Group = [obj]
     doc.recompute()
 
@@ -162,7 +132,7 @@ def process(filename):
     _regex = r'^\s*' + xval + r'\,?\s*' + yval + r'\s*$'
 
     regex = re.compile(_regex)
-    afile = pythonopen(filename, 'r')
+    afile = pyopen(filename, 'r')
     # read the airfoil name which is always at the first line
     airfoilname = afile.readline().strip()
 
@@ -207,7 +177,7 @@ def process(filename):
 
     # do we use the parametric Draft Wire?
     if useDraftWire:
-        obj = Draft.makeWire(coords, True)
+        obj = Draft.make_wire(coords, True)
         # obj.label = airfoilname
     else:
         # alternate solution, uses common Part Faces

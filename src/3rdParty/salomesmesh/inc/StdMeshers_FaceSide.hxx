@@ -99,7 +99,7 @@ public:
   StdMeshers_FaceSide(UVPtStructVec&     theSideNodes,
                       const TopoDS_Face& theFace = TopoDS_Face());
 
-  // static "consrtuctors"
+  // static "constructors"
   static StdMeshers_FaceSidePtr New(const TopoDS_Face&   Face,
                                     const TopoDS_Edge&   Edge,
                                     SMESH_Mesh*          Mesh,

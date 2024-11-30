@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _ImportStep_h_
 #define _ImportStep_h_
 
-#include <TopoDS_Shape.hxx>
-#include <App/ComplexGeoData.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace App {
 class Document;
@@ -35,7 +31,6 @@ class Document;
 
 namespace Part
 {
-
 
 /** The part shape property
  */

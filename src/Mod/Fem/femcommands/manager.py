@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM command base class"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package manager
 #  \ingroup FEM
@@ -32,6 +32,7 @@ __url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 
+from femtools.femutils import expandParentObject
 from femtools.femutils import is_of_type
 
 if FreeCAD.GuiUp:
@@ -40,7 +41,7 @@ if FreeCAD.GuiUp:
     import FemGui
 
 
-class CommandManager(object):
+class CommandManager:
 
     def __init__(self):
 
@@ -48,7 +49,7 @@ class CommandManager(object):
         self.pixmap = self.command
         self.menutext = self.__class__.__name__.lstrip("_")
         self.accel = ""
-        self.tooltip = "Creates a {}".format(self.menutext)
+        self.tooltip = f"Creates a {self.menutext}"
         self.resources = None
 
         self.is_active = None
@@ -63,7 +64,7 @@ class CommandManager(object):
                 "Pixmap": self.pixmap,
                 "MenuText": QtCore.QT_TRANSLATE_NOOP(self.command, self.menutext),
                 "Accel": self.accel,
-                "ToolTip": QtCore.QT_TRANSLATE_NOOP(self.command, self.tooltip)
+                "ToolTip": QtCore.QT_TRANSLATE_NOOP(self.command, self.tooltip),
             }
         return self.resources
 
@@ -75,10 +76,7 @@ class CommandManager(object):
         elif self.is_active == "with_document":
             active = FreeCADGui.ActiveDocument is not None
         elif self.is_active == "with_analysis":
-            active = (
-                FemGui.getActiveAnalysis() is not None
-                and self.active_analysis_in_active_doc()
-            )
+            active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc()
         elif self.is_active == "with_results":
             active = (
                 FemGui.getActiveAnalysis() is not None
@@ -92,24 +90,14 @@ class CommandManager(object):
                 and self.result_selected()
             )
         elif self.is_active == "with_part_feature":
-            active = (
-                FreeCADGui.ActiveDocument is not None
-                and self.part_feature_selected()
-            )
+            active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
         elif self.is_active == "with_femmesh":
-            active = (
-                FreeCADGui.ActiveDocument is not None
-                and self.femmesh_selected()
-            )
+            active = FreeCADGui.ActiveDocument is not None and self.femmesh_selected()
         elif self.is_active == "with_gmsh_femmesh":
-            active = (
-                FreeCADGui.ActiveDocument is not None
-                and self.gmsh_femmesh_selected()
-            )
+            active = FreeCADGui.ActiveDocument is not None and self.gmsh_femmesh_selected()
         elif self.is_active == "with_femmesh_andor_res":
             active = (
-                FreeCADGui.ActiveDocument is not None
-                and self.with_femmesh_andor_res_selected()
+                FreeCADGui.ActiveDocument is not None and self.with_femmesh_andor_res_selected()
             )
         elif self.is_active == "with_material":
             active = (
@@ -146,12 +134,16 @@ class CommandManager(object):
     def Activated(self):
         if self.do_activated == "add_obj_on_gui_noset_edit":
             self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_expand_noset_edit":
+            self.add_obj_on_gui_expand_noset_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_set_edit":
             self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_selobj_noset_edit":
             self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_selobj_set_edit":
             self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_selobj_expand_noset_edit":
+            self.add_obj_on_gui_selobj_expand_noset_edit(self.__class__.__name__.lstrip("_"))
         # in all other cases Activated is implemented it the command class
 
     def results_present(self):
@@ -225,6 +217,7 @@ class CommandManager(object):
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
             self.selobj = sel[0]
+            self.selobj2 = None
             return True
         elif len(sel) == 2:
             if sel[0].isDerivedFrom("Fem::FemMeshObject"):
@@ -295,79 +288,78 @@ class CommandManager(object):
     # methods to add the objects to the document in FreeCADGui mode
 
     def add_obj_on_gui_set_edit(self, objtype):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Create Fem{}"
-            .format(objtype)
-        )
-        FreeCADGui.addModule(
-            "ObjectsFem"
-        )
-        FreeCADGui.addModule(
-            "FemGui"
-        )
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.addModule("FemGui")
         FreeCADGui.doCommand(
             "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "make{}(FreeCAD.ActiveDocument))"
-            .format(objtype)
+            "make{}(FreeCAD.ActiveDocument))".format(objtype)
         )
         # no other obj should be selected if we go in task panel
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.recompute()
 
     def add_obj_on_gui_noset_edit(self, objtype):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Create Fem{}"
-            .format(objtype)
-        )
-        FreeCADGui.addModule(
-            "ObjectsFem"
-        )
-        FreeCADGui.addModule(
-            "FemGui"
-        )
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.addModule("FemGui")
         FreeCADGui.doCommand(
             "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "make{}(FreeCAD.ActiveDocument))"
-            .format(objtype)
+            "make{}(FreeCAD.ActiveDocument))".format(objtype)
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # solver command class had this line
         # no clear selection is done
-        FreeCAD.ActiveDocument.recompute()
+
+    def add_obj_on_gui_expand_noset_edit(self, objtype):
+        # like add_obj_on_gui_noset_edit but the parent object
+        # is expanded in the tree to see the added obj
+        # the added obj is also selected to enable direct additions to it
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.addModule("FemGui")
+        # expand parent obj in tree view if selected
+        expandParentObject()
+        # add the object
+        FreeCADGui.doCommand(
+            "addedObj = FemGui.getActiveAnalysis().addObject(ObjectsFem."
+            "make{}(FreeCAD.ActiveDocument))[0]".format(objtype)
+        )
+        # select only added object
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.doCommand("addedObjDocObj = FreeCAD.ActiveDocument.getObject(addedObj.Name)")
+        FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(addedObjDocObj)")
 
     def add_obj_on_gui_selobj_set_edit(self, objtype):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Create Fem{}"
-            .format(objtype)
-        )
-        FreeCADGui.addModule(
-            "ObjectsFem"
-        )
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
+        FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand(
             "ObjectsFem.make{}("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(objtype, self.selobj.Name)
+            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})".format(objtype, self.selobj.Name)
         )
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.recompute()
 
     def add_obj_on_gui_selobj_noset_edit(self, objtype):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Create Fem{}"
-            .format(objtype)
-        )
-        FreeCADGui.addModule(
-            "ObjectsFem"
-        )
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
+        FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand(
             "ObjectsFem.make{}("
-            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})"
-            .format(objtype, self.selobj.Name)
+            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})".format(objtype, self.selobj.Name)
         )
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+
+    def add_obj_on_gui_selobj_expand_noset_edit(self, objtype):
+        # like add_obj_on_gui_selobj_noset_edit but the selection is kept
+        # and the selobj is expanded in the tree to see the added obj
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand(
+            "ObjectsFem.make{}("
+            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})".format(objtype, self.selobj.Name)
+        )
+        # expand selobj in tree view
+        expandParentObject()

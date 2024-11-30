@@ -29,21 +29,26 @@
 
 #include "ViewProviderFemConstraint.h"
 
-namespace FemGui {
-
-class FemGuiExport ViewProviderFemConstraintTransform : public FemGui::ViewProviderFemConstraint
+namespace FemGui
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintTransform);
+
+class FemGuiExport ViewProviderFemConstraintTransform: public FemGui::ViewProviderFemConstraint
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintTransform);
 
 public:
     ViewProviderFemConstraintTransform();
-    virtual ~ViewProviderFemConstraintTransform();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintTransform() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void transformSymbol(const Base::Vector3d& point,
+                         const Base::Vector3d& normal,
+                         SbMatrix& mat) const override;
+    void transformExtraSymbol() const override;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTTransform_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTTransform_H

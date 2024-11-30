@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
+
 
 namespace DraftUtils {
 extern PyObject* initModule();
@@ -43,7 +40,7 @@ PyMOD_INIT_FUNC(DraftUtils)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = DraftUtils::initModule();
     Base::Console().Log("Loading DraftUtils module... done\n");

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FEATUREPARTBOX_H
 #define PART_FEATUREPARTBOX_H
 
@@ -29,12 +27,13 @@
 
 #include "PrimitiveFeature.h"
 
+
 namespace Part
 {
 
 class PartExport Box :public Part::Primitive
 {
-    PROPERTY_HEADER(Part::Box);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Box);
 
 public:
     Box();
@@ -45,16 +44,16 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderBox";
     }
 protected:
-    void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
     /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
+    void onChanged (const App::Property* prop) override;
     //@}
 };
 

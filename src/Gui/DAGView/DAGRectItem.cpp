@@ -22,13 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
 #include <QApplication>
+#include <QPainter>
 #endif
 
 #include <QStyleOptionViewItem>
 
 #include "DAGRectItem.h"
+
 
 using namespace Gui;
 using namespace DAG;
@@ -42,8 +43,8 @@ RectItem::RectItem(QGraphicsItem* parent) : QGraphicsRectItem(parent)
 
 void RectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-  Q_UNUSED(option); 
-  Q_UNUSED(widget); 
+  Q_UNUSED(option);
+  Q_UNUSED(widget);
   painter->save();
 
   QStyleOptionViewItem styleOption;

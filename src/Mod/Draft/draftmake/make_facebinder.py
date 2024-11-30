@@ -37,10 +37,10 @@ if App.GuiUp:
 
 
 def make_facebinder(selectionset, name="Facebinder"):
-    """makeFacebinder(selectionset, [name])
-    
+    """make_facebinder(selectionset, [name])
+
     Creates a Facebinder object from a selection set.
-    
+
     Parameters
     ----------
     selectionset :

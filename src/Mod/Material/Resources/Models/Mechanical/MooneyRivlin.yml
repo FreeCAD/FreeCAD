@@ -1,0 +1,59 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'MooneyRivlin'
+  UUID: 'beeed169-7770-4da0-ab67-c9172cf7d23d'
+  URL: 'http://www.dhondt.de/ccx_2.21.pdf'
+  Description: >
+    A hyperelastic material model where the strain energy density function
+    W is a linear combination of two invariants of the left Cauchy–Green
+    deformation tensor B
+  MooneyRivlin:
+    DisplayName: "Mooney-Rivlin"
+    Type: '2DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: ""
+      C10:
+        Type: 'Quantity'
+        Units: 'Pa'
+        URL: ''
+        Description: ""
+      C01:
+        Type: 'Quantity'
+        Units: 'Pa'
+        URL: ''
+        Description: ""
+      D1:
+        Type: 'Quantity'
+        Units: '1/Pa'
+        URL: ''
+        Description: "D [1/FreeCAD Pressure unit]"
+    URL: ''
+    Description: >
+      2 Dimensional array showing Mooney-Rivlin properties as
+      a function of temperature

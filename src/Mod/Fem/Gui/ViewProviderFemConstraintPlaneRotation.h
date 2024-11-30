@@ -28,21 +28,22 @@
 
 #include "ViewProviderFemConstraint.h"
 
-namespace FemGui {
-
-class FemGuiExport ViewProviderFemConstraintPlaneRotation : public FemGui::ViewProviderFemConstraint
+namespace FemGui
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintPlaneRotation);
+
+class FemGuiExport ViewProviderFemConstraintPlaneRotation: public FemGui::ViewProviderFemConstraint
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintPlaneRotation);
 
 public:
     ViewProviderFemConstraintPlaneRotation();
-    virtual ~ViewProviderFemConstraintPlaneRotation();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintPlaneRotation() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H

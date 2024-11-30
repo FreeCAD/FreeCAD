@@ -22,58 +22,52 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QBoxLayout>
+# include <QCheckBox>
 # include <QCoreApplication>
 # include <QHeaderView>
-# include <QTextEdit>
-# include <QCheckBox>
+# include <QPushButton>
 # include <QScrollBar>
+# include <QTextEdit>
 # include <QTextStream>
 # include <QThread>
-# include <QTreeWidget>
-# include <QPushButton>
-# include <Python.h>
+# include <QTreeView>
 # include <Standard_Version.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepCheck_Result.hxx>
-# include <BRepCheck_ListIteratorOfListOfStatus.hxx>
+# include <Bnd_Box.hxx>
+# include <BOPAlgo_ArgumentAnalyzer.hxx>
+# include <BOPAlgo_ListOfCheckResult.hxx>
+# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <BRepCheck_ListIteratorOfListOfStatus.hxx>
+# include <BRepCheck_Result.hxx>
 # include <BRepTools_ShapeSet.hxx>
-
-# if OCC_VERSION_HEX >= 0x060600
-#  include <BOPAlgo_ArgumentAnalyzer.hxx>
-#  include <BOPAlgo_ListOfCheckResult.hxx>
-# endif
-
+# include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <gp_Trsf.hxx>
+# include <Inventor/nodes/SoCube.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoResetTransform.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoResetTransform.h>
 #endif //_PreComp_
 
-#include "../App/PartFeature.h"
-#include "../App/TopoShapePy.h"
 #include <Base/Interpreter.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/MainWindow.h>
+#include <Mod/Part/App/PartFeature.h>
+
 #include "TaskCheckGeometry.h"
+
 
 using namespace PartGui;
 
@@ -150,7 +144,7 @@ QString checkStatusToString(const int &index)
     }
     if (index > 33 || index < 0)
     {
-        QString message(QObject::tr("Out Of Enum Range:") + QString::fromLatin1(" "));
+        QString message(QObject::tr("Out Of Enum Range:") + QStringLiteral(" "));
         QString number;
         number.setNum(index);
         message += number;
@@ -162,23 +156,22 @@ QString checkStatusToString(const int &index)
 QVector<QString> buildBOPCheckResultVector()
 {
   QVector<QString> results;
-  results.push_back(QObject::tr("BOPAlgo CheckUnknown"));               //BOPAlgo_CheckUnknown
-  results.push_back(QObject::tr("BOPAlgo BadType"));                    //BOPAlgo_BadType
-  results.push_back(QObject::tr("BOPAlgo SelfIntersect"));              //BOPAlgo_SelfIntersect
-  results.push_back(QObject::tr("BOPAlgo TooSmallEdge"));               //BOPAlgo_TooSmallEdge
-  results.push_back(QObject::tr("BOPAlgo NonRecoverableFace"));         //BOPAlgo_NonRecoverableFace
-  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfVertex"));    //BOPAlgo_IncompatibilityOfVertex
-  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfEdge"));      //BOPAlgo_IncompatibilityOfEdge
-  results.push_back(QObject::tr("BOPAlgo IncompatibilityOfFace"));      //BOPAlgo_IncompatibilityOfFace
-  results.push_back(QObject::tr("BOPAlgo OperationAborted"));           //BOPAlgo_OperationAborted
-  results.push_back(QObject::tr("BOPAlgo GeomAbs_C0"));                 //BOPAlgo_GeomAbs_C0
-  results.push_back(QObject::tr("BOPAlgo_InvalidCurveOnSurface"));      //BOPAlgo_InvalidCurveOnSurface
-  results.push_back(QObject::tr("BOPAlgo NotValid"));                   //BOPAlgo_NotValid
+  results.push_back(QObject::tr("Boolean operation: Unknown check"));               //BOPAlgo_CheckUnknown
+  results.push_back(QObject::tr("Boolean operation: Bad type"));                    //BOPAlgo_BadType
+  results.push_back(QObject::tr("Boolean operation: Self-intersection found"));     //BOPAlgo_SelfIntersect
+  results.push_back(QObject::tr("Boolean operation: Edge too small"));              //BOPAlgo_TooSmallEdge
+  results.push_back(QObject::tr("Boolean operation: Non-recoverable face"));        //BOPAlgo_NonRecoverableFace
+  results.push_back(QObject::tr("Boolean operation: Incompatibility of vertex"));   //BOPAlgo_IncompatibilityOfVertex
+  results.push_back(QObject::tr("Boolean operation: Incompatibility of edge"));     //BOPAlgo_IncompatibilityOfEdge
+  results.push_back(QObject::tr("Boolean operation: Incompatibility of face"));     //BOPAlgo_IncompatibilityOfFace
+  results.push_back(QObject::tr("Boolean operation: Aborted"));                     //BOPAlgo_OperationAborted
+  results.push_back(QObject::tr("Boolean operation: GeomAbs_C0"));                  //BOPAlgo_GeomAbs_C0
+  results.push_back(QObject::tr("Boolean operation: Invalid curve on surface"));    //BOPAlgo_InvalidCurveOnSurface
+  results.push_back(QObject::tr("Boolean operation: Not valid"));                   //BOPAlgo_NotValid
 
   return results;
 }
 
-#if OCC_VERSION_HEX >= 0x060600
 QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 {
   static QVector<QString> strings = buildBOPCheckResultVector();
@@ -187,14 +180,13 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
     index = 0;
   return strings.at(index);
 }
-#endif
 
 ResultEntry::ResultEntry()
 {
-    viewProviderRoot = 0;
-    boxSep = 0;
-    boxSwitch = 0;
-    parent = 0;
+    viewProviderRoot = nullptr;
+    boxSep = nullptr;
+    boxSwitch = nullptr;
+    parent = nullptr;
     children.clear();
     selectionStrings.clear();
 }
@@ -210,14 +202,13 @@ ResultEntry::~ResultEntry()
 
 void ResultEntry::buildEntryName()
 {
-  ResultEntry *parentEntry = this;
-  while(parentEntry->parent != 0)
-  {
-      ResultEntry *temp = parentEntry->parent;
-      if (temp->parent == 0)
-        break;
-      parentEntry = parentEntry->parent;
-  }
+    ResultEntry* parentEntry = this;
+    while (parentEntry->parent) {
+        ResultEntry* temp = parentEntry->parent;
+        if (!temp->parent)
+            break;
+        parentEntry = parentEntry->parent;
+    }
 
   QString stringOut;
   QTextStream stream(&stringOut);
@@ -272,7 +263,7 @@ void ResultEntry::buildEntryName()
 
 ResultModel::ResultModel(QObject *parent) : QAbstractItemModel(parent)
 {
-    root = 0;
+    root = nullptr;
 }
 
 ResultModel::~ResultModel()
@@ -284,10 +275,10 @@ ResultModel::~ResultModel()
 QModelIndex ResultModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (!root)
-        return QModelIndex();
+        return {};
     ResultEntry *parentNode = nodeFromIndex(parent);
     if (!parentNode)
-        return QModelIndex();
+        return {};
     return createIndex(row, column, parentNode->children.at(row));
 }
 
@@ -295,13 +286,13 @@ QModelIndex ResultModel::parent(const QModelIndex &child) const
 {
     ResultEntry *childNode = nodeFromIndex(child);
     if (!childNode)
-        return QModelIndex();
+        return {};
     ResultEntry *parentNode = childNode->parent;
     if (!parentNode)
-        return QModelIndex();
+        return {};
     ResultEntry *grandParentNode = parentNode->parent;
     if (!grandParentNode)
-        return QModelIndex();
+        return {};
     int row = grandParentNode->children.indexOf(parentNode);
     return createIndex(row, 0, parentNode);
 }
@@ -323,10 +314,10 @@ int ResultModel::columnCount(const QModelIndex &parent) const
 QVariant ResultModel::data(const QModelIndex &index, int role) const
 {
     if (role != Qt::DisplayRole)
-        return QVariant();
+        return {};
     ResultEntry *node = nodeFromIndex(index);
     if (!node)
-        return QVariant();
+        return {};
     switch (index.column())
     {
     case 0:
@@ -336,13 +327,13 @@ QVariant ResultModel::data(const QModelIndex &index, int role) const
     case 2:
         return QVariant(node->error);
     }
-    return QVariant();
+    return {};
 }
 
 QVariant ResultModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal || role != Qt::DisplayRole)
-        return QVariant();
+        return {};
     switch (section)
     {
     case 0:
@@ -352,7 +343,7 @@ QVariant ResultModel::headerData(int section, Qt::Orientation orientation, int r
     case 2:
         return QVariant(QString(tr("Error")));
     }
-    return QVariant();
+    return {};
 }
 
 void ResultModel::setResults(ResultEntry *resultsIn)
@@ -400,14 +391,18 @@ TaskCheckGeometryResults::~TaskCheckGeometryResults()
 void TaskCheckGeometryResults::setupInterface()
 {
     message = new QLabel(this);
+    message->setTextFormat(Qt::RichText);
+    message->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    message->setOpenExternalLinks(false);
+    connect(message, &QLabel::linkActivated, this, &TaskCheckGeometryResults::generateReport);
     message->setText(tr("Check is running..."));
     model = new ResultModel(this);
     treeView = new QTreeView(this);
     treeView->setModel(model);
     treeView->setSelectionMode(QAbstractItemView::SingleSelection);
     treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    connect(treeView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            this, SLOT(currentRowChanged(QModelIndex,QModelIndex)));
+    connect(treeView->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, &TaskCheckGeometryResults::currentRowChanged);
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(message);
@@ -422,32 +417,65 @@ void TaskCheckGeometryResults::goCheck()
 
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     ResultEntry *theRoot = new ResultEntry();
+    reportViewStrings.clear();
+    reportViewStrings << QLatin1String("\n");
 
+    std::string scopeName {tr("Boolean operation check...").toStdString()};
 #if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
-    theProgress->NewScope("BOP check...");
-#if OCC_VERSION_HEX >= 0x060900
+    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"),
+                                                                             Gui::getMainWindow());
+    theProgress->NewScope(scopeName.c_str());
     theProgress->Show();
-#endif
 #else
-    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
+    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"),
+                                                                             Gui::getMainWindow());
     Message_ProgressRange theRange(theProgress->Start());
-    Message_ProgressScope theScope(theRange, TCollection_AsciiString("BOP check..."), selection.size());
+    Message_ProgressScope theScope(theRange,
+                                   TCollection_AsciiString(scopeName.c_str()),
+                                   selection.size());
     theScope.Show();
 #endif // 0x070500
 
     for(const auto &sel :  selection) {
         selectedCount++;
-        TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
-        if (shape.IsNull())
-            continue;
-        currentSeparator = Gui::Application::Instance->getViewProvider(sel.pObject)->getRoot();
-        if (!currentSeparator)
-            continue;
+        int localInvalidShapeCount(0);
         QString baseName;
         QTextStream baseStream(&baseName);
         baseStream << sel.DocName;
         baseStream << "." << sel.FeatName;
+        std::string label = sel.pObject->Label.getValue();
+        if (sel.FeatName != label) {
+            baseStream << " (" << label.c_str() << ")";
+        }
+
+        TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
+        if (shape.IsNull()) {
+            ResultEntry *entry = new ResultEntry();
+            entry->parent = theRoot;
+            entry->name = baseName;
+            entry->type = tr("Null shape");
+            entry->error = tr("Skipped");
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
+            theRoot->children.push_back(entry);
+            continue;
+        }
+        if (shape.Infinite()) {
+            ResultEntry *entry = new ResultEntry();
+            entry->parent = theRoot;
+            entry->name = baseName;
+            entry->type = tr("Infinite shape");
+            entry->error = tr("Skipped");
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
+            theRoot->children.push_back(entry);
+            continue;
+        }
+        currentSeparator = Gui::Application::Instance->getViewProvider(sel.pObject)->getRoot();
+        if (!currentSeparator) {
+            continue;
+        }
+
         checkedCount++;
         checkedMap.Clear();
 
@@ -457,12 +485,15 @@ void TaskCheckGeometryResults::goCheck()
         if (!shapeCheck.IsValid())
         {
             invalidShapes++;
+            localInvalidShapeCount++;
             ResultEntry *entry = new ResultEntry();
             entry->parent = theRoot;
             entry->shape = shape;
             entry->name = baseName;
             entry->type = shapeEnumToString(shape.ShapeType());
-            entry->error = QObject::tr("Invalid");
+            entry->error = tr("Invalid");
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
             entry->viewProviderRoot = currentSeparator;
             entry->viewProviderRoot->ref();
             goSetupResultBoundingBox(entry);
@@ -481,35 +512,56 @@ void TaskCheckGeometryResults::goCheck()
           bool runSignal = group->GetBool("RunBOPCheck", false);
           group->SetBool("RunBOPCheck", runSignal);
           if (runSignal) {
-            std::string label = "Checking ";
+            std::string label = tr("Checking").toStdString() + " ";
             label += sel.pObject->Label.getStrValue();
             label += "...";
 #if OCC_VERSION_HEX < 0x070500
             theProgress->NewScope(label.c_str());
-            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
+            localInvalidShapeCount += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
+            invalidShapes += localInvalidShapeCount;
             theProgress->EndScope();
             if (theProgress->UserBreak())
               break;
 #else
             Message_ProgressScope theInnerScope(theScope.Next(), TCollection_AsciiString(label.c_str()), 1);
             theInnerScope.Show();
-            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
+            localInvalidShapeCount += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
+            invalidShapes += localInvalidShapeCount;
             theInnerScope.Close();
             if (theScope.UserBreak())
               break;
 #endif
           }
         }
+        // create an entry for shapes without errors
+        if (localInvalidShapeCount == 0) {
+            ResultEntry *entry = new ResultEntry();
+            entry->parent = theRoot;
+            entry->name = baseName;
+            entry->type = shapeEnumToString(shape.ShapeType());
+            entry->error = tr("No errors");
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
+            entry->viewProviderRoot = currentSeparator;
+            entry->viewProviderRoot->ref();
+            theRoot->children.push_back(entry);
+        }
     }
     model->setResults(theRoot);
     treeView->expandAll();
     treeView->header()->resizeSections(QHeaderView::ResizeToContents);
-    QString aMessage;
-    QTextStream aStream(&aMessage);
-    aStream << checkedCount << " processed out of " << selectedCount << " selected\n";
-    aStream << invalidShapes << " invalid shapes.";
+    QString aMessage {tr("%1 processed out of %2 selected").arg(checkedCount).arg(selectedCount)};
+    aMessage += QLatin1String("<br/>") + tr("%n invalid shapes.", "", invalidShapes);
+    aMessage += QLatin1String(" <a href=\"#report\">") + tr("To Report view.") + QLatin1String("</a>");
     message->setText(aMessage);
 }
+
+void TaskCheckGeometryResults::generateReport()
+{
+    QString reportString = reportViewStrings.join(QLatin1String("\n"));
+    Base::Console().Message(reportString.toStdString().c_str());
+}
+
 
 void TaskCheckGeometryResults::recursiveCheck(const BRepCheck_Analyzer &shapeCheck, const TopoDS_Shape &shape,
                                               ResultEntry *parent)
@@ -527,6 +579,8 @@ void TaskCheckGeometryResults::recursiveCheck(const BRepCheck_Analyzer &shapeChe
             entry->buildEntryName();
             entry->type = shapeEnumToString(shape.ShapeType());
             entry->error = checkStatusToString(listIt.Value());
+            reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                     + entry->type + QLatin1String(" | ") + entry->error);
             entry->viewProviderRoot = currentSeparator;
             entry->viewProviderRoot->ref();
             dispatchError(entry, listIt.Value());
@@ -575,6 +629,8 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
                      entry->buildEntryName();
                      entry->type = shapeEnumToString(sub.ShapeType());
                      entry->error = checkStatusToString(itl.Value());
+                     reportViewStrings.append(entry->name + QLatin1String(" | ")
+                                              + entry->type + QLatin1String(" | ") + entry->error);
                      entry->viewProviderRoot = currentSeparator;
                      entry->viewProviderRoot->ref();
                      dispatchError(entry, itl.Value());
@@ -595,20 +651,42 @@ void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, c
     std::ostringstream stream;
     if (!shapeContentString.empty())
         stream << std::endl << std::endl;
-    stream << "Checked object: ";
+    stream << tr("Checked object").toStdString() << ": ";
     Base::PyGILStateLocker lock;
     try {
         PyObject* module = PyImport_ImportModule("BasicShapes.ShapeContent");
         if (!module) {
             throw Py::Exception();
         }
-        Py::Tuple args(3);
-        args.setItem(0, Py::asObject(pObject->getPyObject()));
-        args.setItem(1, Py::Long(decimals));
-        args.setItem(2, Py::Boolean(advancedShapeContent));
-        Py::Module shapecontent(module, true);
-        Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
-        stream << result.as_std_string("ascii");
+        {
+            Py::Tuple args(3);
+            args.setItem(0, Py::asObject(pObject->getPyObject()));
+            args.setItem(1, Py::Long(decimals));
+            args.setItem(2, Py::Boolean(advancedShapeContent));
+            Py::Module shapecontent(module, true);
+            Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
+            stream << result.as_std_string("utf-8");
+        }
+        {
+            stream << std::endl << tr("Tolerance information").toStdString() << ": " << std::endl;
+            Py::Tuple args(1);
+            {
+                args.setItem(0, Py::Long(-1));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Minimum").toStdString() << ": " << result << std::endl;
+            }
+            {
+                args.setItem(0, Py::Long(0));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Average").toStdString() << ": " << result << std::endl;
+            }
+            {
+                args.setItem(0, Py::Long(1));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Maximum").toStdString() << ": " << result;
+            }
+        }
+
     }
     catch (Py::Exception&) {
         Base::PyException e;
@@ -648,8 +726,6 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
     bool mergeEdgeMode = group->GetBool("MergeEdgeMode", true);
     bool curveOnSurfaceMode = group->GetBool("CurveOnSurfaceMode", true);
 
-    //ArgumentAnalyser was moved at version 6.6. no back port for now.
-#if OCC_VERSION_HEX >= 0x060600
   //Reference use: src/BOPTest/BOPTest_CheckCommands.cxx
 
   //I don't why we need to make a copy, but it doesn't work without it.
@@ -662,7 +738,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
-#if OCC_VERSION_HEX >= 0x060900
+
 #if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
 #elif OCC_VERSION_HEX < 0x070600
@@ -670,36 +746,31 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #else
   Q_UNUSED(theScope)
 #endif // 0x070500
-#else
-  Q_UNUSED(theProgress);
-#endif
-//   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
+
+
   BOPCheck.SetShape1(BOPCopy);
   //all settings are false by default. so only turn on what we want.
   BOPCheck.ArgumentTypeMode() = argumentTypeMode;
   BOPCheck.SelfInterMode() = selfInterMode;
   BOPCheck.SmallEdgeMode() = smallEdgeMode;
   BOPCheck.RebuildFaceMode() = rebuildFaceMode;
-#if OCC_VERSION_HEX >= 0x060700
   BOPCheck.ContinuityMode() = continuityMode;
-#endif
-#if OCC_VERSION_HEX >= 0x060900
+
   BOPCheck.SetParallelMode(!runSingleThreaded); //this doesn't help for speed right now(occt 6.9.1).
   BOPCheck.SetRunParallel(!runSingleThreaded); //performance boost, use all available cores
   BOPCheck.TangentMode() = tangentMode; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = mergeVertexMode;
   BOPCheck.MergeEdgeMode() = mergeEdgeMode;
   BOPCheck.CurveOnSurfaceMode() = curveOnSurfaceMode;
-#endif
 
 #ifdef FC_DEBUG
-  Base::TimeInfo start_time;
+  Base::TimeElapsed start_time;
 #endif
 
   BOPCheck.Perform();
 
 #ifdef FC_DEBUG
-  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
+  float bopAlgoTime = Base::TimeElapsed::diffTimeF(start_time, Base::TimeElapsed());
   std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
 #endif
 
@@ -712,6 +783,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   entry->name = baseName;
   entry->type = shapeEnumToString(shapeIn.ShapeType());
   entry->error = QObject::tr("Invalid");
+  reportViewStrings.append(entry->name + QLatin1String(" | ")
+                           + entry->type + QLatin1String(" | ") + entry->error);
   entry->viewProviderRoot = currentSeparator;
   entry->viewProviderRoot->ref();
   goSetupResultBoundingBox(entry);
@@ -722,14 +795,9 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   for (; BOPResultsIt.More(); BOPResultsIt.Next())
   {
     const BOPAlgo_CheckResult &current = BOPResultsIt.Value();
-
-#if OCC_VERSION_HEX < 0x070000
-    const BOPCol_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
-    BOPCol_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#else
     const TopTools_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
     TopTools_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#endif
+
     for (;faultyShapes1It.More(); faultyShapes1It.Next())
     {
       const TopoDS_Shape &faultyShape = faultyShapes1It.Value();
@@ -739,6 +807,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
       faultyEntry->buildEntryName();
       faultyEntry->type = shapeEnumToString(faultyShape.ShapeType());
       faultyEntry->error = getBOPCheckString(current.GetCheckStatus());
+      reportViewStrings.append(QLatin1String("  ") + faultyEntry->name
+                               + QLatin1String(" | ") + faultyEntry->error);
       faultyEntry->viewProviderRoot = currentSeparator;
       entry->viewProviderRoot->ref();
       goSetupResultBoundingBox(faultyEntry);
@@ -768,9 +838,6 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
     }
   }
   return 1;
-#else
-  return 0;
-#endif
 }
 
 
@@ -837,7 +904,10 @@ void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, co
                 QString doc, object, sub;
                 if (!this->split((*stringIt), doc, object, sub))
                     continue;
-                Gui::Selection().addSelection(doc.toLatin1(), object.toLatin1(), sub.toLatin1());
+                // object might be "name (label)", so trim if necessary
+                int idx = object.indexOf(QLatin1String(" ("));
+                QString trimmed = (idx != -1) ? object.left(idx) : object;
+                Gui::Selection().addSelection(doc.toLatin1(), trimmed.toLatin1(), sub.toLatin1());
             }
         }
     }
@@ -859,10 +929,10 @@ bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &obje
 QString PartGui::buildSelectionName(const ResultEntry *entry, const TopoDS_Shape &shape)
 {
     const ResultEntry *parentEntry = entry;
-    while(parentEntry->parent != 0)
+    while(parentEntry->parent)
     {
         ResultEntry *temp = parentEntry->parent;
-        if (temp->parent == 0)
+        if (!temp->parent)
           break;
         parentEntry = parentEntry->parent;
     }
@@ -1003,7 +1073,7 @@ void PartGui::goSetupResultUnorientableShapeFace(ResultEntry *entry)
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 TaskCheckGeometryDialog::TaskCheckGeometryDialog()
-    : widget(0), contentLabel(0), okBtn(0), settingsBtn(0), resultsBtn(0)
+    : widget(nullptr), contentLabel(nullptr), okBtn(nullptr), settingsBtn(nullptr), resultsBtn(nullptr)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -1014,14 +1084,14 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
 
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     contentLabel = new QTextEdit();
     contentLabel->setText(widget->getShapeContentString());
     shapeContentBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        tr("Shape Content"), true, 0);
+        tr("Shape Content"), true, nullptr);
     shapeContentBox->groupLayout()->addWidget(contentLabel);
     if (!expandShapeContent){
         shapeContentBox->hideGroupBox();
@@ -1029,140 +1099,141 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     Content.push_back(shapeContentBox);
 
     settingsBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        tr("Settings"), true, 0);
+        tr("Settings"), true, nullptr);
     Content.push_back(settingsBox);
 
     autoRunCheckBox = new QCheckBox();
-    autoRunCheckBox->setText(tr("Skip settings page"));
-    autoRunCheckBox->setToolTip(tr("\
-Skip this settings page and run the geometry check automatically.\n\
-Default: false"));
+    autoRunCheckBox->setText(tr("Skip this settings page"));
+    autoRunCheckBox->setToolTip(
+        tr("Skip this settings page and run the geometry check automatically.")
+        + QStringLiteral("\n")
+        + tr("Default: false"));
     autoRunCheckBox->setChecked(group->GetBool("AutoRun", false));
-    connect(autoRunCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_autoRunCheckBox_toggled(bool)));
+    connect(autoRunCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onAutoRunCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(autoRunCheckBox);
 
     runBOPCheckBox = new QCheckBox();
-    runBOPCheckBox->setText(tr("Run BOP check"));
-    runBOPCheckBox->setToolTip(tr("\
-Extra boolean operations check that can sometimes find errors that\n\
-the standard BRep geometry check misses. These errors do not always \n\
-mean the checked object is unusable.  Default: false"));
+    runBOPCheckBox->setText(tr("Run boolean operation check"));
+    runBOPCheckBox->setToolTip(tr(
+        "Extra boolean operations check that can sometimes find errors that\n"
+        "the standard BRep geometry check misses. These errors do not always\n"
+        "mean the checked object is unusable.  Default: false"));
     runBOPCheckBox->setChecked(group->GetBool("RunBOPCheck", false));
-    connect(runBOPCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_runBOPCheckBox_toggled(bool)));
+    connect(runBOPCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onRunBOPCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(runBOPCheckBox);
 
     runSingleThreadedCheckBox = new QCheckBox();
     runSingleThreadedCheckBox->setText(tr("Single-threaded"));
-    runSingleThreadedCheckBox->setToolTip(tr("\
-Run the geometry check in a single thread.  This is slower,\n\
-but more stable.  Default: false"));
+    runSingleThreadedCheckBox->setToolTip(tr(
+        "Run the geometry check in a single thread.  This is slower,\n"
+        "but more stable.  Default: false"));
     runSingleThreadedCheckBox->setChecked(group->GetBool("RunSingleThreaded", false));
-    connect(runSingleThreadedCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_runSingleThreadedCheckBox_toggled(bool)));
+    connect(runSingleThreadedCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onRunSingleThreadedCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(runSingleThreadedCheckBox);
 
     logErrorsCheckBox = new QCheckBox();
     logErrorsCheckBox->setText(tr("Log errors"));
     logErrorsCheckBox->setToolTip(tr("Log errors to report view.  Default: true"));
     logErrorsCheckBox->setChecked(group->GetBool("LogErrors", true));
-    connect(logErrorsCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_logErrorsCheckBox_toggled(bool)));
+    connect(logErrorsCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onLogErrorsCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(logErrorsCheckBox);
 
     expandShapeContentCheckBox = new QCheckBox();
     expandShapeContentCheckBox->setText(tr("Expand shape content"));
-    expandShapeContentCheckBox->setToolTip(tr("\
-Expand shape content.  Changes will take effect next time you use \n\
-the check geometry tool.  Default: false"));
+    expandShapeContentCheckBox->setToolTip(tr(
+        "Expand shape content.  Changes will take effect next time you use \n"
+        "the check geometry tool.  Default: false"));
     expandShapeContentCheckBox->setChecked(group->GetBool("ExpandShapeContent", false));
-    connect(expandShapeContentCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_expandShapeContentCheckBox_toggled(bool)));
+    connect(expandShapeContentCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onExpandShapeContentCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(expandShapeContentCheckBox);
 
     advancedShapeContentCheckBox = new QCheckBox();
     advancedShapeContentCheckBox->setText(tr("Advanced shape content"));
-    advancedShapeContentCheckBox->setToolTip(tr("\
-Show advanced shape content.  Changes will take effect next time you use \n\
-the check geometry tool.  Default: false"));
+    advancedShapeContentCheckBox->setToolTip(tr(
+        "Show advanced shape content.  Changes will take effect next time you use \n"
+        "the check geometry tool.  Default: false"));
     advancedShapeContentCheckBox->setChecked(group->GetBool("AdvancedShapeContent", true));
-    connect(advancedShapeContentCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_advancedShapeContentCheckBox_toggled(bool)));
+    connect(advancedShapeContentCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onAdvancedShapeContentCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(advancedShapeContentCheckBox);
 
-    settingsBox->groupLayout()->addWidget(new QLabel(tr("\nIndividual BOP Checks:")));
+    settingsBox->groupLayout()->addWidget(new QLabel(tr("\nIndividual boolean operation checks:")));
 
     argumentTypeModeCheckBox = new QCheckBox();
-    argumentTypeModeCheckBox->setText(tr("  Bad type"));
+    argumentTypeModeCheckBox->setText(QStringLiteral("  ") + tr("Bad type"));
     argumentTypeModeCheckBox->setToolTip(tr("Check for bad argument types.  Default: true"));
     argumentTypeModeCheckBox->setChecked(group->GetBool("ArgumentTypeMode", true));
-    connect(argumentTypeModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_argumentTypeModeCheckBox_toggled(bool)));
+    connect(argumentTypeModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onArgumentTypeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(argumentTypeModeCheckBox);
 
     selfInterModeCheckBox = new QCheckBox();
-    selfInterModeCheckBox->setText(tr("  Self-intersect"));
+    selfInterModeCheckBox->setText(QStringLiteral("  ") + tr("Self-intersect"));
     selfInterModeCheckBox->setToolTip(tr("Check for self-intersections.  Default: true"));
     selfInterModeCheckBox->setChecked(group->GetBool("SelfInterMode", true));
-    connect(selfInterModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_selfInterModeCheckBox_toggled(bool)));
+    connect(selfInterModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onSelfInterModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(selfInterModeCheckBox);
 
     smallEdgeModeCheckBox = new QCheckBox();
-    smallEdgeModeCheckBox->setText(tr("  Too small edge"));
+    smallEdgeModeCheckBox->setText(QStringLiteral("  ") + tr("Too small edge"));
     smallEdgeModeCheckBox->setToolTip(tr("Check for edges that are too small.  Default: true"));
     smallEdgeModeCheckBox->setChecked(group->GetBool("SmallEdgeMode", true));
-    connect(smallEdgeModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_smallEdgeModeCheckBox_toggled(bool)));
+    connect(smallEdgeModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onSmallEdgeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(smallEdgeModeCheckBox);
 
     rebuildFaceModeCheckBox = new QCheckBox();
-    rebuildFaceModeCheckBox->setText(tr("  Nonrecoverable face"));
+    rebuildFaceModeCheckBox->setText(QStringLiteral("  ") + tr("Nonrecoverable face"));
     rebuildFaceModeCheckBox->setToolTip(tr("Check for nonrecoverable faces.  Default: true"));
     rebuildFaceModeCheckBox->setChecked(group->GetBool("RebuildFaceMode", true));
-    connect(rebuildFaceModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_rebuildFaceModeCheckBox_toggled(bool)));
+    connect(rebuildFaceModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onRebuildFaceModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(rebuildFaceModeCheckBox);
 
     continuityModeCheckBox = new QCheckBox();
-    continuityModeCheckBox->setText(tr("  Continuity"));
+    continuityModeCheckBox->setText(QStringLiteral("  ") + tr("Continuity"));
     continuityModeCheckBox->setToolTip(tr("Check for continuity.  Default: true"));
     continuityModeCheckBox->setChecked(group->GetBool("ContinuityMode", true));
-    connect(continuityModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_continuityModeCheckBox_toggled(bool)));
+    connect(continuityModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onContinuityModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(continuityModeCheckBox);
 
     tangentModeCheckBox = new QCheckBox();
-    tangentModeCheckBox->setText(tr("  Incompatibility of face"));
+    tangentModeCheckBox->setText(QStringLiteral("  ") + tr("Incompatibility of face"));
     tangentModeCheckBox->setToolTip(tr("Check for incompatible faces.  Default: true"));
     tangentModeCheckBox->setChecked(group->GetBool("TangentMode", true));
-    connect(tangentModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_tangentModeCheckBox_toggled(bool)));
+    connect(tangentModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onTangentModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(tangentModeCheckBox);
 
     mergeVertexModeCheckBox = new QCheckBox();
-    mergeVertexModeCheckBox->setText(tr("  Incompatibility of vertex"));
+    mergeVertexModeCheckBox->setText(QStringLiteral("  ") + tr("Incompatibility of vertex"));
     mergeVertexModeCheckBox->setToolTip(tr("Check for incompatible vertices.  Default: true"));
     mergeVertexModeCheckBox->setChecked(group->GetBool("MergeVertexMode", true));
-    connect(mergeVertexModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_mergeVertexModeCheckBox_toggled(bool)));
+    connect(mergeVertexModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onMergeVertexModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(mergeVertexModeCheckBox);
 
     mergeEdgeModeCheckBox = new QCheckBox();
-    mergeEdgeModeCheckBox->setText(tr("  Incompatibility of edge"));
+    mergeEdgeModeCheckBox->setText(QStringLiteral("  ") + tr("Incompatibility of edge"));
     mergeEdgeModeCheckBox->setToolTip(tr("Check for incompatible edges.  Default: true"));
     mergeEdgeModeCheckBox->setChecked(group->GetBool("MergeEdgeMode", true));
-    connect(mergeEdgeModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_mergeEdgeModeCheckBox_toggled(bool)));
+    connect(mergeEdgeModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onMergeEdgeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(mergeEdgeModeCheckBox);
 
     curveOnSurfaceModeCheckBox = new QCheckBox();
-    curveOnSurfaceModeCheckBox->setText(tr("  Invalid curve on surface"));
+    curveOnSurfaceModeCheckBox->setText(QStringLiteral("  ") + tr("Invalid curve on surface"));
     curveOnSurfaceModeCheckBox->setToolTip(tr("Check for invalid curves on surfaces.  Default: true"));
     curveOnSurfaceModeCheckBox->setChecked(group->GetBool("CurveOnSurfaceMode", true));
-    connect(curveOnSurfaceModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_curveOnSurfaceModeCheckBox_toggled(bool)));
+    connect(curveOnSurfaceModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onCurveOnSurfaceModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(curveOnSurfaceModeCheckBox);
     if (group->GetBool("AutoRun",false)){
         settingsBox->hide();
@@ -1194,7 +1265,7 @@ bool TaskCheckGeometryDialog::reject()
     return true;
 }
 
-void TaskCheckGeometryDialog::on_clicked(QAbstractButton *btn)
+void TaskCheckGeometryDialog::onClicked(QAbstractButton *btn)
 {
     /** when ok (run check) is clicked or when close is clicked
      *  the appropriate accept() or reject() is called already
@@ -1230,108 +1301,108 @@ void TaskCheckGeometryDialog::modifyStandardButtons(QDialogButtonBox* box)
         settingsBtn->setEnabled(false);
     resultsBtn = box->addButton(tr("Results"),QDialogButtonBox::ActionRole);
     resultsBtn->setEnabled(false);
-    connect(box, SIGNAL(clicked(QAbstractButton*)), this, SLOT(on_clicked(QAbstractButton*)));
+    connect(box, &QDialogButtonBox::clicked, this, &TaskCheckGeometryDialog::onClicked);
 }
 
-void TaskCheckGeometryDialog::on_autoRunCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onAutoRunCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("AutoRun", isOn);
 }
 
-void TaskCheckGeometryDialog::on_runBOPCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRunBOPCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RunBOPCheck", isOn);
 }
 
-void TaskCheckGeometryDialog::on_runSingleThreadedCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRunSingleThreadedCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RunSingleThreaded", isOn);
 }
 
-void TaskCheckGeometryDialog::on_logErrorsCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onLogErrorsCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("LogErrors", isOn);
 }
 
-void TaskCheckGeometryDialog::on_argumentTypeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onArgumentTypeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ArgumentTypeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_expandShapeContentCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onExpandShapeContentCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ExpandShapeContent", isOn);
 }
 
-void TaskCheckGeometryDialog::on_advancedShapeContentCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onAdvancedShapeContentCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("AdvancedShapeContent", isOn);
 }
 
-void TaskCheckGeometryDialog::on_selfInterModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onSelfInterModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("SelfInterMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_smallEdgeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onSmallEdgeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("SmallEdgeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_rebuildFaceModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRebuildFaceModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RebuildFaceMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_continuityModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onContinuityModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ContinuityMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_tangentModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onTangentModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("TangentMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_mergeVertexModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onMergeVertexModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("MergeVertexMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_mergeEdgeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onMergeEdgeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("MergeEdgeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_curveOnSurfaceModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onCurveOnSurfaceModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -1343,12 +1414,12 @@ TaskCheckGeometryDialog::~TaskCheckGeometryDialog()
   if (widget)
   {
     delete widget;
-    widget = 0;
+    widget = nullptr;
   }
   if (contentLabel)
   {
     delete contentLabel;
-    contentLabel = 0;
+    contentLabel = nullptr;
   }
 }
 
@@ -1385,7 +1456,7 @@ Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
     else {
         Handle(TCollection_HAsciiString) aName = GetScope(1).GetName(); //current step
         if (!aName.IsNull())
-            myProgress->setLabelText (QString::fromLatin1(aName->ToCString()));
+            myProgress->setLabelText (QString::fromUtf8(aName->ToCString()));
     }
 
     return Standard_True;
@@ -1395,7 +1466,7 @@ void BOPProgressIndicator::Show (const Message_ProgressScope& theScope,
                                  const Standard_Boolean isForce)
 {
     Standard_CString aName = theScope.Name(); //current step
-    myProgress->setLabelText (QString::fromLatin1(aName));
+    myProgress->setLabelText (QString::fromUtf8(aName));
 
     if (isForce) {
         myProgress->show();

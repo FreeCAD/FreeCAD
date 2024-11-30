@@ -9,7 +9,7 @@
 
 #include <iterator>
 
-#include <kdtree++/node.hpp>
+#include "node.hpp"
 
 namespace KDTree
 {
@@ -205,37 +205,37 @@ namespace KDTree
     };
 
   template<typename _Val, typename _Ref, typename _Ptr>
-    inline bool
+    bool
     operator==(_Iterator<_Val, _Ref, _Ptr> const& __X,
                _Iterator<_Val, _Ref, _Ptr> const& __Y)
     { return __X._M_node == __Y._M_node; }
 
   template<typename _Val>
-    inline bool
+    bool
     operator==(_Iterator<_Val, const _Val&, const _Val*> const& __X,
                _Iterator<_Val, _Val&, _Val*> const& __Y)
     { return __X._M_node == __Y._M_node; }
 
   template<typename _Val>
-    inline bool
+    bool
     operator==(_Iterator<_Val, _Val&, _Val*> const& __X,
                _Iterator<_Val, const _Val&, const _Val*> const& __Y)
     { return __X._M_node == __Y._M_node; }
 
   template<typename _Val, typename _Ref, typename _Ptr>
-    inline bool
+    bool
     operator!=(_Iterator<_Val, _Ref, _Ptr> const& __X,
                _Iterator<_Val, _Ref, _Ptr> const& __Y)
     { return __X._M_node != __Y._M_node; }
 
   template<typename _Val>
-    inline bool
+    bool
     operator!=(_Iterator<_Val, const _Val&, const _Val*> const& __X,
                _Iterator<_Val, _Val&, _Val*> const& __Y)
     { return __X._M_node != __Y._M_node; }
 
   template<typename _Val>
-    inline bool
+    bool
     operator!=(_Iterator<_Val, _Val&, _Val*> const& __X,
                _Iterator<_Val, const _Val&, const _Val*> const& __Y)
     { return __X._M_node != __Y._M_node; }

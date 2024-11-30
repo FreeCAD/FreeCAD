@@ -62,7 +62,7 @@
       <item row="1" column="0" colspan="3">
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
-         <string>Write solids and shells as</string>
+         <string>Export solids and shells as</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
@@ -132,6 +132,16 @@
       <item row="0" column="1">
        <widget class="QLineEdit" name="lineEditCompany"/>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Author</string>
+        </property>
+       </widget>
+      </item>
+     <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEditAuthor"/>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
@@ -142,17 +152,7 @@
       <item row="2" column="1">
        <widget class="QLineEdit" name="lineEditProduct"/>
       </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEditAuthor"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Author</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="3" column="0">

@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2012 Keith Sloan <keith@sloan-home.co.uk>               *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +20,7 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
-__title__="FreeCAD OpenSCAD Workbench - CSG importer Version 0.5c"
+__title__ = "FreeCAD OpenSCAD Workbench - CSG importer Version 0.5c"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
@@ -108,27 +107,33 @@ reserved_map = { }
 for r in reserved:
     reserved_map[r.lower()] = r
 
+
 # Deal with Comments
-def t_comment1(t) :
+def t_comment1(t):
     r'//[^\r\n]*((\r\n)|<<EOF>>)'
     pass
 
-def t_comment2(t) :
+
+def t_comment2(t):
     r'//[^\n]*((\n)|<<EOF>>)'
     pass
+
 
 def t_ID(t):
     r'[$]?[a-zA-Z_]+[0-9]*'
     t.type = reserved_map.get(t.value, "ID")
     return t
 
+
 # Define a rule so we can track line numbers
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
+
 # A string containing ignored characters (spaces and tabs)
-t_ignore  = " \t\r"
+t_ignore = " \t\r"
+
 
 # Error handling rule
 def t_error(t):

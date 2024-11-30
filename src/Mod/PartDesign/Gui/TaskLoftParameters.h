@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskLoftParameters_H
 #define GUI_TASKVIEW_TaskLoftParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderLoft.h"
+
 
 class Ui_TaskLoftParameters;
 class QListWidget;
@@ -50,8 +46,8 @@ class TaskLoftParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskLoftParameters(ViewProviderLoft *LoftView, bool newObj=false, QWidget *parent = 0);
-    ~TaskLoftParameters();
+    explicit TaskLoftParameters(ViewProviderLoft *LoftView, bool newObj=false, QWidget *parent = nullptr);
+    ~TaskLoftParameters() override;
 
 private Q_SLOTS:
     void onProfileButton(bool);
@@ -65,15 +61,16 @@ private Q_SLOTS:
 protected:
     enum selectionModes { none, refAdd, refRemove, refProfile };
 
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI();
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
     void removeFromListWidget(QListWidget*w, QString name);
     void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
+    void setSelectionMode(selectionModes mode, bool checked);
 
 private:
     QWidget* proxy;
@@ -88,14 +85,11 @@ class TaskDlgLoftParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool newObj=false);
-    ~TaskDlgLoftParameters();
-
-    ViewProviderLoft* getLoftView() const
-    { return static_cast<ViewProviderLoft*>(vp); }
+    explicit TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool newObj=false);
+    ~TaskDlgLoftParameters() override;
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 
 protected:
     TaskLoftParameters  *parameter;

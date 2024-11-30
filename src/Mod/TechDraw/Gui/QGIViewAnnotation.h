@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIView.h"
 
 namespace TechDraw {
@@ -41,22 +43,21 @@ public:
     explicit QGIViewAnnotation();
 
     /// m_textItem belongs to this group and will be deleted by Qt
-    ~QGIViewAnnotation() = default;
+    ~QGIViewAnnotation() override = default;
 
     enum {Type = QGraphicsItem::UserType + 120};
     int type() const override { return Type;}
 
-    virtual void updateView(bool update = false) override;
+    void updateView(bool update = false) override;
     void setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj);
 
-    virtual void draw() override;
-    virtual void rotateView(void) override;
+    void draw() override;
+    void rotateView() override;
 
 protected:
     void drawAnnotation();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     QGCustomText *m_textItem;
     QColor m_colNormal;

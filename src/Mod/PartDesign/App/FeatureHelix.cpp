@@ -23,37 +23,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <Precision.hxx>
-# include <gp_Lin.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <Law_Function.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
-# include <ShapeAnalysis.hxx>
+# include <BRepOffsetAPI_MakePipe.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <BRepPrimAPI_MakeRevol.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
+# include <Precision.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Wire.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax3.hxx>
 #endif
 
 # include <Standard_Version.hxx>
 # include <Base/Axis.h>
-# include <Base/Console.h>
 # include <Base/Exception.h>
 # include <Base/Placement.h>
 # include <Base/Tools.h>
@@ -65,12 +56,13 @@
 
 using namespace PartDesign;
 
-const char* Helix::ModeEnums[] = { "pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", NULL };
+const char* Helix::ModeEnums[] = { "pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", nullptr };
 
 PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
 // we purposely use not FLT_MAX because this would not be computable
 const App::PropertyFloatConstraint::Constraints Helix::floatTurns = { Precision::Confusion(), INT_MAX, 1.0 };
+const App::PropertyFloatConstraint::Constraints Helix::floatTolerance = { 0.1, INT_MAX, 1.0 };
 const App::PropertyAngle::Constraints Helix::floatAngle = { -89.0, 89.0, 1.0 };
 
 Helix::Helix()
@@ -83,7 +75,7 @@ Helix::Helix()
         QT_TRANSLATE_NOOP("App::Property", "The center point of the helix' start; derived from the reference axis."));
     ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0.0, 1.0, 0.0)), group, App::Prop_ReadOnly,
         QT_TRANSLATE_NOOP("App::Property", "The helix' direction; derived from the reference axis."));
-    ADD_PROPERTY_TYPE(ReferenceAxis, (0), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), group, App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "The reference axis of the helix."));
     ADD_PROPERTY_TYPE(Mode, (long(initialMode)), group, App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "The helix input mode specifies which properties are set by the user.\n"
@@ -114,6 +106,9 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(HasBeenEdited, (false), group, App::Prop_Hidden,
         QT_TRANSLATE_NOOP("App::Property", "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
             "so that self intersection is avoided."));
+    ADD_PROPERTY_TYPE(Tolerance, (0.1), group, App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part."));
+    Tolerance.setConstraints(&floatTolerance);
 
     setReadWriteStatusForMode(initialMode);
 }
@@ -129,41 +124,41 @@ short Helix::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Helix::execute(void)
+App::DocumentObjectExecReturn* Helix::execute()
 {
     // Validate and normalize parameters
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
     if (mode == HelixMode::pitch_height_angle) {
         if (Pitch.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: Pitch too small");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Pitch too small!"));
         if (Height.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: height too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: height too small!"));
         Turns.setValue(Height.getValue() / Pitch.getValue());
         Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::pitch_turns_angle) {
         if (Pitch.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: pitch too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: pitch too small!"));
         if (Turns.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: turns too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: turns too small!"));
         Height.setValue(Turns.getValue() * Pitch.getValue());
         Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::height_turns_angle) {
         if (Height.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: height too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: height too small!"));
         if (Turns.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: turns too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: turns too small!"));
         Pitch.setValue(Height.getValue() / Turns.getValue());
         Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::height_turns_growth) {
         if (Turns.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: turns too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: turns too small!"));
         if ((Height.getValue() < Precision::Confusion())
             && (abs(Growth.getValue()) < Precision::Confusion())
             && Turns.getValue() > 1.0)
-            return new App::DocumentObjectExecReturn("Error: either height or growth must not be zero!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: either height or growth must not be zero!"));
         Pitch.setValue(Height.getValue() / Turns.getValue());
         if (Height.getValue() > 0) {
             Angle.setValue(Base::toDegrees(atan(
@@ -177,10 +172,10 @@ App::DocumentObjectExecReturn* Helix::execute(void)
         }
     }
     else {
-        return new App::DocumentObjectExecReturn("Error: unsupported mode");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: unsupported mode"));
     }
 
-    TopoDS_Shape sketchshape;
+    TopoDS_Shape sketchshape;   // Fixme: Should this be TopoShape here and below?
     try {
         sketchshape = getVerifiedFace();
     }
@@ -189,7 +184,7 @@ App::DocumentObjectExecReturn* Helix::execute(void)
     }
 
     if (sketchshape.IsNull())
-        return new App::DocumentObjectExecReturn("Error: No valid sketch or face");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: No valid sketch or face"));
     else {
         //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could
         //not use the current simulate approach and build the start and end face from the wires. As the shell
@@ -198,17 +193,17 @@ App::DocumentObjectExecReturn* Helix::execute(void)
         TopoDS_Face face = TopoDS::Face(sketchshape);
         BRepAdaptor_Surface adapt(face);
         if (adapt.GetType() != GeomAbs_Plane)
-            return new App::DocumentObjectExecReturn("Error: Face must be planar");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Face must be planar"));
     }
 
     // if the Base property has a valid shape, fuse the AddShape into it
-    TopoDS_Shape base;
+    TopoShape base;
     try {
-        base = getBaseShape();
+        base = getBaseTopoShape();
     }
     catch (const Base::Exception&) {
         // fall back to support (for legacy features)
-        base = TopoDS_Shape();
+        base = TopoShape();
     }
 
     // update Axis from ReferenceAxis
@@ -223,156 +218,108 @@ App::DocumentObjectExecReturn* Helix::execute(void)
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
-        base.Move(invObjLoc);
+        base.move(invObjLoc);
+
+        TopoDS_Shape result;
 
         // generate the helix path
-        TopoDS_Shape path = generateHelixPath();
-        TopoDS_Shape auxpath = generateHelixPath(1.0);
-
-
-        std::vector<TopoDS_Wire> wires;
-        try {
-            wires = getProfileWires();
-        }
-        catch (const Base::Exception& e) {
-            return new App::DocumentObjectExecReturn(e.what());
+        TopoDS_Shape path;
+        if (Angle.getValue()==0.){
+            // breaking the path at each turn prevents an OCC issue
+            path = generateHelixPath();
+        } else {
+            // don't break the path or the generated solid is invalid
+            path = generateHelixPath(1000.);
         }
 
-        std::vector<std::vector<TopoDS_Wire>> wiresections;
-        for (TopoDS_Wire& wire : wires)
-            wiresections.emplace_back(1, wire);
+        TopoDS_Shape face = sketchshape;
+        face.Move(invObjLoc);
 
-        //build all shells
-        std::vector<TopoDS_Shape> shells;
-        std::vector<TopoDS_Wire> frontwires, backwires;
-        for (std::vector<TopoDS_Wire>& wires : wiresections) {
+        Bnd_Box bounds;
+        BRepBndLib::Add(path, bounds);
+        double size=sqrt(bounds.SquareExtent());
+        ShapeFix_ShapeTolerance fix;
+        fix.LimitTolerance(path, Precision::Confusion() * 1e-6 * size ); // needed to produce valid Pipe for very big parts
+        // We introduce final part tolerance with the second call to LimitTolerance below, however
+        // OCCT has a bug where the side-walls of the Pipe disappear with very large (km range) pieces
+        // increasing a tiny bit of extra tolerance to the path fixes this. This will in any case
+        // be less than the tolerance lower limit below, but sufficient to avoid the bug
 
-            BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
-
-            mkPS.SetTolerance(Precision::Confusion());
-            mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-
-            //mkPS.SetMode(true);  //This is for frenet
-            mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
-
-            for (TopoDS_Wire& wire : wires) {
-                wire.Move(invObjLoc);
-                mkPS.Add(wire);
-            }
-
-            if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn("Error: Could not build");
-
-            shells.push_back(mkPS.Shape());
-
-            if (!mkPS.Shape().Closed()) {
-                // shell is not closed - use simulate to get the end wires
-                TopTools_ListOfShape sim;
-                mkPS.Simulate(2, sim);
-
-                frontwires.push_back(TopoDS::Wire(sim.First()));
-                backwires.push_back(TopoDS::Wire(sim.Last()));
-            }
-        }
-
-        BRepBuilderAPI_MakeSolid mkSolid;
-
-        if (!frontwires.empty()) {
-            // build the end faces, sew the shell and build the final solid
-            TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
-
-            BRepBuilderAPI_Sewing sewer;
-            sewer.SetTolerance(Precision::Confusion());
-            sewer.Add(front);
-            sewer.Add(back);
-
-            for (TopoDS_Shape& s : shells)
-                sewer.Add(s);
-
-            sewer.Perform();
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-        }
-        else {
-            // shells are already closed - add them directly
-            for (TopoDS_Shape& s : shells) {
-                mkSolid.Add(TopoDS::Shell(s));
-            }
-        }
-
-        if (!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn("Error: Result is not a solid");
-
-        TopoDS_Shape result = mkSolid.Shape();
+        BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
+        result = mkPS.Shape();
 
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
-        if (SC.State() == TopAbs_IN)
+        if (SC.State() == TopAbs_IN) {
             result.Reverse();
+        }
+ 
+        fix.LimitTolerance(result, Precision::Confusion() * size * Tolerance.getValue() ); // significant precision reduction due to helical approximation - needed to allow fusion to succeed
 
         AddSubShape.setValue(result);
 
-        if (base.IsNull()) {
+        if (base.isNull()) {
 
-            if (getAddSubType() == FeatureAddSub::Subtractive)
-                return new App::DocumentObjectExecReturn("Error: There is nothing to subtract\n");
-
-            int solidCount = countSolids(result);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Error: Result has multiple solids");
+            if (getAddSubType() == FeatureAddSub::Subtractive){
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract"));
             }
+
+            if (!isSingleSolidRuleSatisfied(result)) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
+            }
+
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
 
         if (getAddSubType() == FeatureAddSub::Additive) {
 
-            BRepAlgoAPI_Fuse mkFuse(base, result);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Error: Adding the helix failed");
+            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
+            if (!mkFuse.IsDone()){
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
+            }
             // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+            TopoShape boolOp = this->getSolid(mkFuse.Shape());
 
             // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Error: Result is not a solid");
-
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Error: Result has multiple solids");
+            if (boolOp.isNull()){
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
             }
 
-            boolOp = refineShapeIfActive(boolOp);
+            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
+            }
+
+            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
-            TopoDS_Shape boolOp;
+            TopoShape boolOp;
 
             if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
-                BRepAlgoAPI_Common mkCom(result, base);
+                FCBRepAlgoAPI_Common mkCom(result, base.getShape());
                 if (!mkCom.IsDone())
-                    return new App::DocumentObjectExecReturn("Error: Intersecting the helix failed");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed"));
                 boolOp = this->getSolid(mkCom.Shape());
 
             }
             else {
-                BRepAlgoAPI_Cut mkCut(base, result);
+                FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
                 if (!mkCut.IsDone())
-                    return new App::DocumentObjectExecReturn("Error: Subtracting the helix failed");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed"));
                 boolOp = this->getSolid(mkCut.Shape());
             }
 
             // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Error: Result is not a solid");
+            if (boolOp.isNull())
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Error: Result has multiple solids");
+            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
-            boolOp = refineShapeIfActive(boolOp);
+            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
 
@@ -381,7 +328,7 @@ App::DocumentObjectExecReturn* Helix::execute(void)
     catch (Standard_Failure& e) {
 
         if (std::string(e.GetMessageString()) == "TopoDS::Face")
-            return new App::DocumentObjectExecReturn("Error: Could not create face from sketch");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not create face from sketch"));
         else
             return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
@@ -390,7 +337,7 @@ App::DocumentObjectExecReturn* Helix::execute(void)
     }
 }
 
-void Helix::updateAxis(void)
+void Helix::updateAxis()
 {
     App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
     const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
@@ -402,7 +349,7 @@ void Helix::updateAxis(void)
     Axis.setValue(dir.x, dir.y, dir.z);
 }
 
-TopoDS_Shape Helix::generateHelixPath(double startOffset0)
+TopoDS_Shape Helix::generateHelixPath(double breakAtTurn)
 {
     double turns = Turns.getValue();
     double height = Height.getValue();
@@ -411,17 +358,17 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     double angle = Angle.getValue();
     double growth = Growth.getValue();
 
-    if (angle < Precision::Confusion() && angle > -Precision::Confusion())
+    if (fabs(angle) < Precision::Confusion())
         angle = 0.0;
 
     // get revolve axis
-    Base::Vector3d b = Base.getValue();
-    gp_Pnt pnt(b.x, b.y, b.z);
-    Base::Vector3d v = Axis.getValue();
-    gp_Dir dir(v.x, v.y, v.z);
+    Base::Vector3d baseVector = Base.getValue();
+    gp_Pnt pnt(baseVector.x, baseVector.y, baseVector.z);
+    Base::Vector3d axisVector = Axis.getValue();
+    gp_Dir dir(axisVector.x, axisVector.y, axisVector.z);
 
     Base::Vector3d normal = getProfileNormal();
-    Base::Vector3d start = v.Cross(normal);  // pointing towards the desired helix start point.
+    Base::Vector3d start = axisVector.Cross(normal);  // pointing towards the desired helix start point.
 
     // if our axis is (nearly) aligned with the profile's normal, we're only interested in the "twist"
     // of the helix. The actual starting point, and thus the radius, isn't important as long as it's
@@ -442,15 +389,18 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     Base::Vector3d profileCenter = getProfileCenterPoint();
 
     // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
-    // This improves the issue reported in https://forum.freecadweb.org/viewtopic.php?f=10&t=65048
-    double axisOffset = 100 * (profileCenter * start - b * start);
-    double startOffset = startOffset0 + profileCenter * v - b * v;
+    // This improves the issue reported in https://forum.freecad.org/viewtopic.php?f=10&t=65048
+    double axisOffset = 100.0 * (profileCenter * start - baseVector * start);
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
+    // since the factor does not only change the radius but also the path position, we must shift its offset back
+    // using the square of the factor
+    double noAngle = angle == 0. ? 1. : 0.; // alternative to the legacy use of an auxiliary path
+    double startOffset = 10000.0 * std::fabs(noAngle * (profileCenter * axisVector) - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
-        if (std::fabs(v * normal) < Precision::Confusion())
+        if (fabs(axisVector * normal) < Precision::Confusion())
             throw Base::ValueError("Error: Result is self intersecting");
         radius = 1000.0; //fallback to radius 1000
     }
@@ -462,11 +412,8 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     else
         radiusTop = radius + height * tan(Base::toRadians(angle));
 
-
     //build the helix path
-    //TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
-    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 1, leftHanded);
-
+    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, breakAtTurn, leftHanded);
 
     /*
      * The helix wire is created with the axis coinciding with z-axis and the start point at (radius, 0, 0)
@@ -477,18 +424,18 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     gp_Pnt origo(0.0, 0.0, 0.0);
     gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
     gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
-
     gp_Trsf mov;
 
-
-    if (reversed) {
-        mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    if (abs(startOffset) > 0) {  // translate the helix so that the starting point aligns with the profile
+        mov.SetTranslation(startOffset * gp_Vec(dir_axis1));
         TopLoc_Location loc(mov);
         path.Move(loc);
     }
 
-    if (abs(startOffset) > 0) {  // translate the helix so that the starting point aligns with the profile
-        mov.SetTranslation(startOffset * gp_Vec(dir_axis1));
+    // because of the radius factor we used above, we must reverse after the
+    // startOffset movement (that brings the path back to the desired position)
+    if (reversed) {
+        mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
         TopLoc_Location loc(mov);
         path.Move(loc);
     }
@@ -602,7 +549,7 @@ void Helix::proposeParameters(bool force)
 
         Pitch.setValue(pitch);
         Height.setValue(pitch * 3.0);
-        HasBeenEdited.setValue(1);
+        HasBeenEdited.setValue(true);
     }
 }
 

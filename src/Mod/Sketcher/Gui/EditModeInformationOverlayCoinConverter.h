@@ -20,26 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_InformationOverlayCoinConverter_H
 #define SKETCHERGUI_InformationOverlayCoinConverter_H
 
 #include <vector>
 
-namespace Base {
-    template< typename T >
-    class Vector3;
+#include "ViewProviderSketch.h"
 
-    class Vector2d;
+
+namespace Base
+{
+template<typename T>
+class Vector3;
+
+class Vector2d;
+}  // namespace Base
+
+namespace Part
+{
+class Geometry;
 }
 
-namespace Part {
-    class Geometry;
-}
-
-namespace SketcherGui {
-    struct OverlayParameters;
-    struct DrawingParameters;
+namespace SketcherGui
+{
+class ViewProviderSketch;
+struct OverlayParameters;
+struct DrawingParameters;
 
 /** @brief      Class for creating the Overlay information layer
  *  @details
@@ -54,31 +60,35 @@ namespace SketcherGui {
  *
  * [Geometry] => Calculate => addUpdateNode
  *
- * Calculate is responsible for generating information directly usable by Coin (but with standard types that
- * would enable portability) in a predetermined internal Node structure format (e.g. StringNode, PolygonNode)
- * that can generically be used by the addUpdateNode.
+ * Calculate is responsible for generating information directly usable by Coin (but with standard
+ * types that would enable portability) in a predetermined internal Node structure format (e.g.
+ * StringNode, PolygonNode) that can generically be used by the addUpdateNode.
  *
- * addUpdateNode is responsible for creating or updating the node structure (depending on overlayParameters.rebuildInformationLayer)
+ * addUpdateNode is responsible for creating or updating the node structure (depending on
+ * overlayParameters.rebuildInformationLayer)
  *
  * Supported:
- * Currently it only supports information of Part::Geometry objects and implements calculations only for GeomBSplineCurve.
+ * Currently it only supports information of Part::Geometry objects and implements calculations only
+ * for GeomBSplineCurve and GeomArc.
  *
  * Caveats:
- * - This class relies on the order of creation to perform the update. Any parallel execution that does not deterministically
- * maintain the order will result in undefined behaviour. This provides a reasonable tradeoff between complexity and the fact that
- * currently the information layer is generally so small that no parallel execution would actually result in a performance gain.
+ * - This class relies on the order of creation to perform the update. Any parallel execution that
+ * does not deterministically maintain the order will result in undefined behaviour. This provides a
+ * reasonable tradeoff between complexity and the fact that currently the information layer is
+ * generally so small that no parallel execution would actually result in a performance gain.
  *
  */
-class EditModeInformationOverlayCoinConverter {
+class EditModeInformationOverlayCoinConverter
+{
 private:
-
     enum class CalculationType
     {
         BSplineDegree,
         BSplineControlPolygon,
         BSplineCurvatureComb,
         BSplineKnotMultiplicity,
-        BSplinePoleWeight
+        BSplinePoleWeight,
+        ArcCircleHelper
     };
     enum class VisualisationType
     {
@@ -98,32 +108,37 @@ private:
     //
     // a struct Node template enables to define the VisualisationType and
     // the CalculationType so that uniform treatment can be provided
-    template< VisualisationType vtype, CalculationType ctype >
-    struct Node {
+    template<VisualisationType vtype, CalculationType ctype>
+    struct Node
+    {
         static constexpr VisualisationType visualisationType = vtype;
         static constexpr CalculationType calculationType = ctype;
     };
 
-    template< CalculationType ctype >
-    struct NodeText : public Node<VisualisationType::Text, ctype> {
+    template<CalculationType ctype>
+    struct NodeText: public Node<VisualisationType::Text, ctype>
+    {
         std::vector<std::string> strings;
         std::vector<Vector3d> positions;
     };
 
-    template< CalculationType ctype >
-    struct NodePolygon: public Node<VisualisationType::Polygon, ctype> {
+    template<CalculationType ctype>
+    struct NodePolygon: public Node<VisualisationType::Polygon, ctype>
+    {
         std::vector<Vector3d> coordinates;
         std::vector<int> indices;
     };
 
 private:
     // Node Position in the Coin Scenograph for the different types of nodes
-    enum class TextNodePosition {
+    enum class TextNodePosition
+    {
         TextCoordinates = 0,
         TextInformation = 3
     };
 
-    enum class PolygonNodePosition {
+    enum class PolygonNodePosition
+    {
         PolygonCoordinates = 1,
         PolygonLineSet = 2
     };
@@ -139,49 +154,53 @@ public:
      * @param overlayparameters: Parameters for controlling the overlay
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeInformationOverlayCoinConverter(    SoGroup * infogroup,
-                                                OverlayParameters & overlayparameters,
-                                                DrawingParameters & drawingparameters);
+    EditModeInformationOverlayCoinConverter(ViewProviderSketch& vp,
+                                            SoGroup* infogroup,
+                                            OverlayParameters& overlayparameters,
+                                            DrawingParameters& drawingparameters);
 
     /**
-    * extracts information from the geometry and converts it into an information overlay in the
-    * SoGroup provided in the constructor.
-    *
-    * @param geometry: the geometry to be processed
-    */
-    void convert(const Part::Geometry * geometry, int geoid);
+     * extracts information from the geometry and converts it into an information overlay in the
+     * SoGroup provided in the constructor.
+     *
+     * @param geometry: the geometry to be processed
+     */
+    void convert(const Part::Geometry* geometry, int geoid);
 
 private:
-    template < CalculationType calculation >
-    void calculate(const Part::Geometry * geometry, [[maybe_unused]] int geoid);
+    template<CalculationType calculation>
+    void calculate(const Part::Geometry* geometry, [[maybe_unused]] int geoid);
 
-    template <typename Result>
-    void addUpdateNode(const Result & result);
+    template<typename Result>
+    void addUpdateNode(const Result& result);
 
-    template < CalculationType calculation >
+    template<CalculationType calculation>
     bool isVisible();
 
-    template < typename Result >
-    void setPolygon(const Result & result, SoLineSet *polygonlineset, SoCoordinate3 *polygoncoords);
+    template<typename Result>
+    void setPolygon(const Result& result, SoLineSet* polygonlineset, SoCoordinate3* polygoncoords);
 
-    template < int line = 1 >
-    void setText(const std::string & string, SoText2 * text);
+    template<int line = 1>
+    void setText(const std::string& string, SoText2* text);
 
-    void addToInfoGroup(SoSwitch * sw);
+    void addToInfoGroup(SoSwitch* sw);
 
-    template < typename Result >
-    void clearCalculation(Result & result);
+    template<typename Result>
+    void clearCalculation(Result& result);
 
-    template < typename Result>
-    void addNode(const Result & result);
+    template<typename Result>
+    void addNode(const Result& result);
 
-    template < typename Result >
-    void updateNode(const Result & result);
+    template<typename Result>
+    void updateNode(const Result& result);
 
 private:
-    SoGroup * infoGroup;
-    OverlayParameters & overlayParameters;
-    DrawingParameters & drawingParameters;
+    /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
+    ViewProviderSketch& viewProvider;
+
+    SoGroup* infoGroup;
+    OverlayParameters& overlayParameters;
+    DrawingParameters& drawingParameters;
 
     // Calculations
     NodeText<CalculationType::BSplineDegree> degree;
@@ -189,14 +208,14 @@ private:
     NodeText<CalculationType::BSplinePoleWeight> poleWeights;
     NodePolygon<CalculationType::BSplineControlPolygon> controlPolygon;
     NodePolygon<CalculationType::BSplineCurvatureComb> curvatureComb;
+    NodePolygon<CalculationType::ArcCircleHelper> circleHelper;
 
     // Node Management
     int nodeId;
 };
 
 
-} // namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif // SKETCHERGUI_InformationOverlayCoinConverter_H
-
+#endif  // SKETCHERGUI_InformationOverlayCoinConverter_H

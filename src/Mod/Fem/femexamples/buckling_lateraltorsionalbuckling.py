@@ -37,14 +37,16 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["displacement", "force"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
-        "equation": "buckling"
+        "equations": ["buckling"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.buckling_lateraltorsionalbuckling import setup
@@ -52,7 +54,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=20217&start=110#p510526
+https://forum.freecad.org/viewtopic.php?f=18&t=20217&start=110#p510526
 
 Simple supported I-beam with a fork support modelled with shell elements.
 Loaded with constant bending moment.
@@ -65,6 +67,7 @@ flange load for a buckling factor of 1.00:
 43280000 Nmm / 278.6 mm = 155348 N
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -106,17 +109,15 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        solver_obj.WorkingDir = u""
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "buckling"
         solver_obj.GeometricalNonlinearity = "linear"
@@ -127,10 +128,10 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(solver_obj)
 
     # shell thicknesses
-    thickness_flanges = ObjectsFem.makeElementGeometry2D(doc, 10.7, 'Thickness_Flanges')
+    thickness_flanges = ObjectsFem.makeElementGeometry2D(doc, 10.7, "Thickness_Flanges")
     thickness_flanges.References = [(geom_obj, ("Face1", "Face2", "Face3", "Face4"))]
     analysis.addObject(thickness_flanges)
-    thickness_web = ObjectsFem.makeElementGeometry2D(doc, 7.1, 'Thickness_Web')
+    thickness_web = ObjectsFem.makeElementGeometry2D(doc, 7.1, "Thickness_Web")
     thickness_web.References = [(geom_obj, "Face5")]
     analysis.addObject(thickness_web)
 
@@ -146,35 +147,36 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraints displacement
     con_disp_x = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement_X")
     con_disp_x.References = [(geom_obj, "Vertex2")]
-    con_disp_x.xFix = True
+    con_disp_x.xDisplacement = 0
     con_disp_x.xFree = False
     analysis.addObject(con_disp_x)
 
     con_disp_yz = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement_YZ")
     con_disp_yz.References = [(geom_obj, ("Edge15", "Edge16"))]
-    con_disp_yz.yFix = True
+    con_disp_yz.yDisplacement = 0
     con_disp_yz.yFree = False
-    con_disp_yz.zFix = True
+    con_disp_yz.zDisplacement = 0
     con_disp_yz.zFree = False
     analysis.addObject(con_disp_yz)
 
     # constraints force
     con_force_in_x = ObjectsFem.makeConstraintForce(doc, "Force_in_X")
     con_force_in_x.References = [(geom_obj, ("Edge3", "Edge7", "Edge8", "Edge12"))]
-    con_force_in_x.Force = 155350
+    con_force_in_x.Force = "155350 N"
     con_force_in_x.Reversed = False
     con_force_in_x.Direction = (geom_obj, ["Edge4"])
     analysis.addObject(con_force_in_x)
 
     con_force_rev_x = ObjectsFem.makeConstraintForce(doc, "Force_rev_X")
     con_force_rev_x.References = [(geom_obj, ("Edge1", "Edge5", "Edge10", "Edge14"))]
-    con_force_rev_x.Force = 155350
+    con_force_rev_x.Force = "155350 N"
     con_force_rev_x.Reversed = True
     con_force_rev_x.Direction = (geom_obj, ["Edge4"])
     analysis.addObject(con_force_rev_x)
 
     # mesh
     from .meshes.mesh_buckling_ibeam_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -184,7 +186,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMax = "50.0 mm"
     femmesh_obj.ElementDimension = "2D"

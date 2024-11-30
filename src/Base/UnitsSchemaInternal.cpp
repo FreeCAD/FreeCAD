@@ -23,12 +23,11 @@
 
 #include "PreCompiled.h"
 #ifdef __GNUC__
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #include <QString>
-#include "Exception.h"
-#include "UnitsApi.h"
+
 #include "UnitsSchemaInternal.h"
 #include <cmath>
 
@@ -36,7 +35,8 @@
 using namespace Base;
 
 
-QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
+QString
+UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QString& unitString)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
@@ -51,33 +51,33 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
 
     // now do special treatment on all cases seems necessary:
     if (unit == Unit::Length) {  // Length handling ============================
-        if (UnitValue < 0.000000001) {// smaller than 0.001 nm -> scientific notation
+        if (UnitValue < 1e-6) {  // smaller than 0.001 nm -> scientific notation
             unitString = QString::fromLatin1("mm");
             factor = 1.0;
         }
-        else if(UnitValue < 0.001) {
+        else if (UnitValue < 1e-3) {
             unitString = QString::fromLatin1("nm");
-            factor = 0.000001;
+            factor = 1e-6;
         }
         else if (UnitValue < 0.1) {
             unitString = QString::fromUtf8("\xC2\xB5m");
-            factor = 0.001;
+            factor = 1e-3;
         }
-        else if (UnitValue < 10000.0) {
+        else if (UnitValue < 1e4) {
             unitString = QString::fromLatin1("mm");
             factor = 1.0;
         }
-        else if (UnitValue < 10000000.0) {
+        else if (UnitValue < 1e7) {
             unitString = QString::fromLatin1("m");
-            factor = 1000.0;
+            factor = 1e3;
         }
-        else if (UnitValue < 100000000000.0) {
+        else if (UnitValue < 1e10) {
             unitString = QString::fromLatin1("km");
-            factor = 1000000.0;
+            factor = 1e6;
         }
-        else { // bigger than 1000 km -> scientific notation
-            unitString = QString::fromLatin1("mm");
-            factor = 1.0;
+        else {  // bigger than 1000 km -> scientific notation
+            unitString = QString::fromLatin1("m");
+            factor = 1e3;
         }
     }
     else if (unit == Unit::Area) {
@@ -93,13 +93,13 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             unitString = QString::fromLatin1("m^2");
             factor = 1e6;
         }
-        else { // bigger than 1 square kilometer
+        else {  // bigger than 1 square kilometer
             unitString = QString::fromLatin1("km^2");
             factor = 1e12;
         }
     }
     else if (unit == Unit::Volume) {
-        if (UnitValue < 1e3) {// smaller than 1 ul
+        if (UnitValue < 1e3) {  // smaller than 1 ul
             unitString = QString::fromLatin1("mm^3");
             factor = 1.0;
         }
@@ -111,13 +111,13 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             unitString = QString::fromLatin1("l");
             factor = 1e6;
         }
-        else { // bigger than 1000 l
+        else {  // bigger than 1000 l
             unitString = QString::fromLatin1("m^3");
             factor = 1e9;
         }
     }
     else if (unit == Unit::Angle) {
-        // TODO Cascade for the Areas
+        // TODO: Cascade for the Areas
         // default action for all cases without special treatment:
         unitString = QString::fromUtf8("\xC2\xB0");
         factor = 1.0;
@@ -147,7 +147,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     else if (unit == Unit::Density) {
         if (UnitValue < 0.0001) {
             unitString = QString::fromLatin1("kg/m^3");
-            factor = 0.000000001;
+            factor = 1e-9;
         }
         else if (UnitValue < 1.0) {
             unitString = QString::fromLatin1("kg/cm^3");
@@ -159,7 +159,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
     }
     else if (unit == Unit::ThermalConductivity) {
-        if (UnitValue > 1000000) {
+        if (UnitValue > 1e6) {
             unitString = QString::fromLatin1("W/mm/K");
             factor = 1e6;
         }
@@ -171,7 +171,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     else if (unit == Unit::ThermalExpansionCoefficient) {
         if (UnitValue < 0.001) {
             unitString = QString::fromUtf8("\xC2\xB5m/m/K");  // micro-meter/meter/K
-            factor = 0.000001;
+            factor = 1e-6;
         }
         else {
             unitString = QString::fromLatin1("mm/mm/K");
@@ -197,7 +197,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         factor = 1.0;
     }
     else if ((unit == Unit::Pressure) || (unit == Unit::Stress)) {
-        if (UnitValue < 10.0) {// Pa is the smallest
+        if (UnitValue < 10.0) {  // Pa is the smallest
             unitString = QString::fromLatin1("Pa");
             factor = 0.001;
         }
@@ -211,19 +211,19 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
         else if (UnitValue < 10000000000.0) {
             unitString = QString::fromLatin1("GPa");
-            factor = 1000000.0;
+            factor = 1e6;
         }
-        else { // bigger -> scientific notation
+        else {  // bigger -> scientific notation
             unitString = QString::fromLatin1("Pa");
             factor = 0.001;
         }
     }
     else if ((unit == Unit::Stiffness)) {
-        if (UnitValue < 1){// mN/m is the smallest
+        if (UnitValue < 1) {  // mN/m is the smallest
             unitString = QString::fromLatin1("mN/m");
             factor = 1e-3;
         }
-        if (UnitValue < 1e3) {
+        else if (UnitValue < 1e3) {
             unitString = QString::fromLatin1("N/m");
             factor = 1.0;
         }
@@ -234,7 +234,24 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         else {
             unitString = QString::fromLatin1("MN/m");
             factor = 1e6;
-            
+        }
+    }
+    else if ((unit == Unit::StiffnessDensity)) {
+        if (UnitValue < 1e-3) {
+            unitString = QString::fromLatin1("Pa/m");
+            factor = 1e-6;
+        }
+        else if (UnitValue < 1) {
+            unitString = QString::fromLatin1("kPa/m");
+            factor = 1e-3;
+        }
+        else if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("MPa/m");
+            factor = 1.0;
+        }
+        else {
+            unitString = QString::fromLatin1("GPa/m");
+            factor = 1e3;
         }
     }
     else if (unit == Unit::Force) {
@@ -255,6 +272,24 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 1e9;
         }
     }
+    //    else if (unit == Unit::Moment) {
+    //        if (UnitValue < 1e6) {
+    //            unitString = QString::fromLatin1("mNm");
+    //            factor = 1e3;
+    //        }
+    //        else if (UnitValue < 1e9) {
+    //            unitString = QString::fromLatin1("Nm");
+    //            factor = 1e6;
+    //        }
+    //        else if (UnitValue < 1e12) {
+    //            unitString = QString::fromLatin1("kNm");
+    //            factor = 1e9;
+    //        }
+    //        else {
+    //            unitString = QString::fromLatin1("MNm");
+    //            factor = 1e12;
+    //        }
+    //    }
     else if (unit == Unit::Power) {
         if (UnitValue < 1e6) {
             unitString = QString::fromLatin1("mW");
@@ -282,7 +317,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             unitString = QString::fromLatin1("kV");
             factor = 1e9;
         }
-        else { // > 1000 kV scientificc notation
+        else {  // > 1000 kV scientificc notation
             unitString = QString::fromLatin1("V");
             factor = 1e6;
         }
@@ -316,7 +351,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             unitString = QString::fromLatin1("kWh");
             factor = 3.6e+12;
         }
-        else { // bigger than 1000 kWh -> scientific notation
+        else {  // bigger than 1000 kWh -> scientific notation
             unitString = QString::fromLatin1("J");
             factor = 1e6;
         }
@@ -327,11 +362,21 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     }
     else if (unit == Unit::HeatFlux) {
         unitString = QString::fromLatin1("W/m^2");
-        factor = 1;  //  unit signiture (0,1,-3,0,0) is length independent
+        factor = 1;  //  unit signature (0,1,-3,0,0) is length independent
     }
     else if (unit == Unit::ElectricCharge) {
         unitString = QString::fromLatin1("C");
         factor = 1.0;
+    }
+    else if (unit == Unit::CurrentDensity) {
+        if (UnitValue <= 1e3) {
+            unitString = QString::fromLatin1("A/m^2");
+            factor = 1e-6;
+        }
+        else {
+            unitString = QString::fromLatin1("A/mm^2");
+            factor = 1;
+        }
     }
     else if (unit == Unit::MagneticFluxDensity) {
         if (UnitValue <= 1e-3) {
@@ -344,16 +389,20 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
     }
     else if (unit == Unit::MagneticFieldStrength) {
-        unitString = QString::fromLatin1("Oe");
-        factor = 0.07957747;
+        unitString = QString::fromLatin1("A/m");
+        factor = 1e-3;
     }
     else if (unit == Unit::MagneticFlux) {
         unitString = QString::fromLatin1("Wb");
         factor = 1e6;
     }
+    else if (unit == Unit::Magnetization) {
+        unitString = QString::fromLatin1("A/m");
+        factor = 1e-3;
+    }
     else if (unit == Unit::ElectricalConductance) {
         if (UnitValue < 1e-9) {
-            unitString = QString::fromLatin1("\xC2\xB5S");
+            unitString = QString::fromUtf8("\xC2\xB5S");
             factor = 1e-12;
         }
         else if (UnitValue < 1e-6) {
@@ -407,7 +456,9 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 1e-15;
         }
         else if (UnitValue < 1e-9) {
-            unitString = QString::fromUtf8("\xC2\xB5""F"); // \x reads everything to the end, therefore split
+            // \x reads everything to the end, therefore split
+            unitString = QString::fromUtf8("\xC2\xB5"
+                                           "F");
             factor = 1e-12;
         }
         else if (UnitValue < 1e-6) {
@@ -437,6 +488,10 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 1e6;
         }
     }
+    else if (unit == Unit::VacuumPermittivity) {
+        unitString = QString::fromLatin1("F/m");
+        factor = 1e-9;
+    }
     else if (unit == Unit::Frequency) {
         if (UnitValue < 1e3) {
             unitString = QString::fromLatin1("Hz");
@@ -464,8 +519,8 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         factor = 1.0;
     }
     else if (unit == Unit::DynamicViscosity) {
-        unitString = QString::fromLatin1("kg/(mm*s)");
-        factor = 1.0;
+        unitString = QString::fromLatin1("Pa*s");
+        factor = 0.001;
     }
     else if (unit == Unit::KinematicViscosity) {
         if (UnitValue < 1e3) {
@@ -475,6 +530,98 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         else {
             unitString = QString::fromLatin1("m^2/s");
             factor = 1e6;
+        }
+    }
+    else if (unit == Unit::VolumeFlowRate) {
+        if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("mm^3/s");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("ml/s");
+            factor = 1e3;
+        }
+        else if (UnitValue < 1e9) {
+            unitString = QString::fromLatin1("l/s");
+            factor = 1e6;
+        }
+        else {
+            unitString = QString::fromLatin1("m^3/s");
+            factor = 1e9;
+        }
+    }
+    else if (unit == Unit::DissipationRate) {
+        unitString = QString::fromLatin1("W/kg");
+        factor = 1e6;
+    }
+    else if (unit == Unit::InverseLength) {
+        if (UnitValue < 1e-6) {  // smaller than 0.001 1/km -> scientific notation
+            unitString = QString::fromLatin1("1/m");
+            factor = 1e-3;
+        }
+        else if (UnitValue < 1e-3) {
+            unitString = QString::fromLatin1("1/km");
+            factor = 1e-6;
+        }
+        else if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("1/m");
+            factor = 1e-3;
+        }
+        else if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("1/mm");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromUtf8("1/\xC2\xB5m");
+            factor = 1e3;
+        }
+        else if (UnitValue < 1e9) {
+            unitString = QString::fromLatin1("1/nm");
+            factor = 1e6;
+        }
+        else {  // larger -> scientific notation
+            unitString = QString::fromLatin1("1/m");
+            factor = 1e-3;
+        }
+    }
+    else if (unit == Unit::InverseArea) {
+        if (UnitValue < 1e-12) {  // smaller than 0.001 1/km^2 -> scientific notation
+            unitString = QString::fromLatin1("1/m^2");
+            factor = 1e-6;
+        }
+        else if (UnitValue < 1e-6) {
+            unitString = QString::fromLatin1("1/km^2");
+            factor = 1e-12;
+        }
+        else if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("1/m^2");
+            factor = 1e-6;
+        }
+        else if (UnitValue < 1e2) {
+            unitString = QString::fromLatin1("1/cm^2");
+            factor = 1e-2;
+        }
+        else {
+            unitString = QString::fromLatin1("1/mm^2");
+            factor = 1.0;
+        }
+    }
+    else if (unit == Unit::InverseVolume) {
+        if (UnitValue < 1e-6) {
+            unitString = QString::fromLatin1("1/m^3");
+            factor = 1e-9;
+        }
+        else if (UnitValue < 1e-3) {
+            unitString = QString::fromLatin1("1/l");
+            factor = 1e-6;
+        }
+        else if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("1/ml");
+            factor = 1e-3;
+        }
+        else {
+            unitString = QString::fromLatin1("1/mm^3");
+            factor = 1.0;
         }
     }
     else {

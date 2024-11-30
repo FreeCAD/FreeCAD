@@ -20,11 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
+#include <QApplication>
+#include <QPalette>
+
 #include "SyntaxHighlighter.h"
-#include "TextEdit.h"
+
 
 using namespace Gui;
 
@@ -34,11 +36,16 @@ class SyntaxHighlighterP
 public:
     SyntaxHighlighterP()
     {
-        cNormalText.setRgb(0, 0, 0); cComment.setRgb(0, 170, 0);
-        cBlockcomment.setRgb(160, 160, 164); cLiteral.setRgb(255, 0, 0);
-        cNumber.setRgb(0, 0, 255); cOperator.setRgb(160, 160, 164);
-        cKeyword.setRgb(0, 0, 255); cClassName.setRgb(255, 170, 0);
-        cDefineName.setRgb(255, 170, 0); cOutput.setRgb(170, 170, 127);
+        cNormalText = qApp->palette().windowText().color();
+        cComment.setRgb(0, 170, 0);
+        cBlockcomment.setRgb(160, 160, 164);
+        cLiteral.setRgb(255, 0, 0);
+        cNumber.setRgb(0, 0, 255);
+        cOperator.setRgb(160, 160, 164);
+        cKeyword.setRgb(0, 0, 255);
+        cClassName.setRgb(255, 170, 0);
+        cDefineName.setRgb(255, 170, 0);
+        cOutput.setRgb(170, 170, 127);
         cError.setRgb(255, 0, 0);
     }
 
@@ -124,7 +131,7 @@ QColor SyntaxHighlighter::color(const QString& type)
     else if (type == QLatin1String("Python error"))
         return d->cError;
     else
-        return QColor(); // not found
+        return {}; // not found
 }
 
 QColor SyntaxHighlighter::colorByType(SyntaxHighlighter::TColor type)
@@ -152,7 +159,7 @@ QColor SyntaxHighlighter::colorByType(SyntaxHighlighter::TColor type)
     else if (type == SyntaxHighlighter::Error)
         return d->cError;
     else
-        return QColor(); // not found
+        return {}; // not found
 }
 
 void SyntaxHighlighter::colorChanged(const QString& type, const QColor& col)

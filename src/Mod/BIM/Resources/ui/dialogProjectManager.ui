@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>402</width>
+    <height>470</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>BIM Project Setup</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>This screen allows you to configure a new BIM project in FreeCAD.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="presets">
+     <item>
+      <property name="text">
+       <string>Use preset...</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="buttonSaveTemplate">
+       <property name="toolTip">
+        <string>Saves the current document as a template, including all the current BIM settings</string>
+       </property>
+       <property name="text">
+        <string>Save template...</string>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-save">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonLoadTemplate">
+       <property name="toolTip">
+        <string>Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</string>
+       </property>
+       <property name="text">
+        <string>Load template...</string>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-open">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>369</width>
+        <height>1214</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGroupBox" name="groupNewDocument">
+         <property name="title">
+          <string>Create new document</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_18">
+            <property name="text">
+             <string>Project name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="projectName">
+            <property name="text">
+             <string>Unnamed</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="addHumanFigure">
+         <property name="toolTip">
+          <string>If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</string>
+         </property>
+         <property name="text">
+          <string>Add a human figure</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupSite">
+         <property name="title">
+          <string>Create Site</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_19">
+            <property name="text">
+             <string>The site object contains all the data relative to the project location. Later on, you can attach a physical object representing the terrain.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="3" column="1">
+             <widget class="QDoubleSpinBox" name="siteLongitude">
+              <property name="suffix">
+               <string> E</string>
+              </property>
+              <property name="decimals">
+               <number>4</number>
+              </property>
+              <property name="maximum">
+                <double>180.0</double>
+                </property>
+                <property name="minimum">
+                <double>-180.0</double>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Elevation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Declination</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="siteName">
+              <property name="text">
+               <string>Default Site</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QDoubleSpinBox" name="siteDeviation">
+              <property name="suffix">
+               <string> °</string>
+              </property>
+              <property name="maximum">
+               <double>359.990000000000009</double>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Longitude</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="Gui::InputField" name="siteElevation">
+              <property name="unit" stdset="0">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="siteAddress"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Address</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Latitude</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QDoubleSpinBox" name="siteLatitude">
+              <property name="suffix">
+               <string> N</string>
+              </property>
+              <property name="decimals">
+               <number>4</number>
+              </property>
+              <property name="maximum">
+               <double>90.0</double>
+              </property>
+              <property name="minimum">
+               <double>-90.0</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBuilding">
+         <property name="title">
+          <string>Create Building</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_15">
+            <property name="text">
+             <string>This will configure a single building for this project. If your project is made of several buildings, you can duplicate it after creation and update its properties.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_24">
+              <property name="text">
+               <string>Gross building length</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_25">
+              <property name="text">
+               <string>Gross building width</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="buildingName">
+              <property name="text">
+               <string>Default Building</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <widget class="QLabel" name="label_17">
+              <property name="text">
+               <string>Number of H axes</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="0">
+             <widget class="QLabel" name="label_26">
+              <property name="text">
+               <string>Distance between H axes</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="label_27">
+              <property name="text">
+               <string>Number of V axes</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QComboBox" name="buildingUse">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+              </property>
+              <property name="minimumContentsLength">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="label_28">
+              <property name="text">
+               <string>Distance between V axes</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <widget class="QSpinBox" name="countVAxes">
+              <property name="value">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_29">
+              <property name="text">
+               <string>Main use</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1">
+             <widget class="QSpinBox" name="countHAxes">
+              <property name="value">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="Gui::InputField" name="buildingWidth">
+              <property name="text">
+               <string>0 </string>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+            <item row="13" column="1">
+             <widget class="QSpinBox" name="lineWidth">
+              <property name="value">
+               <number>2</number>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <widget class="Gui::InputField" name="distVAxes">
+              <property name="text">
+               <string>0 </string>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="Gui::InputField" name="buildingLength">
+              <property name="text">
+               <string>0 </string>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="1">
+             <widget class="Gui::InputField" name="distHAxes">
+              <property name="text">
+               <string>0 </string>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+            <item row="13" column="0">
+             <widget class="QLabel" name="label_30">
+              <property name="text">
+               <string>Axes line width</string>
+              </property>
+             </widget>
+            </item>
+            <item row="14" column="1">
+             <widget class="Gui::ColorButton" name="lineColor">
+              <property name="color">
+               <color>
+                <red>33</red>
+                <green>38</green>
+                <blue>94</blue>
+               </color>
+              </property>
+             </widget>
+            </item>
+            <item row="14" column="0">
+             <widget class="QLabel" name="label_31">
+              <property name="text">
+               <string>Axes color</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Levels</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="countLevels">
+              <property name="singleStep">
+               <number>1</number>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_32">
+              <property name="text">
+               <string>Level height</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="levelHeight">
+              <property name="text">
+               <string>0 </string>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_33">
+              <property name="text">
+               <string>Number of levels</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="levelsAxis">
+            <property name="text">
+             <string>Bind levels to vertical axes</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="levelsWP">
+            <property name="text">
+             <string>Define a working plane for each level</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_34">
+            <property name="text">
+             <string>Default groups to be added to each level</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="groupsList">
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::InternalMove</enum>
+            </property>
+            <property name="defaultDropAction">
+             <enum>Qt::MoveAction</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QPushButton" name="buttonAdd">
+              <property name="text">
+               <string>Add</string>
+              </property>
+              <property name="icon">
+               <iconset theme="add">
+                <normaloff/>
+               </iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonDel">
+              <property name="text">
+               <string>Del</string>
+              </property>
+              <property name="icon">
+               <iconset theme="remove">
+                <normaloff/>
+               </iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_35">
+     <property name="text">
+      <string>The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="buttonSave">
+       <property name="text">
+        <string>Save preset</string>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-save">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOK">
+       <property name="text">
+        <string>OK</string>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-ok">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-cancel">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>presets</tabstop>
+  <tabstop>buttonSaveTemplate</tabstop>
+  <tabstop>buttonLoadTemplate</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>groupNewDocument</tabstop>
+  <tabstop>projectName</tabstop>
+  <tabstop>addHumanFigure</tabstop>
+  <tabstop>groupSite</tabstop>
+  <tabstop>siteName</tabstop>
+  <tabstop>siteAddress</tabstop>
+  <tabstop>siteLatitude</tabstop>
+  <tabstop>siteLongitude</tabstop>
+  <tabstop>siteDeviation</tabstop>
+  <tabstop>siteElevation</tabstop>
+  <tabstop>groupBuilding</tabstop>
+  <tabstop>buildingName</tabstop>
+  <tabstop>buildingUse</tabstop>
+  <tabstop>buildingLength</tabstop>
+  <tabstop>buildingWidth</tabstop>
+  <tabstop>countVAxes</tabstop>
+  <tabstop>distVAxes</tabstop>
+  <tabstop>countHAxes</tabstop>
+  <tabstop>distHAxes</tabstop>
+  <tabstop>lineWidth</tabstop>
+  <tabstop>lineColor</tabstop>
+  <tabstop>countLevels</tabstop>
+  <tabstop>levelHeight</tabstop>
+  <tabstop>levelsAxis</tabstop>
+  <tabstop>levelsWP</tabstop>
+  <tabstop>groupsList</tabstop>
+  <tabstop>buttonAdd</tabstop>
+  <tabstop>buttonDel</tabstop>
+  <tabstop>buttonSave</tabstop>
+  <tabstop>buttonOK</tabstop>
+  <tabstop>buttonCancel</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

@@ -29,12 +29,12 @@
 namespace PartGui {
 class Ui_DlgPartImportIges;
 class DlgPartImportIgesImp : public QDialog
-{ 
+{
     Q_OBJECT
 
 public:
-  DlgPartImportIgesImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
-  ~DlgPartImportIgesImp();
+  explicit DlgPartImportIgesImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+  ~DlgPartImportIgesImp() override;
 
 public Q_SLOTS:
   virtual void OnApply();

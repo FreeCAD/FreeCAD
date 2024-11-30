@@ -25,6 +25,7 @@
  *      $Id: rrframes.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $
  ****************************************************************************/
+// clazy:excludeall=rule-of-two-soft
 
 #ifndef RRFRAMES_H
 #define RRFRAMES_H

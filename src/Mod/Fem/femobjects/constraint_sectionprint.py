@@ -23,13 +23,16 @@
 
 __title__ = "FreeCAD FEM constraint section print document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package constraint_sectionprint
 #  \ingroup FEM
 #  \brief constraint section print object
 
+from FreeCAD import Base
 from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class ConstraintSectionPrint(base_fempythonobject.BaseFemPythonObject):
@@ -40,4 +43,30 @@ class ConstraintSectionPrint(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintSectionPrint"
 
     def __init__(self, obj):
-        super(ConstraintSectionPrint, self).__init__(obj)
+        super().__init__(obj)
+
+        for prop in self._get_properties():
+            prop.add_to_object(obj)
+
+    def _get_properties(self):
+        prop = []
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Variable",
+                group="Constraint Section Print",
+                doc="Set facial variable",
+                value=["Section Force", "Heat Flux", "Drag Stress"],
+            )
+        )
+
+        return prop
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)

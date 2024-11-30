@@ -24,27 +24,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
 # include <QMenu>
 #endif
 
 #include "TaskPocketParameters.h"
-
 #include "ViewProviderPocket.h"
 
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPocket,PartDesignGui::ViewProviderSketchBased)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPocket, PartDesignGui::ViewProviderExtrude)
 
 ViewProviderPocket::ViewProviderPocket()
 {
     sPixmap = "PartDesign_Pocket.svg";
 }
 
-ViewProviderPocket::~ViewProviderPocket()
-{
-}
+ViewProviderPocket::~ViewProviderPocket() = default;
 
 
 void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

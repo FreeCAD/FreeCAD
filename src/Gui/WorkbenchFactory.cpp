@@ -28,41 +28,39 @@
 
 using namespace Gui;
 
-Gui::WorkbenchFactoryInst* Gui::WorkbenchFactoryInst::_pcSingleton = 0;
+Gui::WorkbenchFactoryInst* Gui::WorkbenchFactoryInst::_pcSingleton = nullptr;
 
 WorkbenchFactoryInst& WorkbenchFactoryInst::instance()
 {
-  if (_pcSingleton == 0L)
+  if (!_pcSingleton)
     _pcSingleton = new WorkbenchFactoryInst;
   return *_pcSingleton;
 }
 
 void WorkbenchFactoryInst::destruct ()
 {
-  if ( _pcSingleton != 0 )
     delete _pcSingleton;
-  _pcSingleton = 0;
+    _pcSingleton = nullptr;
 }
 
 Workbench* WorkbenchFactoryInst::createWorkbench ( const char* sName ) const
 {
-  Workbench* obj = (Workbench*)Produce( sName );
-  Workbench* w = dynamic_cast<Workbench*>(obj);
-  if ( !w )
-  {
-    delete obj; // delete the unknown object as no workbench object
-    return 0;
-  }
+    auto obj = (Workbench*)Produce( sName );
+    auto wb = dynamic_cast<Workbench*>(obj);
+    if (!wb) {
+        delete obj; // delete the unknown object as no workbench object
+        return nullptr;
+    }
 
-  w->setName( sName );
-  return w;
+    wb->setName( sName );
+    return wb;
 }
 
 std::list<std::string> WorkbenchFactoryInst::workbenches() const
 {
-  std::list<std::string> wb;
-  for (std::map<const std::string, Base::AbstractProducer*>::const_iterator
-      it = _mpcProducers.begin(); it != _mpcProducers.end(); ++it)
-      wb.push_back(it->first);
-  return wb;
+    std::list<std::string> wb;
+    for (const auto& it : _mpcProducers) {
+        wb.push_back(it.first);
+    }
+    return wb;
 }

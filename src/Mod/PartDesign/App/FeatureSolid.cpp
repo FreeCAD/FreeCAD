@@ -22,12 +22,8 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 
 #include "FeatureSolid.h"
-
 
 
 namespace PartDesign {
@@ -35,9 +31,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::Solid,PartDesign::Feature)
 
-Solid::Solid()
-{
-}
+Solid::Solid() = default;
 
 
 

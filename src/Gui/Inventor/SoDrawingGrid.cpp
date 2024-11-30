@@ -21,22 +21,24 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/elements/SoCacheElement.h>
+# include <Inventor/elements/SoLazyElement.h>
+# include <Inventor/elements/SoModelMatrixElement.h>
+# include <Inventor/elements/SoProjectionMatrixElement.h>
+# include <Inventor/elements/SoViewingMatrixElement.h>
+# include <Inventor/elements/SoViewportRegionElement.h>
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
 #else
 #include <GL/gl.h>
 #endif
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
+#endif
 
 #include "SoDrawingGrid.h"
-#include <QObject>
+
 
 using namespace Gui::Inventor;
 
@@ -175,14 +177,14 @@ SoDrawingGrid::GLRenderOffPath(SoGLRenderAction *)
 void
 SoDrawingGrid::generatePrimitives(SoAction* action)
 {
-    Q_UNUSED(action); 
+    (void)action; 
 }
 
 void
 SoDrawingGrid::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
 {
-    Q_UNUSED(action); 
-    Q_UNUSED(box); 
-    Q_UNUSED(center); 
+    (void)action; 
+    (void)box; 
+    (void)center; 
     //SoState*  state = action->getState();
 }

@@ -20,26 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
 # include <QMenu>
-# include <QPixmap>
-# include <boost_bind_bind.hpp>
 #endif
 
-#include <App/Part.h>
 #include <App/Document.h>
-
-#include "ActiveObjectList.h"
-#include "ActionFunction.h"
-#include "BitmapFactory.h"
-#include "Command.h"
+#include <App/DocumentObject.h>
+#include <App/Part.h>
 
 #include "ViewProviderPart.h"
+#include "ActionFunction.h"
 #include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
 #include "MDIView.h"
 
 
@@ -60,8 +55,7 @@ ViewProviderPart::ViewProviderPart()
     aPixmap = "Geoassembly.svg";
 }
 
-ViewProviderPart::~ViewProviderPart()
-{ }
+ViewProviderPart::~ViewProviderPart() = default;
 
 /**
  * TODO
@@ -74,18 +68,20 @@ void ViewProviderPart::onChanged(const App::Property* prop) {
 
 void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Toggle active part"));
-    func->trigger(act, boost::bind(&ViewProviderPart::doubleClicked, this));
+    auto func = new Gui::ActionFunction(menu);
+
+    QAction* act = menu->addAction(QObject::tr("Active object"));
+    act->setCheckable(true);
+    act->setChecked(isActivePart());
+    func->trigger(act, [this](){
+    this->toggleActivePart();
+    });
 
     ViewProviderDragger::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPart::doubleClicked(void)
+bool ViewProviderPart::isActivePart()
 {
-    //make the part the active one
-
-    //first, check if the part is already active.
     App::DocumentObject* activePart = nullptr;
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if(!activeDoc)
@@ -97,6 +93,16 @@ bool ViewProviderPart::doubleClicked(void)
     activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);
 
     if (activePart == this->getObject()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void ViewProviderPart::toggleActivePart()
+{
+    //make the part the active one
+    if (isActivePart()){
         //active part double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)",
@@ -109,19 +115,23 @@ bool ViewProviderPart::doubleClicked(void)
                 this->getObject()->getDocument()->getName(),
                 this->getObject()->getNameInDocument());
     }
+}
 
+bool ViewProviderPart::doubleClicked()
+{
+    toggleActivePart();
     return true;
 }
 
-QIcon ViewProviderPart::getIcon(void) const
+QIcon ViewProviderPart::getIcon() const
 {
     // the original Part object for this ViewProviderPart
-    App::Part* part = static_cast<App::Part*>(this->getObject());
+    auto part = static_cast<App::Part*>(this->getObject());
     // the normal case for Std_Part
     const char* pixmap = sPixmap;
     // if it's flagged as an Assembly in its Type, it gets another icon
     if (part->Type.getStrValue() == "Assembly") { pixmap = aPixmap; }
-    
+
     return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(pixmap));
 }
 
@@ -134,5 +144,5 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPartPython, Gui::ViewProviderPart)
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderPart>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderPart>;
 }

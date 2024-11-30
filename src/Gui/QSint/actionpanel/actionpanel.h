@@ -45,7 +45,7 @@ class QSINT_EXPORT ActionPanel : public QFrame
 public:
     /** Constructor.
       */
-    explicit ActionPanel(QWidget *parent = 0);
+    explicit ActionPanel(QWidget *parent = nullptr);
 
     /** Adds a widget \a w to the ActionPanel's vertical layout.
       */
@@ -89,7 +89,7 @@ public:
       */
     void setScheme(ActionPanelScheme *scheme);
 
-    virtual QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
 protected:
     //virtual void paintEvent ( QPaintEvent * event );

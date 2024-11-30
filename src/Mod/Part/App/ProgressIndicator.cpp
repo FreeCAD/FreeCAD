@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "ProgressIndicator.h"
+
 
 using namespace Part;
 /*!

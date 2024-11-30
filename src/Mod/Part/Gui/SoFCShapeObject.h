@@ -23,17 +23,16 @@
 #ifndef PARTGUI_SOFCSHAPEOBJECT_H
 #define PARTGUI_SOFCSHAPEOBJECT_H
 
-#include <Inventor/fields/SoSFUInt32.h>
 #include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/fields/SoSFUInt32.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/elements/SoReplacedElement.h>
+#include <Mod/Part/PartGlobal.h>
+
 
 namespace PartGui {
 
 class PartGuiExport SoFCControlPoints : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoFCControlPoints);
 
@@ -48,10 +47,10 @@ public:
     SoSFColor  lineColor;
 
 protected:
-    virtual ~SoFCControlPoints() {};
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void generatePrimitives(SoAction *action);
+    ~SoFCControlPoints() override = default;;
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void generatePrimitives(SoAction *action) override;
 
 private:
     void drawControlPoints(const SbVec3f *,int32_t) const;

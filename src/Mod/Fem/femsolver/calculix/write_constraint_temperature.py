@@ -23,15 +23,18 @@
 
 __title__ = "FreeCAD FEM calculix constraint temperature"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
+
+import FreeCAD
 
 
 def get_analysis_types():
     return ["thermomech"]
 
 
+# name must substitute underscores for whitespace (#7360)
 def get_sets_name():
-    return "constraints temperature node sets"
+    return "constraints_temperature_node_sets"
 
 
 def get_constraint_title():
@@ -39,9 +42,9 @@ def get_constraint_title():
 
 
 def write_meshdata_constraint(f, femobj, temp_obj, ccxwriter):
-    f.write("*NSET,NSET={}\n".format(temp_obj.Name))
+    f.write(f"*NSET,NSET={temp_obj.Name}\n")
     for n in femobj["Nodes"]:
-        f.write("{},\n".format(n))
+        f.write(f"{n},\n")
 
 
 def get_before_write_meshdata_constraint():
@@ -67,12 +70,19 @@ def write_constraint(f, femobj, temp_obj, ccxwriter):
     NumberOfNodes = len(femobj["Nodes"])
     if temp_obj.ConstraintType == "Temperature":
         f.write("*BOUNDARY\n")
-        f.write("{},11,11,{:.13G}\n".format(temp_obj.Name, temp_obj.Temperature))
+        f.write(
+            "{},11,11,{}\n".format(
+                temp_obj.Name, FreeCAD.Units.Quantity(temp_obj.Temperature.getValueAs("K"))
+            )
+        )
         f.write("\n")
     elif temp_obj.ConstraintType == "CFlux":
         f.write("*CFLUX\n")
-        f.write("{},11,{:.13G}\n".format(
-            temp_obj.Name,
-            temp_obj.CFlux * 0.001 / NumberOfNodes
-        ))
+        # CFLUX has to be specified in mW
+        f.write(
+            "{},11,{}\n".format(
+                temp_obj.Name,
+                FreeCAD.Units.Quantity(temp_obj.CFlux.getValueAs("mW")) / NumberOfNodes,
+            )
+        )
         f.write("\n")

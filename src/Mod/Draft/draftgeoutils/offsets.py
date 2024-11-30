@@ -169,14 +169,14 @@ def offset(edge, vector, trim=False):
 
 def offsetWire(wire, dvec, bind=False, occ=False,
                widthList=None, offsetMode=None, alignList=[],
-               normal=None, basewireOffset=0):
+               normal=None, basewireOffset=0, wireNedge=False):
+               # normal=None, basewireOffset=0):
     """Offset the wire along the given vector.
 
     Parameters
     ----------
-    wire as a list of edges (use the list directly),
-    or previously as a wire or a face (Draft Wire with MakeFace True
-    or False supported).
+    wire as a sorted list of edges (the list is used directly), or as a
+    wire or a face (Draft Wire with MakeFace True or False supported).
 
     The vector will be applied at the first vertex of the wire. If bind
     is True (and the shape is open), the original wire and the offsetted one
@@ -196,7 +196,9 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     in the wire with corresponding index.
 
     'basewireOffset' corresponds to 'offset' in ArchWall which offset
-    the basewire before creating the wall outline
+    the basewire before creating the wall outline; or
+    it can be a list, e.g. corresponds to 'overrideOffset' in ArchWall, so
+    offset can be 'per segment' of wire, or 'per wall segment' in ArchWall
 
     OffsetWire() is now aware of width and align per edge
     Primarily for use with ArchWall based on Sketch object
@@ -207,19 +209,25 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     in this function if widthList and alignList are provided
     - 'dvec' to be obsolete in future?
     """
-    if isinstance(wire, Part.Wire) or isinstance(wire, Part.Face):
-        # Found Draft GuiOffset directly offset Sketch.Shape(wire) would fails
-        # thus need to sort its edges same order 
+
+    if isinstance(wire, list) and isinstance(wire[0], Part.Edge):
+        edges = wire.copy()
+        wire = Part.Wire(edges)
+        closed = wire.isClosed()
+    elif isinstance(wire, Part.Wire):
+        # Draft_Offset can fail when directly offsetting a Sketch wire. We need
+        # to sort the edges. And because Part.__sortEdges__() can remove edges,
+        # we need to create a new wire as well.
         edges = Part.__sortEdges__(wire.Edges)
-        #edges = wire.Edges
+        wire = Part.Wire(edges)
+        closed = wire.isClosed()
+    elif isinstance(wire, Part.Face):
+        # We also need to sort the edges of a face.
+        edges = Part.__sortEdges__(wire.OuterWire.Edges)
+        closed = True
     elif isinstance(wire, Part.Edge):
         edges = [wire]
-    elif isinstance(wire, list):
-        if isinstance(wire[0], Part.Edge):
-            edges = wire.copy()
-            # How to avoid __sortEdges__ again?
-            # Make getNormal directly tackle edges?
-            wire = Part.Wire(Part.__sortEdges__(edges))
+        closed = wire.isClosed()
     else:
         print("Either Part.Wire or Part.Edges should be provided, "
               "returning None")
@@ -238,7 +246,6 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if norm is None:
             norm = App.Vector(0, 0, 1)
 
-    closed = isReallyClosed(wire)
     nedges = []
     if occ:
         length = abs(dvec.Length)
@@ -314,10 +321,15 @@ def offsetWire(wire, dvec, bind=False, occ=False,
             firstAlign = 'Left'
             alignListC.append('Left')
 
+    if not isinstance(basewireOffset, list):
+        basewireOffset = [basewireOffset]
+    else:
+        basewireOffset = basewireOffset  # for backward compatibility
+
     for i in range(len(edges)):
         # make a copy so it do not reverse the self.baseWires edges
         # pointed to by _Wall.getExtrusionData()?
-        curredge = edges[i].copy()
+        curredge = Part.Shape(edges[i]).Edges[0]  # saved memory?
 
         # record first edge's Orientation, Dir, Align and set Delta
         if i == 0:
@@ -332,7 +344,9 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # record current edge's Orientation, and set Delta
         if i != 0:  # else:
             # TODO Should also calculate 1st edge direction above
-            if isinstance(curredge.Curve, Part.Circle):
+            if isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+            # Seems Circle/Ellipse (1 geometry) would be sorted in 1 list,
+            # so i=0; should not happen here in fact (i != 0). 2024.8.25.
                 delta = curredge.tangentAt(curredge.FirstParameter).cross(norm)
             else:
                 delta = vec(curredge).cross(norm)
@@ -359,6 +373,12 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                     delta = DraftVecUtils.scaleTo(delta, 200)
         else:
             delta = DraftVecUtils.scaleTo(delta, dvec.Length)
+
+        # Consider individual offset distance
+        try:
+            currOffset = basewireOffset[i]
+        except:
+            currOffset = basewireOffset[0]  # use first value
 
         # Consider individual edge Align direction
         # - ArchWall should now always provide alignList
@@ -401,8 +421,8 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                     # ArchWall has an Offset properties for user to offset
                     # the basewire before creating the base profile of wall
                     # (not applicable to 'Center' align)
-                    if basewireOffset:
-                        delta = DraftVecUtils.scaleTo(delta, basewireOffset)
+                    if currOffset:
+                        delta = DraftVecUtils.scaleTo(delta, currOffset)
                         nedge = offset(curredge,delta,trim=True)
                     else:
                         nedge = curredge
@@ -415,25 +435,21 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                 # ArchWall has an Offset properties for user to offset
                 # the basewire before creating the base profile of wall
                 # (not applicable to 'Center' align)
-                if basewireOffset:
+                if currOffset:
                     if curAlign in ['Left', 'Right']:
                         delta = DraftVecUtils.scaleTo(delta,
-                                                      delta.Length + basewireOffset)
-                    #else: # elif curAlign == 'Center': #pass # no need to add basewireOffset
+                                                      delta.Length + currOffset)
                 nedge = offset(curredge, delta, trim=True)
 
             # TODO arc always in counter-clockwise directinon
             # ... ( not necessarily 'reversed')
             if curOrientation == "Reversed":
-                # need to test against Part.Circle, not Part.ArcOfCircle
-                if not isinstance(curredge.Curve, Part.Circle):
-                    # if not arc/circle, assume straight line, reverse it
+                if not isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+                    # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
+                elif nedge.isClosed():
+                    pass
                 else:
-                    # if arc/circle
-                    # Part.ArcOfCircle(edge.Curve,
-                    #                  edge.FirstParameter, edge.LastParameter,
-                    #                  edge.Curve.Axis.z > 0)
                     midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
                     midOfArc = nedge.valueAt(midParameter)
                     nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point,
@@ -449,8 +465,8 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                     # ArchWall has an Offset properties for user to offset
                     # the basewire before creating the base profile of wall
                     # (not applicable to 'Center' align)
-                    if basewireOffset:
-                        delta = DraftVecUtils.scaleTo(delta, basewireOffset)
+                    if currOffset:
+                        delta = DraftVecUtils.scaleTo(delta, currOffset)
                         nedge = offset(curredge, delta, trim=True)
                     else:
                         nedge = curredge
@@ -462,24 +478,19 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                     # ArchWall has an Offset properties for user to offset
                     # the basewire before creating the base profile of wall
                     # (not applicable to 'Center' align)
-                    if basewireOffset:
+                    if currOffset:
                         delta = DraftVecUtils.scaleTo(delta,
-                                                      delta.Length + basewireOffset)
+                                                      delta.Length + currOffset)
                     nedge = offset(curredge, delta, trim=True)
-
                 elif curAlign == 'Center':
                     nedge = offset(curredge, delta, trim=True)
             if curOrientation == "Reversed":
-                # need to test against Part.Circle, not Part.ArcOfCircle
-                if not isinstance(curredge.Curve, Part.Circle):
-                    # if not arc/circle, assume straight line, reverse it
+                if not isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+                    # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
+                elif nedge.isClosed():
+                    pass
                 else:
-                    # if arc/circle
-                    # Part.ArcOfCircle(edge.Curve,
-                    #                  edge.FirstParameter,
-                    #                  edge.LastParameter,
-                    #                  edge.Curve.Axis.z > 0)
                     midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
                     midOfArc = nedge.valueAt(midParameter)
                     nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point,
@@ -493,23 +504,33 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if not nedge:
             return None
 
+        # nedges is offset edges
         nedges.append(nedge)
 
     if len(edges) > 1:
-        nedges = connect(nedges, closed)
+        # TODO May phase out wire if bind() can do without it later and do with
+        # only connectEdges so no need bind() to find 'touching edges' there
+        wire,connectEdgesF,connectEdges = connect(nedges,closed,wireNedge=True)
     else:
-        nedges = Part.Wire(nedges[0])
+        # TODO May phase out wire if bind() can do without it later and do with
+        # only connectEdges so no need bind() to find 'touching edges' there
+        wire = Part.Wire(nedges[0])
+        connectEdgesF = connectEdges = nedges  # nedges[0]
 
     if bind and not closed:
         e1 = Part.LineSegment(edges[0].Vertexes[0].Point,
-                              nedges[0].Vertexes[0].Point).toShape()
+                              wire[0].Vertexes[0].Point).toShape()
         e2 = Part.LineSegment(edges[-1].Vertexes[-1].Point,
-                              nedges[-1].Vertexes[-1].Point).toShape()
-        alledges = edges.extend(nedges)
+                              wire[-1].Vertexes[-1].Point).toShape()
+                              #nedges[-1].Vertexes[-1].Point).toShape()
+        alledges = edges.extend(nedges)  # TODO nedges is a wire or are edges?
         alledges = alledges.extend([e1, e2])
         w = Part.Wire(alledges)
         return w
     else:
-        return nedges
+        if wireNedge:
+            return (wire,connectEdgesF,connectEdges,nedges)
+        else:
+            return wire
 
 ## @}

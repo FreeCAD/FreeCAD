@@ -7,15 +7,20 @@
 
 import sys, os, getopt, tarfile, gzip, time, io, platform, shutil, subprocess
 
+
 def main():
-    bindir="."
-    major="0"
-    minor="0"
-    dfsg=False
-    check=False
-    wta=None
+    bindir = "."
+    major = "0"
+    minor = "0"
+    dfsg = False
+    check = False
+    wta = None
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "sb:", ["srcdir=","bindir=","major=","minor=","dfsg", "check"])
+        opts, args = getopt.getopt(
+            sys.argv[1:],
+            "sb:",
+            ["srcdir=", "bindir=", "major=", "minor=", "dfsg", "check"],
+        )
     except getopt.GetoptError:
         pass
 
@@ -33,9 +38,9 @@ def main():
             wta = "--worktree-attributes"
         if o in ("--check"):
             check = True
-            
+
     if dfsg:
-        gitattr = open("src/.gitattributes","w")
+        gitattr = open("src/.gitattributes", "w")
         gitattr.write("zipios++    export-ignore\n")
         gitattr.write("Pivy-0.5    export-ignore\n")
         gitattr.write("Pivy    export-ignore\n")
@@ -44,24 +49,24 @@ def main():
         gitattr.close()
 
     # revision number
-    info=os.popen("git rev-list HEAD").read()
-    revision='%04d' % (info.count('\n'))
+    info = os.popen("git rev-list HEAD").read()
+    revision = "%04d" % (info.count("\n"))
 
-    verfile = open("{}/src/Build/Version.h".format(bindir), 'rb')
+    verfile = open("{}/src/Build/Version.h".format(bindir), "rb")
     verstream = io.BytesIO(verfile.read())
     verfile.close()
 
     version_major = major
     version_minor = minor
 
-    PACKAGE_NAME = 'freecad'
+    PACKAGE_NAME = "freecad"
     version = "{}.{}.{}".format(version_major, version_minor, revision)
 
-    DIRNAME = "%(p)s-%(v)s" % {'p': PACKAGE_NAME, 'v': version}
-    TARNAME = DIRNAME + '.tar'
-    TGZNAME = DIRNAME + '.tar.gz'
+    DIRNAME = "%(p)s-%(v)s" % {"p": PACKAGE_NAME, "v": version}
+    TARNAME = DIRNAME + ".tar"
+    TGZNAME = DIRNAME + ".tar.gz"
     if dfsg:
-        TGZNAME = DIRNAME + '-dfsg.tar.gz'
+        TGZNAME = DIRNAME + "-dfsg.tar.gz"
 
     verinfo = tarfile.TarInfo(DIRNAME + "/src/Build/Version.h")
     verinfo.mode = 0o660
@@ -73,15 +78,17 @@ def main():
     else:
         print(("git archive {} --prefix={}/ HEAD".format(wta, DIRNAME)))
 
-    if platform.system() == 'Windows':
-        os.popen("git archive {} --prefix={}/ --output={} HEAD".format(wta, DIRNAME, TARNAME)).read()
+    if platform.system() == "Windows":
+        os.popen(
+            "git archive {} --prefix={}/ --output={} HEAD".format(wta, DIRNAME, TARNAME)
+        ).read()
 
         tar = tarfile.TarFile(mode="a", name=TARNAME)
         tar.addfile(verinfo, verstream)
         tar.close()
 
         out = gzip.open(TGZNAME, "wb")
-        tardata = open(TARNAME, 'rb')
+        tardata = open(TARNAME, "rb")
         out.write(tardata.read())
         out.close()
         tardata.close()
@@ -94,7 +101,7 @@ def main():
         cmd_line.append("HEAD")
 
         tardata = subprocess.Popen(cmd_line, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out,err = tardata.communicate()
+        out, err = tardata.communicate()
         tarstream = io.BytesIO(out)
 
         tar = tarfile.TarFile(mode="a", fileobj=tarstream)
@@ -104,13 +111,13 @@ def main():
         out = gzip.open(TGZNAME, "wb")
         out.write(tarstream.getvalue())
         out.close()
-        
+
     if dfsg:
         os.remove("src/.gitattributes")
     print(("Created " + TGZNAME))
     # Unpack and build
     if check:
-        archive=tarfile.open(mode='r:gz',name=TGZNAME)
+        archive = tarfile.open(mode="r:gz", name=TGZNAME)
         archive.extractall(bindir)
         builddir = os.path.join(bindir, DIRNAME)
         cwd = os.getcwd()
@@ -119,6 +126,7 @@ def main():
         os.system("make")
         os.chdir(cwd)
         shutil.rmtree(builddir)
+
 
 if __name__ == "__main__":
     main()

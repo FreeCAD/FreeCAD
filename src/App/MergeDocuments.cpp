@@ -22,115 +22,69 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <stack>
-# include <boost_bind_bind.hpp>
+#include <stack>
 #endif
 
 #include <QCoreApplication>
-
-#include "MergeDocuments.h"
-#include <Base/Console.h>
+#include <App/Document.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+
+#include "MergeDocuments.h"
+
 
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
-namespace App {
+namespace App
+{
 
-class XMLMergeReader : public Base::XMLReader
+class XMLMergeReader: public Base::XMLReader
 {
 public:
-    XMLMergeReader(std::map<std::string, std::string>& name, const char* FileName, std::istream& str)
-      : Base::XMLReader(FileName, str), nameMap(name)
+    XMLMergeReader(std::map<std::string, std::string>& name,
+                   const char* FileName,
+                   std::istream& str)
+        : Base::XMLReader(FileName, str)
+        , nameMap(name)
     {}
 
-    void addName(const char* s1, const char* s2)
+    void addName(const char* s1, const char* s2) override
     {
         nameMap[s1] = s2;
     }
-    const char* getName(const char* name) const
+    const char* getName(const char* name) const override
     {
         std::map<std::string, std::string>::const_iterator it = nameMap.find(name);
-        if (it != nameMap.end())
+        if (it != nameMap.end()) {
             return it->second.c_str();
-        else
+        }
+        else {
             return name;
+        }
     }
-    bool doNameMapping() const
+    bool doNameMapping() const override
     {
         return true;
     }
+
 protected:
-
-    // It is not safe to change potential object name reference at this level.
-    // For example, a LinkSub with sub element name Face1 may also be some
-    // object's name that may potentially be mapped. In addition, with the
-    // introduction of full qualified SubName reference, the Sub value inside
-    // LinkSub may require customized mapping. So we move the mapping logic to
-    // various link property's Restore() function.
-#if 0
-    void startElement(const XMLCh* const uri, const XMLCh* const localname,
-                      const XMLCh* const qname,
-                      const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
-    {
-        Base::XMLReader::startElement(uri, localname, qname, attrs);
-        if (LocalName == "Property")
-            propertyStack.push(std::make_pair(AttrMap["name"],AttrMap["type"]));
-
-        if (!propertyStack.empty()) {
-            // replace the stored object name with the real one
-            if (LocalName == "Link" || LocalName == "LinkSub" || (LocalName == "String" && propertyStack.top().first == "Label")) {
-                for (std::map<std::string, std::string>::iterator it = AttrMap.begin(); it != AttrMap.end(); ++it) {
-                    std::map<std::string, std::string>::const_iterator jt = nameMap.find(it->second);
-                    if (jt != nameMap.end())
-                        it->second = jt->second;
-                }
-            }
-            // update the expression if name of the object is used
-            else if (LocalName == "Expression") {
-                std::map<std::string, std::string>::iterator it = AttrMap.find("expression");
-                if (it != AttrMap.end()) {
-                    // search for the part before the first dot that should be the object name.
-                    std::string expression = it->second;
-                    std::string::size_type dotpos = expression.find_first_of(".");
-                    if (dotpos != std::string::npos) {
-                        std::string name = expression.substr(0, dotpos);
-                        std::map<std::string, std::string>::const_iterator jt = nameMap.find(name);
-                        if (jt != nameMap.end()) {
-                            std::string newexpression = jt->second;
-                            newexpression += expression.substr(dotpos);
-                            it->second = newexpression;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    void endElement(const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname)
-    {
-        Base::XMLReader::endElement(uri, localname, qname);
-        if (LocalName == "Property")
-            propertyStack.pop();
-    }
-#endif
-
 private:
     std::map<std::string, std::string>& nameMap;
-    typedef std::pair<std::string, std::string> PropertyTag;
+    using PropertyTag = std::pair<std::string, std::string>;
     std::stack<PropertyTag> propertyStack;
 };
-}
+}  // namespace App
 
-MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), verbose(true), stream(0), appdoc(doc)
+MergeDocuments::MergeDocuments(App::Document* doc)
+    : appdoc(doc)
 {
-    connectExport = doc->signalExportObjects.connect
-        (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
-    connectImport = doc->signalImportObjects.connect
-        (boost::bind(&MergeDocuments::importObject, this, bp::_1, bp::_2));
+    // NOLINTBEGIN
+    connectExport = doc->signalExportObjects.connect(
+        std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
+    connectImport = doc->signalImportObjects.connect(
+        std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
+    // NOLINTEND
 
     QCoreApplication* app = QCoreApplication::instance();
     if (app && app->inherits("QApplication")) {
@@ -144,40 +98,39 @@ MergeDocuments::~MergeDocuments()
     connectImport.disconnect();
 }
 
-unsigned int MergeDocuments::getMemSize (void) const
+unsigned int MergeDocuments::getMemSize() const
 {
     return 0;
 }
 
-std::vector<App::DocumentObject*>
-MergeDocuments::importObjects(std::istream& input)
+std::vector<App::DocumentObject*> MergeDocuments::importObjects(std::istream& input)
 {
     this->nameMap.clear();
     this->stream = new zipios::ZipInputStream(input);
-    XMLMergeReader reader(this->nameMap,"<memory>", *stream);
+    XMLMergeReader reader(this->nameMap, "<memory>", *stream);
     reader.setVerbose(isVerbose());
     std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
     delete this->stream;
-    this->stream = 0;
+    this->stream = nullptr;
 
     return objs;
 }
 
-void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r)
+void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader& r)
 {
     objects = o;
     Restore(r);
     r.readFiles(*this->stream);
 }
 
-void MergeDocuments::exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer & w)
+void MergeDocuments::exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer& w)
 {
     objects = o;
     Save(w);
 }
 
-void MergeDocuments::Save (Base::Writer & w) const
+void MergeDocuments::Save(Base::Writer& w) const
 {
     // Save view provider stuff
     if (guiup) {
@@ -185,7 +138,7 @@ void MergeDocuments::Save (Base::Writer & w) const
     }
 }
 
-void MergeDocuments::Restore(Base::XMLReader &r)
+void MergeDocuments::Restore(Base::XMLReader& r)
 {
     // Restore view provider stuff
     if (guiup) {
@@ -193,13 +146,13 @@ void MergeDocuments::Restore(Base::XMLReader &r)
     }
 }
 
-void MergeDocuments::SaveDocFile (Base::Writer & w) const
+void MergeDocuments::SaveDocFile(Base::Writer& w) const
 {
     // Save view provider stuff
     appdoc->signalExportViewObjects(this->objects, w);
 }
 
-void MergeDocuments::RestoreDocFile(Base::Reader & r)
+void MergeDocuments::RestoreDocFile(Base::Reader& r)
 {
     // Restore view provider stuff
     appdoc->signalImportViewObjects(this->objects, r, this->nameMap);

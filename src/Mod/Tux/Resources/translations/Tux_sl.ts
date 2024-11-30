@@ -4,92 +4,97 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="63"/>
+      <location filename="../../NavigationIndicatorGui.py" line="85"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="64"/>
+      <location filename="../../NavigationIndicatorGui.py" line="86"/>
       <source>Zoom</source>
       <translation>Približaj/Oddalji</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="65"/>
+      <location filename="../../NavigationIndicatorGui.py" line="87"/>
       <source>Rotate</source>
       <translation>Zavrti</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="66"/>
+      <location filename="../../NavigationIndicatorGui.py" line="88"/>
       <source>Pan</source>
       <translation>Premik</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="67"/>
+      <location filename="../../NavigationIndicatorGui.py" line="89"/>
       <source>Tilt</source>
       <translation>Nagib</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="68"/>
+      <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Navigation style</source>
       <translation>Slog krmarjenja</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="69"/>
+      <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Page Up or Page Down key.</source>
       <translation>Tipka Page Up ali Page Down.</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="70"/>
+      <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Rotation focus</source>
       <translation>Osredotoči vrtilno središče</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="71"/>
+      <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Middle mouse button or H key.</source>
       <translation>Srednja miškina tipka ali tipka H.</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="73"/>
+      <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Middle mouse button.</source>
       <translation>Srednja miškina tipka.</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="76"/>
+      <location filename="../../NavigationIndicatorGui.py" line="98"/>
       <source>Navigation style not recognized.</source>
       <translation>Stil navigacije ni prepoznan.</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="291"/>
+      <location filename="../../NavigationIndicatorGui.py" line="569"/>
       <source>Settings</source>
       <translation>Nastavitve</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="292"/>
+      <location filename="../../NavigationIndicatorGui.py" line="570"/>
       <source>Orbit style</source>
       <translation>Slog vrtenja</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="293"/>
+      <location filename="../../NavigationIndicatorGui.py" line="571"/>
       <source>Compact</source>
       <translation>Kompakten</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="294"/>
+      <location filename="../../NavigationIndicatorGui.py" line="572"/>
       <source>Tooltip</source>
       <translation>Namig orodja</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="295"/>
+      <location filename="../../NavigationIndicatorGui.py" line="573"/>
       <source>Turntable</source>
-      <translation>Sukajoča pogled</translation>
+      <translation>Sukajoči pogled</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="296"/>
+      <location filename="../../NavigationIndicatorGui.py" line="574"/>
+      <source>Free Turntable</source>
+      <translation>Prostosukajoča plošča</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="575"/>
       <source>Trackball</source>
-      <translation>Vrtilna krogla</translation>
+      <translation>Sledilna kroglica</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="297"/>
+      <location filename="../../NavigationIndicatorGui.py" line="576"/>
       <source>Undefined</source>
       <translation>Nedoločeno</translation>
     </message>

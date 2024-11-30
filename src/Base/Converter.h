@@ -24,84 +24,108 @@
 #ifndef BASE_CONVERTER_H
 #define BASE_CONVERTER_H
 
-#include "Vector3D.h"
-#include "Rotation.h"
 #include <tuple>
+#include "Rotation.h"
+#include "Vector3D.h"
 
-namespace Base {
 
-template <class vecT>
-struct vec_traits { };
+namespace Base
+{
 
-template <>
-struct vec_traits<Vector3f> {
-    typedef Vector3f vec_type;
-    typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+template<class vecT>
+struct vec_traits
+{
+};
+
+template<>
+struct vec_traits<Vector3f>
+{
+    using vec_type = Vector3f;
+    using float_type = float;
+    explicit vec_traits(const vec_type& vec)
+        : v(vec)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.x, v.y, v.z);
     }
+
 private:
     const vec_type& v;
 };
 
-template <>
-struct vec_traits<Vector3d> {
-    typedef Vector3d vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+template<>
+struct vec_traits<Vector3d>
+{
+    using vec_type = Vector3d;
+    using float_type = double;
+    explicit vec_traits(const vec_type& vec)
+        : v(vec)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.x, v.y, v.z);
     }
+
 private:
     const vec_type& v;
 };
 
-template <>
-struct vec_traits<Rotation> {
-    typedef Rotation vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type,float_type> get() const {
-        float_type q1,q2,q3,q4;
-        v.getValue(q1,q2,q3,q4);
+template<>
+struct vec_traits<Rotation>
+{
+    using vec_type = Rotation;
+    using float_type = double;
+    explicit vec_traits(const vec_type& vec)
+        : v(vec)
+    {}
+    inline std::tuple<float_type, float_type, float_type, float_type> get() const
+    {
+        float_type q1 {};
+        float_type q2 {};
+        float_type q3 {};
+        float_type q4 {};
+        v.getValue(q1, q2, q3, q4);
         return std::make_tuple(q1, q2, q3, q4);
     }
+
 private:
     const vec_type& v;
 };
 
 // type with three floats
-template <class _Vec, typename float_type>
-_Vec make_vec(const std::tuple<float_type, float_type, float_type>&& t) {
-    typedef vec_traits<_Vec> traits_type;
-    typedef typename traits_type::float_type float_traits_type;
-    return _Vec(float_traits_type(std::get<0>(t)),
-                float_traits_type(std::get<1>(t)),
-                float_traits_type(std::get<2>(t)));
+template<class Vec, typename float_type>
+Vec make_vec(const std::tuple<float_type, float_type, float_type>&& ft)
+{
+    using traits_type = vec_traits<Vec>;
+    using float_traits_type = typename traits_type::float_type;
+    return Vec(float_traits_type(std::get<0>(ft)),
+               float_traits_type(std::get<1>(ft)),
+               float_traits_type(std::get<2>(ft)));
 }
 
 // type with four floats
-template <class _Vec, typename float_type>
-_Vec make_vec(const std::tuple<float_type, float_type, float_type, float_type>&& t) {
-    typedef vec_traits<_Vec> traits_type;
-    typedef typename traits_type::float_type float_traits_type;
-    return _Vec(float_traits_type(std::get<0>(t)),
-                float_traits_type(std::get<1>(t)),
-                float_traits_type(std::get<2>(t)),
-                float_traits_type(std::get<3>(t)));
-}
-
-template <class _Vec1, class _Vec2>
-inline _Vec1 convertTo(const _Vec2& v)
+template<class Vec, typename float_type>
+Vec make_vec(const std::tuple<float_type, float_type, float_type, float_type>&& ft)
 {
-    typedef vec_traits<_Vec2> traits_type;
-    typedef typename traits_type::float_type float_type;
-    traits_type t(v);
-    auto tuple = t.get();
-    return make_vec<_Vec1, float_type>(std::move(tuple));
+    using traits_type = vec_traits<Vec>;
+    using float_traits_type = typename traits_type::float_type;
+    return Vec(float_traits_type(std::get<0>(ft)),
+               float_traits_type(std::get<1>(ft)),
+               float_traits_type(std::get<2>(ft)),
+               float_traits_type(std::get<3>(ft)));
 }
 
+template<class Vec1, class Vec2>
+inline Vec1 convertTo(const Vec2& vec)
+{
+    using traits_type = vec_traits<Vec2>;
+    using float_type = typename traits_type::float_type;
+    traits_type tt(vec);
+    auto tuple = tt.get();
+    return make_vec<Vec1, float_type>(std::move(tuple));
 }
 
-#endif // BASE_CONVERTER_H
+}  // namespace Base
+
+#endif  // BASE_CONVERTER_H

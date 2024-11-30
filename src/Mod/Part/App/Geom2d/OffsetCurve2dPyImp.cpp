@@ -20,23 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom2d_OffsetCurve.hxx>
 #endif
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/OffsetCurve2dPy.cpp>
+#include "Geom2d/OffsetCurve2dPy.h"
+#include "Geom2d/OffsetCurve2dPy.cpp"
+#include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string OffsetCurve2dPy::representation(void) const
+std::string OffsetCurve2dPy::representation() const
 {
     return "<OffsetCurve2d object>";
 }
@@ -77,7 +74,7 @@ int OffsetCurve2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-Py::Float OffsetCurve2dPy::getOffsetValue(void) const
+Py::Float OffsetCurve2dPy::getOffsetValue() const
 {
     Handle(Geom2d_OffsetCurve) curve = Handle(Geom2d_OffsetCurve)::DownCast(getGeometry2dPtr()->handle());
     return Py::Float(curve->Offset());
@@ -89,7 +86,7 @@ void OffsetCurve2dPy::setOffsetValue(Py::Float arg)
     curve->SetOffsetValue((double)arg);
 }
 
-Py::Object OffsetCurve2dPy::getBasisCurve(void) const
+Py::Object OffsetCurve2dPy::getBasisCurve() const
 {
     Handle(Geom2d_OffsetCurve) curve = Handle(Geom2d_OffsetCurve)::DownCast(getGeometry2dPtr()->handle());
     Handle(Geom2d_Curve) basis = curve->BasisCurve();
@@ -129,10 +126,10 @@ void OffsetCurve2dPy::setBasisCurve(Py::Object arg)
 
 PyObject *OffsetCurve2dPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int OffsetCurve2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

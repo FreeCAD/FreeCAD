@@ -30,7 +30,7 @@ class TaskWatcherFilter:
         self.commands = ["Sketcher_NewSketch", "PartDesign_Fillet", "PartDesign_Chamfer"]
         self.filter = "SELECT Part::Feature SUBELEMENT Face COUNT 1"
         self.title = "Face tools"
-        self.icon = "Part_Box"
+        self.icon = "Part_Box_Parametric"
 
 class TaskPanel:
     def __init__(self):
@@ -61,7 +61,7 @@ class TaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+        return QtGui.QDialogButtonBox.Ok
 
     def helpRequested(self):
         pass
@@ -102,6 +102,7 @@ class TaskManyTaskBoxes:
         widget2 = QtGui.QWidget()
         widget2.setWindowTitle("My Test Box")
         text = QtGui.QLabel("testBox",widget2)
+        text.setObjectName("label")
         self.form = [widget1,widget2]
 
 def createTask():

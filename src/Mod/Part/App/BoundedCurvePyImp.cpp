@@ -20,16 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
 #include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
-#include "Geometry.h"
 #include "BoundedCurvePy.h"
 #include "BoundedCurvePy.cpp"
 
@@ -37,7 +34,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string BoundedCurvePy::representation(void) const
+std::string BoundedCurvePy::representation() const
 {
     return "<Curve object>";
 }
@@ -47,7 +44,7 @@ PyObject *BoundedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
                     "You cannot create an instance of the abstract class 'BoundedCurve'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -56,19 +53,19 @@ int BoundedCurvePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-Py::Object BoundedCurvePy::getStartPoint(void) const
+Py::Object BoundedCurvePy::getStartPoint() const
 {
     return Py::Vector(getGeomBoundedCurvePtr()->getStartPoint());
 }
 
-Py::Object BoundedCurvePy::getEndPoint(void) const
+Py::Object BoundedCurvePy::getEndPoint() const
 {
     return Py::Vector(getGeomBoundedCurvePtr()->getEndPoint());
 }
 
 PyObject *BoundedCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int BoundedCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

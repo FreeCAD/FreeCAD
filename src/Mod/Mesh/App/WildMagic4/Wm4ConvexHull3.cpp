@@ -31,8 +31,8 @@ ConvexHull3<Real>::ConvexHull3 (int iVertexQuantity, Vector3<Real>* akVertex,
     m_akVertex = akVertex;
     m_akPlaneDirection[0] = Vector3<Real>::ZERO;
     m_akPlaneDirection[1] = Vector3<Real>::ZERO;
-    m_akSVertex = 0;
-    m_pkQuery = 0;
+    m_akSVertex = nullptr;
+    m_pkQuery = nullptr;
 
     Mapper3<Real> kMapper(m_iVertexQuantity,m_akVertex,m_fEpsilon);
     if (kMapper.GetDimension() == 0)
@@ -219,7 +219,7 @@ ConvexHull1<Real>* ConvexHull3<Real>::GetConvexHull1 () const
     assert(m_iDimension == 1);
     if (m_iDimension != 1)
     {
-        return 0;
+        return nullptr;
     }
 
     Real* afProjection = WM4_NEW Real[m_iVertexQuantity];
@@ -239,7 +239,7 @@ ConvexHull2<Real>* ConvexHull3<Real>::GetConvexHull2 () const
     assert(m_iDimension == 2);
     if (m_iDimension != 2)
     {
-        return 0;
+        return nullptr;
     }
 
     Vector2<Real>* akProjection = WM4_NEW Vector2<Real>[m_iVertexQuantity];
@@ -258,7 +258,7 @@ template <class Real>
 bool ConvexHull3<Real>::Update (int i)
 {
     // Locate a triangle visible to the input point (if possible).
-    Triangle* pkVisible = 0;
+    Triangle* pkVisible = nullptr;
     Triangle* pkTri;
     typename std::set<Triangle*>::iterator pkIter;
     for (pkIter = m_kHull.begin(); pkIter != m_kHull.end(); pkIter++)
@@ -404,9 +404,9 @@ ConvexHull3<Real>::ConvexHull3 (const char* acFilename)
     :
     ConvexHull<Real>(0,(Real)0.0,false,Query::QT_REAL)
 {
-    m_akVertex = 0;
-    m_akSVertex = 0;
-    m_pkQuery = 0;
+    m_akVertex = nullptr;
+    m_akSVertex = nullptr;
+    m_pkQuery = nullptr;
     bool bLoaded = Load(acFilename);
     assert(bLoaded);
     (void)bLoaded;  // avoid warning in Release build
@@ -532,9 +532,9 @@ ConvexHull3<Real>::Triangle::Triangle (int iV0, int iV1, int iV2)
     V[0] = iV0;
     V[1] = iV1;
     V[2] = iV2;
-    A[0] = 0;
-    A[1] = 0;
-    A[2] = 0;
+    A[0] = nullptr;
+    A[1] = nullptr;
+    A[2] = nullptr;
     Sign = 0;
     Time = -1;
     OnStack = false;
@@ -566,12 +566,12 @@ template <class Real>
 int ConvexHull3<Real>::Triangle::DetachFrom (int iAdj, Triangle* pkAdj)
 {
     assert(0 <= iAdj && iAdj < 3 && A[iAdj] == pkAdj);
-    A[iAdj] = 0;
+    A[iAdj] = nullptr;
     for (int i = 0; i < 3; i++)
     {
         if (pkAdj->A[i] == this)
         {
-            pkAdj->A[i] = 0;
+            pkAdj->A[i] = nullptr;
             return i;
         }
     }

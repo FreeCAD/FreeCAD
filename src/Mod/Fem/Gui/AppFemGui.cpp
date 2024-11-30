@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (c) 2023 Peter McB                                          *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -20,76 +21,75 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <Standard_math.hxx>
-#endif
 
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
-#include "PropertyFemMeshItem.h"
+
 #include "DlgSettingsFemCcxImp.h"
 #include "DlgSettingsFemElmerImp.h"
 #include "DlgSettingsFemExportAbaqusImp.h"
 #include "DlgSettingsFemGeneralImp.h"
 #include "DlgSettingsFemGmshImp.h"
 #include "DlgSettingsFemInOutVtkImp.h"
-#include "DlgSettingsFemMaterialImp.h"
 #include "DlgSettingsFemMystranImp.h"
 #include "DlgSettingsFemZ88Imp.h"
+#include "PropertyFemMeshItem.h"
+#include "ViewProviderAnalysis.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
-#include "ViewProviderAnalysis.h"
-#include "ViewProviderSolver.h"
-#include "ViewProviderSetNodes.h"
 #include "ViewProviderSetElements.h"
+#include "ViewProviderSetElementNodes.h"
 #include "ViewProviderSetFaces.h"
 #include "ViewProviderSetGeometry.h"
+#include "ViewProviderSetNodes.h"
+#include "ViewProviderSolver.h"
 #include "ViewProviderFemConstraint.h"
-#include "ViewProviderFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintBearing.h"
+#include "ViewProviderFemConstraintContact.h"
+#include "ViewProviderFemConstraintDisplacement.h"
 #include "ViewProviderFemConstraintFixed.h"
+#include "ViewProviderFemConstraintRigidBody.h"
 #include "ViewProviderFemConstraintForce.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
-#include "ViewProviderFemConstraintPressure.h"
-#include "ViewProviderFemConstraintSpring.h"
 #include "ViewProviderFemConstraintGear.h"
-#include "ViewProviderFemConstraintPulley.h"
-#include "ViewProviderFemConstraintDisplacement.h"
-#include "ViewProviderFemConstraintTemperature.h"
 #include "ViewProviderFemConstraintHeatflux.h"
 #include "ViewProviderFemConstraintInitialTemperature.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintPlaneRotation.h"
-#include "ViewProviderFemConstraintContact.h"
+#include "ViewProviderFemConstraintPressure.h"
+#include "ViewProviderFemConstraintPulley.h"
+#include "ViewProviderFemConstraintSpring.h"
+#include "ViewProviderFemConstraintTemperature.h"
 #include "ViewProviderFemConstraintTransform.h"
 #include "ViewProviderResult.h"
 #include "Workbench.h"
 
 #ifdef FC_USE_VTK
+#include "ViewProviderFemPostFilter.h"
+#include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostPipeline.h"
-#include "ViewProviderFemPostFunction.h"
-#include "ViewProviderFemPostFilter.h"
 #endif
 
 
 // use a different name to CreateCommand()
-void CreateFemCommands(void);
+void CreateFemCommands();
 
 void loadFemResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Fem);
+    Q_INIT_RESOURCE(Fem_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace FemGui {
+namespace FemGui
+{
 extern PyObject* initModule();
 }
 
@@ -99,7 +99,7 @@ PyMOD_INIT_FUNC(FemGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = FemGui::initModule();
@@ -108,6 +108,7 @@ PyMOD_INIT_FUNC(FemGui)
     // instantiating the commands
     CreateFemCommands();
 
+    // clang-format off
     // addition objects
     FemGui::Workbench                                           ::init();
 
@@ -122,6 +123,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemConstraintContact                    ::init();
     FemGui::ViewProviderFemConstraintDisplacement               ::init();
     FemGui::ViewProviderFemConstraintFixed                      ::init();
+    FemGui::ViewProviderFemConstraintRigidBody                  ::init();
     FemGui::ViewProviderFemConstraintFluidBoundary              ::init();
     FemGui::ViewProviderFemConstraintForce                      ::init();
     FemGui::ViewProviderFemConstraintGear                       ::init();
@@ -136,11 +138,14 @@ PyMOD_INIT_FUNC(FemGui)
 
     FemGui::ViewProviderFemMesh                                 ::init();
     FemGui::ViewProviderFemMeshPython                           ::init();
+    FemGui::ViewProviderFemMeshShapeBase                        ::init();
+    FemGui::ViewProviderFemMeshShapeBasePython                  ::init();
     FemGui::ViewProviderFemMeshShape                            ::init();
     FemGui::ViewProviderFemMeshShapeNetgen                      ::init();
     FemGui::PropertyFemMeshItem                                 ::init();
 
     FemGui::ViewProviderSetElements                             ::init();
+    FemGui::ViewProviderSetElementNodes                         ::init();
     FemGui::ViewProviderSetFaces                                ::init();
     FemGui::ViewProviderSetGeometry                             ::init();
     FemGui::ViewProviderSetNodes                                ::init();
@@ -156,6 +161,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemPostObject                           ::init();
     FemGui::ViewProviderFemPostPipeline                         ::init();
     FemGui::ViewProviderFemPostClip                             ::init();
+    FemGui::ViewProviderFemPostContours                         ::init();
     FemGui::ViewProviderFemPostCut                              ::init();
     FemGui::ViewProviderFemPostDataAlongLine                    ::init();
     FemGui::ViewProviderFemPostDataAtPoint                      ::init();
@@ -164,26 +170,28 @@ PyMOD_INIT_FUNC(FemGui)
 
     FemGui::ViewProviderFemPostFunction                         ::init();
     FemGui::ViewProviderFemPostFunctionProvider                 ::init();
+    FemGui::ViewProviderFemPostBoxFunction                      ::init();
+    FemGui::ViewProviderFemPostCylinderFunction                 ::init();
     FemGui::ViewProviderFemPostPlaneFunction                    ::init();
     FemGui::ViewProviderFemPostSphereFunction                   ::init();
 #endif
 
 
     // register preferences pages on FEM, the order here will be the order of the tabs in pref widget
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemGeneralImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemMystranImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemMaterialImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemGeneralImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemMystranImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
 
     // register preferences pages on Import-Export
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemExportAbaqusImp> (QT_TRANSLATE_NOOP("QObject","Import-Export"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemInOutVtkImp> (QT_TRANSLATE_NOOP("QObject","Import-Export"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemExportAbaqusImp>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemInOutVtkImp>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
 
-     // add resources and reloads the translators
+    // add resources and reloads the translators
     loadFemResource();
+    // clang-format on
 
     PyMOD_Return(mod);
 }

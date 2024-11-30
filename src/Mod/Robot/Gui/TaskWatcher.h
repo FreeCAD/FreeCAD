@@ -20,40 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOTGUI_TASKWATCHER_H
 #define ROBOTGUI_TASKWATCHER_H
 
-
-
 #include <Gui/TaskView/TaskWatcher.h>
+
 #include "TaskRobot6Axis.h"
 #include "TaskRobotControl.h"
 
-#include <QObject>
 
-namespace RobotGui {
+namespace RobotGui
+{
 
 class TaskContent;
 
 /// Father class of watcher classes
-class RobotGuiExport TaskWatcherRobot : public Gui::TaskView::TaskWatcher 
+class RobotGuiExport TaskWatcherRobot: public Gui::TaskView::TaskWatcher
 {
     Q_OBJECT
 
 public:
     TaskWatcherRobot();
-    ~TaskWatcherRobot();
 
-    /// is called when the document or the selection changes. 
-    virtual bool shouldShow(void);
+    /// is called when the document or the selection changes.
+    bool shouldShow() override;
 
 protected:
-    TaskRobot6Axis    *rob; 
-    TaskRobotControl  *ctr ;
+    TaskRobot6Axis* rob;
+    TaskRobotControl* ctr;
 };
 
 
-} //namespace RobotGui
+}  // namespace RobotGui
 
-#endif // ROBOTGUI_TASKWATCHER_H
+#endif  // ROBOTGUI_TASKWATCHER_H

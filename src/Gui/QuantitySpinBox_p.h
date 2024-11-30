@@ -33,14 +33,14 @@ public:
     ExpressionLabel(QWidget * parent) : QLabel(parent) { }
 
     void setExpressionText(const QString& text) {
-        if (text.isEmpty()) 
-            this->setToolTip(genericFormulaEditorTooltip);
-        else 
-            this->setToolTip(formulaEditorTooltipPrefix + text);
+        if (text.isEmpty())
+            this->setToolTip(genericExpressionEditorTooltip);
+        else
+            this->setToolTip(expressionEditorTooltipPrefix + text);
     }
 
 protected:
-    void mouseReleaseEvent(QMouseEvent * event) {
+    void mouseReleaseEvent(QMouseEvent * event) override {
         if (rect().contains(event->pos()))
                 Q_EMIT clicked();
     }
@@ -50,8 +50,8 @@ Q_SIGNALS:
 
 private:
 
-    const QString genericFormulaEditorTooltip = tr("Enter an expression...");
-    const QString formulaEditorTooltipPrefix = tr("Expression: ");
+    const QString genericExpressionEditorTooltip = tr("Enter an expression... (=)");
+    const QString expressionEditorTooltipPrefix = tr("Expression:") + QLatin1String(" ");
 };
 
 #endif // QUANTITYSPINBOX_P_H

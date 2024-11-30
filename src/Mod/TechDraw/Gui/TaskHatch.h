@@ -24,12 +24,12 @@
 #ifndef GUI_TASKVIEW_TASKHATCH_H
 #define GUI_TASKVIEW_TASKHATCH_H
 
-#include <App/Material.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-
+#include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/Gui/ui_TaskHatch.h>
+
+#include "ui_TaskHatch.h"
 
 
 class Ui_TaskHatch;
@@ -48,43 +48,52 @@ class TaskHatch : public QWidget
     Q_OBJECT
 
 public:
-    TaskHatch(TechDraw::DrawHatch* inHatch,TechDrawGui::ViewProviderHatch* inVp, bool mode);
-    ~TaskHatch();
+    TaskHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
+    explicit TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
+    ~TaskHatch() override;
 
-public:
     virtual bool accept();
     virtual bool reject();
-    void setCreateMode(bool b) { m_createMode = b;}
-    bool getCreateMode() { return m_createMode; }
 
 protected Q_SLOTS:
-    void onFileChanged(void);
-
-protected:
-    void changeEvent(QEvent *e);
-    void initUi();
-//    bool resetUi();
-    void updateValues();
-    void getParameters();
-    QStringList listToQ(std::vector<std::string> in);
-
-private Q_SLOTS:
+    void onFileChanged();
     void onScaleChanged();
     void onColorChanged();
+    void onRotationChanged();
+    void onOffsetChanged();
+
+protected:
+    void changeEvent(QEvent *e) override;
+    void apply(bool forceUpdate = false);
+
+    void createHatch();
+    void updateHatch();
+
+    void setUiPrimary();
+    void setUiEdit();
+
+    void saveHatchState();
+    void restoreHatchState();
+    void getParameters();
 
 private:
     std::unique_ptr<Ui_TaskHatch> ui;
     TechDraw::DrawHatch* m_hatch;
-    TechDrawGui::ViewProviderHatch* m_Vp;
-    App::DocumentObject* m_source;
+    TechDrawGui::ViewProviderHatch* m_vp;
+    TechDraw::DrawViewPart* m_dvp;
+    std::vector<std::string> m_subs;
     std::string m_file;
     double m_scale;
     App::Color m_color;
-    std::string m_origFile;
-    double m_origScale;
-    App::Color m_origColor;
+    double m_rotation;
+    Base::Vector3d m_offset;
 
-    bool m_createMode;
+    std::string m_saveFile;
+    double m_saveScale;
+    App::Color m_saveColor;
+    std::vector<std::string> m_saveSubs;
+    double m_saveRotation;
+    Base::Vector3d m_saveOffset;
 
 };
 
@@ -93,29 +102,24 @@ class TaskDlgHatch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgHatch(TechDraw::DrawHatch* inHatch,TechDrawGui::ViewProviderHatch* inVp, bool mode);
-    ~TaskDlgHatch();
-    const ViewProviderHatch * getViewProvider() const { return viewProvider; }
+    TaskDlgHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
+    explicit TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
+    ~TaskDlgHatch() override;
 
-public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
     { return false; }
-    void setCreateMode(bool b);
 
     void update();
-
-protected:
-    const ViewProviderHatch *viewProvider;
 
 private:
     TaskHatch * widget;

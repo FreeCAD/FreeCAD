@@ -387,7 +387,7 @@ void StructureNodeImpl::writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, i
    /// don't checkImageFileOpen
 
    ustring fieldName;
-   if ( forcedFieldName != nullptr )
+   if ( forcedFieldName )
    {
       fieldName = forcedFieldName;
    }

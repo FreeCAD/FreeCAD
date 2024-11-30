@@ -24,14 +24,14 @@
 #ifndef GUI_COMMAND_T_H
 #define GUI_COMMAND_T_H
 
-#include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Exception.h>
 #include <Gui/Command.h>
-#include <exception>
 #include <type_traits>
 #include <typeinfo>
 #include <boost/format.hpp>
+
 
 namespace Gui {
 
@@ -100,6 +100,33 @@ void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::Document* doc, co
     }
 }
 
+/** Runs a command for accessing document attribute or method
+ * This function is an alternative to _FCMD_DOC_CMD
+ * @param doc: document name
+ * @param mod: module name, "Gui" or "App"
+ * @param cmd: command string, streamable
+ *
+ * Example:
+ * @code{.cpp}
+ *      _cmdDocument(Gui::Command::Gui, doc, "Gui", std::stringstream() << "getObject('" << objName << "')");
+ * @endcode
+ *
+ * Translates to command (assuming doc's name is 'DocName', and
+ * and objName contains value 'ObjName'):
+ * @code{.py}
+ *       Gui.getDocument('DocName').getObject('ObjName')
+ * @endcode
+ */
+template<typename T>
+void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const std::string& doc, const std::string& mod, T&& cmd) {
+    if (!doc.empty()) {
+        std::stringstream str;
+        str << mod << ".getDocument('" << doc << "')."
+            << FormatString::str(cmd);
+        Gui::Command::runCommand(cmdType, str.str().c_str());
+    }
+}
+
 /** Runs a command for accessing App.Document attribute or method
  * This function is an alternative to FCMD_DOC_CMD
  *
@@ -124,6 +151,29 @@ inline void cmdAppDocument(const App::Document* doc, T&& cmd) {
 }
 
 /** Runs a command for accessing App.Document attribute or method
+ * This function is an alternative to FCMD_DOC_CMD
+ *
+ * @param doc: document name
+ * @param cmd: command string, streamable
+ * @sa _cmdDocument()
+ *
+ * Example:
+ * @code{.cpp}
+ *      cmdAppDocument(doc, std::stringstream() << "getObject('" << objName << "')");
+ * @endcode
+ *
+ * Translates to command (assuming doc's name is 'DocName', and
+ * and objName contains value 'ObjName'):
+ * @code{.py}
+ *       App.getDocument('DocName').getObject('ObjName')
+ * @endcode
+ */
+template<typename T>
+inline void cmdAppDocument(const std::string& doc, T&& cmd) {
+    _cmdDocument(Gui::Command::Doc, doc, "App", std::forward<T>(cmd));
+}
+
+/** Runs a command for accessing App.Document attribute or method
  *
  * @param doc: pointer to a document
  * @param cmd: command string, streamable
@@ -142,6 +192,28 @@ inline void cmdAppDocument(const App::Document* doc, T&& cmd) {
  */
 template<typename T>
 inline void cmdGuiDocument(const App::Document* doc, T&& cmd) {
+    _cmdDocument(Gui::Command::Gui, doc, "Gui", std::forward<T>(cmd));
+}
+
+/** Runs a command for accessing App.Document attribute or method
+ *
+ * @param doc: document name
+ * @param cmd: command string, streamable
+ * @sa _cmdDocument()
+ *
+ * Example:
+ * @code{.cpp}
+ *      cmdGuiDocument(doc, std::stringstream() << "getObject('" << objName << "')");
+ * @endcode
+ *
+ * Translates to command (assuming doc's name is 'DocName', and
+ * and objName contains value 'ObjName'):
+ * @code{.py}
+ *       Gui.getDocument('DocName').getObject('ObjName')
+ * @endcode
+ */
+template<typename T>
+inline void cmdGuiDocument(const std::string& doc, T&& cmd) {
     _cmdDocument(Gui::Command::Gui, doc, "Gui", std::forward<T>(cmd));
 }
 
@@ -190,10 +262,10 @@ void cmdAppDocumentArgs(const App::Document* doc, const std::string& cmd, Args&&
             doc->getName(), _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().Error("%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().DeveloperError(doc->Label.getStrValue(),"%s: %s\n", e.what(), cmd.c_str());
     }
     catch (const Base::Exception&) {
-        Base::Console().Error("App.getDocument('%s').%s\n",
+        Base::Console().DeveloperError(doc->Label.getStrValue(),"App.getDocument('%s').%s\n",
             doc->getName(), _cmd.c_str());
         throw;
     }
@@ -229,7 +301,7 @@ inline void cmdGuiDocument(const App::DocumentObject* obj, T&& cmd) {
  */
 template<typename T>
 void _cmdObject(Gui::Command::DoCmd_Type cmdType, const App::DocumentObject* obj, const std::string& mod, T&& cmd) {
-    if (obj && obj->getNameInDocument()) {
+    if (obj && obj->isAttachedToDocument()) {
         std::ostringstream str;
         str << mod << ".getDocument('" << obj->getDocument()->getName() << "')"
                       ".getObject('" << obj->getNameInDocument() << "')."
@@ -280,7 +352,7 @@ inline void cmdAppObjectShow(const App::DocumentObject* obj) {
  * external group.
  */
 inline void cmdSetEdit(const App::DocumentObject* obj, int mod = 0) {
-    if (obj && obj->getNameInDocument()) {
+    if (obj && obj->isAttachedToDocument()) {
         Gui::Command::doCommand(Gui::Command::Gui,
             "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %d)",
             obj->getDocument()->getName(), obj->getNameInDocument(), mod);
@@ -313,10 +385,10 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
             obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().Error("%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().DeveloperError(obj->getFullLabel(),"%s: %s\n", e.what(), cmd.c_str());
     }
     catch (const Base::Exception&) {
-        Base::Console().Error("App.getDocument('%s').getObject('%s').%s\n",
+        Base::Console().DeveloperError(obj->getFullLabel(),"App.getDocument('%s').getObject('%s').%s\n",
             obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
         throw;
     }
@@ -338,10 +410,10 @@ void cmdGuiObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
             obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().Error("%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().DeveloperError(obj->getFullLabel(),"%s: %s\n", e.what(), cmd.c_str());
     }
     catch (const Base::Exception&) {
-        Base::Console().Error("Gui.getDocument('%s').getObject('%s').%s\n",
+        Base::Console().DeveloperError(obj->getFullLabel(),"Gui.getDocument('%s').getObject('%s').%s\n",
             obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
         throw;
     }
@@ -371,10 +443,10 @@ void doCommandT(Gui::Command::DoCmd_Type cmdType, const std::string& cmd, Args&&
         Gui::Command::doCommand(cmdType,"%s", _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().Error("%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().DeveloperError("doCommandT","%s: %s\n", e.what(), cmd.c_str());
     }
     catch (const Base::Exception&) {
-        Base::Console().Error("%s\n", _cmd.c_str());
+        Base::Console().DeveloperError("doCommandT","%s\n", _cmd.c_str());
         throw;
     }
 }

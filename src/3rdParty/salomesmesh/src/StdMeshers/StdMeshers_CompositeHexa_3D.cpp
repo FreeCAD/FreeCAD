@@ -17,7 +17,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 // File      : StdMeshers_CompositeHexa_3D.cxx
 // Module    : SMESH
 // Created   : Tue Nov 25 11:04:59 2008
@@ -82,7 +82,7 @@ enum EBoxSides{ B_BOTTOM=0, B_RIGHT, B_TOP, B_LEFT, B_FRONT, B_BACK, B_UNDEFINED
 
 //================================================================================
 /*!
- * \brief Convertor of a pair of integers to a sole index
+ * \brief Converter of a pair of integers to a sole index
  */
 struct _Indexer
 {

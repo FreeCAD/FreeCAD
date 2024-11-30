@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMDS : implementaion of Salome mesh data structure
+//  SMESH SMDS : implementation of Salome mesh data structure
 // File:      SMDS_QuadraticFaceOfNodes.cxx
 // Created:   16.01.06 17:12:58
 // Author:    Sergey KUUL

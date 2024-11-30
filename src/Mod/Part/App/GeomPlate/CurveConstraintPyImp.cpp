@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <GeomAdaptor_Curve.hxx>
@@ -37,8 +36,8 @@
 #include "GeomPlate/CurveConstraintPy.cpp"
 #include "Geom2d/Curve2dPy.h"
 #include "GeometryCurvePy.h"
-#include "GeometrySurfacePy.h"
-#include "Geometry2d.h"
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 
 using namespace Part;
 
@@ -63,11 +62,13 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
     // Length(), FirstParameter(), LastParameter(), ...
     // Thus, we don't allow to create an empty GeomPlate_CurveConstraint instance
 
-    static char* keywords[] = {"Boundary", "Order", "NbPts", "TolDist", "TolAng", "TolCurv", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|iiddd", keywords,
-                                     &(GeometryCurvePy::Type), &bound, &order,
-                                     &nbPts, &tolDist, &tolAng, &tolCurv))
+    static const std::array<const char *, 7> keywords{"Boundary", "Order", "NbPts", "TolDist", "TolAng", "TolCurv",
+                                                      nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|iiddd", keywords,
+                                             &(GeometryCurvePy::Type), &bound, &order,
+                                             &nbPts, &tolDist, &tolAng, &tolCurv)) {
         return -1;
+    }
 
     try {
         std::unique_ptr<GeomPlate_CurveConstraint> ptr;
@@ -81,7 +82,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 
 #if OCC_VERSION_HEX >= 0x070600
             Handle(Adaptor3d_Curve) hCurve;
-            if (curve->getTypeId().isDerivedFrom(GeomTrimmedCurve::getClassTypeId())) {
+            if (curve->isDerivedFrom<GeomTrimmedCurve>()) {
                 GeomTrimmedCurve* trim = static_cast<GeomTrimmedCurve*>(curve);
                 hCurve = new GeomAdaptor_Curve(handle, trim->getFirstParameter(), trim->getLastParameter());
             }
@@ -90,7 +91,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
             }
 #else
             Handle(Adaptor3d_HCurve) hCurve;
-            if (curve->getTypeId().isDerivedFrom(GeomTrimmedCurve::getClassTypeId())) {
+            if (curve->isDerivedFrom<GeomTrimmedCurve>()) {
                 GeomTrimmedCurve* trim = static_cast<GeomTrimmedCurve*>(curve);
                 GeomAdaptor_Curve adapt(handle, trim->getFirstParameter(), trim->getLastParameter());
                 hCurve = new GeomAdaptor_HCurve(adapt);
@@ -101,10 +102,10 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
             }
 #endif
 
-            ptr.reset(new GeomPlate_CurveConstraint(hCurve, order, nbPts, tolDist, tolAng, tolCurv));
+            ptr = std::make_unique<GeomPlate_CurveConstraint>(hCurve, order, nbPts, tolDist, tolAng, tolCurv);
         }
         else {
-            ptr.reset(new GeomPlate_CurveConstraint);
+            ptr = std::make_unique<GeomPlate_CurveConstraint>();
         }
 
         setTwinPointer(ptr.release());
@@ -118,9 +119,9 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string CurveConstraintPy::representation(void) const
+std::string CurveConstraintPy::representation() const
 {
-    return std::string("<GeomPlate_CurveConstraint object>");
+    return {"<GeomPlate_CurveConstraint object>"};
 }
 
 PyObject* CurveConstraintPy::setOrder(PyObject *args)
@@ -355,7 +356,7 @@ PyObject* CurveConstraintPy::projectedCurve(PyObject *args)
     }
 }
 
-Py::Long CurveConstraintPy::getNbPoints(void) const
+Py::Long CurveConstraintPy::getNbPoints() const
 {
     try {
         Standard_Integer v = getGeomPlate_CurveConstraintPtr()->NbPoints();
@@ -376,7 +377,7 @@ void  CurveConstraintPy::setNbPoints(Py::Long arg)
     }
 }
 
-Py::Float CurveConstraintPy::getFirstParameter(void) const
+Py::Float CurveConstraintPy::getFirstParameter() const
 {
     try {
         Standard_Real v = getGeomPlate_CurveConstraintPtr()->FirstParameter();
@@ -387,7 +388,7 @@ Py::Float CurveConstraintPy::getFirstParameter(void) const
     }
 }
 
-Py::Float CurveConstraintPy::getLastParameter(void) const
+Py::Float CurveConstraintPy::getLastParameter() const
 {
     try {
         Standard_Real v = getGeomPlate_CurveConstraintPtr()->LastParameter();
@@ -398,7 +399,7 @@ Py::Float CurveConstraintPy::getLastParameter(void) const
     }
 }
 
-Py::Float CurveConstraintPy::getLength(void) const
+Py::Float CurveConstraintPy::getLength() const
 {
     try {
         Standard_Real v = getGeomPlate_CurveConstraintPtr()->Length();
@@ -411,7 +412,7 @@ Py::Float CurveConstraintPy::getLength(void) const
 
 PyObject *CurveConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CurveConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -73,8 +73,8 @@ istream *ZipFile::getInputStream( const string &entry_name,
 
   ConstEntryPointer ent = getEntry( entry_name, matchpath ) ;
   
-  if ( ent == 0 )
-    return 0 ;
+  if ( !ent )
+    return nullptr ;
   else
     return new ZipInputStream( _filename,	
 			   static_cast< const ZipCDirEntry * >( ent.get() )->
@@ -110,7 +110,7 @@ bool ZipFile::readCentralDirectory ( istream &_zipfile ) {
 
   int entry_num = 0 ;
   // Giving the default argument in the next line to keep Visual C++ quiet
-  _entries.resize ( _eocd.totalCount(), 0 ) ;
+  _entries.resize ( _eocd.totalCount(), nullptr ) ;
   while ( ( entry_num < _eocd.totalCount() ) ) {
     ZipCDirEntry *ent = new ZipCDirEntry ; 
     _entries[ entry_num ] = ent ;

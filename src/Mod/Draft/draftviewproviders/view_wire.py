@@ -39,11 +39,12 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import DraftGeomUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftutils.messages import _msg
+import WorkingPlane
+from draftgeoutils import wires
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
+from draftutils.translate import translate
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -72,7 +73,7 @@ class ViewProviderWire(ViewProviderDraft):
                              "ArrowSize",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.ArrowSize = utils.get_param("arrowsize", 0.1)
+            vobj.ArrowSize = params.get_param("arrowsize")
 
         if not hasattr(vobj, "ArrowType"):
             _tip = "Arrow type"
@@ -81,7 +82,7 @@ class ViewProviderWire(ViewProviderDraft):
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
             vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol", 0)]
+            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
 
     def attach(self, vobj):
         self.Object = vobj.Object
@@ -124,7 +125,7 @@ class ViewProviderWire(ViewProviderDraft):
                     if hasattr(vobj,"ArrowSize"):
                         s = vobj.ArrowSize
                     else:
-                        s = utils.get_param("arrowsize",0.1)
+                        s = params.get_param("arrowsize")
                     self.coords.scaleFactor.setValue((s,s,s))
                     rn.addChild(self.pt)
                 else:
@@ -146,32 +147,24 @@ class ViewProviderWire(ViewProviderDraft):
             return [self.Object.Base,self.Object.Tool]
         return []
 
-    def setupContextMenu(self,vobj,menu):
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),
-                                "Flatten this wire",
-                                menu)
-        QtCore.QObject.connect(action1,
-                               QtCore.SIGNAL("triggered()"),
-                               self.flatten)
-        menu.addAction(action1)
+    def flatten(self): # Only to be used for Draft_Wires.
+        if not hasattr(self, "Object"):
+            return
 
-    def flatten(self):
-        if hasattr(self,"Object"):
-            if len(self.Object.Shape.Wires) == 1:
-                fw = DraftGeomUtils.flattenWire(self.Object.Shape.Wires[0])
-                points = [v.Point for v in fw.Vertexes]
-                if len(points) == len(self.Object.Points):
-                    if points != self.Object.Points:
-                        App.ActiveDocument.openTransaction("Flatten wire")
-                        Gui.doCommand("FreeCAD.ActiveDocument." + 
-                                      self.Object.Name + 
-                                      ".Points=" + 
-                                      str(points).replace("Vector", "FreeCAD.Vector").replace(" " , ""))
-                        App.ActiveDocument.commitTransaction()
+        wp = WorkingPlane.get_working_plane()
+        flat_wire = wires.flattenWire(self.Object.Shape.Wires[0],
+                                      origin=wp.position,
+                                      normal=wp.axis)
 
-                    else:
-                        _flat = "This Wire is already flat"
-                        _msg(QT_TRANSLATE_NOOP("Draft", _flat))
+        doc = App.ActiveDocument
+        doc.openTransaction(translate("draft", "Flatten"))
+
+        self.Object.Placement = App.Placement()
+        self.Object.Points = [vert.Point for vert in flat_wire.Vertexes]
+        self.Object.Closed = flat_wire.isClosed()
+
+        doc.recompute()
+        doc.commitTransaction()
 
 
 # Alias for compatibility with v0.18 and earlier

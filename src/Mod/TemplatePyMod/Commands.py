@@ -66,7 +66,7 @@ class TemplatePyMod_Cmd2:
                         self.node=[]
                         self.view.removeEventCallback("SoMouseButtonEvent",self.call)
 
-        p=PolygonCreator(d,v,10)
+        self.polycreator = PolygonCreator(d,v,10)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
@@ -142,7 +142,7 @@ class TemplatePyMod_Cmd4:
 		FreeCAD.Console.PrintError('TemplatePyMod_Cmd4 was destroyed\n')
 
 	def Activated(self):
-		if FreeCADGui.ActiveDocument != None:
+		if FreeCADGui.ActiveDocument is not None:
 			self.sc.enter()
 		else:
 			FreeCAD.Console.PrintWarning('A 3d view must be created\n')

@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include "Geometry.h"
 
 #include "FeatureGeometrySet.h"
 
@@ -38,19 +33,19 @@ PROPERTY_SOURCE(Part::FeatureGeometrySet, Part::Feature)
 
 FeatureGeometrySet::FeatureGeometrySet()
 {
-    ADD_PROPERTY(GeometrySet,(0));
+    ADD_PROPERTY(GeometrySet,(nullptr));
 }
 
 
-App::DocumentObjectExecReturn *FeatureGeometrySet::execute(void)
+App::DocumentObjectExecReturn *FeatureGeometrySet::execute()
 {
     TopoShape result;
 
     const std::vector<Geometry*> &Geoms = GeometrySet.getValues();
 
     bool first = true;
-    for(std::vector<Geometry*>::const_iterator it=Geoms.begin();it!=Geoms.end();++it){
-        TopoDS_Shape sh = (*it)->toShape();
+    for(auto Geom : Geoms) {
+        TopoDS_Shape sh = Geom->toShape();
         if (first) {
             first = false;
             result.setShape(sh);
@@ -59,7 +54,7 @@ App::DocumentObjectExecReturn *FeatureGeometrySet::execute(void)
             result.setShape(result.fuse(sh));
         }
     }
-    
+
     Shape.setValue(result);
 
     return App::DocumentObject::StdReturn;

@@ -1,5 +1,5 @@
 
-#include <time.h>
+#include <ctime>
 
 #include "zipios-config.h"
 

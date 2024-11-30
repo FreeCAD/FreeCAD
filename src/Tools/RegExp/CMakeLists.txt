@@ -3,7 +3,7 @@ set(APP_VERSION "1.0")
 
 cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
 
-find_package(Qt4)
+find_package(Qt5)
 
 include_directories(
     ${QT_INCLUDE_DIR}
@@ -16,11 +16,11 @@ link_directories(${QT_LIBRARY_DIR})
 
 add_definitions(-D_UNICODE)
 
-QT4_WRAP_CPP(RegExp_MOC_SRCS
+QT5_WRAP_CPP(RegExp_MOC_SRCS
     regexpdialog.h
 )
 
-QT4_WRAP_UI(RegExp_UIC_HDRS 
+QT5_WRAP_UI(RegExp_UIC_HDRS
     regexpdialog.ui
 )
 

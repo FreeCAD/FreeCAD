@@ -201,14 +201,14 @@ class SMESH_EXPORT SMESH_Mesh
   bool IsUsedHypothesis(SMESHDS_Hypothesis *  anHyp,
                         const SMESH_subMesh * aSubMesh);
   /*!
-   * \brief check if a hypothesis alowing notconform mesh is present
+   * \brief check if a hypothesis allowing notconform mesh is present
    */
   bool IsNotConformAllowed() const;
   
   bool IsMainShape(const TopoDS_Shape& theShape) const;
   /*!
    * \brief Return list of ancestors of theSubShape in the order
-   *        that lower dimention shapes come first
+   *        that lower dimension shapes come first
    */
   const TopTools_ListOfShape& GetAncestors(const TopoDS_Shape& theSubShape) const;
 

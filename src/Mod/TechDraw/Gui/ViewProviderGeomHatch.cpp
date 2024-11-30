@@ -27,33 +27,18 @@
 #ifndef _PreComp_
 #endif
 
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
 #include <Gui/Application.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Utilities.h>
-#include <Gui/Control.h>
-
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
+#include "QGIView.h"
 #include "TaskGeomHatch.h"
 #include "PreferencesGui.h"
 #include "ViewProviderDrawingView.h"
@@ -73,9 +58,9 @@ ViewProviderGeomHatch::ViewProviderGeomHatch()
 
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(ColorPattern,(TechDraw::DrawGeomHatch::prefGeomHatchColor()),
-                        vgroup,App::Prop_None,"Color of the pattern");
-    ADD_PROPERTY_TYPE(WeightPattern,(0),vgroup,App::Prop_None,"GeometricHatch pattern line thickness");
+    ADD_PROPERTY_TYPE(ColorPattern, (TechDraw::DrawGeomHatch::prefGeomHatchColor()),
+                        vgroup, App::Prop_None, "Color of the pattern");
+    ADD_PROPERTY_TYPE(WeightPattern, (0), vgroup, App::Prop_None, "GeometricHatch pattern line thickness");
 
     getParameters();
 
@@ -85,32 +70,13 @@ ViewProviderGeomHatch::~ViewProviderGeomHatch()
 {
 }
 
-void ViewProviderGeomHatch::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
-}
-
-void ViewProviderGeomHatch::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderGeomHatch::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-
-    return StrList;
-}
-
 bool ViewProviderGeomHatch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     TaskDlgGeomHatch *projDlg = qobject_cast<TaskDlgGeomHatch *>(dlg);
     if (projDlg && (projDlg->getViewProvider() != this))
-        projDlg = 0; // somebody left task panel open
+        projDlg = nullptr; // somebody left task panel open
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
@@ -120,23 +86,13 @@ bool ViewProviderGeomHatch::setEdit(int ModNum)
         projDlg->setCreateMode(false);
         Gui::Control().showDialog(projDlg);
     } else {
-        Gui::Control().showDialog(new TaskDlgGeomHatch(getViewObject(),this,false));
+        Gui::Control().showDialog(new TaskDlgGeomHatch(getViewObject(), this, false));
     }
 
     return true;
 }
 
-void ViewProviderGeomHatch::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDocumentObject::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderGeomHatch::doubleClicked(void)
+bool ViewProviderGeomHatch::doubleClicked()
 {
     setEdit(0);
     return true;
@@ -148,7 +104,7 @@ void ViewProviderGeomHatch::onChanged(const App::Property* p)
     if ((p == &WeightPattern)  ||
         (p == &ColorPattern) ) {
         auto gHatch = getViewObject();
-        if (gHatch != nullptr) {
+        if (gHatch) {
             TechDraw::DrawViewPart* parent = gHatch->getSourceView();
             if (parent) {
                 parent->requestPaint();
@@ -159,37 +115,49 @@ void ViewProviderGeomHatch::onChanged(const App::Property* p)
     Gui::ViewProviderDocumentObject::onChanged(p);
 }
 
-//for feature properties - but each letter/digit in property editor triggers this!
+//for feature properties
 void ViewProviderGeomHatch::updateData(const App::Property* prop)
 {
+    if ( prop == &(getViewObject()->FilePattern) ||
+            prop == &(getViewObject()->NamePattern) ) {
+        TechDraw::DrawViewPart* parent = getViewObject()->getSourceView();
+        if (parent) {
+            parent->requestPaint();
+        }
+    }
+
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-void ViewProviderGeomHatch::updateGraphic(void)
+void ViewProviderGeomHatch::updateGraphic()
 {
     TechDraw::DrawGeomHatch* dc = getViewObject();
-    if (dc) {
-        TechDraw::DrawViewPart* dvp = dc->getSourceView();
-        if (dvp) {
-            Gui::ViewProvider* view = Gui::Application::Instance->getDocument(dvp->getDocument())->getViewProvider(dvp);
-            TechDrawGui::ViewProviderDrawingView* vpDV = dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(view);
-            if (vpDV) {
-                vpDV->show();
-                QGIView* qgiv = vpDV->getQView();
-                if (qgiv) {
-                    qgiv->updateView(true);
-                }
-            }
-        }
-   }
+    if (!dc) {
+        return;
+    }
+
+    TechDraw::DrawViewPart* dvp = dc->getSourceView();
+    if (!dvp) {
+        return;
+    }
+
+    Gui::ViewProvider* view = Gui::Application::Instance->getDocument(dvp->getDocument())->getViewProvider(dvp);
+    TechDrawGui::ViewProviderDrawingView* vpDV = dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(view);
+    if (!vpDV) {
+        return;
+    }
+    vpDV->show();
+
+    QGIView* qgiv = vpDV->getQView();
+    if (!qgiv) {
+        return;
+    }
+    qgiv->updateView(true);
 }
 
-void ViewProviderGeomHatch::getParameters(void)
+void ViewProviderGeomHatch::getParameters()
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Graphic");
-    delete lg;                                                    //Coverity CID 174667
+    double weight = TechDraw::LineGroup::getDefaultWidth("Graphic");
     WeightPattern.setValue(weight);
 }
 
@@ -209,8 +177,10 @@ TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
 Gui::MDIView *ViewProviderGeomHatch::getMDIView() const
 {
     auto obj = getViewObject();
-    if(!obj) return 0;
+    if(!obj)
+        return nullptr;
     auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
-    if(!vp) return 0;
+    if(!vp)
+        return nullptr;
     return vp->getMDIView();
 }

@@ -68,14 +68,14 @@ class RotationalInterpolation_SingleAxis: public RotationalInterpolation
 		double angle;
 	public:
 		RotationalInterpolation_SingleAxis();
-		virtual void SetStartEnd(Rotation start,Rotation end);
-		virtual double Angle();
-		virtual Rotation Pos(double th) const;
-		virtual Vector Vel(double th,double thd) const;
-		virtual Vector Acc(double th,double thd,double thdd)   const;
-		virtual void Write(std::ostream& os) const;
-		virtual RotationalInterpolation* Clone() const;
-		virtual ~RotationalInterpolation_SingleAxis();
+		void SetStartEnd(Rotation start,Rotation end) override;
+		double Angle() override;
+		Rotation Pos(double th) const override;
+		Vector Vel(double th,double thd) const override;
+		Vector Acc(double th,double thd,double thdd)   const override;
+		void Write(std::ostream& os) const override;
+		RotationalInterpolation* Clone() const override;
+		~RotationalInterpolation_SingleAxis() override;
 	};
 
 }

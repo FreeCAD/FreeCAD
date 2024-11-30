@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <gp_Pnt.hxx>
 # include <TopoDS_Wire.hxx>
 #endif
 
 #include "FeaturePartPolygon.h"
-#include <Base/Exception.h>
+
 
 PROPERTY_SOURCE(Part::Polygon, Part::Feature)
 
@@ -41,9 +39,7 @@ Part::Polygon::Polygon()
     ADD_PROPERTY(Close,(false));
 }
 
-Part::Polygon::~Polygon()
-{
-}
+Part::Polygon::~Polygon() = default;
 
 short Part::Polygon::mustExecute() const
 {
@@ -52,13 +48,13 @@ short Part::Polygon::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Part::Polygon::execute(void)
+App::DocumentObjectExecReturn *Part::Polygon::execute()
 {
     BRepBuilderAPI_MakePolygon poly;
     const std::vector<Base::Vector3d> nodes = Nodes.getValues();
 
-    for (std::vector<Base::Vector3d>::const_iterator it = nodes.begin(); it != nodes.end(); ++it) {
-        gp_Pnt pnt(it->x, it->y, it->z);
+    for (const auto & node : nodes) {
+        gp_Pnt pnt(node.x, node.y, node.z);
         poly.Add(pnt);
     }
 

@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM constant vacuum permittivity object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package constant_vacuumpermittivity
 #  \ingroup FEM
@@ -40,11 +40,14 @@ class ConstantVacuumPermittivity(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstantVacuumPermittivity"
 
     def __init__(self, obj):
-        super(ConstantVacuumPermittivity, self).__init__(obj)
+        super().__init__(obj)
         obj.addProperty(
             "App::PropertyVacuumPermittivity",
             "VacuumPermittivity",
             "Constants",
-            "Set the permittivity of vacuum"
+            "Overwrites default permittivity of vacuum",
         )
-        obj.VacuumPermittivity = Units.Quantity(constants.vacuum_permittivity())
+        obj.setPropertyStatus("VacuumPermittivity", "LockDynamic")
+        # we must set an expression so that the small value can actually be entered
+        permittivity = Units.Quantity(constants.vacuum_permittivity()).getValueAs("F/m")
+        obj.setExpression("VacuumPermittivity", str(permittivity))

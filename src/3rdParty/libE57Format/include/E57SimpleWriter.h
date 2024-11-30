@@ -105,7 +105,7 @@ namespace e57
       //! @param [in] buffer of idElementValue index for this group
       //! @param [in] startPointIndex buffer with starting indices in to the "points" data vector for the groups
       //! @param [in] pointCount buffer with sizes of the groups given
-      //! @return Return true if sucessful, false otherwise
+      //! @return Return true if successful, false otherwise
       bool WriteData3DGroupsData( int64_t dataIndex, int64_t groupCount, int64_t *idElementValue,
                                   int64_t *startPointIndex, int64_t *pointCount );
 

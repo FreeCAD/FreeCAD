@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "FemAnalysis.h"
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
-#include <Base/Placement.h>
 #include <Base/Uuid.h>
+
+#include "FemAnalysis.h"
+
 
 using namespace Fem;
 using namespace App;
@@ -41,16 +38,14 @@ PROPERTY_SOURCE(Fem::FemAnalysis, App::DocumentObjectGroup)
 FemAnalysis::FemAnalysis()
 {
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Analysis");
+    ADD_PROPERTY_TYPE(Uid, (id), 0, App::Prop_None, "UUID of the Analysis");
 }
 
-FemAnalysis::~FemAnalysis()
-{
-}
+FemAnalysis::~FemAnalysis() = default;
 
-void FemAnalysis::handleChangedPropertyName(Base::XMLReader &reader,
-                                            const char * TypeName,
-                                            const char *PropName)
+void FemAnalysis::handleChangedPropertyName(Base::XMLReader& reader,
+                                            const char* TypeName,
+                                            const char* PropName)
 {
     Base::Type type = Base::Type::fromName(TypeName);
     if (Group.getClassTypeId() == type && strcmp(PropName, "Member") == 0) {
@@ -67,17 +62,20 @@ PROPERTY_SOURCE_ABSTRACT(Fem::DocumentObject, App::DocumentObject)
 
 // Python feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemAnalysisPython, Fem::FemAnalysis)
-template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
+template<>
+const char* Fem::FemAnalysisPython::getViewProviderName() const
+{
     return "FemGui::ViewProviderFemAnalysisPython";
 }
 
 // template<> void Fem::FemAnalysisPython::Restore(Base::XMLReader& reader) {
 //     FemAnalysis::Restore(reader);
 // }
-//template<> PyObject* Fem::FemAnalysisPython::getPyObject(void) {
+// template<> PyObject* Fem::FemAnalysisPython::getPyObject(void) {
 //    if (PythonObject.is(Py::_None())) {
 //        // ref counter is set to 1
 //        PythonObject = Py::Object(new App::DocumentObjectPy(this),true);
@@ -88,24 +86,29 @@ template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
 
 // explicit template instantiation
 template class FemExport FeaturePythonT<Fem::FemAnalysis>;
-}
+}  // namespace App
 
 // ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FeaturePython, Fem::DocumentObject)
-template<> const char* Fem::FeaturePython::getViewProviderName(void) const {
-    return "Gui::ViewProviderPythonFeature";
+template<>
+const char* Fem::FeaturePython::getViewProviderName() const
+{
+    return "Gui::ViewProviderFeaturePython";
 }
-template<> PyObject* Fem::FeaturePython::getPyObject(void) {
+template<>
+PyObject* Fem::FeaturePython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
 // explicit template instantiation
 template class FemExport FeaturePythonT<Fem::DocumentObject>;
 /// @endcond
-}
+}  // namespace App

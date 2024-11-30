@@ -139,10 +139,12 @@ namespace Py
                 args[0] = Object( self, true );
                 args[1] = Object( PyCObject_FromVoidPtr( method_def, do_not_dealloc ), true );
 
-                PyObject *func = PyCFunction_New
+                assert( m_module != NULL );
+                PyObject *func = PyCFunction_NewEx
                                     (
                                     &method_def->ext_meth_def,
-                                    new_reference_to( args )
+                                    new_reference_to( args ),
+                                    m_module
                                     );
 
                 method_def->py_method = Object( func, true );

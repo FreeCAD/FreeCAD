@@ -20,23 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 
 #include "FeaturePartSpline.h"
 
 
 using namespace Part;
 
-
 PROPERTY_SOURCE(Part::Spline, Part::Feature)
 
 
-Spline::Spline()
-{
-}
+Spline::Spline() = default;
 
 

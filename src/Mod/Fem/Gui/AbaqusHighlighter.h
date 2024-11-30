@@ -26,22 +26,23 @@
 
 #include <Gui/SyntaxHighlighter.h>
 
-namespace FemGui {
+namespace FemGui
+{
 
 /**
  * Syntax highlighter for Abaqus.
  * @author Werner Mayer
  */
-class AbaqusHighlighter : public Gui::SyntaxHighlighter
+class AbaqusHighlighter: public Gui::SyntaxHighlighter
 {
 public:
-    AbaqusHighlighter(QObject* parent);
-    virtual ~AbaqusHighlighter();
+    explicit AbaqusHighlighter(QObject* parent);
+    ~AbaqusHighlighter() override;
 
 protected:
-    void highlightBlock(const QString &text);
+    void highlightBlock(const QString& text) override;
 };
 
-} // namespace FemGui
+}  // namespace FemGui
 
-#endif // FEMGUI_ABAQUSHIGHLIGHTER_H
+#endif  // FEMGUI_ABAQUSHIGHLIGHTER_H

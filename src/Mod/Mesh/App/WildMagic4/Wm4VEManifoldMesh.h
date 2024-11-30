@@ -73,7 +73,7 @@ public:
 
 
     // construction and destruction
-    VEManifoldMesh (VCreator oVCreator = 0, ECreator oECreator = 0);
+    VEManifoldMesh (VCreator oVCreator = nullptr, ECreator oECreator = nullptr);
     virtual ~VEManifoldMesh ();
 
     // member access

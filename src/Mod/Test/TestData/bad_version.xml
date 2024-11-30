@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<package format="2" xmlns="https://wiki.freecad.org/Package_Metadata">
+	<name>Bad format</name>
+	<description>There is no such thing as format version 2 (yet).</description>
+	<version>1.0.0</version>
+</package>

@@ -31,21 +31,21 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderAddSub : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderAddSub);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderAddSub);
 
 public:
     /// constructor
     ViewProviderAddSub();
     /// destructor
-    virtual ~ViewProviderAddSub();
-    
-    virtual void attach(App::DocumentObject*);
-    virtual void updateData(const App::Property*);
-    
-protected: 
+    ~ViewProviderAddSub() override;
+
+    void attach(App::DocumentObject*) override;
+    void updateData(const App::Property*) override;
+
+protected:
     void updateAddSubShapeIndicator();
     void setPreviewDisplayMode(bool);
-    
+
     SoSeparator*                previewShape;
     PartGui::SoBrepFaceSet*     previewFaceSet;
     SoCoordinate3*              previewCoords;

@@ -20,22 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef APP_PRECOMPILED_H
 #define APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// here get the warnings of too long specifiers disabled
+// point at which warnings of overly long specifiers disabled
 #ifdef _MSC_VER
-#pragma warning( disable : 4251 )
-#pragma warning( disable : 4273 )
-#pragma warning( disable : 4275 )
-#pragma warning( disable : 4482 )  // nonstandard extension used: enum 'App::ObjectStatus' used in qualified name
-#pragma warning( disable : 4503 )
-#pragma warning( disable : 4786 )  // specifier longer then 255 chars
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4273)
+#pragma warning(disable : 4275)
+#pragma warning(disable : 4482)  // nonstandard extension used: enum 'App::ObjectStatus' used in
+                                 // qualified name
+#pragma warning(disable : 4503)
+#pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
-
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -47,20 +46,21 @@
 #ifdef _PreComp_
 
 // standard
-#include <cstdio>
 #include <cassert>
-#include <ctime>
 #include <csignal>
+#include <cstdio>
+#include <ctime>
+#include <cfloat>
 
 #ifdef FC_OS_WIN32
+#include <crtdbg.h>
 #include <direct.h>
 #include <windows.h>
-#include <crtdbg.h>
 #endif
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-#include <unistd.h>
 #include <pwd.h>
+#include <unistd.h>
 #include <sys/types.h>
 #endif
 
@@ -69,37 +69,38 @@
 #include <sstream>
 
 // STL
-#include <string>
+#include <bitset>
+#include <chrono>
+#include <exception>
+#include <functional>
+#include <iterator>
 #include <list>
 #include <map>
-#include <vector>
+#include <memory>
+#include <queue>
+#include <random>
 #include <set>
 #include <stack>
-#include <queue>
-#include <bitset>
-#include <exception>
-#include <random>
-#include <unordered_set>
-#include <unordered_map>
-#include <iterator>
-#include <functional>
+#include <string>
 #include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 // Boost
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/regex.hpp>
-
-#include <boost/utility.hpp>
 #include <boost_graph_adjacency_list.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost_signals2.hpp>
 
 #include <boost/program_options.hpp>
-
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <boost/regex.hpp>
+#include <boost/utility.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/core/ignore_unused.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem/exception.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
 
-#endif //_PreComp_
+#endif  //_PreComp_
 
-#endif // APP_PRECOMPILED_H
+#endif  // APP_PRECOMPILED_H

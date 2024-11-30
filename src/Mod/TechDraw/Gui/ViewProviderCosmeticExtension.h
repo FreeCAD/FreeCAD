@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERCOSMETICEXTENSION_H
 #define GUI_VIEWPROVIDERCOSMETICEXTENSION_H
 
-#include <App/Extension.h>
-#include <Gui/ViewProviderExtension.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <Gui/ViewProviderExtensionPython.h>
 
 namespace TechDrawGui
 {
@@ -36,16 +36,13 @@ class TechDrawGuiExport ViewProviderCosmeticExtension : public Gui::ViewProvider
 
 public:
     /// Constructor
-    ViewProviderCosmeticExtension(void);
-    virtual ~ViewProviderCosmeticExtension() = default;
+    ViewProviderCosmeticExtension();
+    ~ViewProviderCosmeticExtension() override = default;
 
-    virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const override;
-
-    virtual void extensionUpdateData(const App::Property*) override;
-
+    QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const override;
 };
 
-typedef Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExtension> ViewProviderCosmeticExtensionPython;
+using ViewProviderCosmeticExtensionPython = Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExtension>;
 
 } //namespace TechDrawGui
 

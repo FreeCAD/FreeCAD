@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
 #define DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include "QGIPrimPath.h"
 
 QT_BEGIN_NAMESPACE
@@ -37,12 +39,12 @@ class TechDrawGuiExport QGIDimLines : public QGIPrimPath
 {
 public:
     explicit QGIDimLines();
-    ~QGIDimLines() {}
+    ~QGIDimLines() override = default;
 
     enum {Type = QGraphicsItem::UserType + 175};
     int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape() const override;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
 public:
     void draw();
@@ -50,11 +52,10 @@ public:
     //double getLineWidth() { return m_lineWidth; }
     //void setLineWidth(double w);
     //QPainterPath shape() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override;
 
 protected:
     //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    double getEdgeFuzz(void) const;
+    double getEdgeFuzz() const;
 
 
 private:

@@ -20,53 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Elips.hxx>
-# include <Geom_Ellipse.hxx>
 # include <GC_MakeEllipse.hxx>
+# include <Geom_Ellipse.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
+#include "EllipsePy.h"
+#include "EllipsePy.cpp"
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/EllipsePy.h>
-#include <Mod/Part/App/EllipsePy.cpp>
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string EllipsePy::representation(void) const
+std::string EllipsePy::representation() const
 {
     return "<Ellipse object>";
 }
 
 PyObject *EllipsePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of EllipsePy and the Twin object 
+    // create a new instance of EllipsePy and the Twin object
     return new EllipsePy(new GeomEllipse);
 }
 
 // constructor method
 int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {NULL};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
+    static const std::array<const char *, 1> keywords_n {nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
         ellipse->SetMajorRadius(2.0);
         ellipse->SetMinorRadius(1.0);
         return 0;
     }
 
-    char* keywords_e[] = {"Ellipse",NULL};
+    static const std::array<const char *, 2> keywords_e {"Ellipse", nullptr};
     PyErr_Clear();
     PyObject *pElips;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(EllipsePy::Type), &pElips)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(EllipsePy::Type), &pElips)) {
         EllipsePy* pEllipse = static_cast<EllipsePy*>(pElips);
         Handle(Geom_Ellipse) Elips1 = Handle(Geom_Ellipse)::DownCast
             (pEllipse->getGeomEllipsePtr()->handle());
@@ -76,13 +75,13 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_ssc[] = {"S1","S2","Center",NULL};
+    static const std::array<const char *, 4> keywords_ssc {"S1", "S2", "Center", nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
-                                         &(Base::VectorPy::Type), &pV1,
-                                         &(Base::VectorPy::Type), &pV2,
-                                         &(Base::VectorPy::Type), &pV3)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
+                                            &(Base::VectorPy::Type), &pV1,
+                                            &(Base::VectorPy::Type), &pV2,
+                                            &(Base::VectorPy::Type), &pV3)) {
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
@@ -99,11 +98,11 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",NULL};
+    static const std::array<const char *, 4> keywords_cmm {"Center", "MajorRadius", "MinorRadius", nullptr};
     PyErr_Clear();
     PyObject *pV;
     double major, minor;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
                                         &(Base::VectorPy::Type), &pV,
                                         &major, &minor)) {
         Base::Vector3d c = static_cast<Base::VectorPy*>(pV)->value();
@@ -127,10 +126,10 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float EllipsePy::getMajorRadius(void) const
+Py::Float EllipsePy::getMajorRadius() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
-    return Py::Float(ellipse->MajorRadius()); 
+    return Py::Float(ellipse->MajorRadius());
 }
 
 void EllipsePy::setMajorRadius(Py::Float arg)
@@ -139,10 +138,10 @@ void EllipsePy::setMajorRadius(Py::Float arg)
     ellipse->SetMajorRadius((double)arg);
 }
 
-Py::Float EllipsePy::getMinorRadius(void) const
+Py::Float EllipsePy::getMinorRadius() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
-    return Py::Float(ellipse->MinorRadius()); 
+    return Py::Float(ellipse->MinorRadius());
 }
 
 void EllipsePy::setMinorRadius(Py::Float arg)
@@ -151,20 +150,20 @@ void EllipsePy::setMinorRadius(Py::Float arg)
     ellipse->SetMinorRadius((double)arg);
 }
 
-Py::Float EllipsePy::getFocal(void) const
+Py::Float EllipsePy::getFocal() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
-    return Py::Float(ellipse->Focal()); 
+    return Py::Float(ellipse->Focal());
 }
 
-Py::Object EllipsePy::getFocus1(void) const
+Py::Object EllipsePy::getFocus1() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     gp_Pnt loc = ellipse->Focus1();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
-Py::Object EllipsePy::getFocus2(void) const
+Py::Object EllipsePy::getFocus2() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     gp_Pnt loc = ellipse->Focus2();
@@ -173,10 +172,10 @@ Py::Object EllipsePy::getFocus2(void) const
 
 PyObject *EllipsePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int EllipsePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

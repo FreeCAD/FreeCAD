@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMDS : implementaion of Salome mesh data structure
+//  SMESH SMDS : implementation of Salome mesh data structure
 // File      : SMDS_SetIterator.hxx
 // Created   : Feb 27 2006
 // Author    : Edward AGAPOV (eap)
@@ -77,7 +77,7 @@ namespace SMDS {
 
 template<typename VALUE,
          typename VALUE_SET_ITERATOR,
-         typename ACCESOR=SMDS::SimpleAccessor<VALUE,VALUE_SET_ITERATOR>,
+         typename ACCESSOR =SMDS::SimpleAccessor<VALUE,VALUE_SET_ITERATOR>,
          typename VALUE_FILTER=SMDS::PassAllValueFilter<VALUE> >
 class SMDS_SetIterator : public SMDS_Iterator<VALUE>
 {
@@ -98,7 +98,7 @@ public:
     _beg = begin;
     _end = end;
     _filter = filter;
-    if ( more() && !_filter( ACCESOR::value( _beg )))
+    if ( more() && !_filter(ACCESSOR::value( _beg )))
       next();
   }
   /// Return true iff there are other object in this iterator
@@ -109,8 +109,8 @@ public:
   /// Return the current object and step to the next one
   virtual VALUE next()
   {
-    VALUE ret = ACCESOR::value( _beg++ );
-    while ( more() && !_filter( ACCESOR::value( _beg )))
+    VALUE ret = ACCESSOR::value( _beg++ );
+    while ( more() && !_filter(ACCESSOR::value( _beg )))
       ++_beg;
     return ret;
   }

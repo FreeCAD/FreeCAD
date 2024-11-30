@@ -34,12 +34,12 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-
-from draftutils.messages import _msg, _err
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils import utils
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -56,46 +56,44 @@ class Rectangle(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Rectangle, self).Activated(name="Rectangle")
+        super().Activated(name="Rectangle")
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Rectangle")
+            self.ui.pointUi(title=translate("draft", "Rectangle"), icon="Draft_Rectangle")
             self.ui.extUi()
-            if utils.getParam("UsePartPrimitives", False):
-                self.fillstate = self.ui.hasFill.isChecked()
-                self.ui.hasFill.setChecked(True)
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rect = trackers.rectangleTracker()
-            _msg(translate("draft", "Pick first point"))
+            _toolmsg(translate("draft", "Pick first point"))
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False):
         """Terminate the operation.
 
-        The arguments of this function are not used and should be removed.
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         """
-        super(Rectangle, self).finish()
+        self.end_callbacks(self.call)
         if self.ui:
-            if hasattr(self, "fillstate"):
-                self.ui.hasFill.setChecked(self.fillstate)
-                del self.fillstate
             self.rect.off()
             self.rect.finalize()
-            if self.ui.continueMode:
-                self.Activated()
+        super().finish()
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            self.Activated()
 
     def createObject(self):
         """Create the final object in the current document."""
-        plane = App.DraftWorkingPlane
         p1 = self.node[0]
         p3 = self.node[-1]
         diagonal = p3.sub(p1)
-        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
-        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
+        p2 = p1.add(DraftVecUtils.project(diagonal, self.wp.v))
+        p4 = p1.add(DraftVecUtils.project(diagonal, self.wp.u))
         length = p4.sub(p1).Length
-        if abs(DraftVecUtils.angle(p4.sub(p1), plane.u, plane.axis)) > 1:
+        if abs(DraftVecUtils.angle(p4.sub(p1), self.wp.u, self.wp.axis)) > 1:
             length = -length
         height = p2.sub(p1).Length
-        if abs(DraftVecUtils.angle(p2.sub(p1), plane.v, plane.axis)) > 1:
+        if abs(DraftVecUtils.angle(p2.sub(p1), self.wp.v, self.wp.axis)) > 1:
             height = -height
         try:
             # The command to run is built as a series of text strings
@@ -109,7 +107,7 @@ class Rectangle(gui_base_original.Creator):
                 height = -height
                 base = base.add((p1.sub(p2)).negative())
             Gui.addModule("Draft")
-            if utils.getParam("UsePartPrimitives", False):
+            if params.get_param("UsePartPrimitives"):
                 # Insert a Part::Primitive object
                 _cmd = 'FreeCAD.ActiveDocument.'
                 _cmd += 'addObject("Part::Plane", "Plane")'
@@ -121,6 +119,7 @@ class Rectangle(gui_base_original.Creator):
                              'pl.Base = ' + DraftVecUtils.toString(base),
                              'plane.Placement = pl',
                              'Draft.autogroup(plane)',
+                             'Draft.select(plane)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Plane"),
                             _cmd_list)
@@ -143,7 +142,7 @@ class Rectangle(gui_base_original.Creator):
                             _cmd_list)
         except Exception:
             _err("Draft: error delaying commit")
-        self.finish(cont=True)
+        self.finish(cont=None)
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -160,10 +159,7 @@ class Rectangle(gui_base_original.Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            (self.point,
-             ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                        mobile=True,
-                                                        noTracker=True)
+            self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             self.rect.update(self.point)
             gui_tool_utils.redraw3DView()
         elif (arg["Type"] == "SoMouseButtonEvent"
@@ -171,16 +167,15 @@ class Rectangle(gui_base_original.Creator):
               and arg["Button"] == "BUTTON1"):
 
             if arg["Position"] == self.pos:
-                self.finish()
+                self.finish(cont=None)
+                return
 
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
-                (self.point,
-                 ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                            mobile=True,
-                                                            noTracker=True)
+                self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if self.point:
                 self.ui.redraw()
+                self.pos = arg["Position"]
                 self.appendPoint(self.point)
 
     def numericInput(self, numx, numy, numz):
@@ -199,7 +194,7 @@ class Rectangle(gui_base_original.Creator):
             self.rect.update(point)
             self.createObject()
         else:
-            _msg(translate("draft", "Pick opposite point"))
+            _toolmsg(translate("draft", "Pick opposite point"))
             self.ui.setRelative()
             self.rect.setorigin(point)
             self.rect.on()

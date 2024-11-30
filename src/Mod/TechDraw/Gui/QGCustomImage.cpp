@@ -22,17 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#include <QtGlobal>
+# include <QPainter>
+# include <QPixmap>
+# include <QRectF>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <Base/Console.h>
-
-#include <QRectF>
-#include <QPixmap>
-
 #include "QGCustomImage.h"
+
 
 using namespace TechDrawGui;
 
@@ -51,7 +48,7 @@ QGCustomImage::~QGCustomImage()
 
 void QGCustomImage::centerAt(QPointF centerPos)
 {
-    centerAt(centerPos.x(),centerPos.y());
+    centerAt(centerPos.x(), centerPos.y());
 }
 
 void QGCustomImage::centerAt(double cX, double cY)
@@ -83,10 +80,9 @@ bool QGCustomImage::load(QPixmap map)
     return(success);
 }
 
-QSize QGCustomImage::imageSize(void)
+QSize QGCustomImage::imageSize()
 {
-    QSize result = m_px.size();
-    return result;
+    return m_px.size() * scale();
 }
 
 void QGCustomImage::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

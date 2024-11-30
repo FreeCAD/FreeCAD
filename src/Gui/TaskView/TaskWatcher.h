@@ -24,17 +24,11 @@
 #ifndef GUI_TASKVIEW_TASKWATCHER_H
 #define GUI_TASKVIEW_TASKWATCHER_H
 
-#include <map>
-#include <string>
 #include <vector>
 #include <QObject>
 
-#include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 
-namespace App {
-
-}
 
 namespace Gui {
 namespace TaskView {
@@ -47,14 +41,18 @@ class GuiExport TaskWatcher : public QObject, public Gui::SelectionFilter
     Q_OBJECT
 
 public:
-    TaskWatcher(const char* Filter);
-    virtual ~TaskWatcher();
+    explicit TaskWatcher(const char* Filter);
+    ~TaskWatcher() override;
 
-    std::vector<QWidget*> &getWatcherContent(void);
+    QWidget* addTaskBox(QWidget* widget, bool expandable = true, QWidget* parent = nullptr);
+    QWidget* addTaskBox(const QPixmap& icon, QWidget* widget, bool expandable = true, QWidget* parent = nullptr);
+    QWidget* addTaskBoxWithoutHeader(QWidget* widget);
+
+    std::vector<QWidget*> &getWatcherContent();
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow(void);
+    virtual bool shouldShow();
 
 protected:
     /// List of TaskBoxes of that dialog
@@ -74,7 +72,7 @@ public:
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow(void);
+    bool shouldShow() override;
 
 };
 
@@ -90,7 +88,7 @@ public:
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow(void);
+    bool shouldShow() override;
 
 };
 
@@ -103,11 +101,11 @@ class GuiExport TaskWatcherCommandsEmptySelection : public TaskWatcherCommands
 
 public:
     TaskWatcherCommandsEmptySelection(const char* commands[], const char* name, const char* pixmap);
-    ~TaskWatcherCommandsEmptySelection();
+    ~TaskWatcherCommandsEmptySelection() override;
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow(void);
+    bool shouldShow() override;
 
 };
 

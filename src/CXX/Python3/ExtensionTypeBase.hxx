@@ -42,19 +42,19 @@ namespace Py
 {
     // Class PythonExtension is what you inherit from to create
     // a new Python extension type. You give your class itself
-    // as the template paramter.
+    // as the template parameter.
 
     // There are two ways that extension objects can get destroyed.
     // 1. Their reference count goes to zero
     // 2. Someone does an explicit delete on a pointer.
-    // In(1) the problem is to get the destructor called 
+    // In(1) the problem is to get the destructor called
     //      We register a special deallocator in the Python type object
     //      (see behaviors()) to do this.
     // In(2) there is no problem, the dtor gets called.
 
-    // PythonExtension does not use the usual Python heap allocator, 
+    // PythonExtension does not use the usual Python heap allocator,
     // instead using new/delete. We do the setting of the type object
-    // and reference count, usually done by PyObject_New, in the 
+    // and reference count, usually done by PyObject_New, in the
     // base class ctor.
 
     // This special deallocator does a delete on the pointer.
@@ -66,11 +66,11 @@ namespace Py
         virtual ~PythonExtensionBase();
 
     public:
-        // object 
+        // object
         virtual void reinit( Tuple &args, Dict &kwds );
 
         // object basics
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
         virtual int print( FILE *, int );
 #endif
         virtual Object getattr( const char * );
@@ -89,15 +89,22 @@ namespace Py
         virtual PyObject *iternext();
 
         // Sequence methods
-        virtual int sequence_length();
+        virtual PyCxx_ssize_t sequence_length();
         virtual Object sequence_concat( const Object & );
         virtual Object sequence_repeat( Py_ssize_t );
         virtual Object sequence_item( Py_ssize_t );
+
         virtual int sequence_ass_item( Py_ssize_t, const Object & );
 
+        virtual Object sequence_inplace_concat( const Object & );
+        virtual Object sequence_inplace_repeat( Py_ssize_t );
+
+        virtual int sequence_contains( const Object & );
+
         // Mapping
-        virtual int mapping_length();
+        virtual PyCxx_ssize_t mapping_length();
         virtual Object mapping_subscript( const Object & );
+
         virtual int mapping_ass_subscript( const Object &, const Object & );
 
         // Number
@@ -107,7 +114,6 @@ namespace Py
         virtual Object number_invert();
         virtual Object number_int();
         virtual Object number_float();
-        virtual Object number_long();
         virtual Object number_add( const Object & );
         virtual Object number_subtract( const Object & );
         virtual Object number_multiply( const Object & );
@@ -119,10 +125,34 @@ namespace Py
         virtual Object number_xor( const Object & );
         virtual Object number_or( const Object & );
         virtual Object number_power( const Object &, const Object & );
+        virtual Object number_floor_divide( const Object & );
+        virtual Object number_true_divide( const Object & );
+        virtual Object number_index();
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+        virtual Object number_matrix_multiply( const Object & );
+#endif
 
+        virtual Object number_inplace_add( const Object & );
+        virtual Object number_inplace_subtract( const Object & );
+        virtual Object number_inplace_multiply( const Object & );
+        virtual Object number_inplace_remainder( const Object & );
+        virtual Object number_inplace_power( const Object &, const Object & );
+        virtual Object number_inplace_lshift( const Object & );
+        virtual Object number_inplace_rshift( const Object & );
+        virtual Object number_inplace_and( const Object & );
+        virtual Object number_inplace_xor( const Object & );
+        virtual Object number_inplace_or( const Object & );
+        virtual Object number_inplace_floor_divide( const Object & );
+        virtual Object number_inplace_true_divide( const Object & );
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+        virtual Object number_inplace_matrix_multiply( const Object & );
+#endif
+
+#if !defined( Py_LIMITED_API )
         // Buffer
         virtual int buffer_get( Py_buffer *, int flags );
         virtual int buffer_release( Py_buffer *buf );
+#endif
 
     public:
         // helper functions to call function fn_name with 0 to 9 args

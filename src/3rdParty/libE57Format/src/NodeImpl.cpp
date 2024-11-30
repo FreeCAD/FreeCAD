@@ -213,7 +213,7 @@ bool NodeImpl::isTypeConstrained()
             /// Downcast to shared_ptr<VectorNodeImpl>
             std::shared_ptr<VectorNodeImpl> ai( std::static_pointer_cast<VectorNodeImpl>( p ) );
 
-            /// If homogenous vector and have more than one child, then can't
+            /// If homogeneous vector and have more than one child, then can't
             /// change them
             if ( !ai->allowHeteroChildren() && ai->childCount() > 1 )
             {

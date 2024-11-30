@@ -20,41 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/draggers/SoTrackballDragger.h>
-# include <Inventor/nodes/SoAntiSquish.h>
-# include <Inventor/nodes/SoSurroundScale.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/manips/SoTransformerManip.h>
+#include <Inventor/draggers/SoTrackballDragger.h>
+#include <Inventor/manips/SoTransformerManip.h>
+#include <Inventor/nodes/SoAntiSquish.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSurroundScale.h>
 #endif
+
+#include <Base/Console.h>
+#include <Gui/SoFCSelection.h>
+
+#include <Mod/Mesh/App/Core/Iterator.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
 #include "ViewProviderTransformDemolding.h"
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <App/Application.h>
-#include <Gui/Selection.h>
-#include <Gui/SoFCSelection.h>
-#include <Base/Sequencer.h>
-
-
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
 
 using Mesh::Feature;
-using MeshCore::MeshKernel;
 using MeshCore::MeshFacetIterator;
 using MeshCore::MeshGeomFacet;
+using MeshCore::MeshKernel;
 using namespace MeshGui;
 
 
@@ -63,164 +54,154 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshTransformDemolding, MeshGui::ViewProvid
 
 ViewProviderMeshTransformDemolding::ViewProviderMeshTransformDemolding()
 {
-  pcTrackballDragger = new SoTrackballDragger;
-  pcTrackballDragger->ref();
-  pcTransformDrag = 0;
-  pcColorMat = 0;
+    // NOLINTBEGIN
+    pcTrackballDragger = new SoTrackballDragger;
+    pcTrackballDragger->ref();
+    pcTransformDrag = nullptr;
+    pcColorMat = nullptr;
+    // NOLINTEND
 }
 
 ViewProviderMeshTransformDemolding::~ViewProviderMeshTransformDemolding()
 {
-  pcTrackballDragger->unref();
+    pcTrackballDragger->unref();
 }
 
-void ViewProviderMeshTransformDemolding::attach(App::DocumentObject *pcFeat)
+void ViewProviderMeshTransformDemolding::attach(App::DocumentObject* obj)
 {
-  // creates the standard viewing modes
-  ViewProviderMesh::attach(pcFeat);
+    // creates the standard viewing modes
+    ViewProviderMesh::attach(obj);
 
-  SoGroup* pcDemoldRoot = new SoGroup();
+    auto pcDemoldRoot = new SoGroup();
 
-  SoDrawStyle *pcFlatStyle = new SoDrawStyle();
-  pcFlatStyle->style = SoDrawStyle::FILLED;
-  pcDemoldRoot->addChild(pcFlatStyle);
+    auto pcFlatStyle = new SoDrawStyle();
+    pcFlatStyle->style = SoDrawStyle::FILLED;
+    pcDemoldRoot->addChild(pcFlatStyle);
 
-  // dragger
-  SoSeparator * surroundsep = new SoSeparator;
+    // dragger
+    auto surroundsep = new SoSeparator;
 
-  SoSurroundScale * ss = new SoSurroundScale;
-  ss->numNodesUpToReset = 1;
-  ss->numNodesUpToContainer = 2;
-  surroundsep->addChild(ss);
+    auto ss = new SoSurroundScale;
+    ss->numNodesUpToReset = 1;
+    ss->numNodesUpToContainer = 2;
+    surroundsep->addChild(ss);
 
-  SoAntiSquish * antisquish = new SoAntiSquish;
-  antisquish->sizing = SoAntiSquish::AVERAGE_DIMENSION ;
-  surroundsep->addChild(antisquish);
+    auto antisquish = new SoAntiSquish;
+    antisquish->sizing = SoAntiSquish::AVERAGE_DIMENSION;
+    surroundsep->addChild(antisquish);
 
-  pcTrackballDragger->addValueChangedCallback(sValueChangedCallback,this); 
-  pcTrackballDragger->addFinishCallback (sDragEndCallback,this); 
-  surroundsep->addChild(pcTrackballDragger);
+    pcTrackballDragger->addValueChangedCallback(sValueChangedCallback, this);
+    pcTrackballDragger->addFinishCallback(sDragEndCallback, this);
+    surroundsep->addChild(pcTrackballDragger);
 
-  pcTransformDrag = new SoTransform();
+    pcTransformDrag = new SoTransform();
 
 
-  SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
-  //pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
-  pcMatBinding->value = SoMaterialBinding::PER_FACE_INDEXED;
-  pcColorMat = new SoMaterial;
-  pcColorMat->diffuseColor.set1Value(0, 1,1,0);
-  pcColorMat->diffuseColor.set1Value(1, 1,0,0);
-  pcColorMat->diffuseColor.set1Value(2, 0,1,0);
-  
-  pcDemoldRoot->addChild(surroundsep);
-  pcDemoldRoot->addChild(pcTransformDrag);
-  pcDemoldRoot->addChild(pcColorMat);
-  pcDemoldRoot->addChild(pcMatBinding);
-  pcDemoldRoot->addChild(pcHighlight);
+    auto pcMatBinding = new SoMaterialBinding;
 
-  // adding to the switch
-  addDisplayMaskMode(pcDemoldRoot, "Demold");
+    pcMatBinding->value = SoMaterialBinding::PER_FACE_INDEXED;
+    pcColorMat = new SoMaterial;
+    pcColorMat->diffuseColor.set1Value(0, 1, 1, 0);
+    pcColorMat->diffuseColor.set1Value(1, 1, 0, 0);
+    pcColorMat->diffuseColor.set1Value(2, 0, 1, 0);
 
-  calcNormalVector();
-  calcMaterialIndex(SbRotation());
-  // getting center point
-  center = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().GetCenter();
+    pcDemoldRoot->addChild(surroundsep);
+    pcDemoldRoot->addChild(pcTransformDrag);
+    pcDemoldRoot->addChild(pcColorMat);
+    pcDemoldRoot->addChild(pcMatBinding);
+    pcDemoldRoot->addChild(pcHighlight);
 
-  //SoGetBoundingBoxAction  boxAction;
-  //pcHighlight->getBoundingBox(&boxAction);
-  //SbVector3f Center = boxAction->getCenter();
+    // adding to the switch
+    addDisplayMaskMode(pcDemoldRoot, "Demold");
+
+    calcNormalVector();
+    calcMaterialIndex(SbRotation());
+    setCenterPoint();
 }
 
-void ViewProviderMeshTransformDemolding::calcNormalVector(void)
+void ViewProviderMeshTransformDemolding::setCenterPoint()
 {
-  const MeshKernel& cMesh = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel();
-
-  MeshFacetIterator cFIt(cMesh);
-  for( cFIt.Init(); cFIt.More(); cFIt.Next())
-  {
-    const MeshGeomFacet& rFace = *cFIt;
-
-    Base::Vector3f norm(rFace.GetNormal());
-    normalVector.emplace_back(norm.x,norm.y,norm.z);
-  }
+    // getting center point
+    const Mesh::MeshObject& mesh = getMeshObject();
+    const MeshCore::MeshKernel& kernel = mesh.getKernel();
+    Base::BoundBox3f bbox = kernel.GetBoundBox();
+    center = bbox.GetCenter();
 }
 
-void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation &rot)
+void ViewProviderMeshTransformDemolding::calcNormalVector()
 {
-    SbVec3f Up(0, 0, 1), result;
+    const Mesh::MeshObject& mesh = getMeshObject();
+    const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
-    int i = 0;
-    for (std::vector<SbVec3f>::const_iterator it = normalVector.begin(); it != normalVector.end(); ++it, i++)
-    {
-        rot.multVec(*it, result);
+    MeshFacetIterator cFIt(kernel);
+    for (cFIt.Init(); cFIt.More(); cFIt.Next()) {
+        const MeshGeomFacet& rFace = *cFIt;
 
-        float Angle = acos((result.dot(Up)) / (result.length() * Up.length())) * (180 / M_PI);
-
-        if (Angle < 87.0) {
-            //      pcMeshFaces->materialIndex .set1Value(i, 2);
-        }
-        else if (Angle > 90.0) {
-            //      pcMeshFaces->materialIndex .set1Value(i, 1 );
-        }
-        else {
-            //      pcMeshFaces->materialIndex .set1Value(i, 0 );
-        }
-
+        Base::Vector3f norm(rFace.GetNormal());
+        normalVector.emplace_back(norm.x, norm.y, norm.z);
     }
 }
 
-void ViewProviderMeshTransformDemolding::sValueChangedCallback(void *This, SoDragger *)
+void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation& rot)
 {
-  static_cast<ViewProviderMeshTransformDemolding*>(This)->valueChangedCallback();
+    SbVec3f Up(0, 0, 1);
+    SbVec3f result;
+
+    int i = 0;
+    for (auto it = normalVector.begin(); it != normalVector.end(); ++it, i++) {
+        rot.multVec(*it, result);
+    }
 }
 
-void ViewProviderMeshTransformDemolding::sDragEndCallback(void *This, SoDragger *)
+void ViewProviderMeshTransformDemolding::sValueChangedCallback(void* This,
+                                                               [[maybe_unused]] SoDragger* dragger)
 {
-  static_cast<ViewProviderMeshTransformDemolding*>(This)->DragEndCallback();
+    static_cast<ViewProviderMeshTransformDemolding*>(This)->valueChangedCallback();
 }
 
-void ViewProviderMeshTransformDemolding::DragEndCallback(void)
+void ViewProviderMeshTransformDemolding::sDragEndCallback(void* This,
+                                                          [[maybe_unused]] SoDragger* dragger)
 {
-  SbRotation rot = pcTrackballDragger->rotation.getValue();
-  calcMaterialIndex(rot);
-
-  Base::Console().Log("View: Finish dragging\n");
-
+    static_cast<ViewProviderMeshTransformDemolding*>(This)->DragEndCallback();
 }
 
-void ViewProviderMeshTransformDemolding::valueChangedCallback(void)
+void ViewProviderMeshTransformDemolding::DragEndCallback()
 {
-  //Base::Console().Log("Value change Callback\n");
-  //setTransformation(pcTrackballDragger->getMotionMatrix());
-  //pcTransform->rotation = pcTrackballDragger->rotation;
-  SbMatrix temp;
-  SbRotation rot = pcTrackballDragger->rotation.getValue();
+    SbRotation rot = pcTrackballDragger->rotation.getValue();
+    calcMaterialIndex(rot);
 
-  //calcMaterialIndex(rot);
+    Base::Console().Log("View: Finish dragging\n");
+}
 
-  temp.setTransform( SbVec3f(0,0,0),    // no transformation
-                     rot,               // rotation from the dragger
-                     SbVec3f(1,1,1),    // no scaling
-                     SbRotation() ,     // no scaling orientation
-                     SbVec3f(center.x,center.y,center.z)); // center of rotation
-  pcTransformDrag->setMatrix( temp );
+void ViewProviderMeshTransformDemolding::valueChangedCallback()
+{
+    SbMatrix temp;
+    SbRotation rot = pcTrackballDragger->rotation.getValue();
+
+    temp.setTransform(SbVec3f(0, 0, 0),                        // no transformation
+                      rot,                                     // rotation from the dragger
+                      SbVec3f(1, 1, 1),                        // no scaling
+                      SbRotation(),                            // no scaling orientation
+                      SbVec3f(center.x, center.y, center.z));  // center of rotation
+    pcTransformDrag->setMatrix(temp);
 }
 
 void ViewProviderMeshTransformDemolding::setDisplayMode(const char* ModeName)
 {
-  if ( strcmp("Demold",ModeName) == 0 )
-    setDisplayMaskMode("Demold");
-  ViewProviderMesh::setDisplayMode(ModeName);
+    if (strcmp("Demold", ModeName) == 0) {
+        setDisplayMaskMode("Demold");
+    }
+    ViewProviderMesh::setDisplayMode(ModeName);
 }
 
 const char* ViewProviderMeshTransformDemolding::getDefaultDisplayMode() const
 {
-  return "Demold";
+    return "Demold";
 }
 
-std::vector<std::string> ViewProviderMeshTransformDemolding::getDisplayModes(void) const
+std::vector<std::string> ViewProviderMeshTransformDemolding::getDisplayModes() const
 {
-  std::vector<std::string> StrList = ViewProviderMesh::getDisplayModes();
-  StrList.push_back("Demold");
-  return StrList;
+    std::vector<std::string> StrList = ViewProviderMesh::getDisplayModes();
+    StrList.emplace_back("Demold");
+    return StrList;
 }

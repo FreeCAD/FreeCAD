@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Python.h>
-# include <Standard_math.hxx>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -67,7 +66,7 @@ private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
     {
 #ifdef HAVE_PART
-        if (object == &Obj && Prop.getTypeId() == Part::PropertyGeometryList::getClassTypeId()) {
+        if (object == &Obj && Prop.is<Part::PropertyGeometryList>()) {
             const Part::PropertyGeometryList& geom = static_cast<const Part::PropertyGeometryList&>(Prop);
             const std::vector<Part::Geometry*>& items = geom.getValues();
             if (items.size() != 2)

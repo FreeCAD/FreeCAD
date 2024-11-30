@@ -22,9 +22,5 @@ Dockrey on
 
   https://github.com/attoparsec/inkscape-extensions.git
 
-The simplest way to use it is to copy the example macro file
-gear.FCMacro to ~/.FreeCAD/ (make sure the fcgear directory is in the
-FreeCAD's Python path).
-
 Copyright 2014 David Douard <david.douard@gmail.com>.
 Distributed under the LGPL licence.

@@ -1,0 +1,48 @@
+---
+# File created by FreeCAD 0.22.0 Revision: 34863 (Git)
+General:
+  UUID: "c6c64159-19c1-40b5-859c-10561f20f979"
+  Name: "Test Material"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
+  Description: "This material is for testing purposes only. It does not describe any real material."
+Inherits:
+  DefaultAppearance:
+    UUID: "5dbb7be6-8b63-479b-ab4c-87be02ead973"
+Models:
+  Test Model:
+    UUID: "34d0583d-f999-49ba-99e6-aa40bd5c3a6b"
+    TestArray2D: 
+      - [["10.00 C", "10.00 kg/m^3"],
+         ["20.00 C", "20.00 kg/m^3"],
+         ["30.00 C", "30.00 kg/m^3"]]
+    TestArray2D3Column: 
+      - [["10.00 C", "11.00 kg/m^3", "12.00 Pa"],
+         ["20.00 C", "21.00 kg/m^3", "22.00 Pa"],
+         ["30.00 C", "31.00 kg/m^3", "32.00 Pa"]]
+    TestArray3D: 
+      - ["10.00 C": [["11.00 Pa", "12.00 Pa"],
+                     ["21.00 Pa", "22.00 Pa"]],
+         "20.00 C": [],
+         "30.00 C": [["10.00 Pa", "11.00 Pa"],
+                     ["20.00 Pa", "21.00 Pa"],
+                     ["30.00 Pa", "31.00 Pa"]]]
+    TestBoolean: "true"
+    TestColor: "(1,0,0,1)"
+    TestFile: "/home/dcarter/Meshroom demo.txt"
+    TestFloat: "32.17"
+    TestInteger: "42"
+    TestList: 
+      - "Now is the time for all good men to come to the aid of the party"
+      - "The quick brown fox jumps over the lazy dogs back"
+      - "Lore Ipsum"
+      - "Single quote '"
+      - "Double quote \""
+      - "Backslash \\"
+    TestMultiLineString: |2
+      Now is the time for 'all' \  <good> "men" come to the aid of the party
+        Indentation is significant
+      Similar to Python
+    TestQuantity: "19.76 kg/m^3"
+    TestString: "Now is the time for 'all' \\  <good> \"men\" come to the aid of the party"
+    TestURL: "https://www.freecad.org/"

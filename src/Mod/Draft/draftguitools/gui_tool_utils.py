@@ -36,16 +36,26 @@ as they operate on selections and graphical properties.
 # @{
 import FreeCAD as App
 import FreeCADGui as Gui
-import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
-
+import WorkingPlane
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _wrn
 
 # Set modifier keys from the parameter database
 MODS = ["shift", "ctrl", "alt"]
-MODCONSTRAIN = MODS[utils.get_param("modconstrain", 0)]
-MODSNAP = MODS[utils.get_param("modsnap", 1)]
-MODALT = MODS[utils.get_param("modalt", 2)]
+
+
+def get_mod_constrain_key():
+    return MODS[params.get_param("modconstrain")]
+
+
+def get_mod_snap_key():
+    return MODS[params.get_param("modsnap")]
+
+
+def get_mod_alt_key():
+    return MODS[params.get_param("modalt")]
 
 
 def format_unit(exp, unit="mm"):
@@ -146,8 +156,7 @@ def set_mod(args, mod, state):
 setMod = set_mod
 
 
-def get_point(target, args,
-              mobile=False, sym=False, workingplane=True, noTracker=False):
+def get_point(target, args, noTracker=False):
     """Return a constrained 3D point and its original point.
 
     It is used by the Draft tools.
@@ -165,21 +174,6 @@ def get_point(target, args,
     args: Coin event
         The Coin event received from the 3D view.
 
-    mobile: bool, optional
-        It defaults to `False`.
-        If it is `True` the constraining occurs from the location of
-        the mouse cursor when `Shift` is pressed; otherwise from the last
-        entered point.
-
-    sym: bool, optional
-        It defaults to `False`.
-        If it is `True`, the x and y values always stay equal.
-
-    workingplane: bool, optional
-        It defaults to `True`.
-        If it is `False`, the point won't be projected on the currently
-        active working plane.
-
     noTracker: bool, optional
         It defaults to `False`.
         If it is `True`, the tracking line will not be displayed.
@@ -196,20 +190,22 @@ def get_point(target, args,
         returned by the `Snapper` or by the `ActiveView`.
     """
     ui = Gui.draftToolBar
+    if not ui.mouse:
+        return None, None, None
 
     if target.node:
         last = target.node[-1]
     else:
         last = None
 
-    amod = hasMod(args, MODSNAP)
-    cmod = hasMod(args, MODCONSTRAIN)
+    smod = has_mod(args, get_mod_snap_key())
+    cmod = has_mod(args, get_mod_constrain_key())
     point = None
 
     if hasattr(Gui, "Snapper"):
         point = Gui.Snapper.snap(args["Position"],
                                  lastpoint=last,
-                                 active=amod,
+                                 active=smod,
                                  constrain=cmod,
                                  noTracker=noTracker)
         info = Gui.Snapper.snapInfo
@@ -221,15 +217,14 @@ def get_point(target, args,
         mask = None
 
     ctrlPoint = App.Vector(point)
+    wp = WorkingPlane.get_working_plane(update=False)
     if target.node:
         if target.featureName == "Rectangle":
-            ui.displayPoint(point, target.node[0],
-                            plane=App.DraftWorkingPlane, mask=mask)
+            ui.displayPoint(point, target.node[0], plane=wp, mask=mask)
         else:
-            ui.displayPoint(point, target.node[-1],
-                            plane=App.DraftWorkingPlane, mask=mask)
+            ui.displayPoint(point, target.node[-1], plane=wp, mask=mask)
     else:
-        ui.displayPoint(point, plane=App.DraftWorkingPlane, mask=mask)
+        ui.displayPoint(point, plane=wp, mask=mask)
     return point, ctrlPoint, info
 
 
@@ -237,31 +232,19 @@ getPoint = get_point
 
 
 def set_working_plane_to_object_under_cursor(mouseEvent):
-    """Set the working plane to the object under the cursor.
+    """Align the working plane to the face under the cursor.
 
-    It tests for an object under the cursor.
-    If it is found, it checks whether a `'face'` or `'curve'` component
-    is selected in the object's `Shape`.
-    Then it tries to align the working plane to that face or curve.
-
-    The working plane is only aligned to the face if
-    the working plane is not `'weak'`.
+    The working plane is only aligned if it is `'auto'`.
 
     Parameters
     ----------
     mouseEvent: Coin event
-        Coin event with the mouse, that is, a click.
+        Coin mouse event.
 
     Returns
     -------
-    None
-        If no object was found in the 3D view under the cursor.
-        Or if the working plane is not `weak`.
-        Or if there was an exception with aligning the working plane
-        to the component under the cursor.
-
-    Coin info
-        The `getObjectInfo` of the object under the cursor.
+    App::DocumentObject or None
+        The parent object the face belongs to, if alignment occurred, or None.
     """
     objectUnderCursor = gui_utils.get_3d_view().getObjectInfo((
         mouseEvent["Position"][0],
@@ -269,25 +252,24 @@ def set_working_plane_to_object_under_cursor(mouseEvent):
 
     if not objectUnderCursor:
         return None
+    if "Face" not in objectUnderCursor["Component"]:
+        return None
+    wp = WorkingPlane.get_working_plane(update=False)
+    if not wp.auto:
+        return None
 
-    try:
-        # Get the component "face" or "curve" under the "Shape"
-        # of the selected object
-        componentUnderCursor = getattr(
-            App.ActiveDocument.getObject(objectUnderCursor['Object']).Shape,
-            objectUnderCursor["Component"])
+    import Part
+    if "ParentObject" in objectUnderCursor:
+        obj = objectUnderCursor["ParentObject"]
+        sub = objectUnderCursor["SubName"]
+    else:
+        obj = App.ActiveDocument.getObject(objectUnderCursor["Object"])
+        sub = objectUnderCursor["Component"]
+    shape = Part.getShape(obj, sub, needSubElement=True, retType=0)
 
-        if not App.DraftWorkingPlane.weak:
-            return None
-
-        if "Face" in objectUnderCursor["Component"]:
-            App.DraftWorkingPlane.alignToFace(componentUnderCursor)
-        else:
-            App.DraftWorkingPlane.alignToCurve(componentUnderCursor)
-        App.DraftWorkingPlane.weak = True
-        return objectUnderCursor
-    except Exception:
-        pass
+    if wp.align_to_face(shape, _hist_add=False):
+        wp.auto = True
+        return obj
 
     return None
 
@@ -296,32 +278,34 @@ setWorkingPlaneToObjectUnderCursor = set_working_plane_to_object_under_cursor
 
 
 def set_working_plane_to_selected_object():
-    """Set the working plane to the selected object's face.
+    """Align the working plane to a preselected face.
 
-    The working plane is only aligned to the face if
-    the working plane is `'weak'`.
+    The working plane is only aligned if it is `'auto'`.
 
     Returns
     -------
-    None
-        If more than one object was selected.
-        Or if the selected object has many subelements.
-        Or if the single subelement is not a `'Face'`.
-
-    App::DocumentObject
-        The single object that contains a single selected face.
+    App::DocumentObject or None
+        The parent object the face belongs to, if alignment occurred, or None.
     """
-    sel = Gui.Selection.getSelectionEx()
-    if len(sel) != 1:
+    wp = WorkingPlane.get_working_plane(update=False)
+    if not wp.auto:
         return None
-    sel = sel[0]
-    if (sel.HasSubObjects
-            and len(sel.SubElementNames) == 1
-            and "Face" in sel.SubElementNames[0]):
-        if App.DraftWorkingPlane.weak:
-            App.DraftWorkingPlane.alignToFace(sel.SubObjects[0])
-            App.DraftWorkingPlane.weak = True
-        return sel.Object
+
+    sels = Gui.Selection.getSelectionEx("", 0)
+
+    if len(sels) == 1 \
+            and len(sels[0].SubObjects) == 1 \
+            and sels[0].SubObjects[0].ShapeType == "Face":
+        import Part
+        shape = Part.getShape(sels[0].Object,
+                              sels[0].SubElementNames[0],
+                              needSubElement=True,
+                              retType=0)
+
+        if wp.align_to_face(shape, _hist_add=False):
+            wp.auto = True
+            return sels[0].Object
+
     return None
 
 
@@ -329,44 +313,24 @@ setWorkingPlaneToSelectedObject = set_working_plane_to_selected_object
 
 
 def get_support(mouseEvent=None):
-    """Return the supporting object and set the working plane.
+    """"Align the working plane to a preselected face or the face under the cursor.
 
-    It saves the current working plane, then sets it to the selected object.
+    The working plane is only aligned if it is `'auto'`.
 
     Parameters
     ----------
     mouseEvent: Coin event, optional
-        It defaults to `None`.
-        Coin event with the mouse, that is, a click.
-
-        If there is a mouse event it calls
-        `set_working_plane_to_object_under_cursor`.
-        Otherwise, it calls `set_working_plane_to_selected_object`.
+        Defaults to `None`.
+        Coin mouse event.
 
     Returns
     -------
-    None
-        If there was a mouse event, but there was nothing under the cursor.
-        Or if the working plane is not `weak`.
-        Or if there was an exception with aligning the working plane
-        to the component under the cursor.
-        Or if more than one object was selected.
-        Or if the selected object has many subelements.
-        Or if the single subelement is not a `'Face'`.
-
-    Coin info
-        If there was a mouse event, the `getObjectInfo`
-        of the object under the cursor.
-
-    App::DocumentObject
-        If there was no mouse event, the single selected object
-        that contains the single selected face that was used
-        to align the working plane.
+    App::DocumentObject or None
+        The parent object the face belongs to, if alignment occurred, or None.
     """
-    App.DraftWorkingPlane.save()
-    if mouseEvent:
-        return setWorkingPlaneToObjectUnderCursor(mouseEvent)
-    return setWorkingPlaneToSelectedObject()
+    if mouseEvent is None:
+        return set_working_plane_to_selected_object()
+    return set_working_plane_to_object_under_cursor(mouseEvent)
 
 
 getSupport = get_support

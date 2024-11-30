@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMBORDER_H
 #define DRAWINGGUI_QGCUSTOMBORDER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>
@@ -38,13 +40,13 @@ namespace TechDrawGui
 class TechDrawGuiExport QGCustomBorder : public QGraphicsRectItem
 {
 public:
-    explicit QGCustomBorder(void);
-    ~QGCustomBorder() {}
+    explicit QGCustomBorder();
+    ~QGCustomBorder() override = default;
 
     enum {Type = QGraphicsItem::UserType + 136};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
 

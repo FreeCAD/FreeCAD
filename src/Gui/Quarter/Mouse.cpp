@@ -37,32 +37,28 @@
   QuarterWidget.
 */
 
-#include "PreCompiled.h"
-
 #ifdef _MSC_VER
 #pragma warning(disable : 4267)
 #endif
 
-#include <Quarter/devices/Mouse.h>
-#include <Gui/SoMouseWheelEvent.h>
-
-#include <QtCore/QEvent>
-#include <QtCore/QSize>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QWheelEvent>
-
-#include <QGuiApplication>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QWheelEvent>
 
 #include <Inventor/SbVec2s.h>
-#include <Inventor/events/SoEvents.h>
+#include <Inventor/SoMouseWheelEvent.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Quarter/QuarterWidget.h>
+#include <Inventor/events/SoEvents.h>
+
+#include "QuarterWidget.h"
+#include "devices/Mouse.h"
+
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
 class MouseP {
 public:
-  MouseP(Mouse * publ) {
+  explicit MouseP(Mouse * publ) {
     this->publ = publ;
     this->location2 = new SoLocation2Event;
     this->mousebutton = new SoMouseButtonEvent;
@@ -95,15 +91,10 @@ using namespace SIM::Coin3D::Quarter;
 #define PRIVATE(obj) obj->pimpl
 #define PUBLIC(obj) obj->publ
 
-Mouse::Mouse()
+Mouse::Mouse(QuarterWidget* quarter) :
+  InputDevice(quarter)
 {
   PRIVATE(this) = new MouseP(this);
-}
-
-Mouse::Mouse(QuarterWidget *quarter) :
-    InputDevice(quarter)
-{
-    PRIVATE(this) = new MouseP(this);
 }
 
 Mouse::~Mouse()

@@ -27,7 +27,7 @@ margin-left: 30px !important;
 font-size: 1.15em !important;
 }
 .navbar{
- border: 0px solid #222 !important;
+ background-color: #222;
 }
 table{
     white-space:pre-wrap !important;
@@ -35,81 +35,6 @@ table{
 /*
  ===========================
  */
-
-
-/* Sticky footer styles
--------------------------------------------------- */
-html,
-body {
-    height: 100%;
-    /* The html and body elements cannot have any padding or margin. */
-}
-
-/* Wrapper for page content to push down footer */
-#wrap {
-    min-height: 100%;
-    height: auto;
-    /* Negative indent footer by its height */
-    margin: 0 auto -60px;
-    /* Pad bottom by footer height */
-    padding: 0 0 60px;
-}
-
-/* Set the fixed height of the footer here */
-#footer {
-    font-size: 0.9em;
-    padding: 8px 0px;
-    background-color: #f5f5f5;
-}
-
-.footer-row {
-    line-height: 44px;
-}
-
-#footer > .container {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-.footer-follow-icon {
-    margin-left: 3px;
-    text-decoration: none !important;
-}
-
-.footer-follow-icon img {
-    width: 20px;
-}
-
-.footer-link {
-    padding-top: 5px;
-    display: inline-block;
-    color: #999999;
-    text-decoration: none;
-}
-
-.footer-copyright {
-    text-align: center;
-}
-
-
-@media (min-width: 992px) {
-    .footer-row {
-        text-align: left;
-    }
-
-    .footer-icons {
-        text-align: right;
-    }
-}
-@media (max-width: 991px) {
-    .footer-row {
-        text-align: center;
-    }
-
-    .footer-icons {
-        text-align: center;
-    }
-}
 
 /* DOXYGEN Code Styles
 ----------------------------------- */
@@ -371,9 +296,6 @@ span.SRScope {
 .summary {
   margin-top: 25px;
 }
-.page-header {
-  margin: 20px 0px !important;
-}
 .page-header .title {
   display: inline-block;
 }
@@ -386,13 +308,6 @@ span.SRScope {
 }
 
 /* FreeCAD-specific */
-.maincontents {
-    margin-top: 50px;
-}
-address.footer {
-    text-align: center;
-    margin-bottom: 50px;
-}
 .directory td.entry {
     max-width: 400px;
 }
@@ -405,6 +320,51 @@ pre.fragment {
 .memdoc p {
     text-align: left;
 }
+.maincontents {
+    display: none;
+}
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+}
 body, table, div, p, dl {
-    font: 400 16px/22px Fira Sans,sans-serif;
+    font: 400 16px/22px 'Fira Sans' ,sans-serif;
+}
+#main-nav {
+    display: none;
+}
+.navbar {
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #222;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    height: 72px;
+    padding: 0 10px;
+}
+.navbar li {
+    float: left;
+}
+.navbar li a {
+    color: #fff;
+    display: block;
+}
+.navbar logo {
+    height: 140px
+}
+.footer {
+    background-color: #222;
+    padding: 25px 0;
+    color: #eee;
+    text-align: center !important;
+}
+.sm.sm-dox {
+    display: none;
 }

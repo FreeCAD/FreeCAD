@@ -9,6 +9,7 @@
 
 from PySide import QtCore, QtGui
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -40,9 +41,26 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuFreeCAD.setTitle(QtGui.QApplication.translate("MainWindow", "FreeCAD", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionEmbed.setText(QtGui.QApplication.translate("MainWindow", "Embed", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDocument.setText(QtGui.QApplication.translate("MainWindow", "Document", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionCube.setText(QtGui.QApplication.translate("MainWindow", "Cube", None, QtGui.QApplication.UnicodeUTF8))
-
+        MainWindow.setWindowTitle(
+            QtGui.QApplication.translate(
+                "MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
+        self.menuFreeCAD.setTitle(
+            QtGui.QApplication.translate(
+                "MainWindow", "FreeCAD", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
+        self.actionEmbed.setText(
+            QtGui.QApplication.translate(
+                "MainWindow", "Embed", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
+        self.actionDocument.setText(
+            QtGui.QApplication.translate(
+                "MainWindow", "Document", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
+        self.actionCube.setText(
+            QtGui.QApplication.translate("MainWindow", "Cube", None, QtGui.QApplication.UnicodeUTF8)
+        )

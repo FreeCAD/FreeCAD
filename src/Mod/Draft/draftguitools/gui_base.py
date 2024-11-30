@@ -31,11 +31,9 @@
 # @{
 import FreeCAD as App
 import FreeCADGui as Gui
-import draftutils.todo as todo
-
-from draftutils.messages import _msg, _log
-
-__metaclass__ = type  # to support Python 2 use of `super()`
+from draftutils import gui_utils
+from draftutils import todo
+from draftutils.messages import _toolmsg, _log
 
 
 class GuiCommandSimplest:
@@ -88,14 +86,8 @@ class GuiCommandSimplest:
         self.doc = doc
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a document.
-        """
-        if App.activeDocument():
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(App.activeDocument())
 
     def Activated(self):
         """Execute when the command is called.
@@ -106,8 +98,8 @@ class GuiCommandSimplest:
         self.doc = App.activeDocument()
         _log("Document: {}".format(self.doc.Label))
         _log("GuiCommand: {}".format(self.command_name))
-        _msg("{}".format(16*"-"))
-        _msg("GuiCommand: {}".format(self.command_name))
+        _toolmsg("{}".format(16*"-"))
+        _toolmsg("GuiCommand: {}".format(self.command_name))
 
 
 class GuiCommandNeedsSelection(GuiCommandSimplest):
@@ -121,14 +113,8 @@ class GuiCommandNeedsSelection(GuiCommandSimplest):
     """
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a selection.
-        """
-        if App.activeDocument() and Gui.Selection.getSelection():
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(Gui.Selection.getSelection())
 
 
 class GuiCommandBase:
@@ -177,10 +163,7 @@ class GuiCommandBase:
 
     def IsActive(self):
         """Return True when this command should be available."""
-        if App.ActiveDocument:
-            return True
-        else:
-            return False
+        return bool(gui_utils.get_3d_view())
 
     def finish(self):
         """Terminate the active command by committing the list of commands.

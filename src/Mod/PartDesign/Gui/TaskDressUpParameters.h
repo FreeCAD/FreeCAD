@@ -21,15 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskDressUpParameters_H
 #define GUI_TASKVIEW_TaskDressUpParameters_H
 
+#include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
+
 
 class QAction;
 class QListWidget;
@@ -46,11 +47,11 @@ class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::Selecti
     Q_OBJECT
 
 public:
-    TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = 0);
-    virtual ~TaskDressUpParameters();
+    TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = nullptr);
+    ~TaskDressUpParameters() override;
 
-    const std::vector<std::string> getReferences(void) const;
-    Part::Feature *getBase(void) const;
+    const std::vector<std::string> getReferences() const;
+    Part::Feature *getBase() const;
 
     void hideObject();
     void showObject();
@@ -63,40 +64,62 @@ public:
         return transactionID;
     }
 
+    bool event(QEvent* event) override;
+
 protected Q_SLOTS:
-    void onButtonRefAdd(const bool checked);
-    void onButtonRefRemove(const bool checked);
+    void onButtonRefSel(const bool checked);
     void doubleClicked(QListWidgetItem* item);
     void setSelection(QListWidgetItem* current);
     void itemClickedTimeout();
-    virtual void onRefDeleted(void) = 0;
-    void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
+    virtual void onRefDeleted() = 0;
+    void createDeleteAction(QListWidget* parentList);
     void createAddAllEdgesAction(QListWidget* parentList);
 
 protected:
-    void exitSelectionMode();
-    bool referenceSelected(const Gui::SelectionChanges& msg);
+    void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
     bool wasDoubleClicked = false;
-    bool KeyEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent* ke) override;
     void hideOnError();
     void addAllEdges(QListWidget* listWidget);
+    void deleteRef(QListWidget* listWidget);
+    void updateFeature(PartDesign::DressUp* pcDressUp, const std::vector<std::string>& refs);
+
 protected:
-    enum selectionModes { none, refAdd, refRemove, plane, line };
-    virtual void clearButtons(const selectionModes notThis) = 0;
+    enum selectionModes { none, refSel, plane, line };
+    void setSelectionMode(selectionModes mode);
+    virtual void setButtons(const selectionModes mode) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
-    ViewProviderDressUp* getDressUpView() const
-    { return DressUpView; }
+    ViewProviderDressUp* getDressUpView() const;
+
+    template<typename T = App::DocumentObject> T* getObject() const
+    {
+        static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
+        if (!DressUpView.expired()) {
+            return dynamic_cast<T*>(DressUpView->getObject());
+        }
+
+        return nullptr;
+    }
+
+private:
+    void tryAddSelection(const std::string& doc, const std::string& obj, const std::string& sub);
+    void setDressUpVisibility(bool visible);
 
 protected:
     QWidget* proxy;
-    ViewProviderDressUp *DressUpView;
     QAction* deleteAction;
     QAction* addAllEdgesAction;
 
     bool allowFaces, allowEdges;
     selectionModes selectionMode;
     int transactionID;
+
+    static const QString btnPreviewStr();
+    static const QString btnSelectStr();
+
+private:
+    Gui::WeakPtrT<ViewProviderDressUp> DressUpView;
 };
 
 /// simulation dialog for the TaskView
@@ -105,16 +128,13 @@ class TaskDlgDressUpParameters : public TaskDlgFeatureParameters
     Q_OBJECT
 
 public:
-    TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
-    virtual ~TaskDlgDressUpParameters();
-
-    ViewProviderDressUp* getDressUpView() const
-    { return static_cast<ViewProviderDressUp*>(vp); }
+    explicit TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
+    ~TaskDlgDressUpParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    virtual bool reject();
+    bool accept() override;
+    bool reject() override;
 
 protected:
     TaskDressUpParameters  *parameter;

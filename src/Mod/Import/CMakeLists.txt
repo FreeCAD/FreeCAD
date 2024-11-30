@@ -42,12 +42,12 @@ SET(DXF_Plate
 
 set(Import_Scripts
     Init.py
-    gzip_utf8.py
     stepZ.py
 )
 
 if(BUILD_GUI)
     list (APPEND Import_Scripts InitGui.py)
+    list (APPEND Import_Scripts TestImportGui.py)
 endif(BUILD_GUI)
 
 add_custom_target(ImportScripts ALL
@@ -82,4 +82,3 @@ INSTALL(
     FILES_MATCHING
         PATTERN "*.rub*"
 )
-   

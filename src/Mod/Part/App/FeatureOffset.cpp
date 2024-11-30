@@ -19,25 +19,28 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Precision.hxx>
 #endif
 
+#include <App/Link.h>
 
 #include "FeatureOffset.h"
+#include <App/Document.h>
 
 
 using namespace Part;
 
-const char* Part::Offset::ModeEnums[]= {"Skin","Pipe", "RectoVerso",NULL};
-const char* Part::Offset::JoinEnums[]= {"Arc","Tangent", "Intersection",NULL};
+const char* Part::Offset::ModeEnums[]= {"Skin","Pipe", "RectoVerso",nullptr};
+const char* Part::Offset::JoinEnums[]= {"Arc","Tangent", "Intersection",nullptr};
 
 PROPERTY_SOURCE(Part::Offset, Part::Feature)
 
 Offset::Offset()
 {
-    ADD_PROPERTY_TYPE(Source,(0),"Offset",App::Prop_None,"Source shape");
+    ADD_PROPERTY_TYPE(Source,(nullptr),"Offset",App::Prop_None,"Source shape");
     ADD_PROPERTY_TYPE(Value,(1.0),"Offset",App::Prop_None,"Offset value");
     ADD_PROPERTY_TYPE(Mode,(long(0)),"Offset",App::Prop_None,"Mode");
     Mode.setEnums(ModeEnums);
@@ -50,10 +53,7 @@ Offset::Offset()
     Source.setScope(App::LinkScope::Global);
 }
 
-Offset::~Offset()
-{
-
-}
+Offset::~Offset() = default;
 
 short Offset::mustExecute() const
 {
@@ -74,7 +74,7 @@ short Offset::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset::execute(void)
+App::DocumentObjectExecReturn *Offset::execute()
 {
     App::DocumentObject* source = Source.getValue();
     if (!source)
@@ -84,13 +84,13 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     bool inter = Intersection.getValue();
     bool self = SelfIntersection.getValue();
     short mode = (short)Mode.getValue();
-    short join = (short)Join.getValue();
     bool fill = Fill.getValue();
-    const TopoShape& shape = Feature::getShape(source);
-    if (fabs(offset) > 2*tol)
-        this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
-    else
-        this->Shape.setValue(shape);
+    auto shape = Feature::getTopoShape(source);
+    if(shape.isNull())
+        return new App::DocumentObjectExecReturn("Invalid source link");
+    auto join = static_cast<JoinType>(Join.getValue());
+    this->Shape.setValue(TopoShape(0).makeElementOffset(
+        shape,offset,tol,inter,self,mode,join,fill ? FillType::fill : FillType::noFill));
     return App::DocumentObject::StdReturn;
 }
 
@@ -106,10 +106,7 @@ Offset2D::Offset2D()
     this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
 }
 
-Offset2D::~Offset2D()
-{
-
-}
+Offset2D::~Offset2D() = default;
 
 short Offset2D::mustExecute() const
 {
@@ -128,11 +125,17 @@ short Offset2D::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset2D::execute(void)
+App::DocumentObjectExecReturn *Offset2D::execute()
 {
     App::DocumentObject* source = Source.getValue();
-    if (!(source && source->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+
+    if (!source) {
+       return new App::DocumentObjectExecReturn("No source shape linked.");
+    }
+    const TopoShape shape = Part::Feature::getTopoShape(source);
+    if (shape.isNull()) {
         return new App::DocumentObjectExecReturn("No source shape linked.");
+    }
     double offset = Value.getValue();
     short mode = (short)Mode.getValue();
     short join = (short)Join.getValue();
@@ -140,7 +143,7 @@ App::DocumentObjectExecReturn *Offset2D::execute(void)
     bool inter = Intersection.getValue();
     if (mode == 2)
         return new App::DocumentObjectExecReturn("Mode 'Recto-Verso' is not supported for 2D offset.");
-    const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
+
     this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0, inter));
     return App::DocumentObject::StdReturn;
 }

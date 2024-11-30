@@ -125,12 +125,14 @@ bool Tree::addTreeRecursive(SegmentMap::const_iterator root, const std::string& 
             parents_chain_root.push_back(s->first);
             if (s->first == root_name) break;
         }
-        if (parents_chain_root.empty() || parents_chain_root.back() != root_name) return false;
+        if (parents_chain_root.empty() || parents_chain_root.back() != root_name)
+            return false;
         for (SegmentMap::const_iterator s=getSegment(chain_tip); s!=segments.end(); s = GetTreeElementParent(s->second)){
             parents_chain_tip.push_back(s->first);
             if (s->first == root_name) break;
         }
-        if (parents_chain_tip.empty() || parents_chain_tip.back()  != root_name) return false;
+        if (parents_chain_tip.empty() || parents_chain_tip.back()  != root_name)
+            return false;
         
         // remove common part of segment lists
         SegmentMap::key_type last_segment = root_name;

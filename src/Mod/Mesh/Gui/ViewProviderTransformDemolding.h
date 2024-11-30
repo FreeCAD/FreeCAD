@@ -23,7 +23,8 @@
 #ifndef MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
 #define MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
 
-#include <Inventor/nodes/SoRotation.h>
+#include "ViewProvider.h"
+
 
 class SoSeparator;
 class SbVec3f;
@@ -35,63 +36,64 @@ class SoIndexedFaceSet;
 class SoFaceSet;
 class SoPath;
 class SoLocateHighlight;
+class SbRotation;
 class SoTrackballDragger;
 class SoTransformerManip;
 
-namespace Gui {
-  class View3DInventorViewer;
+namespace Gui
+{
+class View3DInventorViewer;
 }
 
-
-#include "ViewProvider.h"
-#include <Base/Vector3D.h>
-
-namespace MeshGui {
+namespace MeshGui
+{
 
 /** Like Mesh viewprovider but with manipulator
  */
-class ViewProviderMeshTransformDemolding : public ViewProviderMesh
+class ViewProviderMeshTransformDemolding: public ViewProviderMesh
 {
-  PROPERTY_HEADER(MeshGui::ViewProviderMeshTransformDemolding);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshTransformDemolding);
 
 public:
-  ViewProviderMeshTransformDemolding();
-  virtual ~ViewProviderMeshTransformDemolding();
+    ViewProviderMeshTransformDemolding();
+    ~ViewProviderMeshTransformDemolding() override;
 
 
-  /** 
-   * Extracts the mesh data from the feature \a pcFeature and creates
-   * an Inventor node \a SoNode with these data. 
-   */
-  virtual void attach(App::DocumentObject *);
+    /**
+     * Extracts the mesh data from the feature \a pcFeature and creates
+     * an Inventor node \a SoNode with these data.
+     */
+    void attach(App::DocumentObject* obj) override;
 
-  /// set the viewing mode
-  virtual void setDisplayMode(const char* ModeName);
-  /// get the default display mode
-  virtual const char* getDefaultDisplayMode() const;
-  /// returns a list of all possible modes
-  virtual std::vector<std::string> getDisplayModes(void) const;
+    /// set the viewing mode
+    void setDisplayMode(const char* ModeName) override;
+    /// get the default display mode
+    const char* getDefaultDisplayMode() const override;
+    /// returns a list of all possible modes
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
-  void calcMaterialIndex(const SbRotation &rot);
-  void calcNormalVector(void);
+    void setCenterPoint();
+    void calcMaterialIndex(const SbRotation& rot);
+    void calcNormalVector();
 
-  static void sValueChangedCallback(void *, SoDragger *);
-  void valueChangedCallback(void);
+    static void sValueChangedCallback(void*, SoDragger*);
+    void valueChangedCallback();
 
-  static void sDragEndCallback(void *, SoDragger *);
-  void DragEndCallback(void);
+    static void sDragEndCallback(void*, SoDragger*);
+    void DragEndCallback();
 
-  SoTrackballDragger *pcTrackballDragger;
-  SoTransform        *pcTransformDrag;
-  SoMaterial         *pcColorMat;
-  std::vector<SbVec3f> normalVector;
-  Base::Vector3f            center;
+private:
+    SoTrackballDragger* pcTrackballDragger;
+    SoTransform* pcTransformDrag;
+    SoMaterial* pcColorMat;
+    std::vector<SbVec3f> normalVector;
+    Base::Vector3f center;
 
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshTransformDemolding)
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
-
+#endif  // MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H

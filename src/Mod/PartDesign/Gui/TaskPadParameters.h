@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPadParameters_H
 #define GUI_TASKVIEW_TaskPadParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderPad.h"
+
 
 namespace App {
 class Property;
@@ -47,10 +43,10 @@ class TaskPadParameters : public TaskExtrudeParameters
     Q_OBJECT
 
 public:
-    TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = 0, bool newObj=false);
-    ~TaskPadParameters();
+    explicit TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = nullptr, bool newObj=false);
+    ~TaskPadParameters() override;
 
-    virtual void apply() override;
+    void apply() override;
 
 private:
     void onModeChanged(int index) override;
@@ -59,15 +55,21 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
+class TaskDlgPadParameters : public TaskDlgExtrudeParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
+    explicit TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
 
-    ViewProviderPad* getPadView() const
-    { return static_cast<ViewProviderPad*>(vp); }
+protected:
+    TaskExtrudeParameters* getTaskParameters() override
+    {
+        return parameters;
+    }
+
+private:
+    TaskPadParameters* parameters;
 };
 
 } //namespace PartDesignGui

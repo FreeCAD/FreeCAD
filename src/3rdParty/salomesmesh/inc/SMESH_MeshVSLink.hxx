@@ -57,9 +57,6 @@
 #ifndef _MeshVS_EntityType_HeaderFile
 #include <MeshVS_EntityType.hxx>
 #endif
-#ifndef _Standard_Address_HeaderFile
-#include <Standard_Address.hxx>
-#endif
 #ifndef _TColStd_HArray1OfInteger_HeaderFile
 #include <TColStd_HArray1OfInteger.hxx>
 #endif
@@ -102,7 +99,7 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 	*/
 
 	//! Returns geometry information about node ( if IsElement is False ) or element ( IsElement is True ) <br>
-	//! by co-ordinates. For element this method must return all its nodes co-ordinates in the strict order: X, Y, Z and <br>
+	//! by coordinates. For element this method must return all its nodes coordinates in the strict order: X, Y, Z and <br>
 	//! with nodes order is the same as in wire bounding the face or link. NbNodes is number of nodes of element. <br>
 	//! It is recommended to return 1 for node. Type is an element type. <br>
 	Standard_EXPORT   Standard_Boolean GetGeom(const Standard_Integer ID,const Standard_Boolean IsElement,TColStd_Array1OfReal& Coords,Standard_Integer& NbNodes,MeshVS_EntityType& Type) const override;

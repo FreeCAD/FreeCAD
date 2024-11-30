@@ -212,7 +212,27 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="uvdir">
+        <property name="text">
+         <string>User-defined u/v directions</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>User-Defined UVDir</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/ReverseEngineering/BSplineFit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="makePlacement">
+        <property name="text">
+         <string>Create placement</string>
+        </property>
+       </widget>
+      </item>
+     <item row="3" column="0" colspan="2">
        <widget class="QGroupBox" name="groupBoxSmooth">
         <property name="title">
          <string>Smoothing</string>
@@ -340,27 +360,7 @@
         </layout>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="Gui::PrefCheckBox" name="uvdir">
-        <property name="text">
-         <string>User-defined u/v directions</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>User-Defined UVDir</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/ReverseEngineering/BSplineFit</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="makePlacement">
-        <property name="text">
-         <string>Create placement</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
   </layout>

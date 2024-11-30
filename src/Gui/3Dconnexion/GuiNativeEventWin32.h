@@ -29,30 +29,27 @@
 
 #include <map>
 
-//#define _WIN32_WINNT 0x0501  //target at least windows XP
 #include <Windows.h>
-#if QT_VERSION >= 0x050000
 #include "GuiRawInputEventFilter.h"
-#endif
 
 class QMainWindow;
 class GUIApplicationNativeEventAware;
 
 namespace Gui
 {
-	class GUIApplicationNativeEventAware;
+    class GUIApplicationNativeEventAware;
 
-	class GuiNativeEvent : public GuiAbstractNativeEvent
-	{
-	Q_OBJECT
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent() override;
-		void initSpaceball(QMainWindow *window) override final;
-	private:
-		GuiNativeEvent();
-		GuiNativeEvent(const GuiNativeEvent&);
-		GuiNativeEvent& operator=(const GuiNativeEvent&);
+    class GuiNativeEvent : public GuiAbstractNativeEvent
+    {
+    Q_OBJECT
+    public:
+        GuiNativeEvent(GUIApplicationNativeEventAware *app);
+        ~GuiNativeEvent() override;
+        void initSpaceball(QMainWindow *window) override final;
+    private:
+        GuiNativeEvent();
+        GuiNativeEvent(const GuiNativeEvent&);
+        GuiNativeEvent& operator=(const GuiNativeEvent&);
     public:
         static bool Is3dmouseAttached();
 
@@ -65,7 +62,11 @@ namespace Gui
 
     private:
         bool InitializeRawInput(HWND hwndTarget);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         static bool RawInputEventFilter(void* msg, long* result);
+#else
+        static bool RawInputEventFilter(void* msg, qintptr* result);
+#endif
         void OnRawInput(UINT nInputCode, HRAWINPUT hRawInput);
         UINT GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader);
         bool TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput);
@@ -99,7 +100,7 @@ namespace Gui
         // use to calculate distance traveled since last event
         DWORD fLast3dmouseInputTime;
         static Gui::GuiNativeEvent* gMouseInput;
-	};
+    };
 }
 
 #endif //GUINATIVEEVENT_H

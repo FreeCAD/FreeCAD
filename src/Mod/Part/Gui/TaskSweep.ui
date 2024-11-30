@@ -59,6 +59,9 @@
      <property name="text">
       <string>Frenet</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item row="3" column="2">

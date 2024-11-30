@@ -23,48 +23,63 @@
 #ifndef PROPERTYCOLUMNWIDTHS_H
 #define PROPERTYCOLUMNWIDTHS_H
 
-#include <map>
 #include <App/Property.h>
 #include <CXX/Objects.hxx>
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
+#include <map>
 
-namespace Spreadsheet {
-
-class SpreadsheetExport PropertyColumnWidths : public App::Property, std::map<int, int>
+namespace Spreadsheet
 {
-    TYPESYSTEM_HEADER();
+
+class SpreadsheetExport PropertyColumnWidths: public App::Property, std::map<int, int>
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     PropertyColumnWidths();
 
-    void setValue() { }
+    void setValue()
+    {}
 
     void setValue(int col, int width);
 
-    void setValues(const std::map<int,int> &);
+    void setValues(const std::map<int, int>&);
 
-    std::map<int, int> getValues() const {
+    std::map<int, int> getValues() const
+    {
         return *this;
     }
 
-    int getValue(int column) const {
+    int getValue(int column) const
+    {
         std::map<int, int>::const_iterator i = find(column);
         return i != end() ? i->second : defaultWidth;
     }
 
-    virtual Property *Copy(void) const;
+    Property* Copy() const override;
 
-    virtual void Paste(const Property &from);
+    void Paste(const Property& from) override;
 
-    virtual void Save (Base::Writer & writer) const;
+    void Save(Base::Writer& writer) const override;
 
-    virtual void Restore(Base::XMLReader & reader);
+    void Restore(Base::XMLReader& reader) override;
 
-    bool isDirty() const { return dirty.size() > 0; }
+    bool isDirty() const
+    {
+        return !dirty.empty();
+    }
 
-    void clearDirty() { dirty.clear(); }
+    void clearDirty()
+    {
+        dirty.clear();
+    }
 
-    const std::set<int> & getDirty() const { return dirty; }
+    const std::set<int>& getDirty() const
+    {
+        return dirty;
+    }
 
-    PyObject *getPyObject(void);
+    PyObject* getPyObject() override;
 
     void clear();
 
@@ -72,14 +87,13 @@ public:
     static const int defaultHeaderWidth;
 
 private:
-
-    PropertyColumnWidths(const PropertyColumnWidths & other);
+    PropertyColumnWidths(const PropertyColumnWidths& other);
 
     std::set<int> dirty;
 
     Py::Object PythonObject;
 };
 
-}
+}  // namespace Spreadsheet
 
-#endif // PROPERTYCOLUMNWIDTHS_H
+#endif  // PROPERTYCOLUMNWIDTHS_H

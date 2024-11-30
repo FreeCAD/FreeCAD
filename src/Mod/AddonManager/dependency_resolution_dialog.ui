@@ -3,7 +3,7 @@
  <class>DependencyResolutionDialog</class>
  <widget class="QDialog" name="DependencyResolutionDialog">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -16,13 +16,19 @@
   <property name="windowTitle">
    <string>Resolve Dependencies</string>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
       <string>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
-Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</string>
+Do you want the Addon Manager to install them automatically? Choose "Ignore" to install the Addon without installing the dependencies.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -38,17 +38,17 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderImport : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderImport);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderImport);
 
 public:
     /// constructor
     ViewProviderImport();
     /// destructor
-    virtual ~ViewProviderImport();
+    ~ViewProviderImport() override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 } // namespace PartGui

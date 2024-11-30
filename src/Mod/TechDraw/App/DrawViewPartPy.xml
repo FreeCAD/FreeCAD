@@ -18,9 +18,19 @@
         <UserDocu>getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getVisibleVertexes">
+      <Documentation>
+        <UserDocu>getVisibleVertexes() - get the visible vertexes as App.Vector in the View's coordinate system.</UserDocu>
+      </Documentation>
+    </Methode>
    <Methode Name="getHiddenEdges">
       <Documentation>
         <UserDocu>getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getHiddenVertexes">
+      <Documentation>
+        <UserDocu>getHiddenVertexes() - get the hidden vertexes as App.Vector in the View's coordinate system.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeCosmeticVertex">
@@ -41,11 +51,6 @@
     <Methode Name="getCosmeticVertexBySelection">
       <Documentation>
         <UserDocu>cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="replaceCosmeticVertex">
-      <Documentation>
-        <UserDocu>rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeCosmeticVertex">
@@ -78,6 +83,16 @@
         <UserDocu>tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeCosmeticCircle3d">
+      <Documentation>
+        <UserDocu>tag = makeCosmeticCircle3d(center, radius) - add a CosmeticEdge at center (3d point) with radius. Returns tag of new CosmeticEdge.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCosmeticCircleArc3d">
+      <Documentation>
+        <UserDocu>tag = makeCosmeticCircleArc3d(center, radius, start, end) - add a CosmeticEdge at center (3d point) with radius from start angle to end angle. Returns tag of new CosmeticEdge.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getCosmeticEdge">
       <Documentation>
         <UserDocu>ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id.</UserDocu>
@@ -86,11 +101,6 @@
     <Methode Name="getCosmeticEdgeBySelection">
       <Documentation>
         <UserDocu>ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="replaceCosmeticEdge">
-      <Documentation>
-        <UserDocu>replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeCosmeticEdge">
@@ -111,11 +121,6 @@
     <Methode Name="getCenterLineBySelection">
       <Documentation>
         <UserDocu>cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="replaceCenterLine">
-      <Documentation>
-        <UserDocu>replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeCenterLine">
@@ -161,6 +166,18 @@
     <Methode Name="getVertexBySelection">
       <Documentation>
         <UserDocu>getVertexBySelection(vertexName). Returns Part.TopoShape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="projectPoint">
+      <Documentation>
+        <UserDocu>projectPoint(vector3d point, [bool invert]). Returns the projection of point in the
+        projection coordinate system of this DrawViewPart. Optionally inverts the Y coordinate of the
+        result.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getGeometricCenter">
+      <Documentation>
+        <UserDocu>point3d = getGeometricCenter() - returns the geometric center of the source shapes.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="requestPaint">

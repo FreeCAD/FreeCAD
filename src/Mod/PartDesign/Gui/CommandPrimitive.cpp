@@ -22,26 +22,25 @@
 
 
 #include "PreCompiled.h"
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
+
 #ifndef _PreComp_
-# include <Inventor/nodes/SoPickStyle.h>
 # include <QApplication>
 # include <QMessageBox>
 #endif
 
 #include <App/Document.h>
-#include <Gui/Command.h>
 #include <Gui/Action.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Application.h>
-#include <Base/Console.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
 
+#include "DlgActiveBody.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
-#include "DlgActiveBody.h"
 
 using namespace std;
 
@@ -77,8 +76,6 @@ CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
 void CmdPrimtiveCompAdditive::activated(int iMsg)
 {
     App::Document *doc = getDocument();
-    if (!PartDesignGui::assureModernWorkflow(doc))
-        return;
 
     // We need either an active Body, or for there to be no Body objects
     // (in which case, just make one) to make a new additive shape.
@@ -119,7 +116,8 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     auto* prm = static_cast<PartDesign::FeaturePrimitive*>(
             pcActiveBody->getDocument()->getObject(FeatName.c_str()));
 
-    if(!prm) return;
+    if(!prm)
+        return;
     FCMD_OBJ_CMD(pcActiveBody,"addObject("<<getObjectCmd(prm)<<")");
     Gui::Command::updateActive();
 
@@ -128,16 +126,16 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
 
     if(!base)
         base = pcActiveBody;
-    copyVisual(prm, "ShapeColor", base);
+    copyVisual(prm, "ShapeAppearance", base);
     copyVisual(prm, "LineColor", base);
     copyVisual(prm, "PointColor", base);
     copyVisual(prm, "Transparency", base);
     copyVisual(prm, "DisplayMode", base);
-    
+
     PartDesignGui::setEdit(prm,pcActiveBody);
 }
 
-Gui::Action * CmdPrimtiveCompAdditive::createAction(void)
+Gui::Action * CmdPrimtiveCompAdditive::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -229,7 +227,7 @@ void CmdPrimtiveCompAdditive::languageChange()
     arc8->setStatusTip(arc8->toolTip());
 }
 
-bool CmdPrimtiveCompAdditive::isActive(void)
+bool CmdPrimtiveCompAdditive::isActive()
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -250,10 +248,6 @@ CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)
 {
-    App::Document *doc = getDocument();
-    if (!PartDesignGui::assureModernWorkflow(doc))
-        return;
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -279,7 +273,7 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     Gui::Command::updateActive();
 
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-    copyVisual(Feat, "ShapeColor", prevSolid);
+    copyVisual(Feat, "ShapeAppearance", prevSolid);
     copyVisual(Feat, "LineColor", prevSolid);
     copyVisual(Feat, "PointColor", prevSolid);
     copyVisual(Feat, "Transparency", prevSolid);
@@ -293,7 +287,7 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     PartDesignGui::setEdit(Feat,pcActiveBody);
 }
 
-Gui::Action * CmdPrimtiveCompSubtractive::createAction(void)
+Gui::Action * CmdPrimtiveCompSubtractive::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -385,7 +379,7 @@ void CmdPrimtiveCompSubtractive::languageChange()
     arc8->setStatusTip(arc8->toolTip());
 }
 
-bool CmdPrimtiveCompSubtractive::isActive(void)
+bool CmdPrimtiveCompSubtractive::isActive()
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -394,7 +388,7 @@ bool CmdPrimtiveCompSubtractive::isActive(void)
 // Initialization
 //===========================================================================
 
-void CreatePartDesignPrimitiveCommands(void)
+void CreatePartDesignPrimitiveCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

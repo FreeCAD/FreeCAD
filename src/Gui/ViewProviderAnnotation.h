@@ -26,6 +26,7 @@
 
 #include "ViewProviderDocumentObject.h"
 #include <App/PropertyUnits.h>
+#include "SoTextLabel.h"
 
 class SoFont;
 class SoText2;
@@ -42,12 +43,12 @@ namespace Gui
 
 class GuiExport ViewProviderAnnotation : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderAnnotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderAnnotation);
 
 public:
     /// Constructor
-    ViewProviderAnnotation(void);
-    virtual ~ViewProviderAnnotation();
+    ViewProviderAnnotation();
+    ~ViewProviderAnnotation() override;
 
     // Display properties
     App::PropertyColor          TextColor;
@@ -58,13 +59,13 @@ public:
     App::PropertyAngle          Rotation;
     App::PropertyEnumeration    RotationAxis;
 
-    void attach(App::DocumentObject *);
-    void updateData(const App::Property*);
-    std::vector<std::string> getDisplayModes(void) const;
-    void setDisplayMode(const char* ModeName);
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property*) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void setDisplayMode(const char* ModeName) override;
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
     SoFont           * pFont;
@@ -86,12 +87,12 @@ private:
  */
 class GuiExport ViewProviderAnnotationLabel : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderAnnotationLabel);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderAnnotationLabel);
 
 public:
     /// Constructor
-    ViewProviderAnnotationLabel(void);
-    virtual ~ViewProviderAnnotationLabel();
+    ViewProviderAnnotationLabel();
+    ~ViewProviderAnnotationLabel() override;
 
     // Display properties
     App::PropertyColor          TextColor;
@@ -101,22 +102,13 @@ public:
     App::PropertyFont           FontName;
     App::PropertyBool           Frame;
 
-    void attach(App::DocumentObject *);
-    void updateData(const App::Property*);
-    std::vector<std::string> getDisplayModes(void) const;
-    void setDisplayMode(const char* ModeName);
-
-    /** @name Edit methods */
-    //@{
-    bool doubleClicked(void);
-    void setupContextMenu(QMenu*, QObject*, const char*);
-protected:
-    bool setEdit(int ModNum);
-    void unsetEdit(int ModNum);
-    //@}
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property*) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void setDisplayMode(const char* ModeName) override;
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     void drawImage(const std::vector<std::string>&);
 
 private:
@@ -129,7 +121,7 @@ private:
     SoImage          * pImage;
     SoBaseColor      * pColor;
     SoTranslation    * pBaseTranslation;
-    SoTransform      * pTextTranslation;
+    TranslateManip   * pTextTranslation;
 
     static const char* JustificationEnums[];
 };

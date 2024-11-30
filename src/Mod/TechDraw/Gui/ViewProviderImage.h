@@ -20,38 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERIMAGE_H
 #define DRAWINGGUI_VIEWPROVIDERIMAGE_H
 
-#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewImage.h>
+
 #include "ViewProviderDrawingView.h"
+
 
 namespace TechDrawGui {
 
 
 class TechDrawGuiExport ViewProviderImage : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderImage);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderImage);
 
 public:
     /// constructor
     ViewProviderImage();
     /// destructor
-    virtual ~ViewProviderImage();
+    ~ViewProviderImage() override;
 
     App::PropertyBool  Crop;              //crop to feature width x height
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    bool useNewSelectionModel() const override {return false;}
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property *prop);
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property *prop) override;
 
-    virtual TechDraw::DrawViewImage* getViewObject() const;
+    TechDraw::DrawViewImage* getViewObject() const override;
 };
 
 

@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>277</width>
-    <height>394</height>
+    <width>456</width>
+    <height>492</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Placement</string>
@@ -23,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBox5">
      <property name="title">
-      <string>Translation:</string>
+      <string>Translation</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -41,8 +35,8 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="4" column="0">
-       <widget class="QLabel" name="TextLabelAxial">
+      <item row="0" column="0">
+       <widget class="QLabel" name="TextLabelX">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -50,22 +44,12 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Axial:</string>
+         <string notr="true">X</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="TextLabelZ">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Z:</string>
-        </property>
-       </widget>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="xPos"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="TextLabelY">
@@ -76,12 +60,15 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Y:</string>
+         <string notr="true">Y</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="TextLabelX">
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="yPos"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="TextLabelZ">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -89,18 +76,25 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>X:</string>
+         <string notr="true">Z</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xPos"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yPos"/>
-      </item>
       <item row="3" column="1">
        <widget class="Gui::QuantitySpinBox" name="zPos"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="TextLabelAxial">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Axial</string>
+        </property>
+       </widget>
       </item>
       <item row="4" column="1">
        <widget class="Gui::QuantitySpinBox" name="axialPos"/>
@@ -121,7 +115,7 @@
    <item row="0" column="1">
     <widget class="QGroupBox" name="GroupBox5_3">
      <property name="title">
-      <string>Center:</string>
+      <string>Center</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -139,8 +133,8 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="2" column="0">
-       <widget class="QLabel" name="TextLabelZ_5">
+      <item row="0" column="0">
+       <widget class="QLabel" name="TextLabelX_2">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -148,9 +142,12 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Z:</string>
+         <string notr="true">X</string>
         </property>
        </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="xCnt"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="TextLabelY_2">
@@ -161,12 +158,15 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Y:</string>
+         <string notr="true">Y</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="TextLabelX_2">
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="yCnt"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="TextLabelZ_5">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -174,15 +174,9 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>X:</string>
+         <string notr="true">Z</string>
         </property>
        </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xCnt"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yCnt"/>
       </item>
       <item row="2" column="1">
        <widget class="Gui::QuantitySpinBox" name="zCnt"/>
@@ -207,7 +201,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="QGroupBox" name="GroupBox5_2">
      <property name="title">
-      <string>Rotation:</string>
+      <string>Rotation</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -225,6 +219,20 @@
       <property name="spacing">
        <number>6</number>
       </property>
+      <item row="0" column="0">
+       <widget class="QComboBox" name="rotationInput">
+        <item>
+         <property name="text">
+          <string>Rotation axis and angle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Euler angles (zy'x'')</string>
+         </property>
+        </item>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
@@ -264,26 +272,6 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="1" column="0">
-             <widget class="QLabel" name="textLabelAngle">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Angle:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="direction">
-              <property name="currentIndex">
-               <number>-1</number>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="TextLabelAxis">
               <property name="sizePolicy">
@@ -293,11 +281,33 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Axis:</string>
+               <string>Axis</string>
               </property>
              </widget>
             </item>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="xAxis"/>
+            </item>
             <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="yAxis"/>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::QuantitySpinBox" name="zAxis"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="textLabelAngle">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Angle</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="angle"/>
             </item>
            </layout>
@@ -338,6 +348,26 @@
             <property name="spacing">
              <number>6</number>
             </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="TextLabelZ_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Yaw (around z-axis)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="yawAngle">
+              <property name="toolTip">
+               <string>Yaw (around z-axis)</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="TextLabelZ_3">
               <property name="sizePolicy">
@@ -347,7 +377,14 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Pitch (around y-axis):</string>
+               <string>Pitch (around y-axis)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="pitchAngle">
+              <property name="toolTip">
+               <string>Pitch (around y-axis)</string>
               </property>
              </widget>
             </item>
@@ -360,34 +397,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Roll (around x-axis):</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="TextLabelZ_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Yaw (around z-axis):</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="yawAngle">
-              <property name="toolTip">
-               <string>Yaw (around z-axis)</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="pitchAngle">
-              <property name="toolTip">
-               <string>Pitch (around y-axis)</string>
+               <string>Roll (around x-axis)</string>
               </property>
              </widget>
             </item>
@@ -403,20 +413,6 @@
          </layout>
         </widget>
         <widget class="QWidget" name="page_2"/>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QComboBox" name="rotationInput">
-        <item>
-         <property name="text">
-          <string>Rotation axis with angle</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Euler angles (zy'x'')</string>
-         </property>
-        </item>
        </widget>
       </item>
      </layout>
@@ -491,23 +487,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="oKButton">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="closeButton">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="applyButton">
-       <property name="text">
-        <string>Apply</string>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -523,48 +505,8 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>rotationInput</tabstop>
-  <tabstop>direction</tabstop>
-  <tabstop>applyIncrementalPlacement</tabstop>
-  <tabstop>oKButton</tabstop>
-  <tabstop>applyButton</tabstop>
-  <tabstop>closeButton</tabstop>
- </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>oKButton</sender>
-   <signal>clicked()</signal>
-   <receiver>Gui::Dialog::Placement</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>164</x>
-     <y>252</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>8</x>
-     <y>28</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>closeButton</sender>
-   <signal>clicked()</signal>
-   <receiver>Gui::Dialog::Placement</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>354</x>
-     <y>252</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>291</x>
-     <y>179</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>rotationInput</sender>
    <signal>activated(int)</signal>
@@ -578,6 +520,38 @@
     <hint type="destinationlabel">
      <x>278</x>
      <y>94</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Gui::Dialog::Placement</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>469</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>245</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Gui::Dialog::Placement</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>469</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>245</y>
     </hint>
    </hints>
   </connection>

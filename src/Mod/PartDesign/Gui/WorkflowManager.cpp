@@ -23,31 +23,24 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <vector>
-# include <list>
-# include <set>
-# include <boost_bind_bind.hpp>
 # include <QMessageBox>
 # include <QPushButton>
 #endif
 
-#include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include "WorkflowManager.h"
 
 
 using namespace PartDesignGui;
-namespace bp = boost::placeholders;
-
+namespace sp = std::placeholders;
 
 WorkflowManager * WorkflowManager::_instance = nullptr;
-
 
 WorkflowManager::WorkflowManager() {
     // Fill the map with already opened documents
@@ -55,12 +48,14 @@ WorkflowManager::WorkflowManager() {
         slotFinishRestoreDocument ( *doc );
    }
 
+    //NOLINTBEGIN
     connectNewDocument = App::GetApplication().signalNewDocument.connect(
-            boost::bind( &WorkflowManager::slotNewDocument, this, bp::_1 ) );
+            std::bind( &WorkflowManager::slotNewDocument, this, sp::_1 ) );
     connectFinishRestoreDocument = App::GetApplication().signalFinishRestoreDocument.connect(
-            boost::bind( &WorkflowManager::slotFinishRestoreDocument, this, bp::_1 ) );
+            std::bind( &WorkflowManager::slotFinishRestoreDocument, this, sp::_1 ) );
     connectDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
-            boost::bind( &WorkflowManager::slotDeleteDocument, this, bp::_1 ) );
+            std::bind( &WorkflowManager::slotDeleteDocument, this, sp::_1 ) );
+    //NOLINTEND
 }
 
 WorkflowManager::~WorkflowManager() {

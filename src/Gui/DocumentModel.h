@@ -26,7 +26,7 @@
 
 #include <QAbstractItemModel>
 #include <vector>
-#include <map>
+
 
 namespace App {
 class Property;
@@ -38,18 +38,18 @@ class ViewProviderDocumentObject;
 class DocumentModel : public QAbstractItemModel
 {
 public:
-    DocumentModel(QObject* parent);
-    virtual ~DocumentModel();
+    explicit DocumentModel(QObject* parent);
+    ~DocumentModel() override;
 
-    int columnCount (const QModelIndex & parent = QModelIndex()) const;
-    QVariant data (const QModelIndex & index, int role = Qt::DisplayRole) const;
-    bool setData (const QModelIndex & idx, const QVariant & value, int role);
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    QModelIndex index (int row, int column, const QModelIndex & parent = QModelIndex()) const;
-    QModelIndex parent (const QModelIndex & index) const;
-    int rowCount (const QModelIndex & parent = QModelIndex()) const;
-    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool setHeaderData (int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole);
+    int columnCount (const QModelIndex & parent = QModelIndex()) const override;
+    QVariant data (const QModelIndex & index, int role = Qt::DisplayRole) const override;
+    bool setData (const QModelIndex & idx, const QVariant & value, int role) override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QModelIndex index (int row, int column, const QModelIndex & parent = QModelIndex()) const override;
+    QModelIndex parent (const QModelIndex & index) const override;
+    int rowCount (const QModelIndex & parent = QModelIndex()) const override;
+    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    bool setHeaderData (int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole) override;
 
 private:
     void slotNewDocument(const Gui::Document&);

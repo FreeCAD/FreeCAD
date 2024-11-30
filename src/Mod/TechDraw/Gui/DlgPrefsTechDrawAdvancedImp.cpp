@@ -22,20 +22,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
+#include <Mod/TechDraw/App/Preferences.h>
 #include "DlgPrefsTechDrawAdvancedImp.h"
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAdvanced.h>
-#include <Gui/PrefWidgets.h>
+#include "ui_DlgPrefsTechDrawAdvanced.h"
+
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 DlgPrefsTechDrawAdvancedImp::DlgPrefsTechDrawAdvancedImp( QWidget* parent )
   : PreferencePage( parent )
   , ui(new Ui_DlgPrefsTechDrawAdvancedImp)
 {
     ui->setupUi(this);
+
+    makeBalloonBoxConnections();
 }
 
 DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
@@ -45,20 +48,55 @@ DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
 
 void DlgPrefsTechDrawAdvancedImp::saveSettings()
 {
-    ui->cbDetectFaces->onSave(); 
+    ui->cbDetectFaces->onSave();
     ui->cbShowSectionEdges->onSave();
     ui->cbDebugSection->onSave();
     ui->cbDebugDetail->onSave();
     ui->cbCrazyEdges->onSave();
     ui->cbFuseBeforeSection->onSave();
-    ui->cbShowLoose->onSave();
     ui->pdsbEdgeFuzz->onSave();
     ui->pdsbMarkFuzz->onSave();
-    ui->leFormatSpec->onSave();
-    ui->cbEndCap->onSave();
     ui->sbMaxTiles->onSave();
     ui->sbMaxPat->onSave();
+    ui->cbReportProgress->onSave();
+    ui->cbAutoCorrectRefs->onSave();
+    ui->cbNewFaceFinder->onSave();
+    ui->sbScrubCount->onSave();
+
+    saveBalloonOverride();
+
+    ui->cbSwitchWB->onSave();
 }
+
+
+void DlgPrefsTechDrawAdvancedImp::saveBalloonOverride()
+{
+    if (ui->cbBalloonDefault->isChecked()) {
+        Preferences::setBalloonDragModifiers(Qt::ControlModifier);
+        return;
+    }
+
+    Qt::KeyboardModifiers result{Qt::NoModifier};
+
+    if (ui->cbBalloonShift->isChecked()) {
+        result |= Qt::ShiftModifier;
+    }
+
+     if (ui->cbBalloonControl->isChecked()) {
+        result |= Qt::ControlModifier;
+     }
+
+     if (ui->cbBalloonAlt->isChecked()) {
+        result |= Qt::AltModifier;
+     }
+
+     if (ui->cbBalloonMeta->isChecked()) {
+         result |= Qt::MetaModifier;
+     }
+
+     Preferences::setBalloonDragModifiers(result);
+}
+
 
 void DlgPrefsTechDrawAdvancedImp::loadSettings()
 {
@@ -68,27 +106,126 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->cbDebugDetail->onRestore();
     ui->cbCrazyEdges->onRestore();
     ui->cbFuseBeforeSection->onRestore();
-    ui->cbShowLoose->onRestore();
     ui->pdsbEdgeFuzz->onRestore();
     ui->pdsbMarkFuzz->onRestore();
-    ui->leFormatSpec->onRestore();
-    ui->cbEndCap->onRestore();
     ui->sbMaxTiles->onRestore();
     ui->sbMaxPat->onRestore();
+    ui->cbReportProgress->onRestore();
+    ui->cbAutoCorrectRefs->onRestore();
+    ui->cbNewFaceFinder->onRestore();
+    ui->sbScrubCount->onRestore();
+
+    loadBalloonOverride();
+
+    ui->cbSwitchWB->onRestore();
 }
+
+void DlgPrefsTechDrawAdvancedImp::loadBalloonOverride()
+{
+    uint prefOverride = Preferences::balloonDragModifiers();
+    if (prefOverride == Qt::ControlModifier) {
+        // default case
+        ui->cbBalloonDefault->setChecked(true);
+        clearBalloonOptions();
+        enableBalloonOptions(false);
+        return;
+    }
+
+    ui->cbBalloonDefault->setChecked(false);
+    enableBalloonOptions(true);
+
+    if (flagsContainValue(prefOverride, Qt::ShiftModifier)) {
+        ui->cbBalloonShift->setChecked(true);
+    }
+    if (flagsContainValue(prefOverride, Qt::ControlModifier)) {
+        ui->cbBalloonControl->setChecked(true);
+    }
+
+    if (flagsContainValue(prefOverride, Qt::AltModifier)) {
+        ui->cbBalloonAlt->setChecked(true);
+    }
+
+    if (flagsContainValue(prefOverride, Qt::MetaModifier)) {
+        ui->cbBalloonMeta->setChecked(true);
+    }
+}
+
+//! true if bit pattern of value is found in flags.
+bool DlgPrefsTechDrawAdvancedImp::flagsContainValue(uint flags, uint value)
+{
+    uint matchResult = flags & value;
+    if (matchResult == value) {
+        return true;
+    }
+    return false;
+}
+
+
+void DlgPrefsTechDrawAdvancedImp::clearBalloonOptions()
+{
+    ui->cbBalloonShift->setChecked(false);
+    ui->cbBalloonControl->setChecked(false);
+    ui->cbBalloonAlt->setChecked(false);
+    ui->cbBalloonMeta->setChecked(false);
+}
+
+
+void DlgPrefsTechDrawAdvancedImp::enableBalloonOptions(bool newState)
+{
+    ui->cbBalloonShift->setEnabled(newState);
+    ui->cbBalloonControl->setEnabled(newState);
+    ui->cbBalloonAlt->setEnabled(newState);
+    ui->cbBalloonMeta->setEnabled(newState);
+}
+
+
+void DlgPrefsTechDrawAdvancedImp::slotBalloonBoxChecked()
+{
+    if (ui->cbBalloonDefault->isChecked()) {
+        clearBalloonOptions();
+        enableBalloonOptions(false);
+    } else {
+        enableBalloonOptions(true);
+    }
+
+}
+
+
+void DlgPrefsTechDrawAdvancedImp::makeBalloonBoxConnections()
+{
+    connect(ui->cbBalloonDefault,
+            qOverload<int>(&QCheckBox::stateChanged),
+            this,
+            &DlgPrefsTechDrawAdvancedImp::slotBalloonBoxChecked);
+    connect(ui->cbBalloonShift,
+            qOverload<int>(&QCheckBox::stateChanged),
+            this,
+            &DlgPrefsTechDrawAdvancedImp::slotBalloonBoxChecked);
+    connect(ui->cbBalloonControl,
+            qOverload<int>(&QCheckBox::stateChanged),
+            this,
+            &DlgPrefsTechDrawAdvancedImp::slotBalloonBoxChecked);
+    connect(ui->cbBalloonAlt,
+            qOverload<int>(&QCheckBox::stateChanged),
+            this,
+            &DlgPrefsTechDrawAdvancedImp::slotBalloonBoxChecked);
+    connect(ui->cbBalloonMeta,
+            qOverload<int>(&QCheckBox::stateChanged),
+            this,
+            &DlgPrefsTechDrawAdvancedImp::slotBalloonBoxChecked);
+}
+
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsTechDrawAdvancedImp::changeEvent(QEvent *e)
+void DlgPrefsTechDrawAdvancedImp::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
-        saveSettings();
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
-        loadSettings();
     }
     else {
-        QWidget::changeEvent(e);
+        QWidget::changeEvent(event);
     }
 }
 

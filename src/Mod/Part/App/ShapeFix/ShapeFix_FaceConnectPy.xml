@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ShapeFix_FaceConnectPy"
+      PythonName="Part.ShapeFix.FaceConnect"
+      Twin="ShapeFix_FaceConnect"
+      TwinPointer="ShapeFix_FaceConnect"
+      Include="ShapeFix_FaceConnect.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Rebuilds connectivity between faces in shell</UserDocu>
+    </Documentation>
+    <Methode Name="add">
+      <Documentation>
+        <UserDocu>add(face, face)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="build">
+      <Documentation>
+        <UserDocu>build(shell, sewtolerance, fixtolerance)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clear">
+      <Documentation>
+        <UserDocu>Clears internal data structure</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

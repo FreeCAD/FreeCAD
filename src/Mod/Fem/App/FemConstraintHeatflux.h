@@ -29,34 +29,36 @@
 
 #include "FemConstraint.h"
 
-namespace Fem {
-
-class FemExport ConstraintHeatflux : public Fem::Constraint
+namespace Fem
 {
-    PROPERTY_HEADER(Fem::ConstraintHeatflux);
+
+class FemExport ConstraintHeatflux: public Fem::Constraint
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintHeatflux);
 
 public:
-    ConstraintHeatflux(void);
+    ConstraintHeatflux();
 
-    App::PropertyFloat AmbientTemp;
+    App::PropertyTemperature AmbientTemp;
     /*App::PropertyFloat FaceTemp;*/
-    App::PropertyFloat FilmCoef;
-    App::PropertyFloat DFlux;
+    App::PropertyThermalTransferCoefficient FilmCoef;
+    App::PropertyFloat Emissivity;
+    App::PropertyHeatFlux DFlux;
     App::PropertyEnumeration ConstraintType;
 
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const;
+    const char* getViewProviderName() const override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 };
 
-}
+}  // namespace Fem
 
-#endif // FEM_CONSTRAINTHEATFLUX_H
+#endif  // FEM_CONSTRAINTHEATFLUX_H

@@ -29,6 +29,7 @@
 ## \addtogroup drafttests
 # @{
 import unittest
+import math
 
 import FreeCAD as App
 import Draft
@@ -263,17 +264,14 @@ class DraftCreation(unittest.TestCase):
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_shapestring(self):
-        """Create a ShapeString. NOT IMPLEMENTED CURRENTLY."""
+        """Create a ShapeString."""
         operation = "Draft ShapeString"
         _msg("  Test '{}'".format(operation))
-        _msg("  In order to test this, a font file is needed.")
-        text = "Testing Shapestring "
-        # TODO: find a reliable way to always get a font file here
-        font = None
-        _msg("  text='{0}', font='{1}'".format(text, font))
-        Draft.make_shapestring = aux.fake_function
-        obj = Draft.make_shapestring("Text", font)
-        # Draft.make_shapestring("Text", FontFile="")
+        text = "Test"
+        fontfile = App.getResourceDir() + "Mod/TechDraw/Resources/fonts/osifont-lgpl3fe.ttf"
+        _msg("  text='{0}'".format(text))
+        _msg("  fontfile='{0}'".format(fontfile))
+        obj = Draft.make_shapestring(text, fontfile)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_facebinder(self):
@@ -360,6 +358,41 @@ class DraftCreation(unittest.TestCase):
         obj = Draft.make_layer()
         obj.Proxy.addObject(obj, rect)
         self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_workingplaneproxy(self):
+        """Create a working plane proxy."""
+        operation = "Draft WorkingPlaneProxy"
+        _msg("  Test '{}'".format(operation))
+        placement = App.Placement(Vector(10, 20, 0), App.Rotation())
+        _msg("  placement={}".format(placement))
+        obj = Draft.make_workingplaneproxy(placement)
+        self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_hatch(self):
+        """Create a hatch."""
+        operation = "Draft Hatch"
+        _msg("  Test '{}'".format(operation))
+        length = 50
+        width = 30
+        _msg("  Rectangle with face")
+        _msg("  length={0}, width={1}".format(length, width))
+        rect = Draft.make_rectangle(length, width)
+        rect.MakeFace = True
+        App.ActiveDocument.recompute()
+
+        patfile = App.getResourceDir() + "Mod/TechDraw/PAT/FCPAT.pat"
+        patname = "Horizontal5"
+        _msg("  patfile='{0}'".format(patfile))
+        _msg("  patname='{0}'".format(patname))
+        obj = Draft.make_hatch(rect, patfile, patname, scale=1, rotation=45)
+        App.ActiveDocument.recompute()
+
+        box = obj.Shape.BoundBox
+        # A rather high tolerance is required.
+        obj_is_ok = (box.Center.isEqual(Vector(length/2, width/2, 0), 1e-6)
+                      and math.isclose(box.XLength, length, rel_tol=0, abs_tol=1e-6)
+                      and math.isclose(box.YLength, width, rel_tol=0, abs_tol=1e-6))
+        self.assertTrue(obj_is_ok, "'{}' failed".format(operation))
 
     def tearDown(self):
         """Finish the test.

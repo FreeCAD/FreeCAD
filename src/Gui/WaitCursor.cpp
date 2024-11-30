@@ -25,15 +25,13 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QDateTime>
 # include <QMessageBox>
 # include <QProgressDialog>
+# include <QWindow>
 # ifdef FC_OS_WIN32
 #   include <windows.h>
 # endif
 #endif
-
-#include <QWindow>
 
 #include "WaitCursor.h"
 
@@ -49,20 +47,20 @@ public:
     void setIgnoreEvents(WaitCursor::FilterEventsFlags flags);
 
 protected:
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject*, QEvent*) override;
     bool isModalDialog(QObject* o) const;
 
 private:
     WaitCursorP(); // Disable constructor
     static WaitCursorP* _instance;
-    bool isOn;
-    WaitCursor::FilterEventsFlags flags;
+    bool isOn{false};
+    WaitCursor::FilterEventsFlags flags{WaitCursor::AllEvents};
 };
 } // namespace Gui
 
-WaitCursorP* WaitCursorP::_instance = 0;
+WaitCursorP* WaitCursorP::_instance = nullptr;
 
-WaitCursorP::WaitCursorP() : QObject(0), isOn(false), flags(WaitCursor::AllEvents)
+WaitCursorP::WaitCursorP() : QObject(nullptr)
 {
 }
 
@@ -109,10 +107,10 @@ bool WaitCursorP::isModalDialog(QObject* o) const
             parent = QWidget::find(window->winId());
     }
     while (parent) {
-        QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
+        auto dlg = qobject_cast<QMessageBox*>(parent);
         if (dlg && dlg->isModal())
             return true;
-        QProgressDialog* pd = qobject_cast<QProgressDialog*>(parent);
+        auto pd = qobject_cast<QProgressDialog*>(parent);
         if (pd)
             return true;
         parent = parent->parentWidget();

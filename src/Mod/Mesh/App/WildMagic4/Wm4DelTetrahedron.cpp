@@ -27,10 +27,10 @@ DelTetrahedron<Real>::DelTetrahedron (int iV0, int iV1, int iV2, int iV3)
     V[1] = iV1;
     V[2] = iV2;
     V[3] = iV3;
-    A[0] = 0;
-    A[1] = 0;
-    A[2] = 0;
-    A[3] = 0;
+    A[0] = nullptr;
+    A[1] = nullptr;
+    A[2] = nullptr;
+    A[3] = nullptr;
     Time = -1;
     IsComponent = false;
     OnStack = false;
@@ -102,12 +102,12 @@ template <class Real>
 int DelTetrahedron<Real>::DetachFrom (int iAdj, DelTetrahedron* pkAdj)
 {
     assert(0 <= iAdj && iAdj < 4 && A[iAdj] == pkAdj);
-    A[iAdj] = 0;
+    A[iAdj] = nullptr;
     for (int i = 0; i < 4; i++)
     {
         if (pkAdj->A[i] == this)
         {
-            pkAdj->A[i] = 0;
+            pkAdj->A[i] = nullptr;
             return i;
         }
     }

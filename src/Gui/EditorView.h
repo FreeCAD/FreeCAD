@@ -28,6 +28,7 @@
 #include "Window.h"
 
 QT_BEGIN_NAMESPACE
+class QLineEdit;
 class QPlainTextEdit;
 class QPrinter;
 class QHBoxLayout;
@@ -39,6 +40,8 @@ QT_END_NAMESPACE
 namespace Gui {
 
 class EditorViewP;
+class TextEdit;
+class PythonTracingWatcher;
 
 /**
  * A special view class which sends the messages from the application to
@@ -49,7 +52,7 @@ class GuiExport EditorView : public MDIView, public WindowParameter
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum DisplayName {
@@ -58,20 +61,20 @@ public:
         BaseName
     };
 
-    EditorView(QPlainTextEdit* editor, QWidget* parent);
-    ~EditorView();
+    EditorView(TextEdit* editor, QWidget* parent);
+    ~EditorView() override;
 
     QPlainTextEdit* getEditor() const;
     void setDisplayName(DisplayName);
-    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
+    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
 
-    const char *getName(void) const {return "EditorView";}
-    void onUpdate(void){}
+    const char *getName() const override {return "EditorView";}
+    void onUpdate() override{}
 
-    bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
 
-    bool canClose(void);
+    bool canClose() override;
 
     /** @name Standard actions of the editor */
     //@{
@@ -82,21 +85,21 @@ public:
     void paste  ();
     void undo   ();
     void redo   ();
-    void print  ();
-    void printPdf();
-    void printPreview();
-    void print(QPrinter*);
+    void print  () override;
+    void printPdf() override;
+    void printPreview() override;
+    void print(QPrinter*) override;
     //@}
 
-    QStringList undoActions() const;
-    QStringList redoActions() const;
+    QStringList undoActions() const override;
+    QStringList redoActions() const override;
     QString fileName() const;
 
 protected:
-    void focusInEvent(QFocusEvent* e);
-    void showEvent(QShowEvent*);
-    void hideEvent(QHideEvent*);
-    void closeEvent(QCloseEvent*);
+    void focusInEvent(QFocusEvent* e) override;
+    void showEvent(QShowEvent*) override;
+    void hideEvent(QHideEvent*) override;
+    void closeEvent(QCloseEvent*) override;
 
 private Q_SLOTS:
     void checkTimestamp();
@@ -120,14 +123,14 @@ class GuiExport PythonEditorView : public EditorView
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PythonEditorView(PythonEditor* editor, QWidget* parent);
-    ~PythonEditorView();
+    ~PythonEditorView() override;
 
-    bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
 
 public Q_SLOTS:
     void executeScript();
@@ -138,6 +141,7 @@ public Q_SLOTS:
 
 private:
     PythonEditor* _pye;
+    PythonTracingWatcher* watcher;
 };
 
 class SearchBar : public QWidget
@@ -145,13 +149,13 @@ class SearchBar : public QWidget
     Q_OBJECT
 
 public:
-    SearchBar(QWidget* parent = nullptr);
+    explicit SearchBar(QWidget* parent = nullptr);
 
     void setEditor(QPlainTextEdit *textEdit);
 
 protected:
-    void keyPressEvent(QKeyEvent*);
-    void changeEvent(QEvent*);
+    void keyPressEvent(QKeyEvent*) override;
+    void changeEvent(QEvent*) override;
 
 public Q_SLOTS:
     void activate();

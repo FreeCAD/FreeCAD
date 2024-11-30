@@ -24,28 +24,31 @@
 #ifndef TECHDRAWGUI_QGIVBALLOON_H
 #define TECHDRAWGUI_QGIVBALLOON_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
-#include <Base/Vector3D.h>
-#include "QGIView.h"
-#include "QGIViewPart.h"
-#include "QGCustomText.h"
-#include "QGIViewDimension.h"
+#include <QGraphicsItem>
+#include <QGraphicsObject>
+#include <QStyleOptionGraphicsItem>
 
-namespace TechDraw {
+#include <Base/Vector3D.h>
+
+#include "QGCustomText.h"
+#include "QGIView.h"
+
+
+namespace TechDraw
+{
 class DrawViewBalloon;
 class DrawView;
-}
+}// namespace TechDraw
 
-namespace TechDraw {
+namespace TechDraw
+{
 class BaseGeom;
 class AOC;
-}
+}// namespace TechDraw
 
 namespace TechDrawGui
 {
@@ -53,125 +56,187 @@ class QGIArrow;
 class QGIDimLines;
 class QGIViewBalloon;
 
-class QGIBalloonLabel : public QGraphicsObject
+class QGIBalloonLabel: public QGraphicsObject
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     QGIBalloonLabel();
-    virtual ~QGIBalloonLabel() = default;
+    ~QGIBalloonLabel() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 141};
-    int type() const override { return Type;}
+    enum
+    {
+        Type = QGraphicsItem::UserType + 141
+    };
+    int type() const override
+    {
+        return Type;
+    }
 
-    virtual QRectF boundingRect() const override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void paint( QPainter *painter,
-                        const QStyleOptionGraphicsItem *option,
-                        QWidget *widget = nullptr ) override;
+    QRectF boundingRect() const override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+               QWidget* widget = nullptr) override;
     void setLabelCenter();
-    void setPosFromCenter(const double &xCenter, const double &yCenter);
-    double X() const { return posX; }
-    double Y() const { return posY; }              //minus posY?
-    
-    void setFont(QFont f);
-    QFont getFont(void) { return m_labelText->font(); }
-    void setDimString(QString t);
-    void setDimString(QString t, qreal maxWidth);
-    void setPrettySel(void);
-    void setPrettyPre(void);
-    void setPrettyNormal(void);
-    void setColor(QColor c);
+    Base::Vector3d getLabelCenter() const;
+    void setPosFromCenter(const double& xCenter, const double& yCenter);
 
-    bool verticalSep;
-    std::vector<int> seps;
+    double getCenterX() const
+    {
+        return mapToParent(m_labelText->boundingRect().center()).x();
+    }
+    double getCenterY() const
+    {
+        return mapToParent(m_labelText->boundingRect().center()).y();
+    }
 
-    QGCustomText* getDimText(void) { return m_labelText; }
-    void setDimText(QGCustomText* newText) { m_labelText = newText; }
+    void setFont(QFont font);
+    QFont getFont()
+    {
+        return m_labelText->font();
+    }
+    void setDimString(QString text);
+    void setDimString(QString text, qreal maxWidth);
+    void setPrettySel();
+    void setPrettyPre();
+    void setPrettyNormal();
+    void setColor(QColor color);
 
-    bool hasHover;
+    void setQBalloon(QGIViewBalloon* qBalloon)
+    {
+        parent = qBalloon;
+    }
 
-    QGIViewBalloon *parent;
+
+    QGCustomText* getDimText()
+    {
+        return m_labelText;
+    }
+
+    void setDimText(QGCustomText* newText)
+    {
+        newText->setTightBounding(true);
+        m_labelText = newText;
+    }
+    bool getVerticalSep() const
+    {
+        return verticalSep;
+    }
+    void setVerticalSep(bool sep)
+    {
+        verticalSep = sep;
+    }
+    std::vector<int> getSeps() const
+    {
+        return seps;
+    }
+    void setSeps(std::vector<int> newSeps)
+    {
+        seps = newSeps;
+    }
+    QGCustomText* m_labelText;
 
 Q_SIGNALS:
-    void dragging(bool);
+    void dragging(bool state);
     void hover(bool state);
     void selected(bool state);
     void dragFinished();
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
-    QGCustomText* m_labelText;
+private:
+    bool hasHover;
+
+    QGIViewBalloon* parent;
+    bool verticalSep;
+    std::vector<int> seps;
+
     QColor m_colNormal;
 
-    double posX;
-    double posY;
-    bool m_ctrl;
-    bool m_drag;
-    
-private:
+    bool m_originDrag;
+    bool m_dragging;
 };
 
 //*******************************************************************
 
-class TechDrawGuiExport QGIViewBalloon : public QGIView
+class TechDrawGuiExport QGIViewBalloon: public QGIView
 {
     Q_OBJECT
 
 public:
-    enum {Type = QGraphicsItem::UserType + 140};
+    enum
+    {
+        Type = QGraphicsItem::UserType + 140
+    };
 
     explicit QGIViewBalloon();
-    virtual ~QGIViewBalloon() = default;
+    ~QGIViewBalloon() override = default;
 
-    void setViewPartFeature(TechDraw::DrawViewBalloon *obj);
-    int type() const override { return Type;}
+    void setViewPartFeature(TechDraw::DrawViewBalloon* balloonFeat);
+    int type() const override
+    {
+        return Type;
+    }
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
-    virtual void paint( QPainter * painter,
-                        const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+    void drawBorder() override;
+    void updateView(bool update = false) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+               QWidget* widget = nullptr) override;
 
-    QString getLabelText(void);
+    QString getLabelText();
     void placeBalloon(QPointF pos);
-    TechDraw::DrawViewBalloon *dvBalloon;
-    void setPrettyPre(void);
-    void setPrettySel(void);
-    void setPrettyNormal(void);
+    void setPrettyPre();
+    void setPrettySel();
+    void setPrettyNormal();
 
-    virtual void setGroupSelection(bool b) override;
-    virtual QGIBalloonLabel* getBalloonLabel(void) { return balloonLabel; }
+    bool getGroupSelection() override;
+    void setGroupSelection(bool isSelected) override;
+    virtual QGIBalloonLabel* getBalloonLabel()
+    {
+        return balloonLabel;
+    }
 
-    virtual QColor getNormalColor(void) override;
+    void setNormalColorAll();
+    QColor prefNormalColor();
     int prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
 
+    TechDraw::DrawViewBalloon* getBalloonFeat()
+    {
+        return dvBalloon;
+    }
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
-    void balloonLabelDragFinished(void);
+    void balloonLabelDragFinished();
     void select(bool state);
     void hover(bool state);
     void updateBalloon(bool obtuse = false);
 
 protected:
     void draw() override;
-    void drawBalloon(bool dragged = false);
-    virtual QVariant itemChange( GraphicsItemChange change,
-                                 const QVariant &value ) override;
-    virtual void setSvgPens(void);
-    virtual void setPens(void);
-    QString getPrecision(void);
+    void drawBalloon(bool originDrag = false);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    virtual void setSvgPens();
+    virtual void setPens();
+    QString getPrecision();
+    void parentViewMousePressed(QGIView* view, QPointF pos);
+    TechDraw::DrawView* getSourceView() const;
+    Base::Vector3d arrowPosInDrag();
+    void getBalloonPoints(TechDraw::DrawViewBalloon* balloon,
+                          TechDraw::DrawView* refObj,
+                          bool isDragging,
+                          Base::Vector3d& labelPos,
+                          Base::Vector3d& arrowPos);
 
-protected:
+
+private:
+    TechDraw::DrawViewBalloon* dvBalloon;
     bool hasHover;
     QGIBalloonLabel* balloonLabel;
     QGIDimLines* balloonLines;
@@ -179,18 +244,15 @@ protected:
     QGIArrow* arrow;
     double m_lineWidth;
     bool m_obtuse;
-    void parentViewMousePressed(QGIView *view, QPointF pos);
-    QGIView *parent;           //used to create edit dialog
+    QGIView* parent;//used to create edit dialog
 
-    TechDraw::DrawView* getSourceView() const;
     bool m_dragInProgress;
     bool m_originDragged = false;
-    bool m_ctrl;
-    Base::Vector3d m_saveOffset;
-
-
+    Base::Vector3d m_saveOriginOffset;
+    Base::Vector3d m_saveOrigin;
+    Base::Vector3d m_savePosition;
 };
 
-} // namespace
+}// namespace TechDrawGui
 
-#endif // TECHDRAWGUI_QGIVBALLOON_H
+#endif// TECHDRAWGUI_QGIVBALLOON_H

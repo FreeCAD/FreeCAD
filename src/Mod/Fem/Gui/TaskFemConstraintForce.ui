@@ -6,21 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>320</height>
+    <width>300</width>
+    <height>243</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-    <horstretch>3</horstretch>
-    <verstretch>35</verstretch>
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>330</width>
-    <height>300</height>
-   </size>
   </property>
   <property name="baseSize">
    <size>
@@ -35,7 +29,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Select multiple face(s), click Add or Remove</string>
+      <string>Click Add or Remove and select geometric element(s)</string>
      </property>
     </widget>
    </item>
@@ -43,6 +37,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QToolButton" name="btnAdd">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Add</string>
        </property>
@@ -53,6 +53,12 @@
      </item>
      <item>
       <widget class="QToolButton" name="btnRemove">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Remove</string>
        </property>
@@ -84,13 +90,19 @@
      <item>
       <widget class="QLabel" name="labelForce">
        <property name="text">
-        <string>Load [N]</string>
+        <string>Force</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="spinForce">
-       <property name="value" stdset="0">
+       <property name="unit" stdset="0">
+        <string>N</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="value">
         <double>500.000000000000000</double>
        </property>
       </widget>

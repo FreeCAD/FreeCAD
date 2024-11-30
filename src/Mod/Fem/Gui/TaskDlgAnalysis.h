@@ -27,46 +27,49 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 
-namespace Fem{
-    class FemAnalysis;
+namespace Fem
+{
+class FemAnalysis;
 }
 
-namespace FemGui {
-    class TaskAnalysisInfo ;
-    class TaskDriver;
+namespace FemGui
+{
+class TaskAnalysisInfo;
+class TaskDriver;
 
 /// simulation dialog for the TaskView
-class TaskDlgAnalysis : public Gui::TaskView::TaskDialog
+class TaskDlgAnalysis: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgAnalysis(Fem::FemAnalysis *);
-    ~TaskDlgAnalysis();
+    explicit TaskDlgAnalysis(Fem::FemAnalysis*);
+    ~TaskDlgAnalysis() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user press the help button
-    virtual void helpRequested();
+    void helpRequested() override;
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply; }
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply;
+    }
 
 protected:
-    TaskAnalysisInfo             *info;
-    TaskDriver                   *driver;
+    TaskAnalysisInfo* info;
+    TaskDriver* driver;
 
-    Fem::FemAnalysis              *FemAnalysis;
+    Fem::FemAnalysis* FemAnalysis;
 };
 
 
+}  // namespace FemGui
 
-} //namespace FemGui
-
-#endif // FEMGUI_TaskDlgAnalysis_H
+#endif  // FEMGUI_TaskDlgAnalysis_H

@@ -32,15 +32,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderPrism : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPrism);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPrism);
 
 public:
     /// constructor
     ViewProviderPrism();
     /// destructor
-    virtual ~ViewProviderPrism();
+    ~ViewProviderPrism() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 
@@ -48,15 +48,15 @@ protected:
 
 class PartGuiExport ViewProviderWedge : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderWedge);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderWedge);
 
 public:
     /// constructor
     ViewProviderWedge();
     /// destructor
-    virtual ~ViewProviderWedge();
+    ~ViewProviderWedge() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

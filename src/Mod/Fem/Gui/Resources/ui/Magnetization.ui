@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>133</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Analysis feature properties</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="magnetizationLbl">
+     <property name="text">
+      <string>Magnetization</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="labelReal">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Real</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QLabel" name="labelImaginary">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Imaginary</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelX">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>x</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="Gui::QuantitySpinBox" name="realXQSB">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Real part of potential x-component</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>true</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true"/>
+     </property>
+     <property name="minimum">
+      <double>-1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QCheckBox" name="reXunspecBox">
+     <property name="toolTip">
+      <string>unspecified</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="Gui::QuantitySpinBox" name="imagXQSB">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Imaginary part of potential x-component</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>true</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true"/>
+     </property>
+     <property name="minimum">
+      <double>-1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4">
+    <widget class="QCheckBox" name="imXunspecBox">
+     <property name="toolTip">
+      <string>unspecified</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelY">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>y</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="Gui::QuantitySpinBox" name="realYQSB">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Real part of potential y-component</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>true</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true"/>
+     </property>
+     <property name="minimum">
+      <double>-1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QCheckBox" name="reYunspecBox">
+     <property name="toolTip">
+      <string>unspecified</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="Gui::QuantitySpinBox" name="imagYQSB">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Imaginary part of potential y-component</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>true</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true"/>
+     </property>
+     <property name="minimum">
+      <double>-1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="4">
+    <widget class="QCheckBox" name="imYunspecBox">
+     <property name="toolTip">
+      <string>unspecified</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelZ">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>z</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="Gui::QuantitySpinBox" name="realZQSB">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Real part of potential z-component</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>true</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true"/>
+     </property>
+     <property name="minimum">
+      <double>-1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QCheckBox" name="reZunspecBox">
+     <property name="toolTip">
+      <string>unspecified</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="Gui::QuantitySpinBox" name="imagZQSB">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Imaginary part of potential z-component</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>true</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true"/>
+     </property>
+     <property name="minimum">
+      <double>-1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000000000000000000000.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4">
+    <widget class="QCheckBox" name="imZunspecBox">
+     <property name="toolTip">
+      <string>unspecified</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>reXunspecBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>realXQSB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>reYunspecBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>realYQSB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>imZunspecBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>imagZQSB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>imYunspecBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>imagYQSB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>imXunspecBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>imagXQSB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>reZunspecBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>realZQSB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

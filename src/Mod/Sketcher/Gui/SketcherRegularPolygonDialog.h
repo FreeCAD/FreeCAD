@@ -23,30 +23,32 @@
 #ifndef SKETCHERGUI_SketcherRegularPolygonDialog_H
 #define SKETCHERGUI_SketcherRegularPolygonDialog_H
 
-#include <Base/Placement.h>
 #include <QDialog>
 
-namespace SketcherGui {
+
+namespace SketcherGui
+{
 
 class Ui_SketcherRegularPolygonDialog;
-class SketcherRegularPolygonDialog : public QDialog
+class SketcherRegularPolygonDialog: public QDialog
 {
     Q_OBJECT
 
 public:
-    SketcherRegularPolygonDialog(void);
-    ~SketcherRegularPolygonDialog();
+    SketcherRegularPolygonDialog();
+    ~SketcherRegularPolygonDialog() override;
 
-    void accept();
+    void accept() override;
 
     int sides;
 
 protected:
-    void updateValues(void);
+    void updateValues();
+
 private:
     std::unique_ptr<Ui_SketcherRegularPolygonDialog> ui;
 };
 
-}
+}  // namespace SketcherGui
 
-#endif // SKETCHERGUI_SketcherRegularPolygonDialog_H
+#endif  // SKETCHERGUI_SketcherRegularPolygonDialog_H

@@ -47,10 +47,10 @@ class TaskSketchBasedParameters : public PartDesignGui::TaskFeatureParameters,
 public:
     TaskSketchBasedParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
                               const std::string& pixmapname, const QString& parname);
-    ~TaskSketchBasedParameters();
+    ~TaskSketchBasedParameters() override;
 
 protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg)=0;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override =0;
     const QString onAddSelection(const Gui::SelectionChanges& msg);
     virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
@@ -79,14 +79,14 @@ class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParamet
     Q_OBJECT
 
 public:
-    TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp);
-    ~TaskDlgSketchBasedParameters();
+    explicit TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp);
+    ~TaskDlgSketchBasedParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
 };
 
 } //namespace PartDesignGui

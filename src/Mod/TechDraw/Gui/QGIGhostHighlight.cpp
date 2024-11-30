@@ -22,27 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QPen>
-#include <QColor>
+# include <QGraphicsSceneEvent>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include <Mod/TechDraw/App/DrawUtil.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
-#include <qmath.h>
-#include "Rez.h"
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-#include "QGIView.h"
 #include "QGIGhostHighlight.h"
+#include "PreferencesGui.h"
+#include "Rez.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -53,7 +41,7 @@ QGIGhostHighlight::QGIGhostHighlight()
     m_dragging = false;
 
     //make the ghost very visible
-    QFont f(QGIView::getPrefFont());
+    QFont f(Preferences::labelFontQString());
     double fontSize = Preferences::labelFontSizeMM();
     setFont(f, fontSize);
     setReference("drag");
@@ -68,18 +56,10 @@ QGIGhostHighlight::~QGIGhostHighlight()
 
 }
 
-QVariant QGIGhostHighlight::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    if (change == ItemPositionHasChanged && scene()) {
-        // nothing to do here?
-    }
-    return QGIHighlight::itemChange(change, value);
-}
-
 void QGIGhostHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIGhostHighlight::mousePress() - %X\n", this);
-    if ( (event->button() == Qt::LeftButton) && 
+    if ( (event->button() == Qt::LeftButton) &&
         (flags() & QGraphicsItem::ItemIsMovable) ) {
             m_dragging = true;
             event->accept();
@@ -89,7 +69,7 @@ void QGIGhostHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIGhostHighlight::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGIGhostHighlight::mouseRelease() - pos: %s scenePos: %s\n", 
+//    Base::Console().Message("QGIGhostHighlight::mouseRelease() - pos: %s scenePos: %s\n",
 //                                 DrawUtil::formatVector(pos()).c_str(),
 //                                 DrawUtil::formatVector(mapToScene(pos())).c_str());
     if (m_dragging) {

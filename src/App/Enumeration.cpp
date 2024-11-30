@@ -22,114 +22,122 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cassert>
-# include <cstring>
-# include <cstdlib>
+#include <cassert>
+#include <cstring>
 #endif
 
 #include <Base/Exception.h>
 #include "Enumeration.h"
+#include <string_view>
 
 using namespace App;
 
-Enumeration::Enumeration()
-    : _EnumArray(NULL), _ownEnumArray(false), _index(0), _maxVal(-1)
+namespace
 {
-}
-
-Enumeration::Enumeration(const Enumeration &other)
-    : _EnumArray(NULL), _ownEnumArray(false), _index(0), _maxVal(-1)
+struct StringCopy: public Enumeration::Object
 {
-    if (other._ownEnumArray) {
-        setEnums(other.getEnumVector());
-    } else {
-        _EnumArray = other._EnumArray;
+    explicit StringCopy(const char* str)
+        : d(str)
+    {}
+    const char* data() const override
+    {
+        return d.data();
+    }
+    bool isEqual(const char* str) const override
+    {
+        return d == str;
+    }
+    bool isCustom() const override
+    {
+        return true;
     }
 
-    _ownEnumArray = other._ownEnumArray;
+private:
+    std::string d;
+};
+
+struct StringView: public Enumeration::Object
+{
+    explicit StringView(const char* str)
+        : d(str)
+    {}
+    const char* data() const override
+    {
+        return d.data();
+    }
+    bool isEqual(const char* str) const override
+    {
+        return d == str;
+    }
+    bool isCustom() const override
+    {
+        return false;
+    }
+
+private:
+    std::string_view d;
+};
+}  // namespace
+
+Enumeration::Enumeration()
+    : _index(0)
+{}
+
+Enumeration::Enumeration(const Enumeration& other)
+{
+    enumArray = other.enumArray;
     _index = other._index;
-    _maxVal = other._maxVal;
 }
 
-Enumeration::Enumeration(const char *valStr)
-    : _ownEnumArray(true), _index(0), _maxVal(0)
+Enumeration::Enumeration(const char* valStr)
+    : _index(0)
 {
-    _EnumArray = new const char*[2];
-#if defined (_MSC_VER)
-     _EnumArray[0] = _strdup(valStr);
-#else
-     _EnumArray[0] = strdup(valStr);
-#endif
-     _EnumArray[1] = NULL;
+    enumArray.push_back(std::make_shared<StringCopy>(valStr));
+    setValue(valStr);
 }
 
-Enumeration::Enumeration(const char **list, const char *valStr)
-    : _EnumArray(list), _ownEnumArray(false)
+Enumeration::Enumeration(const char** list, const char* valStr)
+    : _index(0)
 {
-    findMaxVal();
+    while (list && *list) {
+        enumArray.push_back(std::make_shared<StringView>(*list));
+        list++;
+    }
     setValue(valStr);
 }
 
 Enumeration::~Enumeration()
 {
-    if (_ownEnumArray) {
-        if (_EnumArray != NULL) {
-            tearDown();
-        }
-    }
+    enumArray.clear();
 }
 
-void Enumeration::tearDown(void)
+void Enumeration::setEnums(const char** plEnums)
 {
-    // Ugly...
-    for(char **plEnums = (char **)_EnumArray; *plEnums != NULL; ++plEnums) {
-        // Delete C Strings first
-        free(*plEnums);
-    }
-
-    delete [] _EnumArray;
-
-    _EnumArray = NULL;
-    _ownEnumArray = false;
-    _maxVal = -1;
-}
-
-void Enumeration::setEnums(const char **plEnums)
-{
-    if(plEnums == _EnumArray)
-        return;
-
     std::string oldValue;
-    bool preserve = (isValid() && plEnums != NULL);
+    bool preserve = (isValid() && plEnums != nullptr);
     if (preserve) {
         const char* str = getCStr();
-        if (str)
+        if (str) {
             oldValue = str;
+        }
     }
 
-    // set _ownEnumArray
-    if (isValid() && _ownEnumArray) {
-        tearDown();
+    enumArray.clear();
+    while (plEnums && *plEnums) {
+        enumArray.push_back(std::make_shared<StringView>(*plEnums));
+        plEnums++;
     }
-
-    // set...
-    _EnumArray = plEnums;
-
-    // set _maxVal
-    findMaxVal();
 
     // set _index
-    if (_index < 0)
+    if (_index < 0) {
         _index = 0;
-    else if (_index > _maxVal)
-        _index = _maxVal;
-
+    }
     if (preserve) {
         setValue(oldValue);
     }
 }
 
-void Enumeration::setEnums(const std::vector<std::string> &values)
+void Enumeration::setEnums(const std::vector<std::string>& values)
 {
     if (values.empty()) {
         setEnums(nullptr);
@@ -140,225 +148,175 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
     bool preserve = isValid();
     if (preserve) {
         const char* str = getCStr();
-        if (str)
+        if (str) {
             oldValue = str;
+        }
     }
 
-    if (isValid() && _ownEnumArray) {
-        tearDown();
+    enumArray.clear();
+    for (const auto& it : values) {
+        enumArray.push_back(std::make_shared<StringCopy>(it.c_str()));
     }
 
-    _EnumArray = new const char*[values.size() + 1];
-    int i = 0;
-    for (std::vector<std::string>::const_iterator it = values.begin(); it != values.end(); ++it) {
-#if defined (_MSC_VER)
-        _EnumArray[i++] = _strdup(it->c_str());
-#else
-        _EnumArray[i++] = strdup(it->c_str());
-#endif
-    }
-
-    _EnumArray[i] = 0; // null termination
-
-    // Other state variables
-    _maxVal = values.size() - 1;
-    _ownEnumArray = true;
-    if (_index < 0)
+    // set _index
+    if (_index < 0) {
         _index = 0;
-    else if (_index > _maxVal)
-        _index = _maxVal;
-
+    }
     if (preserve) {
         setValue(oldValue);
     }
 }
 
-void Enumeration::setValue(const char *value)
+void Enumeration::setValue(const char* value)
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    //assert(_EnumArray);
-
-    if (!_EnumArray) {
-        _index = 0;
-        return;
-    }
-
-    int i = 0;
-    const char **plEnums = _EnumArray;
-
-    // search for the right entry
-    while (1) {
-        // end of list? set zero
-        if (*plEnums == NULL) {
-            _index = 0;
+    _index = 0;
+    for (std::size_t i = 0; i < enumArray.size(); i++) {
+        if (enumArray[i]->isEqual(value)) {
+            _index = static_cast<int>(i);
             break;
         }
-        if (strcmp(*plEnums, value) == 0) {
-            _index = i;
-            break;
-        }
-        ++plEnums;
-        ++i;
     }
 }
 
 void Enumeration::setValue(long value, bool checkRange)
 {
-    if (value >= 0 && value <= _maxVal) {
+    if (value >= 0 && value < countItems()) {
         _index = value;
-    } else {
+    }
+    else {
         if (checkRange) {
             throw Base::ValueError("Out of range");
-        } else {
+        }
+        else {
             _index = value;
         }
     }
 }
 
-bool Enumeration::isValue(const char *value) const
+bool Enumeration::isValue(const char* value) const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    //assert(_EnumArray);
-
     int i = getInt();
 
     if (i == -1) {
         return false;
-    } else {
-        return strcmp(_EnumArray[i], value) == 0;
+    }
+    else {
+        return enumArray[i]->isEqual(value);
     }
 }
 
-bool Enumeration::contains(const char *value) const
+bool Enumeration::contains(const char* value) const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    //assert(_EnumArray);
-
-    if (!getEnums()) {
+    if (!isValid()) {
         return false;
     }
 
-    const char **plEnums = _EnumArray;
-
-    // search for the right entry
-    while (1) {
-        // end of list?
-        if (*plEnums == NULL)
-            return false;
-        if (strcmp(*plEnums, value) == 0)
+    for (const auto& it : enumArray) {
+        if (it->isEqual(value)) {
             return true;
-        ++plEnums;
-    }
-}
-
-const char * Enumeration::getCStr(void) const
-{
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    //assert(_EnumArray);
-
-    if (!isValid() || _index < 0 || _index > _maxVal) {
-        return NULL;
+        }
     }
 
-    return _EnumArray[_index];
+    return false;
 }
 
-int Enumeration::getInt(void) const
+const char* Enumeration::getCStr() const
 {
-    if (!isValid() || _index < 0 || _index > _maxVal) {
+    if (!isValid() || _index < 0 || _index >= countItems()) {
+        return nullptr;
+    }
+
+    return enumArray[_index]->data();
+}
+
+int Enumeration::getInt() const
+{
+    if (!isValid() || _index < 0 || _index >= countItems()) {
         return -1;
     }
 
     return _index;
 }
 
-std::vector<std::string> Enumeration::getEnumVector(void) const
+std::vector<std::string> Enumeration::getEnumVector() const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    if (!_EnumArray)
-        return std::vector<std::string>();
+    std::vector<std::string> list;
+    for (const auto& it : enumArray) {
+        list.emplace_back(it->data());
+    }
+    return list;
+}
 
-    std::vector<std::string> result;
-    const char **plEnums = _EnumArray;
+bool Enumeration::hasEnums() const
+{
+    return (!enumArray.empty());
+}
 
-    // end of list?
-    while (*plEnums != NULL) {
-        result.push_back(*plEnums);
-        ++plEnums;
+bool Enumeration::isValid() const
+{
+    return (!enumArray.empty() && _index >= 0 && _index < countItems());
+}
+
+int Enumeration::maxValue() const
+{
+    int num = -1;
+    if (!enumArray.empty()) {
+        num = static_cast<int>(enumArray.size()) - 1;
+    }
+    return num;
+}
+
+bool Enumeration::isCustom() const
+{
+    for (const auto& it : enumArray) {
+        if (it->isCustom()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+Enumeration& Enumeration::operator=(const Enumeration& other)
+{
+    if (this == &other) {
+        return *this;
     }
 
-    return result;
-}
-
-const char ** Enumeration::getEnums(void) const
-{
-    return _EnumArray;
-}
-
-bool Enumeration::isValid(void) const
-{
-    return (_EnumArray != NULL && _index >= 0 && _index <= _maxVal);
-}
-
-Enumeration & Enumeration::operator=(const Enumeration &other)
-{
-    if (other._ownEnumArray) {
-        setEnums(other.getEnumVector());
-    } else {
-        _EnumArray = other._EnumArray;
-    }
-
-    _ownEnumArray = other._ownEnumArray;
+    enumArray = other.enumArray;
     _index = other._index;
-    _maxVal = other._maxVal;
 
     return *this;
 }
 
-bool Enumeration::operator==(const Enumeration &other) const
+bool Enumeration::operator==(const Enumeration& other) const
 {
-    if(_index != other._index || _maxVal != other._maxVal)
+    if (_index != other._index || enumArray.size() != other.enumArray.size()) {
         return false;
-    if (_EnumArray == other._EnumArray)
-        return true;
-    for (int i=0; i<=_maxVal; ++i) {
-        if (_EnumArray[i] == other._EnumArray[i])
+    }
+    for (size_t i = 0; i < enumArray.size(); ++i) {
+        if (enumArray[i]->data() == other.enumArray[i]->data()) {
             continue;
-        if (_EnumArray[i] == nullptr || other._EnumArray[i] == nullptr)
+        }
+        if (!enumArray[i]->data() || !other.enumArray[i]->data()) {
             return false;
-        if (strcmp(_EnumArray[i], other._EnumArray[i]) != 0)
+        }
+        if (!enumArray[i]->isEqual(other.enumArray[i]->data())) {
             return false;
+        }
     }
     return true;
 }
 
-bool Enumeration::operator==(const char *other) const
+bool Enumeration::operator==(const char* other) const
 {
-    if (getCStr() == NULL) {
+    if (!getCStr()) {
         return false;
     }
 
     return (strcmp(getCStr(), other) == 0);
 }
 
-void Enumeration::findMaxVal(void)
+int Enumeration::countItems() const
 {
-    if (_EnumArray == NULL) {
-        _maxVal = -1;
-        return;
-    }
-
-    const char **plEnums = _EnumArray;
-
-    // the NULL terminator doesn't belong to the range of
-    // valid values
-    int i = -1;
-    while (*(plEnums++) != NULL) {
-        ++i;
-        // very unlikely to have enums with more then 5000 entries!
-        assert(i < 5000);
-    }
-
-    _maxVal = i;
+    return static_cast<int>(enumArray.size());
 }
-

@@ -20,43 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_TrimmedCurve.hxx>
 # include <GC_MakeCylindricalSurface.hxx>
-# include <gp_Circ.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_CylindricalSurface.hxx>
 # include <gp_Cylinder.hxx>
-# include <gp_Lin.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include "CirclePy.h"
-#include "EllipsePy.h"
-#include "LinePy.h"
 #include "CylinderPy.h"
 #include "CylinderPy.cpp"
+#include "CirclePy.h"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string CylinderPy::representation(void) const
+std::string CylinderPy::representation() const
 {
     return "<Cylinder object>";
 }
 
 PyObject *CylinderPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of CylinderPy and the Twin object 
+    // create a new instance of CylinderPy and the Twin object
     return new CylinderPy(new GeomCylinder);
 }
 
@@ -66,8 +60,8 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     // cylinder and distance for offset
     PyObject *pCyl;
     double dist;
-    static char* keywords_cd[] = {"Cylinder","Distance",NULL};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(CylinderPy::Type), &pCyl, &dist)) {
+    static const std::array<const char *, 3> keywords_cd{"Cylinder", "Distance", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(CylinderPy::Type), &pCyl, &dist)) {
         CylinderPy* pcCylinder = static_cast<CylinderPy*>(pCyl);
         Handle(Geom_CylindricalSurface) cylinder = Handle(Geom_CylindricalSurface)::DownCast
             (pcCylinder->getGeomCylinderPtr()->handle());
@@ -83,9 +77,9 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    static char* keywords_c[] = {"Cylinder",NULL};
+    static const std::array<const char *, 2> keywords_c {"Cylinder", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(CylinderPy::Type), &pCyl)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(CylinderPy::Type), &pCyl)) {
         CylinderPy* pcCylinder = static_cast<CylinderPy*>(pCyl);
         Handle(Geom_CylindricalSurface) cyl1 = Handle(Geom_CylindricalSurface)::DownCast
             (pcCylinder->getGeomCylinderPtr()->handle());
@@ -96,12 +90,12 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     PyObject *pV1, *pV2, *pV3;
-    static char* keywords_ppp[] = {"Point1","Point2","Point3",NULL};
+    static const std::array<const char *, 4> keywords_ppp {"Point1", "Point2", "Point3", nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ppp,
-                                         &(Base::VectorPy::Type), &pV1,
-                                         &(Base::VectorPy::Type), &pV2,
-                                         &(Base::VectorPy::Type), &pV3)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ppp,
+                                            &(Base::VectorPy::Type), &pV1,
+                                            &(Base::VectorPy::Type), &pV2,
+                                            &(Base::VectorPy::Type), &pV3)) {
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
@@ -119,10 +113,10 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    static char* keywords_cc[] = {"Circle",NULL};
+    static const std::array<const char *, 2> keywords_cc {"Circle", nullptr};
     PyErr_Clear();
     PyObject *pCirc;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_cc, &(CirclePy::Type), &pCirc)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_cc, &(CirclePy::Type), &pCirc)) {
         CirclePy* pcCircle = static_cast<CirclePy*>(pCirc);
         Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast
             (pcCircle->getGeomCirclePtr()->handle());
@@ -138,9 +132,9 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    static char* keywords_n[] = {NULL};
+    static const std::array<const char *, 1> keywords_n {nullptr};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
             (getGeomCylinderPtr()->handle());
         cyl->SetRadius(1.0);
@@ -157,11 +151,11 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float CylinderPy::getRadius(void) const
+Py::Float CylinderPy::getRadius() const
 {
     Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
         (getGeomCylinderPtr()->handle());
-    return Py::Float(cyl->Radius()); 
+    return Py::Float(cyl->Radius());
 }
 
 void CylinderPy::setRadius(Py::Float arg)
@@ -171,7 +165,7 @@ void CylinderPy::setRadius(Py::Float arg)
     cyl->SetRadius((double)arg);
 }
 
-Py::Object CylinderPy::getCenter(void) const
+Py::Object CylinderPy::getCenter() const
 {
     Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
         (getGeomCylinderPtr()->handle());
@@ -201,7 +195,7 @@ void CylinderPy::setCenter(Py::Object arg)
     }
 }
 
-Py::Object CylinderPy::getAxis(void) const
+Py::Object CylinderPy::getAxis() const
 {
     Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeometryPtr()->handle());
@@ -246,12 +240,12 @@ void CylinderPy::setAxis(Py::Object arg)
 
 PyObject *CylinderPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CylinderPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

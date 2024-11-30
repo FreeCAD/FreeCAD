@@ -33,35 +33,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFBool.h>
-#include <Inventor/nodes/SoSubNode.h>
-
-//#include <SmallChange/basic.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <FCGlobal.h>
 
 
 class GuiExport SmSwitchboard : public SoGroup {
-  typedef SoGroup inherited;
+  using inherited = SoGroup;
   SO_NODE_HEADER(SmSwitchboard);
 
 public:
-  static void initClass(void);
-  SmSwitchboard(void);
+  static void initClass();
+  SmSwitchboard();
   SmSwitchboard(int numchildren);
 
   SoMFBool enable;
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void search(SoSearchAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void pick(SoPickAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void search(SoSearchAction * action) override;
 
 protected:
-  virtual ~SmSwitchboard(void);
+  ~SmSwitchboard() override;
 
 };
 

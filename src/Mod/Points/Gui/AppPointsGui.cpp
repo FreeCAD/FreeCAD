@@ -20,53 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include "ViewProvider.h"
-#include "Workbench.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include <Mod/Points/App/PropertyPointKernel.h>
 
+#include "ViewProvider.h"
+#include "Workbench.h"
+
+
 // use a different name to CreateCommand()
-void CreatePointsCommands(void);
+void CreatePointsCommands();
 
 void loadPointsResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Points);
+    Q_INIT_RESOURCE(Points_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace PointsGui {
-class Module : public Py::ExtensionModule<Module>
+namespace PointsGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("PointsGui")
+    Module()
+        : Py::ExtensionModule<Module>("PointsGui")
     {
-        initialize("This module is the PointsGui module."); // register with Python
+        initialize("This module is the PointsGui module.");  // register with Python
     }
-
-    virtual ~Module() {}
-
-private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace PointsGui
+}  // namespace PointsGui
 
 
 /* Python entry */
@@ -74,16 +69,16 @@ PyMOD_INIT_FUNC(PointsGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     // load dependent module
     try {
         Base::Interpreter().loadModule("Points");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     Base::Console().Log("Loading GUI of Points module... done\n");
@@ -92,14 +87,15 @@ PyMOD_INIT_FUNC(PointsGui)
     // instantiating the commands
     CreatePointsCommands();
 
+    // clang-format off
     PointsGui::ViewProviderPoints       ::init();
     PointsGui::ViewProviderScattered    ::init();
     PointsGui::ViewProviderStructured   ::init();
     PointsGui::ViewProviderPython       ::init();
     PointsGui::Workbench                ::init();
-    Gui::ViewProviderBuilder::add(
-        Points::PropertyPointKernel::getClassTypeId(),
-        PointsGui::ViewProviderPoints::getClassTypeId());
+    // clang-format on
+    Gui::ViewProviderBuilder::add(Points::PropertyPointKernel::getClassTypeId(),
+                                  PointsGui::ViewProviderPoints::getClassTypeId());
 
     // add resources and reloads the translators
     loadPointsResource();

@@ -20,47 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <Base/Matrix.h>
-using Base::Matrix4D;
+
 #include "FeatureMeshTransform.h"
 
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
 
+using Base::Matrix4D;
 using namespace Mesh;
 using namespace MeshCore;
 
 PROPERTY_SOURCE(Mesh::Transform, Mesh::Feature)
 
-
-Transform::Transform(void)
+Transform::Transform()
 {
-  ADD_PROPERTY(Source  ,(0));
-  ADD_PROPERTY(Position,(Matrix4D()));
+    ADD_PROPERTY(Source, (nullptr));
+    ADD_PROPERTY(Position, (Matrix4D()));
 }
 
-App::DocumentObjectExecReturn *Transform::execute(void)
+App::DocumentObjectExecReturn* Transform::execute()
 {
-/*
-  Feature *pcFirst  = dynamic_cast<Feature*>(Source.getValue());
-  if(!pcFirst || pcFirst->isError())
-    return new App::DocumentObjectExecReturn("Unknown Error");
+    /*
+        Feature* pcFirst = dynamic_cast<Feature*>(Source.getValue());
+        if (!pcFirst || pcFirst->isError())
+            return new App::DocumentObjectExecReturn("Unknown Error");
 
-  Matrix4D Matrix =Position.getValue();
+        Matrix4D Matrix = Position.getValue();
 
- 
-  MeshCore::MeshKernel *pcKernel = new MeshCore::MeshKernel(pcFirst->Mesh.getValue()); // Result Meshkernel
-  pcKernel->Transform(Matrix);
-  Mesh.setValue(pcKernel);
-*/
-  return App::DocumentObject::StdReturn;
+
+        MeshCore::MeshKernel* pcKernel =
+            new MeshCore::MeshKernel(pcFirst->Mesh.getValue());// Result Meshkernel
+        pcKernel->Transform(Matrix);
+        Mesh.setValue(pcKernel);
+    */
+    return App::DocumentObject::StdReturn;
 }
-

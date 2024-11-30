@@ -25,16 +25,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoVertexProperty.h>
 #endif
 
-#include "ViewProviderDatumPoint.h"
-// #include <Mod/Part/Gui/SoBrepPointSet.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
 #include <App/Application.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/ViewProviderBuilder.h>
+#include <Gui/SoFCSelection.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
+
+#include "ViewProviderDatumPoint.h"
 
 using namespace PartDesignGui;
 
@@ -49,28 +52,25 @@ ViewProviderDatumPoint::ViewProviderDatumPoint()
     Transparency.setStatus(App::Property::Hidden, true); //< make transparency hidden
 }
 
-ViewProviderDatumPoint::~ViewProviderDatumPoint()
-{
-}
+ViewProviderDatumPoint::~ViewProviderDatumPoint() = default;
 
 void ViewProviderDatumPoint::attach ( App::DocumentObject *obj ) {
     ViewProviderDatum::attach ( obj );
 
-    SoMFVec3f v;
-    v.setNum(1);
-    v.set1Value(0, 0,0,0);
-
-    SoVertexProperty* vprop = new SoVertexProperty();
-    vprop->vertex = v;
-
-    // Using a marker gives a larger point but it doesn't do highlighting automatically like the SoBrepPointSet
-    // TODO Fix the highlight (may be via additional pcHighlight node?) (2015-09-09, Fat-Zer)
-    SoMarkerSet* marker = new SoMarkerSet();
-    marker->vertexProperty = vprop;
+    const int markerSize = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9);
+    // Using a marker gives a larger point.
+    auto *marker = new SoMarkerSet();
     marker->numPoints = 1;
-    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
+    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED",
+            markerSize);
 
-    getShapeRoot ()->addChild(marker);
+    auto *pcHighlight = Gui::ViewProviderBuilder::createSelection();
+    pcHighlight->style = Gui::SoFCSelection::EMISSIVE_DIFFUSE;
+    pcHighlight->addChild(new SoCoordinate3());
+    pcHighlight->addChild(marker);
+
+    getShapeRoot ()->addChild(pcHighlight);
 }
 
 void ViewProviderDatumPoint::onChanged (const App::Property* prop) {

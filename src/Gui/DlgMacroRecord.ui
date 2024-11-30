@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>Macro recording</string>
   </property>
-  <property name="modal">
-   <bool>true</bool>
-  </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
     <number>6</number>
@@ -96,7 +93,7 @@
          </size>
         </property>
         <property name="text">
-         <string>...</string>
+         <string notr="true">...</string>
         </property>
        </widget>
       </item>
@@ -154,9 +151,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonCancel">
+      <widget class="QPushButton" name="buttonClose">
        <property name="text">
-        <string>Cancel</string>
+        <string>Close</string>
        </property>
       </widget>
      </item>
@@ -169,7 +166,7 @@
   <tabstop>lineEditPath</tabstop>
   <tabstop>buttonStart</tabstop>
   <tabstop>buttonStop</tabstop>
-  <tabstop>buttonCancel</tabstop>
+  <tabstop>buttonClose</tabstop>
  </tabstops>
  <resources/>
  <connections/>

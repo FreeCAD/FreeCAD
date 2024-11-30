@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCVECTORIZEU3DACTION_H
 #define GUI_SOFCVECTORIZEU3DACTION_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
-
 #include <fstream>
+#include <Inventor/annex/HardCopy/SoVectorizeAction.h>
+#include <Inventor/annex/HardCopy/SoVectorOutput.h>
 
 
 namespace Gui {
@@ -36,10 +33,10 @@ namespace Gui {
 class GuiExport SoU3DVectorOutput : public SoVectorOutput {
 public:
     SoU3DVectorOutput();
-    virtual ~SoU3DVectorOutput();
+    ~SoU3DVectorOutput() override;
 
-    virtual SbBool openFile (const char *filename);
-    virtual void closeFile (void);
+    SbBool openFile (const char *filename) override;
+    void closeFile () override;
     std::fstream& getFileStream();
 
 private:
@@ -51,25 +48,25 @@ private:
  */
 class SoFCVectorizeU3DActionP;
 class GuiExport SoFCVectorizeU3DAction : public SoVectorizeAction {
-    typedef SoVectorizeAction inherited;
+    using inherited = SoVectorizeAction;
 
     SO_ACTION_HEADER(SoFCVectorizeU3DAction);
 
 public:
-    SoFCVectorizeU3DAction(void);
-    virtual ~SoFCVectorizeU3DAction();
+    SoFCVectorizeU3DAction();
+    ~SoFCVectorizeU3DAction() override;
 
-    static void initClass(void);
-    SoU3DVectorOutput * getU3DOutput(void) const;
+    static void initClass();
+    SoU3DVectorOutput * getU3DOutput() const;
 
 protected:
-    virtual void beginTraversal(SoNode * node);
-    virtual void endTraversal(SoNode *node);
-    virtual void printHeader(void) const;
-    virtual void printFooter(void) const;
-    virtual void printBackground(void) const;
-    virtual void printItem(const SoVectorizeItem * item) const;
-    virtual void printViewport(void) const;
+    void beginTraversal(SoNode * node) override;
+    void endTraversal(SoNode *node) override;
+    void printHeader() const override;
+    void printFooter() const override;
+    void printBackground() const override;
+    void printItem(const SoVectorizeItem * item) const override;
+    void printViewport() const override;
 
 private:
     static void actionMethod(SoAction *, SoNode *);

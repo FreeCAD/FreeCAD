@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderLinearPattern.h"
 #include "TaskLinearPatternParameters.h"
 
@@ -35,4 +32,16 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderLinearPattern,PartDesignGui::ViewProv
 
 TaskDlgFeatureParameters *ViewProviderLinearPattern::getEditDialog() {
     return new TaskDlgLinearPatternParameters (this);
+}
+
+void ViewProviderLinearPattern::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit linear pattern"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
+
+const std::string & ViewProviderLinearPattern::featureName() const
+{
+    static const std::string name = "LinearPattern";
+    return name;
 }

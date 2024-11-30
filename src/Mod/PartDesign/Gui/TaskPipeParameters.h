@@ -20,13 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPipeParameters_H
 #define GUI_TASKVIEW_TaskPipeParameters_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderPipe.h"
@@ -67,7 +62,7 @@ public:
 
 public:
     StateHandlerTaskPipe() {selectionMode = SelectionModes::none;}
-    ~StateHandlerTaskPipe() {}
+    ~StateHandlerTaskPipe() = default;
 
     // only keeping getter because task boxes shouldn't need to change this
     // and task dialog is already friend
@@ -84,8 +79,8 @@ class TaskPipeParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskPipeParameters(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = 0);
-    ~TaskPipeParameters();
+    explicit TaskPipeParameters(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = nullptr);
+    ~TaskPipeParameters() override;
 
     bool accept();
 
@@ -100,14 +95,11 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI();
     void clearButtons();
     void exitSelectionMode();
     void setVisibilityOfSpineAndProfile();
-
-    ViewProviderPipe* getPipeView() const
-    { return static_cast<ViewProviderPipe*>(vp); }
 
     bool spineShow = false;
     bool profileShow = false;
@@ -125,8 +117,8 @@ class TaskPipeOrientation : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskPipeOrientation(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = 0);
-    virtual ~TaskPipeOrientation();
+    explicit TaskPipeOrientation(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = nullptr);
+    ~TaskPipeOrientation() override;
 
 
 private Q_SLOTS:
@@ -142,7 +134,7 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void clearButtons();
     void exitSelectionMode();
 
@@ -159,8 +151,8 @@ class TaskPipeScaling : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskPipeScaling(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
-    virtual ~TaskPipeScaling();
+    explicit TaskPipeScaling(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = nullptr);
+    ~TaskPipeScaling() override;
 
 private Q_SLOTS:
     void onScalingChanged(int);
@@ -173,7 +165,7 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void clearButtons();
     void exitSelectionMode();
 
@@ -190,12 +182,12 @@ class TaskDlgPipeParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool newObj=false);
-    ~TaskDlgPipeParameters();
+    explicit TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool newObj=false);
+    ~TaskDlgPipeParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
 
 protected Q_SLOTS:

@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Elips2d.hxx>
-# include <Geom2d_Ellipse.hxx>
 # include <GCE2d_MakeEllipse.hxx>
+# include <Geom2d_Ellipse.hxx>
+# include <gp_Elips2d.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/Ellipse2dPy.h>
-#include <Mod/Part/App/Geom2d/Ellipse2dPy.cpp>
+#include "Geom2d/Ellipse2dPy.h"
+#include "Geom2d/Ellipse2dPy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string Ellipse2dPy::representation(void) const
+std::string Ellipse2dPy::representation() const
 {
     return "<Ellipse2d object>";
 }
@@ -54,18 +54,18 @@ PyObject *Ellipse2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 // constructor method
 int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {NULL};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
+    static const std::array<const char *, 1> keywords_n {nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetMajorRadius(2.0);
         ellipse->SetMinorRadius(1.0);
         return 0;
     }
 
-    char* keywords_e[] = {"Ellipse",NULL};
+    static const std::array<const char *, 2> keywords_e {"Ellipse",nullptr};
     PyErr_Clear();
     PyObject *pElips;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(Ellipse2dPy::Type), &pElips)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(Ellipse2dPy::Type), &pElips)) {
         Ellipse2dPy* pEllipse = static_cast<Ellipse2dPy*>(pElips);
         Handle(Geom2d_Ellipse) Elips1 = Handle(Geom2d_Ellipse)::DownCast
             (pEllipse->getGeom2dEllipsePtr()->handle());
@@ -75,13 +75,13 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_ssc[] = {"S1","S2","Center",NULL};
+    static const std::array<const char *, 4> keywords_ssc {"S1", "S2", "Center", nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
-                                         Base::Vector2dPy::type_object(), &pV1,
-                                         Base::Vector2dPy::type_object(), &pV2,
-                                         Base::Vector2dPy::type_object(), &pV3)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
+                                            Base::Vector2dPy::type_object(), &pV1,
+                                            Base::Vector2dPy::type_object(), &pV2,
+                                            Base::Vector2dPy::type_object(), &pV3)) {
         Base::Vector2d v1 = Py::toVector2d(pV1);
         Base::Vector2d v2 = Py::toVector2d(pV2);
         Base::Vector2d v3 = Py::toVector2d(pV3);
@@ -98,13 +98,13 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",NULL};
+    static const std::array<const char *, 4> keywords_cmm {"Center","MajorRadius","MinorRadius",nullptr};
     PyErr_Clear();
     PyObject *pV;
     double major, minor;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
-                                        Base::Vector2dPy::type_object(), &pV,
-                                        &major, &minor)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
+                                            Base::Vector2dPy::type_object(), &pV,
+                                            &major, &minor)) {
         Base::Vector2d c = Py::toVector2d(pV);
         GCE2d_MakeEllipse me(gp_Ax2d(gp_Pnt2d(c.x,c.y), gp_Dir2d(0.0,1.0)),
                           major, minor);
@@ -126,10 +126,10 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float Ellipse2dPy::getMajorRadius(void) const
+Py::Float Ellipse2dPy::getMajorRadius() const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
-    return Py::Float(ellipse->MajorRadius()); 
+    return Py::Float(ellipse->MajorRadius());
 }
 
 void Ellipse2dPy::setMajorRadius(Py::Float arg)
@@ -138,10 +138,10 @@ void Ellipse2dPy::setMajorRadius(Py::Float arg)
     ellipse->SetMajorRadius((double)arg);
 }
 
-Py::Float Ellipse2dPy::getMinorRadius(void) const
+Py::Float Ellipse2dPy::getMinorRadius() const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
-    return Py::Float(ellipse->MinorRadius()); 
+    return Py::Float(ellipse->MinorRadius());
 }
 
 void Ellipse2dPy::setMinorRadius(Py::Float arg)
@@ -150,20 +150,20 @@ void Ellipse2dPy::setMinorRadius(Py::Float arg)
     ellipse->SetMinorRadius((double)arg);
 }
 
-Py::Float Ellipse2dPy::getFocal(void) const
+Py::Float Ellipse2dPy::getFocal() const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
-    return Py::Float(ellipse->Focal()); 
+    return Py::Float(ellipse->Focal());
 }
 
-Py::Object Ellipse2dPy::getFocus1(void) const
+Py::Object Ellipse2dPy::getFocus1() const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus1();
     return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
-Py::Object Ellipse2dPy::getFocus2(void) const
+Py::Object Ellipse2dPy::getFocus2() const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus2();
@@ -172,10 +172,10 @@ Py::Object Ellipse2dPy::getFocus2(void) const
 
 PyObject *Ellipse2dPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Ellipse2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

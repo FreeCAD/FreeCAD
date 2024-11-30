@@ -23,15 +23,20 @@
 #ifndef APP_AUTOTRANSACTION_H
 #define APP_AUTOTRANSACTION_H
 
-namespace App {
+#include <cstddef>
+#include <FCGlobal.h>
+
+namespace App
+{
 
 class Application;
 
 /// Helper class to manager transaction (i.e. undo/redo)
-class AppExport AutoTransaction {
-private:
+class AppExport AutoTransaction
+{
+public:
     /// Private new operator to prevent heap allocation
-    void* operator new(size_t size);
+    void* operator new(std::size_t) = delete;
 
 public:
     /** Constructor
@@ -48,7 +53,7 @@ public:
      * current active transaction until it reaches zero. It does not have any
      * effect on aborting transaction, though.
      */
-    AutoTransaction(const char *name=0, bool tmpName=false);
+    AutoTransaction(const char* name = nullptr, bool tmpName = false);
 
     /** Destructor
      *
@@ -64,7 +69,7 @@ public:
      * transaction, if the current transaction ID matches the one created inside
      * the constructor. For aborting, it will abort any current transaction
      */
-    void close(bool abort=false);
+    void close(bool abort = false);
 
     /** Enable/Disable any AutoTransaction instance in the current stack
      *
@@ -87,13 +92,13 @@ private:
  * The helper class is used to protect some critical transaction from being
  * closed prematurely, e.g. when deleting some object.
  */
-class AppExport TransactionLocker {
+class AppExport TransactionLocker
+{
 public:
-
     /** Constructor
      * @param lock: whether to activate the lock
      */
-    TransactionLocker(bool lock=true);
+    TransactionLocker(bool lock = true);
 
     /** Destructor
      * Unlock the transaction is this locker is active
@@ -111,21 +116,24 @@ public:
     void activate(bool enable);
 
     /// Check if the locker is active
-    bool isActive() const {return active;}
+    bool isActive() const
+    {
+        return active;
+    }
 
     /// Check if transaction is being locked
     static bool isLocked();
 
     friend class Application;
 
-private:
+public:
     /// Private new operator to prevent heap allocation
-    void* operator new(size_t size);
+    void* operator new(std::size_t) = delete;
 
 private:
     bool active;
 };
 
-} // namespace App
+}  // namespace App
 
-#endif // APP_AUTOTRANSACTION_H
+#endif  // APP_AUTOTRANSACTION_H

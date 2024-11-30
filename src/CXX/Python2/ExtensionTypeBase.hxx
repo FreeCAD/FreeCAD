@@ -42,7 +42,7 @@ namespace Py
 {
     // Class PythonExtension is what you inherit from to create
     // a new Python extension type. You give your class itself
-    // as the template paramter.
+    // as the template parameter.
 
     // There are two ways that extension objects can get destroyed.
     // 1. Their reference count goes to zero

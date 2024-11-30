@@ -109,7 +109,8 @@ namespace KDL
 
     const char* ChainIkSolverVel_pinv::strError(const int error) const
     {
-        if (E_SVD_FAILED == error) return "SVD failed";
+        if (E_SVD_FAILED == error)
+            return "SVD failed";
         else return SolverI::strError(error);
     }
 }

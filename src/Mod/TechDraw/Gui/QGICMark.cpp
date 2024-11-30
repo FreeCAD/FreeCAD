@@ -22,22 +22,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QStyleOptionGraphicsItem>
+# include <cassert>
+
+# include <QPainter>
+# include <QPainterPath>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
 #include <App/Material.h>
-#include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGICMark.h"
+#include "PreferencesGui.h"
 
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGICMark::QGICMark(int index) : QGIVertex(index)
@@ -46,13 +45,13 @@ QGICMark::QGICMark(int index) : QGIVertex(index)
     m_width = 0.75;
     draw();
 }
-void QGICMark::draw(void)
+void QGICMark::draw()
 {
     QPainterPath cmPath;
-    cmPath.moveTo(0.0,m_size);
-    cmPath.lineTo(0.0,-m_size);
-    cmPath.moveTo(m_size,0.0);
-    cmPath.lineTo(-m_size,0.0);
+    cmPath.moveTo(0.0, m_size);
+    cmPath.lineTo(0.0, -m_size);
+    cmPath.moveTo(m_size, 0.0);
+    cmPath.lineTo(-m_size, 0.0);
     setPath(cmPath);
 }
 
@@ -70,10 +69,7 @@ void QGICMark::setThick(float t)
 
 QColor QGICMark::getCMarkColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CMarkColor", 0x08080800));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::centerQColor();
 }
 
 void QGICMark::setPrettyNormal() {
@@ -103,11 +99,8 @@ QPainterPath QGICMark::shape() const
     return outline;
 }
 
- double QGICMark::getMarkFuzz(void) const
+ double QGICMark::getMarkFuzz() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("MarkFuzz",5.0);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetFloat("MarkFuzz", 5.0);
 }
 

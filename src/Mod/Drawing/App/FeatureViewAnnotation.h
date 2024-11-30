@@ -20,26 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _FeatureViewAnnotation_h_
 #define _FeatureViewAnnotation_h_
 
-
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
 #include <App/FeaturePython.h>
+#include <App/PropertyLinks.h>
+
+#include "FeatureView.h"
 
 
 namespace Drawing
 {
 
-
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport FeatureViewAnnotation : public FeatureView
+class DrawingExport FeatureViewAnnotation: public FeatureView
 {
     PROPERTY_HEADER(Drawing::FeatureView);
 
@@ -48,26 +44,27 @@ public:
     FeatureViewAnnotation(void);
     virtual ~FeatureViewAnnotation();
 
-    App::PropertyStringList   Text;
-    App::PropertyString       Font;
-    App::PropertyColor        TextColor;
+    App::PropertyStringList Text;
+    App::PropertyString Font;
+    App::PropertyColor TextColor;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn* execute(void);
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const
+    {
         return "DrawingGui::ViewProviderDrawingView";
     }
 };
 
-typedef App::FeaturePythonT<FeatureViewAnnotation> FeatureViewAnnotationPython;
+using FeatureViewAnnotationPython = App::FeaturePythonT<FeatureViewAnnotation>;
 
 
-} //namespace Drawing
+}  // namespace Drawing
 
 
 #endif

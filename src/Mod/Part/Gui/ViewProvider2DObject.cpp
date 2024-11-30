@@ -20,44 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Python.h>
+# include <cfloat>
+
+
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoDepthBuffer.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <cfloat>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
-#include <Base/ViewProj.h>
-#include <App/Application.h>
-#include <Gui/SoFCBoundingBox.h>
+#include <Gui/Inventor/SoFCBoundingBox.h>
 
 #include "ViewProvider2DObject.h"
-#include <Mod/Part/App/PartFeature.h>
 
 
 using namespace PartGui;
 using namespace std;
 
-
 //**************************************************************************
 // Construction/Destruction
 
-const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",NULL};
+const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",nullptr};
 App::PropertyQuantityConstraint::Constraints ViewProvider2DObjectGrid::GridSizeRange = {0.001,DBL_MAX,1.0};
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObjectGrid, PartGui::ViewProvider2DObject)
@@ -94,11 +89,8 @@ ViewProvider2DObjectGrid::~ViewProvider2DObjectGrid()
 
 // **********************************************************************************
 
-SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
+SoSeparator* ViewProvider2DObjectGrid::createGrid()
 {
-    //double dx = 10 * GridSize.getValue();                       // carpet size
-    //double dy = 10 * GridSize.getValue();
-    // float Size = (MaxX-MinX > MaxY-MinY) ? MaxX-MinX : MaxY-MinY;
     float Step = GridSize.getValue(); //pow(10,floor(log10(Size/5.0)));
     float MiX, MaX, MiY, MaY;
     if (TightGrid.getValue()) {
@@ -137,35 +129,6 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
     SoBaseColor *mycolor;
     SoVertexProperty *vts;
 
-   // carpet
- /* mycolor = new SoBaseColor;
-    mycolor->rgb.setValue(0.2f, 0.7f, 0.7f);
-    parent->addChild(mycolor);
-
-    vts = new SoVertexProperty;
-    vts->vertex.set1Value(0, -0.5*dx, -1.5*dy,  0.5*zGrid);
-    vts->vertex.set1Value(1, -0.5*dx, -1.5*dy, -0.5*zGrid);
-    vts->vertex.set1Value(2,  0.5*dx, -1.5*dy,  0.5*zGrid);
-    vts->vertex.set1Value(3,  0.5*dx, -1.5*dy, -0.5*zGrid);
-
-    SoQuadMesh *carpet = new SoQuadMesh;
-    carpet->verticesPerColumn = 2;
-    carpet->verticesPerRow = 2;
-    carpet->vertexProperty = vts;
-    parent->addChild(carpet);*/
-
-    // It seems that SoDepthBuffer will mess up with other object's
-    // pre-selection highlight. No idea why the setting can leak out of a
-    // separator.
-    //
-    // What's the purpose of using SoDepthBuffer here anyway? If the intention
-    // is to render grid always on top, shouldn't it be better to use
-    // SoAnnotation?
-#if 0
-    SoDepthBuffer *depth = new SoDepthBuffer;
-    depth->function = SoDepthBuffer::ALWAYS;
-    parent->addChild(depth);
-#endif
 
     // gridlines
     mycolor = new SoBaseColor;
@@ -203,7 +166,8 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
     int lines = vlines + hlines;
 
     if (lines > maxNumberOfLines.getValue()) {
-        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n.", lines, maxNumberOfLines.getValue());
+        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n."
+                                "Either increase the 'GridSize' property to a more reasonable value (recommended) or increase the 'maxNumberOfLines' property.\n", lines, maxNumberOfLines.getValue());
         parent->addChild(vts);
         parent->addChild(grid);
         return GridRoot;
@@ -245,10 +209,11 @@ void ViewProvider2DObjectGrid::updateData(const App::Property* prop)
 {
     ViewProvider2DObject::updateData(prop);
 
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+    if (prop->is<Part::PropertyPartShape>()) {
         if (GridAutoSize.getValue()) {
             Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
-            if (!bbox.IsValid()) return;
+            if (!bbox.IsValid())
+                return;
             Gui::coinRemoveAllChildren(GridRoot);
             Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
             place.invert();
@@ -297,7 +262,7 @@ void ViewProvider2DObjectGrid::handleChangedPropertyType(Base::XMLReader &reader
                                                          App::Property * prop)
 {
     Base::Type inputType = Base::Type::fromName(TypeName);
-    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+    if (prop->isDerivedFrom<App::PropertyFloat>() &&
         inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
@@ -352,24 +317,20 @@ void ViewProvider2DObjectGrid::updateGridExtent(float minx, float maxx, float mi
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
 
-ViewProvider2DObject::ViewProvider2DObject()
-{
-}
+ViewProvider2DObject::ViewProvider2DObject() = default;
 
-ViewProvider2DObject::~ViewProvider2DObject()
-{
-}
+ViewProvider2DObject::~ViewProvider2DObject() = default;
 
-std::vector<std::string> ViewProvider2DObject::getDisplayModes(void) const
+std::vector<std::string> ViewProvider2DObject::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
 
     // add your own modes
-    StrList.push_back("Flat Lines");
+    StrList.emplace_back("Flat Lines");
     //StrList.push_back("Shaded");
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }
@@ -385,5 +346,5 @@ PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProvider2DObjectPython, PartGui::ViewProvi
 /// @endcond
 
 // explicit template instantiation
-template class PartGuiExport ViewProviderPythonFeatureT<PartGui::ViewProvider2DObject>;
+template class PartGuiExport ViewProviderFeaturePythonT<PartGui::ViewProvider2DObject>;
 }

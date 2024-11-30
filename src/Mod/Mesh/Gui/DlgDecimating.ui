@@ -61,7 +61,7 @@
        </layout>
       </item>
       <item row="1" column="0">
-       <widget class="QCheckBox" name="checkAbsolueNumber">
+       <widget class="QCheckBox" name="checkAbsoluteNumber">
         <property name="text">
          <string>Absolute number</string>
         </property>

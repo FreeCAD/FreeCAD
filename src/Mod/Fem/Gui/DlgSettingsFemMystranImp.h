@@ -1,4 +1,4 @@
- /**************************************************************************
+/**************************************************************************
  *   Copyright (c) 2021 FreeCAD Developers                                 *
  *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
  *   Based on src/Mod/Fem/Gui/DlgSettingsFemGeneralImp.h                   *
@@ -22,33 +22,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H
 #define FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H
 
 #include <Gui/PropertyPage.h>
 #include <memory>
 
-namespace FemGui {
+
+namespace FemGui
+{
 
 class Ui_DlgSettingsFemMystranImp;
-class DlgSettingsFemMystranImp : public Gui::Dialog::PreferencePage
+class DlgSettingsFemMystranImp: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
 public:
-    DlgSettingsFemMystranImp( QWidget* parent = 0 );
-    ~DlgSettingsFemMystranImp();
+    explicit DlgSettingsFemMystranImp(QWidget* parent = nullptr);
+    ~DlgSettingsFemMystranImp() override;
+
+protected Q_SLOTS:
+    void onfileNameChanged(QString FileName);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemMystranImp> ui;
 };
 
-} // namespace FemGui
+}  // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H
+#endif  // FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H

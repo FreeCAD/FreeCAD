@@ -58,7 +58,8 @@ namespace KDL {
                 delta_twist->second = diff(f_it->second, f_des_it->second);
             }
             double res = iksolver.CartToJnt(q_out, delta_twists, delta_q);
-            if (res < eps) return res;
+            if (res < eps)
+                return res;
             
             Add(q_out, delta_q, q_out);
             

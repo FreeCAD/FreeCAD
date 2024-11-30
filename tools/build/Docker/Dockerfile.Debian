@@ -1,0 +1,27 @@
+FROM debian:12
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+ENV UTC=true
+ENV ARC=false
+
+COPY debian.sh /tmp
+
+RUN apt-get update && \
+    apt-get upgrade --yes && \
+    sh /tmp/debian.sh && \
+    mkdir /builds
+
+# Debian 12 (bookworm) contains opencascade 7.6.x which contains deprecated constructs
+# (inheriting from std::iterator) which have been fixed in 7.7.x
+# lets bring the changes here to have less warnings during the build
+# https://github.com/Open-Cascade-SAS/OCCT/commit/8af9bbd59aecf24c765e7ea0eeeb8c9dd5c1f8db
+
+RUN apt-get install curl --yes
+RUN curl --silent --location --output-dir /usr/include/opencascade/ \
+       --remote-name https://github.com/Open-Cascade-SAS/OCCT/raw/8af9bbd59aecf24c765e7ea0eeeb8c9dd5c1f8db/src/NCollection/NCollection_StlIterator.hxx --next \
+       --remote-name https://github.com/Open-Cascade-SAS/OCCT/raw/8af9bbd59aecf24c765e7ea0eeeb8c9dd5c1f8db/src/OSD/OSD_Parallel.hxx
+
+WORKDIR /builds
+
+VOLUME [ "/builds" ]

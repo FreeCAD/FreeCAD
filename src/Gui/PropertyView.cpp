@@ -20,44 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QGridLayout>
-# include <QHeaderView>
 # include <QEvent>
+# include <QGridLayout>
 # include <QTimer>
-# include <boost_bind_bind.hpp>
 #endif
 
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Parameter.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyContainer.h>
-#include <App/DocumentObject.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "PropertyView.h"
 #include "Application.h"
-#include "MainWindow.h"
 #include "Document.h"
-#include "BitmapFactory.h"
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
+#include "MainWindow.h"
+#include "SelectionObject.h"
 #include "Tree.h"
 #include "ViewParams.h"
-
+#include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 #include "propertyeditor/PropertyEditor.h"
+
 
 using namespace std;
 using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace Gui::PropertyEditor;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 static ParameterGrp::handle _GetParam() {
     static ParameterGrp::handle hGrp;
@@ -76,15 +68,15 @@ static ParameterGrp::handle _GetParam() {
  * in two tabs.
  */
 PropertyView::PropertyView(QWidget *parent)
-  : QWidget(parent),SelectionObserver(false,0)
+  : QWidget(parent), SelectionObserver(false, ResolveMode::NoResolve)
 {
-    QGridLayout* pLayout = new QGridLayout( this );
+    auto pLayout = new QGridLayout( this );
     pLayout->setSpacing(0);
-    pLayout->setMargin (0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    connect(timer, &QTimer::timeout, this, &PropertyView::onTimer);
 
     tabs = new QTabWidget (this);
     tabs->setObjectName(QString::fromUtf8("propertyTab"));
@@ -92,11 +84,13 @@ PropertyView::PropertyView(QWidget *parent)
     pLayout->addWidget(tabs, 0, 0);
 
     propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
+    propertyEditorView->setObjectName(QStringLiteral("propertyEditorView"));
     propertyEditorView->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionView", false));
     propertyEditorView->setAutomaticExpand(_GetParam()->GetBool("AutoExpandView", false));
     tabs->addTab(propertyEditorView, tr("View"));
 
     propertyEditorData = new Gui::PropertyEditor::PropertyEditor();
+    propertyEditorData->setObjectName(QStringLiteral("propertyEditorData"));
     propertyEditorData->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionData", true));
     propertyEditorData->setAutomaticExpand(_GetParam()->GetBool("AutoExpandData", false));
     tabs->addTab(propertyEditorData, tr("Data"));
@@ -107,41 +101,45 @@ PropertyView::PropertyView(QWidget *parent)
         tabs->setCurrentIndex(preferredTab);
 
     // connect after adding all tabs, so adding doesn't thrash the parameter
-    connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+    connect(tabs, &QTabWidget::currentChanged, this, &PropertyView::tabChanged);
 
+    //NOLINTBEGIN
     this->connectPropData =
-    App::GetApplication().signalChangedObject.connect(boost::bind
-        (&PropertyView::slotChangePropertyData, this, bp::_1, bp::_2));
+    App::GetApplication().signalChangedObject.connect(std::bind
+        (&PropertyView::slotChangePropertyData, this, sp::_2));
     this->connectPropView =
-    Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&PropertyView::slotChangePropertyView, this, bp::_1, bp::_2));
+    Gui::Application::Instance->signalChangedObject.connect(std::bind
+        (&PropertyView::slotChangePropertyView, this, sp::_1, sp::_2));
     this->connectPropAppend =
-    App::GetApplication().signalAppendDynamicProperty.connect(boost::bind
-        (&PropertyView::slotAppendDynamicProperty, this, bp::_1));
+    App::GetApplication().signalAppendDynamicProperty.connect(std::bind
+        (&PropertyView::slotAppendDynamicProperty, this, sp::_1));
     this->connectPropRemove =
-    App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
-        (&PropertyView::slotRemoveDynamicProperty, this, bp::_1));
+    App::GetApplication().signalRemoveDynamicProperty.connect(std::bind
+        (&PropertyView::slotRemoveDynamicProperty, this, sp::_1));
     this->connectPropChange =
-    App::GetApplication().signalChangePropertyEditor.connect(boost::bind
-        (&PropertyView::slotChangePropertyEditor, this, bp::_1, bp::_2));
+    App::GetApplication().signalChangePropertyEditor.connect(std::bind
+        (&PropertyView::slotChangePropertyEditor, this, sp::_1, sp::_2));
     this->connectUndoDocument =
-    App::GetApplication().signalUndoDocument.connect(boost::bind
+    App::GetApplication().signalUndoDocument.connect(std::bind
         (&PropertyView::slotRollback, this));
     this->connectRedoDocument =
-    App::GetApplication().signalRedoDocument.connect(boost::bind
+    App::GetApplication().signalRedoDocument.connect(std::bind
         (&PropertyView::slotRollback, this));
     this->connectActiveDoc =
-    Application::Instance->signalActiveDocument.connect(boost::bind
-        (&PropertyView::slotActiveDocument, this, bp::_1));
+    Application::Instance->signalActiveDocument.connect(std::bind
+        (&PropertyView::slotActiveDocument, this, sp::_1));
     this->connectDelDocument =
         Application::Instance->signalDeleteDocument.connect(
-                boost::bind(&PropertyView::slotDeleteDocument, this, bp::_1));
+                std::bind(&PropertyView::slotDeleteDocument, this, sp::_1));
     this->connectDelViewObject =
         Application::Instance->signalDeletedObject.connect(
-                boost::bind(&PropertyView::slotDeletedViewObject, this, bp::_1));
+                std::bind(&PropertyView::slotDeletedViewObject, this, sp::_1));
     this->connectDelObject =
         App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&PropertyView::slotDeletedObject, this, bp::_1));
+                std::bind(&PropertyView::slotDeletedObject, this, sp::_1));
+    this->connectChangedDocument = App::GetApplication().signalChangedDocument.connect(
+            std::bind(&PropertyView::slotChangePropertyData, this, sp::_2));
+    //NOLINTEND
 }
 
 PropertyView::~PropertyView()
@@ -157,6 +155,7 @@ PropertyView::~PropertyView()
     this->connectDelDocument.disconnect();
     this->connectDelObject.disconnect();
     this->connectDelViewObject.disconnect();
+    this->connectChangedDocument.disconnect();
 }
 
 static bool _ShowAll;
@@ -168,9 +167,13 @@ bool PropertyView::showAll() {
 void PropertyView::setShowAll(bool enable) {
     if(_ShowAll != enable) {
         _ShowAll = enable;
-        for(auto view : getMainWindow()->findChildren<PropertyView*>()) {
-            if(view->isVisible())
+        const auto views = getMainWindow()->findChildren<PropertyView*>();
+        for(auto view : views) {
+            if(view->isVisible()) {
+                view->propertyEditorData->buildUp();
+                view->propertyEditorView->buildUp();
                 view->onTimer();
+            }
         }
     }
 }
@@ -187,7 +190,7 @@ void PropertyView::hideEvent(QHideEvent *ev) {
 
 void PropertyView::showEvent(QShowEvent *ev) {
     this->attachSelection();
-    this->timer->start(100);
+    this->timer->start(ViewParams::instance()->getPropertyViewTimer());
     QWidget::showEvent(ev);
 }
 
@@ -209,14 +212,20 @@ void PropertyView::slotRollback() {
     clearPropertyItemSelection();
 }
 
-void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
+void PropertyView::slotChangePropertyData(const App::Property& prop)
 {
-    propertyEditorData->updateProperty(prop);
+    if (propertyEditorData->propOwners.count(prop.getContainer())) {
+        propertyEditorData->updateProperty(prop);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
+    }
 }
 
 void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::Property& prop)
 {
-    propertyEditorView->updateProperty(prop);
+    if (propertyEditorView->propOwners.count(prop.getContainer())) {
+        propertyEditorView->updateProperty(prop);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
+    }
 }
 
 bool PropertyView::isPropertyHidden(const App::Property *prop) {
@@ -229,10 +238,11 @@ void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
     if (isPropertyHidden(&prop))
         return;
 
-    if (propertyEditorData->appendProperty(prop)
-            || propertyEditorView->appendProperty(prop))
+    App::PropertyContainer* parent = prop.getContainer();
+    if (propertyEditorData->propOwners.count(parent)
+            || propertyEditorView->propOwners.count(parent))
     {
-        timer->start(100);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
 
@@ -243,34 +253,17 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
         propertyEditorData->removeProperty(prop);
     else if(propertyEditorView->propOwners.count(parent))
         propertyEditorView->removeProperty(prop);
+    else
+        return;
+    timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
 void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    Gui::PropertyEditor::PropertyEditor* editor = nullptr;
-
-    if (parent && propertyEditorData->propOwners.count(parent))
-        editor = propertyEditorData;
-    else if (parent && propertyEditorView->propOwners.count(parent))
-        editor = propertyEditorView;
-    else
-        return;
-
-    if(showAll() || isPropertyHidden(&prop)) {
-        editor->updateEditorMode(prop);
-        return;
-    }
-    for(auto &v : editor->propList) {
-        for(auto p : v.second)
-            if(p == &prop) {
-                editor->updateEditorMode(prop);
-                return;
-            }
-    }
-    // The property is not in the list, probably because it is hidden before.
-    // So perform a full update.
-    timer->start(50);
+    if (propertyEditorData->propOwners.count(parent)
+            || propertyEditorView->propOwners.count(parent))
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
 void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
@@ -278,7 +271,7 @@ void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
-        timer->start(50);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
 
@@ -287,7 +280,7 @@ void PropertyView::slotDeletedViewObject(const Gui::ViewProvider &vp) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
-        timer->start(50);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
 
@@ -296,7 +289,7 @@ void PropertyView::slotDeletedObject(const App::DocumentObject &obj) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
-        timer->start(50);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
 
@@ -312,7 +305,7 @@ void PropertyView::checkEnable(const char *doc) {
     }
     // check if at least one selected object is part of the active document
     setEnabled(!Selection().hasSelection()
-            || Selection().hasSelection(doc,false));
+            || Selection().hasSelection(doc, ResolveMode::NoResolve));
 }
 
 struct PropertyView::PropInfo
@@ -324,7 +317,7 @@ struct PropertyView::PropInfo
 
 struct PropertyView::PropFind {
     const PropInfo& item;
-    PropFind(const PropInfo& item) : item(item) {}
+    explicit PropFind(const PropInfo& item) : item(item) {}
     bool operator () (const PropInfo& elem) const
     {
         return (elem.propId == item.propId) &&
@@ -341,23 +334,35 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         return;
 
     // clear the properties.
-    timer->start(50);
+    timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
-void PropertyView::onTimer() {
+void PropertyView::onTimer()
+{
+    // See https://forum.freecad.org/viewtopic.php?f=8&t=72526
+    if (this->updating) {
+        Base::Console().Log("Ignore recursive call of PropertyView::onTimer()\n");
+        return;
+    }
+    Base::StateLocker guard(this->updating);
 
-    propertyEditorData->buildUp();
-    propertyEditorView->buildUp();
-    clearPropertyItemSelection();
     timer->stop();
 
-    if(!this->isSelectionAttached())
+    if(!this->isSelectionAttached()) {
+        propertyEditorData->buildUp();
+        propertyEditorView->buildUp();
+        clearPropertyItemSelection();
         return;
+    }
 
     if(!Gui::Selection().hasSelection()) {
         auto gdoc = TreeWidget::selectedDocument();
-        if(!gdoc || !gdoc->getDocument())
+        if(!gdoc || !gdoc->getDocument()) {
+            propertyEditorData->buildUp();
+            propertyEditorView->buildUp();
+            clearPropertyItemSelection();
             return;
+        }
 
         PropertyModel::PropertyList docProps;
 
@@ -378,7 +383,7 @@ void PropertyView::onTimer() {
     std::vector<PropInfo> propDataMap;
     std::vector<PropInfo> propViewMap;
     bool checkLink = true;
-    ViewProviderDocumentObject *vpLast = 0;
+    ViewProviderDocumentObject *vpLast = nullptr;
     auto sels = Gui::Selection().getSelectionEx("*");
     for(auto &sel : sels) {
         App::DocumentObject *ob = sel.getObject();
@@ -420,7 +425,7 @@ void PropertyView::onTimer() {
                 nameType.propName = prop->getName();
                 nameType.propId = prop->getTypeId().getKey();
 
-                std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
+                auto pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
                 if (pi != propDataMap.end()) {
                     pi->propList.push_back(prop);
                 }
@@ -441,7 +446,7 @@ void PropertyView::onTimer() {
                 nameType.propName = pt->first;
                 nameType.propId = pt->second->getTypeId().getKey();
 
-                std::vector<PropInfo>::iterator pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
+                auto pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
                 if (pi != propViewMap.end()) {
                     pi->propList.push_back(pt->second);
                 }
@@ -554,19 +559,17 @@ void PropertyView::changeEvent(QEvent *e)
 PropertyDockView::PropertyDockView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
 {
-    setWindowTitle(tr("Property View"));
+    setWindowTitle(tr("Property view"));
 
-    PropertyView* view = new PropertyView(this);
-    QGridLayout* pLayout = new QGridLayout(this);
+    auto view = new PropertyView(this);
+    auto pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
-    pLayout->setMargin (0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
     pLayout->addWidget(view, 0, 0);
 
     resize( 200, 400 );
 }
 
-PropertyDockView::~PropertyDockView()
-{
-}
+PropertyDockView::~PropertyDockView() = default;
 
 #include "moc_PropertyView.cpp"

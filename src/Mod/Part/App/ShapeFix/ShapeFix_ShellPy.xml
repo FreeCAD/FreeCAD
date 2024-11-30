@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_ShellPy"
+      PythonName="Part.ShapeFix.Shell"
+      Twin="ShapeFix_Shell"
+      TwinPointer="ShapeFix_Shell"
+      Include="ShapeFix_Shell.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Root class for fixing operations</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Initializes by shell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixFaceTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing faces</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perform">
+      <Documentation>
+        <UserDocu>Iterates on subshapes and performs fixes</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shell">
+      <Documentation>
+        <UserDocu>Returns fixed shell (or subset of oriented faces)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="numberOfShells">
+      <Documentation>
+        <UserDocu>Returns the number of obtained shells</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shape">
+      <Documentation>
+        <UserDocu>In case of multiconnexity returns compound of fixed shells and one shell otherwise</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="errorFaces">
+      <Documentation>
+        <UserDocu>Returns not oriented subset of faces</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixFaceOrientation">
+      <Documentation>
+        <UserDocu>
+Fixes orientation of faces in shell.
+Changes orientation of face in the shell, if it is oriented opposite
+to neighbouring faces. If it is not possible to orient all faces in the
+shell (like in case of mebious band), this method orients only subset
+of faces. Other faces are stored in Error compound.
+Modes :
+isAccountMultiConex - mode for account cases of multiconnexity.
+If this mode is equal to Standard_True, separate shells will be created
+in the cases of multiconnexity. If this mode is equal to Standard_False,
+one shell will be created without account of multiconnexity. By default - Standard_True;
+NonManifold - mode for creation of non-manifold shells.
+If this mode is equal to Standard_True one non-manifold will be created from shell
+contains multishared edges. Else if this mode is equal to Standard_False only
+manifold shells will be created. By default - Standard_False.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setNonManifoldFlag">
+      <Documentation>
+        <UserDocu>Sets NonManifold flag</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="FixOrientationMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of orientation of faces</UserDocu>
+      </Documentation>
+      <Parameter Name="FixOrientationMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixFaceMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes using ShapeFix_Face</UserDocu>
+      </Documentation>
+      <Parameter Name="FixFaceMode" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

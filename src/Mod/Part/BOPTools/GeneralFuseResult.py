@@ -22,7 +22,7 @@
 
 __title__="BOPTools.GeneralFuseResult module"
 __author__ = "DeepSOIC"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Implementation of GeneralFuseResult class, which parses return of generalFuse."
 
 import Part
@@ -41,7 +41,7 @@ def myCustomFusionRoutine(list_of_shapes):
 
     def __define_attributes(self):
         # stores the data returned by generalFuse, supplied to class constructor
-        self.gfa_return = None 
+        self.gfa_return = None
 
         # pieces that resulted from intersetion routine. List of shapes (non-decorated).
         self.pieces = None
@@ -60,7 +60,7 @@ def myCustomFusionRoutine(list_of_shapes):
 
         # dictionary for finding, which source shapes did an element of pieces come from.
         # key = HashableShape (element). Value = set of ints
-        self._element_to_source = {} 
+        self._element_to_source = {}
 
         self._freeze()
 
@@ -270,7 +270,7 @@ def myCustomFusionRoutine(list_of_shapes):
         """Splits aggregates inside compound. Returns None if nothing is split, otherwise
         returns compound.
         existing_pieces is a dict. Key is deep hash. Value is tuple (int, shape). It is
-        used to search for if this split piece was already generated, and re-use the old
+        used to search for if this split piece was already generated, and reuse the old
         one."""
 
         changed = False

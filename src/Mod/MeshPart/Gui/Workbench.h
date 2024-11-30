@@ -26,25 +26,26 @@
 
 #include <Gui/Workbench.h>
 
-namespace MeshPartGui {
+namespace MeshPartGui
+{
 
 /**
  * @author Werner Mayer
  */
-class MeshPartGuiExport Workbench : public Gui::StdWorkbench
+class Workbench: public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-  Workbench();
-  virtual ~Workbench();
+    Workbench();
+    ~Workbench() override;
 
 protected:
-  Gui::ToolBarItem* setupToolBars() const;
-  Gui::ToolBarItem* setupCommandBars() const;
+    Gui::ToolBarItem* setupToolBars() const override;
+    Gui::ToolBarItem* setupCommandBars() const override;
 };
 
-} // namespace MeshPartGui
+}  // namespace MeshPartGui
 
 
-#endif // MESHPARTGUI_WORKBENCH_H 
+#endif  // MESHPARTGUI_WORKBENCH_H

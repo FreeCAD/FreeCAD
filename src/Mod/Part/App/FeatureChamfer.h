@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATURECHAMFER_H
 #define PART_FEATURECHAMFER_H
 
-#include <App/PropertyStandard.h>
 #include "PartFeature.h"
+
 
 namespace Part
 {
 
 class Chamfer : public Part::FilletBase
 {
-    PROPERTY_HEADER(Part::Chamfer);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Chamfer);
 
 public:
     Chamfer();
@@ -40,9 +39,9 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderChamfer";
     }
     //@}

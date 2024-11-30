@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
+
 #include "FeaturePartCurveNet.h"
 
 
@@ -47,7 +43,7 @@ short CurveNet::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *CurveNet::execute(void)
+App::DocumentObjectExecReturn *CurveNet::execute()
 {
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {

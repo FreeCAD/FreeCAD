@@ -21,45 +21,40 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "Workbench.h"
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
+
+#include "Workbench.h"
+
 
 using namespace SurfaceGui;
 
 /// @namespace SurfaceGui @class Workbench
 TYPESYSTEM_SOURCE(SurfaceGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 Gui::MenuItem* Workbench::setupMenuBar() const
 {
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
-    Gui::MenuItem* item = root->findItem( "&Windows" );
+    Gui::MenuItem* item = root->findItem("&Windows");
 
     Gui::MenuItem* surface = new Gui::MenuItem;
-    root->insertItem( item, surface );
+    root->insertItem(item, surface);
     surface->setCommand("Surface");
     *surface << "Surface_Filling"
              << "Surface_GeomFillSurface"
              << "Surface_Sections"
              << "Surface_ExtendFace"
-             << "Surface_CurveOnMesh";
-/*
-    *surface << "Surface_Cut";
-*/
+             << "Surface_CurveOnMesh"
+             << "Surface_BlendCurve";
+    /*
+     *surface << "Surface_Cut";
+     */
 
     return root;
 }
@@ -74,10 +69,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "Surface_GeomFillSurface"
              << "Surface_Sections"
              << "Surface_ExtendFace"
-             << "Surface_CurveOnMesh";
-/*
-    *surface << "Surface_Cut";
-*/
+             << "Surface_CurveOnMesh"
+             << "Surface_BlendCurve";
+    /*
+     *surface << "Surface_Cut";
+     */
 
     return root;
 }

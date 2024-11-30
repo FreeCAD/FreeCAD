@@ -1,7 +1,10 @@
 // geo file for meshing with Gmsh meshing software created by FreeCAD
 
+// enable multi-core processing
+General.NumThreads = X;
+
 // open brep geometry
-Merge "/tmp/tmp0TVZbM.brep";
+Merge "tmp0TVZbM.brep";
 
 // group data
 Physical Surface("Face1") = {1};
@@ -32,23 +35,28 @@ Mesh.Algorithm = 2;
 // 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, 9=R-tree, 10=HTX)
 Mesh.Algorithm3D = 1;
 
+// subdivision algorithm
+Mesh.SubdivisionAlgorithm = 0;
+
+// incomplete second order elements
+Mesh.SecondOrderIncomplete = 0;
+
 // meshing
 Geometry.Tolerance = 1e-06; // set geometrical tolerance (also used for merging nodes)
 Mesh  3;
 Coherence Mesh; // Remove duplicate vertices
 
 // save
-Mesh.Format = 2;
 // Ignore Physical definitions and save all elements;
 Mesh.SaveAll = 1;
-Save "/tmp/tmpjVhNNb.unv";
+Save "tmpjVhNNb.unv";
 
 
 // **********************************************************************
 // Gmsh documentation:
 // https://gmsh.info/doc/texinfo/gmsh.html#Mesh
 //
-// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself: 
+// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself:
 //
 // to see full Gmsh log, run in bash:
 // /usr/bin/gmsh - /tmp/tmputZ_uU.geo

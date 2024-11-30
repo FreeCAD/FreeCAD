@@ -25,6 +25,9 @@
 #define GUI_WORKBENCHMANAGER_H
 
 #include <list>
+#include <map>
+#include <string>
+#include <FCGlobal.h>
 
 namespace Gui {
 
@@ -58,6 +61,8 @@ public:
     bool activate(const std::string& name, const std::string& className);
     /** Returns the active workbench. */
     Workbench* active() const;
+    /** Returns the name of the active workbench. */
+    std::string activeName() const;
     /** Returns a list of all created workbench objects. */
     std::list<std::string> workbenches() const;
 
@@ -67,7 +72,7 @@ protected:
 
 private:
     static WorkbenchManager* _instance;
-    Workbench*  _activeWorkbench;
+    Workbench*  _activeWorkbench{nullptr};
     std::map<std::string, Workbench*> _workbenches;
 };
 

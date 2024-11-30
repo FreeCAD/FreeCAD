@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   fill-rule="evenodd"
+   stroke-linejoin="round"
+   stroke-width="28.222"
+   preserveAspectRatio="xMidYMid"
+   version="1.2"
+   viewBox="0 0 1693.3332 1693.3333"
+   xml:space="preserve"
+   id="svg82"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><title
+   id="title1">TechDraw_Dimension_Angle</title><defs
+   id="defs59741" />
+   <metadata
+   id="metadata1"><rdf:RDF><cc:Work
+       rdf:about=""><dc:title>TechDraw_Dimension_Angle</dc:title></cc:Work></rdf:RDF></metadata><g
+   id="g4"
+   transform="translate(0,-52.916304)"><path
+     style="display:inline;fill:none;stroke:#302b00;stroke-width:211.667;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+     d="m 158.75017,1217.0831 c 0,0 62.36606,-634.99998 701.14562,-634.99998 638.77951,0 674.68731,634.99998 674.68731,634.99998"
+     id="path2" /><path
+     style="display:inline;fill:none;stroke:#edd400;stroke-width:105.833;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+     d="m 158.75017,1217.0831 c 0,0 62.36606,-634.99998 701.14562,-634.99998 638.77951,0 674.68731,634.99998 674.68731,634.99998"
+     id="path1" /><path
+     style="display:inline;fill:none;stroke:#fce94f;stroke-width:52.9167;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+     d="m 132.29166,1190.6248 c 0,0 62.36606,-634.99999 701.14562,-634.99999 638.77952,0 674.68732,634.99999 674.68732,634.99999"
+     id="path5" /></g></svg>

@@ -72,17 +72,17 @@ class QSINT_EXPORT ActionLabel : public QToolButton
 public:
     /** Constructor.
       */
-    explicit ActionLabel(QWidget *parent = 0);
+    explicit ActionLabel(QWidget *parent = nullptr);
 
     /** Constructor. Creates ActionLabel from the \a action.
       \since 0.2
       */
-    explicit ActionLabel(QAction *action, QWidget *parent = 0);
+    explicit ActionLabel(QAction *action, QWidget *parent = nullptr);
 
-    virtual ~ActionLabel() {}
+    ~ActionLabel() override = default;
 
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 protected:
     void init();

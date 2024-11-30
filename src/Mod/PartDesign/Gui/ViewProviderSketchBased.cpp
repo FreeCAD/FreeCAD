@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <Gui/Application.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -38,20 +35,15 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvider)
 
 
-ViewProviderSketchBased::ViewProviderSketchBased()
-{
-}
+ViewProviderSketchBased::ViewProviderSketchBased() = default;
+
+ViewProviderSketchBased::~ViewProviderSketchBased() = default;
 
 
-ViewProviderSketchBased::~ViewProviderSketchBased()
-{
-}
-
-
-std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren() const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
-    if (sketch != NULL && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (sketch && !sketch->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
         temp.push_back(sketch);
 
     return temp;
@@ -62,7 +54,7 @@ bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
     PartDesign::ProfileBased* feature = static_cast<PartDesign::ProfileBased*>(getObject());
 
     // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
+    Sketcher::SketchObject *pcSketch = nullptr;
     if (feature->Profile.getValue())
         pcSketch = static_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
 

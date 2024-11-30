@@ -32,10 +32,10 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
-import FreeCAD as App
 
 from draftgeoutils.general import geomType, vec, precision
 from draftgeoutils.geometry import get_normal
+from draftgeoutils.geometry import project_point_on_plane
 from draftgeoutils.edges import findMidpoint, isLine
 
 # Delay import of module until first use because it is heavy
@@ -157,26 +157,25 @@ def findWiresOld(edges):
     return result[1]
 
 
-def flattenWire(wire):
-    """Force a wire to get completely flat along its normal."""
-    n = get_normal(wire)
-    # for backward compatibility with previous getNormal implementation
-    if n is None:
-        n = App.Vector(0, 0, 1)
+def flattenWire(wire, origin=None, normal=None):
+    """Force a wire to be flat on a plane defined by an origin and a normal.
 
-    o = wire.Vertexes[0].Point
-    plane = WorkingPlane.plane()
-    plane.alignToPointAndAxis(o, n, 0)
-    verts = [o]
+    If origin or normal are None they are derived from the wire.
+    """
+    if normal is None:
+        normal = get_normal(wire)
+        # for backward compatibility with previous getNormal implementation
+        if normal is None:
+            normal = App.Vector(0, 0, 1)
+    if origin is None:
+        origin = wire.Vertexes[0].Point
 
-    for v in wire.Vertexes[1:]:
-        verts.append(plane.projectPoint(v.Point))
-
+    points = [project_point_on_plane(vert.Point, origin, normal) for vert in wire.Vertexes]
     if wire.isClosed():
-        verts.append(o)
-    w = Part.makePolygon(verts)
+        points.append(points[0])
+    new_wire = Part.makePolygon(points)
 
-    return w
+    return new_wire
 
 
 def superWire(edgeslist, closed=False):
@@ -246,36 +245,9 @@ def superWire(edgeslist, closed=False):
 
 
 def isReallyClosed(wire):
-    """Check if a wire is really closed."""
-    # TODO yet to find out why not use wire.isClosed() direct,
-    # in isReallyClosed(wire)
-
-    # Remark out below - Found not true if a vertex is used again
-    # in a wire in sketch (e.g. wire with shape like 'd', 'b', 'g', ...)
-    # if len(wire.Edges) == len(wire.Vertexes): return True
-
-    # Found cases where Wire[-1] are not 'last' vertexes
-    # e.g. Part.Wire( Part.__sortEdges__(<Rectangle Geometries>.toShape()))
-    # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex
-    # for the rectangle - use Edges[i].Vertexes[0/1] instead
-    length = len(wire.Edges)
-
-    # Test if it is full circle / ellipse first
-    if length == 1:
-        if len(wire.Edges[0].Vertexes) == 1:
-            return True  # This is a closed wire - full circle/ellipse
-        else:
-            # TODO Should be False if 1 edge but not single vertex, correct?
-            # No need to test further below.
-            return False
-
-    # If more than 1 edge, further test below
-    v1 = wire.Edges[0].Vertexes[0].Point   # v1 = wire.Vertexes[0].Point
-    v2 = wire.Edges[length-1].Vertexes[1].Point  # v2 = wire.Vertexes[-1].Point
-    if DraftVecUtils.equals(v1, v2):
-        return True
-
-    return False
+    if isinstance(wire, (Part.Wire, Part.Edge)):
+        return wire.isClosed()
+    return isinstance(wire, Part.Face)
 
 
 def curvetowire(obj, steps):
@@ -432,8 +404,8 @@ def get_placement_perpendicular_to_wire(wire):
 
 
 def get_extended_wire(wire, offset_start, offset_end):
-    """Return a wire trimmed (negative offset) or extended (positive offset) at its first vertex, last vertex or both ends. 
-    
+    """Return a wire trimmed (negative offset) or extended (positive offset) at its first vertex, last vertex or both ends.
+
     get_extended_wire(wire, -100.0, 0.0) -> returns a copy of the wire with its first 100 mm removed
     get_extended_wire(wire, 0.0, 100.0) -> returns a copy of the wire extended by 100 mm after it's last vertex
     """

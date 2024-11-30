@@ -1,6 +1,5 @@
 ANN    export-ignore
 atlas    export-ignore
-CxImage    export-ignore
 CoinBinding.sln    export-ignore
 boost.CMakeLists.txt    export-ignore
 zlib.CMakeLists.txt    export-ignore

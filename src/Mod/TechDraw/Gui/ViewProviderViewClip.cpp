@@ -30,13 +30,9 @@
 # endif
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Selection.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "ViewProviderViewClip.h"
 
@@ -48,39 +44,16 @@ ViewProviderViewClip::ViewProviderViewClip()
 {
     sPixmap = "actions/TechDraw_ClipGroup";
 
-    // Do not show in property editor
-    //DisplayMode.StatusBits.set(3, true);
-    DisplayMode.setStatus(App::Property::ReadOnly,true);
+    // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
+    // don't use coin.
+    DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
 ViewProviderViewClip::~ViewProviderViewClip()
 {
 }
 
-void ViewProviderViewClip::updateData(const App::Property* prop)
-{
-     ViewProviderDrawingView::updateData(prop);
-}
-
-void ViewProviderViewClip::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderViewClip::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderViewClip::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList;
-    return StrList;
-}
-
-std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren() const
 {
     // Collect any child views
     // for Clip, valid children are any View in Views
@@ -88,13 +61,13 @@ std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) cons
     return views;
 }
 
-void ViewProviderViewClip::show(void)
+void ViewProviderViewClip::show()
 {
     //TODO: not sure that clip members need to be touched when hiding clip group
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring())
         return;
-    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawViewClip>()) {
         std::vector<App::DocumentObject*> inp = obj->getInList();
         for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
             (*it)->touch();
@@ -103,23 +76,18 @@ void ViewProviderViewClip::show(void)
 
 }
 
-void ViewProviderViewClip::hide(void)
+void ViewProviderViewClip::hide()
 {
     //TODO: not sure that clip members need to be touched when hiding clip group
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring())
         return;
-    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawViewClip>()) {
         std::vector<App::DocumentObject*> inp = obj->getInList();
         for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
             (*it)->touch();
     }
     ViewProviderDrawingView::hide();
-}
-
-bool ViewProviderViewClip::isShow(void) const
-{
-    return Visibility.getValue();
 }
 
 bool ViewProviderViewClip::canDelete(App::DocumentObject *obj) const
@@ -138,4 +106,44 @@ TechDraw::DrawViewClip* ViewProviderViewClip::getViewObject() const
 TechDraw::DrawViewClip* ViewProviderViewClip::getObject() const
 {
     return getViewObject();
+}
+
+
+void ViewProviderViewClip::dragObject(App::DocumentObject* docObj)
+{
+    if (!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        return;
+    }
+
+    auto dv = static_cast<TechDraw::DrawView*>(docObj);
+
+    getObject()->removeView(dv);
+}
+
+void ViewProviderViewClip::dropObject(App::DocumentObject* docObj)
+{
+    if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        //DPGI can not be dropped onto the Page if it belongs to DPG
+        auto* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(docObj);
+        if (dpgi->getPGroup()) {
+            return;
+        }
+    }
+    if (!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        return;
+    }
+
+    auto dv = static_cast<TechDraw::DrawView*>(docObj);
+    TechDraw::DrawPage* pageClip = getObject()->findParentPage();
+    TechDraw::DrawPage* pageView = dv->findParentPage();
+    if (!pageClip || !pageView) {
+        return;
+    }
+
+    if (pageClip != pageView) {
+        pageView->removeView(dv);
+        pageClip->addView(dv);
+    }
+
+    getObject()->addView(dv);
 }

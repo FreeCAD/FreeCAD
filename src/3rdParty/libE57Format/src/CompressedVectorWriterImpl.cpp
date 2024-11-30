@@ -342,6 +342,7 @@ namespace e57
                       /// zero after write, if have too much data)
          }
 
+#ifdef E57_MAX_VERBOSE
          ///??? useful?
          /// Get approximation of number of bytes per record of CompressedVector
          /// and total of bytes used
@@ -351,7 +352,6 @@ namespace e57
             totalBitsPerRecord += bytestream->bitsPerRecord();
          }
 
-#ifdef E57_MAX_VERBOSE
          const float totalBytesPerRecord = std::max( totalBitsPerRecord / 8, 0.1F ); //??? trust
 
          std::cout << "  totalBytesPerRecord=" << totalBytesPerRecord << std::endl; //???

@@ -26,20 +26,26 @@
 
 #include <list>
 #include <map>
+#include <memory>
 #include <set>
 #include <vector>
 
-#include <Base/Type.h>
-#include <Base/Placement.h>
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/SbRotation.h>
-#include <Gui/Quarter/SoQTQuarterAdaptor.h>
 #include <QCursor>
 #include <QImage>
 
-#include <Gui/Selection.h>
-#include <Gui/Namespace.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoSwitch.h>
+
+#include <Base/Placement.h>
+
+#include "Namespace.h"
+#include "Selection.h"
+
+#include "CornerCrossLetters.h"
+#include "View3DInventorSelection.h"
+#include "Quarter/SoQTQuarterAdaptor.h"
+
 
 class SoTranslation;
 class SoTransform;
@@ -50,16 +56,20 @@ class SoShapeHints;
 class SoMaterial;
 class SoRotationXYZ;
 class SbSphereSheetProjector;
-class SoEventCallback;
+class SoEventCallback;  // NOLINT
 class SbBox2s;
 class SoVectorizeAction;
 class QImage;
-class SoGroup;
+class SoGroup;  // NOLINT
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
 
 namespace Quarter = SIM::Coin3D::Quarter;
+
+namespace Base {
+    class BoundBox2d;
+}
 
 namespace Gui {
 
@@ -77,7 +87,8 @@ class ViewerEventFilter;
  */
 class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
-    typedef Quarter::SoQTQuarterAdaptor inherited;
+    using inherited = Quarter::SoQTQuarterAdaptor;
+    Q_OBJECT
 
 public:
     /// Pick modes for picking points in the scene
@@ -95,26 +106,11 @@ public:
     //@{
     enum ViewerMod {
         ShowCoord=1,       /**< Enables the Coordinate system in the corner. */
-        ShowFPS  =2,       /**< Enables the Frams per Second counter. */
+        ShowFPS  =2,       /**< Enables the Frames Per Second counter. */
         SimpleBackground=4,/**< switch to a simple background. */
         DisallowRotation=8,/**< switch off the rotation. */
         DisallowPanning=16,/**< switch off the panning. */
         DisallowZooming=32,/**< switch off the zooming. */
-    };
-    //@}
-
-    /** @name Anti-Aliasing modes of the rendered 3D scene
-      * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
-      * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite common and efficient AA technique
-      */
-    //@{
-    enum AntiAliasing {
-        None,
-        Smoothing,
-        MSAA2x,
-        MSAA4x,
-        MSAA8x
     };
     //@}
 
@@ -128,50 +124,62 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = 0);
-    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = 0);
-    virtual ~View3DInventorViewer();
+    /** @name Background
+      */
+    //@{
+    enum Background {
+        NoGradient,
+        LinearGradient,
+        RadialGradient
+    };
+    //@}
+
+    explicit View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    ~View3DInventorViewer() override;
 
     void init();
 
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const SelectionChanges &Reason);
-    void checkGroupOnTop(const SelectionChanges &Reason);
-    void clearGroupOnTop();
+    void onSelectionChanged(const SelectionChanges &Reason) override;
 
-    SoDirectionalLight* getBacklight(void) const;
-    void setBacklight(SbBool on);
-    SbBool isBacklight(void) const;
-    void setSceneGraph (SoNode *root);
-    SbBool searchNode(SoNode*) const;
+    SoDirectionalLight* getBacklight() const;
+    void setBacklightEnabled(bool on);
+    bool isBacklightEnabled() const;
+    void setSceneGraph (SoNode *root) override;
+    bool searchNode(SoNode*) const;
 
-    void setAnimationEnabled(const SbBool enable);
-    SbBool isAnimationEnabled(void) const;
+    void setAnimationEnabled(bool enable);
+    void setSpinningAnimationEnabled(bool enable);
+    bool isAnimationEnabled() const;
+    bool isSpinningAnimationEnabled() const;
+    bool isAnimating() const;
+    bool isSpinning() const;
+    void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
+                        const SbVec3f& translation, int duration = -1, bool wait = false);
+    void startSpinningAnimation(const SbVec3f& axis, float velocity);
+    void stopAnimating();
 
-    void setPopupMenuEnabled(const SbBool on);
-    SbBool isPopupMenuEnabled(void) const;
+    void setPopupMenuEnabled(bool on);
+    bool isPopupMenuEnabled() const;
 
-    void startAnimating(const SbVec3f& axis, float velocity);
-    void stopAnimating(void);
-    SbBool isAnimating(void) const;
+    void setFeedbackVisibility(bool enable);
+    bool isFeedbackVisible() const;
 
-    void setFeedbackVisibility(const SbBool enable);
-    SbBool isFeedbackVisible(void) const;
-
-    void setFeedbackSize(const int size);
-    int getFeedbackSize(void) const;
+    void setFeedbackSize(int size);
+    int getFeedbackSize() const;
 
     /// Get the preferred samples from the user settings
     static int getNumSamples();
-    void setRenderType(const RenderType type);
+    void setRenderType(RenderType type);
     RenderType getRenderType() const;
     void renderToFramebuffer(QtGLFramebufferObject*);
     QImage grabFramebuffer();
     void imageFromFramebuffer(int width, int height, int samples,
                               const QColor& bgcolor, QImage& img);
 
-    virtual void setViewing(SbBool enable);
-    virtual void setCursorEnabled(SbBool enable);
+    void setViewing(bool enable) override;
+    virtual void setCursorEnabled(bool enable);
 
     void addGraphicsItem(GLGraphicsItem*);
     void removeGraphicsItem(GLGraphicsItem*);
@@ -182,11 +190,11 @@ public:
     /** @name Handling of view providers */
     //@{
     /// Checks if the view provider is a top-level object of the scene
-    SbBool hasViewProvider(ViewProvider*) const;
+    bool hasViewProvider(ViewProvider*) const;
     /// Checks if the view provider is part of the scene.
     /// In contrast to hasViewProvider() this method also checks if the view
     /// provider is a child of another view provider
-    SbBool containsViewProvider(const ViewProvider*) const;
+    bool containsViewProvider(const ViewProvider*) const;
     /// adds an ViewProvider to the view, e.g. from a feature
     void addViewProvider(ViewProvider*);
     /// remove a ViewProvider
@@ -197,22 +205,24 @@ public:
     /// get all view providers of given type
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     /// set the ViewProvider in special edit mode
-    void setEditingViewProvider(Gui::ViewProvider* p, int ModNum);
+    void setEditingViewProvider(Gui::ViewProvider* vp, int ModNum);
     /// return whether a view provider is edited
-    SbBool isEditingViewProvider() const;
+    bool isEditingViewProvider() const;
+    /// return currently editing view provider
+    ViewProvider* getEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
-    void setupEditingRoot(SoNode *node=0, const Base::Matrix4D *mat=0);
+    void setupEditingRoot(SoNode *node=nullptr, const Base::Matrix4D *mat=nullptr);
     void resetEditingRoot(bool updateLinks=true);
     void setEditingTransform(const Base::Matrix4D &mat);
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */
-    SoPickedPoint* getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const;
+    SoPickedPoint* getPointOnRay(const SbVec2s& pos, const ViewProvider* vp) const;
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */
-    SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, ViewProvider* vp) const;
+    SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, const ViewProvider* vp) const;
     /// display override mode
     void setOverrideMode(const std::string &mode);
     void updateOverrideMode(const std::string &mode);
@@ -222,10 +232,10 @@ public:
     /** @name Making pictures */
     //@{
     /**
-     * Creates an image with width \a w and height \a h of the current scene graph
-     * using a multi-sampling of \a s and exports the rendered scenegraph to an image.
+     * Creates an image with width \a width and height \a height of the current scene graph
+     * using a multi-sampling of \a sample and exports the rendered scenegraph to an image.
      */
-    void savePicture(int w, int h, int s, const QColor&, QImage&) const;
+    void savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const;
     void saveGraphic(int pagesize, const QColor&, SoVectorizeAction* va) const;
     //@}
     /**
@@ -239,11 +249,11 @@ public:
     void abortSelection();
     void stopSelection();
     bool isSelecting() const;
-    std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;
+    std::vector<SbVec2f> getGLPolygon(SelectionRole* role=nullptr) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
-    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
-    void setSelectionEnabled(const SbBool enable);
-    SbBool isSelectionEnabled(void) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
+    void setSelectionEnabled(bool enable);
+    bool isSelectionEnabled() const;
     //@}
 
     /// Returns the screen coordinates of the origin of the path's tail object
@@ -252,14 +262,14 @@ public:
 
     /** @name Edit methods */
     //@{
-    void setEditing(SbBool edit);
-    SbBool isEditing() const { return this->editing; }
+    void setEditing(bool edit);
+    bool isEditing() const { return this->editing; }
     void setEditingCursor (const QCursor& cursor);
     void setComponentCursor(const QCursor& cursor);
-    void setRedirectToSceneGraph(SbBool redirect) { this->redirected = redirect; }
-    SbBool isRedirectedToSceneGraph() const { return this->redirected; }
-    void setRedirectToSceneGraphEnabled(SbBool enable) { this->allowredir = enable; }
-    SbBool isRedirectToSceneGraphEnabled(void) const { return this->allowredir; }
+    void setRedirectToSceneGraph(bool redirect) { this->redirected = redirect; }
+    bool isRedirectedToSceneGraph() const { return this->redirected; }
+    void setRedirectToSceneGraphEnabled(bool enable) { this->allowredir = enable; }
+    bool isRedirectToSceneGraphEnabled() const { return this->allowredir; }
     //@}
 
     /** @name Pick actions */
@@ -268,7 +278,7 @@ public:
     bool pickPoint(const SbVec2s& pos,SbVec3f &point,SbVec3f &norm) const;
     SoPickedPoint* pickPoint(const SbVec2s& pos) const;
     const SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
-    SbBool pubSeekToPoint(const SbVec2s& pos);
+    bool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
     //@}
 
@@ -276,11 +286,11 @@ public:
      * Set up a callback function \a cb which will be invoked for the given eventtype.
      * \a userdata will be given as the first argument to the callback function.
      */
-    void addEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = 0);
+    void addEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = nullptr);
     /**
      * Unregister the given callback function \a cb.
      */
-    void removeEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = 0);
+    void removeEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = nullptr);
 
     /** @name Clipping plane, near and far plane */
     //@{
@@ -292,27 +302,57 @@ public:
     void    setViewDirection(SbVec3f);
     /** Returns the up direction */
     SbVec3f getUpDirection() const;
+
     /** Returns the orientation of the camera. */
     SbRotation getCameraOrientation() const;
+
     /** Returns the 3d point on the focal plane to the given 2d point. */
     SbVec3f getPointOnFocalPlane(const SbVec2s&) const;
-    /** Returns the 2d coordinates on the screen to the given 3d point. */
-    SbVec2s getPointOnScreen(const SbVec3f&) const;
+
+    /** Returns the 3d point on a line to the given 2d point. */
+    SbVec3f getPointOnLine(const SbVec2s&, const SbVec3f& axisCenter, const SbVec3f& axis) const;
+
+    /** Returns the 3d point on the XY plane of a placement to the given 2d point. */
+    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, const Base::Placement&) const;
+
+    /** Returns the bounding box on the XY plane of a placement to the given 2d point. */
+    Base::BoundBox2d getViewportOnXYPlaneOfPlacement(Base::Placement plc) const;
+
+    /** Returns the 2d coordinates on the viewport to the given 3d point. */
+    SbVec2s getPointOnViewport(const SbVec3f&) const;
+
+    /** Converts Inventor coordinates into Qt coordinates.
+     * The conversion takes the device pixel ratio into account.
+     */
+    QPoint toQPoint(const SbVec2s&) const;
+
+    /** Converts Qt coordinates into Inventor coordinates.
+     * The conversion takes the device pixel ratio into account.
+     */
+    SbVec2s fromQPoint(const QPoint&) const;
+
     /** Returns the near plane represented by its normal and base point. */
     void getNearPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
+
     /** Returns the far plane represented by its normal and base point. */
     void getFarPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
+
     /** Adds or remove a manipulator to/from the scenegraph. */
     void toggleClippingPlane(int toggle=-1, bool beforeEditing=false,
             bool noManip=false, const Base::Placement &pla = Base::Placement());
+
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
+
     /** Project the given normalized 2d point onto the near plane */
     SbVec3f projectOnNearPlane(const SbVec2f&) const;
+
     /** Project the given normalized 2d point onto the far plane */
     SbVec3f projectOnFarPlane(const SbVec2f&) const;
+
     /** Project the given 2d point to a line */
     void projectPointToLine(const SbVec2s&, SbVec3f& pt1, SbVec3f& pt2) const;
+
     /** Get the normalized position of the 2d point. */
     SbVec2f getNormalizedPosition(const SbVec2s&) const;
     //@}
@@ -339,9 +379,9 @@ public:
      * \a true the reorientation is animated, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
-    void setCameraType(SoType t);
-    void moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms);
+    void setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false);
+    void setCameraType(SoType type) override;
+    void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
      * Zooms the viewport to the size of the bounding box.
      */
@@ -349,11 +389,16 @@ public:
     /**
      * Reposition the current camera so we can see the complete scene.
      */
-    void viewAll();
+    void viewAll() override;
     void viewAll(float factor);
 
     /// Breaks out a VR window for a Rift
-    void viewVR(void);
+    void viewVR();
+
+    /**
+     * Returns the bounding box of the scene graph.
+     */
+    SbBox3f getBoundingBox() const;
 
     /**
      * Reposition the current camera so we can see all selected objects
@@ -362,8 +407,10 @@ public:
      */
     void viewSelection();
 
-    void setGradientBackground(bool b);
-    bool hasGradientBackground() const;
+    void alignToSelection();
+
+    void setGradientBackground(Background);
+    Background getGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
                                     const SbColor& toColor);
     void setGradientBackgroundColor(const SbColor& fromColor,
@@ -371,41 +418,49 @@ public:
                                     const SbColor& midColor);
     void setNavigationType(Base::Type);
 
-    void setAxisCross(bool b);
-    bool hasAxisCross(void);
+    void setAxisLetterColor(const SbColor& color);
+    void setAxisCross(bool on);
+    bool hasAxisCross();
 
-    void setEnabledFPSCounter(bool b);
-    void setEnabledNaviCube(bool b);
-    bool isEnabledNaviCube(void) const;
+    void showRotationCenter(bool show);
+    void changeRotationCenterPosition(const SbVec3f& newCenter);
+
+    void setEnabledFPSCounter(bool on);
+    void setEnabledNaviCube(bool on);
+    bool isEnabledNaviCube() const;
     void setNaviCubeCorner(int);
-    NaviCube* getNavigationCube() const;
-    void setEnabledVBO(bool b);
+    NaviCube* getNaviCube() const;
+    void setEnabledVBO(bool on);
     bool isEnabledVBO() const;
     void setRenderCache(int);
+
+    void getDimensions(float& fHeight, float& fWidth) const;
+    float getMaxDimension() const;
+    SbVec3f getCenterPointOnFocalPlane() const;
 
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);
     Gui::Document* getDocument();
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
 
 protected:
-    GLenum getInternalTextureFormat() const;
+    static GLenum getInternalTextureFormat();
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
     void animatedViewAll(int steps, int ms);
-    virtual void actualRedraw(void);
-    virtual void setSeekMode(SbBool enable);
-    virtual void afterRealizeHook(void);
-    virtual bool processSoEvent(const SoEvent * ev);
-    void dropEvent (QDropEvent * e);
-    void dragEnterEvent (QDragEnterEvent * e);
-    void dragMoveEvent(QDragMoveEvent *e);
-    void dragLeaveEvent(QDragLeaveEvent *e);
-    SbBool processSoEventBase(const SoEvent * const ev);
-    void printDimension();
+    void actualRedraw() override;
+    void setSeekMode(bool on) override;
+    void afterRealizeHook() override;
+    bool processSoEvent(const SoEvent * ev) override;
+    void dropEvent (QDropEvent * ev) override;
+    void dragEnterEvent (QDragEnterEvent * ev) override;
+    void dragMoveEvent(QDragMoveEvent* ev) override;
+    void dragLeaveEvent(QDragLeaveEvent* ev) override;
+    bool processSoEventBase(const SoEvent * const ev);
+    void printDimension() const;
     void selectAll();
 
 private:
@@ -418,12 +473,13 @@ private:
     static void interactionLoggerCB(void * ud, SoAction* action);
 
 private:
-    static void selectCB(void * closure, SoPath * p);
-    static void deselectCB(void * closure, SoPath * p);
-    static SoPath * pickFilterCB(void * data, const SoPickedPoint * pick);
+    static void selectCB(void * viewer, SoPath * path);
+    static void deselectCB(void * viewer, SoPath * path);
+    static SoPath * pickFilterCB(void * viewer, const SoPickedPoint * pp);
     void initialize();
-    void drawAxisCross(void);
-    static void drawArrow(void);
+    void drawAxisCross();
+    static void drawArrow();
+    static void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors(double);
@@ -439,13 +495,12 @@ private:
     SoSeparator * foregroundroot;
     SoDirectionalLight* backlight;
 
+    // Scene graph root
     SoSeparator * pcViewProviderRoot;
+    // Child group in the scene graph that contains view providers related to the physical object
+    SoGroup* objectGroup;
 
-    SoGroup * pcGroupOnTop;
-    SoGroup * pcGroupOnTopSel;
-    SoGroup * pcGroupOnTopPreSel;
-    std::map<std::string,SoNode*> objectsOnTop;
-    std::map<std::string,SoNode*> objectsOnTopPreSel;
+    std::unique_ptr<View3DInventorSelection> inventorSelection;
 
     SoSeparator * pcEditingRoot;
     SoTransform * pcEditingTransform;
@@ -459,32 +514,38 @@ private:
     RenderType renderType;
     QtGLFramebufferObject* framebuffer;
     QImage glImage;
-    SbBool shading;
+    bool shading;
     SoSwitch *dimensionRoot;
 
     // small axis cross in the corner
-    SbBool axiscrossEnabled;
+    bool axiscrossEnabled;
     int axiscrossSize;
     // big one in the middle
     SoShapeScale* axisCross;
     SoGroup* axisGroup;
 
+    SoGroup* rotationCenterGroup;
+
     //stuff needed to draw the fps counter
     bool fpsEnabled;
     bool vboEnabled;
-    SbBool naviCubeEnabled;
+    bool naviCubeEnabled;
 
-    SbBool editing;
+    bool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;
-    SbBool redirected;
-    SbBool allowredir;
+    bool redirected;
+    bool allowredir;
 
     std::string overrideMode;
     Gui::Document* guiDocument = nullptr;
 
     ViewerEventFilter* viewerEventFilter;
 
-    PyObject *_viewerPy;
+    PyObject* _viewerPy;
+
+    static unsigned char XPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
+    static unsigned char YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
+    static unsigned char ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_BYTES_PER_PIXEL + 1];
 
     // friends
     friend class NavigationStyle;

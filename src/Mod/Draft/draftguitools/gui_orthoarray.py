@@ -34,11 +34,11 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc  # include resources, icons, ui files
-import draftutils.todo as todo
-
-from draftutils.messages import _msg, _log
-from draftutils.translate import translate
 from draftguitools import gui_base
+from draftutils import gui_utils
+from draftutils import todo
+from draftutils.messages import _log
+from draftutils.translate import translate
 from drafttaskpanels import task_orthoarray
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -49,7 +49,7 @@ class OrthoArray(gui_base.GuiCommandBase):
     """Gui command for the OrthoArray tool."""
 
     def __init__(self):
-        super(OrthoArray, self).__init__()
+        super().__init__()
         self.command_name = "Orthogonal array"
         # self.location = None
         self.mouse_event = None
@@ -61,9 +61,9 @@ class OrthoArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'Pixmap': 'Draft_Array',
-               'MenuText': QT_TRANSLATE_NOOP("Draft_Array", "Array"),
-               'ToolTip': QT_TRANSLATE_NOOP("Draft_Array", "Creates copies of the selected object, and places the copies in an orthogonal pattern,\nmeaning the copies follow the specified direction in the X, Y, Z axes.\n\nThe array can be turned into a polar or a circular array by changing its type.")}
+        return {"Pixmap": "Draft_Array",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Array"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Creates copies of the selected object, and places the copies in an orthogonal pattern,\nmeaning the copies follow the specified direction in the X, Y, Z axes.\n\nThe array can be turned into a polar or a circular array by changing its type.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -72,8 +72,6 @@ class OrthoArray(gui_base.GuiCommandBase):
         the widgets of the task panel.
         """
         _log("GuiCommand: {}".format(self.command_name))
-        #_msg("{}".format(16*"-"))
-        #_msg("GuiCommand: {}".format(self.command_name))
 
         # self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
@@ -117,9 +115,10 @@ class OrthoArray(gui_base.GuiCommandBase):
         #                                   self.callback_move)
         self.view.removeEventCallbackPivy(self.mouse_event,
                                           self.callback_click)
+        gui_utils.end_all_events()
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super(OrthoArray, self).finish()
+            self.finish()
 
 
 Gui.addCommand('Draft_OrthoArray', OrthoArray())

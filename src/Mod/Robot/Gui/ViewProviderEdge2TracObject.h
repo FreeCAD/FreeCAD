@@ -29,19 +29,19 @@
 namespace RobotGui
 {
 
-class RobotGuiExport ViewProviderEdge2TracObject : public ViewProviderTrajectory
+class RobotGuiExport ViewProviderEdge2TracObject: public ViewProviderTrajectory
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderEdge2TracObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderEdge2TracObject);
 
 public:
-    virtual bool doubleClicked(void);
-protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool doubleClicked() override;
 
+protected:
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
-} //namespace RobotGui
+}  // namespace RobotGui
 
 
-#endif // ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
+#endif  // ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H

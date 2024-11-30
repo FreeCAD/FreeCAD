@@ -41,14 +41,16 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["force", "fixed"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.square_pipe_end_twisted_edgeforces import setup
@@ -59,6 +61,7 @@ See forum topic post:
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -91,17 +94,15 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        solver_obj.WorkingDir = u""
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
@@ -129,13 +130,14 @@ def setup(doc=None, solvertype="ccxtools"):
         (doc.SquareTube, "Edge4"),
         (doc.SquareTube, "Edge7"),
         (doc.SquareTube, "Edge10"),
-        (doc.SquareTube, "Edge12")]
+        (doc.SquareTube, "Edge12"),
+    ]
     analysis.addObject(con_fixed)
 
     # con_force1
     con_force1 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1")
     con_force1.References = [(geom_obj, "Edge9")]
-    con_force1.Force = 100000.00
+    con_force1.Force = "100000.00 N"
     con_force1.Direction = (geom_obj, ["Edge9"])
     con_force1.Reversed = True
     analysis.addObject(con_force1)
@@ -143,7 +145,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force2
     con_force2 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2")
     con_force2.References = [(geom_obj, "Edge3")]
-    con_force2.Force = 100000.00
+    con_force2.Force = "100000.00 N"
     con_force2.Direction = (geom_obj, ["Edge3"])
     con_force2.Reversed = True
     analysis.addObject(con_force2)
@@ -151,7 +153,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force3
     con_force3 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3")
     con_force3.References = [(geom_obj, "Edge11")]
-    con_force3.Force = 100000.00
+    con_force3.Force = "100000.00 N"
     con_force3.Direction = (geom_obj, ["Edge11"])
     con_force3.Reversed = True
     analysis.addObject(con_force3)
@@ -159,13 +161,14 @@ def setup(doc=None, solvertype="ccxtools"):
     # con_force4
     con_force4 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4")
     con_force4.References = [(geom_obj, "Edge6")]
-    con_force4.Force = 100000.00
+    con_force4.Force = "100000.00 N"
     con_force4.Direction = (geom_obj, ["Edge6"])
     con_force4.Reversed = True
     analysis.addObject(con_force4)
 
     # mesh
     from .meshes.mesh_square_pipe_end_twisted_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -175,7 +178,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()

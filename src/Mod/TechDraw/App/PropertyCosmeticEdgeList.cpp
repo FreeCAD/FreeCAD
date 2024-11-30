@@ -20,31 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <assert.h>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
-#include "Cosmetic.h"
-#include "CosmeticEdgePy.h"
 
 #include "PropertyCosmeticEdgeList.h"
+#include "CosmeticEdgePy.h"
 
 
 using namespace App;
 using namespace Base;
-using namespace std;
 using namespace TechDraw;
-
 
 //**************************************************************************
 // PropertyCosmeticEdgeList
@@ -67,12 +55,10 @@ PropertyCosmeticEdgeList::~PropertyCosmeticEdgeList()
 
 void PropertyCosmeticEdgeList::setSize(int newSize)
 {
-//    for (unsigned int i = newSize; i < _lValueList.size(); i++)
-//        delete _lValueList[i];
     _lValueList.resize(newSize);
 }
 
-int PropertyCosmeticEdgeList::getSize(void) const
+int PropertyCosmeticEdgeList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -81,6 +67,7 @@ int PropertyCosmeticEdgeList::getSize(void) const
 //_lValueList is not const. so why do we pass a const parameter?
 void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
 {
+//    Base::Console().Message("PCEL::setValue() - current values: %d lValue: %s\n", _lValueList.size(), lValue ? "valid" : "null");
     if (lValue) {
         aboutToSetValue();
         _lValueList.resize(1);
@@ -91,14 +78,17 @@ void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
 
 void PropertyCosmeticEdgeList::setValues(const std::vector<CosmeticEdge*>& lValue)
 {
+//    Base::Console().Message("PCEL::seValues() - in values: %d current values: %d\n", lValue.size(), _lValueList.size());
     aboutToSetValue();
     _lValueList.resize(lValue.size());
-    for (unsigned int i = 0; i < lValue.size(); i++)
-        _lValueList[i] = lValue[i];
+    if (!lValue.empty()) {
+        for (unsigned int i = 0; i < lValue.size(); i++)
+            _lValueList[i] = lValue[i];
+    }
     hasSetValue();
 }
 
-PyObject *PropertyCosmeticEdgeList::getPyObject(void)
+PyObject *PropertyCosmeticEdgeList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -109,19 +99,20 @@ PyObject *PropertyCosmeticEdgeList::getPyObject(void)
 void PropertyCosmeticEdgeList::setPyObject(PyObject *value)
 {
     if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::vector<CosmeticEdge*> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyObject_TypeCheck(item, &(CosmeticEdgePy::Type))) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyObject_TypeCheck(item.ptr(), &(CosmeticEdgePy::Type))) {
                 std::string error = std::string("types in list must be 'CosmeticEdge', not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
 
-            values[i] = static_cast<CosmeticEdgePy*>(item)->getCosmeticEdgePtr();
+            values[i] = static_cast<CosmeticEdgePy*>(item.ptr())->getCosmeticEdgePtr();
         }
 
         setValues(values);
@@ -139,18 +130,19 @@ void PropertyCosmeticEdgeList::setPyObject(PyObject *value)
 
 void PropertyCosmeticEdgeList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<CosmeticEdgeList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<CosmeticEdgeList count=\"" << getSize() << "\">"
+                    << std::endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<CosmeticEdge  type=\""
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;
+                        << _lValueList[i]->getTypeId().getName() << "\">" << std::endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
-        writer.Stream() << writer.ind() << "</CosmeticEdge>" << endl;
+        writer.Stream() << writer.ind() << "</CosmeticEdge>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</CosmeticEdgeList>" << endl ;
+    writer.Stream() << writer.ind() << "</CosmeticEdgeList>" << std::endl;
 }
 
 void PropertyCosmeticEdgeList::Restore(Base::XMLReader &reader)
@@ -165,11 +157,11 @@ void PropertyCosmeticEdgeList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("CosmeticEdge");
         const char* TypeName = reader.getAttribute("type");
-        CosmeticEdge *newG = (CosmeticEdge *)Base::Type::fromName(TypeName).createInstance();
+        CosmeticEdge *newG = static_cast<CosmeticEdge *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().Error("CosmeticEdge \"%s\" within a PropertyCosmeticEdgeList was subject to a partial restore.\n",reader.localName());
+            Base::Console().Error("CosmeticEdge \"%s\" within a PropertyCosmeticEdgeList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the CosmeticEdge class
                 values.push_back(newG);
@@ -192,7 +184,7 @@ void PropertyCosmeticEdgeList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-App::Property *PropertyCosmeticEdgeList::Copy(void) const
+App::Property *PropertyCosmeticEdgeList::Copy() const
 {
     PropertyCosmeticEdgeList *p = new PropertyCosmeticEdgeList();
     p->setValues(_lValueList);
@@ -205,7 +197,7 @@ void PropertyCosmeticEdgeList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyCosmeticEdgeList::getMemSize(void) const
+unsigned int PropertyCosmeticEdgeList::getMemSize() const
 {
     int size = sizeof(PropertyCosmeticEdgeList);
     for (int i = 0; i < getSize(); i++)

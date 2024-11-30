@@ -26,19 +26,15 @@
 # include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeChamfer.hxx>
 # include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_ListOfShape.hxx>
-# include <BRep_Tool.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
 # include <Standard_Version.hxx>
 #endif
 
-#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -52,7 +48,7 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
-const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", NULL};
+const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", nullptr};
 const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize = {0.0, FLT_MAX, 0.1};
 const App::PropertyAngle::Constraints Chamfer::floatAngle = {0.0, 180.0, 1.0};
 
@@ -76,6 +72,9 @@ Chamfer::Chamfer()
     Angle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");
+    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Chamfer", App::Prop_None,
+             "Chamfer all edges if true, else use only those edges in Base property.\n"
+             "If true, then this overrides any edge changes made to the Base property or in the dialog.\n");
 
     updateProperties();
 }
@@ -103,28 +102,30 @@ short Chamfer::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Chamfer::execute(void)
+App::DocumentObjectExecReturn *Chamfer::execute()
 {
     // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
     // The only difference is that the Base property also stores the edges that are to be chamfered
     Part::TopoShape TopShape;
     try {
-        TopShape = getBaseShape();
-    } catch (Base::Exception& e) {
+        TopShape = getBaseTopoShape();
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
-    std::vector<std::string> FaceNames;
-  
-    getContinuousEdges(TopShape, SubNames, FaceNames);
+    TopShape.setTransform(Base::Matrix4D());
 
-    if (SubNames.size() == 0)
-        return new App::DocumentObjectExecReturn("No edges specified");
+    auto edges = UseAllEdges.getValue() ? TopShape.getSubTopoShapes(TopAbs_EDGE)
+                                        : getContinuousEdges(TopShape);
 
+    if (edges.empty()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "No edges specified"));
+    }
     const int chamferType = ChamferType.getValue();
     const double size = Size.getValue();
-    const double size2 = Size2.getValue();
+    double size2 = Size2.getValue();
     const double angle = Angle.getValue();
     const bool flipDirection = FlipDirection.getValue();
 
@@ -134,80 +135,46 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     }
 
     this->positionByBaseFeature();
-    // create an untransformed copy of the basefeature shape
-    Part::TopoShape baseShape(TopShape);
-    baseShape.setTransform(Base::Matrix4D());
+
+    if ( static_cast<Part::ChamferType>(chamferType) == Part::ChamferType::distanceAngle ) {
+        size2 = angle;
+    }
     try {
-        BRepFilletAPI_MakeChamfer mkChamfer(baseShape.getShape());
-
-        TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
-        TopExp::MapShapesAndAncestors(baseShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
-
-        for (const auto &itSN : SubNames) {
-            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(itSN.c_str()));
-
-            const TopoDS_Shape& faceLast = mapEdgeFace.FindFromKey(edge).Last();
-            const TopoDS_Shape& faceFirst = mapEdgeFace.FindFromKey(edge).First();
-
-            // Set the face based on flipDirection for all edges by default. Note for chamferType==0 it does not matter which face is used.
-            TopoDS_Face face = TopoDS::Face( flipDirection ? faceLast : faceFirst );
-    
-            // for chamfer types otherthan Equal (type = 0) check if one of the faces associated with the edge
-            // is one of the originally selected faces. If so use the other face by default or the selected face if "flipDirection" is set
-            if (chamferType != 0) {
-
-                // for each selected face
-                for (const auto &itFN : FaceNames) {
-                    const TopoDS_Shape selFace = baseShape.getSubShape(itFN.c_str());
-
-                    if ( faceLast.IsEqual(selFace) ) 
-                        face = TopoDS::Face( flipDirection ? faceFirst : faceLast );
-                    
-                    else if ( faceFirst.IsEqual(selFace) ) 
-                        face = TopoDS::Face( flipDirection ? faceLast : faceFirst );
-                }
-
-            } 
-
-            switch (chamferType) {
-                case 0: // Equal distance
-                    mkChamfer.Add(size, size, edge, face);
-                    break;
-                case 1: // Two distances
-                    mkChamfer.Add(size, size2, edge, face);
-                    break;
-                case 2: // Distance and angle
-                    mkChamfer.AddDA(size, Base::toRadians(angle), edge, face);
-                    break;
-            }
+        TopoShape shape(0);
+        shape.makeElementChamfer(TopShape,
+                                 edges,
+                                 static_cast<Part::ChamferType>(chamferType),
+                                 size,
+                                 size2,
+                                 nullptr,
+                                 flipDirection ? Part::Flip::flip : Part::Flip::none);
+        if (shape.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer"));
         }
-
-        mkChamfer.Build();
-        if (!mkChamfer.IsDone())
-            return new App::DocumentObjectExecReturn("Failed to create chamfer");
-
-        TopoDS_Shape shape = mkChamfer.Shape();
-        if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         TopTools_ListOfShape aLarg;
-        aLarg.Append(baseShape.getShape());
-        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+        aLarg.Append(TopShape.getShape());
+        bool failed = false;
+        if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
-            aSFT.LimitTolerance(shape, Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
-            Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape);
-            aSfs->Perform();
-            shape = aSfs->Shape();
-            if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
-                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
-            }
+            aSFT.LimitTolerance(shape.getShape(),
+                                Precision::Confusion(),
+                                Precision::Confusion(),
+                                TopAbs_SHAPE);
         }
-        int solidCount = countSolids(shape);
-        if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn("Chamfer: Result has multiple solids. This is not supported at this time.");
+        if (!failed) {
+            shape = refineShapeIfActive(shape);
+            shape = getSolid(shape);
         }
-        shape = refineShapeIfActive(shape);
-        this->Shape.setValue(getSolid(shape));
+        if (!isSingleSolidRuleSatisfied(shape.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
+        this->Shape.setValue(shape);
+        if (failed) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Resulting shape is invalid"));
+        }
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -270,7 +237,7 @@ static App::DocumentObjectExecReturn *validateParameters(int chamferType, double
 {
     // Size is common to all chamfer types.
     if (size <= 0) {
-        return new App::DocumentObjectExecReturn("Size must be greater than zero");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Size must be greater than zero"));
     }
 
     switch (chamferType) {
@@ -279,12 +246,12 @@ static App::DocumentObjectExecReturn *validateParameters(int chamferType, double
             break;
         case 1: // Two distances
             if (size2 <= 0) {
-                return new App::DocumentObjectExecReturn("Size2 must be greater than zero");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Size2 must be greater than zero"));
             }
             break;
         case 2: // Distance and angle
             if (angle <= 0 || angle >= 180.0) {
-                return new App::DocumentObjectExecReturn("Angle must be greater than 0 and less than 180");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle must be greater than 0 and less than 180"));
             }
             break;
     }

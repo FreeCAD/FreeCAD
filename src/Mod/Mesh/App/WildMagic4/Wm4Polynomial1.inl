@@ -29,7 +29,7 @@ Polynomial1<Real>::Polynomial1 (int iDegree)
     {
         // default creation
         m_iDegree = -1;
-        m_afCoeff = 0;
+        m_afCoeff = nullptr;
     }
 }
 //----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ void Polynomial1<Real>::SetDegree (int iDegree)
     }
     else
     {
-        m_afCoeff = 0;
+        m_afCoeff = nullptr;
     }
 }
 //----------------------------------------------------------------------------

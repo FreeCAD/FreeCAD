@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="PyObjectBase" 
-      Name="MeshPointPy" 
-      Twin="MeshPoint" 
-      TwinPointer="MeshPoint" 
-      Include="Mod/Mesh/App/MeshPoint.h" 
-      FatherInclude="Base/PyObjectBase.h" 
-      Namespace="Mesh" 
+  <PythonExport
+      Father="PyObjectBase"
+      Name="MeshPointPy"
+      Twin="MeshPoint"
+      TwinPointer="MeshPoint"
+      Include="Mod/Mesh/App/MeshPoint.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="Mesh"
       Constructor="true"
       Delete="true"
       FatherNamespace="Base">
@@ -16,7 +16,7 @@
       <DeveloperDocu>Point in a Mesh</DeveloperDocu>
       <UserDocu> Point in mesh
 This is a point in a MeshObject. You can get it by e.g. iterating a
-mesh. The point has a connection to its mesh and allows therefore 
+mesh. The point has a connection to its mesh and allows therefore
 topological operations. It is also possible to create an unbounded mesh point e.g. to create
 a mesh. In this case the topological operations will fail. The same is
 when you cut the bound to the mesh by calling unbound().
@@ -30,16 +30,6 @@ free and is more or less a simple vector/point.
 After calling unbound() no topological operation will
 work!
 			  </UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="move">
-		  <Documentation>
-			  <UserDocu>method move(Vector)
-This method moves the point in the mesh along the 
-given vector. This affects the geometry of the mesh.
-Be aware that after moving point(s) the mesh can 
-have self intersections!
-              </UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Attribute Name="Index" ReadOnly="true">
@@ -66,24 +56,21 @@ have self intersections!
 		  </Documentation>
 		  <Parameter Name="Normal" Type="Object"/>
 	  </Attribute>
-	  <Attribute Name="x" ReadOnly="false">
+      <Attribute Name="x" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>The X component of the point.
-Setting this value also affects the mesh if this point is connected to it.</UserDocu>
+              <UserDocu>The X component of the point.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="x" Type="Float"/>
 	  </Attribute>
-	  <Attribute Name="y" ReadOnly="false">
+      <Attribute Name="y" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>The Y component of the point.
-Setting this value also affects the mesh if this point is connected to it.</UserDocu>
+              <UserDocu>The Y component of the point.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="y" Type="Float"/>
 	  </Attribute>
-	  <Attribute Name="z" ReadOnly="false">
+      <Attribute Name="z" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>The Z component of the point.
-Setting this value also affects the mesh if this point is connected to it.</UserDocu>
+              <UserDocu>The Z component of the point.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="z" Type="Float"/>
 	  </Attribute>

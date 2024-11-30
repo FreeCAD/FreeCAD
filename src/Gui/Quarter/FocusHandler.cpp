@@ -33,15 +33,17 @@
 /*!
   \class SIM::Coin3D::Quarter::FocusHandler FocusHandler.h Quarter/devices/FocusHandler.h
 
-  \brief The FocusHandler eventfilter provides Coin with focus in and
-  focus out events, if installed on QuarterWidget.
+  \brief The FocusHandler event filter provides Coin with focus in and
+  focus out events, if installed on a QuarterWidget.
 */
 
-#include <Quarter/eventhandlers/FocusHandler.h>
-#include <Quarter/QuarterWidget.h>
-#include <QtCore/QEvent>
+#include <QEvent>
 #include <Inventor/SoEventManager.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
+
+#include "QuarterWidget.h"
+#include "eventhandlers/FocusHandler.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 

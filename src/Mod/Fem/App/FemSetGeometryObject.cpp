@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "FemSetGeometryObject.h"
 #include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+
 
 using namespace Fem;
 using namespace App;
@@ -36,25 +32,20 @@ using namespace App;
 PROPERTY_SOURCE(Fem::FemSetGeometryObject, Fem::FemSetObject)
 
 
-FemSetGeometryObject::FemSetGeometryObject()
-{
-}
+FemSetGeometryObject::FemSetGeometryObject() = default;
 
-FemSetGeometryObject::~FemSetGeometryObject()
-{
-}
+FemSetGeometryObject::~FemSetGeometryObject() = default;
 
-short FemSetGeometryObject::mustExecute(void) const
+short FemSetGeometryObject::mustExecute() const
 {
     return 0;
 }
 
-PyObject *FemSetGeometryObject::getPyObject()
+PyObject* FemSetGeometryObject::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
+        PythonObject = Py::Object(new DocumentObjectPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
-

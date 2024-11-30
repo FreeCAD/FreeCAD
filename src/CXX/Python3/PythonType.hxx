@@ -38,12 +38,16 @@
 #ifndef __CXX_PythonType__h
 #define __CXX_PythonType__h
 
+#if defined( Py_LIMITED_API )
+#include <unordered_map>
+#endif
+
 namespace Py
 {
     class PYCXX_EXPORT PythonType
     {
     public:
-        // if you define one sequence method you must define 
+        // if you define one sequence method you must define
         // all of them except the assigns
 
         PythonType( size_t base_size, int itemsize, const char *default_name );
@@ -57,7 +61,7 @@ namespace Py
         PythonType &doc( const char *d );
 
         PythonType &supportClass( void );
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
         PythonType &supportPrint( void );
 #endif
         PythonType &supportGetattr( void );
@@ -72,12 +76,122 @@ namespace Py
         PythonType &supportStr( void );
         PythonType &supportHash( void );
         PythonType &supportCall( void );
-        PythonType &supportIter( void );
 
-        PythonType &supportSequenceType( void );
-        PythonType &supportMappingType( void );
-        PythonType &supportNumberType( void );
-        PythonType &supportBufferType( void );
+#define B( n ) (1<<(n))
+        enum {
+            support_iter_iter =                 B(0),
+            support_iter_iternext =             B(1)
+        };
+        PythonType &supportIter( int methods_to_support=
+                        support_iter_iter |
+                        support_iter_iternext );
+
+        enum {
+            support_sequence_length =           B(0),
+            support_sequence_repeat =           B(1),
+            support_sequence_item =             B(2),
+            support_sequence_slice =            B(3),
+            support_sequence_concat =           B(4),
+            support_sequence_ass_item =         B(5),
+            support_sequence_ass_slice =        B(6),
+            support_sequence_inplace_concat =   B(7),
+            support_sequence_inplace_repeat =   B(8),
+            support_sequence_contains =         B(9)
+        };
+        PythonType &supportSequenceType( int methods_to_support=
+                        support_sequence_length |
+                        support_sequence_repeat |
+                        support_sequence_item |
+                        support_sequence_slice |
+                        support_sequence_concat
+                        );
+
+        enum {
+            support_mapping_length =            B(0),
+            support_mapping_subscript =         B(1),
+            support_mapping_ass_subscript =     B(2)
+        };
+        PythonType &supportMappingType( int methods_to_support=
+                        support_mapping_length |
+                        support_mapping_subscript
+                        );
+
+        enum {
+            support_number_add =                B(0),
+            support_number_subtract =           B(1),
+            support_number_multiply =           B(2),
+            support_number_remainder =          B(3),
+            support_number_divmod =             B(4),
+            support_number_power =              B(5),
+            support_number_negative =           B(6),
+            support_number_positive =           B(7),
+            support_number_absolute =           B(8),
+            support_number_invert =             B(9),
+            support_number_lshift =             B(10),
+            support_number_rshift =             B(11),
+            support_number_and =                B(12),
+            support_number_xor =                B(13),
+            support_number_or =                 B(14),
+            support_number_int =                B(15),
+            support_number_float =              B(16),
+            support_number_floor_divide =       B(17),
+            support_number_true_divide =        B(18),
+            support_number_index =              B(19),
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+            support_number_matrix_multiply =    B(20),
+#endif
+
+            // start a new bit mask for inplace that avoid using more then 32 bits in methods_to_support
+            support_number_inplace_floor_divide = B(0),
+            support_number_inplace_true_divide = B(1),
+            support_number_inplace_add =        B(2),
+            support_number_inplace_subtract =   B(3),
+            support_number_inplace_multiply =   B(4),
+            support_number_inplace_remainder =  B(5),
+            support_number_inplace_power =      B(6),
+            support_number_inplace_lshift =     B(7),
+            support_number_inplace_rshift =     B(8),
+            support_number_inplace_and =        B(9),
+            support_number_inplace_xor =        B(10),
+            support_number_inplace_or =         B(11)
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+            ,
+            support_number_inplace_matrix_multiply = B(12)
+#endif
+        };
+        PythonType &supportNumberType(
+            int methods_to_support=
+                support_number_add |
+                support_number_subtract |
+                support_number_multiply |
+                support_number_remainder |
+                support_number_divmod |
+                support_number_power |
+                support_number_negative |
+                support_number_positive |
+                support_number_absolute |
+                support_number_invert |
+                support_number_lshift |
+                support_number_rshift |
+                support_number_and |
+                support_number_xor |
+                support_number_or |
+                support_number_int |
+                support_number_float,
+            int inplace_methods_to_support=0
+            );
+
+#if !defined( Py_LIMITED_API )
+        enum {
+            support_buffer_getbuffer =          B(0),
+            support_buffer_releasebuffer =      B(1)
+        };
+        PythonType &supportBufferType( int methods_to_support=
+                    support_buffer_getbuffer |
+                    support_buffer_releasebuffer
+                    );
+#endif
+#undef B
 
         PythonType &set_tp_dealloc( void (*tp_dealloc)( PyObject * ) );
         PythonType &set_tp_init( int (*tp_init)( PyObject *self, PyObject *args, PyObject *kwds ) );
@@ -88,16 +202,17 @@ namespace Py
         bool readyType();
 
     protected:
-        void init_sequence();
-        void init_mapping();
-        void init_number();
-        void init_buffer();
-
+#if defined( Py_LIMITED_API )
+        std::unordered_map<int, void*>  slots;
+        PyType_Spec                     *spec;
+        PyTypeObject                    *tp_object;
+#else
         PyTypeObject            *table;
         PySequenceMethods       *sequence_table;
         PyMappingMethods        *mapping_table;
         PyNumberMethods         *number_table;
         PyBufferProcs           *buffer_table;
+#endif
 
     private:
         //

@@ -45,10 +45,10 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 def draftify(objectslist, makeblock=False, delete=True):
     """draftify(objectslist,[makeblock],[delete])
-    
-    Turn each object of the given list (objectslist can also be a single 
-    object) into a Draft parametric wire. 
-    
+
+    Turn each object of the given list (objectslist can also be a single
+    object) into a Draft parametric wire.
+
     TODO: support more objects
 
     Parameters
@@ -57,7 +57,7 @@ def draftify(objectslist, makeblock=False, delete=True):
 
     makeblock : bool
         If makeblock is True, multiple objects will be grouped in a block.
-    
+
     delete : bool
         If delete = False, old objects are not deleted
     """

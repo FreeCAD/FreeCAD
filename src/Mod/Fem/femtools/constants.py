@@ -29,7 +29,7 @@ All constants are in SI units.
 
 __title__ = "FEM collection of natural constants"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 def gravity():
@@ -42,10 +42,15 @@ def stefan_boltzmann():
     return "5.67037e-8 W/(m^2*K^4)"
 
 
+def vacuum_permeability():
+    # https://en.wikipedia.org/wiki/Vacuum_permeability
+    return "1.256637e-6 N/A^2"
+
+
 def vacuum_permittivity():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
+    # https://forum.freecad.org/viewtopic.php?f=18&p=400959#p400959
     # https://en.wikipedia.org/wiki/Permittivity#Vacuum_permittivity
-    return "8.85419e-12 s^4*A^2 / (m^3*kg)"
+    return "8.85419e-12 F/m"
 
 
 def boltzmann_constant():

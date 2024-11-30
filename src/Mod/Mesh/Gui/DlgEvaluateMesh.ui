@@ -29,7 +29,10 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="2" rowspan="2">
+      <item row="0" column="0" colspan="2">
+       <widget class="QComboBox" name="meshNameButton"/>
+      </item>
+     <item row="0" column="2" rowspan="2">
        <layout class="QGridLayout">
         <property name="margin">
          <number>0</number>
@@ -37,23 +40,6 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="2" column="0">
-         <widget class="QLabel" name="textLabel3">
-          <property name="text">
-           <string>Number of points:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="textLabel4">
-          <property name="text">
-           <string>No information</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="textLabel1">
           <property name="text">
@@ -61,8 +47,24 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QLabel" name="textLabel6">
+        <item row="0" column="1">
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>16</width>
+            <height>21</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       <item row="0" column="2">
+         <widget class="QLabel" name="textLabel4">
           <property name="text">
            <string>No information</string>
           </property>
@@ -77,22 +79,6 @@
            <string>Number of edges:</string>
           </property>
          </widget>
-        </item>
-        <item row="2" column="1">
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>16</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="1" column="1">
          <spacer>
@@ -120,7 +106,14 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="2" column="0">
+         <widget class="QLabel" name="textLabel3">
+          <property name="text">
+           <string>Number of points:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
          <spacer>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -131,12 +124,29 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>16</width>
-            <height>21</height>
+            <height>20</height>
            </size>
           </property>
          </spacer>
         </item>
-       </layout>
+        <item row="2" column="2">
+         <widget class="QLabel" name="textLabel6">
+          <property name="text">
+           <string>No information</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="refreshButton">
+        <property name="text">
+         <string>Refresh</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
        <spacer>
@@ -154,17 +164,7 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="refreshButton">
-        <property name="text">
-         <string>Refresh</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QComboBox" name="meshNameButton"/>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="1" column="0">

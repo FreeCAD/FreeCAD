@@ -1,4 +1,5 @@
-#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
+#**************************************************************************
+#   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
@@ -26,15 +27,18 @@
 # datum tools
 from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
 from PartDesignTests.TestShapeBinder import TestShapeBinder
+from PartDesignTests.TestShapeBinder import TestSubShapeBinder
 
 # additive/subtractive features & primitives
 from PartDesignTests.TestPad import TestPad
 from PartDesignTests.TestPocket import TestPocket
+from PartDesignTests.TestHelix import TestHelix
 from PartDesignTests.TestHole import TestHole
 from PartDesignTests.TestRevolve import TestRevolve
 from PartDesignTests.TestPipe import TestPipe
 from PartDesignTests.TestLoft import TestLoft
 from PartDesignTests.TestPrimitive import TestPrimitive
+from PartDesignTests.TestHelix import TestHelix
 
 # transformations and boolean
 from PartDesignTests.TestMirrored import TestMirrored
@@ -51,3 +55,7 @@ from PartDesignTests.TestThickness import TestThickness
 
 # extras
 from PartDesignTests.TestInvoluteGear import TestInvoluteGear
+from PartDesignTests.TestSketch import TestSketch
+
+# Topological naming problem
+from PartDesignTests.TestTopologicalNamingProblem import TestTopologicalNamingProblem

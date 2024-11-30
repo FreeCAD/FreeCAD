@@ -24,38 +24,38 @@
 #ifndef Fem_FemSetNodesObject_H
 #define Fem_FemSetNodesObject_H
 
+#include "FemSetObject.h"
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
-#include "FemSetObject.h"
 
 namespace Fem
 {
 
-class FemExport FemSetNodesObject : public FemSetObject
+class FemExport FemSetNodesObject: public FemSetObject
 {
-    PROPERTY_HEADER(Fem::FemSetNodesObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSetNodesObject);
 
 public:
     /// Constructor
-    FemSetNodesObject(void);
-    virtual ~FemSetNodesObject();
+    FemSetNodesObject();
+    ~FemSetNodesObject() override;
 
     App::PropertyIntegerSet Nodes;
 
     // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderSetNodes";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    App::DocumentObjectExecReturn* execute() override
+    {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
-
-
+    short mustExecute() const override;
+    PyObject* getPyObject() override;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // Fem_FemSetNodesObject_H
+#endif  // Fem_FemSetNodesObject_H

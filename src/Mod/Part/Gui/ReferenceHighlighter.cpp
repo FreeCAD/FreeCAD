@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+
+# include <boost/algorithm/string/predicate.hpp>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
 #include "ReferenceHighlighter.h"
 
 
@@ -114,7 +113,7 @@ void ReferenceHighlighter::getVertexColors(const std::vector<std::string>& eleme
     colors.resize(vMap.Extent(), defaultColor);
 
     if (!elements.empty()) {
-        for (std::string e : elements) {
+        for (const std::string& e : elements) {
             if (boost::starts_with(e, "Vertex")) {
                 getVertexColor(e, colors);
             }
@@ -185,7 +184,7 @@ void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& element
     colors.resize(eMap.Extent(), defaultColor);
 
     if (!elements.empty()) {
-        for (std::string e : elements) {
+        for (const std::string& e : elements) {
             if (boost::starts_with(e, "Edge")) {
                 getEdgeColor(e, colors);
             }
@@ -211,13 +210,24 @@ void ReferenceHighlighter::getFaceColor(const std::string& element, std::vector<
         colors[pos] = elementColor;
 }
 
+void ReferenceHighlighter::getFaceColor(const std::string& element,
+                                        std::vector<App::Material>& materials) const
+{
+    int idx = std::stoi(element.substr(4)) - 1;
+    assert(idx >= 0);
+    std::size_t pos = std::size_t(idx);
+    if (pos < materials.size()) {
+        materials[pos].diffuseColor = elementColor;
+    }
+}
+
 void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& elements,
                                          std::vector<App::Color>& colors) const
 {
     colors.resize(fMap.Extent(), defaultColor);
 
     if (!elements.empty()) {
-        for (std::string e : elements) {
+        for (const std::string& e : elements) {
             if (boost::starts_with(e, "Face")) {
                 getFaceColor(e, colors);
             }
@@ -225,5 +235,26 @@ void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& element
     }
     else {
         std::fill(colors.begin(), colors.end(), objectColor);
+    }
+}
+
+void ReferenceHighlighter::getFaceMaterials(const std::vector<std::string>& elements,
+                                         std::vector<App::Material>& materials) const
+{
+    App::Material defaultMaterial;
+    materials.resize(fMap.Extent(), defaultMaterial);
+
+    if (!elements.empty()) {
+        for (const std::string& e : elements) {
+            if (boost::starts_with(e, "Face")) {
+                getFaceColor(e, materials);
+            }
+        }
+    }
+    else {
+        for (auto& material : materials) {
+            material.diffuseColor = objectColor;
+        }
+        // std::fill(materials.begin(), materials.end(), objectColor);
     }
 }

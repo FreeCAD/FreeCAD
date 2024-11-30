@@ -1,0 +1,19 @@
+/* our own FreeCAD styling */
+
+html { color: #000000; font-family: "sans"; background: #ffffff; }
+a { color: #3071B1; font-weight: bold; }
+body { max-width: 800px; text-align: justify; margin:10px auto; padding: 10px; }
+img { max-width: 100%; margin: 10px 0; }
+li { padding: 5px 0; }
+li img { vertical-align:middle; margin: 0; }
+pre, code { background: #eeeeee; white-space: pre-wrap; }
+pre { padding: 10px; }
+code { padding: 2px 5px; }
+h1, h2, h3, h4, h5 { margin: 25px 0; color: #222222; }
+h1 { border-bottom: 1px solid #000000; }
+
+/* codehilite */
+
+.dv { color: #9A0000; } /* numbers */
+.im { color: #0A1F96; font-weight: bold; } /* import */
+.op { color: #333333; } /* operators */

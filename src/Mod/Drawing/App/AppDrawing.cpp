@@ -10,26 +10,24 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
- 
-#include "FeaturePage.h"
-#include "FeatureView.h"
-#include "FeatureViewPart.h"
-#include "FeatureViewAnnotation.h"
-#include "FeatureViewSymbol.h"
-#include "FeatureProjection.h"
-#include "FeatureViewSpreadsheet.h"
+#include <Base/PyObjectBase.h>
+
 #include "FeatureClip.h"
+#include "FeaturePage.h"
+#include "FeatureProjection.h"
+#include "FeatureView.h"
+#include "FeatureViewAnnotation.h"
+#include "FeatureViewPart.h"
+#include "FeatureViewSpreadsheet.h"
+#include "FeatureViewSymbol.h"
 #include "PageGroup.h"
 
 
-namespace Drawing {
+namespace Drawing
+{
 extern PyObject* initModule();
 }
 
@@ -39,11 +37,11 @@ PyMOD_INIT_FUNC(Drawing)
     // load dependent module
     try {
         Base::Interpreter().loadModule("Part");
-        //Base::Interpreter().loadModule("Mesh");
+        // Base::Interpreter().loadModule("Mesh");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = Drawing::initModule();
     Base::Console().Log("Loading Drawing module... done\n");
@@ -52,7 +50,7 @@ PyMOD_INIT_FUNC(Drawing)
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
- 
+    // clang-format off
     Drawing::FeaturePage            ::init();
     Drawing::FeatureView            ::init();
     Drawing::FeatureViewPart        ::init();
@@ -64,6 +62,6 @@ PyMOD_INIT_FUNC(Drawing)
     Drawing::FeatureViewSymbol      ::init();
     Drawing::FeatureClip            ::init();
     Drawing::FeatureViewSpreadsheet ::init();
-
+    // clang-format on
     PyMOD_Return(mod);
 }

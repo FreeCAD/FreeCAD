@@ -1,28 +1,39 @@
-# March 2021, the oldest we have to support : Ununtu 18.04 LTS
-cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
+# As of January 2023 we require CMake 3.16.3
+# see https://forum.freecad.org/viewtopic.php?f=10&t=72173
+# for further info why
+cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
 
 # policy CMP0072 was introduced with CMake 3.11
 # relates to FindOpenGL module
 # and cache variables OPENGL_gl_LIBRARY, OPENGL_glu_LIBRARY
 if (POLICY CMP0072)
-    cmake_policy(SET CMP0072 OLD)
+    set(OpenGL_GL_PREFERENCE LEGACY)
 endif(POLICY CMP0072)
 
-find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
-if(CCACHE_PROGRAM)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+# FindPythonInterp and FindPythonLibs modules are deprecated.
+# Currently, they are still used by shiboken's CMake files
+if (POLICY CMP0148)
+    cmake_policy(SET CMP0148 OLD)
+endif()
+
+option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
+
+if(FREECAD_USE_CCACHE)
+    find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
+    if(CCACHE_PROGRAM)
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+        message(NOTICE "-- Using ccache found at: " ${CCACHE_PROGRAM})
+    endif()
 endif()
 
 project(FreeCAD)
 
-set(PACKAGE_VERSION_NAME "Vulcan")
-set(PACKAGE_VERSION_MAJOR "0")
-set(PACKAGE_VERSION_MINOR "20")
-set(PACKAGE_VERSION_PATCH "0")
+set(PACKAGE_VERSION_MAJOR "1")
+set(PACKAGE_VERSION_MINOR "1")
+set(PACKAGE_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
 set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" (empty string)
-set(FREECAD_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
+set(PACKAGE_BUILD_VERSION "0") # used when the same FreeCAD version will be re-released (for example using an updated LibPack)
 
-set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 
@@ -41,7 +52,9 @@ InitializeFreeCADBuildOptions()
 CheckInterModuleDependencies()
 FreeCADLibpackChecks()
 SetupDoxygen()
-if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
+SetupLibFmt()
+SetupYamlCpp()
+if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
     SetupPython()
     SetupPCL()
     SetupPybind11()
@@ -55,8 +68,8 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         # OPENGL_gl_LIBRARY empty that results into linker errors
         SetupOpenGL()
     endif(BUILD_GUI)
-    SetupSalomeSMESH()
     SetupBoost()
+    SetupSalomeSMESH()
     if (BUILD_FEM_NETGEN)
         find_package(NETGEN)
     endif(BUILD_FEM_NETGEN)
@@ -75,7 +88,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         SetupShibokenAndPyside()
         SetupMatplotlib()
     endif(BUILD_GUI)
-endif(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
+endif()
 
 if(BUILD_VR)
     find_package(Rift)
@@ -87,6 +100,22 @@ SetGlobalCompilerAndLinkerSettings()
 add_subdirectory(src)
 add_subdirectory(data)
 
+BuildAndInstallDesignerPlugin()
+
 CreatePackagingTargets()
 
+if(MSVC AND FREECAD_LIBPACK_USE AND LIBPACK_FOUND)
+    CopyLibpackDirectories()
+endif()
+
+if (ENABLE_DEVELOPER_TESTS)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
 PrintFinalReport()
+
+message("\n=================================================\n"
+        "Now run 'cmake --build ${CMAKE_BINARY_DIR}' to build ${PROJECT_NAME}\n"
+        "=================================================\n")

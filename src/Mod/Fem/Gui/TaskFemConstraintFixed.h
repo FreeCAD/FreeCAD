@@ -21,62 +21,53 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintFixed_H
 #define GUI_TASKVIEW_TaskFemConstraintFixed_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
+#include <memory>
 
-#include "TaskFemConstraint.h"
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintFixed.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
 
 class Ui_TaskFemConstraintFixed;
 
-namespace FemGui {
-class TaskFemConstraintFixed : public TaskFemConstraintOnBoundary
+namespace FemGui
+{
+class TaskFemConstraintFixed: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent = 0);
-    ~TaskFemConstraintFixed();
-    const std::string getReferences() const;
+    explicit TaskFemConstraintFixed(ViewProviderFemConstraintFixed* ConstraintView,
+                                    QWidget* parent = nullptr);
+    ~TaskFemConstraintFixed() override;
+    const std::string getReferences() const override;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
-    void addToSelection();
-    void removeFromSelection();
+    void onReferenceDeleted();
+    void addToSelection() override;
+    void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintFixed* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintFixed> ui;
 };
 
-class TaskDlgFemConstraintFixed : public TaskDlgFemConstraint
+class TaskDlgFemConstraintFixed: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    explicit TaskDlgFemConstraintFixed(ViewProviderFemConstraintFixed* ConstraintView);
+    bool accept() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintFixed_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintFixed_H

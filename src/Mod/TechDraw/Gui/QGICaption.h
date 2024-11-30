@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGICAPTION_H
 #define DRAWINGGUI_QGICAPTION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGCustomText.h"
 
 namespace TechDrawGui
@@ -31,11 +33,11 @@ namespace TechDrawGui
 class TechDrawGuiExport QGICaption : public QGCustomText
 {
 public:
-    explicit QGICaption(void);
-    ~QGICaption() {}
+    explicit QGICaption();
+    ~QGICaption() override {}
 
     enum {Type = QGraphicsItem::UserType + 180};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
 };
 

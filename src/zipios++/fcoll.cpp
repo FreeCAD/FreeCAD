@@ -11,30 +11,6 @@ namespace zipios {
 
 using std::find_if ;
 
-FileCollection::FileCollection( const FileCollection &src ) 
-  : _filename( src._filename ),
-    _valid   ( src._valid    )
-{
-  _entries.reserve( src._entries.size() ) ;
-  Entries::const_iterator it ;
-  for ( it = src._entries.begin() ; it != src._entries.end() ; ++it )
-    _entries.push_back( (*it)->clone() ) ;
-}
-
-const FileCollection &FileCollection::operator= ( const FileCollection &src ) {
-  if ( this != &src ) {
-    _filename = src._filename ;
-    _valid    = src._valid    ;
-    _entries.clear() ;
-    _entries.reserve( src._entries.size() ) ;
-    
-    Entries::const_iterator it ;
-    for ( it = src._entries.begin() ; it != src._entries.end() ; ++it )
-      _entries.push_back( (*it)->clone() ) ;
-  }
-  return *this ;
-}
-
 // FIXME: make InvalidStateException message customized for
 // subclasses. maybe make an InvalidStateException factory ;-)
 
@@ -66,7 +42,7 @@ ConstEntryPointer FileCollection::getEntry( const string &name,
   else
     iter = find_if( _entries.begin(), _entries.end(), FileEntry::MatchFileName( name ) ) ;
   if ( iter == _entries.end() )
-    return 0 ;
+    return nullptr ;
   else
     return *iter ; 
 }

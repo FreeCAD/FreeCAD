@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <sstream>
-# include <QRegExp>
-# include <QTextStream>
 # include <Precision.hxx>
 #endif
 
+#include <Mod/PartDesign/App/FeaturePocket.h>
+
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskPocketParameters.h"
-#include <Gui/Command.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeaturePocket.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -50,9 +44,16 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->checkBoxReversed->setToolTip(tr("Reverses pocket direction"));
 
     // set the history path
+    ui->lengthEdit->setEntryName(QByteArray("Length"));
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength"));
+    ui->lengthEdit2->setEntryName(QByteArray("Length2"));
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength2"));
+    ui->offsetEdit->setEntryName(QByteArray("Offset"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset"));
+    ui->taperEdit->setEntryName(QByteArray("TaperAngle"));
+    ui->taperEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketTaperAngle"));
+    ui->taperEdit2->setEntryName(QByteArray("TaperAngle2"));
+    ui->taperEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketTaperAngle2"));
 
     setupDialog();
 
@@ -62,9 +63,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     }
 }
 
-TaskPocketParameters::~TaskPocketParameters()
-{
-}
+TaskPocketParameters::~TaskPocketParameters() = default;
 
 void TaskPocketParameters::translateModeList(int index)
 {
@@ -74,6 +73,7 @@ void TaskPocketParameters::translateModeList(int index)
     ui->changeMode->addItem(tr("To first"));
     ui->changeMode->addItem(tr("Up to face"));
     ui->changeMode->addItem(tr("Two dimensions"));
+    ui->changeMode->addItem(tr("Up to shape"));
     ui->changeMode->setCurrentIndex(index);
 }
 
@@ -82,15 +82,15 @@ void TaskPocketParameters::updateUI(int index)
     // update direction combobox
     fillDirectionCombo();
     // set and enable checkboxes
-    setCheckboxes(static_cast<Modes>(index), Type::Pocket);
+    setCheckboxes(static_cast<Mode>(index), Type::Pocket);
 }
 
 void TaskPocketParameters::onModeChanged(int index)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    auto pcPocket = getObject<PartDesign::Pocket>();
 
-    switch (static_cast<Modes>(index)) {
-        case Modes::Dimension:
+    switch (static_cast<Mode>(index)) {
+        case Mode::Dimension:
             // Why? See below for "UpToFace"
             if (oldLength < Precision::Confusion())
                 oldLength = 5.0;
@@ -98,25 +98,34 @@ void TaskPocketParameters::onModeChanged(int index)
             ui->lengthEdit->setValue(oldLength);
             pcPocket->Type.setValue("Length");
             break;
-        case Modes::ThroughAll:
+        case Mode::ThroughAll:
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("ThroughAll");
             break;
-        case Modes::ToFirst:
+        case Mode::ToFirst:
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFirst");
             break;
-        case Modes::ToFace:
-            // Because of the code at the beginning of Pocket::execute() which is used to detect
-            // broken legacy parts, we must set the length to zero here!
+        case Mode::ToFace:
+            // Note: ui->checkBoxReversed is purposely enabled because the selected face
+            // could be a circular one around the sketch
+            // Also note: Because of the code at the beginning of Pocket::execute() which is used
+            // to detect broken legacy parts, we must set the length to zero here!
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFace");
             pcPocket->Length.setValue(0.0);
             ui->lengthEdit->setValue(0.0);
+            if (ui->lineFaceName->text().isEmpty()) {
+                ui->buttonFace->setChecked(true);
+                handleLineFaceNameClick(); // sets placeholder text
+            }
             break;
-        case Modes::TwoDimensions:
+        case Mode::TwoDimensions:
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("TwoLengths");
+            break;
+        case Mode::ToShape:
+            pcPocket->Type.setValue("UpToShape");
             break;
     }
 
@@ -127,7 +136,7 @@ void TaskPocketParameters::onModeChanged(int index)
 void TaskPocketParameters::apply()
 {
     QString facename = QString::fromLatin1("None");
-    if (static_cast<Modes>(getMode()) == Modes::ToFace) {
+    if (static_cast<Mode>(getMode()) == Mode::ToFace) {
         facename = getFaceName();
     }
     applyParameters(facename);
@@ -139,10 +148,9 @@ void TaskPocketParameters::apply()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket *PocketView)
-    : TaskDlgSketchBasedParameters(PocketView)
+    : TaskDlgExtrudeParameters(PocketView), parameters(new TaskPocketParameters(PocketView))
 {
-    assert(vp);
-    Content.push_back ( new TaskPocketParameters(PocketView ) );
+    Content.push_back(parameters);
 }
 
 #include "moc_TaskPocketParameters.cpp"

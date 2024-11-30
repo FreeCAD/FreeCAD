@@ -120,7 +120,7 @@ namespace e57
       // don't checkImageFileOpen
 
       ustring fieldName;
-      if ( forcedFieldName != nullptr )
+      if ( forcedFieldName )
       {
          fieldName = forcedFieldName;
       }

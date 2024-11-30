@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DEMOMODE_H
 #define GUI_DIALOG_DEMOMODE_H
 
-#include <Inventor/SbLinear.h>
+#include <Inventor/SbVec3f.h>
 #include <QDialog>
+#include <FCGlobal.h>
+
 
 class QTimer;
 class SoCamera;
+class SbVec3f;
 class SbRotation;
 
 namespace Gui {
@@ -44,19 +46,20 @@ class GuiExport DemoMode : public QDialog
     Q_OBJECT
 
 public:
-    DemoMode(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DemoMode();
+    explicit DemoMode(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DemoMode() override;
 
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
-protected Q_SLOTS:
-    void on_playButton_toggled(bool);
-    void on_fullscreen_toggled(bool);
-    void on_timerCheck_toggled(bool);
-    void on_speedSlider_valueChanged(int);
-    void on_angleSlider_valueChanged(int);
-    void on_timeout_valueChanged(int);
+protected:
+    void setupConnections();
+    void onPlayButtonToggled(bool);
+    void onFullscreenToggled(bool);
+    void onTimerCheckToggled(bool);
+    void onSpeedSliderValueChanged(int);
+    void onAngleSliderValueChanged(int);
+    void onTimeoutValueChanged(int);
     void onAutoPlay();
 
 private:
@@ -66,10 +69,10 @@ private:
     SbVec3f getDirection(Gui::View3DInventor*) const;
     Gui::View3DInventor* activeView() const;
     void startAnimation(Gui::View3DInventor*);
-    void changeEvent(QEvent *e);
-    bool eventFilter(QObject *, QEvent *);
-    void showEvent(QShowEvent *);
-    void hideEvent(QHideEvent *);
+    void changeEvent(QEvent *e) override;
+    bool eventFilter(QObject *, QEvent *) override;
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *) override;
 
 private:
     int oldvalue;

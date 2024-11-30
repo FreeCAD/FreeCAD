@@ -30,34 +30,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "QuarterWidgetP.h"
-#include <Quarter/QuarterWidget.h>
-#include <Quarter/eventhandlers/EventFilter.h>
-
 #ifdef _MSC_VER
 #pragma warning(disable : 4267)
 #endif
 
-#include <QApplication>
-#include <QtGui/QCursor>
-#include <QMenu>
-#include <QtCore/QMap>
+#include "QuarterWidgetP.h"
+#include "QuarterWidget.h"
+#include "eventhandlers/EventFilter.h"
 
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoNode.h>
+#include <QActionGroup>
+#include <QApplication>
+#include <QCursor>
+#include <QMenu>
+
+#include <Inventor/SoEventManager.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/SoEventManager.h>
-#include <Inventor/scxml/SoScXMLStateMachine.h>
 #include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/scxml/SoScXMLStateMachine.h>
 #include <Inventor/C/glue/gl.h>
 
-#include "NativeEvent.h"
 #include "ContextMenu.h"
+#include "NativeEvent.h"
 #include "QuarterP.h"
 
-#include <cstdlib>
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -86,7 +85,12 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QtGLWidget * sha
   clearzbuffer(true),
   clearwindow(true),
   addactions(true),
+  processdelayqueue(true),
+  currentStateMachine(nullptr),
   device_pixel_ratio(1.0),
+  transparencytypegroup(nullptr),
+  stereomodegroup(nullptr),
+  rendermodegroup(nullptr),
   contextmenu(nullptr)
 {
   this->cachecontext = findCacheContext(masterptr, sharewidget);
@@ -102,9 +106,7 @@ QuarterWidgetP::~QuarterWidgetP()
 {
   QtGLWidget* glMaster = static_cast<QtGLWidget*>(this->master->viewport());
   removeFromCacheContext(this->cachecontext, glMaster);
-  if (this->contextmenu) {
-    delete this->contextmenu;
-  }
+  delete this->contextmenu;
 }
 
 SoCamera *
@@ -133,7 +135,7 @@ QuarterWidgetP::getCacheContextId() const
 QuarterWidgetP_cachecontext *
 QuarterWidgetP::findCacheContext(QuarterWidget * widget, const QtGLWidget * sharewidget)
 {
-  if (cachecontext_list == nullptr) {
+  if (!cachecontext_list) {
     // FIXME: static memory leak
     cachecontext_list = new SbList <QuarterWidgetP_cachecontext*>;
   }
@@ -165,13 +167,22 @@ QuarterWidgetP::removeFromCacheContext(QuarterWidgetP_cachecontext * context, co
 
     for (int i = 0; i < cachecontext_list->getLength(); i++) {
       if ((*cachecontext_list)[i] == context) {
-        // set the context while calling destructingContext() (might trigger OpenGL calls)
-        const_cast<QtGLWidget*> (widget)->makeCurrent();
-        // fetch the cc_glglue context instance as a workaround for a bug fixed in Coin r12818
-        (void) cc_glglue_instance(context->id);
+        QtGLContext* glcontext = widget->context();
+        if (glcontext) {
+          // set the context while calling destructingContext() (might trigger OpenGL calls)
+          if (glcontext->isValid()) {
+            const_cast<QtGLWidget*> (widget)->makeCurrent();
+          }
+          // fetch the cc_glglue context instance as a workaround for a bug fixed in Coin r12818
+          (void) cc_glglue_instance(context->id);
+        }
         cachecontext_list->removeFast(i);
         SoContextHandler::destructingContext(context->id);
-        const_cast<QtGLWidget*> (widget)->doneCurrent();
+        if (glcontext) {
+          if (glcontext->isValid()) {
+            const_cast<QtGLWidget*> (widget)->doneCurrent();
+          }
+        }
         delete context;
         return;
       }

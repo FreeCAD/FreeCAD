@@ -51,21 +51,34 @@ PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences = { 1, INT_MAX, 1 };
 const App::PropertyAngle::Constraints PolarPattern::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
 
+const char* PolarPattern::ModeEnums[] = {"angle", "offset", nullptr};
+
 PolarPattern::PolarPattern()
 {
-    ADD_PROPERTY_TYPE(Axis, (0), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
+    auto initialMode = PolarPatternMode::angle;
+
+    ADD_PROPERTY_TYPE(Axis, (nullptr), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
     ADD_PROPERTY(Reversed, (0));
+    ADD_PROPERTY(Mode, (long(initialMode)));
+    Mode.setEnums(PolarPattern::ModeEnums);
     ADD_PROPERTY(Angle, (360.0));
+    ADD_PROPERTY(Offset, (120.0));
     Angle.setConstraints(&floatAngle);
+    Offset.setConstraints(&floatAngle);
     ADD_PROPERTY(Occurrences, (3));
     Occurrences.setConstraints(&intOccurrences);
+
+    setReadWriteStatusForMode(initialMode);
 }
 
 short PolarPattern::mustExecute() const
 {
     if (Axis.isTouched() ||
         Reversed.isTouched() ||
-        Angle.isTouched() ||
+        Mode.isTouched() ||
+        // Angle and Offset are mutually exclusive, only one could be updated at once
+        Angle.isTouched() || 
+        Offset.isTouched() || 
         Occurrences.isTouched())
         return 1;
     return Transformed::mustExecute();
@@ -73,32 +86,17 @@ short PolarPattern::mustExecute() const
 
 const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    double angle = Angle.getValue();
-    double radians = Base::toRadians<double>(angle);
-    if (radians < Precision::Angular())
-        throw Base::ValueError("Pattern angle too small");
     int occurrences = Occurrences.getValue();
     if (occurrences < 1)
         throw Base::ValueError("At least one occurrence required");
 
-    // Note: The original feature is NOT included in the list of transformations! Therefore
-    // we start with occurrence number 1, not number 0
-    std::list<gp_Trsf> transformations;
-    gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
-
-    if (occurrences < 2)
-        return transformations;
+    if (occurrences == 1)
+        return {gp_Trsf()};
 
     bool reversed = Reversed.getValue();
-    double offset;
-    if (std::fabs(angle - 360.0) < Precision::Confusion())
-        offset = radians / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
-    else
-        offset = radians / (occurrences - 1);
 
     App::DocumentObject* refObject = Axis.getValue();
-    if (refObject == NULL)
+    if (!refObject)
         throw Base::ValueError("No axis reference specified");
     std::vector<std::string> subStrings = Axis.getSubValues();
     if (subStrings.empty())
@@ -106,7 +104,7 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
 
     gp_Pnt axbase;
     gp_Dir axdir;
-    if (refObject->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (refObject->isDerivedFrom<Part::Part2DObject>()) {
         Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
         Base::Axis axis;
         if (subStrings[0] == "H_Axis")
@@ -123,19 +121,19 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         axis *= refSketch->Placement.getValue();
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<PartDesign::Line>()) {
         PartDesign::Line* line = static_cast<PartDesign::Line*>(refObject);
         Base::Vector3d base = line->getBasePoint();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d dir = line->getDirection();
         axdir = gp_Dir(dir.x, dir.y, dir.z);
-    } else if (refObject->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line* line = static_cast<App::Line*>(refObject);
         Base::Rotation rot = line->Placement.getValue().getRotation();
         Base::Vector3d d(1,0,0);
         rot.multVec(d, d);
         axdir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<Part::Feature>()) {
         if (subStrings[0].empty())
             throw Base::ValueError("No axis reference specified");
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
@@ -171,6 +169,38 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     if (reversed)
         axis.SetDirection(axis.Direction().Reversed());
 
+    double angle;
+
+    switch (static_cast<PolarPatternMode>(Mode.getValue())) {
+        case PolarPatternMode::angle:
+            angle = Angle.getValue();
+
+            if (std::fabs(angle - 360.0) < Precision::Confusion())
+                angle /= occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
+            else
+                angle /= occurrences - 1;
+
+            break;
+
+        case PolarPatternMode::offset:
+            angle = Offset.getValue();
+            break;
+
+        default:
+            throw Base::ValueError("Invalid mode");
+    }
+
+    double offset = Base::toRadians<double>(angle);
+
+    if (offset < Precision::Angular())
+        throw Base::ValueError("Pattern angle too small");
+
+    std::list<gp_Trsf> transformations;
+    gp_Trsf trans;
+    transformations.push_back(trans);
+
+    // Note: The original feature is already included in the list of transformations!
+    // Therefore we start with occurrence number 1
     for (int i = 1; i < occurrences; i++) {
         trans.SetRotation(axis.Axis(), i * offset);
         transformations.push_back(trans);
@@ -192,6 +222,23 @@ void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char
     else {
         Transformed::handleChangedPropertyType(reader, TypeName, prop);
     }
+}
+
+
+void PolarPattern::onChanged(const App::Property* prop)
+{
+    if (prop == &Mode) {
+        auto mode = static_cast<PolarPatternMode>(Mode.getValue());
+        setReadWriteStatusForMode(mode);
+    }
+
+    Transformed::onChanged(prop);
+}
+
+void PolarPattern::setReadWriteStatusForMode(PolarPatternMode mode)
+{
+    Offset.setReadOnly(mode != PolarPatternMode::offset);
+    Angle.setReadOnly(mode != PolarPatternMode::angle);
 }
 
 }

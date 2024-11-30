@@ -20,26 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/actions/SoToVRML2Action.h>
-# include <Inventor/VRMLnodes/SoVRMLGroup.h>
-# include <Inventor/VRMLnodes/SoVRMLParent.h>
+# include <Inventor/SbSphere.h>
 # include <Inventor/SbString.h>
+# include <Inventor/SoInteraction.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/actions/SoToVRML2Action.h>
+# include <Inventor/actions/SoWriteAction.h>
+# include <Inventor/fields/SoMFNode.h>
+# include <Inventor/fields/SoSFNode.h>
 # include <Inventor/nodes/SoGroup.h>
+# include <Inventor/VRMLnodes/SoVRMLGroup.h>
+# include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+# include <Inventor/VRMLnodes/SoVRMLNormal.h>
+# include <Inventor/VRMLnodes/SoVRMLParent.h>
+# include <Inventor/VRMLnodes/SoVRMLShape.h>
 # include <QDir>
 # include <QProcess>
 # include <QTemporaryFile>
 # include <sstream>
 #endif
-
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
-#include <Inventor/VRMLnodes/SoVRMLNormal.h>
-#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
-#include <Inventor/VRMLnodes/SoVRMLShape.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoMFNode.h>
 
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
@@ -47,35 +48,36 @@
 #include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
+#include "Camera.h"
+#include "Flag.h"
+#include "GestureNavigationStyle.h"
+#include "NavigationStyle.h"
+#include "SelectionObject.h"
 #include "SoFCColorBar.h"
-#include "SoFCColorLegend.h"
 #include "SoFCColorGradient.h"
-#include "SoFCSelection.h"
-#include "SoFCBackgroundGradient.h"
-#include "SoFCBoundingBox.h"
-#include "SoFCSelection.h"
-#include "SoFCUnifiedSelection.h"
-#include "SoFCSelectionAction.h"
+#include "SoFCColorLegend.h"
+#include "SoFCCSysDragger.h"
 #include "SoFCInteractiveElement.h"
+#include "SoFCSelection.h"
+#include "SoFCSelectionAction.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
-#include "SoAxisCrossKit.h"
 #include "SoTextLabel.h"
-#include "SoNavigationDragger.h"
-#include "Inventor/SoDrawingGrid.h"
-#include "Inventor/SoAutoZoomTranslation.h"
+#include "SoDatumLabel.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
-#include "SoFCCSysDragger.h"
-#include "SoMouseWheelEvent.h"
-
+#include "Inventor/So3DAnnotation.h"
+#include "Inventor/SoAutoZoomTranslation.h"
+#include "Inventor/SoAxisCrossKit.h"
+#include "Inventor/SoDrawingGrid.h"
+#include "Inventor/SoFCBackgroundGradient.h"
+#include "Inventor/SoFCBoundingBox.h"
+#include "Inventor/SoMouseWheelEvent.h"
+#include "Inventor/SoFCTransform.h"
 #include "propertyeditor/PropertyItem.h"
-#include "NavigationStyle.h"
-#include "GestureNavigationStyle.h"
-#include "Flag.h"
-#include "SelectionObject.h"
-#include "View3DPy.h"
+#include "ArcEngine.h"
+
 
 using namespace Gui;
 using namespace Gui::Inventor;
@@ -84,7 +86,7 @@ using namespace Gui::PropertyEditor;
 static SbBool init_done = false;
 static SoGroup *storage = nullptr;
 
-SbBool Gui::SoFCDB::isInitialized(void)
+SbBool Gui::SoFCDB::isInitialized()
 {
     return init_done;
 }
@@ -92,7 +94,6 @@ SbBool Gui::SoFCDB::isInitialized(void)
 void Gui::SoFCDB::init()
 {
     SoInteraction                   ::init();
-    RotTransDragger                 ::initClass();
     SoGLRenderActionElement         ::initClass();
     SoFCInteractiveElement          ::initClass();
     SoGLWidgetElement               ::initClass();
@@ -125,6 +126,8 @@ void Gui::SoFCDB::init()
     SoVRMLAction                    ::initClass();
     SoSkipBoundingGroup             ::initClass();
     SoTextLabel                     ::initClass();
+    SoDatumLabel                    ::initClass();
+    SoColorBarLabel                 ::initClass();
     SoStringLabel                   ::initClass();
     SoFrameLabel                    ::initClass();
     TranslateManip                  ::initClass();
@@ -132,6 +135,7 @@ void Gui::SoFCDB::init()
     SoAxisCrossKit                  ::initClass();
     SoRegPoint                      ::initClass();
     SoDrawingGrid                   ::initClass();
+    SoFCTransform                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
     SoFCCSysDragger                 ::initClass();
@@ -140,6 +144,7 @@ void Gui::SoFCDB::init()
     SoFCSelectionRoot               ::initClass();
     SoFCPathAnnotation              ::initClass();
     SoMouseWheelEvent               ::initClass();
+    So3DAnnotation                  ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
@@ -193,6 +198,8 @@ void Gui::SoFCDB::init()
 
     SelectionObject                 ::init();
 
+    ArcEngine                       ::initClass();
+
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");
     qRegisterMetaType<Base::Quantity>("Base::Quantity");
@@ -234,32 +241,31 @@ void Gui::SoFCDB::finish()
 }
 
 // buffer acrobatics for inventor ****************************************************
-static char * static_buffer;
-static size_t static_buffer_size = 0;
-static std::string cReturnString;
+
+namespace {
+static std::vector<char> static_buffer;
 
 static void *
-buffer_realloc(void * bufptr, size_t size)
+buffer_realloc(void * /*bufptr*/, std::size_t size)
 {
-    static_buffer = (char *)realloc(bufptr, size);
-    static_buffer_size = size;
-    return static_buffer;
+    static_buffer.resize(size);
+    return static_buffer.data();
+}
 }
 
 const std::string& Gui::SoFCDB::writeNodesToString(SoNode * root)
 {
     SoOutput out;
-    static_buffer = (char *)malloc(1024);
-    static_buffer_size = 1024;
-    out.setBuffer(static_buffer, static_buffer_size, buffer_realloc);
+    static_buffer.resize(1024);
+    out.setBuffer(static_buffer.data(), static_buffer.size(), buffer_realloc);
     if (root && root->getTypeId().isDerivedFrom(SoVRMLParent::getClassTypeId()))
         out.setHeaderString("#VRML V2.0 utf8");
 
     SoWriteAction wa(&out);
     wa.apply(root);
 
-    cReturnString = static_buffer;
-    free(static_buffer);
+    static std::string cReturnString;
+    cReturnString = static_buffer.data();
     return cReturnString;
 }
 
@@ -273,11 +279,11 @@ SoNode* replaceSwitches(SoNodeList* children, SoGroup* parent)
         SoNode* node = (*children)[i];
         if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
             if (node->getTypeId().isDerivedFrom(SoSwitch::getClassTypeId())) {
-                SoSwitch* group = static_cast<SoSwitch*>(node);
+                auto group = static_cast<SoSwitch*>(node);
                 int which = group->whichChild.getValue();
                 if (which == SO_SWITCH_NONE)
                     continue;
-                SoGroup* newParent = new SoGroup();
+                auto newParent = new SoGroup();
                 SoNodeList c;
                 if (which >= 0) {
                     c.append(group->getChild(which));
@@ -292,7 +298,7 @@ SoNode* replaceSwitches(SoNodeList* children, SoGroup* parent)
                 parent->addChild(newParent);
             }
             else {
-                SoGroup* newParent = static_cast<SoGroup*>(node->getTypeId().createInstance());
+                auto newParent = static_cast<SoGroup*>(node->getTypeId().createInstance());
                 replaceSwitches(node->getChildren(), newParent);
                 parent->addChild(newParent);
             }
@@ -407,59 +413,6 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, const char* filename, bool binary)
 
 bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& buffer)
 {
-#if 0
-    writeToVRML(node, buffer);
-    if (buffer.empty())
-        return false;
-
-    QString filename = QDir::tempPath();
-    filename += QLatin1String("/sceneXXXXXX.wrl");
-    QTemporaryFile wrlFile(filename);
-    if (wrlFile.open()) {
-        filename = wrlFile.fileName();
-        wrlFile.write(buffer.c_str(), buffer.size());
-        wrlFile.close();
-
-        QString exe(QLatin1String("tovrmlx3d"));
-        QStringList args;
-        args << filename << QLatin1String("--encoding") << QLatin1String("xml");
-        QProcess proc;
-        proc.setEnvironment(QProcess::systemEnvironment());
-        proc.start(exe, args);
-        if (proc.waitForStarted() && proc.waitForFinished()) {
-            QByteArray x3d = proc.readAll();
-            if (x3d.isEmpty())
-                return false;
-
-            x3d.replace('\t', "  ");
-
-            if (exportViewpoints) {
-                // compute a sensible view point
-                SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
-                bboxAction.apply(node);
-                SbBox3f bbox = bboxAction.getBoundingBox();
-                SbSphere bs;
-                bs.circumscribe(bbox);
-                const SbVec3f& cnt = bs.getCenter();
-                float dist = bs.getRadius();
-
-                QString vp = QString::fromLatin1("  <Viewpoint id=\"Top\" centerOfRotation=\"%1 %2 %3\" "
-                                                 "position=\"%1 %2 %4\" orientation=\"0.000000 0.000000 1.000000 0.000000\" "
-                                                 "description=\"camera\" fieldOfView=\"0.9\"></Viewpoint>\n")
-                             .arg(cnt[0]).arg(cnt[1]).arg(cnt[2]).arg(cnt[2] + 2.0f * dist);
-                int index = x3d.indexOf("<Scene>\n");
-                if (index >= 0) {
-                    x3d.insert(index + 8, vp);
-                }
-            }
-
-            buffer = x3d.data();
-            return true;
-        }
-    }
-
-    return false;
-#else
     SoNode* noSwitches = replaceSwitchesInSceneGraph(node);
     noSwitches->ref();
     SoVRMLAction vrml2;
@@ -482,7 +435,7 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
         SoPathList& paths = sa.getPaths();
         for (int i=0; i<paths.getLength(); i++) {
             SoPath* path = paths[i];
-            SoVRMLShape* shape = static_cast<SoVRMLShape*>(path->getTail());
+            auto shape = static_cast<SoVRMLShape*>(path->getTail());
             SoNode* geom = shape->geometry.getValue();
             if (geom && geom->getTypeId() == SoVRMLIndexedFaceSet::getClassTypeId()) {
                 SoNode* norm = static_cast<SoVRMLIndexedFaceSet*>(geom)->normal.getValue();
@@ -511,7 +464,6 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
     noSwitches->unref();
 
     return true;
-#endif
 }
 
 void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
@@ -574,11 +526,11 @@ void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& n
             SoField* field = fielddata->getField(node, i);
             if (!field->isDefault()) {
                 if (field->isOfType(SoSFNode::getClassTypeId())) {
-                    SoSFNode* sfNode = static_cast<SoSFNode*>(field);
+                    auto sfNode = static_cast<SoSFNode*>(field);
                     writeX3DChild(sfNode->getValue(), nodeMap, numDEF, spaces+2, out);
                 }
                 else if (field->isOfType(SoMFNode::getClassTypeId())) {
-                    SoMFNode* mfNode = static_cast<SoMFNode*>(field);
+                    auto mfNode = static_cast<SoMFNode*>(field);
                     for (int j=0; j<mfNode->getNum(); j++) {
                         writeX3DChild(mfNode->getNode(j), nodeMap, numDEF, spaces+2, out);
                     }
@@ -645,7 +597,7 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
                 << "\" centerOfRotation=\"" << cnt[0] << " " << cnt[1] << " " << cnt[2]
                 << "\" position=\"" << pos[0] << " " << pos[1] << " " << pos[2]
                 << "\" orientation=\"" << axis[0] << " " << axis[1] << " " << axis[2] << " " << angle
-                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << R"(" description="camera" fieldOfView="0.9">)"
                 << "</Viewpoint>\n";
         };
 
@@ -712,14 +664,14 @@ bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
     Base::FileInfo fi(filename);
 
     // Write VRML V2.0
-    if (fi.hasExtension("wrl") || fi.hasExtension("vrml") || fi.hasExtension("wrz")) {
+    if (fi.hasExtension({"wrl", "vrml", "wrz"})) {
         // If 'wrz' is set then force compression
         if (fi.hasExtension("wrz"))
             binary = true;
 
         ret = SoFCDB::writeToVRML(node, filename, binary);
     }
-    else if (fi.hasExtension("x3d") || fi.hasExtension("x3dz")) {
+    else if (fi.hasExtension({"x3d", "x3dz"})) {
         // If 'x3dz' is set then force compression
         if (fi.hasExtension("x3dz"))
             binary = true;

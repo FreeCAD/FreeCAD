@@ -31,19 +31,22 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderFillet : public ViewProviderDressUp
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderFillet);
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderFillet)
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderFillet);
 
 public:
     /// constructor
     ViewProviderFillet()
-        { sPixmap = "PartDesign_Fillet.svg"; }
+        { sPixmap = "PartDesign_Fillet.svg";
+          menuName = tr("Fillet parameters"); }
 
     /// return "Fillet"
-    virtual const std::string & featureName() const;
+    const std::string & featureName() const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 };
 
 } // namespace PartDesignGui

@@ -175,11 +175,6 @@ macro(generate_from_any INPUT_FILE OUTPUT_FILE VARIABLE)
 endmacro(generate_from_any)
 
 
-# generates the ui -> cpp h files
-#macro(qt4_wrap_ui infiles )
-#
-#endmacro(qt4_wrap_ui)
-
 
 MACRO(ADD_MSVC_PRECOMPILED_HEADER TargetName PrecompiledHeader PrecompiledSource SourcesVar)
   IF(MSVC)
@@ -247,8 +242,8 @@ MACRO(SET_BIN_DIR ProjectName OutputName)
     if(WIN32)
         set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME ${OutputName}_d)
     else(WIN32)
-        # FreeCADBase, SMDS, Driver, MEFISTO2 and area-native libs don't depend on parts from CMAKE_INSTALL_LIBDIR
-        if(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2|area-native)$")
+        # FreeCADBase, SMDS, Driver and MEFISTO2 libs don't depend on parts from CMAKE_INSTALL_LIBDIR
+        if(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2)$")
             if(${ARGC} STREQUAL 4)
                 set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${ARGV3})
             elseif(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
@@ -273,3 +268,58 @@ MACRO(SET_PYTHON_PREFIX_SUFFIX ProjectName)
         set_target_properties(${ProjectName} PROPERTIES SUFFIX ".so")
     endif(WIN32)
 ENDMACRO(SET_PYTHON_PREFIX_SUFFIX)
+
+# Locate the include directory for a pip-installed package -- uses pip show to find the base pip
+# install directory, and then appends the package name and  "/include" to the end
+macro(find_pip_package PACKAGE)
+	execute_process(
+			COMMAND ${PYTHON_EXECUTABLE} -m pip show ${PACKAGE}
+			RESULT_VARIABLE FAILURE
+			OUTPUT_VARIABLE PRINT_OUTPUT
+	)
+	if(NOT FAILURE)
+		# Extract Name: and Location: lines and use them to construct the include directory
+		string(REPLACE "\n" ";" PIP_OUTPUT_LINES ${PRINT_OUTPUT})
+		foreach(LINE IN LISTS PIP_OUTPUT_LINES)
+			STRING(FIND "${LINE}" "Name: " NAME_STRING_LOCATION)
+			STRING(FIND "${LINE}" "Location: " LOCATION_STRING_LOCATION)
+			if(${NAME_STRING_LOCATION} EQUAL 0)
+				STRING(SUBSTRING "${LINE}" 6 -1 PIP_PACKAGE_NAME)
+				STRING(STRIP "${PIP_PACKAGE_NAME}" PIP_PACKAGE_NAME)
+				STRING(REPLACE "-" "_" PIP_PACKAGE_NAME "${PIP_PACKAGE_NAME}")
+			elseif(${LOCATION_STRING_LOCATION} EQUAL 0)
+				STRING(SUBSTRING "${LINE}" 9 -1 PIP_PACKAGE_LOCATION)
+				STRING(STRIP "${PIP_PACKAGE_LOCATION}" PIP_PACKAGE_LOCATION)
+			endif()
+		endforeach()
+		file(TO_CMAKE_PATH "${PIP_PACKAGE_LOCATION}" PIP_PACKAGE_LOCATION)
+		if(EXISTS "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include")
+			set(INCLUDE_DIR "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include")
+		endif()
+		# There are many different library naming schemes, but basically we are looking for things that look like
+		#  PACKAGE*.lib/so or PACKAGE_d*.lib/so
+		if(WIN32)
+			file(GLOB OPT_LIBRARIES "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/${PIP_PACKAGE_NAME}.*.lib")
+			file(GLOB DEBUG_LIBRARIES "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/${PIP_PACKAGE_NAME}_d.*.lib")
+		else()
+			string(TOLOWER ${PIP_PACKAGE_NAME} PIP_LIB_NAME)
+			file(GLOB OPT_LIBRARIES "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/*${PIP_LIB_NAME}*.so.*")
+		endif()
+		if (OPT_LIBRARIES AND DEBUG_LIBRARIES)
+			set(${PACKAGE}_LIBRARIES optimized ${OPT_LIBRARIES} debug ${DEBUG_LIBRARIES} CACHE PATH "")
+		elseif(OPT_LIBRARIES)
+			set(${PACKAGE}_LIBRARIES ${OPT_LIBRARIES} CACHE PATH "")
+		elseif(DEBUG_LIBRARIES)
+			set(${PACKAGE}_LIBRARIES ${DEBUG_LIBRARIES} CACHE PATH "")
+		endif()
+		set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} CACHE PATH "")
+		set(${PACKAGE}_FOUND ON CACHE BOOL OFF)
+		message(STATUS "Found pip-installed ${PACKAGE} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
+	endif()
+endmacro()
+
+function(target_compile_warn_error ProjectName)
+    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
+        target_compile_options(${ProjectName} PRIVATE -Werror)
+    endif()
+endfunction()

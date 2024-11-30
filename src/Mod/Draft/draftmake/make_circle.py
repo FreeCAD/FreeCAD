@@ -45,29 +45,32 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     """make_circle(radius, [placement, face, startangle, endangle])
     or make_circle(edge,[face]):
 
-    Creates a circle object with given parameters. 
+    Creates a circle object with given parameters.
+
+    If startangle and endangle are provided and not equal, the object will show
+    an arc instead of a full circle.
 
     Parameters
     ----------
     radius : the radius of the circle.
 
-    placement : 
-        If placement is given, it is used. 
-    
-    face : Bool
-        If face is False, the circle is shown as a wireframe, 
-        otherwise as a face. 
-    
-    startangle : start angle of the arc (in degrees)
+    placement :
+        If placement is given, it is used.
 
-    endangle : end angle of the arc (in degrees)
-        if startangle and endangle are equal, a circle is created, 
-        if they are different an arc is created
+    face : Bool
+        If face is False, the circle is shown as a wireframe,
+        otherwise as a face.
+
+    startangle : start angle of the circle (in degrees)
+        Recalculated if not in the -360 to 360 range.
+
+    endangle : end angle of the circle (in degrees)
+        Recalculated if not in the -360 to 360 range.
 
     edge : edge.Curve must be a 'Part.Circle'
-        the circle is created from the given edge
+        The circle is created from the given edge.
 
-    support : 
+    support :
         TODO: Describe
     """
 
@@ -87,7 +90,7 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
 
     Circle(obj)
 
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
 
     if isinstance(radius,Part.Edge):
@@ -112,14 +115,13 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
                 obj.LastAngle = a1
     else:
         obj.Radius = radius
-        if (startangle != None) and (endangle != None):
-            if startangle == -0: startangle = 0
-            obj.FirstAngle = startangle
-            obj.LastAngle = endangle
+        if (startangle is not None) and (endangle is not None):
+            obj.FirstAngle = math.copysign(abs(startangle) % 360, startangle)
+            obj.LastAngle = math.copysign(abs(endangle) % 360, endangle)
 
-    obj.Support = support
+    obj.AttachmentSupport = support
 
-    if placement: 
+    if placement:
         obj.Placement = placement
 
     if App.GuiUp:

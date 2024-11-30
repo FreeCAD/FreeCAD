@@ -1,17 +1,18 @@
-![Logo](https://www.freecadweb.org/images/logo.png)
+<a href="https://freecad.org"><img src="/src/Gui/Icons/freecad.svg" height="100px" width="100px"></a>
 
 ### Your own 3D parametric modeler
 
-[Website](https://www.freecadweb.org) • 
-[Documentation](https://wiki.freecadweb.org) •
-[Forum](https://forum.freecadweb.org/) •
-[Bug tracker](https://www.freecadweb.org/tracker/) •
-[Git repository](https://github.com/FreeCAD/FreeCAD)
+[Website](https://www.freecad.org) •
+[Documentation](https://wiki.freecad.org) •
+[Forum](https://forum.freecad.org/) •
+[Bug tracker](https://github.com/FreeCAD/FreeCAD/issues) •
+[Git repository](https://github.com/FreeCAD/FreeCAD) •
+[Blog](https://blog.freecad.org)
 
 
-[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Master][freecad-master-status]][travis-branches] [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad) [![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/FreeCAD/FreeCAD.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FreeCAD/FreeCAD/context:python) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/FreeCAD/FreeCAD.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FreeCAD/FreeCAD/context:cpp) [![Liberapay](https://img.shields.io/liberapay/receives/FreeCAD.svg?logo=liberapay)](https://liberapay.com/FreeCAD)
+[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad) [![Liberapay](https://img.shields.io/liberapay/receives/FreeCAD.svg?logo=liberapay)](https://liberapay.com/FreeCAD)
 
-![screenshot](https://wiki.freecadweb.org/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
+<img src="/.github/images/partdesign.png" width="800"/>
 
 Overview
 --------
@@ -42,81 +43,75 @@ whether you are a hobbyist, programmer, experienced CAD user, student or teacher
 Installing
 ----------
 
-Precompiled (installable) packages are available for Windows and macOS on the
+Precompiled packages for stable releases are available for Windows, macOS and Linux on the
 [Releases page](https://github.com/FreeCAD/FreeCAD/releases).
 
-On most Linux distributions, FreeCAD is directly installable from the 
+On most Linux distributions, FreeCAD is also directly installable from the 
 software center application.
 
-Other options are described at the [wiki Download page](https://wiki.freecadweb.org/Download).
+For development releases visit the [weekly-builds page](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds).
 
-Build Status
-------------
-
-| Master | 0.19 | Translation |
-|:------:|:----:|:-----------:|
-|[![Master][freecad-master-status]][travis-branches]|[![0.19][freecad-0.19-status]][travis-branches]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
-
-[freecad-0.19-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=releases/FreeCAD-0-19
-[freecad-master-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=master
-[travis-branches]: https://travis-ci.org/FreeCAD/FreeCAD/branches
-[travis-builds]: https://travis-ci.org/FreeCAD/FreeCAD/builds
+Other options are described on the [wiki Download page](https://wiki.freecad.org/Download).
 
 Compiling
 ---------
 
-Compiling FreeCAD requires installation of several libraries and their 
-development files such as OCCT (Open Cascade), Coin and Qt, listed in the 
-pages below. Once this is done, FreeCAD can be compiled with 
-CMake. On Windows, these libraries are bundled and offered by the 
-FreeCAD team in a convenient package. On Linux, they are usually found 
-in your distribution's repositories, and on macOS and other platforms, 
-you will usually have to compile them yourself.
+FreeCAD requires several dependencies to correctly compile for development and
+production builds. The following pages contain updated build instructions for
+their respective platforms:
 
-The pages below contain up-to-date build instructions:
-
-- [Linux](https://wiki.freecadweb.org/Compile_on_Linux)
-- [Windows](https://wiki.freecadweb.org/Compile_on_Windows)
-- [macOS](https://wiki.freecadweb.org/Compile_on_MacOS)
-- [Cygwin](https://wiki.freecadweb.org/Compile_on_Cygwin)
-- [MinGW](https://wiki.freecadweb.org/Compile_on_MinGW)
+- [Linux](https://wiki.freecad.org/Compile_on_Linux)
+- [Windows](https://wiki.freecad.org/Compile_on_Windows)
+- [macOS](https://wiki.freecad.org/Compile_on_MacOS)
+- [MinGW](https://wiki.freecad.org/Compile_on_MinGW)
 
 
 Reporting Issues
 ---------
 
 To report an issue please:
-- First post to forum to verify the issue; 
-- Link forum thread to bug tracker ticket and vice-a-versa; 
-- Use the most updated stable or development versions of FreeCAD; 
-- Post version info from eg. `Help > About FreeCAD > Copy to clipboard`; 
+
+- Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/F4hdxzYZfc) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
+- Search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
+- Use the most updated stable or [development versions](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) of FreeCAD; 
+- Post version info from `Help > About FreeCAD > Copy to clipboard`; 
+- Restart FreeCAD in safe mode `Help > Restart in safe mode` and try to reproduce the issue again. If the issue is resolved it can be fixed by deleting the FreeCAD config files.
+- Start recording a macro `Macro > Macro recording...` and repeat all steps. Stop recording after the issue occurs and upload the saved macro or copy the macro code in the issue; 
 - Post a Step-By-Step explanation on how to recreate the issue; 
-- Upload an example file to demonstrate problem. 
+- Upload an example file (FCStd as ZIP file) to demonstrate the problem; 
 
-For more detail see:
-- [Wiki Page about the Bug Tracker](https://wiki.freecadweb.org/Tracker)
-- [Bug Tracker](https://tracker.freecadweb.org)
-- [Help Forum](http://forum.freecadweb.org/viewforum.php?f=3)
+For more details see:
+
+- [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
+- [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
+- [Contributing](https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
+- [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
+- [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
+
+> [!NOTE]
+The [FPA](https://fpa.freecad.org) offers developers the opportunity
+to apply for a grant to work on projects of their choosing. Check
+[jobs and funding](https://blog.freecad.org/jobs/) to know more.
 
 
-Usage & Getting help
+Usage & Getting Help
 --------------------
 
 The FreeCAD wiki contains documentation on 
-general FreeCAD usage, Python scripting, and development. These 
-pages might help you get started:
+general FreeCAD usage, Python scripting, and development.
+View these pages for more information:
 
-- [Getting started](https://wiki.freecadweb.org/Getting_started)
-- [Features list](https://wiki.freecadweb.org/Feature_list)
-- [Frequent questions](https://wiki.freecadweb.org/FAQ/en)
-- [Workbenches](https://wiki.freecadweb.org/Workbenches)
-- [Scripting](https://wiki.freecadweb.org/Power_users_hub)
-- [Development](https://wiki.freecadweb.org/Developer_hub)
+- [Getting started](https://wiki.freecad.org/Getting_started)
+- [Features list](https://wiki.freecad.org/Feature_list)
+- [Frequent questions](https://wiki.freecad.org/FAQ/en)
+- [Workbenches](https://wiki.freecad.org/Workbenches)
+- [Scripting](https://wiki.freecad.org/Power_users_hub)
+- [Development](https://wiki.freecad.org/Developer_hub)
 
-The [FreeCAD forum](https://forum.freecadweb.org) is also a great place
-to find help and solve specific problems you might encounter when
-learning to use FreeCAD.
+The [FreeCAD forum](https://forum.freecad.org) is a great place
+to find help and solve specific problems when learning to use FreeCAD.
 
+---
 
 <p>This project receives generous infrastructure support from
   <a href="https://www.digitalocean.com/">

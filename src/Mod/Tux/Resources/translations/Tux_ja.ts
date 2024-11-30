@@ -4,92 +4,97 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="63"/>
+      <location filename="../../NavigationIndicatorGui.py" line="85"/>
       <source>Select</source>
       <translation>選択</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="64"/>
+      <location filename="../../NavigationIndicatorGui.py" line="86"/>
       <source>Zoom</source>
       <translation>ズーム</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="65"/>
+      <location filename="../../NavigationIndicatorGui.py" line="87"/>
       <source>Rotate</source>
       <translation>回転</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="66"/>
+      <location filename="../../NavigationIndicatorGui.py" line="88"/>
       <source>Pan</source>
       <translation>パン</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="67"/>
+      <location filename="../../NavigationIndicatorGui.py" line="89"/>
       <source>Tilt</source>
       <translation>チルト</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="68"/>
+      <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Navigation style</source>
       <translation>ナビゲーションスタイル</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="69"/>
+      <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Page Up or Page Down key.</source>
       <translation>PageUpキーまたはPageDownキー</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="70"/>
+      <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Rotation focus</source>
       <translation>回転中心</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="71"/>
+      <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Middle mouse button or H key.</source>
       <translation>マウス中央ボタンまたはHキー</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="73"/>
+      <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Middle mouse button.</source>
       <translation>マウス中央ボタン</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="76"/>
+      <location filename="../../NavigationIndicatorGui.py" line="98"/>
       <source>Navigation style not recognized.</source>
       <translation>ナビゲーションスタイルが認識されません。</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="291"/>
+      <location filename="../../NavigationIndicatorGui.py" line="569"/>
       <source>Settings</source>
       <translation>設定</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="292"/>
+      <location filename="../../NavigationIndicatorGui.py" line="570"/>
       <source>Orbit style</source>
       <translation>軌道スタイル</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="293"/>
+      <location filename="../../NavigationIndicatorGui.py" line="571"/>
       <source>Compact</source>
       <translation>コンパクト</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="294"/>
+      <location filename="../../NavigationIndicatorGui.py" line="572"/>
       <source>Tooltip</source>
       <translation>ツールチップ</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="295"/>
+      <location filename="../../NavigationIndicatorGui.py" line="573"/>
       <source>Turntable</source>
-      <translation>ターン テーブル</translation>
+      <translation>ターンテーブル</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="296"/>
+      <location filename="../../NavigationIndicatorGui.py" line="574"/>
+      <source>Free Turntable</source>
+      <translation>フリーターンテーブル</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="575"/>
       <source>Trackball</source>
       <translation>トラックボール</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="297"/>
+      <location filename="../../NavigationIndicatorGui.py" line="576"/>
       <source>Undefined</source>
       <translation>未定義</translation>
     </message>

@@ -1957,7 +1957,7 @@ int SMESH_Mesh::NbMeshes() const // nb meshes in the Study
 
 //=======================================================================
 //function : IsNotConformAllowed
-//purpose  : check if a hypothesis alowing notconform mesh is present
+//purpose  : check if a hypothesis allowing notconform mesh is present
 //=======================================================================
 
 bool SMESH_Mesh::IsNotConformAllowed() const
@@ -2129,7 +2129,7 @@ bool SMESH_Mesh::RemoveGroup (const int theGroupID)
 //=======================================================================
 //function : GetAncestors
 //purpose  : return list of ancestors of theSubShape in the order
-//           that lower dimention shapes come first.
+//           that lower dimension shapes come first.
 //=======================================================================
 
 const TopTools_ListOfShape& SMESH_Mesh::GetAncestors(const TopoDS_Shape& theS) const

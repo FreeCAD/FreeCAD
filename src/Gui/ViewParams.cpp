@@ -37,8 +37,7 @@ ViewParams::ViewParams() {
     FC_VIEW_PARAMS
 }
 
-ViewParams::~ViewParams() {
-}
+ViewParams::~ViewParams() = default;
 
 void ViewParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
     if(!sReason)

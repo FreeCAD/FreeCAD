@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -31,13 +30,12 @@
 # include <QFile>
 #endif
 
-#include "ViewProviderInventorObject.h"
-#include <Gui/SoFCSelection.h>
-#include <App/InventorObject.h>
 #include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <sstream>
+#include <App/InventorObject.h>
+
+#include "ViewProviderInventorObject.h"
+#include "SoFCSelection.h"
+
 
 using namespace Gui;
 
@@ -60,7 +58,7 @@ ViewProviderInventorObject::~ViewProviderInventorObject()
 void ViewProviderInventorObject::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
-    SoGroup* pcFileBuf = new SoGroup();
+    auto pcFileBuf = new SoGroup();
     pcFileBuf->addChild(pcBuffer);
     pcFileBuf->addChild(pcFile);
     addDisplayMaskMode(pcFileBuf, "FileBuffer");
@@ -79,24 +77,25 @@ void ViewProviderInventorObject::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderInventorObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderInventorObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("File+Buffer");
-    StrList.push_back("Buffer");
-    StrList.push_back("File");
+    StrList.emplace_back("File+Buffer");
+    StrList.emplace_back("Buffer");
+    StrList.emplace_back("File");
     return StrList;
 }
 
 void ViewProviderInventorObject::updateData(const App::Property* prop)
 {
-    App::InventorObject* ivObj = static_cast<App::InventorObject*>(pcObject);
+    auto ivObj = static_cast<App::InventorObject*>(pcObject);
     if (prop == &ivObj->Buffer) {
         // read from buffer
         SoInput in;
         std::string buffer = ivObj->Buffer.getValue();
         coinRemoveAllChildren(pcBuffer);
-        if (buffer.empty()) return;
+        if (buffer.empty())
+            return;
         in.setBuffer((void *)buffer.c_str(), buffer.size());
         SoSeparator * node = SoDB::readAll(&in);
         if (node) {
@@ -136,13 +135,13 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         //    <==> (I-R) * c = 0 ==> c = 0
         // This means that the center point must be the origin!
         Base::Placement p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-        float q0 = (float)p.getRotation().getValue()[0];
-        float q1 = (float)p.getRotation().getValue()[1];
-        float q2 = (float)p.getRotation().getValue()[2];
-        float q3 = (float)p.getRotation().getValue()[3];
-        float px = (float)p.getPosition().x;
-        float py = (float)p.getPosition().y;
-        float pz = (float)p.getPosition().z;
+        auto q0 = (float)p.getRotation().getValue()[0];
+        auto q1 = (float)p.getRotation().getValue()[1];
+        auto q2 = (float)p.getRotation().getValue()[2];
+        auto q3 = (float)p.getRotation().getValue()[3];
+        auto px = (float)p.getPosition().x;
+        auto py = (float)p.getPosition().y;
+        auto pz = (float)p.getPosition().z;
         pcTransform->rotation.setValue(q0,q1,q2,q3);
         pcTransform->translation.setValue(px,py,pz);
         pcTransform->center.setValue(0.0f,0.0f,0.0f);
@@ -158,7 +157,7 @@ void ViewProviderInventorObject::adjustSelectionNodes(SoNode* child, const char*
         static_cast<SoFCSelection*>(child)->objectName = objname;
     }
     else if (child->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
-        SoGroup* group = static_cast<SoGroup*>(child);
+        auto group = static_cast<SoGroup*>(child);
         for (int i=0; i<group->getNumChildren(); i++) {
             SoNode* subchild = group->getChild(i);
             adjustSelectionNodes(subchild, docname, objname);

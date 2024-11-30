@@ -30,9 +30,8 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftutils.utils as utils
-
 from draftobjects.base import DraftObject
+from draftutils import params
 
 
 class Circle(DraftObject):
@@ -42,7 +41,7 @@ class Circle(DraftObject):
         super(Circle, self).__init__(obj, "Circle")
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Start angle of the arc")
-        obj.addProperty("App::PropertyAngle", "FirstAngle", 
+        obj.addProperty("App::PropertyAngle", "FirstAngle",
                         "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "End angle of the arc (for a full circle, \
@@ -62,11 +61,15 @@ class Circle(DraftObject):
         obj.addProperty("App::PropertyArea", "Area",
                         "Draft", _tip)
 
-        obj.MakeFace = utils.get_param("fillmode", True)
-
+        obj.MakeFace = params.get_param("fillmode")
 
     def execute(self, obj):
         """This method is run when the object is created or recomputed."""
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
 
         plm = obj.Placement
@@ -88,8 +91,11 @@ class Circle(DraftObject):
             obj.Area = shape.Area
 
         obj.Placement = plm
-
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

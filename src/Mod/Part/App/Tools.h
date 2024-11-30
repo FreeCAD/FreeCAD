@@ -20,26 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_TOOLS_H
 #define PART_TOOLS_H
 
 #include <Base/Converter.h>
+#include <Base/Placement.h>
+#include <Mod/Part/PartGlobal.h>
+
+#include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#include <gp_Dir.hxx>
 #include <gp_XYZ.hxx>
 #include <Geom_Surface.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <Poly_Triangle.hxx>
 #include <Poly_Triangulation.hxx>
-#include <TColStd_ListOfTransient.hxx>
 #include <TColgp_Array1OfDir.hxx>
+#include <TColStd_ListOfTransient.hxx>
 #include <TopLoc_Location.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <vector>
-#include <Mod/Part/PartGlobal.h>
+
 
 class gp_Lin;
 class gp_Pln;
@@ -48,9 +50,9 @@ namespace Base {
 // Specialization for gp_Pnt
 template <>
 struct vec_traits<gp_Pnt> {
-    typedef gp_Pnt vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = gp_Pnt;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
@@ -60,9 +62,9 @@ private:
 // Specialization for gp_Vec
 template <>
 struct vec_traits<gp_Vec> {
-    typedef gp_Vec vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = gp_Vec;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
@@ -72,9 +74,9 @@ private:
 // Specialization for gp_Dir
 template <>
 struct vec_traits<gp_Dir> {
-    typedef gp_Dir vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = gp_Dir;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
@@ -84,9 +86,9 @@ private:
 // Specialization for gp_XYZ
 template <>
 struct vec_traits<gp_XYZ> {
-    typedef gp_XYZ vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = gp_XYZ;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
@@ -206,7 +208,7 @@ public:
      * \param done
      */
     static void getNormal(const Handle(Geom_Surface)& surf, double u, double v, const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done);
-     /* \brief getNormal
+    /*! \brief getNormal
      * Returns the normal at the given parameters on the face and the state of the calculation.
      * The orientation is taken into account
      * \param face
@@ -217,6 +219,22 @@ public:
      * \param done
      */
     static void getNormal(const TopoDS_Face& face, double u, double v, const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done);
+    /*!
+     * \brief fromPlacement
+     * Converts a placement into a TopLoc_Location
+     * \return TopLoc_Location
+     */
+    static TopLoc_Location fromPlacement(const Base::Placement&);
+
+    /*!
+     * \brief isConcave
+     * \param face
+     * \param pointOfVue
+     * \param direction
+     * \return true if the face is concave when shown from pointOfVue and looking into direction
+     * and false otherwise, plane case included.
+     */
+    static bool isConcave(const TopoDS_Face &face, const gp_Pnt &pointOfVue, const gp_Dir &direction);
 };
 
 } //namespace Part

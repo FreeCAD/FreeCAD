@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Z88 tasks"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -31,6 +31,7 @@ __url__ = "https://www.freecadweb.org"
 import os
 import os.path
 import subprocess
+from platform import system
 
 import FreeCAD
 
@@ -41,6 +42,8 @@ from feminout import importZ88O2Results
 from femmesh import meshsetsgetter
 from femtools import femutils
 from femtools import membertools
+
+SOLVER_TYPES = ["sorcg", "siccg", "choly"]
 
 
 class Check(run.Check):
@@ -73,11 +76,7 @@ class Prepare(run.Prepare):
 
         # write solver input
         w = writer.FemInputWriterZ88(
-            self.analysis,
-            self.solver,
-            mesh_obj,
-            meshdatagetter.member,
-            self.directory
+            self.analysis, self.solver, mesh_obj, meshdatagetter.member, self.directory
         )
         path = w.write_solver_input()
         # report to user if task succeeded
@@ -101,32 +100,39 @@ class Solve(run.Solve):
         self.pushStatus("Get solver binary...\n")
         binary = settings.get_binary("Z88")
         if binary is None:
-            self.fail()  # a print has been made in settings module
+            self.pushStatus("Error: The z88r binary has not been found!")
+            self.fail()
+            return
+
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
+        solver_index = prefs.GetInt("Solver", 0)
+        solver_name = SOLVER_TYPES[solver_index]
+        self.pushStatus(f"Used solver: {solver_name}\n")
 
         # run solver test mode
         # AFAIK: z88r needs to be run twice
         # once in test mode and once in real solve mode
         # the subprocess was just copied, it works :-)
-        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values
+        # TODO: search out for "Vector GS" and "Vector KOI" and print values
         # may be compare with the used ones
         self.pushStatus("Executing solver in test mode...\n")
-        self._process = subprocess.Popen(
-            [binary, "-t", "-choly"],
-            cwd=self.directory,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        self.signalAbort.add(self._process.terminate)
-        self._process.communicate()
-        self.signalAbort.remove(self._process.terminate)
+        Solve.runZ88(self, "-t", binary, solver_name, "hide")
 
         # run solver real mode
         self.pushStatus("Executing solver in real mode...\n")
-        binary = settings.get_binary("Z88")
+        # starting normal because the user must see the z88 window
+        Solve.runZ88(self, "-c", binary, solver_name, "normal")
+
+    def runZ88(self, command, binary, solver, state):
+        solver_name = solver
+        # minimize or hide the popups on Windows
         self._process = subprocess.Popen(
-            [binary, "-c", "-choly"],
+            [binary, command, "-" + solver_name],
             cwd=self.directory,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+            stderr=subprocess.PIPE,
+            startupinfo=femutils.startProgramInfo(state),
+        )
         self.signalAbort.add(self._process.terminate)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
@@ -137,8 +143,7 @@ class Solve(run.Solve):
 class Results(run.Results):
 
     def run(self):
-        prefs = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/General")
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
         self.load_results()
@@ -155,18 +160,14 @@ class Results(run.Results):
     def load_results(self):
         self.pushStatus("Import new results...\n")
         # displacements from z88o2 file
-        disp_result_file = os.path.join(
-            self.directory, "z88o2.txt")
+        disp_result_file = os.path.join(self.directory, "z88o2.txt")
         if os.path.isfile(disp_result_file):
             result_name_prefix = "Z88_" + self.solver.AnalysisType + "_"
-            importZ88O2Results.import_z88_disp(
-                disp_result_file, self.analysis, result_name_prefix)
+            importZ88O2Results.import_z88_disp(disp_result_file, self.analysis, result_name_prefix)
         else:
             # TODO: use solver framework status message system
-            FreeCAD.Console.PrintError(
-                "FEM: No results found at {}!\n"
-                .format(disp_result_file)
-            )
+            FreeCAD.Console.PrintError(f"FEM: No results found at {disp_result_file}!\n")
             self.fail()
+
 
 ##  @}

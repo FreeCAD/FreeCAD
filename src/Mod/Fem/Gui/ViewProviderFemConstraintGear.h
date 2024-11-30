@@ -30,22 +30,22 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintGear : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintGear: public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintGear);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintGear);
 
 public:
     /// Constructor
     ViewProviderFemConstraintGear();
-    virtual ~ViewProviderFemConstraintGear();
+    ~ViewProviderFemConstraintGear() override;
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTGear_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTGear_H

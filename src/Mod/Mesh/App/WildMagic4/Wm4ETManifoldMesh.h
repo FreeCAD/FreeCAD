@@ -81,7 +81,7 @@ public:
 
 
     // construction and destruction
-    ETManifoldMesh (ECreator oECreator = 0, TCreator oTCreator = 0);
+    ETManifoldMesh (ECreator oECreator = nullptr, TCreator oTCreator = nullptr);
     virtual ~ETManifoldMesh ();
 
     // member access

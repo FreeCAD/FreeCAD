@@ -726,12 +726,16 @@ inline CRCType CRC::CalculateRemainder(const void * data, crcpp_size size, const
     // Disable warning about data loss when doing (remainder >> CHAR_BIT) when
     // remainder is one byte long. The algorithm is still correct in this case,
     // though it's possible that one additional machine instruction will be executed.
+#   if defined(_MSC_VER)
 #   pragma warning (push)
 #   pragma warning (disable : 4333)
+#   endif
 #endif
             remainder = (remainder >> CHAR_BIT) ^ lookupTable[static_cast<unsigned char>(remainder ^ *current++)];
 #if defined(WIN32) || defined(_WIN32) || defined(WINCE)
+#   if defined(_MSC_VER)
 #   pragma warning (pop)
+#   endif
 #endif
         }
     }

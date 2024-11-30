@@ -31,14 +31,15 @@
 # include <QPointer>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Control.h"
-#include "TaskView/TaskView.h"
-
 #include <App/AutoTransaction.h>
-#include <Gui/MainWindow.h>
 #include <Gui/ComboView.h>
 #include <Gui/DockWindowManager.h>
+#include <Gui/MainWindow.h>
+
+#include "Control.h"
+#include "BitmapFactory.h"
+#include "Tree.h"
+#include "TaskView/TaskView.h"
 
 
 using namespace Gui;
@@ -46,53 +47,106 @@ using namespace std;
 
 /* TRANSLATOR Gui::ControlSingleton */
 
-ControlSingleton* ControlSingleton::_pcSingleton = 0;
-static QPointer<Gui::TaskView::TaskView> _taskPanel = 0;
+ControlSingleton* ControlSingleton::_pcSingleton = nullptr;
 
 ControlSingleton::ControlSingleton()
-  : ActiveDialog(0)
+  : ActiveDialog(nullptr)
+  , oldTabIndex(-1)
 {
 
 }
 
-ControlSingleton::~ControlSingleton()
-{
-
-}
+ControlSingleton::~ControlSingleton() = default;
 
 Gui::TaskView::TaskView* ControlSingleton::taskPanel() const
 {
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    // should return the pointer to combo view
-    if (pcComboView)
-        return pcComboView->getTaskPanel();
-    // not all workbenches have the combo view enabled
-    else if (_taskPanel)
-        return _taskPanel;
-    // no task panel available
-    else
-        return 0;
+    auto taskView = qobject_cast<Gui::TaskView::TaskView*>
+        (Gui::DockWindowManager::instance()->getDockWindow("Tasks"));
+    return taskView;
+}
+
+void ControlSingleton::showDockWidget(QWidget* widget)
+{
+    QWidget* parent = widget->parentWidget();
+    if (parent) {
+        parent->show();
+        parent->raise();
+    }
+}
+
+QTabBar* ControlSingleton::findTabBar(QDockWidget* widget) const
+{
+    int count = getMainWindow()->tabifiedDockWidgets(widget).size() + 1;
+    if (count > 1) {
+        QList<QTabBar*> bars = getMainWindow()->findChildren<QTabBar*>();
+        for (auto it : bars) {
+            if (it->count() <= count) {
+                for (int i = 0; i < count; i++) {
+                    if (it->tabText(i) == widget->windowTitle()) {
+                        return it;
+                    }
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+void ControlSingleton::aboutToShowDialog(QDockWidget* widget)
+{
+    static QIcon icon = Gui::BitmapFactory().pixmap("edit-edit.svg");
+    QTabBar* bar = findTabBar(widget);
+    if (bar) {
+        oldTabIndex = bar->currentIndex();
+        for (int i = 0; i < bar->count(); i++) {
+            if (bar->tabText(i) == widget->windowTitle()) {
+                bar->setTabIcon(i, icon);
+                break;
+            }
+        }
+    }
+
+    widget->show();
+    widget->raise();
+}
+
+void ControlSingleton::aboutToHideDialog(QDockWidget* widget)
+{
+    QTabBar* bar = findTabBar(widget);
+    if (bar) {
+        bar->setCurrentIndex(oldTabIndex);
+        for (int i = 0; i < bar->count(); i++) {
+            if (bar->tabText(i) == widget->windowTitle()) {
+                bar->setTabIcon(i, QIcon());
+                break;
+            }
+        }
+    }
 }
 
 void ControlSingleton::showTaskView()
 {
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    if (pcComboView)
-        pcComboView->showTaskView();
-    else if (_taskPanel)
-        _taskPanel->raise();
+    Gui::TaskView::TaskView* taskView = taskPanel();
+    if (taskView) {
+        showDockWidget(taskView);
+    }
 }
 
 void ControlSingleton::showModelView()
 {
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    if (pcComboView)
-        pcComboView->showTreeView();
-    else if (_taskPanel)
-        _taskPanel->raise();
+    auto treeView = qobject_cast<Gui::TreeDockWidget*>
+        (Gui::DockWindowManager::instance()->getDockWindow("Tree view"));
+    if (treeView) {
+        showDockWidget(treeView);
+    }
+    else {
+        auto comboView = qobject_cast<Gui::DockWnd::ComboView*>
+            (Gui::DockWindowManager::instance()->getDockWindow("Model"));
+        if (comboView) {
+            showDockWidget(comboView);
+        }
+    }
 }
 
 void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
@@ -117,14 +171,15 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
     // which may open a transaction but fails when auto transaction is still active.
     App::AutoTransaction::setEnable(false);
 
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
+    Gui::TaskView::TaskView* taskView = taskPanel();
     // should return the pointer to combo view
-    if (pcComboView) {
-        pcComboView->showDialog(dlg);
+    if (taskView) {
+        taskView->showDialog(dlg);
+
         // make sure that the combo view is shown
-        QDockWidget* dw = qobject_cast<QDockWidget*>(pcComboView->parentWidget());
+        auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget());
         if (dw) {
+            aboutToShowDialog(dw);
             dw->setVisible(true);
             dw->toggleViewAction()->setVisible(true);
             dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
@@ -133,39 +188,9 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
         if (ActiveDialog == dlg)
             return; // dialog is already defined
         ActiveDialog = dlg;
-        connect(dlg, SIGNAL(aboutToBeDestroyed()), this, SLOT(closedDialog()));
+        connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed,
+                this, &ControlSingleton::closedDialog);
     }
-    // not all workbenches have the combo view enabled
-    else if (!_taskPanel) {
-        QDockWidget* dw = new QDockWidget();
-        dw->setWindowTitle(tr("Task panel"));
-        dw->setFeatures(QDockWidget::DockWidgetMovable);
-        _taskPanel = new Gui::TaskView::TaskView(dw);
-        dw->setWidget(_taskPanel);
-        _taskPanel->showDialog(dlg);
-        getMainWindow()->addDockWidget(Qt::LeftDockWidgetArea, dw);
-        connect(dlg, SIGNAL(destroyed()), dw, SLOT(deleteLater()));
-
-        // if we have the normal tree view available then just tabify with it
-        QWidget* treeView = Gui::DockWindowManager::instance()->getDockWindow("Tree view");
-        QDockWidget* par = treeView ? qobject_cast<QDockWidget*>(treeView->parent()) : 0;
-        if (par && par->isVisible()) {
-            getMainWindow()->tabifyDockWidget(par, dw);
-            qApp->processEvents(); // make sure that the task panel is tabified now
-            dw->show();
-            dw->raise();
-        }
-    }
-}
-
-QTabWidget* ControlSingleton::tabPanel() const
-{
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    // should return the pointer to combo view
-    if (pcComboView)
-        return pcComboView->getTabPanel();
-    return 0;
 }
 
 Gui::TaskView::TaskDialog* ControlSingleton::activeDialog() const
@@ -173,22 +198,11 @@ Gui::TaskView::TaskDialog* ControlSingleton::activeDialog() const
     return ActiveDialog;
 }
 
-Gui::TaskView::TaskView* ControlSingleton::getTaskPanel()
-{
-    // should return the pointer to combo view
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    if (pcComboView)
-        return pcComboView->getTaskPanel();
-    else
-        return _taskPanel;
-}
-
 void ControlSingleton::accept()
 {
-    Gui::TaskView::TaskView* taskPanel = getTaskPanel();
-    if (taskPanel) {
-        taskPanel->accept();
+    Gui::TaskView::TaskView* taskView = taskPanel();
+    if (taskView) {
+        taskView->accept();
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents |
                             QEventLoop::ExcludeSocketNotifiers);
     }
@@ -196,9 +210,9 @@ void ControlSingleton::accept()
 
 void ControlSingleton::reject()
 {
-    Gui::TaskView::TaskView* taskPanel = getTaskPanel();
-    if (taskPanel) {
-        taskPanel->reject();
+    Gui::TaskView::TaskView* taskView = taskPanel();
+    if (taskView) {
+        taskView->reject();
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents |
                             QEventLoop::ExcludeSocketNotifiers);
     }
@@ -206,32 +220,28 @@ void ControlSingleton::reject()
 
 void ControlSingleton::closeDialog()
 {
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    // should return the pointer to combo view
-    if (pcComboView)
-        pcComboView->closeDialog();
-    else if (_taskPanel)
-        _taskPanel->removeDialog();
+    Gui::TaskView::TaskView* taskView = taskPanel();
+    if (taskView)
+        taskView->removeDialog();
 }
 
 void ControlSingleton::closedDialog()
 {
-    ActiveDialog = 0;
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    // should return the pointer to combo view
-    assert(pcComboView);
-    pcComboView->closedDialog();
+    ActiveDialog = nullptr;
+    Gui::TaskView::TaskView* taskView = taskPanel();
+    assert(taskView);
+
     // make sure that the combo view is shown
-    QDockWidget* dw = qobject_cast<QDockWidget*>(pcComboView->parentWidget());
-    if (dw)
+    auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget());
+    if (dw) {
+        aboutToHideDialog(dw);
         dw->setFeatures(QDockWidget::DockWidgetClosable
                         | QDockWidget::DockWidgetMovable
                         | QDockWidget::DockWidgetFloatable);
+    }
 }
 
-bool ControlSingleton::isAllowedAlterDocument(void) const
+bool ControlSingleton::isAllowedAlterDocument() const
 {
     if (ActiveDialog)
         return ActiveDialog->isAllowedAlterDocument();
@@ -239,14 +249,14 @@ bool ControlSingleton::isAllowedAlterDocument(void) const
 }
 
 
-bool ControlSingleton::isAllowedAlterView(void) const
+bool ControlSingleton::isAllowedAlterView() const
 {
     if (ActiveDialog)
         return ActiveDialog->isAllowedAlterView();
     return true;
 }
 
-bool ControlSingleton::isAllowedAlterSelection(void) const
+bool ControlSingleton::isAllowedAlterSelection() const
 {
     if (ActiveDialog)
         return ActiveDialog->isAllowedAlterSelection();
@@ -255,18 +265,18 @@ bool ControlSingleton::isAllowedAlterSelection(void) const
 
 // -------------------------------------------
 
-ControlSingleton& ControlSingleton::instance(void)
+ControlSingleton& ControlSingleton::instance()
 {
-    if (_pcSingleton == NULL)
+    if (!_pcSingleton)
         _pcSingleton = new ControlSingleton;
     return *_pcSingleton;
 }
 
-void ControlSingleton::destruct (void)
+void ControlSingleton::destruct ()
 {
-    if (_pcSingleton != NULL)
+    if (_pcSingleton)
         delete _pcSingleton;
-    _pcSingleton = 0;
+    _pcSingleton = nullptr;
 }
 
 

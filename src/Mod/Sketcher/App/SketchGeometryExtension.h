@@ -23,38 +23,47 @@
 #ifndef SKETCHER_SKETCHGEOMETRYEXTENSION_H
 #define SKETCHER_SKETCHGEOMETRYEXTENSION_H
 
-#include <Mod/Part/App/Geometry.h>
+#include <array>
 #include <atomic>
 #include <bitset>
-#include <array>
+
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/GeometryMigrationExtension.h>
+#include <Mod/Sketcher/SketcherGlobal.h>
+
 
 namespace Sketcher
 {
 
-    namespace InternalType {
-        enum InternalType {
-            None                    = 0,
-            EllipseMajorDiameter    = 1,
-            EllipseMinorDiameter    = 2,
-            EllipseFocus1           = 3,
-            EllipseFocus2           = 4,
-            HyperbolaMajor          = 5,
-            HyperbolaMinor          = 6,
-            HyperbolaFocus          = 7,
-            ParabolaFocus           = 8,
-            BSplineControlPoint     = 9,
-            BSplineKnotPoint        = 10,
-            NumInternalGeometryType        // Must be the last
-        };
-    }
+namespace InternalType
+{
+enum InternalType
+{
+    None = 0,
+    EllipseMajorDiameter = 1,
+    EllipseMinorDiameter = 2,
+    EllipseFocus1 = 3,
+    EllipseFocus2 = 4,
+    HyperbolaMajor = 5,
+    HyperbolaMinor = 6,
+    HyperbolaFocus = 7,
+    ParabolaFocus = 8,
+    BSplineControlPoint = 9,
+    BSplineKnotPoint = 10,
+    ParabolaFocalAxis = 11,
+    NumInternalGeometryType  // Must be the last
+};
+}
 
-    namespace GeometryMode {
-        enum GeometryMode {
-            Blocked                 = 0,
-            Construction            = 1,
-            NumGeometryMode        // Must be the last
-        };
-    }
+namespace GeometryMode
+{
+enum GeometryMode
+{
+    Blocked = 0,
+    Construction = 1,
+    NumGeometryMode  // Must be the last
+};
+}
 
 class ISketchGeometryExtension
 {
@@ -70,65 +79,105 @@ public:
 
     // Geometry functional mode
     virtual bool testGeometryMode(int flag) const = 0;
-    virtual void setGeometryMode(int flag, bool v=true) = 0;
+    virtual void setGeometryMode(int flag, bool v = true) = 0;
 
     virtual int getGeometryLayerId() const = 0;
     virtual void setGeometryLayerId(int geolayer) = 0;
 };
 
-class SketcherExport SketchGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchGeometryExtension
+class SketcherExport SketchGeometryExtension: public Part::GeometryMigrationPersistenceExtension,
+                                              private ISketchGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-
     SketchGeometryExtension();
-    SketchGeometryExtension(long cid);
-    virtual ~SketchGeometryExtension() override = default;
+    explicit SketchGeometryExtension(long cid);
+    ~SketchGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject* getPyObject() override;
 
-    virtual long getId() const override {return Id;}
-    virtual void setId(long id) override {Id = id;}
+    long getId() const override
+    {
+        return Id;
+    }
+    void setId(long id) override
+    {
+        Id = id;
+    }
 
-    virtual InternalType::InternalType getInternalType() const override {return InternalGeometryType;}
-    virtual void setInternalType(InternalType::InternalType type) override {InternalGeometryType = type;}
+    InternalType::InternalType getInternalType() const override
+    {
+        return InternalGeometryType;
+    }
+    void setInternalType(InternalType::InternalType type) override
+    {
+        InternalGeometryType = type;
+    }
 
-    virtual bool testGeometryMode(int flag) const override { return GeometryModeFlags.test((size_t)(flag)); };
-    virtual void setGeometryMode(int flag, bool v=true) override { GeometryModeFlags.set((size_t)(flag), v); };
+    bool testGeometryMode(int flag) const override
+    {
+        return GeometryModeFlags.test((size_t)(flag));
+    };
+    void setGeometryMode(int flag, bool v = true) override
+    {
+        GeometryModeFlags.set((size_t)(flag), v);
+    };
 
-    virtual int getGeometryLayerId() const override { return GeometryLayer;}
-    virtual void setGeometryLayerId(int geolayer) override { GeometryLayer = geolayer;}
+    int getGeometryLayerId() const override
+    {
+        return GeometryLayer;
+    }
+    void setGeometryLayerId(int geolayer) override
+    {
+        GeometryLayer = geolayer;
+    }
 
-    constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
+    constexpr static std::array<const char*, InternalType::NumInternalGeometryType>
+        internaltype2str {{"None",
+                           "EllipseMajorDiameter",
+                           "EllipseMinorDiameter",
+                           "EllipseFocus1",
+                           "EllipseFocus2",
+                           "HyperbolaMajor",
+                           "HyperbolaMinor",
+                           "HyperbolaFocus",
+                           "ParabolaFocus",
+                           "BSplineControlPoint",
+                           "BSplineKnotPoint",
+                           "ParabolaFocalAxis"}};
 
-    constexpr static std::array<const char *,GeometryMode::NumGeometryMode> geometrymode2str {{ "Blocked", "Construction" }};
+    constexpr static std::array<const char*, GeometryMode::NumGeometryMode> geometrymode2str {
+        {"Blocked", "Construction"}};
 
-    static bool getInternalTypeFromName(std::string str, InternalType::InternalType &type);
+    static bool getInternalTypeFromName(std::string str, InternalType::InternalType& type);
 
-    static bool getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type);
+    static bool getGeometryModeFromName(std::string str, GeometryMode::GeometryMode& type);
 
 protected:
-    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
-    virtual void restoreAttributes(Base::XMLReader &reader) override;
-    virtual void saveAttributes(Base::Writer &writer) const override;
+    void copyAttributes(Part::GeometryExtension* cpy) const override;
+    void restoreAttributes(Base::XMLReader& reader) override;
+    void saveAttributes(Base::Writer& writer) const override;
+    void preSave(Base::Writer& writer) const override;
+    void postSave(Base::Writer& writer) const override;
 
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;
 
 private:
     using GeometryModeFlagType = std::bitset<32>;
-    long                          Id;
-    InternalType::InternalType    InternalGeometryType;
-    GeometryModeFlagType          GeometryModeFlags;
-    int                           GeometryLayer;
+    long Id;
+    InternalType::InternalType InternalGeometryType;
+    GeometryModeFlagType GeometryModeFlags;
+    int GeometryLayer;
 
 private:
     static std::atomic<long> _GeometryID;
 };
 
-} //namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif // SKETCHER_SKETCHGEOMETRYEXTENSION_H
+#endif  // SKETCHER_SKETCHGEOMETRYEXTENSION_H

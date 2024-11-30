@@ -25,15 +25,12 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <stdexcept>
 # include <QAbstractSpinBox>
 # include <QByteArray>
 # include <QComboBox>
-# include <QDataStream>
-# include <QDebug>
+# include <QTextStream>
 # include <QFileInfo>
 # include <QFileOpenEvent>
-# include <QKeyEvent>
 # include <QSessionManager>
 # include <QTimer>
 #endif
@@ -41,38 +38,35 @@
 #include <QLocalServer>
 #include <QLocalSocket>
 
-#if defined(Q_OS_WIN)
-# include <Windows.h>
-#endif
 #if defined(Q_OS_UNIX)
 # include <sys/types.h>
-# include <time.h>
+# include <ctime>
 # include <unistd.h>
 #endif
 
-#include "GuiApplication.h"
-#include "Application.h"
-#include "SpaceballEvent.h"
-#include "MainWindow.h"
-
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
-#include <App/Application.h>
+#include "GuiApplication.h"
+#include "Application.h"
+#include "MainWindow.h"
+#include "SpaceballEvent.h"
+
 
 using namespace Gui;
 
 GUIApplication::GUIApplication(int & argc, char ** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
-    connect(this, SIGNAL(commitDataRequest(QSessionManager &)),
-            SLOT(commitData(QSessionManager &)), Qt::DirectConnection);
+    connect(this, &GUIApplication::commitDataRequest,
+            this, &GUIApplication::commitData, Qt::DirectConnection);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     setFallbackSessionManagementEnabled(false);
+#endif
 }
 
-GUIApplication::~GUIApplication()
-{
-}
+GUIApplication::~GUIApplication() = default;
 
 bool GUIApplication::notify (QObject * receiver, QEvent * event)
 {
@@ -81,6 +75,16 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
             (int)event->type());
         return false;
     }
+
+    // https://github.com/FreeCAD/FreeCAD/issues/16905
+    std::string exceptionWarning =
+#if FC_DEBUG
+        "Exceptions must be caught before they go through Qt."
+        " Ignoring this will cause crashes on some systems.\n";
+#else
+        "";
+#endif
+
     try {
         if (event->type() == Spaceball::ButtonEvent::ButtonEventType ||
             event->type() == Spaceball::MotionEvent::MotionEventType)
@@ -95,14 +99,15 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+                              "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (const std::exception& e) {
         Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+                              "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (...) {
-        Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n");
+        Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n%s",
+                              exceptionWarning);
     }
 
     // Print some more information to the log file (if active) to ease bug fixing
@@ -154,6 +159,20 @@ void GUIApplication::commitData(QSessionManager &manager)
 bool GUIApplication::event(QEvent * ev)
 {
     if (ev->type() == QEvent::FileOpen) {
+        // (macOS workaround when opening FreeCAD by opening a .FCStd file in 1.0)
+        // With the current implementation of the splash screen boot procedure, Qt will
+        // start an event loop before FreeCAD is fully initalized. This event loop will
+        // process the QFileOpenEvent that is sent by macOS before the main window is ready.
+        if (!Gui::getMainWindow()->property("eventLoop").toBool()) {
+            // If we never reach this point when opening FreeCAD by double clicking an
+            // .FCStd file, then the workaround isn't needed anymore and can be removed
+            QEvent* eventCopy = new QFileOpenEvent(static_cast<QFileOpenEvent*>(ev)->file());
+            QTimer::singleShot(0, [eventCopy, this]() {
+                QCoreApplication::postEvent(this, eventCopy);
+            });
+            return true;
+        }
+
         QString file = static_cast<QFileOpenEvent*>(ev)->file();
         QFileInfo fi(file);
         if (fi.suffix().toLower() == QLatin1String("fcstd")) {
@@ -170,11 +189,9 @@ bool GUIApplication::event(QEvent * ev)
 
 class GUISingleApplication::Private {
 public:
-    Private(GUISingleApplication *q_ptr)
+    explicit Private(GUISingleApplication *q_ptr)
       : q_ptr(q_ptr)
       , timer(new QTimer(q_ptr))
-      , server(0)
-      , running(false)
     {
         timer->setSingleShot(true);
         std::string exeName = App::Application::getExecutableName();
@@ -204,8 +221,8 @@ public:
     {
         // Start a QLocalServer to listen for connections
         server = new QLocalServer();
-        QObject::connect(server, SIGNAL(newConnection()),
-                         q_ptr, SLOT(receiveConnection()));
+        QObject::connect(server, &QLocalServer::newConnection,
+                         q_ptr, &GUISingleApplication::receiveConnection);
         // first attempt
         if (!server->listen(serverName)) {
             if (server->serverError() == QAbstractSocket::AddressInUseError) {
@@ -224,10 +241,10 @@ public:
 
     GUISingleApplication *q_ptr;
     QTimer *timer;
-    QLocalServer *server;
+    QLocalServer *server{nullptr};
     QString serverName;
-    QList<QByteArray> messages;
-    bool running;
+    QList<QString> messages;
+    bool running{false};
 };
 
 GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
@@ -235,27 +252,26 @@ GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
       d_ptr(new Private(this))
 {
     d_ptr->setupConnection();
-    connect(d_ptr->timer, SIGNAL(timeout()), this, SLOT(processMessages()));
+    connect(d_ptr->timer, &QTimer::timeout, this, &GUISingleApplication::processMessages);
 }
 
-GUISingleApplication::~GUISingleApplication()
-{
-}
+GUISingleApplication::~GUISingleApplication() = default;
 
 bool GUISingleApplication::isRunning() const
 {
     return d_ptr->running;
 }
 
-bool GUISingleApplication::sendMessage(const QByteArray &message, int timeout)
+bool GUISingleApplication::sendMessage(const QString &message, int timeout)
 {
     QLocalSocket socket;
     bool connected = false;
     for(int i = 0; i < 2; i++) {
         socket.connectToServer(d_ptr->serverName);
         connected = socket.waitForConnected(timeout/2);
-        if (connected || i > 0)
+        if (connected || i > 0) {
             break;
+        }
         int ms = 250;
 #if defined(Q_OS_WIN)
         Sleep(DWORD(ms));
@@ -263,41 +279,60 @@ bool GUISingleApplication::sendMessage(const QByteArray &message, int timeout)
         usleep(ms*1000);
 #endif
     }
-    if (!connected)
+    if (!connected) {
         return false;
+    }
 
-    QDataStream ds(&socket);
-    ds << message;
-    socket.waitForBytesWritten(timeout);
-    return true;
+    QTextStream ts(&socket);
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
+    ts.setCodec("UTF-8");
+#else
+    ts.setEncoding(QStringConverter::Utf8);
+#endif
+#if QT_VERSION <= QT_VERSION_CHECK(5, 15, 0)
+    ts << message << endl;
+#else
+    ts << message << Qt::endl;
+#endif
+
+    return socket.waitForBytesWritten(timeout);
+}
+
+void GUISingleApplication::readFromSocket()
+{
+    auto socket = qobject_cast<QLocalSocket*>(sender());
+    if (socket) {
+        QTextStream in(socket);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+        in.setCodec("UTF-8");
+#else
+        in.setEncoding(QStringConverter::Utf8);
+#endif
+        while (socket->canReadLine()) {
+            d_ptr->timer->stop();
+            QString message = in.readLine();
+            Base::Console().Log("Received message: %s\n", message.toStdString());
+            d_ptr->messages.push_back(message);
+            d_ptr->timer->start(1000);
+        }
+    }
 }
 
 void GUISingleApplication::receiveConnection()
 {
     QLocalSocket *socket = d_ptr->server->nextPendingConnection();
-    if (!socket)
+    if (!socket) {
         return;
-
-    connect(socket, SIGNAL(disconnected()),
-            socket, SLOT(deleteLater()));
-    if (socket->waitForReadyRead()) {
-        QDataStream in(socket);
-        if (!in.atEnd()) {
-            d_ptr->timer->stop();
-            QByteArray message;
-            in >> message;
-            Base::Console().Log("Received message: %s\n", message.constData());
-            d_ptr->messages.push_back(message);
-            d_ptr->timer->start(1000);
-        }
     }
 
-    socket->disconnectFromServer();
+    connect(socket, &QLocalSocket::disconnected,
+            socket, &QLocalSocket::deleteLater);
+    connect(socket, &QLocalSocket::readyRead, this, &GUISingleApplication::readFromSocket);
 }
 
 void GUISingleApplication::processMessages()
 {
-    QList<QByteArray> msg = d_ptr->messages;
+    QList<QString> msg = d_ptr->messages;
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);
 }
@@ -313,7 +348,7 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
 {
     if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel)
         return true;
-    QAbstractSpinBox* sb = qobject_cast<QAbstractSpinBox*>(obj);
+    auto sb = qobject_cast<QAbstractSpinBox*>(obj);
     if (sb) {
         if (ev->type() == QEvent::Show) {
             sb->setFocusPolicy(Qt::StrongFocus);
@@ -324,30 +359,5 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
     }
     return false;
 }
-
-KeyboardFilter::KeyboardFilter(QObject* parent)
-  : QObject(parent)
-{
-}
-
-bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
-{
-    if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
-        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
-        Qt::KeyboardModifiers mod = kev->modifiers();
-        int key = kev->key();
-        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))
-        {
-            QChar dp = QLocale().decimalPoint();
-            if (key != dp) {
-                QKeyEvent modifiedKeyEvent(kev->type(), dp.digitValue(), mod, QString(dp), kev->isAutoRepeat(), kev->count());
-                qApp->sendEvent(obj, &modifiedKeyEvent);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 
 #include "moc_GuiApplication.cpp"

@@ -21,82 +21,78 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintForce_H
 #define GUI_TASKVIEW_TaskFemConstraintForce_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+#include <QObject>
+#include <memory>
 
-#include "TaskFemConstraint.h"
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintForce.h"
 
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintForce;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class SelectionObject;
 class ViewProvider;
-}
+}  // namespace Gui
 
-namespace FemGui {
+namespace FemGui
+{
 
-class TaskFemConstraintForce : public TaskFemConstraintOnBoundary
+class TaskFemConstraintForce: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent = 0);
-    virtual ~TaskFemConstraintForce();
-    double getForce(void) const;
-    const std::string getReferences() const;
-    const std::string getDirectionName(void) const;
-    const std::string getDirectionObject(void) const;
-    bool getReverse(void) const;
+    explicit TaskFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView,
+                                    QWidget* parent = nullptr);
+    ~TaskFemConstraintForce() override;
+    const std::string getForce() const;
+    const std::string getReferences() const override;
+    const std::string getDirectionName() const;
+    const std::string getDirectionObject() const;
+    bool getReverse() const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
-    void onForceChanged(double);
+    void onReferenceDeleted();
     void onButtonDirection(const bool pressed = false);
     void onCheckReverse(bool);
-    void addToSelection();
-    void removeFromSelection();
+    void addToSelection() override;
+    void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e);
-    virtual void changeEvent(QEvent *e);
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
-    std::pair<App::DocumentObject*, std::string> getDirection(const std::vector<Gui::SelectionObject>&) const;
+    std::pair<App::DocumentObject*, std::string>
+    getDirection(const std::vector<Gui::SelectionObject>&) const;
     void updateUI();
 
 private:
-    Ui_TaskFemConstraintForce* ui;
+    std::unique_ptr<Ui_TaskFemConstraintForce> ui;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFemConstraintForce : public TaskDlgFemConstraint
+class TaskDlgFemConstraintForce: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView);
+    explicit TaskDlgFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual void open();
-    virtual bool accept();
-    virtual bool reject();
-
+    bool accept() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintForce_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintForce_H

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ShapeFix_EdgeConnectPy"
+      PythonName="Part.ShapeFix.EdgeConnect"
+      Twin="ShapeFix_EdgeConnect"
+      TwinPointer="ShapeFix_EdgeConnect"
+      Include="ShapeFix_EdgeConnect.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Root class for fixing operations</UserDocu>
+    </Documentation>
+    <Methode Name="add">
+      <Documentation>
+        <UserDocu>add(edge, edge)
+Adds information on connectivity between start vertex
+of second edge and end vertex of first edge taking
+edges orientation into account
+
+add(shape)
+Adds connectivity information for the whole shape.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="build">
+      <Documentation>
+        <UserDocu>Builds shared vertices, updates their positions and tolerances</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clear">
+      <Documentation>
+        <UserDocu>Clears internal data structure</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

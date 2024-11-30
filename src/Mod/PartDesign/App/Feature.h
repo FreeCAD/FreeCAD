@@ -25,6 +25,7 @@
 #define PARTDESIGN_Feature_H
 
 #include <App/PropertyStandard.h>
+#include <App/SuppressibleExtension.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
@@ -36,7 +37,7 @@ class gp_Pln;
 namespace PartDesign
 {
 
-typedef Part::TopoShape TopoShape;
+using TopoShape = Part::TopoShape;
 
 class Body;
 
@@ -44,25 +45,31 @@ class Body;
  *   Base class of all PartDesign features.
  *   This kind of features only produce solids or fail.
  */
-class PartDesignExport Feature : public Part::Feature
+class PartDesignExport Feature : public Part::Feature, public App::SuppressibleExtension
 {
-    PROPERTY_HEADER(PartDesign::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Feature);
 
 public:
     Feature();
+
+    enum SingleSolidRuleMode { Disabled = 0, Enforced = 1 };
 
     /// Base feature which this feature will be fused into or cut out of
     App::PropertyLink   BaseFeature;
     App::PropertyLinkHidden _Body;
 
-    short mustExecute() const;
+    /// Keep a copy of suppressed shapes so that we can restore them (and maybe display them)
+    Part::PropertyPartShape SuppressedShape;
+    App::DocumentObjectExecReturn* recompute() override;
+
+    short mustExecute() const override;
 
     /// Check whether the given feature is a datum feature
     static bool isDatum(const App::DocumentObject* feature);
 
     /// Returns the body the feature is in, or none
     Body* getFeatureBody() const;
-    
+
     /**
      * Returns the BaseFeature property's object (if any)
      * @param silent if couldn't determine the base feature and silent == true,
@@ -75,28 +82,49 @@ public:
     /// Returns the BaseFeature property's TopoShape (if any)
     Part::TopoShape getBaseTopoShape(bool silent=false) const;
 
-    virtual PyObject* getPyObject(void);
+    PyObject* getPyObject() override;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProvider";
     }
+
+    void onChanged(const App::Property* prop) override;
+
+    App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+
 
 protected:
 
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-    static TopoDS_Shape getSolid(const TopoDS_Shape&);    
-    static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID );    
+    TopoShape getSolid(const TopoShape&);
+    static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
+
+    /**
+     * Checks if the single-solid body rule is fulfilled.
+     */
+    bool isSingleSolidRuleSatisfied(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
+    SingleSolidRuleMode singleSolidRuleMode();
+
+    void updateSuppressedShape();
+
+    /**
+     * Set the Material To Body Material object
+     */
+    void setMaterialToBodyMaterial();
 
     /// Grab any point from the given face
-    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    
+    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
     /// Make a shape from a base plane (convenience method)
     static gp_Pln makePlnFromPlane(const App::DocumentObject* obj);
+    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);
+    static TopoShape makeTopoShapeFromPlane(const App::DocumentObject* obj);
 };
 
-typedef App::FeaturePythonT<Feature> FeaturePython;
+using FeaturePython = App::FeaturePythonT<Feature>;
 
 } //namespace PartDesign
 

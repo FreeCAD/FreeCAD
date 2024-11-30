@@ -18,6 +18,7 @@
 									<xs:attribute name="Name" type="xs:string" use="required"/>
 									<xs:attribute name="Const" type="xs:boolean" use="optional"/>
 									<xs:attribute name="Keyword" type="xs:boolean" use="optional" default="false"/>
+									<xs:attribute name="NoArgs" type="xs:boolean" use="optional" default="false"/>
 									<xs:attribute name="Class" type="xs:boolean" use="optional" default="false"/>
 									<xs:attribute name="Static" type="xs:boolean" use="optional" default="false"/>
 								</xs:complexType>
@@ -66,6 +67,8 @@
 						<xs:attribute name="Reference" type="xs:boolean" use="optional"/>
 						<xs:attribute name="Initialization" type="xs:boolean" use="optional" default="false"/>
 						<xs:attribute name="DisableNotify" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="DescriptorGetter" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="DescriptorSetter" type="xs:boolean" use="optional" default="false"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

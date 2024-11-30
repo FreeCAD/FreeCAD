@@ -7,22 +7,24 @@
     <x>0</x>
     <y>0</y>
     <width>757</width>
-    <height>621</height>
+    <height>783</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Addon manager options</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="Gui::PrefCheckBox" name="guiprefcheckboxcheckupdates">
      <property name="toolTip">
       <string>If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</string>
+installed addons will be checked for available updates</string>
      </property>
      <property name="text">
-      <string>Automatically check for updates at start (requires GitPython)</string>
+      <string>Automatically check for updates at start (requires Git)</string>
      </property>
      <property name="autoExclusive">
       <bool>false</bool>
@@ -41,10 +43,10 @@ installed addons will be checked for available updates
       <string>Download Macro metadata (approximately 10MB)</string>
      </property>
      <property name="prefEntry" stdset="0">
-      <string>DownloadMacros</string>
+      <cstring>DownloadMacros</cstring>
      </property>
      <property name="prefPath" stdset="0">
-      <string>Addons</string>
+      <cstring>Addons</cstring>
      </property>
     </widget>
    </item>
@@ -91,6 +93,54 @@ installed addons will be checked for available updates
     </layout>
    </item>
    <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhideunlicensed">
+     <property name="text">
+      <string>Hide Addons without a license</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideUnlicensed</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidenonfsf">
+     <property name="text">
+      <string>Hide Addons with non-FSF Free/Libre license</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideNonFSFFreeLibre</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxnonosi">
+     <property name="text">
+      <string>Hide Addons with non-OSI-approved license</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideNonOSIApproved</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidepy2">
      <property name="text">
       <string>Hide Addons marked Python 2 Only</string>
@@ -99,10 +149,10 @@ installed addons will be checked for available updates
       <bool>true</bool>
      </property>
      <property name="prefEntry" stdset="0">
-      <string>HidePy2</string>
+      <cstring>HidePy2</cstring>
      </property>
      <property name="prefPath" stdset="0">
-      <string>Addons</string>
+      <cstring>Addons</cstring>
      </property>
     </widget>
    </item>
@@ -115,52 +165,88 @@ installed addons will be checked for available updates
       <bool>true</bool>
      </property>
      <property name="prefEntry" stdset="0">
-      <string>HideObsolete</string>
-     </property>
-     <property name="prefPath" stdset="0">
-      <string>Addons</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Custom repositories (one per line):</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Gui::PrefTextEdit" name="guipreftexteditcustomrepositories">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="baseSize">
-      <size>
-       <width>0</width>
-       <height>48</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>You can use this window to specify additional addon repositories
-to be scanned for available addons. To include a specific branch, add it to the end
-of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</string>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>CustomRepositories</cstring>
+      <cstring>HideObsolete</cstring>
      </property>
      <property name="prefPath" stdset="0">
       <cstring>Addons</cstring>
      </property>
     </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidenewerfreecadrequired">
+     <property name="text">
+      <string>Hide Addons that require a newer version of FreeCAD</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideNewerFreeCADRequired</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Custom repositories</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableView" name="customRepositoriesTableView">
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QToolButton" name="addCustomRepositoryButton">
+       <property name="text">
+        <string notr="true">...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="removeCustomRepositoryButton">
+       <property name="text">
+        <string notr="true">...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -215,12 +301,6 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
       </item>
       <item>
        <widget class="Gui::PrefLineEdit" name="guipreflineedituserproxy">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>24</height>
-         </size>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>ProxyUrl</cstring>
         </property>
@@ -233,15 +313,45 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayoutScore">
      <item>
-      <widget class="QLabel" name="fclabel">
+      <widget class="QLabel" name="label_score">
        <property name="text">
-        <string>Python executable (optional):</string>
+        <string>Score source URL</string>
        </property>
       </widget>
      </item>
      <item>
+      <widget class="Gui::PrefLineEdit" name="guipreflineeditscoresourceurl">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</string>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>AddonsScoreURL</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Addons</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Path to Git executable (optional):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
       <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -256,10 +366,10 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
         </size>
        </property>
        <property name="toolTip">
-        <string>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</string>
+        <string>The path to the Git executable. Autodetected if needed and not specified.</string>
        </property>
        <property name="prefEntry" stdset="0">
-        <cstring>PythonExecutableForPip</cstring>
+        <cstring>GitExecutable</cstring>
        </property>
        <property name="prefPath" stdset="0">
         <cstring>Addons</cstring>
@@ -267,6 +377,63 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="advanced">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Advanced Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="guiprefcheckboxShowBranchSwitcher">
+        <property name="text">
+         <string>Show option to change branches (requires Git)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowBranchSwitcher</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Addons</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="guiprefcheckboxDisableGit">
+        <property name="text">
+         <string>Disable Git (fall back to ZIP downloads only)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>disableGit</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Addons</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="guiprefcheckboxDeveloperMode">
+        <property name="toolTip">
+         <string>Activate Addon Manager options intended for developers of new Addons.</string>
+        </property>
+        <property name="text">
+         <string>Addon developer mode</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Addons</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>developerMode</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -292,11 +459,6 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefTextEdit</class>
-   <extends>QTextEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

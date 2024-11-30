@@ -23,53 +23,129 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <limits>
+#include <locale>
+#include <iomanip>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Writer.h"
-#include "Persistence.h"
-#include "Exception.h"
 #include "Base64.h"
+#include "Base64Filter.h"
+#include "Exception.h"
 #include "FileInfo.h"
+#include "Persistence.h"
 #include "Stream.h"
 #include "Tools.h"
 
-#include <algorithm>
-#include <locale>
-#include <limits>
+#include <boost/iostreams/filtering_stream.hpp>
 
 using namespace Base;
 using namespace std;
 using namespace zipios;
 
+// boost iostream filter to escape ']]>' in text file saved into CDATA section.
+// It does not check if the character is valid utf8 or not.
+struct cdata_filter
+{
 
+    using char_type = char;
+    using category = boost::iostreams::output_filter_tag;
+
+    template<typename Device>
+    inline bool put(Device& dev, char ch)
+    {
+        switch (state) {
+            case 0:
+            case 1:
+                if (ch == ']') {
+                    ++state;
+                }
+                else {
+                    state = 0;
+                }
+                break;
+            case 2:
+                if (ch == '>') {
+                    static const char escape[] = "]]><![CDATA[";
+                    boost::iostreams::write(dev, escape, sizeof(escape) - 1);
+                }
+                state = 0;
+                break;
+        }
+        return boost::iostreams::put(dev, ch);
+    }
+
+    int state = 0;
+};
 
 // ---------------------------------------------------------------------------
 //  Writer: Constructors and Destructor
 // ---------------------------------------------------------------------------
 
-Writer::Writer(void)
-  : indent(0),forceXML(false),fileVersion(1)
+Writer::Writer()
 {
     indBuf[0] = '\0';
 }
 
-Writer::~Writer()
+Writer::~Writer() = default;
+
+std::ostream& Writer::beginCharStream(CharStreamFormat format)
 {
+    if (CharStream) {
+        throw Base::RuntimeError("Writer::beginCharStream(): invalid state");
+    }
+    charStreamFormat = format;
+    if (format == CharStreamFormat::Base64Encoded) {
+        CharStream = create_base64_encoder(Stream(), Base::base64DefaultBufferSize);
+    }
+    else {
+        Stream() << "<![CDATA[";
+        CharStream = std::make_unique<boost::iostreams::filtering_ostream>();
+        auto* filteredStream = dynamic_cast<boost::iostreams::filtering_ostream*>(CharStream.get());
+        filteredStream->push(cdata_filter());
+        filteredStream->push(Stream());
+        *filteredStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+    }
+    return *CharStream;
+}
+
+std::ostream& Writer::endCharStream()
+{
+    if (CharStream) {
+        CharStream.reset();
+        if (charStreamFormat == CharStreamFormat::Raw) {
+            Stream() << "]]>";
+        }
+    }
+    return Stream();
+}
+
+std::ostream& Writer::charStream()
+{
+    if (!CharStream) {
+        throw Base::RuntimeError("Writer::endCharStream(): no current character stream");
+    }
+    return *CharStream;
+}
+
+void Writer::insertText(const std::string& str)
+{
+    beginCharStream() << str;
+    endCharStream();
 }
 
 void Writer::insertAsciiFile(const char* FileName)
 {
     Base::FileInfo fi(FileName);
     Base::ifstream from(fi);
-    if (!from)
+    if (!from) {
         throw Base::FileException("Writer::insertAsciiFile() Could not open file!");
+    }
 
     Stream() << "<![CDATA[";
-    char ch;
-    while (from.get(ch))
+    char ch {};
+    while (from.get(ch)) {
         Stream().put(ch);
+    }
     Stream() << "]]>" << endl;
 }
 
@@ -77,15 +153,17 @@ void Writer::insertBinFile(const char* FileName)
 {
     Base::FileInfo fi(FileName);
     Base::ifstream from(fi, std::ios::in | std::ios::binary | std::ios::ate);
-    if (!from)
+    if (!from) {
         throw Base::FileException("Writer::insertAsciiFile() Could not open file!");
+    }
 
     Stream() << "<![CDATA[";
     std::ifstream::pos_type fileSize = from.tellg();
     from.seekg(0, std::ios::beg);
-    std::vector<unsigned char> bytes(fileSize);
-    from.read((char*)&bytes[0], fileSize);
-    Stream() << Base::base64_encode(&bytes[0], fileSize);
+    std::vector<unsigned char> bytes(static_cast<size_t>(fileSize));
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+    from.read(reinterpret_cast<char*>(bytes.data()), fileSize);
+    Stream() << Base::base64_encode(bytes.data(), static_cast<unsigned int>(fileSize));
     Stream() << "]]>" << endl;
 }
 
@@ -94,14 +172,14 @@ void Writer::setForceXML(bool on)
     forceXML = on;
 }
 
-bool Writer::isForceXML(void)
+bool Writer::isForceXML() const
 {
     return forceXML;
 }
 
-void Writer::setFileVersion(int v)
+void Writer::setFileVersion(int version)
 {
-    fileVersion = v;
+    fileVersion = version;
 }
 
 int Writer::getFileVersion() const
@@ -133,8 +211,9 @@ std::set<std::string> Writer::getModes() const
 void Writer::clearMode(const std::string& mode)
 {
     std::set<std::string>::iterator it = Modes.find(mode);
-    if (it != Modes.end())
+    if (it != Modes.end()) {
         Modes.erase(it);
+    }
 }
 
 void Writer::clearModes()
@@ -162,10 +241,10 @@ std::vector<std::string> Writer::getErrors() const
     return Errors;
 }
 
-std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
+std::string Writer::addFile(const char* Name, const Base::Persistence* Object)
 {
     // always check isForceXML() before requesting a file!
-    assert(isForceXML()==false);
+    assert(!isForceXML());
 
     FileEntry temp;
     temp.FileName = getUniqueFileName(Name);
@@ -173,41 +252,44 @@ std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
 
     FileList.push_back(temp);
 
-    FileNames.push_back( temp.FileName );
+    FileNames.push_back(temp.FileName);
 
     // return the unique file name
     return temp.FileName;
 }
 
-std::string Writer::getUniqueFileName(const char *Name)
+std::string Writer::getUniqueFileName(const char* Name)
 {
     // name in use?
     std::string CleanName = (Name ? Name : "");
     std::vector<std::string>::const_iterator pos;
-    pos = find(FileNames.begin(),FileNames.end(),CleanName);
+    pos = find(FileNames.begin(), FileNames.end(), CleanName);
 
     if (pos == FileNames.end()) {
         // if not, name is OK
         return CleanName;
     }
-    else {
-        std::vector<std::string> names;
-        names.reserve(FileNames.size());
-        FileInfo fi(CleanName);
-        CleanName = fi.fileNamePure();
-        std::string ext = fi.extension();
-        for (pos = FileNames.begin();pos != FileNames.end();++pos) {
-            fi.setFile(*pos);
-            std::string FileName = fi.fileNamePure();
-            if (fi.extension() == ext)
-                names.push_back(FileName);
+
+    std::vector<std::string> names;
+    names.reserve(FileNames.size());
+    FileInfo fi(CleanName);
+    CleanName = fi.fileNamePure();
+    std::string ext = fi.extension();
+    for (pos = FileNames.begin(); pos != FileNames.end(); ++pos) {
+        fi.setFile(*pos);
+        std::string FileName = fi.fileNamePure();
+        if (fi.extension() == ext) {
+            names.push_back(FileName);
         }
-        std::stringstream str;
-        str << Base::Tools::getUniqueName(CleanName, names);
-        if (!ext.empty())
-            str << "." << ext;
-        return str.str();
     }
+
+    std::stringstream str;
+    str << Base::Tools::getUniqueName(CleanName, names);
+    if (!ext.empty()) {
+        str << "." << ext;
+    }
+
+    return str.str();
 }
 
 const std::vector<std::string>& Writer::getFilenames() const
@@ -215,19 +297,19 @@ const std::vector<std::string>& Writer::getFilenames() const
     return FileNames;
 }
 
-void Writer::incInd(void)
+void Writer::incInd()
 {
     if (indent < 1020) {
-        indBuf[indent  ] = ' ';
-        indBuf[indent+1] = ' ';
-        indBuf[indent+2] = ' ';
-        indBuf[indent+3] = ' ';
-        indBuf[indent+4] = '\0';
+        indBuf[indent] = ' ';
+        indBuf[indent + 1] = ' ';
+        indBuf[indent + 2] = ' ';
+        indBuf[indent + 3] = ' ';
+        indBuf[indent + 4] = '\0';
         indent += 4;
     }
 }
 
-void Writer::decInd(void)
+void Writer::decInd()
 {
     if (indent >= 4) {
         indent -= 4;
@@ -238,10 +320,15 @@ void Writer::decInd(void)
     indBuf[indent] = '\0';
 }
 
+void Writer::putNextEntry(const char* file, const char* obj)
+{
+    ObjectName = obj ? obj : file;
+}
+
 // ----------------------------------------------------------------------------
 
 ZipWriter::ZipWriter(const char* FileName)
-  : ZipStream(FileName)
+    : ZipStream(FileName)
 {
 #ifdef _MSC_VER
     ZipStream.imbue(std::locale::empty());
@@ -249,11 +336,11 @@ ZipWriter::ZipWriter(const char* FileName)
     ZipStream.imbue(std::locale::classic());
 #endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(ios::fixed,ios::floatfield);
+    ZipStream.setf(ios::fixed, ios::floatfield);
 }
 
 ZipWriter::ZipWriter(std::ostream& os)
-  : ZipStream(os)
+    : ZipStream(os)
 {
 #ifdef _MSC_VER
     ZipStream.imbue(std::locale::empty());
@@ -261,17 +348,26 @@ ZipWriter::ZipWriter(std::ostream& os)
     ZipStream.imbue(std::locale::classic());
 #endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(ios::fixed,ios::floatfield);
+    ZipStream.setf(ios::fixed, ios::floatfield);
 }
 
-void ZipWriter::writeFiles(void)
+void ZipWriter::putNextEntry(const char* file, const char* obj)
+{
+    Writer::putNextEntry(file, obj);
+
+    ZipStream.putNextEntry(file);
+}
+
+void ZipWriter::writeFiles()
 {
     // use a while loop because it is possible that while
     // processing the files new ones can be added
     size_t index = 0;
     while (index < FileList.size()) {
-        FileEntry entry = FileList.begin()[index];
-        ZipStream.putNextEntry(entry.FileName);
+        FileEntry entry = FileList[index];
+        putNextEntry(entry.FileName.c_str());
+        indent = 0;
+        indBuf[0] = 0;
         entry.Object->SaveDocFile(*this);
         index++;
     }
@@ -284,33 +380,33 @@ ZipWriter::~ZipWriter()
 
 // ----------------------------------------------------------------------------
 
-FileWriter::FileWriter(const char* DirName) : DirName(DirName)
-{
-}
+FileWriter::FileWriter(const char* DirName)
+    : DirName(DirName)
+{}
 
-FileWriter::~FileWriter()
-{
-}
+FileWriter::~FileWriter() = default;
 
-void FileWriter::putNextEntry(const char* file)
+void FileWriter::putNextEntry(const char* file, const char* obj)
 {
+    Writer::putNextEntry(file, obj);
+
     std::string fileName = DirName + "/" + file;
     this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
 }
 
-bool FileWriter::shouldWrite(const std::string& , const Base::Persistence *) const
+bool FileWriter::shouldWrite(const std::string& /*name*/, const Base::Persistence* /*obj*/) const
 {
     return true;
 }
 
-void FileWriter::writeFiles(void)
+void FileWriter::writeFiles()
 {
     // use a while loop because it is possible that while
     // processing the files new ones can be added
     size_t index = 0;
     this->FileStream.close();
     while (index < FileList.size()) {
-        FileEntry entry = FileList.begin()[index];
+        FileEntry entry = FileList[index];
 
         if (shouldWrite(entry.FileName, entry.Object)) {
             std::string filePath = entry.FileName;
@@ -322,8 +418,9 @@ void FileWriter::writeFiles(void)
                 fi.createDirectory();
             }
 
-            std::string fileName = DirName + "/" + entry.FileName;
-            this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+            putNextEntry(entry.FileName.c_str());
+            indent = 0;
+            indBuf[0] = 0;
             entry.Object->SaveDocFile(*this);
             this->FileStream.close();
         }

@@ -21,9 +21,10 @@
  ***************************************************************************/
 
 
+// clang-format off
 // LeastSquareConformalMapping + fem relaxing
 // ------------------------------------------
-// 
+//
 #ifndef UNWRAP_H
 #define UNWRAP_H
 
@@ -35,16 +36,14 @@
 // 6: K.u=forces ->u
 // 7: x1, y1 += w * u
 
-#include "MeshFlattening.h"
-
-#include <vector>
 #include <memory>
 #include <tuple>
+#include <vector>
 
-#include <Eigen/Geometry>
-#include <Eigen/IterativeLinearSolvers>
+#include "MeshFlattening.h"
 
-typedef Eigen::SparseMatrix<double> spMat;
+
+using spMat = Eigen::SparseMatrix<double>;
 
 namespace lscmrelax
 {
@@ -54,21 +53,21 @@ class NullSpaceProjector: public Eigen::IdentityPreconditioner
   public:
     Eigen::MatrixXd null_space_1;
     Eigen::MatrixXd null_space_2;
-    
+
     template<typename Rhs>
-    inline Rhs solve(Rhs& b) const { 
-	return b - this->null_space_1 * (this->null_space_2 * b);
+    inline Rhs solve(Rhs& b) const {
+        return b - this->null_space_1 * (this->null_space_2 * b);
     }
 
     void setNullSpace(Eigen::MatrixXd null_space) {
-	// normalize + orthogonalize the nullspace
-	this->null_space_1 = null_space * ((null_space.transpose() * null_space).inverse());
-	this->null_space_2 = null_space.transpose();
+        // normalize + orthogonalize the nullspace
+        this->null_space_1 = null_space * ((null_space.transpose() * null_space).inverse());
+        this->null_space_2 = null_space.transpose();
     }
 };
-    
-typedef Eigen::Vector3d Vector3;
-typedef Eigen::Vector2d Vector2;
+
+using Vector3 = Eigen::Vector3d;
+using Vector2 = Eigen::Vector2d;
 
 class LscmRelax{
 private:
@@ -91,9 +90,9 @@ private:
     Eigen::MatrixXd get_nullspace();
 
 public:
-    LscmRelax() {}
+    LscmRelax() = default;
     LscmRelax(
-        RowMat<double, 3> vertices, 
+        RowMat<double, 3> vertices,
         RowMat<long, 3> triangles,
         std::vector<long> fixed_pins);
 
@@ -116,7 +115,7 @@ public:
 
     void rotate_by_min_bound_area();
     void transform(bool scale=false);
-    
+
     double get_area();
     double get_flat_area();
 
@@ -125,3 +124,4 @@ public:
 }
 
 #endif
+// clang-format on

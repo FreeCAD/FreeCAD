@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>Test Workbench</name>
+  <description>A package.xml file for unit testing.</description>
+  <version>1.0.1</version>
+  <date>2022-01-07</date>
+  <maintainer email="developer1@freecad.org">FreeCAD Developer 1</maintainer>
+  <maintainer email="developer2@freecad.org">FreeCAD Developer 2</maintainer>
+  <author email="developer3@freecad.org">FreeCAD Developer 3</author>
+  <author>FreeCAD Developer 4</author>
+  <author>FreeCAD Developer 5</author>
+  <license file="LICENSE">LGPLv2.1</license>
+  <url type="repository" branch="main">https://github.com/chennes/FreeCAD-Package</url>
+  <url type="readme">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
+  <url type="documentation">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
+  <url type="bugtracker">https://github.com/chennes/FreeCAD-Package/issues</url>
+  <url type="discussion">https://forum.freecad.org/</url>
+  <icon>Resources/icons/PackageIcon.svg</icon>
+  <tag>Tag0</tag>
+  <tag>Tag1</tag>
+</package>

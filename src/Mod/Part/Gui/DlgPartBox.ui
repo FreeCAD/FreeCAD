@@ -26,6 +26,13 @@
       <property name="spacing">
        <number>6</number>
       </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="TextLabel1">
+        <property name="text">
+         <string>X:</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
        <widget class="Gui::QuantitySpinBox" name="xPos">
         <property name="unit" stdset="0">
@@ -39,10 +46,10 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="direction">
-        <property name="currentIndex">
-         <number>-1</number>
+      <item row="1" column="0">
+       <widget class="QLabel" name="TextLabel2">
+        <property name="text">
+         <string>Y:</string>
         </property>
        </widget>
       </item>
@@ -59,7 +66,14 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="2" column="0">
+       <widget class="QLabel" name="TextLabel3">
+        <property name="text">
+         <string>Z:</string>
+        </property>
+       </widget>
+      </item>
+     <item row="2" column="1">
        <widget class="Gui::QuantitySpinBox" name="zPos">
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -79,28 +93,14 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="TextLabel1">
-        <property name="text">
-         <string>X:</string>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="direction">
+        <property name="currentIndex">
+         <number>-1</number>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="TextLabel2">
-        <property name="text">
-         <string>Y:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="TextLabel3">
-        <property name="text">
-         <string>Z:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="1" column="0">
@@ -115,8 +115,15 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="wLength">
+      <item row="0" column="0">
+       <widget class="QLabel" name="TextLabel1_2">
+        <property name="text">
+         <string>Length:</string>
+        </property>
+       </widget>
+      </item>
+     <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="uLength">
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
         </property>
@@ -125,24 +132,18 @@
         </property>
         <property name="value">
          <double>100.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="TextLabel2_2">
+        <property name="text">
+         <string>Width:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="Gui::QuantitySpinBox" name="vLength">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-        <property name="maximum">
-         <double>2147480000.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>100.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="uLength">
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
         </property>
@@ -161,21 +162,20 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="TextLabel2_2">
-        <property name="text">
-         <string>Width:</string>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="wLength">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="maximum">
+         <double>2147480000.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>100.000000000000000</double>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="TextLabel1_2">
-        <property name="text">
-         <string>Length:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">

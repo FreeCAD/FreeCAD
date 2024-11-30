@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -21,31 +21,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
 #include <App/PropertyUnits.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
 
 #include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawViewDimension.h>
 
 
 namespace TechDrawGui {
 
-
 class TechDrawGuiExport ViewProviderDimension : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderDimension);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderDimension);
 
 public:
     /// constructor
     ViewProviderDimension();
     /// destructor
-    virtual ~ViewProviderDimension();
+    ~ViewProviderDimension() override;
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
+    App::PropertyLength Arrowsize;
     App::PropertyLength LineWidth;
     App::PropertyColor  Color;
 
@@ -65,29 +65,33 @@ public:
 
     App::PropertyBool        FlipArrowheads;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property* p);
-    virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual bool doubleClicked(void);
+    App::PropertyFloat GapFactorISO;
+    App::PropertyFloat GapFactorASME;
+    App::PropertyFloat LineSpacingFactorISO;
 
-    virtual TechDraw::DrawViewDimension* getViewObject() const;
+    void attach(App::DocumentObject *) override;
+    bool useNewSelectionModel() const override {return false;}
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* p) override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
+    bool onDelete(const std::vector<std::string> & parms) override;
+
+
+    TechDraw::DrawViewDimension* getViewObject() const override;
 
     App::Color prefColor() const;
     std::string prefFont() const;
     double prefFontSize() const;
+    double prefArrowSize() const;
     double prefWeight() const;
     int prefStandardAndStyle() const;
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool canDelete(App::DocumentObject* obj) const override;
+    void setPixmapForType();
 
 protected:
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 private:
     static const char *StandardAndStyleEnums[];

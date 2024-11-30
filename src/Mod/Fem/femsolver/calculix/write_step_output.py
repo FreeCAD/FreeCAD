@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix write inpfile step output"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 def write_step_output(f, ccxwriter):
@@ -51,15 +51,18 @@ def write_step_output(f, ccxwriter):
         f.write("U\n")
     if not ccxwriter.member.geos_fluidsection:
         f.write("*EL FILE\n")
+        variables = "S, E"
+        if ccxwriter.analysis_type == "thermomech":
+            variables += ", HFL"
         if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
-            f.write("S, E, PEEQ\n")
-        else:
-            f.write("S, E\n")
+            variables += ", PEEQ"
+
+        f.write(variables + "\n")
 
         # dat file
-        # reaction forces: freecadweb.org/tracker/view.php?id=2934
+        # reaction forces: freecad.org/tracker/view.php?id=2934
         # some hint can be found in this topic:
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=20664&start=10#p520642
+        # https://forum.freecad.org/viewtopic.php?f=18&t=20664&start=10#p520642
         if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
             f.write("** outputs --> dat file\n")
         if ccxwriter.member.cons_fixed:
@@ -81,12 +84,36 @@ def write_step_output(f, ccxwriter):
                 ):
                     f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(femobj["Object"].Name))
                     f.write("RF\n")
+        if ccxwriter.member.cons_rigidbody:
+            # reaction forces/moments for Constraint rigid body
+            f.write("** reaction forces/moments for Constraint rigid body\n")
+            for femobj in ccxwriter.member.cons_rigidbody:
+                # femobj --> dict, FreeCAD document object is femobj["Object"]
+                if (
+                    femobj["Object"].TranslationalModeX != "Free"
+                    or femobj["Object"].TranslationalModeY != "Free"
+                    or femobj["Object"].TranslationalModeZ != "Free"
+                ):
+                    f.write(
+                        "*NODE PRINT, NSET={}_RefNode, TOTALS=ONLY\n".format(femobj["Object"].Name)
+                    )
+                    f.write("RF\n")
+                if (
+                    femobj["Object"].RotationalModeX != "Free"
+                    or femobj["Object"].RotationalModeY != "Free"
+                    or femobj["Object"].RotationalModeZ != "Free"
+                ):
+                    f.write(
+                        "*NODE PRINT, NSET={}_RotNode, TOTALS=ONLY\n".format(femobj["Object"].Name)
+                    )
+                    f.write("RF\n")
         if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
             f.write("\n")
+        f.write(f"*OUTPUT, FREQUENCY={ccxwriter.solver_obj.OutputFrequency}")
 
         # there is no need to write all integration point results
         # as long as there is no reader for them
-        # see https://forum.freecadweb.org/viewtopic.php?f=18&t=29060
+        # see https://forum.freecad.org/viewtopic.php?f=18&t=29060
         # f.write("*NODE PRINT , NSET=" + ccxwriter.ccx_nall + "\n")
         # f.write("U \n")
         # f.write("*EL PRINT , ELSET=" + ccxwriter.ccx_eall + "\n")

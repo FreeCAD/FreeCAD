@@ -4,92 +4,97 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="63"/>
+      <location filename="../../NavigationIndicatorGui.py" line="85"/>
       <source>Select</source>
       <translation>Выбрать</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="64"/>
+      <location filename="../../NavigationIndicatorGui.py" line="86"/>
       <source>Zoom</source>
       <translation>Масштаб</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="65"/>
+      <location filename="../../NavigationIndicatorGui.py" line="87"/>
       <source>Rotate</source>
       <translation>Повернуть</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="66"/>
+      <location filename="../../NavigationIndicatorGui.py" line="88"/>
       <source>Pan</source>
       <translation>Сдвиг</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="67"/>
+      <location filename="../../NavigationIndicatorGui.py" line="89"/>
       <source>Tilt</source>
-      <translation>Вращение</translation>
+      <translation>Наклон (вращение)</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="68"/>
+      <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Navigation style</source>
       <translation>Стиль навигации</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="69"/>
+      <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Page Up or Page Down key.</source>
       <translation>Клавиши Page Up или Page Down.</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="70"/>
+      <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Rotation focus</source>
       <translation>Центр вращения</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="71"/>
+      <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Middle mouse button or H key.</source>
       <translation>Средняя кнопка мыши или клавиша H.</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="73"/>
+      <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Middle mouse button.</source>
       <translation>Средняя кнопка мыши.</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="76"/>
+      <location filename="../../NavigationIndicatorGui.py" line="98"/>
       <source>Navigation style not recognized.</source>
       <translation>Стиль навигации не распознан.</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="291"/>
+      <location filename="../../NavigationIndicatorGui.py" line="569"/>
       <source>Settings</source>
       <translation>Настройки</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="292"/>
+      <location filename="../../NavigationIndicatorGui.py" line="570"/>
       <source>Orbit style</source>
-      <translation>Вращение</translation>
+      <translation>Орбитальный стиль</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="293"/>
+      <location filename="../../NavigationIndicatorGui.py" line="571"/>
       <source>Compact</source>
       <translation>Компактно</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="294"/>
+      <location filename="../../NavigationIndicatorGui.py" line="572"/>
       <source>Tooltip</source>
       <translation>Подсказка</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="295"/>
+      <location filename="../../NavigationIndicatorGui.py" line="573"/>
       <source>Turntable</source>
-      <translation>Поворотный круг</translation>
+      <translation>Поворотный стол</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="296"/>
+      <location filename="../../NavigationIndicatorGui.py" line="574"/>
+      <source>Free Turntable</source>
+      <translation>Свободный Поворотный стол</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="575"/>
       <source>Trackball</source>
-      <translation>Trackball</translation>
+      <translation>Трекбол</translation>
     </message>
     <message>
-      <location filename="NavigationIndicatorGui.py" line="297"/>
+      <location filename="../../NavigationIndicatorGui.py" line="576"/>
       <source>Undefined</source>
       <translation>Не определено</translation>
     </message>

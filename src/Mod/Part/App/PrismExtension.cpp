@@ -25,8 +25,9 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 #endif
 
-#include "PrismExtension.h"
 #include <Base/Tools.h>
+
+#include "PrismExtension.h"
 
 
 using namespace Part;
@@ -45,9 +46,7 @@ PrismExtension::PrismExtension()
     initExtensionType(PrismExtension::getExtensionClassTypeId());
 }
 
-PrismExtension::~PrismExtension()
-{
-}
+PrismExtension::~PrismExtension() = default;
 
 short int PrismExtension::extensionMustExecute()
 {

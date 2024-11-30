@@ -32,14 +32,15 @@
 
 #include "SensorManager.h"
 
-#include <QtCore/QTimer>
+#include <QTimer>
 
-#include <Inventor/SoDB.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/SoDB.h>
 #include <Inventor/SoRenderManager.h>
-#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/C/threads/thread.h>
+
 #include "SignalThread.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -49,8 +50,8 @@ SensorManager::SensorManager()
   this->mainthreadid = cc_thread_id();
   this->signalthread = new SignalThread();
 
-  QObject::connect(this->signalthread, SIGNAL(triggerSignal()),
-                   this, SLOT(sensorQueueChanged()));
+  QObject::connect(this->signalthread, &SignalThread::triggerSignal,
+                   this, &SensorManager::sensorQueueChanged);
 
   this->idletimer = new QTimer;
   this->delaytimer = new QTimer;
@@ -60,9 +61,9 @@ SensorManager::SensorManager()
   this->delaytimer->setSingleShot(true);
   this->timerqueuetimer->setSingleShot(true);
 
-  this->connect(this->idletimer, SIGNAL(timeout(void)), this, SLOT(idleTimeout()));
-  this->connect(this->delaytimer, SIGNAL(timeout(void)), this, SLOT(delayTimeout()));
-  this->connect(this->timerqueuetimer, SIGNAL(timeout(void)), this, SLOT(timerQueueTimeout()));
+  this->connect(this->idletimer, &QTimer::timeout, this, &SensorManager::idleTimeout);
+  this->connect(this->delaytimer, &QTimer::timeout, this, &SensorManager::delayTimeout);
+  this->connect(this->timerqueuetimer, &QTimer::timeout, this, &SensorManager::timerQueueTimeout);
 
   SoDB::getSensorManager()->setChangedCallback(SensorManager::sensorQueueChangedCB, this);
   this->timerEpsilon = 1.0 / 5000.0;

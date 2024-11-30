@@ -20,69 +20,62 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define MeshExport        __declspec(dllimport)
-# define PartExport        __declspec(dllimport)
-# define MeshGuiExport     __declspec(dllimport)
-# define PartGuiExport     __declspec(dllimport)
-# define MeshPartAppExport __declspec(dllimport)
-# define MeshPartGuiExport __declspec(dllexport)
-#else // for Linux
-# define MeshExport
-# define PartExport
-# define MeshGuiExport
-# define PartGuiExport
-# define MeshPartAppExport
-# define MeshPartGuiExport
-#endif
-
 #ifdef _MSC_VER
-# pragma warning(disable : 4005)
-# pragma warning(disable : 4290)
-# pragma warning(disable : 4275)
+#pragma warning(disable : 4005)
+#pragma warning(disable : 4290)
+#pragma warning(disable : 4275)
 #endif
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
-// standard
-#include <iostream>
-#include <assert.h>
-#include <cmath>
-
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
+#include <cfloat>
+#include <sstream>
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
+#include <QApplication>
+#include <QFuture>
+#include <QKeyEvent>
+#include <QMenu>
+#include <QMessageBox>
+#include <QPointer>
+#include <QPushButton>
+#include <QStatusBar>
+#include <QTimer>
+#include <QtConcurrentMap>
 
 // OCCT
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <GeomAPI_PointsToBSpline.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Poly_Polygon3D.hxx>
+#include <TColgp_Array1OfPnt.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
+#include <gp_Pnt.hxx>
 
-#endif //_PreComp_
+// Inventor
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoSeparator.h>
 
-#endif // __PRECOMPILED_GUI__
+#endif  //_PreComp_
+
+#endif  // __PRECOMPILED_GUI__

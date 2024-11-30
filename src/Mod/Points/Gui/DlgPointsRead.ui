@@ -52,36 +52,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="1" column="0">
-       <layout class="QGridLayout">
-        <property name="margin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="lineEditClusterStart"/>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="lineEditComments"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="textLabel4">
-          <property name="text">
-           <string>Ignore lines starting with:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="textLabel3">
-          <property name="text">
-           <string>Cluster by lines starting with:</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item row="0" column="0">
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
@@ -117,7 +87,37 @@
         </layout>
        </widget>
       </item>
-     </layout>
+     <item row="1" column="0">
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabel3">
+          <property name="text">
+           <string>Cluster by lines starting with:</string>
+          </property>
+         </widget>
+        </item>
+       <item row="0" column="1">
+         <widget class="QLineEdit" name="lineEditClusterStart"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabel4">
+          <property name="text">
+           <string>Ignore lines starting with:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineEditComments"/>
+        </item>
+        </layout>
+      </item>
+      </layout>
     </widget>
    </item>
    <item>
@@ -140,33 +140,66 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="3" column="1">
-         <widget class="QComboBox" name="comboBoxNextBlock2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabel6">
+          <property name="text">
+           <string>Number separator:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboBoxSeparator">
+          <property name="editable">
+           <bool>true</bool>
+          </property>
           <item>
            <property name="text">
-            <string>none</string>
+            <string notr="true">,</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>I,J,K (normal vector)</string>
+            <string notr="true">;</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>I,K (normal vector 2D)</string>
+            <string>\t</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>R,G,B (color)</string>
+            <string>\w</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabel7">
+          <property name="text">
+           <string>Points format:</string>
+          </property>
+         </widget>
+        </item>
+       <item row="1" column="1">
+         <widget class="QComboBox" name="comboBoxPointsFormat">
+          <item>
+           <property name="text">
+            <string>X,Y,Z</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>I (Gray value)</string>
+            <string>X,Y</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="textLabel8">
+          <property name="text">
+           <string>Next block:</string>
+          </property>
          </widget>
         </item>
         <item row="2" column="1">
@@ -198,29 +231,44 @@
           </item>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="textLabel6">
+        <item row="3" column="0">
+         <widget class="QLabel" name="textLabel8_2">
           <property name="text">
-           <string>Number separator:</string>
+           <string>Next block:</string>
           </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="comboBoxNextBlock2">
+          <item>
+           <property name="text">
+            <string>none</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I,J,K (normal vector)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I,K (normal vector 2D)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R,G,B (color)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I (Gray value)</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="textLabel8_2_2">
-          <property name="text">
-           <string>Next block:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="textLabel8">
-          <property name="text">
-           <string>Next block:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="textLabel8_2">
           <property name="text">
            <string>Next block:</string>
           </property>
@@ -255,55 +303,7 @@
           </item>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QComboBox" name="comboBoxSeparator">
-          <property name="editable">
-           <bool>true</bool>
-          </property>
-          <item>
-           <property name="text">
-            <string>,</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>;</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>\t</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>\w</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="comboBoxPointsFormat">
-          <item>
-           <property name="text">
-            <string>X,Y,Z</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>X,Y</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="textLabel7">
-          <property name="text">
-           <string>Points format:</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        </layout>
       </item>
      </layout>
     </widget>
@@ -345,7 +345,7 @@
         <item>
          <widget class="QLineEdit" name="lineEditPreviewLines">
           <property name="text">
-           <string>100</string>
+           <string notr="true">100</string>
           </property>
          </widget>
         </item>

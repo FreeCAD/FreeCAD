@@ -24,37 +24,37 @@
 #ifndef APP_DOCUMENTOBJECTGROUP_H
 #define APP_DOCUMENTOBJECTGROUP_H
 
-#include "FeaturePython.h"
 #include "DocumentObject.h"
-#include "PropertyLinks.h"
+#include "FeaturePython.h"
 #include "GroupExtension.h"
-#include <vector>
 
 
 namespace App
 {
 
-class AppExport DocumentObjectGroup : public DocumentObject, public GroupExtension {
+class AppExport DocumentObjectGroup: public DocumentObject, public GroupExtension
+{
 
     PROPERTY_HEADER_WITH_EXTENSIONS(App::DocumentObjectGroup);
 
 public:
     /// Constructor
-    DocumentObjectGroup(void);
-    virtual ~DocumentObjectGroup();
+    DocumentObjectGroup();
+    ~DocumentObjectGroup() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override{
+    const char* getViewProviderName() const override
+    {
         return "Gui::ViewProviderDocumentObjectGroup";
     }
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject* getPyObject() override;
 };
 
-typedef App::FeaturePythonT<DocumentObjectGroup> DocumentObjectGroupPython;
+using DocumentObjectGroupPython = App::FeaturePythonT<DocumentObjectGroup>;
 
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_DOCUMENTOBJECTGROUP_H
+#endif  // APP_DOCUMENTOBJECTGROUP_H

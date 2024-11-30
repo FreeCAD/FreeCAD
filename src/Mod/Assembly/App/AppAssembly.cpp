@@ -1,86 +1,73 @@
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-//# include <ode/ode.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
-#include "Item.h"
-#include "Product.h"
-#include "ProductRef.h"
+#include "AssemblyObject.h"
+#include "AssemblyLink.h"
+#include "BomObject.h"
+#include "BomGroup.h"
+#include "JointGroup.h"
+#include "ViewGroup.h"
 
-#include "Constraint.h"
-#include "ConstraintGroup.h"
 
-
-extern struct PyMethodDef Assembly_methods[];
-
-PyDoc_STRVAR(module_Assembly_doc,
-"This module is the Assembly module.");
-
+namespace Assembly
+{
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void AssemblyExport initAssembly()
+PyMOD_INIT_FUNC(AssemblyApp)
 {
     // load dependent module
     try {
         Base::Interpreter().runString("import Part");
-        //Base::Interpreter().runString("import PartDesign");
+        Base::Interpreter().runString("import Spreadsheet");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(nullptr);
     }
-    static struct PyModuleDef AssemblyAPIDef = {
-        PyModuleDef_HEAD_INIT,
-        "Assembly", module_Assembly_doc, -1, Assembly_methods,
-        NULL, NULL, NULL, NULL
-    };
-    PyModule_Create(&AssemblyAPIDef);
+
+    PyObject* mod = Assembly::initModule();
     Base::Console().Log("Loading Assembly module... done\n");
 
-
-	//dWorldID id = dWorldCreate();
-	//dWorldDestroy(id);
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
- 
-    // Item hierarchy
-    Assembly::Item          ::init();
-    Assembly::Product       ::init();
-    Assembly::ProductRef    ::init();
 
-    // constraint hierarchy
-    Assembly::Constraint        ::init();
-    Assembly::ConstraintGroup   ::init();
+    Assembly::AssemblyObject ::init();
+    Assembly::AssemblyLink ::init();
+    Assembly::BomObject ::init();
+
+    Assembly::BomGroup ::init();
+    Assembly::JointGroup ::init();
+    Assembly::ViewGroup ::init();
+
+    PyMOD_Return(mod);
 }
-
-} // extern "C"

@@ -478,7 +478,7 @@ namespace Py
         return Object(Py::_True());
     }
 
-    // TMM: 31May'01 - Added the #ifndef so I can exlude iostreams.
+    // TMM: 31May'01 - Added the #ifndef so I can exclude iostreams.
 #ifndef CXX_NO_IOSTREAMS
     PYCXX_EXPORT std::ostream& operator<< (std::ostream& os, const Object& ob);
 #endif
@@ -1420,7 +1420,7 @@ namespace Py
             return SeqBase<T> (PySequence_Concat(ptr(), *other), true);
         }
 
-        // more STL compatability
+        // more STL compatibility
         const T front () const
         {
             return getItem(0);

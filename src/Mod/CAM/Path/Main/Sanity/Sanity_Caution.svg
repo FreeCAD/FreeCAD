@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64px"
+   height="64px"
+   id="svg2985"
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2987">
+    <linearGradient
+       id="linearGradient3007">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3009" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop3011" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3007"
+       id="linearGradient3013"
+       x1="117.28671"
+       y1="85.444054"
+       x2="103.23077"
+       y2="40.384613"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <metadata
+     id="metadata2990">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>CAM_Sanity_Caution</dc:title>
+        <dc:date>2015-07-04</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/CAM/Gui/Resources/icons/CAM_Sanity_Caution.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+    <path
+       style="fill:#ef2929;fill-opacity:0.85997319999999999;fill-rule:nonzero;stroke:#280000;stroke-width:1.98682772999999990;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3003"
+       d="m 77.09091,22.272728 a 29.545454,28.09091 0 1 1 -59.090908,0 29.545454,28.09091 0 1 1 59.090908,0 z"
+       transform="matrix(0.98153848,0,0,1.0323624,-14.667694,9.0064723)" />
+    <path
+       style="fill:url(#linearGradient3013);fill-opacity:1;fill-rule:nonzero;stroke-width:0.87000000000000000;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3005"
+       d="m 135.09091,62.454544 a 24.363636,23.90909 0 1 1 -48.727274,0 24.363636,23.90909 0 1 1 48.727274,0 z"
+       transform="matrix(1.0671642,0,0,1.0874525,-86.164179,-35.916347)" />
+    <g
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#eeeeec;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       id="text2999">
+      <path
+         d="m 26,10 12,0 0,16.119223 -1.7,11.758875 -8.600002,0 L 26,26.119223 26,10 m 0,31.985264 12,0 L 38,52 26,52 26,41.985264"
+         id="path2993" />
+    </g>
+  </g>
+</svg>

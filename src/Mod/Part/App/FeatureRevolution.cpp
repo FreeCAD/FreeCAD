@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Ax1.hxx>
-# include <TopoDS.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <gp_Lin.hxx>
+# include <gp_Ax1.hxx>
 # include <gp_Circ.hxx>
+# include <gp_Lin.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 #endif
 
-
 #include "FeatureRevolution.h"
-#include <Base/Tools.h>
-#include <Base/Exception.h>
-#include <App/Application.h>
 #include "FaceMaker.h"
+
 
 using namespace Part;
 
@@ -46,10 +42,10 @@ PROPERTY_SOURCE(Part::Revolution, Part::Feature)
 
 Revolution::Revolution()
 {
-    ADD_PROPERTY_TYPE(Source,(0), "Revolve", App::Prop_None, "Shape to revolve");
+    ADD_PROPERTY_TYPE(Source,(nullptr), "Revolve", App::Prop_None, "Shape to revolve");
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)), "Revolve", App::Prop_None, "Base point of revolution axis");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,0.0,1.0)), "Revolve", App::Prop_None, "Direction of revolution axis");
-    ADD_PROPERTY_TYPE(AxisLink,(0),"Revolve",App::Prop_None,"Link to edge to use as revolution axis.");
+    ADD_PROPERTY_TYPE(AxisLink,(nullptr),"Revolve",App::Prop_None,"Link to edge to use as revolution axis.");
     ADD_PROPERTY_TYPE(Angle,(360.0), "Revolve", App::Prop_None, "Angle span of revolution. If angle is zero, and an arc is used for axis link, angle span of arc will be used.");
     Angle.setConstraints(&angleRangeU);
     ADD_PROPERTY_TYPE(Symmetric,(false),"Revolve",App::Prop_None,"Extend revolution symmetrically from the profile.");
@@ -93,8 +89,8 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     auto linked = axisLink.getValue();
 
     TopoDS_Shape axEdge;
-    if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
-        axEdge = Feature::getTopoShape(linked).getSubShape(axisLink.getSubValues()[0].c_str());
+    if (!axisLink.getSubValues().empty()  &&  axisLink.getSubValues()[0].length() > 0){
+        axEdge = Feature::getTopoShape(linked, axisLink.getSubValues()[0].c_str(), true /*need element*/).getShape();
     } else {
         axEdge = Feature::getShape(linked);
     }
@@ -125,7 +121,7 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     return true;
 }
 
-App::DocumentObjectExecReturn *Revolution::execute(void)
+App::DocumentObjectExecReturn *Revolution::execute()
 {
     App::DocumentObject* link = Source.getValue();
     if (!link)
@@ -152,7 +148,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             angle = angle_edge;
 
         //apply "midplane" symmetry
-        TopoShape sourceShape = Feature::getShape(link);
+        TopoShape sourceShape = Feature::getTopoShape(link);
         if (Symmetric.getValue()) {
             //rotate source shape backwards by half angle, to make resulting revolution symmetric to the profile
             gp_Trsf mov;
@@ -160,46 +156,21 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             TopLoc_Location loc(mov);
             sourceShape.setShape(sourceShape.getShape().Moved(loc));
         }
-
-        //"make solid" processing: make faces from wires.
-        Standard_Boolean makeSolid = Solid.getValue() ? Standard_True : Standard_False;
-        if (makeSolid){
-            //test if we need to make faces from wires. If there are faces - we don't.
-            TopExp_Explorer xp(sourceShape.getShape(), TopAbs_FACE);
-            if (xp.More())
-                //source shape has faces. Just revolve as-is.
-                makeSolid = Standard_False;
-        }
-        if (makeSolid && strlen(this->FaceMakerClass.getValue())>0){
-            //new facemaking behavior: use facemaker class
-            std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
-
-            TopoDS_Shape myShape = sourceShape.getShape();
-            if(myShape.ShapeType() == TopAbs_COMPOUND)
-                mkFace->useCompound(TopoDS::Compound(myShape));
-            else
-                mkFace->addShape(myShape);
-            mkFace->Build();
-            myShape = mkFace->Shape();
-            sourceShape = TopoShape(myShape);
-
-            makeSolid = Standard_False;//don't ask TopoShape::revolve to make solid, as we've made faces...
-        }
-
-        // actual revolution!
-        TopoDS_Shape revolve = sourceShape.revolve(revAx, angle, makeSolid);
-
-        if (revolve.IsNull())
+        TopoShape revolve(0);
+        revolve.makeElementRevolve(sourceShape,
+                                   revAx,
+                                   angle,
+                                   Solid.getValue() ? FaceMakerClass.getValue() : 0);
+        if (revolve.isNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
+        }
         this->Shape.setValue(revolve);
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
-
-
 
 void Part::Revolution::setupObject()
 {

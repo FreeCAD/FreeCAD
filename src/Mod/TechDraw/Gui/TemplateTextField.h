@@ -23,41 +23,56 @@
 #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
 #define DRAWINGGUI_TEMPLATETEXTFIELD_H
 
-#include <QGraphicsRectItem>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "Mod/TechDraw/App/DrawTemplate.h"
+#include <QGraphicsItemGroup>
+#include <QGraphicsRectItem>
+#include <QGraphicsPathItem>
+
+namespace TechDraw {
+class DrawTemplate;
+}
 
 namespace TechDrawGui
 {
-    /// QGraphicsRectItem-derived class for the text fields in title blocks
+    /// QGraphicsItemGroupm-derived class for the text fields in title blocks
     /*!
      * Makes an area on the drawing that's clickable, so appropriate
      * Properties of the template can be modified.
      */
-class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
+class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
 {
     public:
         TemplateTextField(QGraphicsItem *parent,
                           TechDraw::DrawTemplate *myTmplte,
                           const std::string &myFieldName);
 
-        virtual ~TemplateTextField() = default;
+        ~TemplateTextField() override = default;
 
         enum {Type = QGraphicsItem::UserType + 160};
-        int type() const { return Type;}
+        int type() const override { return Type;}
 
         /// Returns the field name that this TemplateTextField represents
         std::string fieldName() const { return fieldNameStr; }
 
+        void setAutofill(QString autofillString);
+        void setRectangle(QRectF rect);
+        void setLine(QPointF from, QPointF to);
+        void setLineColor(QColor color);
+
     protected:
         TechDraw::DrawTemplate *tmplte;
         std::string fieldNameStr;
+        QString m_autofillString;
 
         /// Need this to properly handle mouse release
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
         /// Trigger the dialog for editing template text
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+        QGraphicsRectItem* m_rect;
+        QGraphicsPathItem* m_line;
 };
 }   // namespace TechDrawGui
 

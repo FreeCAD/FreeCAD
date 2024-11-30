@@ -20,24 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/Selection.h>
 
 #include "ViewProviderImage.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 
@@ -48,36 +36,26 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderImage, TechDrawGui::ViewProviderDrawing
 
 ViewProviderImage::ViewProviderImage()
 {
-    sPixmap = "actions/techdraw-image";
+    sPixmap = "actions/TechDraw_Image";
 
-    ADD_PROPERTY_TYPE(Crop ,(false),"Image", App::Prop_None, "Crop image to Width x Height");
+    ADD_PROPERTY_TYPE(Crop ,(false), "Image", App::Prop_None, "Crop image to Width x Height");
 }
 
 ViewProviderImage::~ViewProviderImage()
 {
 }
 
-void ViewProviderImage::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderImage::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderImage::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
 void ViewProviderImage::updateData(const App::Property* prop)
 {
+    if (prop == &(getViewObject()->Width)  ||
+        prop == &(getViewObject()->Height)  ||
+        prop == &(getViewObject()->Scale) ) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->QGIView::updateView(true);
+        }
+    }
+
     ViewProviderDrawingView::updateData(prop);
 }
 

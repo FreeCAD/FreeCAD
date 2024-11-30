@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QContextMenuEvent>
@@ -30,32 +29,28 @@
 # include <QTextCursor>
 #endif
 
+#include <Base/Parameter.h>
+
 #include "PythonEditor.h"
-#include "PythonDebugger.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Macro.h"
-#include "FileDialog.h"
-#include "DlgEditorImp.h"
+#include "PythonDebugger.h"
 
-#include <Base/Interpreter.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 
 using namespace Gui;
 
 namespace Gui {
 struct PythonEditorP
 {
-    int   debugLine;
+    int   debugLine{-1};
     QRect debugRect;
     QPixmap breakpoint;
     QPixmap debugMarker;
     QString filename;
     PythonDebugger* debugger;
     PythonEditorP()
-        : debugLine(-1),
-          breakpoint(BitmapFactory().iconFromTheme("breakpoint").pixmap(16,16)),
+        : breakpoint(BitmapFactory().iconFromTheme("breakpoint").pixmap(16,16)),
           debugMarker(BitmapFactory().iconFromTheme("debug-marker").pixmap(16,16))
     {
         debugger = Application::Instance->macroManager()->debugger();
@@ -75,23 +70,20 @@ PythonEditor::PythonEditor(QWidget* parent)
     d = new PythonEditorP();
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
 
-    // set acelerators
-    QShortcut* comment = new QShortcut(this);
+    // set accelerators
+    auto comment = new QShortcut(this);
     comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
 
-    QShortcut* uncomment = new QShortcut(this);
+    auto uncomment = new QShortcut(this);
     uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
 
-    connect(comment, SIGNAL(activated()),
-            this, SLOT(onComment()));
-    connect(uncomment, SIGNAL(activated()),
-            this, SLOT(onUncomment()));
+    connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
+    connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
 }
 
 /** Destroys the object and frees any allocated resources */
 PythonEditor::~PythonEditor()
 {
-    getWindowParameter()->Detach( this );
     delete d;
 }
 
@@ -157,12 +149,63 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     QMenu* menu = createStandardContextMenu();
     if (!isReadOnly()) {
         menu->addSeparator();
-        menu->addAction( tr("Comment"), this, SLOT( onComment() ), QKeySequence(QString::fromLatin1("ALT+C")));
-        menu->addAction( tr("Uncomment"), this, SLOT( onUncomment() ), QKeySequence(QString::fromLatin1("ALT+U")));
+        QAction* comment = menu->addAction( tr("Comment"), this, &PythonEditor::onComment);
+        comment->setShortcut(QKeySequence(QString::fromLatin1("ALT+C")));
+        QAction* uncomment = menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment);
+        uncomment->setShortcut(QKeySequence(QString::fromLatin1("ALT+U")));
     }
 
     menu->exec(e->globalPos());
     delete menu;
+}
+
+void PythonEditor::keyPressEvent(QKeyEvent* e)
+{
+    /** When the user presses enter the next line should match the current
+     * indentation unless the line ends in a colon, where the next line
+     * should have an additional indentation.  Shift+Enter should dedent
+     * the next block 1 indentation from what it would have been, if possible.
+     */
+    if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return) {
+        bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
+        ParameterGrp::handle hPrefGrp = getWindowParameter();
+        int indent = hPrefGrp->GetInt( "IndentSize", 4 );
+        bool space = hPrefGrp->GetBool( "Spaces", true );
+        QString ch = space ? QString::fromLatin1(" ")
+                           : QString::fromLatin1("\t");
+
+        QTextCursor cursor = textCursor();
+        QString currentLineText = cursor.block().text();
+        bool endsWithColon = currentLineText.endsWith(QLatin1Char(':'));
+        int currentIndentation = 0;
+        //count spaces/tabs at start of current line
+        for (auto c : currentLineText) {
+            if (c == ch) {
+                currentIndentation++;
+            } else {
+                break;
+            }
+        }
+        cursor.insertBlock(); //new line
+        cursor.movePosition(QTextCursor::StartOfBlock); //carriage return
+        //Shift+Enter means dedent, but ensure we are not at column 0
+        if (shiftPressed && currentIndentation >= indent){
+            currentIndentation -= indent;
+        }
+        //insert appropriate number of spaces/tabs to match current indentation
+        cursor.insertText(QString(currentIndentation, ch[0]));
+        //if the line ended in a colon, then we need to add another tab or multiple spaces
+        if (endsWithColon) {
+            if (space){
+                cursor.insertText(QString(indent, ch[0])); //4 more spaces by default
+            } else {
+                cursor.insertText(ch); //1 more tab
+            }
+        }
+        setTextCursor(cursor);
+        return; //skip default handler
+    }
+    TextEditor::keyPressEvent(e); //wasn't enter key, so let base class handle it
 }
 
 void PythonEditor::onComment()

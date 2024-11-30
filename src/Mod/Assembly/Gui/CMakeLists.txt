@@ -1,122 +1,100 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/Mod/Assembly/App
+    ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIR}
-    ${OCC_INCLUDE_DIR}
-    ${QT_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${EIGEN3_INCLUDE_DIR}
+    ${OCC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
 )
-
 link_directories(${OCC_LIBRARY_DIR})
 
 set(AssemblyGui_LIBS
-    #${ODE_LIBRARIES}
     Assembly
+    PartDesign
     PartGui
+    Spreadsheet
+    SpreadsheetGui
     FreeCADGui
 )
 
-set(AssemblyGui_MOC_HDRS
-    #TaskAssemblyConstraints.h
-    #TaskDlgAssemblyConstraints.h
+PYSIDE_WRAP_RC(Assembly_QRC_SRCS Resources/Assembly.qrc)
+
+set (Assembly_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Assembly_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Assembly_TR_QRC} ${QM_SRCS})
+qt_add_resources(AssemblyResource_SRCS Resources/Assembly.qrc ${Assembly_TR_QRC})
+
+SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
+
+generate_from_xml(ViewProviderAssemblyPy)
+
+SET(Python_SRCS
+    ViewProviderAssemblyPy.xml
+    ViewProviderAssemblyPyImp.cpp
 )
-fc_wrap_cpp(AssemblyGui_MOC_SRCS ${AssemblyGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${AssemblyGui_MOC_SRCS})
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
-if (BUILD_QT5)
-	qt5_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
-else()
-	qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
-endif()
-
-set(AssemblyGui_UIC_SRCS
-    #TaskAssemblyConstraints.ui
-)
-if (BUILD_QT5)
-	qt5_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
-else()
-	qt4_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
-endif()
-
-SET(AssemblyGuiViewProvider_SRCS
-    ViewProvider.cpp
-    ViewProvider.h
-    #ViewProviderPartRef.cpp
-    #ViewProviderPartRef.h
-    ViewProviderProduct.cpp
-    ViewProviderProduct.h
-    ViewProviderProductRef.cpp
-    ViewProviderProductRef.h
-    ViewProviderConstraint.cpp
-    ViewProviderConstraint.h
-    ViewProviderConstraintGroup.cpp
-    ViewProviderConstraintGroup.h
-    #TaskDlgAssemblyConstraints.cpp
-    #TaskDlgAssemblyConstraints.h
-    #TaskAssemblyConstraints.h
-    #TaskAssemblyConstraints.cpp
-)
-SOURCE_GROUP("ViewProvider" FILES ${AssemblyGuiViewProvider_SRCS})
-
-SET(AssemblyGuiModule_SRCS 
+SET(AssemblyGui_SRCS_Module
     AppAssemblyGui.cpp
     AppAssemblyGuiPy.cpp
-    Command.cpp
-    CommandConstraints.cpp
-    Resources/Assembly.qrc
-	#qrc_Assembly.cxx
     PreCompiled.cpp
     PreCompiled.h
-    Workbench.cpp
-    Workbench.h
+    ViewProviderAssembly.cpp
+    ViewProviderAssembly.h
+    ViewProviderAssemblyLink.cpp
+    ViewProviderAssemblyLink.h
+    ViewProviderBom.cpp
+    ViewProviderBom.h
+    ViewProviderBomGroup.cpp
+    ViewProviderBomGroup.h
+    ViewProviderJointGroup.cpp
+    ViewProviderJointGroup.h
+    ViewProviderViewGroup.cpp
+    ViewProviderViewGroup.h
+    ${Assembly_QRC_SRCS}
 )
-SOURCE_GROUP("Module" FILES ${AssemblyGuiModule_SRCS})
+
+SOURCE_GROUP("Module" FILES ${AssemblyGui_SRCS_Module})
 
 
 SET(AssemblyGui_SRCS
-    ${AssemblyGui_SRCS}
-    ${AssemblyGuiViewProvider_SRCS}
-    ${AssemblyGuiModule_SRCS}
+    ${AssemblyResource_SRCS}
     ${AssemblyGui_UIC_HDRS}
+    ${AssemblyGui_SRCS_Module}
+    ${Python_SRCS}
 )
 
-SET(AssemblyGui_Scripts
-    ../InitGui.py
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${AssemblyGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PathGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
+SET(AssemblyGuiIcon_SVG
+    Resources/icons/AssemblyWorkbench.svg
 )
 
-add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGui_Scripts})
-if(CMAKE_COMPILER_IS_GNUCXX)
-	set_target_properties(AssemblyGui PROPERTIES COMPILE_FLAGS "-fext-numeric-literals")
-endif()
+add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGuiIcon_SVG})
+
+if(WIN32)
+    target_compile_definitions(AssemblyGui PRIVATE _USE_MATH_DEFINES)
+endif(WIN32)
+
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
-
-
-fc_target_copy_resource_flat(AssemblyGui
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Assembly
-    ${AssemblyGui_Scripts})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(AssemblyGui)
+endif()
 
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)
 
-INSTALL(TARGETS AssemblyGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-SET(AssemblyGuiIcon_SVG
-	Resources/icons/AssemblyWorkbench.svg
-)
-
 fc_copy_sources(AssemblyGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Assembly" ${AssemblyGuiIcon_SVG})
+fc_target_copy_resource(AssemblyGui
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/Assembly
+        Assembly_rc.py)
 
+INSTALL(TARGETS AssemblyGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${AssemblyGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Assembly/Resources/icons")
+INSTALL(FILES ${Assembly_QRC_SRCS} DESTINATION Mod/Assembly
+)

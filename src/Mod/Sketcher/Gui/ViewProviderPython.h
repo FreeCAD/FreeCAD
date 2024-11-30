@@ -20,36 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SketcherGui_VIEWPROVIDERPYTHON_H
 #define SketcherGui_VIEWPROVIDERPYTHON_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
-namespace SketcherGui {
 
-class SketcherGuiExport ViewProviderCustom : public ViewProviderSketch
+namespace SketcherGui
 {
-    PROPERTY_HEADER(SketcherGui::ViewProviderCustom);
+
+class SketcherGuiExport ViewProviderCustom: public ViewProviderSketch
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SketcherGui::ViewProviderCustom);
 
 public:
     /// constructor
     ViewProviderCustom();
     /// destructor
-    virtual ~ViewProviderCustom();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderCustom() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     std::map<const App::Property*, Gui::ViewProvider*> propView;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderSketch> ViewProviderPython;
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderCustom> ViewProviderCustomPython;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProviderSketch>;
+using ViewProviderCustomPython = Gui::ViewProviderFeaturePythonT<ViewProviderCustom>;
 
-} // namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif // SketcherGui_VIEWPROVIDERPYTHON_H
-
+#endif  // SketcherGui_VIEWPROVIDERPYTHON_H

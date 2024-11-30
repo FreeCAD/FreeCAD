@@ -23,12 +23,14 @@
 #ifndef TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 #define TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 
-#include <QObject>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
+#include <QObject>
 #include <QPointF>
 
 #include "QGIHighlight.h"
+
 
 //a movable, selectable surrogate for detail highlights in QGIVPart
 
@@ -40,7 +42,7 @@ class TechDrawGuiExport QGIGhostHighlight : public QObject, public QGIHighlight
     Q_OBJECT
 public:
     explicit QGIGhostHighlight();
-    ~QGIGhostHighlight();
+    ~QGIGhostHighlight() override;
 
     enum {Type = QGraphicsItem::UserType + 177};
     int type() const override { return Type;}
@@ -52,9 +54,8 @@ Q_SIGNALS:
     void positionChange(QPointF p);
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
     bool m_dragging;
 

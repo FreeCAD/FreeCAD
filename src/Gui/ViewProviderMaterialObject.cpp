@@ -20,24 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QPixmap>
+# include <QStyle>
 #endif
 
-#include <App/DocumentObjectGroup.h>
-#include <App/Document.h>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderMaterialObject.h"
 #include "Application.h"
-#include "Command.h"
-#include "BitmapFactory.h"
 #include "Document.h"
-#include "Tree.h"
 
 
 using namespace Gui;
@@ -49,16 +41,11 @@ PROPERTY_SOURCE(Gui::ViewProviderMaterialObject, Gui::ViewProviderDocumentObject
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderMaterialObject::ViewProviderMaterialObject()
-{
+ViewProviderMaterialObject::ViewProviderMaterialObject() = default;
 
-}
+ViewProviderMaterialObject::~ViewProviderMaterialObject() = default;
 
-ViewProviderMaterialObject::~ViewProviderMaterialObject()
-{
-}
-
-bool ViewProviderMaterialObject::doubleClicked(void)
+bool ViewProviderMaterialObject::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
@@ -86,5 +73,5 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderMaterialObjectPython, Gui::ViewProvide
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderMaterialObject>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderMaterialObject>;
 }

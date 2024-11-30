@@ -30,22 +30,23 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintFixed : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintFixed
+    : public FemGui::ViewProviderFemConstraintOnBoundary
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintFixed);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintFixed);
 
 public:
     /// Constructor
     ViewProviderFemConstraintFixed();
-    virtual ~ViewProviderFemConstraintFixed();
+    ~ViewProviderFemConstraintFixed() override;
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H

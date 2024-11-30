@@ -36,7 +36,8 @@
 class QImage;
 class SbImage;
 
-#include <Quarter/Basic.h>
+#include "Basic.h"
+
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 

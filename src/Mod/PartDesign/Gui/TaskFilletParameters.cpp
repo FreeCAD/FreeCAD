@@ -24,27 +24,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QKeyEvent>
-# include <QListWidget>
-# include <QMessageBox>
+#include <QAction>
+#include <QListWidget>
+#include <QMessageBox>
 #endif
+
+#include <Base/Interpreter.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/PartDesign/App/FeatureFillet.h>
 
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Mod/PartDesign/App/FeatureFillet.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 
 using namespace PartDesignGui;
@@ -52,17 +45,20 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskFilletParameters */
 
-TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
+TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
     : TaskDressUpParameters(DressUpView, true, true, parent)
     , ui(new Ui_TaskFilletParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    bool useAllEdges = pcFillet->UseAllEdges.getValue();
+    ui->checkBoxUseAllEdges->setChecked(useAllEdges);
+    ui->buttonRefSel->setEnabled(!useAllEdges);
+    ui->listWidgetReferences->setEnabled(!useAllEdges);
     double r = pcFillet->Radius.getValue();
 
     ui->filletRadius->setUnit(Base::Unit::Length);
@@ -72,36 +68,41 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     ui->filletRadius->bind(pcFillet->Radius);
     QMetaObject::invokeMethod(ui->filletRadius, "setFocus", Qt::QueuedConnection);
     std::vector<std::string> strings = pcFillet->Base.getSubValues();
-    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
-    {
-        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
+    for (const auto& string : strings) {
+        ui->listWidgetReferences->addItem(QString::fromStdString(string));
     }
 
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->filletRadius, SIGNAL(valueChanged(double)),
-        this, SLOT(onLengthChanged(double)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefRemove(bool)));
+    // clang-format off
+    connect(ui->filletRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &TaskFilletParameters::onLengthChanged);
+    connect(ui->buttonRefSel, &QToolButton::toggled,
+        this, &TaskFilletParameters::onButtonRefSel);
+    connect(ui->checkBoxUseAllEdges, &QToolButton::toggled,
+        this, &TaskFilletParameters::onCheckBoxUseAllEdgesToggled);
 
     // Create context menu
-    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
-    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    createDeleteAction(ui->listWidgetReferences);
+    connect(deleteAction, &QAction::triggered, this, &TaskFilletParameters::onRefDeleted);
 
     createAddAllEdgesAction(ui->listWidgetReferences);
     connect(addAllEdgesAction, &QAction::triggered, this, &TaskFilletParameters::onAddAllEdges);
 
-    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-        this, SLOT(doubleClicked(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, &QListWidget::currentItemChanged,
+        this, &TaskFilletParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemClicked,
+        this, &TaskFilletParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
+        this, &TaskFilletParameters::doubleClicked);
+    // clang-format on
 
-    // the dialog can be called on a broken fillet, then hide the fillet
-    hideOnError();
+    if (strings.empty()) {
+        setSelectionMode(refSel);
+    }
+    else {
+        hideOnError();
+    }
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -109,119 +110,56 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     // executed when the user selected something in the CAD object
     // adds/deletes the selection accordingly
 
-    if (selectionMode == none)
-        return;
-
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
-                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-                // it might be the second one so we can enable the context menu
-                if (ui->listWidgetReferences->count() > 1) {
-                    deleteAction->setEnabled(true);
-                    deleteAction->setStatusTip(QString());
-                    ui->buttonRefRemove->setEnabled(true);
-                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
-                }
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-                // remove its selection too
-                Gui::Selection().clearSelection();
-                // if there is only one item left, it cannot be deleted
-                if (ui->listWidgetReferences->count() == 1) {
-                    deleteAction->setEnabled(false);
-                    deleteAction->setStatusTip(tr("There must be at least one item"));
-                    ui->buttonRefRemove->setEnabled(false);
-                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-                    // we must also end the selection mode
-                    exitSelectionMode();
-                    clearButtons(none);
-                }
-            }
-            // highlight existing references for possible further selections
-            DressUpView->highlightReferences(true);
+        if (selectionMode == refSel) {
+            referenceSelected(msg, ui->listWidgetReferences);
         }
     }
 }
 
-void TaskFilletParameters::clearButtons(const selectionModes notThis)
+void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 {
-    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
-    DressUpView->highlightReferences(false);
-}
+    if (auto fillet = getObject<PartDesign::Fillet>()) {
+        if (checked) {
+            setSelectionMode(none);
+        }
 
-void TaskFilletParameters::onRefDeleted(void)
-{
-    // assure we we are not in selection mode
-    exitSelectionMode();
-    clearButtons(none);
-    // delete any selections since the reference(s) might be highlighted
-    Gui::Selection().clearSelection();
-    DressUpView->highlightReferences(false);
-
-    // get the list of items to be deleted
-    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
-
-    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
-    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()){
-        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
-        return;
-    }
-
-    // get the fillet object
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
-    App::DocumentObject* base = pcFillet->Base.getValue();
-    // get all fillet references
-    std::vector<std::string> refs = pcFillet->Base.getSubValues();
-    setupTransaction();
-
-    // delete the selection backwards to assure the list index keeps valid for the deletion
-    for (int i = selectedList.count()-1; i > -1; i--) {
-        // the ref index is the same as the listWidgetReferences index
-        // so we can erase using the row number of the element to be deleted
-        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
-        // erase the reference
-        refs.erase(refs.begin() + rowNumber);
-        // remove from the list
-        ui->listWidgetReferences->model()->removeRow(rowNumber);
-    }
-
-    // update the object
-    pcFillet->Base.setValue(base, refs);
-    // recompute the feature
-    pcFillet->recomputeFeature();
-    // hide the fillet if there was a computation error
-    hideOnError();
-
-    // if there is only one item left, it cannot be deleted
-    if (ui->listWidgetReferences->count() == 1) {
-        deleteAction->setEnabled(false);
-        deleteAction->setStatusTip(tr("There must be at least one item"));
-        ui->buttonRefRemove->setEnabled(false);
-        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+        ui->buttonRefSel->setEnabled(!checked);
+        ui->listWidgetReferences->setEnabled(!checked);
+        fillet->UseAllEdges.setValue(checked);
+        fillet->recomputeFeature();
     }
 }
 
-void TaskFilletParameters::onAddAllEdges(void)
+void TaskFilletParameters::setButtons(const selectionModes mode)
+{
+    ui->buttonRefSel->setChecked(mode == refSel);
+    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
+}
+
+void TaskFilletParameters::onRefDeleted()
+{
+    TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
+}
+
+void TaskFilletParameters::onAddAllEdges()
 {
     TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
-    ui->buttonRefRemove->setEnabled(true);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)
 {
-    clearButtons(none);
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
-    setupTransaction();
-    pcFillet->Radius.setValue(len);
-    pcFillet->getDocument()->recomputeFeature(pcFillet);
-    // hide the fillet if there was a computation error
-    hideOnError();   
+    if (auto fillet = getObject<PartDesign::Fillet>()) {
+        setSelectionMode(none);
+        setupTransaction();
+        fillet->Radius.setValue(len);
+        fillet->recomputeFeature();
+        // hide the fillet if there was a computation error
+        hideOnError();
+    }
 }
 
-double TaskFilletParameters::getLength(void) const
+double TaskFilletParameters::getLength() const
 {
     return ui->filletRadius->value().getValue();
 }
@@ -233,17 +171,12 @@ TaskFilletParameters::~TaskFilletParameters()
         Gui::Selection().rmvSelectionGate();
     }
     catch (const Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.ReportException();
     }
 }
 
-bool TaskFilletParameters::event(QEvent *e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
-}
-
-void TaskFilletParameters::changeEvent(QEvent *e)
+void TaskFilletParameters::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
@@ -253,10 +186,13 @@ void TaskFilletParameters::changeEvent(QEvent *e)
 
 void TaskFilletParameters::apply()
 {
-    std::string name = getDressUpView()->getObject()->getNameInDocument();
-
-    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fillet changed"));
     ui->filletRadius->apply();
+
+    // Alert user if he created an empty feature
+    if (ui->listWidgetReferences->count() == 0) {
+        std::string text = tr("Empty fillet created!").toStdString();
+        Base::Console().Warning("%s\n", text.c_str());
+    }
 }
 
 //**************************************************************************
@@ -264,35 +200,24 @@ void TaskFilletParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFilletParameters::TaskDlgFilletParameters(ViewProviderFillet *DressUpView)
+TaskDlgFilletParameters::TaskDlgFilletParameters(ViewProviderFillet* DressUpView)
     : TaskDlgDressUpParameters(DressUpView)
 {
-    parameter  = new TaskFilletParameters(DressUpView);
+    parameter = new TaskFilletParameters(DressUpView);
 
     Content.push_back(parameter);
 }
 
-TaskDlgFilletParameters::~TaskDlgFilletParameters()
-{
-
-}
+TaskDlgFilletParameters::~TaskDlgFilletParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
-
-//void TaskDlgFilletParameters::open()
-//{
-//    // a transaction is already open at creation time of the fillet
-//    if (!Gui::Command::hasPendingCommand()) {
-//        QString msg = tr("Edit fillet");
-//        Gui::Command::openCommand((const char*)msg.toUtf8());
-//    }
-//}
 bool TaskDlgFilletParameters::accept()
 {
-    auto obj = vp->getObject();
-    if (!obj->isError())
+    auto obj = getObject();
+    if (!obj->isError()) {
         parameter->showObject();
+    }
 
     parameter->apply();
 

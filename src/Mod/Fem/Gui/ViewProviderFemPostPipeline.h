@@ -20,34 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 #define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 
+#include <Gui/ViewProviderFeaturePython.h>
+#include <Mod/Fem/FemGlobal.h>
+
 #include "ViewProviderFemPostObject.h"
+
 
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemPostPipeline : public ViewProviderFemPostObject {
+class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject
+{
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostPipeline);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostPipeline);
 
 public:
     /// constructor.
     ViewProviderFemPostPipeline();
-    ~ViewProviderFemPostPipeline();
+    ~ViewProviderFemPostPipeline() override;
 
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
-    virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
-    virtual void updateData(const App::Property* prop);
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    std::vector<App::DocumentObject*> claimChildren3D() const override;
+    void updateData(const App::Property* prop) override;
+    bool onDelete(const std::vector<std::string>& objs) override;
+    void onSelectionChanged(const Gui::SelectionChanges& sel) override;
+    void updateColorBars();
+    void transformField(char* FieldName, double FieldFactor);
+    void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
+    PyObject* getPyObject() override;
 
 protected:
     void updateFunctionSize();
-
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+#endif  // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H

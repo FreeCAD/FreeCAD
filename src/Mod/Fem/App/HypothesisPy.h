@@ -24,70 +24,70 @@
 #define FEM_HYPOTHESISPY_H
 
 #include <CXX/Extensions.hxx>
+#include <SMESH_Version.h>  // needed for SMESH_VERSION_MAJOR
 #include <memory>
-#include <SMESH_Version.h>
 
 class SMESH_Hypothesis;
 class SMESH_Gen;
 
-namespace Fem {
+namespace Fem
+{
 
-class HypothesisPy : public Py::PythonExtension<HypothesisPy>
+class HypothesisPy: public Py::PythonExtension<HypothesisPy>
 {
 public:
-    typedef Py::PythonExtension<HypothesisPy> HypothesisPyBase;
-    HypothesisPy(std::shared_ptr<SMESH_Hypothesis>);
-    virtual ~HypothesisPy();
+    using HypothesisPyBase = Py::PythonExtension<HypothesisPy>;
+    explicit HypothesisPy(std::shared_ptr<SMESH_Hypothesis>);
+    ~HypothesisPy() override;
     std::shared_ptr<SMESH_Hypothesis> getHypothesis() const
-    { return hyp; }
+    {
+        return hyp;
+    }
 
 private:
     std::shared_ptr<SMESH_Hypothesis> hyp;
 };
 
-typedef Py::ExtensionObject<HypothesisPy> Hypothesis;
+using Hypothesis = Py::ExtensionObject<HypothesisPy>;
 
-template <class T>
-class SMESH_HypothesisPy : public Py::PythonExtension<T>
+template<class T>
+class SMESH_HypothesisPy: public Py::PythonExtension<T>
 {
 public:
-    typedef SMESH_HypothesisPy<T> SMESH_HypothesisPyBase;
-    static void init_type(PyObject*);    // announce properties and methods
+    using SMESH_HypothesisPyBase = SMESH_HypothesisPy<T>;
+    static void init_type(PyObject*);  // announce properties and methods
 
-    SMESH_HypothesisPy(SMESH_Hypothesis*);
-    virtual ~SMESH_HypothesisPy();
+    explicit SMESH_HypothesisPy(SMESH_Hypothesis*);
+    ~SMESH_HypothesisPy() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char* name) override;
+    Py::Object repr() override;
     Py::Object getLibName(const Py::Tuple& args);
     Py::Object setLibName(const Py::Tuple& args);
-#if SMESH_VERSION_MAJOR < 7
-    Py::Object setParameters(const Py::Tuple& args);
-    Py::Object getParameters(const Py::Tuple& args);
-    Py::Object setLastParameters(const Py::Tuple& args);
-    Py::Object getLastParameters(const Py::Tuple& args);
-    Py::Object clearParameters(const Py::Tuple& args);
-#endif
     Py::Object isAuxiliary(const Py::Tuple& args);
     Py::Object setParametersByMesh(const Py::Tuple& args);
 
     std::shared_ptr<SMESH_Hypothesis> getHypothesis() const
-    { return hyp; }
+    {
+        return hyp;
+    }
 
 protected:
     template<typename type>
     type* hypothesis() const
-    { return static_cast<type*>(hyp.get()); }
+    {
+        return static_cast<type*>(hyp.get());
+    }
 
 private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
+    static PyObject* PyMake(struct _typeobject*, PyObject*, PyObject*);
 
 private:
     std::shared_ptr<SMESH_Hypothesis> hyp;
 };
 
 #if SMESH_VERSION_MAJOR >= 9
-class StdMeshers_Arithmetic1DPy : public SMESH_HypothesisPy<StdMeshers_Arithmetic1DPy>
+class StdMeshers_Arithmetic1DPy: public SMESH_HypothesisPy<StdMeshers_Arithmetic1DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -98,7 +98,7 @@ public:
     Py::Object getLength(const Py::Tuple& args);
 };
 
-class StdMeshers_AutomaticLengthPy : public SMESH_HypothesisPy<StdMeshers_AutomaticLengthPy>
+class StdMeshers_AutomaticLengthPy: public SMESH_HypothesisPy<StdMeshers_AutomaticLengthPy>
 {
 public:
     static void init_type(PyObject*);
@@ -110,7 +110,7 @@ public:
     Py::Object getLength(const Py::Tuple& args);
 };
 
-class StdMeshers_NotConformAllowedPy : public SMESH_HypothesisPy<StdMeshers_NotConformAllowedPy>
+class StdMeshers_NotConformAllowedPy: public SMESH_HypothesisPy<StdMeshers_NotConformAllowedPy>
 {
 public:
     static void init_type(PyObject*);
@@ -118,7 +118,7 @@ public:
     ~StdMeshers_NotConformAllowedPy();
 };
 
-class StdMeshers_MaxLengthPy : public SMESH_HypothesisPy<StdMeshers_MaxLengthPy>
+class StdMeshers_MaxLengthPy: public SMESH_HypothesisPy<StdMeshers_MaxLengthPy>
 {
 public:
     static void init_type(PyObject*);
@@ -134,7 +134,7 @@ public:
     Py::Object getUsePreestimatedLength(const Py::Tuple& args);
 };
 
-class StdMeshers_LocalLengthPy : public SMESH_HypothesisPy<StdMeshers_LocalLengthPy>
+class StdMeshers_LocalLengthPy: public SMESH_HypothesisPy<StdMeshers_LocalLengthPy>
 {
 public:
     static void init_type(PyObject*);
@@ -147,7 +147,7 @@ public:
     Py::Object getPrecision(const Py::Tuple& args);
 };
 
-class StdMeshers_MaxElementAreaPy : public SMESH_HypothesisPy<StdMeshers_MaxElementAreaPy>
+class StdMeshers_MaxElementAreaPy: public SMESH_HypothesisPy<StdMeshers_MaxElementAreaPy>
 {
 public:
     static void init_type(PyObject*);
@@ -158,7 +158,8 @@ public:
     Py::Object getMaxArea(const Py::Tuple& args);
 };
 
-class StdMeshers_QuadranglePreferencePy : public SMESH_HypothesisPy<StdMeshers_QuadranglePreferencePy>
+class StdMeshers_QuadranglePreferencePy
+    : public SMESH_HypothesisPy<StdMeshers_QuadranglePreferencePy>
 {
 public:
     static void init_type(PyObject*);
@@ -166,7 +167,7 @@ public:
     ~StdMeshers_QuadranglePreferencePy();
 };
 
-class StdMeshers_Quadrangle_2DPy : public SMESH_HypothesisPy<StdMeshers_Quadrangle_2DPy>
+class StdMeshers_Quadrangle_2DPy: public SMESH_HypothesisPy<StdMeshers_Quadrangle_2DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -174,7 +175,7 @@ public:
     ~StdMeshers_Quadrangle_2DPy();
 };
 
-class StdMeshers_Regular_1DPy : public SMESH_HypothesisPy<StdMeshers_Regular_1DPy>
+class StdMeshers_Regular_1DPy: public SMESH_HypothesisPy<StdMeshers_Regular_1DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -182,7 +183,7 @@ public:
     ~StdMeshers_Regular_1DPy();
 };
 
-class StdMeshers_UseExisting_1DPy : public SMESH_HypothesisPy<StdMeshers_UseExisting_1DPy>
+class StdMeshers_UseExisting_1DPy: public SMESH_HypothesisPy<StdMeshers_UseExisting_1DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -190,7 +191,7 @@ public:
     ~StdMeshers_UseExisting_1DPy();
 };
 
-class StdMeshers_UseExisting_2DPy : public SMESH_HypothesisPy<StdMeshers_UseExisting_2DPy>
+class StdMeshers_UseExisting_2DPy: public SMESH_HypothesisPy<StdMeshers_UseExisting_2DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -198,7 +199,7 @@ public:
     ~StdMeshers_UseExisting_2DPy();
 };
 
-class StdMeshers_CompositeSegment_1DPy : public SMESH_HypothesisPy<StdMeshers_CompositeSegment_1DPy>
+class StdMeshers_CompositeSegment_1DPy: public SMESH_HypothesisPy<StdMeshers_CompositeSegment_1DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -206,7 +207,7 @@ public:
     ~StdMeshers_CompositeSegment_1DPy();
 };
 
-class StdMeshers_Deflection1DPy : public SMESH_HypothesisPy<StdMeshers_Deflection1DPy>
+class StdMeshers_Deflection1DPy: public SMESH_HypothesisPy<StdMeshers_Deflection1DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -216,7 +217,7 @@ public:
     Py::Object setDeflection(const Py::Tuple& args);
 };
 
-class StdMeshers_Hexa_3DPy : public SMESH_HypothesisPy<StdMeshers_Hexa_3DPy>
+class StdMeshers_Hexa_3DPy: public SMESH_HypothesisPy<StdMeshers_Hexa_3DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -224,7 +225,7 @@ public:
     ~StdMeshers_Hexa_3DPy();
 };
 
-class StdMeshers_StartEndLengthPy : public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
+class StdMeshers_StartEndLengthPy: public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
 {
 public:
     static void init_type(PyObject*);
@@ -234,7 +235,8 @@ public:
     Py::Object getLength(const Py::Tuple& args);
 };
 
-class StdMeshers_SegmentLengthAroundVertexPy : public SMESH_HypothesisPy<StdMeshers_SegmentLengthAroundVertexPy>
+class StdMeshers_SegmentLengthAroundVertexPy
+    : public SMESH_HypothesisPy<StdMeshers_SegmentLengthAroundVertexPy>
 {
 public:
     static void init_type(PyObject*);
@@ -244,7 +246,8 @@ public:
     Py::Object getLength(const Py::Tuple& args);
 };
 
-class StdMeshers_SegmentAroundVertex_0DPy : public SMESH_HypothesisPy<StdMeshers_SegmentAroundVertex_0DPy>
+class StdMeshers_SegmentAroundVertex_0DPy
+    : public SMESH_HypothesisPy<StdMeshers_SegmentAroundVertex_0DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -252,7 +255,7 @@ public:
     ~StdMeshers_SegmentAroundVertex_0DPy();
 };
 
-class StdMeshers_RadialPrism_3DPy : public SMESH_HypothesisPy<StdMeshers_RadialPrism_3DPy>
+class StdMeshers_RadialPrism_3DPy: public SMESH_HypothesisPy<StdMeshers_RadialPrism_3DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -260,7 +263,7 @@ public:
     ~StdMeshers_RadialPrism_3DPy();
 };
 
-class StdMeshers_QuadraticMeshPy : public SMESH_HypothesisPy<StdMeshers_QuadraticMeshPy>
+class StdMeshers_QuadraticMeshPy: public SMESH_HypothesisPy<StdMeshers_QuadraticMeshPy>
 {
 public:
     static void init_type(PyObject*);
@@ -268,7 +271,7 @@ public:
     ~StdMeshers_QuadraticMeshPy();
 };
 
-class StdMeshers_ProjectionSource3DPy : public SMESH_HypothesisPy<StdMeshers_ProjectionSource3DPy>
+class StdMeshers_ProjectionSource3DPy: public SMESH_HypothesisPy<StdMeshers_ProjectionSource3DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -276,7 +279,7 @@ public:
     ~StdMeshers_ProjectionSource3DPy();
 };
 
-class StdMeshers_ProjectionSource2DPy : public SMESH_HypothesisPy<StdMeshers_ProjectionSource2DPy>
+class StdMeshers_ProjectionSource2DPy: public SMESH_HypothesisPy<StdMeshers_ProjectionSource2DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -284,7 +287,7 @@ public:
     ~StdMeshers_ProjectionSource2DPy();
 };
 
-class StdMeshers_ProjectionSource1DPy : public SMESH_HypothesisPy<StdMeshers_ProjectionSource1DPy>
+class StdMeshers_ProjectionSource1DPy: public SMESH_HypothesisPy<StdMeshers_ProjectionSource1DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -292,7 +295,7 @@ public:
     ~StdMeshers_ProjectionSource1DPy();
 };
 
-class StdMeshers_Projection_3DPy : public SMESH_HypothesisPy<StdMeshers_Projection_3DPy>
+class StdMeshers_Projection_3DPy: public SMESH_HypothesisPy<StdMeshers_Projection_3DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -300,7 +303,7 @@ public:
     ~StdMeshers_Projection_3DPy();
 };
 
-class StdMeshers_Projection_2DPy : public SMESH_HypothesisPy<StdMeshers_Projection_2DPy>
+class StdMeshers_Projection_2DPy: public SMESH_HypothesisPy<StdMeshers_Projection_2DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -308,7 +311,7 @@ public:
     ~StdMeshers_Projection_2DPy();
 };
 
-class StdMeshers_Projection_1DPy : public SMESH_HypothesisPy<StdMeshers_Projection_1DPy>
+class StdMeshers_Projection_1DPy: public SMESH_HypothesisPy<StdMeshers_Projection_1DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -316,7 +319,7 @@ public:
     ~StdMeshers_Projection_1DPy();
 };
 
-class StdMeshers_Prism_3DPy : public SMESH_HypothesisPy<StdMeshers_Prism_3DPy>
+class StdMeshers_Prism_3DPy: public SMESH_HypothesisPy<StdMeshers_Prism_3DPy>
 {
 public:
     static void init_type(PyObject*);
@@ -324,7 +327,7 @@ public:
     ~StdMeshers_Prism_3DPy();
 };
 
-class StdMeshers_NumberOfSegmentsPy : public SMESH_HypothesisPy<StdMeshers_NumberOfSegmentsPy>
+class StdMeshers_NumberOfSegmentsPy: public SMESH_HypothesisPy<StdMeshers_NumberOfSegmentsPy>
 {
 public:
     static void init_type(PyObject*);
@@ -334,7 +337,7 @@ public:
     Py::Object getNumSegm(const Py::Tuple& args);
 };
 
-class StdMeshers_NumberOfLayersPy : public SMESH_HypothesisPy<StdMeshers_NumberOfLayersPy>
+class StdMeshers_NumberOfLayersPy: public SMESH_HypothesisPy<StdMeshers_NumberOfLayersPy>
 {
 public:
     static void init_type(PyObject*);
@@ -344,15 +347,17 @@ public:
     Py::Object getNumLayers(const Py::Tuple& args);
 };
 
-class StdMeshers_MEFISTO_2DPy : public SMESH_HypothesisPy<StdMeshers_MEFISTO_2DPy>
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
+class StdMeshers_MEFISTO_2DPy: public SMESH_HypothesisPy<StdMeshers_MEFISTO_2DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_MEFISTO_2DPy(int hypId, SMESH_Gen* gen);
     ~StdMeshers_MEFISTO_2DPy();
 };
+#endif
 
-class StdMeshers_MaxElementVolumePy : public SMESH_HypothesisPy<StdMeshers_MaxElementVolumePy>
+class StdMeshers_MaxElementVolumePy: public SMESH_HypothesisPy<StdMeshers_MaxElementVolumePy>
 {
 public:
     static void init_type(PyObject*);
@@ -362,7 +367,7 @@ public:
     Py::Object getMaxVolume(const Py::Tuple& args);
 };
 
-class StdMeshers_LengthFromEdgesPy : public SMESH_HypothesisPy<StdMeshers_LengthFromEdgesPy>
+class StdMeshers_LengthFromEdgesPy: public SMESH_HypothesisPy<StdMeshers_LengthFromEdgesPy>
 {
 public:
     static void init_type(PyObject*);
@@ -372,7 +377,7 @@ public:
     Py::Object getMode(const Py::Tuple& args);
 };
 
-class StdMeshers_LayerDistributionPy : public SMESH_HypothesisPy<StdMeshers_LayerDistributionPy>
+class StdMeshers_LayerDistributionPy: public SMESH_HypothesisPy<StdMeshers_LayerDistributionPy>
 {
 public:
     static void init_type(PyObject*);
@@ -382,43 +387,43 @@ public:
     Py::Object getLayerDistribution(const Py::Tuple& args);
 };
 #else
-class StdMeshers_Arithmetic1DPy : public SMESH_HypothesisPy<StdMeshers_Arithmetic1DPy>
+class StdMeshers_Arithmetic1DPy: public SMESH_HypothesisPy<StdMeshers_Arithmetic1DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Arithmetic1DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Arithmetic1DPy();
+    ~StdMeshers_Arithmetic1DPy() override;
 
     Py::Object setLength(const Py::Tuple& args);
     Py::Object getLength(const Py::Tuple& args);
 };
 
-class StdMeshers_AutomaticLengthPy : public SMESH_HypothesisPy<StdMeshers_AutomaticLengthPy>
+class StdMeshers_AutomaticLengthPy: public SMESH_HypothesisPy<StdMeshers_AutomaticLengthPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_AutomaticLengthPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_AutomaticLengthPy();
+    ~StdMeshers_AutomaticLengthPy() override;
 
     Py::Object setFineness(const Py::Tuple& args);
     Py::Object getFineness(const Py::Tuple& args);
     Py::Object getLength(const Py::Tuple& args);
 };
 
-class StdMeshers_NotConformAllowedPy : public SMESH_HypothesisPy<StdMeshers_NotConformAllowedPy>
+class StdMeshers_NotConformAllowedPy: public SMESH_HypothesisPy<StdMeshers_NotConformAllowedPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_NotConformAllowedPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_NotConformAllowedPy();
+    ~StdMeshers_NotConformAllowedPy() override;
 };
 
-class StdMeshers_MaxLengthPy : public SMESH_HypothesisPy<StdMeshers_MaxLengthPy>
+class StdMeshers_MaxLengthPy: public SMESH_HypothesisPy<StdMeshers_MaxLengthPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_MaxLengthPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_MaxLengthPy();
+    ~StdMeshers_MaxLengthPy() override;
 
     Py::Object setLength(const Py::Tuple& args);
     Py::Object getLength(const Py::Tuple& args);
@@ -429,12 +434,12 @@ public:
     Py::Object getUsePreestimatedLength(const Py::Tuple& args);
 };
 
-class StdMeshers_LocalLengthPy : public SMESH_HypothesisPy<StdMeshers_LocalLengthPy>
+class StdMeshers_LocalLengthPy: public SMESH_HypothesisPy<StdMeshers_LocalLengthPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_LocalLengthPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_LocalLengthPy();
+    ~StdMeshers_LocalLengthPy() override;
 
     Py::Object setLength(const Py::Tuple& args);
     Py::Object getLength(const Py::Tuple& args);
@@ -442,283 +447,288 @@ public:
     Py::Object getPrecision(const Py::Tuple& args);
 };
 
-class StdMeshers_MaxElementAreaPy : public SMESH_HypothesisPy<StdMeshers_MaxElementAreaPy>
+class StdMeshers_MaxElementAreaPy: public SMESH_HypothesisPy<StdMeshers_MaxElementAreaPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_MaxElementAreaPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_MaxElementAreaPy();
+    ~StdMeshers_MaxElementAreaPy() override;
 
     Py::Object setMaxArea(const Py::Tuple& args);
     Py::Object getMaxArea(const Py::Tuple& args);
 };
 
-class StdMeshers_QuadranglePreferencePy : public SMESH_HypothesisPy<StdMeshers_QuadranglePreferencePy>
+class StdMeshers_QuadranglePreferencePy
+    : public SMESH_HypothesisPy<StdMeshers_QuadranglePreferencePy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_QuadranglePreferencePy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_QuadranglePreferencePy();
+    ~StdMeshers_QuadranglePreferencePy() override;
 };
 
-class StdMeshers_Quadrangle_2DPy : public SMESH_HypothesisPy<StdMeshers_Quadrangle_2DPy>
+class StdMeshers_Quadrangle_2DPy: public SMESH_HypothesisPy<StdMeshers_Quadrangle_2DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Quadrangle_2DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Quadrangle_2DPy();
+    ~StdMeshers_Quadrangle_2DPy() override;
 };
 
-class StdMeshers_Regular_1DPy : public SMESH_HypothesisPy<StdMeshers_Regular_1DPy>
+class StdMeshers_Regular_1DPy: public SMESH_HypothesisPy<StdMeshers_Regular_1DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Regular_1DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Regular_1DPy();
+    ~StdMeshers_Regular_1DPy() override;
 };
 
-class StdMeshers_UseExisting_1DPy : public SMESH_HypothesisPy<StdMeshers_UseExisting_1DPy>
+class StdMeshers_UseExisting_1DPy: public SMESH_HypothesisPy<StdMeshers_UseExisting_1DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_UseExisting_1DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_UseExisting_1DPy();
+    ~StdMeshers_UseExisting_1DPy() override;
 };
 
-class StdMeshers_UseExisting_2DPy : public SMESH_HypothesisPy<StdMeshers_UseExisting_2DPy>
+class StdMeshers_UseExisting_2DPy: public SMESH_HypothesisPy<StdMeshers_UseExisting_2DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_UseExisting_2DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_UseExisting_2DPy();
+    ~StdMeshers_UseExisting_2DPy() override;
 };
 
-class StdMeshers_CompositeSegment_1DPy : public SMESH_HypothesisPy<StdMeshers_CompositeSegment_1DPy>
+class StdMeshers_CompositeSegment_1DPy: public SMESH_HypothesisPy<StdMeshers_CompositeSegment_1DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_CompositeSegment_1DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_CompositeSegment_1DPy();
+    ~StdMeshers_CompositeSegment_1DPy() override;
 };
 
-class StdMeshers_Deflection1DPy : public SMESH_HypothesisPy<StdMeshers_Deflection1DPy>
+class StdMeshers_Deflection1DPy: public SMESH_HypothesisPy<StdMeshers_Deflection1DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Deflection1DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Deflection1DPy();
+    ~StdMeshers_Deflection1DPy() override;
 
     Py::Object setDeflection(const Py::Tuple& args);
 };
 
-class StdMeshers_Hexa_3DPy : public SMESH_HypothesisPy<StdMeshers_Hexa_3DPy>
+class StdMeshers_Hexa_3DPy: public SMESH_HypothesisPy<StdMeshers_Hexa_3DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Hexa_3DPy();
+    ~StdMeshers_Hexa_3DPy() override;
 };
-#if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
-class StdMeshers_TrianglePreferencePy : public SMESH_HypothesisPy<StdMeshers_TrianglePreferencePy>
+#if SMESH_VERSION_MAJOR < 7  // -----------------------------------------------
+class StdMeshers_TrianglePreferencePy: public SMESH_HypothesisPy<StdMeshers_TrianglePreferencePy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_TrianglePreferencePy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_TrianglePreferencePy();
 };
-#endif // --------------------------------------------------------------------
+#endif                       // --------------------------------------------------------------------
 
-class StdMeshers_StartEndLengthPy : public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
+class StdMeshers_StartEndLengthPy: public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_StartEndLengthPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_StartEndLengthPy();
+    ~StdMeshers_StartEndLengthPy() override;
     Py::Object setLength(const Py::Tuple& args);
     Py::Object getLength(const Py::Tuple& args);
 };
 
-class StdMeshers_SegmentLengthAroundVertexPy : public SMESH_HypothesisPy<StdMeshers_SegmentLengthAroundVertexPy>
+class StdMeshers_SegmentLengthAroundVertexPy
+    : public SMESH_HypothesisPy<StdMeshers_SegmentLengthAroundVertexPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_SegmentLengthAroundVertexPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_SegmentLengthAroundVertexPy();
+    ~StdMeshers_SegmentLengthAroundVertexPy() override;
     Py::Object setLength(const Py::Tuple& args);
     Py::Object getLength(const Py::Tuple& args);
 };
 
-class StdMeshers_SegmentAroundVertex_0DPy : public SMESH_HypothesisPy<StdMeshers_SegmentAroundVertex_0DPy>
+class StdMeshers_SegmentAroundVertex_0DPy
+    : public SMESH_HypothesisPy<StdMeshers_SegmentAroundVertex_0DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_SegmentAroundVertex_0DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_SegmentAroundVertex_0DPy();
+    ~StdMeshers_SegmentAroundVertex_0DPy() override;
 };
 
-class StdMeshers_RadialPrism_3DPy : public SMESH_HypothesisPy<StdMeshers_RadialPrism_3DPy>
+class StdMeshers_RadialPrism_3DPy: public SMESH_HypothesisPy<StdMeshers_RadialPrism_3DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_RadialPrism_3DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_RadialPrism_3DPy();
+    ~StdMeshers_RadialPrism_3DPy() override;
 };
 
-class StdMeshers_QuadraticMeshPy : public SMESH_HypothesisPy<StdMeshers_QuadraticMeshPy>
+class StdMeshers_QuadraticMeshPy: public SMESH_HypothesisPy<StdMeshers_QuadraticMeshPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_QuadraticMeshPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_QuadraticMeshPy();
+    ~StdMeshers_QuadraticMeshPy() override;
 };
 
-class StdMeshers_ProjectionSource3DPy : public SMESH_HypothesisPy<StdMeshers_ProjectionSource3DPy>
+class StdMeshers_ProjectionSource3DPy: public SMESH_HypothesisPy<StdMeshers_ProjectionSource3DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_ProjectionSource3DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_ProjectionSource3DPy();
-    //Py::Object setSource3DShape(const Py::Tuple& args);
-    //Py::Object getSource3DShape(const Py::Tuple& args);
-    //Py::Object setSourceMesh(const Py::Tuple& args);
-    //Py::Object getSourceMesh(const Py::Tuple& args);
-    //Py::Object setVertexAssociation(const Py::Tuple& args);
-    //Py::Object getSourceVertex(const Py::Tuple& args);
-    //Py::Object getTargetVertex(const Py::Tuple& args);
-    //Py::Object hasVertexAssociation(const Py::Tuple& args);
-    //Py::Object getStoreParams(const Py::Tuple& args);
-    //Py::Object restoreParams(const Py::Tuple& args);
+    ~StdMeshers_ProjectionSource3DPy() override;
+    // Py::Object setSource3DShape(const Py::Tuple& args);
+    // Py::Object getSource3DShape(const Py::Tuple& args);
+    // Py::Object setSourceMesh(const Py::Tuple& args);
+    // Py::Object getSourceMesh(const Py::Tuple& args);
+    // Py::Object setVertexAssociation(const Py::Tuple& args);
+    // Py::Object getSourceVertex(const Py::Tuple& args);
+    // Py::Object getTargetVertex(const Py::Tuple& args);
+    // Py::Object hasVertexAssociation(const Py::Tuple& args);
+    // Py::Object getStoreParams(const Py::Tuple& args);
+    // Py::Object restoreParams(const Py::Tuple& args);
 };
 
-class StdMeshers_ProjectionSource2DPy : public SMESH_HypothesisPy<StdMeshers_ProjectionSource2DPy>
+class StdMeshers_ProjectionSource2DPy: public SMESH_HypothesisPy<StdMeshers_ProjectionSource2DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_ProjectionSource2DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_ProjectionSource2DPy();
-    //Py::Object setSourceFace(const Py::Tuple& args);
-    //Py::Object getSourceFace(const Py::Tuple& args);
-    //Py::Object isCompoundSource(const Py::Tuple& args);
-    //Py::Object setSourceMesh(const Py::Tuple& args);
-    //Py::Object getSourceMesh(const Py::Tuple& args);
-    //Py::Object setVertexAssociation(const Py::Tuple& args);
-    //Py::Object getSourceVertex(const Py::Tuple& args);
-    //Py::Object getTargetVertex(const Py::Tuple& args);
-    //Py::Object hasVertexAssociation(const Py::Tuple& args);
-    //Py::Object getStoreParams(const Py::Tuple& args);
-    //Py::Object restoreParams(const Py::Tuple& args);
+    ~StdMeshers_ProjectionSource2DPy() override;
+    // Py::Object setSourceFace(const Py::Tuple& args);
+    // Py::Object getSourceFace(const Py::Tuple& args);
+    // Py::Object isCompoundSource(const Py::Tuple& args);
+    // Py::Object setSourceMesh(const Py::Tuple& args);
+    // Py::Object getSourceMesh(const Py::Tuple& args);
+    // Py::Object setVertexAssociation(const Py::Tuple& args);
+    // Py::Object getSourceVertex(const Py::Tuple& args);
+    // Py::Object getTargetVertex(const Py::Tuple& args);
+    // Py::Object hasVertexAssociation(const Py::Tuple& args);
+    // Py::Object getStoreParams(const Py::Tuple& args);
+    // Py::Object restoreParams(const Py::Tuple& args);
 };
 
-class StdMeshers_ProjectionSource1DPy : public SMESH_HypothesisPy<StdMeshers_ProjectionSource1DPy>
+class StdMeshers_ProjectionSource1DPy: public SMESH_HypothesisPy<StdMeshers_ProjectionSource1DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_ProjectionSource1DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_ProjectionSource1DPy();
-    //Py::Object setSourceEdge(const Py::Tuple& args);
-    //Py::Object getSourceEdge(const Py::Tuple& args);
-    //Py::Object isCompoundSource(const Py::Tuple& args);
-    //Py::Object setSourceMesh(const Py::Tuple& args);
-    //Py::Object getSourceMesh(const Py::Tuple& args);
-    //Py::Object setVertexAssociation(const Py::Tuple& args);
-    //Py::Object getSourceVertex(const Py::Tuple& args);
-    //Py::Object getTargetVertex(const Py::Tuple& args);
-    //Py::Object hasVertexAssociation(const Py::Tuple& args);
-    //Py::Object getStoreParams(const Py::Tuple& args);
-    //Py::Object restoreParams(const Py::Tuple& args);
+    ~StdMeshers_ProjectionSource1DPy() override;
+    // Py::Object setSourceEdge(const Py::Tuple& args);
+    // Py::Object getSourceEdge(const Py::Tuple& args);
+    // Py::Object isCompoundSource(const Py::Tuple& args);
+    // Py::Object setSourceMesh(const Py::Tuple& args);
+    // Py::Object getSourceMesh(const Py::Tuple& args);
+    // Py::Object setVertexAssociation(const Py::Tuple& args);
+    // Py::Object getSourceVertex(const Py::Tuple& args);
+    // Py::Object getTargetVertex(const Py::Tuple& args);
+    // Py::Object hasVertexAssociation(const Py::Tuple& args);
+    // Py::Object getStoreParams(const Py::Tuple& args);
+    // Py::Object restoreParams(const Py::Tuple& args);
 };
 
-class StdMeshers_Projection_3DPy : public SMESH_HypothesisPy<StdMeshers_Projection_3DPy>
+class StdMeshers_Projection_3DPy: public SMESH_HypothesisPy<StdMeshers_Projection_3DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Projection_3DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Projection_3DPy();
+    ~StdMeshers_Projection_3DPy() override;
 };
 
-class StdMeshers_Projection_2DPy : public SMESH_HypothesisPy<StdMeshers_Projection_2DPy>
+class StdMeshers_Projection_2DPy: public SMESH_HypothesisPy<StdMeshers_Projection_2DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Projection_2DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Projection_2DPy();
+    ~StdMeshers_Projection_2DPy() override;
 };
 
-class StdMeshers_Projection_1DPy : public SMESH_HypothesisPy<StdMeshers_Projection_1DPy>
+class StdMeshers_Projection_1DPy: public SMESH_HypothesisPy<StdMeshers_Projection_1DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Projection_1DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Projection_1DPy();
+    ~StdMeshers_Projection_1DPy() override;
 };
 
-class StdMeshers_Prism_3DPy : public SMESH_HypothesisPy<StdMeshers_Prism_3DPy>
+class StdMeshers_Prism_3DPy: public SMESH_HypothesisPy<StdMeshers_Prism_3DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_Prism_3DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_Prism_3DPy();
+    ~StdMeshers_Prism_3DPy() override;
 };
 
-class StdMeshers_NumberOfSegmentsPy : public SMESH_HypothesisPy<StdMeshers_NumberOfSegmentsPy>
+class StdMeshers_NumberOfSegmentsPy: public SMESH_HypothesisPy<StdMeshers_NumberOfSegmentsPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_NumberOfSegmentsPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_NumberOfSegmentsPy();
+    ~StdMeshers_NumberOfSegmentsPy() override;
     Py::Object setNumSegm(const Py::Tuple& args);
     Py::Object getNumSegm(const Py::Tuple& args);
 };
 
-class StdMeshers_NumberOfLayersPy : public SMESH_HypothesisPy<StdMeshers_NumberOfLayersPy>
+class StdMeshers_NumberOfLayersPy: public SMESH_HypothesisPy<StdMeshers_NumberOfLayersPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_NumberOfLayersPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_NumberOfLayersPy();
+    ~StdMeshers_NumberOfLayersPy() override;
     Py::Object setNumLayers(const Py::Tuple& args);
     Py::Object getNumLayers(const Py::Tuple& args);
 };
 
-class StdMeshers_MEFISTO_2DPy : public SMESH_HypothesisPy<StdMeshers_MEFISTO_2DPy>
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
+class StdMeshers_MEFISTO_2DPy: public SMESH_HypothesisPy<StdMeshers_MEFISTO_2DPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_MEFISTO_2DPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_MEFISTO_2DPy();
+    ~StdMeshers_MEFISTO_2DPy() override;
 };
+#endif
 
-class StdMeshers_MaxElementVolumePy : public SMESH_HypothesisPy<StdMeshers_MaxElementVolumePy>
+class StdMeshers_MaxElementVolumePy: public SMESH_HypothesisPy<StdMeshers_MaxElementVolumePy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_MaxElementVolumePy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_MaxElementVolumePy();
+    ~StdMeshers_MaxElementVolumePy() override;
     Py::Object setMaxVolume(const Py::Tuple& args);
     Py::Object getMaxVolume(const Py::Tuple& args);
 };
 
-class StdMeshers_LengthFromEdgesPy : public SMESH_HypothesisPy<StdMeshers_LengthFromEdgesPy>
+class StdMeshers_LengthFromEdgesPy: public SMESH_HypothesisPy<StdMeshers_LengthFromEdgesPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_LengthFromEdgesPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_LengthFromEdgesPy();
+    ~StdMeshers_LengthFromEdgesPy() override;
     Py::Object setMode(const Py::Tuple& args);
     Py::Object getMode(const Py::Tuple& args);
 };
 
-class StdMeshers_LayerDistributionPy : public SMESH_HypothesisPy<StdMeshers_LayerDistributionPy>
+class StdMeshers_LayerDistributionPy: public SMESH_HypothesisPy<StdMeshers_LayerDistributionPy>
 {
 public:
     static void init_type(PyObject*);
     StdMeshers_LayerDistributionPy(int hypId, int studyId, SMESH_Gen* gen);
-    ~StdMeshers_LayerDistributionPy();
+    ~StdMeshers_LayerDistributionPy() override;
     Py::Object setLayerDistribution(const Py::Tuple& args);
     Py::Object getLayerDistribution(const Py::Tuple& args);
 };
 #endif
 
-} // namespace Fem
+}  // namespace Fem
 
-#endif // FEM_HYPOTHESISPY_H
+#endif  // FEM_HYPOTHESISPY_H

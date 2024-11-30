@@ -21,14 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
-#endif
-
-#include <App/GeoFeatureGroupExtension.h>
 
 #include "ViewProviderGeoFeatureGroup.h"
 
@@ -43,9 +36,7 @@ ViewProviderGeoFeatureGroup::ViewProviderGeoFeatureGroup()
     ViewProviderGeoFeatureGroupExtension::initExtension(this);
 }
 
-ViewProviderGeoFeatureGroup::~ViewProviderGeoFeatureGroup()
-{
-}
+ViewProviderGeoFeatureGroup::~ViewProviderGeoFeatureGroup() = default;
 
 
 // Python feature -----------------------------------------------------------------------
@@ -56,5 +47,5 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGeoFeatureGroupPython, Gui::ViewProvid
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderGeoFeatureGroup>;
 }

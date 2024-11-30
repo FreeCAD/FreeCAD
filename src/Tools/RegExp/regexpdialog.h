@@ -25,12 +25,14 @@
 #define REG_EXP_DIALOG_H
 
 #include <qdialog.h>
-#include <qregexp.h>
+#include <qregularexpression.h>
 #include <qsyntaxhighlighter.h>
+#include <qtextedit.h>
 
+class QRegularExpressionValidator;
 class RegExpSyntaxHighlighter;
 class Ui_RegExpDialog;
-class RegExpDialog : public QDialog
+class RegExpDialog: public QDialog
 {
     Q_OBJECT
 public:
@@ -44,24 +46,24 @@ protected Q_SLOTS:
 
 private:
     RegExpSyntaxHighlighter* rxhilighter;
+    QRegularExpressionValidator* validator;
     Ui_RegExpDialog* ui;
 };
 
 // -------------------------------------------------------------
 
-class RegExpSyntaxHighlighter : public QSyntaxHighlighter
+class RegExpSyntaxHighlighter: public QSyntaxHighlighter
 {
 public:
-    RegExpSyntaxHighlighter (QTextEdit * textEdit);
+    RegExpSyntaxHighlighter(QTextEdit* textEdit);
     ~RegExpSyntaxHighlighter();
 
-    void highlightBlock (const QString & text);
-    //int highlightParagraph ( const QString & text, int endStateOfLastPara );
-    void highlightMatchedText( const QRegExp& );
+    void highlightBlock(const QString& text);
+    void highlightMatchedText(const QRegularExpression&);
     void resethighlight();
 
 private:
-    QRegExp regexp;
+    QRegularExpression regexp;
 };
 
-#endif // REG_EXP_DIALOG_H
+#endif  // REG_EXP_DIALOG_H

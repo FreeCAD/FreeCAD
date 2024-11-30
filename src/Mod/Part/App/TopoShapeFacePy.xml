@@ -107,6 +107,16 @@ validate()
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="countNodes" Const="true">
+        <Documentation>
+          <UserDocu>Returns the number of nodes of the triangulation.</UserDocu>
+        </Documentation>
+        </Methode>
+        <Methode Name="countTriangles" Const="true">
+        <Documentation>
+          <UserDocu>Returns the number of triangles of the triangulation.</UserDocu>
+        </Documentation>
+        </Methode>
         <Methode Name="curveOnSurface" Const="true">
             <Documentation>
                 <UserDocu>Returns the curve associated to the edge in the parametric space of the face.

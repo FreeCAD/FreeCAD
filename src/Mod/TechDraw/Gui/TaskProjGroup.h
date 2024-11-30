@@ -25,23 +25,19 @@
 #define GUI_TASKVIEW_TASKVIEWGROUP_H
 
 #include <QString>
+#include <QDialog>
 
-#include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "MDIViewPage.h"
-
-#include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
-
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-
-
-class Ui_TaskProjGroup;
+namespace Gui {
+    class QuantitySpinBox;
+}
 
 namespace TechDraw {
+class DrawView;
 class DrawProjGroup;
 class DrawPage;
 }
@@ -49,17 +45,17 @@ class DrawPage;
 namespace TechDrawGui
 {
 class MDIViewPage;
-class ViewProviderProjGroup;
+class Ui_TaskProjGroup;
+class ViewProviderDrawingView;
 
 class TaskProjGroup : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode);
-    ~TaskProjGroup();
+    TaskProjGroup(TechDraw::DrawView* featView, bool mode);
+    ~TaskProjGroup() override = default;
 
-public:
     virtual bool accept();
     virtual bool reject();
     virtual bool apply();
@@ -69,29 +65,13 @@ public:
                      QPushButton* btnApply);
 
     void updateTask();
-    std::pair<int, int> nearestFraction(const double val, const long int maxDenom = 999) const;
     // Sets the numerator and denominator widgets to match newScale
     void setFractionalScale(double newScale);
-    void setCreateMode(bool b) { m_createMode = b;}
-    bool getCreateMode() { return m_createMode; }
-
-protected Q_SLOTS:
-    void viewToggled(bool toggle);
-
-    /// Requests appropriate rotation of our DrawProjGroup
-    void rotateButtonClicked(void);
-
-//    void onResetClicked(void);
-/*    void projectionTypeChanged(int index);*/
-    void projectionTypeChanged(QString qText);
-    void scaleTypeChanged(int index);
-    void AutoDistributeClicked(bool b);
-    /// Updates item spacing
-    void spacingChanged(void);
-    void scaleManuallyChanged(int i);
+    void setCreateMode(bool mode) { m_createMode = mode;}
+    bool getCreateMode() const { return m_createMode; }
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *event) override;
 
     /// Connects and updates state of view checkboxes to match the state of multiView
     /*!
@@ -99,79 +79,127 @@ protected:
      * between checkboxes and viewToggled()
      */
     void setupViewCheckboxes(bool addConnections = false);
-    void setUiPrimary(void);
+    void setUiPrimary();
+    bool useThirdAngle();
     void saveGroupState();
     void restoreGroupState();
+    void updateUi();
+    void connectWidgets();
+    void initializeUi();
 
-    QString formatVector(Base::Vector3d v);
+    void turnViewToProjGroup();
+    void turnProjGroupToView();
 
+    QString formatVector(Base::Vector3d vec);
+
+protected Q_SLOTS:
+    void viewToggled(bool toggle);
+
+    /// Requests appropriate rotation of our DrawProjGroup
+    void rotateButtonClicked();
+
+    void customDirectionClicked();
+
+    void projectionTypeChanged(QString qText);
+    void scaleTypeChanged(int index);
+    void AutoDistributeClicked(bool clicked);
+    /// Updates item spacing
+    void spacingChanged();
+    void scaleManuallyChanged(int unused);
+
+
+private:
     TechDraw::DrawPage* m_page;
     MDIViewPage* m_mdi;
 
-private:
     std::unique_ptr<Ui_TaskProjGroup> ui;
+    TechDraw::DrawView* view;
     TechDraw::DrawProjGroup* multiView;
     bool m_createMode;
 
-    bool blockUpdate;
+    bool blockUpdate{true};
+    bool blockCheckboxes;
     /// Translate a view checkbox index into represented view string, depending on projection type
-    const char * viewChkIndexToCStr(int index);
+    const char *  viewChkIndexToCStr(int index);
+    QString getToolTipForBox(int boxNumber);
 
-    QPushButton* m_btnOK;
-    QPushButton* m_btnCancel;
-    QPushButton* m_btnApply;
+    QPushButton* m_btnOK{nullptr};
+    QPushButton* m_btnCancel{nullptr};
+    QPushButton* m_btnApply{nullptr};
 
     std::vector<App::DocumentObject*> m_saveSource;
     std::string    m_saveProjType;
     std::string    m_saveScaleType;
-    double         m_saveScale;
-    bool           m_saveAutoDistribute;
-    double         m_saveSpacingX;
-    double         m_saveSpacingY;
+    double         m_saveScale{1};
+    bool           m_saveAutoDistribute{false};
+    double         m_saveSpacingX{15};
+    double         m_saveSpacingY{15};
     Base::Vector3d m_saveDirection;
     std::vector<std::string> m_saveViewNames;
 };
 
-/// Simulation dialog for the TaskView
 class TaskDlgProjGroup : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgProjGroup(TechDraw::DrawProjGroup* featView,bool mode);
-    ~TaskDlgProjGroup();
+    TaskDlgProjGroup(TechDraw::DrawView* featView, bool mode);
+    ~TaskDlgProjGroup() override = default;
 
-    const ViewProviderProjGroup * getViewProvider() const { return viewProvider; }
-    TechDraw::DrawProjGroup * getMultiView() const { return multiView; }
+    const ViewProviderDrawingView* getViewProvider() const { return viewProvider; }
+    TechDraw::DrawView* getView() const { return view; }
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
-    virtual void modifyStandardButtons(QDialogButtonBox* box);
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
-public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int ikey) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return false; }
-    void setCreateMode(bool b);
+    void setCreateMode(bool mode);
 
     void update();
 
 protected:
-    const ViewProviderProjGroup *viewProvider;
-    TechDraw::DrawProjGroup *multiView;
+    const ViewProviderDrawingView *viewProvider;
+    TechDraw::DrawView* view;
 
 private:
     TaskProjGroup * widget;
     Gui::TaskView::TaskBox* taskbox;
+};
+
+
+class DirectionEditDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit DirectionEditDialog(QWidget* parent = nullptr);
+
+    void setDirection(const Base::Vector3d& pos);
+    Base::Vector3d getDirection() const;
+
+    void setAngle(double val);
+    double getAngle() const;
+
+protected:
+    void showEvent(QShowEvent* event) override;
+
+private:
+    Gui::QuantitySpinBox* xSpinBox;
+    Gui::QuantitySpinBox* ySpinBox;
+    Gui::QuantitySpinBox* zSpinBox;
+    Gui::QuantitySpinBox* angleSpinBox;
+
+    void createUI();
 };
 
 } //namespace TechDrawGui

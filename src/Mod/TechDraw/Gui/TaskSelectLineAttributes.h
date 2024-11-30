@@ -23,12 +23,11 @@
 #ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
 #define TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+
 
 class dimAttributes {
     double cascadeSpacing;
@@ -36,19 +35,15 @@ class dimAttributes {
 
     public:
 
-    dimAttributes(void);
+    dimAttributes();
     void setCascadeSpacing(double);
-    double getCascadeSpacing(void) {return cascadeSpacing;}
+    double getCascadeSpacing() {return cascadeSpacing;}
     void setLineStretch(double);
-    double getLineStretch(void) {return lineStretch;}
+    double getLineStretch() {return lineStretch;}
 
 }; // class dimAttributes
 
 extern dimAttributes activeDimAttributes; // container holding dimension attributes
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {
@@ -62,10 +57,12 @@ class LineFormat;
 namespace TechDraw
 {
 class Face;
+class LineGenerator;
 }
 
 namespace TechDrawGui
 {
+class QGSPage;
 class QGVPage;
 class QGIView;
 class QGIPrimPath;
@@ -73,50 +70,46 @@ class MDIViewPage;
 class ViewProviderViewPart;
 class Ui_TaskSelectLineAttributes;
 
-class lineAttributes {
-    int style;
-    int width;
-    int color;
+// class lineAttributes {
+//     int style;
+//     int width;
+//     int color;
 
-public:
+// public:
 
-    lineAttributes(void);
-    void setStyle(int);
-    int getStyle(void) const {return style;}
-    void setWidth(int);
-    int getWidth(void) const {return width;}
-    float getWidthValue(void);
-    void setColor(int);
-    int getColor(void) const {return color;}
-    App::Color getColorValue(void);
+//     lineAttributes();
+//     void setStyle(int);
+//     int getStyle() const {return style;}
+//     void setWidth(int);
+//     int getWidth() const {return width;}
+//     float getWidthValue();
+//     void setColor(int);
+//     int getColor() const {return color;}
+//     App::Color getColorValue();
 
-}; // class lineAttributes
+// }; // class lineAttributes
 
 class TaskSelectLineAttributes : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
-    ~TaskSelectLineAttributes();
+    explicit TaskSelectLineAttributes();
+    ~TaskSelectLineAttributes() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
 
-protected Q_SLOTS:
-
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *event) override;
 
-    void setUiEdit(void);
+    void setUiEdit();
 
 private:
-    lineAttributes* activeAttributes;
     std::unique_ptr<Ui_TaskSelectLineAttributes> ui;
+
+    TechDraw::LineGenerator* m_lineGenerator;
 }; // class TaskSelectLineAttributes
 
 class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
@@ -124,21 +117,20 @@ class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
-    ~TaskDlgSelectLineAttributes();
+    explicit TaskDlgSelectLineAttributes();
+    ~TaskDlgSelectLineAttributes() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 

@@ -33,7 +33,7 @@ TriangulateEC<Real>::TriangulateEC (const Positions& rkPositions,
 
     // Triangulate the unindexed polygon.
     int iVQuantity = (int)rkPositions.size();
-    const int* aiIndex = 0;
+    const int* aiIndex = nullptr;
     InitializeVertices(iVQuantity,aiIndex,rkTriangles);
     DoEarClipping(iVQuantity,aiIndex,rkTriangles);
 }
@@ -984,7 +984,7 @@ void TriangulateEC<Real>::Delete (Tree*& rpkRoot)
             WM4_DELETE pkTree;
         }
 
-        rpkRoot = 0;
+        rpkRoot = nullptr;
     }
 }
 //----------------------------------------------------------------------------

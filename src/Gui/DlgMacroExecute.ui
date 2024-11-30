@@ -70,7 +70,46 @@
         <property name="spacing">
          <number>6</number>
         </property>
+        <item row="0" column="0">
+         <widget class="QLineEdit" name="LineEditMacroName">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
+         <layout class="QHBoxLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Find file:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="LineEditFind">
+            <property name="toolTip">
+             <string>Case-insensitive search for filenames, regular expressions supported</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label1">
+            <property name="text">
+             <string>Find in files:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="LineEditFindInFiles">
+            <property name="toolTip">
+             <string>Filter by case-insensitive file content, regular expressions supported</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
          <widget class="QTabWidget" name="tabMacroWidget">
           <property name="tabPosition">
            <enum>QTabWidget::North</enum>
@@ -128,47 +167,6 @@
             </item>
            </layout>
           </widget>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLineEdit" name="LineEditMacroName">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QGroupBox" name="DestinationGroup">
-       <property name="title">
-        <string>User macros location:</string>
-       </property>
-       <layout class="QGridLayout">
-        <property name="leftMargin">
-         <number>9</number>
-        </property>
-        <property name="topMargin">
-         <number>9</number>
-        </property>
-        <property name="rightMargin">
-         <number>9</number>
-        </property>
-        <property name="bottomMargin">
-         <number>9</number>
-        </property>
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="Gui::FileChooser" name="fileChooser">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
-          </property>
          </widget>
         </item>
        </layout>
@@ -279,6 +277,9 @@
          <property name="enabled">
           <bool>false</bool>
          </property>
+         <property name="toolTip">
+          <string>Launch a guide on how to set up a macro in a custom global toolbar.</string>
+         </property>
          <property name="text">
           <string>Toolbar</string>
          </property>
@@ -302,12 +303,49 @@
          <property name="enabled">
           <bool>true</bool>
          </property>
+         <property name="toolTip">
+          <string>Open Addon Manager where macros created by the community and other addons can be downloaded.</string>
+         </property>
          <property name="text">
-          <string>Addons...</string>
+          <string>Download</string>
          </property>
         </widget>
        </item>
       </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="DestinationGroup">
+       <property name="title">
+        <string>User macros location:</string>
+       </property>
+       <layout class="QGridLayout">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="Gui::FileChooser" name="fileChooser">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </item>
     </layout>
    </item>

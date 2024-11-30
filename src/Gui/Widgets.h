@@ -24,23 +24,23 @@
 #ifndef GUI_WIDGETS_H
 #define GUI_WIDGETS_H
 
-#include <QButtonGroup>
-#include <QDialog>
-#include <QListWidget>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPointer>
-#include <QPushButton>
-#include <QPlainTextEdit>
-#include <QBasicTimer>
-#include <QElapsedTimer>
-#include <QToolButton>
-#include <QModelIndex>
-#include "ExpressionBinding.h"
-#include <Base/Parameter.h>
 #include <memory>
 #include <FCGlobal.h>
 
+#include <QBasicTimer>
+#include <QButtonGroup>
+#include <QDialog>
+#include <QElapsedTimer>
+#include <QLabel>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QPlainTextEdit>
+#include <QPointer>
+#include <QPushButton>
+#include <QToolButton>
+
+#include <Base/Parameter.h>
+#include "ExpressionBinding.h"
 
 class QGridLayout;
 class QVBoxLayout;
@@ -63,11 +63,11 @@ class CommandIconView : public QListWidget
   Q_OBJECT
 
 public:
-  CommandIconView (QWidget * parent = 0);
-  virtual ~CommandIconView ();
+  CommandIconView (QWidget * parent = nullptr);
+  ~CommandIconView () override;
 
 protected:
-  void startDrag ( Qt::DropActions supportedActions );
+  void startDrag ( Qt::DropActions supportedActions ) override;
 
 protected Q_SLOTS:
   void onSelectionChanged( QListWidgetItem * item, QListWidgetItem * );
@@ -84,8 +84,8 @@ class GuiExport ActionSelector : public QWidget
     Q_OBJECT
 
 public:
-    ActionSelector(QWidget* parent=0);
-    ~ActionSelector();
+    ActionSelector(QWidget* parent=nullptr);
+    ~ActionSelector() override;
 
     QTreeWidget* availableTreeWidget() const
     { return availableWidget; }
@@ -97,16 +97,16 @@ public:
     QString availableLabel() const;
 
 private:
-    void keyPressEvent(QKeyEvent *);
-    void changeEvent(QEvent*);
+    void keyPressEvent(QKeyEvent *) override;
+    void changeEvent(QEvent*) override;
     void retranslateUi();
     void setButtonsEnabled();
 
 private Q_SLOTS:
-    void on_addButton_clicked();
-    void on_removeButton_clicked();
-    void on_upButton_clicked();
-    void on_downButton_clicked();
+    void onAddButtonClicked();
+    void onRemoveButtonClicked();
+    void onUpButtonClicked();
+    void onDownButtonClicked();
     void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
     void onItemDoubleClicked(QTreeWidgetItem * item, int column);
 
@@ -129,7 +129,7 @@ private:
 // ------------------------------------------------------------------------------
 
 /**
- * The AccelLineEdit class provides a lineedit to specfify shortcuts.
+ * The AccelLineEdit class provides a lineedit to specify shortcuts.
  * \author Werner Mayer
  */
 class GuiExport AccelLineEdit : public QLineEdit
@@ -137,15 +137,30 @@ class GuiExport AccelLineEdit : public QLineEdit
   Q_OBJECT
 
 public:
-    AccelLineEdit(QWidget * parent=0);
+    AccelLineEdit(QWidget * parent=nullptr);
     bool isNone() const;
 
 protected:
-    void keyPressEvent(QKeyEvent * e);
+    void keyPressEvent(QKeyEvent * e) override;
 
 private:
-    QString noneStr;
     int keyPressedCount;
+};
+
+// ------------------------------------------------------------------------------
+
+/**
+ * The ModifierLineEdit class provides a lineedit to specify modifiers.
+ */
+class GuiExport ModifierLineEdit : public QLineEdit
+{
+  Q_OBJECT
+
+public:
+    ModifierLineEdit(QWidget * parent=nullptr);
+
+protected:
+    void keyPressEvent(QKeyEvent * e) override;
 };
 
 // ------------------------------------------------------------------------------
@@ -159,10 +174,10 @@ class GuiExport ClearLineEdit : public QLineEdit
   Q_OBJECT
 
 public:
-    ClearLineEdit (QWidget * parent=0);
+    ClearLineEdit (QWidget * parent=nullptr);
 
 protected:
-    void resizeEvent(QResizeEvent *);
+    void resizeEvent(QResizeEvent *) override;
 
 private Q_SLOTS:
     void updateClearButton(const QString &text);
@@ -173,7 +188,7 @@ private:
 
 // ------------------------------------------------------------------------------
 
-typedef QPair<QString, bool> CheckListItem;
+using CheckListItem = QPair<QString, bool>;
 class Ui_DlgTreeWidget;
 
 /**
@@ -187,14 +202,14 @@ class GuiExport CheckListDialog : public QDialog
   Q_OBJECT
 
 public:
-  CheckListDialog( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
-  ~CheckListDialog();
+  CheckListDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+  ~CheckListDialog() override;
 
   void setCheckableItems( const QStringList& items );
   void setCheckableItems( const QList<CheckListItem>& items );
   QStringList getCheckedItems() const;
 
-  void accept ();
+  void accept () override;
 
 private:
   QStringList checked;
@@ -211,17 +226,20 @@ class GuiExport ColorButton : public QPushButton
 {
     Q_OBJECT
 
-    Q_PROPERTY( QColor color READ color WRITE setColor )
-    Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor )
-    Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame )
-    Q_PROPERTY( bool allowTransparency READ allowTransparency WRITE setAllowTransparency)
+    Q_PROPERTY( QColor color READ color WRITE setColor NOTIFY changed)
+    Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY( bool allowTransparency READ allowTransparency WRITE setAllowTransparency) // clazy:exclude=qproperty-without-notify
 
 public:
-    ColorButton(QWidget* parent = 0);
-    ~ColorButton();
+    ColorButton(QWidget* parent = nullptr);
+    ~ColorButton() override;
 
     void setColor(const QColor&);
     QColor color() const;
+
+    void setPackedColor(uint32_t);
+    uint32_t packedColor() const;
 
     void setAllowChangeColor(bool);
     bool allowChangeColor() const;
@@ -250,7 +268,11 @@ Q_SIGNALS:
     void changed();
 
 protected:
-    void paintEvent (QPaintEvent*);
+    void paintEvent (QPaintEvent*) override;
+
+private:
+    void showModeless();
+    void showModal();
 
 private:
     struct ColorButtonP *d;
@@ -269,12 +291,12 @@ private:
 class GuiExport UrlLabel : public QLabel
 {
   Q_OBJECT
-  Q_PROPERTY( QString  url    READ url   WRITE setUrl)
-  Q_PROPERTY( bool  launchExternal    READ launchExternal   WRITE setLaunchExternal)
+  Q_PROPERTY( QString  url    READ url   WRITE setUrl) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( bool  launchExternal    READ launchExternal   WRITE setLaunchExternal) // clazy:exclude=qproperty-without-notify
 
 public:
-  UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = Qt::WindowFlags() );
-  virtual ~UrlLabel();
+  UrlLabel ( QWidget * parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags() );
+  ~UrlLabel() override;
 
   QString url() const;
   bool launchExternal() const;
@@ -287,7 +309,7 @@ public Q_SLOTS:
   void setLaunchExternal(bool l);
 
 protected:
-  void mouseReleaseEvent ( QMouseEvent * );
+  void mouseReleaseEvent ( QMouseEvent * ) override;
 
 private:
   QString _url;
@@ -328,7 +350,7 @@ class GuiExport StatefulLabel : public QLabel, public Base::Observer<const char*
 
 public:
     StatefulLabel(QWidget* parent = nullptr);
-    virtual ~StatefulLabel();
+    ~StatefulLabel() override;
 
     /** If an unrecognized state is set, use this style */
     void setDefaultStyle(const QString &defaultStyle);
@@ -351,7 +373,7 @@ public:
         const std::string& preferenceName = std::string());
 
     /** Observes the parameter group and clears the cache if it changes */
-    void OnChange(Base::Subject<const char *>& rCaller, const char* rcReason);
+    void OnChange(Base::Subject<const char *>& rCaller, const char* rcReason) override;
 
 public Q_SLOTS:
     void setState(QString state);
@@ -383,11 +405,11 @@ class GuiExport LabelButton : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(QVariant value  READ value  WRITE setValue)
+    Q_PROPERTY(QVariant value  READ value  WRITE setValue NOTIFY valueChanged)
 
 public:
-    LabelButton (QWidget * parent = 0);
-    virtual ~LabelButton();
+    LabelButton (QWidget * parent = nullptr);
+    ~LabelButton() override;
 
     QVariant value() const;
 
@@ -399,7 +421,7 @@ public Q_SLOTS:
 
 protected:
     virtual void showValue(const QVariant& data);
-    void resizeEvent(QResizeEvent*);
+    void resizeEvent(QResizeEvent*) override;
 
 protected Q_SLOTS:
     virtual void browse();
@@ -426,16 +448,17 @@ private:
 class GuiExport ToolTip : public QObject
 {
 public:
-    static void showText(const QPoint & pos, const QString & text, QWidget * w = 0);
+    static void showText(const QPoint & pos, const QString & text, QWidget * w = nullptr);
+    static void hideText();
 
 protected:
     static ToolTip* instance();
 
     ToolTip();
-    virtual ~ToolTip();
+    ~ToolTip() override;
 
-    void timerEvent(QTimerEvent *e);
-    bool eventFilter(QObject* o, QEvent*e);
+    void timerEvent(QTimerEvent *e) override;
+    bool eventFilter(QObject* o, QEvent*e) override;
 
     void installEventFilter();
     void removeEventFilter();
@@ -458,14 +481,14 @@ class GuiExport StatusWidget : public QDialog
 
 public:
     StatusWidget(QWidget* parent);
-    ~StatusWidget();
+    ~StatusWidget() override;
     void setStatusText(const QString&);
-    QSize sizeHint () const;
+    QSize sizeHint () const override;
     void showText(int ms);
 
 protected:
-    void showEvent(QShowEvent*);
-    void hideEvent(QHideEvent*);
+    void showEvent(QShowEvent*) override;
+    void hideEvent(QHideEvent*) override;
 
 private:
     QLabel* label;
@@ -478,13 +501,13 @@ class GuiExport PropertyListEditor : public QPlainTextEdit
     Q_OBJECT
 
 public:
-    PropertyListEditor(QWidget *parent = 0);
+    PropertyListEditor(QWidget *parent = nullptr);
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
 
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 
 private Q_SLOTS:
     void updateLineNumberAreaWidth(int newBlockCount);
@@ -501,14 +524,14 @@ class GuiExport LabelEditor : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString  text        READ text        WRITE setText      )
-    Q_PROPERTY(QString  buttonText  READ buttonText  WRITE setButtonText)
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY(QString buttonText READ buttonText WRITE setButtonText) // clazy:exclude=qproperty-without-notify
 
 public:
     enum InputType {String, Float, Integer};
 
-    LabelEditor (QWidget * parent = 0);
-    virtual ~LabelEditor();
+    LabelEditor (QWidget * parent = nullptr);
+    ~LabelEditor() override;
 
     /**
     * Returns the text.
@@ -537,7 +560,7 @@ private Q_SLOTS:
     void changeText();
 
 protected:
-    void resizeEvent(QResizeEvent*);
+    void resizeEvent(QResizeEvent*) override;
 
 private:
     InputType type;
@@ -550,24 +573,24 @@ private:
  * The ExpLineEdit class provides a lineedit that support expressing binding.
  * \author realthunder
  */
-class GuiExport ExpLineEdit : public QLineEdit, public ExpressionBinding
+class GuiExport ExpLineEdit : public QLineEdit, public ExpressionWidget
 {
     Q_OBJECT
 
 public:
-    ExpLineEdit ( QWidget * parent=0, bool expressionOnly=false );
+    ExpLineEdit ( QWidget * parent=nullptr, bool expressionOnly=false );
 
-    void setExpression(std::shared_ptr<App::Expression> expr);
-    void bind(const App::ObjectIdentifier &_path);
-    bool apply(const std::string &propName);
+    void setExpression(std::shared_ptr<App::Expression> expr) override;
+    void bind(const App::ObjectIdentifier &_path) override;
+    bool apply(const std::string &propName) override;
 
-    void keyPressEvent(QKeyEvent *event);
-    void resizeEvent(QResizeEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private Q_SLOTS:
     void finishFormulaDialog();
     void openFormulaDialog();
-    virtual void onChange();
+    void onChange() override;
 
 private:
     bool autoClose;

@@ -48,7 +48,6 @@
 #include <Bnd_Box.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <Geom_Surface.hxx>
-#include <NCollection_DefineArray2.hxx>
 #include <Precision.hxx>
 #include <Standard_Real.hxx>
 #include <TColStd_SequenceOfInteger.hxx>

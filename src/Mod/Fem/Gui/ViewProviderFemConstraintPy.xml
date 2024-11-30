@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="ViewProviderGeometryObjectPy"
+        Name="ViewProviderFemConstraintPy"
+        Twin="ViewProviderFemConstraint"
+        TwinPointer="ViewProviderFemConstraint"
+        Include="Mod/Fem/Gui/ViewProviderFemConstraint.h"
+        Namespace="FemGui"
+        FatherInclude="Gui/ViewProviderGeometryObjectPy.h"
+        FatherNamespace="Gui">
+        <Documentation>
+            <Author Licence="LGPL" Name="Mario Passaglia" EMail="mpassaglia@cbc.uba.ar" />
+            <UserDocu>This is the ViewProviderFemConstraint class</UserDocu>
+        </Documentation>
+        <Methode Name="loadSymbol">
+            <Documentation>
+                <UserDocu>loadSymbol(filename) -> None
+
+Load constraint symbol from Open Inventor file.
+The file structure should be as follows:
+A separator containing a separator with the symbol used in
+multiple copies at points on the surface and an optional
+separator with a symbol excluded from multiple copies.
+
+filename : str
+    Open Inventor file.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="SymbolNode" ReadOnly="true">
+            <Documentation>
+                <UserDocu>A pivy SoSeparator with the nodes of the constraint symbols</UserDocu>
+            </Documentation>
+            <Parameter Name="SymbolNode" Type="Object" />
+        </Attribute>
+        <Attribute Name="ExtraSymbolNode" ReadOnly="true">
+            <Documentation>
+                <UserDocu>A pivy SoSeparator with the nodes of the constraint extra symbols</UserDocu>
+            </Documentation>
+            <Parameter Name="ExtraSymbolNode" Type="Object" />
+        </Attribute>
+        <Attribute Name="RotateSymbol">
+            <Documentation>
+                <UserDocu>Apply rotation on copies of the constraint symbol</UserDocu>
+            </Documentation>
+            <Parameter Name="SymbolNode" Type="Boolean" />
+        </Attribute>
+    </PythonExport>
+</GenerateModel>

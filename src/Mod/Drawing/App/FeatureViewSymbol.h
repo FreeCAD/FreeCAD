@@ -20,26 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _FeatureViewSymbol_h_
 #define _FeatureViewSymbol_h_
 
-
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
 #include <App/FeaturePython.h>
+#include <App/PropertyStandard.h>
+
+#include "FeatureView.h"
 
 
 namespace Drawing
 {
 
-
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport FeatureViewSymbol : public FeatureView
+class DrawingExport FeatureViewSymbol: public FeatureView
 {
     PROPERTY_HEADER(Drawing::FeatureView);
 
@@ -48,17 +44,18 @@ public:
     FeatureViewSymbol(void);
     virtual ~FeatureViewSymbol();
 
-    App::PropertyString       Symbol;
-    App::PropertyStringList   EditableTexts;
+    App::PropertyString Symbol;
+    App::PropertyStringList EditableTexts;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn* execute(void);
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const
+    {
         return "DrawingGui::ViewProviderDrawingView";
     }
 
@@ -66,10 +63,10 @@ protected:
     void onChanged(const App::Property* prop);
 };
 
-typedef App::FeaturePythonT<FeatureViewSymbol> FeatureViewSymbolPython;
+using FeatureViewSymbolPython = App::FeaturePythonT<FeatureViewSymbol>;
 
 
-} //namespace Drawing
+}  // namespace Drawing
 
 
 #endif

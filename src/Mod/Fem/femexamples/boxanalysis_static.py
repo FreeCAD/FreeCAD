@@ -37,14 +37,16 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "force", "pressure"],
-        "solvers": ["calculix", "ccxtools", "elmer"],
+        "solvers": ["ccxtools", "elmer"],
         "material": "solid",
-        "equation": "mechanical"
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.boxanalysis_static import setup
@@ -55,6 +57,7 @@ See forum topic post:
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -73,20 +76,18 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = doc.Analysis
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        solver_obj.WorkingDir = u""
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
+        solver_obj.WorkingDir = ""
     elif solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         ObjectsFem.makeEquationElasticity(doc, solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
@@ -103,7 +104,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint force
     con_force = ObjectsFem.makeConstraintForce(doc, "FemConstraintForce")
     con_force.References = [(geom_obj, "Face6")]
-    con_force.Force = 40000.0
+    con_force.Force = "40000.0 N"
     con_force.Direction = (geom_obj, ["Edge5"])
     con_force.Reversed = True
     analysis.addObject(con_force)
@@ -111,7 +112,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint pressure
     con_pressure = ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
     con_pressure.References = [(geom_obj, "Face2")]
-    con_pressure.Pressure = 1000.0
+    con_pressure.Pressure = "1000.0 MPa"
     con_pressure.Reversed = False
     analysis.addObject(con_pressure)
 

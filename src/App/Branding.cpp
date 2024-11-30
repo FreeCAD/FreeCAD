@@ -22,16 +22,11 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <QXmlSimpleReader>
-#include <QXmlInputSource>
-#include <QDir>
 #include <QFile>
-#include <QFileInfo>
 
 #include "Branding.h"
+
 
 using namespace App;
 
@@ -55,6 +50,7 @@ Branding::Branding()
     filter.push_back("SplashAlignment");
     filter.push_back("SplashTextColor");
     filter.push_back("SplashInfoColor");
+    filter.push_back("SplashWarningColor");
 
     filter.push_back("StartWorkbench");
 
@@ -67,10 +63,12 @@ Branding::Branding()
 bool Branding::readFile(const QString& fn)
 {
     QFile file(fn);
-    if (!file.open(QFile::ReadOnly))
+    if (!file.open(QFile::ReadOnly)) {
         return false;
-    if (!evaluateXML(&file, domDocument))
+    }
+    if (!evaluateXML(&file, domDocument)) {
         return false;
+    }
     file.close();
     return true;
 }
@@ -83,24 +81,24 @@ Branding::XmlConfig Branding::getUserDefines() const
     if (!root.isNull()) {
         child = root.firstChildElement();
         while (!child.isNull()) {
-            std::string name = (const char*)child.localName().toLatin1();
-            std::string value = (const char*)child.text().toUtf8();
-            if (std::find(filter.begin(), filter.end(), name) != filter.end())
+            std::string name = child.localName().toLatin1().constData();
+            std::string value = child.text().toUtf8().constData();
+            if (std::find(filter.begin(), filter.end(), name) != filter.end()) {
                 cfg[name] = value;
+            }
             child = child.nextSiblingElement();
         }
     }
     return cfg;
 }
 
-bool Branding::evaluateXML(QIODevice *device, QDomDocument& xmlDocument)
+bool Branding::evaluateXML(QIODevice* device, QDomDocument& xmlDocument)
 {
     QString errorStr;
     int errorLine;
     int errorColumn;
 
-    if (!xmlDocument.setContent(device, true, &errorStr, &errorLine,
-                                &errorColumn)) {
+    if (!xmlDocument.setContent(device, true, &errorStr, &errorLine, &errorColumn)) {
         return false;
     }
 
@@ -110,8 +108,9 @@ bool Branding::evaluateXML(QIODevice *device, QDomDocument& xmlDocument)
     }
     else if (root.hasAttribute(QLatin1String("version"))) {
         QString attr = root.attribute(QLatin1String("version"));
-        if (attr != QLatin1String("1.0"))
+        if (attr != QLatin1String("1.0")) {
             return false;
+        }
     }
 
     return true;

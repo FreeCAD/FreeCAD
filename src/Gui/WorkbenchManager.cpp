@@ -22,27 +22,22 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
+
 #include "WorkbenchManager.h"
 #include "Workbench.h"
+#include "DockWindowManager.h"
 #include "MenuManager.h"
 #include "ToolBarManager.h"
-#include "ToolBoxManager.h"
-#include "DockWindowManager.h"
-#include "MainWindow.h"
 
 using namespace Gui;
 
-WorkbenchManager* WorkbenchManager::_instance = 0;
+WorkbenchManager* WorkbenchManager::_instance = nullptr;
 
 WorkbenchManager* WorkbenchManager::instance()
 {
-    if (_instance == 0)
+    if (!_instance)
         _instance = new WorkbenchManager;
     return _instance;
 }
@@ -50,17 +45,15 @@ WorkbenchManager* WorkbenchManager::instance()
 void WorkbenchManager::destruct()
 {
     delete _instance;
-    _instance = 0;
+    _instance = nullptr;
 }
 
-WorkbenchManager::WorkbenchManager() : _activeWorkbench(0)
-{
-}
+WorkbenchManager::WorkbenchManager() = default;
 
 WorkbenchManager::~WorkbenchManager()
 {
-    for (std::map<std::string, Workbench*>::iterator it = _workbenches.begin(); it != _workbenches.end(); ++it) {
-        Workbench* wb = it->second;
+    for (auto & it : _workbenches) {
+        Workbench* wb = it.second;
         delete wb;
     }
 
@@ -76,23 +69,17 @@ Workbench* WorkbenchManager::createWorkbench (const std::string& name, const std
 
     if (!wb) {
         // try to create an instance now
-        Base::BaseClass* base = static_cast<Base::BaseClass*>
-            (Base::Type::createInstanceByName(className.c_str(),false));
-        if (base) {
-            if (!base->getTypeId().isDerivedFrom(Gui::Workbench::getClassTypeId())) {
-                delete base;
-                std::stringstream str;
-                str << "'" << className << "' not a workbench type" << std::ends;
-                throw Base::TypeError(str.str());
-            }
-
-            wb = static_cast<Workbench*>(base);
-            wb->setName(name);
-            _workbenches[name] = wb;
+        Base::Type type = Base::Type::getTypeIfDerivedFrom(className.c_str(), Workbench::getClassTypeId(), false);
+        wb = static_cast<Workbench*>(type.createInstance());
+        // createInstance could return a null pointer
+        if (!wb) {
+            std::stringstream str;
+            str << "'" << className << "' not a workbench type" << std::ends;
+            throw Base::TypeError(str.str());
         }
-        else
-            Base::Console().Log("WorkbenchManager::createWorkbench(): Can not create "
-                "Workbench instance with type: %s\n",className.c_str());
+
+        wb->setName(name);
+        _workbenches[name] = wb;
     }
 
     return wb;
@@ -105,14 +92,14 @@ void WorkbenchManager::removeWorkbench(const std::string& name)
         Workbench* wb = it->second;
         _workbenches.erase(it);
         if (_activeWorkbench == wb)
-            _activeWorkbench = 0;
+            _activeWorkbench = nullptr;
         delete wb;
     }
 }
 
 Workbench* WorkbenchManager::getWorkbench (const std::string& name) const
 {
-    Workbench* wb=0;
+    Workbench* wb=nullptr;
 
     std::map<std::string, Workbench*>::const_iterator it = _workbenches.find(name);
     if (it != _workbenches.end()) {
@@ -140,10 +127,19 @@ Workbench* WorkbenchManager::active() const
     return _activeWorkbench;
 }
 
+std::string WorkbenchManager::activeName() const
+{
+    std::string activeWbName = "";
+    if (_activeWorkbench) {
+        activeWbName = _activeWorkbench->name();
+    }
+    return activeWbName;
+}
+
 std::list<std::string> WorkbenchManager::workbenches() const
 {
     std::list<std::string> wb;
-    for (std::map<std::string, Workbench*>::const_iterator it = _workbenches.begin(); it != _workbenches.end(); ++it)
-        wb.push_back(it->first);
+    for (const auto & it : _workbenches)
+        wb.push_back(it.first);
     return wb;
 }

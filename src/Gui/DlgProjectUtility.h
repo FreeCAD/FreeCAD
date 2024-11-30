@@ -25,6 +25,7 @@
 #define GUI_DIALOG_DLGPROJECTUTILITY_H
 
 #include <QDialog>
+#include <memory>
 #include <string>
 
 namespace Gui { namespace Dialog {
@@ -35,16 +36,17 @@ class DlgProjectUtility : public QDialog
     Q_OBJECT
 
 public:
-    DlgProjectUtility(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgProjectUtility();
+    DlgProjectUtility(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgProjectUtility() override;
 
-private Q_SLOTS:
-    void on_extractButton_clicked();
-    void on_createButton_clicked();
+private:
+    void extractButton();
+    void createButton();
+    void tryExtractArchive(const QString& source, const QString& target);
+    void tryCreateArchive(const QString& source, const QString& target, bool openFile);
 
 protected:
-    static std::string doctools;
-    Ui_DlgProjectUtility* ui;
+    std::unique_ptr<Ui_DlgProjectUtility> ui;
 };
 
 } // namespace Dialog

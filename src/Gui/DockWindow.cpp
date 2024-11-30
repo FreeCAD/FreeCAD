@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DockWindow.h"
+
 
 using namespace Gui;
 
@@ -32,8 +32,6 @@ DockWindow::DockWindow( Gui::Document* pcDocument, QWidget *parent)
 {
 }
 
-DockWindow::~DockWindow()
-{
-}
+DockWindow::~DockWindow() = default;
 
 #include "moc_DockWindow.cpp"

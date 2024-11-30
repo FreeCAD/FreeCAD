@@ -38348,6 +38348,9 @@ Efaces
 15603,S2
 15604,S2
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -38365,15 +38368,15 @@ Efaces
 ***********************************************************
 ** Contact Constraints
 ** ConstraintContact
-*CONTACT PAIR, INTERACTION=INTConstraintContact,TYPE=SURFACE TO SURFACE
-DEPConstraintContact,INDConstraintContact
+*CONTACT PAIR, INTERACTION=INTConstraintContact, TYPE=SURFACE TO SURFACE
+DEPConstraintContact, INDConstraintContact
 *SURFACE INTERACTION, NAME=INTConstraintContact
-*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR
+*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR
 1000000
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
+*STEP, INC=2000
 *STATIC
 
 
@@ -38394,7 +38397,7 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node load on shape: Load_place_point:Vertex1
-5,2,-5.0000000000000E+03
+5,2,-5000
 
 
 
@@ -38409,14 +38412,14 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.19.19278 (Git)
-**   written on    --> Tue Jan 14 20:17:09 2020
+**   written by    --> FreeCAD 0.21.0
+**   written on    --> Tue Mar 28 05:18:47 2023
 **   file name     --> Contact_Shell_Shell.FCStd
 **   analysis name --> Analysis
 **

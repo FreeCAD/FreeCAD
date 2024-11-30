@@ -1,10 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppRobot -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -35,7 +28,7 @@ SET(Python_SRCS
     Robot6AxisPy.xml
     Robot6AxisPyImp.cpp
     TrajectoryPy.xml
-    TrajectoryPyImp.cpp 
+    TrajectoryPyImp.cpp
     RobotObjectPy.xml
     RobotObjectPyImp.cpp
     WaypointPy.xml
@@ -74,6 +67,12 @@ SET(Robot_SRCS
     ${Mod_SRCS}
     ${Python_SRCS}
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Robot_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Robot PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 # FIXME: The bundled KDL has some extensions which makes it incompatible
 # to an installed KDL. To fix the issue two things must be done:
@@ -124,6 +123,9 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 add_library(Robot SHARED ${Robot_SRCS})
 target_link_libraries(Robot ${Robot_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Robot)
+endif()
 
 unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskAssemblyInsertLink</class>
+ <widget class="QWidget" name="TaskAssemblyInsertLink">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>200</width>
+    <height>200</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Insert Component</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLineEdit" name="filterPartList">
+     <property name="placeholderText">
+      <string>Search parts...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTreeWidget" name="partList">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="hLayout">
+     <item>
+      <widget class="QLabel" name="label1">
+       <property name="text">
+        <string>Don't find your part? </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="openFileButton">
+       <property name="text">
+        <string>Open file</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_ShowOnlyParts">
+     <property name="toolTip">
+      <string>If checked, the list will show only Parts.</string>
+     </property>
+     <property name="text">
+      <string>Show only parts</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>InsertShowOnlyParts</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_RigidSubAsm">
+     <property name="toolTip">
+      <string>Sets whether the inserted sub-assemblies will be rigid or flexible.
+Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
+Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
+You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
+Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</string>
+     </property>
+     <property name="text">
+      <string>Rigid sub-assemblies</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>InsertRigidSubAssemblies</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
+   </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

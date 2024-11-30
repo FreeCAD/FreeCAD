@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_DEFINITIONS_H
 #define MESH_DEFINITIONS_H
 
@@ -31,30 +30,31 @@
 #include <climits>
 
 // default values
-#define MESH_MIN_PT_DIST           1.0e-6f
-#define MESH_MIN_EDGE_LEN          1.0e-3f
-#define MESH_MIN_EDGE_ANGLE        2.0
-#define MESH_REMOVE_MIN_LEN        true
-#define MESH_REMOVE_G3_EDGES       true
+#define MESH_MIN_PT_DIST 1.0e-6F
+#define MESH_MIN_EDGE_LEN 1.0e-3F
+#define MESH_MIN_EDGE_ANGLE 2.0
+#define MESH_REMOVE_MIN_LEN true
+#define MESH_REMOVE_G3_EDGES true
 
 /*
  * general constant definitions
  */
-#define FLOAT_EPS   1.0e-4f 
+#define FLOAT_EPS 1.0e-4F
 
-#ifndef  FLOAT_MAX
-# define FLOAT_MAX 1e30f
+#ifndef FLOAT_MAX
+#define FLOAT_MAX 1e30F
 #endif
 
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+#ifndef DOUBLE_MAX
+#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
 #endif
 
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+#ifndef DOUBLE_MIN
+#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
 #endif
 
-namespace MeshCore {
+namespace MeshCore
+{
 
 // type definitions
 using ElementIndex = unsigned long;
@@ -64,15 +64,15 @@ const FacetIndex FACET_INDEX_MAX = ULONG_MAX;
 using PointIndex = ElementIndex;
 const PointIndex POINT_INDEX_MAX = ULONG_MAX;
 
-template <class Prec>
+template<class Prec>
 class Math
 {
 public:
     MeshExport static const Prec PI;
 };
 
-typedef Math<float> Mathf;
-typedef Math<double> Mathd;
+using Mathf = Math<float>;
+using Mathd = Math<double>;
 
 /**
  * Global defined tolerances used to compare points
@@ -81,22 +81,20 @@ typedef Math<double> Mathd;
 class MeshExport MeshDefinitions
 {
 public:
-  MeshDefinitions ();
-  virtual ~MeshDefinitions ()
-  {}
+    MeshDefinitions();
 
-  static float  _fMinPointDistance;
-  static float  _fMinPointDistanceP2;
-  static float  _fMinPointDistanceD1;
+    static float _fMinPointDistance;
+    static float _fMinPointDistanceP2;
+    static float _fMinPointDistanceD1;
 
-  static float  _fMinEdgeLength;
-  static bool  _bRemoveMinLength;
+    static float _fMinEdgeLength;
+    static bool _bRemoveMinLength;
 
-  static float _fMinEdgeAngle;
+    static float _fMinEdgeAngle;
 
-  static void  SetMinPointDistance (float fMin);
+    static void SetMinPointDistance(float fMin);
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
-#endif // MESH_DEFINITIONS_H 
+#endif  // MESH_DEFINITIONS_H

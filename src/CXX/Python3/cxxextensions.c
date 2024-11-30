@@ -38,16 +38,26 @@
 #include "CXX/WrapPython.h"
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 
-PyObject py_object_initializer = 
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 13
+PyObject py_object_initializer =
     {
-    _PyObject_EXTRA_INIT
-    1, 
+    { 1 },
     NULL    // type must be init'ed by user
     };
+
+#else
+PyObject py_object_initializer =
+    {
+    _PyObject_EXTRA_INIT
+    1,
+    NULL    // type must be init'ed by user
+    };
+
+#endif
 
 #ifdef __cplusplus
 }

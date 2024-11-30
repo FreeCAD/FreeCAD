@@ -46,7 +46,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -66,7 +66,7 @@ class Stretch(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Stretch, self).Activated(name="Stretch")
+        super().Activated(name="Stretch")
         self.rectracker = None
         self.nodetracker = None
         if self.ui:
@@ -118,14 +118,13 @@ class Stretch(gui_base_original.Modifier):
             self.step = 1
             self.refpoint = None
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Stretch")
-            self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rectracker = trackers.rectangleTracker(dotted=True,
                                                         scolor=(0.0, 0.0, 1.0),
                                                         swidth=2)
             self.nodetracker = []
             self.displacement = None
-            _msg(translate("draft", "Pick first point of selection rectangle"))
+            _toolmsg(translate("draft", "Pick first point of selection rectangle"))
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -142,7 +141,6 @@ class Stretch(gui_base_original.Modifier):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            # ,mobile=True) #,noTracker=(self.step < 3))
             point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             if self.step == 2:
                 self.rectracker.update(point)
@@ -153,7 +151,6 @@ class Stretch(gui_base_original.Modifier):
                     # clicked twice on the same point
                     self.finish()
                 else:
-                    # ,mobile=True) #,noTracker=(self.step < 3))
                     point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
                     self.addPoint(point)
 
@@ -161,9 +158,9 @@ class Stretch(gui_base_original.Modifier):
         """Add point to defined selection rectangle."""
         if self.step == 1:
             # first rctangle point
-            _msg(translate("draft", "Pick opposite point "
+            _toolmsg(translate("draft", "Pick opposite point "
                                     "of selection rectangle"))
-            self.ui.setRelative()
+            self.ui.setRelative(-1)
             self.rectracker.setorigin(point)
             self.rectracker.on()
             if self.planetrack:
@@ -171,7 +168,8 @@ class Stretch(gui_base_original.Modifier):
             self.step = 2
         elif self.step == 2:
             # second rectangle point
-            _msg(translate("draft", "Pick start point of displacement"))
+            _toolmsg(translate("draft", "Pick start point of displacement"))
+            self.ui.setRelative(-2)
             self.rectracker.off()
             nodes = []
             self.ops = []
@@ -234,7 +232,7 @@ class Stretch(gui_base_original.Modifier):
             self.step = 3
         elif self.step == 3:
             # first point of displacement line
-            _msg(translate("draft", "Pick end point of displacement"))
+            _toolmsg(translate("draft", "Pick end point of displacement"))
             self.displacement = point
             # print("first point:", point)
             self.node = [point]
@@ -255,14 +253,15 @@ class Stretch(gui_base_original.Modifier):
         point = App.Vector(numx, numy, numz)
         self.addPoint(point)
 
-    def finish(self, closed=False):
+    def finish(self, cont=False):
         """Terminate the operation of the command. and clean up."""
+        self.end_callbacks(self.call)
         if self.rectracker:
             self.rectracker.finalize()
         if self.nodetracker:
             for n in self.nodetracker:
                 n.finalize()
-        super(Stretch, self).finish()
+        super().finish()
 
     def doStretch(self):
         """Do the actual stretching once the points are selected."""
@@ -338,6 +337,8 @@ class Stretch(gui_base_original.Modifier):
                             optype = 3
                         elif ops[1] == [True, True, False, False]:
                             optype = 4
+                        elif ops[1] == [True, True, True, True]:
+                            optype = 5
                         else:
                             optype = 0
                         # print("length:", ops[0].Length,
@@ -345,7 +346,7 @@ class Stretch(gui_base_original.Modifier):
                         #       " - ", ops[1],
                         #       " - ", self.displacement)
                         done = False
-                        if optype > 0:
+                        if 0 < optype < 5:
                             v1 = ops[0].Placement.multVec(p2).sub(ops[0].Placement.multVec(p1))
                             a1 = round(self.displacement.getAngle(v1), 4)
                             v2 = ops[0].Placement.multVec(p4).sub(ops[0].Placement.multVec(p1))
@@ -444,6 +445,12 @@ class Stretch(gui_base_original.Modifier):
                                     commitops.append(_cmd)
                                     commitops.append(_pl)
                                     done = True
+                        elif optype == 5:
+                            _pl = _doc + ops[0].Name
+                            _pl += ".Placement.Base=FreeCAD."
+                            _pl += str(ops[0].Placement.Base.add(self.displacement))
+                            commitops.append(_pl)
+                            done = True
                         if not done:
                             # otherwise create a wire copy and stretch it instead
                             _msg(translate("draft", "Turning one Rectangle into a Wire"))

@@ -22,27 +22,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QMessageBox>
+#endif
 
 #include "DlgSettingsFemMystranImp.h"
 #include "ui_DlgSettingsFemMystran.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
-DlgSettingsFemMystranImp::DlgSettingsFemMystranImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemMystranImp)
+DlgSettingsFemMystranImp::DlgSettingsFemMystranImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsFemMystranImp)
 {
     ui->setupUi(this);
+
+    connect(ui->fc_mystran_binary_path,
+            &Gui::PrefFileChooser::fileNameChanged,
+            this,
+            &DlgSettingsFemMystranImp::onfileNameChanged);
 }
 
-DlgSettingsFemMystranImp::~DlgSettingsFemMystranImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsFemMystranImp::~DlgSettingsFemMystranImp() = default;
 
 void DlgSettingsFemMystranImp::saveSettings()
 {
@@ -61,13 +64,24 @@ void DlgSettingsFemMystranImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemMystranImp::changeEvent(QEvent *e)
+void DlgSettingsFemMystranImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void DlgSettingsFemMystranImp::onfileNameChanged(QString FileName)
+{
+    if (!QFileInfo::exists(FileName)) {
+        QMessageBox::critical(this,
+                              tr("File does not exist"),
+                              tr("The specified executable\n'%1'\n does not exist!\n"
+                                 "Specify another file please.")
+                                  .arg(FileName));
     }
 }
 

@@ -30,22 +30,23 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintFluidBoundary : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintFluidBoundary
+    : public FemGui::ViewProviderFemConstraintOnBoundary
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintFluidBoundary);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintFluidBoundary);
 
 public:
     /// Constructor
     ViewProviderFemConstraintFluidBoundary();
-    virtual ~ViewProviderFemConstraintFluidBoundary();
+    ~ViewProviderFemConstraintFluidBoundary() override;
 
-    virtual void updateData(const App::Property*);
-    //virtual void onChanged(const App::Property*); //no further property for viewProvider
+    void updateData(const App::Property*) override;
+    // virtual void onChanged(const App::Property*); //no further property for viewProvider
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMConstraintFluidBoundary_H
+#endif  // GUI_VIEWPROVIDERFEMConstraintFluidBoundary_H

@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM material ViewProvider for the document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_material_common
 #  \ingroup FEM
@@ -34,10 +34,10 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD
 
 from femtaskpanels import task_material_common
-from . import view_base_femconstraint
+from . import view_base_femmaterial
 
 
-class VPMaterialCommon(view_base_femconstraint.VPBaseFemConstraint):
+class VPMaterialCommon(view_base_femmaterial.VPBaseFemMaterial):
     """
     A View Provider for the MaterialCommon object
     """
@@ -55,9 +55,4 @@ class VPMaterialCommon(view_base_femconstraint.VPBaseFemConstraint):
             return ""
 
     def setEdit(self, vobj, mode=0):
-        view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_material_common._TaskPanel
-        )
+        super().setEdit(vobj, mode, task_material_common._TaskPanel)

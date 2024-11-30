@@ -29,52 +29,58 @@
 #include <Gui/TaskView/TaskView.h>
 #include <memory>
 
-namespace MeshGui {
+namespace MeshGui
+{
 class Ui_DlgDecimating;
-class DlgDecimating : public QWidget
+class DlgDecimating: public QWidget
 {
     Q_OBJECT
 
 public:
-    DlgDecimating(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgDecimating();
+    explicit DlgDecimating(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgDecimating() override;
     void setNumberOfTriangles(int);
     double tolerance() const;
     double reduction() const;
     bool isAbsoluteNumber() const;
     int targetNumberOfTriangles() const;
 
-private Q_SLOTS:
-    void on_checkAbsolueNumber_toggled(bool);
+private:
+    void onCheckAbsoluteNumberToggled(bool);
 
 private:
-    int numberOfTriangles;
+    int numberOfTriangles {0};
     std::unique_ptr<Ui_DlgDecimating> ui;
+
+    Q_DISABLE_COPY_MOVE(DlgDecimating)
 };
 
 /**
  * Embed the panel into a task dialog.
  */
-class TaskDecimating : public Gui::TaskView::TaskDialog
+class TaskDecimating: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     TaskDecimating();
-    ~TaskDecimating();
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument(void) const
-    { return true; }
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
+    bool isAllowedAlterDocument() const override
+    {
+        return true;
+    }
 
 private:
     DlgDecimating* widget;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLGDECIMATING_H
+#endif  // MESHGUI_DLGDECIMATING_H

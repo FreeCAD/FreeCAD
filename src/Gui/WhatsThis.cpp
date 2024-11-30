@@ -28,8 +28,8 @@
 #endif
 
 #include "WhatsThis.h"
-#include "MainWindow.h"
 #include "Action.h"
+#include "MainWindow.h"
 
 
 using namespace Gui;
@@ -50,11 +50,9 @@ StdCmdDescription::StdCmdDescription()
   sAccel        = "F1";
 }
 
-StdCmdDescription::~StdCmdDescription()
-{
-}
+StdCmdDescription::~StdCmdDescription() = default;
 
-Action * StdCmdDescription::createAction(void)
+Action * StdCmdDescription::createAction()
 {
   Action *pcAction = Command::createAction();
   pcAction->setCheckable( true );

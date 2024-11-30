@@ -32,14 +32,16 @@ namespace PartDesign
 
 class PartDesignExport Groove : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Groove);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Groove);
 
 public:
     Groove();
 
+    App::PropertyEnumeration Type;
     App::PropertyVector Base;
     App::PropertyVector Axis;
     App::PropertyAngle  Angle;
+    App::PropertyAngle  Angle2;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -55,21 +57,74 @@ public:
       * If Reversed is true then the direction of revolution will be reversed.
       * The created material will be cut out of the sketch support
       */
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderGroove";
     }
     //@}
 
     /// suggests a value for Reversed flag so that material is always removed from the support
-    bool suggestReversed(void);
+    bool suggestReversed();
+
+    enum class RevolMethod {
+        Dimension,
+        ThroughAll,
+        ToLast = ThroughAll,
+        ToFirst,
+        ToFace,
+        TwoDimensions
+    };
+
 protected:
     /// updates Axis from ReferenceAxis
-    void updateAxis(void);
+    void updateAxis();
 
     static const App::PropertyAngle::Constraints floatAngle;
+
+    // See BRepFeat_MakeRevol
+    enum RevolMode {
+        CutFromBase = 0,
+        FuseWithBase = 1,
+        None = 2
+    };
+
+    RevolMethod methodFromString(const std::string& methodStr);
+
+    /**
+     * Generates a [groove] of the input sketchshape and stores it in the given \a revol.
+     */
+    void generateRevolution(TopoDS_Shape& revol,
+                            const TopoDS_Shape& sketchshape,
+                            const gp_Ax1& ax1,
+                            const double angle,
+                            const double angle2,
+                            const bool midplane,
+                            const bool reversed,
+                            RevolMethod method);
+
+    /**
+     * Generates a [groove] of the input \a profileshape.
+     * It will be a stand-alone solid created with BRepFeat_MakeRevol.
+     */
+    void generateRevolution(TopoDS_Shape& revol,
+                            const TopoDS_Shape& baseshape,
+                            const TopoDS_Shape& profileshape,
+                            const TopoDS_Face& supportface,
+                            const TopoDS_Face& uptoface,
+                            const gp_Ax1& ax1,
+                            RevolMethod method,
+                            RevolMode Mode,
+                            Standard_Boolean Modify);
+
+    /**
+     * Disables settings that are not valid for the current method
+     */
+    void updateProperties(RevolMethod method);
+
+private:
+    static const char* TypeEnums[];
 };
 
 } //namespace PartDesign

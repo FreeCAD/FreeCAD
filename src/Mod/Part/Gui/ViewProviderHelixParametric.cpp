@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <QMenu>
 #endif
 
@@ -42,17 +41,14 @@ ViewProviderHelixParametric::ViewProviderHelixParametric()
     extension.initExtension(this);
 }
 
-ViewProviderHelixParametric::~ViewProviderHelixParametric()
-{
+ViewProviderHelixParametric::~ViewProviderHelixParametric() = default;
 
-}
-
-std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderHelixParametric::getDisplayModes() const
 {
     // add your own modes
     std::vector<std::string> StrList;
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }
@@ -73,17 +69,14 @@ ViewProviderSpiralParametric::ViewProviderSpiralParametric()
     extension.initExtension(this);
 }
 
-ViewProviderSpiralParametric::~ViewProviderSpiralParametric()
-{
+ViewProviderSpiralParametric::~ViewProviderSpiralParametric() = default;
 
-}
-
-std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes() const
 {
     // add your own modes
     std::vector<std::string> StrList;
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }

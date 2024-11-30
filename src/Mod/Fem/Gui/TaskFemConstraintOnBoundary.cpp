@@ -20,35 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <sstream>
-#endif
-
 #include "TaskFemConstraintOnBoundary.h"
-#include <App/Application.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
 
 
 using namespace FemGui;
@@ -56,78 +30,66 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintOnBoundary */
 
-TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstraint *ConstraintView, QWidget *parent, const char* pixmapname)
+TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstraint* ConstraintView,
+                                                         QWidget* parent,
+                                                         const char* pixmapname)
     : TaskFemConstraint(ConstraintView, parent, pixmapname)
+    , selChangeMode(SelectionChangeModes::none)
 {
     ConstraintView->highlightReferences(true);
+
+    buttonGroup = new ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+
+    connect(buttonGroup,
+            qOverload<QAbstractButton*, bool>(&QButtonGroup::buttonToggled),
+            this,
+            &TaskFemConstraintOnBoundary::onButtonToggled);
 }
 
 TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()
 {
-    ConstraintView->highlightReferences(false);
+    if (!ConstraintView.expired()) {
+        ConstraintView->highlightReferences(false);
+    }
 }
-
-void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
+void TaskFemConstraintOnBoundary::onButtonToggled(QAbstractButton* button, bool checked)
 {
-    if (checked)
-    {
-        const auto& selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-        if (selection.empty()) {
-            this->clearButtons(refAdd);
-            selChangeMode = refAdd;
-            ConstraintView->highlightReferences(true);
-        } else {
-            this->addToSelection();
-            clearButtons(none);
+    auto mode = static_cast<SelectionChangeModes>(buttonGroup->id(button));
+
+    Gui::Selection().clearSelection();
+
+    if (checked) {
+        selChangeMode = mode;
+        ConstraintView->highlightReferences(true);
+    }
+    else {
+        if (selChangeMode == mode) {
+            selChangeMode = SelectionChangeModes::none;
         }
-    } else {
-        exitSelectionChangeMode();
     }
 }
 
-void TaskFemConstraintOnBoundary::_removeFromSelection(bool checked)
-{
-    if (checked)
-    {
-        const auto& selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-        if (selection.empty()) {
-            this->clearButtons(refRemove);
-            selChangeMode = refRemove;
-            ConstraintView->highlightReferences(true);
-        } else {
-            this->removeFromSelection();
-            clearButtons(none);
-        }
-    } else {
-        exitSelectionChangeMode();
-    }
-}
-
-void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges&msg)
+void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         switch (selChangeMode) {
-        case refAdd:
-            // TODO: Optimize to just perform actions on the newly selected item. Suggestion from PartDesign:
-            // ui->lw_references->addItem(makeRefText(msg.pObjectName, msg.pSubName));
-            this->addToSelection();
-            break;
-        case refRemove:
-            this->removeFromSelection();
-            break;
-        case none:
-            return;
-        default:
-            return;
+            case SelectionChangeModes::refAdd:
+                // TODO: Optimize to just perform actions on the newly selected item. Suggestion
+                // from PartDesign: ui->lw_references->addItem(makeRefText(msg.pObjectName,
+                // msg.pSubName));
+                this->addToSelection();
+                break;
+            case SelectionChangeModes::refRemove:
+                this->removeFromSelection();
+                break;
+            case SelectionChangeModes::none:
+                return;
+            default:
+                return;
         }
         ConstraintView->highlightReferences(true);
     }
-}
-
-void TaskFemConstraintOnBoundary::exitSelectionChangeMode()
-{
-    selChangeMode = none;
-    Gui::Selection().clearSelection();
 }
 
 #include "moc_TaskFemConstraintOnBoundary.cpp"

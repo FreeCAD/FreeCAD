@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <SMESH_Mesh.hxx>
+#include <QTextStream>
+#include <SMESH_Mesh.hxx>
 #endif
 
-#include "PropertyFemMeshItem.h"
 #include <Mod/Fem/App/FemMeshProperty.h>
+
+#include "PropertyFemMeshItem.h"
 
 
 using namespace FemGui;
@@ -38,38 +39,38 @@ PROPERTYITEM_SOURCE(FemGui::PropertyFemMeshItem)
 
 PropertyFemMeshItem::PropertyFemMeshItem()
 {
-    m_n = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
-        (Gui::PropertyEditor::PropertyIntegerItem::create());
+    m_n = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
+        Gui::PropertyEditor::PropertyIntegerItem::create());
     m_n->setParent(this);
     m_n->setPropertyName(QLatin1String("Nodes"));
     this->appendChild(m_n);
-    m_e = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
-        (Gui::PropertyEditor::PropertyIntegerItem::create());
+    m_e = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
+        Gui::PropertyEditor::PropertyIntegerItem::create());
     m_e->setParent(this);
     m_e->setPropertyName(QLatin1String("Edges"));
     this->appendChild(m_e);
-    m_f = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
-        (Gui::PropertyEditor::PropertyIntegerItem::create());
+    m_f = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
+        Gui::PropertyEditor::PropertyIntegerItem::create());
     m_f->setParent(this);
     m_f->setPropertyName(QLatin1String("Faces"));
     this->appendChild(m_f);
-    m_p = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
-        (Gui::PropertyEditor::PropertyIntegerItem::create());
+    m_p = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
+        Gui::PropertyEditor::PropertyIntegerItem::create());
     m_p->setParent(this);
     m_p->setPropertyName(QLatin1String("Polygons"));
     this->appendChild(m_p);
-    m_v = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
-        (Gui::PropertyEditor::PropertyIntegerItem::create());
+    m_v = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
+        Gui::PropertyEditor::PropertyIntegerItem::create());
     m_v->setParent(this);
     m_v->setPropertyName(QLatin1String("Volumes"));
     this->appendChild(m_v);
-    m_h = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
-        (Gui::PropertyEditor::PropertyIntegerItem::create());
+    m_h = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
+        Gui::PropertyEditor::PropertyIntegerItem::create());
     m_h->setParent(this);
     m_h->setPropertyName(QLatin1String("Polyhedrons"));
     this->appendChild(m_h);
-    m_g = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
-        (Gui::PropertyEditor::PropertyIntegerItem::create());
+    m_g = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
+        Gui::PropertyEditor::PropertyIntegerItem::create());
     m_g->setParent(this);
     m_g->setPropertyName(QLatin1String("Groups"));
     this->appendChild(m_g);
@@ -91,9 +92,9 @@ QVariant PropertyFemMeshItem::value(const App::Property*) const
     int ctG = 0;
 
     const std::vector<App::Property*>& props = getPropertyData();
-    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
-        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
-        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+    for (auto pt : props) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(pt);
+        const SMESH_Mesh* mesh = prop->getValue().getSMesh();
         ctN += mesh->NbNodes();
         ctE += mesh->NbEdges();
         ctF += mesh->NbFaces();
@@ -103,9 +104,18 @@ QVariant PropertyFemMeshItem::value(const App::Property*) const
         ctG += mesh->NbGroup();
     }
 
-    QString  str = QObject::tr("[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6, Groups: %7]")
-        .arg(ctN).arg(ctE).arg(ctF).arg(ctP).arg(ctV).arg(ctH).arg(ctG);
-    return QVariant(str);
+    QString str;
+    QTextStream out(&str);
+    out << '[';
+    out << QObject::tr("Nodes") << ": " << ctN << ", ";
+    out << QObject::tr("Edges") << ": " << ctE << ", ";
+    out << QObject::tr("Faces") << ": " << ctF << ", ";
+    out << QObject::tr("Polygons") << ": " << ctP << ", ";
+    out << QObject::tr("Volumes") << ": " << ctV << ", ";
+    out << QObject::tr("Polyhedrons") << ": " << ctH << ", ";
+    out << QObject::tr("Groups") << ": " << ctG;
+    out << ']';
+    return {str};
 }
 
 QVariant PropertyFemMeshItem::toolTip(const App::Property* prop) const
@@ -118,33 +128,33 @@ void PropertyFemMeshItem::setValue(const QVariant& value)
     Q_UNUSED(value);
 }
 
-QWidget* PropertyFemMeshItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyFemMeshItem::createEditor(QWidget* parent,
+                                           const std::function<void()>& method) const
 {
     Q_UNUSED(parent);
-    Q_UNUSED(receiver);
     Q_UNUSED(method);
-    return 0;
+    return nullptr;
 }
 
-void PropertyFemMeshItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyFemMeshItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     Q_UNUSED(editor);
     Q_UNUSED(data);
 }
 
-QVariant PropertyFemMeshItem::editorData(QWidget *editor) const
+QVariant PropertyFemMeshItem::editorData(QWidget* editor) const
 {
     Q_UNUSED(editor);
-    return QVariant();
+    return {};
 }
 
 int PropertyFemMeshItem::countNodes() const
 {
     int ctN = 0;
     const std::vector<App::Property*>& props = getPropertyData();
-    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
-        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
-        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+    for (auto pt : props) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(pt);
+        const SMESH_Mesh* mesh = prop->getValue().getSMesh();
         ctN += mesh->NbNodes();
     }
 
@@ -155,9 +165,9 @@ int PropertyFemMeshItem::countEdges() const
 {
     int ctE = 0;
     const std::vector<App::Property*>& props = getPropertyData();
-    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
-        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
-        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+    for (auto pt : props) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(pt);
+        const SMESH_Mesh* mesh = prop->getValue().getSMesh();
         ctE += mesh->NbEdges();
     }
 
@@ -168,9 +178,9 @@ int PropertyFemMeshItem::countFaces() const
 {
     int ctF = 0;
     const std::vector<App::Property*>& props = getPropertyData();
-    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
-        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
-        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+    for (auto pt : props) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(pt);
+        const SMESH_Mesh* mesh = prop->getValue().getSMesh();
         ctF += mesh->NbFaces();
     }
 
@@ -181,9 +191,9 @@ int PropertyFemMeshItem::countPolygons() const
 {
     int ctP = 0;
     const std::vector<App::Property*>& props = getPropertyData();
-    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
-        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
-        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+    for (auto pt : props) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(pt);
+        const SMESH_Mesh* mesh = prop->getValue().getSMesh();
         ctP += mesh->NbPolygons();
     }
 
@@ -194,9 +204,9 @@ int PropertyFemMeshItem::countVolumes() const
 {
     int ctV = 0;
     const std::vector<App::Property*>& props = getPropertyData();
-    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
-        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
-        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+    for (auto pt : props) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(pt);
+        const SMESH_Mesh* mesh = prop->getValue().getSMesh();
         ctV += mesh->NbVolumes();
     }
 
@@ -207,9 +217,9 @@ int PropertyFemMeshItem::countPolyhedrons() const
 {
     int ctH = 0;
     const std::vector<App::Property*>& props = getPropertyData();
-    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
-        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
-        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+    for (auto pt : props) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(pt);
+        const SMESH_Mesh* mesh = prop->getValue().getSMesh();
         ctH += mesh->NbPolyhedrons();
     }
 
@@ -220,9 +230,9 @@ int PropertyFemMeshItem::countGroups() const
 {
     int ctG = 0;
     const std::vector<App::Property*>& props = getPropertyData();
-    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
-        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
-        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+    for (auto pt : props) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(pt);
+        const SMESH_Mesh* mesh = prop->getValue().getSMesh();
         ctG += mesh->NbGroup();
     }
 

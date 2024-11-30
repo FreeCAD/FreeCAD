@@ -22,7 +22,7 @@ ConvexHull<Real>::ConvexHull (int iVertexQuantity, Real fEpsilon, bool bOwner,
     m_iVertexQuantity = iVertexQuantity;
     m_iDimension = 0;
     m_iSimplexQuantity = 0;
-    m_aiIndex = 0;
+    m_aiIndex = nullptr;
     m_fEpsilon = fEpsilon;
     m_bOwner = bOwner;
 }
@@ -100,7 +100,7 @@ bool ConvexHull<Real>::Load (FILE* pkIFile)
         return true;
     }
 
-    m_aiIndex = 0;
+    m_aiIndex = nullptr;
     return m_iDimension == 0;
 }
 //----------------------------------------------------------------------------

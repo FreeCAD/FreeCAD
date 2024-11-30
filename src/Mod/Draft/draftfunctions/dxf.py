@@ -21,11 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the DXF representation of various shapes.
-
-Warning: this still uses the `Drawing.projectToDXF` method to provide
-the DXF representation of certain objects.
-Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
-may not be removed completely yet. This must be checked.
 """
 ## @package dxf
 # \ingroup draftfunctions
@@ -43,7 +38,7 @@ from draftutils.messages import _wrn
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
+TechDraw = lz.LazyLoader("TechDraw", globals(), "TechDraw")
 
 
 ## \addtogroup draftfunctions
@@ -72,8 +67,7 @@ def get_dxf(obj, direction=None):
     """
     plane = None
     result = ""
-    if (obj.isDerivedFrom("Drawing::View")
-            or obj.isDerivedFrom("TechDraw::DrawView")):
+    if obj.isDerivedFrom("TechDraw::DrawView"):
         if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
             for o in obj.Source.Group:
                 result += get_dxf(o, obj.Direction)
@@ -83,8 +77,8 @@ def get_dxf(obj, direction=None):
 
     if direction and isinstance(direction, App.Vector):
         if direction != App.Vector(0, 0, 0):
-            plane = WorkingPlane.Plane()
-            plane.alignToPointAndAxis(App.Vector(0, 0, 0), direction)
+            plane = WorkingPlane.PlaneBase()
+            plane.align_to_point_and_axis(App.Vector(0, 0, 0), direction)
 
     if utils.get_type(obj) in ("Dimension", "LinearDimension"):
         p1 = _get_proj(obj.Start, plane=plane)
@@ -119,7 +113,7 @@ def get_dxf(obj, direction=None):
             direction = App.Vector(0, 0, -1)
 
         try:
-            d = Drawing.projectToDXF(obj.Shape, direction)
+            d = TechDraw.projectToDXF(obj.Shape, direction)
         except Exception:
             # TODO: trap only specific exception.
             # Impossible to generate DXF from Shape? Which exception is throw?

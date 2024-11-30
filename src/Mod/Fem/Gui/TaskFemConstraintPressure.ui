@@ -6,18 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>226</width>
+    <width>300</width>
     <height>253</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Select multiple face(s), click Add or Remove</string>
+      <string>Click Add or Remove and select face(s)</string>
      </property>
     </widget>
    </item>
@@ -25,6 +25,12 @@
     <layout class="QHBoxLayout" name="hLayout1">
      <item>
       <widget class="QToolButton" name="btnAdd">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Add</string>
        </property>
@@ -35,6 +41,12 @@
      </item>
      <item>
       <widget class="QToolButton" name="btnRemove">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Remove</string>
        </property>
@@ -58,12 +70,12 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::InputField" name="if_pressure">
-       <property name="text">
-        <string>0 MPa</string>
-       </property>
+      <widget class="Gui::QuantitySpinBox" name="if_pressure">
        <property name="unit" stdset="0">
         <string notr="true"/>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -80,9 +92,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

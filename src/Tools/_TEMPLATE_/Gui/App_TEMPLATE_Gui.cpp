@@ -23,10 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
+#include <Python.h>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 
@@ -39,26 +40,29 @@
 void Create_TEMPLATE_Commands(void);
 
 
-namespace _TEMPLATE_Gui {
-class Module : public Py::ExtensionModule<Module>
+namespace _TEMPLATE_Gui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("_TEMPLATE_Gui")
+    Module()
+        : Py::ExtensionModule<Module>("_TEMPLATE_Gui")
     {
-        initialize("This module is the _TEMPLATE_Gui module."); // register with Python
+        initialize("This module is the _TEMPLATE_Gui module.");  // register with Python
     }
 
-    virtual ~Module() {}
+    virtual ~Module()
+    {}
 
 private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace _TEMPLATE_Gui
+}  // namespace _TEMPLATE_Gui
 
 
 /* Python entry */

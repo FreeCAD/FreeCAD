@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
     <PythonExport
-            Father="ViewProviderDocumentObjectPy"
+            Father="ViewProviderGeometryObjectPy"
             Name="ViewProviderFemMeshPy"
             Twin="ViewProviderFemMesh"
             TwinPointer="ViewProviderFemMesh"
             Include="Mod/Fem/Gui/ViewProviderFemMesh.h"
             Namespace="FemGui"
-            FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+            FatherInclude="Gui/ViewProviderGeometryObjectPy.h"
             FatherNamespace="Gui"
             Constructor="false"
             Delete="false">

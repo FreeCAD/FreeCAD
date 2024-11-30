@@ -24,16 +24,13 @@
 #ifndef APP_EXTENSIONCONTAINER_H
 #define APP_EXTENSIONCONTAINER_H
 
-#include "Extension.h"
 #include "PropertyContainer.h"
-#include "PropertyPythonObject.h"
-#include "DynamicProperty.h"
-#include <CXX/Objects.hxx>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
 
-namespace App {
 
+namespace App
+{
+
+class Extension;
 /**
  * @brief Container which can hold extensions
  *
@@ -53,14 +50,14 @@ namespace App {
  * - Extensions can be added from c++ and python, even from both together
  *
  * The interoperability with python is highly important, as in FreeCAD all functionality should be
- * as easily accessible from python as from c++. To ensure this, and as already noted, extensions can
- * be added to a object from python. However, this means that it is not clear from the c++ object type
- * if an extension was added or not. If added from c++ it becomes clear in the type due to the use of
- * multiple inheritance. If added from python it is a runtime extension and not visible from type.
- * Hence querying existing extensions of an object and accessing its methods works not by type
- * casting but by the interface provided in ExtensionContainer. The default workflow is to query if
- * an extension exists and then get the extension object. No matter if added from python or c++ this
- * interface works always the same.
+ * as easily accessible from python as from c++. To ensure this, and as already noted, extensions
+ * can be added to a object from python. However, this means that it is not clear from the c++
+ * object type if an extension was added or not. If added from c++ it becomes clear in the type due
+ * to the use of multiple inheritance. If added from python it is a runtime extension and not
+ * visible from type. Hence querying existing extensions of an object and accessing its methods
+ * works not by type casting but by the interface provided in ExtensionContainer. The default
+ * workflow is to query if an extension exists and then get the extension object. No matter if added
+ * from python or c++ this interface works always the same.
  * @code
  * if (object->hasExtension(GroupExtension::getClassTypeId())) {
  *     App::GroupExtension* group = object->getExtensionByType<GroupExtension>();
@@ -81,8 +78,8 @@ namespace App {
  *
  * Here is a working example:
  * @code
- * class AppExport Part : public App::DocumentObject, public App::FirstExtension, public App::SecondExtension {
- *   PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
+ * class AppExport Part : public App::DocumentObject, public App::FirstExtension, public
+ * App::SecondExtension { PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
  * };
  * PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::DocumentObject)
  * Part::Part(void) {
@@ -92,9 +89,9 @@ namespace App {
  * @endcode
  *
  * From python adding an extension is easier, it must be simply registered to a document object
- * at object initialisation like done with properties. Note that the special python extension objects
- * need to be added, not the c++ objects. Normally the only difference in name is the additional
- * "Python" at the end of the extension name.
+ * at object initialisation like done with properties. Note that the special python extension
+ * objects need to be added, not the c++ objects. Normally the only difference in name is the
+ * additional "Python" at the end of the extension name.
  * @code{.py}
  * class Test():
  *   __init(self)__:
@@ -103,105 +100,149 @@ namespace App {
  * @endcode
  *
  * Extensions can provide methods that should be overridden by the extended object for customisation
- * of the extension behaviour. In c++ this is as simple as overriding the provided virtual functions.
- * In python a class method must be provided which has the same name as the method to override. This
- * method must not necessarily be in the object that is extended, it must be in the object which is
- * provided to the "registerExtension" call as second argument. This second argument is used as a
- * proxy and enqueired if the method to override exists in this proxy before calling it.
+ * of the extension behaviour. In c++ this is as simple as overriding the provided virtual
+ * functions. In python a class method must be provided which has the same name as the method to
+ * override. This method must not necessarily be in the object that is extended, it must be in the
+ * object which is provided to the "registerExtension" call as second argument. This second argument
+ * is used as a proxy and enqueired if the method to override exists in this proxy before calling
+ * it.
  *
  * For information on howto create extension see the documentation of Extension
  */
-class AppExport ExtensionContainer : public App::PropertyContainer
+class AppExport ExtensionContainer: public App::PropertyContainer
 {
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-
-    typedef std::map<Base::Type, App::Extension*>::iterator ExtensionIterator;
+    using ExtensionIterator = std::map<Base::Type, App::Extension*>::iterator;
 
     ExtensionContainer();
-    virtual ~ExtensionContainer();
+    ~ExtensionContainer() override;
 
     void registerExtension(Base::Type extension, App::Extension* ext);
-    bool hasExtension(Base::Type, bool derived=true) const; //returns first of type (or derived from if set to true) and throws otherwise
-    bool hasExtension(const std::string& name) const; //this version does not check derived classes
+    // returns first of type (or derived from if set to true) and throws otherwise
+    bool hasExtension(Base::Type, bool derived = true) const;
+    // this version does not check derived classes
+    bool hasExtension(const std::string& name) const;
     bool hasExtensions() const;
-    App::Extension* getExtension(Base::Type, bool derived = true, bool no_except=false) const;
-    App::Extension* getExtension(const std::string& name) const; //this version does not check derived classes
-
-    //returns first of type (or derived from) and throws otherwise
+    App::Extension* getExtension(Base::Type, bool derived = true, bool no_except = false) const;
+    // this version does not check derived classes
+    App::Extension* getExtension(const std::string& name) const;
+    // this version checks for derived types and doesn't throw
     template<typename ExtensionT>
-    ExtensionT* getExtensionByType(bool no_except=false, bool derived=true) const {
-        return static_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId(),derived,no_except));
+    ExtensionT* getExtension() const
+    {
+        return static_cast<ExtensionT*>(
+            getExtension(ExtensionT::getExtensionClassTypeId(), true, true));
     }
 
-    //get all extensions which have the given base class
+    // returns first of type (or derived from) and throws otherwise
+    template<typename ExtensionT>
+    ExtensionT* getExtensionByType(bool no_except = false, bool derived = true) const
+    {
+        return static_cast<ExtensionT*>(
+            getExtension(ExtensionT::getExtensionClassTypeId(), derived, no_except));
+    }
+
+    // get all extensions which have the given base class
     std::vector<Extension*> getExtensionsDerivedFrom(Base::Type type) const;
     template<typename ExtensionT>
-    std::vector<ExtensionT*> getExtensionsDerivedFromType() const {
+    std::vector<ExtensionT*> getExtensionsDerivedFromType() const
+    {
         std::vector<ExtensionT*> typevec;
-        for(auto entry : _extensions) {
-            if(entry.first.isDerivedFrom(ExtensionT::getExtensionClassTypeId()))
+        for (const auto& entry : _extensions) {
+            if (entry.first.isDerivedFrom(ExtensionT::getExtensionClassTypeId())) {
                 typevec.push_back(static_cast<ExtensionT*>(entry.second));
+            }
         }
         return typevec;
     }
 
-    ExtensionIterator extensionBegin() {return _extensions.begin();}
-    ExtensionIterator extensionEnd() {return _extensions.end();}
+    ExtensionIterator extensionBegin()
+    {
+        return _extensions.begin();
+    }
+    ExtensionIterator extensionEnd()
+    {
+        return _extensions.end();
+    }
 
 
     /** @name Access properties */
     //@{
     /// find a property by its name
-    virtual Property *getPropertyByName(const char* name) const override;
+    Property* getPropertyByName(const char* name) const override;
     /// get the name of a property
-    virtual const char* getPropertyName(const Property* prop) const override;
+    const char* getPropertyName(const Property* prop) const override;
     /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyMap(std::map<std::string,Property*> &Map) const override;
+    void getPropertyMap(std::map<std::string, Property*>& Map) const override;
     /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyList(std::vector<Property*> &List) const override;
+    void getPropertyList(std::vector<Property*>& List) const override;
 
     /// get the Type of a Property
-    virtual short getPropertyType(const Property* prop) const override;
+    short getPropertyType(const Property* prop) const override;
     /// get the Type of a named Property
-    virtual short getPropertyType(const char *name) const override;
+    short getPropertyType(const char* name) const override;
     /// get the Group of a Property
-    virtual const char* getPropertyGroup(const Property* prop) const override;
+    const char* getPropertyGroup(const Property* prop) const override;
     /// get the Group of a named Property
-    virtual const char* getPropertyGroup(const char *name) const override;
+    const char* getPropertyGroup(const char* name) const override;
     /// get the Group of a Property
-    virtual const char* getPropertyDocumentation(const Property* prop) const override;
+    const char* getPropertyDocumentation(const Property* prop) const override;
     /// get the Group of a named Property
-    virtual const char* getPropertyDocumentation(const char *name) const override;
+    const char* getPropertyDocumentation(const char* name) const override;
     //@}
 
-    virtual void onChanged(const Property*) override;
+    void onChanged(const Property*) override;
 
-    virtual void Save(Base::Writer& writer) const override;
-    virtual void Restore(Base::XMLReader& reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    //those methods save/restore the dynamic extensions without handling properties, which is something
-    //done by the default Save/Restore methods.
+    // those methods save/restore the dynamic extensions without handling properties, which is
+    // something done by the default Save/Restore methods.
     void saveExtensions(Base::Writer& writer) const;
     void restoreExtensions(Base::XMLReader& reader);
 
+    /** Extends the rules for handling property name changed, so that extensions are given an
+     * opportunity to handle it. If an extension handles a change, neither the rest of the
+     * extensions, nor the container itself get to handle it.
+     *
+     *  Extensions get their extensionHandleChangedPropertyName() called.
+     *
+     *  If no extension handles the request, then the containers handleChangedPropertyName() is
+     * called.
+     */
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   const char* PropName) override;
+    /** Extends the rules for handling property type changed, so that extensions are given an
+     * opportunity to handle it. If an extension handles a change, neither the rest of the
+     * extensions, nor the container itself get to handle it.
+     *
+     *  Extensions get their extensionHandleChangedPropertyType() called.
+     *
+     *  If no extension handles the request, then the containers handleChangedPropertyType() is
+     * called.
+     */
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   Property* prop) override;
+
 private:
-    //stored extensions
+    // stored extensions
     std::map<Base::Type, App::Extension*> _extensions;
 };
 
-#define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
-  PROPERTY_HEADER_WITH_OVERRIDE(_class)
+#define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) PROPERTY_HEADER_WITH_OVERRIDE(_class)
 
 /// We make sure that the PropertyData of the container is not connected to the one of the extension
-#define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_) \
+#define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_)                                    \
     PROPERTY_SOURCE(_class_, _parentclass_)
 
-#define PROPERTY_SOURCE_ABSTRACT_WITH_EXTENSIONS(_class_, _parentclass_) \
+#define PROPERTY_SOURCE_ABSTRACT_WITH_EXTENSIONS(_class_, _parentclass_)                           \
     PROPERTY_SOURCE_ABSTRACT(_class_, _parentclass_)
 
-} //App
+}  // namespace App
 
-#endif // APP_EXTENSIONCONTAINER_H
+#endif  // APP_EXTENSIONCONTAINER_H

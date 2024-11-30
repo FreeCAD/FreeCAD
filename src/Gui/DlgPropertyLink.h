@@ -20,17 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DLGPROPERTYLINK_H
 #define GUI_DIALOG_DLGPROPERTYLINK_H
 
 #include <QDialog>
-#include <QAbstractItemView>
-#include <QTimer>
-#include <QPushButton>
 #include <QPointer>
+#include <QPushButton>
+#include <QTimer>
+#include "Selection.h"
 
 #define FC_XLINK_VALUE_INDEX 5
+
+class QTreeWidgetItem;
 
 namespace Gui { namespace Dialog {
 
@@ -40,17 +41,17 @@ class DlgPropertyLink : public QDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgPropertyLink(QWidget* parent = 0);
-    ~DlgPropertyLink();
+    explicit DlgPropertyLink(QWidget* parent = nullptr);
+    ~DlgPropertyLink() override;
 
-    void accept();
+    void accept() override;
 
     QList<App::SubObjectT> currentLinks() const;
     QList<App::SubObjectT> originalLinks() const;
 
     void init(const App::DocumentObjectT &prop, bool tryFilter=true);
 
-    static QString linksToPython(QList<App::SubObjectT> links);
+    static QString linksToPython(const QList<App::SubObjectT>& links);
 
     static QList<App::SubObjectT> getLinksFromProperty(const App::PropertyLinkBase *prop);
 
@@ -63,22 +64,22 @@ public:
     static QString formatLinks(App::Document *ownerDoc, QList<App::SubObjectT> links);
 
 protected:
-    void showEvent(QShowEvent *);
-    void hideEvent(QHideEvent *);
-    void closeEvent (QCloseEvent * e);
-    void leaveEvent(QEvent *);
-    bool eventFilter(QObject *obj, QEvent *ev);
-    void keyPressEvent(QKeyEvent *ev);
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *) override;
+    void closeEvent (QCloseEvent * e) override;
+    void leaveEvent(QEvent *) override;
+    bool eventFilter(QObject *obj, QEvent *ev) override;
+    void keyPressEvent(QKeyEvent *ev) override;
 
     void detachObserver();
     void attachObserver();
 
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-private Q_SLOTS:
-    void on_checkObjectType_toggled(bool);
-    void on_typeTree_itemSelectionChanged();
-    void on_searchBox_textChanged(const QString&);
+private:
+    void onObjectTypeToggled(bool);
+    void onTypeTreeItemSelectionChanged();
+    void onSearchBoxTextChanged(const QString&);
     void onItemExpanded(QTreeWidgetItem * item);
     void onItemSelectionChanged();
     void onItemEntered(QTreeWidgetItem *item);
@@ -92,7 +93,7 @@ private:
     void filterObjects();
     void filterItem(QTreeWidgetItem *item);
     bool filterType(QTreeWidgetItem *item);
-    QTreeWidgetItem *findItem(App::DocumentObject *obj, const char *subname=0, bool *found=nullptr);
+    QTreeWidgetItem *findItem(App::DocumentObject *obj, const char *subname=nullptr, bool *found=nullptr);
     void itemSearch(const QString &text, bool select);
     QList<App::SubObjectT> getLinkFromItem(QTreeWidgetItem *, bool needSubName=true) const;
 

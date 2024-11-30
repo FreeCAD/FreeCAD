@@ -20,42 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef APP_PRECOMPILED_H
 #define APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define WebAppExport __declspec(dllexport)
-#else // for Linux
-# define WebAppExport
-#endif
-
 #ifdef _PreComp_
 
 // standard
-#include <cstdio>
-#include <cassert>
-#include <iostream>
+#include <stdexcept>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
+#include <memory>
 #include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
+// Qt
+#include <QCoreApplication>
+#include <QTcpSocket>
 
-#endif //_PreComp_
+#endif  //_PreComp_
 
 #endif
-

@@ -30,12 +30,8 @@
 # endif //_MSC_VER
 #endif
 
-#include <Base/Console.h>
-
-#include "ViewProviderCosmeticExtension.h"
 #include <Mod/TechDraw/App/CosmeticExtension.h>
-
-#include <Gui/BitmapFactory.h>
+#include "ViewProviderCosmeticExtension.h"
 
 using namespace TechDrawGui;
 
@@ -52,11 +48,6 @@ QIcon ViewProviderCosmeticExtension::extensionMergeGreyableOverlayIcons(const QI
     QIcon mergedicon = orig;
 
     return mergedicon;
-}
-
-void ViewProviderCosmeticExtension::extensionUpdateData(const App::Property* prop)
-{
-    Gui::ViewProviderExtension::extensionUpdateData(prop);
 }
 
 namespace Gui {

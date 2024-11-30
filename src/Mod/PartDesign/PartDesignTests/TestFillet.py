@@ -43,6 +43,18 @@ class TestFillet(unittest.TestCase):
         self.Body.addObject(self.Fillet)
         self.Doc.recompute()
         self.assertAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
+        #test UseAllEdges property
+        self.Fillet.UseAllEdges = True
+        self.Fillet.Base = (self.Box, ['']) # no subobjects, should still work
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
+        self.Fillet.Base = (self.Box, ['Face50']) # non-existent face, topo naming resilience
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
+        self.Fillet.UseAllEdges = False
+        self.Fillet.Base = (self.Box, ['Face1'])
+        self.Doc.recompute()
+        self.assertNotAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
 
     def tearDown(self):
         #closing doc

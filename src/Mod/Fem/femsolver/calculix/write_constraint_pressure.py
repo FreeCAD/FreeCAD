@@ -23,7 +23,9 @@
 
 __title__ = "FreeCAD FEM calculix constraint pressure"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
+
+import FreeCAD
 
 
 def get_analysis_types():
@@ -47,7 +49,9 @@ def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
     # floats read from ccx should use {:.13G}, see comment in writer module
 
     rev = -1 if prs_obj.Reversed else 1
-    press_rev = rev * prs_obj.Pressure
+    # the pressure has to be output in MPa
+    pressure_quantity = FreeCAD.Units.Quantity(prs_obj.Pressure.getValueAs("MPa"))
+    press_rev = rev * pressure_quantity
 
     f.write("*DLOAD\n")
     for ref_shape in femobj["PressureFaces"]:
@@ -57,12 +61,12 @@ def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
         f.write("** " + ref_shape[0] + "\n")
         for face, fno in ref_shape[1]:
             if fno > 0:  # solid mesh face
-                f.write("{},P{},{:.13G}\n".format(face, fno, press_rev))
+                f.write(f"{face},P{fno},{press_rev}\n")
             # on shell mesh face: fno == 0
             # normal of element face == face normal
             elif fno == 0:
-                f.write("{},P,{:.13G}\n".format(face, press_rev))
+                f.write(f"{face},P,{press_rev}\n")
             # on shell mesh face: fno == -1
             # normal of element face opposite direction face normal
             elif fno == -1:
-                f.write("{},P,{:.13G}\n".format(face, -1 * press_rev))
+                f.write(f"{face},P,{-1 * press_rev}\n")

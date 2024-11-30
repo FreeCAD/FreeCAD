@@ -29,19 +29,19 @@
 namespace FemGui
 {
 
-class ViewProviderSetNodes : public Gui::ViewProviderGeometryObject
+class ViewProviderSetNodes: public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderSetNodes);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderSetNodes);
 
 public:
-    virtual bool doubleClicked(void);
+    bool doubleClicked() override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_ViewProviderSetNodes_H
+#endif  // FEM_ViewProviderSetNodes_H

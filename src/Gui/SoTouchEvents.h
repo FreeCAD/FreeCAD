@@ -39,8 +39,8 @@ public:
     static void initClass(){
         SO_EVENT_INIT_CLASS(SoGestureEvent, SoEvent);
     }
-    SoGestureEvent() : state(SbGSNoGesture) {}
-    ~SoGestureEvent(){}
+    SoGestureEvent() = default;
+    ~SoGestureEvent() override = default;
     SbBool isSoGestureEvent(const SoEvent* ev) const;
 
     enum SbGestureState {
@@ -50,7 +50,7 @@ public:
         SbGSEnd = Qt::GestureFinished,
         SbGsCanceled = Qt::GestureCanceled
     };
-    SbGestureState state;
+    SbGestureState state{SbGSNoGesture};
 };
 
 class SoGesturePanEvent : public SoGestureEvent {
@@ -59,9 +59,9 @@ public:
     static void initClass(){//needs to be called before the class can be used. Initializes type IDs of the class.
         SO_EVENT_INIT_CLASS(SoGesturePanEvent, SoGestureEvent);
     }
-    SoGesturePanEvent() {}
+    SoGesturePanEvent() = default;
     SoGesturePanEvent(QPanGesture *qpan, QWidget *widget);
-    ~SoGesturePanEvent(){}
+    ~SoGesturePanEvent() override = default;
     SbBool isSoGesturePanEvent(const SoEvent* ev) const;
 
     SbVec2f deltaOffset;
@@ -79,7 +79,7 @@ public:
     {
     }
     SoGesturePinchEvent(QPinchGesture* qpinch, QWidget* widget);
-    ~SoGesturePinchEvent(){}
+    ~SoGesturePinchEvent() override = default;
     SbBool isSoGesturePinchEvent(const SoEvent* ev) const;
 
     SbVec2f startCenter;//in GL pixel coordinates (from bottom left corner of view area)
@@ -104,7 +104,7 @@ public:
     {
     }
     SoGestureSwipeEvent(QSwipeGesture* qwsipe, QWidget *widget);
-    ~SoGestureSwipeEvent(){}
+    ~SoGestureSwipeEvent() override = default;
     SbBool isSoGestureSwipeEvent(const SoEvent* ev) const;
 
     double angle;
@@ -115,10 +115,10 @@ public:
 
 class GesturesDevice : public Quarter::InputDevice {
 public:
-    GesturesDevice(QWidget* widget);//it needs to know the widget to do coordinate translation
+    explicit GesturesDevice(QWidget* widget);//it needs to know the widget to do coordinate translation
 
-    virtual ~GesturesDevice()  {}
-    virtual const SoEvent* translateEvent(QEvent* event);
+    ~GesturesDevice() override = default;
+    const SoEvent* translateEvent(QEvent* event) override;
 protected:
     QWidget* widget;
 };

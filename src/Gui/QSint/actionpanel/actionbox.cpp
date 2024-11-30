@@ -7,7 +7,7 @@
 
 #include "actionbox.h"
 
-#include <QtCore/QVariant>
+#include <QVariant>
 
 
 namespace QSint
@@ -132,7 +132,7 @@ QPixmap ActionBox::icon() const
 ActionLabel* ActionBox::createItem(QAction * action, QLayout * l)
 {
     if (!action)
-        return 0;
+        return nullptr;
 
     ActionLabel *act = createItem("", l);
     act->setDefaultAction(action);
@@ -148,7 +148,7 @@ QList<ActionLabel*> ActionBox::createItems(QList<QAction*> actions)
 
     QLayout *l = createHBoxLayout();
 
-    foreach (QAction *action, actions) {
+    Q_FOREACH (QAction *action, actions) {
         ActionLabel *act = createItem(action, l);
         if (act)
             list.append(act);
@@ -215,7 +215,8 @@ void ActionBox::addLayout(QLayout * l)
 
 void ActionBox::addWidget(QWidget * w, QLayout * l)
 {
-    if (!w) return;
+    if (!w)
+        return;
 
     w->setParent(this);
 
@@ -231,7 +232,7 @@ void ActionBox::addWidget(QWidget * w, QLayout * l)
 
 QSize ActionBox::minimumSizeHint() const
 {
-    return QSize(150,65);
+    return {150,65};
 }
 
 

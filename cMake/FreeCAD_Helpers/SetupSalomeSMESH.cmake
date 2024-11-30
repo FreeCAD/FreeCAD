@@ -4,7 +4,7 @@ macro(SetupSalomeSMESH)
     # Salome SMESH sources are under src/3rdParty now
     if(BUILD_SMESH)
         # set the internal smesh version:
-        # see src/3rdParty/salomonemesh/CMakeLists.txt and commit https://github.com/FreeCAD/FreeCAD/commit/666a3e5 and https://forum.freecadweb.org/viewtopic.php?f=10&t=30838
+        # see src/3rdParty/salomonemesh/CMakeLists.txt and commit https://github.com/FreeCAD/FreeCAD/commit/666a3e5 and https://forum.freecad.org/viewtopic.php?f=10&t=30838
         set(SMESH_VERSION_MAJOR 7)
         set(SMESH_VERSION_MINOR 7)
         set(SMESH_VERSION_PATCH 1)
@@ -26,7 +26,13 @@ macro(SetupSalomeSMESH)
 
         # check which modules are available
         if(UNIX OR WIN32)
-            find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
+            # Module names changed between 8 and 9, so do a QUIET find for 9 and its module name first, and fall back
+            # to v7 minimum with the old component name if it is not found.
+            find_package(VTK 9 COMPONENTS CommonCore QUIET NO_MODULE)
+            if(NOT VTK_FOUND)
+                message(STATUS "Did not find VTK 9, trying for an older version")
+                find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
+            endif()
             if(${VTK_MAJOR_VERSION} LESS 9)
                 list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5 vtkFiltersParallelDIY2 vtkRenderingCore vtkInteractionStyle vtkRenderingFreeType vtkRenderingOpenGL2)
                 foreach(_module ${VTK_COMPONENTS})
@@ -75,7 +81,7 @@ macro(SetupSalomeSMESH)
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(MEDFile REQUIRED)
             # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
-            if (WIN32)
+            if (MSVC)
                 find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
             else()
                 find_package(PkgConfig)
@@ -119,18 +125,26 @@ macro(SetupSalomeSMESH)
 
         else(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(SMESH CONFIG)
+            # If this definition is not set, linker errors will occur against SMESH on 64 bit machines.
+            if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+                add_definitions(-DSALOME_USE_64BIT_IDS)
+            endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
+            if(NOT SMESH_FOUND)
+                find_package(SMESH REQUIRED)
+                if(NOT SMESH_FOUND)
+                    message(ERROR "================\n"
+                                "SMESH not found.\n"
+                                "================\n")
+                endif()
+            endif()
             set (SMESH_INCLUDE_DIR ${SMESH_INCLUDE_PATH})
             set(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
-            if(NOT SMESH_FOUND)
-                message(ERROR "================\n"
-                              "SMESH not found.\n"
-                              "================\n")
-            endif()
+
             include_directories(${SMESH_INCLUDE_DIR})
         endif()
 
         set(SMESH_FOUND TRUE)
-        configure_file(SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
+        configure_file(${CMAKE_SOURCE_DIR}/src/SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
     endif(BUILD_SMESH)
 
 endmacro(SetupSalomeSMESH)

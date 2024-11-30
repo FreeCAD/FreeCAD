@@ -112,7 +112,7 @@ SourceDestBufferImpl::SourceDestBufferImpl( ImageFileImplWeakPtr destImageFile, 
    /// don't checkImageFileOpen, checkState_ will do it
 
    /// Set capacity_ after testing that b is OK
-   if ( b == nullptr )
+   if ( !b )
    {
       throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "sdbuf.pathName=" + pathName );
    }
@@ -291,7 +291,7 @@ void SourceDestBufferImpl::checkState_() const
 
    if ( memoryRepresentation_ != E57_USTRING )
    {
-      if ( base_ == nullptr )
+      if ( !base_ )
       {
          throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "pathName=" + pathName_ );
       }
@@ -304,7 +304,7 @@ void SourceDestBufferImpl::checkState_() const
    }
    else
    {
-      if ( ustrings_ == nullptr )
+      if ( !ustrings_ )
       {
          throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "pathName=" + pathName_ );
       }
@@ -388,7 +388,7 @@ int64_t SourceDestBufferImpl::getNextInt64( double scale, double offset )
    /// Reverse scale (undo scaling) of a user's number to get raw value to put
    /// in file.
 
-   /// Encorporating the scale is optional (requested by user when constructing
+   /// Incorporating the scale is optional (requested by user when constructing
    /// the sdbuf). If the user did not request scaling, then we get raw values
    /// from user's buffer.
    if ( !doScaling_ )
@@ -804,10 +804,10 @@ void SourceDestBufferImpl::setNextInt64( int64_t value, double scale, double off
 {
    /// don't checkImageFileOpen
 
-   /// Apply a scale and offset to numbers from file before puting in user's
+   /// Apply a scale and offset to numbers from file before putting in user's
    /// buffer.
 
-   /// Encorporating the scale is optional (requested by user when constructing
+   /// Incorporating the scale is optional (requested by user when constructing
    /// the sdbuf). If the user did not request scaling, then we send raw values
    /// to user's buffer.
    if ( !doScaling_ )

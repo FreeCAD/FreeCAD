@@ -20,54 +20,55 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskMultiTransformParameters_H
 #define GUI_TASKVIEW_TaskMultiTransformParameters_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderMultiTransform.h"
 
+
 class Ui_TaskMultiTransformParameters;
 class QModelIndex;
 
-namespace PartDesign {
+namespace PartDesign
+{
 class Transformed;
 }
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
-
-class TaskMultiTransformParameters : public TaskTransformedParameters
+class TaskMultiTransformParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
-    TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent = 0);
-    virtual ~TaskMultiTransformParameters();
+    explicit TaskMultiTransformParameters(ViewProviderTransformed* TransformedView,
+                                          QWidget* parent = nullptr);
+    ~TaskMultiTransformParameters() override;
 
-    const std::vector<App::DocumentObject*> getTransformFeatures(void) const;
+    void apply() override;
 
     /// Return the currently active subFeature
-    PartDesign::Transformed* getSubFeature(void) {
+    PartDesign::Transformed* getSubFeature()
+    {
         return subFeature;
     }
 
-    virtual void apply();
-
 private Q_SLOTS:
+    /// User finished editing a subFeature
+    void onSubTaskButtonOK();
     void onTransformDelete();
     void onTransformEdit();
     void onTransformActivated(const QModelIndex& index);
@@ -77,53 +78,43 @@ private Q_SLOTS:
     void onTransformAddScaled();
     void onMoveUp();
     void onMoveDown();
-    /// User finished editing a subFeature
-    virtual void onSubTaskButtonOK();
     // Note: There is no Cancel button because I couldn't work out how to save the state of
     // a subFeature so as to revert the changes of an edit operation
-    virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
-    /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
-
-protected:
-    virtual void addObject(App::DocumentObject*);
-    virtual void removeObject(App::DocumentObject*);
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
+    void onUpdateView(bool /*unused*/) override;
 
 private:
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
+
+    /** Notifies when the object is about to be removed. */
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
+
     void updateUI();
     void closeSubTask();
-    void moveTransformFeature(const int increment);
-    void finishAdd(std::string &newFeatName);
+    void moveTransformFeature(int increment);
+    void finishAdd(std::string& newFeatName);
 
 private:
     std::unique_ptr<Ui_TaskMultiTransformParameters> ui;
     /// The subTask and subFeature currently active in the UI
-    TaskTransformedParameters* subTask;
-    PartDesign::Transformed* subFeature;
-    bool editHint;
+    TaskTransformedParameters* subTask = nullptr;
+    PartDesign::Transformed* subFeature = nullptr;
+    bool editHint = false;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMultiTransformParameters : public TaskDlgTransformedParameters
+class TaskDlgMultiTransformParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgMultiTransformParameters(ViewProviderMultiTransform *MultiTransformView);
-    virtual ~TaskDlgMultiTransformParameters() {}
+    explicit TaskDlgMultiTransformParameters(ViewProviderMultiTransform* MultiTransformView);
 
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     // virtual bool reject();
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

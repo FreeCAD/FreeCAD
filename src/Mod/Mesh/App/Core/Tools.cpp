@@ -20,48 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
+#include <algorithm>
 #endif
 
 #include "Tools.h"
-#include "Iterator.h"
 
 
 using namespace MeshCore;
 
-MeshSearchNeighbours::MeshSearchNeighbours (const MeshKernel &rclM, float fSampleDistance)
-  : _rclMesh(rclM)
-  , _rclFAry(rclM.GetFacets())
-  , _rclPAry(rclM.GetPoints())
-  , _clPt2Fa(rclM)
-  , _fMaxDistanceP2(0)
-  , _fSampleDistance(fSampleDistance)
-  , _bTooFewPoints(false)
+MeshSearchNeighbours::MeshSearchNeighbours(const MeshKernel& rclM, float fSampleDistance)
+    : _rclMesh(rclM)
+    , _rclFAry(rclM.GetFacets())
+    , _rclPAry(rclM.GetPoints())
+    , _clPt2Fa(rclM)
+    , _fSampleDistance(fSampleDistance)
 {
     MeshAlgorithm(_rclMesh).ResetFacetFlag(MeshFacet::MARKED);
     MeshAlgorithm(_rclMesh).ResetPointFlag(MeshPoint::MARKED);
 }
 
-void MeshSearchNeighbours::Reinit (float fSampleDistance)
+void MeshSearchNeighbours::Reinit(float fSampleDistance)
 {
     _fSampleDistance = fSampleDistance;
     MeshAlgorithm(_rclMesh).ResetFacetFlag(MeshFacet::MARKED);
     MeshAlgorithm(_rclMesh).ResetPointFlag(MeshPoint::MARKED);
 }
 
-unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, float fDistance, unsigned long ulMinPoints, std::vector<Base::Vector3f> &raclResultPoints)
+unsigned long
+MeshSearchNeighbours::NeighboursFromFacet(FacetIndex ulFacetIdx,
+                                          float fDistance,
+                                          unsigned long ulMinPoints,
+                                          std::vector<Base::Vector3f>& raclResultPoints)
 {
     bool bAddPoints = false;
 
     _fMaxDistanceP2 = fDistance * fDistance;
-    _clCenter       = _rclMesh.GetFacet(ulFacetIdx).GetGravityPoint();
+    _clCenter = _rclMesh.GetFacet(ulFacetIdx).GetGravityPoint();
 
     unsigned long ulVisited = 1;
-    std::vector<MeshFacetArray::_TConstIterator>  aclTestedFacet;
+    std::vector<MeshFacetArray::_TConstIterator> aclTestedFacet;
 
     _aclResult.clear();
     _aclOuter.clear();
@@ -71,60 +71,63 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
     _rclFAry[ulFacetIdx].SetFlag(MeshFacet::MARKED);
     aclTestedFacet.push_back(_rclFAry.begin() + ulFacetIdx);
 
-    if ((bFound == false) && (_aclResult.size() < ulMinPoints)) {
+    if (!bFound && (_aclResult.size() < ulMinPoints)) {
         bAddPoints = true;
         bFound = ExpandRadius(ulMinPoints);
     }
 
-    int nCtExpandRadius = 0; 
+    int nCtExpandRadius = 0;
     // search neighbours, add not marked facets, test distance, add outer points
     MeshFacetArray::_TConstIterator f_beg = _rclFAry.begin();
-    while ((bFound == true) && (nCtExpandRadius < 10)) {
+    while (bFound && (nCtExpandRadius < 10)) {
         bFound = false;
 
         std::set<PointIndex> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<FacetIndex>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
-            const std::set<FacetIndex> &rclISet = _clPt2Fa[*pI];
+        for (PointIndex pI : aclTmp) {
+            const std::set<FacetIndex>& rclISet = _clPt2Fa[pI];
             // search all facets hanging on this point
-            for (std::set<FacetIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
-                const MeshFacet &rclF = f_beg[*pJ];
+            for (FacetIndex pJ : rclISet) {
+                const MeshFacet& rclF = f_beg[pJ];
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
                     bool bLF = CheckDistToFacet(rclF);
                     bFound = bFound || bLF;
                     rclF.SetFlag(MeshFacet::MARKED);
-                    aclTestedFacet.push_back(f_beg+*pJ);
+                    aclTestedFacet.push_back(f_beg + pJ);
                 }
             }
             ulVisited += rclISet.size();
         }
 
         // too few points inside radius found -> expand radius
-        if ((bFound == false) && (_aclResult.size() < ulMinPoints)) {
+        if (!bFound && (_aclResult.size() < ulMinPoints)) {
             nCtExpandRadius++;
             bAddPoints = true;
             bFound = ExpandRadius(ulMinPoints);
         }
-        else
+        else {
             nCtExpandRadius = 0;
+        }
     }
 
     // reset marked facets, points
-    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin();
-        pF != aclTestedFacet.end(); ++pF)
-        (*pF)->ResetFlag(MeshFacet::MARKED);
-    for (std::set<PointIndex>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); ++pR)
-        _rclPAry[*pR].ResetFlag(MeshPoint::MARKED);
+    for (auto& pF : aclTestedFacet) {
+        pF->ResetFlag(MeshFacet::MARKED);
+    }
+    for (PointIndex pR : _aclResult) {
+        _rclPAry[pR].ResetFlag(MeshPoint::MARKED);
+    }
 
 
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
     size_t i = 0;
-    for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
+    for (auto pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++) {
         raclResultPoints[i] = _rclPAry[*pI];
+    }
 
-    if (bAddPoints == true) {
+    if (bAddPoints) {
         // sort points, remove points lying furthest from center
         std::sort(raclResultPoints.begin(), raclResultPoints.end(), CDistRad(_clCenter));
         raclResultPoints.erase(raclResultPoints.begin() + ulMinPoints, raclResultPoints.end());
@@ -133,10 +136,11 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
     return ulVisited;
 }
 
-void MeshSearchNeighbours::SampleAllFacets ()
+void MeshSearchNeighbours::SampleAllFacets()
 {
-    if (_aclSampledFacets.size() == _rclMesh.CountFacets())
-        return; // already sampled, do nothing
+    if (_aclSampledFacets.size() == _rclMesh.CountFacets()) {
+        return;  // already sampled, do nothing
+    }
 
     _aclSampledFacets.resize(_rclMesh.CountFacets());
     MeshFacetIterator clFIter(_rclMesh);
@@ -149,18 +153,21 @@ void MeshSearchNeighbours::SampleAllFacets ()
     }
 }
 
-unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (FacetIndex ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints)
+unsigned long
+MeshSearchNeighbours::NeighboursFromSampledFacets(FacetIndex ulFacetIdx,
+                                                  float fDistance,
+                                                  std::vector<Base::Vector3f>& raclResultPoints)
 {
     SampleAllFacets();
 
     _fMaxDistanceP2 = fDistance * fDistance;
-    _clCenter       = _rclMesh.GetFacet(ulFacetIdx).GetGravityPoint();
+    _clCenter = _rclMesh.GetFacet(ulFacetIdx).GetGravityPoint();
 
     _akSphere.Center = Wm4::Vector3<float>(_clCenter.x, _clCenter.y, _clCenter.z);
     _akSphere.Radius = fDistance;
 
     unsigned long ulVisited = 1;
-    std::vector<MeshFacetArray::_TConstIterator>  aclTestedFacet;
+    std::vector<MeshFacetArray::_TConstIterator> aclTestedFacet;
 
     _aclResult.clear();
     _aclOuter.clear();
@@ -172,22 +179,22 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (FacetIndex ulFa
 
     // search neighbours, add not marked facets, test distance, add outer points
     MeshFacetArray::_TConstIterator f_beg = _rclFAry.begin();
-    while (bFound == true) {
+    while (bFound) {
         bFound = false;
 
         std::set<PointIndex> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<PointIndex>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
-            const std::set<FacetIndex> &rclISet = _clPt2Fa[*pI];
+        for (PointIndex pI : aclTmp) {
+            const std::set<FacetIndex>& rclISet = _clPt2Fa[pI];
             // search all facets hanging on this point
-            for (std::set<FacetIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
-                const MeshFacet &rclF = f_beg[*pJ];
+            for (FacetIndex pJ : rclISet) {
+                const MeshFacet& rclF = f_beg[pJ];
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
-                    bool bLF = AccumulateNeighbours(rclF, *pJ);
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
+                    bool bLF = AccumulateNeighbours(rclF, pJ);
                     bFound = bFound || bLF;
                     rclF.SetFlag(MeshFacet::MARKED);
-                    aclTestedFacet.push_back(f_beg+*pJ);
+                    aclTestedFacet.push_back(f_beg + pJ);
                 }
             }
             ulVisited += rclISet.size();
@@ -195,50 +202,55 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (FacetIndex ulFa
     }
 
     // reset marked facets
-    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); ++pF)
-        (*pF)->ResetFlag(MeshFacet::MARKED);
+    for (auto& pF : aclTestedFacet) {
+        pF->ResetFlag(MeshFacet::MARKED);
+    }
 
     // copy points in result container
     raclResultPoints.resize(_aclPointsResult.size());
     std::copy(_aclPointsResult.begin(), _aclPointsResult.end(), raclResultPoints.begin());
 
     // facet points
-    for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI) {
-        if (InnerPoint(_rclPAry[*pI]) == true)
-            raclResultPoints.push_back(_rclPAry[*pI]);
+    for (PointIndex pI : _aclResult) {
+        if (InnerPoint(_rclPAry[pI])) {
+            raclResultPoints.push_back(_rclPAry[pI]);
+        }
     }
 
     return ulVisited;
 }
 
-bool MeshSearchNeighbours::AccumulateNeighbours (const MeshFacet &rclF, FacetIndex ulFIdx)
+bool MeshSearchNeighbours::AccumulateNeighbours(const MeshFacet& rclF, FacetIndex ulFIdx)
 {
-    int  k = 0;
+    int k = 0;
 
-    for (int i = 0; i < 3; i++) {
-        PointIndex ulPIdx = rclF._aulPoints[i];
+    for (PointIndex ulPIdx : rclF._aulPoints) {
         _aclOuter.insert(ulPIdx);
         _aclResult.insert(ulPIdx);
 
-        if (Base::DistanceP2(_clCenter, _rclPAry[ulPIdx]) < _fMaxDistanceP2)
+        if (Base::DistanceP2(_clCenter, _rclPAry[ulPIdx]) < _fMaxDistanceP2) {
             k++;
+        }
     }
 
     bool bFound = false;
     if (k == 3) {  // add all sample points
-        _aclPointsResult.insert(_aclPointsResult.end(), _aclSampledFacets[ulFIdx].begin(), _aclSampledFacets[ulFIdx].end());
+        _aclPointsResult.insert(_aclPointsResult.end(),
+                                _aclSampledFacets[ulFIdx].begin(),
+                                _aclSampledFacets[ulFIdx].end());
         bFound = true;
     }
     else {  // add points inner radius
         bFound = TriangleCutsSphere(rclF);
 
-        if (bFound == true) {
-            std::vector<Base::Vector3f> &rclT = _aclSampledFacets[ulFIdx];
+        if (bFound) {
+            const std::vector<Base::Vector3f>& rclT = _aclSampledFacets[ulFIdx];
             std::vector<Base::Vector3f> clTmp;
             clTmp.reserve(rclT.size());
-            for (std::vector<Base::Vector3f>::iterator pI = rclT.begin(); pI != rclT.end(); ++pI) {
-                if (InnerPoint(*pI) == true)
-                    clTmp.push_back(*pI);
+            for (const auto& pI : rclT) {
+                if (InnerPoint(pI)) {
+                    clTmp.push_back(pI);
+                }
             }
             _aclPointsResult.insert(_aclPointsResult.end(), clTmp.begin(), clTmp.end());
         }
@@ -247,30 +259,35 @@ bool MeshSearchNeighbours::AccumulateNeighbours (const MeshFacet &rclF, FacetInd
     return bFound;
 }
 
-bool MeshSearchNeighbours::ExpandRadius (unsigned long ulMinPoints)
+bool MeshSearchNeighbours::ExpandRadius(unsigned long ulMinPoints)
 {
     // add facets from current level
     _aclResult.insert(_aclOuter.begin(), _aclOuter.end());
-    for (std::set<PointIndex>::iterator pI = _aclOuter.begin(); pI != _aclOuter.end(); ++pI)
-        _rclPAry[*pI].SetFlag(MeshPoint::MARKED);
+    for (PointIndex pI : _aclOuter) {
+        _rclPAry[pI].SetFlag(MeshPoint::MARKED);
+    }
 
     if (_aclResult.size() < ulMinPoints) {
         _fMaxDistanceP2 *= float(ulMinPoints) / float(_aclResult.size());
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
-unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (FacetIndex ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints, std::vector<FacetIndex> &raclResultFacets)
+unsigned long
+MeshSearchNeighbours::NeighboursFacetFromFacet(FacetIndex ulFacetIdx,
+                                               float fDistance,
+                                               std::vector<Base::Vector3f>& raclResultPoints,
+                                               std::vector<FacetIndex>& raclResultFacets)
 {
     std::set<FacetIndex> aulFacetSet;
 
     _fMaxDistanceP2 = fDistance * fDistance;
-    _clCenter       = _rclMesh.GetFacet(ulFacetIdx).GetGravityPoint();
+    _clCenter = _rclMesh.GetFacet(ulFacetIdx).GetGravityPoint();
 
-    unsigned long            ulVisited = 1;
-    std::vector<MeshFacetArray::_TConstIterator>  aclTestedFacet;
+    unsigned long ulVisited = 1;
+    std::vector<MeshFacetArray::_TConstIterator> aclTestedFacet;
 
     _aclResult.clear();
     _aclOuter.clear();
@@ -284,30 +301,30 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (FacetIndex ulFacet
 
     // search neighbours, add not marked facets, test distance, add outer points
     MeshFacetArray::_TConstIterator f_beg = _rclFAry.begin();
-    while (bFound == true) {
+    while (bFound) {
         bFound = false;
 
         std::set<PointIndex> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<PointIndex>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
-            const std::set<FacetIndex> &rclISet = _clPt2Fa[*pI];
+        for (PointIndex pI : aclTmp) {
+            const std::set<FacetIndex>& rclISet = _clPt2Fa[pI];
             // search all facets hanging on this point
-            for (std::set<PointIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
-                const MeshFacet &rclF = f_beg[*pJ];
+            for (FacetIndex pJ : rclISet) {
+                const MeshFacet& rclF = f_beg[pJ];
 
-                for (int i = 0; i < 3; i++) {
-                    if (Base::DistanceP2(_clCenter, _rclPAry[rclF._aulPoints[i]]) < _fMaxDistanceP2) {
-                        aulFacetSet.insert(*pJ);
+                for (PointIndex ptIndex : rclF._aulPoints) {
+                    if (Base::DistanceP2(_clCenter, _rclPAry[ptIndex]) < _fMaxDistanceP2) {
+                        aulFacetSet.insert(pJ);
                         break;
                     }
                 }
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
                     bool bLF = CheckDistToFacet(rclF);
 
                     bFound = bFound || bLF;
                     rclF.SetFlag(MeshFacet::MARKED);
-                    aclTestedFacet.push_back(f_beg+*pJ);
+                    aclTestedFacet.push_back(f_beg + pJ);
                 }
             }
             ulVisited += rclISet.size();
@@ -315,16 +332,19 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (FacetIndex ulFacet
     }
 
     // reset marked facets, points
-    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); ++pF)
-        (*pF)->ResetFlag(MeshFacet::MARKED);
-    for (std::set<PointIndex>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); ++pR)
-        _rclPAry[*pR].ResetFlag(MeshPoint::MARKED);
+    for (auto& pF : aclTestedFacet) {
+        pF->ResetFlag(MeshFacet::MARKED);
+    }
+    for (PointIndex pR : _aclResult) {
+        _rclPAry[pR].ResetFlag(MeshPoint::MARKED);
+    }
 
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
     size_t i = 0;
-    for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
+    for (auto pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++) {
         raclResultPoints[i] = _rclPAry[*pI];
+    }
 
     // copy facets in result container
     raclResultFacets.insert(raclResultFacets.begin(), aulFacetSet.begin(), aulFacetSet.end());

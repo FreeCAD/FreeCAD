@@ -38,7 +38,7 @@ namespace e57
 
    //! Indicates to use FloatNode instead of ScaledIntegerNode in fields that can use both.
    constexpr double E57_NOT_SCALED_USE_FLOAT = 0.;
-   //! Indicates to use ScaledIntegerNode insterad of FloatNode in fields that can use both.
+   //! Indicates to use ScaledIntegerNode instead of FloatNode in fields that can use both.
    constexpr double E57_NOT_SCALED_USE_INTEGER = -1.;
 
    //! @cond documentNonPublic   The following isn't part of the API, and isn't documented.
@@ -144,7 +144,7 @@ namespace e57
       double elevationMinimum; //!< The minimum extent of the bounding region from the horizontal plane
       double elevationMaximum; //!< The maximum extent of the bounding region from the horizontal plane
       double azimuthStart; //!< The starting azimuth angle defining the extent of the bounding region around the z axis
-      double azimuthEnd;   //!< The ending azimuth angle defining the extent of the bounding region around the z axix
+      double azimuthEnd;   //!< The ending azimuth angle defining the extent of the bounding region around the z axis
 
       bool operator==( const SphericalBounds &rhs ) const
       {

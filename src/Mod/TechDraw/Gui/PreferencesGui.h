@@ -20,12 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _PreferencesGui_h_
-#define _PreferencesGui_h_
+#ifndef PreferencesGui_h_
+#define PreferencesGui_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QColor>
+
+class QColor;
+class QString;
+
+namespace App
+{
+class Color;
+}
 
 class QFont;
 class QString;
-class QColor;
 
 #include <Mod/TechDraw/App/Preferences.h>
 
@@ -52,16 +63,33 @@ static App::Color  leaderColor();
 static QColor      leaderQColor();
 static App::Color  dimColor();
 static QColor      dimQColor();
+static App::Color  pageColor();
+static QColor      pageQColor();
+static App::Color  breaklineColor();
+static QColor      breaklineQColor();
 
 static int         dimArrowStyle();
 static double      dimArrowSize();
 
 static double      edgeFuzz();
 
-static Qt::PenStyle  sectionLineStyle();
-static int         mattingStyle();
-
 static QString     weldingDirectory();
+
+static bool showGrid();
+static App::Color gridColor();
+static QColor gridQColor();
+static double gridSpacing();
+static bool multiSelection();
+
+static QColor       getAccessibleQColor(QColor orig);
+static QColor       lightTextQColor();
+static QColor       reverseColor(QColor orig);
+static QColor       lightenColor(QColor orig);
+
+static double       templateClickBoxSize();
+static QColor       templateClickBoxColor();
+
+static int          get3dMarkerSize();
 
 };
 

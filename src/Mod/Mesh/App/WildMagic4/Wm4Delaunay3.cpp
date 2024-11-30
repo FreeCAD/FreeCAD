@@ -49,10 +49,10 @@ Delaunay3<Real>::Delaunay3 (int iVertexQuantity, Vector3<Real>* akVertex,
     m_iUniqueVertexQuantity = 0;
     m_akPlaneDirection[0] = Vector3<Real>::ZERO;
     m_akPlaneDirection[1] = Vector3<Real>::ZERO;
-    m_akSVertex = 0;
-    m_pkQuery = 0;
+    m_akSVertex = nullptr;
+    m_pkQuery = nullptr;
     m_iPathLast = -1;
-    m_aiPath = 0;
+    m_aiPath = nullptr;
     m_iLastFaceV0 = -1;
     m_iLastFaceV1 = -1;
     m_iLastFaceV2 = -1;
@@ -215,7 +215,7 @@ Delaunay3<Real>::Delaunay3 (int iVertexQuantity, Vector3<Real>* akVertex,
         pkTetra = *pkTIter;
         kPermute[pkTetra] = i++;
     }
-    kPermute[0] = -1;
+    kPermute[nullptr] = -1;
 
     // Put Delaunay tetrahedra into an array (vertices and adjacency info).
     m_iSimplexQuantity = (int)m_kTetrahedron.size();
@@ -296,7 +296,7 @@ Delaunay1<Real>* Delaunay3<Real>::GetDelaunay1 () const
     assert(m_iDimension == 1);
     if (m_iDimension != 1)
     {
-        return 0;
+        return nullptr;
     }
 
     Real* afProjection = WM4_NEW Real[m_iVertexQuantity];
@@ -329,7 +329,7 @@ Delaunay2<Real>* Delaunay3<Real>::GetDelaunay2 () const
     assert(m_iDimension == 2);
     if (m_iDimension != 2)
     {
-        return 0;
+        return nullptr;
     }
 
     Vector2<Real>* akProjection = WM4_NEW Vector2<Real>[m_iVertexQuantity];
@@ -354,7 +354,7 @@ bool Delaunay3<Real>::GetHull (int& riTQuantity, int*& raiIndex) const
     }
 
     riTQuantity = 0;
-    raiIndex = 0;
+    raiIndex = nullptr;
 
     // Count the number of triangles that are not shared by two tetrahedra.
     int i, iAdjQuantity = 4*m_iSimplexQuantity;
@@ -618,7 +618,7 @@ void Delaunay3<Real>::Update (int i)
 
     // Locate and remove the tetrahedra forming the insertion polyhedron.
     std::stack<DelTetrahedron<Real>*> kStack;
-    ETManifoldMesh kPolyhedron(0,DelPolyhedronFace<Real>::TCreator);
+    ETManifoldMesh kPolyhedron(nullptr,DelPolyhedronFace<Real>::TCreator);
     kStack.push(pkTetra);
     pkTetra->OnStack = true;
     int j, iV0, iV1, iV2;
@@ -681,7 +681,7 @@ void Delaunay3<Real>::Update (int i)
                             pkFace = (DelPolyhedronFace<Real>*)
                                 kPolyhedron.InsertTriangle(iV0,iV1,iV2);
                             pkFace->NullIndex = -1;
-                            pkFace->Tetra = 0;
+                            pkFace->Tetra = nullptr;
                         }
                     }
                 }
@@ -799,7 +799,7 @@ DelTetrahedron<Real>* Delaunay3<Real>::GetContainingTetrahedron (int i) const
     }
 
     assert(false);
-    return 0;
+    return nullptr;
 }
 //----------------------------------------------------------------------------
 template <class Real>
@@ -838,7 +838,7 @@ void Delaunay3<Real>::RemoveTetrahedra ()
                 {
                     if (pkAdj->A[k] == pkTetra)
                     {
-                        pkAdj->A[k] = 0;
+                        pkAdj->A[k] = nullptr;
                         break;
                     }
                 }
@@ -949,10 +949,10 @@ Delaunay3<Real>::Delaunay3 (const char* acFilename)
     :
     Delaunay<Real>(0,(Real)0.0,false,Query::QT_REAL)
 {
-    m_akVertex = 0;
-    m_akSVertex = 0;
-    m_pkQuery = 0;
-    m_aiPath = 0;
+    m_akVertex = nullptr;
+    m_akSVertex = nullptr;
+    m_pkQuery = nullptr;
+    m_aiPath = nullptr;
     bool bLoaded = Load(acFilename);
     assert(bLoaded);
     (void)bLoaded;  // avoid warning in Release build

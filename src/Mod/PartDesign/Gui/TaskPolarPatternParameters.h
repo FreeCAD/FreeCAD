@@ -20,91 +20,92 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPolarPatternParameters_H
 #define GUI_TASKVIEW_TaskPolarPatternParameters_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderPolarPattern.h"
 
+
 class QTimer;
 class Ui_TaskPolarPatternParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskPolarPatternParameters : public TaskTransformedParameters
+class TaskPolarPatternParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    explicit TaskPolarPatternParameters(ViewProviderTransformed* TransformedView,
+                                        QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
-    virtual ~TaskPolarPatternParameters();
+    TaskPolarPatternParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
+    ~TaskPolarPatternParameters() override;
 
-    void apply();
+    void apply() override;
+
+protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onAxisChanged(int num);
-    void onCheckReverse(const bool on);
-    void onAngle(const double a);
-    void onOccurrences(const uint n);
-    virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
-
-protected:
-    virtual void addObject(App::DocumentObject*);
-    virtual void removeObject(App::DocumentObject*);
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
-    void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-    const std::string getStdAxis(void) const;
-    const std::string getAxis(void) const;
-    bool getReverse(void) const;
-    double getAngle(void) const;
-    unsigned getOccurrences(void) const;
+    void onModeChanged(int mode);
+    void onCheckReverse(bool on);
+    void onAngle(double angle);
+    void onOffset(double offset);
+    void onOccurrences(uint number);
+    void onUpdateView(bool /*unused*/) override;
 
 private:
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
+
     void connectSignals();
-    void setupUI();
     void updateUI();
     void kickUpdateViewTimer() const;
+    void adaptVisibilityToMode();
+
+    void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    const std::string getStdAxis() const;
+    const std::string getAxis() const;
+    bool getReverse() const;
+    int getMode() const;
+    double getAngle() const;
+    unsigned getOccurrences() const;
 
 private:
     std::unique_ptr<Ui_TaskPolarPatternParameters> ui;
-    QTimer* updateViewTimer;
+    QTimer* updateViewTimer = nullptr;
 
     ComboLinks axesLinks;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgPolarPatternParameters : public TaskDlgTransformedParameters
+class TaskDlgPolarPatternParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView);
-    virtual ~TaskDlgPolarPatternParameters() {}
+    explicit TaskDlgPolarPatternParameters(ViewProviderPolarPattern* PolarPatternView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

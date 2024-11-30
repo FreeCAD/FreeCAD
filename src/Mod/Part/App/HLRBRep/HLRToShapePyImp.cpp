@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "HLRBRep/HLRToShapePy.h"
 #include "HLRBRep/HLRToShapePy.cpp"
 #include "HLRBRep/HLRBRep_AlgoPy.h"
-#include <Mod/Part/App/TopoShapePy.h>
+#include "TopoShapePy.h"
+
 
 using namespace Part;
-
 
 PyObject *HLRToShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
@@ -53,9 +52,9 @@ int HLRToShapePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string HLRToShapePy::representation(void) const
+std::string HLRToShapePy::representation() const
 {
-    return std::string("<HLRBRep_HLRToShape object>");
+    return {"<HLRBRep_HLRToShape object>"};
 }
 
 PyObject* HLRToShapePy::vCompound(PyObject *args)
@@ -244,25 +243,24 @@ PyObject* HLRToShapePy::compoundOfEdges(PyObject *args, PyObject *kwds)
     PyObject* in3d = nullptr;
     PyObject* shape = nullptr;
 
-    static char* keywords[] = {"Type", "Visible", "In3D", "Shape", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "iO!O!|O!", keywords,
-                                     &type,
-                                     &PyBool_Type, &visible,
-                                     &PyBool_Type, &in3d,
-                                     &Part::TopoShapePy::Type, &shape))
+    static const std::array<const char *, 5> keywords {"Type", "Visible", "In3D", "Shape", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "iO!O!|O!", keywords,
+                                             &type,
+                                             &PyBool_Type, &visible,
+                                             &PyBool_Type, &in3d,
+                                             &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         TopoDS_Shape result = getHLRBRep_HLRToShapePtr()->CompoundOfEdges(input, static_cast<HLRBRep_TypeOfResultingEdge>(type),
-                                                                          PyObject_IsTrue(visible) ? Standard_True : Standard_False,
-                                                                          PyObject_IsTrue(in3d) ? Standard_True : Standard_False);
+                                                                          Base::asBoolean(visible), Base::asBoolean(in3d));
         return new TopoShapePy(new TopoShape(result));
     }
     else {
         TopoDS_Shape result = getHLRBRep_HLRToShapePtr()->CompoundOfEdges(static_cast<HLRBRep_TypeOfResultingEdge>(type),
-                                                                          PyObject_IsTrue(visible) ? Standard_True : Standard_False,
-                                                                          PyObject_IsTrue(in3d) ? Standard_True : Standard_False);
+                                                                          Base::asBoolean(visible), Base::asBoolean(in3d));
         return new TopoShapePy(new TopoShape(result));
     }
 }

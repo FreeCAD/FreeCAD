@@ -34,7 +34,7 @@ template <class Real>
 ETManifoldMesh::TPtr DelPolyhedronFace<Real>::TCreator (int iV0, int iV1,
     int iV2)
 {
-    return WM4_NEW DelPolyhedronFace<Real>(iV0,iV1,iV2,0,0);
+    return WM4_NEW DelPolyhedronFace<Real>(iV0,iV1,iV2,0,nullptr);
 }
 //----------------------------------------------------------------------------
 

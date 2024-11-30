@@ -20,55 +20,90 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QMessageBox>
+#endif
 
-#include <Python.h>
-#include <QMessageBox>
-#include "ViewProvider.h"
-#include "DlgSettings3DViewPartImp.h"
-#include "ui_DlgSettings3DViewPart.h"
-
-#include <Gui/PrefWidgets.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+
+#include "DlgSettings3DViewPartImp.h"
+#include "ui_DlgSettings3DViewPart.h"
+#include "ViewProvider.h"
+
 
 using namespace PartGui;
 
 /**
- *  Constructs a DlgSettings3DViewPart which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettings3DViewPart which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
-  : PreferencePage(parent), ui(new Ui_DlgSettings3DViewPart), checkValue(false)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettings3DViewPart)
+    , checkValue(false)
 {
     ui->setupUi(this);
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Part");
-    double lowerLimit = hPart->GetFloat("MinimumDeviation", ui->maxDeviation->minimum());
-    ui->maxDeviation->setMinimum(lowerLimit);
+    connect(ui->maxDeviation,
+            qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this,
+            &DlgSettings3DViewPart::onMaxDeviationValueChanged);
+    connect(ui->maxAngularDeflection,
+            qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this,
+            &DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged);
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part");
+    const double minDeviationlowerLimit = hPart->GetFloat(
+        "MinimumDeviation", ui->maxDeviation->minimum());
+    ui->maxDeviation->setMinimum(minDeviationlowerLimit);
+    const double minAngleDeflectionlowerLimit = hPart->GetFloat(
+        "MinimumDeviation", ui->maxAngularDeflection->minimum());
+    ui->maxAngularDeflection->setMinimum(minAngleDeflectionlowerLimit);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettings3DViewPart::~DlgSettings3DViewPart()
+DlgSettings3DViewPart::~DlgSettings3DViewPart() = default;
+
+void DlgSettings3DViewPart::onMaxDeviationValueChanged(double vMaxDev)
 {
-    // no need to delete child widgets, Qt does it all for us
+    if (!this->isVisible()) {
+        return;
+    }
+    const double maxDevMinThreshold = 0.01;
+    if (vMaxDev < maxDevMinThreshold && !checkValue) {
+        checkValue = true;
+        QMessageBox::warning(
+            this,
+            tr("Deviation"),
+            tr("Setting a too small deviation causes the tessellation to take longer"
+               " and thus freezes or slows down the GUI."));
+    }
 }
 
-void DlgSettings3DViewPart::on_maxDeviation_valueChanged(double v)
+void DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged(double vMaxAngle)
 {
-    if (!this->isVisible())
+    if (!this->isVisible()) {
         return;
-    if (v < 0.01 && !checkValue) {
+    }
+    /**
+     *  The lower threshold of 2.0 was determined by testing
+     *  as laid out in the table as per comment hyperlink:
+     *  https://github.com/FreeCAD/FreeCAD/issues/15951#issuecomment-2304308163
+     */
+    const double vMaxAngleMinThreshold = 2.0;
+    if (vMaxAngle < vMaxAngleMinThreshold && !checkValue) {
         checkValue = true;
-        QMessageBox::warning(this, tr("Deviation"),
-            tr("Setting a too small deviation causes the tessellation to take longer"
-               "and thus freezes or slows down the GUI."));
+        QMessageBox::warning(
+            this,
+            tr("Angle Deflection"),
+            tr("Setting a too small angle deviation causes the tessellation to take longer"
+               " and thus freezes or slows down the GUI."));
     }
 }
 
@@ -79,15 +114,15 @@ void DlgSettings3DViewPart::saveSettings()
 
     // search for Part view providers and apply the new settings
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (std::vector<App::Document*>::iterator it = docs.begin(); it != docs.end(); ++it) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(*it);
-        std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(ViewProviderPart::getClassTypeId());
-        for (std::vector<Gui::ViewProvider*>::iterator jt = views.begin(); jt != views.end(); ++jt) {
-            static_cast<ViewProviderPart*>(*jt)->reload();
+    for (auto it : docs) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(it);
+        std::vector<Gui::ViewProvider*> views =
+            doc->getViewProvidersOfType(ViewProviderPart::getClassTypeId());
+        for (auto view : views) {
+            static_cast<ViewProviderPart*>(view)->reload();
         }
     }
 }
-
 void DlgSettings3DViewPart::loadSettings()
 {
     ui->maxDeviation->onRestore();

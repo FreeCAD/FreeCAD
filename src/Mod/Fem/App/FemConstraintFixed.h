@@ -21,44 +21,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTFIXED_H
 #define FEM_CONSTRAINTFIXED_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-
 #include "FemConstraint.h"
+
 
 namespace Fem
 {
 
-class FemExport ConstraintFixed : public Fem::Constraint
+class FemExport ConstraintFixed: public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintFixed);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintFixed);
 
 public:
     /// Constructor
-    ConstraintFixed(void);
-
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
+    ConstraintFixed();
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemConstraintFixed";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTFIXED_H
+#endif  // FEM_CONSTRAINTFIXED_H

@@ -24,23 +24,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qapplication.h>
-# include <qdir.h>
-# include <qfileinfo.h>
-# include <qlineedit.h>
-# include <qmessagebox.h>
-# include <qtimer.h>
+# include <QApplication>
+# include <QDir>
+# include <QFileInfo>
+# include <QMessageBox>
+# include <QTimer>
 #endif
+
+#include <App/Application.h>
+#include <Base/Console.h>
 
 #include "NetworkRetriever.h"
 #include "Action.h"
 #include "BitmapFactory.h"
+#include "FileDialog.h"
 #include "MainWindow.h"
 #include "ui_DlgAuthorization.h"
-#include "FileDialog.h"
 
-#include <App/Application.h>
-#include <Base/Console.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -91,11 +91,11 @@ NetworkRetriever::NetworkRetriever( QObject * parent )
     wget = new QProcess(this);
 
     // if wgets exits emit signal
-    connect(wget, SIGNAL(finished(int, QProcess::ExitStatus)),
-            this, SLOT(wgetFinished(int, QProcess::ExitStatus)));
+    connect(wget, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
+            this, &NetworkRetriever::wgetFinished);
 
     // if application quits kill wget immediately to avoid dangling processes
-    connect( qApp, SIGNAL(lastWindowClosed()), wget, SLOT(kill()) );
+    connect(qApp, &QApplication::lastWindowClosed, wget, &QProcess::kill);
 }
 
 NetworkRetriever::~NetworkRetriever()
@@ -261,9 +261,9 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
     if ( !d->dir.isEmpty() )
     {
         QDir dir(d->dir);
-        if ( dir.exists( d->dir ) == false )
+        if (!dir.exists(d->dir))
         {
-            if ( dir.mkdir( d->dir ) == false)
+            if (!dir.mkdir(d->dir))
             {
                 Base::Console().Error("Directory '%s' could not be created.", (const char*)d->dir.toLatin1());
                 return true; // please, no error message
@@ -351,7 +351,7 @@ void NetworkRetriever::abort()
 {
     if ( wget->state() == QProcess::Running)
     {
-        QTimer::singleShot( 2000, wget, SLOT( kill() ) );
+        QTimer::singleShot( 2000, wget, &QProcess::kill);
     }
 }
 
@@ -364,7 +364,7 @@ void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
         QByteArray data = wget->readAll();
         Base::Console().Warning(data);
     }
-    wgetExited();
+    Q_EMIT wgetExited();
 }
 
 /**
@@ -406,7 +406,7 @@ StdCmdDownloadOnlineHelp::StdCmdDownloadOnlineHelp( QObject * parent)
     wget->setFollowRelative( false );
     wget->setNoParent( true );
 
-    connect( wget, SIGNAL( wgetExited() ), this, SLOT( wgetFinished() ) );
+    connect(wget, &NetworkRetriever::wgetExited, this, &StdCmdDownloadOnlineHelp::wgetFinished);
 }
 
 StdCmdDownloadOnlineHelp::~StdCmdDownloadOnlineHelp()
@@ -414,7 +414,7 @@ StdCmdDownloadOnlineHelp::~StdCmdDownloadOnlineHelp()
     delete wget;
 }
 
-Action * StdCmdDownloadOnlineHelp::createAction(void)
+Action * StdCmdDownloadOnlineHelp::createAction()
 {
     Action *pcAction;
 
@@ -455,7 +455,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
     if (!wget->isDownloading()) {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hGrp = hGrp->GetGroup("Preferences")->GetGroup("OnlineHelp");
-        std::string url = hGrp->GetASCII("DownloadURL", "www.freecadweb.org/wiki/");
+        std::string url = hGrp->GetASCII("DownloadURL", "www.freecad.org/wiki/");
         std::string prx = hGrp->GetASCII("ProxyText", "");
         bool bUseProxy  = hGrp->GetBool ("UseProxy", false);
         bool bAuthor    = hGrp->GetBool ("Authorize", false);
@@ -495,7 +495,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
                 if (QMessageBox::critical(getMainWindow(), tr("Non-existing directory"),
                      tr("The directory '%1' does not exist.\n\n"
                         "Do you want to specify an existing directory?").arg(fi.filePath()),
-                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) !=
+                     QMessageBox::Yes | QMessageBox::No) !=
                      QMessageBox::Yes)
                 {
                     // exit the command
@@ -513,7 +513,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
                 if (QMessageBox::critical(getMainWindow(), tr("Missing permission"),
                      tr("You don't have write permission to '%1'\n\n"
                         "Do you want to specify another directory?").arg(fi.filePath()),
-                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) !=
+                     QMessageBox::Yes | QMessageBox::No) !=
                      QMessageBox::Yes)
                 {
                     // exit the command
@@ -534,7 +534,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
 
         if (canStart) {
             bool ok = wget->startDownload(QString::fromLatin1(url.c_str()));
-            if ( ok == false )
+            if (!ok)
                 Base::Console().Error("The tool 'wget' couldn't be found. Please check your installation.");
             else if ( wget->isDownloading() && _pcAction )
                 _pcAction->setText(tr("Stop downloading"));

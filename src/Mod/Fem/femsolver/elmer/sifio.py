@@ -23,14 +23,12 @@
 
 __title__ = "FreeCAD FEM solver Elmer sifio"
 __author__ = "Markus Hovorka"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
 
 import collections
-import six
-
 
 SIMULATION = "Simulation"
 CONSTANTS = "Constants"
@@ -57,7 +55,6 @@ _VALID_SECTIONS = (
     COMPONENT,
 )
 
-
 _NUMBERED_SECTIONS = (
     BODY,
     MATERIAL,
@@ -69,24 +66,22 @@ _NUMBERED_SECTIONS = (
     COMPONENT,
 )
 
-
 _SECTION_DELIM = "End"
 _WHITESPACE = " "
 _INDENT = " " * 2
 _NEWLINE = "\n"
-
 
 _TYPE_REAL = "Real"
 _TYPE_INTEGER = "Integer"
 _TYPE_LOGICAL = "Logical"
 _TYPE_STRING = "String"
 _TYPE_FILE = "File"
+_TYPE_VARIABLE = "Variable"
 
-
-WARN = "Warn"
-IGNORE = "Ignore"
-ABORT = "Abort"
-SILENT = "Silent"
+WARN = '"Warn"'
+IGNORE = '"Ignore"'
+ABORT = '"Abort"'
+SILENT = '"Silent"'
 
 
 def createSection(name):
@@ -109,7 +104,7 @@ def isValid(section):
     return section.name in _VALID_SECTIONS
 
 
-class Builder(object):
+class Builder:
 
     _ACTIVE_SOLVERS = "Active Solvers"
 
@@ -196,7 +191,7 @@ class Builder(object):
         return iter(allSections)
 
 
-class Sif(object):
+class Sif:
 
     _CHECK_KEYWORDS = "Check Keywords"
     _HEADER = "Header"
@@ -243,7 +238,7 @@ class Sif(object):
         stream.write('"%s"' % value)
 
 
-class Section(object):
+class Section:
 
     def __init__(self, name):
         self.name = name
@@ -279,7 +274,7 @@ class FileAttr(str):
     pass
 
 
-class _Writer(object):
+class _Writer:
 
     def __init__(self, idManager, sections, stream):
         self._idMgr = idManager
@@ -287,11 +282,13 @@ class _Writer(object):
         self._stream = stream
 
     def write(self):
-        sortedSections = sorted(
-            self._sections, key=lambda s: s.priority, reverse=True)
+        firstSection, *sortedSections = sorted(
+            self._sections, key=lambda s: s.priority, reverse=True
+        )
+        self._writeSection(firstSection)
         for s in sortedSections:
-            self._writeSection(s)
             self._stream.write(_NEWLINE)
+            self._writeSection(s)
 
     def _writeSection(self, s):
         self._writeSectionHeader(s)
@@ -301,8 +298,8 @@ class _Writer(object):
 
     def _writeSectionHeader(self, s):
         self._stream.write(s.name)
-        self._stream.write(_WHITESPACE)
         if isNumbered(s):
+            self._stream.write(_WHITESPACE)
             self._stream.write(str(self._idMgr.getId(s)))
 
     def _writeSectionFooter(self, s):
@@ -334,13 +331,10 @@ class _Writer(object):
 
     def _getOnlyElement(self, collection):
         it = iter(collection)
-        return it.next()
+        return next(it)
 
     def _isCollection(self, data):
-        return (
-            not isinstance(data, six.string_types)
-            and isinstance(data, collections.Iterable)
-        )
+        return not isinstance(data, str) and isinstance(data, collections.abc.Iterable)
 
     def _checkScalar(self, dataType):
         if issubclass(dataType, int):
@@ -362,9 +356,20 @@ class _Writer(object):
         self._stream.write(_WHITESPACE)
         self._stream.write("=")
         self._stream.write(_WHITESPACE)
-        self._stream.write(attrType)
-        self._stream.write(_WHITESPACE)
-        self._stream.write(self._preprocess(data, type(data)))
+        # check if we have a variable string
+        if attrType is _TYPE_STRING:
+            if data.startswith("Variable"):
+                attrType = _TYPE_VARIABLE
+        if attrType is not _TYPE_VARIABLE:
+            self._stream.write(attrType)
+            self._stream.write(_WHITESPACE)
+        output = self._preprocess(data, type(data))
+        # in case of a variable the output must be without the quatoation marks
+        if attrType is _TYPE_VARIABLE:
+            output = output.lstrip('"')
+            # we cannot use rstrip because there are two subsequent " at the end
+            output = output[:-1]
+        self._stream.write(output)
 
     def _writeArrAttr(self, key, data):
         attrType = self._getAttrTypeArr(data)
@@ -374,10 +379,21 @@ class _Writer(object):
         self._stream.write(_WHITESPACE)
         self._stream.write("=")
         self._stream.write(_WHITESPACE)
-        self._stream.write(attrType)
+        # check if we have a variable string
+        if attrType is _TYPE_STRING:
+            if data.startswith("Variable"):
+                attrType = _TYPE_VARIABLE
+        if attrType is not _TYPE_VARIABLE:
+            self._stream.write(attrType)
         for val in data:
             self._stream.write(_WHITESPACE)
-            self._stream.write(self._preprocess(val, type(val)))
+            output = self._preprocess(val, type(val))
+            # in case of a variable the output must be without the quatoation marks
+            if attrType is _TYPE_VARIABLE:
+                output = output.lstrip('"')
+                # we cannot use rstrip because there are two subsequent " at the end
+                output = output[:-1]
+            self._stream.write(output)
 
     def _writeFileAttr(self, key, data):
         self._stream.write(_INDENT)
@@ -400,16 +416,14 @@ class _Writer(object):
             return _TYPE_INTEGER
         if issubclass(dataType, float):
             return _TYPE_REAL
-        # use six to be sure to be Python 2.7 and 3.x compatible
-        if issubclass(dataType, six.string_types):
+        if issubclass(dataType, str):
             return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        # use six to be sure to be Python 2.7 and 3.x compatible
-        if issubclass(dataType, six.string_types):
+        if issubclass(dataType, str):
             return '"%s"' % data
         return str(data)
 
@@ -427,7 +441,7 @@ class _Writer(object):
         return self._getSifDataType(dataType)
 
 
-class _IdManager(object):
+class _IdManager:
 
     def __init__(self, firstId=1):
         self._pool = dict()
@@ -444,5 +458,6 @@ class _IdManager(object):
         if section not in self._ids:
             self.setId(section)
         return self._ids[section]
+
 
 ##  @}

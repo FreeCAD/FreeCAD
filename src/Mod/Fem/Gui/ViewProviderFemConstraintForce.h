@@ -30,26 +30,30 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintForce : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintForce
+    : public FemGui::ViewProviderFemConstraintOnBoundary
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintForce);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintForce);
 
 public:
     /// Constructor
     ViewProviderFemConstraintForce();
-    virtual ~ViewProviderFemConstraintForce();
+    ~ViewProviderFemConstraintForce() override;
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void transformSymbol(const Base::Vector3d& point,
+                         const Base::Vector3d& normal,
+                         SbMatrix& mat) const override;
 
 private:
     /// Direction of the force
     Base::Vector3f forceDirection;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H

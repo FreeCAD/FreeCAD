@@ -38,15 +38,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderCylinderParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderCylinderParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderCylinderParametric);
 
 public:
     /// constructor
     ViewProviderCylinderParametric();
     /// destructor
-    virtual ~ViewProviderCylinderParametric();
+    ~ViewProviderCylinderParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

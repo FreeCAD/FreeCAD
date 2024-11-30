@@ -24,8 +24,9 @@
 #define TASKFEATUREPARAMETERS_H_NAHKE2YZ
 
 
-#include <Gui/TaskView/TaskView.h>
+#include <type_traits>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Gui/DocumentObserver.h>
 
 #include "ViewProvider.h"
@@ -41,14 +42,19 @@ class TaskFeatureParameters : public Gui::TaskView::TaskBox,
 public:
     TaskFeatureParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
                               const std::string& pixmapname, const QString& parname);
-    virtual ~TaskFeatureParameters() {}
+    ~TaskFeatureParameters() override = default;
 
     /// save field history
-    virtual void saveHistory(void) {}
+    virtual void saveHistory() {}
     /// apply changes made in the parameters input to the model via commands
     virtual void apply() {}
 
     void recomputeFeature();
+
+    bool isUpdateBlocked() const
+    {
+        return blockUpdate;
+    }
 
 protected Q_SLOTS:
     // TODO Add update view to all dialogs (2015-12-05, Fat-Zer)
@@ -56,11 +62,49 @@ protected Q_SLOTS:
 
 private:
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 protected:
+    template<typename T = PartDesignGui::ViewProvider> T* getViewObject() const
+    {
+        static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
+                "Wrong template argument");
+        return dynamic_cast<T*>(vp);
+    }
+
+    template<typename T = App::DocumentObject> T* getObject() const
+    {
+        static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
+        if (vp) {
+            return dynamic_cast<T*>(vp->getObject());
+        }
+
+        return nullptr;
+    }
+
+    Gui::Document* getGuiDocument() const
+    {
+        return vp ? vp->getDocument() : nullptr;
+    }
+
+    App::Document* getAppDocument() const
+    {
+        auto obj = getObject();
+        return obj ? obj->getDocument() : nullptr;
+    }
+
+    bool& getUpdateBlockRef()
+    {
+        return blockUpdate;
+    }
+
+    void setUpdateBlocked(bool value)
+    {
+        blockUpdate = value;
+    }
+
+private:
     PartDesignGui::ViewProvider *vp;
-    /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate;
 };
 
@@ -70,20 +114,34 @@ class TaskDlgFeatureParameters : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp);
-    virtual ~TaskDlgFeatureParameters();
+    explicit TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp);
+    ~TaskDlgFeatureParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
 
-    /// Returns the view provider dialog is runed for
-     PartDesignGui::ViewProvider *viewProvider() const { return vp; }
+    template<typename T = PartDesignGui::ViewProvider> T* getViewObject() const
+    {
+        static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
+                "Wrong template argument");
+        return dynamic_cast<T*>(vp);
+    }
 
-protected:
-    PartDesignGui::ViewProvider *vp;
+    template<typename T = App::DocumentObject> T* getObject() const
+    {
+        static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
+        if (vp) {
+            return dynamic_cast<T*>(vp->getObject());
+        }
+
+        return nullptr;
+    }
+
+private:
+    PartDesignGui::ViewProvider* vp;
 };
 
 } //namespace PartDesignGui

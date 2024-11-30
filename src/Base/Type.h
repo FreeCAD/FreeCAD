@@ -54,12 +54,12 @@ struct TypeData;
   \code
   void getRightFeature(Base::Base * anode)
   {
-    assert(anode->getTypeId().isDerivedFrom(App::Feature::getClassTypeId()));
+    assert(anode->isDerivedFrom<App::Feature>());
 
-    if (anode->getTypeId() == Mesh::MeshFeature::getClassTypeId()) {
+    if (anode->is<Mesh::MeshFeature>()) {
       // do something..
     }
-    else if (anode->getTypeId() == Part::PartFeature::getClassTypeId()) {
+    else if (anode->is<Part::PartFeature>()) {
       // do something..
     }
     else {
@@ -80,124 +80,109 @@ struct TypeData;
 class BaseExport Type
 {
 public:
-  /// Construction
-  Type(const Type& type);
-  Type(void);
-  /// Destruction
-  virtual ~Type();
+    /// Construction
+    Type(const Type& type) = default;
+    Type(Type&& type) = default;
+    Type() = default;
+    /// Destruction
+    ~Type() = default;
 
-  /// creates a instance of this type
-  void *createInstance(void);
-  /// creates a instance of the named type
-  static void *createInstanceByName(const char* TypeName, bool bLoadModule=false);
-  static void importModule(const char* TypeName);
+    /// creates a instance of this type
+    void* createInstance();
+    /// Checks whether this type can instantiate
+    bool canInstantiate() const;
+    /// creates a instance of the named type
+    static void* createInstanceByName(const char* TypeName, bool bLoadModule = false);
+    static void importModule(const char* TypeName);
 
-  typedef void * (*instantiationMethod)(void);
+    using instantiationMethod = void* (*)();
 
-  static Type fromName(const char *name);
-  static Type fromKey(unsigned int key);
-  const char *getName(void) const;
-  const Type getParent(void) const;
-  bool isDerivedFrom(const Type type) const;
+    static Type fromName(const char* name);
+    static Type fromKey(unsigned int key);
+    const char* getName() const;
+    Type getParent() const;
+    bool isDerivedFrom(const Type& type) const;
 
-  static int getAllDerivedFrom(const Type type, std::vector<Type>& List);
-  /// Returns the given named type if is derived from parent type, otherwise return bad type
-  static Type getTypeIfDerivedFrom(const char* name , const Type parent, bool bLoadModule=false);
+    static int getAllDerivedFrom(const Type& type, std::vector<Type>& List);
+    /// Returns the given named type if is derived from parent type, otherwise return bad type
+    static Type
+    getTypeIfDerivedFrom(const char* name, const Type& parent, bool bLoadModule = false);
 
-  static int getNumTypes(void);
+    static int getNumTypes();
 
-  static const Type createType(const Type parent, const char *name,instantiationMethod method = 0);
+    static Type
+    createType(const Type& parent, const char* name, instantiationMethod method = nullptr);
 
-  unsigned int getKey(void) const;
-  bool isBad(void) const;
+    unsigned int getKey() const;
+    bool isBad() const;
 
-  void operator =  (const Type type);
-  bool operator == (const Type type) const;
-  bool operator != (const Type type) const;
+    Type& operator=(const Type& type) = default;
+    Type& operator=(Type&& type) = default;
+    bool operator==(const Type& type) const;
+    bool operator!=(const Type& type) const;
 
-  bool operator <  (const Type type) const;
-  bool operator <= (const Type type) const;
-  bool operator >= (const Type type) const;
-  bool operator >  (const Type type) const;
+    bool operator<(const Type& type) const;
+    bool operator<=(const Type& type) const;
+    bool operator>=(const Type& type) const;
+    bool operator>(const Type& type) const;
 
-  static Type badType(void);
-  static void init(void);
-  static void destruct(void);
+    static Type badType();
+    static void init();
+    static void destruct();
 
-protected:
-  static std::string getModuleName(const char* ClassName);
+    static std::string getModuleName(const char* ClassName);
 
 
 private:
+    unsigned int index {0};
 
-
-  unsigned int index;
-
-
-  static std::map<std::string,unsigned int> typemap;
-  static std::vector<TypeData*>     typedata;
-
-  static std::set<std::string>  loadModuleSet;
-
+    static std::map<std::string, unsigned int> typemap;
+    static std::vector<TypeData*> typedata;
+    static std::set<std::string> loadModuleSet;
 };
 
 
-inline unsigned int
-Type::getKey(void) const
+inline unsigned int Type::getKey() const
 {
-  return this->index;
+    return this->index;
 }
 
-inline bool
-Type::operator != (const Type type) const
+inline bool Type::operator!=(const Type& type) const
 {
-  return (this->getKey() != type.getKey());
+    return (this->getKey() != type.getKey());
 }
 
-inline void
-Type::operator = (const Type type)
+inline bool Type::operator==(const Type& type) const
 {
-  this->index = type.getKey();
+    return (this->getKey() == type.getKey());
 }
 
-inline bool
-Type::operator == (const Type type) const
+inline bool Type::operator<(const Type& type) const
 {
-  return (this->getKey() == type.getKey());
+    return (this->getKey() < type.getKey());
 }
 
-inline bool
-Type::operator <  (const Type type) const
+inline bool Type::operator<=(const Type& type) const
 {
-  return (this->getKey() < type.getKey());
+    return (this->getKey() <= type.getKey());
 }
 
-inline bool
-Type::operator <= (const Type type) const
+inline bool Type::operator>=(const Type& type) const
 {
-  return (this->getKey() <= type.getKey());
+    return (this->getKey() >= type.getKey());
 }
 
-inline bool
-Type::operator >= (const Type type) const
+inline bool Type::operator>(const Type& type) const
 {
-  return (this->getKey() >= type.getKey());
+    return (this->getKey() > type.getKey());
 }
 
-inline bool
-Type::operator >  (const Type type) const
+inline bool Type::isBad() const
 {
-  return (this->getKey() > type.getKey());
+    return (this->index == 0);
 }
 
-inline bool
-Type::isBad(void) const
-{
-  return (this->index == 0);
-}
-
-} //namespace Base
+}  // namespace Base
 
 
-#endif // BASE_TYPE_H
-
+#endif  // BASE_TYPE_H

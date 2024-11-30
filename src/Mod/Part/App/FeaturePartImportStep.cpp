@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>
@@ -28,6 +27,7 @@
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
+
 #include "FeaturePartImportStep.h"
 
 
@@ -36,7 +36,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::ImportStep, Part::Feature)
 
 
-ImportStep::ImportStep(void)
+ImportStep::ImportStep()
 {
     ADD_PROPERTY(FileName,(""));
 }
@@ -48,7 +48,7 @@ short ImportStep::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportStep::execute(void)
+App::DocumentObjectExecReturn *ImportStep::execute()
 {
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {

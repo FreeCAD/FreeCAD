@@ -20,26 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _FeatureViewPart_h_
 #define _FeatureViewPart_h_
 
-
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
 #include <App/FeaturePython.h>
+#include <App/PropertyLinks.h>
+
+#include "FeatureView.h"
 
 
 namespace Drawing
 {
 
-
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport FeatureViewPart : public FeatureView
+class DrawingExport FeatureViewPart: public FeatureView
 {
     PROPERTY_HEADER(Part::FeatureViewPart);
 
@@ -48,23 +44,24 @@ public:
     FeatureViewPart(void);
     virtual ~FeatureViewPart();
 
-    App::PropertyLink   Source;
+    App::PropertyLink Source;
     App::PropertyVector Direction;
-    App::PropertyBool   ShowHiddenLines;
-    App::PropertyBool   ShowSmoothLines;
-    App::PropertyFloat  LineWidth;
-    App::PropertyFloat  HiddenWidth;
-    App::PropertyFloatConstraint  Tolerance;
+    App::PropertyBool ShowHiddenLines;
+    App::PropertyBool ShowSmoothLines;
+    App::PropertyFloat LineWidth;
+    App::PropertyFloat HiddenWidth;
+    App::PropertyFloatConstraint Tolerance;
 
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn* execute(void);
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const
+    {
         return "DrawingGui::ViewProviderDrawingView";
     }
 
@@ -72,10 +69,10 @@ private:
     static App::PropertyFloatConstraint::Constraints floatRange;
 };
 
-typedef App::FeaturePythonT<FeatureViewPart> FeatureViewPartPython;
+using FeatureViewPartPython = App::FeaturePythonT<FeatureViewPart>;
 
 
-} //namespace Drawing
+}  // namespace Drawing
 
 
 #endif

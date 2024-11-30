@@ -38,26 +38,26 @@ if App.GuiUp:
 
 def make_ellipse(majradius, minradius, placement=None, face=None, support=None):
     """make_ellipse(majradius, minradius, [placement], [face], [support])
-    
+
     Makes an ellipse with the given major and minor radius, and optionally
     a placement.
 
     Parameters
     ----------
-    majradius : 
+    majradius :
         Major radius of the ellipse.
 
-    minradius : 
+    minradius :
         Minor radius of the ellipse.
 
     placement : Base.Placement
         If a placement is given, it is used.
-    
-    face : Bool
-        If face is False, the rectangle is shown as a wireframe, 
-        otherwise as a face.   
 
-    support : 
+    face : Bool
+        If face is False, the rectangle is shown as a wireframe,
+        otherwise as a face.
+
+    support :
         TODO: Describe.
     """
 
@@ -72,9 +72,9 @@ def make_ellipse(majradius, minradius, placement=None, face=None, support=None):
         majradius, minradius = minradius, majradius
     obj.MajorRadius = majradius
     obj.MinorRadius = minradius
-    obj.Support = support
+    obj.AttachmentSupport = support
 
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
 
     if placement:

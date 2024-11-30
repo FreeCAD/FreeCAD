@@ -19,6 +19,7 @@
  *      $Id: rframes.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $
  ****************************************************************************/
+// clazy:excludeall=rule-of-two-soft
 
 #ifndef KDL_FRAMEVEL_H
 #define KDL_FRAMEVEL_H

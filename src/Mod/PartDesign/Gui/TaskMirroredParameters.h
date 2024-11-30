@@ -20,83 +20,73 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskMirroredParameters_H
 #define GUI_TASKVIEW_TaskMirroredParameters_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderMirrored.h"
 
+
 class Ui_TaskMirroredParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskMirroredParameters : public TaskTransformedParameters
+class TaskMirroredParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    explicit TaskMirroredParameters(ViewProviderTransformed* TransformedView,
+                                    QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
+    TaskMirroredParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 
-    virtual ~TaskMirroredParameters();
+    ~TaskMirroredParameters() override;
 
-    void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    void apply() override;
 
-    virtual void apply();
+protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private Q_SLOTS:
     void onPlaneChanged(int num);
-    virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
-
-protected:
-    virtual void addObject(App::DocumentObject*);
-    virtual void removeObject(App::DocumentObject*);
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
+    void onUpdateView(bool /*unused*/) override;
 
 private:
-    void setupUI();
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
-    ComboLinks planeLinks;
+    void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
 private:
+    ComboLinks planeLinks;
     std::unique_ptr<Ui_TaskMirroredParameters> ui;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMirroredParameters : public TaskDlgTransformedParameters
+class TaskDlgMirroredParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
-    virtual ~TaskDlgMirroredParameters() {}
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    explicit TaskDlgMirroredParameters(ViewProviderMirrored* MirroredView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

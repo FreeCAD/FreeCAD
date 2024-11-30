@@ -25,7 +25,7 @@
 #define GUI_DIALOG_DLGPARAMETERFIND_H
 
 #include <QDialog>
-#include <Base/Parameter.h>
+#include <FCGlobal.h>
 
 class QTreeWidgetItem;
 
@@ -40,17 +40,18 @@ class GuiExport DlgParameterFind : public QDialog
     Q_OBJECT
 
 public:
-    DlgParameterFind(DlgParameterImp* parent);
-    ~DlgParameterFind();
+    explicit DlgParameterFind(DlgParameterImp* parent);
+    ~DlgParameterFind() override;
 
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
-private Q_SLOTS:
-    void on_lineEdit_textChanged(const QString&);
-    void on_checkGroups_toggled(bool);
-    void on_checkNames_toggled(bool);
-    void on_checkValues_toggled(bool);
+private:
+    void setupConnections();
+    void onLineEditTextChanged(const QString&);
+    void onCheckGroupsToggled(bool);
+    void onCheckNamesToggled(bool);
+    void onCheckValuesToggled(bool);
 
 private:
     struct Options {

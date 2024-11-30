@@ -7,7 +7,7 @@
       TwinPointer="CosmeticEdge"
       Include="Mod/TechDraw/App/Cosmetic.h"
       Namespace="TechDraw"
-      FatherInclude="Base/PyObjectBase.h"
+      FatherInclude="Base/GeometryPyCXX.h"
       FatherNamespace="Base"
       Constructor="true"
       Delete="true">
@@ -15,16 +15,6 @@
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>CosmeticEdge specifies an extra (cosmetic) edge in Views</UserDocu>
     </Documentation>
-    <Methode Name="clone" Const="true">
-        <Documentation>
-            <UserDocu>Create a clone of this CosmeticEdge</UserDocu>
-        </Documentation>
-    </Methode>
-    <Methode Name="copy" Const="true">
-        <Documentation>
-            <UserDocu>Create a copy of this CosmeticEdge</UserDocu>
-        </Documentation>
-    </Methode>
     <Attribute Name="Tag" ReadOnly="true">
       <Documentation>
         <UserDocu>Gives the tag of the CosmeticEdge as string.</UserDocu>
@@ -41,25 +31,25 @@
       <Documentation>
         <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>
       </Documentation>
-      <Parameter Name="Start" Type="Object"/>
+      <Parameter Name="Start" Type="Vector"/>
     </Attribute>
     <Attribute Name="End">
       <Documentation>
         <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>
       </Documentation>
-      <Parameter Name="End" Type="Object"/>
+      <Parameter Name="End" Type="Vector"/>
     </Attribute>
     <Attribute Name="Center">
       <Documentation>
         <UserDocu>Gives the position of center point of this CosmeticEdge as vector.</UserDocu>
       </Documentation>
-      <Parameter Name="Center" Type="Object"/>
+      <Parameter Name="Center" Type="Vector"/>
     </Attribute>
     <Attribute Name="Radius">
       <Documentation>
         <UserDocu>Gives the radius of CosmeticEdge in mm.</UserDocu>
       </Documentation>
-      <Parameter Name="Radius" Type="Object"/>
+      <Parameter Name="Radius" Type="Float"/>
     </Attribute>
 
 
@@ -73,7 +63,7 @@
       <Documentation>
         <UserDocu>The appearance attributes (style, weight, color, visible) for this CosmeticEdge.</UserDocu>
       </Documentation>
-      <Parameter Name="Format" Type="Object"/>
+      <Parameter Name="Format" Type="Dict"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

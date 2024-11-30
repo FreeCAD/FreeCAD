@@ -43,7 +43,7 @@ class ReferenceSelection : public Gui::SelectionFilterGate
 public:
     ReferenceSelection(const App::DocumentObject* support_,
                        AllowSelectionFlags type)
-        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        : Gui::SelectionFilterGate(nullPointer())
         , support(support_)
         , type(type)
     {
@@ -52,7 +52,7 @@ public:
       * Allow the user to pick only edges or faces (or both) from the defined support
       * Optionally restrict the selection to planar edges/faces
       */
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 
 private:
     PartDesign::Body* getBody() const;
@@ -71,7 +71,7 @@ class NoDependentsSelection : public Gui::SelectionFilterGate
 
 public:
     NoDependentsSelection(const App::DocumentObject* support_)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), support(support_)
+        : Gui::SelectionFilterGate(nullPointer()), support(support_)
     {
     }
     /**
@@ -87,7 +87,7 @@ class CombineSelectionFilterGates: public Gui::SelectionFilterGate
 
 public:
     CombineSelectionFilterGates(std::unique_ptr<Gui::SelectionFilterGate> &filter1_, std::unique_ptr<Gui::SelectionFilterGate> &filter2_)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), filter1(std::move(filter1_)), filter2(std::move(filter2_))
+        : Gui::SelectionFilterGate(nullPointer()), filter1(std::move(filter1_)), filter2(std::move(filter2_))
     {
     }
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;

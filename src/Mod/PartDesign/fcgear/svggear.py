@@ -16,12 +16,7 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
 import itertools
-from involute import CreateExternalGear, rotate
-
-def makeGear(m, Z, angle):
-    w = SVGWireBuilder()
-    CreateExternalGear(w, m, Z, angle)
-    return '\n'.join(w.svg)
+from involute import CreateExternalGear, CreateInternalGear, rotate
 
 class SVGWireBuilder(object):
     def __init__(self):
@@ -57,14 +52,64 @@ class SVGWireBuilder(object):
     def close(self):
         self.svg.append('Z')
 
+
 if __name__ == '__main__':
     from optparse import OptionParser
-    p = OptionParser()
-    p.add_option('-a', '--angle', help='pressure angle',
-                 dest='angle', default=20)
+    p = OptionParser(
+        usage="usage: %prog [options] [[MODULE] NUMER_OF_TEETH]",
+        description=("Generates the outline of a metric, involute gear. "
+            "Prints out an SVG path. "
+            "This is mainly a debugging tool to quickly inspect the gear visually. "
+            "For this, online tools like https://yqnn.github.io/svg-path-editor/ are handy. "
+            "Most of the time it's enough to just use the first 20 lines or so, e.g.:\n\t"
+            "%prog -z50 | head -n20 | pbcopy"))
+    p.add_option('-z', '--numer-of-teeth',
+        help="The number of teeth for the gear.",
+        metavar='NUMER_OF_TEETH', type='int')
+    p.add_option('-m', '--module',
+        help="The metric module, in svg user unit, i.e. unit-less. [default: %default]",
+        metavar='MODULE', type='float', default=1)
+    p.add_option('-p', '--pressure-angle',
+        help="The pressure angle, in degree. [default: %default]",
+        metavar='PRESSURE_ANGLE', type='float', default=20)
+    p.add_option('-i', '--internal',
+        help=("Generates an internal gear, i.e. the addednum points towards the center "
+            "and the root fillet is at the outside. [default: %default]"),
+        action='store_true', default=False)
+    p.add_option('-a', '--addendum',
+        help=("The tooth height above the pitch line, normalized by the MODULE. "
+            "[default: %default]"),
+        metavar='ADDENDUM_COEFFICIENT', type='float', default=1)
+    p.add_option('-d', '--dedendum',
+        help=("The tooth height from the root to the pitch line, normalized by the MODULE. "
+            "[default: %default]"),
+        metavar='DEDENDUM_COEFFICIENT', type='float', default=1.25)
+    p.add_option('-f', '--fillet-radius',
+        help=("The radius of the root fillet, normalized by the MODULE. "
+            "[default: %default]"),
+        metavar='FILLET_RADIUS_COEFFICIENT', type='float', default=0.38)
+
     opts, args = p.parse_args()
-    if len(args) != 2:
-        p.error("Invalid arguments")
-    m, Z = [float(v) for v in args]
-    print(makeGear(m, int(Z), float(opts.angle)))
+    errors = []
+    if len(args) == 1:
+        opts.numer_of_teeth = int(args[0])
+    if len(args) == 2:
+        opts.module = float(args[0])
+        opts.numer_of_teeth = int(args[1])
+    if len(args) > 2:
+        errors.append("Too many arguments.")
+    if opts.numer_of_teeth is None:
+        errors.append("No number of teeth given.")
+    if len(errors) > 0:
+        errors.append("Try --help for more info.")
+        p.error("\n".join(errors))
+
+    w = SVGWireBuilder()
+    generator_func = CreateInternalGear if opts.internal else CreateExternalGear
+    generator_func(w, opts.module, opts.numer_of_teeth, opts.pressure_angle,
+        addCoeff=opts.addendum, dedCoeff=opts.dedendum,
+        filletCoeff=opts.fillet_radius)
+
+    for l in w.svg:
+        print(l)
 

@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_BodyBase_H
 #define PART_BodyBase_H
 
 #include <App/PropertyStandard.h>
 #include <App/OriginGroupExtension.h>
-#include <Mod/Part/App/PartFeature.h>
+
+#include "PartFeature.h"
 
 
 namespace Part
@@ -47,9 +47,8 @@ public:
     /**
      * The final feature of the body it is associated with.
      * Note: tip may either point to the BaseFeature or to some feature inside the Group list.
-     *       in case it points to the model the PartDesign::Body guaranties that it is a solid.
      */
-    App::PropertyLink       Tip;
+    App::PropertyLink Tip;
 
     /**
      * A base object of the body, serves as a base object for the first feature of the body.
@@ -78,14 +77,14 @@ public:
      * TODO introduce a findBodiesOf() if needed (2015-08-04, Fat-Zer)
      */
     static BodyBase* findBodyOf(const App::DocumentObject* f);
-    virtual PyObject* getPyObject() override;
+    PyObject* getPyObject() override;
 
 protected:
     /// If BaseFeature is getting changed and Tip points to it reset the Tip
-    virtual void onBeforeChange (const App::Property* prop) override;
+    void onBeforeChange (const App::Property* prop) override;
     /// If BaseFeature is set and Tip is null set the Tip to it
-    virtual void onChanged (const App::Property* prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader,
+    void onChanged (const App::Property* prop) override;
+    void handleChangedPropertyName(Base::XMLReader &reader,
                                            const char * TypeName,
                                            const char *PropName) override;
 

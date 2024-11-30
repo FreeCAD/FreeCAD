@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,48 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
-#include "FeaturePad.h"
-#include "FeatureSolid.h"
-#include "FeaturePocket.h"
-#include "FeatureFillet.h"
-#include "FeatureSketchBased.h"
-#include "FeatureRevolution.h"
-#include "FeatureGroove.h"
 #include "Body.h"
-#include "FeatureDressUp.h"
+#include "DatumCS.h"
+#include "DatumLine.h"
+#include "DatumPlane.h"
+#include "DatumPoint.h"
+#include "Measure.h"
+#include "FeatureBase.h"
+#include "FeatureBoolean.h"
 #include "FeatureChamfer.h"
 #include "FeatureDraft.h"
-#include "FeatureTransformed.h"
-#include "FeatureMirrored.h"
-#include "FeatureLinearPattern.h"
-#include "FeaturePolarPattern.h"
-#include "FeatureScaled.h"
-#include "FeatureMultiTransform.h"
-#include "FeatureHole.h"
-#include "DatumPlane.h"
-#include "DatumLine.h"
-#include "DatumPoint.h"
-#include "FeatureBoolean.h"
-#include "FeaturePrimitive.h"
-#include "DatumCS.h"
-#include "FeatureThickness.h"
-#include "FeaturePipe.h"
-#include "FeatureLoft.h"
-#include "ShapeBinder.h"
-#include "FeatureBase.h"
+#include "FeatureDressUp.h"
+#include "FeatureFillet.h"
+#include "FeatureGroove.h"
 #include "FeatureHelix.h"
+#include "FeatureHole.h"
+#include "FeatureLinearPattern.h"
+#include "FeatureLoft.h"
+#include "FeatureMirrored.h"
+#include "FeatureMultiTransform.h"
+#include "FeaturePad.h"
+#include "FeaturePipe.h"
+#include "FeaturePocket.h"
+#include "FeaturePolarPattern.h"
+#include "FeaturePrimitive.h"
+#include "FeatureRevolution.h"
+#include "FeatureScaled.h"
+#include "FeatureSketchBased.h"
+#include "FeatureSolid.h"
+#include "FeatureThickness.h"
+#include "FeatureTransformed.h"
+#include "ShapeBinder.h"
 
-namespace PartDesign {
+
+namespace PartDesign
+{
 extern PyObject* initModule();
 }
 
@@ -73,9 +72,9 @@ PyMOD_INIT_FUNC(_PartDesign)
         Base::Interpreter().runString("import Part");
         Base::Interpreter().runString("import Sketcher");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = PartDesign::initModule();
@@ -86,6 +85,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
 
+    // clang-format off
     PartDesign::Feature                     ::init();
     PartDesign::FeaturePython               ::init();
     PartDesign::Solid                       ::init();
@@ -155,6 +155,9 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::AdditiveWedge               ::init();
     PartDesign::SubtractiveWedge            ::init();
     PartDesign::FeatureBase                 ::init();
+
+    PartDesign::Measure ::initialize();
+    // clang-format on
 
     PyMOD_Return(mod);
 }

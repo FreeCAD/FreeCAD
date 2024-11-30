@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <Base/Placement.h>
 
 #include "Placement.h"
@@ -40,26 +37,19 @@ PROPERTY_SOURCE(App::Placement, App::GeoFeature)
 // Feature
 //===========================================================================
 
-Placement::Placement(void)
-{
+Placement::Placement() = default;
 
-}
-
-Placement::~Placement(void)
-{
-}
-
+Placement::~Placement() = default;
 
 
 // Python feature ---------------------------------------------------------
-namespace App {
+namespace App
+{
 PROPERTY_SOURCE_TEMPLATE(App::PlacementPython, App::Placement)
-template<> const char* App::PlacementPython::getViewProviderName(void) const {
-   return "Gui::ViewProviderPlacementPython";
+template<>
+const char* App::PlacementPython::getViewProviderName() const
+{
+    return "Gui::ViewProviderPlacementPython";
 }
 template class AppExport FeaturePythonT<App::Placement>;
-}
-
-
-
-
+}  // namespace App

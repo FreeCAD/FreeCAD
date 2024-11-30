@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 Ladislav Michl <ladis@linux-mips.org>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,138 +25,109 @@
 #ifndef BASE_TIMEINFO_H
 #define BASE_TIMEINFO_H
 
-// Std. configurations
-
-
-#include <stdio.h>
-#if defined(FC_OS_BSD)
-#include <sys/time.h>
-#else
-#include <sys/timeb.h>
-#endif
-#include <time.h>
-
-#ifdef __GNUC__
-# include <stdint.h>
-#endif
-
-#if defined(FC_OS_BSD)
-struct timeb
-{
-    int64_t time;
-    unsigned short millitm;
-};
-#endif
+#include <chrono>
+#include <sstream>
+#include <string>
+#include <FCGlobal.h>
 
 namespace Base
 {
-/// BaseClass class and root of the type system
-class BaseExport TimeInfo
+
+using Clock = std::chrono::system_clock;
+
+class TimeInfo: public std::chrono::time_point<Clock>
 {
+private:
+    bool _null;
 
 public:
-    /// Construction
-    TimeInfo();
-    /// Destruction
-    virtual ~TimeInfo();
+    TimeInfo()
+    {
+        setCurrent();
+    }
 
-    /// sets the object to the actual system time
-    void setCurrent(void);
-    void setTime_t (uint64_t seconds);
+    TimeInfo(const TimeInfo&) = default;
+    TimeInfo(TimeInfo&&) = default;
+    ~TimeInfo() = default;
 
-    uint64_t getSeconds(void) const;
-    unsigned short  getMiliseconds(void) const;
+    void setCurrent()
+    {
+        static_cast<std::chrono::time_point<Clock>&>(*this) = Clock::now();
+        _null = false;
+    }
 
-    //void operator =  (const TimeInfo &time);
-    bool operator == (const TimeInfo &time) const;
-    bool operator != (const TimeInfo &time) const;
+    void setTime_t(std::time_t time)
+    {
+        static_cast<std::chrono::time_point<Clock>&>(*this) = Clock::from_time_t(time);
+        _null = false;
+    }
 
-    bool operator <  (const TimeInfo &time) const;
-    bool operator <= (const TimeInfo &time) const;
-    bool operator >= (const TimeInfo &time) const;
-    bool operator >  (const TimeInfo &time) const;
+    std::time_t getTime_t()
+    {
+        return Clock::to_time_t(*this);
+    }
 
-    static std::string currentDateTimeString();
-    static std::string diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd = TimeInfo());
-    static float diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd  = TimeInfo());
-    bool isNull() const;
-    static TimeInfo null();
+    static float diffTimeF(const TimeInfo& start, const TimeInfo& end = TimeInfo())
+    {
+        const std::chrono::duration<float> duration = end - start;
+        return duration.count();
+    }
 
-protected:
-#if defined (_MSC_VER)
-    struct _timeb timebuffer;
-#elif defined(__GNUC__)
-    struct timeb timebuffer;
-#endif
-};
+    static std::string diffTime(const TimeInfo& start, const TimeInfo& end = TimeInfo())
+    {
+        std::stringstream ss;
+        const std::chrono::duration<float> secs = end - start;
+        ss << secs.count();
+        return ss.str();
+    }
 
+    bool isNull() const
+    {
+        return _null;
+    }
 
- inline uint64_t TimeInfo::getSeconds(void) const
- {
-     return timebuffer.time;
- }
+    static TimeInfo null()
+    {
+        TimeInfo ti;
+        ti._null = true;
+        return ti;
+    }
+};  // class TimeInfo
 
- inline unsigned short  TimeInfo::getMiliseconds(void) const
- {
-     return timebuffer.millitm;
- }
+using Ticks = std::chrono::steady_clock;
 
-inline bool
-TimeInfo::operator != (const TimeInfo &time) const
+class TimeElapsed: public std::chrono::time_point<Ticks>
 {
-    return (timebuffer.time != time.timebuffer.time || timebuffer.millitm != time.timebuffer.millitm);
-}
+public:
+    TimeElapsed()
+    {
+        setCurrent();
+    }
 
-//inline void
-//TimeInfo::operator = (const TimeInfo &time)
-//{
-    //timebuffer = time.timebuffer;
-//}
+    TimeElapsed(const TimeElapsed&) = default;
+    TimeElapsed(TimeElapsed&&) = default;
+    ~TimeElapsed() = default;
 
-inline bool
-TimeInfo::operator == (const TimeInfo &time) const
-{
-    return (timebuffer.time == time.timebuffer.time && timebuffer.millitm == time.timebuffer.millitm);
-}
+    void setCurrent()
+    {
+        static_cast<std::chrono::time_point<Ticks>&>(*this) = Ticks::now();
+    }
 
-inline bool
-TimeInfo::operator <  (const TimeInfo &time) const
-{
-    if (timebuffer.time == time.timebuffer.time)
-        return timebuffer.millitm < time.timebuffer.millitm;
-    else
-        return timebuffer.time < time.timebuffer.time;
-}
+    static float diffTimeF(const TimeElapsed& start, const TimeElapsed& end = TimeElapsed())
+    {
+        const std::chrono::duration<float> duration = end - start;
+        return duration.count();
+    }
 
-inline bool
-TimeInfo::operator <= (const TimeInfo &time) const
-{
-    if (timebuffer.time == time.timebuffer.time)
-        return timebuffer.millitm <= time.timebuffer.millitm;
-    else
-        return timebuffer.time <= time.timebuffer.time;
-}
+    static std::string diffTime(const TimeElapsed& start, const TimeElapsed& end = TimeElapsed())
+    {
+        std::stringstream ss;
+        const std::chrono::duration<float> secs = end - start;
+        ss << secs.count();
+        return ss.str();
+    }
+};  // class TimeElapsed
 
-inline bool
-TimeInfo::operator >= (const TimeInfo &time) const
-{
-    if (timebuffer.time == time.timebuffer.time)
-        return timebuffer.millitm >= time.timebuffer.millitm;
-    else
-        return timebuffer.time >= time.timebuffer.time;
-}
+}  // namespace Base
 
-inline bool
-TimeInfo::operator >  (const TimeInfo &time) const
-{
-    if (timebuffer.time == time.timebuffer.time)
-        return timebuffer.millitm > time.timebuffer.millitm;
-    else
-        return timebuffer.time > time.timebuffer.time;
-}
-
-} //namespace Base
-
-
-#endif // BASE_TIMEINFO_H
-
+#endif  // BASE_TIMEINFO_H

@@ -123,7 +123,14 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="1">
+       <widget class="QComboBox" name="continuity">
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+     <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Maximum curve degree</string>
@@ -137,14 +144,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="continuity">
-        <property name="currentIndex">
-         <number>-1</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="3" column="0">

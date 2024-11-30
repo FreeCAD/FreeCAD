@@ -23,60 +23,58 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTDISPLACEMENT_H
 #define FEM_CONSTRAINTDISPLACEMENT_H
 
 #include "FemConstraint.h"
 
+
 namespace Fem
 {
 
-class FemExport ConstraintDisplacement : public Fem::Constraint
+class FemExport ConstraintDisplacement: public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintDisplacement);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintDisplacement);
 
 public:
     /// Constructor
-    ConstraintDisplacement(void);
+    ConstraintDisplacement();
 
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
-    //Displacement parameters
-    App::PropertyFloat xDisplacement;
-    App::PropertyFloat yDisplacement;
-    App::PropertyFloat zDisplacement;
-    App::PropertyFloat xRotation;
-    App::PropertyFloat yRotation;
-    App::PropertyFloat zRotation;
+    // Displacement parameters
+    App::PropertyDistance xDisplacement;
+    App::PropertyDistance yDisplacement;
+    App::PropertyDistance zDisplacement;
+    App::PropertyAngle xRotation;
+    App::PropertyAngle yRotation;
+    App::PropertyAngle zRotation;
+    App::PropertyString xDisplacementFormula;
+    App::PropertyString yDisplacementFormula;
+    App::PropertyString zDisplacementFormula;
     App::PropertyBool xFree;
     App::PropertyBool yFree;
     App::PropertyBool zFree;
-    App::PropertyBool xFix;
-    App::PropertyBool yFix;
-    App::PropertyBool zFix;
     App::PropertyBool rotxFree;
     App::PropertyBool rotyFree;
     App::PropertyBool rotzFree;
-    App::PropertyBool rotxFix;
-    App::PropertyBool rotyFix;
-    App::PropertyBool rotzFix;
-    //App::PropertyBool element;
+    App::PropertyBool hasXFormula;
+    App::PropertyBool hasYFormula;
+    App::PropertyBool hasZFormula;
+    App::PropertyBool useFlowSurfaceForce;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const;
+    const char* getViewProviderName() const override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
-
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTDISPLACEMENT_H
+#endif  // FEM_CONSTRAINTDISPLACEMENT_H

@@ -8,9 +8,9 @@
 #ifndef ACTIONGROUP_H
 #define ACTIONGROUP_H
 
+#include <QBoxLayout>
 #include <QTimer>
 #include <QWidget>
-#include <QBoxLayout>
 #include "qsint_global.h"
 
 
@@ -36,14 +36,14 @@ class QSINT_EXPORT ActionGroup : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable)
-    Q_PROPERTY(bool header READ hasHeader WRITE setHeader)
-    Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText)
+    Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool header READ hasHeader WRITE setHeader) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText) // clazy:exclude=qproperty-without-notify
 
 public:
     /** Constructor. Creates ActionGroup without header.
       */
-    explicit ActionGroup(QWidget *parent = 0);
+    explicit ActionGroup(QWidget *parent = nullptr);
 
     /** Constructor. Creates ActionGroup with header's
         text set to \a title, but with no icon.
@@ -52,7 +52,7 @@ public:
       */
     explicit ActionGroup(const QString& title,
                          bool expandable = true,
-                         QWidget *parent = 0);
+                         QWidget *parent = nullptr);
 
     /** Constructor. Creates ActionGroup with header's
         text set to \a title and icon set to \a icon.
@@ -62,7 +62,7 @@ public:
     explicit ActionGroup(const QPixmap& icon,
                          const QString& title,
                          bool expandable = true,
-                         QWidget *parent = 0);
+                         QWidget *parent = nullptr);
 
     /** Creates action item from the \a action and returns it.
 
@@ -121,7 +121,7 @@ public:
       */
     QString headerText() const;
 
-    QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
 public Q_SLOTS:
     /** Expands/collapses the group.
@@ -147,6 +147,7 @@ public Q_SLOTS:
       \sa headerText().
       */
     void setHeaderText(const QString & title);
+    void setHeaderIcon(const QPixmap& icon);
 
 protected Q_SLOTS:
     void processHide();
@@ -155,7 +156,7 @@ protected Q_SLOTS:
 protected:
     void init(bool header);
 
-    virtual void paintEvent ( QPaintEvent * event );
+    void paintEvent ( QPaintEvent * event ) override;
 
     double m_foldStep, m_foldDelta, m_fullHeight, m_tempHeight;
     int m_foldDirection;

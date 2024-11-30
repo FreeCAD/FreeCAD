@@ -28,22 +28,18 @@
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
-#include <Inventor/nodes/SoSwitch.h>
 #endif
 
-#include <Gui/ActionFunction.h>
-#include <Gui/Command.h>
-#include <Gui/MDIView.h>
-#include <Gui/Control.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
 #include <Base/Exception.h>
+#include <App/Document.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
-#include "Utils.h"
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
@@ -54,16 +50,14 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-:oldWb(""), oldTip(NULL), isSetTipIcon(false)
 {
+    ViewProviderSuppressibleExtension::initExtension(this);
     PartGui::ViewProviderAttachExtension::initExtension(this);
 }
 
-ViewProvider::~ViewProvider()
-{
-}
+ViewProvider::~ViewProvider() = default;
 
-bool ViewProvider::doubleClicked(void)
+bool ViewProvider::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
@@ -78,7 +72,8 @@ bool ViewProvider::doubleClicked(void)
 
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
+    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Part_ColorFace.svg"));
+    QAction* act = menu->addAction(iconObject, QObject::tr("Set colors..."), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
     // Call the extensions
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);
@@ -93,8 +88,8 @@ bool ViewProvider::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgFeatureParameters *featureDlg = qobject_cast<TaskDlgFeatureParameters *>(dlg);
         // NOTE: if the dialog is not partDesigan dialog the featureDlg will be NULL
-        if (featureDlg && featureDlg->viewProvider() != this) {
-            featureDlg = 0; // another feature left open its task panel
+        if (featureDlg && featureDlg->getViewObject() != this) {
+            featureDlg = nullptr; // another feature left open its task panel
         }
         if (dlg && !featureDlg) {
             QMessageBox msgBox;
@@ -156,18 +151,18 @@ void ViewProvider::unsetEdit(int ModNum)
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
         }
 #endif
-        oldTip = NULL;
+        oldTip = nullptr;
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
-        oldTip = NULL;
+        oldTip = nullptr;
     }
 }
 
 void ViewProvider::updateData(const App::Property* prop)
 {
     // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() &&
+    if (prop->is<Part::PropertyPartShape>() &&
         strcmp(prop->getName(),"AddSubShape") == 0) {
         return;
     }
@@ -210,26 +205,8 @@ QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
     QIcon mergedicon = orig;
 
     if(isSetTipIcon) {
-        QPixmap px;
-
-        static const char * const feature_tip_xpm[]={
-            "9 9 3 1",
-            ". c None",
-            "# c #00cc00",
-            "a c #ffffff",
-            "...###...",
-            ".##aaa##.",
-            ".##aaa##.",
-            "###aaa###",
-            "##aaaaa##",
-            "##aaaaa##",
-            ".##aaa##.",
-            ".##aaa##.",
-            "...###..."};
-        px = QPixmap(feature_tip_xpm);
-
+        static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay_Tip", QSize(10, 10)));
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
-
     }
 
     return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
@@ -251,7 +228,7 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
     // find surrounding features in the tree
     Part::BodyBase* body = PartDesign::Body::findBodyOf(getObject());
 
-    if (body != NULL) {
+    if (body) {
         // Deletion from the tree of a feature is handled by Document.removeObject, which has no clue
         // about what a body is. Therefore, Bodies, although an "activable" container, know nothing
         // about what happens at Document level with the features they contain.
@@ -337,6 +314,6 @@ PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewP
 /// @endcond
 
 // explicit template instantiation
-template class PartDesignGuiExport ViewProviderPythonFeatureT<PartDesignGui::ViewProvider>;
+template class PartDesignGuiExport ViewProviderFeaturePythonT<PartDesignGui::ViewProvider>;
 }
 

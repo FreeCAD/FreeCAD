@@ -290,7 +290,7 @@ namespace e57
    void ImageFileImpl::close()
    {
       /// If file already closed, have nothing to do
-      if ( file_ == nullptr )
+      if ( !file_ )
       {
          return;
       }
@@ -302,10 +302,10 @@ namespace e57
          file_->seek( xmlLogicalOffset_, CheckedFile::Logical );
          uint64_t xmlPhysicalOffset = file_->position( CheckedFile::Physical );
          *file_ << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-#ifdef E57_OXYGEN_SUPPORT //???                                                             \
+#ifdef E57_OXYGEN_SUPPORT /*//???                                                             \
                           //???        *file_ << "<?oxygen                                  \
                           // RNGSchema=\"file:/C:/kevin/astm/DataFormat/xif/las_v0_05.rnc\" \
-                          // type=\"compact\"?>\n";
+                          // type=\"compact\"?>\n";*/
 #endif
 
          //??? need to add name space attributes to e57Root
@@ -349,7 +349,7 @@ namespace e57
    void ImageFileImpl::cancel()
    {
       /// If file already closed, have nothing to do
-      if ( file_ == nullptr )
+      if ( !file_ )
       {
          return;
       }
@@ -392,7 +392,7 @@ namespace e57
    ImageFileImpl::~ImageFileImpl()
    {
       /// Try to cancel if not already closed, but don't allow any exceptions to
-      /// propogate to caller (because in dtor). If writing, this will unlink the
+      /// propagate to caller (because in dtor). If writing, this will unlink the
       /// file, so make sure call ImageFileImpl::close explicitly before dtor runs.
       try
       {

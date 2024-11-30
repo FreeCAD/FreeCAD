@@ -30,7 +30,7 @@ class SprocketCreationFrame(qt.QFrame):
         l.addRow('Number of teeth:', self.N)
         l.addRow('Chain Pitch (in):', self.P)
         l.addRow('Roller Diameter (in):', self.Dr)
-        
+
 
 class SprocketDialog(qt.QDialog):
     def __init__(self, parent=None):

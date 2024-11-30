@@ -23,25 +23,20 @@
 
 __title__ = "FreeCAD FEM mesh region ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_mesh_region
 #  \ingroup FEM
 #  \brief view provider for mesh region object
 
 from femtaskpanels import task_mesh_region
-from . import view_base_femconstraint
+from . import view_base_femmeshelement
 
 
-class VPMeshRegion(view_base_femconstraint.VPBaseFemConstraint):
+class VPMeshRegion(view_base_femmeshelement.VPBaseFemMeshElement):
     """
     A View Provider for the FemMeshRegion object
     """
 
     def setEdit(self, vobj, mode=0):
-        view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_mesh_region._TaskPanel
-        )
+        super().setEdit(vobj, mode, task_mesh_region._TaskPanel)

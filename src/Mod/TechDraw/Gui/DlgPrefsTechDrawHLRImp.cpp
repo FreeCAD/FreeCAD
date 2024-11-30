@@ -22,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawHLRImp.h"
 #include "ui_DlgPrefsTechDrawHLR.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace TechDrawGui;
 
@@ -59,7 +58,9 @@ void DlgPrefsTechDrawHLRImp::saveSettings()
 
 void DlgPrefsTechDrawHLRImp::loadSettings()
 {
+    // set defaults for HLR
     ui->pcbSeamViz->onRestore();
+
     ui->pcbSmoothViz->onRestore();
     ui->pcbHardViz->onRestore();
     ui->pcbPolygon->onRestore();
@@ -77,9 +78,7 @@ void DlgPrefsTechDrawHLRImp::loadSettings()
 void DlgPrefsTechDrawHLRImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        saveSettings();
         ui->retranslateUi(this);
-        loadSettings();
     }
     else {
         QWidget::changeEvent(e);

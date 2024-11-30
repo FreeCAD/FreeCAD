@@ -20,18 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderResult.h"
-#include "Gui/Command.h"
+
 
 using namespace FemGui;
-
-
 
 PROPERTY_SOURCE(FemGui::ViewProviderResult, Gui::ViewProviderDocumentObject)
 
@@ -40,26 +34,17 @@ ViewProviderResult::ViewProviderResult()
     sPixmap = "FEM_ResultShow";
 }
 
-ViewProviderResult::~ViewProviderResult()
-{
+ViewProviderResult::~ViewProviderResult() = default;
 
-}
-
-/* not needed since _ViewProviderFemResult.py is made
-bool ViewProviderResult::doubleClicked(void)
-{
-    Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Fem_ResultShow')");
-    return true;
-}
-*/
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderResultPython, FemGui::ViewProviderResult)
 /// @endcond
 
 // explicit template instantiation
-template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderResult>;
-}
+template class FemGuiExport ViewProviderFeaturePythonT<ViewProviderResult>;
+}  // namespace Gui

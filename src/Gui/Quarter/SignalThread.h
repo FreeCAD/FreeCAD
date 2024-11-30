@@ -33,9 +33,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QtCore/QThread>
-#include <QtCore/QWaitCondition>
-#include <QtCore/QMutex>
+#include <QMutex>
+#include <QThread>
+#include <QWaitCondition>
+
 
 class SoQtP;
 
@@ -45,9 +46,9 @@ class SignalThread : public QThread {
   Q_OBJECT
 public:
   SignalThread();
-  virtual ~SignalThread();
+  ~SignalThread() override;
 
-  virtual void run();
+  void run() override;
   void trigger();
   void stopThread();
 

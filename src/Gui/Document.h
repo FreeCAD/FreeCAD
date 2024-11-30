@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCUMENT_H
 #define GUI_DOCUMENT_H
-
-#include "MDIView.h"
 
 #include <list>
 #include <map>
 #include <string>
+#include <boost_signals2.hpp>
+#include <QString>
 
 #include <Base/Persistence.h>
-#include <App/Document.h>
-
-#include "Tree.h"
+#include <Gui/TreeItemMode.h>
 
 class SoNode;
 class SoPath;
@@ -43,17 +40,23 @@ class Matrix4D;
 }
 
 namespace App {
+class Document;
+class DocumentObject;
 class DocumentObjectGroup;
+class Property;
+class Transaction;
 }
 
 namespace Gui {
 
+class BaseView;
+class MDIView;
+class View3DInventor;
 class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
 class TransactionViewProvider;
-enum  class HighlightMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping
@@ -67,7 +70,7 @@ class GuiExport Document : public Base::Persistence
 {
 public:
     Document(App::Document* pcDocument, Application * app);
-    ~Document();
+    ~Document() override;
 
 protected:
     /** @name I/O of the document */
@@ -93,9 +96,9 @@ protected:
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
     //@}
 
+public:
     void addViewProvider(Gui::ViewProviderDocumentObject*);
 
-public:
     /** @name Signals of the document */
     //@{
     /// signal on new Object
@@ -139,23 +142,23 @@ public:
 
     /** @name I/O of the document */
     //@{
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const override;
     /// Save the document
-    bool save(void);
+    bool save();
     /// Save the document under a new file name
-    bool saveAs(void);
+    bool saveAs();
     /// Save a copy of the document under a new file name
-    bool saveCopy(void);
+    bool saveCopy();
     /// Save all open document
     static void saveAll();
     /// This method is used to save properties or very small amounts of data to an XML document.
-    virtual void Save (Base::Writer &writer) const;
+    void Save (Base::Writer &writer) const override;
     /// This method is used to restore properties from an XML document.
-    virtual void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
     /// This method is used to save large amounts of data to a binary file.
-    virtual void SaveDocFile (Base::Writer &writer) const;
+    void SaveDocFile (Base::Writer &writer) const override;
     /// This method is used to restore large amounts of data from a binary file.
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void RestoreDocFile(Base::Reader &reader) override;
     void exportObjects(const std::vector<App::DocumentObject*>&, Base::Writer&);
     void importObjects(const std::vector<App::DocumentObject*>&, Base::Reader&,
                        const std::map<std::string, std::string>& nameMapping);
@@ -167,16 +170,19 @@ public:
     void setModified(bool);
     bool isModified() const;
 
+    /// Returns true if the document is about to be closed, false otherwise
+    bool isAboutToClose() const;
+
     /// Getter for the App Document
-    App::Document*  getDocument(void) const;
+    App::Document*  getDocument() const;
 
     /** @name methods for View handling */
     //@{
     /// Getter for the active view
-    Gui::MDIView* getActiveView(void) const;
+    Gui::MDIView* getActiveView() const;
     void setActiveWindow(Gui::MDIView* view);
     Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
-    Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
+    Gui::MDIView* getViewOfViewProvider(const Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfNode(SoNode*) const;
     /// Create a new view
     MDIView *createView(const Base::Type& typeId);
@@ -205,16 +211,17 @@ public:
     /// Get all view providers along the path and the corresponding node index in the path
     std::vector<std::pair<ViewProviderDocumentObject*,int> > getViewProvidersByPath(SoPath * path) const;
     /// call update on all attached views
-    void onUpdate(void);
+    void onUpdate();
     /// call relabel to all attached views
-    void onRelabel(void);
+    void onRelabel();
     /// returns a list of all attached MDI views
     std::list<MDIView*> getMDIViews() const;
     /// returns a list of all MDI views of a certain type
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
+    MDIView *setActiveView(const ViewProviderDocumentObject* vp = nullptr, Base::Type typeId = Base::Type());
+    View3DInventor* openEditingView3D(const ViewProviderDocumentObject* vp);
+    View3DInventor* openEditingView3D(const App::DocumentObject* obj);
     //@}
-
-    MDIView *setActiveView(ViewProviderDocumentObject *vp=0, Base::Type typeId = Base::Type());
 
     /** @name View provider handling  */
     //@{
@@ -225,7 +232,11 @@ public:
     void setAnnotationViewProvider(const char* name, ViewProvider *pcProvider);
     /// get an annotation view provider
     ViewProvider * getAnnotationViewProvider(const char* name) const;
-    /// remove an annotation view provider
+    /// return true if the view provider is added as an annotation view provider
+    bool isAnnotationViewProvider(const ViewProvider* vp) const;
+    /// remove an annotation view provider from the document and return it
+    ViewProvider* takeAnnotationViewProvider(const char* name);
+    /// remove and delete an annotation view provider
     void removeAnnotationViewProvider(const char* name);
     /// test if the feature is in show
     bool isShow(const char* name);
@@ -238,16 +249,18 @@ public:
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     ViewProvider *getViewProviderByName(const char* name) const;
     /// set the ViewProvider in special edit mode
-    bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=0);
+    bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=nullptr);
     const Base::Matrix4D &getEditingTransform() const;
     void setEditingTransform(const Base::Matrix4D &mat);
     /// reset from edit mode, this cause all document to reset edit
-    void resetEdit(void);
+    void resetEdit();
     /// reset edit of this document
-    void _resetEdit(void);
+    void _resetEdit();
+    /// set if the edit asks for restore or not.
+    void setEditRestore(bool val);
     /// get the in edit ViewProvider or NULL
-    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=0,
-            std::string *subname=0, int *mode=0, std::string *subElement=0) const;
+    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=nullptr,
+            std::string *subname=nullptr, int *mode=nullptr, std::string *subElement=nullptr) const;
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
     /** Add or remove view provider from scene graphs of all views
@@ -261,17 +274,17 @@ public:
     /** @name methods for the UNDO REDO handling */
     //@{
     /// Open a new Undo transaction on the document
-    void openCommand(const char* sName=0);
+    void openCommand(const char* sName=nullptr);
     /// Commit the Undo transaction on the document
-    void commitCommand(void);
+    void commitCommand();
     /// Abort the Undo transaction on the document
-    void abortCommand(void);
+    void abortCommand();
     /// Check if an Undo transaction is open
-    bool hasPendingCommand(void) const;
+    bool hasPendingCommand() const;
     /// Get an Undo string vector with the Undo names
-    std::vector<std::string> getUndoVector(void) const;
+    std::vector<std::string> getUndoVector() const;
     /// Get an Redo string vector with the Redo names
-    std::vector<std::string> getRedoVector(void) const;
+    std::vector<std::string> getRedoVector() const;
     /// Will UNDO one or more steps
     void undo(int iSteps);
     /// Will REDO one or more steps
@@ -286,21 +299,26 @@ public:
 
     /// handles the application close event
     bool canClose(bool checkModify=true, bool checkLink=false);
-    bool isLastView(void);
+    bool isLastView();
 
     /// called by Application before being deleted
     void beforeDelete();
 
-    virtual PyObject *getPyObject(void);
+    PyObject *getPyObject() override;
 
     const char *getCameraSettings() const;
     bool saveCameraSettings(const char *) const;
+
+    /// get all tree root objects (objects that are at the root of the object tree)
+    std::vector<App::DocumentObject*> getTreeRootObjects() const;
 
 protected:
     // pointer to the python class
     Gui::DocumentPy *_pcDocPy;
 
 private:
+    bool trySetEdit(Gui::ViewProvider* p, int ModNum, const char *subname);
+    void resetIfEditing();
     //handles the scene graph nodes to correctly group child and parents
     void handleChildren3D(ViewProvider* viewProvider, bool deleting=false);
 

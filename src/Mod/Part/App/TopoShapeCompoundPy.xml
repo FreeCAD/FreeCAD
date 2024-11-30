@@ -30,5 +30,10 @@ If Shared is True  connection is performed only when adjacent edges share the sa
 If Shared is False connection is performed only when ends of adjacent edges are at distance less than Tolerance.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setFaces">
+      <Documentation>
+        <UserDocu>A shape is created from points and triangles and set to this object</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

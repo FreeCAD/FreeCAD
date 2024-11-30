@@ -20,44 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-# include <QApplication>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoIndexedPointSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 #endif
 
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/details/SoLineDetail.h>
+#include <App/DocumentObject.h>
+
 #include "ViewProviderPlacement.h"
 #include "SoFCSelection.h"
 #include "SoFCUnifiedSelection.h"
-#include "Application.h"
-#include "Document.h"
-#include "View3DInventorViewer.h"
-#include "Inventor/SoAutoZoomTranslation.h"
-#include "SoAxisCrossKit.h"
-//#include <SoDepthBuffer.h>
 
-#include <App/PropertyGeo.h>
-#include <App/PropertyStandard.h>
-#include <App/MeasureDistance.h>
-#include <Base/Console.h>
 
 using namespace Gui;
 
@@ -78,20 +54,18 @@ ViewProviderPlacement::ViewProviderPlacement()
     OnTopWhenSelected.setValue(1);
 }
 
-ViewProviderPlacement::~ViewProviderPlacement()
-{
-}
+ViewProviderPlacement::~ViewProviderPlacement() = default;
 
 void ViewProviderPlacement::onChanged(const App::Property* prop)
 {
         ViewProviderGeometryObject::onChanged(prop);
 }
 
-std::vector<std::string> ViewProviderPlacement::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPlacement::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Base");
+    StrList.emplace_back("Base");
     return StrList;
 }
 
@@ -108,7 +82,7 @@ void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
     if(!Axis) {
-        Axis.reset(new AxisOrigin);
+        Axis = std::make_unique<AxisOrigin>();
         std::map<std::string,std::string> labels;
         labels["O"] = "Origin";
         labels["X"] = "X-Axis";
@@ -150,7 +124,7 @@ bool ViewProviderPlacement::getDetailPath(
     return true;
 }
 
-bool ViewProviderPlacement::isSelectable(void) const
+bool ViewProviderPlacement::isSelectable() const
 {
     return true;
 }
@@ -164,6 +138,6 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPlacementPython, Gui::ViewProviderPlac
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderPlacement>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderPlacement>;
 }
 

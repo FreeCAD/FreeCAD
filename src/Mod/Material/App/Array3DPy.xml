@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy"
+      Name="Array3DPy"
+      Twin="Material3DArray"
+      TwinPointer="Material3DArray"
+      Include="Mod/Material/App/MaterialValue.h"
+      Namespace="Materials"
+      FatherInclude="Base/BaseClassPy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
+      <UserDocu>3D Array of material properties.</UserDocu>
+    </Documentation>
+    <Attribute Name="Array" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The 3 dimensional array.</UserDocu>
+      </Documentation>
+      <Parameter Name="Array" Type="List"/>
+    </Attribute>
+    <Attribute Name="Columns" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The number of columns in the array.</UserDocu>
+      </Documentation>
+      <Parameter Name="Columns" Type="Int"/>
+    </Attribute>
+    <Attribute Name="Depth" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The depth of the array (3rd dimension).</UserDocu>
+      </Documentation>
+      <Parameter Name="Columns" Type="Int"/>
+    </Attribute>
+    <Methode Name="getRows" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Get the number of rows in the array at the specified depth.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Get the value at the given row and column</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getDepthValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Get the column value at the given depth</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

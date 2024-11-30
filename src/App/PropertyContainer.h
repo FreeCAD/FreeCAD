@@ -25,7 +25,6 @@
 #define APP_PROPERTYCONTAINER_H
 
 #include <map>
-#include <climits>
 #include <cstring>
 #include <Base/Persistence.h>
 
@@ -43,16 +42,18 @@ class PropertyContainer;
 class DocumentObject;
 class Extension;
 
+// clang-format off
 enum PropertyType
 {
-  Prop_None        = 0, /*!< No special property type */
-  Prop_ReadOnly    = 1, /*!< Property is read-only in the editor */
-  Prop_Transient   = 2, /*!< Property content won't be saved to file, but still saves name, type and status */
-  Prop_Hidden      = 4, /*!< Property won't appear in the editor */
-  Prop_Output      = 8, /*!< Modified property doesn't touch its parent container */
-  Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
-  Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
+    Prop_None        = 0, /*!< No special property type */
+    Prop_ReadOnly    = 1, /*!< Property is read-only in the editor */
+    Prop_Transient   = 2, /*!< Property content won't be saved to file, but still saves name, type and status */
+    Prop_Hidden      = 4, /*!< Property won't appear in the editor */
+    Prop_Output      = 8, /*!< Modified property doesn't touch its parent container */
+    Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
+    Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
 };
+// clang-format on
 
 struct AppExport PropertyData
 {
@@ -74,8 +75,8 @@ struct AppExport PropertyData
   //accepting void*
   struct OffsetBase
   {
-      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}
-      OffsetBase(const App::Extension* container) : m_container(container) {}
+      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}//explicit bombs
+      OffsetBase(const App::Extension* container) : m_container(container) {}//explicit bombs
 
       short int getOffsetTo(const App::Property* prop) const {
             auto *pt = (const char*)prop;
@@ -83,38 +84,40 @@ struct AppExport PropertyData
             if(pt<base || pt>base+SHRT_MAX)
                 return -1;
             return (short) (pt-base);
-      };
+      }
       char* getOffset() const {return (char*) m_container;}
 
   private:
       const void* m_container;
   };
 
-  // A multi index container for holding the property spec, with the following
-  // index,
-  // * a sequence, to preserve creation order
-  // * hash index on property name
-  // * hash index on property pointer offset
-  mutable bmi::multi_index_container<
-      PropertySpec,
-      bmi::indexed_by<
-          bmi::sequenced<>,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
-              CStringHasher,
-              CStringHasher
-          >,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, short, &PropertySpec::Offset>
-          >
-      >
-  > propertyData;
+    // clang-format off
+    // A multi index container for holding the property spec, with the following
+    // index,
+    // * a sequence, to preserve creation order
+    // * hash index on property name
+    // * hash index on property pointer offset
+    mutable bmi::multi_index_container<
+        PropertySpec,
+        bmi::indexed_by<
+            bmi::sequenced<>,
+            bmi::hashed_unique<
+                bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
+                CStringHasher,
+                CStringHasher
+            >,
+            bmi::hashed_unique<
+                bmi::member<PropertySpec, short, &PropertySpec::Offset>
+            >
+        >
+    > propertyData;
+    // clang-format on
 
   mutable bool parentMerged = false;
 
   const PropertyData*     parentPropertyData;
 
-  void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
+  void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= nullptr, PropertyType = Prop_None, const char* PropertyDocu= nullptr );
 
   const PropertySpec *findProperty(OffsetBase offsetBase,const char* PropName) const;
   const PropertySpec *findProperty(OffsetBase offsetBase,const Property* prop) const;
@@ -132,7 +135,7 @@ struct AppExport PropertyData
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
   void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
 
-  void merge(PropertyData *other=0) const;
+  void merge(PropertyData *other=nullptr) const;
   void split(PropertyData *other);
 };
 
@@ -142,7 +145,7 @@ struct AppExport PropertyData
 class AppExport PropertyContainer: public Base::Persistence
 {
 
-  TYPESYSTEM_HEADER();
+  TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
   /**
@@ -155,11 +158,11 @@ public:
    * A destructor.
    * A more elaborate description of the destructor.
    */
-  virtual ~PropertyContainer();
+  ~PropertyContainer() override;
 
-  virtual unsigned int getMemSize (void) const;
+  unsigned int getMemSize () const override;
 
-  virtual std::string getFullName() const {return std::string();}
+  virtual std::string getFullName() const {return {};}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
@@ -195,8 +198,8 @@ public:
   /// check if the named property is hidden
   bool isHidden(const char *name) const;
   virtual App::Property* addDynamicProperty(
-        const char* type, const char* name=0,
-        const char* group=0, const char* doc=0,
+        const char* type, const char* name=nullptr,
+        const char* group=nullptr, const char* doc=nullptr,
         short attr=0, bool ro=false, bool hidden=false);
 
   DynamicProperty::PropData getDynamicPropertyData(const Property* prop) const {
@@ -219,8 +222,11 @@ public:
 
   virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus);
 
-  virtual void Save (Base::Writer &writer) const;
-  virtual void Restore(Base::XMLReader &reader);
+  void Save (Base::Writer &writer) const override;
+  void Restore(Base::XMLReader &reader) override;
+  virtual void beforeSave() const;
+
+  virtual void editProperty(const char * /*propName*/) {}
 
   const char *getPropertyPrefix() const {
       return _propertyPrefix.c_str();
@@ -235,22 +241,27 @@ public:
 
 
 protected:
+  /** get called by the container when a property has changed
+   *
+   * This function is called before onChanged()
+   */
+  virtual void onEarlyChange(const Property* /*prop*/){}
   /// get called by the container when a property has changed
   virtual void onChanged(const Property* /*prop*/){}
   /// get called before the value is changed
   virtual void onBeforeChange(const Property* /*prop*/){}
 
   //void hasChanged(Property* prop);
-  static const  PropertyData * getPropertyDataPtr(void);
-  virtual const PropertyData& getPropertyData(void) const;
+  static const  PropertyData * getPropertyDataPtr();
+  virtual const PropertyData& getPropertyData() const;
 
   virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
 
-private:
+public:
   // forbidden
-  PropertyContainer(const PropertyContainer&);
-  PropertyContainer& operator = (const PropertyContainer&);
+  PropertyContainer(const PropertyContainer&) = delete;
+  PropertyContainer& operator = (const PropertyContainer&) = delete;
 
 protected:
   DynamicProperty dynamicProps;
@@ -260,6 +271,7 @@ private:
   static PropertyData propertyData;
 };
 
+// clang-format off
 /// Property define
 #define _ADD_PROPERTY(_name,_prop_, _defaultval_) \
   do { \
@@ -295,7 +307,7 @@ private: \
   TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
 protected: \
   static const App::PropertyData * getPropertyDataPtr(void); \
-  virtual const App::PropertyData &getPropertyData(void) const override; \
+  const App::PropertyData &getPropertyData(void) const override; \
 private: \
   static App::PropertyData propertyData
 ///
@@ -336,6 +348,7 @@ template<> void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
   _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr(); \
 }
+// clang-format on
 
 } // namespace App
 

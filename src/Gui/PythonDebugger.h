@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PYTHONDEBUG_H
 #define GUI_PYTHONDEBUG_H
 
 #include <CXX/Extensions.hxx>
 #include <frameobject.h>
-#include <string>
 #include <set>
+#include <QObject>
+#include <FCGlobal.h>
+
 
 namespace Gui {
 
@@ -96,10 +97,10 @@ inline bool Breakpoint::operator ==(const QString& fn)
 class GuiExport PythonDebugModule : public Py::ExtensionModule<PythonDebugModule>
 {
 public:
-    static void init_module(void);
+    static void init_module();
 
     PythonDebugModule();
-    virtual ~PythonDebugModule();
+    ~PythonDebugModule() override;
 
 private:
     Py::Object getFunctionCallCount(const Py::Tuple &a);
@@ -114,12 +115,12 @@ private:
 class GuiExport PythonDebugStdout : public Py::PythonExtension<PythonDebugStdout>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     PythonDebugStdout();
-    ~PythonDebugStdout();
+    ~PythonDebugStdout() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
 };
@@ -130,12 +131,12 @@ public:
 class GuiExport PythonDebugStderr : public Py::PythonExtension<PythonDebugStderr>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     PythonDebugStderr();
-    ~PythonDebugStderr();
+    ~PythonDebugStderr() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
 };
 
@@ -145,12 +146,12 @@ public:
 class GuiExport PythonDebugExcept : public Py::PythonExtension<PythonDebugExcept>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     PythonDebugExcept();
-    ~PythonDebugExcept();
+    ~PythonDebugExcept() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object excepthook(const Py::Tuple&);
 };
 
@@ -160,7 +161,7 @@ class GuiExport PythonDebugger : public QObject
 
 public:
     PythonDebugger();
-    ~PythonDebugger();
+    ~PythonDebugger() override;
     Breakpoint getBreakpoint(const QString&) const;
     bool toggleBreakpoint(int line, const QString&);
     void runFile(const QString& fn);

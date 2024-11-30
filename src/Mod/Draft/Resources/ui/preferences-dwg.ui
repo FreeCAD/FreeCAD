@@ -38,7 +38,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="comboBox">
           <property name="toolTip">
-           <string>This is the method FreeCAD will use to convert DWG files to DXF. If &quot;Automatic&quot; is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the &quot;dwg2dxf&quot; utility if using LibreDWG, &quot;ODAFileConverter&quot; if using the ODA file converter, or the &quot;dwg2dwg&quot; utility if using the pro version of QCAD.</string>
+           <string>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DWGConversion</cstring>
@@ -97,7 +97,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

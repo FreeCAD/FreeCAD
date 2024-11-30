@@ -21,27 +21,20 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "DAGModelGraph.h"
+
 
 using namespace Gui;
 using namespace DAG;
 
-VertexProperty::VertexProperty() : 
+VertexProperty::VertexProperty() :
   rectangle(new RectItem()),
-  point(new QGraphicsEllipseItem()), 
+  point(new QGraphicsEllipseItem()),
   visibleIcon(new QGraphicsPixmapItem()),
   stateIcon(new QGraphicsPixmapItem()),
   icon(new QGraphicsPixmapItem()),
-  text(new QGraphicsTextItem()),
-  row(0),
-  column(0),
-  topoSortIndex(0),
-  lastVisibleState(VisibilityState::None),
-  lastFeatureState(FeatureState::None),
-  dagVisible(true)
+  text(new QGraphicsTextItem())
 {
   //set z values.
   this->rectangle->setZValue(-1000.0);
@@ -52,22 +45,27 @@ VertexProperty::VertexProperty() :
   this->text->setZValue(0.0);
 }
 
-EdgeProperty::EdgeProperty() : relation(BranchTag::None)
-{
-
-}
+EdgeProperty::EdgeProperty() = default;
 
 bool Gui::DAG::hasRecord(const App::DocumentObject* dObjectIn, const GraphLinkContainer &containerIn)
 {
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByDObject>::type List;
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByDObject>::type;
   const List &list = containerIn.get<GraphLinkRecord::ByDObject>();
   List::const_iterator it = list.find(dObjectIn);
   return it != list.end();
 }
 
+bool Gui::DAG::hasRecord(const ViewProviderDocumentObject* VPDObjectIn, const GraphLinkContainer &containerIn)
+{
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type;
+  const List &list = containerIn.get<GraphLinkRecord::ByVPDObject>();
+  List::const_iterator it = list.find(VPDObjectIn);
+  return it != list.end();
+}
+
 const GraphLinkRecord& Gui::DAG::findRecord(Vertex vertexIn, const GraphLinkContainer &containerIn)
 {
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByVertex>::type List;
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByVertex>::type;
   const List &list = containerIn.get<GraphLinkRecord::ByVertex>();
   List::const_iterator it = list.find(vertexIn);
   assert(it != list.end());
@@ -76,7 +74,7 @@ const GraphLinkRecord& Gui::DAG::findRecord(Vertex vertexIn, const GraphLinkCont
 
 const GraphLinkRecord& Gui::DAG::findRecord(const App::DocumentObject* dObjectIn, const GraphLinkContainer &containerIn)
 {
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByDObject>::type List;
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByDObject>::type;
   const List &list = containerIn.get<GraphLinkRecord::ByDObject>();
   List::const_iterator it = list.find(dObjectIn);
   assert(it != list.end());
@@ -85,7 +83,7 @@ const GraphLinkRecord& Gui::DAG::findRecord(const App::DocumentObject* dObjectIn
 
 const GraphLinkRecord& Gui::DAG::findRecord(const ViewProviderDocumentObject* VPDObjectIn, const GraphLinkContainer &containerIn)
 {
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type List;
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type;
   const List &list = containerIn.get<GraphLinkRecord::ByVPDObject>();
   List::const_iterator it = list.find(VPDObjectIn);
   assert(it != list.end());
@@ -94,7 +92,7 @@ const GraphLinkRecord& Gui::DAG::findRecord(const ViewProviderDocumentObject* VP
 
 const GraphLinkRecord& Gui::DAG::findRecord(const RectItem* rectIn, const GraphLinkContainer &containerIn)
 {
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByRectItem>::type List;
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByRectItem>::type;
   const List &list = containerIn.get<GraphLinkRecord::ByRectItem>();
   List::const_iterator it = list.find(rectIn);
   assert(it != list.end());
@@ -103,7 +101,7 @@ const GraphLinkRecord& Gui::DAG::findRecord(const RectItem* rectIn, const GraphL
 
 const GraphLinkRecord& Gui::DAG::findRecord(const std::string &stringIn, const GraphLinkContainer &containerIn)
 {
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByUniqueName>::type List;
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByUniqueName>::type;
   const List &list = containerIn.get<GraphLinkRecord::ByUniqueName>();
   List::const_iterator it = list.find(stringIn);
   assert(it != list.end());
@@ -112,7 +110,7 @@ const GraphLinkRecord& Gui::DAG::findRecord(const std::string &stringIn, const G
 
 void Gui::DAG::eraseRecord(const ViewProviderDocumentObject* VPDObjectIn, GraphLinkContainer &containerIn)
 {
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type List;
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type;
   const List &list = containerIn.get<GraphLinkRecord::ByVPDObject>();
   List::iterator it = list.find(VPDObjectIn);
   assert(it != list.end());

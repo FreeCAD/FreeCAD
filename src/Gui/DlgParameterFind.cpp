@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QPushButton>
+#include <QMessageBox>
+#include <QPushButton>
 #endif
 
-#include "ui_DlgParameterFind.h"
 #include "DlgParameterFind.h"
+#include "ui_DlgParameterFind.h"
 #include "DlgParameterImp.h"
 
 
@@ -37,11 +36,13 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgParameterFind */
 
 DlgParameterFind::DlgParameterFind(DlgParameterImp* parent)
-  : QDialog(parent)
-  , ui(new Ui_DlgParameterFind)
-  , dialog(parent)
+    : QDialog(parent)
+    , ui(new Ui_DlgParameterFind)
+    , dialog(parent)
 {
     ui->setupUi(this);
+    setupConnections();
+
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
         btn->setText(tr("Find Next"));
@@ -58,48 +59,58 @@ DlgParameterFind::~DlgParameterFind()
     delete ui;
 }
 
-void DlgParameterFind::on_lineEdit_textChanged(const QString& text)
+void DlgParameterFind::setupConnections()
+{
+    // clang-format off
+    connect(ui->lineEdit, &QLineEdit::textChanged,
+            this, &DlgParameterFind::onLineEditTextChanged);
+    connect(ui->checkGroups, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckGroupsToggled);
+    connect(ui->checkNames, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckNamesToggled);
+    connect(ui->checkValues, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckValuesToggled);
+    // clang-format on
+}
+
+void DlgParameterFind::onLineEditTextChanged(const QString& text)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
-        bool ok = ui->checkGroups->isChecked() ||
-                  ui->checkNames->isChecked() ||
-                  ui->checkValues->isChecked();
+        bool ok = ui->checkGroups->isChecked() || ui->checkNames->isChecked()
+            || ui->checkValues->isChecked();
         btn->setDisabled(!ok || text.isEmpty());
     }
 }
 
-void DlgParameterFind::on_checkGroups_toggled(bool)
+void DlgParameterFind::onCheckGroupsToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
-        bool ok = ui->checkGroups->isChecked() ||
-                  ui->checkNames->isChecked() ||
-                  ui->checkValues->isChecked();
+        bool ok = ui->checkGroups->isChecked() || ui->checkNames->isChecked()
+            || ui->checkValues->isChecked();
         QString text = ui->lineEdit->text();
         btn->setDisabled(!ok || text.isEmpty());
     }
 }
 
-void DlgParameterFind::on_checkNames_toggled(bool)
+void DlgParameterFind::onCheckNamesToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
-        bool ok = ui->checkGroups->isChecked() ||
-                  ui->checkNames->isChecked() ||
-                  ui->checkValues->isChecked();
+        bool ok = ui->checkGroups->isChecked() || ui->checkNames->isChecked()
+            || ui->checkValues->isChecked();
         QString text = ui->lineEdit->text();
         btn->setDisabled(!ok || text.isEmpty());
     }
 }
 
-void DlgParameterFind::on_checkValues_toggled(bool)
+void DlgParameterFind::onCheckValuesToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
-        bool ok = ui->checkGroups->isChecked() ||
-                  ui->checkNames->isChecked() ||
-                  ui->checkValues->isChecked();
+        bool ok = ui->checkGroups->isChecked() || ui->checkNames->isChecked()
+            || ui->checkValues->isChecked();
         QString text = ui->lineEdit->text();
         btn->setDisabled(!ok || text.isEmpty());
     }
@@ -111,17 +122,19 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
     if (opt.group) {
         // whole word matches
         if (opt.match) {
-            if (item->text(0).compare(opt.text, Qt::CaseInsensitive) == 0)
+            if (item->text(0).compare(opt.text, Qt::CaseInsensitive) == 0) {
                 return true;
+            }
         }
         else {
-            if (item->text(0).indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
+            if (item->text(0).indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                 return true;
+            }
         }
     }
 
     if (opt.name || opt.value) {
-        ParameterGroupItem* group = static_cast<ParameterGroupItem*>(item);
+        auto group = static_cast<ParameterGroupItem*>(item);
         Base::Reference<ParameterGrp> hGrp = group->_hcGrp;
 
         auto boolMap = hGrp->GetBoolMap();
@@ -133,57 +146,67 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
         // check the name of an entry in the group
         if (opt.name) {
             if (opt.match) {
-                for (auto it : boolMap) {
+                for (const auto& it : boolMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
+                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0) {
                         return true;
+                    }
                 }
-                for (auto it : intMap) {
+                for (const auto& it : intMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
+                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0) {
                         return true;
+                    }
                 }
-                for (auto it : uintMap) {
+                for (const auto& it : uintMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
+                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0) {
                         return true;
+                    }
                 }
-                for (auto it : floatMap) {
+                for (const auto& it : floatMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
+                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0) {
                         return true;
+                    }
                 }
-                for (auto it : asciiMap) {
+                for (const auto& it : asciiMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
+                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0) {
                         return true;
+                    }
                 }
             }
             else {
-                for (auto it : boolMap) {
+                for (const auto& it : boolMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
+                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                         return true;
+                    }
                 }
-                for (auto it : intMap) {
+                for (const auto& it : intMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
+                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                         return true;
+                    }
                 }
-                for (auto it : uintMap) {
+                for (const auto& it : uintMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
+                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                         return true;
+                    }
                 }
-                for (auto it : floatMap) {
+                for (const auto& it : floatMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
+                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                         return true;
+                    }
                 }
-                for (auto it : asciiMap) {
+                for (const auto& it : asciiMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
-                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
+                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                         return true;
+                    }
                 }
             }
         }
@@ -191,17 +214,19 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
         // check the value of an entry in the group
         if (opt.value) {
             if (opt.match) {
-                for (auto it : asciiMap) {
+                for (const auto& it : asciiMap) {
                     QString text = QString::fromUtf8(it.second.c_str());
-                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
+                    if (text.compare(opt.text, Qt::CaseInsensitive) == 0) {
                         return true;
+                    }
                 }
             }
             else {
-                for (auto it : asciiMap) {
+                for (const auto& it : asciiMap) {
                     QString text = QString::fromUtf8(it.second.c_str());
-                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
+                    if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                         return true;
+                    }
                 }
             }
         }
@@ -212,23 +237,27 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
 
 QTreeWidgetItem* DlgParameterFind::findItem(QTreeWidgetItem* root, const Options& opt) const
 {
-    if (!root)
+    if (!root) {
         return nullptr;
+    }
 
     if (matches(root, opt)) {
         // if the root matches then only return if it's not the current element
         // as otherwise it would never move forward
-        if (root->treeWidget()->currentItem() != root)
+        if (root->treeWidget()->currentItem() != root) {
             return root;
+        }
     }
 
-    for (int i=0; i<root->childCount(); i++) {
+    for (int i = 0; i < root->childCount(); i++) {
         QTreeWidgetItem* item = root->child(i);
-        if (matches(item, opt))
+        if (matches(item, opt)) {
             return item;
+        }
         item = findItem(item, opt);
-        if (item)
+        if (item) {
             return item;
+        }
     }
 
     return nullptr;
@@ -236,7 +265,7 @@ QTreeWidgetItem* DlgParameterFind::findItem(QTreeWidgetItem* root, const Options
 
 void DlgParameterFind::accept()
 {
-    ParameterGroup* groupTree = dialog->findChild<ParameterGroup*>();
+    auto groupTree = dialog->findChild<ParameterGroup*>();
     if (groupTree) {
         Options opt;
         opt.text = ui->lineEdit->text();
@@ -259,10 +288,11 @@ void DlgParameterFind::accept()
             }
             if (parent) {
                 int index = parent->indexOfChild(current);
-                for (int i=index+1; i<parent->childCount(); i++) {
+                for (int i = index + 1; i < parent->childCount(); i++) {
                     next = findItem(parent->child(i), opt);
-                    if (next)
+                    if (next) {
                         break;
+                    }
                 }
             }
 
@@ -272,10 +302,14 @@ void DlgParameterFind::accept()
         }
 
         // if search was successful then make it the current item
-        if (next)
+        if (next) {
             groupTree->setCurrentItem(next);
-        else
-            QMessageBox::warning(this, tr("Not found"), tr("Can't find the text: %1").arg(opt.text));
+        }
+        else {
+            QMessageBox::warning(this,
+                                 tr("Not found"),
+                                 tr("Can't find the text: %1").arg(opt.text));
+        }
     }
 }
 

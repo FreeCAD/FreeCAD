@@ -31,13 +31,13 @@ import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
 import DraftVecUtils
+from draftutils import params
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 
 ## \addtogroup draftgeoutils
 # @{
-PARAMGRP = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 # Default normal direction for all geometry operations
 NORM = App.Vector(0, 0, 1)
@@ -54,9 +54,9 @@ def precision():
     #      15 that the code would never consider 2 points are coincident
     #      as internal float is not that precise)
     precisionMax = 10
-    precisionInt = PARAMGRP.GetInt("precision", 6)
-    precisionInt = (precisionInt if precisionInt <= 10 else precisionMax)
-    return precisionInt  # return PARAMGRP.GetInt("precision", 6)
+    precisionInt = params.get_param("precision")
+    precisionInt = precisionInt if precisionInt <= 10 else precisionMax
+    return precisionInt
 
 
 def vec(edge, use_orientation = False):
@@ -148,32 +148,30 @@ def isAligned(edge, axis="x"):
 
     The axis can be 'x', 'y' or 'z'.
     """
+    def is_same(a, b):
+        return round(a, precision()) == round(b, precision())
+
     if axis == "x":
         if isinstance(edge, Part.Edge):
             if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].X == edge.Vertexes[-1].X:
-                    return True
+                return is_same(edge.Vertexes[0].X, edge.Vertexes[-1].X)
         elif isinstance(edge, Part.LineSegment):
-            if edge.StartPoint.x == edge.EndPoint.x:
-                return True
+            return is_same(edge.StartPoint.x, edge.EndPoint.x)
 
     elif axis == "y":
         if isinstance(edge, Part.Edge):
             if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].Y == edge.Vertexes[-1].Y:
-                    return True
+                return is_same(edge.Vertexes[0].Y, edge.Vertexes[-1].Y)
         elif isinstance(edge, Part.LineSegment):
-            if edge.StartPoint.y == edge.EndPoint.y:
-                return True
+            return is_same(edge.StartPoint.y, edge.EndPoint.y)
 
     elif axis == "z":
         if isinstance(edge, Part.Edge):
             if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].Z == edge.Vertexes[-1].Z:
-                    return True
+                return is_same(edge.Vertexes[0].Z, edge.Vertexes[-1].Z)
         elif isinstance(edge, Part.LineSegment):
-            if edge.StartPoint.z == edge.EndPoint.z:
-                return True
+            return is_same(edge.StartPoint.z, edge.EndPoint.z)
+
     return False
 
 

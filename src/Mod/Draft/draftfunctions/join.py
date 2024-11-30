@@ -28,10 +28,11 @@
 ## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
+import DraftVecUtils
 
 
 def join_wires(wires, joinAttempts = 0):
-    """joinWires(objects): merges a set of wires where possible, if any of those
+    """join_wires(objects): merges a set of wires where possible, if any of those
     wires have a coincident start and end point"""
     if joinAttempts > len(wires):
         return
@@ -40,48 +41,40 @@ def join_wires(wires, joinAttempts = 0):
         for wire2Index, wire2 in enumerate(wires):
             if wire2Index <= wire1Index:
                 continue
-            if joinTwoWires(wire1, wire2):
+            if join_two_wires(wire1, wire2):
                 wires.pop(wire2Index)
                 break
-    joinWires(wires, joinAttempts)
+    join_wires(wires, joinAttempts)
 
 
 joinWires = join_wires
 
 
 def join_two_wires(wire1, wire2):
-    """joinTwoWires(object, object): joins two wires if they share a common
+    """join_two_wires(object, object): joins two wires if they share a common
     point as a start or an end.
-
-    BUG: it occasionally fails to join lines even if the lines
-    visually share a point.
-    This is a rounding error in the comparison of the shared point;
-    a small difference will result in the points being considered different
-    and thus the lines not joining.
-    Test properly using `DraftVecUtils.equals` because then it will consider
-    the precision set in the Draft preferences.
     """
     wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
     wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
-    if ((wire1AbsPoints[0] == wire2AbsPoints[-1] and 
-        wire1AbsPoints[-1] == wire2AbsPoints[0]) or
-        (wire1AbsPoints[0] == wire2AbsPoints[0] and 
-        wire1AbsPoints[-1] == wire2AbsPoints[-1])):
+    if ((DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[-1])
+            and DraftVecUtils.equals(wire1AbsPoints[-1], wire2AbsPoints[0]))
+        or (DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[0])
+            and DraftVecUtils.equals(wire1AbsPoints[-1], wire2AbsPoints[-1]))):
         wire2AbsPoints.pop()
         wire1.Closed = True
-    elif wire1AbsPoints[0] == wire2AbsPoints[0]:
+    elif DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[0]):
         wire1AbsPoints = list(reversed(wire1AbsPoints))
-    elif wire1AbsPoints[0] == wire2AbsPoints[-1]:
+    elif DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[-1]):
         wire1AbsPoints = list(reversed(wire1AbsPoints))
         wire2AbsPoints = list(reversed(wire2AbsPoints))
-    elif wire1AbsPoints[-1] == wire2AbsPoints[-1]:
+    elif DraftVecUtils.equals(wire1AbsPoints[-1], wire2AbsPoints[-1]):
         wire2AbsPoints = list(reversed(wire2AbsPoints))
-    elif wire1AbsPoints[-1] == wire2AbsPoints[0]:
+    elif DraftVecUtils.equals(wire1AbsPoints[-1], wire2AbsPoints[0]):
         pass
     else:
         return False
     wire2AbsPoints.pop(0)
-    wire1.Points = ([wire1.Placement.inverse().multVec(point) 
+    wire1.Points = ([wire1.Placement.inverse().multVec(point)
                      for point in wire1AbsPoints] +
                     [wire1.Placement.inverse().multVec(point)
                      for point in wire2AbsPoints])

@@ -20,22 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QAction>
 # include <QActionGroup>
+# include <QCoreApplication>
 # include <QDir>
-# include <QLayout>
 # include <QFile>
+# include <QLayout>
 # include <QTextStream>
 #endif
+
+#include <functional>
+#include <Base/Interpreter.h>
 
 #include "UiLoader.h"
 #include "PythonWrapper.h"
 #include "WidgetFactory.h"
-#include <Base/Interpreter.h>
-#include <functional>
+
 
 using namespace Gui;
 
@@ -119,7 +121,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     QTextStream str(&cmd);
     // https://github.com/albop/dolo/blob/master/bin/load_ui.py
     str << "import pyside2uic\n"
-        << "from PySide2 import QtCore, QtGui, QtWidgets\n"
+        << "from PySide import QtCore, QtGui, QtWidgets\n"
         << "import xml.etree.ElementTree as xml\n"
         << "try:\n"
         << "    from cStringIO import StringIO\n"
@@ -171,39 +173,14 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
 
     QString cmd;
     QTextStream str(&cmd);
-#if 0
-    // https://github.com/lunaryorn/snippets/blob/master/qt4/designer/pyside_dynamic.py
-    str << "from PySide import QtCore, QtGui, QtUiTools\n"
-        << "import FreeCADGui"
-        << "\n"
-        << "class UiLoader(QtUiTools.QUiLoader):\n"
-        << "    def __init__(self, baseinstance):\n"
-        << "        QtUiTools.QUiLoader.__init__(self, baseinstance)\n"
-        << "        self.baseinstance = baseinstance\n"
-        << "        self.ui = FreeCADGui.UiLoader()\n"
-        << "\n"
-        << "    def createWidget(self, class_name, parent=None, name=''):\n"
-        << "        if parent is None and self.baseinstance:\n"
-        << "            return self.baseinstance\n"
-        << "        else:\n"
-        << "            widget = self.ui.createWidget(class_name, parent, name)\n"
-        << "            if not widget:\n"
-        << "                widget = QtUiTools.QUiLoader.createWidget(self, class_name, parent, name)\n"
-        << "            if self.baseinstance:\n"
-        << "                setattr(self.baseinstance, name, widget)\n"
-        << "            return widget\n"
-        << "\n"
-        << "loader = UiLoader(globals()[\"base_\"])\n"
-        << "widget = loader.load(globals()[\"uiFile_\"])\n"
-        << "\n";
-#else
-    str << "from PySide2 import QtCore, QtGui, QtWidgets\n"
+
+    str << "from PySide import QtCore, QtGui, QtWidgets\n"
         << "import FreeCADGui"
         << "\n"
         << "loader = FreeCADGui.UiLoader()\n"
         << "widget = loader.load(globals()[\"uiFile_\"])\n"
         << "\n";
-#endif
+
 
     PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
     if (result) {
@@ -227,7 +204,6 @@ Py::Object PySideUicModule::createCustomWidget(const Py::Tuple& args)
 // ----------------------------------------------------
 
 #if !defined (HAVE_QT_UI_TOOLS)
-namespace Gui {
 QUiLoader::QUiLoader(QObject* parent)
 {
     Base::PyGILStateLocker lock;
@@ -432,7 +408,8 @@ QDir QUiLoader::workingDirectory() const
         PythonWrapper wrap;
         Py::Object dir((uiloader.callMemberFunction("workingDirectory")));
         QDir* d = wrap.toQDir(dir.ptr());
-        if (d) return *d;
+        if (d)
+            return *d;
         return QDir::current();
     }
     catch (Py::Exception& e) {
@@ -505,7 +482,6 @@ QString QUiLoader::errorString() const
         return QString();
     }
 }
-}
 #endif
 
 // ----------------------------------------------------
@@ -513,15 +489,23 @@ QString QUiLoader::errorString() const
 UiLoader::UiLoader(QObject* parent)
   : QUiLoader(parent)
 {
-    // do not use the plugins for additional widgets as we don't need them and
-    // the application may crash under Linux (tested on Ubuntu 7.04 & 7.10).
-    clearPluginPaths();
     this->cw = availableWidgets();
+    setLanguageChangeEnabled(true);
 }
 
-UiLoader::~UiLoader()
+std::unique_ptr<UiLoader> UiLoader::newInstance(QObject *parent)
 {
+    QCoreApplication* app = QCoreApplication::instance();
+    QStringList libPaths = app->libraryPaths();
+
+    app->setLibraryPaths(QStringList{}); //< backup library paths, so QUiLoader won't load plugins by default
+    std::unique_ptr<UiLoader> rv{new UiLoader{parent}};
+    app->setLibraryPaths(libPaths);
+
+    return rv;
 }
+
+UiLoader::~UiLoader() = default;
 
 QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
                                 const QString& name)
@@ -553,15 +537,27 @@ void UiLoaderPy::init_type()
     add_varargs_method("load",&UiLoaderPy::load,"load(string, QWidget parent=None) -> QWidget\n"
                                                 "load(QIODevice, QWidget parent=None) -> QWidget");
     add_varargs_method("createWidget",&UiLoaderPy::createWidget,"createWidget()");
+
+    add_varargs_method("availableWidgets",&UiLoaderPy::availableWidgets,"availableWidgets()");
+    add_varargs_method("clearPluginPaths",&UiLoaderPy::clearPluginPaths,"clearPluginPaths()");
+    add_varargs_method("pluginPaths",&UiLoaderPy::pluginPaths,"pluginPaths()");
+    add_varargs_method("addPluginPath",&UiLoaderPy::addPluginPath,"addPluginPath()");
+    add_varargs_method("errorString",&UiLoaderPy::errorString,"errorString()");
+    add_varargs_method("isLanguageChangeEnabled",&UiLoaderPy::isLanguageChangeEnabled,
+                       "isLanguageChangeEnabled()");
+    add_varargs_method("setLanguageChangeEnabled",&UiLoaderPy::setLanguageChangeEnabled,
+                       "setLanguageChangeEnabled()");
+    add_varargs_method("setWorkingDirectory",&UiLoaderPy::setWorkingDirectory,
+                       "setWorkingDirectory()");
+    add_varargs_method("workingDirectory",&UiLoaderPy::workingDirectory,"workingDirectory()");
 }
 
 UiLoaderPy::UiLoaderPy()
+    : loader{UiLoader::newInstance()}
 {
 }
 
-UiLoaderPy::~UiLoaderPy()
-{
-}
+UiLoaderPy::~UiLoaderPy() = default;
 
 Py::Object UiLoaderPy::repr()
 {
@@ -586,7 +582,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
             device = &file;
         }
         else if (args[0].isString()) {
-            fn = (std::string)Py::String(args[0]);
+            fn = static_cast<std::string>(Py::String(args[0]));
             file.setFileName(QString::fromUtf8(fn.c_str()));
             if (!file.open(QFile::ReadOnly))
                 throw Py::RuntimeError("Cannot open file");
@@ -603,7 +599,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
         }
 
         if (device) {
-            QWidget* widget = loader.load(device, parent);
+            QWidget* widget = loader->load(device, parent);
             if (widget) {
                 wrap.loadGuiModule();
                 wrap.loadWidgetsModule();
@@ -624,10 +620,93 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
 
 Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
 {
-    return wrapFromWidgetFactory(args, std::bind(&UiLoader::createWidget, &loader,
+    //NOLINTBEGIN
+    return wrapFromWidgetFactory(args, std::bind(&UiLoader::createWidget, loader.get(),
                                                  std::placeholders::_1,
                                                  std::placeholders::_2,
                                                  std::placeholders::_3));
+    //NOLINTEND
 }
 
-#include "moc_UiLoader.cpp"
+Py::Object UiLoaderPy::addPluginPath(const Py::Tuple& args)
+{
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
+        std::string fn;
+        if (wrap.toCString(args[0], fn)) {
+            loader->addPluginPath(QString::fromStdString(fn));
+        }
+    }
+    return Py::None();
+}
+
+Py::Object UiLoaderPy::clearPluginPaths(const Py::Tuple& /*args*/)
+{
+    loader->clearPluginPaths();
+    return Py::None();
+}
+
+Py::Object UiLoaderPy::pluginPaths(const Py::Tuple& /*args*/)
+{
+    auto list = loader->pluginPaths();
+    Py::List py;
+    for (const auto& it : list) {
+        py.append(Py::String(it.toStdString()));
+    }
+    return py;
+}
+
+Py::Object UiLoaderPy::availableWidgets(const Py::Tuple& /*args*/)
+{
+    auto list = loader->availableWidgets();
+    Py::List py;
+    for (const auto& it : list) {
+        py.append(Py::String(it.toStdString()));
+    }
+
+    auto producer = WidgetFactory().CanProduce();
+    for (const auto& it : producer) {
+        py.append(Py::String(it));
+    }
+
+    return py;
+}
+
+Py::Object UiLoaderPy::errorString(const Py::Tuple& /*args*/)
+{
+    return Py::String(loader->errorString().toStdString());
+}
+
+Py::Object UiLoaderPy::isLanguageChangeEnabled(const Py::Tuple& /*args*/)
+{
+    return Py::Boolean(loader->isLanguageChangeEnabled());
+}
+
+Py::Object UiLoaderPy::setLanguageChangeEnabled(const Py::Tuple& args)
+{
+    loader->setLanguageChangeEnabled(Py::Boolean(args[0]));
+    return Py::None();
+}
+
+Py::Object UiLoaderPy::setWorkingDirectory(const Py::Tuple& args)
+{
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
+        std::string fn;
+        if (wrap.toCString(args[0], fn)) {
+            loader->setWorkingDirectory(QString::fromStdString(fn));
+        }
+    }
+    return Py::None();
+}
+
+Py::Object UiLoaderPy::workingDirectory(const Py::Tuple& /*args*/)
+{
+    QDir dir = loader->workingDirectory();
+    QString path = dir.absolutePath();
+    return Py::String(path.toStdString());
+}
+
+#if !defined (HAVE_QT_UI_TOOLS)
+# include "moc_UiLoader.cpp"
+#endif

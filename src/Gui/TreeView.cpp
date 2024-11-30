@@ -27,11 +27,11 @@
 #endif
 
 #include "TreeView.h"
-#include "DocumentModel.h"
 #include "Application.h"
 #include "Document.h"
-#include "MDIView.h"
+#include "DocumentModel.h"
 #include "MainWindow.h"
+#include "MDIView.h"
 #include "ViewProvider.h"
 
 using namespace Gui;
@@ -50,26 +50,25 @@ TreeView::TreeView(QWidget* parent)
     this->setMouseTracking(true); // needed for itemEntered() to work
 }
 
-TreeView::~TreeView()
-{
-}
+TreeView::~TreeView() = default;
 
 void TreeView::mouseDoubleClickEvent (QMouseEvent * event)
 {
     QModelIndex index = indexAt(event->pos());
     if (!index.isValid() || index.internalPointer() == Application::Instance)
         return;
-    Base::BaseClass* item = 0;
+    Base::BaseClass* item = nullptr;
     item = static_cast<Base::BaseClass*>(index.internalPointer());
-    if (item->getTypeId() == Document::getClassTypeId()) {
+    if (item->is<Document>()) {
         QTreeView::mouseDoubleClickEvent(event);
         const Gui::Document* doc = static_cast<Gui::Document*>(item);
         MDIView *view = doc->getActiveView();
-        if (!view) return;
+        if (!view)
+            return;
         getMainWindow()->setActiveWindow(view);
     }
-    else if (item->getTypeId().isDerivedFrom(ViewProvider::getClassTypeId())) {
-        if (static_cast<ViewProvider*>(item)->doubleClicked() == false)
+    else if (item->isDerivedFrom<ViewProvider>()) {
+        if (!static_cast<ViewProvider*>(item)->doubleClicked())
             QTreeView::mouseDoubleClickEvent(event);
     }
 }
@@ -78,7 +77,7 @@ void TreeView::rowsInserted (const QModelIndex & parent, int start, int end)
 {
     QTreeView::rowsInserted(parent, start, end);
     if (parent.isValid()) {
-        Base::BaseClass* ptr = static_cast<Base::BaseClass*>(parent.internalPointer());
+        auto ptr = static_cast<Base::BaseClass*>(parent.internalPointer());
         // type is defined in DocumentModel.cpp
         if (ptr->getTypeId() == Base::Type::fromName("Gui::ApplicationIndex")) {
             for (int i=start; i<=end;i++) {

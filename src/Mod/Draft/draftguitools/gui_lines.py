@@ -33,28 +33,27 @@ like Wire, BSpline, and BezCurve.
 
 ## \addtogroup draftguitools
 # @{
-import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftutils.todo as todo
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-
-from draftutils.messages import _msg, _err
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
+from draftutils import todo
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
 class Line(gui_base_original.Creator):
     """Gui command for the Line tool."""
 
-    def __init__(self, wiremode=False):
-        super(Line, self).__init__()
-        self.isWire = wiremode
+    def __init__(self, mode="line"):
+        super().__init__()
+        self.mode = mode
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -64,27 +63,28 @@ class Line(gui_base_original.Creator):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Line", "Line"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line. CTRL to snap, SHIFT to constrain.")}
 
-    def Activated(self, name="Line", icon="Draft_Line"):
+    def Activated(self, name=QT_TRANSLATE_NOOP("draft", "Line"), icon="Draft_Line", task_title=None):
         """Execute when the command is called."""
-        super(Line, self).Activated(name)
-
-        if not self.doc:
-            return
-        self.obj = None  # stores the temp shape
-        self.oldWP = None  # stores the WP if we modify it
-        if self.isWire:
-            self.ui.wireUi(title=translate("draft", self.featureName), icon=icon)
+        super().Activated(name)
+        if task_title is None:
+            title = translate("draft", name)
         else:
-            self.ui.lineUi(title=translate("draft", self.featureName), icon=icon)
-        if sys.version_info.major < 3:
-            if isinstance(self.featureName, unicode):
-                self.featureName = self.featureName.encode("utf8")
+            title = task_title
+        if self.mode == "wire":
+            self.ui.wireUi(title=title, icon=icon)
+        elif self.mode == "leader":
+            self.ui.wireUi(title=title, icon=icon)
+            self.ui.closeButton.hide()
+            self.ui.hasFill.hide()
+        else:
+            self.ui.lineUi(title=title, icon=icon)
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
+        self.obj.ViewObject.ShowInTree = False
 
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick first point"))
+        _toolmsg(translate("draft", "Pick first point"))
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -97,58 +97,64 @@ class Line(gui_base_original.Creator):
             Dictionary with strings that indicates the type of event received
             from the 3D view.
         """
-        if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
-            self.finish()
-        elif arg["Type"] == "SoLocation2Event":
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+            return
+        if arg["Type"] == "SoLocation2Event":
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             gui_tool_utils.redraw3DView()
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"):
+            return
+        if arg["Type"] != "SoMouseButtonEvent":
+            return
+        if arg["State"] == "UP":
+            self.obj.ViewObject.Selectable = True
+            return
+        if arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
+            # Stop self.obj from being selected to avoid its display in the tree:
+            self.obj.ViewObject.Selectable = False
             if arg["Position"] == self.pos:
-                return self.finish(False, cont=True)
+                self.finish(cont=None)
+                return
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
-                (self.point,
-                 ctrlPoint, info) = gui_tool_utils.getPoint(self, arg)
+                self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             if self.point:
                 self.ui.redraw()
                 self.pos = arg["Position"]
                 self.node.append(self.point)
                 self.drawSegment(self.point)
-                if not self.isWire and len(self.node) == 2:
-                    self.finish(False, cont=True)
+                if self.mode == "line" and len(self.node) == 2:
+                    self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # The wire is closed
                     if (self.point - self.node[0]).Length < utils.tolerance():
                         self.undolast()
                         if len(self.node) > 2:
-                            self.finish(True, cont=True)
+                            self.finish(cont=None, closed=True)
                         else:
-                            self.finish(False, cont=True)
+                            self.finish(cont=None, closed=False)
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False, closed=False):
         """Terminate the operation and close the polyline if asked.
 
         Parameters
         ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         closed: bool, optional
             Close the line if `True`.
         """
+        self.end_callbacks(self.call)
         self.removeTemporaryObject()
-        if self.oldWP:
-            App.DraftWorkingPlane = self.oldWP
-            if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setGrid()
-                Gui.Snapper.restack()
-        self.oldWP = None
 
         if len(self.node) > 1:
             Gui.addModule("Draft")
             # The command to run is built as a series of text strings
             # to be committed through the `draftutils.todo.ToDo` class.
             if (len(self.node) == 2
-                    and utils.getParam("UsePartPrimitives", False)):
+                    and params.get_param("UsePartPrimitives")):
                 # Insert a Part::Primitive object
                 p1 = self.node[0]
                 p2 = self.node[-1]
@@ -163,6 +169,7 @@ class Line(gui_base_original.Creator):
                              'line.Y2 = ' + str(p2.y),
                              'line.Z2 = ' + str(p2.z),
                              'Draft.autogroup(line)',
+                             'Draft.select(line)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Line"),
                             _cmd_list)
@@ -171,7 +178,7 @@ class Line(gui_base_original.Creator):
                 rot, sup, pts, fil = self.getStrings()
 
                 _base = DraftVecUtils.toString(self.node[0])
-                _cmd = 'Draft.makeWire'
+                _cmd = 'Draft.make_wire'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'placement=pl, '
@@ -188,8 +195,8 @@ class Line(gui_base_original.Creator):
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Wire"),
                             _cmd_list)
-        super(Line, self).finish()
-        if self.ui and self.ui.continueMode:
+        super().finish()
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
     def removeTemporaryObject(self):
@@ -218,8 +225,8 @@ class Line(gui_base_original.Creator):
                 else:
                     self.obj.ViewObject.hide()
                 # DNC: report on removal
-                # _msg(translate("draft", "Removing last point"))
-                _msg(translate("draft", "Pick next point"))
+                # _toolmsg(translate("draft", "Removing last point"))
+                _toolmsg(translate("draft", "Pick next point"))
 
     def drawSegment(self, point):
         """Draws new line segment."""
@@ -227,14 +234,14 @@ class Line(gui_base_original.Creator):
         if self.planetrack and self.node:
             self.planetrack.set(self.node[-1])
         if len(self.node) == 1:
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
         elif len(self.node) == 2:
             last = self.node[len(self.node) - 2]
             newseg = Part.LineSegment(last, point).toShape()
             self.obj.Shape = newseg
             self.obj.ViewObject.Visibility = True
-            if self.isWire:
-                _msg(translate("draft", "Pick next point"))
+            if self.mode != "line":
+                _toolmsg(translate("draft", "Pick next point"))
         else:
             currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node) - 2]
@@ -242,7 +249,7 @@ class Line(gui_base_original.Creator):
                 newseg = Part.LineSegment(last, point).toShape()
                 newshape = currentshape.fuse(newseg)
                 self.obj.Shape = newshape
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
 
     def wipe(self):
         """Remove all previous segments and starts from last point."""
@@ -252,27 +259,20 @@ class Line(gui_base_original.Creator):
             self.node = [self.node[-1]]
             if self.planetrack:
                 self.planetrack.set(self.node[0])
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
 
     def orientWP(self):
         """Orient the working plane."""
-        import DraftGeomUtils
-        if hasattr(App, "DraftWorkingPlane"):
-            if len(self.node) > 1 and self.obj:
-                n = DraftGeomUtils.getNormal(self.obj.Shape)
-                if not n:
-                    n = App.DraftWorkingPlane.axis
-                p = self.node[-1]
-                v = self.node[-2].sub(self.node[-1])
-                v = v.negative()
-                if not self.oldWP:
-                    self.oldWP = App.DraftWorkingPlane.copy()
-                App.DraftWorkingPlane.alignToPointAndAxis(p, n, upvec=v)
-                if hasattr(Gui, "Snapper"):
-                    Gui.Snapper.setGrid()
-                    Gui.Snapper.restack()
-                if self.planetrack:
-                    self.planetrack.set(self.node[-1])
+        if len(self.node) > 1 and self.obj:
+            import DraftGeomUtils
+            n = DraftGeomUtils.getNormal(self.obj.Shape)
+            if not n:
+                n = self.wp.axis
+            p = self.node[-1]
+            v = self.node[-1].sub(self.node[-2])
+            self.wp.align_to_point_and_axis(p, n, upvec=v, _hist_add=False)
+            if self.planetrack:
+                self.planetrack.set(self.node[-1])
 
     def numericInput(self, numx, numy, numz):
         """Validate the entry fields in the user interface.
@@ -283,8 +283,8 @@ class Line(gui_base_original.Creator):
         self.point = App.Vector(numx, numy, numz)
         self.node.append(self.point)
         self.drawSegment(self.point)
-        if not self.isWire and len(self.node) == 2:
-            self.finish(False, cont=True)
+        if self.mode == "line" and len(self.node) == 2:
+            self.finish(cont=None, closed=False)
         self.ui.setNextFocus()
 
 
@@ -295,12 +295,12 @@ class Wire(Line):
     """Gui command for the Wire or Polyline tool.
 
     It inherits the `Line` class, and calls essentially the same code,
-    only this time the `wiremode` is set to `True`,
+    only this time the `mode` is set to `"wire"`,
     so we are allowed to place more than two points.
     """
 
     def __init__(self):
-        super(Wire, self).__init__(wiremode=True)
+        super().__init__(mode="wire")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -327,7 +327,7 @@ class Wire(Line):
                 edges.extend(o.Shape.Edges)
             if edges:
                 try:
-                    w = Part.Wire(edges)
+                    w = Part.Wire(Part.__sortEdges__(edges))
                 except Exception:
                     _err(translate("draft",
                                    "Unable to create a Wire "
@@ -347,7 +347,10 @@ class Wire(Line):
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
                     # to be committed through the `draftutils.todo.ToDo` class
-                    _cmd_list = ['wire = Draft.makeWire([' + pts + '])']
+                    _cmd = 'wire = Draft.make_wire('
+                    _cmd += '[' + pts + '], closed=' + str(w.isClosed())
+                    _cmd += ')'
+                    _cmd_list = [_cmd]
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')
                     _cmd_list.append('FreeCAD.ActiveDocument.recompute()')
@@ -359,8 +362,9 @@ class Wire(Line):
         # If there was no selection or the selection was just one object
         # then we proceed with the normal line creation functions,
         # only this time we will be able to input more than two points
-        super(Wire, self).Activated(name="Polyline",
-                                    icon="Draft_Wire")
+        super().Activated(name="Polyline",
+                          icon="Draft_Wire",
+                          task_title=translate("draft", "Polyline"))
 
 
 Gui.addCommand('Draft_Wire', Wire())

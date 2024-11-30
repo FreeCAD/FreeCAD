@@ -20,35 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderSetFaces.h"
-//#include <Gui/Control.h>
+
 
 using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderSetFaces, Gui::ViewProviderGeometryObject)
 
-bool ViewProviderSetFaces::doubleClicked(void)
+bool ViewProviderSetFaces::doubleClicked()
 {
-    //Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
-    //Gui::Control().showDialog(dlg);
+    // Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject
+    // *>(getObject())); Gui::Control().showDialog(dlg);
     return true;
 }
 
 
 bool ViewProviderSetFaces::setEdit(int)
 {
-    //Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
-    //Gui::Control().showDialog(dlg);
+    // Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject
+    // *>(getObject())); Gui::Control().showDialog(dlg);
     return true;
 }
 
 void ViewProviderSetFaces::unsetEdit(int)
-{
-
-}
+{}

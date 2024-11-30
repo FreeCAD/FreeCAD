@@ -1,22 +1,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -37,26 +37,24 @@
   functionality to the QuarterWidget.
 */
 
-#include <Quarter/eventhandlers/DragDropHandler.h>
-
-#include <QtCore/QUrl>
-#include <QtCore/QFileInfo>
-#include <QtCore/QStringList>
-#include <QtGui/QDragEnterEvent>
-#include <QtGui/QDropEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QFileInfo>
 #include <QMimeData>
-
+#include <QStringList>
+#include <QUrl>
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#include <Quarter/QuarterWidget.h>
-#include <cstdlib>
+#include "QuarterWidget.h"
+#include "eventhandlers/DragDropHandler.h"
+
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
 class DragDropHandlerP {
 public:
-  DragDropHandlerP(DragDropHandler * master) {
+  explicit DragDropHandlerP(DragDropHandler * master) {
     this->master = master;
   }
   void dragEnterEvent(QDragEnterEvent * event);
@@ -95,7 +93,7 @@ DragDropHandler::~DragDropHandler()
 
 /*!
   Detects a QDragEnterEvent and if the event is the dropping of a
-  valid Inventor or VRML it opens the file, reads in the scenegraph
+  valid Inventor or VRML file it opens the file, reads in the scene graph
   and calls setSceneGraph on the QuarterWidget
  */
 bool
@@ -117,12 +115,15 @@ void
 DragDropHandlerP::dragEnterEvent(QDragEnterEvent * event)
 {
   const QMimeData * mimedata = event->mimeData();
-  if (!mimedata->hasUrls() && !mimedata->hasText()) return;
+  if (!mimedata->hasUrls() && !mimedata->hasText())
+      return;
 
   if (mimedata->hasUrls()) {
-    QFileInfo fileinfo(mimedata->urls().takeFirst().path());
+    QFileInfo fileinfo(mimedata->urls().constFirst().path());
     QString suffix = fileinfo.suffix().toLower();
-    if (!this->suffixes.contains(suffix)) { return; }
+    if (!this->suffixes.contains(suffix)) {
+        return;
+    }
   }
 
   event->acceptProposedAction();
@@ -138,23 +139,26 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
   QByteArray bytes;
 
   if (mimedata->hasUrls()) {
-    QUrl url = mimedata->urls().takeFirst();
+    QUrl url = mimedata->urls().constFirst();
     if (url.scheme().isEmpty() || url.scheme().toLower() == QString("file") ) {
       // attempt to open file
-      if (!in.openFile(url.toLocalFile().toLatin1().constData())) return;
+      if (!in.openFile(url.toLocalFile().toLatin1().constData()))
+          return;
     }
   } else if (mimedata->hasText()) {
     /* FIXME 2007-11-09 preng: dropping text buffer does not work on Windows Vista. */
     bytes = mimedata->text().toUtf8();
     in.setBuffer((void *) bytes.constData(), bytes.size());
-    if (!in.isValidBuffer()) return;
+    if (!in.isValidBuffer())
+        return;
   }
 
   // attempt to import it
   root = SoDB::readAll(&in);
-  if (root == nullptr) return;
+  if (!root)
+      return;
 
-  // set new scenegraph
+  // set new scene graph
   this->quarterwidget->setSceneGraph(root);
   this->quarterwidget->viewport()->update();
 }

@@ -40,7 +40,7 @@ enum class HelixMode {
 
 class PartDesignExport Helix : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Helix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Helix);
 
 public:
     Helix();
@@ -56,6 +56,7 @@ public:
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
+    App::PropertyFloatConstraint   Tolerance;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -64,23 +65,23 @@ public:
 
     /** @name methods override feature */
     //@{
-    App::DocumentObjectExecReturn* execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderHelix";
     }
     //@}
 
     void proposeParameters(bool force = false);
-    double safePitch(void);
+    double safePitch();
 
 protected:
     /// updates Axis from ReferenceAxis
-    void updateAxis(void);
+    void updateAxis();
 
     /// generate helix and move it to the right location.
-    TopoDS_Shape generateHelixPath(double startOffset0 = 0.0);
+    TopoDS_Shape generateHelixPath(double breakAtTurn = 1.);
 
     // project shape on plane. Used for detecting self intersection.
     TopoDS_Shape projectShape(const TopoDS_Shape& input, const gp_Ax2& plane);
@@ -89,12 +90,13 @@ protected:
     Base::Vector3d getProfileCenterPoint();
 
     // handle changed property types for backward compatibility
-    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
 
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     static const App::PropertyFloatConstraint::Constraints floatTurns;
     static const App::PropertyAngle::Constraints floatAngle;
+    static const App::PropertyFloatConstraint::Constraints floatTolerance;
 
 private:
     static const char* ModeEnums[];
@@ -106,7 +108,7 @@ private:
 
 class PartDesignExport AdditiveHelix : public Helix {
 
-    PROPERTY_HEADER(PartDesign::AdditiveHelix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveHelix);
 public:
     AdditiveHelix();
 };
@@ -114,7 +116,7 @@ public:
 
 class PartDesignExport SubtractiveHelix : public Helix {
 
-    PROPERTY_HEADER(PartDesign::SubtractiveHelix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveHelix);
 public:
     SubtractiveHelix();
 };

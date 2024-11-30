@@ -28,17 +28,15 @@
 #ifndef PARTATTACHERTEXTS_H
 #define PARTATTACHERTEXTS_H
 
-
 #include <vector>
 #include <QString>
 #include <QStringList>
-#include <CXX/Objects.hxx>
 #include <Mod/Part/App/Attacher.h>
 
 
 namespace AttacherGui {
 
-typedef std::vector<QString> TextSet;
+using TextSet = std::vector<QString>;
 
 /**
  * @brief getUIStrings

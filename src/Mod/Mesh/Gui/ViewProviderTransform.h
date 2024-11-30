@@ -23,6 +23,8 @@
 #ifndef MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
 #define MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
 
+#include "ViewProvider.h"
+
 class SoSeparator;
 class SbVec3f;
 class SoSwitch;
@@ -34,48 +36,47 @@ class SoPath;
 class SoLocateHighlight;
 class SoTransformerManip;
 
-namespace Gui {
-  class View3DInventorViewer;
+namespace Gui
+{
+class View3DInventorViewer;
 }
 
-
-#include "ViewProvider.h"
-
-namespace MeshGui {
+namespace MeshGui
+{
 
 /** Like Mesh viewprovider but with manipulator
  */
-class ViewProviderMeshTransform : public ViewProviderMesh
+class ViewProviderMeshTransform: public ViewProviderMesh
 {
-  PROPERTY_HEADER(MeshGui::ViewProviderMeshTransform);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshTransform);
 
 public:
-  ViewProviderMeshTransform();
-  virtual ~ViewProviderMeshTransform();
+    ViewProviderMeshTransform();
+    ~ViewProviderMeshTransform() override;
 
 
-  /** 
-   * Extracts the mesh data from the feature \a pcFeature and creates
-   * an Inventor node \a SoNode with these data. 
-   */
-  virtual void attach(App::DocumentObject *);
+    /**
+     * Extracts the mesh data from the feature \a pcFeature and creates
+     * an Inventor node \a SoNode with these data.
+     */
+    void attach(App::DocumentObject* obj) override;
 
-  /// set the viewing mode
-  virtual void setDisplayMode(const char* ModeName);
-  /// get the default display mode
-  virtual const char* getDefaultDisplayMode() const;
-  /// returns a list of all possible modes
-  virtual std::vector<std::string> getDisplayModes(void) const;
-  /// Update the Mesh representation
-  virtual void updateData(const App::Property*);
+    /// set the viewing mode
+    void setDisplayMode(const char* ModeName) override;
+    /// get the default display mode
+    const char* getDefaultDisplayMode() const override;
+    /// returns a list of all possible modes
+    std::vector<std::string> getDisplayModes() const override;
+    /// Update the Mesh representation
+    void updateData(const App::Property*) override;
 
-protected:
+private:
+    SoTransformerManip* pcTransformerDragger;
 
-  SoTransformerManip *pcTransformerDragger;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshTransform)
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
-
+#endif  // MESHGUI_VIEWPROVIDERMESHTRANSFORM_H

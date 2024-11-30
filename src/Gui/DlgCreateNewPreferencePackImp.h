@@ -26,7 +26,7 @@
 
 #include <memory>
 #include <QDialog>
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 
 #include "PreferencePackManager.h"
 
@@ -40,9 +40,9 @@ class Ui_DlgCreateNewPreferencePack;
 
 /**
  * \class DlgCreateNewPreferencePackImp
- * 
- * A dialog to request a preferencePack name and a set of preferencePack templates. 
- * 
+ *
+ * A dialog to request a preferencePack name and a set of preferencePack templates.
+ *
  * \author Chris Hennes
  */
 class GuiExport DlgCreateNewPreferencePackImp : public QDialog
@@ -51,8 +51,8 @@ class GuiExport DlgCreateNewPreferencePackImp : public QDialog
 
 public:
 
-    DlgCreateNewPreferencePackImp(QWidget* parent = nullptr);
-    ~DlgCreateNewPreferencePackImp();
+    explicit DlgCreateNewPreferencePackImp(QWidget* parent = nullptr);
+    ~DlgCreateNewPreferencePackImp() override;
 
     void setPreferencePackTemplates(const std::vector<PreferencePackManager::TemplateFile> &availableTemplates);
     void setPreferencePackNames(const std::vector<std::string>& usedNames);
@@ -64,7 +64,7 @@ protected Q_SLOTS:
 
     void onItemChanged(QTreeWidgetItem* item, int column);
 
-    void on_lineEdit_textEdited(const QString &text);
+    void onLineEditTextEdited(const QString &text);
 
     void accept() override;
 
@@ -72,7 +72,7 @@ private:
     std::unique_ptr<Ui_DlgCreateNewPreferencePack> ui;
     std::map<std::string, QTreeWidgetItem*> _groups;
     std::vector<PreferencePackManager::TemplateFile> _templates;
-    QRegExpValidator _nameValidator;
+    QRegularExpressionValidator _nameValidator;
     std::vector<std::string> _existingPackNames;
 };
 

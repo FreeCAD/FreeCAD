@@ -8,11 +8,11 @@
 #ifndef TASKGROUP_P_H
 #define TASKGROUP_P_H
 
-#include "actionpanelscheme.h"
 #include "actionlabel.h"
+#include "actionpanelscheme.h"
 
-#include <QFrame>
 #include <QBoxLayout>
+#include <QFrame>
 
 
 namespace QSint
@@ -40,9 +40,9 @@ public:
   QPixmap transparentRender();
 
 protected:
-  virtual void paintEvent ( QPaintEvent * event );
-  virtual void keyPressEvent ( QKeyEvent * event );
-  virtual void keyReleaseEvent ( QKeyEvent * event );
+  void paintEvent ( QPaintEvent * event ) override;
+  void keyPressEvent ( QKeyEvent * event ) override;
+  void keyReleaseEvent ( QKeyEvent * event ) override;
 
   ActionPanelScheme *myScheme;
 

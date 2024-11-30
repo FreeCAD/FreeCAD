@@ -31,19 +31,19 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderRevolution : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderRevolution);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderRevolution);
 
 public:
     /// constructor
     ViewProviderRevolution();
     /// destructor
-    virtual ~ViewProviderRevolution();
+    ~ViewProviderRevolution() override;
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /// Returns a newly created TaskDlgRevolutionParameters
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 
 };

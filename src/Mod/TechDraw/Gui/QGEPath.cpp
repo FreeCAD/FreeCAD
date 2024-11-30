@@ -22,57 +22,38 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QVector2D>
+# include <QGraphicsScene>
+# include <QGraphicsSceneHoverEvent>
+# include <QKeyEvent>
+# include <QPainterPath>
+# include <QPainterPathStroker>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "DrawGuiStd.h"
+#include "QGEPath.h"
 #include "PreferencesGui.h"
+#include "QGILeaderLine.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
-#include "QGILeaderLine.h"
-#include "QGEPath.h"
+#include "Rez.h"
+#include "ZVALUE.h"
+#include "DrawGuiUtil.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
+using DGU = DrawGuiUtil;
 
 QGMarker::QGMarker(int idx) : QGIVertex(idx),
     m_dragging(false)
 {
 //    Base::Console().Message("QGMarker::QGMarker(%d)\n", idx);
     setFlag(QGraphicsItem::ItemIsMovable, true);
-}
-
-QVariant QGMarker::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-//    Base::Console().Message("QGMarker::itemChange(%d)\n",change);
-    return QGIVertex::itemChange(change, value);
-}
-
-void QGMarker::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-//    Base::Console().Message("QGMarker::hoverEnterEvent(%d)\n",getProjIndex());
-    QGIVertex::hoverEnterEvent(event);
-}
-
-void QGMarker::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-//    Base::Console().Message("QGMarker::hoverLeaveEvent(%d)\n",getProjIndex());
-    QGIVertex::hoverLeaveEvent(event);
 }
 
 void QGMarker::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -84,7 +65,9 @@ void QGMarker::mousePressEvent(QGraphicsSceneMouseEvent * event)
         Q_EMIT endEdit();
         event->accept();
         return;
-    } else if(scene() && this == scene()->mouseGrabberItem()) {
+    }
+
+    if(scene() && this == scene()->mouseGrabberItem()) {
         //start dragging
         m_dragging = true;
         Q_EMIT dragging(pos(), getProjIndex());      //pass center of marker[i] to epath
@@ -92,15 +75,10 @@ void QGMarker::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGIVertex::mousePressEvent(event);
 }
 
-void QGMarker::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-//    Base::Console().Message("QGMarker::mouseMoveEvent(%d)\n", getProjIndex());
-    QGIVertex::mouseMoveEvent(event);
-}
-
 void QGMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-    if (event->button() == Qt::RightButton) {    //we're done
+    if (event->button() == Qt::RightButton) {
+        // we are finished our edit session
         Q_EMIT endEdit();
         m_dragging = false;
         return;
@@ -110,6 +88,7 @@ void QGMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         if (m_dragging) {
             m_dragging = false;
             setSelected(false);
+            // send this marker's new position to QGEPath
             Q_EMIT dragFinished(pos(), getProjIndex());      //pass center of marker[i] to epath
         }
     }
@@ -118,9 +97,11 @@ void QGMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void QGMarker::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGMarker::mouseDoubleClickEvent(%d)\n",getProjIndex());
+//    Base::Console().Message("QGMarker::mouseDoubleClickEvent(%d)\n", getProjIndex());
     if (event->button() == Qt::RightButton) {    //we're done
+        // we are finished our edit session
         Q_EMIT endEdit();
+        m_dragging = false;
         return;
     }
     QGIVertex::mouseDoubleClickEvent(event);
@@ -128,40 +109,36 @@ void QGMarker::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 
 void QGMarker::keyPressEvent(QKeyEvent * event)
 {
-//    Base::Console().Message("QGMarker::keyPressEvent(%d)\n",getProjIndex());
+//    Base::Console().Message("QGMarker::keyPressEvent(%d)\n", getProjIndex());
     if (event->key() == Qt::Key_Escape) {
+        m_dragging = false;
         Q_EMIT endEdit();
     }
     QGIVertex::keyPressEvent(event);
 }
 
-void QGMarker::setRadius(float r)
+//! adjust the size of this marker
+void QGMarker::setRadius(float radius)
 {
     //TODO:: implement different marker shapes. circle, square, triangle, ???
     //if (m_markerShape == Circle) { ...
     //setRect(QRectF) for rectangular markers
-    m_radius = r;
-    QPainterPath p;
-    p.addRect(-r/2.0, -r/2.0, r, r);
-    setPath(p);
-}
-
-void QGMarker::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
-{
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    //~ painter->drawRect(boundingRect());          //good for debugging
-
-    QGIVertex::paint (painter, &myOption, widget);
+    m_radius = radius;
+    QPainterPath pPath;
+    pPath.addRect(-radius/2.0, -radius/2.0, radius, radius);
+    setPath(pPath);
 }
 
 //******************************************************************************
 
-QGEPath::QGEPath(QGILeaderLine* leader) :
+
+//! QGEPath is an editable version of QGIPrimPath.  Points along the path can be dragged to new
+//! positions that are returned to the caller on completion of the edit session.    The points are in
+//! scene coordinates and are relative to the scene position of the caller.
+
+QGEPath::QGEPath() :
     m_scale(1.0),
     m_inEdit(false),
-    m_parentLeader(leader),
     m_startAdj(0.0),
     m_endAdj(0.0)
 {
@@ -170,7 +147,7 @@ QGEPath::QGEPath(QGILeaderLine* leader) :
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     m_ghost = new QGIPrimPath();       //drawing/editing line
     m_ghost->setParentItem(this);
@@ -183,7 +160,7 @@ QGEPath::QGEPath(QGILeaderLine* leader) :
 
 QVariant QGEPath::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-//    Base::Console().Message("QGEP::itemChange(%d) - type: %d\n", change,type() - QGraphicsItem::UserType);
+//    Base::Console().Message("QGEP::itemChange(%d) - type: %d\n", change, type() - QGraphicsItem::UserType);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             Q_EMIT selected(true);
@@ -207,14 +184,14 @@ void QGEPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGEPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    QGIView *view = dynamic_cast<QGIView *> (parentItem());
-    assert(view != 0);
+    auto view = dynamic_cast<QGIView *> (parentItem());
+    assert(view);
     Q_UNUSED(view);
 
     Q_EMIT hover(false);
     QGraphicsItem* parent = parentItem();
     bool parentSel(false);
-    if (parent != nullptr) {
+    if (parent) {
         parentSel = parent->isSelected();
     }
     if (!parentSel  && !isSelected()) {
@@ -224,7 +201,9 @@ void QGEPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //    QGIPrimPath::hoverLeaveEvent(event);  //QGIPP::hoverleave will reset pretty to normal
 }
 
-void QGEPath::startPathEdit(std::vector<QPointF> pathPoints)
+
+//! this begins an edit session for a path described by pathPoints.
+void QGEPath::startPathEdit(const std::vector<QPointF>& pathPoints)
 {
 //    Base::Console().Message("QGEPath::startPathEdit()\n");
     inEdit(true);
@@ -232,7 +211,7 @@ void QGEPath::startPathEdit(std::vector<QPointF> pathPoints)
     showMarkers(m_ghostPoints);
 }
 
-void QGEPath::showMarkers(std::vector<QPointF> points)
+void QGEPath::showMarkers(const std::vector<QPointF>& points)
 {
 //    Base::Console().Message("QGEPath::showMarkers()\n");
     if (!inEdit()) {
@@ -254,25 +233,24 @@ void QGEPath::showMarkers(std::vector<QPointF> points)
         v->setFlag(QGraphicsItem::ItemIsFocusable, true);
         v->setParentItem(this);
         QObject::connect(
-            v, SIGNAL(dragFinished(QPointF, int)),
-            this     , SLOT  (onDragFinished(QPointF, int))
+            v, &QGMarker::dragFinished,
+            this, &QGEPath::onDragFinished
            );
         QObject::connect(
-            v, SIGNAL(dragging(QPointF, int)),
-            this     , SLOT  (onDragging(QPointF, int))
+            v, &QGMarker::dragging,
+            this, &QGEPath::onDragging
            );
         QObject::connect(
-            v, SIGNAL(doubleClick(QPointF, int)),
-            this     , SLOT  (onDoubleClick(QPointF, int))
+            v, &QGMarker::doubleClick,
+            this, &QGEPath::onDoubleClick
            );
         QObject::connect(
-            v, SIGNAL(endEdit()),
-            this     , SLOT  (onEndEdit())
+            v, &QGMarker::endEdit,
+            this, &QGEPath::onEndEdit
            );
-//TODO: double r = getMarkerSize();
-//      v->setRadius(r);
-        v->setRadius(50.0);
-        v->setNormalColor(QColor(Qt::black));
+        v->setRadius(PreferencesGui::get3dMarkerSize());
+        // v->setRadius(50.0);  // this make a huge marker
+        v->setNormalColor(PreferencesGui::getAccessibleQColor(QColor(Qt::black)));
         v->setZValue(ZVALUE::VERTEX);
         v->setPos(p);
         v->show();
@@ -289,10 +267,10 @@ void QGEPath::clearMarkers()
         return;
     }
     for (auto& m: m_markers) {
-        if (m != nullptr) {
+        if (m) {
             m->hide();
             QGraphicsScene* s = m->scene();
-            if (s != nullptr) {
+            if (s) {
                 s->removeItem(m);           //should this be setParentItem(nullptr) instead??
             }
             delete m;
@@ -330,10 +308,10 @@ void QGEPath::onDoubleClick(QPointF pos, int markerIndex)
     onEndEdit();
 }
 
-void QGEPath::onEndEdit(void)
+void QGEPath::onEndEdit()
 {
 //    Base::Console().Message("QGEPath::onEndEdit()\n");
-    if (m_ghost != nullptr) {
+    if (m_ghost) {
         scene()->removeItem(m_ghost);   //stop ghost from messing up brect
     }
     inEdit(false);
@@ -342,36 +320,11 @@ void QGEPath::onEndEdit(void)
     clearMarkers();
 }
 
-std::vector<QPointF> QGEPath::getDeltasFromLeader(void)
-{
-    std::vector<QPointF> qDeltas;
-    if (m_parentLeader == nullptr) {
-        Base::Console().Message("QGEP::getDeltasFromLeader - m_parentLeader is nullptr\n");
-        return qDeltas;
-    }
-
-    DrawLeaderLine* featLeader = m_parentLeader->getFeature();
-    if (featLeader == nullptr) {
-        Base::Console().Message("QGEP::getDeltasFromLeader - featLeader is nullptr\n");
-        return  qDeltas;
-    }
-
-    std::vector<Base::Vector3d> vDeltas = featLeader->WayPoints.getValues();
-    for (auto& d: vDeltas) {
-        Base::Vector3d vTemp = Rez::guiX(d);
-        QPointF temp(vTemp.x, -vTemp.y);
-        qDeltas.push_back(temp);
-    }
-    if (qDeltas.empty()) {
-        Base::Console().Warning("QGEPath::getDeltasFromLeader - no points\n");
-    }
-    return qDeltas;
-}
 
 //announce points editing is finished
-void QGEPath::updateParent(void)
+void QGEPath::updateParent()
 {
-//    Base::Console().Message("QGEPath::updateParent() - inEdit: %d pts: %d\n",inEdit(), m_ghostPoints.size());
+//    Base::Console().Message("QGEPath::updateParent() - inEdit: %d pts: %d\n", inEdit(), m_ghostPoints.size());
 //    dumpGhostPoints("QGEP::updateParent");
     QPointF attach = m_ghostPoints.front();
     if (!inEdit()) {
@@ -379,11 +332,11 @@ void QGEPath::updateParent(void)
     }
 }
 
-//the ghost is the red line drawn when creating or editing the Leader points
-void QGEPath::drawGhost(void)
+//! the ghost is the red line drawn when creating or editing the points
+void QGEPath::drawGhost()
 {
 //    Base::Console().Message("QGEPath::drawGhost()\n");
-    if (m_ghost->scene() == nullptr) {
+    if (!m_ghost->scene()) {
         m_ghost->setParentItem(this);
     }
     QPainterPath qpp;
@@ -419,18 +372,9 @@ QPainterPath QGEPath::shape() const
     return outline;
 }
 
- double QGEPath::getEdgeFuzz(void) const
+ double QGEPath::getEdgeFuzz() const
 {
     return PreferencesGui::edgeFuzz();
-}
-
-void QGEPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//     painter->drawRect(boundingRect());          //good for debugging
-
-    QGIPrimPath::paint (painter, &myOption, widget);
 }
 
 void QGEPath::dumpGhostPoints(const char* text)
@@ -438,7 +382,7 @@ void QGEPath::dumpGhostPoints(const char* text)
     int idb = 0;
     for (auto& d: m_ghostPoints) {
         Base::Console().Message("%s - point: %d %s\n", text,
-                                 idb,TechDraw::DrawUtil::formatVector(d).c_str());
+                                 idb, TechDraw::DrawUtil::formatVector(d).c_str());
         idb++;
     }
 }
@@ -448,7 +392,7 @@ void QGEPath::dumpMarkerPos(const char* text)
     int idb = 0;
     for (auto& m: m_markers) {
         Base::Console().Message("QGEP - %s - markerPos: %d %s\n", text,
-                                 idb,TechDraw::DrawUtil::formatVector(m->pos()).c_str());
+                                 idb, TechDraw::DrawUtil::formatVector(m->pos()).c_str());
         idb++;
     }
 }

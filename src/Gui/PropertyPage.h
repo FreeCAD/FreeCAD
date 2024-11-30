@@ -1,24 +1,26 @@
-/***************************************************************************
- *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+ // SPDX-License-Identifier: LGPL-2.1-or-later
+
+ /****************************************************************************
+  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>      *
+  *   Copyright (c) 2023 FreeCAD Project Association                         *
+  *                                                                          *
+  *   This file is part of FreeCAD.                                          *
+  *                                                                          *
+  *   FreeCAD is free software: you can redistribute it and/or modify it     *
+  *   under the terms of the GNU Lesser General Public License as            *
+  *   published by the Free Software Foundation, either version 2.1 of the   *
+  *   License, or (at your option) any later version.                        *
+  *                                                                          *
+  *   FreeCAD is distributed in the hope that it will be useful, but         *
+  *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+  *   Lesser General Public License for more details.                        *
+  *                                                                          *
+  *   You should have received a copy of the GNU Lesser General Public       *
+  *   License along with FreeCAD. If not, see                                *
+  *   <https://www.gnu.org/licenses/>.                                       *
+  *                                                                          *
+  ***************************************************************************/
 
 
 #ifndef GUI_DIALOG_PROPERTYPAGE_H
@@ -38,10 +40,10 @@ class GuiExport PropertyPage : public QWidget
     Q_OBJECT
 
 public:
-    PropertyPage(QWidget* parent = 0);
-    virtual ~PropertyPage();
+    explicit PropertyPage(QWidget* parent = nullptr);
+    ~PropertyPage() override = default;
 
-    bool isModified();
+    bool isModified() const;
     void setModified(bool b);
     void onApply();
     void onCancel();
@@ -68,15 +70,26 @@ class GuiExport PreferencePage : public QWidget
     Q_OBJECT
 
 public:
-    PreferencePage(QWidget* parent = 0);
-    virtual ~PreferencePage();
+    explicit PreferencePage(QWidget* parent = nullptr);
+    ~PreferencePage() override = default;
+
+    bool isRestartRequired() const;
+    void requireRestart();
+    
+    // this fixes issue with wordWrap on labels affecting size hints:
+    // https://stackoverflow.com/questions/78276854/layout-ignoring-sizehints-when-qlabel-with-text-wrap-is-present
+    bool hasHeightForWidth() const override { return false; }
 
 public Q_SLOTS:
     virtual void loadSettings()=0;
     virtual void saveSettings()=0;
+    virtual void resetSettingsToDefaults();
 
 protected:
-    virtual void changeEvent(QEvent *e) = 0;
+    void changeEvent(QEvent* event) override = 0;
+
+private:
+    bool restartRequired;
 };
 
 /** Subclass that embeds a form from a UI file.
@@ -87,14 +100,16 @@ class GuiExport PreferenceUiForm : public PreferencePage
     Q_OBJECT
 
 public:
-    PreferenceUiForm(const QString& fn, QWidget* parent = 0);
-    virtual ~PreferenceUiForm();
+    explicit PreferenceUiForm(const QString& fn, QWidget* parent = nullptr);
+    ~PreferenceUiForm() override;
 
-    void loadSettings();
-    void saveSettings();
+    void loadSettings() override;
+    void saveSettings() override;
+
+    QWidget* form();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     template <typename PW>
@@ -103,7 +118,7 @@ private:
     void savePrefWidgets();
 
 private:
-    QWidget* form;
+    QWidget* _form;
 };
 
 /** Base class for custom pages.
@@ -114,12 +129,12 @@ class GuiExport CustomizeActionPage : public QWidget
     Q_OBJECT
 
 public:
-    CustomizeActionPage(QWidget* parent = 0);
-    virtual ~CustomizeActionPage();
+    explicit CustomizeActionPage(QWidget* parent = nullptr);
+    ~CustomizeActionPage() override;
 
 protected:
-    bool event(QEvent* e);
-    virtual void changeEvent(QEvent *e) = 0;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent *e) override = 0;
 
 protected Q_SLOTS:
     virtual void onAddMacroAction(const QByteArray&)=0;

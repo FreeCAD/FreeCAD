@@ -26,18 +26,20 @@
 
 #include <boost_signals2.hpp>
 
-#include <vector>
 #include <deque>
+#include <vector>
 
-#include <Base/PyObjectBase.h>
-#include <Base/Parameter.h>
 #include <Base/Observer.h>
+#include <Base/Parameter.h>
 
+// forward declarations
+using PyObject = struct _object;
+using PyMethodDef = struct PyMethodDef;
 
 namespace Base
 {
-    class ConsoleObserverStd;
-    class ConsoleObserverFile;
+class ConsoleObserverStd;
+class ConsoleObserverFile;
 }
 
 namespace App
@@ -61,6 +63,12 @@ enum GetLinkOption {
     GetLinkExternal = 8,
 };
 
+enum class MessageOption {
+    Quiet, /**< Suppress error. */
+    Error, /**< Print an error message. */
+    Throw, /**< Throw an exception. */
+};
+
 
 /** The Application
  *  The root of the whole application
@@ -70,7 +78,6 @@ class AppExport Application
 {
 
 public:
-
     //---------------------------------------------------------------------
     // exported functions go here +++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
@@ -86,14 +93,14 @@ public:
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
-    App::Document* newDocument(const char * Name=0l, const char * UserName=0l,
+    App::Document* newDocument(const char * Name=nullptr, const char * UserName=nullptr,
             bool createView=true, bool tempDoc=false);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=0l, bool createView=true);
+    App::Document* openDocument(const char * FileName=nullptr, bool createView=true);
     /** Open multiple documents
      *
      * @param filenames: input file names
@@ -112,12 +119,12 @@ public:
      * This function will also open any external referenced files.
      */
     std::vector<Document*> openDocuments(const std::vector<std::string> &filenames,
-            const std::vector<std::string> *paths=0,
-            const std::vector<std::string> *labels=0,
-            std::vector<std::string> *errs=0,
+            const std::vector<std::string> *paths=nullptr,
+            const std::vector<std::string> *labels=nullptr,
+            std::vector<std::string> *errs=nullptr,
             bool createView = true);
     /// Retrieve the active document
-    App::Document* getActiveDocument(void) const;
+    App::Document* getActiveDocument() const;
     /// Retrieve a named document
     App::Document* getDocument(const char *Name) const;
 
@@ -155,7 +162,7 @@ public:
     void setActiveDocument(App::Document* pDoc);
     void setActiveDocument(const char *Name);
     /// close all documents (without saving)
-    void closeAllDocuments(void);
+    void closeAllDocuments();
     /// Add pending document to open together with the current opening document
     int addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
     /// Indicate whether the application is opening (restoring) some document
@@ -184,7 +191,7 @@ public:
      */
     int setActiveTransaction(const char *name, bool persist=false);
     /// Return the current active transaction name and ID
-    const char *getActiveTransaction(int *tid=0) const;
+    const char *getActiveTransaction(int *tid=nullptr) const;
     /** Commit/abort current active transactions
      *
      * @param abort: whether to abort or commit the transactions
@@ -197,6 +204,8 @@ public:
     void closeActiveTransaction(bool abort=false, int id=0);
     //@}
 
+    // NOLINTBEGIN
+    // clang-format off
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
@@ -303,15 +312,17 @@ public:
     boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
     /// signal after the extension was added
     boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
-     //@}
+    //@}
+    // clang-format off
+    // NOLINTEND
 
 
     /** @name methods for parameter handling */
     //@{
     /// returns the system parameter
-    ParameterManager &                                GetSystemParameter(void) ;
+    ParameterManager &                                GetSystemParameter();
     /// returns the user parameter
-    ParameterManager &                                GetUserParameter(void) ;
+    ParameterManager &                                GetUserParameter();
     /** Gets a parameter group by a full qualified path
      * It's an easy method to get a group:
      * \code
@@ -324,7 +335,7 @@ public:
     Base::Reference<ParameterGrp>                     GetParameterGroupByPath(const char* sName);
 
     ParameterManager *                                GetParameterSet(const char* sName) const;
-    const std::map<std::string,ParameterManager *> &  GetParameterSetList(void) const;
+    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList() const;
     void AddParameterSet(const char* sName);
     void RemoveParameterSet(const char* sName);
     //@}
@@ -352,11 +363,11 @@ public:
     /// Return a list of filetypes that are supported by a module.
     std::vector<std::string> getImportTypes(const char* Module) const;
     /// Return a list of all filetypes.
-    std::vector<std::string> getImportTypes(void) const;
+    std::vector<std::string> getImportTypes() const;
     /// Return the import filters with modules of a given filetype.
     std::map<std::string, std::string> getImportFilters(const char* Type) const;
     /// Return a list of all import filters.
-    std::map<std::string, std::string> getImportFilters(void) const;
+    std::map<std::string, std::string> getImportFilters() const;
     //@}
     //@{
     /// Register an export filetype and a module name
@@ -370,27 +381,28 @@ public:
     /// Return a list of filetypes that are supported by a module.
     std::vector<std::string> getExportTypes(const char* Module) const;
     /// Return a list of all filetypes.
-    std::vector<std::string> getExportTypes(void) const;
+    std::vector<std::string> getExportTypes() const;
     /// Return the export filters with modules of a given filetype.
     std::map<std::string, std::string> getExportFilters(const char* Type) const;
     /// Return a list of all export filters.
-    std::map<std::string, std::string> getExportFilters(void) const;
+    std::map<std::string, std::string> getExportFilters() const;
     //@}
 
     /** @name Init, Destruct an Access methods */
     //@{
     static void init(int argc, char ** argv);
-    static void initTypes(void);
-    static void destruct(void);
-    static void destructObserver(void);
-    static void processCmdLineFiles(void);
+    static void initTypes();
+    static void destruct();
+    static void destructObserver();
+    static void processCmdLineFiles();
     static std::list<std::string> getCmdLineFiles();
     static std::list<std::string> processFiles(const std::list<std::string>&);
-    static void runApplication(void);
-    friend Application &GetApplication(void);
-    static std::map<std::string,std::string> &Config(void){return mConfig;}
-    static int GetARGC(void){return _argc;}
-    static char** GetARGV(void){return _argv;}
+    static void runApplication();
+    friend Application &GetApplication();
+    static std::map<std::string, std::string> &Config(){return mConfig;}
+    static int GetARGC(){return _argc;}
+    static char** GetARGV(){return _argv;}
+    static int64_t applicationPid();
     //@}
 
     /** @name Application directories */
@@ -402,12 +414,13 @@ public:
      system's temporary directory but can be customized by the user.
      */
     static std::string getTempPath();
-    static std::string getTempFileName(const char* FileName=0);
+    static std::string getTempFileName(const char* FileName=nullptr);
     static std::string getUserCachePath();
     static std::string getUserConfigPath();
     static std::string getUserAppDataDir();
     static std::string getUserMacroDir();
     static std::string getResourceDir();
+    static std::string getLibraryDir();
     static std::string getHelpDir();
     //@}
 
@@ -417,14 +430,15 @@ public:
     /** Check for link recursion depth
      *
      * @param depth: current depth
-     * @param no_throw: whether to throw exception
+     * @param option: whether to throw exception, print an error message or quieten any output.
+     * In the latter case the caller must check the returned value.
      *
      * @return Return the maximum remaining depth.
      *
      * The function uses an internal count of all objects in all documents as
      * the limit of recursion depth.
      */
-    int checkLinkDepth(int depth, bool no_throw=true);
+    int checkLinkDepth(int depth, MessageOption option = MessageOption::Error);
 
     /** Return the links to a given object
      *
@@ -477,7 +491,7 @@ protected:
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {
     public:
-        TransactionSignaller(bool abort,bool signal);
+        TransactionSignaller(bool abort, bool signal);
         ~TransactionSignaller();
     private:
         bool abort;
@@ -485,7 +499,7 @@ protected:
 
 private:
     /// Constructor
-    Application(std::map<std::string,std::string> &mConfig);
+    explicit Application(std::map<std::string, std::string> &mConfig);
     /// Destructor
     virtual ~Application();
 
@@ -493,35 +507,39 @@ private:
 
     /** @name member for parameter */
     //@{
-    static ParameterManager *_pcSysParamMngr;
-    static ParameterManager *_pcUserParamMngr;
+    static Base::Reference<ParameterManager> _pcSysParamMngr;
+    static Base::Reference<ParameterManager> _pcUserParamMngr;
     //@}
 
     //---------------------------------------------------------------------
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
+    static void setupPythonTypes();
+    static void setupPythonException(PyObject*);
 
+    // clang-format off
     // static python wrapper of the exported functions
-    static PyObject* sGetParam          (PyObject *self,PyObject *args);
-    static PyObject* sSaveParameter     (PyObject *self,PyObject *args);
-    static PyObject* sGetVersion        (PyObject *self,PyObject *args);
-    static PyObject* sGetConfig         (PyObject *self,PyObject *args);
-    static PyObject* sSetConfig         (PyObject *self,PyObject *args);
-    static PyObject* sDumpConfig        (PyObject *self,PyObject *args);
-    static PyObject* sAddImportType     (PyObject *self,PyObject *args);
-    static PyObject* sChangeImportModule(PyObject *self,PyObject *args);
-    static PyObject* sGetImportType     (PyObject *self,PyObject *args);
-    static PyObject* sAddExportType     (PyObject *self,PyObject *args);
-    static PyObject* sChangeExportModule(PyObject *self,PyObject *args);
-    static PyObject* sGetExportType     (PyObject *self,PyObject *args);
-    static PyObject* sGetResourcePath   (PyObject *self,PyObject *args);
-    static PyObject* sGetTempPath       (PyObject *self,PyObject *args);
-    static PyObject* sGetUserCachePath  (PyObject *self,PyObject *args);
-    static PyObject* sGetUserConfigPath (PyObject *self,PyObject *args);
-    static PyObject* sGetUserAppDataPath(PyObject *self,PyObject *args);
-    static PyObject* sGetUserMacroPath  (PyObject *self,PyObject *args);
-    static PyObject* sGetHelpPath       (PyObject *self,PyObject *args);
-    static PyObject* sGetHomePath       (PyObject *self,PyObject *args);
+    static PyObject* sGetParam          (PyObject *self, PyObject *args);
+    static PyObject* sSaveParameter     (PyObject *self, PyObject *args);
+    static PyObject* sGetVersion        (PyObject *self, PyObject *args);
+    static PyObject* sGetConfig         (PyObject *self, PyObject *args);
+    static PyObject* sSetConfig         (PyObject *self, PyObject *args);
+    static PyObject* sDumpConfig        (PyObject *self, PyObject *args);
+    static PyObject* sAddImportType     (PyObject *self, PyObject *args);
+    static PyObject* sChangeImportModule(PyObject *self, PyObject *args);
+    static PyObject* sGetImportType     (PyObject *self, PyObject *args);
+    static PyObject* sAddExportType     (PyObject *self, PyObject *args);
+    static PyObject* sChangeExportModule(PyObject *self, PyObject *args);
+    static PyObject* sGetExportType     (PyObject *self, PyObject *args);
+    static PyObject* sGetResourcePath   (PyObject *self, PyObject *args);
+    static PyObject* sGetLibraryPath    (PyObject *self, PyObject *args);
+    static PyObject* sGetTempPath       (PyObject *self, PyObject *args);
+    static PyObject* sGetUserCachePath  (PyObject *self, PyObject *args);
+    static PyObject* sGetUserConfigPath (PyObject *self, PyObject *args);
+    static PyObject* sGetUserAppDataPath(PyObject *self, PyObject *args);
+    static PyObject* sGetUserMacroPath  (PyObject *self, PyObject *args);
+    static PyObject* sGetHelpPath       (PyObject *self, PyObject *args);
+    static PyObject* sGetHomePath       (PyObject *self, PyObject *args);
 
     static PyObject* sLoadFile          (PyObject *self,PyObject *args);
     static PyObject* sOpenDocument      (PyObject *self,PyObject *args, PyObject *kwd);
@@ -550,14 +568,15 @@ private:
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
     static PyMethodDef    Methods[];
+    // clang-format on
 
     friend class ApplicationObserver;
 
     /** @name  Private Init, Destruct an Access methods */
     //@{
     static void initConfig(int argc, char ** argv);
-    static void initApplication(void);
-    static void logStatus(void);
+    static void initApplication();
+    static void logStatus();
     // the one and only pointer to the application object
     static Application *_pcSingleton;
     /// checks if the environment is alright
@@ -568,11 +587,11 @@ private:
      */
     static std::string FindHomePath(const char* sCall);
     /// Print the help message
-    static void PrintInitHelp(void);
+    static void PrintInitHelp();
     /// figure out some things
     static void ExtractUserPath();
     /// load the user and system parameter set
-    static void LoadParameters(void);
+    static void LoadParameters();
     /// puts the given env variable in the config
     static void SaveEnv(const char *);
     /// startup configuration container
@@ -592,9 +611,9 @@ private:
     std::vector<FileTypeItem> _mExportTypes;
     std::map<std::string,Document*> DocMap;
     mutable std::map<std::string,Document*> DocFileMap;
-    std::map<std::string,ParameterManager *> mpcPramManager;
+    std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
-    App::Document* _pActiveDoc;
+    App::Document* _pActiveDoc{nullptr};
 
     std::deque<std::string> _pendingDocs;
     std::deque<std::string> _pendingDocsReopen;
@@ -604,26 +623,26 @@ private:
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
 
-    bool _isRestoring;
-    bool _allowPartial;
-    bool _isClosingAll;
+    bool _isRestoring{false};
+    bool _allowPartial{false};
+    bool _isClosingAll{false};
 
     // for estimate max link depth
-    int _objCount;
+    int _objCount{-1};
 
     friend class AutoTransaction;
 
     std::string _activeTransactionName;
-    int _activeTransactionID;
-    int _activeTransactionGuard;
-    bool _activeTransactionTmpName;
+    int _activeTransactionID{0};
+    int _activeTransactionGuard{0};
+    bool _activeTransactionTmpName{false};
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
 };
 
 /// Singleton getter of the Application
-inline App::Application &GetApplication(void){
+inline App::Application &GetApplication(){
     return *App::Application::_pcSingleton;
 }
 

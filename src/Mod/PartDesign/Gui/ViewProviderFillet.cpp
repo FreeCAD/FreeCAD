@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "TaskFilletParameters.h"
 #include "ViewProviderFillet.h"
 
@@ -39,6 +36,11 @@ const std::string & ViewProviderFillet::featureName() const {
     return name;
 }
 
+void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit fillet"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
 
 TaskDlgFeatureParameters *ViewProviderFillet::getEditDialog() {
     return new TaskDlgFilletParameters (this);

@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2024 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -34,7 +35,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import draftobjects.fillet as fillet
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -47,64 +48,48 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 ## \addtogroup draftmake
 # @{
 
-
-def _print_obj_length(obj, edge, num=1):
-    if hasattr(obj, "Label"):
-        name = obj.Label
+def _preprocess(objs, radius, chamfer):
+    """Check the inputs and return the edges for the fillet and the objects to be deleted."""
+    edges = []
+    del_objs = []
+    if objs[0].isDerivedFrom("Gui::SelectionObject"):
+        for sel in objs:
+            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+                shape = sel.Object.getSubObject(sub)
+                if shape.ShapeType == "Edge":
+                    edges.append(shape)
+                    if sel.Object not in del_objs:
+                        del_objs.append(sel.Object)
     else:
-        name = num
+        for obj in objs:
+            if hasattr(obj, "Shape"):
+                shape = obj.Shape
+                del_objs.append(obj)
+            else:
+                shape = obj
+            if hasattr(shape, "ShapeType") and shape.ShapeType in ("Wire", "Edge"):
+                edges.append(shape.Edges[0])
 
-    _msg("({0}): {1}; {2} {3}".format(num, name,
-                                      translate("draft","length:"), edge.Length))
+    if len(edges) != 2:
+        _err(translate("draft", "Two edges are needed."))
+        return None, None
 
+    edges = DraftGeomUtils.fillet(edges, radius, chamfer)
+    if len(edges) < 3:
+        _err(translate("draft", "Edges are not connected or radius is too large."))
+        return None, None
 
-def _extract_edges(objs):
-    """Extract the edges from the list of objects, Draft lines or Part.Edges.
-
-    Parameters
-    ----------
-    objs: list of Draft Lines or Part.Edges
-        The list of edges from which to create the fillet.
-    """
-    o1, o2 = objs
-    if hasattr(o1, "PropertiesList"):
-        if "Proxy" in o1.PropertiesList:
-            if hasattr(o1.Proxy, "Type"):
-                if o1.Proxy.Type in ("Wire", "Fillet"):
-                    e1 = o1.Shape.Edges[0]
-        elif "Shape" in o1.PropertiesList:
-            if o1.Shape.ShapeType in ("Wire", "Edge"):
-                e1 = o1.Shape
-    elif hasattr(o1, "ShapeType"):
-        if o1.ShapeType in "Edge":
-            e1 = o1
-
-    _print_obj_length(o1, e1, num=1)
-
-    if hasattr(o2, "PropertiesList"):
-        if "Proxy" in o2.PropertiesList:
-            if hasattr(o2.Proxy, "Type"):
-                if o2.Proxy.Type in ("Wire", "Fillet"):
-                    e2 = o2.Shape.Edges[0]
-        elif "Shape" in o2.PropertiesList:
-            if o2.Shape.ShapeType in ("Wire", "Edge"):
-                e2 = o2.Shape
-    elif hasattr(o2, "ShapeType"):
-        if o2.ShapeType in "Edge":
-            e2 = o2
-
-    _print_obj_length(o2, e2, num=2)
-
-    return e1, e2
+    return edges, del_objs
 
 
 def make_fillet(objs, radius=100, chamfer=False, delete=False):
-    """Create a fillet between two lines or Part.Edges.
+    """Create a fillet between two edges.
 
     Parameters
     ----------
     objs: list
-        List of two objects of type wire, or edges.
+        A list of two objects or shapes of type wire (1st edge is used) or edge,
+        or a 2 edge selection set:`FreeCADGui.Selection.getSelectionEx("", 0)`.
 
     radius: float, optional
         It defaults to 100. The curvature of the fillet.
@@ -115,9 +100,8 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         with the value of the `radius`.
 
     delete: bool, optional
-        It defaults to `False`. If it is `True` it will delete
-        the pair of objects that are used to create the fillet.
-        Otherwise, the original objects will still be there.
+        It defaults to `False`. If `True` the source objects are deleted.
+        Ignored for shapes.
 
     Returns
     -------
@@ -125,33 +109,18 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         The object of Proxy type `'Fillet'`.
         It returns `None` if it fails producing the object.
     """
-    _name = "make_fillet"
-    utils.print_header(_name, "Fillet")
 
-    if len(objs) != 2:
-        _err(translate("draft","Two elements are needed."))
-        return None
-
-    e1, e2 = _extract_edges(objs)
-
-    edges = DraftGeomUtils.fillet([e1, e2], radius, chamfer)
-    if len(edges) < 3:
-        _err(translate("draft","Radius is too large") + ", r={}".format(radius))
-        return None
-
-    lengths = [edges[0].Length, edges[1].Length, edges[2].Length]
-    _msg(translate("draft","Segment") + " 1, " + translate("draft","length:") + " {}".format(lengths[0]))
-    _msg(translate("draft","Segment") + " 2, " + translate("draft","length:") + " {}".format(lengths[1]))
-    _msg(translate("draft","Segment") + " 3, " + translate("draft","length:") + " {}".format(lengths[2]))
+    edges, del_objs = _preprocess(objs, radius, chamfer)
+    if edges is None:
+        return
 
     try:
         wire = Part.Wire(edges)
     except Part.OCCError:
         return None
 
-    _doc = App.activeDocument()
-    obj = _doc.addObject("Part::Part2DObjectPython",
-                         "Fillet")
+    doc = App.activeDocument()
+    obj = doc.addObject("Part::Part2DObjectPython", "Fillet")
     fillet.Fillet(obj)
     obj.Shape = wire
     obj.Length = wire.Length
@@ -160,15 +129,13 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
     obj.FilletRadius = radius
 
     if delete:
-        _doc.removeObject(objs[0].Name)
-        _doc.removeObject(objs[1].Name)
-        _msg(translate("draft","Removed original objects."))
+        for del_obj in del_objs:
+            doc.removeObject(del_obj.Name)
 
     if App.GuiUp:
         view_fillet.ViewProviderFillet(obj.ViewObject)
         gui_utils.format_object(obj)
         gui_utils.select(obj)
-        gui_utils.autogroup(obj)
 
     return obj
 

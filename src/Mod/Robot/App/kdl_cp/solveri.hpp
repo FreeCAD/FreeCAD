@@ -36,7 +36,7 @@ namespace KDL {
  * class MySolver : public SolverI
  * {
  * public:
- *    static const int E_CHILDFAILD = xxx;
+ *    static const int E_CHILDFAILED = xxx;
  *
  *    MySolver(SomeOtherSolver& other);
  *    virtual ~MySolver();
@@ -85,7 +85,7 @@ class SolverI
 {
 public:
     enum {
-	/// Converged but degraded solution (e.g. WDLS with psuedo-inverse singular)
+	/// Converged but degraded solution (e.g. WDLS with pseudo-inverse singular)
         E_DEGRADED         = +1,
     //! No error
         E_NOERROR          =  0,

@@ -20,29 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawView_h_
-#define _DrawView_h_
-
-#include <Mod/TechDraw/TechDrawGlobal.h>
+#ifndef DrawView_h_
+#define DrawView_h_
 
 #include <boost_signals2.hpp>
-
 #include <QCoreApplication>
 #include <QRectF>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyUnits.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace TechDraw
 {
 
 class DrawPage;
+class DrawViewCollection;
 class DrawViewClip;
 class DrawLeaderLine;
-/*class CosmeticVertex;*/
+class DrawViewPart;
 
 /** Base class of all View Features in the drawing module
  */
@@ -53,8 +51,8 @@ class TechDrawExport DrawView : public App::DocumentObject
 
 public:
     /// Constructor
-    DrawView(void);
-    virtual ~DrawView();
+    DrawView();
+    ~DrawView() override;
 
     App::PropertyDistance X;
     App::PropertyDistance Y;
@@ -68,59 +66,86 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *recompute() override;
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual void onDocumentRestored() override;
-    virtual short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
+    void onDocumentRestored() override;
+    short mustExecute() const override;
     //@}
-    virtual void handleChangedPropertyType(
+    void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     bool isInClip();
-    DrawViewClip* getClipGroup(void);
+    DrawViewClip* getClipGroup();
+    DrawViewCollection *getCollection() const;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDrawingView";
     }
     //return PyObject as DrawViewPy
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     virtual DrawPage* findParentPage() const;
     virtual std::vector<DrawPage*> findAllParentPages() const;
+    virtual DrawView *claimParent() const;
+
     virtual int countParentPages() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
-    virtual double autoScale(void) const;
+    QRectF getRectAligned() const;
+    virtual double autoScale() const;
     virtual double autoScale(double w, double h) const;
-    virtual bool checkFit(void) const;
+    virtual bool checkFit() const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y, bool force = false);
+    virtual Base::Vector3d getPosition() const { return Base::Vector3d(X.getValue(), Y.getValue(), 0.0); }
     virtual bool keepUpdated(void);
+
     boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
-    virtual double getScale(void) const;
-    void checkScale(void);
+    boost::signals2::signal<void (const DrawView*, std::string, std::string)> signalProgressMessage;
     void requestPaint(void);
+    void showProgressMessage(std::string featureName, std::string text);
+
+    virtual double getScale(void) const;
+    virtual int getScaleType() const { return ScaleType.getValue(); };
+    void checkScale(void);
+
     virtual void handleXYLock(void);
     virtual bool isLocked(void) const;
     virtual bool showLock(void) const;
 
     std::vector<TechDraw::DrawLeaderLine*> getLeaders(void) const;
 
+    void setScaleAttribute();
+
+    void overrideKeepUpdated(bool s) { m_overrideKeepUpdated = s; }
+    bool overrideKeepUpdated(void) { return m_overrideKeepUpdated; }
+
+    void translateLabel(std::string context, std::string baseName, std::string uniqueName);
+
+    virtual App::PropertyLink *getOwnerProperty() { return nullptr; }
+
+    static bool isProjGroupItem(DrawViewPart* item);
+
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+    void onBeforeChange(const App::Property *prop) override;
+    void onChanged(const App::Property* prop) override;
+    virtual void validateScale();
     std::string pageFeatName;
     bool autoPos;
     bool mouseMove;
 
-    int prefScaleType(void);
-    double prefScale(void);
+    int prefScaleType();
+    double prefScale();
+
+    void touchTreeOwner(App::DocumentObject *owner) const;
 
 private:
     static const char* ScaleTypeEnums[];
     static App::PropertyFloatConstraint::Constraints scaleRange;
+
+    bool m_overrideKeepUpdated;
 };
 
-typedef App::FeaturePythonT<DrawView> DrawViewPython;
+using DrawViewPython = App::FeaturePythonT<DrawView>;
 
 } //namespace TechDraw
 

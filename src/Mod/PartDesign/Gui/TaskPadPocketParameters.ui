@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>436</height>
+    <height>772</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -40,30 +40,203 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="minimum">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
+      <widget class="QLabel" name="labelLength2">
+       <property name="text">
+        <string>2nd length</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
       <widget class="QLabel" name="labelOffset">
        <property name="text">
         <string>Offset to face</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
-       <property name="keyboardTracking">
+     <item row="3" column="1">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="upToShapeList">
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <layout class="QVBoxLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QGridLayout" name="_2">
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineShapeName">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QToolButton" name="buttonShape">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Select shape</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxAllFaces">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Applies length symmetrically to sketch plane</string>
+        </property>
+        <property name="text">
+         <string>Select all faces</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="upToShapeFaces" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QToolButton" name="buttonShapeFace">
+           <property name="toolTip">
+            <string>Click button to enter selection mode,
+         click again to end selection</string>
+           </property>
+           <property name="text">
+            <string>Select</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListWidget" name="listWidgetReferences">
+           <property name="selectionMode">
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_5">
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="lineFaceName">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QToolButton" name="buttonFace">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Select face</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxMidplane">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Applies length symmetrically to sketch plane</string>
+     </property>
+     <property name="text">
+      <string>Symmetric to plane</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxReversed">
+     <property name="text">
+      <string>Reversed</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -128,6 +301,13 @@ the sketch plane's normal vector will be used</string>
          <bool>false</bool>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelXSkew">
+           <property name="text">
+            <string>x</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="Gui::DoubleSpinBox" name="XDirectionEdit">
            <property name="toolTip">
@@ -150,10 +330,10 @@ the sketch plane's normal vector will be used</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="labelZSkew">
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelYSkew">
            <property name="text">
-            <string>z</string>
+            <string>y</string>
            </property>
           </widget>
          </item>
@@ -179,10 +359,10 @@ the sketch plane's normal vector will be used</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="labelYSkew">
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelZSkew">
            <property name="text">
-            <string>y</string>
+            <string>z</string>
            </property>
           </widget>
          </item>
@@ -211,13 +391,6 @@ the sketch plane's normal vector will be used</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="labelXSkew">
-           <property name="text">
-            <string>x</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
@@ -239,54 +412,50 @@ measured along the specified direction</string>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxMidplane">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>Applies length symmetrically to sketch plane</string>
-     </property>
-     <property name="text">
-      <string>Symmetric to plane</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxReversed">
-     <property name="text">
-      <string>Reversed</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <widget class="QLabel" name="labelLength2">
+      <widget class="QLabel" name="labelTaperAngle">
+       <property name="toolTip">
+        <string>Angle to taper the extrusion</string>
+       </property>
        <property name="text">
-        <string>2nd length</string>
+        <string>Taper angle</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="taperEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_5">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="buttonFace">
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="labelTaperAngle2">
+       <property name="toolTip">
+        <string>Angle to taper the extrusion</string>
+       </property>
        <property name="text">
-        <string>Face</string>
+        <string>2nd taper angle</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineFaceName"/>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="taperEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -329,19 +498,21 @@ measured along the specified direction</string>
  <tabstops>
   <tabstop>changeMode</tabstop>
   <tabstop>lengthEdit</tabstop>
-  <tabstop>offsetEdit</tabstop>
-  <tabstop>directionCB</tabstop>
-  <tabstop>checkBoxAlongDirection</tabstop>
-  <tabstop>checkBoxMidplane</tabstop>
-  <tabstop>checkBoxReversed</tabstop>
   <tabstop>lengthEdit2</tabstop>
+  <tabstop>offsetEdit</tabstop>
   <tabstop>buttonFace</tabstop>
   <tabstop>lineFaceName</tabstop>
-  <tabstop>checkBoxUpdateView</tabstop>
+  <tabstop>checkBoxMidplane</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+  <tabstop>directionCB</tabstop>
   <tabstop>checkBoxDirection</tabstop>
   <tabstop>XDirectionEdit</tabstop>
   <tabstop>YDirectionEdit</tabstop>
   <tabstop>ZDirectionEdit</tabstop>
+  <tabstop>checkBoxAlongDirection</tabstop>
+  <tabstop>taperEdit</tabstop>
+  <tabstop>taperEdit2</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

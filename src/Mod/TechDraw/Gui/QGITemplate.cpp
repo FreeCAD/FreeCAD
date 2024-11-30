@@ -21,23 +21,18 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QGraphicsScene>
-#endif
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
 
-#include "ZVALUE.h"
-#include "TemplateTextField.h"
 #include "QGITemplate.h"
+#include "QGSPage.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 
-QGITemplate::QGITemplate(QGraphicsScene *scene) : QGraphicsItemGroup(),
-    pageTemplate(0)
+QGITemplate::QGITemplate(QGSPage *scene) : QGraphicsItemGroup(),
+    pageTemplate(nullptr)
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
@@ -48,17 +43,12 @@ QGITemplate::QGITemplate(QGraphicsScene *scene) : QGraphicsItemGroup(),
 
 QGITemplate::~QGITemplate()
 {
-    pageTemplate = 0;
-}
-
-QVariant QGITemplate::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGraphicsItemGroup::itemChange(change, value);
+    pageTemplate = nullptr;
 }
 
 void QGITemplate::setTemplate(TechDraw::DrawTemplate *obj)
 {
-    if(obj == 0)
+    if (!obj)
         return;
 
     pageTemplate = obj;

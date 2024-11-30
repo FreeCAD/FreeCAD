@@ -36,39 +36,13 @@
 #include "Document.h"
 #include "DlgActivateWindowImp.h"
 #include "DockWindowManager.h"
+#include "ToolBarManager.h"
 
 #include <Base/Exception.h>
 #include <App/Document.h>
 
 using namespace Gui;
 
-
-//===========================================================================
-// Std_ArrangeIcons
-//===========================================================================
-DEF_STD_CMD_A(StdCmdArrangeIcons)
-
-StdCmdArrangeIcons::StdCmdArrangeIcons()
-  : Command("Std_ArrangeIcons")
-{
-    sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Arrange &Icons");
-    sToolTipText  = QT_TR_NOOP("Arrange Icons");
-    sWhatsThis    = "Std_ArrangeIcons";
-    sStatusTip    = QT_TR_NOOP("Arrange Icons");
-    eType         = 0;
-}
-
-void StdCmdArrangeIcons::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    getMainWindow()->arrangeIcons ();
-}
-
-bool StdCmdArrangeIcons::isActive(void)
-{
-    return !(getMainWindow()->windows().isEmpty());
-}
 
 //===========================================================================
 // Std_TileWindows
@@ -93,7 +67,7 @@ void StdCmdTileWindows::activated(int iMsg)
     getMainWindow()->tile();
 }
 
-bool StdCmdTileWindows::isActive(void)
+bool StdCmdTileWindows::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -121,7 +95,7 @@ void StdCmdCascadeWindows::activated(int iMsg)
     getMainWindow()->cascade();
 }
 
-bool StdCmdCascadeWindows::isActive(void)
+bool StdCmdCascadeWindows::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -153,7 +127,7 @@ void StdCmdCloseActiveWindow::activated(int iMsg)
     getMainWindow()->closeActiveWindow();
 }
 
-bool StdCmdCloseActiveWindow::isActive(void)
+bool StdCmdCloseActiveWindow::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -181,9 +155,9 @@ void StdCmdCloseAllWindows::activated(int iMsg)
     getMainWindow()->closeAllDocuments();
 }
 
-bool StdCmdCloseAllWindows::isActive(void)
+bool StdCmdCloseAllWindows::isActive()
 {
-    return !(getMainWindow()->windows().isEmpty()) || App::GetApplication().getDocuments().size();
+    return !(getMainWindow()->windows().isEmpty()) || !App::GetApplication().getDocuments().empty();
 }
 
 //===========================================================================
@@ -210,7 +184,7 @@ void StdCmdActivateNextWindow::activated(int iMsg)
     getMainWindow()->activateNextWindow();
 }
 
-bool StdCmdActivateNextWindow::isActive(void)
+bool StdCmdActivateNextWindow::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -229,7 +203,12 @@ StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
     sWhatsThis    = "Std_ActivatePrevWindow";
     sStatusTip    = QT_TR_NOOP("Activate previous window");
     sPixmap       = "Std_WindowPrev";
-    sAccel        = keySequenceToAccel(QKeySequence::PreviousChild);
+    // Depending on the OS 'QKeySequence::PreviousChild' gives
+    // Ctrl+Shift+Backtab instead of Ctrl+Shift+Tab which leads
+    // to a strange behaviour when using it.
+    // A workaround is to create a shortcut as Shift + QKeySequence::NextChild
+    static std::string previousChild = std::string("Shift+") + keySequenceToAccel(QKeySequence::NextChild);
+    sAccel        = previousChild.c_str();
     eType         = 0;
 }
 
@@ -239,7 +218,7 @@ void StdCmdActivatePrevWindow::activated(int iMsg)
     getMainWindow()->activatePreviousWindow();
 }
 
-bool StdCmdActivatePrevWindow::isActive(void)
+bool StdCmdActivatePrevWindow::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -312,12 +291,12 @@ void StdCmdDockViewMenu::activated(int iMsg)
     Q_UNUSED(iMsg);
 }
 
-bool StdCmdDockViewMenu::isActive(void)
+bool StdCmdDockViewMenu::isActive()
 {
     return true;
 }
 
-Action * StdCmdDockViewMenu::createAction(void)
+Action * StdCmdDockViewMenu::createAction()
 {
     Action *pcAction;
     pcAction = new DockWidgetAction(this, getMainWindow());
@@ -348,18 +327,58 @@ void StdCmdToolBarMenu::activated(int iMsg)
     Q_UNUSED(iMsg);
 }
 
-bool StdCmdToolBarMenu::isActive(void)
+bool StdCmdToolBarMenu::isActive()
 {
     return true;
 }
 
-Action * StdCmdToolBarMenu::createAction(void)
+Action * StdCmdToolBarMenu::createAction()
 {
     Action *pcAction;
     pcAction = new ToolBarAction(this, getMainWindow());
     applyCommandData(this->className(), pcAction);
     return pcAction;
 }
+
+//===========================================================================
+// Std_DlgToggleToolBarLock
+//===========================================================================
+DEF_STD_CMD_C(StdCmdToggleToolBarLock)
+
+StdCmdToggleToolBarLock::StdCmdToggleToolBarLock()
+  :Command("Std_ToggleToolBarLock")
+{
+    sGroup        = "Tools";
+    sMenuText     = QT_TR_NOOP("Lock toolbars");
+    sToolTipText  = QT_TR_NOOP("Lock toolbars so they are no longer moveable");
+    sWhatsThis    = "Std_ToggleToolBarLock";
+    sStatusTip    = QT_TR_NOOP("Lock toolbars so they are no longer moveable");
+    eType         = 0;
+}
+
+
+Action* StdCmdToggleToolBarLock::createAction()
+{
+    Action* action = Command::createAction();
+
+    action->setCheckable(true);
+    action->setChecked(ToolBarManager::getInstance()->areToolBarsLocked(), true);
+
+    return action;
+}
+
+void StdCmdToggleToolBarLock::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto manager = ToolBarManager::getInstance();
+    auto toggled = !manager->areToolBarsLocked();
+
+    manager->setToolBarsLocked(toggled);
+
+    getAction()->setChecked(toggled);
+}
+
 
 //===========================================================================
 // Std_ViewStatusBar
@@ -374,9 +393,10 @@ public:
 //    virtual ~FilterStatusBar() {}
 protected:
     Action * action;
-    bool eventFilter(QObject *obj, QEvent *event)
+    bool eventFilter(QObject *obj, QEvent *event) override
     {
-        if (getMainWindow()->findChild<QStatusBar *>() != nullptr && obj == getMainWindow()->statusBar() && ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
+        if (getMainWindow() && getMainWindow()->findChild<QStatusBar *>() && obj == getMainWindow()->statusBar() &&
+            ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
             this->action->setChecked(getMainWindow()->statusBar()->isVisible());
         }
         return false;
@@ -396,12 +416,12 @@ StdCmdStatusBar::StdCmdStatusBar()
     eType         = 0;
 }
 
-Action * StdCmdStatusBar::createAction(void)
+Action * StdCmdStatusBar::createAction()
 {
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
     pcAction->setChecked(false, true);
-    FilterStatusBar *fsb = new FilterStatusBar(pcAction);
+    auto fsb = new FilterStatusBar(pcAction);
     getMainWindow()->statusBar()->installEventFilter(fsb);
 
     return pcAction;
@@ -435,7 +455,7 @@ StdCmdWindowsMenu::StdCmdWindowsMenu()
   : Command("Std_WindowsMenu")
 {
     sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Activates this window");
+    sMenuText     = QT_TR_NOOP("Activate window"); // Replaced with the name of the window
     sToolTipText  = QT_TR_NOOP("Activates this window");
     sWhatsThis    = "Std_WindowsMenu";
     sStatusTip    = QT_TR_NOOP("Activates this window");
@@ -448,12 +468,12 @@ void StdCmdWindowsMenu::activated(int iMsg)
     Q_UNUSED(iMsg);
 }
 
-bool StdCmdWindowsMenu::isActive(void)
+bool StdCmdWindowsMenu::isActive()
 {
     return true;
 }
 
-Action * StdCmdWindowsMenu::createAction(void)
+Action * StdCmdWindowsMenu::createAction()
 {
     // Allow to show 10 menu items in the 'Window' menu and one separator.
     // If we have more windows then the user can use the 'Windows...' item.
@@ -483,11 +503,10 @@ Action * StdCmdWindowsMenu::createAction(void)
 
 namespace Gui {
 
-void CreateWindowStdCommands(void)
+void CreateWindowStdCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new StdCmdArrangeIcons());
     rcCmdMgr.addCommand(new StdCmdTileWindows());
     rcCmdMgr.addCommand(new StdCmdCascadeWindows());
     rcCmdMgr.addCommand(new StdCmdCloseActiveWindow());
@@ -497,6 +516,7 @@ void CreateWindowStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdWindows());
     rcCmdMgr.addCommand(new StdCmdDockViewMenu());
     rcCmdMgr.addCommand(new StdCmdToolBarMenu());
+    rcCmdMgr.addCommand(new StdCmdToggleToolBarLock());
     rcCmdMgr.addCommand(new StdCmdWindowsMenu());
     rcCmdMgr.addCommand(new StdCmdStatusBar());
     rcCmdMgr.addCommand(new StdCmdUserInterface());

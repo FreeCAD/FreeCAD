@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 - Wanderer Fan <wandererfan@gmail.com>             *
+# *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,17 +21,25 @@
 
 __title__ = "TechDrawTools package"
 __author__  = "WandererFan"
-__url__     = "https://www.freecadweb.org"
+__url__     = "https://www.freecad.org"
 __version__ = "00.01"
-__date__    = "2022-01-11" 
- 
+__date__    = "2022-01-11"
+
 ## @package TechDrawTools
 #  \ingroup TechDraw
 #  \brief TechDrawTools Package for TechDraw workbench
 
 from .TDToolsMovers import *
 from .TDToolsUtil import *
-from .CommandCopyView import CommandCopyView
+from .CommandShareView import CommandShareView
 from .CommandMoveView import CommandMoveView
-from .TaskCopyView import TaskCopyView
+from .CommandAxoLengthDimension import CommandAxoLengthDimension
+from .CommandPositionSectionView import CommandPositionSectionView
+from .CommandVertexCreations import CommandVertexCreationGroup
+from .CommandHoleShaftFit import CommandHoleShaftFit
+from .CommandFillTemplateFields import CommandFillTemplateFields
+from .TaskShareView import TaskShareView
 from .TaskMoveView import TaskMoveView
+from .TaskHoleShaftFit import TaskHoleShaftFit
+from .TaskAddOffsetVertex import TaskAddOffsetVertex
+from .TaskFillTemplateFields import TaskFillTemplateFields

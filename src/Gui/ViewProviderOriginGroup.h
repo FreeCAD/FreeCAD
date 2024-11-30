@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
-#define VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
+#ifndef VIEWPROVIDERORIGINGROUP_H
+#define VIEWPROVIDERORIGINGROUP_H
 
-#include "ViewProviderGeoFeatureGroup.h"
 #include "ViewProviderOriginGroupExtension.h"
 
 namespace Gui {
@@ -34,10 +33,10 @@ class GuiExport ViewProviderOriginGroup: public ViewProviderDocumentObject,
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderOriginGroup);
 public:
     ViewProviderOriginGroup ();
-    virtual ~ViewProviderOriginGroup ();
+    ~ViewProviderOriginGroup () override;
 };
 
 } /* Gui  */
 
 
-#endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H_JIXBOPA7 */
+#endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H */

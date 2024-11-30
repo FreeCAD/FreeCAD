@@ -1,72 +1,78 @@
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+#    Copyright (c) 2024 The FreeCAD Project Association AISBL               *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
  ***************************************************************************/
-
 
 #ifndef STARTGUI_PRECOMPILED_H
 #define STARTGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define StartAppExport __declspec(dllimport)
-# define StartGuiExport __declspec(dllexport)
-#else // for Linux
-# define StartAppExport
-# define StartGuiExport
+#ifdef _MSC_VER
+#pragma warning(disable : 5208)
 #endif
-
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
-#include <iostream>
-#include <assert.h>
+#include <cinttypes>
 #include <cmath>
-
-// STL
-#include <vector>
+#include <iomanip>
 #include <map>
+#include <sstream>
 #include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+#include <vector>
+#include <unordered_map>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+// Qt
+#include <QApplication>
+#include <QBoxLayout>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QCoreApplication>
+#include <QFile>
+#include <QFileIconProvider>
+#include <QFrame>
+#include <QGridLayout>
+#include <QGuiApplication>
+#include <QHBoxLayout>
+#include <QImageReader>
+#include <QLabel>
+#include <QListView>
+#include <QMessageBox>
+#include <QModelIndex>
+#include <QPainter>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QScrollArea>
+#include <QSpacerItem>
+#include <QStackedWidget>
+#include <QString>
+#include <QStyleHints>
+#include <QStyleOptionViewItem>
+#include <QTimer>
+#include <QToolButton>
+#include <QUrl>
+#include <QVBoxLayout>
+#include <QWidget>
 
-
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
-
-#endif //_PreComp_
-
-#endif // STARTGUI_PRECOMPILED_H
+#endif  // _PreComp_
+#endif  // STARTGUI_PRECOMPILED_H

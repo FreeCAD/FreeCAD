@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,18 +27,13 @@
 
 #include "GLPainter.h"
 #include "View3DInventorViewer.h"
-#include <Base/Console.h>
+
 
 using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass)
 
 GLPainter::GLPainter()
-  : viewer(0)
-  , width(0)
-  , height(0)
-  , logicOp(false)
-  , lineStipple(false)
 {
     depthrange[0] = 0;
     depthrange[1] = 0;
@@ -91,10 +85,6 @@ bool GLPainter::begin(QPaintDevice * device)
     glColor4f(1.0, 1.0, 1.0, 0.0);
     glViewport(0, 0, this->width, this->height);
 
-#if !defined(HAVE_QT5_OPENGL)
-    glDrawBuffer(GL_FRONT);
-#endif
-
     return true;
 }
 
@@ -123,13 +113,13 @@ bool GLPainter::end()
     glPopAttrib();
     glPopMatrix();
 
-    viewer = 0;
+    viewer = nullptr;
     return true;
 }
 
 bool GLPainter::isActive() const
 {
-    return viewer != 0;
+    return viewer != nullptr;
 }
 
 void GLPainter::setLineWidth(float w)
@@ -227,21 +217,19 @@ Rubberband::Rubberband(View3DInventorViewer* v) : viewer(v)
     rgb_a = 1.0f;
 }
 
-Rubberband::Rubberband() : viewer(0)
+Rubberband::Rubberband() : viewer(nullptr)
 {
     x_old = y_old = x_new = y_new = 0;
     working = false;
     stipple = true;
 
-    rgb_r = 1.0f;
-    rgb_g = 1.0f;
+    rgb_r = 0.27f;
+    rgb_g = 0.4f;
     rgb_b = 1.0f;
     rgb_a = 1.0f;
 }
 
-Rubberband::~Rubberband()
-{
-}
+Rubberband::~Rubberband() = default;
 
 void Rubberband::setWorking(bool on)
 {
@@ -331,7 +319,7 @@ Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
     rgb_a = 1.0f;
 }
 
-Polyline::Polyline() : viewer(0)
+Polyline::Polyline() : viewer(nullptr)
 {
     x_new = y_new = 0;
     working = false;
@@ -345,9 +333,7 @@ Polyline::Polyline() : viewer(0)
     rgb_a = 1.0f;
 }
 
-Polyline::~Polyline()
-{
-}
+Polyline::~Polyline() = default;
 
 void Polyline::setWorking(bool on)
 {
@@ -434,8 +420,8 @@ void Polyline::paintGL()
     if (closed && !stippled) {
         glBegin(GL_LINE_LOOP);
 
-        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
-            glVertex2i(it->x(), it->y());
+        for (const QPoint& it : _cNodeVector) {
+            glVertex2i(it.x(), it.y());
         }
 
         glEnd();
@@ -444,10 +430,10 @@ void Polyline::paintGL()
         glBegin(GL_LINES);
 
         QPoint start = _cNodeVector.front();
-        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
+        for (const QPoint& it : _cNodeVector) {
             glVertex2i(start.x(), start.y());
-            start = *it;
-            glVertex2i(it->x(), it->y());
+            start = it;
+            glVertex2i(it.x(), it.y());
         }
 
         glEnd();

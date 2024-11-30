@@ -25,6 +25,7 @@
 #define GUI_SYNTAXHIGHLIGHTER_H
 
 #include <QSyntaxHighlighter>
+#include <FCGlobal.h>
 
 namespace Gui {
 class SyntaxHighlighterP;
@@ -38,7 +39,7 @@ class GuiExport SyntaxHighlighter : public QSyntaxHighlighter
 {
 public:
     SyntaxHighlighter(QObject* parent);
-    virtual ~SyntaxHighlighter();
+    ~SyntaxHighlighter() override;
 
     int maximumUserState() const;
 

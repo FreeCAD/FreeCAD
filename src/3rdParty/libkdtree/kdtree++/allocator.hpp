@@ -74,7 +74,11 @@ namespace KDTree
       void
       _M_destroy_node(_Node_* __p)
       {
+#if __cplusplus >= 201703L
+        std::allocator_traits<allocator_type>::destroy(_M_node_allocator,__p);
+#else
         _M_node_allocator.destroy(__p);
+#endif
       }
     };
 

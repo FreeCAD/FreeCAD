@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGITemplate.h"
 
 QT_BEGIN_NAMESPACE
@@ -36,27 +38,27 @@ class DrawParametricTemplate;
 
 namespace TechDrawGui
 {
+class QGSPage;
 
 class TechDrawGuiExport  QGIDrawingTemplate : public QGITemplate
 {
     Q_OBJECT
 
 public:
-    QGIDrawingTemplate(QGraphicsScene *);
-    ~QGIDrawingTemplate();
+    explicit QGIDrawingTemplate(QGSPage *);
+    ~QGIDrawingTemplate() override;
 
     enum {Type = QGraphicsItem::UserType + 151};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
     void clearContents();
-    void draw();
-    virtual void updateView(bool update = false);
+    void draw() override;
+    void updateView(bool update = false) override;
 
 protected:
   TechDraw::DrawParametricTemplate * getParametricTemplate();
 
 protected:
-  virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
   QGraphicsPathItem *pathItem;
 };
 

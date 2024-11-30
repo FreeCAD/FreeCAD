@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <memory>
 # include <Standard_Failure.hxx>
 #endif
 
+#include <Base/VectorPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 #include "GeomPlate/PointConstraintPy.h"
 #include "GeomPlate/PointConstraintPy.cpp"
-#include "GeometryCurvePy.h"
-#include "GeometrySurfacePy.h"
-#include "Geometry2d.h"
-#include <Base/VectorPy.h>
+
 
 using namespace Part;
 
@@ -48,16 +48,17 @@ int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
     int order = 0;
     double tolDist = 0.0001;
 
-    static char* keywords[] = {"Point", "Order", "TolDist", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|id", keywords,
-                                     &(Base::VectorPy::Type), &pt, &order, &tolDist))
+    static const std::array<const char *, 4> keywords {"Point", "Order", "TolDist", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|id", keywords, &(Base::VectorPy::Type), &pt, &order,
+                                             &tolDist)) {
         return -1;
+    }
 
     try {
         std::unique_ptr<GeomPlate_PointConstraint> ptr;
         Base::Vector3d v = static_cast<Base::VectorPy*>(pt)->value();
 
-        ptr.reset(new GeomPlate_PointConstraint(gp_Pnt(v.x, v.y, v.z), order, tolDist));
+        ptr = std::make_unique<GeomPlate_PointConstraint>(gp_Pnt(v.x, v.y, v.z), order, tolDist);
         setTwinPointer(ptr.release());
 
         return 0;
@@ -69,9 +70,9 @@ int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string PointConstraintPy::representation(void) const
+std::string PointConstraintPy::representation() const
 {
-    return std::string("<GeomPlate_PointConstraint object>");
+    return {"<GeomPlate_PointConstraint object>"};
 }
 
 PyObject* PointConstraintPy::setOrder(PyObject *args)
@@ -249,7 +250,7 @@ PyObject* PointConstraintPy::pnt2dOnSurf(PyObject *args)
 
 PyObject *PointConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PointConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

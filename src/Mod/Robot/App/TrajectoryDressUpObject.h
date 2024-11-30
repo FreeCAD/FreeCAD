@@ -20,58 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_TrajectoryDressUpObject_H
 #define ROBOT_TrajectoryDressUpObject_H
 
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyUnits.h>
 
-#include "Trajectory.h"
 #include "TrajectoryObject.h"
-#include "PropertyTrajectory.h"
+
 
 namespace Robot
 {
 
-class RobotExport TrajectoryDressUpObject : public TrajectoryObject
+class RobotExport TrajectoryDressUpObject: public TrajectoryObject
 {
-    PROPERTY_HEADER(Robot::TrajectoryObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Robot::TrajectoryObject);
 
 public:
     /// Constructor
-    TrajectoryDressUpObject(void);
-    virtual ~TrajectoryDressUpObject();
+    TrajectoryDressUpObject();
 
-    App::PropertyLink         Source;
-    App::PropertySpeed        Speed;
-    App::PropertyBool         UseSpeed;
+    App::PropertyLink Source;
+    App::PropertySpeed Speed;
+    App::PropertyBool UseSpeed;
     App::PropertyAcceleration Acceleration;
-    App::PropertyBool         UseAcceleration;
-    App::PropertyEnumeration  ContType;
-    App::PropertyPlacement    PosAdd;
-    App::PropertyEnumeration  AddType;
+    App::PropertyBool UseAcceleration;
+    App::PropertyEnumeration ContType;
+    App::PropertyPlacement PosAdd;
+    App::PropertyEnumeration AddType;
 
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override
+    {
         return "RobotGui::ViewProviderTrajectoryDressUp";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn* execute() override;
 
     static const char* ContTypeEnums[];
     static const char* AddTypeEnums[];
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
-
-
+    void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Robot
+}  // namespace Robot
 
 
-#endif // ROBOT_ROBOTOBJECT_H
+#endif  // ROBOT_ROBOTOBJECT_H

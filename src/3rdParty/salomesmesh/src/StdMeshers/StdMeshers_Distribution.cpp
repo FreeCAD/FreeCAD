@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH StdMeshers : implementaion of point distribution algorithm
+//  SMESH StdMeshers : implementation of point distribution algorithm
 //  File   : StdMeshers_Distribution.cxx
 //  Author : Alexandre SOLOVYOV
 //  Module : SMESH

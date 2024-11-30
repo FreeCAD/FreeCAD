@@ -23,35 +23,34 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
 # include <QDialog>
 #endif
 
-#include <App/OriginFeature.h>
-#include <App/GeoFeatureGroupExtension.h>
+#include <App/Document.h>
 #include <App/Origin.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
 
-#include "Utils.h"
-
+#include "ui_DlgReference.h"
 #include "ReferenceSelection.h"
 #include "TaskFeaturePick.h"
-#include <ui_DlgReference.h>
+#include "Utils.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -69,11 +68,11 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     }
 
     // Enable selection from origin of current part/
-    if (pObj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())) {
+    if (pObj->isDerivedFrom<App::OriginFeature>()) {
         return allowOrigin(body, originGroup, pObj);
     }
 
-    if (pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+    if (pObj->isDerivedFrom<Part::Datum>()) {
         return allowDatum(body, pObj);
     }
 
@@ -91,11 +90,11 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return type.testFlag(AllowSelection::WHOLE);
 
     // resolve links if needed
-    if (!pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!pObj->isDerivedFrom<Part::Feature>()) {
         pObj = Part::Feature::getShapeOwner(pObj, sSubName);
     }
 
-    if (pObj && pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (pObj && pObj->isDerivedFrom<Part::Feature>()) {
         return allowPartFeature(pObj, sSubName);
     }
 
@@ -139,10 +138,10 @@ App::OriginGroupExtension* ReferenceSelection::getOriginGroupExtension(PartDesig
 bool ReferenceSelection::allowOrigin(PartDesign::Body *body, App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const
 {
     bool fits = false;
-    if (type.testFlag(AllowSelection::FACE) && pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (type.testFlag(AllowSelection::FACE) && pObj->isDerivedFrom<App::Plane>()) {
         fits = true;
     }
-    else if (type.testFlag(AllowSelection::EDGE) && pObj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+    else if (type.testFlag(AllowSelection::EDGE) && pObj->isDerivedFrom<App::Line>()) {
         fits = true;
     }
 
@@ -174,11 +173,11 @@ bool ReferenceSelection::allowDatum(PartDesign::Body *body, App::DocumentObject*
         return false;
     }
 
-    if (type.testFlag(AllowSelection::FACE) && (pObj->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())))
+    if (type.testFlag(AllowSelection::FACE) && (pObj->isDerivedFrom<PartDesign::Plane>()))
         return true;
-    if (type.testFlag(AllowSelection::EDGE) && (pObj->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())))
+    if (type.testFlag(AllowSelection::EDGE) && (pObj->isDerivedFrom<PartDesign::Line>()))
         return true;
-    if (type.testFlag(AllowSelection::POINT) && (pObj->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())))
+    if (type.testFlag(AllowSelection::POINT) && (pObj->isDerivedFrom<PartDesign::Point>()))
         return true;
 
     return false;
@@ -341,21 +340,24 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
 
 QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
 {
-    if (obj == NULL)
-        return QString::fromLatin1("");
+    if (!obj) {
+        return {};
+    }
 
-    if (PartDesign::Feature::isDatum(obj))
+    if (PartDesign::Feature::isDatum(obj)) {
         return QString::fromLatin1(obj->getNameInDocument());
-    else if (sub.size()>0)
+    }
+    else if (!sub.empty()) {
         return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") +
                QString::fromLatin1(sub.front().c_str());
-    else
-        return QString();
+    }
+
+    return {};
 }
 
 std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& subs)
 {
-    if ( obj == NULL)
+    if (!obj)
         return "None";
 
     std::string result("[");
@@ -370,7 +372,7 @@ std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vec
 std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj,
         const std::vector<std::string>& subs)
 {
-    if (obj == NULL)
+    if (!obj)
         return "None";
 
     if (PartDesign::Feature::isDatum(obj))
@@ -387,8 +389,8 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
 
     std::string result("[");
 
-    for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
-        result += Gui::Command::getObjectCmd(*o,0,",");
+    for (auto obj : objs)
+        result += Gui::Command::getObjectCmd(obj,nullptr,",");
     result += "]";
 
     return result;

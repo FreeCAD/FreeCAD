@@ -24,12 +24,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
 # include <QMenu>
 #endif
 
 #include "TaskRevolutionParameters.h"
-
 #include "ViewProviderRevolution.h"
 
 using namespace PartDesignGui;
@@ -38,12 +36,10 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderRevolution,PartDesignGui::ViewProvide
 
 ViewProviderRevolution::ViewProviderRevolution()
 {
-    sPixmap = "Tree_PartDesign_Revolution.svg";
+    sPixmap = "PartDesign_Revolution.svg";
 }
 
-ViewProviderRevolution::~ViewProviderRevolution()
-{
-}
+ViewProviderRevolution::~ViewProviderRevolution() = default;
 
 void ViewProviderRevolution::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {

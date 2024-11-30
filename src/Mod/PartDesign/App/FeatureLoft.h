@@ -24,10 +24,6 @@
 #ifndef PARTDESIGN_Loft_H
 #define PARTDESIGN_Loft_H
 
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-
 #include "FeatureSketchBased.h"
 
 namespace PartDesign
@@ -35,7 +31,7 @@ namespace PartDesign
 
 class PartDesignExport Loft : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Loft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Loft);
 
 public:
     Loft();
@@ -46,17 +42,22 @@ public:
 
     /** @name methods override feature */
     //@{
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderLoft";
     }
     //@}
 
+    static std::vector<Part::TopoShape> getSectionShape(const char *name,
+                                                        App::DocumentObject *obj,
+                                                        const std::vector<std::string> &subname,
+                                                        size_t expected_size = 0);
+
 protected:
     // handle changed property
-    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
 
 private:
     //static const char* TypeEnums[];
@@ -65,14 +66,14 @@ private:
 
 class PartDesignExport AdditiveLoft : public Loft {
 
-    PROPERTY_HEADER(PartDesign::AdditiveLoft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveLoft);
 public:
     AdditiveLoft();
 };
 
 class PartDesignExport SubtractiveLoft : public Loft {
 
-    PROPERTY_HEADER(PartDesign::SubtractiveLoft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveLoft);
 public:
     SubtractiveLoft();
 };

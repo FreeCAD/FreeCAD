@@ -24,12 +24,12 @@
 #ifndef BASE_UNITSSCHEMAIMPERIAL1_H
 #define BASE_UNITSSCHEMAIMPERIAL1_H
 
-
-#include <string>
 #include <QString>
 #include "UnitsSchema.h"
 
-namespace Base {
+
+namespace Base
+{
 
 
 /** The schema class for the imperial unit system
@@ -39,9 +39,14 @@ namespace Base {
 class UnitsSchemaImperial1: public UnitsSchema
 {
 public:
-    //virtual void setSchemaUnits(void);
-    //virtual void resetSchemaUnits(void);
-    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+    // virtual void setSchemaUnits(void);
+    // virtual void resetSchemaUnits(void);
+    QString
+    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string getBasicLengthUnit() const override
+    {
+        return {"in"};
+    }
 };
 
 /** The schema class for the imperial unit system
@@ -51,9 +56,14 @@ public:
 class UnitsSchemaImperialDecimal: public UnitsSchema
 {
 public:
-    //virtual void setSchemaUnits(void);
-    //virtual void resetSchemaUnits(void);
-    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+    // virtual void setSchemaUnits(void);
+    // virtual void resetSchemaUnits(void);
+    QString
+    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string getBasicLengthUnit() const override
+    {
+        return {"in"};
+    }
 };
 
 /** The schema class for the imperial unit system
@@ -63,9 +73,20 @@ public:
 class UnitsSchemaImperialBuilding: public UnitsSchema
 {
 public:
-    //virtual void setSchemaUnits(void);
-    //virtual void resetSchemaUnits(void);
-    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+    // virtual void setSchemaUnits(void);
+    // virtual void resetSchemaUnits(void);
+    QString
+    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string getBasicLengthUnit() const override
+    {
+        return {"ft"};
+    }
+
+    // return true if this schema uses multiple units for length (ex. Ft/In)
+    bool isMultiUnitLength() const override
+    {
+        return true;
+    }
 };
 
 /** The schema class for Civil Engineering in the imperial unit system
@@ -75,13 +96,24 @@ public:
 class UnitsSchemaImperialCivil: public UnitsSchema
 {
 public:
-    //virtual void setSchemaUnits(void);
-    //virtual void resetSchemaUnits(void);
-    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+    // virtual void setSchemaUnits(void);
+    // virtual void resetSchemaUnits(void);
+    QString
+    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string getBasicLengthUnit() const override
+    {
+        return {"ft"};
+    }
+
+    // return true if this schema uses multiple units for angles (ex. DMS)
+    bool isMultiUnitAngle() const override
+    {
+        return true;
+    }
 };
 
 
-} // namespace Base
+}  // namespace Base
 
 
-#endif // BASE_UNITSSCHEMAIMPERIAL1_H
+#endif  // BASE_UNITSSCHEMAIMPERIAL1_H

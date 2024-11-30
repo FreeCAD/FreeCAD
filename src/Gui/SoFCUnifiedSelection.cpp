@@ -23,48 +23,43 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qstatusbar.h>
-# include <qstring.h>
+# include <Inventor/SoFullPath.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoCallbackAction.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/actions/SoGetPrimitiveCountAction.h>
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoHandleEventAction.h>
+# include <Inventor/actions/SoWriteAction.h>
+# include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
+# include <Inventor/elements/SoCacheElement.h>
+# include <Inventor/elements/SoCoordinateElement.h>
+# include <Inventor/elements/SoDrawStyleElement.h>
+# include <Inventor/elements/SoGLCacheContextElement.h>
+# include <Inventor/elements/SoLazyElement.h>
+# include <Inventor/elements/SoLineWidthElement.h>
+# include <Inventor/elements/SoMaterialBindingElement.h>
+# include <Inventor/elements/SoModelMatrixElement.h>
+# include <Inventor/elements/SoOverrideElement.h>
+# include <Inventor/elements/SoShapeStyleElement.h>
+# include <Inventor/elements/SoSwitchElement.h>
+# include <Inventor/elements/SoTextureEnabledElement.h>
+# include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/misc/SoChildList.h>
+# include <Inventor/misc/SoState.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoCube.h>
+# include <Inventor/nodes/SoIndexedFaceSet.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoNormalBinding.h>
+# include <Inventor/nodes/SoPointSet.h>
+# include <Inventor/threads/SbStorage.h>
 #endif
-
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoWindowElement.h>
-
-#include <Inventor/SoFullPath.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/elements/SoComplexityElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoElements.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoLineWidthElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoProfileCoordinateElement.h>
-#include <Inventor/elements/SoProfileElement.h>
-#include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/elements/SoUnitsElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoNormalBinding.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/threads/SbStorage.h>
 
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
@@ -75,36 +70,37 @@
 # include <GL/gl.h>
 #endif
 
-#include <QtOpenGL.h>
-
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/Document.h>
-#include <App/DocumentObject.h>
-#include <App/ComplexGeoData.h>
+#include <App/GeoFeature.h>
+#include <App/ElementNamingUtils.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
 #include "SoFCUnifiedSelection.h"
 #include "Application.h"
+#include "Document.h"
+#include "DocumentObserver.h"
 #include "MainWindow.h"
-#include "Selection.h"
-#include "ViewProvider.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderGeometryObject.h"
 #include "ViewParams.h"
+#include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
+
 
 FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 
 using namespace Gui;
 
 namespace Gui {
-std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
+void printPreselectionInfo(const char* documentName,
+                           const char* objectName,
+                           const char* subElementName,
+                           float x, float y, float z,
+                           double precision);
 }
 
-SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = NULL;
+SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = nullptr;
 
 // *************************************************************************
 
@@ -113,7 +109,7 @@ SO_NODE_SOURCE(SoFCUnifiedSelection)
 /*!
   Constructor.
 */
-SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
+SoFCUnifiedSelection::SoFCUnifiedSelection()
 {
     SO_NODE_CONSTRUCTOR(SoFCUnifiedSelection);
 
@@ -148,19 +144,19 @@ SoFCUnifiedSelection::~SoFCUnifiedSelection()
 {
     // If we're being deleted and we're the current highlight,
     // NULL out that variable
-    if (currenthighlight != NULL) {
+    if (currenthighlight) {
         currenthighlight->unref();
-        currenthighlight = NULL;
+        currenthighlight = nullptr;
     }
     if (detailPath) {
         detailPath->unref();
-        detailPath = NULL;
+        detailPath = nullptr;
     }
 }
 
 // doc from parent
 void
-SoFCUnifiedSelection::initClass(void)
+SoFCUnifiedSelection::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCUnifiedSelection,SoSeparator,"Separator");
 }
@@ -171,7 +167,7 @@ void SoFCUnifiedSelection::finish()
 }
 
 bool SoFCUnifiedSelection::hasHighlight() {
-    return currenthighlight != NULL;
+    return currenthighlight != nullptr;
 }
 
 void SoFCUnifiedSelection::applySettings()
@@ -186,7 +182,7 @@ void SoFCUnifiedSelection::applySettings()
     else {
         // Search for a user defined value with the current color as default
         SbColor highlightColor = this->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        auto highlight = (unsigned long)(highlightColor.getPackedValue());
         highlight = hGrp->GetUnsigned("HighlightColor", highlight);
         highlightColor.setPackedValue((uint32_t)highlight, transparency);
         this->colorHighlight.setValue(highlightColor);
@@ -198,14 +194,14 @@ void SoFCUnifiedSelection::applySettings()
     else {
         // Do the same with the selection color
         SbColor selectionColor = this->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        auto selection = (unsigned long)(selectionColor.getPackedValue());
         selection = hGrp->GetUnsigned("SelectionColor", selection);
         selectionColor.setPackedValue((uint32_t)selection, transparency);
         this->colorSelection.setValue(selectionColor);
     }
 }
 
-const char* SoFCUnifiedSelection::getFileFormatName(void) const
+const char* SoFCUnifiedSelection::getFileFormatName() const
 {
     return "Separator";
 }
@@ -215,8 +211,9 @@ void SoFCUnifiedSelection::write(SoWriteAction * action)
     SoOutput * out = action->getOutput();
     if (out->getStage() == SoOutput::WRITE) {
         // Do not write out the fields of this class
-        if (this->writeHeader(out, true, false)) return;
-        SoGroup::doAction((SoAction *)action);
+        if (this->writeHeader(out, true, false))
+            return;
+        SoGroup::doAction(static_cast<SoAction *>(action));
         this->writeFooter(out);
     }
     else {
@@ -227,25 +224,29 @@ void SoFCUnifiedSelection::write(SoWriteAction * action)
 int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
 {
     const SoDetail* detail = p->getDetail();
-    if (!detail)                                           return 0;
-    if (detail->isOfType(SoFaceDetail::getClassTypeId()))  return 1;
-    if (detail->isOfType(SoLineDetail::getClassTypeId()))  return 2;
-    if (detail->isOfType(SoPointDetail::getClassTypeId())) return 3;
+    if (!detail)
+        return 0;
+    if (detail->isOfType(SoFaceDetail::getClassTypeId()))
+        return 1;
+    if (detail->isOfType(SoLineDetail::getClassTypeId()))
+        return 2;
+    if (detail->isOfType(SoPointDetail::getClassTypeId()))
+        return 3;
     return 0;
 }
 
 std::vector<SoFCUnifiedSelection::PickedInfo>
 SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick) const
 {
-    ViewProvider *last_vp = 0;
+    ViewProvider *last_vp = nullptr;
     std::vector<PickedInfo> ret;
     const SoPickedPointList & points = action->getPickedPointList();
     for(int i=0,count=points.getLength();i<count;++i) {
         PickedInfo info;
         info.pp = points[i];
-        info.vpd = 0;
-        ViewProvider *vp = 0;
-        SoFullPath *path = static_cast<SoFullPath *>(info.pp->getPath());
+        info.vpd = nullptr;
+        ViewProvider *vp = nullptr;
+        auto path = static_cast<SoFullPath *>(info.pp->getPath());
         if (this->pcDocument && path && path->containsPath(action->getCurPath())) {
             vp = this->pcDocument->getViewProviderByPathFromHead(path);
             if(singlePick && last_vp && last_vp!=vp)
@@ -261,7 +262,7 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
         if(!(useNewSelection.getValue()||info.vpd->useNewSelectionModel()) || !info.vpd->isSelectable()) {
             if(!singlePick) continue;
             if(ret.empty()) {
-                info.vpd = 0;
+                info.vpd = nullptr;
                 ret.push_back(info);
             }
             break;
@@ -274,7 +275,8 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
         ret.push_back(info);
     }
 
-    if(ret.size()<=1) return ret;
+    if(ret.size()<=1)
+        return ret;
 
     // To identify the picking of lines in a concave area we have to
     // get all intersection points. If we have two or more intersection
@@ -293,7 +295,7 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
         int cur_prio = getPriority(info.pp);
         const SbVec3f& cur_pt = info.pp->getPoint();
 
-        if ((cur_prio > picked_prio) && picked_pt.equals(cur_pt, 0.01f)) {
+        if ((cur_prio > picked_prio) && picked_pt.equals(cur_pt, 0.2F)) {
             itPicked = it;
             picked_prio = cur_prio;
         }
@@ -311,7 +313,7 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
 void SoFCUnifiedSelection::doAction(SoAction *action)
 {
     if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-        SoFCEnableHighlightAction *preaction = (SoFCEnableHighlightAction*)action;
+        auto preaction = static_cast<SoFCEnableHighlightAction*>(action);
         if (preaction->highlight) {
             this->highlightMode = SoFCUnifiedSelection::AUTO;
         }
@@ -321,7 +323,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
-        SoFCEnableSelectionAction *selaction = (SoFCEnableSelectionAction*)action;
+        auto selaction = static_cast<SoFCEnableSelectionAction*>(action);
         if (selaction->selection) {
             this->selectionMode = SoFCUnifiedSelection::ON;
         }
@@ -331,24 +333,24 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCSelectionColorAction::getClassTypeId()) {
-        SoFCSelectionColorAction *colaction = (SoFCSelectionColorAction*)action;
+        auto colaction = static_cast<SoFCSelectionColorAction*>(action);
         this->colorSelection = colaction->selectionColor;
     }
 
     if (action->getTypeId() == SoFCHighlightColorAction::getClassTypeId()) {
-        SoFCHighlightColorAction *colaction = (SoFCHighlightColorAction*)action;
+        auto colaction = static_cast<SoFCHighlightColorAction*>(action);
         this->colorHighlight = colaction->highlightColor;
     }
 
     if (action->getTypeId() == SoFCHighlightAction::getClassTypeId()) {
-        SoFCHighlightAction *hilaction = static_cast<SoFCHighlightAction*>(action);
+        auto hilaction = static_cast<SoFCHighlightAction*>(action);
         // Do not clear currently highlighted object when setting new pre-selection
         if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
             if (currenthighlight) {
                 SoHighlightElementAction hlAction;
                 hlAction.apply(currenthighlight);
                 currenthighlight->unref();
-                currenthighlight = 0;
+                currenthighlight = nullptr;
             }
         }
         else if (highlightMode.getValue() != OFF
@@ -357,7 +359,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 SoHighlightElementAction hlAction;
                 hlAction.apply(currenthighlight);
                 currenthighlight->unref();
-                currenthighlight = 0;
+                currenthighlight = nullptr;
             }
 
             App::Document* doc = App::GetApplication().getDocument(hilaction->SelChange.pDocName);
@@ -384,7 +386,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
-        SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
+        auto selaction = static_cast<SoFCSelectionAction*>(action);
         if(selectionMode.getValue() == ON
             && (selaction->SelChange.Type == SelectionChanges::AddSelection
                 || selaction->SelChange.Type == SelectionChanges::RmvSelection))
@@ -396,8 +398,15 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             if (vp && (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable()) {
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
+                auto subName = selaction->SelChange.pSubName;
+                App::ElementNamePair elementName;;
+                App::GeoFeature::resolveElement(obj, subName, elementName);
+                if (Data::isMappedElement(subName)
+                    && !elementName.oldName.empty()) {      // If we have a shortened element name
+                    subName = elementName.oldName.c_str();  // use it.
+                }
                 if(!selaction->SelChange.pSubName || !selaction->SelChange.pSubName[0] ||
-                    vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,detail))
+                    vp->getDetailPath(subName,detailPath,true,detail))
                 {
                     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
                     if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
@@ -435,8 +444,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             std::vector<ViewProvider*> vps;
             if (this->pcDocument)
                 vps = this->pcDocument->getViewProvidersOfType(ViewProviderDocumentObject::getClassTypeId());
-            for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
-                ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(*it);
+            for (const auto & vp : vps) {
+                auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
                 if (useNewSelection.getValue() || vpd->useNewSelectionModel()) {
                     SoSelectionElementAction::Type type;
                     if(Selection().isSelected(vpd->getObject()) && vpd->isSelectable())
@@ -459,7 +468,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable())
             {
                 detailPath->truncate(0);
-                SoDetail *det = 0;
+                SoDetail *det = nullptr;
                 if(vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,det)) {
                     setHighlight(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
                             selaction->SelChange.pSubName,
@@ -480,7 +489,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
 
 bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
     if(!info.pp)
-        return setHighlight(0,0,0,0,0.0,0.0,0.0);
+        return setHighlight(nullptr,nullptr,nullptr,nullptr,0.0,0.0,0.0);
     const auto &pt = info.pp->getPoint();
     return setHighlight(static_cast<SoFullPath*>(info.pp->getPath()),
             info.pp->getDetail(), info.vpd, info.element.c_str(), pt[0],pt[1],pt[2]);
@@ -493,22 +502,15 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 
     bool highlighted = false;
     if(path && path->getLength() &&
-       vpd && vpd->getObject() && vpd->getObject()->getNameInDocument())
+       vpd && vpd->getObject() && vpd->getObject()->isAttachedToDocument())
     {
         const char *docname = vpd->getObject()->getDocument()->getName();
         const char *objname = vpd->getObject()->getNameInDocument();
 
         this->preSelection = 1;
-        static char buf[513];
 
-        auto pts = schemaTranslatePoint(x, y, z, 1e-7);
-        snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
-                ,docname,objname,element
-                ,pts[0].first,pts[0].second.c_str()
-                ,pts[1].first,pts[1].second.c_str()
-                ,pts[2].first,pts[2].second.c_str());
+        printPreselectionInfo(docname, objname, element, x, y, z, 1e-7);
 
-        getMainWindow()->showMessage(QString::fromUtf8(buf));
 
         int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
         if(ret<0 && currenthighlight)
@@ -520,7 +522,7 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
                 action.setHighlighted(false);
                 action.apply(currenthighlight);
                 currenthighlight->unref();
-                currenthighlight = 0;
+                currenthighlight = nullptr;
             }
             currenthighlight = static_cast<SoFullPath*>(path->copy());
             currenthighlight->ref();
@@ -536,7 +538,7 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         action.apply(currenthighlight);
         if(!highlighted) {
             currenthighlight->unref();
-            currenthighlight = 0;
+            currenthighlight = nullptr;
             Selection().rmvPreselect();
         }
         this->touch();
@@ -545,12 +547,13 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 }
 
 bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bool ctrlDown) {
-    if(infos.empty() || !infos[0].vpd) return false;
+    if (infos.empty() || !infos[0].vpd)
+        return false;
 
     std::vector<SelectionSingleton::SelObj> sels;
-    if(infos.size()>1) {
-        for(auto &info : infos) {
-            if(!info.vpd) continue;
+    if (infos.size() > 1) {
+        for (auto &info: infos) {
+            if (!info.vpd) continue;
 
             SelectionSingleton::SelObj sel;
             sel.pResolvedObject = nullptr;
@@ -570,138 +573,141 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
 
     const auto &info = infos[0];
     auto vpd = info.vpd;
-    if(!vpd) return false;
+    if (!vpd)
+        return false;
+    if (!vpd->getObject()->isAttachedToDocument())
+        return false;
     const char *objname = vpd->getObject()->getNameInDocument();
-    if(!objname) return false;
     const char *docname = vpd->getObject()->getDocument()->getName();
 
+    auto getFullSubElementName = [vpd](std::string &subName) {
+        App::ElementNamePair elementName;
+        App::GeoFeature::resolveElement(vpd->getObject(), subName.c_str(), elementName);
+        if (!elementName.newName.empty()) {      // If we have a mapped name use it
+            auto elementNameSuffix = Data::findElementName(subName.c_str()); // Only suffix
+            subName.erase(subName.find(elementNameSuffix)); // Everything except original suffix
+            subName = subName.append(elementName.newName);  // Add the mapped name suffix,
+        }
+    };
+
     bool hasNext = false;
-    const SoPickedPoint * pp = info.pp;
+    const SoPickedPoint *pp = info.pp;
     const SoDetail *det = pp->getDetail();
-    SoDetail *detNext = 0;
-    SoFullPath *pPath = static_cast<SoFullPath*>(pp->getPath());
+    SoDetail *detNext = nullptr;
+    auto pPath = static_cast<SoFullPath *>(pp->getPath());
     const auto &pt = pp->getPoint();
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
     static char buf[513];
+    auto subName = info.element;
+    std::string objectName = objname;
 
     if (ctrlDown) {
-        if(Gui::Selection().isSelected(docname,objname,info.element.c_str(),0))
-            Gui::Selection().rmvSelection(docname,objname,info.element.c_str(),&sels);
+        if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve)) {
+            Gui::Selection().rmvSelection(docname, objname, info.element.c_str(), &sels);
+            return true;
+        }
         else {
-            bool ok = Gui::Selection().addSelection(docname,objname,
-                    info.element.c_str(), pt[0] ,pt[1] ,pt[2], &sels);
+            // Changing the selection may result in destroying this view provider.
+            // So, make sure that the object still exists afterwards (#17965)
+            ViewProviderWeakPtrT guard(vpd);
+            getFullSubElementName(subName);
+            bool ok = Gui::Selection().addSelection(docname, objname,
+                                                    subName.c_str(), pt[0], pt[1], pt[2], &sels);
+            if (guard.expired()) {
+                return false;
+            }
+
             if (ok && mymode == OFF) {
-                snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",
-                        docname,objname,info.element.c_str()
-                        ,fabs(pt[0])>1e-7?pt[0]:0.0
-                        ,fabs(pt[1])>1e-7?pt[1]:0.0
-                        ,fabs(pt[2])>1e-7?pt[2]:0.0);
+                snprintf(buf, 512, "Selected: %s.%s.%s (%g, %g, %g)",
+                         docname, objname, info.element.c_str(), fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,
+                         fabs(pt[1]) > 1e-7 ? pt[1] : 0.0, fabs(pt[2]) > 1e-7 ? pt[2] : 0.0);
 
                 getMainWindow()->showMessage(QString::fromLatin1(buf));
             }
-        }
-        return true;
-    }
-
-    // Hierarchy ascending
-    //
-    // If the clicked subelement is already selected, check if there is an
-    // upper hierarchy, and select that hierarchy instead.
-    //
-    // For example, let's suppose PickedInfo above reports
-    // 'link.link2.box.Face1', and below Selection().getSelectedElement returns
-    // 'link.link2.box.', meaning that 'box' is the current selected hierarchy,
-    // and the user is clicking the box again.  So we shall go up one level,
-    // and select 'link.link2.'
-    //
-
-    std::string subName = info.element;
-    std::string objectName = objname;
-
-    const char *subSelected = Gui::Selection().getSelectedElement(
-                                vpd->getObject(),subName.c_str());
-
-    FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " <<
-            objectName << ", " << subName);
-    std::string newElement;
-    if(subSelected) {
-        newElement = Data::ComplexGeoData::newElementName(subSelected);
-        subSelected = newElement.c_str();
-        std::string nextsub;
-        const char *next = strrchr(subSelected,'.');
-        if(next && next!=subSelected) {
-            if(next[1]==0) {
-                // The convention of dot separated SubName demands a mandatory
-                // ending dot for every object name reference inside SubName.
-                // The non-object sub-element, however, must not end with a dot.
-                // So, next[1]==0 here means current selection is a whole object
-                // selection (because no sub-element), so we shall search
-                // upwards for the second last dot, which is the end of the
-                // parent name of the current selected object
-                for(--next;next!=subSelected;--next) {
-                    if(*next == '.') break;
-                }
-            }
-            if(*next == '.')
-                nextsub = std::string(subSelected,next-subSelected+1);
-        }
-        if(nextsub.length() || *subSelected!=0) {
-            hasNext = true;
-            subName = nextsub;
             detailPath->truncate(0);
-            if(vpd->getDetailPath(subName.c_str(),detailPath,true,detNext) &&
-               detailPath->getLength())
-            {
+            if (vpd->getDetailPath(info.element.c_str(), detailPath, true, detNext) &&
+                detailPath->getLength()) {
                 pPath = detailPath;
                 det = detNext;
                 FC_TRACE("select next " << objectName << ", " << subName);
+                if (ok)
+                    type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
             }
         }
     }
+    else {
+        // Hierarchy ascending
+        //
+        // If the clicked subelement is already selected, check if there is an
+        // upper hierarchy, and select that hierarchy instead.
+        //
+        // For example, let's suppose PickedInfo above reports
+        // 'link.link2.box.Face1', and below Selection().getSelectedElement returns
+        // 'link.link2.box.', meaning that 'box' is the current selected hierarchy,
+        // and the user is clicking the box again.  So we shall go up one level,
+        // and select 'link.link2.'
+        //
 
-#if 0 // ViewProviderDocumentObject now has default implementation of getElementPicked
 
-    // If no next hierarchy is found, do another try on view provider hierarchies,
-    // which is used by geo feature group.
-    if(!hasNext) {
-        bool found = false;
-        auto vps = this->pcDocument->getViewProvidersByPath(pPath);
-        for(auto it=vps.begin();it!=vps.end();++it) {
-            auto vpdNext = it->first;
-            if(Gui::Selection().isSelected(vpdNext->getObject(),"")) {
-                found = true;
-                continue;
+        // We need to convert the short name in the selection to a full element path to look it up
+        // Ex:  Body.Pad.Face9  to Body.Pad.;g3;SKT;:H12dc,E;FAC;:H12dc:4,F;:G0;XTR;:H12dc:8,F.Face9
+        getFullSubElementName(subName);
+        const char *subSelected = Gui::Selection().getSelectedElement(
+                vpd->getObject(), subName.c_str());
+
+        FC_TRACE("select " << (subSelected ? subSelected : "'null'") << ", " <<
+                           objectName << ", " << subName);
+        std::string newElement;
+        if (subSelected) {
+            newElement = Data::newElementName(subSelected);
+            subSelected = newElement.c_str();
+            std::string nextsub;
+            const char *next = strrchr(subSelected, '.');
+            if (next && next != subSelected) {
+                if (next[1] == 0) {
+                    // The convention of dot separated SubName demands a mandatory
+                    // ending dot for every object name reference inside SubName.
+                    // The non-object sub-element, however, must not end with a dot.
+                    // So, next[1]==0 here means current selection is a whole object
+                    // selection (because no sub-element), so we shall search
+                    // upwards for the second last dot, which is the end of the
+                    // parent name of the current selected object
+                    for (--next; next != subSelected; --next) {
+                        if (*next == '.') break;
+                    }
+                }
+                if (*next == '.')
+                    nextsub = std::string(subSelected, next - subSelected + 1);
             }
-            if(!found || !vpdNext->useNewSelectionModel() || !vpdNext->isSelectable())
-                continue;
-            hasNext = true;
-            vpd = vpdNext;
-            det = 0;
-            pPath->truncate(it->second+1);
-            objectName = vpd->getObject()->getNameInDocument();
-            subName = "";
-            break;
+            if (nextsub.length() || *subSelected != 0) {
+                hasNext = true;
+                subName = nextsub;
+                detailPath->truncate(0);
+                if (vpd->getDetailPath(subName.c_str(), detailPath, true, detNext) &&
+                    detailPath->getLength()) {
+                    pPath = detailPath;
+                    det = detNext;
+                    FC_TRACE("select next " << objectName << ", " << subName);
+                }
+            }
         }
-    }
-#endif
 
-    FC_TRACE("clearing selection");
-    Gui::Selection().clearSelection();
-    FC_TRACE("add selection");
-    bool ok = Gui::Selection().addSelection(docname, objectName.c_str() ,subName.c_str(),
-            pt[0] ,pt[1] ,pt[2], &sels);
-    if (ok)
-        type = hasNext?SoSelectionElementAction::All:SoSelectionElementAction::Append;
+        FC_TRACE("clearing selection");
+        Gui::Selection().clearSelection();
+        FC_TRACE("add selection");
+        bool ok = Gui::Selection().addSelection(docname, objectName.c_str(), subName.c_str(),
+                                                pt[0], pt[1], pt[2], &sels);
+        if (ok)
+            type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
 
-    if (mymode == OFF) {
-        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",
-                docname, objectName.c_str() ,subName.c_str()
-                ,fabs(pt[0])>1e-7?pt[0]:0.0
-                ,fabs(pt[1])>1e-7?pt[1]:0.0
-                ,fabs(pt[2])>1e-7?pt[2]:0.0);
+        if (mymode == OFF) {
+            snprintf(buf, 512, "Selected: %s.%s.%s (%g, %g, %g)",
+                     docname, objectName.c_str(), subName.c_str(), fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,
+                     fabs(pt[1]) > 1e-7 ? pt[1] : 0.0, fabs(pt[2]) > 1e-7 ? pt[2] : 0.0);
 
-        getMainWindow()->showMessage(QString::fromLatin1(buf));
+            getMainWindow()->showMessage(QString::fromLatin1(buf));
+        }
     }
 
     if (pPath) {
@@ -714,7 +720,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         this->touch();
     }
 
-    if(detNext) delete detNext;
+    if (detNext) delete detNext;
     return true;
 }
 
@@ -728,7 +734,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         return;
     }
 
-    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
     const SoEvent * event = action->getEvent();
 
     // If we don't need to pick for locate highlighting,
@@ -751,7 +757,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         if (mymode == AUTO || mymode == ON) {
             // check to see if the mouse is over our geometry...
             auto infos = this->getPickedList(action,true);
-            if(infos.size())
+            if(!infos.empty())
                 setHighlight(infos[0]);
             else {
                 setHighlight(PickedInfo());
@@ -767,11 +773,13 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     // mouse press events for (de)selection
     else if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
              selectionMode.getValue() == SoFCUnifiedSelection::ON) {
-        const SoMouseButtonEvent* e = static_cast<const SoMouseButtonEvent *>(event);
+        const auto e = static_cast<const SoMouseButtonEvent *>(event);
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
             // check to see if the mouse is over a geometry...
             auto infos = this->getPickedList(action,!Selection().needPickedList());
-            if(setSelection(infos,event->wasCtrlDown()))
+            bool greedySel = Gui::Selection().getSelectionStyle() == Gui::SelectionSingleton::SelectionStyle::GreedySelection;
+            greedySel = greedySel || event->wasCtrlDown();
+            if(setSelection(infos, greedySel) || greedySel)
                 action->setHandled();
         } // mouse release
     }
@@ -791,7 +799,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
         QtGLWidget* window;
         SoState *state = action->getState();
         SoGLWidgetElement::get(state, window);
-        QWidget* parent = window ? window->parentWidget() : 0;
+        QWidget* parent = window ? window->parentWidget() : nullptr;
         if (parent) {
             QCursor c = parent->cursor();
             if (c.shape() == Qt::ForbiddenCursor) {
@@ -811,6 +819,7 @@ void SoHighlightElementAction::initClass()
     SO_ACTION_INIT_CLASS(SoHighlightElementAction,SoAction);
 
     SO_ENABLE(SoHighlightElementAction, SoSwitchElement);
+    SO_ENABLE(SoHighlightElementAction, SoModelMatrixElement);
 
     SO_ACTION_ADD_METHOD(SoNode,nullAction);
 
@@ -822,14 +831,12 @@ void SoHighlightElementAction::initClass()
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoHighlightElementAction::SoHighlightElementAction () : _highlight(false), _det(0)
+SoHighlightElementAction::SoHighlightElementAction ()
 {
     SO_ACTION_CONSTRUCTOR(SoHighlightElementAction);
 }
 
-SoHighlightElementAction::~SoHighlightElementAction()
-{
-}
+SoHighlightElementAction::~SoHighlightElementAction() = default;
 
 void SoHighlightElementAction::beginTraversal(SoNode *node)
 {
@@ -880,6 +887,7 @@ void SoSelectionElementAction::initClass()
     SO_ACTION_INIT_CLASS(SoSelectionElementAction,SoAction);
 
     SO_ENABLE(SoSelectionElementAction, SoSwitchElement);
+    SO_ENABLE(SoSelectionElementAction, SoModelMatrixElement);
 
     SO_ACTION_ADD_METHOD(SoNode,nullAction);
 
@@ -893,14 +901,12 @@ void SoSelectionElementAction::initClass()
 }
 
 SoSelectionElementAction::SoSelectionElementAction (Type t, bool secondary)
-    : _type(t), _det(0), _secondary(secondary)
+    : _type(t), _secondary(secondary)
 {
     SO_ACTION_CONSTRUCTOR(SoSelectionElementAction);
 }
 
-SoSelectionElementAction::~SoSelectionElementAction()
-{
-}
+SoSelectionElementAction::~SoSelectionElementAction() = default;
 
 void SoSelectionElementAction::beginTraversal(SoNode *node)
 {
@@ -965,14 +971,12 @@ void SoVRMLAction::initClass()
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoVRMLAction::SoVRMLAction() : overrideMode(true)
+SoVRMLAction::SoVRMLAction()
 {
     SO_ACTION_CONSTRUCTOR(SoVRMLAction);
 }
 
-SoVRMLAction::~SoVRMLAction()
-{
-}
+SoVRMLAction::~SoVRMLAction() = default;
 
 void SoVRMLAction::setOverrideMode(SbBool on)
 {
@@ -987,9 +991,9 @@ SbBool SoVRMLAction::isOverrideMode() const
 void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
 {
     if (node->getTypeId().isDerivedFrom(SoNormalBinding::getClassTypeId()) && action->isOfType(SoVRMLAction::getClassTypeId())) {
-        SoVRMLAction* vrmlAction = static_cast<SoVRMLAction*>(action);
+        auto vrmlAction = static_cast<SoVRMLAction*>(action);
         if (vrmlAction->overrideMode) {
-            SoNormalBinding* bind = static_cast<SoNormalBinding*>(node);
+            auto bind = static_cast<SoNormalBinding*>(node);
             vrmlAction->bindList.push_back(bind->value.getValue());
             // this normal binding causes some problems for the part view provider
             // See also #0002222: Number of normals in exported VRML is wrong
@@ -1044,7 +1048,7 @@ void SoFCSeparator::GLRenderBelowPath(SoGLRenderAction * action) {
     inherited::GLRenderBelowPath(action);
 }
 
-void SoFCSeparator::initClass(void)
+void SoFCSeparator::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCSeparator,SoSeparator,"FCSeparator");
 }
@@ -1058,33 +1062,33 @@ void SoFCSeparator::finish()
 // Thread local data for bounding box rendering
 //
 // The code is inspred by Coin SoLevelOfDetails.cpp.
-typedef struct {
+using SoFCBBoxRenderInfo = struct {
     SoGetBoundingBoxAction * bboxaction;
     SoCube *cube;
     SoColorPacker *packer;
-} SoFCBBoxRenderInfo;
+};
 
 static void so_bbox_construct_data(void * closure)
 {
-    SoFCBBoxRenderInfo * data = (SoFCBBoxRenderInfo*) closure;
-    data->bboxaction = NULL;
-    data->cube = NULL;
-    data->packer = NULL;
+    auto data = static_cast<SoFCBBoxRenderInfo*>(closure);
+    data->bboxaction = nullptr;
+    data->cube = nullptr;
+    data->packer = nullptr;
 }
 
 static void so_bbox_destruct_data(void * closure)
 {
-    SoFCBBoxRenderInfo * data = (SoFCBBoxRenderInfo*) closure;
+    auto data = static_cast<SoFCBBoxRenderInfo*>(closure);
     delete data->bboxaction;
     if(data->cube)
         data->cube->unref();
     delete data->packer;
 }
 
-static SbStorage * so_bbox_storage = NULL;
+static SbStorage * so_bbox_storage = nullptr;
 
 // called from atexit
-static void so_bbox_cleanup(void)
+static void so_bbox_cleanup()
 {
     delete so_bbox_storage;
 }
@@ -1110,11 +1114,9 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
 }
 
-SoFCSelectionRoot::~SoFCSelectionRoot()
-{
-}
+SoFCSelectionRoot::~SoFCSelectionRoot() = default;
 
-void SoFCSelectionRoot::initClass(void)
+void SoFCSelectionRoot::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCSelectionRoot,SoFCSeparator,"FCSelectionRoot");
 
@@ -1131,7 +1133,7 @@ void SoFCSelectionRoot::finish()
 }
 
 SoNode *SoFCSelectionRoot::getCurrentRoot(bool front, SoNode *def) {
-    if(SelStack.size())
+    if(!SelStack.empty())
         return front?SelStack.front():SelStack.back();
     return def;
 }
@@ -1142,37 +1144,42 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
     if(stack.empty())
         return def;
 
-    SoFCSelectionRoot *front = stack.front();
+    auto front = dynamic_cast<SoFCSelectionRoot *>(stack.front());
+    if (front == nullptr) {
+        return SoFCSelectionContextBasePtr();
+    }
 
-    // NOTE: _node is not necessary of type SoFCSelectionRoot, but it is safe
-    // here since we only use it as searching key, although it is probably not
-    // a best practice.
-    stack.front() = static_cast<SoFCSelectionRoot*>(node);
+    stack.front() = node;
 
     auto it = front->contextMap.find(stack);
     stack.front() = front;
     if(it!=front->contextMap.end())
         return it->second;
-    return SoFCSelectionContextBasePtr();
+    return {};
 }
 
 SoFCSelectionContextBasePtr
 SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge)
 {
     SoFCSelectionContextBasePtr ret;
-    if(stack.empty() || stack.back()->contextMap2.empty())
+    if (stack.empty()) {
         return ret;
+    }
+
+    auto *back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
+    if (back == nullptr || back->contextMap2.empty()) {
+        return ret;
+    }
 
     int status = 0;
-    auto *back = stack.back();
     auto &map = back->contextMap2;
-    stack.back() = static_cast<SoFCSelectionRoot*>(node);
+    stack.back() = node;
     for(stack.offset=0;stack.offset<stack.size();++stack.offset) {
         auto it = map.find(stack);
         SoFCSelectionContextBasePtr ctx;
         if(it!=map.end())
             ctx = it->second;
-        status = merge(status,ret,ctx,stack.offset==stack.size()-1?0:stack[stack.offset]);
+        status = merge(status,ret,ctx,stack.offset==stack.size()-1?nullptr:stack[stack.offset]);
         if(status<0)
             break;
     }
@@ -1185,6 +1192,7 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
         SoAction *action, SoNode *_node, bool create, bool erase)
 {
     std::pair<bool,SoFCSelectionContextBasePtr*> res(false,0);
+
     if(action->isOfType(SoSelectionElementAction::getClassTypeId()))
         res.first = static_cast<SoSelectionElementAction*>(action)->isSecondary();
 
@@ -1194,44 +1202,46 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
 
     auto &stack = it->second;
 
-    auto node = static_cast<SoFCSelectionRoot*>(_node);
-
     if(res.first) {
-        auto back = stack.back();
-        stack.back() = node;
-        if(create)
-            res.second = &back->contextMap2[stack];
-        else {
-            auto it = back->contextMap2.find(stack);
-            if(it!=back->contextMap2.end()) {
-                res.second = &it->second;
-                if(erase)
-                    back->contextMap2.erase(it);
+        auto back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
+        if (back != nullptr) {
+            stack.back() = _node;
+            if(create)
+                res.second = &back->contextMap2[stack];
+            else {
+                auto it = back->contextMap2.find(stack);
+                if(it!=back->contextMap2.end()) {
+                    res.second = &it->second;
+                    if(erase)
+                        back->contextMap2.erase(it);
+                }
             }
+            stack.back() = back;
         }
-        stack.back() = back;
     }else{
-        auto front = stack.front();
-        stack.front() = node;
-        if(create)
-            res.second = &front->contextMap[stack];
-        else {
-            auto it = front->contextMap.find(stack);
-            if(it!=front->contextMap.end()) {
-                res.second = &it->second;
-                if(erase)
-                    front->contextMap.erase(it);
+        auto front = dynamic_cast<SoFCSelectionRoot*>(stack.front());
+        if (front != nullptr) {
+            stack.front() = _node;
+            if(create)
+                res.second = &front->contextMap[stack];
+            else {
+                auto it = front->contextMap.find(stack);
+                if(it!=front->contextMap.end()) {
+                    res.second = &it->second;
+                    if(erase)
+                        front->contextMap.erase(it);
+                }
             }
+            stack.front() = front;
         }
-        stack.front() = front;
     }
     return res;
 }
 
 bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbColor color)
 {
-    auto data = (SoFCBBoxRenderInfo*) so_bbox_storage->get();
-    if (data->bboxaction == NULL) {
+    auto data = static_cast<SoFCBBoxRenderInfo*>(so_bbox_storage->get());
+    if (!data->bboxaction) {
         // The viewport region will be replaced every time the action is
         // used, so we can just feed it a dummy here.
         data->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());
@@ -1283,7 +1293,7 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
     if(ViewParams::instance()->getCoinCycleCheck()
             && !SelStack.nodeSet.insert(this).second)
     {
-        std::time_t t = std::time(0);
+        std::time_t t = std::time(nullptr);
         if(_CyclicLastReported < t) {
             _CyclicLastReported = t+5;
             FC_ERR("Cyclic scene graph: " << getName());
@@ -1397,7 +1407,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
     }
 
     if(colorPushed) {
-        ShapeColorNode = 0;
+        ShapeColorNode = nullptr;
         state->pop();
     }
 
@@ -1593,7 +1603,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
                     touch();
                 }
                 // applied to a node means clear all visibility setting, so
-                // return true to propgate the action
+                // return true to propagate the action
                 return selAction->getType()==SoSelectionElementAction::Color ||
                        action->getWhatAppliedTo()==SoAction::NODE;
 
@@ -1678,7 +1688,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
 }
 
 int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr &output,
-        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *)
+        SoFCSelectionContextBasePtr input, SoNode *)
 {
     auto ctx = std::dynamic_pointer_cast<SelContext>(input);
     if(ctx && ctx->hideAll) {
@@ -1695,9 +1705,9 @@ SO_NODE_SOURCE(SoFCPathAnnotation)
 SoFCPathAnnotation::SoFCPathAnnotation()
 {
     SO_NODE_CONSTRUCTOR(SoFCPathAnnotation);
-    path = 0;
-    tmpPath = 0;
-    det = 0;
+    path = nullptr;
+    tmpPath = nullptr;
+    det = nullptr;
 }
 
 SoFCPathAnnotation::~SoFCPathAnnotation()
@@ -1712,7 +1722,7 @@ void SoFCPathAnnotation::finish()
     atexit_cleanup();
 }
 
-void SoFCPathAnnotation::initClass(void)
+void SoFCPathAnnotation::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCPathAnnotation,SoSeparator,"Separator");
 }
@@ -1739,7 +1749,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 
     if(path->getLength() != tmpPath->getLength()) {
         // The auditing SoPath may be truncated due to harmless things such as
-        // fliping a SoSwitch sibling node. So we keep an unauditing SoTempPath
+        // flipping a SoSwitch sibling node. So we keep an unauditing SoTempPath
         // around to try to restore the path.
         for(int i=path->getLength()-1;i<tmpPath->getLength()-1;++i) {
             auto children = path->getNode(i)->getChildren();
@@ -1751,7 +1761,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
                 }
             }
             tmpPath->unref();
-            tmpPath = 0;
+            tmpPath = nullptr;
             return;
         }
     }
@@ -1771,8 +1781,9 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
                 for(int i=0,count=path->getLength();i<count;++i) {
                     if(!path->getNode(i)->isOfType(SoFCSelectionRoot::getClassTypeId()))
                         continue;
-                    auto node = static_cast<SoFCSelectionRoot*>(path->getNode(i));
-                    if(node->selectionStyle.getValue()==SoFCSelectionRoot::Box) {
+                    auto node = dynamic_cast<SoFCSelectionRoot*>(path->getNode(i));
+                    if (node != nullptr
+                        && node->selectionStyle.getValue() == SoFCSelectionRoot::Box) {
                         bbox = true;
                         break;
                     }
@@ -1797,7 +1808,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
     } else {
         SoCacheElement::invalidate(action->getState());
         auto curPath = action->getCurPath();
-        SoPath *newPath = new SoPath(curPath->getLength()+path->getLength());
+        auto newPath = new SoPath(curPath->getLength()+path->getLength());
         newPath->append(curPath);
         newPath->append(path);
         action->addDelayedPath(newPath);
@@ -1820,10 +1831,10 @@ void SoFCPathAnnotation::setPath(SoPath *newPath) {
     if(path) {
         path->unref();
         coinRemoveAllChildren(this);
-        path = 0;
+        path = nullptr;
         if(tmpPath) {
             tmpPath->unref();
-            tmpPath = 0;
+            tmpPath = nullptr;
         }
     }
     if(!newPath || !newPath->getLength())

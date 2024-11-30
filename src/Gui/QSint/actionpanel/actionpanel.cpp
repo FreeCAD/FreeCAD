@@ -9,7 +9,7 @@
 #include "actionpanelscheme.h"
 #include "actiongroup.h"
 
-#include <QtCore/QVariant>
+#include <QVariant>
 
 
 namespace QSint
@@ -17,7 +17,7 @@ namespace QSint
 
 
 ActionPanel::ActionPanel(QWidget *parent) :
-    BaseClass(parent), mySpacer(0)
+    BaseClass(parent), mySpacer(nullptr)
 {
     setProperty("class", "panel");
 
@@ -26,7 +26,7 @@ ActionPanel::ActionPanel(QWidget *parent) :
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
     QVBoxLayout *vbl = new QVBoxLayout();
-    vbl->setMargin(8);
+    vbl->setContentsMargins(8, 8, 8, 8);
     vbl->setSpacing(8);
     setLayout(vbl);
 }
@@ -39,7 +39,7 @@ void ActionPanel::setScheme(ActionPanelScheme *scheme)
 
     // set scheme for children
     QObjectList list(children());
-    foreach(QObject *obj, list) {
+    Q_FOREACH(QObject *obj, list) {
       if (dynamic_cast<ActionGroup*>(obj)) {
         ((ActionGroup*)obj)->setScheme(scheme);
         continue;
@@ -85,7 +85,7 @@ void ActionPanel::removeStretch()
   if (mySpacer) {
     layout()->removeItem(mySpacer);
     delete mySpacer;
-    mySpacer = 0;
+    mySpacer = nullptr;
   }
 }
 
@@ -113,7 +113,7 @@ ActionGroup * ActionPanel::createGroup(const QPixmap &icon, const QString &title
 
 QSize ActionPanel::minimumSizeHint() const
 {
-    return QSize(200,150);
+    return {200,150};
 }
 
 

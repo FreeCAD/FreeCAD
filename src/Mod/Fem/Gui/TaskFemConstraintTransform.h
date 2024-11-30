@@ -27,67 +27,59 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintTransform_H
 #define GUI_TASKVIEW_TaskFemConstraintTransform_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
+#include <memory>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintTransform.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintTransform;
 
-namespace FemGui {
-class TaskFemConstraintTransform : public TaskFemConstraint
+namespace FemGui
+{
+class TaskFemConstraintTransform: public TaskFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = 0);
-    ~TaskFemConstraintTransform();
-    const std::string getReferences() const;
-    double get_X_rot()const;
-    double get_Y_rot()const;
-    double get_Z_rot()const;
-    std::string get_transform_type(void) const;
+    explicit TaskFemConstraintTransform(ViewProviderFemConstraintTransform* ConstraintView,
+                                        QWidget* parent = nullptr);
+    ~TaskFemConstraintTransform() override;
+    const std::string getReferences() const override;
+    Base::Rotation getRotation() const;
+    std::string get_transform_type() const;
     static std::string getSurfaceReferences(const std::string showConstr);
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void Rect();
     void Cyl();
     void addToSelection();
     void removeFromSelection();
-    void x_Changed(int x);
-    void y_Changed(int y);
-    void z_Changed(int z);
+    void xAxisChanged(double x);
+    void yAxisChanged(double y);
+    void zAxisChanged(double z);
+    void angleChanged(double a);
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent* e) override;
     const QString makeText(const App::DocumentObject* obj) const;
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintTransform* ui;
+    std::unique_ptr<Ui_TaskFemConstraintTransform> ui;
 };
 
-class TaskDlgFemConstraintTransform : public TaskDlgFemConstraint
+class TaskDlgFemConstraintTransform: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    explicit TaskDlgFemConstraintTransform(ViewProviderFemConstraintTransform* ConstraintView);
+    bool accept() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintTransform_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintTransform_H

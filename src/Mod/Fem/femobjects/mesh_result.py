@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM mesh result document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package mesh_result
 #  \ingroup FEM
@@ -40,4 +40,4 @@ class MeshResult(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::MeshResult"
 
     def __init__(self, obj):
-        super(MeshResult, self).__init__(obj)
+        super().__init__(obj)

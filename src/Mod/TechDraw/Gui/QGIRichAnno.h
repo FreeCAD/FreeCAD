@@ -23,19 +23,15 @@
 #ifndef TECHDRAWGUI_QGIRICHANNO_H
 #define TECHDRAWGUI_QGIRICHANNO_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
-#include <QColor>
-#include <QFont>
-#include <QPointF>
-#include <QPen>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Base/Vector3D.h>
-#include "QGILeaderLine.h"
+#include <QFont>
+#include <QGraphicsItem>
+#include <QPen>
+#include <QStyleOptionGraphicsItem>
+
+#include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawRichAnno;
@@ -61,46 +57,40 @@ class TechDrawGuiExport QGIRichAnno : public QGIView
 public:
     enum {Type = QGraphicsItem::UserType + 233};
 
-    explicit QGIRichAnno(QGraphicsItem* myParent = nullptr,
-                           TechDraw::DrawRichAnno* lead = nullptr);
-    ~QGIRichAnno() = default;
+    explicit QGIRichAnno();
+    ~QGIRichAnno() override = default;
 
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
-                        const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape(void) const override;
+    void paint( QPainter * painter,
+                const QStyleOptionGraphicsItem * option,
+                QWidget * widget = nullptr ) override;
+    QRectF boundingRect() const override;
+    QRectF frameRect() const;
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    void drawBorder() override;
+    void updateView(bool update = false) override;
 
-    void setTextItem(void);
+    void setTextItem();
 
-    virtual TechDraw::DrawRichAnno* getFeature(void);
+    virtual TechDraw::DrawRichAnno* getFeature();
     QPen rectPen() const;
 
-    void setExporting(bool b) { m_isExporting = b; }
-    bool getExporting(void) { return m_isExporting; }
-
-
-public Q_SLOTS:
-/*    void textDragging(void);*/
-/*    void textDragFinished(void);*/
-/*    void hover(bool state);*/
-/*    void select(bool state);*/
+    void setExportingPdf(bool b) { m_isExportingPdf = b; }
+    bool getExportingPdf() const { return m_isExportingPdf; }
+    void setExportingSvg(bool b) { m_isExportingSvg = b; }
+    bool getExportingSvg() const { return m_isExportingSvg; }
 
 protected:
-    virtual void draw() override;
-    virtual QVariant itemChange( GraphicsItemChange change,
-                                 const QVariant &value ) override;
+    void draw() override;
     void setLineSpacing(int lineSpacing);
-    double prefPointSize(void);
     QFont prefFont(void);
 
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
-    bool m_isExporting;
+    QString convertTextSizes(const QString& inHtml)  const;
+
+    bool m_isExportingPdf;
+    bool m_isExportingSvg;
     QGCustomText* m_text;
     bool m_hasHover;
     QGCustomRect* m_rect;

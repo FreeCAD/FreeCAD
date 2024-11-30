@@ -60,19 +60,20 @@ class Downgrade(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Downgrade, self).Activated(name="Downgrade")
-        if self.ui:
-            if not Gui.Selection.getSelection():
-                self.ui.selectUi(on_close_call=self.finish)
-                _msg(translate("draft", "Select an object to upgrade"))
-                self.call = self.view.addEventCallback(
-                    "SoEvent",
-                    gui_tool_utils.selectObject)
-            else:
-                self.proceed()
+        super().Activated(name="Downgrade")
+        if not self.ui:
+            return
+        if not Gui.Selection.getSelection():
+            self.ui.selectUi(on_close_call=self.finish)
+            _msg(translate("draft", "Select an object to upgrade"))
+            self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
+        else:
+            self.proceed()
 
     def proceed(self):
         """Proceed with execution of the command after selection."""
+        if self.call is not None:
+            self.end_callbacks(self.call)
         if Gui.Selection.getSelection():
             Gui.addModule("Draft")
             _cmd = 'Draft.downgrade'

@@ -7,47 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>270</width>
-    <height>339</height>
+    <height>188</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <widget class="QPushButton" name="buttonAddFeature">
-       <property name="text">
-        <string>Add feature</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonRemoveFeature">
-       <property name="text">
-        <string>Remove feature</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QListWidget" name="listWidgetFeatures">
-     <property name="toolTip">
-      <string>List can be reordered by dragging</string>
-     </property>
-     <property name="dragDropMode">
-      <enum>QAbstractItemView::InternalMove</enum>
-     </property>
-    </widget>
-   </item>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
@@ -70,28 +48,105 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="labelMode">
        <property name="text">
-        <string>Length</string>
+        <string>Mode</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="spinLength">
-       <property name="keyboardTracking">
-        <bool>false</bool>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
-       </property>
-       <property name="value">
-        <double>100.000000000000000</double>
-       </property>
+      <widget class="QComboBox" name="comboMode">
+       <item>
+        <property name="text">
+         <string>Overall Length</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Offset</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="lengthWrapper" native="true">
+     <layout class="QHBoxLayout" name="_3">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="labelLength">
+        <property name="text">
+         <string>Length</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::QuantitySpinBox" name="spinLength" native="true">
+        <property name="keyboardTracking" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="value" stdset="0">
+         <double>100.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="offsetWrapper" native="true">
+     <layout class="QHBoxLayout" name="_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="labelOffset">
+        <property name="text">
+         <string>Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::QuantitySpinBox" name="spinOffset" native="true">
+        <property name="keyboardTracking" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="value" stdset="0">
+         <double>10.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -106,27 +161,6 @@
       <widget class="Gui::UIntSpinBox" name="spinOccurrences"/>
      </item>
     </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <widget class="QPushButton" name="buttonOK">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUpdateView">
-     <property name="text">
-      <string>Update view</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>
@@ -143,39 +177,12 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>comboDirection</tabstop>
+  <tabstop>checkReverse</tabstop>
+  <tabstop>spinLength</tabstop>
+  <tabstop>spinOccurrences</tabstop>
+ </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonAddFeature</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>buttonRemoveFeature</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>70</x>
-     <y>21</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>198</x>
-     <y>21</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonRemoveFeature</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>buttonAddFeature</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>198</x>
-     <y>21</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>70</x>
-     <y>21</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

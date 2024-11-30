@@ -23,9 +23,11 @@
 #ifndef DRAWINGGUI_QGCUSTOMLABEL_H
 #define DRAWINGGUI_QGCUSTOMLABEL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
-#include <QPointF>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -38,13 +40,13 @@ namespace TechDrawGui
 class TechDrawGuiExport QGCustomLabel : public QGraphicsTextItem
 {
 public:
-    explicit QGCustomLabel(void);
-    ~QGCustomLabel() {}
+    explicit QGCustomLabel();
+    ~QGCustomLabel() override = default;
 
     enum {Type = QGraphicsItem::UserType + 135};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
 

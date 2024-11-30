@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="BaseClassPy" 
-        Name="LinkViewPy" 
-        Twin="LinkView" 
-        TwinPointer="LinkView" 
-        Include="Gui/ViewProviderLink.h" 
-        Namespace="Gui" 
+    <PythonExport
+        Father="BaseClassPy"
+        Name="LinkViewPy"
+        Twin="LinkView"
+        TwinPointer="LinkView"
+        Include="Gui/ViewProviderLink.h"
+        Namespace="Gui"
         FatherInclude="Base/BaseClass.h"
         FatherNamespace="Base"
         Constructor="true"
@@ -26,10 +26,10 @@
 setMaterial(Material): set the override material of the entire linked object
 
 setMaterial([Material,...]): set the materials for the elements of the link
-                             array/group. 
+                             array/group.
 
 setMaterial({Int:Material,...}): set the material for the elements of the
-                                 link array/group by index. 
+                                 link array/group by index.
 
 If material is None, then the material is unset. If the material of an element
 is unset, it defaults to the override material of the linked object, if there
@@ -70,15 +70,15 @@ setTransform({index:matrix,...}): set transformation for elements of the link
             <Documentation>
                 <UserDocu>
 setChildren([obj...],vis=[],type=0)
-Group a list of children objects. Note, this mode of operation is incompatible 
+Group a list of children objects. Note, this mode of operation is incompatible
 with link array. Calling this function will deactivate link array. And calling
 setSize() will reset all linked children.
 
 vis: initial visibility status of the children
 
-type: children linking type, 
-   0: override transformation and visibility, 
-   1: override visibility, 
+type: children linking type,
+   0: override transformation and visibility,
+   1: override visibility,
    2: override none.
                 </UserDocu>
             </Documentation>

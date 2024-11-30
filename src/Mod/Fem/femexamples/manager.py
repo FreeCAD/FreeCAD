@@ -68,8 +68,16 @@ def run_all():
     run_example("constraint_tie", run_solver=True)
     run_example("constraint_transform_beam_hinged", run_solver=True)
     run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam", run_solver=True)
+    run_example("equation_deformation_spring_elmer", run_solver=True)
     run_example("equation_electrostatics_capacitance_two_balls", run_solver=True)
     run_example("equation_electrostatics_electricforce_elmer_nongui6", run_solver=True)
+    run_example("equation_flow_elmer_2D", run_solver=True)
+    run_example("equation_flow_initial_elmer_2D", run_solver=True)
+    run_example("equation_flow_turbulent_elmer_2D", run_solver=True)
+    run_example("equation_flux_elmer", run_solver=True)
+    run_example("equation_magnetodynamics_elmer", run_solver=True)
+    run_example("equation_magnetodynamics_2D_elmer.py", run_solver=True)
+    run_example("equation_magnetostatics_2D_elmer.py", run_solver=True)
     run_example("frequency_beamsimple", run_solver=True)
     run_example("material_multiple_bendingbeam_fiveboxes", run_solver=True)
     run_example("material_multiple_bendingbeam_fivefaces", run_solver=True)
@@ -78,9 +86,7 @@ def run_all():
     run_example("rc_wall_2d", run_solver=True)
     run_example("square_pipe_end_twisted_edgeforces", run_solver=True)
     run_example("square_pipe_end_twisted_nodeforces", run_solver=True)
-    run_example("thermomech_bimetall", run_solver=True)
-    run_example("thermomech_flow1d", run_solver=True)
-    run_example("thermomech_spine", run_solver=True)
+    run_example("thermomech_bimetal", run_solver=True)
 
 
 def setup_all():
@@ -100,8 +106,16 @@ def setup_all():
     run_example("constraint_tie")
     run_example("constraint_transform_beam_hinged")
     run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam")
+    run_example("equation_deformation_spring_elmer")
     run_example("equation_electrostatics_capacitance_two_balls")
     run_example("equation_electrostatics_electricforce_elmer_nongui6")
+    run_example("equation_flow_elmer_2D")
+    run_example("equation_flow_initial_elmer_2D")
+    run_example("equation_flow_turbulent_elmer_2D")
+    run_example("equation_flux_elmer")
+    run_example("equation_magnetodynamics_elmer")
+    run_example("equation_magnetodynamics_2D_elmer.py")
+    run_example("equation_magnetostatics_2D_elmer.py")
     run_example("frequency_beamsimple")
     run_example("material_multiple_bendingbeam_fiveboxes")
     run_example("material_multiple_bendingbeam_fivefaces")
@@ -110,9 +124,7 @@ def setup_all():
     run_example("rc_wall_2d")
     run_example("square_pipe_end_twisted_edgeforces")
     run_example("square_pipe_end_twisted_nodeforces")
-    run_example("thermomech_bimetall")
-    run_example("thermomech_flow1d")
-    run_example("thermomech_spine")
+    run_example("thermomech_bimetal")
 
 
 def run_analysis(doc, base_name, filepath="", run_solver=False):
@@ -136,6 +148,7 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
     # find the first solver
     # thus ATM only one solver per analysis is supported
     from femtools.femutils import is_derived_from
+
     for m in doc.Analysis.Group:
         if is_derived_from(m, "Fem::FemSolverObjectPython"):
             solver = m
@@ -143,17 +156,17 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
 
     # a file name is needed for the besides dir to work
     save_fc_file = join(filepath, (base_name + ".FCStd"))
-    FreeCAD.Console.PrintMessage(
-        "Save FreeCAD file for {} analysis to {}\n.".format(base_name, save_fc_file)
-    )
+    FreeCAD.Console.PrintMessage(f"Save FreeCAD file for {base_name} analysis to {save_fc_file}\n.")
     doc.saveAs(save_fc_file)
 
     # get analysis workig dir
     from femtools.femutils import get_beside_dir
+
     working_dir = get_beside_dir(solver)
 
     # run analysis
     from femsolver.run import run_fem_solver
+
     if run_solver is True:
         run_fem_solver(solver, working_dir)
 
@@ -164,9 +177,10 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
 def run_example(example, solver=None, base_name=None, run_solver=False):
 
     from importlib import import_module
+
     module = import_module("femexamples." + example)
     if not hasattr(module, "setup"):
-        FreeCAD.Console.PrintError("Setup method not found in {}\n".format(example))
+        FreeCAD.Console.PrintError(f"Setup method not found in {example}\n")
         return None
 
     if solver is None:
@@ -189,6 +203,9 @@ def run_example(example, solver=None, base_name=None, run_solver=False):
 def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
+        # set license
+        doc.License = "Creative Commons Attribution 4.0"
+        doc.LicenseURL = "https://creativecommons.org/licenses/by/4.0/"
     return doc
 
 
@@ -200,7 +217,9 @@ def get_meshname():
 def get_header(information):
     return """{name}
 
-{information}""".format(name=information["name"], information=print_info_dict(information))
+{information}""".format(
+        name=information["name"], information=print_info_dict(information)
+    )
 
 
 def print_info_dict(information):
@@ -209,11 +228,11 @@ def print_info_dict(information):
         value_text = ""
         if isinstance(v, list):
             for j in v:
-                value_text += "{}, ".format(j)
+                value_text += f"{j}, "
             value_text = value_text.rstrip(", ")
         else:
             value_text = v
-        the_text += "{} --> {}\n".format(k, value_text)
+        the_text += f"{k} --> {value_text}\n"
     # print(the_text)
     return the_text
 

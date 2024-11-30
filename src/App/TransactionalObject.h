@@ -34,21 +34,22 @@ class TransactionObject;
 
 /** Base class of transactional objects
  */
-class AppExport TransactionalObject : public App::ExtensionContainer
+class AppExport TransactionalObject: public App::ExtensionContainer
 {
-    PROPERTY_HEADER(App::TransactionalObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::TransactionalObject);
 
 public:
     /// Constructor
-    TransactionalObject(void);
-    virtual ~TransactionalObject();
+    TransactionalObject();
+    ~TransactionalObject() override;
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
+
 protected:
-    void onBeforeChangeProperty(Document *doc, const Property *prop);
+    void onBeforeChangeProperty(Document* doc, const Property* prop);
 };
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_TRANSACTIONALOBJECT_H
+#endif  // APP_TRANSACTIONALOBJECT_H

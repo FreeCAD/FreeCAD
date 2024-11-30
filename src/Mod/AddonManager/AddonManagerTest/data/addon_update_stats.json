@@ -1,0 +1,156 @@
+{
+    "3DfindIT": {
+        "refs/remotes/origin/HEAD": [
+            "2022-09-08T13:58:17+02:00",
+            "dc99f8f1bdb17c1e55c00ac0dffa3ec15caf5b9d"
+        ],
+        "refs/remotes/origin/master": [
+            "2022-09-08T13:58:17+02:00",
+            "dc99f8f1bdb17c1e55c00ac0dffa3ec15caf5b9d"
+        ],
+        "refs/tags/v1.0": [
+            "2020-11-09T10:11:44+01:00",
+            "e97b6caf5eaed0b709dfeabecedac14c9bc2cc2b"
+        ],
+        "refs/tags/v1.1": [
+            "2021-06-21T13:33:58+02:00",
+            "b9ab38ae93fcb8c1f69516ea563494bca63ebf49"
+        ],
+        "refs/tags/v1.2": [
+            "2021-08-31T07:42:11+02:00",
+            "d8553961a43dd450681f6df6e8ce5bce72da1b0a"
+        ]
+    },
+    "3D_Printing_Tools": {
+        "refs/remotes/origin/HEAD": [
+            "2019-06-30T23:01:34+01:00",
+            "e7ea9cd05dc11d5503115522b87cac7704eafc0e"
+        ],
+        "refs/remotes/origin/master": [
+            "2019-06-30T23:01:34+01:00",
+            "e7ea9cd05dc11d5503115522b87cac7704eafc0e"
+        ]
+    },
+    "A2plus": {
+        "refs/remotes/origin/HEAD": [
+            "2022-10-02T22:20:41+02:00",
+            "3392d72ded45918ea28cd46ed4de778571488639"
+        ],
+        "refs/remotes/origin/devel": [
+            "2022-01-27T19:10:27+01:00",
+            "dcc6193f36d4c7c8c43c4f3384e2bc03d27debd3"
+        ],
+        "refs/remotes/origin/master": [
+            "2022-10-02T22:20:41+02:00",
+            "3392d72ded45918ea28cd46ed4de778571488639"
+        ],
+        "refs/tags/V0.1.4.1": [
+            "2018-10-28T16:38:46+01:00",
+            "6f6ff0a892efca602ec916faac11b041be792fe2"
+        ],
+        "refs/tags/V0.1.5": [
+            "2018-11-01T19:03:15+01:00",
+            "db6cdde71d4a2e9a53f2b14694e2ba2b42ac58c0"
+        ],
+        "refs/tags/V0.1.6": [
+            "2018-11-11T16:04:51+01:00",
+            "46d4039c1fd08b3e5604d4fad3e955bca5855338"
+        ],
+        "refs/tags/V0.4.6": [
+            "2019-03-19T15:19:32+01:00",
+            "42d5ed3846f24c7a7f0f6db655513e9038c3f651"
+        ]
+    },
+    "AirPlaneDesign": {
+        "refs/remotes/origin/HEAD": [
+            "2022-07-03T19:21:44+02:00",
+            "34a5c5a827a378d4b6c9c16c54a1f2238b8e3b6b"
+        ],
+        "refs/remotes/origin/dev-v0.4": [
+            "2021-01-23T16:15:58+01:00",
+            "f21bb8fca55b7d34fe920f0b823a7722ff977e43"
+        ],
+        "refs/remotes/origin/dev-v03bis": [
+            "2021-08-03T18:28:22+02:00",
+            "5e2b4ebafaaed6ca87b99f480ae2fecd3722a83b"
+        ],
+        "refs/remotes/origin/master": [
+            "2022-07-03T19:21:44+02:00",
+            "34a5c5a827a378d4b6c9c16c54a1f2238b8e3b6b"
+        ],
+        "refs/remotes/origin/refactoring": [
+            "2021-10-18T18:41:10+02:00",
+            "2f22aa7faa049b0e8ec7dd43a39554b597c7e772"
+        ],
+        "refs/tags/V0.1": [
+            "2018-08-18T20:27:30+02:00",
+            "c5bf85c552b31c0abdca7cadf428099c0b38e97e"
+        ],
+        "refs/tags/V0.2": [
+            "2019-07-30T08:36:55+02:00",
+            "39a7c90ac53148c3317d50e07584c96f54db549e"
+        ],
+        "refs/tags/V0.3": [
+            "2019-10-25T08:44:43+02:00",
+            "8e11fb6a5c33479570e0f572e6319f220e3cf6fd"
+        ]
+    },
+    "Curves": {
+        "refs/remotes/origin/HEAD": [
+            "2022-10-06T19:18:14+02:00",
+            "b43970d71ccfed6a85d6e547993863520db9920c"
+        ],
+        "refs/remotes/origin/blendcurve": [
+            "2020-02-26T18:55:13+01:00",
+            "41dff49edfadc7b3085d4afff3c32b598fcd3ed0"
+        ],
+        "refs/remotes/origin/blending": [
+            "2022-06-24T17:52:22+02:00",
+            "687b38faad85187e486fe68ccf072adb7d06be11"
+        ],
+        "refs/remotes/origin/decimate_edges": [
+            "2021-05-18T18:40:44+02:00",
+            "b299597f3817cfb29fd45a8c5710706ae01261fe"
+        ],
+        "refs/remotes/origin/facemap": [
+            "2021-12-21T19:06:20+01:00",
+            "7f315ab0e72d61fb6d04a2da631c66f8f3a30c82"
+        ],
+        "refs/remotes/origin/flatten": [
+            "2022-05-09T15:18:05+02:00",
+            "436b135ff1c2d93686911c2e81ef4fa379e5b001"
+        ],
+        "refs/remotes/origin/master": [
+            "2022-10-06T19:18:14+02:00",
+            "b43970d71ccfed6a85d6e547993863520db9920c"
+        ],
+        "refs/remotes/origin/reflect2": [
+            "2021-04-10T13:42:07+02:00",
+            "6245d86e18f0e5c0a1e724ac614a369da18590e3"
+        ],
+        "refs/remotes/origin/rotsweep": [
+            "2022-10-05T17:50:39+02:00",
+            "99b5e2619481257636d864921d22f60ca0af24d8"
+        ],
+        "refs/remotes/origin/seamcheck": [
+            "2022-03-18T17:53:05+01:00",
+            "2703f93074a94ecdf09c4bb445bef347c206f00f"
+        ],
+        "refs/remotes/origin/solid": [
+            "2021-03-01T22:16:08+01:00",
+            "4f4cc7ec6672b48660601b566777366fd0685a5d"
+        ],
+        "refs/tags/v0.1": [
+            "2019-02-17T08:57:09+01:00",
+            "74ea77f091cf3a62e1dee3b64b49e9ab9fcdb560"
+        ],
+        "refs/tags/v0.2": [
+            "2020-06-16T15:02:23+02:00",
+            "521037588be1aa28320ce6c9b9f77b40f4c8aeb6"
+        ],
+        "refs/tags/v0.3": [
+            "2021-01-08T19:06:59+01:00",
+            "a1fa4857b1de95da1062acc63919acdee59f045c"
+        ]
+    }
+}

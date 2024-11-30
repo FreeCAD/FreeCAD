@@ -9,37 +9,58 @@ endif(BUILD_GUI)
 set(TechDraw_Scripts
     Init.py
     TestTechDrawApp.py
+    TestTechDrawGui.py
 )
-
-if(BUILD_GUI)
-    list (APPEND Image_Scripts InitGui.py)
-    set(TechDraw_ToolsScripts
-        TechDrawTools/__init__.py
-        TechDrawTools/CommandMoveView.py
-        TechDrawTools/CommandCopyView.py
-        TechDrawTools/TaskMoveView.py
-        TechDrawTools/TaskCopyView.py
-        TechDrawTools/TDToolsUtil.py
-        TechDrawTools/TDToolsMovers.py
-        Gui/TaskMoveView.ui
-        Gui/DlgPageChooser.ui
-    )
-endif(BUILD_GUI)
 
 if(BUILD_GUI)
     list (APPEND TechDraw_Scripts InitGui.py)
 endif(BUILD_GUI)
 
+set(TechDraw_ToolsScripts
+    TechDrawTools/__init__.py
+    TechDrawTools/CommandMoveView.py
+    TechDrawTools/CommandShareView.py
+    TechDrawTools/CommandAxoLengthDimension.py
+    TechDrawTools/CommandPositionSectionView.py
+    TechDrawTools/CommandFillTemplateFields.py
+    TechDrawTools/CommandVertexCreations.py
+    TechDrawTools/CommandHoleShaftFit.py
+    TechDrawTools/TaskMoveView.py
+    TechDrawTools/TaskShareView.py
+    TechDrawTools/TaskFillTemplateFields.py
+    TechDrawTools/TaskHoleShaftFit.py
+    TechDrawTools/TaskAddOffsetVertex.py
+    TechDrawTools/TDToolsUtil.py
+    TechDrawTools/TDToolsMovers.py
+)
+
+set(TechDraw_ToolsGui
+    Gui/TaskMoveView.ui
+    Gui/TaskHoleShaftFit.ui
+    Gui/TaskAddOffsetVertex.ui
+    Gui/DlgPageChooser.ui
+)
+
 SET(TechDraw_PATFile
     PAT/FCPAT.pat
 )
 
+SET(TechDraw_CSVFile
+    CSVdata/FillTemplateFields.csv
+)
+
 SET(TechDraw_LineGroupFile
+    LineGroup/ANSI.Y14.2M.1992.ElementDef.csv
+    LineGroup/ANSI.Y14.2M.1992.LineDef.csv
+    LineGroup/ASME.Y14.2.2008.ElementDef.csv
+    LineGroup/ASME.Y14.2.2008.LineDef.csv
+    LineGroup/ISO.128.20.1996.ElementDef.csv
+    LineGroup/ISO.128.20.1996.LineDef.csv
     LineGroup/LineGroup.csv
 )
 
 add_custom_target(TechDraw_Data ALL
-SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile} ${TechDraw_ToolsScripts}
+SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_CSVFile} ${TechDraw_LineGroupFile} ${TechDraw_ToolsScripts} ${TechDraw_ToolsGui}
 )
 
 fc_target_copy_resource(TechDraw_Data
@@ -56,26 +77,18 @@ fc_target_copy_resource(TechDraw_Data
 fc_target_copy_resource(TechDraw_Data
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
-    ${TechDraw_LineGroupFile})
+    ${TechDraw_CSVFile})
 
 fc_target_copy_resource(TechDraw_Data
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/TechDraw
-    ${TechDraw_ToolsScripts}
-)
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    ${TechDraw_LineGroupFile})
 
 INSTALL(
     FILES
         ${TechDraw_Scripts}
     DESTINATION
         Mod/TechDraw
-)
-
-INSTALL(
-    FILES
-        ${TechDraw_ToolsScripts}
-    DESTINATION
-        Mod/TechDraw/TechDrawTools
 )
 
 INSTALL(
@@ -94,6 +107,15 @@ INSTALL(
         ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     FILES_MATCHING
         PATTERN "*.pat*"
+)
+
+INSTALL(
+    DIRECTORY
+        CSVdata
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    FILES_MATCHING
+        PATTERN "*.csv*"
 )
 
 INSTALL(
@@ -123,17 +145,48 @@ INSTALL(
         PATTERN "*.svg*"
 )
 
+if(BUILD_GUI)
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw
+    ${TechDraw_ToolsScripts}
+)
+
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw/TechDrawTools
+    ${TechDraw_ToolsGui}
+)
+
+INSTALL(
+    FILES
+        ${TechDraw_ToolsScripts}
+    DESTINATION
+        Mod/TechDraw/TechDrawTools
+)
+
+INSTALL(
+    FILES
+        ${TechDraw_ToolsGui}
+    DESTINATION
+        Mod/TechDraw/TechDrawTools/Gui
+)
+endif(BUILD_GUI)
 
 #unit test files
 SET(TDTest_SRCS
     TDTest/__init__.py
-    TDTest/DHatchTest.py
-    TDTest/DProjGroupTest.py
-    TDTest/DVAnnoSymImageTest.py
-    TDTest/DVDimensionTest.py
-    TDTest/DVPartTest.py
-    TDTest/DVSectionTest.py
-    TDTest/DVBalloonTest.py
+    TDTest/DrawHatchTest.py
+    TDTest/DrawProjectionGroupTest.py
+    TDTest/DrawViewAnnotationTest.py
+    TDTest/DrawViewImageTest.py
+    TDTest/DrawViewSymbolTest.py
+    TDTest/DrawViewDimensionTest.py
+    TDTest/DrawViewPartTest.py
+    TDTest/DrawViewSectionTest.py
+    TDTest/DrawViewBalloonTest.py
+    TDTest/DrawViewDetailTest.py
+    TDTest/TechDrawTestUtilities.py
 )
 
 SET(TDTestFile_SRCS

@@ -20,7 +20,7 @@ public:
   /** Constructor.
       @param path A string representation of the path.
       @param check_exists If true is specified the constructor will
-      check the existence and type of the path immidiately, instead of
+      check the existence and type of the path immediately, instead of
       deferring that task until it is needed. */
   FilePath( const string &path = "", bool check_exists = false ) ;
 

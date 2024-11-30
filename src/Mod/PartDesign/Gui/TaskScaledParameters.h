@@ -20,60 +20,56 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskScaledParameters_H
 #define GUI_TASKVIEW_TaskScaledParameters_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderScaled.h"
 
+
 class Ui_TaskScaledParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskScaledParameters : public TaskTransformedParameters
+class TaskScaledParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    explicit TaskScaledParameters(ViewProviderTransformed* TransformedView,
+                                  QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskScaledParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
-    virtual ~TaskScaledParameters();
+    TaskScaledParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 
-    virtual void apply();
+    void apply() override;
 
 private Q_SLOTS:
-    void onFactor(const double f);
-    void onOccurrences(const uint n);
-    virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    void onFactor(double factor);
+    void onOccurrences(uint number);
+    void onUpdateView(bool /*unused*/) override;
 
-protected:
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
-    double getFactor(void) const;
-    unsigned getOccurrences(void) const;
 
 private:
-    void setupUI();
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
+
+    double getFactor() const;
+    unsigned getOccurrences() const;
 
 private:
     std::unique_ptr<Ui_TaskScaledParameters> ui;
@@ -81,19 +77,14 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgScaledParameters : public TaskDlgTransformedParameters
+class TaskDlgScaledParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgScaledParameters(ViewProviderScaled *ScaledView);
-    virtual ~TaskDlgScaledParameters() {}
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    explicit TaskDlgScaledParameters(ViewProviderScaled* ScaledView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

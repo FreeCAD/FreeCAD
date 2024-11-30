@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH StdMeshers_QuadranglePreference : implementaion of SMESH idl descriptions
+//  SMESH StdMeshers_QuadranglePreference : implementation of SMESH idl descriptions
 //  File   : StdMeshers_QuadranglePreference.cxx
 //  Module : SMESH
 //

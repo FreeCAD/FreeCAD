@@ -38,11 +38,10 @@ class CallTip
 {
 public:
     enum Type {Unknown, Module, Class, Method, Member, Property};
-    CallTip():type(Unknown) {}
     QString name;
     QString description;
     QString parameter;
-    Type type;
+    Type type{Unknown};
 };
 
 /**
@@ -56,16 +55,16 @@ public:
     /// Construction
     CallTipsList(QPlainTextEdit* parent);
     /// Destruction
-    ~CallTipsList();
+    ~CallTipsList() override;
 
-    void keyboardSearch (const QString&);
+    void keyboardSearch (const QString&) override;
     void showTips(const QString&);
     void validateCursor();
 
 protected:
-    bool eventFilter(QObject *, QEvent *);
-    void showEvent(QShowEvent*);
-    void hideEvent(QHideEvent*);
+    bool eventFilter(QObject *, QEvent *) override;
+    void showEvent(QShowEvent*) override;
+    void hideEvent(QHideEvent*) override;
 
 private Q_SLOTS:
     void callTipItemActivated(QListWidgetItem *item);
@@ -76,11 +75,12 @@ private:
     void extractTipsFromObject(Py::Object&, Py::List&, QMap<QString, CallTip>&) const;
     void extractTipsFromProperties(Py::Object&, QMap<QString, CallTip>&) const;
     QString stripWhiteSpace(const QString&) const;
+    Py::Object getAttrWorkaround(Py::Object&, Py::String&) const;
 
 private:
     QPlainTextEdit* textEdit;
     int cursorPos;
-    bool validObject;
+    mutable bool validObject;
     bool doCallCompletion;
     QList<int> hideKeys;
     QList<int> compKeys;

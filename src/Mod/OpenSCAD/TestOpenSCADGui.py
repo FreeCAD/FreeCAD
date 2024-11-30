@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 # Gui Unit tests for the FEM module
-from OpenSCADTest.gui.test_dummy import TestDummy as OpenSCADGuiTestDummy 
+from OpenSCADTest.gui.test_dummy import TestDummy as OpenSCADGuiTestDummy
 
 
 # dummy usage to get flake8 and lgtm quiet

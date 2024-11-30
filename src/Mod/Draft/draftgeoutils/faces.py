@@ -30,7 +30,6 @@ import lazy_loader.lazy_loader as lz
 
 import DraftVecUtils
 from FreeCAD import Base
-from draftgeoutils.general import precision
 from draftgeoutils.geometry import are_coplanar
 
 # Delay import of module until first use because it is heavy
@@ -110,31 +109,106 @@ def is_coplanar(faces, tol=-1):
 isCoplanar = is_coplanar
 
 
-def bind(w1, w2):
-    """Bind 2 wires by their endpoints and returns a face."""
-    if not w1 or not w2:
-        print("DraftGeomUtils: unable to bind wires")
-        return None
+def bind(w1, w2, per_segment=False):
+    """Bind 2 wires by their endpoints and returns a face / compound of faces.
 
-    if w1.isClosed() and w2.isClosed():
-        d1 = w1.BoundBox.DiagonalLength
-        d2 = w2.BoundBox.DiagonalLength
-        if d1 > d2:
-            # w2.reverse()
-            return Part.Face([w1, w2])
-        else:
-            # w1.reverse()
-            return Part.Face([w2, w1])
-    else:
+    If per_segment is True and the wires have the same number of edges, the
+    wires are processed per segment: a separate face is created for each pair
+    of edges (one from w1 and one from w2), and the faces are then fused. This
+    avoids problems with walls based on wires that selfintersect, or that have
+    a loop that ends in a T-connection (f.e. a wire shaped like a number 6).
+    """
+
+    def create_face(w1, w2):
         try:
             w3 = Part.LineSegment(w1.Vertexes[0].Point,
                                   w2.Vertexes[0].Point).toShape()
             w4 = Part.LineSegment(w1.Vertexes[-1].Point,
                                   w2.Vertexes[-1].Point).toShape()
-            return Part.Face(Part.Wire(w1.Edges+[w3] + w2.Edges+[w4]))
+            return Part.Face(Part.Wire(w1.Edges + [w3] + w2.Edges + [w4]))
         except Part.OCCError:
             print("DraftGeomUtils: unable to bind wires")
             return None
+
+    if not w1 or not w2:
+        print("DraftGeomUtils: unable to bind wires")
+        return None
+
+    if (per_segment
+            and len(w1.Edges) > 1
+            and len(w1.Edges) == len(w2.Edges)):
+        faces = []
+        faces_list = []
+        for (edge1, edge2) in zip(w1.Edges, w2.Edges):
+            # Find touching edges due to ArchWall Align in opposite
+            # directions, and/or opposite edge orientations.
+            #
+            # w1 o-----o            w1 o-----o            w1 o-----o
+            #          | w1                  |                     |
+            # w2 +-----x-----o w1   w2 +-----+            w2 +-----+
+            #       w2 |                  w2 | w1               w2 | w1
+            #          +-----+ w2            o-----o w1            +-----+ w2
+            #                                |                     |
+            #                                +-----+ w2            o-----o w1
+            #
+            # TODO Maybe those edge pair should not be generated in offsetWire()
+            #      and separate wires should then be returned.
+
+            # If edges touch the Shape.section() compound will have 1 or 2 vertexes:
+            if edge1.section(edge2).Vertexes:
+                faces_list.append(faces)  # Break into separate list
+                faces = []  # Reset original faces variable
+                continue  # Skip the touching edge pair
+            else:
+                face = create_face(edge1, edge2)
+                if face is None:
+                    return None
+                faces.append(face)
+        # Usually there is last series of face after above 'for' routine,
+        # EXCEPT when the last edge pair touch, faces had been appended
+        # to faces_list, and reset faces =[]
+        #
+        # TODO Need fix further anything if there is a empty [] in faces_list ?
+        #
+        if faces_list and faces:
+            # if wires are closed, 1st & last series of faces might be connected
+            # except when
+            # 1) there are only 2 series, connecting would return invalid shape
+            # 2) 1st series of faces happens to be [], i.e. 1st edge pairs touch
+            #
+            if w1.isClosed() and w2.isClosed() \
+            and len(faces_list) > 1 and faces_list[0]:
+                faces_list[0].extend(faces)
+            else:
+                faces_list.append(faces)  # Break into separate list
+        if faces_list:
+            faces_fused_list = []
+            for faces in faces_list:
+                if len(faces) > 1 :
+                    faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+                    faces_fused_list.append(faces_fused)
+                # faces might be empty list [], see above; skip if empty
+                elif faces:
+                    faces_fused_list.append(faces[0])  # Only 1 face
+            return Part.Compound(faces_fused_list)
+        else:
+            return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+
+    elif w1.isClosed() and w2.isClosed():
+        d1 = w1.BoundBox.DiagonalLength
+        d2 = w2.BoundBox.DiagonalLength
+        if d1 < d2:
+            w1, w2 = w2, w1
+        # return Part.Face(w1).cut(Part.Face(w2)).Faces[0] # Only works if wires do not self-intersect.
+        try:
+            face = Part.Face([w1, w2])
+            face.fix(1e-7, 0, 1)
+            return face
+        except Part.OCCError:
+            print("DraftGeomUtils: unable to bind wires")
+            return None
+    else:
+        return create_face(w1, w2)
 
 
 def cleanFaces(shape):

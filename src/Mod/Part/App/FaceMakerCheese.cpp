@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepCheck_Analyzer.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <BRepBndLib.hxx>
 # include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
 # include <IntTools_FClass2d.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis.hxx>
@@ -47,7 +46,6 @@
 #endif
 
 #include "FaceMakerCheese.h"
-
 
 
 using namespace Part;
@@ -169,8 +167,8 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
     }
 
     wires.pop_front();
-    for (std::list<TopoDS_Wire>::iterator it = wires.begin(); it != wires.end(); ++it) {
-        BRepBuilderAPI_MakeFace mkInnerFace(*it);
+    for (auto wire : wires) {
+        BRepBuilderAPI_MakeFace mkInnerFace(wire);
         const TopoDS_Face& inner_face = mkInnerFace.Face();
         if (inner_face.IsNull())
             return inner_face; // failure
@@ -182,8 +180,8 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
         // It seems that orientation is always 'Forward' and we only have to reverse
         // if the underlying plane have opposite normals.
         if (axis.Dot(inner_axis) < 0)
-            it->Reverse();
-        mkFace.Add(*it);
+            wire.Reverse();
+        mkFace.Add(wire);
     }
     return validateFace(mkFace.Face());
 }
@@ -191,7 +189,7 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
 TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
 {
     if (w.empty())
-        return TopoDS_Shape();
+        return {};
 
     //FIXME: Need a safe method to sort wire that the outermost one comes last
     // Currently it's done with the diagonal lengths of the bounding boxes
@@ -230,8 +228,8 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
-        for (std::list< std::list<TopoDS_Wire> >::iterator it = sep_wire_list.begin(); it != sep_wire_list.end(); ++it) {
-            TopoDS_Shape aFace = makeFace(*it);
+        for (auto & it : sep_wire_list) {
+            TopoDS_Shape aFace = makeFace(it);
             if (!aFace.IsNull())
                 builder.Add(comp, aFace);
         }
@@ -239,19 +237,19 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
         return TopoDS_Shape(std::move(comp));
     }
     else {
-        return TopoDS_Shape(); // error
+        return {}; // error
     }
 }
 
 
 std::string FaceMakerCheese::getUserFriendlyName() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Cheese facemaker"));
+    return {tr("Cheese facemaker").toStdString()};
 }
 
 std::string FaceMakerCheese::getBriefExplanation() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making planar faces with holes, but no islands inside holes."));
+    return {tr("Supports making planar faces with holes, but no islands inside holes.").toStdString()};
 }
 
 void FaceMakerCheese::Build_Essence()

@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItemGroup>
 #include <QObject>
 
@@ -37,17 +39,18 @@ class DrawTemplate;
 namespace TechDrawGui
 {
 class TemplateTextField;
+class QGSPage;
 
 class TechDrawGuiExport QGITemplate : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 
 public:
-    QGITemplate(QGraphicsScene *);
-    ~QGITemplate();
+    QGITemplate(QGSPage *);
+    ~QGITemplate() override;
 
     enum {Type = QGraphicsItem::UserType + 150};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
     void clearContents();
 
@@ -57,17 +60,16 @@ public:
     inline qreal getY() { return y() * -1; }
 
     virtual void updateView(bool update = false);
-    std::vector<TemplateTextField *> getTextFields(void) { return textFields; };
+    std::vector<TemplateTextField *> getTextFields() { return textFields; };
 
     virtual void draw() = 0;
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     TechDraw::DrawTemplate *pageTemplate;
 
     std::vector<TemplateTextField *> textFields;
 };
 
-} // namespace MDIViewPageGui
+} // namespace
 
 #endif // DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H

@@ -4,18 +4,19 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 
 ## Spelling
 - Be mindful of spelling. Spell checks are quite often neglected.
-- Utilize [codespell](https://github.com/codespell-project/codespell) to discover and quickly correct spelling errors.  
+- Utilize [codespell](https://github.com/codespell-project/codespell) to discover and quickly correct spelling errors.
 
   ```bash
   # Find typos
-  codespell -q 2 -S *.ts -L childs,dof,dum,methode,nd,normaly,uint,vertexes,freez src/Mod/Fem/
+  codespell -q 2 -S *.ts -S *.dyn -S *.svg -L childs,dof,dum,freez,methode,nd,normaly,programm,som,uint,vertexes,inout  src/Mod/Fem/
+
   # Interactively fix said typos
-  codespell -i 3 -w -S *.ts -L childs,dof,dum,methode,nd,normaly,uint,vertexes,freez src/Mod/Fem/
+  codespell -i 3 -w -S *.ts -S *.dyn -S *.svg -L childs,dof,dum,freez,methode,nd,normaly,programm,som,uint,vertexes,inout  src/Mod/Fem/
   ```
 
-  **Notes:**  
-  1) We recommend running the dev version as it uses the most up to date typo dictionaries.  
-  2) To find the most amount of typos we recommend running a quick `pip install --upgrade`  
+  **Notes:**
+  1) We recommend running the dev version as it uses the most up to date typo dictionaries.
+  2) To find the most amount of typos we recommend running a quick `pip install --upgrade`
   See the [codespell docs](https://github.com/codespell-project/codespell#updating) for more info.
 
 
@@ -67,7 +68,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
             - One empty line
             - relative imports
         - One empty line
-    - FreeCAD Gui imports: 
+    - FreeCAD Gui imports:
         - The import of Gui modules should be guarded by a 'if FreeCAD.GuiUp:'
         - On Gui only modules the guard is not needed
         - Same as above but without a empty line
@@ -98,7 +99,7 @@ find src/Mod/Fem/ -name "*\.py" | xargs -I [] flake8 --ignore=E266,W503 --max-li
 - print() vs. FreeCAD.Console.PrintMessage()
     - `FreeCAD.Console.PrintMessage()` or Log or Error should be used
     - `print()` should be used for debugging only
-    - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=39110) 
+    - [forum topic](https://forum.freecad.org/viewtopic.php?f=10&t=39110)
     - BTW: Console prints need a new line where as print does not need one
 - type checking:
     - do not use hasattr(obj, "Proxy") and obj.Proxy.Type
@@ -109,15 +110,15 @@ find src/Mod/Fem/ -name "*\.py" | xargs -I [] flake8 --ignore=E266,W503 --max-li
     - try to avoid the use of Gui.ActiveDocument or FreeCADGui.ActiveDocument
     - instead try to use some_obj.ViewObject.Document or some_view_obj.Document
     - activeDocument() is more robust than ActiveDocument
-    - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=44133)
+    - [forum topic](https://forum.freecad.org/viewtopic.php?f=10&t=44133)
     - FreeCAD Python console
         - in code examples which will be copied in FreeCAD Python console
         - it is common to use App.ActiveDocument.some_obj or method
-    
+
 ### Documenting
 Python style is preferred over Doxygen style
     - see `ccx` tools module in fem tools package
-    - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
+    - see [forum topic](https://forum.freecad.org/viewtopic.php?f=10&t=37094)
 
 ### Module structure
 - task panels should go into a separate package too
@@ -141,4 +142,4 @@ Python style is preferred over Doxygen style
 ## Icons
 ### Naming plicy
 - Command icons use the command name.
-- see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=18&t=43379)
+- see [forum topic](https://forum.freecad.org/viewtopic.php?f=18&t=43379)

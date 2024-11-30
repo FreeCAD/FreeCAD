@@ -26,8 +26,7 @@
 # ***************************************************************************
 """Provides functions to create PointArray objects.
 
-The copies will be placed along a list of points defined by a sketch,
-a `Part::Compound`, or a `Draft Block`.
+The copies will be created at the points of a point object.
 """
 ## @package make_pointarray
 # \ingroup draftmake
@@ -39,7 +38,7 @@ import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 from draftobjects.pointarray import PointArray
 
@@ -51,8 +50,8 @@ if App.GuiUp:
 def make_point_array(base_object, point_object, extra=None, use_link=True):
     """Make a Draft PointArray object.
 
-    Distribute copies of a `base_object` in the points
-    defined by `point_object`.
+    Create copies of a `base_object` at the points defined by
+    a `point_object`.
 
     Parameters
     ----------
@@ -63,26 +62,9 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         Since a label is not guaranteed to be unique in a document,
         it will use the first object found with this label.
 
-    point_object: Part::Feature or str
-        An object that is a type of container for holding points.
-        This object must have one of the following properties `Geometry`,
-        `Links`, or `Components`, which themselves must contain objects
-        with `X`, `Y`, and `Z` properties.
-
-        This object could be:
-
-        - A `Sketcher::SketchObject`, as it has a `Geometry` property.
-          The sketch can contain different elements but it must contain
-          at least one `Part::GeomPoint`.
-
-        - A `Part::Compound`, as it has a `Links` property. The compound
-          can contain different elements but it must contain at least
-          one object that has `X`, `Y`, and `Z` properties,
-          like a `Draft Point` or a `Part::Vertex`.
-
-        - A `Draft Block`, as it has a `Components` property. This `Block`
-          behaves essentially the same as a `Part::Compound`. It must
-          contain at least a point or vertex object.
+    point_object: Part::Feature, Sketcher::SketchObject, Mesh::Feature,
+                  Points::FeatureCustom or str
+        The object must have vertices and/or points.
 
     extra: Base::Placement, Base::Vector3, or Base::Rotation, optional
         It defaults to `None`.
@@ -101,50 +83,38 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         If there is a problem it will return `None`.
     """
     _name = "make_point_array"
-    utils.print_header(_name, "Point array")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(translate("draft","No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return None
-
-    if isinstance(base_object, str):
-        base_object_str = base_object
 
     found, base_object = utils.find_object(base_object, doc)
     if not found:
-        _msg("base_object: {}".format(base_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: base_object not in document."))
         return None
-
-    _msg("base_object: {}".format(base_object.Label))
-
-    if isinstance(point_object, str):
-        point_object_str = point_object
 
     found, point_object = utils.find_object(point_object, doc)
     if not found:
-        _msg("point_object: {}".format(point_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: point_object not in document."))
         return None
 
-    _msg("point_object: {}".format(point_object.Label))
-    if (not hasattr(point_object, "Geometry")
-            and not hasattr(point_object, "Links")
-            and not hasattr(point_object, "Components")):
-        _err(translate("draft","Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'."))
+    if not ((hasattr(point_object, "Shape") and hasattr(point_object.Shape, "Vertexes"))
+            or hasattr(point_object, "Mesh")
+            or hasattr(point_object, "Points")):
+        _err(translate("draft", "Wrong input: object has the wrong type."))
         return None
 
-    _msg("extra: {}".format(extra))
     if not extra:
         extra = App.Placement()
+
     try:
         utils.type_check([(extra, (App.Placement,
                                    App.Vector,
                                    App.Rotation))],
                          name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a placement, a vector, or a rotation."))
+        _err(translate("draft", "Wrong input: must be a placement, a vector, or a rotation."))
         return None
 
     # Convert the vector or rotation to a full placement
@@ -170,13 +140,10 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         if use_link:
             ViewProviderDraftLink(new_obj.ViewObject)
         else:
+            new_obj.Proxy.execute(new_obj) # Updates Count which is required for correct DiffuseColor.
             ViewProviderDraftArray(new_obj.ViewObject)
             gui_utils.format_object(new_obj, new_obj.Base)
-
-            if hasattr(new_obj.Base.ViewObject, "DiffuseColor"):
-                if len(new_obj.Base.ViewObject.DiffuseColor) > 1:
-                    new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
-
+            new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
         new_obj.Base.ViewObject.hide()
         gui_utils.select(new_obj)
 

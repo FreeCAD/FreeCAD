@@ -104,7 +104,7 @@ private:
     {
     public:
         TerminatorData (int iV0 = -1, int iV1 = -1, int iNullIndex = -1,
-            Triangle* pkTri = 0)
+            Triangle* pkTri = nullptr)
         {
             V[0] = iV0;
             V[1] = iV1;

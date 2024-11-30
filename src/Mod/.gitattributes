@@ -20,7 +20,7 @@ JtReader    export-ignore
 # find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.*' | sed 's|.*\.||' | sort -u
 
 # search for a specific file ending in normalized folders
-# find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.emn' 
+# find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.emn'
 
 
 # normalize the line endings of the following files
@@ -71,10 +71,9 @@ JtReader    export-ignore
 
 # AddonManager/** -text
 # Arch/** -text
-# Complete/** -text
 # Draft/** -text
-# Idf/** -text
 # Fem/** -text
+# Idf/** -text
 # Material/** -text
 # OpenSCAD/** -text
 # Path/** -text
@@ -85,11 +84,8 @@ JtReader    export-ignore
 # line endings of the modules NOT commented will NOT be normalized
 # Be carefully changes here could affect a lot of files automatically!
 
-Assembly/** -text
-Cam/** -text
 Cloud/** -text
 Drawing/** -text
-Image/** -text
 Import/** -text
 Inspection/** -text
 JtReader/** -text
@@ -100,7 +96,6 @@ Part/** -text
 PartDesign/** -text
 Plot/** -text
 Points/** -text
-Raytracing/** -text
 ReverseEngineering/** -text
 Robot/** -text
 Sandbox/** -text

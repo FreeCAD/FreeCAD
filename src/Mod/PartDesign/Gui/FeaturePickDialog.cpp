@@ -23,16 +23,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QPixmap>
 # include <QDialog>
 # include <QListIterator>
 #endif
 
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <App/Document.h>
-#include <Base/Tools.h>
 
 #include "ui_FeaturePickDialog.h"
 #include "FeaturePickDialog.h"

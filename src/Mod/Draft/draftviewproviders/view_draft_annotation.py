@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -42,14 +43,14 @@ Its edit mode launches the `Draft_Edit` command.
 import json
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
+
 import FreeCAD as App
-import draftutils.utils as utils
-from draftutils.messages import _msg
-
-if App.GuiUp:
-    import FreeCADGui as Gui
-
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+import FreeCADGui as Gui
+from draftutils import params
+from draftutils import utils
+from draftutils.translate import translate
 
 
 class ViewProviderDraftAnnotation(object):
@@ -68,6 +69,8 @@ class ViewProviderDraftAnnotation(object):
         """Set the properties only if they don't already exist."""
         properties = vobj.PropertiesList
         self.set_annotation_properties(vobj, properties)
+        self.set_text_properties(vobj, properties)
+        self.set_units_properties(vobj, properties)
         self.set_graphics_properties(vobj, properties)
 
     def set_annotation_properties(self, vobj, properties):
@@ -83,9 +86,7 @@ class ViewProviderDraftAnnotation(object):
                              "ScaleMultiplier",
                              "Annotation",
                              _tip)
-            annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-            if annotation_scale != 0:
-                vobj.ScaleMultiplier = 1 / annotation_scale
+            vobj.ScaleMultiplier = params.get_param("DefaultAnnoScaleMultiplier")
 
         if "AnnotationStyle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -108,6 +109,38 @@ class ViewProviderDraftAnnotation(object):
 
             vobj.AnnotationStyle = [""] + styles
 
+    def set_text_properties(self, vobj, properties):
+        """Set text properties only if they don't already exist."""
+        if "FontName" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Font name")
+            vobj.addProperty("App::PropertyFont",
+                             "FontName",
+                             "Text",
+                             _tip)
+            vobj.FontName = params.get_param("textfont")
+
+        if "FontSize" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Font size")
+            vobj.addProperty("App::PropertyLength",
+                             "FontSize",
+                             "Text",
+                             _tip)
+            vobj.FontSize = params.get_param("textheight")
+
+        if "TextColor" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Text color")
+            vobj.addProperty("App::PropertyColor",
+                             "TextColor",
+                             "Text",
+                             _tip)
+            vobj.TextColor = params.get_param("DefaultTextColor") & 0xFFFFFF00
+
+    def set_units_properties(self, vobj, properties):
+        return
+
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
         if "LineWidth" not in properties:
@@ -116,6 +149,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineWidth",
                              "Graphics",
                              _tip)
+            vobj.LineWidth = params.get_param("DefaultAnnoLineWidth")
 
         if "LineColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line color")
@@ -123,12 +157,13 @@ class ViewProviderDraftAnnotation(object):
                              "LineColor",
                              "Graphics",
                              _tip)
+            vobj.LineColor = params.get_param("DefaultAnnoLineColor") & 0xFFFFFF00
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of objects to save or None."""
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set the internal properties from the restored state."""
         return None
 
@@ -142,8 +177,11 @@ class ViewProviderDraftAnnotation(object):
 
     def getDisplayModes(self, vobj):
         """Return the display modes that this viewprovider supports."""
-        modes = []
-        return modes
+        return ["World", "Screen"]
+
+    def getDefaultDisplayMode(self):
+        """Return the default display mode."""
+        return ["World", "Screen"][params.get_param("DefaultAnnoDisplayMode")]
 
     def setDisplayMode(self, mode):
         """Return the saved display mode."""
@@ -155,11 +193,9 @@ class ViewProviderDraftAnnotation(object):
         meta = vobj.Object.Document.Meta
 
         if prop == "AnnotationStyle" and "AnnotationStyle" in properties:
-            if not vobj.AnnotationStyle or vobj.AnnotationStyle == " ":
+            if not vobj.AnnotationStyle or vobj.AnnotationStyle == "":
                 # unset style
-                _msg(16 * "-")
-                _msg("Unset style")
-                for visprop in utils.ANNOTATION_STYLE.keys():
+                for visprop in utils.get_default_annotation_style().keys():
                     if visprop in properties:
                         # make property writable
                         vobj.setPropertyStatus(visprop, '-ReadOnly')
@@ -171,69 +207,75 @@ class ViewProviderDraftAnnotation(object):
                         styles[key[12:]] = json.loads(value)
 
                 if vobj.AnnotationStyle in styles:
-                    _msg(16 * "-")
-                    _msg("Style: {}".format(vobj.AnnotationStyle))
                     style = styles[vobj.AnnotationStyle]
                     for visprop in style.keys():
                         if visprop in properties:
-                            try:
-                                getattr(vobj, visprop).setValue(style[visprop])
-                                _msg("setValue: "
-                                     "'{}', '{}'".format(visprop,
-                                                         style[visprop]))
-                            except AttributeError:
-                                setattr(vobj, visprop, style[visprop])
-                                _msg("setattr: "
-                                     "'{}', '{}'".format(visprop,
-                                                         style[visprop]))
                             # make property read-only
-                            vobj.setPropertyStatus(visprop, 'ReadOnly')
+                            vobj.setPropertyStatus(visprop, "ReadOnly")
+                            value = style[visprop]
+                            try:
+                                if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
+                                    value = value & 0xFFFFFF00
+                                setattr(vobj, visprop, value)
+                            except:
+                                pass
 
     def execute(self, vobj):
         """Execute when the object is created or recomputed."""
         return
 
-    def setEdit(self, vobj, mode=0):
+    def setEdit(self, vobj, mode):
         """Execute the code when entering the specific edit mode.
 
-        Currently only mode 0 works.
+        See view_base.py.
         """
-        if mode == 0:
-            Gui.runCommand("Draft_Edit")
-            return True
-        return False
+        if mode != 0:
+            return None
 
-    def unsetEdit(self, vobj, mode=0):
+        if utils.get_type(vobj.Object) in ("AngularDimension", "Label"):
+            return False # Required, else edit mode is entered.
+
+        if not "Draft_Edit" in Gui.listCommands():
+            self.wb_before_edit = Gui.activeWorkbench()
+            Gui.activateWorkbench("DraftWorkbench")
+        Gui.runCommand("Draft_Edit")
+        return True
+
+    def unsetEdit(self, vobj, mode):
         """Execute the code when leaving the specific edit mode.
 
-        Currently only mode 0 works.
-        It runs the finish method of the currently active command, and close
-        the task panel if any.
+        See view_base.py.
         """
-        if App.activeDraftCommand:
+        if mode != 0:
+            return None
+
+        if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
             App.activeDraftCommand.finish()
         Gui.Control.closeDialog()
-        return False
+        if hasattr(self, "wb_before_edit"):
+            Gui.activateWorkbench(self.wb_before_edit.name())
+            delattr(self, "wb_before_edit")
+        return True
+
+    def doubleClicked(self, vobj):
+        self.edit()
+
+    def setupContextMenu(self, vobj, menu):
+        if utils.get_type(self.Object) in ("AngularDimension", "Label"):
+            return
+
+        action_edit = QtGui.QAction(translate("draft", "Edit"),
+                                    menu)
+        QtCore.QObject.connect(action_edit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(action_edit)
+
+    def edit(self):
+        Gui.ActiveDocument.setEdit(self.Object, 0)
 
     def getIcon(self):
         """Return the path to the icon used by the view provider."""
         return ":/icons/Draft_Text.svg"
-
-    def claimChildren(self):
-        """Return objects that will be placed under it in the tree view.
-
-        Editor: perhaps this is not useful???
-        """
-        objs = []
-        if hasattr(self.Object, "Base"):
-            objs.append(self.Object.Base)
-        if hasattr(self.Object, "Objects"):
-            objs.extend(self.Object.Objects)
-        if hasattr(self.Object, "Components"):
-            objs.extend(self.Object.Components)
-        if hasattr(self.Object, "Group"):
-            objs.extend(self.Object.Group)
-
-        return objs
 
 ## @}

@@ -25,23 +25,21 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cassert>
+#include <cassert>
 #endif
 
 #include <atomic>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Writer.h>
-using Base::Writer;
-#include <Base/Reader.h>
-using Base::XMLReader;
 #include <Base/Console.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
+
 #include "Transactions.h"
-#include "Property.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "Property.h"
 
-FC_LOG_LEVEL_INIT("App",true,true)
+
+FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 using namespace std;
@@ -53,7 +51,9 @@ TYPESYSTEM_SOURCE(App::Transaction, Base::Persistence)
 
 Transaction::Transaction(int id)
 {
-    if(!id) id = getNewID();
+    if (!id) {
+        id = getNewID();
+    }
     transID = id;
 }
 
@@ -63,9 +63,9 @@ Transaction::Transaction(int id)
  */
 Transaction::~Transaction()
 {
-    auto &index = _Objects.get<0>();
-    for (auto It= index.begin();It!=index.end();++It) {
-        if (It->second->status == TransactionObject::New) {
+    auto& index = _Objects.get<0>();
+    for (const auto& It : index) {
+        if (It.second->status == TransactionObject::New) {
             // If an object has been removed from the document the transaction
             // status is 'New'. The 'pcNameInDocument' member serves as criterion
             // to check whether the object is part of the document or not.
@@ -77,8 +77,8 @@ Transaction::~Transaction()
             // to cause a memory leak. This usually is the case when the removal
             // of an object is not undone or when an addition is undone.
 
-            if (!It->first->isAttachedToDocument()) {
-                if (It->first->getTypeId().isDerivedFrom(DocumentObject::getClassTypeId())) {
+            if (!It.first->isAttachedToDocument()) {
+                if (It.first->isDerivedFrom<DocumentObject>()) {
                     // #0003323: Crash when clearing transaction list
                     // It can happen that when clearing the transaction list several objects
                     // are destroyed with dependencies which can lead to dangling pointers.
@@ -87,45 +87,49 @@ Transaction::~Transaction()
                     // possible dangling pointers.
                     // An alternative solution is to call breakDependency inside
                     // Document::_removeObject. Make this change in v0.18.
-                    const DocumentObject* obj = static_cast<const DocumentObject*>(It->first);
+                    const DocumentObject* obj = static_cast<const DocumentObject*>(It.first);
                     const_cast<DocumentObject*>(obj)->setStatus(ObjectStatus::Destroy, true);
                 }
-                delete It->first;
+                delete It.first;
             }
         }
-        delete It->second;
+        delete It.second;
     }
 }
 
 static std::atomic<int> _TransactionID;
 
-int Transaction::getNewID() {
+int Transaction::getNewID()
+{
     int id = ++_TransactionID;
-    if(id) return id;
+    if (id) {
+        return id;
+    }
     // wrap around? really?
     return ++_TransactionID;
 }
 
-int Transaction::getLastID() {
+int Transaction::getLastID()
+{
     return _TransactionID;
 }
 
-unsigned int Transaction::getMemSize (void) const
+unsigned int Transaction::getMemSize() const
 {
     return 0;
 }
 
-void Transaction::Save (Base::Writer &/*writer*/) const
+void Transaction::Save(Base::Writer& /*writer*/) const
 {
     assert(0);
 }
 
-void Transaction::Restore(Base::XMLReader &/*reader*/)
+void Transaction::Restore(Base::XMLReader& /*reader*/)
 {
     assert(0);
 }
 
-int Transaction::getID(void) const
+int Transaction::getID() const
 {
     return transID;
 }
@@ -135,18 +139,17 @@ bool Transaction::isEmpty() const
     return _Objects.empty();
 }
 
-bool Transaction::hasObject(const TransactionalObject *Obj) const
+bool Transaction::hasObject(const TransactionalObject* Obj) const
 {
     return !!_Objects.get<1>().count(Obj);
 }
 
-void Transaction::addOrRemoveProperty(TransactionalObject *Obj,
-                                    const Property* pcProp, bool add)
+void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
 {
-    auto &index = _Objects.get<1>();
+    auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
 
-    TransactionObject *To;
+    TransactionObject* To;
 
     if (pos != index.end()) {
         To = pos->second;
@@ -154,70 +157,78 @@ void Transaction::addOrRemoveProperty(TransactionalObject *Obj,
     else {
         To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         To->status = TransactionObject::Chn;
-        index.emplace(Obj,To);
+        index.emplace(Obj, To);
     }
 
-    To->addOrRemoveProperty(pcProp,add);
+    To->addOrRemoveProperty(pcProp, add);
 }
 
 //**************************************************************************
 // separator for other implementation aspects
 
 
-void Transaction::apply(Document &Doc, bool forward)
+void Transaction::apply(Document& Doc, bool forward)
 {
     std::string errMsg;
     try {
-        auto &index = _Objects.get<0>();
-        for(auto &info : index) 
+        auto& index = _Objects.get<0>();
+        for (auto& info : index) {
             info.second->applyDel(Doc, const_cast<TransactionalObject*>(info.first));
-        for(auto &info : index) 
+        }
+        for (auto& info : index) {
             info.second->applyNew(Doc, const_cast<TransactionalObject*>(info.first));
-        for(auto &info : index) 
+        }
+        for (auto& info : index) {
             info.second->applyChn(Doc, const_cast<TransactionalObject*>(info.first), forward);
-    }catch(Base::Exception &e) {
+        }
+    }
+    catch (Base::Exception& e) {
         e.ReportException();
         errMsg = e.what();
-    }catch(std::exception &e) {
+    }
+    catch (std::exception& e) {
         errMsg = e.what();
-    }catch(...) {
+    }
+    catch (...) {
         errMsg = "Unknown exception";
     }
-    if(errMsg.size()) {
-        FC_ERR("Exception on " << (forward?"redo":"undo") << " '" 
-                << Name << "':" << errMsg);
+    if (!errMsg.empty()) {
+        FC_ERR("Exception on " << (forward ? "redo" : "undo") << " '" << Name << "':" << errMsg);
     }
 }
 
-void Transaction::addObjectNew(TransactionalObject *Obj)
+void Transaction::addObjectNew(TransactionalObject* Obj)
 {
-    auto &index = _Objects.get<1>();
+    auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
     if (pos != index.end()) {
         if (pos->second->status == TransactionObject::Del) {
-            delete pos->second;
-            delete pos->first;
+            // first remove the item from the container before deleting it
+            auto second = pos->second;
+            auto first = pos->first;
             index.erase(pos);
+            delete second;
+            delete first;
         }
         else {
             pos->second->status = TransactionObject::New;
             pos->second->_NameInDocument = Obj->detachFromDocument();
             // move item at the end to make sure the order of removal is kept
-            auto &seq = _Objects.get<0>();
-            seq.relocate(seq.end(),_Objects.project<0>(pos));
+            auto& seq = _Objects.get<0>();
+            seq.relocate(seq.end(), _Objects.project<0>(pos));
         }
     }
     else {
-        TransactionObject *To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+        TransactionObject* To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         To->status = TransactionObject::New;
         To->_NameInDocument = Obj->detachFromDocument();
-        index.emplace(Obj,To);
+        index.emplace(Obj, To);
     }
 }
 
-void Transaction::addObjectDel(const TransactionalObject *Obj)
+void Transaction::addObjectDel(const TransactionalObject* Obj)
 {
-    auto &index = _Objects.get<1>();
+    auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
 
     // is it created in this transaction ?
@@ -230,18 +241,18 @@ void Transaction::addObjectDel(const TransactionalObject *Obj)
         pos->second->status = TransactionObject::Del;
     }
     else {
-        TransactionObject *To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+        TransactionObject* To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         To->status = TransactionObject::Del;
-        index.emplace(Obj,To);
+        index.emplace(Obj, To);
     }
 }
 
-void Transaction::addObjectChange(const TransactionalObject *Obj, const Property *Prop)
+void Transaction::addObjectChange(const TransactionalObject* Obj, const Property* Prop)
 {
-    auto &index = _Objects.get<1>();
+    auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
 
-    TransactionObject *To;
+    TransactionObject* To;
 
     if (pos != index.end()) {
         To = pos->second;
@@ -249,7 +260,7 @@ void Transaction::addObjectChange(const TransactionalObject *Obj, const Property
     else {
         To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         To->status = TransactionObject::Chn;
-        index.emplace(Obj,To);
+        index.emplace(Obj, To);
     }
 
     To->setProperty(Prop);
@@ -270,10 +281,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionObject, Base::Persistence)
  * A constructor.
  * A more elaborate description of the constructor.
  */
-TransactionObject::TransactionObject()
-  : status(New)
-{
-}
+TransactionObject::TransactionObject() = default;
 
 /**
  * A destructor.
@@ -281,27 +289,26 @@ TransactionObject::TransactionObject()
  */
 TransactionObject::~TransactionObject()
 {
-    for(auto &v : _PropChangeMap)
+    for (auto& v : _PropChangeMap) {
         delete v.second.property;
+    }
 }
 
-void TransactionObject::applyDel(Document & /*Doc*/, TransactionalObject * /*pcObj*/)
-{
-}
+void TransactionObject::applyDel(Document& /*Doc*/, TransactionalObject* /*pcObj*/)
+{}
 
-void TransactionObject::applyNew(Document & /*Doc*/, TransactionalObject * /*pcObj*/)
-{
-}
+void TransactionObject::applyNew(Document& /*Doc*/, TransactionalObject* /*pcObj*/)
+{}
 
-void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj, bool /* Forward */)
+void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, bool /* Forward */)
 {
     if (status == New || status == Chn) {
         // Property change order is not preserved, as it is recursive in nature
-        for(auto &v : _PropChangeMap) {
-            auto &data = v.second;
-            auto prop = const_cast<Property*>(v.first);
+        for (auto& v : _PropChangeMap) {
+            auto& data = v.second;
+            auto prop = const_cast<Property*>(data.propertyOrig);
 
-            if(!data.property) {
+            if (!data.property) {
                 // here means we are undoing/redoing and property add operation
                 pcObj->removeDynamicProperty(v.second.name.c_str());
                 continue;
@@ -311,9 +318,10 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
             // been destroies. We must prepare for the case where user removed
             // a dynamic property but does not recordered as transaction.
             auto name = pcObj->getPropertyName(prop);
-            if(!name) {
+            if (!name || (!data.name.empty() && data.name != name)
+                || data.propertyType != prop->getTypeId()) {
                 // Here means the original property is not found, probably removed
-                if(v.second.name.empty()) {
+                if (data.name.empty()) {
                     // not a dynamic property, nothing to do
                     continue;
                 }
@@ -322,15 +330,19 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
                 // restored. But since restoring property is actually creating
                 // a new property, the property key inside redo stack will not
                 // match. So we search by name first.
-                prop = pcObj->getDynamicPropertyByName(v.second.name.c_str());
-                if(!prop) {
+                prop = pcObj->getDynamicPropertyByName(data.name.c_str());
+                if (!prop) {
                     // Still not found, re-create the property
-                    prop = pcObj->addDynamicProperty(
-                            data.property->getTypeId().getName(),
-                            v.second.name.c_str(), data.group.c_str(), data.doc.c_str(),
-                            data.attr, data.readonly, data.hidden);
-                    if(!prop)
+                    prop = pcObj->addDynamicProperty(data.propertyType.getName(),
+                                                     data.name.c_str(),
+                                                     data.group.c_str(),
+                                                     data.doc.c_str(),
+                                                     data.attr,
+                                                     data.readonly,
+                                                     data.hidden);
+                    if (!prop) {
                         continue;
+                    }
                     prop->setStatusValue(data.property->getStatus());
                 }
             }
@@ -350,23 +362,27 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
             // }
             try {
                 prop->Paste(*data.property);
-            } catch (Base::Exception &e) {
+            }
+            catch (Base::Exception& e) {
                 e.ReportException();
                 FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
-            } catch (std::exception &e) {
+            }
+            catch (std::exception& e) {
                 FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
-            } catch (...)
-            {}
+            }
+            catch (...) {
+            }
         }
     }
 }
 
 void TransactionObject::setProperty(const Property* pcProp)
 {
-    auto &data = _PropChangeMap[pcProp];
-    if(!data.property && data.name.empty()) {
-        static_cast<DynamicProperty::PropData&>(data) = 
+    auto& data = _PropChangeMap[pcProp->getID()];
+    if (!data.property && data.name.empty()) {
+        static_cast<DynamicProperty::PropData&>(data) =
             pcProp->getContainer()->getDynamicPropertyData(pcProp);
+        data.propertyOrig = pcProp;
         data.property = pcProp->Copy();
         data.propertyType = pcProp->getTypeId();
         data.property->setStatusValue(pcProp->getStatus());
@@ -376,27 +392,29 @@ void TransactionObject::setProperty(const Property* pcProp)
 void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
 {
     (void)add;
-    if(!pcProp || !pcProp->getContainer())
+    if (!pcProp || !pcProp->getContainer()) {
         return;
+    }
 
-    auto &data = _PropChangeMap[pcProp];
-    if(data.name.size()) {
-        if(!add && !data.property) {
+    auto& data = _PropChangeMap[pcProp->getID()];
+    if (!data.name.empty()) {
+        if (!add && !data.property) {
             // this means add and remove the same property inside a single
             // transaction, so they cancel each other out.
-            _PropChangeMap.erase(pcProp);
+            _PropChangeMap.erase(pcProp->getID());
         }
         return;
     }
-    if(data.property) {
+    if (data.property) {
         delete data.property;
-        data.property = 0;
+        data.property = nullptr;
     }
-
-    static_cast<DynamicProperty::PropData&>(data) = 
+    data.propertyOrig = pcProp;
+    static_cast<DynamicProperty::PropData&>(data) =
         pcProp->getContainer()->getDynamicPropertyData(pcProp);
-    if(add) 
-        data.property = 0;
+    if (add) {
+        data.property = nullptr;
+    }
     else {
         data.property = pcProp->Copy();
         data.propertyType = pcProp->getTypeId();
@@ -404,17 +422,17 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
     }
 }
 
-unsigned int TransactionObject::getMemSize (void) const
+unsigned int TransactionObject::getMemSize() const
 {
     return 0;
 }
 
-void TransactionObject::Save (Base::Writer &/*writer*/) const
+void TransactionObject::Save(Base::Writer& /*writer*/) const
 {
     assert(0);
 }
 
-void TransactionObject::Restore(Base::XMLReader &/*reader*/)
+void TransactionObject::Restore(Base::XMLReader& /*reader*/)
 {
     assert(0);
 }
@@ -433,30 +451,27 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionDocumentObject, App::TransactionObjec
  * A constructor.
  * A more elaborate description of the constructor.
  */
-TransactionDocumentObject::TransactionDocumentObject()
-{
-}
+TransactionDocumentObject::TransactionDocumentObject() = default;
 
 /**
  * A destructor.
  * A more elaborate description of the destructor.
  */
-TransactionDocumentObject::~TransactionDocumentObject()
-{
-}
+TransactionDocumentObject::~TransactionDocumentObject() = default;
 
-void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcObj)
+void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcObj)
 {
     if (status == Del) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
 
 #ifndef USE_OLD_DAG
-        //Make sure the backlinks of all linked objects are updated. As the links of the removed
-        //object are never set to [] they also do not remove the backlink. But as they are 
-        //not in the document anymore we need to remove them anyway to ensure a correct graph
+        // Make sure the backlinks of all linked objects are updated. As the links of the removed
+        // object are never set to [] they also do not remove the backlink. But as they are
+        // not in the document anymore we need to remove them anyway to ensure a correct graph
         auto list = obj->getOutList();
-        for (auto link : list)
+        for (auto link : list) {
             link->_removeBackLink(obj);
+        }
 #endif
 
         // simply filling in the saved object
@@ -464,17 +479,18 @@ void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcO
     }
 }
 
-void TransactionDocumentObject::applyNew(Document &Doc, TransactionalObject *pcObj)
+void TransactionDocumentObject::applyNew(Document& Doc, TransactionalObject* pcObj)
 {
     if (status == New) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
         Doc._addObject(obj, _NameInDocument.c_str());
 
 #ifndef USE_OLD_DAG
-        //make sure the backlinks of all linked objects are updated
+        // make sure the backlinks of all linked objects are updated
         auto list = obj->getOutList();
-        for (auto link : list)
+        for (auto link : list) {
             link->_addBackLink(obj);
+        }
 #endif
     }
 }
@@ -488,8 +504,9 @@ App::TransactionFactory* App::TransactionFactory::self = nullptr;
 
 TransactionFactory& TransactionFactory::instance()
 {
-    if (self == nullptr)
+    if (!self) {
         self = new TransactionFactory;
+    }
     return *self;
 }
 
@@ -499,7 +516,7 @@ void TransactionFactory::destruct()
     self = nullptr;
 }
 
-void TransactionFactory::addProducer (const Base::Type& type, Base::AbstractProducer *producer)
+void TransactionFactory::addProducer(const Base::Type& type, Base::AbstractProducer* producer)
 {
     producers[type] = producer;
 }
@@ -507,7 +524,7 @@ void TransactionFactory::addProducer (const Base::Type& type, Base::AbstractProd
 /**
  * Creates a transaction object for the given type id.
  */
-TransactionObject* TransactionFactory::createTransaction (const Base::Type& type) const
+TransactionObject* TransactionFactory::createTransaction(const Base::Type& type) const
 {
     std::map<Base::Type, Base::AbstractProducer*>::const_iterator it;
     for (it = producers.begin(); it != producers.end(); ++it) {

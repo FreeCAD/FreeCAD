@@ -24,15 +24,19 @@
 #ifndef APP_DOCUMENTOBSERVERPYTHON_H
 #define APP_DOCUMENTOBSERVERPYTHON_H
 
+#include <FCGlobal.h>
+#include <boost/signals2.hpp>
 #include <CXX/Objects.hxx>
-
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
 #include <string>
-
+#include <vector>
 
 namespace App
 {
+
+class Document;
+class DocumentObject;
+class ExtensionContainer;
+class Property;
 
 /**
  * The DocumentObserverPython class is used to notify registered Python instances
@@ -102,7 +106,7 @@ private:
     /** Called when an object gets a dynamic property removed*/
     void slotRemoveDynamicProperty(const App::Property& Prop);
     /** Called when an object property gets a new editor relevant status like hidden or read only*/
-    void slotChangePropertyEditor(const App::Document &Doc, const App::Property& Prop);
+    void slotChangePropertyEditor(const App::Document& Doc, const App::Property& Prop);
     /** Called when a document is about to be saved*/
     void slotStartSaveDocument(const App::Document&, const std::string&);
     /** Called when an document has been saved*/
@@ -117,13 +121,15 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef struct PythonObject {
-       boost::signals2::scoped_connection slot;
-       Py::Object py;
-       PyObject* ptr() {
-           return py.ptr();
-       }
-    } Connection;
+    using Connection = struct PythonObject
+    {
+        boost::signals2::scoped_connection slot;
+        Py::Object py;
+        PyObject* ptr()
+        {
+            return py.ptr();
+        }
+    };
 
     Connection pyCreatedDocument;
     Connection pyDeletedDocument;
@@ -156,6 +162,6 @@ private:
     Connection pyAddedDynamicExtension;
 };
 
-} //namespace App
+}  // namespace App
 
-#endif // APP_DOCUMENTOBSERVERPYTHON_H
+#endif  // APP_DOCUMENTOBSERVERPYTHON_H

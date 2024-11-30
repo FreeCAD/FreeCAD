@@ -2,10 +2,10 @@
 
 With these files one can find information on how to run unit tests for FEM
 
-## Specifically 
+## Specifically
 
 - How to run a specific test class or a test method see file: `src/Mod/Test/__init__`
-- related [forum thread](https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546)
+- related [forum thread](https://forum.freecad.org/viewtopic.php?f=10&t=22190#p175546)
 
 ## let some test document stay open
 
@@ -123,7 +123,7 @@ unittest.TextTestRunner().run(alltest)
 ```
 
 
-## Open files 
+## Open files
 
 ### From FEM test suite source code
 
@@ -157,11 +157,7 @@ doc = ut.spine_thermomech()
 
 ```python
 app_home = FreeCAD.ConfigGet("AppHomePath")
-doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever2D.FCStd")
-doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever3D.FCStd")
-doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever3D_newSolver.FCStd")
-doc = FreeCAD.open(app_home + "data/examples/Fem.FCStd")
-doc = FreeCAD.open(app_home + "data/examples/Fem2.FCStd")
+doc = FreeCAD.open(app_home + "data/examples/FEMExample.FCStd")
 ```
 
 ### Load all documents files
@@ -170,4 +166,3 @@ doc = FreeCAD.open(app_home + "data/examples/Fem2.FCStd")
 app_home = FreeCAD.ConfigGet("AppHomePath")
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/open/all_objects_de9b3fb438.FCStd')
 ```
-

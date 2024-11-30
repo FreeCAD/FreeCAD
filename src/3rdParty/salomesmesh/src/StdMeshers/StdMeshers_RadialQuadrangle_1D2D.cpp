@@ -17,7 +17,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 // File      : StdMeshers_RadialQuadrangle_1D2D.cxx
 // Module    : SMESH
 
@@ -207,7 +207,7 @@ namespace
 //         list <const SMESHDS_Hypothesis *> hyps2 =
 //           radialQuadAlgo->GetUsedHypothesis( mesh, otherFaceSubMesh->GetSubShape());
 //         if( hyps1.empty() && hyps2.empty() )
-//           return true; // defaul hyps
+//           return true; // default hyps
 //         if ( hyps1.size() != hyps2.size() )
 //           return false;
 //         return *hyps1.front() == *hyps2.front();

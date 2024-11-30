@@ -20,21 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TRANSLATOR_H
 #define GUI_TRANSLATOR_H
 
 #include <QObject>
-#include <string>
-#include <map>
 #include <list>
+#include <map>
+#include <memory>
+#include <string>
+#include <FCGlobal.h>
+
 
 class QDir;
 
 namespace Gui {
 
-typedef std::list<std::string> TStringList;
-typedef std::map<std::string, std::string> TStringMap;
+using TStringList = std::list<std::string>;
+using TStringMap = std::map<std::string, std::string>;
 
 /**
  * The Translator class uses Qt's QTranslator objects to change the language of the application
@@ -53,9 +55,9 @@ public:
     /** @name singleton stuff */
     //@{
     /// Creates an instance
-    static Translator* instance(void);
+    static Translator* instance();
     /// Destroys the instance
-    static void destruct (void);
+    static void destruct ();
     //@}
 
     /** Activates the specified language \a lang if available. */
@@ -66,23 +68,33 @@ public:
     std::string activeLanguage() const;
     /** Returns the locale (e.g. "de") to the given language name. */
     std::string locale(const std::string&) const;
+    /** Sets default Qt locale based on given language name **/
+    void setLocale(const std::string& = "") const;
     /** Returns a list of supported languages. */
     TStringList supportedLanguages() const;
     /** Returns a map of supported languages/locales. */
     TStringMap supportedLocales() const;
     /** Adds a path where localization files can be found */
     void addPath(const QString& path);
+    /** eventFilter used to convert decimal separator **/
+    bool eventFilter(QObject* obj, QEvent* ev) override;
+    /** Enables/disables decimal separator conversion **/
+    void enableDecimalPointConversion(bool on);
+    /** Returns whether decimal separator conversion is enabled */
+    bool isEnabledDecimalPointConversion() const;
 
 private:
     Translator();
-    ~Translator();
+    ~Translator() override;
     void removeTranslators();
     QStringList directories() const;
     void installQMFiles(const QDir& dir, const char* locale);
+    void updateLocaleChange() const;
 
 private:
     static Translator* _pcSingleton;
     TranslatorP* d;
+    std::unique_ptr<Translator, std::function<void(Translator*)>> decimalPointConverter;
 };
 
 } // namespace Gui

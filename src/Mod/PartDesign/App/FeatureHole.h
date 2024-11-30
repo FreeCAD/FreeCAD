@@ -24,6 +24,7 @@
 #ifndef PARTDESIGN_Hole_H
 #define PARTDESIGN_Hole_H
 
+#include <optional>
 #include <App/PropertyUnits.h>
 #include "json_fwd.hpp"
 #include "FeatureSketchBased.h"
@@ -42,7 +43,7 @@ static constexpr size_t ThreadRunout_size = 24;
 
 class PartDesignExport Hole : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Hole);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Hole);
 
 public:
     Hole();
@@ -76,39 +77,39 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderHole";
     }
     //@}
-    short mustExecute() const;
+    short mustExecute() const override;
 
-    typedef struct {
+    using ThreadDescription = struct {
         const char * designation;
         double diameter;
         double pitch;
         double CoreHole;
-    } ThreadDescription;
+    };
     static const ThreadDescription threadDescription[][171];
 
     static const double metricHoleDiameters[36][4];
 
-    typedef struct {
+    using UTSClearanceDefinition = struct {
         std::string designation;
         double close;
         double normal;
         double loose;
-    } UTSClearanceDefinition;
+    };
     static const UTSClearanceDefinition UTSHoleDiameters[22];
 
-    virtual void Restore(Base::XMLReader & reader);
+    void Restore(Base::XMLReader & reader) override;
 
     virtual void updateProps();
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     static const App::PropertyAngle::Constraints floatAngle;
 
 private:
@@ -196,7 +197,7 @@ private:
         std::string thread_type;
         std::string cut_name;
     public:
-        CutDimensionKey() {}
+        CutDimensionKey() = default;
         CutDimensionKey(const std::string &t, const std::string &c);
         bool operator<(const CutDimensionKey &b) const;
     };
@@ -212,13 +213,18 @@ private:
     bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
     bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
     void updateHoleCutParams();
+    std::optional<double> determineDiameter() const;
     void updateDiameterParam();
     void updateThreadDepthParam();
     void readCutDefinitions();
 
-    double getThreadClassClearance();
-    double getThreadRunout(int mode = 1);
-    double getThreadPitch();
+    double getThreadClassClearance() const;
+    double getThreadRunout(int mode = 1) const;
+    double getThreadPitch() const;
+    void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
+    gp_Vec computePerpendicular(const gp_Vec&) const;
+    TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
+    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
     // helpers for nlohmann json
     friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);

@@ -34,27 +34,27 @@ namespace Part
  */
 class PartExport CustomFeature : public Part::Feature
 {
-    PROPERTY_HEADER(Part::UserFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::UserFeature);
 
 public:
     /// Constructor
-    CustomFeature(void);
-    virtual ~CustomFeature();
+    CustomFeature();
+    ~CustomFeature() override;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual short mustExecute(void) const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderCustom";
     }
 };
 
-typedef App::FeaturePythonT<CustomFeature> CustomFeaturePython;
+using CustomFeaturePython = App::FeaturePythonT<CustomFeature>;
 
 } //namespace Part
 

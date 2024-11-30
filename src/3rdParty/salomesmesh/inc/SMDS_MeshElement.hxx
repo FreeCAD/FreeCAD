@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMDS : implementaion of Salome mesh data structure
+//  SMESH SMDS : implementation of Salome mesh data structure
 //  File   : SMDS_MeshElement.hxx
 //  Module : SMESH
 //
@@ -221,8 +221,8 @@ struct TIDTypeCompare {
 // WARNING: this comparator makes impossible to store both nodes and elements in the same set
 // because there are nodes and elements with the same ID. Use TIDTypeCompare for such containers.
 struct TIDCompare {
-  bool operator () (const SMDS_MeshElement* e1, const SMDS_MeshElement* e2) const
-  { return e1->GetID() < e2->GetID(); }
+  template<typename T> bool operator () (const T* e1, const T* e2) const
+  { return static_cast<const SMDS_MeshElement*>(e1)->GetID() < static_cast<const SMDS_MeshElement*>(e2)->GetID(); }
 };
 
 #endif

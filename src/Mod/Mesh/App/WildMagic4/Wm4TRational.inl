@@ -174,7 +174,7 @@ bool TRational<N>::operator> (const TRational& rkR) const
 template <int N>
 TRational<N> TRational<N>::operator+ (const TRational& rkR) const
 {
-    TRational kSum;
+    TRational<N> kSum;
     kSum.m_kNumer = m_kNumer*rkR.m_kDenom + m_kDenom*rkR.m_kNumer;
     kSum.m_kDenom = m_kDenom*rkR.m_kDenom;
     kSum.EliminatePowersOfTwo();
@@ -184,7 +184,7 @@ TRational<N> TRational<N>::operator+ (const TRational& rkR) const
 template <int N>
 TRational<N> TRational<N>::operator- (const TRational& rkR) const
 {
-    TRational kDiff;
+    TRational<N> kDiff;
     kDiff.m_kNumer = m_kNumer*rkR.m_kDenom - m_kDenom*rkR.m_kNumer;
     kDiff.m_kDenom = m_kDenom*rkR.m_kDenom;
     kDiff.EliminatePowersOfTwo();
@@ -194,7 +194,7 @@ TRational<N> TRational<N>::operator- (const TRational& rkR) const
 template <int N>
 TRational<N> TRational<N>::operator* (const TRational& rkR) const
 {
-    TRational kProd;
+    TRational<N> kProd;
     kProd.m_kNumer = m_kNumer*rkR.m_kNumer;
     kProd.m_kDenom = m_kDenom*rkR.m_kDenom;
     kProd.EliminatePowersOfTwo();
@@ -204,7 +204,7 @@ TRational<N> TRational<N>::operator* (const TRational& rkR) const
 template <int N>
 TRational<N> TRational<N>::operator/ (const TRational& rkR) const
 {
-    TRational kQuot;
+    TRational<N> kQuot;
     kQuot.m_kNumer = m_kNumer*rkR.m_kDenom;
     kQuot.m_kDenom = m_kDenom*rkR.m_kNumer;
     kQuot.EliminatePowersOfTwo();
@@ -214,7 +214,7 @@ TRational<N> TRational<N>::operator/ (const TRational& rkR) const
 template <int N>
 TRational<N> TRational<N>::operator- () const
 {
-    TRational kNeg;
+    TRational<N> kNeg;
     kNeg.m_kNumer = -m_kNumer;
     kNeg.m_kDenom = m_kDenom;
     return kNeg;
@@ -350,7 +350,7 @@ TRational<N>::TRational (float fValue)
     unsigned int uiMantissa = (0x007FFFFF & uiBits);
 
     // create 1.mantissa
-    TRational kFraction(1,2);
+    TRational<N> kFraction(1,2);
     TInteger<N> kTwo(2);
     m_kNumer = kOne;
     unsigned int uiMask;
@@ -363,7 +363,7 @@ TRational<N>::TRational (float fValue)
     }
 
     // multiply by 2^exponent
-    TRational kMultiplier;
+    TRational<N> kMultiplier;
     TInteger<N> kPower(2);
     int i, iDelay = 0;
     if (uiExponent & 0x00000080)
@@ -411,6 +411,7 @@ TRational<N>::TRational (float fValue)
     }
 }
 //----------------------------------------------------------------------------
+#if 0
 template <int N>
 void TRational<N>::ConvertTo (float& rfValue) const
 {
@@ -434,6 +435,7 @@ void TRational<N>::ConvertTo (float& rfValue) const
     TInteger<N> kQuo, kRem;
     bool bSuccess = TInteger<N>::GetDivMod(kAbsNumer,kAbsDenom,kQuo,kRem);
     assert(bSuccess);
+    static_cast<void>(bSuccess);
 
     unsigned int uiExponent = 0, uiMantissa = 0;
 
@@ -540,6 +542,7 @@ void TRational<N>::ConvertTo (float& rfValue) const
 
     rfValue = *(float*)&uiResult;
 }
+#endif
 //----------------------------------------------------------------------------
 template <int N>
 void TRational<N>::GetPositiveFloat (const TInteger<N>& rkDenom,
@@ -627,7 +630,7 @@ TRational<N>::TRational (double dValue)
     unsigned int uiMantissaLo = auiBits[0];
 
     // create 1.mantissa
-    TRational kFraction(1,2);
+    TRational<N> kFraction(1,2);
     TInteger<N> kTwo(2);
     m_kNumer = kOne;
     unsigned int uiMask;
@@ -647,13 +650,13 @@ TRational<N>::TRational (double dValue)
     }
 
     // multiply by 2^exponent
-    TRational kMultiplier;
+    TRational<N> kMultiplier;
     TInteger<N> kPower(2);
-    int i, iDelay = 0;
+    int iDelay = 0;
     if (uiExponent & 0x400)
     {
         kMultiplier = 2;
-        for (i = 0; i <= 9; i++, uiExponent >>= 1, iDelay++)
+        for (int i = 0; i <= 9; i++, uiExponent >>= 1, iDelay++)
         {
             if (uiExponent & 1)
             {
@@ -670,7 +673,7 @@ TRational<N>::TRational (double dValue)
     else
     {
         kMultiplier = 1;
-        for (i = 0; i <= 9; i++, uiExponent >>= 1, iDelay++)
+        for (int i = 0; i <= 9; i++, uiExponent >>= 1, iDelay++)
         {
             if (!(uiExponent & 1))
             {
@@ -695,6 +698,8 @@ TRational<N>::TRational (double dValue)
     }
 }
 //----------------------------------------------------------------------------
+// Potentially unsafe code: https://pvs-studio.com/en/blog/posts/cpp/1072/
+#if 0
 template <int N>
 void TRational<N>::ConvertTo (double& rdValue) const
 {
@@ -718,6 +723,7 @@ void TRational<N>::ConvertTo (double& rdValue) const
     TInteger<N> kQuo, kRem;
     bool bSuccess = TInteger<N>::GetDivMod(kAbsNumer,kAbsDenom,kQuo,kRem);
     assert(bSuccess);
+    static_cast<void>(bSuccess);
 
     unsigned int uiExponent = 0, uiMantissaHi = 0, uiMantissaLo;
 
@@ -875,6 +881,7 @@ void TRational<N>::ConvertTo (double& rdValue) const
 #endif
     rdValue = *(double*)auiResult;
 }
+#endif
 //----------------------------------------------------------------------------
 template <int N>
 void TRational<N>::GetPositiveDouble (const TInteger<N>& rkDenom,
@@ -979,6 +986,7 @@ void TRational<N>::GetPositiveDouble (const TInteger<N>& rkDenom,
                 rkRem = kNRem;
             }
         }
+        static_cast<void>(bSuccess);
     }
 }
 //----------------------------------------------------------------------------

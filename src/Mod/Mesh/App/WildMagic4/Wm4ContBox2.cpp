@@ -105,7 +105,7 @@ Box2<Real> ContMinBox (int iQuantity, const Vector2<Real>* akPoint,
     Box2<Real> kBox;
 
     // get the convex hull of the points
-    Vector2<Real>* akHPoint = 0;
+    Vector2<Real>* akHPoint = nullptr;
     if (bIsConvexPolygon)
     {
         akHPoint = (Vector2<Real>*)akPoint;

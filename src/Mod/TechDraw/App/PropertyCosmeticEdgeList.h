@@ -20,19 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAW_PropertyCosmeticEdgeList_H
 #define TECHDRAW_PropertyCosmeticEdgeList_H
 
-// Std. configurations
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <vector>
-#include <string>
 #include <App/Property.h>
 
-#include <Mod/TechDraw/App/CosmeticEdgePy.h>
-
-#include "Cosmetic.h"
 
 namespace Base {
 class Writer;
@@ -44,7 +39,7 @@ class CosmeticEdge;
 
 class TechDrawExport PropertyCosmeticEdgeList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -57,10 +52,10 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    virtual ~PropertyCosmeticEdgeList();
+    ~PropertyCosmeticEdgeList() override;
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    void setSize(int newSize) override;
+    int getSize(void) const override;
 
     /** Sets the property
      */
@@ -73,20 +68,20 @@ public:
         return _lValueList[idx];
     }
 
-    const std::vector<CosmeticEdge*> &getValues(void) const {
+    const std::vector<CosmeticEdge*> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save(Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    virtual App::Property *Copy(void) const;
-    virtual void Paste(const App::Property &from);
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
 
-    virtual unsigned int getMemSize(void) const;
+    unsigned int getMemSize(void) const override;
 
 private:
     std::vector<CosmeticEdge*> _lValueList;

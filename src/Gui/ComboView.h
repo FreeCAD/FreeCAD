@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUI_DOCKWND_COMBOVIEW_H
 #define GUI_DOCKWND_COMBOVIEW_H
 
 #include "DockWindow.h"
-#include "Selection.h"
+
 
 class QTabWidget;
 class QTreeView;
@@ -38,7 +36,6 @@ namespace App {
 namespace Gui {
     class TreeWidget;
     class PropertyView;
-    class ProjectWidget;
     class TreePanel;
 namespace PropertyEditor {
 class EditableListView;
@@ -58,7 +55,7 @@ namespace Gui {
 namespace DockWnd {
 
 /** Combo View
-  * is a combination of a tree, property and TaskPanel for
+  * is a combination of a tree and property view for
   * integrated user action.
  */
 class GuiExport ComboView : public Gui::DockWindow
@@ -70,41 +67,21 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    ComboView(bool showModel, Gui::Document*  pcDocument, QWidget *parent=0);
+    ComboView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
+
+    void setShowModel(bool);
 
     /**
      * A destructor.
      * A more elaborate description of the destructor.
     */
-    virtual ~ComboView();
-
-    Gui::TaskView::TaskView *getTaskPanel(void){return taskPanel;}
-    QTabWidget* getTabPanel() const { return tabs;}
-
+    ~ComboView() override;
 
     friend class Gui::ControlSingleton;
 
-    void showTreeView();
-    void showTaskView();
-
-private Q_SLOTS:
-    void onCurrentTabChanged(int index);
-
-protected:
-    void showDialog(Gui::TaskView::TaskDialog *dlg);
-    void closeDialog();
-    void closedDialog();
-    void changeEvent(QEvent *e);
-
 private:
-    int oldTabIndex;
-    int modelIndex;
-    int taskIndex;
-    QTabWidget                         * tabs;
-    Gui::PropertyView                  * prop;
-    Gui::TreePanel                     * tree;
-    Gui::TaskView::TaskView            * taskPanel;
-  //Gui::ProjectWidget                 * projectView;
+    Gui::PropertyView * prop;
+    Gui::TreePanel    * tree;
 };
 
 } // namespace DockWnd

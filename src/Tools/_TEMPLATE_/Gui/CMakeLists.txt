@@ -14,11 +14,7 @@ set(_TEMPLATE_Gui_LIBS
     FreeCADGui
 )
 
-if (BUILD_QT5)
-    qt5_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
-else()
-    qt4_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
-endif()
+qt_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
 
 SET(_TEMPLATE_Gui_SRCS
     ${_TEMPLATE__QRC_SRCS}
@@ -35,5 +31,5 @@ target_link_libraries(_TEMPLATE_Gui ${_TEMPLATE_Gui_LIBS})
 
 SET_BIN_DIR(_TEMPLATE_Gui _TEMPLATE_Gui /Mod/_TEMPLATE_)
 SET_PYTHON_PREFIX_SUFFIX(_TEMPLATE_Gui)
-    
+
 install(TARGETS _TEMPLATE_Gui DESTINATION ${CMAKE_INSTALL_LIBDIR})

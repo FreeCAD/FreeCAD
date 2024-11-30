@@ -20,31 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <boost_signals2.hpp>
-# include <boost_bind_bind.hpp>
-# include <qapplication.h>
-# include <qregexp.h>
+# include <boost/core/ignore_unused.hpp>
+# include <QApplication>
 # include <QEvent>
 # include <QCloseEvent>
 # include <QMdiSubWindow>
-#include <iostream>
+# include <QPrintDialog>
+# include <QPrintPreviewDialog>
+# include <QPrinter>
+# include <QPrinterInfo>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
+#include <Base/Interpreter.h>
+#include <App/Document.h>
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
-#include "Command.h"
-#include "Document.h"
 #include "Application.h"
+#include "Document.h"
+#include "FileDialog.h"
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
 
+
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView)
 
@@ -61,9 +67,11 @@ MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wfla
 
     if (pcDocument)
     {
+      //NOLINTBEGIN
       connectDelObject = pcDocument->signalDeletedObject.connect
-        (boost::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, bp::_1));
+        (std::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, sp::_1));
       assert(connectDelObject.connected());
+      //NOLINTEND
     }
 }
 
@@ -106,7 +114,7 @@ void MDIView::deleteSelf()
     // Use deleteLater() instead of delete operator.
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent)) {
-        // https://forum.freecadweb.org/viewtopic.php?f=22&t=23070
+        // https://forum.freecad.org/viewtopic.php?f=22&t=23070
         parent->close();
     }
     else {
@@ -116,7 +124,7 @@ void MDIView::deleteSelf()
     // detach from document
     if (_pcDocument)
         onClose();
-    _pcDocument = 0;
+    _pcDocument = nullptr;
 }
 
 PyObject* MDIView::getPyObject()
@@ -143,16 +151,19 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         // Try to separate document name and view number if there is one
         QString cap = windowTitle();
         // Either with dirty flag ...
-        QRegExp rx(QLatin1String("(\\s\\:\\s\\d+\\[\\*\\])$"));
-        int pos = rx.lastIndexIn(cap);
-        if (pos == -1) {
+        QRegularExpression rx(QLatin1String(R"((\s\:\s\d+\[\*\])$)"));
+        QRegularExpressionMatch match;
+        //int pos =
+        boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
+        if (!match.hasMatch()) {
             // ... or not
-            rx.setPattern(QLatin1String("(\\s\\:\\s\\d+)$"));
-            pos = rx.lastIndexIn(cap);
+            rx.setPattern(QLatin1String(R"((\s\:\s\d+)$)"));
+            //pos =
+            boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         }
-        if (pos != -1) {
+        if (match.hasMatch()) {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
-            cap += rx.cap();
+            cap += match.captured();
             setWindowTitle(cap);
         }
         else {
@@ -181,7 +192,7 @@ bool MDIView::onHasMsg(const char* pMsg) const
     return false;
 }
 
-bool MDIView::canClose(void)
+bool MDIView::canClose()
 {
     if (getAppDocument() && getAppDocument()->testStatus(App::Document::TempDoc))
         return true;
@@ -198,6 +209,8 @@ void MDIView::closeEvent(QCloseEvent *e)
 {
     if (canClose()) {
         e->accept();
+        Application::Instance->viewClosed(this);
+
         if (!bIsPassive) {
             // must be detached so that the last view can get asked
             Document* doc = this->getGuiDocument();
@@ -215,12 +228,14 @@ void MDIView::closeEvent(QCloseEvent *e)
         // because otherwise other parts don't work as they should.
         QMainWindow::closeEvent(e);
     }
-    else
+    else {
         e->ignore();
+    }
 }
 
-void MDIView::windowStateChanged( MDIView* )
+void MDIView::windowStateChanged(QWidget* view)
 {
+    Q_UNUSED(view)
 }
 
 void MDIView::print(QPrinter* printer)
@@ -231,17 +246,73 @@ void MDIView::print(QPrinter* printer)
 
 void MDIView::print()
 {
-    std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
+    QPrinter printer(QPrinter::ScreenResolution);
+    printer.setFullPage(true);
+    QPrintDialog dlg(&printer, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        print(&printer);
+    }
 }
 
 void MDIView::printPdf()
 {
-    std::cerr << "Printing PDF not implemented for " << this->metaObject()->className() << std::endl;
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
+        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    if (!filename.isEmpty()) {
+        QPrinter printer(QPrinter::ScreenResolution);
+        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(filename);
+        print(&printer);
+    }
 }
 
 void MDIView::printPreview()
 {
-    std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
+    QPrinter printer(QPrinter::ScreenResolution);
+    QPrintPreviewDialog dlg(&printer, this);
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&MDIView::print));
+    dlg.exec();
+}
+
+void MDIView::savePrinterSettings(QPrinter* printer)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    QString printerName = printer->printerName();
+    if (printerName.isEmpty()) {
+        // no printer defined
+        return;
+    }
+
+    hGrp = hGrp->GetGroup(printerName.toUtf8());
+
+    hGrp->SetInt("DefaultPageSize", printer->pageLayout().pageSize().id());
+    hGrp->SetInt("DefaultPageOrientation", static_cast<int>(printer->pageLayout().orientation()));
+    hGrp->SetInt("DefaultColorMode", static_cast<int>(printer->colorMode()));
+}
+
+void MDIView::restorePrinterSettings(QPrinter* printer)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    QString printerName = printer->printerName();
+    if (printerName.isEmpty()) {
+        // no printer defined
+        return;
+    }
+
+    hGrp = hGrp->GetGroup(printerName.toUtf8());
+
+    QPrinterInfo info = QPrinterInfo::defaultPrinter();
+    int initialDefaultPageSize = info.isNull() ? QPageSize::A4 : info.defaultPageSize().id();
+    int defaultPageSize = hGrp->GetInt("DefaultPageSize", initialDefaultPageSize);
+    int defaultPageOrientation = hGrp->GetInt("DefaultPageOrientation", QPageLayout::Portrait);
+    int defaultColorMode = hGrp->GetInt("DefaultColorMode", QPrinter::ColorMode::Color);
+
+    printer->setPageSize(QPageSize(static_cast<QPageSize::PageSizeId>(defaultPageSize)));
+    printer->setPageOrientation(static_cast<QPageLayout::Orientation>(defaultPageOrientation));
+    printer->setColorMode(static_cast<QPrinter::ColorMode>(defaultColorMode));
 }
 
 QStringList MDIView::undoActions() const
@@ -250,8 +321,8 @@ QStringList MDIView::undoActions() const
     Gui::Document* doc = getGuiDocument();
     if (doc) {
         std::vector<std::string> vecUndos = doc->getUndoVector();
-        for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
-            actions << QCoreApplication::translate("Command", i->c_str());
+        for (const auto & vecUndo : vecUndos) {
+            actions << QCoreApplication::translate("Command", vecUndo.c_str());
         }
     }
 
@@ -264,8 +335,8 @@ QStringList MDIView::redoActions() const
     Gui::Document* doc = getGuiDocument();
     if (doc) {
         std::vector<std::string> vecRedos = doc->getRedoVector();
-        for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
-            actions << QCoreApplication::translate("Command", i->c_str());
+        for (const auto & vecRedo : vecRedos) {
+            actions << QCoreApplication::translate("Command", vecRedo.c_str());
         }
     }
 
@@ -274,7 +345,7 @@ QStringList MDIView::redoActions() const
 
 QSize MDIView::minimumSizeHint () const
 {
-    return QSize(400, 300);
+    return {400, 300};
 }
 
 void MDIView::changeEvent(QEvent *e)
@@ -335,7 +406,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
+                    setParent(nullptr, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
                                  Qt::WindowMinMaxButtonsHint);
                     if (this->wstate & Qt::WindowMaximized)
                         showMaximized();
@@ -365,7 +436,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window);
+                    setParent(nullptr, Qt::Window);
                     showFullScreen();
                 }
                 else if (this->currentMode == TopLevel) {
@@ -377,6 +448,16 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                 update();
             }   break;
     }
+}
+
+QString MDIView::buildWindowTitle() const
+{
+    QString windowTitle;
+    if (auto document = getAppDocument()) {
+        windowTitle.append(QString::fromStdString(document->Label.getStrValue()));
+    }
+
+    return windowTitle;
 }
 
 #include "moc_MDIView.cpp"

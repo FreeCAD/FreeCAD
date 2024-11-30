@@ -120,7 +120,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonMouse">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
        <property name="icon">
         <iconset resource="Icons/resource.qrc">
@@ -131,7 +131,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonAdd">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
        <property name="icon">
         <iconset resource="Icons/resource.qrc">
@@ -142,7 +142,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonRemove">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
        <property name="icon">
         <iconset resource="Icons/resource.qrc">
@@ -153,7 +153,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonAccept">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
        <property name="icon">
         <iconset resource="Icons/resource.qrc">

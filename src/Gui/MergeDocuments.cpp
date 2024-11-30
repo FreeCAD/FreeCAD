@@ -23,20 +23,21 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <stack>
-# include <boost_bind_bind.hpp>
 #endif
-#include "MergeDocuments.h"
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 
+#include "MergeDocuments.h"
+
+
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
 
@@ -47,11 +48,11 @@ public:
       : Base::XMLReader(FileName, str), nameMap(name)
     {}
 
-    void addName(const char* s1, const char* s2)
+    void addName(const char* s1, const char* s2) override
     {
         nameMap[s1] = s2;
     }
-    const char* getName(const char* name) const
+    const char* getName(const char* name) const override
     {
         std::map<std::string, std::string>::const_iterator it = nameMap.find(name);
         if (it != nameMap.end())
@@ -59,74 +60,29 @@ public:
         else
             return name;
     }
-    bool doNameMapping() const
+    bool doNameMapping() const override
     {
         return true;
     }
 protected:
-    // See App::MergeDocument::XMLMergeReader for comments, with one additional
-    // benefits, we can save repetitive coding here.
-#if 0
-    void startElement(const XMLCh* const uri, const XMLCh* const localname,
-                      const XMLCh* const qname,
-                      const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
-    {
-        Base::XMLReader::startElement(uri, localname, qname, attrs);
-        if (LocalName == "Property")
-            propertyStack.push(std::make_pair(AttrMap["name"],AttrMap["type"]));
 
-        if (!propertyStack.empty()) {
-            // replace the stored object name with the real one
-            if (LocalName == "Link" || LocalName == "LinkSub" || (LocalName == "String" && propertyStack.top().first == "Label")) {
-                for (std::map<std::string, std::string>::iterator it = AttrMap.begin(); it != AttrMap.end(); ++it) {
-                    std::map<std::string, std::string>::const_iterator jt = nameMap.find(it->second);
-                    if (jt != nameMap.end())
-                        it->second = jt->second;
-                }
-            }
-            // update the expression if name of the object is used
-            else if (LocalName == "Expression") {
-                std::map<std::string, std::string>::iterator it = AttrMap.find("expression");
-                if (it != AttrMap.end()) {
-                    // search for the part before the first dot that should be the object name.
-                    std::string expression = it->second;
-                    std::string::size_type dotpos = expression.find_first_of(".");
-                    if (dotpos != std::string::npos) {
-                        std::string name = expression.substr(0, dotpos);
-                        std::map<std::string, std::string>::const_iterator jt = nameMap.find(name);
-                        if (jt != nameMap.end()) {
-                            std::string newexpression = jt->second;
-                            newexpression += expression.substr(dotpos);
-                            it->second = newexpression;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    void endElement(const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname)
-    {
-        Base::XMLReader::endElement(uri, localname, qname);
-        if (LocalName == "Property")
-            propertyStack.pop();
-    }
-#endif
 
 private:
     std::map<std::string, std::string>& nameMap;
-    typedef std::pair<std::string, std::string> PropertyTag;
+    using PropertyTag = std::pair<std::string, std::string>;
     std::stack<PropertyTag> propertyStack;
 };
 }
 
-MergeDocuments::MergeDocuments(App::Document* doc) : stream(0), appdoc(doc)
+MergeDocuments::MergeDocuments(App::Document* doc) : appdoc(doc)
 {
+    //NOLINTBEGIN
     connectExport = doc->signalExportObjects.connect
-        (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
+        (std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
     connectImport = doc->signalImportObjects.connect
-        (boost::bind(&MergeDocuments::importObject, this, bp::_1, bp::_2));
+        (std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
     document = Gui::Application::Instance->getDocument(doc);
+    //NOLINTEND
 }
 
 MergeDocuments::~MergeDocuments()
@@ -135,7 +91,7 @@ MergeDocuments::~MergeDocuments()
     connectImport.disconnect();
 }
 
-unsigned int MergeDocuments::getMemSize (void) const
+unsigned int MergeDocuments::getMemSize () const
 {
     return 0;
 }
@@ -149,7 +105,7 @@ MergeDocuments::importObjects(std::istream& input)
     std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
     delete this->stream;
-    this->stream = 0;
+    this->stream = nullptr;
 
     return objs;
 }
@@ -157,8 +113,8 @@ MergeDocuments::importObjects(std::istream& input)
 void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r)
 {
     objects = o;
-    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
-        Gui::ViewProvider* vp = document->getViewProvider(*it);
+    for (auto it : objects) {
+        Gui::ViewProvider* vp = document->getViewProvider(it);
         if (vp) vp->hide();
     }
     Restore(r);

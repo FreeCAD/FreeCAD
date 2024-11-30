@@ -24,16 +24,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
+#include <cassert>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "BaseClass.h"
 #include "PyObjectBase.h"
 
 using namespace Base;
 
-Type BaseClass::classTypeId = Base::Type::badType();
+Type BaseClass::classTypeId = Base::Type::badType();  // NOLINT
 
 
 //**************************************************************************
@@ -43,24 +42,19 @@ Type BaseClass::classTypeId = Base::Type::badType();
  * A constructor.
  * A more elaborate description of the constructor.
  */
-BaseClass::BaseClass()
-{
-
-}
+BaseClass::BaseClass() = default;
 
 /**
  * A destructor.
  * A more elaborate description of the destructor.
  */
-BaseClass::~BaseClass()
-{
-}
+BaseClass::~BaseClass() = default;
 
 
 //**************************************************************************
 // separator for other implementation aspects
 
-void BaseClass::init(void)
+void BaseClass::init()
 {
     assert(BaseClass::classTypeId == Type::badType() && "don't init() twice!");
     /* Make sure superclass gets initialized before subclass. */
@@ -70,23 +64,23 @@ void BaseClass::init(void)
 
     /* Set up entry in the type system. */
     BaseClass::classTypeId =
-        Type::createType(Type::badType(),
-                         "Base::BaseClass",
-                         BaseClass::create);
+        Type::createType(Type::badType(), "Base::BaseClass", BaseClass::create);
 }
 
-Type BaseClass::getClassTypeId(void)
+Type BaseClass::getClassTypeId()
 {
     return BaseClass::classTypeId;
 }
 
-Type BaseClass::getTypeId(void) const
+Type BaseClass::getTypeId() const
 {
     return BaseClass::classTypeId;
 }
 
 
-void BaseClass::initSubclass(Base::Type &toInit,const char* ClassName, const char *ParentName,
+void BaseClass::initSubclass(Base::Type& toInit,
+                             const char* ClassName,
+                             const char* ParentName,
                              Type::instantiationMethod method)
 {
     // don't init twice!
@@ -94,7 +88,7 @@ void BaseClass::initSubclass(Base::Type &toInit,const char* ClassName, const cha
     // get the parent class
     Base::Type parentType(Base::Type::fromName(ParentName));
     // forgot init parent!
-    assert(parentType != Base::Type::badType() );
+    assert(parentType != Base::Type::badType());
 
     // create the new type
     toInit = Base::Type::createType(parentType, ClassName, method);
@@ -110,13 +104,10 @@ void BaseClass::initSubclass(Base::Type &toInit,const char* ClassName, const cha
  *
  * The default implementation returns 'None'.
  */
-PyObject *BaseClass::getPyObject(void)
+PyObject* BaseClass::getPyObject()
 {
-    assert(0);
     Py_Return;
 }
 
-void BaseClass::setPyObject(PyObject *)
-{
-    assert(0);
-}
+void BaseClass::setPyObject(PyObject* /*unused*/)
+{}

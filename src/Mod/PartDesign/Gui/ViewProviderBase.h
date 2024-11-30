@@ -30,20 +30,20 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderBase : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderBase);
 
 public:
     /// constructor
     ViewProviderBase();
     /// destructor
-    virtual ~ViewProviderBase();
+    ~ViewProviderBase() override;
 
-    virtual bool doubleClicked(void);
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+    bool doubleClicked() override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 } // namespace PartDesignGui

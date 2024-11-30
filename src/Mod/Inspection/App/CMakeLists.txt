@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -36,9 +30,17 @@ set(Inspection_Scripts
     ../Init.py
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Inspection_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Inspection PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(Inspection SHARED ${Inspection_SRCS} ${Inspection_Scripts})
 target_link_libraries(Inspection ${Inspection_LIBS})
-
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Inspection)
+endif()
 
 fc_target_copy_resource_flat(Inspection
     ${CMAKE_CURRENT_SOURCE_DIR}

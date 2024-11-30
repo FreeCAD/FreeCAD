@@ -23,7 +23,7 @@
 # ARE DISCLAIMED.
 # IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
 # DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 # LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
@@ -31,6 +31,7 @@
 
 import sys
 import BaseType
+
 
 class EnumerationId(object):
     """
@@ -40,7 +41,9 @@ class EnumerationId(object):
     values of the enumeration data type. These names are designated by enumeration_ids and are
     referred to as enumeration items.
     """
+
     pass
+
 
 class ENUMERATION(object):
     """
@@ -48,7 +51,7 @@ class ENUMERATION(object):
     ===================
     An ENUMERATION data type has as its domain an ordered set of names. The names represent
     values of the enumeration data type.
-    
+
     Python implementation:
     ======================
     An enumeration is initialized from strings defining the types.
@@ -57,21 +60,22 @@ class ENUMERATION(object):
       (ahead,
        behind);
     END_TYPE; -- ahead_or_behind
-    
+
     is implemented in python with the line:
     >>> ahead_of_behind = ENUMERATION('ahead','behind', the_current_scope)
     >>> ahead_or_behind.ahead
     >>> ahead_of_behind.behind
-    
+
     And, if and only if ahead and/or behind are not in scope (e.g. they are not entity names,
     and/or many enums define the same enumeration identifier):
     >>> ahead
     >>> behind
     """
-    def __init__(self,*kargs,**args):
+
+    def __init__(self, *kargs, **args):
         # first defining the scope
-        if 'scope' in args:
-            self._scope = args['scope']
+        if "scope" in args:
+            self._scope = args["scope"]
         else:
             self._scope = None
         # store passed enum identifiers
@@ -82,14 +86,14 @@ class ENUMERATION(object):
         # we create an attribute ahead with which is a new
         # instance of EnumerationId
         for enum_id_name in self._enum_id_names:
-            setattr(self,enum_id_name,EnumerationId())
+            setattr(self, enum_id_name, EnumerationId())
             # we store this new attributes to the enum_ids list, which
             # will be accessed by the type checker with the get_enum_ids method
             self._enum_ids.append(self.__getattribute__(enum_id_name))
         #
         # Then we check if the enums names can be added to the current scope:
         # if the name is already in the scope, then another enums id or select
-        # has the same name -> we do nothing, enums will be called 
+        # has the same name -> we do nothing, enums will be called
         # with ahead_of_behind.ahead or ahead_or_behind.behind.
         # otherwise, they can be called as only ahead or behind
         # Note: since ENUMERATIONS are defined *before* entities, if an entity
@@ -101,24 +105,26 @@ class ENUMERATION(object):
 
     def get_enum_ids(self):
         return self._enum_ids
-        
+
+
 class SELECT(object):
-    """ A select data type has as its domain the union of the domains of the named data types in
+    """A select data type has as its domain the union of the domains of the named data types in
     its select list. The select data type is a generalization of each of the named data types in its
     select list.
     """
-    def __init__(self,*kargs,**args):
+
+    def __init__(self, *kargs, **args):
         # first defining the scope
-        if 'scope' in args:
-            self._scope = args['scope']
+        if "scope" in args:
+            self._scope = args["scope"]
         else:
             self._scope = None
         # create the types from the list of arguments
         self._base_types = []
         for types in list(kargs):
-            new_type = BaseType.Type(types,self._scope)
+            new_type = BaseType.Type(types, self._scope)
             self._base_types.append(new_type)
- 
+
     def get_allowed_types(self):
         _auth_types = []
         for types in self._base_types:
@@ -126,12 +132,12 @@ class SELECT(object):
         return _auth_types
 
     def get_allowed_basic_types(self):
-        ''' if a select contains some subselect, goes down through the different
-        sublayers until there is no more '''
+        """if a select contains some subselect, goes down through the different
+        sublayers until there is no more"""
         b = []
         _auth_types = self.get_allowed_types()
         for _auth_type in _auth_types:
-            if isinstance(_auth_type,SELECT) or isinstance(_auth_type,ENUMERATION):
+            if isinstance(_auth_type, SELECT) or isinstance(_auth_type, ENUMERATION):
                 h = _auth_type.get_allowed_types()
                 b.extend(h)
             else:

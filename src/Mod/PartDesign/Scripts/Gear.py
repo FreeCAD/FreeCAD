@@ -219,7 +219,7 @@ def compute():
     App.ActiveDocument.recompute()
 
 
-    if c1.isChecked()==True:
+    if c1.isChecked():
         gearMesh = App.ActiveDocument.addObject("Mesh::Feature", "Gear3D-mesh")
 
         faces = []

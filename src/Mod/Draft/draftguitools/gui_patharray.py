@@ -112,6 +112,8 @@ class PathArray(gui_base_original.Modifier):
             tan_vector = App.Vector(1, 0, 0)
             force_vertical = False
             vertical_vector = App.Vector(0, 0, 1)
+            start_offset = 0.0
+            end_offset = 0.0
             use_link = self.use_link
 
             _edge_list_str = list()
@@ -134,6 +136,8 @@ class PathArray(gui_base_original.Modifier):
             _cmd += "tan_vector=" + DraftVecUtils.toString(tan_vector) + ", "
             _cmd += "force_vertical=" + str(force_vertical) + ", "
             _cmd += "vertical_vector=" + vertical_vector_str + ", "
+            _cmd += "start_offset=" + str(start_offset) + ", "
+            _cmd += "end_offset=" + str(end_offset) + ", "
             _cmd += "use_link=" + str(use_link)
             _cmd += ")"
 
@@ -160,7 +164,7 @@ class PathLinkArray(PathArray):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_PathLinkArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Path Link array"),
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Path link array"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Like the PathArray tool, but creates a 'Link array' instead.\nA 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.")}
 
     def Activated(self):

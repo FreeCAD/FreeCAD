@@ -20,19 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawLeaderLine_h_
-#define _TechDraw_DrawLeaderLine_h_
-#include <tuple>
+#ifndef TechDraw_DrawLeaderLine_h_
+#define TechDraw_DrawLeaderLine_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+#include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
+#include <App/PropertyLinks.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"
 
 
 namespace TechDraw
 {
+class DrawViewPart;
 
 class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 {
@@ -40,53 +41,62 @@ class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 
 public:
     DrawLeaderLine();
-    virtual ~DrawLeaderLine();
+    ~DrawLeaderLine() override = default;
 
     App::PropertyLink         LeaderParent;
     App::PropertyVectorList   WayPoints;
     App::PropertyEnumeration  StartSymbol;
     App::PropertyEnumeration  EndSymbol;
 
-/*    App::PropertyInteger      StartSymbol;          //see Gui/QGIArrow for values*/
-/*    App::PropertyInteger      EndSymbol;*/
-
     App::PropertyBool         Scalable;
     App::PropertyBool         AutoHorizontal;
+    App::PropertyBool         RotatesWithParent;
 
-    virtual short mustExecute() const override;
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
+    App::PropertyLink *getOwnerProperty() override { return &LeaderParent; }
 
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderLeader";
     }
-    virtual PyObject *getPyObject(void) override;
-    virtual QRectF getRect() const override { return QRectF(0,0,1,1);}
+    PyObject *getPyObject() override;
+    QRectF getRect() const override { return { 0, 0,1, 1}; }
 
-    Base::Vector3d getAttachPoint(void);
-    DrawView* getBaseView(void) const;
-    virtual App::DocumentObject* getBaseObject(void) const;
-    bool keepUpdated(void) override;
-    double getScale(void) const override;
-    double getBaseScale(void) const;
-    void adjustLastSegment(void);
-    bool getDefAuto(void) const;
+    Base::Vector3d getAttachPoint();
+    DrawView* getBaseView() const;
+    virtual App::DocumentObject* getBaseObject() const;
 
-    Base::Vector3d getTileOrigin(void) const;
-    Base::Vector3d getKinkPoint(void) const;
-    Base::Vector3d getTailPoint(void) const;
+    bool keepUpdated() override;
+    double getScale() const override;
+    double getBaseScale() const;
+    void horizLastSegment();
+    static std::vector<Base::Vector3d> horizLastSegment(const std::vector<Base::Vector3d>& inDeltas);
+    bool getDefAuto() const;
+
+    Base::Vector3d getTileOrigin() const;
+    Base::Vector3d getKinkPoint() const;
+    Base::Vector3d getTailPoint() const;
+
+    static DrawLeaderLine* makeLeader(DrawViewPart* parent, std::vector<Base::Vector3d> points, int iStartSymbol = 0, int iEndSymbol = 0);
+    std::vector<Base::Vector3d>  getScaledAndRotatedPoints(bool doScale = true, bool doRotate = true) const;
+    std::vector<Base::Vector3d> makeCanonicalPoints(const std::vector<Base::Vector3d>& inPoints,
+                                                    bool doScale = true,
+                                                    bool doRotate = true) const;
+    std::vector<Base::Vector3d> makeCanonicalPointsInverted(const std::vector<Base::Vector3d>& inPoints,
+                                                    bool doScale = true,
+                                                    bool doRotate = true) const;
+
+    bool isParentReady() const;
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
-/*    static const char* ArrowTypeEnums[];*/
-/*    static const int   ArrowCount;*/
-/*    static const std::vector<std::string> ArrowTypeIcons;*/
 
 
 };
 
-typedef App::FeaturePythonT<DrawLeaderLine> DrawLeaderLinePython;
+using DrawLeaderLinePython = App::FeaturePythonT<DrawLeaderLine>;
 
 } //namespace TechDraw
 #endif

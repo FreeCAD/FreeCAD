@@ -21,39 +21,35 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
+#include <QDialog>
 #endif
 
-#include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
-#include "ui_SketchRectangularArrayDialog.h"
 #include "SketchRectangularArrayDialog.h"
+#include "ui_SketchRectangularArrayDialog.h"
+
 
 using namespace SketcherGui;
 
-SketchRectangularArrayDialog::SketchRectangularArrayDialog(void)
-  : QDialog(Gui::getMainWindow()), ui(new Ui_SketchRectangularArrayDialog)
+SketchRectangularArrayDialog::SketchRectangularArrayDialog()
+    : QDialog(Gui::getMainWindow())
+    , ui(new Ui_SketchRectangularArrayDialog)
 {
     ui->setupUi(this);
-    
+
     ui->RowsQuantitySpinBox->onRestore();
     ui->ColsQuantitySpinBox->onRestore();
     ui->ConstraintSeparationCheckBox->onRestore();
     ui->EqualVerticalHorizontalSpacingCheckBox->onRestore();
     ui->CloneCheckBox->onRestore();
-    
+
     updateValues();
 }
 
 SketchRectangularArrayDialog::~SketchRectangularArrayDialog()
-{
-}
+{}
 
 void SketchRectangularArrayDialog::accept()
 {
@@ -62,19 +58,19 @@ void SketchRectangularArrayDialog::accept()
     ui->ConstraintSeparationCheckBox->onSave();
     ui->EqualVerticalHorizontalSpacingCheckBox->onSave();
     ui->CloneCheckBox->onSave();
-    
+
     updateValues();
-    
+
     QDialog::accept();
 }
 
-void SketchRectangularArrayDialog::updateValues(void)
+void SketchRectangularArrayDialog::updateValues()
 {
     Rows = ui->RowsQuantitySpinBox->value();
     Cols = ui->ColsQuantitySpinBox->value();
     ConstraintSeparation = ui->ConstraintSeparationCheckBox->isChecked();
     EqualVerticalHorizontalSpacing = ui->EqualVerticalHorizontalSpacingCheckBox->isChecked();
-    Clone = ui->CloneCheckBox->isChecked();    
+    Clone = ui->CloneCheckBox->isChecked();
 }
 
 #include "moc_SketchRectangularArrayDialog.cpp"

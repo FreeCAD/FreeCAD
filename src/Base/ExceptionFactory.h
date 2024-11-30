@@ -25,68 +25,66 @@
 #define BASE_EXCEPTIONFACTORY_H
 
 
-#include <Python.h>
-
 #include "Factory.h"
+#include <typeinfo>
+
+// Python stuff
+using PyObject = struct _object;
 
 namespace Base
 {
 
 /// Abstract base class of all exception producers
-class BaseExport AbstractExceptionProducer : public AbstractProducer
+class BaseExport AbstractExceptionProducer: public AbstractProducer
 {
 public:
-    AbstractExceptionProducer () {}
-    ~AbstractExceptionProducer() {}
+    AbstractExceptionProducer() = default;
     // just implement it
-    void* Produce () const {
+    void* Produce() const override
+    {
         return nullptr;
     }
-    virtual void raiseException(PyObject * pydict) const = 0;
+    virtual void raiseException(PyObject* pydict) const = 0;
 };
 
 // --------------------------------------------------------------------
 
 /** The ExceptionFactory */
-class BaseExport ExceptionFactory : public Factory
+class BaseExport ExceptionFactory: public Factory
 {
 public:
-    static ExceptionFactory& Instance(void);
-    static void Destruct (void);
+    static ExceptionFactory& Instance();
+    static void Destruct();
 
-    void raiseException(PyObject * pydict) const;
+    void raiseException(PyObject* pydict) const;
 
 private:
-    static ExceptionFactory* _pcSingleton;
+    static ExceptionFactory* _pcSingleton;  // NOLINT
 
-    ExceptionFactory(){}
-    ~ExceptionFactory(){}
+    ExceptionFactory() = default;
 };
 
 /* Producers */
 
-template <class CLASS>
-class ExceptionProducer : public AbstractExceptionProducer
+template<class CLASS>
+class ExceptionProducer: public AbstractExceptionProducer
 {
 public:
-    ExceptionProducer ()
+    ExceptionProducer()
     {
         ExceptionFactory::Instance().AddProducer(typeid(CLASS).name(), this);
     }
 
-    virtual ~ExceptionProducer (){}
-
-    void raiseException(PyObject * pydict) const
+    void raiseException(PyObject* pydict) const override
     {
-        CLASS c;
-        c.setPyObject(pydict);
+        CLASS cls;
+        cls.setPyObject(pydict);
 
-        throw c;
+        throw cls;
     }
 };
 
-} //namespace Base
+}  // namespace Base
 
 
 #endif
-

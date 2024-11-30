@@ -23,9 +23,13 @@
 #ifndef SKETCHER_EXTERNALGEOMETRYEXTENSION_H
 #define SKETCHER_EXTERNALGEOMETRYEXTENSION_H
 
-#include <Mod/Part/App/Geometry.h>
 #include <array>
 #include <bitset>
+
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/GeometryMigrationExtension.h>
+#include <Mod/Sketcher/SketcherGlobal.h>
+
 
 namespace Sketcher
 {
@@ -34,75 +38,143 @@ class ISketchExternalGeometryExtension
 {
 public:
     // Identification information
-    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
+    // <realthunder.dev@gmail.com>
     virtual bool testFlag(int flag) const = 0;
-    virtual void setFlag(int flag, bool v=true) = 0;
-    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+
+    virtual void setFlag(int flag, bool v = true) = 0;
+
+    virtual unsigned long getFlags() const = 0;
+
+    virtual void setFlags(unsigned long flags) = 0;
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
+    // <realthunder.dev@gmail.com>
 
     virtual bool isClear() const = 0;
+
     virtual size_t flagSize() const = 0;
 
     virtual const std::string& getRef() const = 0;
-    virtual void setRef(const std::string & ref) = 0;
+
+    virtual void setRef(const std::string& ref) = 0;
+
+    virtual int getRefIndex() const = 0;
+
+    virtual void setRefIndex(int index) = 0;
 };
 
-class SketcherExport ExternalGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchExternalGeometryExtension
+class SketcherExport ExternalGeometryExtension: public Part::GeometryMigrationPersistenceExtension,
+                                                private ISketchExternalGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
-    enum Flag {
-        Defining = 0,   // allow an external geometry to build shape
-        Frozen = 1,     // freeze an external geometry
-        Detached = 2,   // signal the intentions of detaching the geometry from external reference
-        Missing = 3,    // geometry with missing external reference
-        Sync = 4,       // signal the intention to synchronize a frozen geometry
-        NumFlags        // Must be the last type
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
+    // <realthunder.dev@gmail.com>
+    enum Flag
+    {
+        Defining = 0,  // allow an external geometry to build shape
+        Frozen = 1,    // freeze an external geometry
+        Detached = 2,  // signal the intentions of detaching the geometry from external reference
+        Missing = 3,   // geometry with missing external reference
+        Sync = 4,      // signal the intention to synchronize a frozen geometry
+        NumFlags       // Must be the last type
     };
-    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
+    // <realthunder.dev@gmail.com>
 
-    constexpr static std::array<const char *,NumFlags> flag2str {{ "Defining", "Frozen", "Detached","Missing", "Sync" }};
+    constexpr static std::array<const char*, NumFlags> flag2str {
+        {"Defining", "Frozen", "Detached", "Missing", "Sync"}};
+
 public:
-
     ExternalGeometryExtension() = default;
-    virtual ~ExternalGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    ~ExternalGeometryExtension() override = default;
 
-    virtual PyObject *getPyObject(void) override;
+    std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
-    virtual bool testFlag(int flag) const override { return Flags.test((size_t)(flag)); }
-    virtual void setFlag(int flag, bool v=true) override { Flags.set((size_t)(flag),v); }
-    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    PyObject* getPyObject() override;
 
-    virtual bool isClear() const override {return Flags.none();}
-    virtual size_t flagSize() const override {return Flags.size();}
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
+    // <realthunder.dev@gmail.com>
+    bool testFlag(int flag) const override
+    {
+        return Flags.test((size_t)(flag));
+    }
 
-    virtual const std::string& getRef() const override {return Ref;}
-    virtual void setRef(const std::string & ref) override {Ref = ref;}
+    void setFlag(int flag, bool v = true) override
+    {
+        Flags.set((size_t)(flag), v);
+    }
 
-    static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag);
+    unsigned long getFlags() const override
+    {
+        return Flags.to_ulong();
+    }
+
+    void setFlags(unsigned long flags) override
+    {
+        Flags = flags;
+    }
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
+    // <realthunder.dev@gmail.com>
+
+    bool isClear() const override
+    {
+        return Flags.none();
+    }
+
+    size_t flagSize() const override
+    {
+        return Flags.size();
+    }
+
+    const std::string& getRef() const override
+    {
+        return Ref;
+    }
+
+    void setRef(const std::string& ref) override
+    {
+        Ref = ref;
+    }
+
+    int getRefIndex() const override
+    {
+        return RefIndex;
+    }
+
+    void setRefIndex(int index) override
+    {
+        RefIndex = index;
+    }
+
+    static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag& flag);
 
 protected:
-    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
-    virtual void restoreAttributes(Base::XMLReader &reader) override;
-    virtual void saveAttributes(Base::Writer &writer) const override;
+    void copyAttributes(Part::GeometryExtension* cpy) const override;
+
+    void restoreAttributes(Base::XMLReader& reader) override;
+
+    void saveAttributes(Base::Writer& writer) const override;
+
+    void preSave(Base::Writer& writer) const override;
 
 private:
     ExternalGeometryExtension(const ExternalGeometryExtension&) = default;
 
 private:
     using FlagType = std::bitset<32>;
-    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
+    // <realthunder.dev@gmail.com>
     std::string Ref;
+    int RefIndex = -1;
     FlagType Flags;
-    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
-
-
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
+    // <realthunder.dev@gmail.com>
 };
 
-} //namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif // SKETCHER_EXTERNALGEOMETRYEXTENSION_H
+#endif  // SKETCHER_EXTERNALGEOMETRYEXTENSION_H

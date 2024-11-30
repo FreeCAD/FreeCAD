@@ -33,7 +33,6 @@
 
 #include <Gui/Application.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "TaskHelixParameters.h"
 #include "ViewProviderHelix.h"
@@ -43,13 +42,9 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProviderHelix,PartDesignGui::ViewProvider)
 
 
-ViewProviderHelix::ViewProviderHelix()
-{
-}
+ViewProviderHelix::ViewProviderHelix() = default;
 
-ViewProviderHelix::~ViewProviderHelix()
-{
-}
+ViewProviderHelix::~ViewProviderHelix() = default;
 
 void ViewProviderHelix::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -62,7 +57,7 @@ TaskDlgFeatureParameters *ViewProviderHelix::getEditDialog()
     return new TaskDlgHelixParameters( this );
 }
 
-QIcon ViewProviderHelix::getIcon(void) const {
+QIcon ViewProviderHelix::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Helix*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
@@ -91,10 +86,10 @@ void ViewProviderHelix::unsetEdit(int ModNum)
     PartDesignGui::ViewProvider::unsetEdit(ModNum);
 }
 
-std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren() const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
-    if (sketch != NULL && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(sketch);
 
     return temp;
@@ -104,7 +99,7 @@ bool ViewProviderHelix::onDelete(const std::vector<std::string> &s) {
     PartDesign::ProfileBased* feature = static_cast<PartDesign::ProfileBased*>(getObject());
 
     // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
+    Sketcher::SketchObject *pcSketch = nullptr;
     if (feature->Profile.getValue())
         pcSketch = static_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
 

@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,8 +24,8 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint electrostatic potential document object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
+__url__ = "https://www.freecad.org"
 
 ## @package constraint_electrostaticpotential
 #  \ingroup FEM
@@ -38,7 +39,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
     Type = "Fem::ConstraintElectrostaticPotential"
 
     def __init__(self, obj):
-        super(ConstraintElectrostaticPotential, self).__init__(obj)
+        super().__init__(obj)
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
@@ -47,38 +48,125 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
     def add_properties(self, obj):
         if not hasattr(obj, "Potential"):
             obj.addProperty(
-                "App::PropertyFloat",
-                "Potential",
-                "Parameter",
-                "Potential"
-            ),
-            obj.Potential = 0.0
+                "App::PropertyElectricPotential", "Potential", "Parameter", "Electric Potential"
+            )
+            obj.setPropertyStatus("Potential", "LockDynamic")
+            # setting  1 V assures that the unit does not switch to mV
+            # and the constraint holds usually Volts
+            obj.Potential = "1 V"
 
+        if not hasattr(obj, "AV_re_1"):
+            obj.addProperty(
+                "App::PropertyElectricPotential",
+                "AV_re_1",
+                "Vector Potential",
+                "Real part of potential x-component",
+            )
+            obj.setPropertyStatus("AV_re_1", "LockDynamic")
+            obj.AV_re_1 = "0 V"
+        if not hasattr(obj, "AV_re_2"):
+            obj.addProperty(
+                "App::PropertyElectricPotential",
+                "AV_re_2",
+                "Vector Potential",
+                "Real part of potential y-component",
+            )
+            obj.setPropertyStatus("AV_re_2", "LockDynamic")
+            obj.AV_re_2 = "0 V"
+        if not hasattr(obj, "AV_re_3"):
+            obj.addProperty(
+                "App::PropertyElectricPotential",
+                "AV_re_3",
+                "Vector Potential",
+                "Real part of potential z-component",
+            )
+            obj.setPropertyStatus("AV_re_3", "LockDynamic")
+            obj.AV_re_3 = "0 V"
+        if not hasattr(obj, "AV_im"):
+            obj.addProperty(
+                "App::PropertyElectricPotential",
+                "AV_im",
+                "Vector Potential",
+                "Imaginary part of scalar potential",
+            )
+            obj.setPropertyStatus("AV_im", "LockDynamic")
+            obj.AV_im = "0 V"
+        if not hasattr(obj, "AV_im_1"):
+            obj.addProperty(
+                "App::PropertyElectricPotential",
+                "AV_im_1",
+                "Vector Potential",
+                "Imaginary part of potential x-component",
+            )
+            obj.setPropertyStatus("AV_im_1", "LockDynamic")
+            obj.AV_im_1 = "0 V"
+        if not hasattr(obj, "AV_im_2"):
+            obj.addProperty(
+                "App::PropertyElectricPotential",
+                "AV_im_2",
+                "Vector Potential",
+                "Imaginary part of potential y-component",
+            )
+            obj.setPropertyStatus("AV_im_2", "LockDynamic")
+            obj.AV_im_2 = "0 V"
+        if not hasattr(obj, "AV_im_3"):
+            obj.addProperty(
+                "App::PropertyElectricPotential",
+                "AV_im_3",
+                "Vector Potential",
+                "Imaginary part of potential z-component",
+            )
+            obj.setPropertyStatus("AV_im_3", "LockDynamic")
+            obj.AV_im_3 = "0 V"
+
+        # now the enable bools
         if not hasattr(obj, "PotentialEnabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "PotentialEnabled",
-                "Parameter",
-                "Potential Enabled"
-            ),
-            obj.PotentialEnabled = False
+                "App::PropertyBool", "PotentialEnabled", "Parameter", "Potential Enabled"
+            )
+            obj.setPropertyStatus("PotentialEnabled", "LockDynamic")
+            obj.PotentialEnabled = True
+        if not hasattr(obj, "AV_re_1_Disabled"):
+            obj.addProperty("App::PropertyBool", "AV_re_1_Disabled", "Vector Potential", "")
+            obj.setPropertyStatus("AV_re_1_Disabled", "LockDynamic")
+            obj.AV_re_1_Disabled = True
+        if not hasattr(obj, "AV_re_2_Disabled"):
+            obj.addProperty("App::PropertyBool", "AV_re_2_Disabled", "Vector Potential", "")
+            obj.setPropertyStatus("AV_re_2_Disabled", "LockDynamic")
+            obj.AV_re_2_Disabled = True
+        if not hasattr(obj, "AV_re_3_Disabled"):
+            obj.addProperty("App::PropertyBool", "AV_re_3_Disabled", "Vector Potential", "")
+            obj.setPropertyStatus("AV_re_3_Disabled", "LockDynamic")
+            obj.AV_re_3_Disabled = True
+        if not hasattr(obj, "AV_im_Disabled"):
+            obj.addProperty("App::PropertyBool", "AV_im_Disabled", "Vector Potential", "")
+            obj.setPropertyStatus("AV_im_Disabled", "LockDynamic")
+            obj.AV_im_Disabled = True
+        if not hasattr(obj, "AV_im_1_Disabled"):
+            obj.addProperty("App::PropertyBool", "AV_im_1_Disabled", "Vector Potential", "")
+            obj.setPropertyStatus("AV_im_1_Disabled", "LockDynamic")
+            obj.AV_im_1_Disabled = True
+        if not hasattr(obj, "AV_im_2_Disabled"):
+            obj.addProperty("App::PropertyBool", "AV_im_2_Disabled", "Vector Potential", "")
+            obj.setPropertyStatus("AV_im_2_Disabled", "LockDynamic")
+            obj.AV_im_2_Disabled = True
+        if not hasattr(obj, "AV_im_3_Disabled"):
+            obj.addProperty("App::PropertyBool", "AV_im_3_Disabled", "Vector Potential", "")
+            obj.setPropertyStatus("AV_im_3_Disabled", "LockDynamic")
+            obj.AV_im_3_Disabled = True
 
         if not hasattr(obj, "PotentialConstant"):
             obj.addProperty(
-                "App::PropertyBool",
-                "PotentialConstant",
-                "Parameter",
-                "Potential Constant"
-            ),
+                "App::PropertyBool", "PotentialConstant", "Parameter", "Potential Constant"
+            )
+            obj.setPropertyStatus("PotentialConstant", "LockDynamic")
             obj.PotentialConstant = False
 
         if not hasattr(obj, "ElectricInfinity"):
             obj.addProperty(
-                "App::PropertyBool",
-                "ElectricInfinity",
-                "Parameter",
-                "Electric Infinity"
-            ),
+                "App::PropertyBool", "ElectricInfinity", "Parameter", "Electric Infinity"
+            )
+            obj.setPropertyStatus("ElectricInfinity", "LockDynamic")
             obj.ElectricInfinity = False
 
         if not hasattr(obj, "ElectricForcecalculation"):
@@ -86,17 +174,16 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "App::PropertyBool",
                 "ElectricForcecalculation",
                 "Parameter",
-                "Electric Force Calculation"
-            ),
+                "Electric Force Calculation",
+            )
+            obj.setPropertyStatus("ElectricForcecalculation", "LockDynamic")
             obj.ElectricForcecalculation = False
 
         if not hasattr(obj, "CapacitanceBody"):
             obj.addProperty(
-                "App::PropertyInteger",
-                "CapacitanceBody",
-                "Parameter",
-                "Capacitance Body"
-            ),
+                "App::PropertyInteger", "CapacitanceBody", "Parameter", "Capacitance Body"
+            )
+            obj.setPropertyStatus("CapacitanceBody", "LockDynamic")
             obj.CapacitanceBody = 0
 
         if not hasattr(obj, "CapacitanceBodyEnabled"):
@@ -104,6 +191,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "App::PropertyBool",
                 "CapacitanceBodyEnabled",
                 "Parameter",
-                "Capacitance Body Enabled"
+                "Capacitance Body Enabled",
             )
+            obj.setPropertyStatus("CapacitanceBodyEnabled", "LockDynamic")
             obj.CapacitanceBodyEnabled = False

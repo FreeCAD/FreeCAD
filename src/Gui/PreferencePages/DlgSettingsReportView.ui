@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsReportView</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsReportView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>432</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Report view</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox1">
+     <property name="title">
+      <string>Output</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
+       <number>11</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkMessage">
+        <property name="toolTip">
+         <string>Normal messages will be recorded</string>
+        </property>
+        <property name="text">
+         <string>Record normal messages</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkMessage</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkLogging">
+        <property name="toolTip">
+         <string>Log messages will be recorded</string>
+        </property>
+        <property name="text">
+         <string>Record log messages</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkLogging</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkWarning">
+        <property name="toolTip">
+         <string>Warnings will be recorded</string>
+        </property>
+        <property name="text">
+         <string>Record warnings</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkWarning</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkError">
+        <property name="toolTip">
+         <string>Error messages will be recorded</string>
+        </property>
+        <property name="text">
+         <string>Record error messages</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkError</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnError">
+        <property name="toolTip">
+         <string>When an error has occurred, the Report View dialog becomes visible
+on-screen while displaying the error</string>
+        </property>
+        <property name="text">
+         <string>Show report view on error</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnError</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnWarning">
+        <property name="toolTip">
+         <string>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</string>
+        </property>
+        <property name="text">
+         <string>Show report view on warning</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnWarning</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnNormalMessage">
+        <property name="toolTip">
+         <string>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</string>
+        </property>
+        <property name="text">
+         <string>Show report view on normal message</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnNormalMessage</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnLogMessage">
+        <property name="toolTip">
+         <string>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</string>
+        </property>
+        <property name="text">
+         <string>Show report view on log message</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnLogMessage</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportTimecode">
+        <property name="toolTip">
+         <string>Include a timecode for each report</string>
+        </property>
+        <property name="text">
+         <string>Include a timecode for each entry</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportTimecode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox2">
+     <property name="title">
+      <string>Colors</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabel1">
+          <property name="text">
+           <string>Normal messages:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Ignored</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>214</width>
+            <height>23</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::PrefColorButton" name="colorText">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>75</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Font color for normal messages in Report view panel</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>colorText</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>OutputWindow</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabel2">
+          <property name="text">
+           <string>Log messages:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Ignored</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>211</width>
+            <height>23</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefColorButton" name="colorLogging">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>75</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Font color for log messages in Report view panel</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>colorLogging</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>OutputWindow</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="textLabel3">
+          <property name="text">
+           <string>Warnings:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Ignored</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>211</width>
+            <height>23</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefColorButton" name="colorWarning">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>75</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Font color for warning messages in Report view panel</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>170</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>colorWarning</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>OutputWindow</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="textLabel4">
+          <property name="text">
+           <string>Errors:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>211</width>
+            <height>23</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefColorButton" name="colorError">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>75</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Font color for error messages in Report view panel</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>colorError</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>OutputWindow</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     <item row="0" column="1">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::MinimumExpanding</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Python interpreter</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="pythonOutput">
+        <property name="toolTip">
+         <string>Internal Python output will be redirected
+from Python console to Report view panel</string>
+        </property>
+        <property name="text">
+         <string>Redirect internal Python output to report view</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>RedirectPythonOutput</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="pythonError">
+        <property name="toolTip">
+         <string>Internal Python error messages will be redirected
+from Python console to Report view panel</string>
+        </property>
+        <property name="text">
+         <string>Redirect internal Python errors to report view</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>RedirectPythonErrors</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>410</width>
+       <height>71</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>checkLogging</tabstop>
+  <tabstop>checkWarning</tabstop>
+  <tabstop>checkError</tabstop>
+  <tabstop>checkShowReportViewOnWarning</tabstop>
+  <tabstop>checkShowReportViewOnError</tabstop>
+  <tabstop>checkShowReportViewOnNormalMessage</tabstop>
+  <tabstop>checkShowReportViewOnLogMessage</tabstop>
+  <tabstop>checkShowReportTimecode</tabstop>
+  <tabstop>colorText</tabstop>
+  <tabstop>colorLogging</tabstop>
+  <tabstop>colorWarning</tabstop>
+  <tabstop>colorError</tabstop>
+  <tabstop>pythonOutput</tabstop>
+  <tabstop>pythonError</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

@@ -25,17 +25,16 @@
 #define APP_PROPERTYPYTHONOBJECT_H
 
 #include <string>
-#include <list>
-#include <vector>
 #include <CXX/Objects.hxx>
 
 #include "Property.h"
 
 
-namespace Base {
+namespace Base
+{
 class Writer;
 class XMLReader;
-}
+}  // namespace Base
 
 namespace App
 {
@@ -44,37 +43,37 @@ namespace App
  * PropertyPythonObject is used to manage Py::Object instances as properties.
  * @author Werner Mayer
  */
-class AppExport PropertyPythonObject : public Property
+class AppExport PropertyPythonObject: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyPythonObject(void);
-    virtual ~PropertyPythonObject();
+    PropertyPythonObject();
+    ~PropertyPythonObject() override;
 
-    void setValue(Py::Object);
+    void setValue(const Py::Object& py);
     Py::Object getValue() const;
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject* obj) override;
 
     /** Use Python's pickle module to save the object */
-    virtual void Save (Base::Writer &writer) const;
+    void Save(Base::Writer& writer) const override;
     /** Use Python's pickle module to restore the object */
-    virtual void Restore(Base::XMLReader &reader);
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void Restore(Base::XMLReader& reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
 
-    virtual unsigned int getMemSize (void) const;
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    unsigned int getMemSize() const override;
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
 
     std::string toString() const;
     void fromString(const std::string&);
 
 private:
-    void saveObject(Base::Writer &writer) const;
-    void restoreObject(Base::XMLReader &reader);
+    void saveObject(Base::Writer& writer) const;
+    void restoreObject(Base::XMLReader& reader);
     std::string encodeValue(const std::string& str) const;
     std::string decodeValue(const std::string& str) const;
     void loadPickle(const std::string& str);
@@ -82,6 +81,6 @@ private:
 };
 
 
-} // namespace App
+}  // namespace App
 
-#endif // APP_PROPERTYPYTHONOBJECT_H
+#endif  // APP_PROPERTYPYTHONOBJECT_H

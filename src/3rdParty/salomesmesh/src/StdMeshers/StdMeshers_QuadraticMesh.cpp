@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH StdMeshers_QuadraticMesh : implementaion of SMESH idl descriptions
+//  SMESH StdMeshers_QuadraticMesh : implementation of SMESH idl descriptions
 //  File   : StdMeshers_QuadraticMesh.cxx
 //  Module : SMESH
 //

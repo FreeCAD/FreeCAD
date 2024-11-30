@@ -20,11 +20,7 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "ViewProviderPolarPattern.h"
 #include "TaskPolarPatternParameters.h"
@@ -35,4 +31,16 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPolarPattern,PartDesignGui::ViewProvi
 
 TaskDlgFeatureParameters *ViewProviderPolarPattern::getEditDialog() {
     return new TaskDlgPolarPatternParameters (this);
+}
+
+void ViewProviderPolarPattern::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit polar pattern"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
+
+const std::string & ViewProviderPolarPattern::featureName() const
+{
+    static const std::string name = "PolarPattern";
+    return name;
 }

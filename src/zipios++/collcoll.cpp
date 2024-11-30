@@ -10,7 +10,7 @@ namespace zipios {
 
 using std::ifstream ;
 
-CollectionCollection *CollectionCollection::_inst = 0 ;
+CollectionCollection *CollectionCollection::_inst = nullptr ;
 
 
 CollectionCollection::CollectionCollection() {
@@ -31,7 +31,7 @@ bool CollectionCollection::addCollection( const FileCollection &collection ) {
 bool CollectionCollection::addCollection( FileCollection *collection ) {
   if ( ! _valid )
     throw InvalidStateException( "Attempt to add a FileCollection to an invalid CollectionCollection" ) ;
-  if ( collection == 0 || this == collection || ! collection->isValid() )
+  if ( !collection || this == collection || ! collection->isValid() )
     return false ;
   _collections.push_back( collection ) ;
   return true ;
@@ -87,8 +87,8 @@ istream *CollectionCollection::getInputStream( const string &entry_name,
 
   getEntry( entry_name, cep, it, matchpath ) ; 
   
-  if ( cep == 0 )
-    return 0 ;
+  if ( !cep )
+    return nullptr ;
   else
     return (*it)->getInputStream( entry_name ) ;
   
@@ -126,7 +126,7 @@ void CollectionCollection::getEntry( const string &name,
 				     MatchPath matchpath ) const {
   
   // Returns the first matching entry.
-  cep = 0 ;
+  cep = nullptr ;
   for ( it = _collections.begin() ; it != _collections.end() ; it++ ) {
     cep = (*it)->getEntry( name, matchpath ) ;
     if ( cep )

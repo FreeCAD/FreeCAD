@@ -23,21 +23,13 @@
 #ifndef TECHDRAWGUI_QGITILE_H
 #define TECHDRAWGUI_QGITILE_H
 
-#include <QFont>
-#include <QPointF>
-#include <QGraphicsTextItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsEllipseItem>
-#include <QPainterPath>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
+#include <QFont>
 #include <QGraphicsColorizeEffect>
+#include <QPointF>
 
-#include <Base/Vector3D.h>
-
-#include "QGIArrow.h"
-#include "QGCustomText.h"
-#include "QGCustomRect.h"
-#include "QGCustomSvg.h"
 #include "QGIDecoration.h"
 
 namespace TechDraw {
@@ -47,19 +39,20 @@ class DrawTileWeld;
 
 namespace TechDrawGui
 {
+class QGCustomSvg;
+class QGCustomText;
 class QGIWeldSymbol;
 
 class TechDrawGuiExport QGITile : public QGIDecoration
 {
 public:
     explicit QGITile(TechDraw::DrawTileWeld*);
-    ~QGITile(void);
+    ~QGITile() override;
 
     enum {Type = QGraphicsItem::UserType + 325};
-    int type(void) const { return Type;}
+    int type(void) const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
     void setTileTextLeft(std::string s);
     void setTileTextRight(std::string s);
@@ -71,12 +64,10 @@ public:
     void setTileScale(double s);
     void setTailRight(bool b) { m_tailRight = b; }
     void setAltWeld(bool b) { m_altWeld = b; }
-    bool isTailRight(void);
-    virtual void draw(void);
+    bool isTailRight();
+    void draw() override;
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
     QColor getTileColor(void) const;
     void setPrettyNormal();
     void setPrettyPre();

@@ -33,32 +33,35 @@
 
 class QButtonGroup;
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 class Selection;
 class Ui_DlgSmoothing;
-class DlgSmoothing : public QWidget
+class DlgSmoothing: public QWidget
 {
     Q_OBJECT
 
 public:
-    enum Smooth {
+    enum Smooth
+    {
         None,
         Taubin,
-        Laplace
+        Laplace,
+        MedianFilter
     };
 
-    DlgSmoothing(QWidget* parent = 0);
-    ~DlgSmoothing();
+    explicit DlgSmoothing(QWidget* parent = nullptr);
+    ~DlgSmoothing() override;
     int iterations() const;
     double lambdaStep() const;
     double microStep() const;
     Smooth method() const;
     bool smoothSelection() const;
 
-private Q_SLOTS:
-    void method_clicked(int);
-    void on_checkBoxSelection_toggled(bool);
+private:
+    void methodClicked(int);
+    void onCheckBoxSelectionToggled(bool);
 
 Q_SIGNALS:
     void toggledSelection(bool);
@@ -66,58 +69,75 @@ Q_SIGNALS:
 private:
     Ui_DlgSmoothing* ui;
     QButtonGroup* bg;
+
+    Q_DISABLE_COPY_MOVE(DlgSmoothing)
 };
 
 /**
  * Embed the panel into a dialog.
  */
-class MeshGuiExport SmoothingDialog : public QDialog
+class MeshGuiExport SmoothingDialog: public QDialog
 {
     Q_OBJECT
 
 public:
-    SmoothingDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~SmoothingDialog();
+    explicit SmoothingDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~SmoothingDialog() override;
 
     int iterations() const
-    { return widget->iterations(); }
+    {
+        return widget->iterations();
+    }
     double lambdaStep() const
-    { return widget->lambdaStep(); }
+    {
+        return widget->lambdaStep();
+    }
     double microStep() const
-    { return widget->microStep(); }
+    {
+        return widget->microStep();
+    }
     DlgSmoothing::Smooth method() const
-    { return widget->method(); }
+    {
+        return widget->method();
+    }
     bool smoothSelection() const
-    { return widget->smoothSelection(); }
+    {
+        return widget->smoothSelection();
+    }
 
 private:
     DlgSmoothing* widget;
+
+    Q_DISABLE_COPY_MOVE(SmoothingDialog)
 };
 
 /**
  * Embed the panel into a task dialog.
  */
-class TaskSmoothing : public Gui::TaskView::TaskDialog
+class TaskSmoothing: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     TaskSmoothing();
-    ~TaskSmoothing();
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument(void) const
-    { return true; }
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
+    bool isAllowedAlterDocument() const override
+    {
+        return true;
+    }
 
 private:
     DlgSmoothing* widget;
     Selection* selection;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLGSMOOTHING_H
+#endif  // MESHGUI_DLGSMOOTHING_H

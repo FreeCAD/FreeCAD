@@ -14,29 +14,32 @@
    <string>Sketcher validation</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="5" column="0">
-    <widget class="QGroupBox" name="groupBox_3">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox_0">
      <property name="title">
-      <string>Reversed external geometry</string>
+      <string>Open and non-manifold vertexes</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
+     <layout class="QGridLayout" name="gridLayout_7">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item row="0" column="0">
-       <widget class="QPushButton" name="findReversed">
+       <widget class="QPushButton" name="highlightButton">
         <property name="toolTip">
-         <string>Finds reversed external geometries</string>
+         <string>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
+This is purely based on topological shape of the sketch and not on its geometry/constrain set.</string>
         </property>
         <property name="text">
-         <string>Find</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="swapReversed">
-        <property name="toolTip">
-         <string>Fixes found reversed external geometries by swapping their endpoints</string>
-        </property>
-        <property name="text">
-         <string>Swap endpoints in constraints</string>
+         <string>Highlight troublesome vertexes</string>
         </property>
        </widget>
       </item>
@@ -52,7 +55,21 @@
       <string>Missing coincidences</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0" colspan="2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Tolerance:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBoxTolerance">
+        <property name="toolTip">
+         <string>Defines the X/Y tolerance inside which missing coincidences are searched.</string>
+        </property>
+       </widget>
+      </item>
+     <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="checkBoxIgnoreConstruction">
         <property name="toolTip">
          <string>If checked, construction geometries are ignored in the search</string>
@@ -68,18 +85,11 @@
       <item row="2" column="0">
        <widget class="QPushButton" name="findButton">
         <property name="toolTip">
-         <string>Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</string>
+         <string>Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</string>
         </property>
         <property name="text">
          <string>Find</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Tolerance:</string>
         </property>
        </widget>
       </item>
@@ -90,14 +100,7 @@ This is done by analyzing the sketch geometries and constraints</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="comboBoxTolerance">
-        <property name="toolTip">
-         <string>Defines the X/Y tolerance inside which missing coincidences are searched.</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">
@@ -139,38 +142,6 @@ This is done by analyzing the sketch geometries and constraints</string>
      </layout>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox_0">
-     <property name="title">
-      <string>Open and non-manifold vertexes</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_7">
-      <property name="leftMargin">
-       <number>6</number>
-      </property>
-      <property name="topMargin">
-       <number>6</number>
-      </property>
-      <property name="rightMargin">
-       <number>6</number>
-      </property>
-      <property name="bottomMargin">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="highlightButton">
-        <property name="toolTip">
-         <string>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
-This is purely based on topological shape of the sketch and not on its geometry/constrain set.</string>
-        </property>
-        <property name="text">
-         <string>Highlight troublesome vertexes</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_6">
      <property name="title">
@@ -194,6 +165,35 @@ This is purely based on topological shape of the sketch and not on its geometry/
         </property>
         <property name="text">
          <string>Fix</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Reversed external geometry</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="findReversed">
+        <property name="toolTip">
+         <string>Finds reversed external geometries</string>
+        </property>
+        <property name="text">
+         <string>Find</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="swapReversed">
+        <property name="toolTip">
+         <string>Fixes found reversed external geometries by swapping their endpoints</string>
+        </property>
+        <property name="text">
+         <string>Swap endpoints in constraints</string>
         </property>
        </widget>
       </item>

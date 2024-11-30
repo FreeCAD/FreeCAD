@@ -30,9 +30,8 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftutils.utils as utils
-
 from draftobjects.base import DraftObject
+from draftutils import params
 
 
 class Ellipse(DraftObject):
@@ -60,9 +59,14 @@ class Ellipse(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property","Area of this object")
         obj.addProperty("App::PropertyArea", "Area","Draft", _tip)
 
-        obj.MakeFace = utils.get_param("fillmode",True)
+        obj.MakeFace = params.get_param("fillmode")
 
     def execute(self, obj):
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
         plm = obj.Placement
         if obj.MajorRadius.Value < obj.MinorRadius.Value:
@@ -91,6 +95,10 @@ class Ellipse(DraftObject):
                 obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

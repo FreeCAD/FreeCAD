@@ -117,7 +117,7 @@
         </font>
        </property>
        <property name="text">
-        <string>||</string>
+        <string notr="true">||</string>
        </property>
       </widget>
      </item>
@@ -234,7 +234,7 @@
      <item>
       <widget class="QSpinBox" name="Override">
        <property name="suffix">
-        <string>%</string>
+        <string notr="true">%</string>
        </property>
        <property name="maximum">
         <number>100</number>

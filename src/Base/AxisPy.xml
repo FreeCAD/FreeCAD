@@ -1,71 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-		Father="PyObjectBase"
-		Name="AxisPy"
-		Twin="Axis"
-		TwinPointer="Axis"
-		Include="Base/Axis.h"
-		FatherInclude="Base/PyObjectBase.h"
-		Namespace="Base"
-		Constructor="true"
-		Delete="true"
-		FatherNamespace="Base">
-	<Documentation>
-		<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-		<UserDocu>Axis
-An defines a direction and a position (base) in 3D space.
+    <PythonExport
+        Father="PyObjectBase"
+        Name="AxisPy"
+        Twin="Axis"
+        TwinPointer="Axis"
+        Include="Base/Axis.h"
+        FatherInclude="Base/PyObjectBase.h"
+        Namespace="Base"
+        Constructor="true"
+        Delete="true"
+        FatherNamespace="Base">
+    <Documentation>
+        <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+        <UserDocu>Base.Axis class.
+
+An Axis defines a direction and a position (base) in 3D space.
 
 The following constructors are supported:
-Axis() -- empty constructor
-Axis(Axis) -- copy constructor
-Axis(Base, Direction) -- define position and direction
-		</UserDocu>
-		<DeveloperDocu>Axis</DeveloperDocu>
-	</Documentation>
+
+Axis()
+Empty constructor.
+
+Axis(axis)
+Copy constructor.
+axis : Base.Axis
+
+Axis(base, direction)
+Define from a position and a direction.
+base : Base.Vector
+direction : Base.Vector</UserDocu>
+        <DeveloperDocu>Axis</DeveloperDocu>
+    </Documentation>
         <Methode Name="copy">>
             <Documentation>
-                <UserDocu>
-                    copy()
-                    Returns a copy of this Axis
-                </UserDocu>
+                <UserDocu>copy() -> Base.Axis
+
+Returns a copy of this Axis.</UserDocu>
             </Documentation>
         </Methode>
-		<Methode Name="move">
-			<Documentation>
-				<UserDocu>
-					move(Vector)
-					Move the axis base along the vector
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="multiply">
-			<Documentation>
-				<UserDocu>
-					multiply(Placement)
-					Multiply this axis with a placement
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="reversed">
-			<Documentation>
-				<UserDocu>
-					reversed() -> Axis
-					compute the reversed axis
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Attribute Name="Base" ReadOnly="false">
-			<Documentation>
-				<UserDocu>Vector to the Base position of the Axis</UserDocu>
-			</Documentation>
-			<Parameter Name="Base" Type="Object" />
-		</Attribute>
-		<Attribute Name="Direction" ReadOnly="false">
-			<Documentation>
-				<UserDocu>Direction vector of the Axis</UserDocu>
-			</Documentation>
-			<Parameter Name="Direction" Type="Object" />
-		</Attribute>
-	</PythonExport>
+        <Methode Name="move">
+            <Documentation>
+                <UserDocu>move(vector) -> None
+
+Move the axis base along the given vector.
+
+vector : Base.Vector
+    Vector by which to move the axis.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="multiply">
+            <Documentation>
+                <UserDocu>multiply(placement) -> Base.Axis
+
+Multiply this axis by a placement.
+
+placement : Base.Placement
+    Placement by which to multiply the axis.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="reversed">
+            <Documentation>
+                <UserDocu>reversed() -> Base.Axis
+
+Compute the reversed axis. This returns a new Base.Axis with
+the original direction reversed.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Base" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Base position vector of the Axis.</UserDocu>
+            </Documentation>
+            <Parameter Name="Base" Type="Object" />
+        </Attribute>
+        <Attribute Name="Direction" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Direction vector of the Axis.</UserDocu>
+            </Documentation>
+            <Parameter Name="Direction" Type="Object" />
+        </Attribute>
+    </PythonExport>
 </GenerateModel>

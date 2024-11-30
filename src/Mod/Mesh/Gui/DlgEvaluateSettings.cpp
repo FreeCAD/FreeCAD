@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "DlgEvaluateSettings.h"
 #include "ui_DlgEvaluateSettings.h"
+
 
 using namespace MeshGui;
 
 /* TRANSLATOR MeshGui::DlgEvaluateSettings */
 
 DlgEvaluateSettings::DlgEvaluateSettings(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), ui(new Ui_DlgEvaluateSettings)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgEvaluateSettings)
 {
     ui->setupUi(this);
 }
@@ -74,4 +73,3 @@ bool DlgEvaluateSettings::isDegeneratedFacetsChecked() const
 }
 
 #include "moc_DlgEvaluateSettings.cpp"
-

@@ -20,66 +20,71 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskCreateNodeSet_H
 #define GUI_TASKVIEW_TaskCreateNodeSet_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Fem/App/FemSetNodesObject.h>
 
 
 class Ui_TaskCreateNodeSet;
 class SoEventCallback;
 
-namespace Base {
+namespace Base
+{
 class Polygon2d;
 }
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 class ViewVolumeProjection;
-}
+}  // namespace Gui
 
-namespace FemGui {
+namespace FemGui
+{
 
 class ViewProviderFemMesh;
 
 
-class TaskCreateNodeSet : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskCreateNodeSet: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent = 0);
-    ~TaskCreateNodeSet();
+    explicit TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* parent = nullptr);
+    ~TaskCreateNodeSet() override;
 
     std::set<long> tempSet;
-    ViewProviderFemMesh * MeshViewProvider;
+    ViewProviderFemMesh* MeshViewProvider;
 
 private Q_SLOTS:
-    void Poly(void);
-    void Pick(void);
+    void Poly();
+    void Pick();
     void SwitchMethod(int Value);
 
 protected:
-    Fem::FemSetNodesObject *pcObject;
-    static void DefineNodesCallback(void * ud, SoEventCallback * n);
-    void DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj,bool);
+    Fem::FemSetNodesObject* pcObject;
+    static void DefineNodesCallback(void* ud, SoEventCallback* n);
+    void DefineNodes(const Base::Polygon2d& polygon, const Gui::ViewVolumeProjection& proj, bool);
 
 protected:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    enum selectionModes { none, PickElement} selectionMode;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    enum selectionModes
+    {
+        none,
+        PickElement
+    } selectionMode;
 
 private:
     QWidget* proxy;
-    Ui_TaskCreateNodeSet* ui;
+    std::unique_ptr<Ui_TaskCreateNodeSet> ui;
 };
 
-} //namespace PartDesignGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskCreateNodeSet_H
+#endif  // GUI_TASKVIEW_TaskCreateNodeSet_H

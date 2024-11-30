@@ -24,9 +24,9 @@
 #ifndef GUI_WORKBENCHFACTORY_H
 #define GUI_WORKBENCHFACTORY_H
 
-#include <Base/Factory.h>
-#include <string>
 #include <list>
+#include <string>
+#include <Base/Factory.h>
 
 namespace Gui {
 class Workbench;
@@ -56,8 +56,8 @@ public:
 private:
   static WorkbenchFactoryInst* _pcSingleton;
 
-  WorkbenchFactoryInst(){}
-  ~WorkbenchFactoryInst(){}
+  WorkbenchFactoryInst() = default;
+  ~WorkbenchFactoryInst() override = default;
 };
 
 inline GuiExport WorkbenchFactoryInst& WorkbenchFactory()
@@ -76,13 +76,11 @@ template <class CLASS>
 class WorkbenchProducer: public Base::AbstractProducer
 {
 public:
-  WorkbenchProducer ()
-  {
-  }
+  WorkbenchProducer()   = default;
 
-  virtual ~WorkbenchProducer (){}
+  ~WorkbenchProducer () override = default;
 
-  virtual void* Produce () const
+  void* Produce () const override
   {
     return (new CLASS);
   }

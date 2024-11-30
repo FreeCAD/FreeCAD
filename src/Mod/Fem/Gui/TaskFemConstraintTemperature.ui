@@ -6,18 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
-    <height>340</height>
+    <width>300</width>
+    <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Select multiple face(s), click Add or Remove</string>
+      <string>Click Add or Remove and select geometric element(s)</string>
      </property>
     </widget>
    </item>
@@ -49,45 +49,48 @@
     <widget class="QListWidget" name="lw_references"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QRadioButton" name="rb_temperature">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_constr_type">
        <property name="text">
-        <string>Temperature</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
+        <string>Constraint type</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QRadioButton" name="rb_cflux">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="cb_constr_type"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_temperature">
+       <property name="text">
+        <string>Temperature</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsb_temperature">
+       <property name="unit" stdset="0">
+        <string notr="true">K</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_cflux">
        <property name="text">
         <string>Concentrated heat flux</string>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="layoutTemperature">
-     <item>
-      <widget class="QLabel" name="lbl_type">
-       <property name="text">
-        <string>Temperature</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Gui::InputField" name="if_temperature">
-       <property name="text">
-        <string>300 K</string>
-       </property>
+     <item row="2" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsb_cflux">
        <property name="unit" stdset="0">
-        <string notr="true"/>
+        <string notr="true">mW</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -97,9 +100,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

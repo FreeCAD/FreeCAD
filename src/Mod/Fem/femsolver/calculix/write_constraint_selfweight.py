@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix constraint selfweight"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 def get_analysis_types():
@@ -49,13 +49,14 @@ def write_constraint(f, femobj, selwei_obj, ccxwriter):
     f.write("*DLOAD\n")
     f.write(
         # elset, GRAV, magnitude, direction x, dir y ,dir z
-        "{},GRAV,{:.13G},{:.13G},{:.13G},{:.13G}\n"
-        .format(
+        "{},GRAV,{:.13G},{:.13G},{:.13G},{:.13G}\n".format(
             ccxwriter.ccx_eall,
-            ccxwriter.gravity,  # actual magnitude of gravity vector
-            selwei_obj.Gravity_x,  # coordinate x of normalized gravity vector
-            selwei_obj.Gravity_y,  # y
-            selwei_obj.Gravity_z  # z
+            selwei_obj.GravityAcceleration.getValueAs(
+                "mm/s^2"
+            ).Value,  # actual magnitude of gravity vector
+            selwei_obj.GravityDirection.x,  # coordinate x of normalized gravity vector
+            selwei_obj.GravityDirection.y,  # y
+            selwei_obj.GravityDirection.z,  # z
         )
     )
     f.write("\n")

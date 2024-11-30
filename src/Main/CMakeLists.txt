@@ -1,5 +1,3 @@
-#add_defintions(-D_FC_GUI_ENABLED_)
-#add_defintions(-DFREECADMAINPY)
 
 configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
 configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
@@ -10,6 +8,7 @@ if(BUILD_GUI)
         ${Boost_INCLUDE_DIRS}
         ${COIN3D_INCLUDE_DIRS}
         ${ZLIB_INCLUDE_DIR}
+        ${QtWidgets_INCLUDE_DIRS}
         ${QT_INCLUDE_DIR}
         ${PYTHON_INCLUDE_DIRS}
         ${XercesC_INCLUDE_DIRS}
@@ -37,12 +36,6 @@ if(BUILD_GUI)
         FreeCADGui
     )
 
-    if (MSVC AND NOT BUILD_QT5)
-        list(APPEND FreeCAD_LIBS
-            ${QT_QTMAIN_LIBRARY}
-        )
-    endif()
-
     if(NOT BUILD_DYNAMIC_LINK_PYTHON)
         # executables have to be linked against python libraries,
         # because extension modules are not.
@@ -53,6 +46,9 @@ if(BUILD_GUI)
 
     add_executable(FreeCADMain WIN32 ${FreeCAD_SRCS})
     target_link_libraries(FreeCADMain ${FreeCAD_LIBS})
+    if (FREECAD_WARN_ERROR)
+        target_compile_warn_error(FreeCADMain)
+    endif()
 
     SET_BIN_DIR(FreeCADMain FreeCAD)
 
@@ -63,7 +59,7 @@ if(BUILD_GUI)
         )
     elseif(APPLE AND NOT BUILD_WITH_CONDA)
         INSTALL(TARGETS FreeCADMain
-	    RUNTIME DESTINATION MacOS
+        RUNTIME DESTINATION MacOS
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     else()
@@ -84,19 +80,9 @@ add_executable(FreeCADMainCmd ${FreeCADMainCmd_SRCS})
 
 SET(FreeCADMainCmd_LIBS
     FreeCADApp
+    ${QtCore_LIBRARIES}
+    ${QtXml_LIBRARIES}
 )
-
-if (BUILD_QT5)
-    list(APPEND FreeCADMainCmd_LIBS
-        ${Qt5Core_LIBRARIES}
-        ${Qt5Xml_LIBRARIES}
-    )
-else()
-    list(APPEND FreeCADMainCmd_LIBS
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTXML_LIBRARY}
-    )
-endif()
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     # executables have to be linked against python libraries,
@@ -109,6 +95,9 @@ endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
 target_link_libraries(FreeCADMainCmd
     ${FreeCADMainCmd_LIBS}
 )
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADMainCmd)
+endif()
 
 SET_BIN_DIR(FreeCADMainCmd FreeCADCmd)
 
@@ -137,6 +126,9 @@ SET(FreeCADMainPy_SRCS
 add_library(FreeCADMainPy SHARED ${FreeCADMainPy_SRCS})
 
 target_link_libraries(FreeCADMainPy FreeCADApp)
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADMainPy)
+endif()
 
 SET_BIN_DIR(FreeCADMainPy FreeCAD)
 SET_PYTHON_PREFIX_SUFFIX(FreeCADMainPy)
@@ -162,6 +154,9 @@ if(BUILD_GUI)
     add_library(FreeCADGuiPy SHARED ${FreeCADGuiPy_SRCS})
 
     target_link_libraries(FreeCADGuiPy FreeCADGui)
+    if (FREECAD_WARN_ERROR)
+        target_compile_warn_error(FreeCADGuiPy)
+    endif()
 
     SET_BIN_DIR(FreeCADGuiPy FreeCADGui)
     SET_PYTHON_PREFIX_SUFFIX(FreeCADGuiPy)

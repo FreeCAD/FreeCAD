@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "TaskThicknessParameters.h"
 #include "ViewProviderThickness.h"
 
@@ -39,6 +36,11 @@ const std::string & ViewProviderThickness::featureName() const {
     return name;
 }
 
+void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit thickness"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
 
 TaskDlgFeatureParameters *ViewProviderThickness::getEditDialog() {
     return new TaskDlgThicknessParameters (this);

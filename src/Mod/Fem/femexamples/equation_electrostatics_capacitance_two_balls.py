@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import sys
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
@@ -42,12 +43,14 @@ def get_information():
         "constraints": ["electrostatic potential"],
         "solvers": ["elmer"],
         "material": "fluid",
-        "equation": "electrostatic"
+        "equations": ["electrostatic"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_electrostatics_capacitance_two_balls import setup
@@ -55,11 +58,12 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
+https://forum.freecad.org/viewtopic.php?f=18&t=41488&start=90#p412047
 
 Electrostatics equation in FreeCAD FEM-Elmer
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -99,6 +103,10 @@ def setup(doc=None, solvertype="elmer"):
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
+    if FreeCAD.GuiUp:
+        import FemGui
+
+        FemGui.setActiveAnalysis(analysis)
 
     # solver
     if solvertype == "elmer":
@@ -109,73 +117,89 @@ def setup(doc=None, solvertype="elmer"):
         eq_electrostatic.CalculateElectricField = True
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     analysis.addObject(solver_obj)
 
     # material
-    material_obj = ObjectsFem.makeMaterialFluid(doc, "FemMaterial")
+    material_obj = ObjectsFem.makeMaterialFluid(doc, "Air")
     mat = material_obj.Material
-    mat["Name"] = "Air-Generic"
-    mat["Density"] = "1.20 kg/m^3"
-    mat["KinematicViscosity"] = "15.11 mm^2/s"
-    mat["VolumetricThermalExpansionCoefficient"] = "0.00 mm/m/K"
-    mat["ThermalConductivity"] = "0.03 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.0034/K"
-    mat["SpecificHeat"] = "1.00 J/kg/K"
-    mat["RelativePermittivity"] = "1.00"
+    mat["Name"] = "Air"
+    mat["Density"] = "1.204 kg/m^3"
+    mat["ThermalConductivity"] = "0.02587 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "3.43e-3 1/K"
+    mat["SpecificHeat"] = "1.01 kJ/kg/K"
+    mat["ElectricalConductivity"] = "1e-12 S/m"
+    mat["RelativePermeability"] = "1.0"
+    mat["RelativePermittivity"] = "1.00059"
     material_obj.Material = mat
+    material_obj.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj)
 
     # constraint potential 1st
-    name_pot1 = "ConstraintElectrostaticPotential001"
+    name_pot1 = "ElectrostaticPotential1"
     con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face1")]
     con_elect_pot1.ElectricInfinity = True
+    con_elect_pot1.PotentialEnabled = False
     analysis.addObject(con_elect_pot1)
 
     # constraint potential 2nd
-    # TODO: use a better name for the constraint, but unit test needs to be changed
-    name_pot2 = "ConstraintElectrostaticPotential001"
+    name_pot2 = "ElectrostaticPotential2"
     con_elect_pot2 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot2)
     con_elect_pot2.References = [(geom_obj, "Face2")]
     con_elect_pot2.CapacitanceBody = 1
     con_elect_pot2.CapacitanceBodyEnabled = True
+    con_elect_pot2.PotentialEnabled = False
     analysis.addObject(con_elect_pot2)
 
     # constraint potential 3rd
-    # TODO: use a better name for the constraint, but unit test needs to be changed
-    name_pot3 = "ConstraintElectrostaticPotential002"
+    name_pot3 = "ElectrostaticPotential3"
     con_elect_pot3 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot3)
     con_elect_pot3.References = [(geom_obj, "Face3")]
     con_elect_pot3.CapacitanceBody = 2
     con_elect_pot3.CapacitanceBodyEnabled = True
+    con_elect_pot3.PotentialEnabled = False
     analysis.addObject(con_elect_pot3)
 
-    # constant vacuum permittivity
-    const_vacperm = ObjectsFem.makeConstantVacuumPermittivity(doc, "ConstantVacuumPermittivity")
-    const_vacperm.VacuumPermittivity = "1 F/m"
-    analysis.addObject(const_vacperm)
-
     # mesh
-    from .meshes.mesh_capacitance_two_balls_tetra10 import create_nodes, create_elements
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.CharacteristicLengthMax = "600 mm"
+    femmesh_obj.ViewObject.Visibility = False
 
     # mesh_region
     mesh_region = ObjectsFem.makeMeshRegion(doc, femmesh_obj, name="MeshRegion")
-    mesh_region.CharacteristicLength = "300 mm"
+    mesh_region.CharacteristicLength = "250 mm"
     mesh_region.References = [(geom_obj, "Face2"), (geom_obj, "Face3")]
+    mesh_region.ViewObject.Visibility = False
+
+    # generate the mesh
+    from femmesh import gmshtools
+
+    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
+    try:
+        error = gmsh_mesh.create_mesh()
+    except Exception:
+        error = sys.exc_info()[1]
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
+    if error:
+        # try to create from existing rough mesh
+        from .meshes.mesh_capacitance_two_balls_tetra10 import (
+            create_nodes,
+            create_elements,
+        )
+
+        fem_mesh = Fem.FemMesh()
+        control = create_nodes(fem_mesh)
+        if not control:
+            FreeCAD.Console.PrintError("Error on creating nodes.\n")
+        control = create_elements(fem_mesh)
+        if not control:
+            FreeCAD.Console.PrintError("Error on creating elements.\n")
+        femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()
     return doc

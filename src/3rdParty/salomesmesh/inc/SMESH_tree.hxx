@@ -265,14 +265,14 @@ int SMESH_Tree<BND_BOX,NB_CHILDREN>::getHeight(const bool full) const
   if ( isLeaf() )
     return 1;
 
-  int heigth = 0;
+  int height = 0;
   for (int i = 0; i<NB_CHILDREN; i++)
   {
     int h = myChildren[i]->getHeight( false );
-    if ( h > heigth )
-      heigth = h;
+    if ( h > height)
+        height = h;
   }
-  return heigth + 1;
+  return height + 1;
 }
 
 #endif

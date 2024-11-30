@@ -23,20 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Precision.hxx>
-#include <TopoDS.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#endif
-
 #include "FemConstraintDisplacement.h"
+
 
 using namespace Fem;
 
@@ -51,68 +41,168 @@ ConstraintDisplacement::ConstraintDisplacement()
     // Displacement or Rotation not 0.0, prescribed displacement, Free and Fix should be False
 
     // x displacement
-    ADD_PROPERTY(xFix,(0));
-    ADD_PROPERTY(xFree,(1));
-    ADD_PROPERTY(xDisplacement,(0.0));
+    ADD_PROPERTY_TYPE(xFree,
+                      (true),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Use free translation in X direction");
+    ADD_PROPERTY_TYPE(xDisplacement,
+                      (0.0),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Translation in local X direction");
+    ADD_PROPERTY_TYPE(hasXFormula,
+                      (false),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Define translation in X direction as a formula");
+    ADD_PROPERTY_TYPE(xDisplacementFormula,
+                      (""),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Formula for translation in X direction");
 
     // y displacement
-    ADD_PROPERTY(yFix,(0));
-    ADD_PROPERTY(yFree,(1));
-    ADD_PROPERTY(yDisplacement,(0.0));
+    ADD_PROPERTY_TYPE(yFree,
+                      (true),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Use free translation in Y direction");
+    ADD_PROPERTY_TYPE(yDisplacement,
+                      (0.0),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Translation in local Y direction");
+    ADD_PROPERTY_TYPE(hasYFormula,
+                      (false),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Define translation in Y direction as a formula");
+    ADD_PROPERTY_TYPE(yDisplacementFormula,
+                      (""),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Formula for translation in Y direction");
 
     // z displacement
-    ADD_PROPERTY(zFix,(0));
-    ADD_PROPERTY(zFree,(1));
-    ADD_PROPERTY(zDisplacement,(0.0));
+    ADD_PROPERTY_TYPE(zFree,
+                      (true),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Use free translation in Z direction");
+    ADD_PROPERTY_TYPE(zDisplacement,
+                      (0.0),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Translation in local Z direction");
+    ADD_PROPERTY_TYPE(hasZFormula,
+                      (false),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Define translation in Z direction as a formula");
+    ADD_PROPERTY_TYPE(zDisplacementFormula,
+                      (""),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Formula for translation in Z direction");
+
+    // flow surface force
+    ADD_PROPERTY_TYPE(useFlowSurfaceForce,
+                      (false),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Use flow surface force");
 
     // x rotation
-    ADD_PROPERTY(rotxFix,(0));
-    ADD_PROPERTY(rotxFree,(1));
-    ADD_PROPERTY(xRotation,(0.0));
+    ADD_PROPERTY_TYPE(rotxFree,
+                      (true),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Use free rotation in X direction");
+    ADD_PROPERTY_TYPE(xRotation,
+                      (0.0),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Rotation in local X direction");
 
     // y rotation
-    ADD_PROPERTY(rotyFix,(0));
-    ADD_PROPERTY(rotyFree,(1));
-    ADD_PROPERTY(yRotation,(0.0));
+    ADD_PROPERTY_TYPE(rotyFree,
+                      (true),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Use free rotation in Y direction");
+    ADD_PROPERTY_TYPE(yRotation,
+                      (0.0),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Rotation in local Y direction");
 
     // z rotation
-    ADD_PROPERTY(rotzFix,(0));
-    ADD_PROPERTY(rotzFree,(1));
-    ADD_PROPERTY(zRotation,(0.0));
-
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                      "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                                                             "Normals where symbols are drawn");
-    Points.setValues(std::vector<Base::Vector3d>());
-    Normals.setValues(std::vector<Base::Vector3d>());
+    ADD_PROPERTY_TYPE(rotzFree,
+                      (true),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Use free rotation in Z direction");
+    ADD_PROPERTY_TYPE(zRotation,
+                      (0.0),
+                      "ConstraintDisplacement",
+                      App::Prop_None,
+                      "Rotation in local Z direction");
 }
 
-App::DocumentObjectExecReturn *ConstraintDisplacement::execute(void)
+App::DocumentObjectExecReturn* ConstraintDisplacement::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintDisplacement::getViewProviderName(void) const
+const char* ConstraintDisplacement::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintDisplacement";
 }
 
+void ConstraintDisplacement::handleChangedPropertyType(Base::XMLReader& reader,
+                                                       const char* TypeName,
+                                                       App::Property* prop)
+{
+    // properties _Displacement had App::PropertyFloat and were changed to App::PropertyDistance
+    if (prop == &xDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat xDisplacementProperty;
+        // restore the PropertyFloat to be able to set its value
+        xDisplacementProperty.Restore(reader);
+        xDisplacement.setValue(xDisplacementProperty.getValue());
+    }
+    else if (prop == &yDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat yDisplacementProperty;
+        yDisplacementProperty.Restore(reader);
+        yDisplacement.setValue(yDisplacementProperty.getValue());
+    }
+    else if (prop == &zDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat zDisplacementProperty;
+        zDisplacementProperty.Restore(reader);
+        zDisplacement.setValue(zDisplacementProperty.getValue());
+    }
+    // properties _Displacement had App::PropertyFloat and were changed to App::PropertyAngle
+    else if (prop == &xRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat xRotationProperty;
+        xRotationProperty.Restore(reader);
+        xRotation.setValue(xRotationProperty.getValue());
+    }
+    else if (prop == &yRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat yRotationProperty;
+        yRotationProperty.Restore(reader);
+        yRotation.setValue(yRotationProperty.getValue());
+    }
+    else if (prop == &zRotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat zRotationProperty;
+        zRotationProperty.Restore(reader);
+        zRotation.setValue(zRotationProperty.getValue());
+    }
+    else {
+        Constraint::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
 void ConstraintDisplacement::onChanged(const App::Property* prop)
 {
-    // Note: If we call this at the end, then the arrows are not oriented correctly initially
-    // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
-
-    if (prop == &References) {
-        std::vector<Base::Vector3d> points;
-        std::vector<Base::Vector3d> normals;
-        int scale = 1; //OvG: Enforce use of scale
-        if (getPoints(points, normals, &scale)) {
-            Points.setValues(points);
-            Normals.setValues(normals);
-            Scale.setValue(scale); //OvG: Scale
-            Points.touch(); // This triggers ViewProvider::updateData()
-        }
-    }
 }

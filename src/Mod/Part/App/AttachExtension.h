@@ -27,33 +27,30 @@
 #ifndef PARTATTACHABLEOBJECT_H
 #define PARTATTACHABLEOBJECT_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
 #include <App/DocumentObjectExtension.h>
-#include <Base/Vector3D.h>
-#include <Base/Placement.h>
+#include <App/ExtensionPython.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <Base/Exception.h>
+#include <Base/Placement.h>
 
-#include "PartFeature.h"
 #include "Attacher.h"
+#include "PartFeature.h"
 
-#include <QString>
-
-#include <gp_Vec.hxx>
 
 namespace Part
 {
 
-class PartExport AttachEngineException : public Base::Exception
+class PartExport AttachEngineException: public Base::Exception
 {
 public:
-   /// Construction
-   AttachEngineException();
-   AttachEngineException(const char * sMessage);
-   AttachEngineException(const std::string& sMessage);
-   /// Destruction
-   virtual ~AttachEngineException() throw() {}
+    /// Construction
+    AttachEngineException();
+    explicit AttachEngineException(const char* sMessage);
+    explicit AttachEngineException(const std::string& sMessage);
+    /// Destruction
+    ~AttachEngineException() throw() override
+    {}
 };
 
 /**
@@ -61,12 +58,13 @@ public:
  * that should be attachable. It includes the required properties, and
  * shortcuts for accessing the attachment math class.
  */
-class PartExport AttachExtension : public App::DocumentObjectExtension
+class PartExport AttachExtension: public App::DocumentObjectExtension
 {
-    EXTENSION_PROPERTY_HEADER(Part::AttachableObject);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::AttachableObject);
+
 public:
     AttachExtension();
-    virtual ~AttachExtension();
+    ~AttachExtension() override;
 
     /**
      * @brief setAttacher sets the AttachEngine object. The class takes the
@@ -74,7 +72,7 @@ public:
      * destroyed, or when a new attacher is set. The default attacher is AttachEngine3D.
      * @param attacher. AttachableObject takes ownership and will delete it eventually.
      */
-    virtual void setAttacher(Attacher::AttachEngine* attacher);
+    virtual void setAttacher(Attacher::AttachEngine* attacher, bool base = false);
 
     /**
      * @brief changeAttacherType
@@ -83,58 +81,86 @@ public:
      * @return true if attacher was changed. false if attacher is already of the
      * type requested. Throws if invalid type is supplied.
      */
-    bool changeAttacherType(const char* typeName);
+    bool changeAttacherType(const char* typeName, bool base = false);
 
-    Attacher::AttachEngine &attacher(void) const {if(!_attacher) throw AttachEngineException("AttachableObject: no attacher is set."); return *_attacher;}
+    Attacher::AttachEngine& attacher(bool base = false) const;
 
-
-    App::PropertyString         AttacherType;
-    App::PropertyLinkSubList    Support;
-    App::PropertyEnumeration    MapMode; //see AttachEngine::eMapMode
-    App::PropertyBool           MapReversed; //inverts Z and X internal axes
-    App::PropertyPlacement      AttachmentOffset;
+    App::PropertyString AttacherType;
+    App::PropertyEnumeration AttacherEngine;
+    App::PropertyLinkSubList AttachmentSupport;
+    App::PropertyEnumeration MapMode;  // see AttachEngine::eMapMode
+    App::PropertyBool MapReversed;     // inverts Z and X internal axes
+    App::PropertyPlacement AttachmentOffset;
 
     /**
-      * @brief MapPathParameter is a parameter value for mmNormalToPath (the
-      * sketch will be mapped normal to a curve at point specified by parameter
-      * (from 0.0 to 1.0, from start to end) )
-      */
+     * @brief MapPathParameter is a parameter value for mmNormalToPath (the
+     * sketch will be mapped normal to a curve at point specified by parameter
+     * (from 0.0 to 1.0, from start to end) )
+     */
     App::PropertyFloat MapPathParameter;
 
     /** calculate and update the Placement property based on the Support, and
-      * mode. Can throw FreeCAD and OCC exceptions. Returns true if attached,
-      * false if not, throws if attachment failed.
-      */
-    virtual bool positionBySupport(void);
+     * mode. Can throw FreeCAD and OCC exceptions. Returns true if attached,
+     * false if not, throws if attachment failed.
+     */
+    virtual bool positionBySupport();
 
     /** Return whether this attacher is active
      */
     bool isAttacherActive() const;
 
     virtual bool isTouched_Mapping()
-    {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/}
+    {
+        return true; /*support.isTouched isn't true when linked objects are changed... why?..*/
+    }
 
-    virtual short int extensionMustExecute(void);
-    virtual App::DocumentObjectExecReturn *extensionExecute(void);
-    virtual PyObject* getExtensionPyObject(void);
-    virtual void onExtendedDocumentRestored();
+    short int extensionMustExecute() override;
+    App::DocumentObjectExecReturn* extensionExecute() override;
+    PyObject* getExtensionPyObject() override;
+    void onExtendedDocumentRestored() override;
+
+    struct Properties
+    {
+        App::PropertyString* attacherType = nullptr;
+        App::PropertyLinkSubList* attachment = nullptr;
+        App::PropertyEnumeration* mapMode = nullptr;
+        App::PropertyBool* mapReversed = nullptr;
+        App::PropertyFloat* mapPathParameter = nullptr;
+        bool matchProperty(const App::Property* prop) const
+        {
+            return prop == attachment || prop == mapMode || prop == mapReversed
+                || prop == mapPathParameter;
+        }
+    };
+    Properties getProperties(bool base) const;
+    Properties getInitedProperties(bool base);
 
 protected:
-    virtual void extensionOnChanged(const App::Property* /*prop*/);
-    virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
-    
+    void extensionOnChanged(const App::Property* /*prop*/) override;
+    virtual bool extensionHandleChangedPropertyName(Base::XMLReader& reader,
+                                                    const char* TypeName,
+                                                    const char* PropName) override;
+
     App::PropertyPlacement& getPlacement() const;
+    void initBase(bool force);
 
 public:
-    void updateAttacherVals();
+    void updateAttacherVals(bool base = false) const;
+    void updatePropertyStatus(bool attached, bool base = false);
 
 private:
-    Attacher::AttachEngine* _attacher;
+    struct _Properties: Properties
+    {
+        mutable std::unique_ptr<Attacher::AttachEngine> attacher;
+    };
+    _Properties _props;
+    _Properties _baseProps;
+
     mutable int _active = -1;
 };
 
 
-typedef App::ExtensionPythonT<AttachExtension> AttachExtensionPython;
+using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
 
 } // namespace Part
 

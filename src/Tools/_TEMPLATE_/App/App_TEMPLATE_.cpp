@@ -23,37 +23,41 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
+#include <Python.h>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
 
-namespace _TEMPLATE_ {
-class Module : public Py::ExtensionModule<Module>
+namespace _TEMPLATE_
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("_TEMPLATE_")
+    Module()
+        : Py::ExtensionModule<Module>("_TEMPLATE_")
     {
-        initialize("This module is the _TEMPLATE_ module."); // register with Python
+        initialize("This module is the _TEMPLATE_ module.");  // register with Python
     }
 
-    virtual ~Module() {}
+    virtual ~Module()
+    {}
 
 private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 
-} // namespace _TEMPLATE_
+}  // namespace _TEMPLATE_
 
 
 /* Python entry */

@@ -35,14 +35,14 @@ namespace Gui
  * View provider associated with an App::OriginFeature.
  */
 class GuiExport ViewProviderOriginFeature: public ViewProviderGeometryObject {
-    PROPERTY_HEADER(Gui::ViewProviderOriginFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOriginFeature);
 
 public:
     /// The display size of the feature
     App::PropertyFloat  Size;
 
     ViewProviderOriginFeature ();
-    virtual ~ViewProviderOriginFeature ();
+    ~ViewProviderOriginFeature () override;
 
     /// Get point derived classes will add their specific stuff
     SoSeparator * getOriginFeatureRoot () { return pOriginFeatureRoot; }
@@ -50,22 +50,22 @@ public:
     /// Get pointer to the text label associated with the feature
     SoAsciiText * getLabel () { return pLabel; }
 
-    virtual void attach(App::DocumentObject *);
-    virtual void updateData(const App::Property *);
-    virtual std::vector<std::string> getDisplayModes () const;
-    virtual void setDisplayMode (const char* ModeName);
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property *) override;
+    std::vector<std::string> getDisplayModes () const override;
+    void setDisplayMode (const char* ModeName) override;
 
     /// @name Suppress ViewProviderGeometryObject's behaviour
     ///@{
-    virtual bool setEdit ( int )
+    bool setEdit ( int ) override
         { return false; }
-    virtual void unsetEdit ( int )
+    void unsetEdit ( int ) override
         { }
     ///@}
 
 protected:
-    virtual void onChanged ( const App::Property* prop );
-    virtual bool onDelete ( const std::vector<std::string> & );
+    void onChanged ( const App::Property* prop ) override;
+    bool onDelete ( const std::vector<std::string> & ) override;
 protected:
     SoSeparator    * pOriginFeatureRoot;
     SoScale        * pScale;

@@ -19,13 +19,18 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
+
 #include "PreCompiled.h"
-#include <boost/algorithm/string/predicate.hpp>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoCacheElement.h>
+
+#ifndef _PreComp_
+# include <boost/algorithm/string/predicate.hpp>
+# include <Inventor/elements/SoCacheElement.h>
+# include <Inventor/misc/SoState.h>
+#endif
+
+#include "SoFCSelectionContext.h"
 #include "SoFCUnifiedSelection.h"
-#include "Selection.h"
+
 
 using namespace Gui;
 
@@ -67,7 +72,7 @@ bool SoFCSelectionContext::removeIndex(int index) {
 }
 
 int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output,
-        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *)
+        SoFCSelectionContextBasePtr input, SoNode *)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContext>(input);
     if(!ctx)
@@ -165,7 +170,7 @@ bool SoFCSelectionContextEx::applyColor(int idx, std::vector<uint32_t> &packedCo
 }
 
 bool SoFCSelectionContextEx::isSingleColor(uint32_t &color, bool &hasTransparency) {
-    if(colors.size() && colors.begin()->first<0) {
+    if(!colors.empty() && colors.begin()->first<0) {
         color = packColor(colors.begin()->second,hasTransparency);
         return colors.size()==1;
     }
@@ -173,11 +178,13 @@ bool SoFCSelectionContextEx::isSingleColor(uint32_t &color, bool &hasTransparenc
 }
 
 int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &output,
-        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node)
+        SoFCSelectionContextBasePtr input, SoNode *node)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContextEx>(input);
+    SoFCSelectionRoot* selectionNode = dynamic_cast<SoFCSelectionRoot*>(node);
+
     if(!ctx) {
-        if(node && node->hasColorOverride()) {
+        if(selectionNode && selectionNode->hasColorOverride()) {
             if(!status)
                 status = 2;
             else if(status == 1)
@@ -220,7 +227,7 @@ int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &outpu
         ret->colors.insert(v);
     }
 
-    if(node && node->hasColorOverride()) {
+    if(selectionNode && selectionNode->hasColorOverride()) {
         if(!status)
             status = 2;
         else if(status == 1)
@@ -232,14 +239,10 @@ int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &outpu
 ///////////////////////////////////////////////////////////////////////
 
 SoFCSelectionCounter::SoFCSelectionCounter()
-    :counter(std::make_shared<int>(0))
-    ,hasSelection(false)
-    ,hasPreselection(false)
+  : counter(std::make_shared<int>(0))
 {}
 
-
-SoFCSelectionCounter::~SoFCSelectionCounter()
-{}
+SoFCSelectionCounter::~SoFCSelectionCounter() = default;
 
 
 bool SoFCSelectionCounter::checkRenderCache(SoState *state) {

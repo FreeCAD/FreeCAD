@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ShapeFix_ShapeTolerancePy"
+      PythonName="Part.ShapeFix.ShapeTolerance"
+      Twin="ShapeFix_ShapeTolerance"
+      TwinPointer="ShapeFix_ShapeTolerance"
+      Include="ShapeFix_ShapeTolerance.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Modifies tolerances of sub-shapes (vertices, edges, faces)</UserDocu>
+    </Documentation>
+    <Methode Name="limitTolerance">
+      <Documentation>
+        <UserDocu>limitTolerance(shape, tmin, [tmax=0, ShapeEnum=SHAPE])</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setTolerance">
+      <Documentation>
+        <UserDocu>setTolerance(shape, precision, [ShapeEnum=SHAPE])</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

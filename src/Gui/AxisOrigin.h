@@ -93,12 +93,12 @@ public:
     bool getDetailPath(const char *subname, SoFullPath *pPath, SoDetail *&det) const;
 
 private:
-    float size;
-    float pSize;
-    float dist;
-    float scale;
-    float lineSize;
-    float pointSize;
+    float size = 6;
+    float pSize = 4;
+    float dist = 2;
+    float scale = 1;
+    float lineSize = 2;
+    float pointSize = 4;
     std::map<std::string, std::string> labels;
     CoinPtr<SoGroup> node;
     std::map<std::string, CoinPtr<SoNode> > nodeMap;

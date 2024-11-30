@@ -28,40 +28,41 @@
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools
 # @{
 import math
 import pivy.coin as coin
 import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
+import PySide.QtWidgets as QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftguitools.gui_trackers as trackers
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_edit_draft_objects as edit_draft
-import draftguitools.gui_edit_arch_objects as edit_arch
-import draftguitools.gui_edit_part_objects as edit_part
-import draftguitools.gui_edit_sketcher_objects as edit_sketcher
-
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
+from draftguitools import gui_base_original
+from draftguitools import gui_edit_arch_objects as edit_arch
+from draftguitools import gui_edit_draft_objects as edit_draft
+from draftguitools import gui_edit_part_objects as edit_part
+from draftguitools import gui_edit_sketcher_objects as edit_sketcher
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+
 
 COLORS = {
-    "default": Gui.draftToolBar.getDefaultColor("snap"),
-    "black":  (0., 0., 0.),
-    "white":  (1., 1., 1.),
-    "grey":   (.5, .5, .5),
-    "red":    (1., 0., 0.),
-    "green":  (0., 1., 0.),
-    "blue":   (0., 0., 1.),
-    "yellow": (1., 1., 0.),
-    "cyan":   (0., 1., 1.),
+    "default": utils.get_rgba_tuple(params.get_param("snapcolor"))[:3],
+    "black":   (0., 0., 0.),
+    "white":   (1., 1., 1.),
+    "grey":    (.5, .5, .5),
+    "red":     (1., 0., 0.),
+    "green":   (0., 1., 0.),
+    "blue":    (0., 0., 1.),
+    "yellow":  (1., 1., 0.),
+    "cyan":    (0., 1., 1.),
     "magenta": (1., 0., 1.)
 }
 
@@ -91,29 +92,13 @@ class Edit(gui_base_original.Modifier):
     Task panel (Draft Toolbar)
     ----------
     self.ui = Gui.draftToolBar
-    TODO: since we introduced context menu for interacting
-          with editTrackers, point 2 should become obsolete,
-          because not consistent with multi-object editing.
 
-    Draft_Edit uses taskpanel in 3 ways:
+    Draft_Edit uses the taskpanel in 2 ways:
 
-    1 - when waiting for user to select an object
-        calling self.ui.selectUi()
+    1 - the user can select select an object and close the operation
+        self.ui.editUi()
 
-    2 - when Trackers are displayed and user must click one, a
-        custom task panel is displayed depending on edited
-        object:
-        self.ui.editUi()            -> the default one
-        self.ui.editUi("Wire")      -> line and wire editing
-        self.ui.editUi("BezCurve")  -> BezCurve editing
-        self.ui.editUi("Circle")    -> circle editing
-        self.ui.editUi("Arc")       -> arc editing
-        When Draft_Edit evaluate mouse click, depending if some
-        ui button have been pressed (.isChecked()), decide if
-        the action is a startEditing or AddPoint or DelPoint or
-        change BezCurve Continuity, ecc.
-
-    3 - when in editing, lineUi support clicking destination point
+    2 - when editing, lineUi support clicking destination point
         by self.startEditing
         self.ui.lineUi()
 
@@ -122,7 +107,6 @@ class Edit(gui_base_original.Modifier):
     If the tool recognize mouse click as an attempt to startEditing,
     using soRayPickAction, it identifies the selected editTracker and
     start editing it. Here is where "looo" code was very useful.
-
 
     Editing preview
     ---------------
@@ -145,7 +129,7 @@ class Edit(gui_base_original.Modifier):
 
     Preferences
     -----------
-    maxObjects: Int
+    max_objects: Int
         set by "DraftEditMaxObjects" in user preferences
         The max number of FreeCAD objects the tool is
         allowed to edit at the same time.
@@ -230,11 +214,10 @@ class Edit(gui_base_original.Modifier):
         # only used by Arch Structure
         self.objs_formats = {}
 
-        # settings
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        self.maxObjects = param.GetInt("DraftEditMaxObjects", 5)
-        self.pick_radius = param.GetInt("DraftEditPickRadius", 20)
-        
+        # settings (get updated in Activated)
+        self.max_objects = 5
+        self.pick_radius = 20
+
         self.alt_edit_mode = 0 # default edit mode for objects
 
         # preview
@@ -273,7 +256,7 @@ class Edit(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Edit',
                 'Accel': "D, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object.\nPress E or ALT+LeftClick to display context menu\non supported nodes and on supported objects.")
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object.\nPress E or ALT + Left Click to display context menu\non supported nodes and on supported objects.")
                 }
 
 
@@ -295,12 +278,14 @@ class Edit(gui_base_original.Modifier):
 
         self.ui = Gui.draftToolBar
         self.view = gui_utils.get_3d_view()
+        self.max_objects = params.get_param("DraftEditMaxObjects")
+        self.pick_radius = params.get_param("DraftEditPickRadius")
 
         if Gui.Selection.getSelection():
             self.proceed()
         else:
             self.ui.selectUi(on_close_call=self.finish)
-            App.Console.PrintMessage(translate("draft", 
+            App.Console.PrintMessage(translate("draft",
                                                "Select a Draft object to edit")
                                                + "\n")
             self.register_selection_callback()
@@ -326,43 +311,32 @@ class Edit(gui_base_original.Modifier):
 
         self.register_editing_callbacks()
 
-        # TODO: align working plane when editing starts
-        # App.DraftWorkingPlane.save()
-        # self.alignWorkingPlane()
 
-
-    def numericInput(self, v, numy=None, numz=None):
+    def numericInput(self, numx, numy, numz):
         """Execute callback by the toolbar to activate the update function.
 
         This function gets called by the toolbar
         or by the mouse click and activate the update function.
         """
-        if numy:
-            v = App.Vector(v, numy, numz)
-        self.endEditing(self.obj, self.editing, v)
+        self.endEditing(self.obj, self.editing, App.Vector(numx, numy, numz))
         App.ActiveDocument.recompute()
 
 
-    def finish(self, closed=False):
+    def finish(self, cont=False):
         """Terminate Edit Tool."""
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
         self.editing = None
         self.finalizeGhost()
         Gui.Snapper.setSelectMode(False)
-        if self.obj and closed:
-            if "Closed" in self.obj.PropertiesList:
-                if not self.obj.Closed:
-                    self.obj.Closed = True
+
         if self.ui:
             self.removeTrackers()
 
         if self.edited_objects:
             self.deformat_objects_after_editing(self.edited_objects)
-        
+
         super(Edit, self).finish()
-        if Gui.Snapper.grid:
-            Gui.Snapper.grid.set()
         self.running = False
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
@@ -390,17 +364,15 @@ class Edit(gui_base_original.Modifier):
         """
         register editing callbacks (former action function)
         """
-        viewer = Gui.ActiveDocument.ActiveView.getViewer()
-        self.render_manager = viewer.getSoRenderManager()
-        view = Gui.ActiveDocument.ActiveView
+        self.render_manager = self.view.getViewer().getSoRenderManager()
         if self._keyPressedCB is None:
-            self._keyPressedCB = view.addEventCallbackPivy(
+            self._keyPressedCB = self.view.addEventCallbackPivy(
             coin.SoKeyboardEvent.getClassTypeId(), self.keyPressed)
         if self._mouseMovedCB is None:
-            self._mouseMovedCB = view.addEventCallbackPivy(
+            self._mouseMovedCB = self.view.addEventCallbackPivy(
             coin.SoLocation2Event.getClassTypeId(), self.mouseMoved)
         if self._mousePressedCB is None:
-            self._mousePressedCB = view.addEventCallbackPivy(
+            self._mousePressedCB = self.view.addEventCallbackPivy(
             coin.SoMouseButtonEvent.getClassTypeId(), self.mousePressed)
         #App.Console.PrintMessage("Draft edit callbacks registered \n")
 
@@ -408,17 +380,16 @@ class Edit(gui_base_original.Modifier):
         """
         remove callbacks used during editing if they exist
         """
-        view = Gui.ActiveDocument.ActiveView
         if self._keyPressedCB:
-            view.removeEventCallbackSWIG(coin.SoKeyboardEvent.getClassTypeId(), self._keyPressedCB)
+            self.view.removeEventCallbackSWIG(coin.SoKeyboardEvent.getClassTypeId(), self._keyPressedCB)
             self._keyPressedCB = None
             #App.Console.PrintMessage("Draft edit keyboard callback unregistered \n")
         if self._mouseMovedCB:
-            view.removeEventCallbackSWIG(coin.SoLocation2Event.getClassTypeId(), self._mouseMovedCB)
+            self.view.removeEventCallbackSWIG(coin.SoLocation2Event.getClassTypeId(), self._mouseMovedCB)
             self._mouseMovedCB = None
             #App.Console.PrintMessage("Draft edit location callback unregistered \n")
         if self._mousePressedCB:
-            view.removeEventCallbackSWIG(coin.SoMouseButtonEvent.getClassTypeId(), self._mousePressedCB)
+            self.view.removeEventCallbackSWIG(coin.SoMouseButtonEvent.getClassTypeId(), self._mousePressedCB)
             self._mousePressedCB = None
             #App.Console.PrintMessage("Draft edit mouse button callback unregistered \n")
 
@@ -435,10 +406,6 @@ class Edit(gui_base_original.Modifier):
             # App.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307:  # ESC
                 self.finish()
-            if key == 97:  # "a"
-                self.finish()
-            if key == 111:  # "o"
-                self.finish(closed=True)
             if key == 101:  # "e"
                 self.display_tracker_menu(event)
             if key == 65535 and Gui.Selection.GetSelection() is None: # BUG: delete key activate Std::Delete command at the same time!
@@ -450,7 +417,7 @@ class Edit(gui_base_original.Modifier):
         mouse button event handler, calls: startEditing, endEditing, addPoint, delPoint
         """
         event = event_callback.getEvent()
-        if (event.getState() == coin.SoMouseButtonEvent.DOWN and 
+        if (event.getState() == coin.SoMouseButtonEvent.DOWN and
             event.getButton() == event.BUTTON1
             ):#left click
             if not event.wasAltDown():
@@ -503,7 +470,8 @@ class Edit(gui_base_original.Modifier):
                                  + ": editing node number "
                                  + str(node_idx) + "\n")
 
-        self.ui.lineUi()
+        self.ui.lineUi(title=translate("draft", "Edit node"), icon="Draft_Edit")
+        self.ui.continueCmd.hide()
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
 
@@ -522,7 +490,7 @@ class Edit(gui_base_original.Modifier):
             orthoConstrain = True
         snappedPos = Gui.Snapper.snap((pos[0],pos[1]),self.node[-1], constrain=orthoConstrain)
         self.trackers[self.obj.Name][self.editing].set(snappedPos)
-        self.ui.displayPoint(snappedPos, self.node[-1])
+        self.ui.displayPoint(snappedPos, self.node[-1], mask=Gui.Snapper.affinity)
         if self.ghost:
             self.updateGhost(obj=self.obj, node_idx=self.editing, v=snappedPos)
 
@@ -540,7 +508,7 @@ class Edit(gui_base_original.Modifier):
             self.trackers[obj.Name][nodeIndex].set(v)
         self.update(obj, nodeIndex, v)
         self.alt_edit_mode = 0
-        self.ui.editUi(self.ui.lastMode)
+        self.ui.editUi()
         self.node = []
         self.editing = None
         self.showTrackers()
@@ -575,10 +543,13 @@ class Edit(gui_base_original.Modifier):
 
     def resetTrackersBezier(self, obj):
         # in future move tracker definition to DraftTrackers
-        knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
-                coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
-                coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
-        polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9    #pole
+        size = params.get_param_view("MarkerSize")
+        knotmarkers = (
+            Gui.getMarkerIndex("DIAMOND_FILLED", size),   # sharp
+            Gui.getMarkerIndex("SQUARE_FILLED", size),    # tangent
+            Gui.getMarkerIndex("HOURGLASS_FILLED", size)  # symmetric
+        )
+        polemarker = Gui.getMarkerIndex("CIRCLE_FILLED",  size)  # pole
         self.trackers[obj.Name] = []
         cont = obj.Continuity
         firstknotcont = cont[-1] if (obj.Closed and cont) else 0
@@ -598,18 +569,25 @@ class Edit(gui_base_original.Modifier):
                 index, obj.ViewObject.LineColor, marker=marker))
 
     def removeTrackers(self, obj=None):
-        """Remove Edit Trackers."""
-        if obj:
-            if obj.Name in self.trackers:
-                for t in self.trackers[obj.Name]:
-                    t.finalize()
-            self.trackers[obj.Name] = []
-        else:
-            for key in self.trackers.keys():
+        """Remove Edit Trackers.
+
+        Attributes
+        ----------
+        obj: FreeCAD object
+            Removes trackers only for given object,
+            if obj is None, removes all trackers
+        """
+        if obj is None:
+            for key in self.trackers:
                 for t in self.trackers[key]:
                     t.finalize()
             self.trackers = {'object': []}
-
+        else:
+            key = obj.Name
+            if key in self.trackers:
+                for t in self.trackers[key]:
+                    t.finalize()
+            self.trackers[key] = []
 
     def hideTrackers(self, obj=None):
         """Hide Edit Trackers.
@@ -653,7 +631,7 @@ class Edit(gui_base_original.Modifier):
         self.current_editing_object_gui_tools = self.get_obj_gui_tools(obj)
         if self.current_editing_object_gui_tools:
             self.ghost = self.current_editing_object_gui_tools.init_preview_object(obj)
-        
+
     def updateGhost(self, obj, node_idx, v):
         self.ghost.on()
 
@@ -675,7 +653,7 @@ class Edit(gui_base_original.Modifier):
     # ------------------------------------------------------------------------
 
     def display_tracker_menu(self, event):
-        self.tracker_menu = QtGui.QMenu()
+        self.tracker_menu = QtWidgets.QMenu()
         actions = None
 
         if self.overNode:
@@ -721,7 +699,7 @@ class Edit(gui_base_original.Modifier):
 
 
     # -------------------------------------------------------------------------
-    # EDIT OBJECT TOOLS 
+    # EDIT OBJECT TOOLS
     #
     # This section contains the code to retrieve the object points and update them
     #
@@ -801,16 +779,16 @@ class Edit(gui_base_original.Modifier):
 
         #to be used for app link support
 
-        for selobj in Gui.Selection.getSelectionEx('', 0): 
+        for selobj in Gui.Selection.getSelectionEx('', 0):
     	    for sub in selobj.SubElementNames:
                 obj = selobj.Object
                 obj_matrix = selobj.Object.getSubObject(sub, retType=4)
         """
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
-        if len(selection) > self.maxObjects:
+        if len(selection) > self.max_objects:
             _err = translate("draft", "Too many objects selected, max number set to:")
-            App.Console.PrintMessage(_err + " " + str(self.maxObjects) + "\n")
+            App.Console.PrintMessage(_err + " " + str(self.max_objects) + "\n")
             return None
 
         for obj in selection:
@@ -830,12 +808,15 @@ class Edit(gui_base_original.Modifier):
             if obj_gui_tools:
                 self.objs_formats[obj.Name] = obj_gui_tools.get_object_style(obj)
                 obj_gui_tools.set_object_editing_style(obj)
-                
+
 
     def deformat_objects_after_editing(self, objs):
         """Restore objects style during editing mode.
         """
         for obj in objs:
+            if not obj.isAttachedToDocument():
+                # Object has been deleted.
+                continue
             obj_gui_tools = self.get_obj_gui_tools(obj)
             if obj_gui_tools:
                 obj_gui_tools.restore_object_style(obj, self.objs_formats[obj.Name])
@@ -844,7 +825,7 @@ class Edit(gui_base_original.Modifier):
     def get_specific_object_info(self, obj, pos):
         """Return info of a specific object at a given position.
         """
-        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        selobjs = self.view.getObjectsInfo((pos[0],pos[1]))
         if not selobjs:
             return
         for info in selobjs:
@@ -860,7 +841,7 @@ class Edit(gui_base_original.Modifier):
 
         If object is one of the edited objects (self.edited_objects).
         """
-        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        selobjs = self.view.getObjectsInfo((pos[0],pos[1]))
         if not selobjs:
             return
         for info in selobjs:
@@ -904,7 +885,7 @@ class Edit(gui_base_original.Modifier):
         """Get edit node from given screen position."""
         node = self.sendRay(pos)
         return node
-    
+
     def sendRay(self, mouse_pos):
         """Send a ray through the scene and return the nearest entity."""
         ray_pick = coin.SoRayPickAction(self.render_manager.getViewportRegion())
@@ -938,7 +919,7 @@ class Edit(gui_base_original.Modifier):
 
 
 class GuiToolsRepository():
-    """ This object provide a repository to collect all the specific objects 
+    """ This object provide a repository to collect all the specific objects
     editing tools.
     """
     def __init__(self):

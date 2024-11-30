@@ -23,11 +23,14 @@
 #ifndef DRAWINGGUI_QGCUSTOMSVG_H
 #define DRAWINGGUI_QGCUSTOMSVG_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QByteArray>
 #include <QGraphicsItem>
 #include <QGraphicsSvgItem>
 #include <QPointF>
-#include <QByteArray>
 #include <QSvgRenderer>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -40,18 +43,19 @@ namespace TechDrawGui
 class TechDrawGuiExport QGCustomSvg : public QGraphicsSvgItem
 {
 public:
-    explicit QGCustomSvg(void);
-    ~QGCustomSvg();
+    explicit QGCustomSvg();
+    ~QGCustomSvg() override;
 
     enum {Type = QGraphicsItem::UserType + 131};
     int type() const override { return Type;}
 
-    virtual void paint( QPainter *painter,
-                        const QStyleOptionGraphicsItem *option,
-                        QWidget *widget = nullptr ) override;
+    void paint( QPainter *painter,
+                const QStyleOptionGraphicsItem *option,
+                QWidget *widget = nullptr ) override;
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
     virtual bool load(QByteArray *svgString);
+    virtual bool load(QString filename);
 
 protected:
     QSvgRenderer *m_svgRender;

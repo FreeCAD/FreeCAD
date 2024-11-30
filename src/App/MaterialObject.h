@@ -25,36 +25,34 @@
 #define APP_MaterialObject_H
 
 #include "DocumentObject.h"
-#include "PropertyStandard.h"
 #include "FeaturePython.h"
 
 
 namespace App
 {
 
-class AppExport MaterialObject : public DocumentObject
+class AppExport MaterialObject: public DocumentObject
 {
-    PROPERTY_HEADER(App::MaterialObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::MaterialObject);
 
 public:
     /// Constructor
-    MaterialObject(void);
-    virtual ~MaterialObject();
+    MaterialObject();
 
     App::PropertyMap Material;
 
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override
+    {
         return "Gui::ViewProviderMaterialObject";
     }
-
 };
 
-typedef App::FeaturePythonT<MaterialObject> MaterialObjectPython;
+using MaterialObjectPython = App::FeaturePythonT<MaterialObject>;
 
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_MaterialObject_H
+#endif  // APP_MaterialObject_H

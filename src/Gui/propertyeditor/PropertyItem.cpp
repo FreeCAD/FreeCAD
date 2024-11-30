@@ -24,80 +24,97 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
-# include <QComboBox>
-# include <QFontDatabase>
-# include <QLayout>
-# include <QLocale>
-# include <QPixmap>
-# include <QTextStream>
-# include <QTimer>
-# include <QApplication>
-# include <QPalette>
-# include <QtGlobal>
+#include <algorithm>
+#include <iomanip>
+#include <QApplication>
+#include <QComboBox>
+#include <QFontDatabase>
+#include <QLocale>
+#include <QMessageBox>
+#include <QPalette>
+#include <QPixmap>
+#include <QTextStream>
+#include <QTimer>
+#include <QtGlobal>
+#include <QMenu>
 #endif
-
-#include <boost/algorithm/string/predicate.hpp>
-
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyUnits.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Widgets.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/Placement.h>
-#include <Gui/FileDialog.h>
-#include <Gui/DlgPropertyLink.h>
-#include <Gui/QuantitySpinBox.h>
-#include <Gui/VectorListEditor.h>
 
 #include "PropertyItem.h"
 #include "PropertyView.h"
-#include <Gui/SpinBox.h>
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Expression.h>
+#include <App/PropertyGeo.h>
+#include <App/PropertyFile.h>
+#include <App/PropertyUnits.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/DlgPropertyLink.h>
+#include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Placement.h>
+#include <Gui/QuantitySpinBox.h>
+#include <Gui/Selection.h>
+#include <Gui/SpinBox.h>
+#include <Gui/VectorListEditor.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
+// NOLINTBEGIN(cppcoreguidelines-pro-*,cppcoreguidelines-prefer-member-initializer)
 using namespace Gui::PropertyEditor;
 using namespace Gui::Dialog;
 
-Gui::PropertyEditor::PropertyItemFactory* Gui::PropertyEditor::PropertyItemFactory::_singleton = NULL;
+namespace
+{
+constexpr const int lowPrec = 2;
+constexpr const int highPrec = 16;
+
+int toPercent(float value)
+{
+    return static_cast<int>(100 * value);  // NOLINT
+}
+
+float fromPercent(int value)
+{
+    return static_cast<float>(value) / 100.0F;  // NOLINT
+}
+
+}  // namespace
 
 PropertyItemFactory& PropertyItemFactory::instance()
 {
-    if (_singleton == NULL)
-        _singleton = new PropertyItemFactory;
-    return *_singleton;
+    static PropertyItemFactory inst;
+    return inst;
 }
 
-void PropertyItemFactory::destruct ()
+PropertyItem* PropertyItemFactory::createPropertyItem(const char* sName) const
 {
-    delete _singleton;
-    _singleton = 0;
-}
-
-PropertyItem* PropertyItemFactory::createPropertyItem (const char* sName) const
-{
-    PropertyItem* w = static_cast<PropertyItem*>(Produce(sName));
-    return w;
+    return static_cast<PropertyItem*>(Produce(sName));
 }
 
 // ----------------------------------------------------
-Q_DECLARE_METATYPE(Py::Object)
+
+QVariant PropertyItemAttorney::toString(PropertyItem* item, const QVariant& value)
+{
+    return item->toString(value);
+}
+
+// ----------------------------------------------------
+
+Q_DECLARE_METATYPE(Py::Object)  // NOLINT
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
 
-PropertyItem::PropertyItem() : parentItem(0), readonly(false), cleared(false), linked(false)
+PropertyItem::PropertyItem()
+    : parentItem(nullptr)
+    , readonly(false)
+    , precision(Base::UnitsApi::getDecimals())
+    , linked(false)
+    , expanded(false)
 {
-    precision = Base::UnitsApi::getDecimals();
     setAutoApply(true);
 }
 
@@ -107,8 +124,7 @@ PropertyItem::~PropertyItem()
 }
 
 void PropertyItem::initialize()
-{
-}
+{}
 
 void PropertyItem::reset()
 {
@@ -118,47 +134,54 @@ void PropertyItem::reset()
 
 void PropertyItem::onChange()
 {
-    if(hasExpression()) {
-        for(auto child : childItems) {
-            if(child && child->hasExpression())
+    if (hasExpression()) {
+        for (auto child : std::as_const(childItems)) {
+            if (child && child->hasExpression()) {
                 child->setExpression(std::shared_ptr<App::Expression>());
+            }
         }
-        for(auto item=parentItem;item;item=item->parentItem) {
-            if(item->hasExpression())
+        for (auto item = parentItem; item; item = item->parentItem) {
+            if (item->hasExpression()) {
                 item->setExpression(std::shared_ptr<App::Expression>());
+            }
         }
     }
 }
 
 bool PropertyItem::hasAnyExpression() const
 {
-    if(ExpressionBinding::hasExpression())
+    if (ExpressionBinding::hasExpression()) {
         return true;
-    if(parentItem)
+    }
+    if (parentItem) {
         return parentItem->hasExpression();
+    }
     return false;
 }
 
 void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
 {
-    //if we have a single property we can bind it for expression handling
+    // if we have a single property we can bind it for expression handling
     if (items.size() == 1) {
-        const App::Property& p = *items.front();
+        const App::Property& prop = *items.front();
 
         try {
-            // Check for 'DocumentObject' as parent because otherwise 'ObjectIdentifier' raises an exception
-            App::DocumentObject * docObj = Base::freecad_dynamic_cast<App::DocumentObject>(p.getContainer());
-            if (docObj && !docObj->isReadOnly(&p)) {
-                App::ObjectIdentifier id(p);
+            // Check for 'DocumentObject' as parent because otherwise 'ObjectIdentifier' raises an
+            // exception
+            auto* docObj = Base::freecad_dynamic_cast<App::DocumentObject>(prop.getContainer());
+            if (docObj && !docObj->isReadOnly(&prop)) {
+                App::ObjectIdentifier id(prop);
                 std::vector<App::ObjectIdentifier> paths;
-                p.getPaths(paths);
+                prop.getPaths(paths);
 
-                //there may be no paths available in this property (for example an empty constraint list)
-                if (id.getProperty() && !paths.empty())
+                // there may be no paths available in this property (for example an empty constraint
+                // list)
+                if (id.getProperty() && !paths.empty()) {
                     bind(id);
+                }
             }
         }
-        //it may happen that setting properties is not possible
+        // it may happen that setting properties is not possible
         catch (...) {
         }
     }
@@ -171,11 +194,11 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
 void PropertyItem::updateData()
 {
     bool ro = true;
-    for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
-        it != propertyItems.end(); ++it) {
-        App::PropertyContainer* parent = (*it)->getContainer();
-        if (parent)
-            ro &= (parent->isReadOnly(*it) || (*it)->testStatus(App::Property::ReadOnly));
+    for (auto it : propertyItems) {
+        App::PropertyContainer* parent = it->getContainer();
+        if (parent) {
+            ro &= (parent->isReadOnly(it) || it->testStatus(App::Property::ReadOnly));
+        }
     }
     this->setReadOnly(ro);
 }
@@ -187,20 +210,18 @@ const std::vector<App::Property*>& PropertyItem::getPropertyData() const
 
 bool PropertyItem::hasProperty(const App::Property* prop) const
 {
-    std::vector<App::Property*>::const_iterator it = std::find(propertyItems.begin(), propertyItems.end(), prop);
-    if (it != propertyItems.end())
-        return true;
-    else
-        return false;
+    auto it = std::find(propertyItems.begin(), propertyItems.end(), prop);
+    return (it != propertyItems.end());
 }
 
-void PropertyItem::assignProperty(const App::Property*)
+void PropertyItem::assignProperty(const App::Property* prop)
 {
+    Q_UNUSED(prop)
 }
 
 bool PropertyItem::removeProperty(const App::Property* prop)
 {
-    std::vector<App::Property*>::iterator it = std::find(propertyItems.begin(), propertyItems.end(), prop);
+    auto it = std::find(propertyItems.begin(), propertyItems.end(), prop);
     if (it != propertyItems.end()) {
         propertyItems.erase(it);
     }
@@ -210,15 +231,17 @@ bool PropertyItem::removeProperty(const App::Property* prop)
 
 App::Property* PropertyItem::getFirstProperty()
 {
-    if (propertyItems.empty())
-        return 0;
+    if (propertyItems.empty()) {
+        return nullptr;
+    }
     return propertyItems.front();
 }
 
 const App::Property* PropertyItem::getFirstProperty() const
 {
-    if (propertyItems.empty())
-        return 0;
+    if (propertyItems.empty()) {
+        return nullptr;
+    }
     return propertyItems.front();
 }
 
@@ -227,17 +250,17 @@ void PropertyItem::setParent(PropertyItem* parent)
     parentItem = parent;
 }
 
-PropertyItem *PropertyItem::parent() const
+PropertyItem* PropertyItem::parent() const
 {
     return parentItem;
 }
 
-void PropertyItem::appendChild(PropertyItem *item)
+void PropertyItem::appendChild(PropertyItem* item)
 {
     childItems.append(item);
 }
 
-void PropertyItem::insertChild(int index, PropertyItem *child)
+void PropertyItem::insertChild(int index, PropertyItem* child)
 {
     childItems.insert(index, child);
 }
@@ -248,25 +271,30 @@ void PropertyItem::insertChild(int index, PropertyItem *child)
  */
 void PropertyItem::removeChildren(int from, int to)
 {
-    int count = to-from+1;
-    for (int i=0; i<count; i++) {
+    int count = to - from + 1;
+    for (int i = 0; i < count; i++) {
         PropertyItem* child = childItems.takeAt(from);
         delete child;
     }
+}
+
+void PropertyItem::moveChild(int from, int to)
+{
+    childItems.move(from, to);
 }
 
 /*!
  * \brief PropertyItem::takeChild
  * Removes the child at index row but doesn't delete it
  */
-PropertyItem *PropertyItem::takeChild(int row)
+PropertyItem* PropertyItem::takeChild(int row)
 {
     PropertyItem* child = childItems.takeAt(row);
     child->setParent(nullptr);
     return child;
 }
 
-PropertyItem *PropertyItem::child(int row)
+PropertyItem* PropertyItem::child(int row)
 {
     return childItems.value(row);
 }
@@ -284,8 +312,9 @@ int PropertyItem::columnCount() const
 void PropertyItem::setReadOnly(bool ro)
 {
     readonly = ro;
-    for (QList<PropertyItem*>::iterator it = childItems.begin(); it != childItems.end(); ++it)
-        (*it)->setReadOnly(ro);
+    for (auto it : std::as_const(childItems)) {
+        it->setReadOnly(ro);
+    }
 }
 
 bool PropertyItem::isReadOnly() const
@@ -293,11 +322,12 @@ bool PropertyItem::isReadOnly() const
     return readonly;
 }
 
-void PropertyItem::setLinked(bool l)
+void PropertyItem::setLinked(bool value)
 {
-    linked = l;
-    for (QList<PropertyItem*>::iterator it = childItems.begin(); it != childItems.end(); ++it)
-        (*it)->setLinked(l);
+    linked = value;
+    for (auto it : std::as_const(childItems)) {
+        it->setLinked(value);
+    }
 }
 
 bool PropertyItem::isLinked() const
@@ -305,12 +335,23 @@ bool PropertyItem::isLinked() const
     return linked;
 }
 
+void PropertyItem::setExpanded(bool enable)
+{
+    expanded = enable;
+}
+
+bool PropertyItem::isExpanded() const
+{
+    return expanded;
+}
+
 bool PropertyItem::testStatus(App::Property::Status pos) const
 {
     std::vector<App::Property*>::const_iterator it;
     for (it = propertyItems.begin(); it != propertyItems.end(); ++it) {
-        if ((*it)->testStatus(pos))
+        if ((*it)->testStatus(pos)) {
             return true;
+        }
     }
     return false;
 }
@@ -327,163 +368,229 @@ int PropertyItem::decimals() const
 
 QVariant PropertyItem::displayName() const
 {
-    return QVariant(displayText);
+    return {displayText};
 }
 
 QVariant PropertyItem::toolTip(const App::Property* prop) const
 {
-    QString str = QApplication::translate("App::Property",
-                                          prop->getDocumentation());
-    return QVariant(str);
+    QString str = QApplication::translate("App::Property", prop->getDocumentation());
+    return {str};
 }
 
-QVariant PropertyItem::decoration(const QVariant&) const
+QVariant PropertyItem::decoration(const QVariant& value) const
 {
-    return QVariant();
+    Q_UNUSED(value)
+    return {};
+}
+
+QString PropertyItem::asNone(const Py::Object& pyobj) const
+{
+    Q_UNUSED(pyobj)
+    return QString::fromUtf8("<None>");
+}
+
+QString PropertyItem::asString(const Py::Object& pyobj) const
+{
+    return QString::fromStdString(pyobj.as_string());
+}
+
+QString PropertyItem::asSequence(const Py::Object& pyobj) const
+{
+    std::ostringstream ss;
+    ss << '[';
+    Py::Sequence seq(pyobj);
+    bool first = true;
+    Py_ssize_t i = 0;
+    for (i = 0; i < 2 && i < seq.size(); ++i) {
+        if (first) {
+            first = false;
+        }
+        else {
+            ss << ", ";
+        }
+        ss << Py::Object(seq[i]).as_string();
+    }
+
+    if (i < seq.size()) {
+        ss << "...";
+    }
+    ss << ']';
+    return QString::fromUtf8(ss.str().c_str());
+}
+
+QString PropertyItem::asMapping(const Py::Object& pyobj) const
+{
+    std::ostringstream ss;
+    ss << '{';
+    Py::Mapping map(pyobj);
+    bool first = true;
+    auto it = map.begin();
+    for (int i = 0; i < 2 && it != map.end(); ++it, ++i) {
+        if (first) {
+            first = false;
+        }
+        else {
+            ss << ", ";
+        }
+        const auto& v = *it;
+        ss << Py::Object(v.first).as_string() << ':' << Py::Object(v.second).as_string();
+    }
+
+    if (it != map.end()) {
+        ss << "...";
+    }
+    ss << '}';
+    return QString::fromUtf8(ss.str().c_str());
+}
+
+QString PropertyItem::toString(const Py::Object& pyobj) const
+{
+    if (pyobj.isNone()) {
+        return asNone(pyobj);
+    }
+    if (pyobj.isSequence()) {
+        return asSequence(pyobj);
+    }
+    if (pyobj.isMapping()) {
+        return asMapping(pyobj);
+    }
+
+    return asString(pyobj);
 }
 
 QVariant PropertyItem::toString(const QVariant& prop) const
 {
-    if (prop != QVariant() || propertyItems.size()!=1)
+    if (prop != QVariant() || propertyItems.size() != 1) {
         return prop;
+    }
 
     std::ostringstream ss;
     Base::PyGILStateLocker lock;
     try {
-        Py::Object pyobj(propertyItems[0]->getPyObject(),true);
-        if(pyobj.isNone()) {
-            ss << "<None>";
-        }
-        else if(pyobj.isSequence()) {
-            ss << '[';
-            Py::Sequence seq(pyobj);
-            bool first = true;
-            Py_ssize_t i=0;
-            for (i=0; i<2 && i < seq.size(); ++i) {
-                if (first)
-                    first = false;
-                else
-                    ss << ", ";
-                ss << Py::Object(seq[i]).as_string();
-            }
-
-            if (i < seq.size())
-                ss << "...";
-            ss << ']';
-        }
-        else if (pyobj.isMapping()) {
-            ss << '{';
-            Py::Mapping map(pyobj);
-            bool first = true;
-            auto it = map.begin();
-            for(int i=0; i<2 && it != map.end(); ++it, ++i) {
-                if (first)
-                    first = false;
-                else
-                    ss << ", ";
-                const auto &v = *it;
-                ss << Py::Object(v.first).as_string() << ':' << Py::Object(v.second).as_string();
-            }
-
-            if (it != map.end())
-                ss << "...";
-            ss << '}';
-        }
-        else
-            ss << pyobj.as_string();
-
-    } catch (Py::Exception &) {
+        Py::Object pyobj(propertyItems[0]->getPyObject(), true);
+        return toString(pyobj);
+    }
+    catch (Py::Exception&) {
         Base::PyException e;
         ss.str("");
         ss << "ERR: " << e.what();
-    } catch (Base::Exception &e) {
+    }
+    catch (Base::Exception& e) {
         ss.str("");
         ss << "ERR: " << e.what();
-    } catch (std::exception &e) {
+    }
+    catch (std::exception& e) {
         ss.str("");
         ss << "ERR: " << e.what();
-    } catch (...) {
+    }
+    catch (...) {
         ss.str("");
         ss << "ERR!";
     }
 
-    return QVariant(QString::fromUtf8(ss.str().c_str()));
+    return {QString::fromUtf8(ss.str().c_str())};
 }
 
 QVariant PropertyItem::value(const App::Property* /*prop*/) const
 {
-    return QVariant();
+    return {};
 }
 
 void PropertyItem::setValue(const QVariant& /*value*/)
+{}
+
+QWidget* PropertyItem::createEditor(QWidget* /*parent*/,
+                                    const std::function<void()>& /*method*/) const
 {
+    return nullptr;
 }
 
-QWidget* PropertyItem::createEditor(QWidget* /*parent*/, const QObject* /*receiver*/, const char* /*method*/) const
+void PropertyItem::setEditorData(QWidget* /*editor*/, const QVariant& /*data*/) const
+{}
+
+QVariant PropertyItem::editorData(QWidget* /*editor*/) const
 {
-    return 0;
+    return {};
 }
 
-void PropertyItem::setEditorData(QWidget * /*editor*/, const QVariant& /*data*/) const
+QWidget* PropertyItem::createExpressionEditor(QWidget* parent,
+                                              const std::function<void()>& method) const
 {
-}
-
-QVariant PropertyItem::editorData(QWidget * /*editor*/) const
-{
-    return QVariant();
-}
-
-QWidget* PropertyItem::createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const
-{
-    if(!isBound())
-        return 0;
-    ExpLineEdit *le = new ExpLineEdit(parent,true);
+    if (!isBound()) {
+        return nullptr;
+    }
+    auto le = new ExpLineEdit(parent, true);
     le->setFrame(false);
     le->setReadOnly(true);
-    QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
+    QObject::connect(le, &ExpLineEdit::textChanged, method);
     le->bind(getPath());
     le->setAutoApply(autoApply());
     return le;
 }
 
-void PropertyItem::setExpressionEditorData(QWidget *editor, const QVariant& data) const
+void PropertyItem::setExpressionEditorData(QWidget* editor, const QVariant& data) const
 {
-    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
-    if(le)
+    auto le = qobject_cast<QLineEdit*>(editor);
+    if (le) {
         le->setText(data.toString());
+    }
 }
 
-QVariant PropertyItem::expressionEditorData(QWidget *editor) const
+QVariant PropertyItem::expressionEditorData(QWidget* editor) const
 {
-    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
-    if(le)
-        return QVariant(le->text());
-    return QVariant();
+    auto le = qobject_cast<QLineEdit*>(editor);
+    if (le) {
+        return {le->text()};
+    }
+    return {};
+}
+
+PropertyEditorWidget* PropertyItem::createPropertyEditorWidget(QWidget* parent) const
+{
+    auto editor = new PropertyEditorWidget(parent);
+    connect(editor, &PropertyEditorWidget::buttonClick, this, [this]() {
+        const auto& props = this->getPropertyData();
+        if (!props.empty() && props[0]->getName() && props[0]->testStatus(App::Property::UserEdit)
+            && props[0]->getContainer()) {
+            props[0]->getContainer()->editProperty(props[0]->getName());
+        }
+    });
+    return editor;
 }
 
 QString PropertyItem::propertyName() const
 {
-    if (propName.isEmpty())
+    if (propName.isEmpty()) {
         return QLatin1String(QT_TRANSLATE_NOOP("App::Property", "<empty>"));
+    }
     return propName;
 }
 
-void PropertyItem::setPropertyName(const QString& name)
+void PropertyItem::setPropertyName(const QString& name, const QString& realName)
 {
-    setObjectName(name);
+    if (realName.size()) {
+        propName = realName;
+    }
+    else {
+        propName = name;
+    }
+
+    setObjectName(propName);
+
     QString display;
     bool upper = false;
-    for (int i=0; i<name.length(); i++) {
-        if (name[i].isUpper() && !display.isEmpty()) {
+    for (auto&& i : name) {
+        if (i.isUpper() && !display.isEmpty()) {
             // if there is a sequence of capital letters do not insert spaces
             if (!upper) {
-                QChar last = display.at(display.length()-1);
-                if (!last.isSpace())
+                QChar last = display.at(display.length() - 1);
+                if (!last.isSpace()) {
                     display += QLatin1String(" ");
+                }
             }
         }
-        upper = name[i].isUpper();
-        display += name[i];
+        upper = i.isUpper();
+        display += i;
     }
 
     propName = display;
@@ -492,55 +599,55 @@ void PropertyItem::setPropertyName(const QString& name)
     displayText = str;
 }
 
-void PropertyItem::setPropertyValue(const QString& value)
+void PropertyItem::setPropertyValue(const std::string& value)
 {
     // Construct command for property assignment in one go, in case of any
     // intermediate changes caused by property change that may potentially
     // invalidate the current property array.
     std::ostringstream ss;
-    for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
-        it != propertyItems.end(); ++it) {
-        auto prop = *it;
+    for (auto prop : propertyItems) {
         App::PropertyContainer* parent = prop->getContainer();
-        if (!parent || parent->isReadOnly(prop) || prop->testStatus(App::Property::ReadOnly))
+        if (!parent || parent->isReadOnly(prop) || prop->testStatus(App::Property::ReadOnly)) {
             continue;
+        }
 
         if (parent->isDerivedFrom(App::Document::getClassTypeId())) {
-            App::Document* doc = static_cast<App::Document*>(parent);
+            auto doc = static_cast<App::Document*>(parent);
             ss << "FreeCAD.getDocument('" << doc->getName() << "').";
         }
         else if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
+            auto obj = static_cast<App::DocumentObject*>(parent);
             App::Document* doc = obj->getDocument();
-            ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('" 
+            ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('"
                << obj->getNameInDocument() << "').";
         }
         else if (parent->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = static_cast<ViewProviderDocumentObject*>(parent)->getObject();
+            App::DocumentObject* obj =
+                static_cast<ViewProviderDocumentObject*>(parent)->getObject();
             App::Document* doc = obj->getDocument();
-            ss << "FreeCADGui.getDocument('" << doc->getName() << "').getObject('" 
+            ss << "FreeCADGui.getDocument('" << doc->getName() << "').getObject('"
                << obj->getNameInDocument() << "').";
         }
         else {
             continue;
         }
 
-        ss << parent->getPropertyPrefix() << prop->getName()
-           << " = " << value.toUtf8().constData() << '\n';
+        ss << parent->getPropertyPrefix() << prop->getName() << " = " << value << '\n';
     }
 
     std::string cmd = ss.str();
-    if (cmd.empty())
+    if (cmd.empty()) {
         return;
+    }
 
     try {
         Gui::Command::runCommand(Gui::Command::App, cmd.c_str());
     }
-    catch (Base::PyException &e) {
+    catch (Base::PyException& e) {
         e.ReportException();
-        Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
+        Base::Console().Error("Stack Trace: %s\n", e.getStackTrace().c_str());
     }
-    catch (Base::Exception &e) {
+    catch (Base::Exception& e) {
         e.ReportException();
     }
     catch (...) {
@@ -548,127 +655,147 @@ void PropertyItem::setPropertyValue(const QString& value)
     }
 }
 
+void PropertyItem::setPropertyValue(const QString& value)
+{
+    setPropertyValue(value.toStdString());
+}
+
+QVariant PropertyItem::dataProperty(int role) const
+{
+    if (role == Qt::ForegroundRole && linked) {
+        return QVariant::fromValue(QColor(0x20, 0xaa, 0x20));  // NOLINT
+    }
+
+    if (role == Qt::BackgroundRole || role == Qt::ForegroundRole) {
+        if (PropertyView::showAll() && propertyItems.size() == 1
+            && propertyItems.front()->testStatus(App::Property::PropDynamic)
+            && !propertyItems.front()->testStatus(App::Property::LockDynamic)) {
+            return role == Qt::BackgroundRole
+                ? QVariant::fromValue(QColor(0xFF, 0xFF, 0x99))  // NOLINT
+                : QVariant::fromValue(QColor(0, 0, 0));
+        }
+        return {};
+    }
+    if (role == Qt::DisplayRole) {
+        return displayName();
+    }
+    // no properties set
+    if (propertyItems.empty()) {
+        return {};
+    }
+    if (role == Qt::ToolTipRole) {
+        QString type =
+            QString::fromLatin1("Type: %1\nName: %2")
+                .arg(QString::fromLatin1(propertyItems[0]->getTypeId().getName()), objectName());
+
+        QString doc = PropertyItem::toolTip(propertyItems[0]).toString();
+        if (doc.isEmpty()) {
+            doc = toolTip(propertyItems[0]).toString();
+        }
+        if (doc.size()) {
+            return type + QLatin1String("\n\n") + doc;
+        }
+        return type;
+    }
+
+    return {};
+}
+
+QVariant PropertyItem::dataValue(int role) const
+{
+    // no properties set
+    if (propertyItems.empty()) {
+        PropertyItem* parent = this->parent();
+        if (!parent || !parent->parent()) {
+            return {};
+        }
+        if (role == Qt::EditRole) {
+            return parent->property(qPrintable(objectName()));
+        }
+        if (role == Qt::DecorationRole) {
+            QVariant val = parent->property(qPrintable(objectName()));
+            return decoration(val);
+        }
+        if (role == Qt::DisplayRole) {
+            QVariant val = parent->property(qPrintable(objectName()));
+            return toString(val);
+        }
+        if (role == Qt::ForegroundRole) {
+            if (hasExpression()) {
+                return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
+            }
+            return {};
+        }
+
+        return {};
+    }
+    if (role == Qt::EditRole) {
+        return value(propertyItems[0]);
+    }
+    if (role == Qt::DecorationRole) {
+        return decoration(value(propertyItems[0]));
+    }
+    if (role == Qt::DisplayRole) {
+        return toString(value(propertyItems[0]));
+    }
+    if (role == Qt::ToolTipRole) {
+        return toolTip(propertyItems[0]);
+    }
+    if (role == Qt::ForegroundRole) {
+        if (hasExpression()) {
+            return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
+        }
+        return {};
+    }
+
+    return {};
+}
+
 QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
-        if (role == Qt::TextColorRole && linked)
-            return QVariant::fromValue(QColor(0x20,0xaa,0x20));
-
-        if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
-            if(PropertyView::showAll()
-                && propertyItems.size() == 1
-                && propertyItems.front()->testStatus(App::Property::PropDynamic)
-                && !propertyItems.front()->testStatus(App::Property::LockDynamic))
-            {
-                return role==Qt::BackgroundRole
-                    ? QVariant::fromValue(QColor(0xFF,0xFF,0x99)) 
-                    : QVariant::fromValue(QColor(0,0,0));
-            }
-            return QVariant();
-        }
-        if (role == Qt::DisplayRole) {
-            return displayName();
-        }
-        // no properties set
-        if (propertyItems.empty()) {
-            return QVariant();
-        }
-        else if (role == Qt::ToolTipRole) {
-            if(!PropertyView::showAll())
-                return toolTip(propertyItems[0]);
-            QString type = QString::fromLatin1("Type: %1").arg(
-                    QString::fromLatin1(propertyItems[0]->getTypeId().getName()));
-            QString doc = toolTip(propertyItems[0]).toString();
-            if(doc.size())
-                return type + QLatin1String("\n\n") + doc;
-            return type;
-        }
-
-        return QVariant();
+        return dataProperty(role);
     }
-    else {
-        // no properties set
-        if (propertyItems.empty()) {
-            PropertyItem* parent = this->parent();
-            if (!parent || !parent->parent()) {
-                return QVariant();
-            }
-            if (role == Qt::EditRole) {
-                return parent->property(qPrintable(objectName()));
-            }
-            else if (role == Qt::DecorationRole) {
-                QVariant val = parent->property(qPrintable(objectName()));
-                return decoration(val);
-            }
-            else if (role == Qt::DisplayRole) {
-                QVariant val = parent->property(qPrintable(objectName()));
-                return toString(val);
-            } 
-            else if (role == Qt::ForegroundRole) {
-                if (hasExpression())
-                    return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
-                return QVariant();
-            }
 
-            return QVariant();
-        }
-        if (role == Qt::EditRole) {
-            return value(propertyItems[0]);
-        }
-        else if (role == Qt::DecorationRole) {
-            return decoration(value(propertyItems[0]));
-        }
-        else if (role == Qt::DisplayRole) {
-            return toString(value(propertyItems[0]));
-        }
-        else if (role == Qt::ToolTipRole) {
-            return toolTip(propertyItems[0]);
-        }
-        else if( role == Qt::ForegroundRole) {
-            if (hasExpression())
-                return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
-            return QVariant();
-        }
-
-        return QVariant();
-    }
+    return dataValue(role);
 }
 
-bool PropertyItem::setData (const QVariant& value)
+bool PropertyItem::setData(const QVariant& value)
 {
-    cleared = false;
-
     // This is the basic mechanism to set the value to
     // a property and if no property is set for this item
     // it delegates it to its parent which sets then the
     // property or delegates again to its parent...
     if (propertyItems.empty()) {
         PropertyItem* parent = this->parent();
-        if (!parent || !parent->parent() || hasAnyExpression())
+        if (!parent || !parent->parent() || hasAnyExpression()) {
             return false;
-        parent->setProperty(qPrintable(objectName()),value);
+        }
+
+        parent->setProperty(qPrintable(objectName()), value);
         return true;
     }
-    else {
-        setValue(value);
-        return true;
-    }
+
+    setValue(value);
+    return true;
 }
 
 Qt::ItemFlags PropertyItem::flags(int column) const
 {
     Qt::ItemFlags basicFlags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    if (column == 1 && !isReadOnly())
+    if (column == 1 && !isReadOnly()) {
         return basicFlags | Qt::ItemIsEditable;
-    else
-        return basicFlags;
+    }
+
+    return basicFlags;
 }
 
 int PropertyItem::row() const
 {
-    if (parentItem)
-        return parentItem->childItems.indexOf(const_cast<PropertyItem*>(this));
+    if (parentItem) {
+        return parentItem->childItems.indexOf(const_cast<PropertyItem*>(this));  // NOLINT
+    }
 
     return 0;
 }
@@ -697,159 +824,153 @@ QString PropertyItem::expressionAsString() const
         }
     }
 
-    return QString();
+    return {};
 }
 
 // --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyStringItem)
 
-PropertyStringItem::PropertyStringItem()
-{
-}
+PropertyStringItem::PropertyStringItem() = default;
 
 QVariant PropertyStringItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyString::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyString>());
 
     std::string value = static_cast<const App::PropertyString*>(prop)->getValue();
-    return QVariant(QString::fromUtf8(value.c_str()));
+    return {QString::fromUtf8(value.c_str())};
 }
 
 void PropertyStringItem::setValue(const QVariant& value)
 {
-    if(!hasExpression())  {
-        if (!value.canConvert(QVariant::String))
-            return;
-        QString val = value.toString();
-        val = QString::fromUtf8(Base::Interpreter().strToPython(val.toUtf8()).c_str());
-        QString data = QString::fromLatin1("\"%1\"").arg(val);
-        setPropertyValue(data);
+    if (!hasExpression() && value.canConvert<QString>()) {
+        std::string val = Base::InterpreterSingleton::strToPython(value.toString().toStdString());
+        setPropertyValue(Base::Tools::quoted(val));
     }
 }
 
-QWidget* PropertyStringItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyStringItem::createEditor(QWidget* parent,
+                                          const std::function<void()>& method) const
 {
-    ExpLineEdit *le = new ExpLineEdit(parent);
+    auto le = new ExpLineEdit(parent);
     le->setFrame(false);
     le->setReadOnly(isReadOnly());
-    QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
-    if(isBound()) {
+    QObject::connect(le, &ExpLineEdit::textChanged, method);
+    if (isBound()) {
         le->bind(getPath());
         le->setAutoApply(autoApply());
     }
-        
+
     return le;
 }
 
-void PropertyStringItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyStringItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
+    auto le = qobject_cast<QLineEdit*>(editor);
     le->setText(data.toString());
 }
 
-QVariant PropertyStringItem::editorData(QWidget *editor) const
+QVariant PropertyStringItem::editorData(QWidget* editor) const
 {
-    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
-    return QVariant(le->text());
+    auto le = qobject_cast<QLineEdit*>(editor);
+    return {le->text()};
 }
 
 // --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFontItem)
 
-PropertyFontItem::PropertyFontItem()
-{
-}
+PropertyFontItem::PropertyFontItem() = default;
 
 QVariant PropertyFontItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFont::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFont>());
 
     std::string value = static_cast<const App::PropertyFont*>(prop)->getValue();
-    return QVariant(QString::fromUtf8(value.c_str()));
+    return {QString::fromUtf8(value.c_str())};
 }
 
 void PropertyFontItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::String))
-        return;
-    QString val = value.toString();
-    QString data = QString::fromLatin1("\"%1\"").arg(val);
-    setPropertyValue(data);
+    if (!hasExpression() && value.canConvert<QString>()) {
+        setPropertyValue(Base::Tools::quoted(value.toString().toStdString()));
+    }
 }
 
-QWidget* PropertyFontItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyFontItem::createEditor(QWidget* parent, const std::function<void()>& method) const
 {
-    QComboBox *cb = new QComboBox(parent);
+    auto cb = new QComboBox(parent);
     cb->setFrame(false);
     cb->setDisabled(isReadOnly());
-    QObject::connect(cb, SIGNAL(activated(const QString&)), receiver, method);
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    QObject::connect(cb, qOverload<const QString&>(&QComboBox::activated), method);
+#else
+    QObject::connect(cb, &QComboBox::textActivated, method);
+#endif
     return cb;
 }
 
-void PropertyFontItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyFontItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    QComboBox *cb = qobject_cast<QComboBox*>(editor);
-    QFontDatabase fdb;
-    QStringList familyNames = fdb.families(QFontDatabase::Any);
+    auto cb = qobject_cast<QComboBox*>(editor);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
+#else
+    QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
+#endif
     cb->addItems(familyNames);
     int index = familyNames.indexOf(data.toString());
     cb->setCurrentIndex(index);
 }
 
-QVariant PropertyFontItem::editorData(QWidget *editor) const
+QVariant PropertyFontItem::editorData(QWidget* editor) const
 {
-    QComboBox *cb = qobject_cast<QComboBox*>(editor);
-    return QVariant(cb->currentText());
+    auto cb = qobject_cast<QComboBox*>(editor);
+    return {cb->currentText()};
 }
 
 // --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertySeparatorItem)
 
-QWidget* PropertySeparatorItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertySeparatorItem::createEditor(QWidget* parent,
+                                             const std::function<void()>& method) const
 {
-    Q_UNUSED(parent); 
-    Q_UNUSED(receiver); 
-    Q_UNUSED(method); 
-    return 0;
+    Q_UNUSED(parent);
+    Q_UNUSED(method);
+    return nullptr;
 }
 
 // --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerItem)
 
-PropertyIntegerItem::PropertyIntegerItem()
-{
-}
+PropertyIntegerItem::PropertyIntegerItem() = default;
 
 QVariant PropertyIntegerItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyInteger>());
 
     int value = (int)static_cast<const App::PropertyInteger*>(prop)->getValue();
-    return QVariant(value);
+    return {value};
 }
 
 void PropertyIntegerItem::setValue(const QVariant& value)
 {
-    //if the item has an expression it issues the python code
-    if (!hasExpression()) {
-        if (!value.canConvert(QVariant::Int))
-            return;
+    // if the item has an expression it issues the python code
+    if (!hasExpression() && value.canConvert<int>()) {
         int val = value.toInt();
-        QString data = QString::fromLatin1("%1").arg(val);
-        setPropertyValue(data);
+        setPropertyValue(std::to_string(val));
     }
 }
 
-QWidget* PropertyIntegerItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyIntegerItem::createEditor(QWidget* parent,
+                                           const std::function<void()>& method) const
 {
-    Gui::IntSpinBox *sb = new Gui::IntSpinBox(parent);
+    auto sb = new Gui::IntSpinBox(parent);
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
-    QObject::connect(sb, SIGNAL(valueChanged(int)), receiver, method);
+    QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
     if (isBound()) {
         sb->bind(getPath());
@@ -859,27 +980,29 @@ QWidget* PropertyIntegerItem::createEditor(QWidget* parent, const QObject* recei
     return sb;
 }
 
-void PropertyIntegerItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyIntegerItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
+    auto sb = qobject_cast<QSpinBox*>(editor);
     sb->setRange(INT_MIN, INT_MAX);
     sb->setValue(data.toInt());
 }
 
-QVariant PropertyIntegerItem::editorData(QWidget *editor) const
+QVariant PropertyIntegerItem::editorData(QWidget* editor) const
 {
-    QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
-    return QVariant(sb->value());
+    auto sb = qobject_cast<QSpinBox*>(editor);
+    return {sb->value()};
 }
 
 QVariant PropertyIntegerItem::toString(const QVariant& v) const
 {
     QString string(PropertyItem::toString(v).toString());
 
-    if (hasExpression())
-        string += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    if (hasExpression()) {
+        string +=
+            QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    }
 
-    return QVariant(string);
+    return {string};
 }
 
 
@@ -887,36 +1010,32 @@ QVariant PropertyIntegerItem::toString(const QVariant& v) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerConstraintItem)
 
-PropertyIntegerConstraintItem::PropertyIntegerConstraintItem()
-{
-}
+PropertyIntegerConstraintItem::PropertyIntegerConstraintItem() = default;
 
 QVariant PropertyIntegerConstraintItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyIntegerConstraint::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyIntegerConstraint>());
 
     int value = (int)static_cast<const App::PropertyIntegerConstraint*>(prop)->getValue();
-    return QVariant(value);
+    return {value};
 }
 
 void PropertyIntegerConstraintItem::setValue(const QVariant& value)
 {
-    //if the item has an expression it issues the python code
-    if (!hasExpression()) {
-        if (!value.canConvert(QVariant::Int))
-            return;
+    // if the item has an expression it issues the python code
+    if (!hasExpression() && value.canConvert<int>()) {
         int val = value.toInt();
-        QString data = QString::fromLatin1("%1").arg(val);
-        setPropertyValue(data);
+        setPropertyValue(std::to_string(val));
     }
 }
 
-QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent,
+                                                     const std::function<void()>& method) const
 {
-    Gui::IntSpinBox *sb = new Gui::IntSpinBox(parent);
+    auto sb = new Gui::IntSpinBox(parent);
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
-    QObject::connect(sb, SIGNAL(valueChanged(int)), receiver, method);
+    QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
     if (isBound()) {
         sb->bind(getPath());
@@ -926,43 +1045,46 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObj
     return sb;
 }
 
-void PropertyIntegerConstraintItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyIntegerConstraintItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    const App::PropertyIntegerConstraint* prop = static_cast
-        <const App::PropertyIntegerConstraint*>(getFirstProperty());
+    const auto prop = static_cast<const App::PropertyIntegerConstraint*>(getFirstProperty());
 
-    const App::PropertyIntegerConstraint::Constraints* c = 0;
+    const App::PropertyIntegerConstraint::Constraints* c = nullptr;
     if (prop) {
         c = prop->getConstraints();
     }
 
-    QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
+    auto sb = qobject_cast<QSpinBox*>(editor);
     if (c) {
-        sb->setMinimum(c->LowerBound);
-        sb->setMaximum(c->UpperBound);
-        sb->setSingleStep(c->StepSize);
+        sb->setMinimum(int(c->LowerBound));
+        sb->setMaximum(int(c->UpperBound));
+        sb->setSingleStep(int(c->StepSize));
     }
     else {
-        sb->setMinimum(INT_MIN);
-        sb->setMaximum(INT_MAX);
+        sb->setMinimum(min);
+        sb->setMaximum(max);
+        sb->setSingleStep(steps);
     }
+
     sb->setValue(data.toInt());
 }
 
-QVariant PropertyIntegerConstraintItem::editorData(QWidget *editor) const
+QVariant PropertyIntegerConstraintItem::editorData(QWidget* editor) const
 {
-    QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
-    return QVariant(sb->value());
+    auto sb = qobject_cast<QSpinBox*>(editor);
+    return {sb->value()};
 }
 
 QVariant PropertyIntegerConstraintItem::toString(const QVariant& v) const
 {
     QString string(PropertyItem::toString(v).toString());
 
-    if (hasExpression())
-        string += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    if (hasExpression()) {
+        string +=
+            QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    }
 
-    return QVariant(string);
+    return {string};
 }
 
 
@@ -970,48 +1092,45 @@ QVariant PropertyIntegerConstraintItem::toString(const QVariant& v) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatItem)
 
-PropertyFloatItem::PropertyFloatItem()
-{
-}
+PropertyFloatItem::PropertyFloatItem() = default;
 
 QVariant PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
     QString data = QLocale().toString(value, 'f', decimals());
 
-    if (hasExpression())
+    if (hasExpression()) {
         data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    }
 
-    return QVariant(data);
+    return {data};
 }
 
 QVariant PropertyFloatItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFloat>());
 
     double value = static_cast<const App::PropertyFloat*>(prop)->getValue();
-    return QVariant(value);
+    return {value};
 }
 
 void PropertyFloatItem::setValue(const QVariant& value)
 {
-    //if the item has an expression it issues the python code
-    if (!hasExpression()) {
-        if (!value.canConvert(QVariant::Double))
-            return;
-        double val = value.toDouble();
-        QString data = QString::fromLatin1("%1").arg(val,0,'f',decimals());
-        setPropertyValue(data);
+    // if the item has an expression it issues the python code
+    if (!hasExpression() && value.canConvert<double>()) {
+        std::ostringstream ss;
+        ss << std::setprecision(highPrec) << value.toDouble();
+        setPropertyValue(ss.str());
     }
 }
 
-QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyFloatItem::createEditor(QWidget* parent, const std::function<void()>& method) const
 {
-    Gui::DoubleSpinBox *sb = new Gui::DoubleSpinBox(parent);
+    auto sb = new Gui::DoubleSpinBox(parent);
     sb->setFrame(false);
     sb->setDecimals(decimals());
     sb->setReadOnly(isReadOnly());
-    QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
+    QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
         sb->bind(getPath());
@@ -1021,17 +1140,17 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receive
     return sb;
 }
 
-void PropertyFloatItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyFloatItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
+    auto sb = qobject_cast<QDoubleSpinBox*>(editor);
     sb->setRange((double)INT_MIN, (double)INT_MAX);
     sb->setValue(data.toDouble());
 }
 
-QVariant PropertyFloatItem::editorData(QWidget *editor) const
+QVariant PropertyFloatItem::editorData(QWidget* editor) const
 {
-    QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
-    return QVariant(sb->value());
+    auto sb = qobject_cast<QDoubleSpinBox*>(editor);
+    return {sb->value()};
 }
 
 // --------------------------------------------------------------------
@@ -1039,23 +1158,23 @@ QVariant PropertyFloatItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyUnitItem)
 
-PropertyUnitItem::PropertyUnitItem()
-{
-}
+PropertyUnitItem::PropertyUnitItem() = default;
 
 QVariant PropertyUnitItem::toString(const QVariant& prop) const
 {
     const Base::Quantity& unit = prop.value<Base::Quantity>();
     QString string = unit.getUserString();
-    if (hasExpression())
-        string += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    if (hasExpression()) {
+        string +=
+            QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    }
 
-    return QVariant(string);
+    return {string};
 }
 
 QVariant PropertyUnitItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyQuantity>());
 
     Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop)->getQuantityValue();
     return QVariant::fromValue<Base::Quantity>(value);
@@ -1063,48 +1182,44 @@ QVariant PropertyUnitItem::value(const App::Property* prop) const
 
 void PropertyUnitItem::setValue(const QVariant& value)
 {
-    //if the item has an expression it handles the python code
-    if (!hasExpression()) {
-        if (!value.canConvert<Base::Quantity>())
-            return;
+    // if the item has an expression it handles the python code
+    if (!hasExpression() && value.canConvert<Base::Quantity>()) {
         const Base::Quantity& val = value.value<Base::Quantity>();
-
-        Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+        Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
         QString unit = Base::UnitsApi::toString(val, format);
         setPropertyValue(unit);
     }
 }
 
-QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyUnitItem::createEditor(QWidget* parent, const std::function<void()>& method) const
 {
-    Gui::QuantitySpinBox *infield = new Gui::QuantitySpinBox(parent);
+    auto infield = new Gui::QuantitySpinBox(parent);
     infield->setFrame(false);
     infield->setMinimumHeight(0);
     infield->setReadOnly(isReadOnly());
-    
-    //if we are bound to an expression we need to bind it to the input field
+
+    // if we are bound to an expression we need to bind it to the input field
     if (isBound()) {
         infield->bind(getPath());
         infield->setAutoApply(autoApply());
     }
 
-    
-    QObject::connect(infield, SIGNAL(valueChanged(double)), receiver, method);
+    QObject::connect(infield, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), method);
     return infield;
 }
 
-void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyUnitItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     const Base::Quantity& value = data.value<Base::Quantity>();
 
-    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
+    auto infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
     infield->selectAll();
 }
 
-QVariant PropertyUnitItem::editorData(QWidget *editor) const
+QVariant PropertyUnitItem::editorData(QWidget* editor) const
 {
-    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
+    auto infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     Base::Quantity value = infield->value();
     return QVariant::fromValue<Base::Quantity>(value);
 }
@@ -1114,23 +1229,19 @@ QVariant PropertyUnitItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyUnitConstraintItem)
 
-PropertyUnitConstraintItem::PropertyUnitConstraintItem()
-{
+PropertyUnitConstraintItem::PropertyUnitConstraintItem() = default;
 
-}
-
-void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyUnitConstraintItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     const Base::Quantity& value = data.value<Base::Quantity>();
 
-    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
+    auto infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
     infield->selectAll();
 
-    const App::PropertyQuantityConstraint* prop = static_cast
-        <const App::PropertyQuantityConstraint*>(getFirstProperty());
+    const auto prop = static_cast<const App::PropertyQuantityConstraint*>(getFirstProperty());
 
-    const App::PropertyQuantityConstraint::Constraints* c = 0;
+    const App::PropertyQuantityConstraint::Constraints* c = nullptr;
     if (prop) {
         c = prop->getConstraints();
     }
@@ -1141,8 +1252,9 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
         infield->setSingleStep(c->StepSize);
     }
     else {
-        infield->setMinimum((double)INT_MIN);
-        infield->setMaximum((double)INT_MAX);
+        infield->setMinimum(min);
+        infield->setMaximum(max);
+        infield->setSingleStep(steps);
     }
 }
 
@@ -1150,44 +1262,41 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatConstraintItem)
 
-PropertyFloatConstraintItem::PropertyFloatConstraintItem()
-{
-}
+PropertyFloatConstraintItem::PropertyFloatConstraintItem() = default;
 
 QVariant PropertyFloatConstraintItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
     QString data = QLocale().toString(value, 'f', decimals());
-    return QVariant(data);
+    return {data};
 }
 
 QVariant PropertyFloatConstraintItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFloatConstraint>());
 
     double value = static_cast<const App::PropertyFloatConstraint*>(prop)->getValue();
-    return QVariant(value);
+    return {value};
 }
 
 void PropertyFloatConstraintItem::setValue(const QVariant& value)
 {
-    //if the item has an expression it issues the python code
-    if (!hasExpression()) {
-        if (!value.canConvert(QVariant::Double))
-            return;
-        double val = value.toDouble();
-        QString data = QString::fromLatin1("%1").arg(val,0,'f',decimals());
-        setPropertyValue(data);
+    // if the item has an expression it issues the python code
+    if (!hasExpression() && value.canConvert<double>()) {
+        std::ostringstream ss;
+        ss << std::setprecision(highPrec) << value.toDouble();
+        setPropertyValue(ss.str());
     }
 }
 
-QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent,
+                                                   const std::function<void()>& method) const
 {
-    Gui::DoubleSpinBox *sb = new Gui::DoubleSpinBox(parent);
+    auto sb = new Gui::DoubleSpinBox(parent);
     sb->setDecimals(decimals());
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
-    QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
+    QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
         sb->bind(getPath());
@@ -1197,34 +1306,34 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObjec
     return sb;
 }
 
-void PropertyFloatConstraintItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyFloatConstraintItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    const App::PropertyFloatConstraint* prop = static_cast
-        <const App::PropertyFloatConstraint*>(getFirstProperty());
+    const auto prop = static_cast<const App::PropertyFloatConstraint*>(getFirstProperty());
 
-    const App::PropertyFloatConstraint::Constraints* c = 0;
+    const App::PropertyFloatConstraint::Constraints* c = nullptr;
     if (prop) {
         c = prop->getConstraints();
     }
 
-    QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
+    auto sb = qobject_cast<QDoubleSpinBox*>(editor);
     if (c) {
         sb->setMinimum(c->LowerBound);
         sb->setMaximum(c->UpperBound);
         sb->setSingleStep(c->StepSize);
     }
     else {
-        sb->setMinimum((double)INT_MIN);
-        sb->setMaximum((double)INT_MAX);
-        sb->setSingleStep(0.1);
+        sb->setMinimum(min);
+        sb->setMaximum(max);
+        sb->setSingleStep(steps);
     }
+
     sb->setValue(data.toDouble());
 }
 
-QVariant PropertyFloatConstraintItem::editorData(QWidget *editor) const
+QVariant PropertyFloatConstraintItem::editorData(QWidget* editor) const
 {
-    QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
-    return QVariant(sb->value());
+    auto sb = qobject_cast<QDoubleSpinBox*>(editor);
+    return {sb->value()};
 }
 
 // --------------------------------------------------------------------
@@ -1233,18 +1342,16 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyPrecisionItem)
 
 PropertyPrecisionItem::PropertyPrecisionItem()
 {
-    setDecimals(16);
+    setDecimals(highPrec);
 }
 
 // --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyAngleItem)
 
-PropertyAngleItem::PropertyAngleItem()
-{
-}
+PropertyAngleItem::PropertyAngleItem() = default;
 
-void PropertyAngleItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyAngleItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     PropertyUnitConstraintItem::setEditorData(editor, data);
 }
@@ -1258,75 +1365,78 @@ QVariant PropertyAngleItem::toString(const QVariant& prop) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyBoolItem)
 
-PropertyBoolItem::PropertyBoolItem()
-{
-}
+PropertyBoolItem::PropertyBoolItem() = default;
 
 QVariant PropertyBoolItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyBool::getClassTypeId()));
-    
-    bool value = ((App::PropertyBool*)prop)->getValue();
-    return QVariant(value);
+    assert(prop && prop->isDerivedFrom<App::PropertyBool>());
+
+    bool value = static_cast<const App::PropertyBool*>(prop)->getValue();
+    return {value};
 }
 
 void PropertyBoolItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::Bool))
-        return;
-    bool val = value.toBool();
-    QString data = (val ? QLatin1String("True") : QLatin1String("False"));
-    setPropertyValue(data);
+    if (!hasExpression() && value.canConvert<bool>()) {
+        std::string val = value.toBool() ? "True" : "False";
+        setPropertyValue(val);
+    }
 }
 
-QWidget* PropertyBoolItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyBoolItem::createEditor(QWidget* parent, const std::function<void()>& method) const
 {
-    QComboBox *cb = new QComboBox(parent);
+    auto cb = new QComboBox(parent);
     cb->setFrame(false);
     cb->addItem(QLatin1String("false"));
     cb->addItem(QLatin1String("true"));
     cb->setDisabled(isReadOnly());
-    QObject::connect(cb, SIGNAL(activated(int)), receiver, method);
+    QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
     return cb;
 }
 
-void PropertyBoolItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyBoolItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    QComboBox *cb = qobject_cast<QComboBox*>(editor);
+    auto cb = qobject_cast<QComboBox*>(editor);
     cb->setCurrentIndex(cb->findText(data.toString()));
 }
 
-QVariant PropertyBoolItem::editorData(QWidget *editor) const
+QVariant PropertyBoolItem::editorData(QWidget* editor) const
 {
-    QComboBox *cb = qobject_cast<QComboBox*>(editor);
-    return QVariant(cb->currentText());
+    auto cb = qobject_cast<QComboBox*>(editor);
+    return {cb->currentText()};
 }
 
 // ---------------------------------------------------------------
 
-namespace Gui { namespace PropertyEditor {
-class VectorLineEdit : public Gui::ExpLineEdit
+namespace Gui::PropertyEditor
+{
+class VectorLineEdit: public Gui::ExpLineEdit
 {
     int decimals;
+
 public:
-    VectorLineEdit (int decimals, QWidget * parent=0, bool expressionOnly=false)
+    explicit VectorLineEdit(int decimals, QWidget* parent = nullptr, bool expressionOnly = false)
         : Gui::ExpLineEdit(parent, expressionOnly)
         , decimals(decimals)
-    {
-    }
+    {}
 
-    bool apply(const std::string &propName) {
-        if (!ExpressionBinding::apply(propName)) {
+    bool apply(const std::string& propName) override
+    {
+        // NOLINTNEXTLINE
+        if (!ExpressionBinding::apply(propName)) {  // clazy:exclude=skipped-base-method
             QVariant data = property("coords");
             if (data.canConvert<Base::Vector3d>()) {
                 const Base::Vector3d& value = data.value<Base::Vector3d>();
 
                 QString str = QString::fromLatin1("(%1, %2, %3)")
-                                .arg(value.x,0,'f',decimals)
-                                .arg(value.y,0,'f',decimals)
-                                .arg(value.z,0,'f',decimals);
+                                  .arg(value.x, 0, 'f', decimals)
+                                  .arg(value.y, 0, 'f', decimals)
+                                  .arg(value.z, 0, 'f', decimals);
 
-                Gui::Command::doCommand(Gui::Command::Doc, "%s = %s", propName.c_str(), str.toLatin1().constData());
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "%s = %s",
+                                        propName.c_str(),
+                                        str.toLatin1().constData());
                 return true;
             }
         }
@@ -1334,7 +1444,7 @@ public:
         return false;
     }
 };
-}}
+}  // namespace Gui::PropertyEditor
 
 // ---------------------------------------------------------------
 
@@ -1361,17 +1471,18 @@ QVariant PropertyVectorItem::toString(const QVariant& prop) const
     QLocale loc;
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
     QString data = QString::fromLatin1("[%1 %2 %3]")
-        .arg(loc.toString(value.x, 'f', 2),
-             loc.toString(value.y, 'f', 2),
-             loc.toString(value.z, 'f', 2));
-    if (hasExpression())
+                       .arg(loc.toString(value.x, 'f', lowPrec),
+                            loc.toString(value.y, 'f', lowPrec),
+                            loc.toString(value.z, 'f', lowPrec));
+    if (hasExpression()) {
         data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
-    return QVariant(data);
+    }
+    return {data};
 }
 
 QVariant PropertyVectorItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVector::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyVector>());
 
     const Base::Vector3d& value = static_cast<const App::PropertyVector*>(prop)->getValue();
     return QVariant::fromValue<Base::Vector3d>(value);
@@ -1379,19 +1490,21 @@ QVariant PropertyVectorItem::value(const App::Property* prop) const
 
 void PropertyVectorItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert<Base::Vector3d>())
+    if (hasExpression() || !value.canConvert<Base::Vector3d>()) {
         return;
+    }
     const Base::Vector3d& val = value.value<Base::Vector3d>();
     QString data = QString::fromLatin1("(%1, %2, %3)")
-                    .arg(val.x,0,'f',decimals())
-                    .arg(val.y,0,'f',decimals())
-                    .arg(val.z,0,'f',decimals());
+                       .arg(val.x, 0, 'g', highPrec)
+                       .arg(val.y, 0, 'g', highPrec)
+                       .arg(val.z, 0, 'g', highPrec);
     setPropertyValue(data);
 }
 
-QWidget* PropertyVectorItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
+QWidget* PropertyVectorItem::createEditor(QWidget* parent,
+                                          const std::function<void()>& /*method*/) const
 {
-    VectorLineEdit *le = new VectorLineEdit(decimals(), parent);
+    auto le = new VectorLineEdit(decimals(), parent);
     le->setFrame(false);
     le->setReadOnly(true);
 
@@ -1403,28 +1516,28 @@ QWidget* PropertyVectorItem::createEditor(QWidget* parent, const QObject* /*rece
     return le;
 }
 
-void PropertyVectorItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyVectorItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     QLocale loc;
-    QLineEdit* le = qobject_cast<QLineEdit*>(editor);
+    auto le = qobject_cast<QLineEdit*>(editor);
     const Base::Vector3d& value = data.value<Base::Vector3d>();
     QString text = QString::fromLatin1("[%1 %2 %3]")
-        .arg(loc.toString(value.x, 'f', 2),
-             loc.toString(value.y, 'f', 2),
-             loc.toString(value.z, 'f', 2));
+                       .arg(loc.toString(value.x, 'f', lowPrec),
+                            loc.toString(value.y, 'f', lowPrec),
+                            loc.toString(value.z, 'f', lowPrec));
     le->setProperty("coords", data);
     le->setText(text);
 }
 
-QVariant PropertyVectorItem::editorData(QWidget *editor) const
+QVariant PropertyVectorItem::editorData(QWidget* editor) const
 {
-    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
-    return QVariant(le->text());
+    auto le = qobject_cast<QLineEdit*>(editor);
+    return {le->text()};
 }
 
 double PropertyVectorItem::x() const
 {
-    return data(1,Qt::EditRole).value<Base::Vector3d>().x;
+    return data(1, Qt::EditRole).value<Base::Vector3d>().x;
 }
 
 void PropertyVectorItem::setX(double x)
@@ -1434,7 +1547,7 @@ void PropertyVectorItem::setX(double x)
 
 double PropertyVectorItem::y() const
 {
-    return data(1,Qt::EditRole).value<Base::Vector3d>().y;
+    return data(1, Qt::EditRole).value<Base::Vector3d>().y;
 }
 
 void PropertyVectorItem::setY(double y)
@@ -1444,7 +1557,7 @@ void PropertyVectorItem::setY(double y)
 
 double PropertyVectorItem::z() const
 {
-    return data(1,Qt::EditRole).value<Base::Vector3d>().z;
+    return data(1, Qt::EditRole).value<Base::Vector3d>().z;
 }
 
 void PropertyVectorItem::setZ(double z)
@@ -1454,19 +1567,18 @@ void PropertyVectorItem::setZ(double z)
 
 void PropertyVectorItem::propertyBound()
 {
-    m_x->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("x"));
-    m_y->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("y"));
-    m_z->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("z"));
+    m_x->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("x"));
+    m_y->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("y"));
+    m_z->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("z"));
 }
 
 // ---------------------------------------------------------------
 
-VectorListWidget::VectorListWidget (int decimals, QWidget * parent)
-  : QWidget(parent)
-  , decimals(decimals)
+PropertyEditorWidget::PropertyEditorWidget(QWidget* parent)
+    : QWidget(parent)
 {
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(0);
+    auto layout = new QHBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(2);
 
     lineEdit = new QLineEdit(this);
@@ -1474,36 +1586,71 @@ VectorListWidget::VectorListWidget (int decimals, QWidget * parent)
     layout->addWidget(lineEdit);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
-    button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
+#if defined(Q_OS_MACOS)
+    button->setAttribute(
+        Qt::WA_LayoutUsesWidgetRect);  // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
-    setFocusProxy(lineEdit);
+    connect(button, &QPushButton::clicked, this, &PropertyEditorWidget::buttonClick);
+
+    // QAbstractItemView will call selectAll() if a QLineEdit is the focus
+    // proxy. Since the QLineEdit here is read-only and not meant for editing,
+    // do not set it as focus proxy. Otherwise, the text won't even shown for
+    // most stylesheets (which contain a trick to hide the content of a selected
+    // read-only/disabled editor widgets).
+    //
+    // setFocusProxy(lineEdit);
 }
 
-VectorListWidget::~VectorListWidget()
-{
-}
+PropertyEditorWidget::~PropertyEditorWidget() = default;
 
-void VectorListWidget::resizeEvent(QResizeEvent* e)
+void PropertyEditorWidget::resizeEvent(QResizeEvent* e)
 {
     button->setFixedWidth(e->size().height());
     button->setFixedHeight(e->size().height());
 }
 
+void PropertyEditorWidget::showValue(const QVariant& d)
+{
+    lineEdit->setText(d.toString());
+}
+
+QVariant PropertyEditorWidget::value() const
+{
+    return variant;
+}
+
+void PropertyEditorWidget::setValue(const QVariant& val)
+{
+    variant = val;
+    showValue(variant);
+    Q_EMIT valueChanged(variant);
+}
+
+// ---------------------------------------------------------------
+
+VectorListWidget::VectorListWidget(int decimals, QWidget* parent)
+    : PropertyEditorWidget(parent)
+    , decimals(decimals)
+{
+    connect(button, &QPushButton::clicked, this, &VectorListWidget::buttonClicked);
+}
+
 void VectorListWidget::buttonClicked()
 {
-    VectorListEditor dlg(decimals, Gui::getMainWindow());
-    dlg.setValues(value().value<QList<Base::Vector3d>>());
+    auto dlg = new VectorListEditor(decimals, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setValues(value().value<QList<Base::Vector3d>>());
     QPoint p(0, 0);
     p = this->mapToGlobal(p);
-    dlg.move(p);
-    if (dlg.exec() == QDialog::Accepted) {
-        QVariant data = QVariant::fromValue<QList<Base::Vector3d>>(dlg.getValues());
+    dlg->move(p);
+    connect(dlg, &VectorListEditor::accepted, this, [this, dlg] {
+        QVariant data = QVariant::fromValue<QList<Base::Vector3d>>(dlg->getValues());
         setValue(data);
-    }
+    });
+
+    dlg->exec();
 }
 
 void VectorListWidget::showValue(const QVariant& d)
@@ -1516,32 +1663,17 @@ void VectorListWidget::showValue(const QVariant& d)
     }
     else {
         data = QString::fromLatin1("[%1 %2 %3], ...")
-            .arg(loc.toString(value[0].x, 'f', 2),
-                 loc.toString(value[0].y, 'f', 2),
-                 loc.toString(value[0].z, 'f', 2));
+                   .arg(loc.toString(value[0].x, 'f', lowPrec),
+                        loc.toString(value[0].y, 'f', lowPrec),
+                        loc.toString(value[0].z, 'f', lowPrec));
     }
     lineEdit->setText(data);
 }
-
-QVariant VectorListWidget::value() const
-{
-    return variant;
-}
-
-void VectorListWidget::setValue(const QVariant& val)
-{
-    variant = val;
-    showValue(variant);
-    valueChanged(variant);
-}
-
 // ---------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorListItem)
 
-PropertyVectorListItem::PropertyVectorListItem()
-{
-}
+PropertyVectorListItem::PropertyVectorListItem() = default;
 
 QVariant PropertyVectorListItem::toString(const QVariant& prop) const
 {
@@ -1553,21 +1685,23 @@ QVariant PropertyVectorListItem::toString(const QVariant& prop) const
     }
     else {
         data = QString::fromLatin1("[%1 %2 %3], ...")
-            .arg(loc.toString(value[0].x, 'f', 2),
-                 loc.toString(value[0].y, 'f', 2),
-                 loc.toString(value[0].z, 'f', 2));
+                   .arg(loc.toString(value[0].x, 'f', lowPrec),
+                        loc.toString(value[0].y, 'f', lowPrec),
+                        loc.toString(value[0].z, 'f', lowPrec));
     }
 
-    if (hasExpression())
+    if (hasExpression()) {
         data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
-    return QVariant(data);
+    }
+    return {data};
 }
 
 QVariant PropertyVectorListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVectorList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyVectorList>());
 
-    const std::vector<Base::Vector3d>& value = static_cast<const App::PropertyVectorList*>(prop)->getValue();
+    const std::vector<Base::Vector3d>& value =
+        static_cast<const App::PropertyVectorList*>(prop)->getValue();
     QList<Base::Vector3d> list;
     std::copy(value.begin(), value.end(), std::back_inserter(list));
     return QVariant::fromValue<QList<Base::Vector3d>>(list);
@@ -1575,39 +1709,41 @@ QVariant PropertyVectorListItem::value(const App::Property* prop) const
 
 void PropertyVectorListItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert<QList<Base::Vector3d>>())
+    if (!value.canConvert<QList<Base::Vector3d>>()) {
         return;
+    }
     const QList<Base::Vector3d>& val = value.value<QList<Base::Vector3d>>();
     QString data;
     QTextStream str(&data);
     str << "[";
     for (const auto& it : val) {
         str << QString::fromLatin1("(%1, %2, %3), ")
-               .arg(it.x,0,'f',decimals())
-               .arg(it.y,0,'f',decimals())
-               .arg(it.z,0,'f',decimals());
+                   .arg(it.x, 0, 'g', highPrec)
+                   .arg(it.y, 0, 'g', highPrec)
+                   .arg(it.z, 0, 'g', highPrec);
     }
     str << "]";
     setPropertyValue(data);
 }
 
-QWidget* PropertyVectorListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyVectorListItem::createEditor(QWidget* parent,
+                                              const std::function<void()>& method) const
 {
-    VectorListWidget *pe = new VectorListWidget(decimals(), parent);
-    QObject::connect(pe, SIGNAL(valueChanged(const QVariant &)), receiver, method);
+    auto pe = new VectorListWidget(decimals(), parent);
+    QObject::connect(pe, &VectorListWidget::valueChanged, method);
     pe->setDisabled(isReadOnly());
     return pe;
 }
 
-void PropertyVectorListItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyVectorListItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    VectorListWidget *pe = qobject_cast<VectorListWidget*>(editor);
+    auto pe = qobject_cast<VectorListWidget*>(editor);
     pe->setValue(data);
 }
 
-QVariant PropertyVectorListItem::editorData(QWidget *editor) const
+QVariant PropertyVectorListItem::editorData(QWidget* editor) const
 {
-    VectorListWidget *pe = qobject_cast<VectorListWidget*>(editor);
+    auto pe = qobject_cast<VectorListWidget*>(editor);
     return pe->value();
 }
 
@@ -1634,19 +1770,20 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    QString data = QString::fromLatin1("[") + 
-           Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
-           Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
-           Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
-    if (hasExpression())
+    QString data = QString::fromLatin1("[")
+        + Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ")
+        + Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ")
+        + Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
+    if (hasExpression()) {
         data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
-    return QVariant(data);
+    }
+    return {data};
 }
 
 
 QVariant PropertyVectorDistanceItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVector::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyVector>());
 
     const Base::Vector3d& value = static_cast<const App::PropertyVector*>(prop)->getValue();
     return QVariant::fromValue<Base::Vector3d>(value);
@@ -1654,32 +1791,34 @@ QVariant PropertyVectorDistanceItem::value(const App::Property* prop) const
 
 void PropertyVectorDistanceItem::setValue(const QVariant& variant)
 {
-    if (hasExpression() || !variant.canConvert<Base::Vector3d>())
+    if (hasExpression() || !variant.canConvert<Base::Vector3d>()) {
         return;
+    }
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
 
     Base::Quantity x = Base::Quantity(value.x, Base::Unit::Length);
     Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
 
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+    Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
     QString data = QString::fromLatin1("(%1, %2, %3)")
-                    .arg(Base::UnitsApi::toNumber(x, format))
-                    .arg(Base::UnitsApi::toNumber(y, format))
-                    .arg(Base::UnitsApi::toNumber(z, format));
+                       .arg(Base::UnitsApi::toNumber(x, format),
+                            Base::UnitsApi::toNumber(y, format),
+                            Base::UnitsApi::toNumber(z, format));
     setPropertyValue(data);
 }
 
-void PropertyVectorDistanceItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyVectorDistanceItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    QLineEdit* le = qobject_cast<QLineEdit*>(editor);
+    auto le = qobject_cast<QLineEdit*>(editor);
     le->setProperty("coords", data);
     le->setText(toString(data).toString());
 }
 
-QWidget* PropertyVectorDistanceItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
+QWidget* PropertyVectorDistanceItem::createEditor(QWidget* parent,
+                                                  const std::function<void()>& /*method*/) const
 {
-    VectorLineEdit *le = new VectorLineEdit(decimals(), parent);
+    auto le = new VectorLineEdit(decimals(), parent);
     le->setFrame(false);
     le->setReadOnly(true);
 
@@ -1691,15 +1830,15 @@ QWidget* PropertyVectorDistanceItem::createEditor(QWidget* parent, const QObject
     return le;
 }
 
-QVariant PropertyVectorDistanceItem::editorData(QWidget *editor) const
+QVariant PropertyVectorDistanceItem::editorData(QWidget* editor) const
 {
-    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
-    return QVariant(le->text());
+    auto le = qobject_cast<QLineEdit*>(editor);
+    return {le->text()};
 }
 
 Base::Quantity PropertyVectorDistanceItem::x() const
 {
-    return Base::Quantity(data(1,Qt::EditRole).value<Base::Vector3d>().x, Base::Unit::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().x, Base::Unit::Length);
 }
 
 void PropertyVectorDistanceItem::setX(Base::Quantity x)
@@ -1709,7 +1848,7 @@ void PropertyVectorDistanceItem::setX(Base::Quantity x)
 
 Base::Quantity PropertyVectorDistanceItem::y() const
 {
-    return Base::Quantity(data(1,Qt::EditRole).value<Base::Vector3d>().y, Base::Unit::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().y, Base::Unit::Length);
 }
 
 void PropertyVectorDistanceItem::setY(Base::Quantity y)
@@ -1719,7 +1858,7 @@ void PropertyVectorDistanceItem::setY(Base::Quantity y)
 
 Base::Quantity PropertyVectorDistanceItem::z() const
 {
-    return Base::Quantity(data(1,Qt::EditRole).value<Base::Vector3d>().z, Base::Unit::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().z, Base::Unit::Length);
 }
 
 void PropertyVectorDistanceItem::setZ(Base::Quantity z)
@@ -1730,9 +1869,9 @@ void PropertyVectorDistanceItem::setZ(Base::Quantity z)
 void PropertyVectorDistanceItem::propertyBound()
 {
     if (isBound()) {
-        m_x->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("x"));
-        m_y->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("y"));
-        m_z->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("z"));
+        m_x->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("x"));
+        m_y->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("y"));
+        m_z->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("z"));
     };
 }
 
@@ -1746,7 +1885,7 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyMatrixItem)
 
 PropertyMatrixItem::PropertyMatrixItem()
 {
-    const int decimals=16;
+    const int decimals = highPrec;
     m_a11 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
     m_a11->setParent(this);
     m_a11->setPropertyName(QLatin1String("A11"));
@@ -1833,29 +1972,31 @@ QVariant PropertyMatrixItem::toString(const QVariant& prop) const
 {
     QLocale loc;
     const Base::Matrix4D& value = prop.value<Base::Matrix4D>();
+    // NOLINTBEGIN
     QString text = QString::fromLatin1("[%1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14 %15 %16]")
-       .arg(loc.toString(value[0][0], 'f', 2), //(unsigned short usNdx)
-            loc.toString(value[0][1], 'f', 2),
-            loc.toString(value[0][2], 'f', 2),
-            loc.toString(value[0][3], 'f', 2),
-            loc.toString(value[1][0], 'f', 2),
-            loc.toString(value[1][1], 'f', 2),
-            loc.toString(value[1][2], 'f', 2),
-            loc.toString(value[1][3], 'f', 2),
-            loc.toString(value[2][0], 'f', 2))
-       .arg(loc.toString(value[2][1], 'f', 2),
-            loc.toString(value[2][2], 'f', 2),
-            loc.toString(value[2][3], 'f', 2),
-            loc.toString(value[3][0], 'f', 2),
-            loc.toString(value[3][1], 'f', 2),
-            loc.toString(value[3][2], 'f', 2),
-            loc.toString(value[3][3], 'f', 2));
-    return QVariant(text);
+                       .arg(loc.toString(value[0][0], 'f', lowPrec),  //(unsigned short usNdx)
+                            loc.toString(value[0][1], 'f', lowPrec),
+                            loc.toString(value[0][2], 'f', lowPrec),
+                            loc.toString(value[0][3], 'f', lowPrec),
+                            loc.toString(value[1][0], 'f', lowPrec),
+                            loc.toString(value[1][1], 'f', lowPrec),
+                            loc.toString(value[1][2], 'f', lowPrec),
+                            loc.toString(value[1][3], 'f', lowPrec),
+                            loc.toString(value[2][0], 'f', lowPrec))
+                       .arg(loc.toString(value[2][1], 'f', lowPrec),
+                            loc.toString(value[2][2], 'f', lowPrec),
+                            loc.toString(value[2][3], 'f', lowPrec),
+                            loc.toString(value[3][0], 'f', lowPrec),
+                            loc.toString(value[3][1], 'f', lowPrec),
+                            loc.toString(value[3][2], 'f', lowPrec),
+                            loc.toString(value[3][3], 'f', lowPrec));
+    // NOLINTEND
+    return {text};
 }
 
 QVariant PropertyMatrixItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMatrix::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMatrix>());
 
     const Base::Matrix4D& value = static_cast<const App::PropertyMatrix*>(prop)->getValue();
     return QVariant::fromValue<Base::Matrix4D>(value);
@@ -1863,236 +2004,293 @@ QVariant PropertyMatrixItem::value(const App::Property* prop) const
 
 QVariant PropertyMatrixItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMatrix::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMatrix>());
 
     const Base::Matrix4D& value = static_cast<const App::PropertyMatrix*>(prop)->getValue();
-    return QVariant(QString::fromStdString(value.analyse()));
+    return {QString::fromStdString(value.analyse())};
 }
 
 void PropertyMatrixItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert<Base::Matrix4D>())
+    if (hasExpression() || !value.canConvert<Base::Matrix4D>()) {
         return;
+    }
     const Base::Matrix4D& val = value.value<Base::Matrix4D>();
-    const int decimals=16;
-    QString data = QString::fromLatin1("FreeCAD.Matrix(%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16)")
-        .arg(val[0][0],0, 'f', decimals)
-        .arg(val[0][1],0, 'f', decimals)
-        .arg(val[0][2],0, 'f', decimals)
-        .arg(val[0][3],0, 'f', decimals)
-        .arg(val[1][0],0, 'f', decimals)
-        .arg(val[1][1],0, 'f', decimals)
-        .arg(val[1][2],0, 'f', decimals)
-        .arg(val[1][3],0, 'f', decimals)
-        .arg(val[2][0],0, 'f', decimals)
-        .arg(val[2][1],0, 'f', decimals)
-        .arg(val[2][2],0, 'f', decimals)
-        .arg(val[2][3],0, 'f', decimals)
-        .arg(val[3][0],0, 'f', decimals)
-        .arg(val[3][1],0, 'f', decimals)
-        .arg(val[3][2],0, 'f', decimals)
-        .arg(val[3][3],0, 'f', decimals);
+    // NOLINTBEGIN
+    QString data =
+        QString::fromLatin1(
+            "FreeCAD.Matrix(%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16)")
+            .arg(val[0][0], 0, 'g', highPrec)
+            .arg(val[0][1], 0, 'g', highPrec)
+            .arg(val[0][2], 0, 'g', highPrec)
+            .arg(val[0][3], 0, 'g', highPrec)
+            .arg(val[1][0], 0, 'g', highPrec)
+            .arg(val[1][1], 0, 'g', highPrec)
+            .arg(val[1][2], 0, 'g', highPrec)
+            .arg(val[1][3], 0, 'g', highPrec)
+            .arg(val[2][0], 0, 'g', highPrec)
+            .arg(val[2][1], 0, 'g', highPrec)
+            .arg(val[2][2], 0, 'g', highPrec)
+            .arg(val[2][3], 0, 'g', highPrec)
+            .arg(val[3][0], 0, 'g', highPrec)
+            .arg(val[3][1], 0, 'g', highPrec)
+            .arg(val[3][2], 0, 'g', highPrec)
+            .arg(val[3][3], 0, 'g', highPrec);
+    // NOLINTEND
     setPropertyValue(data);
 }
 
-QWidget* PropertyMatrixItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
+QWidget* PropertyMatrixItem::createEditor(QWidget* parent,
+                                          const std::function<void()>& /*method*/) const
 {
-    QLineEdit *le = new QLineEdit(parent);
+    auto le = new QLineEdit(parent);
     le->setFrame(false);
     le->setReadOnly(true);
     return le;
 }
 
-void PropertyMatrixItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyMatrixItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     QLocale loc;
-    QLineEdit* le = qobject_cast<QLineEdit*>(editor);
+    auto le = qobject_cast<QLineEdit*>(editor);
     const Base::Matrix4D& value = data.value<Base::Matrix4D>();
+    // NOLINTBEGIN
     QString text = QString::fromLatin1("[%1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14 %15 %16]")
-       .arg(loc.toString(value[0][0], 'f', 2), //(unsigned short usNdx)
-            loc.toString(value[0][1], 'f', 2),
-            loc.toString(value[0][2], 'f', 2),
-            loc.toString(value[0][3], 'f', 2),
-            loc.toString(value[1][0], 'f', 2),
-            loc.toString(value[1][1], 'f', 2),
-            loc.toString(value[1][2], 'f', 2),
-            loc.toString(value[1][3], 'f', 2),
-            loc.toString(value[2][0], 'f', 2))
-       .arg(loc.toString(value[2][1], 'f', 2),
-            loc.toString(value[2][2], 'f', 2),
-            loc.toString(value[2][3], 'f', 2),
-            loc.toString(value[3][0], 'f', 2),
-            loc.toString(value[3][1], 'f', 2),
-            loc.toString(value[3][2], 'f', 2),
-            loc.toString(value[3][3], 'f', 2));
+                       .arg(loc.toString(value[0][0], 'f', lowPrec),  //(unsigned short usNdx)
+                            loc.toString(value[0][1], 'f', lowPrec),
+                            loc.toString(value[0][2], 'f', lowPrec),
+                            loc.toString(value[0][3], 'f', lowPrec),
+                            loc.toString(value[1][0], 'f', lowPrec),
+                            loc.toString(value[1][1], 'f', lowPrec),
+                            loc.toString(value[1][2], 'f', lowPrec),
+                            loc.toString(value[1][3], 'f', lowPrec),
+                            loc.toString(value[2][0], 'f', lowPrec))
+                       .arg(loc.toString(value[2][1], 'f', lowPrec),
+                            loc.toString(value[2][2], 'f', lowPrec),
+                            loc.toString(value[2][3], 'f', lowPrec),
+                            loc.toString(value[3][0], 'f', lowPrec),
+                            loc.toString(value[3][1], 'f', lowPrec),
+                            loc.toString(value[3][2], 'f', lowPrec),
+                            loc.toString(value[3][3], 'f', lowPrec));
+    // NOLINTEND
     le->setText(text);
 }
 
-QVariant PropertyMatrixItem::editorData(QWidget *editor) const
+QVariant PropertyMatrixItem::editorData(QWidget* editor) const
 {
-    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
-    return QVariant(le->text());
+    auto le = qobject_cast<QLineEdit*>(editor);
+    return {le->text()};
 }
 
+// clang-format off
 double PropertyMatrixItem::getA11() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[0][0];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[0][0];
 }
 
 void PropertyMatrixItem::setA11(double A11)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(A11,getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(A11, getA12(), getA13(),getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA12() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[0][1];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[0][1];
 }
 
 void PropertyMatrixItem::setA12(double A12)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),A12,getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), A12, getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA13() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[0][2];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[0][2];
 }
 
 void PropertyMatrixItem::setA13(double A13)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),A13,getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), A13, getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA14() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[0][3];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[0][3];
 }
 
 void PropertyMatrixItem::setA14(double A14)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),A14,getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), A14,
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA21() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[1][0];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[1][0];
 }
 
 void PropertyMatrixItem::setA21(double A21)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),A21,getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               A21, getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA22() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[1][1];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[1][1];
 }
 
 void PropertyMatrixItem::setA22(double A22)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),A22,getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), A22, getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA23() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[1][2];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[1][2];
 }
 
 void PropertyMatrixItem::setA23(double A23)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),A23,getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), A23, getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA24() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[1][3];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[1][3];
 }
 
 void PropertyMatrixItem::setA24(double A24)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),A24,getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), A24,
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA31() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[2][0];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[2][0];
 }
 
 void PropertyMatrixItem::setA31(double A31)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),A31,getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               A31, getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA32() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[2][1];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[2][1];
 }
 
 void PropertyMatrixItem::setA32(double A32)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),A32,getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), A32, getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA33() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[2][2];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[2][2];
 }
 
 void PropertyMatrixItem::setA33(double A33)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),A33,getA34(),getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), A33, getA34(),
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA34() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[2][3];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[2][3];
 }
 
 void PropertyMatrixItem::setA34(double A34)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),A34,getA41(),getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), A34,
+                                               getA41(), getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA41() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[3][0];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[3][0];
 }
 
 void PropertyMatrixItem::setA41(double A41)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),A41,getA42(),getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               A41, getA42(), getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA42() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[3][1];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[3][1];
 }
 
 void PropertyMatrixItem::setA42(double A42)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),A42,getA43(),getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), A42, getA43(), getA44())));
 }
 
 double PropertyMatrixItem::getA43() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[3][2];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[3][2];
 }
 
 void PropertyMatrixItem::setA43(double A43)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),A43,getA44() )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), A43, getA44())));
 }
 
 double PropertyMatrixItem::getA44() const
 {
-    return data(1,Qt::EditRole).value<Base::Matrix4D>()[3][3];
+    return data(1, Qt::EditRole).value<Base::Matrix4D>()[3][3];
 }
 
 void PropertyMatrixItem::setA44(double A44)
 {
-    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),A44 )));
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(), getA12(), getA13(), getA14(),
+                                               getA21(), getA22(), getA23(), getA24(),
+                                               getA31(), getA32(), getA33(), getA34(),
+                                               getA41(), getA42(), getA43(), A44)));
 }
+// clang-format on
 
 // ---------------------------------------------------------------
 
@@ -2100,9 +2298,8 @@ RotationHelper::RotationHelper()
     : init_axis(false)
     , changed_value(false)
     , rot_angle(0)
-    , rot_axis(0,0,1)
-{
-}
+    , rot_axis(0, 0, 1)
+{}
 
 void RotationHelper::setChanged(bool value)
 {
@@ -2111,8 +2308,9 @@ void RotationHelper::setChanged(bool value)
 
 bool RotationHelper::hasChangedAndReset()
 {
-    if (!changed_value)
+    if (!changed_value) {
         return false;
+    }
 
     changed_value = false;
     return true;
@@ -2138,11 +2336,12 @@ void RotationHelper::getValue(Base::Vector3d& axis, double& angle) const
 
 double RotationHelper::getAngle(const Base::Rotation& val) const
 {
-    double angle;
+    double angle {};
     Base::Vector3d dir;
     val.getRawValue(dir, angle);
-    if (dir * this->rot_axis < 0.0)
+    if (dir * this->rot_axis < 0.0) {
         angle = -angle;
+    }
     return angle;
 }
 
@@ -2168,10 +2367,12 @@ Base::Rotation RotationHelper::setAxis(const Base::Rotation& value, const Base::
 {
     this->rot_axis = axis;
     Base::Rotation rot = value;
-    Base::Vector3d dummy; double angle;
+    Base::Vector3d dummy;
+    double angle {};
     rot.getValue(dummy, angle);
-    if (dummy * axis < 0.0)
+    if (dummy * axis < 0.0) {
         angle = -angle;
+    }
     rot.setValue(axis, angle);
     changed_value = true;
     return rot;
@@ -2179,18 +2380,20 @@ Base::Rotation RotationHelper::setAxis(const Base::Rotation& value, const Base::
 
 void RotationHelper::assignProperty(const Base::Rotation& value, double eps)
 {
-    double angle;
+    double angle {};
     Base::Vector3d dir;
     value.getRawValue(dir, angle);
     Base::Vector3d cross = this->rot_axis.Cross(dir);
     double len2 = cross.Sqr();
     if (angle != 0) {
         // vectors are not parallel
-        if (len2 > eps)
+        if (len2 > eps) {
             this->rot_axis = dir;
+        }
         // vectors point into opposite directions
-        else if (this->rot_axis.Dot(dir) < 0)
+        else if (this->rot_axis.Dot(dir) < 0) {
             this->rot_axis = -this->rot_axis;
+        }
     }
     this->rot_angle = Base::toDegrees(angle);
 }
@@ -2212,15 +2415,14 @@ PropertyRotationItem::PropertyRotationItem()
     this->appendChild(m_d);
 }
 
-PropertyRotationItem::~PropertyRotationItem()
-{
-}
+PropertyRotationItem::~PropertyRotationItem() = default;
 
 Base::Quantity PropertyRotationItem::getAngle() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Base::Rotation>())
+    if (!value.canConvert<Base::Rotation>()) {
         return Base::Quantity(0.0);
+    }
 
     const Base::Rotation& val = value.value<Base::Rotation>();
     double angle = h.getAngle(val);
@@ -2230,8 +2432,9 @@ Base::Quantity PropertyRotationItem::getAngle() const
 void PropertyRotationItem::setAngle(Base::Quantity angle)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Base::Rotation>())
+    if (!value.canConvert<Base::Rotation>()) {
         return;
+    }
 
     Base::Rotation rot = h.setAngle(angle.getValue());
     setValue(QVariant::fromValue(rot));
@@ -2245,10 +2448,11 @@ Base::Vector3d PropertyRotationItem::getAxis() const
 void PropertyRotationItem::setAxis(const Base::Vector3d& axis)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Base::Rotation>())
+    if (!value.canConvert<Base::Rotation>()) {
         return;
+    }
 
-    Base::Rotation rot = value.value<Base::Rotation>();
+    auto rot = value.value<Base::Rotation>();
     rot = h.setAxis(rot, axis);
     setValue(QVariant::fromValue(rot));
 }
@@ -2256,9 +2460,9 @@ void PropertyRotationItem::setAxis(const Base::Vector3d& axis)
 void PropertyRotationItem::assignProperty(const App::Property* prop)
 {
     // Choose an adaptive epsilon to avoid changing the axis when they are considered to
-    // be equal. See https://forum.freecadweb.org/viewtopic.php?f=10&t=24662&start=10
-    double eps = std::pow(10.0, -2*(decimals()+1));
-    if (prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId())) {
+    // be equal. See https://forum.freecad.org/viewtopic.php?f=10&t=24662&start=10
+    double eps = std::pow(10.0, -2 * (decimals() + 1));  // NOLINT
+    if (prop->isDerivedFrom<App::PropertyRotation>()) {
         const Base::Rotation& value = static_cast<const App::PropertyRotation*>(prop)->getValue();
         h.assignProperty(value, eps);
     }
@@ -2266,10 +2470,10 @@ void PropertyRotationItem::assignProperty(const App::Property* prop)
 
 QVariant PropertyRotationItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyRotation>());
 
     const Base::Rotation& value = static_cast<const App::PropertyRotation*>(prop)->getValue();
-    double angle;
+    double angle {};
     Base::Vector3d dir;
     value.getRawValue(dir, angle);
     if (!h.isAxisInitialized()) {
@@ -2303,10 +2507,10 @@ QVariant PropertyRotationItem::value(const App::Property* prop) const
 
 QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyRotation>());
 
     const Base::Rotation& p = static_cast<const App::PropertyRotation*>(prop)->getValue();
-    double angle;
+    double angle {};
     Base::Vector3d dir;
     p.getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
@@ -2314,99 +2518,98 @@ QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
     QLocale loc;
     QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
                                      "Angle: %4")
-            .arg(loc.toString(dir.x,'f',decimals()),
-                 loc.toString(dir.y,'f',decimals()),
-                 loc.toString(dir.z,'f',decimals()),
-                 Base::Quantity(angle, Base::Unit::Angle).getUserString());
-    return QVariant(data);
+                       .arg(loc.toString(dir.x, 'f', decimals()),
+                            loc.toString(dir.y, 'f', decimals()),
+                            loc.toString(dir.z, 'f', decimals()),
+                            Base::Quantity(angle, Base::Unit::Angle).getUserString());
+    return {data};
 }
 
 QVariant PropertyRotationItem::toString(const QVariant& prop) const
 {
     const Base::Rotation& p = prop.value<Base::Rotation>();
-    double angle;
+    double angle {};
     Base::Vector3d dir;
     p.getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
 
     QLocale loc;
     QString data = QString::fromUtf8("[(%1 %2 %3); %4]")
-            .arg(loc.toString(dir.x,'f',2),
-                 loc.toString(dir.y,'f',2),
-                 loc.toString(dir.z,'f',2),
-                 Base::Quantity(angle, Base::Unit::Angle).getUserString());
-    return QVariant(data);
+                       .arg(loc.toString(dir.x, 'f', lowPrec),
+                            loc.toString(dir.y, 'f', lowPrec),
+                            loc.toString(dir.z, 'f', lowPrec),
+                            Base::Quantity(angle, Base::Unit::Angle).getUserString());
+    return {data};
 }
 
 void PropertyRotationItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert<Base::Rotation>())
+    if (!value.canConvert<Base::Rotation>()) {
         return;
+    }
     // Accept this only if the user changed the axis, angle or position but
     // not if >this< item loses focus
-    if (!h.hasChangedAndReset())
+    if (!h.hasChangedAndReset()) {
         return;
+    }
 
     Base::Vector3d axis;
-    double angle;
+    double angle {};
     h.getValue(axis, angle);
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+    Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
     QString data = QString::fromLatin1("App.Rotation(App.Vector(%1,%2,%3),%4)")
-                    .arg(Base::UnitsApi::toNumber(axis.x, format))
-                    .arg(Base::UnitsApi::toNumber(axis.y, format))
-                    .arg(Base::UnitsApi::toNumber(axis.z, format))
-                    .arg(Base::UnitsApi::toNumber(angle, format));
+                       .arg(Base::UnitsApi::toNumber(axis.x, format),
+                            Base::UnitsApi::toNumber(axis.y, format),
+                            Base::UnitsApi::toNumber(axis.z, format),
+                            Base::UnitsApi::toNumber(angle, format));
     setPropertyValue(data);
 }
 
-QWidget* PropertyRotationItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyRotationItem::createEditor(QWidget* parent,
+                                            const std::function<void()>& method) const
 {
     Q_UNUSED(parent)
-    Q_UNUSED(receiver)
     Q_UNUSED(method)
     return nullptr;
 }
 
-void PropertyRotationItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyRotationItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     Q_UNUSED(editor)
     Q_UNUSED(data)
 }
 
-QVariant PropertyRotationItem::editorData(QWidget *editor) const
+QVariant PropertyRotationItem::editorData(QWidget* editor) const
 {
     Q_UNUSED(editor)
-    return QVariant();
+    return {};
 }
 
 void PropertyRotationItem::propertyBound()
 {
     if (isBound()) {
-        m_a->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
-                                                  <<App::ObjectIdentifier::String("Angle"));
+        m_a->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("Angle"));
 
-        m_d->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
-                                                  <<App::ObjectIdentifier::String("Axis"));
+        m_d->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("Axis"));
     }
 }
 
 // --------------------------------------------------------------------
 
-PlacementEditor::PlacementEditor(const QString& name, QWidget * parent)
-    : LabelButton(parent), _task(0)
+PlacementEditor::PlacementEditor(QString name, QWidget* parent)
+    : LabelButton(parent)
+    , _task(nullptr)
+    , propertyname {std::move(name)}
 {
-    propertyname = name;
     propertyname.replace(QLatin1String(" "), QLatin1String(""));
 }
 
-PlacementEditor::~PlacementEditor()
-{
-}
+PlacementEditor::~PlacementEditor() = default;
 
 void PlacementEditor::browse()
 {
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    Gui::Dialog::TaskPlacement* task;
+    Gui::Dialog::TaskPlacement* task {};
     task = qobject_cast<Gui::Dialog::TaskPlacement*>(dlg);
     if (dlg && !task) {
         // there is already another task dialog which must be closed first
@@ -2418,11 +2621,11 @@ void PlacementEditor::browse()
     }
     if (!_task) {
         _task = task;
-        connect(task, SIGNAL(placementChanged(const QVariant &, bool, bool)),
-                this, SLOT(updateValue(const QVariant&, bool, bool)));
+        connect(task, &TaskPlacement::placementChanged, this, &PlacementEditor::updateValue);
     }
     task->setPlacement(value().value<Base::Placement>());
     task->setPropertyName(propertyname);
+    task->setSelection(Gui::Selection().getSelectionEx());
     task->bindObject();
     Gui::Control().showDialog(task);
 }
@@ -2430,21 +2633,22 @@ void PlacementEditor::browse()
 void PlacementEditor::showValue(const QVariant& d)
 {
     const Base::Placement& p = d.value<Base::Placement>();
-    double angle;
-    Base::Vector3d dir, pos;
+    double angle {};
+    Base::Vector3d dir;
+    Base::Vector3d pos;
     p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
 
     QLocale loc;
     QString data = QString::fromUtf8("[(%1 %2 %3);%4 \xc2\xb0;(%5 %6 %7)]")
-                    .arg(loc.toString(dir.x,'f',2),
-                         loc.toString(dir.y,'f',2),
-                         loc.toString(dir.z,'f',2),
-                         loc.toString(angle,'f',2),
-                         loc.toString(pos.x,'f',2),
-                         loc.toString(pos.y,'f',2),
-                         loc.toString(pos.z,'f',2));
+                       .arg(loc.toString(dir.x, 'f', lowPrec),
+                            loc.toString(dir.y, 'f', lowPrec),
+                            loc.toString(dir.z, 'f', lowPrec),
+                            loc.toString(angle, 'f', lowPrec),
+                            loc.toString(pos.x, 'f', lowPrec),
+                            loc.toString(pos.y, 'f', lowPrec),
+                            loc.toString(pos.z, 'f', lowPrec));
     getLabel()->setText(data);
 }
 
@@ -2484,15 +2688,14 @@ PropertyPlacementItem::PropertyPlacementItem()
     this->appendChild(m_p);
 }
 
-PropertyPlacementItem::~PropertyPlacementItem()
-{
-}
+PropertyPlacementItem::~PropertyPlacementItem() = default;
 
 Base::Quantity PropertyPlacementItem::getAngle() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Base::Placement>())
+    if (!value.canConvert<Base::Placement>()) {
         return Base::Quantity(0.0);
+    }
 
     const Base::Placement& val = value.value<Base::Placement>();
     double angle = h.getAngle(val.getRotation());
@@ -2502,10 +2705,11 @@ Base::Quantity PropertyPlacementItem::getAngle() const
 void PropertyPlacementItem::setAngle(Base::Quantity angle)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Base::Placement>())
+    if (!value.canConvert<Base::Placement>()) {
         return;
+    }
 
-    Base::Placement val = value.value<Base::Placement>();
+    auto val = value.value<Base::Placement>();
     Base::Rotation rot = h.setAngle(angle.getValue());
     val.setRotation(rot);
     setValue(QVariant::fromValue(val));
@@ -2519,10 +2723,11 @@ Base::Vector3d PropertyPlacementItem::getAxis() const
 void PropertyPlacementItem::setAxis(const Base::Vector3d& axis)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Base::Placement>())
+    if (!value.canConvert<Base::Placement>()) {
         return;
+    }
 
-    Base::Placement val = value.value<Base::Placement>();
+    auto val = value.value<Base::Placement>();
     Base::Rotation rot = val.getRotation();
     rot = h.setAxis(rot, axis);
     val.setRotation(rot);
@@ -2532,8 +2737,9 @@ void PropertyPlacementItem::setAxis(const Base::Vector3d& axis)
 Base::Vector3d PropertyPlacementItem::getPosition() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Base::Placement>())
-        return Base::Vector3d(0,0,0);
+    if (!value.canConvert<Base::Placement>()) {
+        return Base::Vector3d(0, 0, 0);
+    }
     const Base::Placement& val = value.value<Base::Placement>();
     return val.getPosition();
 }
@@ -2541,10 +2747,11 @@ Base::Vector3d PropertyPlacementItem::getPosition() const
 void PropertyPlacementItem::setPosition(const Base::Vector3d& pos)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Base::Placement>())
+    if (!value.canConvert<Base::Placement>()) {
         return;
+    }
 
-    Base::Placement val = value.value<Base::Placement>();
+    auto val = value.value<Base::Placement>();
     val.setPosition(pos);
     h.setChanged(true);
     setValue(QVariant::fromValue(val));
@@ -2553,9 +2760,9 @@ void PropertyPlacementItem::setPosition(const Base::Vector3d& pos)
 void PropertyPlacementItem::assignProperty(const App::Property* prop)
 {
     // Choose an adaptive epsilon to avoid changing the axis when they are considered to
-    // be equal. See https://forum.freecadweb.org/viewtopic.php?f=10&t=24662&start=10
-    double eps = std::pow(10.0, -2*(decimals()+1));
-    if (prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+    // be equal. See https://forum.freecad.org/viewtopic.php?f=10&t=24662&start=10
+    double eps = std::pow(10.0, -2 * (decimals() + 1));  // NOLINT
+    if (prop->isDerivedFrom<App::PropertyPlacement>()) {
         const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
         h.assignProperty(value.getRotation(), eps);
     }
@@ -2563,10 +2770,10 @@ void PropertyPlacementItem::assignProperty(const App::Property* prop)
 
 QVariant PropertyPlacementItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyPlacement>());
 
     const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-    double angle;
+    double angle {};
     Base::Vector3d dir;
     value.getRotation().getRawValue(dir, angle);
     if (!h.isAxisInitialized()) {
@@ -2600,11 +2807,12 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
 
 QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyPlacement>());
 
     const Base::Placement& p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-    double angle;
-    Base::Vector3d dir, pos;
+    double angle {};
+    Base::Vector3d dir;
+    Base::Vector3d pos;
     p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
@@ -2613,97 +2821,107 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
                                      "Angle: %4\n"
                                      "Position: (%5  %6  %7)")
-            .arg(loc.toString(dir.x,'f',decimals()),
-                 loc.toString(dir.y,'f',decimals()),
-                 loc.toString(dir.z,'f',decimals()),
-                 Base::Quantity(angle, Base::Unit::Angle).getUserString(),
-                 Base::Quantity(pos.x, Base::Unit::Length).getUserString(),
-                 Base::Quantity(pos.y, Base::Unit::Length).getUserString(),
-                 Base::Quantity(pos.z, Base::Unit::Length).getUserString());
-    return QVariant(data);
+                       .arg(loc.toString(dir.x, 'f', decimals()),
+                            loc.toString(dir.y, 'f', decimals()),
+                            loc.toString(dir.z, 'f', decimals()),
+                            Base::Quantity(angle, Base::Unit::Angle).getUserString(),
+                            Base::Quantity(pos.x, Base::Unit::Length).getUserString(),
+                            Base::Quantity(pos.y, Base::Unit::Length).getUserString(),
+                            Base::Quantity(pos.z, Base::Unit::Length).getUserString());
+    return {data};
 }
 
 QVariant PropertyPlacementItem::toString(const QVariant& prop) const
 {
     const Base::Placement& p = prop.value<Base::Placement>();
-    double angle;
-    Base::Vector3d dir, pos;
+    double angle {};
+    Base::Vector3d dir;
+    Base::Vector3d pos;
     p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
 
     QLocale loc;
     QString data = QString::fromUtf8("[(%1 %2 %3); %4; (%5  %6  %7)]")
-            .arg(loc.toString(dir.x,'f',2),
-                 loc.toString(dir.y,'f',2),
-                 loc.toString(dir.z,'f',2),
-                 Base::Quantity(angle, Base::Unit::Angle).getUserString(),
-                 Base::Quantity(pos.x, Base::Unit::Length).getUserString(),
-                 Base::Quantity(pos.y, Base::Unit::Length).getUserString(),
-                 Base::Quantity(pos.z, Base::Unit::Length).getUserString());
-    return QVariant(data);
+                       .arg(loc.toString(dir.x, 'f', lowPrec),
+                            loc.toString(dir.y, 'f', lowPrec),
+                            loc.toString(dir.z, 'f', lowPrec),
+                            Base::Quantity(angle, Base::Unit::Angle).getUserString(),
+                            Base::Quantity(pos.x, Base::Unit::Length).getUserString(),
+                            Base::Quantity(pos.y, Base::Unit::Length).getUserString(),
+                            Base::Quantity(pos.z, Base::Unit::Length).getUserString());
+    return {data};
 }
 
 void PropertyPlacementItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert<Base::Placement>())
+    if (hasExpression() || !value.canConvert<Base::Placement>()) {
         return;
+    }
     // Accept this only if the user changed the axis, angle or position but
     // not if >this< item loses focus
-    if (!h.hasChangedAndReset())
+    if (!h.hasChangedAndReset()) {
         return;
+    }
 
     const Base::Placement& val = value.value<Base::Placement>();
     Base::Vector3d pos = val.getPosition();
 
     Base::Vector3d axis;
-    double angle;
+    double angle {};
     h.getValue(axis, angle);
 
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+    Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
     QString data = QString::fromLatin1("App.Placement("
-                                      "App.Vector(%1,%2,%3),"
-                                      "App.Rotation(App.Vector(%4,%5,%6),%7))")
-                    .arg(Base::UnitsApi::toNumber(pos.x, format))
-                    .arg(Base::UnitsApi::toNumber(pos.y, format))
-                    .arg(Base::UnitsApi::toNumber(pos.z, format))
-                    .arg(Base::UnitsApi::toNumber(axis.x, format))
-                    .arg(Base::UnitsApi::toNumber(axis.y, format))
-                    .arg(Base::UnitsApi::toNumber(axis.z, format))
-                    .arg(Base::UnitsApi::toNumber(angle, format));
+                                       "App.Vector(%1,%2,%3),"
+                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")
+                       .arg(Base::UnitsApi::toNumber(pos.x, format),
+                            Base::UnitsApi::toNumber(pos.y, format),
+                            Base::UnitsApi::toNumber(pos.z, format),
+                            Base::UnitsApi::toNumber(axis.x, format),
+                            Base::UnitsApi::toNumber(axis.y, format),
+                            Base::UnitsApi::toNumber(axis.z, format),
+                            Base::UnitsApi::toNumber(angle, format));
     setPropertyValue(data);
 }
 
-QWidget* PropertyPlacementItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyPlacementItem::createEditor(QWidget* parent,
+                                             const std::function<void()>& method) const
 {
-    PlacementEditor *pe = new PlacementEditor(this->propertyName(), parent);
-    QObject::connect(pe, SIGNAL(valueChanged(const QVariant &)), receiver, method);
-    pe->setDisabled(isReadOnly());
+    auto pe = new PlacementEditor(this->propertyName(), parent);
+    QObject::connect(pe, &PlacementEditor::valueChanged, method);
+
+    // The Placement dialog only works if property is part of a DocumentObject
+    bool readonly = isReadOnly();
+    if (auto prop = getFirstProperty()) {
+        readonly |= (!prop->getContainer()->isDerivedFrom<App::DocumentObject>());
+    }
+    pe->setDisabled(readonly);
     return pe;
 }
 
-void PropertyPlacementItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyPlacementItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    PlacementEditor *pe = qobject_cast<PlacementEditor*>(editor);
+    auto pe = qobject_cast<PlacementEditor*>(editor);
     pe->setValue(data);
 }
 
-QVariant PropertyPlacementItem::editorData(QWidget *editor) const
+QVariant PropertyPlacementItem::editorData(QWidget* editor) const
 {
-    PlacementEditor *pe = qobject_cast<PlacementEditor*>(editor);
+    auto pe = qobject_cast<PlacementEditor*>(editor);
     return pe->value();
 }
 
 void PropertyPlacementItem::propertyBound()
 {
     if (isBound()) {
-        m_a->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
-                                                  <<App::ObjectIdentifier::String("Angle"));
-   
-        m_d->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
-                                                  <<App::ObjectIdentifier::String("Axis"));
-        
-        m_p->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Base"));
+        m_a->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("Rotation")
+                                                   << App::ObjectIdentifier::String("Angle"));
+
+        m_d->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("Rotation")
+                                                   << App::ObjectIdentifier::String("Axis"));
+
+        m_p->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("Base"));
     }
 }
 
@@ -2713,9 +2931,9 @@ void PropertyPlacementItem::propertyBound()
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyEnumItem)
 
 PropertyEnumItem::PropertyEnumItem()
-    :m_enum(0)
+    : m_enum(nullptr)
 {
-    if(PropertyView::showAll()) {
+    if (PropertyView::showAll()) {
         m_enum = static_cast<PropertyStringListItem*>(PropertyStringListItem::create());
         m_enum->setParent(this);
         m_enum->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Enum")));
@@ -2725,11 +2943,12 @@ PropertyEnumItem::PropertyEnumItem()
 
 void PropertyEnumItem::propertyBound()
 {
-    if (m_enum && isBound()) 
-        m_enum->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Enum"));
+    if (m_enum && isBound()) {
+        m_enum->bind(App::ObjectIdentifier(getPath()) << App::ObjectIdentifier::String("Enum"));
+    }
 }
 
-void PropertyEnumItem::setEnum(QStringList values)
+void PropertyEnumItem::setEnum(const QStringList& values)
 {
     setData(values);
 }
@@ -2738,85 +2957,169 @@ QStringList PropertyEnumItem::getEnum() const
 {
     QStringList res;
     auto prop = getFirstProperty();
-    if (prop && prop->getTypeId().isDerivedFrom(App::PropertyEnumeration::getClassTypeId())) {
-        const App::PropertyEnumeration* prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
-        for(int i=0; i<prop_enum->getEnum().maxValue(); ++i)
-            res.push_back(QString::fromUtf8(prop_enum->getEnums()[i]));
+    if (prop && prop->isDerivedFrom<App::PropertyEnumeration>()) {
+        const auto prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
+        std::vector<std::string> enums = prop_enum->getEnumVector();
+        for (const auto& it : enums) {
+            res.push_back(QString::fromStdString(it));
+        }
     }
     return res;
 }
 
 QVariant PropertyEnumItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyEnumeration::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyEnumeration>());
 
-    const App::PropertyEnumeration* prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
-    if(!prop_enum->isValid())
-        return QVariant(QString());
-    return QVariant(QString::fromUtf8(prop_enum->getValueAsString()));
+    const auto prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
+    if (!prop_enum->isValid()) {
+        return {QString()};
+    }
+    return {QString::fromUtf8(prop_enum->getValueAsString())};
 }
 
 void PropertyEnumItem::setValue(const QVariant& value)
 {
-    if (hasExpression())
+    if (hasExpression()) {
         return;
+    }
 
-    QString data;
+    std::ostringstream ss;
 
-    if (value.type() == QVariant::StringList) {
+    if (value.userType() == QMetaType::QStringList) {
         QStringList values = value.toStringList();
-        QTextStream str(&data);
-        str << "[";
-        for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-            QString text(*it);
-            text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
+        ss << "[";
+        for (const auto& it : values) {
+            QString text(it);
+            text.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
 
-            std::string pystr = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
-            pystr = Base::Interpreter().strToPython(pystr.c_str());
-            str << "u\"" << pystr.c_str() << "\", ";
+            std::string str = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
+            str = Base::InterpreterSingleton::strToPython(str);
+            ss << "u\"" << str << "\", ";
         }
-        str << "]";
+        ss << "]";
+        setPropertyValue(ss.str());
     }
-    else if (value.canConvert(QVariant::String)) {
-        QByteArray val = value.toString().toUtf8();
-        std::string str = Base::Tools::escapedUnicodeFromUtf8(val);
-        data = QString::fromLatin1("u\"%1\"").arg(QString::fromStdString(str));
+    else if (value.canConvert<QString>()) {
+        std::string str = Base::Tools::escapedUnicodeFromUtf8(value.toString().toUtf8());
+        ss << "u\"" << str << "\"";
+        setPropertyValue(ss.str());
     }
-    else
-        return;
-    setPropertyValue(data);
 }
 
-QWidget* PropertyEnumItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+namespace
 {
-    QComboBox *cb = new QComboBox(parent);
-    cb->setFrame(false);
-    cb->setDisabled(isReadOnly());
-    QObject::connect(cb, SIGNAL(activated(int)), receiver, method);
-    return cb;
+
+class EnumItems;
+
+struct EnumItem
+{
+    QString text;
+    QString fullText;
+    std::shared_ptr<EnumItems> children;
+    explicit EnumItem(QString t = QString(), QString f = QString())
+        : text(std::move(t))
+        , fullText(std::move(f))
+    {}
+    void populate(QMenu* menu);
+};
+
+class EnumItems: public std::vector<EnumItem>
+{
+};
+
+void EnumItem::populate(QMenu* menu)
+{
+    if (!children || children->empty()) {
+        auto action = menu->addAction(text);
+        action->setData(fullText);
+        return;
+    }
+    auto subMenu = menu->addMenu(text);
+    for (auto& item : *children) {
+        item.populate(subMenu);
+    }
 }
 
-void PropertyEnumItem::setEditorData(QWidget *editor, const QVariant& data) const
+std::shared_ptr<EnumItems> getEnumItems(const QStringList& commonModes)  // NOLINT
+{
+    int index = -1;
+    std::shared_ptr<EnumItems> enumItems;
+    for (auto& mode : commonModes) {
+        ++index;
+        auto fields = mode.split(QStringLiteral("|"));
+        if (!enumItems && fields.size() <= 1) {
+            continue;
+        }
+        if (!enumItems) {
+            enumItems = std::make_shared<EnumItems>();
+            for (int i = 0; i < index; ++i) {
+                enumItems->emplace_back(commonModes[i], mode);
+            }
+        }
+        auto children = enumItems;
+        int j = -1;
+        for (auto& field : fields) {
+            ++j;
+            field = field.trimmed();
+            auto it = children->end();
+            if (field.isEmpty()) {
+                if (!children->empty()) {
+                    --it;
+                }
+                else {
+                    continue;
+                }
+            }
+            else {
+                it = std::find_if(children->begin(),
+                                  children->end(),
+                                  [&field](const EnumItem& item) {
+                                      return item.text == field;
+                                  });
+                if (it == children->end()) {
+                    it = children->emplace(children->end(), field, mode);
+                }
+            }
+            if (j + 1 == (int)fields.size()) {
+                break;
+            }
+            if (!it->children) {
+                it->children = std::make_shared<EnumItems>();
+            }
+            children = it->children;
+        }
+    }
+
+    return enumItems;
+}
+
+}  // anonymous namespace
+
+QStringList PropertyEnumItem::getCommonModes() const
 {
     const std::vector<App::Property*>& items = getPropertyData();
 
-    QStringList commonModes, modes;
-    for (std::vector<App::Property*>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        if ((*it)->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
-            App::PropertyEnumeration* prop = static_cast<App::PropertyEnumeration*>(*it);
-            if (prop->getEnums() == 0) {
+    QStringList commonModes;
+    QStringList modes;
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        if ((*it)->is<App::PropertyEnumeration>()) {
+            auto prop = static_cast<App::PropertyEnumeration*>(*it);
+            if (!prop->hasEnums()) {
                 commonModes.clear();
-                break;
+                return {};
             }
             const std::vector<std::string>& value = prop->getEnumVector();
             if (it == items.begin()) {
-                for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt)
-                    commonModes << QString::fromUtf8(jt->c_str());
+                for (const auto& jt : value) {
+                    commonModes << QString::fromUtf8(jt.c_str());
+                }
             }
             else {
-                for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
-                    if (commonModes.contains(QString::fromUtf8(jt->c_str())))
-                        modes << QString::fromUtf8(jt->c_str());
+                for (const auto& jt : value) {
+                    if (commonModes.contains(QString::fromUtf8(jt.c_str()))) {
+                        modes << QString::fromUtf8(jt.c_str());
+                    }
                 }
 
                 commonModes = modes;
@@ -2825,168 +3128,218 @@ void PropertyEnumItem::setEditorData(QWidget *editor, const QVariant& data) cons
         }
     }
 
-    QComboBox *cb = qobject_cast<QComboBox*>(editor);
-    if (!commonModes.isEmpty()) {
-        cb->clear();
+    return commonModes;
+}
+
+QWidget* PropertyEnumItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+{
+    QStringList commonModes = getCommonModes();
+    if (commonModes.isEmpty()) {
+        return nullptr;
+    }
+
+    std::shared_ptr<EnumItems> enumItems = getEnumItems(commonModes);
+
+    if (!enumItems) {
+        auto cb = new QComboBox(parent);
+        cb->setFrame(false);
+        cb->setDisabled(isReadOnly());
         cb->addItems(commonModes);
+        QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
+        return cb;
+    }
+
+    auto button = new PropertyEnumButton(parent);
+    button->setDisabled(isReadOnly());
+    auto menu = new QMenu(button);
+    for (auto& item : *enumItems) {
+        item.populate(menu);
+    }
+    button->setMenu(menu);
+    QObject::connect(menu, &QMenu::aboutToShow, this, [=]() {
+        menu->setMinimumWidth(button->width());
+    });
+    QObject::connect(menu, &QMenu::triggered, this, [=](QAction* action) {
+        button->setText(action->data().toString());
+        Q_EMIT button->picked();
+    });
+    QObject::connect(button, &PropertyEnumButton::picked, method);
+    return button;
+}
+
+void PropertyEnumItem::setEditorData(QWidget* editor, const QVariant& data) const
+{
+    if (auto cb = qobject_cast<QComboBox*>(editor)) {
+        cb->setEditable(false);
         cb->setCurrentIndex(cb->findText(data.toString()));
+    }
+    else if (auto btn = qobject_cast<QPushButton*>(editor)) {
+        btn->setText(data.toString());
     }
 }
 
-QVariant PropertyEnumItem::editorData(QWidget *editor) const
+QVariant PropertyEnumItem::editorData(QWidget* editor) const
 {
-    QComboBox *cb = qobject_cast<QComboBox*>(editor);
-    return QVariant(cb->currentText());
+    if (auto cb = qobject_cast<QComboBox*>(editor)) {
+        return {cb->currentText()};
+    }
+    if (auto btn = qobject_cast<QPushButton*>(editor)) {
+        return btn->text();
+    }
+    return {};
 }
 
 // ---------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyStringListItem)
 
-PropertyStringListItem::PropertyStringListItem()
-{
-}
+PropertyStringListItem::PropertyStringListItem() = default;
 
-QWidget* PropertyStringListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyStringListItem::createEditor(QWidget* parent,
+                                              const std::function<void()>& method) const
 {
-    Gui::LabelEditor* le = new Gui::LabelEditor(parent);
+    auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setDisabled(isReadOnly());
-    QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
+    QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
 
-void PropertyStringListItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyStringListItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    auto le = qobject_cast<Gui::LabelEditor*>(editor);
     QStringList list = data.toStringList();
     le->setText(list.join(QChar::fromLatin1('\n')));
 }
 
-QVariant PropertyStringListItem::editorData(QWidget *editor) const
+QVariant PropertyStringListItem::editorData(QWidget* editor) const
 {
-    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    auto le = qobject_cast<Gui::LabelEditor*>(editor);
     QString complete = le->text();
     QStringList list = complete.split(QChar::fromLatin1('\n'));
-    return QVariant(list);
+    return {list};
 }
 
 QVariant PropertyStringListItem::toString(const QVariant& prop) const
 {
     QStringList list = prop.toStringList();
-    if (list.size() > 10) {
-        list = list.mid(0, 10);
+    const int size = 10;
+    if (list.size() > size) {
+        list = list.mid(0, size);
         list.append(QLatin1String("..."));
     }
 
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
 
-    return QVariant(text);
+    return {text};
 }
 
 QVariant PropertyStringListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyStringList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyStringList>());
     QStringList list;
-    const std::vector<std::string>& value = (static_cast<const App::PropertyStringList*>(prop))->getValues();
-    for ( std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt ) {
-        list << QString::fromUtf8((*jt).c_str());
+    const std::vector<std::string>& value =
+        (static_cast<const App::PropertyStringList*>(prop))->getValues();
+    for (const auto& jt : value) {
+        list << QString::fromUtf8(jt.c_str());
     }
 
-    return QVariant(list);
+    return {list};
 }
 
 void PropertyStringListItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::StringList))
+    if (hasExpression() || !value.canConvert<QStringList>()) {
         return;
-    QStringList values = value.toStringList();
-    QString data;
-    QTextStream str(&data);
-    str.setCodec("UTF-8");
-
-    str << "[";
-    for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-        QString text(*it);
-        std::string pystr = Base::Interpreter().strToPython(text.toUtf8().constData());
-        str << "\"" << QString::fromUtf8(pystr.c_str()) << "\", ";
     }
-    str << "]";
 
-    setPropertyValue(data);
+    QStringList values = value.toStringList();
+    std::ostringstream ss;
+    ss << "[";
+    for (const auto& it : values) {
+        QString text(it);
+        std::string pystr = Base::InterpreterSingleton::strToPython(text.toUtf8().constData());
+        ss << "\"" << pystr << "\", ";
+    }
+    ss << "]";
+    setPropertyValue(ss.str());
 }
 
 // ---------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatListItem)
 
-PropertyFloatListItem::PropertyFloatListItem()
-{
-}
+PropertyFloatListItem::PropertyFloatListItem() = default;
 
-QWidget* PropertyFloatListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyFloatListItem::createEditor(QWidget* parent,
+                                             const std::function<void()>& method) const
 {
-    Gui::LabelEditor* le = new Gui::LabelEditor(parent);
+    auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setInputType(Gui::LabelEditor::Float);
     le->setDisabled(isReadOnly());
-    QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
+    QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
 
-void PropertyFloatListItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyFloatListItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    auto le = qobject_cast<Gui::LabelEditor*>(editor);
     QStringList list = data.toStringList();
     le->setText(list.join(QChar::fromLatin1('\n')));
 }
 
-QVariant PropertyFloatListItem::editorData(QWidget *editor) const
+QVariant PropertyFloatListItem::editorData(QWidget* editor) const
 {
-    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    auto le = qobject_cast<Gui::LabelEditor*>(editor);
     QString complete = le->text();
     QStringList list = complete.split(QChar::fromLatin1('\n'));
-    return QVariant(list);
+    return {list};
 }
 
 QVariant PropertyFloatListItem::toString(const QVariant& prop) const
 {
     QStringList list = prop.toStringList();
-    if (list.size() > 10) {
-        list = list.mid(0, 10);
+    const int size = 10;
+    if (list.size() > size) {
+        list = list.mid(0, size);
         list.append(QLatin1String("..."));
     }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
-    return QVariant(text);
+    return {text};
 }
 
 QVariant PropertyFloatListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFloatList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFloatList>());
 
     QStringList list;
-    const std::vector<double>& value = static_cast<const App::PropertyFloatList*>(prop)->getValues();
-    for (std::vector<double>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
-        list << QString::number(*jt, 'f', decimals());
+    const std::vector<double>& value =
+        static_cast<const App::PropertyFloatList*>(prop)->getValues();
+    for (double jt : value) {
+        list << QString::number(jt, 'f', decimals());
     }
 
-    return QVariant(list);
+    return {list};
 }
 
 void PropertyFloatListItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::StringList))
+    if (hasExpression() || !value.canConvert<QStringList>()) {
         return;
+    }
+
     QStringList values = value.toStringList();
     QString data;
     QTextStream str(&data);
     str << "[";
-    for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-        str << *it << ",";
+    for (auto it = values.begin(); it != values.end(); ++it) {
+        if (it != values.begin()) {
+            str << ",";
+        }
+        str << *it;
     }
     str << "]";
-    if (data == QString::fromUtf8("[,]"))
-        data = QString::fromUtf8("[]");
     setPropertyValue(data);
 }
 
@@ -2994,74 +3347,78 @@ void PropertyFloatListItem::setValue(const QVariant& value)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerListItem)
 
-PropertyIntegerListItem::PropertyIntegerListItem()
-{
-}
+PropertyIntegerListItem::PropertyIntegerListItem() = default;
 
-QWidget* PropertyIntegerListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyIntegerListItem::createEditor(QWidget* parent,
+                                               const std::function<void()>& method) const
 {
-    Gui::LabelEditor* le = new Gui::LabelEditor(parent);
+    auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setInputType(Gui::LabelEditor::Integer);
     le->setDisabled(isReadOnly());
-    QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
+    QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
 
-void PropertyIntegerListItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyIntegerListItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    auto le = qobject_cast<Gui::LabelEditor*>(editor);
     QStringList list = data.toStringList();
     le->setText(list.join(QChar::fromLatin1('\n')));
 }
 
-QVariant PropertyIntegerListItem::editorData(QWidget *editor) const
+QVariant PropertyIntegerListItem::editorData(QWidget* editor) const
 {
-    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    auto le = qobject_cast<Gui::LabelEditor*>(editor);
     QString complete = le->text();
     QStringList list = complete.split(QChar::fromLatin1('\n'));
-    return QVariant(list);
+    return {list};
 }
 
 QVariant PropertyIntegerListItem::toString(const QVariant& prop) const
 {
     QStringList list = prop.toStringList();
-    if (list.size() > 10) {
-        list = list.mid(0, 10);
+    const int size = 10;
+    if (list.size() > size) {
+        list = list.mid(0, size);
         list.append(QLatin1String("..."));
     }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
 
-    return QVariant(text);
+    return {text};
 }
 
 QVariant PropertyIntegerListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyIntegerList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyIntegerList>());
 
     QStringList list;
-    const std::vector<long>& value = static_cast<const App::PropertyIntegerList*>(prop)->getValues();
-    for (std::vector<long>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
-        list << QString::number(*jt);
+    const std::vector<long>& value =
+        static_cast<const App::PropertyIntegerList*>(prop)->getValues();
+    for (long jt : value) {
+        list << QString::number(jt);
     }
 
-    return QVariant(list);
+    return {list};
 }
 
 void PropertyIntegerListItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::StringList))
+    if (hasExpression() || !value.canConvert<QStringList>()) {
         return;
+    }
+
     QStringList values = value.toStringList();
     QString data;
     QTextStream str(&data);
     str << "[";
-    for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-        str << *it << ",";
+    for (auto it = values.begin(); it != values.end(); ++it) {
+        if (it != values.begin()) {
+            str << ",";
+        }
+        str << *it;
     }
     str << "]";
-    if (data == QString::fromUtf8("[,]"))
-        data = QString::fromUtf8("[]");
     setPropertyValue(data);
 }
 
@@ -3069,13 +3426,11 @@ void PropertyIntegerListItem::setValue(const QVariant& value)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyColorItem)
 
-PropertyColorItem::PropertyColorItem()
-{
-}
+PropertyColorItem::PropertyColorItem() = default;
 
 QVariant PropertyColorItem::decoration(const QVariant& value) const
 {
-    QColor color = value.value<QColor>();
+    auto color = value.value<QColor>();
 
     int size = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
     QPixmap p(size, size);
@@ -3086,51 +3441,49 @@ QVariant PropertyColorItem::decoration(const QVariant& value) const
 
 QVariant PropertyColorItem::toString(const QVariant& prop) const
 {
-    QColor value = prop.value<QColor>();
-    QString color = QString::fromLatin1("[%1, %2, %3]")
-        .arg(value.red()).arg(value.green()).arg(value.blue());
-    return QVariant(color);
+    auto value = prop.value<QColor>();
+    QString color =
+        QString::fromLatin1("[%1, %2, %3]").arg(value.red()).arg(value.green()).arg(value.blue());
+    return {color};
 }
 
 QVariant PropertyColorItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyColor>());
 
-    App::Color value = ((App::PropertyColor*)prop)->getValue();
+    App::Color value = static_cast<const App::PropertyColor*>(prop)->getValue();
     return QVariant(value.asValue<QColor>());
 }
 
 void PropertyColorItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert<QColor>())
+    if (hasExpression() || !value.canConvert<QColor>()) {
         return;
-    QColor col = value.value<QColor>();
-    App::Color val; val.setValue<QColor>(col);
-    QString data = QString::fromLatin1("(%1,%2,%3)")
-                    .arg(val.r,0,'f',decimals())
-                    .arg(val.g,0,'f',decimals())
-                    .arg(val.b,0,'f',decimals());
+    }
+    auto col = value.value<QColor>();
+    QString data =
+        QString::fromLatin1("(%1,%2,%3)").arg(col.red()).arg(col.green()).arg(col.blue());
     setPropertyValue(data);
 }
 
-QWidget* PropertyColorItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyColorItem::createEditor(QWidget* parent, const std::function<void()>& method) const
 {
-    Gui::ColorButton* cb = new Gui::ColorButton( parent );
+    auto cb = new Gui::ColorButton(parent);
     cb->setDisabled(isReadOnly());
-    QObject::connect(cb, SIGNAL(changed()), receiver, method);
+    QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
 
-void PropertyColorItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyColorItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    Gui::ColorButton *cb = qobject_cast<Gui::ColorButton*>(editor);
-    QColor color = data.value<QColor>();
+    auto cb = qobject_cast<Gui::ColorButton*>(editor);
+    auto color = data.value<QColor>();
     cb->setColor(color);
 }
 
-QVariant PropertyColorItem::editorData(QWidget *editor) const
+QVariant PropertyColorItem::editorData(QWidget* editor) const
 {
-    Gui::ColorButton *cb = qobject_cast<Gui::ColorButton*>(editor);
+    auto cb = qobject_cast<Gui::ColorButton*>(editor);
     QVariant var;
     var.setValue(cb->color());
     return var;
@@ -3138,26 +3491,29 @@ QVariant PropertyColorItem::editorData(QWidget *editor) const
 
 // --------------------------------------------------------------------
 
-namespace Gui { namespace PropertyEditor {
-    class Material
-    {
-    public:
-        QColor diffuseColor;
-        QColor ambientColor;
-        QColor specularColor;
-        QColor emissiveColor;
-        float shininess;
-        float transparency;
-    };
-}
-}
+namespace Gui::PropertyEditor
+{
+class Material
+{
+public:
+    QColor diffuseColor;
+    QColor ambientColor;
+    QColor specularColor;
+    QColor emissiveColor;
+    float shininess {};
+    float transparency {};
+};
+}  // namespace Gui::PropertyEditor
 
-Q_DECLARE_METATYPE(Gui::PropertyEditor::Material)
+Q_DECLARE_METATYPE(Gui::PropertyEditor::Material)  // NOLINT
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyMaterialItem)
 
 PropertyMaterialItem::PropertyMaterialItem()
 {
+    const int min = 0;
+    const int max = 100;
+    const int steps = 5;
     diffuse = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     diffuse->setParent(this);
     diffuse->setPropertyName(QLatin1String("DiffuseColor"));
@@ -3178,42 +3534,47 @@ PropertyMaterialItem::PropertyMaterialItem()
     emissive->setPropertyName(QLatin1String("EmissiveColor"));
     this->appendChild(emissive);
 
-    shininess = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    shininess =
+        static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
+    shininess->setRange(min, max);
+    shininess->setStepSize(steps);
     shininess->setParent(this);
     shininess->setPropertyName(QLatin1String("Shininess"));
     this->appendChild(shininess);
 
-    transparency = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    transparency =
+        static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
+    transparency->setRange(min, max);
+    transparency->setStepSize(steps);
     transparency->setParent(this);
     transparency->setPropertyName(QLatin1String("Transparency"));
     this->appendChild(transparency);
 }
 
-PropertyMaterialItem::~PropertyMaterialItem()
-{
-}
+PropertyMaterialItem::~PropertyMaterialItem() = default;
 
 void PropertyMaterialItem::propertyBound()
-{
-}
+{}
 
 QColor PropertyMaterialItem::getDiffuseColor() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
-        return QColor();
+    if (!value.canConvert<Material>()) {
+        return {};
+    }
 
-    Material val = value.value<Material>();
+    auto val = value.value<Material>();
     return val.diffuseColor;
 }
 
 void PropertyMaterialItem::setDiffuseColor(const QColor& color)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
+    if (!value.canConvert<Material>()) {
         return;
+    }
 
-    Material mat = value.value<Material>();
+    auto mat = value.value<Material>();
     mat.diffuseColor = color;
     setValue(QVariant::fromValue<Material>(mat));
 }
@@ -3221,20 +3582,22 @@ void PropertyMaterialItem::setDiffuseColor(const QColor& color)
 QColor PropertyMaterialItem::getAmbientColor() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
-        return QColor();
+    if (!value.canConvert<Material>()) {
+        return {};
+    }
 
-    Material val = value.value<Material>();
+    auto val = value.value<Material>();
     return val.ambientColor;
 }
 
 void PropertyMaterialItem::setAmbientColor(const QColor& color)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
+    if (!value.canConvert<Material>()) {
         return;
+    }
 
-    Material mat = value.value<Material>();
+    auto mat = value.value<Material>();
     mat.ambientColor = color;
     setValue(QVariant::fromValue<Material>(mat));
 }
@@ -3242,20 +3605,22 @@ void PropertyMaterialItem::setAmbientColor(const QColor& color)
 QColor PropertyMaterialItem::getSpecularColor() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
-        return QColor();
+    if (!value.canConvert<Material>()) {
+        return {};
+    }
 
-    Material val = value.value<Material>();
+    auto val = value.value<Material>();
     return val.specularColor;
 }
 
 void PropertyMaterialItem::setSpecularColor(const QColor& color)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
+    if (!value.canConvert<Material>()) {
         return;
+    }
 
-    Material mat = value.value<Material>();
+    auto mat = value.value<Material>();
     mat.specularColor = color;
     setValue(QVariant::fromValue<Material>(mat));
 }
@@ -3263,70 +3628,76 @@ void PropertyMaterialItem::setSpecularColor(const QColor& color)
 QColor PropertyMaterialItem::getEmissiveColor() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
-        return QColor();
+    if (!value.canConvert<Material>()) {
+        return {};
+    }
 
-    Material val = value.value<Material>();
+    auto val = value.value<Material>();
     return val.emissiveColor;
 }
 
 void PropertyMaterialItem::setEmissiveColor(const QColor& color)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
+    if (!value.canConvert<Material>()) {
         return;
+    }
 
-    Material mat = value.value<Material>();
+    auto mat = value.value<Material>();
     mat.emissiveColor = color;
     setValue(QVariant::fromValue<Material>(mat));
 }
 
-float PropertyMaterialItem::getShininess() const
+int PropertyMaterialItem::getShininess() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
+    if (!value.canConvert<Material>()) {
         return 0;
+    }
 
-    Material val = value.value<Material>();
-    return val.shininess;
+    auto val = value.value<Material>();
+    return toPercent(val.shininess);
 }
 
-void PropertyMaterialItem::setShininess(float s)
+void PropertyMaterialItem::setShininess(int s)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
+    if (!value.canConvert<Material>()) {
         return;
+    }
 
-    Material mat = value.value<Material>();
-    mat.shininess = s;
+    auto mat = value.value<Material>();
+    mat.shininess = fromPercent(s);
     setValue(QVariant::fromValue<Material>(mat));
 }
 
-float PropertyMaterialItem::getTransparency() const
+int PropertyMaterialItem::getTransparency() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
+    if (!value.canConvert<Material>()) {
         return 0;
+    }
 
-    Material val = value.value<Material>();
-    return val.transparency;
+    auto val = value.value<Material>();
+    return toPercent(val.transparency);
 }
 
-void PropertyMaterialItem::setTransparency(float t)
+void PropertyMaterialItem::setTransparency(int t)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
+    if (!value.canConvert<Material>()) {
         return;
+    }
 
-    Material mat = value.value<Material>();
-    mat.transparency = t;
+    auto mat = value.value<Material>();
+    mat.transparency = fromPercent(t);
     setValue(QVariant::fromValue<Material>(mat));
 }
 
 QVariant PropertyMaterialItem::decoration(const QVariant& value) const
 {
     // use the diffuse color
-    Material val = value.value<Material>();
+    auto val = value.value<Material>();
     QColor color = val.diffuseColor;
 
     int size = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
@@ -3339,45 +3710,50 @@ QVariant PropertyMaterialItem::decoration(const QVariant& value) const
 QVariant PropertyMaterialItem::toString(const QVariant& prop) const
 {
     // use the diffuse color
-    Material val = prop.value<Material>();
+    auto val = prop.value<Material>();
     QColor value = val.diffuseColor;
-    QString color = QString::fromLatin1("[%1, %2, %3]")
-        .arg(value.red()).arg(value.green()).arg(value.blue());
-    return QVariant(color);
+    QString color =
+        QString::fromLatin1("[%1, %2, %3]").arg(value.red()).arg(value.green()).arg(value.blue());
+    return {color};
 }
 
 QVariant PropertyMaterialItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMaterial>());
 
     const App::Material& value = static_cast<const App::PropertyMaterial*>(prop)->getValue();
-    QColor dc = value.diffuseColor.asValue<QColor>();
-    QColor ac = value.ambientColor.asValue<QColor>();
-    QColor sc = value.specularColor.asValue<QColor>();
-    QColor ec = value.emissiveColor.asValue<QColor>();
+    auto dc = value.diffuseColor.asValue<QColor>();
+    auto ac = value.ambientColor.asValue<QColor>();
+    auto sc = value.specularColor.asValue<QColor>();
+    auto ec = value.emissiveColor.asValue<QColor>();
 
-    QString data = QString::fromUtf8(
-        "Diffuse color: [%1, %2, %3]\n"
-        "Ambient color: [%4, %5, %6]\n"
-        "Specular color: [%7, %8, %9]\n"
-        "Emissive color: [%10, %11, %12]\n"
-        "Shininess: %13\n"
-        "Transparency: %14"
-        )
-        .arg(dc.red()).arg(dc.green()).arg(dc.blue())
-        .arg(ac.red()).arg(ac.green()).arg(ac.blue())
-        .arg(sc.red()).arg(sc.green()).arg(sc.blue())
-        .arg(ec.red()).arg(ec.green()).arg(ec.blue())
-        .arg(value.shininess)
-        .arg(value.transparency)
-        ;
+    QString data = QString::fromUtf8("Diffuse color: [%1, %2, %3]\n"
+                                     "Ambient color: [%4, %5, %6]\n"
+                                     "Specular color: [%7, %8, %9]\n"
+                                     "Emissive color: [%10, %11, %12]\n"
+                                     "Shininess: %13\n"
+                                     "Transparency: %14")
+                       .arg(dc.red())
+                       .arg(dc.green())
+                       .arg(dc.blue())
+                       .arg(ac.red())
+                       .arg(ac.green())
+                       .arg(ac.blue())
+                       .arg(sc.red())
+                       .arg(sc.green())
+                       .arg(sc.blue())
+                       .arg(ec.red())
+                       .arg(ec.green())
+                       .arg(ec.blue())
+                       .arg(toPercent(value.shininess))
+                       .arg(toPercent(value.transparency));
 
-    return QVariant(data);
+    return {data};
 }
 
 QVariant PropertyMaterialItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMaterial>());
 
     const App::Material& value = static_cast<const App::PropertyMaterial*>(prop)->getValue();
     Material mat;
@@ -3394,72 +3770,77 @@ QVariant PropertyMaterialItem::value(const App::Property* prop) const
 
 void PropertyMaterialItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert<Material>())
+    if (hasExpression() || !value.canConvert<Material>()) {
         return;
+    }
 
-    Material mat = value.value<Material>();
-    App::Color dc; dc.setValue<QColor>(mat.diffuseColor);
-    App::Color ac; ac.setValue<QColor>(mat.ambientColor);
-    App::Color sc; sc.setValue<QColor>(mat.specularColor);
-    App::Color ec; ec.setValue<QColor>(mat.emissiveColor);
+    auto mat = value.value<Material>();
+    App::Color dc;
+    dc.setValue<QColor>(mat.diffuseColor);
+    App::Color ac;
+    ac.setValue<QColor>(mat.ambientColor);
+    App::Color sc;
+    sc.setValue<QColor>(mat.specularColor);
+    App::Color ec;
+    ec.setValue<QColor>(mat.emissiveColor);
     float s = mat.shininess;
     float t = mat.transparency;
 
-    QString data = QString::fromLatin1(
-        "App.Material("
-        "DiffuseColor=(%1,%2,%3),"
-        "AmbientColor=(%4,%5,%6),"
-        "SpecularColor=(%7,%8,%9),"
-        "EmissiveColor=(%10,%11,%12),"
-        "Shininess=(%13),"
-        "Transparency=(%14),"
-        ")"
-    )
-    .arg(dc.r, 0, 'f', decimals())
-    .arg(dc.g, 0, 'f', decimals())
-    .arg(dc.b, 0, 'f', decimals())
-    .arg(ac.r, 0, 'f', decimals())
-    .arg(ac.g, 0, 'f', decimals())
-    .arg(ac.b, 0, 'f', decimals())
-    .arg(sc.r, 0, 'f', decimals())
-    .arg(sc.g, 0, 'f', decimals())
-    .arg(sc.b, 0, 'f', decimals())
-    .arg(ec.r, 0, 'f', decimals())
-    .arg(ec.g, 0, 'f', decimals())
-    .arg(ec.b, 0, 'f', decimals())
-    .arg(s, 0, 'f', decimals())
-    .arg(t, 0, 'f', decimals())
-    ;
+    QString data = QString::fromLatin1("App.Material("
+                                       "DiffuseColor=(%1,%2,%3),"
+                                       "AmbientColor=(%4,%5,%6),"
+                                       "SpecularColor=(%7,%8,%9),"
+                                       "EmissiveColor=(%10,%11,%12),"
+                                       "Shininess=(%13),"
+                                       "Transparency=(%14),"
+                                       ")")
+                       .arg(dc.r, 0, 'f', decimals())
+                       .arg(dc.g, 0, 'f', decimals())
+                       .arg(dc.b, 0, 'f', decimals())
+                       .arg(ac.r, 0, 'f', decimals())
+                       .arg(ac.g, 0, 'f', decimals())
+                       .arg(ac.b, 0, 'f', decimals())
+                       .arg(sc.r, 0, 'f', decimals())
+                       .arg(sc.g, 0, 'f', decimals())
+                       .arg(sc.b, 0, 'f', decimals())
+                       .arg(ec.r, 0, 'f', decimals())
+                       .arg(ec.g, 0, 'f', decimals())
+                       .arg(ec.b, 0, 'f', decimals())
+                       .arg(s, 0, 'f', decimals())
+                       .arg(t, 0, 'f', decimals());
 
     setPropertyValue(data);
 }
 
-QWidget* PropertyMaterialItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyMaterialItem::createEditor(QWidget* parent,
+                                            const std::function<void()>& method) const
 {
-    Gui::ColorButton* cb = new Gui::ColorButton(parent);
+    auto cb = new Gui::ColorButton(parent);
     cb->setDisabled(isReadOnly());
-    QObject::connect(cb, SIGNAL(changed()), receiver, method);
+    QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
 
-void PropertyMaterialItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyMaterialItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    if (!data.canConvert<Material>())
+    if (!data.canConvert<Material>()) {
         return;
+    }
 
-    Material val = data.value<Material>();
-    Gui::ColorButton *cb = qobject_cast<Gui::ColorButton*>(editor);
+    auto val = data.value<Material>();
+    auto cb = qobject_cast<Gui::ColorButton*>(editor);
     cb->setColor(val.diffuseColor);
 }
 
-QVariant PropertyMaterialItem::editorData(QWidget *editor) const
+QVariant PropertyMaterialItem::editorData(QWidget* editor) const
 {
-    Gui::ColorButton *cb = qobject_cast<Gui::ColorButton*>(editor);
+    auto cb = qobject_cast<Gui::ColorButton*>(editor);
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<Material>())
-        return QVariant();
+    if (!value.canConvert<Material>()) {
+        return {};
+    }
 
-    Material val = value.value<Material>();
+    auto val = value.value<Material>();
     val.diffuseColor = cb->color();
     return QVariant::fromValue<Material>(val);
 }
@@ -3470,6 +3851,10 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyMaterialListItem)
 
 PropertyMaterialListItem::PropertyMaterialListItem()
 {
+    const int min = 0;
+    const int max = 100;
+    const int steps = 5;
+
     // This editor gets a list of materials but it only edits the first item.
     diffuse = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     diffuse->setParent(this);
@@ -3491,56 +3876,65 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     emissive->setPropertyName(QLatin1String("EmissiveColor"));
     this->appendChild(emissive);
 
-    shininess = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    shininess =
+        static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
+    shininess->setRange(min, max);
+    shininess->setStepSize(steps);
     shininess->setParent(this);
     shininess->setPropertyName(QLatin1String("Shininess"));
     this->appendChild(shininess);
 
-    transparency = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    transparency =
+        static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
+    transparency->setRange(min, max);
+    transparency->setStepSize(steps);
     transparency->setParent(this);
     transparency->setPropertyName(QLatin1String("Transparency"));
     this->appendChild(transparency);
 }
 
-PropertyMaterialListItem::~PropertyMaterialListItem()
-{
-}
+PropertyMaterialListItem::~PropertyMaterialListItem() = default;
 
 void PropertyMaterialListItem::propertyBound()
-{
-}
+{}
 
 QColor PropertyMaterialListItem::getDiffuseColor() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
-        return QColor();
+    if (!value.canConvert<QVariantList>()) {
+        return {};
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
-        return QColor();
+    if (list.isEmpty()) {
+        return {};
+    }
 
-    if (!list[0].canConvert<Material>())
-        return QColor();
+    if (!list[0].canConvert<Material>()) {
+        return {};
+    }
 
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     return mat.diffuseColor;
 }
 
 void PropertyMaterialListItem::setDiffuseColor(const QColor& color)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
+    if (!value.canConvert<QVariantList>()) {
         return;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return;
+    }
 
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     mat.diffuseColor = color;
     list[0] = QVariant::fromValue<Material>(mat);
     setValue(list);
@@ -3549,34 +3943,40 @@ void PropertyMaterialListItem::setDiffuseColor(const QColor& color)
 QColor PropertyMaterialListItem::getAmbientColor() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
-        return QColor();
+    if (!value.canConvert<QVariantList>()) {
+        return {};
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
-        return QColor();
+    if (list.isEmpty()) {
+        return {};
+    }
 
-    if (!list[0].canConvert<Material>())
-        return QColor();
+    if (!list[0].canConvert<Material>()) {
+        return {};
+    }
 
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     return mat.ambientColor;
 }
 
 void PropertyMaterialListItem::setAmbientColor(const QColor& color)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
+    if (!value.canConvert<QVariantList>()) {
         return;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return;
+    }
 
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     mat.ambientColor = color;
     list[0] = QVariant::fromValue<Material>(mat);
     setValue(list);
@@ -3585,34 +3985,40 @@ void PropertyMaterialListItem::setAmbientColor(const QColor& color)
 QColor PropertyMaterialListItem::getSpecularColor() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
-        return QColor();
+    if (!value.canConvert<QVariantList>()) {
+        return {};
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
-        return QColor();
+    if (list.isEmpty()) {
+        return {};
+    }
 
-    if (!list[0].canConvert<Material>())
-        return QColor();
+    if (!list[0].canConvert<Material>()) {
+        return {};
+    }
 
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     return mat.specularColor;
 }
 
 void PropertyMaterialListItem::setSpecularColor(const QColor& color)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
+    if (!value.canConvert<QVariantList>()) {
         return;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return;
+    }
 
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     mat.specularColor = color;
     list[0] = QVariant::fromValue<Material>(mat);
     setValue(list);
@@ -3621,125 +4027,146 @@ void PropertyMaterialListItem::setSpecularColor(const QColor& color)
 QColor PropertyMaterialListItem::getEmissiveColor() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
-        return QColor();
+    if (!value.canConvert<QVariantList>()) {
+        return {};
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
-        return QColor();
+    if (list.isEmpty()) {
+        return {};
+    }
 
-    if (!list[0].canConvert<Material>())
-        return QColor();
+    if (!list[0].canConvert<Material>()) {
+        return {};
+    }
 
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     return mat.emissiveColor;
 }
 
 void PropertyMaterialListItem::setEmissiveColor(const QColor& color)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
+    if (!value.canConvert<QVariantList>()) {
         return;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return;
+    }
 
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     mat.emissiveColor = color;
     list[0] = QVariant::fromValue<Material>(mat);
     setValue(list);
 }
 
-float PropertyMaterialListItem::getShininess() const
+int PropertyMaterialListItem::getShininess() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
+    if (!value.canConvert<QVariantList>()) {
         return 0;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return 0;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return 0;
+    }
 
-    Material mat = list[0].value<Material>();
-    return mat.shininess;
+    auto mat = list[0].value<Material>();
+    return toPercent(mat.shininess);
 }
 
-void PropertyMaterialListItem::setShininess(float s)
+void PropertyMaterialListItem::setShininess(int s)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
+    if (!value.canConvert<QVariantList>()) {
         return;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return;
+    }
 
-    Material mat = list[0].value<Material>();
-    mat.shininess = s;
+    auto mat = list[0].value<Material>();
+    mat.shininess = fromPercent(s);
     list[0] = QVariant::fromValue<Material>(mat);
     setValue(list);
 }
 
-float PropertyMaterialListItem::getTransparency() const
+int PropertyMaterialListItem::getTransparency() const
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
+    if (!value.canConvert<QVariantList>()) {
         return 0;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return 0;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return 0;
+    }
 
-    Material mat = list[0].value<Material>();
-    return mat.transparency;
+    auto mat = list[0].value<Material>();
+    return toPercent(mat.transparency);
 }
 
-void PropertyMaterialListItem::setTransparency(float t)
+void PropertyMaterialListItem::setTransparency(int t)
 {
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
+    if (!value.canConvert<QVariantList>()) {
         return;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return;
+    }
 
-    Material mat = list[0].value<Material>();
-    mat.transparency = t;
+    auto mat = list[0].value<Material>();
+    mat.transparency = fromPercent(t);
     list[0] = QVariant::fromValue<Material>(mat);
     setValue(list);
 }
 
 QVariant PropertyMaterialListItem::decoration(const QVariant& value) const
 {
-    if (!value.canConvert<QVariantList>())
-        return QVariant();
+    if (!value.canConvert<QVariantList>()) {
+        return {};
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
-        return QVariant();
+    if (list.isEmpty()) {
+        return {};
+    }
 
-    if (!list[0].canConvert<Material>())
-        return QVariant();
+    if (!list[0].canConvert<Material>()) {
+        return {};
+    }
 
     // use the diffuse color
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     QColor color = mat.diffuseColor;
 
     int size = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
@@ -3751,72 +4178,83 @@ QVariant PropertyMaterialListItem::decoration(const QVariant& value) const
 
 QVariant PropertyMaterialListItem::toString(const QVariant& prop) const
 {
-    if (!prop.canConvert<QVariantList>())
-        return QVariant();
+    if (!prop.canConvert<QVariantList>()) {
+        return {};
+    }
 
     QVariantList list = prop.toList();
-    if (list.isEmpty())
-        return QVariant();
+    if (list.isEmpty()) {
+        return {};
+    }
 
-    if (!list[0].canConvert<Material>())
-        return QVariant();
+    if (!list[0].canConvert<Material>()) {
+        return {};
+    }
 
     // use the diffuse color
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     QColor value = mat.diffuseColor;
-    QString color = QString::fromLatin1("[%1, %2, %3]")
-        .arg(value.red()).arg(value.green()).arg(value.blue());
-    return QVariant(color);
+    QString color =
+        QString::fromLatin1("[%1, %2, %3]").arg(value.red()).arg(value.green()).arg(value.blue());
+    return {color};
 }
 
 QVariant PropertyMaterialListItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterialList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMaterialList>());
 
-    const std::vector<App::Material>& values = static_cast<const App::PropertyMaterialList*>(prop)->getValues();
-    if (values.empty())
-        return QVariant();
+    const std::vector<App::Material>& values =
+        static_cast<const App::PropertyMaterialList*>(prop)->getValues();
+    if (values.empty()) {
+        return {};
+    }
 
     App::Material value = values.front();
-    QColor dc = value.diffuseColor.asValue<QColor>();
-    QColor ac = value.ambientColor.asValue<QColor>();
-    QColor sc = value.specularColor.asValue<QColor>();
-    QColor ec = value.emissiveColor.asValue<QColor>();
+    auto dc = value.diffuseColor.asValue<QColor>();
+    auto ac = value.ambientColor.asValue<QColor>();
+    auto sc = value.specularColor.asValue<QColor>();
+    auto ec = value.emissiveColor.asValue<QColor>();
 
-    QString data = QString::fromUtf8(
-        "Diffuse color: [%1, %2, %3]\n"
-        "Ambient color: [%4, %5, %6]\n"
-        "Specular color: [%7, %8, %9]\n"
-        "Emissive color: [%10, %11, %12]\n"
-        "Shininess: %13\n"
-        "Transparency: %14"
-        )
-        .arg(dc.red()).arg(dc.green()).arg(dc.blue())
-        .arg(ac.red()).arg(ac.green()).arg(ac.blue())
-        .arg(sc.red()).arg(sc.green()).arg(sc.blue())
-        .arg(ec.red()).arg(ec.green()).arg(ec.blue())
-        .arg(value.shininess)
-        .arg(value.transparency)
-        ;
+    QString data = QString::fromUtf8("Diffuse color: [%1, %2, %3]\n"
+                                     "Ambient color: [%4, %5, %6]\n"
+                                     "Specular color: [%7, %8, %9]\n"
+                                     "Emissive color: [%10, %11, %12]\n"
+                                     "Shininess: %13\n"
+                                     "Transparency: %14")
+                       .arg(dc.red())
+                       .arg(dc.green())
+                       .arg(dc.blue())
+                       .arg(ac.red())
+                       .arg(ac.green())
+                       .arg(ac.blue())
+                       .arg(sc.red())
+                       .arg(sc.green())
+                       .arg(sc.blue())
+                       .arg(ec.red())
+                       .arg(ec.green())
+                       .arg(ec.blue())
+                       .arg(toPercent(value.shininess))
+                       .arg(toPercent(value.transparency));
 
-    return QVariant(data);
+    return {data};
 }
 
 QVariant PropertyMaterialListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterialList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMaterialList>());
 
-    const std::vector<App::Material>& value = static_cast<const App::PropertyMaterialList*>(prop)->getValues();
+    const std::vector<App::Material>& value =
+        static_cast<const App::PropertyMaterialList*>(prop)->getValues();
     QVariantList variantList;
 
-    for (std::vector<App::Material>::const_iterator it = value.begin(); it != value.end(); ++it) {
+    for (const auto& it : value) {
         Material mat;
-        mat.diffuseColor = it->diffuseColor.asValue<QColor>();
-        mat.ambientColor = it->ambientColor.asValue<QColor>();
-        mat.specularColor = it->specularColor.asValue<QColor>();
-        mat.emissiveColor = it->emissiveColor.asValue<QColor>();
-        mat.shininess = it->shininess;
-        mat.transparency = it->transparency;
+        mat.diffuseColor = it.diffuseColor.asValue<QColor>();
+        mat.ambientColor = it.ambientColor.asValue<QColor>();
+        mat.specularColor = it.specularColor.asValue<QColor>();
+        mat.emissiveColor = it.emissiveColor.asValue<QColor>();
+        mat.shininess = it.shininess;
+        mat.transparency = it.transparency;
 
         variantList << QVariant::fromValue<Material>(mat);
     }
@@ -3826,103 +4264,113 @@ QVariant PropertyMaterialListItem::value(const App::Property* prop) const
 
 void PropertyMaterialListItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert<QVariantList>())
+    if (hasExpression() || !value.canConvert<QVariantList>()) {
         return;
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return;
+    }
+
+    // Setting an appearance using the property editor resets the
+    // per-face appearance
+    list = list.mid(0, 1);
 
     QString data;
     QTextStream str(&data);
     str << "(";
 
-    for (QVariantList::iterator it = list.begin(); it != list.end(); ++it) {
-        Material mat = it->value<Material>();
-        App::Color dc; dc.setValue<QColor>(mat.diffuseColor);
-        App::Color ac; ac.setValue<QColor>(mat.ambientColor);
-        App::Color sc; sc.setValue<QColor>(mat.specularColor);
-        App::Color ec; ec.setValue<QColor>(mat.emissiveColor);
-        float s = mat.shininess;
-        float t = mat.transparency;
+    auto mat = list[0].value<Material>();
+    App::Color dc;
+    dc.setValue<QColor>(mat.diffuseColor);
+    App::Color ac;
+    ac.setValue<QColor>(mat.ambientColor);
+    App::Color sc;
+    sc.setValue<QColor>(mat.specularColor);
+    App::Color ec;
+    ec.setValue<QColor>(mat.emissiveColor);
+    float s = mat.shininess;
+    float t = mat.transparency;
 
-        QString item = QString::fromLatin1(
-            "App.Material("
-            "DiffuseColor=(%1,%2,%3),"
-            "AmbientColor=(%4,%5,%6),"
-            "SpecularColor=(%7,%8,%9),"
-            "EmissiveColor=(%10,%11,%12),"
-            "Shininess=(%13),"
-            "Transparency=(%14),"
-            ")"
-            )
-            .arg(dc.r, 0, 'f', decimals())
-            .arg(dc.g, 0, 'f', decimals())
-            .arg(dc.b, 0, 'f', decimals())
-            .arg(ac.r, 0, 'f', decimals())
-            .arg(ac.g, 0, 'f', decimals())
-            .arg(ac.b, 0, 'f', decimals())
-            .arg(sc.r, 0, 'f', decimals())
-            .arg(sc.g, 0, 'f', decimals())
-            .arg(sc.b, 0, 'f', decimals())
-            .arg(ec.r, 0, 'f', decimals())
-            .arg(ec.g, 0, 'f', decimals())
-            .arg(ec.b, 0, 'f', decimals())
-            .arg(s, 0, 'f', decimals())
-            .arg(t, 0, 'f', decimals())
-            ;
-        str << item << ", ";
-    }
-
-    str << ")";
+    QString item = QString::fromLatin1("App.Material("
+                                       "DiffuseColor=(%1,%2,%3),"
+                                       "AmbientColor=(%4,%5,%6),"
+                                       "SpecularColor=(%7,%8,%9),"
+                                       "EmissiveColor=(%10,%11,%12),"
+                                       "Shininess=(%13),"
+                                       "Transparency=(%14),"
+                                       ")")
+                       .arg(dc.r, 0, 'f', decimals())
+                       .arg(dc.g, 0, 'f', decimals())
+                       .arg(dc.b, 0, 'f', decimals())
+                       .arg(ac.r, 0, 'f', decimals())
+                       .arg(ac.g, 0, 'f', decimals())
+                       .arg(ac.b, 0, 'f', decimals())
+                       .arg(sc.r, 0, 'f', decimals())
+                       .arg(sc.g, 0, 'f', decimals())
+                       .arg(sc.b, 0, 'f', decimals())
+                       .arg(ec.r, 0, 'f', decimals())
+                       .arg(ec.g, 0, 'f', decimals())
+                       .arg(ec.b, 0, 'f', decimals())
+                       .arg(s, 0, 'f', decimals())
+                       .arg(t, 0, 'f', decimals());
+    str << item << ")";
 
     setPropertyValue(data);
 }
 
-QWidget* PropertyMaterialListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyMaterialListItem::createEditor(QWidget* parent,
+                                                const std::function<void()>& method) const
 {
-    Gui::ColorButton* cb = new Gui::ColorButton(parent);
+    auto cb = new Gui::ColorButton(parent);
     cb->setDisabled(isReadOnly());
-    QObject::connect(cb, SIGNAL(changed()), receiver, method);
+    QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
 
-void PropertyMaterialListItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyMaterialListItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    if (!data.canConvert<QVariantList>())
+    if (!data.canConvert<QVariantList>()) {
         return;
+    }
 
     QVariantList list = data.toList();
-    if (list.isEmpty())
+    if (list.isEmpty()) {
         return;
+    }
 
-    if (!list[0].canConvert<Material>())
+    if (!list[0].canConvert<Material>()) {
         return;
+    }
 
     // use the diffuse color
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     QColor color = mat.diffuseColor;
 
-    Gui::ColorButton *cb = qobject_cast<Gui::ColorButton*>(editor);
+    auto cb = qobject_cast<Gui::ColorButton*>(editor);
     cb->setColor(color);
 }
 
-QVariant PropertyMaterialListItem::editorData(QWidget *editor) const
+QVariant PropertyMaterialListItem::editorData(QWidget* editor) const
 {
-    Gui::ColorButton *cb = qobject_cast<Gui::ColorButton*>(editor);
+    auto cb = qobject_cast<Gui::ColorButton*>(editor);
     QVariant value = data(1, Qt::EditRole);
-    if (!value.canConvert<QVariantList>())
-        return QVariant();
+    if (!value.canConvert<QVariantList>()) {
+        return {};
+    }
 
     QVariantList list = value.toList();
-    if (list.isEmpty())
-        return QVariant();
+    if (list.isEmpty()) {
+        return {};
+    }
 
-    if (!list[0].canConvert<Material>())
-        return QVariant();
+    if (!list[0].canConvert<Material>()) {
+        return {};
+    }
 
     // use the diffuse color
-    Material mat = list[0].value<Material>();
+    auto mat = list[0].value<Material>();
     mat.diffuseColor = cb->color();
     list[0] = QVariant::fromValue<Material>(mat);
 
@@ -3933,25 +4381,21 @@ QVariant PropertyMaterialListItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFileItem)
 
-PropertyFileItem::PropertyFileItem()
-{
-}
+PropertyFileItem::PropertyFileItem() = default;
 
 QVariant PropertyFileItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFile::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFile>());
 
     std::string value = static_cast<const App::PropertyFile*>(prop)->getValue();
-    return QVariant(QString::fromUtf8(value.c_str()));
+    return {QString::fromUtf8(value.c_str())};
 }
 
 void PropertyFileItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::String))
-        return;
-    QString val = value.toString();
-    QString data = QString::fromLatin1("\"%1\"").arg(val);
-    setPropertyValue(data);
+    if (!hasExpression() && value.canConvert<QString>()) {
+        setPropertyValue(Base::Tools::quoted(value.toString().toStdString()));
+    }
 }
 
 QVariant PropertyFileItem::toolTip(const App::Property* prop) const
@@ -3959,56 +4403,53 @@ QVariant PropertyFileItem::toolTip(const App::Property* prop) const
     return value(prop);
 }
 
-QWidget* PropertyFileItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyFileItem::createEditor(QWidget* parent, const std::function<void()>& method) const
 {
-    Gui::FileChooser *fc = new Gui::FileChooser(parent);
+    auto fc = new Gui::FileChooser(parent);
     fc->setAutoFillBackground(true);
     fc->setDisabled(isReadOnly());
-    QObject::connect(fc, SIGNAL(fileNameSelected(const QString&)), receiver, method);
+    QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
 
-void PropertyFileItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyFileItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     const App::Property* prop = getFirstProperty();
-    const App::PropertyFile* propFile = static_cast<const App::PropertyFile*>(prop);
-    std::string filter = propFile->getFilter();
-    Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
-    if (!filter.empty()) {
-        fc->setFilter(Base::Tools::fromStdString(filter));
+    if (const auto propFile = dynamic_cast<const App::PropertyFile*>(prop)) {
+        std::string filter = propFile->getFilter();
+        auto fc = qobject_cast<Gui::FileChooser*>(editor);
+        if (!filter.empty()) {
+            fc->setFilter(Base::Tools::fromStdString(filter));
+        }
+        fc->setFileName(data.toString());
     }
-    fc->setFileName(data.toString());
 }
 
-QVariant PropertyFileItem::editorData(QWidget *editor) const
+QVariant PropertyFileItem::editorData(QWidget* editor) const
 {
-    Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
-    return QVariant(fc->fileName());
+    auto fc = qobject_cast<Gui::FileChooser*>(editor);
+    return {fc->fileName()};
 }
 
 // --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyPathItem)
 
-PropertyPathItem::PropertyPathItem()
-{
-}
+PropertyPathItem::PropertyPathItem() = default;
 
 QVariant PropertyPathItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyPath::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyPath>());
 
     std::string value = static_cast<const App::PropertyPath*>(prop)->getValue().string();
-    return QVariant(QString::fromUtf8(value.c_str()));
+    return {QString::fromUtf8(value.c_str())};
 }
 
 void PropertyPathItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::String))
-        return;
-    QString val = value.toString();
-    QString data = QString::fromLatin1("\"%1\"").arg(val);
-    setPropertyValue(data);
+    if (!hasExpression() && value.canConvert<QString>()) {
+        setPropertyValue(Base::Tools::quoted(value.toString().toStdString()));
+    }
 }
 
 QVariant PropertyPathItem::toolTip(const App::Property* prop) const
@@ -4016,51 +4457,47 @@ QVariant PropertyPathItem::toolTip(const App::Property* prop) const
     return value(prop);
 }
 
-QWidget* PropertyPathItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyPathItem::createEditor(QWidget* parent, const std::function<void()>& method) const
 {
-    Gui::FileChooser *fc = new Gui::FileChooser(parent);
+    auto fc = new Gui::FileChooser(parent);
     fc->setMode(FileChooser::Directory);
     fc->setAutoFillBackground(true);
     fc->setDisabled(isReadOnly());
-    QObject::connect(fc, SIGNAL(fileNameSelected(const QString&)), receiver, method);
+    QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
 
-void PropertyPathItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyPathItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
+    auto fc = qobject_cast<Gui::FileChooser*>(editor);
     fc->setFileName(data.toString());
 }
 
-QVariant PropertyPathItem::editorData(QWidget *editor) const
+QVariant PropertyPathItem::editorData(QWidget* editor) const
 {
-    Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
-    return QVariant(fc->fileName());
+    auto fc = qobject_cast<Gui::FileChooser*>(editor);
+    return {fc->fileName()};
 }
 
 // --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyTransientFileItem)
 
-PropertyTransientFileItem::PropertyTransientFileItem()
-{
-}
+PropertyTransientFileItem::PropertyTransientFileItem() = default;
 
 QVariant PropertyTransientFileItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFileIncluded::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFileIncluded>());
 
     std::string value = static_cast<const App::PropertyFileIncluded*>(prop)->getValue();
-    return QVariant(QString::fromUtf8(value.c_str()));
+    return {QString::fromUtf8(value.c_str())};
 }
 
 void PropertyTransientFileItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::String))
-        return;
-    QString val = value.toString();
-    QString data = QString::fromLatin1("\"%1\"").arg(val);
-    setPropertyValue(data);
+    if (!hasExpression() && value.canConvert<QString>()) {
+        setPropertyValue(Base::Tools::quoted(value.toString().toStdString()));
+    }
 }
 
 QVariant PropertyTransientFileItem::toolTip(const App::Property* prop) const
@@ -4068,41 +4505,49 @@ QVariant PropertyTransientFileItem::toolTip(const App::Property* prop) const
     return value(prop);
 }
 
-QWidget* PropertyTransientFileItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyTransientFileItem::createEditor(QWidget* parent,
+                                                 const std::function<void()>& method) const
 {
-    Gui::FileChooser *fc = new Gui::FileChooser(parent);
+    auto fc = new Gui::FileChooser(parent);
     fc->setAutoFillBackground(true);
     fc->setDisabled(isReadOnly());
-    QObject::connect(fc, SIGNAL(fileNameSelected(const QString&)), receiver, method);
+    QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
 
-void PropertyTransientFileItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyTransientFileItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
+    auto fc = qobject_cast<Gui::FileChooser*>(editor);
     fc->setFileName(data.toString());
+
+    const auto prop = dynamic_cast<const App::PropertyFileIncluded*>(getFirstProperty());
+
+    if (prop) {
+        std::string filter = prop->getFilter();
+        if (!filter.empty()) {
+            fc->setFilter(QString::fromStdString(filter));
+        }
+    }
 }
 
-QVariant PropertyTransientFileItem::editorData(QWidget *editor) const
+QVariant PropertyTransientFileItem::editorData(QWidget* editor) const
 {
-    Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
-    return QVariant(fc->fileName());
+    auto fc = qobject_cast<Gui::FileChooser*>(editor);
+    return {fc->fileName()};
 }
 
 // ---------------------------------------------------------------
 
-LinkSelection::LinkSelection(const App::SubObjectT &link) : link(link)
-{
-}
+LinkSelection::LinkSelection(App::SubObjectT link)
+    : link(std::move(link))
+{}
 
-LinkSelection::~LinkSelection()
-{
-}
+LinkSelection::~LinkSelection() = default;
 
 void LinkSelection::select()
 {
     auto sobj = link.getSubObject();
-    if(!sobj) {
+    if (!sobj) {
         QMessageBox::critical(getMainWindow(), tr("Error"), tr("Object not found"));
         return;
     }
@@ -4116,11 +4561,13 @@ void LinkSelection::select()
 
 // ---------------------------------------------------------------
 
-LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
-    : QWidget(parent), objProp(prop), dlg(nullptr)
-{   
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(0);
+LinkLabel::LinkLabel(QWidget* parent, const App::Property* prop)
+    : QWidget(parent)
+    , objProp(prop)
+    , dlg(nullptr)
+{
+    auto layout = new QHBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(1);
 
     label = new QLabel(this);
@@ -4131,23 +4578,23 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     layout->addWidget(label);
 
     editButton = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
-    editButton->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
+#if defined(Q_OS_MACOS)
+    editButton->setAttribute(
+        Qt::WA_LayoutUsesWidgetRect);  // layout size from QMacStyle was not correct
 #endif
     editButton->setToolTip(tr("Change the linked object"));
     layout->addWidget(editButton);
-    
+
+    this->setFocusPolicy(Qt::StrongFocus);
+    this->setFocusProxy(label);
+
     // setLayout(layout);
-    
-    connect(label, SIGNAL(linkActivated(const QString&)),
-            this, SLOT(onLinkActivated(const QString&)));
-    connect(editButton, SIGNAL(clicked()),
-            this, SLOT(onEditClicked()));
+
+    connect(label, &QLabel::linkActivated, this, &LinkLabel::onLinkActivated);
+    connect(editButton, &QPushButton::clicked, this, &LinkLabel::onEditClicked);
 }
 
-LinkLabel::~LinkLabel()
-{
-}
+LinkLabel::~LinkLabel() = default;
 
 void LinkLabel::updatePropertyLink()
 {
@@ -4157,27 +4604,28 @@ void LinkLabel::updatePropertyLink()
 
     link = QVariant();
 
-    if(owner && prop) {
+    if (owner && prop) {
         auto links = DlgPropertyLink::getLinksFromProperty(prop);
-        if(links.size() == 1) {
-            auto &sobj = links.front();
+        if (links.size() == 1) {
+            auto& sobj = links.front();
             link = QVariant::fromValue(sobj);
             QString linkcolor = QApplication::palette().color(QPalette::Link).name();
-            text = QString::fromLatin1(
-                    "<html><head><style type=\"text/css\">"
-                    "p, li { white-space: pre-wrap; }"
-                    "</style></head><body>"
-                    "<p>"
-                    "<a href=\"%1#%2.%3\"><span style=\" text-decoration: underline; color:%4;\">%5</span></a>"
-                    "</p></body></html>"
-                    )
-                .arg(QLatin1String(sobj.getDocumentName().c_str()),
-                     QLatin1String(sobj.getObjectName().c_str()),
-                     QString::fromUtf8(sobj.getSubName().c_str()),
-                     linkcolor,
-                     DlgPropertyLink::formatObject(
-                         owner->getDocument(), sobj.getObject(), sobj.getSubName().c_str()));
-        } else if (links.size()) {
+            text = QString::fromLatin1("<html><head><style type=\"text/css\">"
+                                       "p, li { white-space: pre-wrap; }"
+                                       "</style></head><body>"
+                                       "<p>"
+                                       "<a href=\"%1#%2.%3\"><span style=\" text-decoration: "
+                                       "underline; color:%4;\">%5</span></a>"
+                                       "</p></body></html>")
+                       .arg(QLatin1String(sobj.getDocumentName().c_str()),
+                            QLatin1String(sobj.getObjectName().c_str()),
+                            QString::fromUtf8(sobj.getSubName().c_str()),
+                            linkcolor,
+                            DlgPropertyLink::formatObject(owner->getDocument(),
+                                                          sobj.getObject(),
+                                                          sobj.getSubName().c_str()));
+        }
+        else if (!links.empty()) {
             text = DlgPropertyLink::formatLinks(owner->getDocument(), links);
         }
     }
@@ -4189,30 +4637,34 @@ QVariant LinkLabel::propertyLink() const
     return link;
 }
 
-void LinkLabel::onLinkActivated (const QString& s)
+void LinkLabel::onLinkActivated(const QString& s)
 {
     Q_UNUSED(s);
-    LinkSelection* select = new LinkSelection(qvariant_cast<App::SubObjectT>(link));
-    QTimer::singleShot(50, select, SLOT(select()));
+    auto select = new LinkSelection(qvariant_cast<App::SubObjectT>(link));
+    QTimer::singleShot(50, select, &LinkSelection::select);  // NOLINT
 }
 
-void LinkLabel::onEditClicked ()
+void LinkLabel::onEditClicked()
 {
-    if(!dlg) {
+    if (!dlg) {
         dlg = new DlgPropertyLink(this);
-        dlg->init(objProp,true);
-        connect(dlg, SIGNAL(accepted()), this, SLOT(onLinkChanged()));
-    } else
-        dlg->init(objProp,false);
+        dlg->init(objProp, true);
+        connect(dlg, &DlgPropertyLink::accepted, this, &LinkLabel::onLinkChanged);
+    }
+    else {
+        dlg->init(objProp, false);
+    }
+
     dlg->show();
 }
 
-void LinkLabel::onLinkChanged() {
-    if(dlg) {
+void LinkLabel::onLinkChanged()
+{
+    if (dlg) {
         auto links = dlg->currentLinks();
-        if(links != dlg->originalLinks()) {
+        if (links != dlg->originalLinks()) {
             link = QVariant::fromValue(links);
-            /*emit*/ linkChanged(link);
+            Q_EMIT linkChanged(link);
             updatePropertyLink();
         }
     }
@@ -4227,82 +4679,84 @@ void LinkLabel::resizeEvent(QResizeEvent* e)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkItem)
 
-PropertyLinkItem::PropertyLinkItem()
-{
-}
+PropertyLinkItem::PropertyLinkItem() = default;
 
 QVariant PropertyLinkItem::toString(const QVariant& prop) const
 {
     QString res;
-    if(propertyItems.size()) {
+    if (!propertyItems.empty()) {
         App::DocumentObjectT owner(propertyItems[0]);
         res = DlgPropertyLink::formatLinks(owner.getDocument(),
-                                           qvariant_cast<QList<App::SubObjectT> >(prop));
+                                           qvariant_cast<QList<App::SubObjectT>>(prop));
     }
     return res;
 }
 
-QVariant PropertyLinkItem::data(int column, int role) const {
-    if(propertyItems.size() && column == 1 
-            && (role == Qt::ForegroundRole || role == Qt::ToolTipRole))
-    {
-        auto propLink = Base::freecad_dynamic_cast<const App::PropertyLinkBase>(propertyItems[0]);
-        if(propLink) {
-            if(role==Qt::ForegroundRole && propLink->checkRestore()>1)
-                return QVariant::fromValue(QColor(0xff,0,0));
-            else if(role == Qt::ToolTipRole) {
-                auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
-                if(xlink) {
-                    const char *filePath = xlink->getFilePath();
-                    if(filePath && filePath[0])
+QVariant PropertyLinkItem::data(int column, int role) const
+{
+    if (!propertyItems.empty() && column == 1
+        && (role == Qt::ForegroundRole || role == Qt::ToolTipRole)) {
+        if (auto propLink = dynamic_cast<const App::PropertyLinkBase*>(propertyItems[0])) {
+            if (role == Qt::ForegroundRole && propLink->checkRestore() > 1) {
+                return QVariant::fromValue(QColor(0xff, 0, 0));  // NOLINT
+            }
+            if (role == Qt::ToolTipRole) {
+                if (auto xlink = dynamic_cast<const App::PropertyXLink*>(propertyItems[0])) {
+                    const char* filePath = xlink->getFilePath();
+                    if (filePath && filePath[0]) {
                         return QVariant::fromValue(QString::fromUtf8(filePath));
+                    }
                 }
             }
         }
     }
-    return PropertyItem::data(column,role);
+
+    return PropertyItem::data(column, role);
 }
 
 QVariant PropertyLinkItem::value(const App::Property* prop) const
 {
     auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
-    if(!propLink)
-        return QVariant();
+    if (!propLink) {
+        return {};
+    }
 
     auto links = DlgPropertyLink::getLinksFromProperty(propLink);
-    if(links.empty())
-        return QVariant();
+    if (links.empty()) {
+        return {};
+    }
 
     return QVariant::fromValue(links);
 }
 
 void PropertyLinkItem::setValue(const QVariant& value)
 {
-    auto links = qvariant_cast<QList<App::SubObjectT> >(value);
+    auto links = qvariant_cast<QList<App::SubObjectT>>(value);
     setPropertyValue(DlgPropertyLink::linksToPython(links));
 }
 
-QWidget* PropertyLinkItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyLinkItem::createEditor(QWidget* parent, const std::function<void()>& method) const
 {
-    if(propertyItems.empty())
-        return 0;
-    LinkLabel *ll = new LinkLabel(parent, propertyItems.front());
+    if (propertyItems.empty()) {
+        return nullptr;
+    }
+    auto ll = new LinkLabel(parent, propertyItems.front());
     ll->setAutoFillBackground(true);
     ll->setDisabled(isReadOnly());
-    QObject::connect(ll, SIGNAL(linkChanged(const QVariant&)), receiver, method);
+    QObject::connect(ll, &LinkLabel::linkChanged, method);
     return ll;
 }
 
-void PropertyLinkItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyLinkItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     (void)data;
-    LinkLabel *ll = static_cast<LinkLabel*>(editor);
+    auto ll = dynamic_cast<LinkLabel*>(editor);
     return ll->updatePropertyLink();
 }
 
-QVariant PropertyLinkItem::editorData(QWidget *editor) const
+QVariant PropertyLinkItem::editorData(QWidget* editor) const
 {
-    LinkLabel *ll = static_cast<LinkLabel*>(editor);
+    auto ll = dynamic_cast<LinkLabel*>(editor);
     return ll->propertyLink();
 }
 
@@ -4310,30 +4764,23 @@ QVariant PropertyLinkItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkListItem)
 
-PropertyLinkListItem::PropertyLinkListItem()
-{
-}
+PropertyLinkListItem::PropertyLinkListItem() = default;
 
+PropertyItemEditorFactory::PropertyItemEditorFactory() = default;
 
-PropertyItemEditorFactory::PropertyItemEditorFactory()
-{
-}
+PropertyItemEditorFactory::~PropertyItemEditorFactory() = default;
 
-PropertyItemEditorFactory::~PropertyItemEditorFactory()
-{
-}
-
-QWidget * PropertyItemEditorFactory::createEditor (int /*type*/, QWidget * /*parent*/) const
+QWidget* PropertyItemEditorFactory::createEditor(int /*type*/, QWidget* /*parent*/) const
 {
     // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
-    return 0;
+    return nullptr;
 }
 
-QByteArray PropertyItemEditorFactory::valuePropertyName (int /*type*/) const
+QByteArray PropertyItemEditorFactory::valuePropertyName(int /*type*/) const
 {
     // do not allow to set properties because we do that in subclasses of PropertyItem
     return "";
 }
+// NOLINTEND(cppcoreguidelines-pro-*,cppcoreguidelines-prefer-member-initializer)
 
 #include "moc_PropertyItem.cpp"
-

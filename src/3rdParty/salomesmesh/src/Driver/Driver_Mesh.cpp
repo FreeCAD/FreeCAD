@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH Driver : implementaion of driver for reading and writing      
+//  SMESH Driver : implementation of driver for reading and writing      
 //  File   : Mesh_Reader.cxx
 //  Module : SMESH
 //

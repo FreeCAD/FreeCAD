@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <vector>
-#include <time.h>
+#include <ctime>
 #include "meta-iostreams.h"
 
 #include <zlib.h>

@@ -1,30 +1,34 @@
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+ // SPDX-License-Identifier: LGPL-2.1-or-later
+
+  /****************************************************************************
+   *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+   *   Copyright (c) 2023 FreeCAD Project Association                         *
+   *                                                                          *
+   *   This file is part of FreeCAD.                                          *
+   *                                                                          *
+   *   FreeCAD is free software: you can redistribute it and/or modify it     *
+   *   under the terms of the GNU Lesser General Public License as            *
+   *   published by the Free Software Foundation, either version 2.1 of the   *
+   *   License, or (at your option) any later version.                        *
+   *                                                                          *
+   *   FreeCAD is distributed in the hope that it will be useful, but         *
+   *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+   *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+   *   Lesser General Public License for more details.                        *
+   *                                                                          *
+   *   You should have received a copy of the GNU Lesser General Public       *
+   *   License along with FreeCAD. If not, see                                *
+   *   <https://www.gnu.org/licenses/>.                                       *
+   *                                                                          *
+   ***************************************************************************/
 
 
 #ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
 #define GUI_DIALOG_DLGPREFERENCESIMP_H
 
 #include <QDialog>
+#include <QStandardItemModel>
+#include <QStackedWidget>
 #include <memory>
 #include <FCGlobal.h>
 
@@ -32,10 +36,25 @@ class QAbstractButton;
 class QListWidgetItem;
 class QTabWidget;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui::Dialog {
 class PreferencePage;
 class Ui_DlgPreferences;
+
+class PreferencesPageItem : public QStandardItem
+{
+public:
+    QWidget* getWidget() const;
+    void setWidget(QWidget* widget);
+
+    bool isExpanded() const;
+    void setExpanded(bool expanded);
+
+    static constexpr char const* PropertyName = "SettingsPageItem";
+
+private:
+    QWidget* _widget = nullptr;
+    bool _expanded = false;
+};
 
 /**
  * This class implements a dialog containing several preference pages.
@@ -111,53 +130,96 @@ class GuiExport DlgPreferencesImp : public QDialog
 {
     Q_OBJECT
 
+    static constexpr double maxScreenWidthCoveragePercent = 0.8; // maximum % of screen width taken by the dialog
+    static constexpr int minVerticalEmptySpace = 100;            // px of vertical space to leave
+
 public:
     static void addPage(const std::string& className, const std::string& group);
     static void removePage(const std::string& className, const std::string& group);
+    static void setGroupData(const std::string& group, const std::string& icon, const QString& tip);
+    static void getGroupData(const std::string& group, std::string& icon, QString& tip);
     static void reloadSettings();
 
-    DlgPreferencesImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgPreferencesImp();
+    static PreferencePage* createPreferencePage(const std::string& pageName, const std::string& groupName);
 
-    void accept();
+    explicit DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgPreferencesImp() override;
+
+    void accept() override;
+    void reject() override;
     void reload();
-    void activateGroupPage(const QString& group, int id);
+    void activateGroupPage(const QString& group, int index);
+    void activeGroupPage(QString& group, int& index) const;
 
 protected:
-    void changeEvent(QEvent *e);
-    void showEvent(QShowEvent*);
-    void resizeEvent(QResizeEvent*);
-
+    void changeEvent(QEvent *e) override;
+    void showEvent(QShowEvent*) override;
 
 protected Q_SLOTS:
-    void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
-    void on_buttonBox_clicked(QAbstractButton*);
-    void resizeWindow(int w, int h);
+    void onButtonBoxClicked(QAbstractButton*);
+    void onPageSelected(const QModelIndex &index);
+    void onStackWidgetChange(int index);
+
+    void onGroupExpanded(const QModelIndex &index);
+    void onGroupCollapsed(const QModelIndex &index);
 
 private:
     /** @name for internal use only */
     //@{
+    void setupConnections();
     void setupPages();
     void reloadPages();
-    QTabWidget* createTabForGroup(const std::string& groupName);
-    void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
+
+    PreferencesPageItem* getCurrentPage() const;
+
+    PreferencesPageItem* createGroup(const std::string& groupName);
+    void createPageInGroup(PreferencesPageItem* item, const std::string& pageName);
+
     void applyChanges();
+    void showResetOptions();
     void restoreDefaults();
+    void restorePageDefaults(PreferencesPageItem* item);
+    void restartIfRequired();
+
+    void updatePageDependentWidgets();
+
+    QPixmap loadIconForGroup(const std::string& name) const;
+
+    void addSizeHint(QWidget*);
+    int minimumPageWidth() const;
+    int minimumDialogWidth(int) const;
+    void expandToMinimumDialogWidth();
     //@}
 
 private:
-    typedef std::pair<std::string, std::list<std::string>> TGroupPages;
+    using TGroupPages = std::pair<std::string, std::list<std::string>>;
+
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
+
+    QStandardItemModel _model;
+    QSize _sizeHintOfPages;
+
+    struct Group {
+        std::string iconName;
+        QString tooltip;
+    };
+    static std::map<std::string, Group> _groupMap;
     std::unique_ptr<Ui_DlgPreferences> ui;
+
     bool invalidParameter;
     bool canEmbedScrollArea;
+    bool restartRequired;
 
-    static const int GroupNameRole; /**< A name for our Qt::UserRole, used when storing user data in a list item */
+    /**< A name for our Qt::UserRole, used when storing user data in a list item */
+    static const int GroupNameRole;
+    static const int PageNameRole;
+
+    static constexpr char const* GroupNameProperty = "GroupName";
+    static constexpr char const* PageNameProperty = "PageName";
 
     static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current instance if there is one */
 };
 
-} // namespace Dialog
 } // namespace Gui
 
 #endif // GUI_DIALOG_DLGPREFERENCESIMP_H

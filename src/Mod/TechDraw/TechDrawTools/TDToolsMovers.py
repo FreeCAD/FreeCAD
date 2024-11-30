@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2022 - Wanderer Fan <wandererfan@gmail.com>             *
+# *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -36,8 +36,7 @@ def simpleViewMove(view, fromPage, toPage, copy):
     for d in deps:
         toPage.addView(d)
 
-    view.recompute()                #update the view feature
-    App.ActiveDocument.recompute()  #update views dependents if necessary
+    App.ActiveDocument.recompute()  #update views & dependents if necessary
     return
 
 #move a section view, its Base View and all its dependents (items, dimensions, balloons, etc) of both from fromPage to toPage

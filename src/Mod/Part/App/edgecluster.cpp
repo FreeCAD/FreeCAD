@@ -20,51 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopExp_Explorer.hxx>
-# include <TopAbs_ShapeEnum.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
 # include <TopExp.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
-# include <TopoDS_Compound.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
-# include <BRep_Builder.hxx>
-#endif
-
-#ifndef _PreComp_
-# include <TopExp_Explorer.hxx>
-# include <TopAbs_ShapeEnum.hxx>
-# include <BRep_Tool.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Compound.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
-# include <BRep_Builder.hxx>
 #endif
 
 #include "edgecluster.h"
 
+
 using namespace Part;
 
 Edgecluster::Edgecluster(const std::vector<TopoDS_Edge>& unsorted_edges)
-        :m_unsortededges(unsorted_edges),m_done(false)
+        :m_unsortededges(unsorted_edges)
 {
     m_edges.clear();
     m_vertices.clear();
     m_final_cluster.clear();
 }
 
-Edgecluster::~Edgecluster(void)
-{
-}
+Edgecluster::~Edgecluster() = default;
 
 tEdgeClusterVector Edgecluster::GetClusters()
 {
@@ -78,19 +56,12 @@ void Edgecluster::Perform()
         return;
 
     //adds all the vertices to a map, and store the associated edges
-    Standard_Integer nbEdges = 0;
-    Standard_Integer nbNonEdges = 0;
     std::vector<TopoDS_Edge>::iterator aVectorIt;
     for (aVectorIt = m_unsortededges.begin();aVectorIt != m_unsortededges.end();++aVectorIt)
     {
         if (IsValidEdge(*aVectorIt))
         {
             Perform(*aVectorIt);
-            nbEdges++;
-        }
-        else
-        {
-            nbNonEdges++;
         }
     }
 

@@ -20,53 +20,68 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHGUI_SEGMENTATIONBESTFIT_H
 #define MESHGUI_SEGMENTATIONBESTFIT_H
 
-#include <QWidget>
 #include <list>
+#include <QDialog>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+
+#include <Mod/Mesh/MeshGlobal.h>
 #include "MeshSelection.h"
+
 
 class QDoubleSpinBox;
 
 // forward declarations
-namespace Mesh { class Feature; }
+namespace Mesh
+{
+class Feature;
+}
 
-namespace MeshGui {
+namespace MeshGui
+{
 class Ui_SegmentationBestFit;
 
 class FitParameter
 {
 public:
-    struct Points {
+    struct Points
+    {
         std::vector<Base::Vector3f> points;
         std::vector<Base::Vector3f> normals;
     };
-    virtual ~FitParameter() {}
+    FitParameter() = default;
+    virtual ~FitParameter() = default;
+    FitParameter(const FitParameter&) = delete;
+    FitParameter(FitParameter&&) = delete;
+    FitParameter& operator=(const FitParameter&) = delete;
+    FitParameter& operator=(FitParameter&&) = delete;
     virtual std::vector<float> getParameter(Points) const = 0;
 };
 
-typedef std::list<std::pair<QString, float> > ParameterList;
-class ParametersDialog : public QDialog
+using ParameterList = std::list<std::pair<QString, float>>;
+class ParametersDialog: public QDialog
 {
     Q_OBJECT
 
 public:
-    ParametersDialog(std::vector<float>&, FitParameter*,
-                     ParameterList, Mesh::Feature* mesh,
-                     QWidget* parent=0);
-    ~ParametersDialog();
-    void accept();
-    void reject();
+    ParametersDialog(std::vector<float>&,
+                     FitParameter*,
+                     ParameterList,
+                     Mesh::Feature* mesh,
+                     QWidget* parent = nullptr);
+    ~ParametersDialog() override;
+    void accept() override;
+    void reject() override;
 
-private Q_SLOTS:
-    void on_region_clicked();
-    void on_single_clicked();
-    void on_clear_clicked();
-    void on_compute_clicked();
+private:
+    void onRegionClicked();
+    void onSingleClicked();
+    void onClearClicked();
+    void onComputeClicked();
 
 private:
     std::vector<float>& values;
@@ -75,24 +90,29 @@ private:
     Mesh::Feature* myMesh;
     MeshSelection meshSel;
     std::vector<QDoubleSpinBox*> spinBoxes;
+
+    Q_DISABLE_COPY_MOVE(ParametersDialog)
 };
 
-class MeshGuiExport SegmentationBestFit : public QWidget
+class MeshGuiExport SegmentationBestFit: public QWidget
 {
     Q_OBJECT
 
 public:
-    SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~SegmentationBestFit();
+    explicit SegmentationBestFit(Mesh::Feature* mesh,
+                                 QWidget* parent = nullptr,
+                                 Qt::WindowFlags fl = Qt::WindowFlags());
+    ~SegmentationBestFit() override;
     void accept();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent* e) override;
 
-private Q_SLOTS:
-    void on_planeParameters_clicked();
-    void on_cylinderParameters_clicked();
-    void on_sphereParameters_clicked();
+private:
+    void setupConnections();
+    void onPlaneParametersClicked();
+    void onCylinderParametersClicked();
+    void onSphereParametersClicked();
 
 private:
     std::vector<float> planeParameter;
@@ -101,28 +121,30 @@ private:
     Ui_SegmentationBestFit* ui;
     Mesh::Feature* myMesh;
     MeshSelection meshSel;
+
+    Q_DISABLE_COPY_MOVE(SegmentationBestFit)
 };
 
 /**
  * Embed the panel into a task dialog.
  */
-class TaskSegmentationBestFit : public Gui::TaskView::TaskDialog
+class TaskSegmentationBestFit: public Gui::TaskView::TaskDialog
 {
 public:
-    TaskSegmentationBestFit(Mesh::Feature* mesh);
-    ~TaskSegmentationBestFit();
+    explicit TaskSegmentationBestFit(Mesh::Feature* mesh);
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     SegmentationBestFit* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_SEGMENTATIONBESTFIT_H
+#endif  // MESHGUI_SEGMENTATIONBESTFIT_H

@@ -20,32 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "ViewProviderTrajectoryDressUp.h"
 #include <Gui/Control.h>
 #include <Mod/Robot/Gui/TaskDlgTrajectoryDressUp.h>
+
+#include "ViewProviderTrajectoryDressUp.h"
+
 
 using namespace Gui;
 using namespace RobotGui;
 
 PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryDressUp, RobotGui::ViewProviderTrajectory)
 
-//bool ViewProviderTrajectoryDressUp::doubleClicked(void)
+// bool ViewProviderTrajectoryDressUp::doubleClicked(void)
 //{
-//    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryDressUp(dynamic_cast<Robot::TrajectoryDressUpObject *>(getObject()));
-//    Gui::Control().showDialog(dlg);
-//    return true;
-//}
+//     Gui::TaskView::TaskDialog* dlg = new
+//     TaskDlgTrajectoryDressUp(dynamic_cast<Robot::TrajectoryDressUpObject *>(getObject()));
+//     Gui::Control().showDialog(dlg);
+//     return true;
+// }
 //
 
 bool ViewProviderTrajectoryDressUp::setEdit(int)
 {
-    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryDressUp(static_cast<Robot::TrajectoryDressUpObject *>(getObject()));
+    Gui::TaskView::TaskDialog* dlg =
+        new TaskDlgTrajectoryDressUp(static_cast<Robot::TrajectoryDressUpObject*>(getObject()));
     Gui::Control().showDialog(dlg);
     return true;
 }
@@ -54,11 +54,9 @@ void ViewProviderTrajectoryDressUp::unsetEdit(int)
 {
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
-
-
 }
 
-std::vector<App::DocumentObject*> ViewProviderTrajectoryDressUp::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderTrajectoryDressUp::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Robot::TrajectoryDressUpObject*>(getObject())->Source.getValue());

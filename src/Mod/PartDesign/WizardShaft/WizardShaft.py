@@ -27,6 +27,8 @@ from PySide import QtCore, QtGui
 from .WizardShaftTable import WizardShaftTable
 from .Shaft import Shaft
 
+translate = FreeCAD.Qt.translate
+
 class TaskWizardShaft:
     "Shaft Wizard"
     App = FreeCAD
@@ -51,7 +53,8 @@ class TaskWizardShaft:
 
         # Buttons for diagram display
         buttonLayout = QtGui.QGridLayout()
-        bnames = [["All [x]", "All [y]", "All [z]" ],
+        all = translate("TaskWizardShaft", "All")
+        bnames = [[f"{all} [x]", f"{all} [y]", f"{all} [z]" ],
                            ["N [x]", "Q [y]", "Q [z]"],
                            ["Mt [x]",  "Mb [z]", "Mb [y]"],
                            ["",  "w [y]",  "w [z]"],
@@ -98,8 +101,8 @@ class TaskWizardShaft:
         except ImportError as e:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(msgBox.Information)
-            msgBox.setWindowTitle("Missing module")
-            msgBox.setText("You may have to install the Plot add-on")
+            msgBox.setWindowTitle(translate("TaskWizardShaft", "Missing module"))
+            msgBox.setText(translate("TaskWizardShaft", "You may have to install the Plot add-on"))
             msgBox.setDetailedText(traceback.format_exc())
             msgBox.exec_()
     def slotAllx(self):
@@ -152,7 +155,7 @@ class TaskWizardShaft:
             self.updateButton(row,  col,  flag)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+        return QtGui.QDialogButtonBox.Ok
 
     def accept(self):
         if self.table:
@@ -166,7 +169,7 @@ class TaskWizardShaft:
     def isAllowedAlterDocument(self):
         return False
 
-# Workaround to allow a callback
+# HACK: Workaround to allow a callback
 # Problem: From the FemConstraint ViewProvider, we need to tell the Shaft instance that the user finished editing the constraint
 # We can find the Shaft Wizard dialog object from C++, but there is no way to reach the Shaft instance
 # Also it seems to be impossible to access the active dialog from Python, so Gui::Command::runCommand() is not an option either
@@ -182,14 +185,14 @@ class WizardShaftGui:
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
-        MenuText = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Shaft design wizard...")
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Start the shaft design wizard")
+        MenuText = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Shaft design wizard...")
+        ToolTip  = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Start the shaft design wizard")
         return {'Pixmap': IconPath,
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument != None
+        return FreeCAD.ActiveDocument is not None
 
     def __del__(self):
         global WizardShaftDlg
@@ -198,7 +201,7 @@ class WizardShaftGui:
 class WizardShaftGuiCallback:
     def Activated(self):
         global WizardShaftDlg
-        if WizardShaftDlg != None and WizardShaftDlg.table != None:
+        if WizardShaftDlg is not None and WizardShaftDlg.table is not None:
             WizardShaftDlg.table.finishEditConstraint()
 
     def isActive(self):
@@ -207,8 +210,8 @@ class WizardShaftGuiCallback:
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
-        MenuText = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Shaft design wizard...")
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Start the shaft design wizard")
+        MenuText = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaftCallBack", "Shaft design wizard...")
+        ToolTip  = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaftCallBack", "Start the shaft design wizard")
         return {'Pixmap': IconPath,
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}

@@ -20,55 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PRECOMPILED_H
 #define GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define PartExport           __declspec(dllimport)
-# define PartGuiExport        __declspec(dllimport)
-# define SurfaceExport        __declspec(dllimport)
-# define SurfaceGuiExport     __declspec(dllexport)
-#else // for Linux
-# define PartExport
-# define PartGuiExport
-# define SurfaceExport
-# define SurfaceGuiExport
-#endif
-
 #ifdef _PreComp_
 
-// standard
-#include <cstdio>
-#include <cassert>
-
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
 #include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
+// Qt
+#include <QAction>
+#include <QApplication>
+#include <QMenu>
+#include <QMessageBox>
+#include <QTimer>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
+// OpenCasCade
+#include <BRepAdaptor_Curve.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <GeomAbs_Shape.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
 
 #endif  //_PreComp_
 
-#endif // GUI_PRECOMPILED_H
+#endif  // GUI_PRECOMPILED_H

@@ -23,37 +23,37 @@
 #ifndef GUI_SOAUTOZOOMTRANSLATION_H
 #define GUI_SOAUTOZOOMTRANSLATION_H
 
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoTransformation.h>
+#include <FCGlobal.h>
+
 
 namespace Gui {
 
 class GuiExport SoAutoZoomTranslation : public SoTransformation  {
-    typedef SoTransformation  inherited;
+    using inherited = SoTransformation;
 
     SO_NODE_HEADER(SoAutoZoomTranslation);
 
 public:
     static void initClass();
     SoAutoZoomTranslation();
-    //SoSFVec3f abPos;
 
     SoSFFloat scaleFactor;
 
 protected:
-    virtual ~SoAutoZoomTranslation() {};
-    virtual void doAction(SoAction * action);
-    virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-    virtual void getMatrix(SoGetMatrixAction * action);
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-    virtual void callback(SoCallbackAction * action);
-    virtual void pick(SoPickAction * action);
+    ~SoAutoZoomTranslation() override = default;
+    void doAction(SoAction * action) override;
+    void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+    void getMatrix(SoGetMatrixAction * action) override;
+    void GLRender(SoGLRenderAction *action) override;
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
+    void callback(SoCallbackAction * action) override;
+    void pick(SoPickAction * action) override;
     float getScaleFactor(SoAction*) const;
 
 private:
-    //void setAutoScale(void);
+
 };
 
 }

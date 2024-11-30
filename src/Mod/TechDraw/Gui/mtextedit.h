@@ -20,12 +20,15 @@
 **
 ** $QT_END_LICENSE$
 */
-#ifndef _MTEXTEDIT_H_
-#define _MTEXTEDIT_H_
+#ifndef MTEXTEDIT_H_
+#define MTEXTEDIT_H_
 
-#include <QTextEdit>
-#include <QMimeData>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QImage>
+#include <QMimeData>
+#include <QTextEdit>
+
 
 class MTextEdit : public QTextEdit {
     Q_OBJECT
@@ -35,9 +38,9 @@ class MTextEdit : public QTextEdit {
     void        dropImage(const QImage& image, const QString& format);
 
   protected:
-    bool        canInsertFromMimeData(const QMimeData *source) const;
-    void        insertFromMimeData(const QMimeData *source);
-    QMimeData  *createMimeDataFromSelection() const;
+    bool        canInsertFromMimeData(const QMimeData *source) const override;
+    void        insertFromMimeData(const QMimeData *source) override;
+    QMimeData  *createMimeDataFromSelection() const override;
 
 };
 

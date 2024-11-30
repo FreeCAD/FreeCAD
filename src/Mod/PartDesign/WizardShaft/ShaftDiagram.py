@@ -27,7 +27,7 @@ import FreeCAD, FreeCADGui
 class Diagram:
     def create(self, title, function, xlength, xname, xunit, xscale, yname, yunit, yscale, numxpoints):
         # Initialize
-        from freecad.plot import Plot
+        from FreeCAD.Plot import Plot
         self.title = title
         self.function = function # This is assumed to be always a SegmentFunction
         self.xlength = xlength
@@ -59,7 +59,7 @@ class Diagram:
         if xlength is not None:
             self.xlength = xlength
         # Calculate points
-        (self.xpoints, self.ypoints) = self.function.evaluate(self.xlength, self.numxpoints)       
+        (self.xpoints, self.ypoints) = self.function.evaluate(self.xlength, self.numxpoints)
         # Create plot
         self.plot()
 
@@ -82,7 +82,7 @@ class Diagram:
         axes.set_xlim(right = max(self.xpoints) * 1.05)
         axes.set_ylim(min(self.ypoints) * 1.05, max(self.ypoints) * 1.05)
         self.thePlot.update()
-        
+
     def close(self):
         # Close the associated mdiSubWindow
         self.win.parent().close()

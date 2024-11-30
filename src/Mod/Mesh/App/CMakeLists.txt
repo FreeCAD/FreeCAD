@@ -19,14 +19,12 @@ set(Mesh_LIBS
     FreeCADApp
 )
 
-if (BUILD_QT5)
-    include_directories(
-        ${Qt5Concurrent_INCLUDE_DIRS}
-    )
-    list(APPEND Mesh_LIBS
-        ${Qt5Concurrent_LIBRARIES}
-    )
-endif()
+include_directories(
+    ${QtConcurrent_INCLUDE_DIRS}
+)
+list(APPEND Mesh_LIBS
+    ${QtConcurrent_LIBRARIES}
+)
 
 generate_from_xml(EdgePy)
 generate_from_xml(FacetPy)
@@ -100,6 +98,16 @@ SET(Core_SRCS
     Core/CylinderFit.h
     Core/SphereFit.cpp
     Core/SphereFit.h
+    Core/IO/Reader3MF.cpp
+    Core/IO/Reader3MF.h
+    Core/IO/ReaderOBJ.cpp
+    Core/IO/ReaderOBJ.h
+    Core/IO/Writer3MF.cpp
+    Core/IO/Writer3MF.h
+    Core/IO/WriterInventor.cpp
+    Core/IO/WriterInventor.h
+    Core/IO/WriterOBJ.cpp
+    Core/IO/WriterOBJ.h
 )
 SOURCE_GROUP("Core" FILES ${Core_SRCS})
 
@@ -357,8 +365,6 @@ SET(Mesh_SRCS
     FeatureMeshTransform.h
     FeatureMeshTransformDemolding.cpp
     FeatureMeshTransformDemolding.h
-#   GTSAlgos.cpp
-#   GTSAlgos.h
     Mesh.cpp
     Mesh.h
     MeshFeature.cpp
@@ -406,6 +412,9 @@ add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
 set_target_properties(Mesh PROPERTIES CXX_STANDARD_REQUIRED ON)
 set_target_properties(Mesh PROPERTIES CXX_STANDARD 17)
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Mesh)
+endif()
 
 
 SET_BIN_DIR(Mesh Mesh /Mod/Mesh)

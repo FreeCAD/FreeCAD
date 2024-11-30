@@ -23,61 +23,53 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
 #define GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
+#include <memory>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintPlaneRotation.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintPlaneRotation;
 
-namespace FemGui {
-class TaskFemConstraintPlaneRotation : public TaskFemConstraint
+namespace FemGui
+{
+class TaskFemConstraintPlaneRotation: public TaskFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent = 0);
-    ~TaskFemConstraintPlaneRotation();
-    const std::string getReferences() const;
+    explicit TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation* ConstraintView,
+                                            QWidget* parent = nullptr);
+    ~TaskFemConstraintPlaneRotation() override;
+    const std::string getReferences() const override;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void addToSelection();
     void removeFromSelection();
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent* e) override;
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintPlaneRotation* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintPlaneRotation> ui;
 };
 
-class TaskDlgFemConstraintPlaneRotation : public TaskDlgFemConstraint
+class TaskDlgFemConstraintPlaneRotation: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    explicit TaskDlgFemConstraintPlaneRotation(
+        ViewProviderFemConstraintPlaneRotation* ConstraintView);
+    bool accept() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H

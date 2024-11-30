@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <sstream>
-# include <QRegExp>
-# include <QTextStream>
 # include <Precision.hxx>
 #endif
 
+#include <Mod/PartDesign/App/FeaturePad.h>
+
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskPadParameters.h"
-#include <Gui/Command.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeaturePad.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -49,9 +43,16 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     ui->checkBoxReversed->setToolTip(tr("Reverses pad direction"));
 
     // set the history path
+    ui->lengthEdit->setEntryName(QByteArray("Length"));
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
+    ui->lengthEdit2->setEntryName(QByteArray("Length2"));
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
+    ui->offsetEdit->setEntryName(QByteArray("Offset"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadOffset"));
+    ui->taperEdit->setEntryName(QByteArray("TaperAngle"));
+    ui->taperEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadTaperAngle"));
+    ui->taperEdit2->setEntryName(QByteArray("TaperAngle2"));
+    ui->taperEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadTaperAngle2"));
 
     setupDialog();
 
@@ -61,9 +62,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     }
 }
 
-TaskPadParameters::~TaskPadParameters()
-{
-}
+TaskPadParameters::~TaskPadParameters() = default;
 
 void TaskPadParameters::translateModeList(int index)
 {
@@ -73,6 +72,7 @@ void TaskPadParameters::translateModeList(int index)
     ui->changeMode->addItem(tr("To first"));
     ui->changeMode->addItem(tr("Up to face"));
     ui->changeMode->addItem(tr("Two dimensions"));
+    ui->changeMode->addItem(tr("Up to shape"));
     ui->changeMode->setCurrentIndex(index);
 }
 
@@ -81,31 +81,40 @@ void TaskPadParameters::updateUI(int index)
     // update direction combobox
     fillDirectionCombo();
     // set and enable checkboxes
-    setCheckboxes(static_cast<Modes>(index), Type::Pad);
+    setCheckboxes(static_cast<Mode>(index), Type::Pad);
 }
 
 void TaskPadParameters::onModeChanged(int index)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+   auto pcPad = getObject<PartDesign::Pad>();
 
-    switch (static_cast<Modes>(index)) {
-    case Modes::Dimension:
+    switch (static_cast<Mode>(index)) {
+    case Mode::Dimension:
         pcPad->Type.setValue("Length");
         // Avoid error message
         if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Unit::Length))
             ui->lengthEdit->setValue(5.0);
         break;
-    case Modes::ToLast:
+    case Mode::ToLast:
         pcPad->Type.setValue("UpToLast");
         break;
-    case Modes::ToFirst:
+    case Mode::ToFirst:
         pcPad->Type.setValue("UpToFirst");
         break;
-    case Modes::ToFace:
+    case Mode::ToFace:
+        // Note: ui->checkBoxReversed is purposely enabled because the selected face
+        // could be a circular one around the sketch
         pcPad->Type.setValue("UpToFace");
+        if (ui->lineFaceName->text().isEmpty()) {
+            ui->buttonFace->setChecked(true);
+            handleLineFaceNameClick(); // sets placeholder text
+        }
         break;
-    case Modes::TwoDimensions:
+    case Mode::TwoDimensions:
         pcPad->Type.setValue("TwoLengths");
+        break;
+    case Mode::ToShape:
+        pcPad->Type.setValue("UpToShape");
         break;
     }
 
@@ -116,7 +125,7 @@ void TaskPadParameters::onModeChanged(int index)
 void TaskPadParameters::apply()
 {
     QString facename = QString::fromLatin1("None");
-    if (static_cast<Modes>(getMode()) == Modes::ToFace) {
+    if (static_cast<Mode>(getMode()) == Mode::ToFace) {
         facename = getFaceName();
     }
     applyParameters(facename);
@@ -128,10 +137,9 @@ void TaskPadParameters::apply()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newObj*/)
-    : TaskDlgSketchBasedParameters(PadView)
+    : TaskDlgExtrudeParameters(PadView), parameters(new TaskPadParameters(PadView))
 {
-    assert(vp);
-    Content.push_back ( new TaskPadParameters(PadView ) );
+    Content.push_back(parameters);
 }
 
 //==== calls from the TaskView ===============================================================

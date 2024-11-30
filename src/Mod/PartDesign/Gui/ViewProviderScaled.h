@@ -30,16 +30,20 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderScaled);
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderScaled)
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderScaled);
 public:
     ViewProviderScaled() {
-        featureName = std::string("Scaled");
+        menuName = tr("Scaled parameters");
         sPixmap = "PartDesign_Scaled.svg";
     }
 
+    const std::string & featureName() const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 };
 

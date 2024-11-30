@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver calculix ccx tools ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_solver_ccxtools
 #  \ingroup FEM
@@ -43,9 +43,5 @@ class VPSolverCcxTools(view_base_femconstraint.VPBaseFemConstraint):
 
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_solver_ccxtools._TaskPanel,
-            hide_mesh=False
+            self, vobj, mode, task_solver_ccxtools._TaskPanel, hide_mesh=False
         )

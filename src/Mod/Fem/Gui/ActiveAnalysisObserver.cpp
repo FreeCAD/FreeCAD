@@ -20,34 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include "ActiveAnalysisObserver.h"
+
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 
+#include "ActiveAnalysisObserver.h"
+
+
 using namespace FemGui;
 
-
-ActiveAnalysisObserver* ActiveAnalysisObserver::inst = 0;
+ActiveAnalysisObserver* ActiveAnalysisObserver::inst = nullptr;
 
 ActiveAnalysisObserver* ActiveAnalysisObserver::instance()
 {
-    if (!inst)
+    if (!inst) {
         inst = new ActiveAnalysisObserver();
+    }
     return inst;
 }
 
-ActiveAnalysisObserver::ActiveAnalysisObserver()
-    : activeObject(0), activeView(0), activeDocument(0)
-{
-}
+ActiveAnalysisObserver::ActiveAnalysisObserver() = default;
 
-ActiveAnalysisObserver::~ActiveAnalysisObserver()
-{
-}
+ActiveAnalysisObserver::~ActiveAnalysisObserver() = default;
 
 void ActiveAnalysisObserver::setActiveObject(Fem::FemAnalysis* fem)
 {
@@ -55,12 +52,13 @@ void ActiveAnalysisObserver::setActiveObject(Fem::FemAnalysis* fem)
         activeObject = fem;
         App::Document* doc = fem->getDocument();
         activeDocument = Gui::Application::Instance->getDocument(doc);
-        activeView = static_cast<Gui::ViewProviderDocumentObject *>(activeDocument->getViewProvider(activeObject));
+        activeView = static_cast<Gui::ViewProviderDocumentObject*>(
+            activeDocument->getViewProvider(activeObject));
         attachDocument(doc);
     }
     else {
-        activeObject = 0;
-        activeView = 0;
+        activeObject = nullptr;
+        activeView = nullptr;
     }
 }
 
@@ -71,22 +69,23 @@ Fem::FemAnalysis* ActiveAnalysisObserver::getActiveObject() const
 
 bool ActiveAnalysisObserver::hasActiveObject() const
 {
-    return activeObject != 0;
+    return activeObject != nullptr;
 }
 
 void ActiveAnalysisObserver::highlightActiveObject(const Gui::HighlightMode& mode, bool on)
 {
-    if (activeDocument && activeView)
+    if (activeDocument && activeView) {
         activeDocument->signalHighlightObject(*activeView, mode, on, 0, 0);
+    }
 }
 
 void ActiveAnalysisObserver::slotDeletedDocument(const App::Document& Doc)
 {
     App::Document* d = getDocument();
     if (d == &Doc) {
-        activeObject = 0;
-        activeDocument = 0;
-        activeView = 0;
+        activeObject = nullptr;
+        activeDocument = nullptr;
+        activeView = nullptr;
         detachDocument();
     }
 }
@@ -94,7 +93,7 @@ void ActiveAnalysisObserver::slotDeletedDocument(const App::Document& Doc)
 void ActiveAnalysisObserver::slotDeletedObject(const App::DocumentObject& Obj)
 {
     if (activeObject == &Obj) {
-        activeObject = 0;
-        activeView = 0;
+        activeObject = nullptr;
+        activeView = nullptr;
     }
 }

@@ -24,10 +24,9 @@
 #ifndef GUI_DOCKWINDOW_H
 #define GUI_DOCKWINDOW_H
 
-
-#include <Base/Parameter.h>
 #include <Gui/View.h>
 #include <QWidget>
+
 
 namespace Gui {
 class MDIView;
@@ -54,30 +53,30 @@ public:
    * the view will attach to the active document. Be aware there isn't
    * always an active document available!
    */
-  DockWindow ( Gui::Document* pcDocument=0, QWidget *parent=0 );
+  explicit DockWindow ( Gui::Document* pcDocument=nullptr, QWidget *parent=nullptr );
   /** View destructor
    * Detach the view from the document, if attached.
    */
-  virtual ~DockWindow();
+  ~DockWindow() override;
 
   /** @name methods to override
    */
   //@{
   /// get called when the document is updated
-  virtual void onUpdate(void){}
+  void onUpdate() override{}
   /// returns the name of the view (important for messages)
-  virtual const char *getName(void) const { return "DockWindow"; }
+  const char *getName() const override { return "DockWindow"; }
   /// Message handler
-  virtual bool onMsg(const char* ,const char** ){ return false; }
+  bool onMsg(const char* ,const char** ) override{ return false; }
   /// Message handler test
-  virtual bool onHasMsg(const char*) const { return false; }
+  bool onHasMsg(const char*) const override { return false; }
   /// overwrite when checking on close state
-  virtual bool canClose(void){return true;}
+  bool canClose() override{return true;}
   //@}
 
 Q_SIGNALS:
   /// sends a message to the document
-  void sendCloseView(MDIView* theView);
+  void sendCloseView(Gui::MDIView* theView);
 };
 
 } // namespace Gui

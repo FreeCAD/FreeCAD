@@ -1,733 +1,743 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-		Father="GeometrySurfacePy"
-		Name="BSplineSurfacePy"
+    <PythonExport
+        Father="GeometrySurfacePy"
+        Name="BSplineSurfacePy"
         PythonName="Part.BSplineSurface"
-		Twin="GeomBSplineSurface"
-		TwinPointer="GeomBSplineSurface"
-		Include="Mod/Part/App/Geometry.h"
-		Namespace="Part"
-		FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
-		FatherNamespace="Part"
-		Constructor="true">
-		<Documentation>
-			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-			<UserDocu>Describes a B-Spline surface in 3D space</UserDocu>
-		</Documentation>
-		<Attribute Name="UDegree" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the degree of this B-Spline surface in the u parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="UDegree" Type="Long"/>
-		</Attribute>
-		<Attribute Name="VDegree" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the degree of this B-Spline surface in the v parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="VDegree" Type="Long"/>
-		</Attribute>
-		<Attribute Name="MaxDegree" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the value of the maximum polynomial degree of any
-					B-Spline surface surface in either parametric directions.
-					This value is 25.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="MaxDegree" Type="Long"/>
-		</Attribute>
-		<Attribute Name="NbUPoles" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the number of poles of this B-Spline surface in the u parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="NbUPoles" Type="Long"/>
-		</Attribute>
-		<Attribute Name="NbVPoles" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the number of poles of this B-Spline surface in the v parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="NbVPoles" Type="Long"/>
-		</Attribute>
-		<Attribute Name="NbUKnots" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the number of knots of this B-Spline surface in the u parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="NbUKnots" Type="Long"/>
-		</Attribute>
-		<Attribute Name="NbVKnots" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the number of knots of this B-Spline surface in the v parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="NbVKnots" Type="Long"/>
-		</Attribute>
-		<Attribute Name="FirstUKnotIndex" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the index in the knot array associated with the u parametric direction,
-					which corresponds to the first parameter of this B-Spline surface in the specified
-					parametric direction.
+        Twin="GeomBSplineSurface"
+        TwinPointer="GeomBSplineSurface"
+        Include="Mod/Part/App/Geometry.h"
+        Namespace="Part"
+        FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
+        FatherNamespace="Part"
+        Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>Describes a B-Spline surface in 3D space</UserDocu>
+        </Documentation>
+        <Attribute Name="UDegree" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the degree of this B-Spline surface in the u parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="UDegree" Type="Long"/>
+        </Attribute>
+        <Attribute Name="VDegree" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the degree of this B-Spline surface in the v parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="VDegree" Type="Long"/>
+        </Attribute>
+        <Attribute Name="MaxDegree" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the value of the maximum polynomial degree of any
+                    B-Spline surface surface in either parametric directions.
+                    This value is 25.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="MaxDegree" Type="Long"/>
+        </Attribute>
+        <Attribute Name="NbUPoles" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the number of poles of this B-Spline surface in the u parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="NbUPoles" Type="Long"/>
+        </Attribute>
+        <Attribute Name="NbVPoles" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the number of poles of this B-Spline surface in the v parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="NbVPoles" Type="Long"/>
+        </Attribute>
+        <Attribute Name="NbUKnots" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the number of knots of this B-Spline surface in the u parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="NbUKnots" Type="Long"/>
+        </Attribute>
+        <Attribute Name="NbVKnots" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the number of knots of this B-Spline surface in the v parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="NbVKnots" Type="Long"/>
+        </Attribute>
+        <Attribute Name="FirstUKnotIndex" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the index in the knot array associated with the u parametric direction,
+                    which corresponds to the first parameter of this B-Spline surface in the specified
+                    parametric direction.
 
-					The isoparametric curves corresponding to these values are the boundary curves of
-					this surface.
+                    The isoparametric curves corresponding to these values are the boundary curves of
+                    this surface.
 
-					Note: The index does not correspond to the first knot of the surface in the specified
-					parametric direction unless the multiplicity of the first knot is equal to Degree + 1,
-					where Degree is the degree of this surface in the corresponding parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="FirstUKnotIndex" Type="Object"/>
-		</Attribute>
-		<Attribute Name="LastUKnotIndex" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the index in the knot array associated with the u parametric direction,
-					which corresponds to the last parameter of this B-Spline surface in the specified
-					parametric direction.
+                    Note: The index does not correspond to the first knot of the surface in the specified
+                    parametric direction unless the multiplicity of the first knot is equal to Degree + 1,
+                    where Degree is the degree of this surface in the corresponding parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="FirstUKnotIndex" Type="Object"/>
+        </Attribute>
+        <Attribute Name="LastUKnotIndex" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the index in the knot array associated with the u parametric direction,
+                    which corresponds to the last parameter of this B-Spline surface in the specified
+                    parametric direction.
 
-					The isoparametric curves corresponding to these values are the boundary curves of
-					this surface.
+                    The isoparametric curves corresponding to these values are the boundary curves of
+                    this surface.
 
-					Note: The index does not correspond to the first knot of the surface in the specified
-					parametric direction unless the multiplicity of the last knot is equal to Degree + 1,
-					where Degree is the degree of this surface in the corresponding parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="LastUKnotIndex" Type="Object"/>
-		</Attribute>
-		<Attribute Name="FirstVKnotIndex" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the index in the knot array associated with the v parametric direction,
-					which corresponds to the first parameter of this B-Spline surface in the specified
-					parametric direction.
+                    Note: The index does not correspond to the first knot of the surface in the specified
+                    parametric direction unless the multiplicity of the last knot is equal to Degree + 1,
+                    where Degree is the degree of this surface in the corresponding parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="LastUKnotIndex" Type="Object"/>
+        </Attribute>
+        <Attribute Name="FirstVKnotIndex" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the index in the knot array associated with the v parametric direction,
+                    which corresponds to the first parameter of this B-Spline surface in the specified
+                    parametric direction.
 
-					The isoparametric curves corresponding to these values are the boundary curves of
-					this surface.
+                    The isoparametric curves corresponding to these values are the boundary curves of
+                    this surface.
 
-					Note: The index does not correspond to the first knot of the surface in the specified
-					parametric direction unless the multiplicity of the first knot is equal to Degree + 1,
-					where Degree is the degree of this surface in the corresponding parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="FirstVKnotIndex" Type="Object"/>
-		</Attribute>
-		<Attribute Name="LastVKnotIndex" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the index in the knot array associated with the v parametric direction,
-					which corresponds to the last parameter of this B-Spline surface in the specified
-					parametric direction.
+                    Note: The index does not correspond to the first knot of the surface in the specified
+                    parametric direction unless the multiplicity of the first knot is equal to Degree + 1,
+                    where Degree is the degree of this surface in the corresponding parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="FirstVKnotIndex" Type="Object"/>
+        </Attribute>
+        <Attribute Name="LastVKnotIndex" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the index in the knot array associated with the v parametric direction,
+                    which corresponds to the last parameter of this B-Spline surface in the specified
+                    parametric direction.
 
-					The isoparametric curves corresponding to these values are the boundary curves of
-					this surface.
+                    The isoparametric curves corresponding to these values are the boundary curves of
+                    this surface.
 
-					Note: The index does not correspond to the first knot of the surface in the specified
-					parametric direction unless the multiplicity of the last knot is equal to Degree + 1,
-					where Degree is the degree of this surface in the corresponding parametric direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="LastVKnotIndex" Type="Object"/>
-		</Attribute>
-		<Attribute Name="UKnotSequence" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-						Returns the knots sequence of this B-Spline surface in
-						the u direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="UKnotSequence" Type="List"/>
-		</Attribute>
-		<Attribute Name="VKnotSequence" ReadOnly="true">
-			<Documentation>
-				<UserDocu>
-					Returns the knots sequence of this B-Spline surface in
-					the v direction.
-				</UserDocu>
-			</Documentation>
-			<Parameter Name="VKnotSequence" Type="List"/>
-		</Attribute>
+                    Note: The index does not correspond to the first knot of the surface in the specified
+                    parametric direction unless the multiplicity of the last knot is equal to Degree + 1,
+                    where Degree is the degree of this surface in the corresponding parametric direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="LastVKnotIndex" Type="Object"/>
+        </Attribute>
+        <Attribute Name="UKnotSequence" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                        Returns the knots sequence of this B-Spline surface in
+                        the u direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="UKnotSequence" Type="List"/>
+        </Attribute>
+        <Attribute Name="VKnotSequence" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the knots sequence of this B-Spline surface in
+                    the v direction.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="VKnotSequence" Type="List"/>
+        </Attribute>
         <Methode Name="bounds" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns the parametric bounds (U1, U2, V1, V2) of this B-Spline surface.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns the parametric bounds (U1, U2, V1, V2) of this B-Spline surface.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="isURational" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns false if the equation of this B-Spline surface is polynomial
-					(e.g. non-rational) in the u or v parametric direction.
-					In other words, returns false if for each row of poles, the associated
-					weights are identical
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns false if the equation of this B-Spline surface is polynomial
+                    (e.g. non-rational) in the u or v parametric direction.
+                    In other words, returns false if for each row of poles, the associated
+                    weights are identical
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="isVRational" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns false if the equation of this B-Spline surface is polynomial
-					(e.g. non-rational) in the u or v parametric direction.
-					In other words, returns false if for each column of poles, the associated
-					weights are identical
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns false if the equation of this B-Spline surface is polynomial
+                    (e.g. non-rational) in the u or v parametric direction.
+                    In other words, returns false if for each column of poles, the associated
+                    weights are identical
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="isUPeriodic" Const="true">
-			<Documentation>
-				<UserDocu>Returns true if this surface is periodic in the u parametric direction.</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>Returns true if this surface is periodic in the u parametric direction.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="isVPeriodic" Const="true">
-			<Documentation>
-				<UserDocu>Returns true if this surface is periodic in the v parametric direction.</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>Returns true if this surface is periodic in the v parametric direction.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="isUClosed" Const="true">
-			<Documentation>
-				<UserDocu>
-					Checks if this surface is closed in the u parametric direction.
-					Returns true if, in the table of poles the first row and the last
-					row are identical.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Checks if this surface is closed in the u parametric direction.
+                    Returns true if, in the table of poles the first row and the last
+                    row are identical.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="isVClosed" Const="true">
-			<Documentation>
-				<UserDocu>
-					Checks if this surface is closed in the v parametric direction.
-					Returns true if, in the table of poles the first column and the
-					last column are identical.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="increaseDegree">
-			<Documentation>
-				<UserDocu>
-					increase(Int=UDegree, int=VDegree)
-					Increases the degrees of this B-Spline surface to UDegree and VDegree
-					in the u and v parametric directions respectively.
-					As a result, the tables of poles, weights and multiplicities are modified.
-					The tables of knots is not changed.
+            <Documentation>
+                <UserDocu>
+                    Checks if this surface is closed in the v parametric direction.
+                    Returns true if, in the table of poles the first column and the
+                    last column are identical.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="increaseDegree">
+            <Documentation>
+                <UserDocu>
+                    increase(Int=UDegree, int=VDegree)
+                    Increases the degrees of this B-Spline surface to UDegree and VDegree
+                    in the u and v parametric directions respectively.
+                    As a result, the tables of poles, weights and multiplicities are modified.
+                    The tables of knots is not changed.
 
-					Note: Nothing is done if the given degree is less than or equal to the
-					current degree in the corresponding parametric direction.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="increaseUMultiplicity">
-			<Documentation>
-				<UserDocu>Increases the multiplicity in the u direction.</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="increaseVMultiplicity">
-			<Documentation>
-				<UserDocu>Increases the multiplicity in the v direction.</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="incrementUMultiplicity">
-			<Documentation>
-				<UserDocu>Increment the multiplicity in the u direction</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="incrementVMultiplicity">
-			<Documentation>
-				<UserDocu>Increment the multiplicity in the v direction</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="insertUKnot">
-			<Documentation>
-				<UserDocu>insertUKnote(float U, int Index, float Tolerance) - Insert or override a knot</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="insertUKnots">
-			<Documentation>
-				<UserDocu>insertUKnote(List of float U, List of float Mult, float Tolerance) - Inserts knots.</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="insertVKnot">
-			<Documentation>
-				<UserDocu>insertUKnote(float V, int Index, float Tolerance) - Insert or override a knot.</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="insertVKnots">
-			<Documentation>
-				<UserDocu>insertUKnote(List of float V, List of float Mult, float Tolerance) - Inserts knots.</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="removeUKnot">
-			<Documentation>
-				<UserDocu>
-				Reduces to M the multiplicity of the knot of index Index in the given
-				parametric direction. If M is 0, the knot is removed.
-				With a modification of this type, the table of poles is also modified.
-				Two different algorithms are used systematically to compute the new
-				poles of the surface. For each pole, the distance between the pole
-				calculated using the first algorithm and the same pole calculated using
-				the second algorithm, is checked. If this distance is less than Tolerance
-				it ensures that the surface is not modified by more than Tolerance.
-				Under these conditions, the function returns true; otherwise, it returns
-				false.
+                    Note: Nothing is done if the given degree is less than or equal to the
+                    current degree in the corresponding parametric direction.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="increaseUMultiplicity">
+            <Documentation>
+                <UserDocu>Increases the multiplicity in the u direction.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="increaseVMultiplicity">
+            <Documentation>
+                <UserDocu>Increases the multiplicity in the v direction.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="incrementUMultiplicity">
+            <Documentation>
+                <UserDocu>Increment the multiplicity in the u direction</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="incrementVMultiplicity">
+            <Documentation>
+                <UserDocu>Increment the multiplicity in the v direction</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="insertUKnot">
+            <Documentation>
+                <UserDocu>insertUKnote(float U, int Index, float Tolerance) - Insert or override a knot</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="insertUKnots">
+            <Documentation>
+                <UserDocu>insertUKnote(List of float U, List of float Mult, float Tolerance) - Inserts knots.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="insertVKnot">
+            <Documentation>
+                <UserDocu>insertUKnote(float V, int Index, float Tolerance) - Insert or override a knot.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="insertVKnots">
+            <Documentation>
+                <UserDocu>insertUKnote(List of float V, List of float Mult, float Tolerance) - Inserts knots.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeUKnot">
+            <Documentation>
+                <UserDocu>
+                Reduces to M the multiplicity of the knot of index Index in the given
+                parametric direction. If M is 0, the knot is removed.
+                With a modification of this type, the table of poles is also modified.
+                Two different algorithms are used systematically to compute the new
+                poles of the surface. For each pole, the distance between the pole
+                calculated using the first algorithm and the same pole calculated using
+                the second algorithm, is checked. If this distance is less than Tolerance
+                it ensures that the surface is not modified by more than Tolerance.
+                Under these conditions, the function returns true; otherwise, it returns
+                false.
 
-				A low tolerance prevents modification of the surface. A high tolerance
-				'smoothes' the surface.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="removeVKnot">
-			<Documentation>
-				<UserDocu>
-				Reduces to M the multiplicity of the knot of index Index in the given
-				parametric direction. If M is 0, the knot is removed.
-				With a modification of this type, the table of poles is also modified.
-				Two different algorithms are used systematically to compute the new
-				poles of the surface. For each pole, the distance between the pole
-				calculated using the first algorithm and the same pole calculated using
-				the second algorithm, is checked. If this distance is less than Tolerance
-				it ensures that the surface is not modified by more than Tolerance.
-				Under these conditions, the function returns true; otherwise, it returns
-				false.
+                A low tolerance prevents modification of the surface. A high tolerance
+                'smoothes' the surface.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeVKnot">
+            <Documentation>
+                <UserDocu>
+                Reduces to M the multiplicity of the knot of index Index in the given
+                parametric direction. If M is 0, the knot is removed.
+                With a modification of this type, the table of poles is also modified.
+                Two different algorithms are used systematically to compute the new
+                poles of the surface. For each pole, the distance between the pole
+                calculated using the first algorithm and the same pole calculated using
+                the second algorithm, is checked. If this distance is less than Tolerance
+                it ensures that the surface is not modified by more than Tolerance.
+                Under these conditions, the function returns true; otherwise, it returns
+                false.
 
-				A low tolerance prevents modification of the surface. A high tolerance
-				'smoothes' the surface.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="segment">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by segmenting it between U1 and U2 in the
-					u parametric direction and between V1 and V2 in the v parametric direction.
-					Any of these values can be outside the bounds of this surface, but U2 must
-					be greater than U1 and V2 must be greater than V1.
+                A low tolerance prevents modification of the surface. A high tolerance
+                'smoothes' the surface.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="segment">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by segmenting it between U1 and U2 in the
+                    u parametric direction and between V1 and V2 in the v parametric direction.
+                    Any of these values can be outside the bounds of this surface, but U2 must
+                    be greater than U1 and V2 must be greater than V1.
 
-					All the data structure tables of this B-Spline surface are modified but the
-					knots located between U1 and U2 in the u parametric direction, and between
-					V1 and V2 in the v parametric direction are retained.
-					The degree of the surface in each parametric direction is not modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setUKnot">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by assigning the value K to the knot of index
-					UIndex of the knots table corresponding to the u parametric direction.
-					This modification remains relatively local, since K must lie between the values
-					of the knots which frame the modified knot.
+                    All the data structure tables of this B-Spline surface are modified but the
+                    knots located between U1 and U2 in the u parametric direction, and between
+                    V1 and V2 in the v parametric direction are retained.
+                    The degree of the surface in each parametric direction is not modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setUKnot">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by assigning the value K to the knot of index
+                    UIndex of the knots table corresponding to the u parametric direction.
+                    This modification remains relatively local, since K must lie between the values
+                    of the knots which frame the modified knot.
 
-					You can also increase the multiplicity of the modified knot to M. Note however
-					that it is not possible to decrease the multiplicity of a knot with this function.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setVKnot">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by assigning the value K to the knot of index
-					VIndex of the knots table corresponding to the v parametric direction.
-					This modification remains relatively local, since K must lie between the values
-					of the knots which frame the modified knot.
+                    You can also increase the multiplicity of the modified knot to M. Note however
+                    that it is not possible to decrease the multiplicity of a knot with this function.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setVKnot">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by assigning the value K to the knot of index
+                    VIndex of the knots table corresponding to the v parametric direction.
+                    This modification remains relatively local, since K must lie between the values
+                    of the knots which frame the modified knot.
 
-					You can also increase the multiplicity of the modified knot to M. Note however
-					that it is not possible to decrease the multiplicity of a knot with this function.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+                    You can also increase the multiplicity of the modified knot to M. Note however
+                    that it is not possible to decrease the multiplicity of a knot with this function.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getUKnot" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns, for this B-Spline surface, in the u parametric direction
-					the knot of index UIndex of the knots table.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns, for this B-Spline surface, in the u parametric direction
+                    the knot of index UIndex of the knots table.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getVKnot" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns, for this B-Spline surface, in the v parametric direction
-					the knot of index VIndex of the knots table.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setUKnots">
-			<Documentation>
-				<UserDocu>
-					Changes all knots of this B-Spline surface in the u parametric
-					direction. The multiplicity of the knots is not modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setVKnots">
-			<Documentation>
-				<UserDocu>
-					Changes all knots of this B-Spline surface in the v parametric
-					direction. The multiplicity of the knots is not modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns, for this B-Spline surface, in the v parametric direction
+                    the knot of index VIndex of the knots table.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setUKnots">
+            <Documentation>
+                <UserDocu>
+                    Changes all knots of this B-Spline surface in the u parametric
+                    direction. The multiplicity of the knots is not modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setVKnots">
+            <Documentation>
+                <UserDocu>
+                    Changes all knots of this B-Spline surface in the v parametric
+                    direction. The multiplicity of the knots is not modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getUKnots" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns, for this B-Spline surface, the knots table
-					in the u parametric direction
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns, for this B-Spline surface, the knots table
+                    in the u parametric direction
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getVKnots" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns, for this B-Spline surface, the knots table
-					in the v parametric direction
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setPole">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by assigning P to the pole of
-					index (UIndex, VIndex) in the poles table.
-					The second syntax allows you also to change the weight of the
-					modified pole. The weight is set to Weight. This syntax must
-					only be used for rational surfaces.
-					Modifies this B-Spline curve by assigning P to the pole of
-					index Index in the poles table.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setPoleCol">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by assigning values to all or part
-					of the column of poles of index VIndex, of this B-Spline surface.
-					You can also change the weights of the modified poles. The weights
-					are set to the corresponding values of CPoleWeights.
-					These syntaxes must only be used for rational surfaces.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setPoleRow">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by assigning values to all or part
-					of the row of poles of index VIndex, of this B-Spline surface.
-					You can also change the weights of the modified poles. The weights
-					are set to the corresponding values of CPoleWeights.
-					These syntaxes must only be used for rational surfaces.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns, for this B-Spline surface, the knots table
+                    in the v parametric direction
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setPole">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by assigning P to the pole of
+                    index (UIndex, VIndex) in the poles table.
+                    The second syntax allows you also to change the weight of the
+                    modified pole. The weight is set to Weight. This syntax must
+                    only be used for rational surfaces.
+                    Modifies this B-Spline curve by assigning P to the pole of
+                    index Index in the poles table.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setPoleCol">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by assigning values to all or part
+                    of the column of poles of index VIndex, of this B-Spline surface.
+                    You can also change the weights of the modified poles. The weights
+                    are set to the corresponding values of CPoleWeights.
+                    These syntaxes must only be used for rational surfaces.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setPoleRow">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by assigning values to all or part
+                    of the row of poles of index VIndex, of this B-Spline surface.
+                    You can also change the weights of the modified poles. The weights
+                    are set to the corresponding values of CPoleWeights.
+                    These syntaxes must only be used for rational surfaces.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getPole" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns the pole of index (UIndex,VIndex) of this B-Spline surface.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns the pole of index (UIndex,VIndex) of this B-Spline surface.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getPoles" Const="true">
-			<Documentation>
-				<UserDocu>Returns the table of poles of this B-Spline surface.</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setWeight">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by assigning the value Weight to the weight
-					of the pole of index (UIndex, VIndex) in the poles tables of this B-Spline
-					surface.
+            <Documentation>
+                <UserDocu>Returns the table of poles of this B-Spline surface.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setWeight">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by assigning the value Weight to the weight
+                    of the pole of index (UIndex, VIndex) in the poles tables of this B-Spline
+                    surface.
 
-					This function must only be used for rational surfaces.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setWeightCol">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by assigning values to all or part of the
-					weights of the column of poles of index VIndex of this B-Spline surface.
+                    This function must only be used for rational surfaces.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setWeightCol">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by assigning values to all or part of the
+                    weights of the column of poles of index VIndex of this B-Spline surface.
 
-					The modified part of the column of weights is defined by the bounds
-					of the array CPoleWeights.
+                    The modified part of the column of weights is defined by the bounds
+                    of the array CPoleWeights.
 
-					This function must only be used for rational surfaces.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setWeightRow">
-			<Documentation>
-				<UserDocu>
-					Modifies this B-Spline surface by assigning values to all or part of the
-					weights of the row of poles of index UIndex of this B-Spline surface.
+                    This function must only be used for rational surfaces.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setWeightRow">
+            <Documentation>
+                <UserDocu>
+                    Modifies this B-Spline surface by assigning values to all or part of the
+                    weights of the row of poles of index UIndex of this B-Spline surface.
 
-					The modified part of the row of weights is defined by the bounds of the
-					array CPoleWeights.
+                    The modified part of the row of weights is defined by the bounds of the
+                    array CPoleWeights.
 
-					This function must only be used for rational surfaces.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+                    This function must only be used for rational surfaces.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getWeight" Const="true">
-			<Documentation>
-				<UserDocu>
-					Return the weight of the pole of index (UIndex,VIndex)
-					in the poles table for this B-Spline surface.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Return the weight of the pole of index (UIndex,VIndex)
+                    in the poles table for this B-Spline surface.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getWeights" Const="true">
-			<Documentation>
-				<UserDocu>Returns the table of weights of the poles for this B-Spline surface.</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>Returns the table of weights of the poles for this B-Spline surface.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getPolesAndWeights" Const="true">
-			<Documentation>
-				<UserDocu>Returns the table of poles and weights in homogeneous coordinates.</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="getResolution" Const="true">
-			<Documentation>
-				<UserDocu>
-					Computes two tolerance values for this B-Spline surface, based on the
-					given tolerance in 3D space Tolerance3D. The tolerances computed are:
-					-- UTolerance in the u parametric direction and
-					-- VTolerance in the v parametric direction.
+            <Documentation>
+                <UserDocu>Returns the table of poles and weights in homogeneous coordinates.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getResolution" Const="true">
+            <Documentation>
+                <UserDocu>
+                    Computes two tolerance values for this B-Spline surface, based on the
+                    given tolerance in 3D space Tolerance3D. The tolerances computed are:
+                    -- UTolerance in the u parametric direction and
+                    -- VTolerance in the v parametric direction.
 
-					If f(u,v) is the equation of this B-Spline surface, UTolerance and
-					VTolerance guarantee that:
-					|u1 - u0| &lt; UTolerance
-					|v1 - v0| &lt; VTolerance
-					====&gt; ||f(u1, v1) - f(u2, v2)|| &lt; Tolerance3D
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="movePoint">
-			<Documentation>
-				<UserDocu>
-					Moves the point of parameters (U, V) of this B-Spline surface to P.
-					UIndex1, UIndex2, VIndex1 and VIndex2 are the indexes in the poles
-					table of this B-Spline surface, of the first and last poles which
-					can be moved in each parametric direction.
-					The returned indexes UFirstIndex, ULastIndex, VFirstIndex and
-					VLastIndex are the indexes of the first and last poles effectively
-					modified in each parametric direction.
-					In the event of incompatibility between UIndex1, UIndex2, VIndex1,
-					VIndex2 and the values U and V:
-					-- no change is made to this B-Spline surface, and
-					-- UFirstIndex, ULastIndex, VFirstIndex and VLastIndex are set to
-					   null.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setUNotPeriodic">
-			<Documentation>
-				<UserDocu>
-					Changes this B-Spline surface into a non-periodic one in the u parametric direction.
-					If this B-Spline surface is already non-periodic in the given parametric direction,
-					it is not modified.
-					If this B-Spline surface is periodic in the given parametric direction, the boundaries
-					of the surface are not given by the first and last rows (or columns) of poles (because
-					the multiplicity of the first knot and of the last knot in the given parametric direction
-					are not modified, nor are they equal to Degree+1, where Degree is the degree of this
-					B-Spline surface in the given parametric direction). Only the function Segment ensures
-					this property.
+                    If f(u,v) is the equation of this B-Spline surface, UTolerance and
+                    VTolerance guarantee that:
+                    |u1 - u0| &lt; UTolerance
+                    |v1 - v0| &lt; VTolerance
+                    ====&gt; ||f(u1, v1) - f(u2, v2)|| &lt; Tolerance3D
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="movePoint">
+            <Documentation>
+                <UserDocu>
+                    Moves the point of parameters (U, V) of this B-Spline surface to P.
+                    UIndex1, UIndex2, VIndex1 and VIndex2 are the indexes in the poles
+                    table of this B-Spline surface, of the first and last poles which
+                    can be moved in each parametric direction.
+                    The returned indexes UFirstIndex, ULastIndex, VFirstIndex and
+                    VLastIndex are the indexes of the first and last poles effectively
+                    modified in each parametric direction.
+                    In the event of incompatibility between UIndex1, UIndex2, VIndex1,
+                    VIndex2 and the values U and V:
+                    -- no change is made to this B-Spline surface, and
+                    -- UFirstIndex, ULastIndex, VFirstIndex and VLastIndex are set to
+                       null.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setUNotPeriodic">
+            <Documentation>
+                <UserDocu>
+                    Changes this B-Spline surface into a non-periodic one in the u parametric direction.
+                    If this B-Spline surface is already non-periodic in the given parametric direction,
+                    it is not modified.
+                    If this B-Spline surface is periodic in the given parametric direction, the boundaries
+                    of the surface are not given by the first and last rows (or columns) of poles (because
+                    the multiplicity of the first knot and of the last knot in the given parametric direction
+                    are not modified, nor are they equal to Degree+1, where Degree is the degree of this
+                    B-Spline surface in the given parametric direction). Only the function Segment ensures
+                    this property.
 
-					Note: the poles and knots tables are modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setVNotPeriodic">
-			<Documentation>
-				<UserDocu>
-					Changes this B-Spline surface into a non-periodic one in the v parametric direction.
-					If this B-Spline surface is already non-periodic in the given parametric direction,
-					it is not modified.
-					If this B-Spline surface is periodic in the given parametric direction, the boundaries
-					of the surface are not given by the first and last rows (or columns) of poles (because
-					the multiplicity of the first knot and of the last knot in the given parametric direction
-					are not modified, nor are they equal to Degree+1, where Degree is the degree of this
-					B-Spline surface in the given parametric direction). Only the function Segment ensures
-					this property.
+                    Note: the poles and knots tables are modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setVNotPeriodic">
+            <Documentation>
+                <UserDocu>
+                    Changes this B-Spline surface into a non-periodic one in the v parametric direction.
+                    If this B-Spline surface is already non-periodic in the given parametric direction,
+                    it is not modified.
+                    If this B-Spline surface is periodic in the given parametric direction, the boundaries
+                    of the surface are not given by the first and last rows (or columns) of poles (because
+                    the multiplicity of the first knot and of the last knot in the given parametric direction
+                    are not modified, nor are they equal to Degree+1, where Degree is the degree of this
+                    B-Spline surface in the given parametric direction). Only the function Segment ensures
+                    this property.
 
-					Note: the poles and knots tables are modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setUPeriodic">
-			<Documentation>
-				<UserDocu>
-					Modifies this surface to be periodic in the u parametric direction.
-					To become periodic in a given parametric direction a surface must
-					be closed in that parametric direction, and the knot sequence relative
-					to that direction must be periodic.
-					To generate this periodic sequence of knots, the functions FirstUKnotIndex
-					and LastUKnotIndex are used to compute I1 and I2. These are the indexes,
-					in the knot array associated with the given parametric direction, of the
-					knots that correspond to the first and last parameters of this B-Spline
-					surface in the given parametric direction. Hence the period is:
+                    Note: the poles and knots tables are modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setUPeriodic">
+            <Documentation>
+                <UserDocu>
+                    Modifies this surface to be periodic in the u parametric direction.
+                    To become periodic in a given parametric direction a surface must
+                    be closed in that parametric direction, and the knot sequence relative
+                    to that direction must be periodic.
+                    To generate this periodic sequence of knots, the functions FirstUKnotIndex
+                    and LastUKnotIndex are used to compute I1 and I2. These are the indexes,
+                    in the knot array associated with the given parametric direction, of the
+                    knots that correspond to the first and last parameters of this B-Spline
+                    surface in the given parametric direction. Hence the period is:
 
-					Knots(I1) - Knots(I2)
+                    Knots(I1) - Knots(I2)
 
-					As a result, the knots and poles tables are modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setVPeriodic">
-			<Documentation>
-				<UserDocu>
-					Modifies this surface to be periodic in the v parametric direction.
-					To become periodic in a given parametric direction a surface must
-					be closed in that parametric direction, and the knot sequence relative
-					to that direction must be periodic.
-					To generate this periodic sequence of knots, the functions FirstUKnotIndex
-					and LastUKnotIndex are used to compute I1 and I2. These are the indexes,
-					in the knot array associated with the given parametric direction, of the
-					knots that correspond to the first and last parameters of this B-Spline
-					surface in the given parametric direction. Hence the period is:
+                    As a result, the knots and poles tables are modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setVPeriodic">
+            <Documentation>
+                <UserDocu>
+                    Modifies this surface to be periodic in the v parametric direction.
+                    To become periodic in a given parametric direction a surface must
+                    be closed in that parametric direction, and the knot sequence relative
+                    to that direction must be periodic.
+                    To generate this periodic sequence of knots, the functions FirstUKnotIndex
+                    and LastUKnotIndex are used to compute I1 and I2. These are the indexes,
+                    in the knot array associated with the given parametric direction, of the
+                    knots that correspond to the first and last parameters of this B-Spline
+                    surface in the given parametric direction. Hence the period is:
 
-					Knots(I1) - Knots(I2)
+                    Knots(I1) - Knots(I2)
 
-					As a result, the knots and poles tables are modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setUOrigin">
-			<Documentation>
-				<UserDocu>
-					Assigns the knot of index Index in the knots table
-					in the u parametric direction to be the origin of
-					this periodic B-Spline surface. As a consequence,
-					the knots and poles tables are modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setVOrigin">
-			<Documentation>
-				<UserDocu>
-					Assigns the knot of index Index in the knots table
-					in the v parametric direction to be the origin of
-					this periodic B-Spline surface. As a consequence,
-					the knots and poles tables are modified.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+                    As a result, the knots and poles tables are modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setUOrigin">
+            <Documentation>
+                <UserDocu>
+                    Assigns the knot of index Index in the knots table
+                    in the u parametric direction to be the origin of
+                    this periodic B-Spline surface. As a consequence,
+                    the knots and poles tables are modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setVOrigin">
+            <Documentation>
+                <UserDocu>
+                    Assigns the knot of index Index in the knots table
+                    in the v parametric direction to be the origin of
+                    this periodic B-Spline surface. As a consequence,
+                    the knots and poles tables are modified.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getUMultiplicity" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns, for this B-Spline surface, the multiplicity of
-					the knot of index UIndex in the u parametric direction.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns, for this B-Spline surface, the multiplicity of
+                    the knot of index UIndex in the u parametric direction.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getVMultiplicity" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns, for this B-Spline surface, the multiplicity of
-					the knot of index VIndex in the v parametric direction.
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns, for this B-Spline surface, the multiplicity of
+                    the knot of index VIndex in the v parametric direction.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getUMultiplicities" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns, for this B-Spline surface, the table of
-					multiplicities in the u parametric direction
-				</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>
+                    Returns, for this B-Spline surface, the table of
+                    multiplicities in the u parametric direction
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getVMultiplicities" Const="true">
-			<Documentation>
-				<UserDocu>
-					Returns, for this B-Spline surface, the table of
-					multiplicities in the v parametric direction
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="exchangeUV">
-			<Documentation>
-				<UserDocu>
-					Exchanges the u and v parametric directions on this B-Spline surface.
-					As a consequence:
-					-- the poles and weights tables are transposed,
-					-- the knots and multiplicities tables are exchanged,
-					-- degrees of continuity and rational, periodic and uniform
-					   characteristics are exchanged and
-					-- the orientation of the surface is reversed.
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="reparametrize" Const="true">
-			<Documentation>
-				<UserDocu>Returns a reparametrized copy of this surface</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="approximate" Keyword="true">
-			<Documentation>
-				<UserDocu>
-					Replaces this B-Spline surface by approximating a set of points.
-					This method uses keywords :
-					- Points = 2Darray of points (or floats, in combination with X0, dX, Y0, dY)
-					- DegMin (int), DegMax (int)
-					- Continuity = 0,1 or 2 (for C0, C1, C2)
-					- Tolerance (float)
-					- X0, dX, Y0, dY (floats) with Points = 2Darray of floats
-					- ParamType = 'Uniform','Centripetal' or 'ChordLength'
-					- LengthWeight, CurvatureWeight, TorsionWeight (floats)
-					(with this smoothing algorithm, continuity C1 requires DegMax >= 3 and C2, DegMax >=5)
+            <Documentation>
+                <UserDocu>
+                    Returns, for this B-Spline surface, the table of
+                    multiplicities in the v parametric direction
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="exchangeUV">
+            <Documentation>
+                <UserDocu>
+                    Exchanges the u and v parametric directions on this B-Spline surface.
+                    As a consequence:
+                    -- the poles and weights tables are transposed,
+                    -- the knots and multiplicities tables are exchanged,
+                    -- degrees of continuity and rational, periodic and uniform
+                       characteristics are exchanged and
+                    -- the orientation of the surface is reversed.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="reparametrize" Const="true">
+            <Documentation>
+                <UserDocu>Returns a reparametrized copy of this surface</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="approximate" Keyword="true">
+            <Documentation>
+                <UserDocu>
+                    Replaces this B-Spline surface by approximating a set of points.
+                    This method uses keywords :
+                    - Points = 2Darray of points (or floats, in combination with X0, dX, Y0, dY)
+                    - DegMin (int), DegMax (int)
+                    - Continuity = 0,1 or 2 (for C0, C1, C2)
+                    - Tolerance (float)
+                    - X0, dX, Y0, dY (floats) with Points = 2Darray of floats
+                    - ParamType = 'Uniform','Centripetal' or 'ChordLength'
+                    - LengthWeight, CurvatureWeight, TorsionWeight (floats)
+                    (with this smoothing algorithm, continuity C1 requires DegMax >= 3 and C2, DegMax >=5)
 
-					Possible combinations :
-					- approximate(Points, DegMin, DegMax, Continuity, Tolerance)
-					- approximate(Points, DegMin, DegMax, Continuity, Tolerance, X0, dX, Y0, dY)
-					With explicit keywords :
-					- approximate(Points, DegMin, DegMax, Continuity, Tolerance, ParamType)
-					- approximate(Points, DegMax, Continuity, Tolerance, LengthWeight, CurvatureWeight, TorsionWeight)
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="interpolate">
-			<Documentation>
-				<UserDocu>
-					interpolate(points)
-					interpolate(zpoints, X0, dX, Y0, dY)
+                    Possible combinations :
+                    - approximate(Points, DegMin, DegMax, Continuity, Tolerance)
+                    - approximate(Points, DegMin, DegMax, Continuity, Tolerance, X0, dX, Y0, dY)
+                    With explicit keywords :
+                    - approximate(Points, DegMin, DegMax, Continuity, Tolerance, ParamType)
+                    - approximate(Points, DegMax, Continuity, Tolerance, LengthWeight, CurvatureWeight, TorsionWeight)
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="interpolate">
+            <Documentation>
+                <UserDocu>
+                    interpolate(points)
+                    interpolate(zpoints, X0, dX, Y0, dY)
 
-					Replaces this B-Spline surface by interpolating a set of points.
-					The resulting surface is of degree 3 and continuity C2.
-					Arguments:
-					a 2 dimensional array of vectors, that the surface passes through
-					or
-					a 2 dimensional array of floats with the z values,
-					the x starting point X0 (float),
-					the x increment dX (float),
-					the y starting point Y0 and increment dY
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="buildFromPolesMultsKnots" Keyword="true">
-			<Documentation>
-				<UserDocu>
-					Builds a B-Spline by a lists of Poles, Mults and Knots
-					arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="buildFromNSections">
-			<Documentation>
-				<UserDocu>
-					Builds a B-Spline from a list of control curves
-				</UserDocu>
-			</Documentation>
-		</Methode>
-	</PythonExport>
+                    Replaces this B-Spline surface by interpolating a set of points.
+                    The resulting surface is of degree 3 and continuity C2.
+                    Arguments:
+                    a 2 dimensional array of vectors, that the surface passes through
+                    or
+                    a 2 dimensional array of floats with the z values,
+                    the x starting point X0 (float),
+                    the x increment dX (float),
+                    the y starting point Y0 and increment dY
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="buildFromPolesMultsKnots" Keyword="true">
+            <Documentation>
+                <UserDocu>
+                    Builds a B-Spline by a lists of Poles, Mults and Knots
+                    arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="buildFromNSections">
+            <Documentation>
+                <UserDocu>
+                    Builds a B-Spline from a list of control curves
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="scaleKnotsToBounds">
+            <Documentation>
+                <UserDocu>
+                    Scales the U and V knots lists to fit the specified bounds.
+                    The shape of the surface is not modified.
+                    bspline_surf.scaleKnotsToBounds(u0, u1, v0, v1)
+                    Default arguments are 0.0, 1.0, 0.0, 1.0
+                </UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
 </GenerateModel>

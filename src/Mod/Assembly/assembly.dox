@@ -1,3 +1,4 @@
 /** \defgroup ASSEMBLY Assembly
- *  \ingroup WORKBENCHES */
-
+ *  \ingroup PYTHONWORKBENCHES
+ *  \brief Tools to build assemblies
+ */

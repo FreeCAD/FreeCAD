@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
 #define GUI_VIEWPROVIDER_ViewProviderPart_H
 
-
-#include "ViewProviderOriginGroup.h"
 #include "ViewProviderDragger.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderOriginGroup.h"
+#include "ViewProviderFeaturePython.h"
 
 
 namespace Gui {
@@ -41,24 +39,29 @@ public:
     /// constructor.
     ViewProviderPart();
     /// destructor.
-    virtual ~ViewProviderPart();
+    ~ViewProviderPart() override;
 
-    virtual bool doubleClicked(void) override;
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    
+    bool doubleClicked() override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool isActivePart();
+    void toggleActivePart();
+
     /// deliver the icon shown in the tree view
     /// override from ViewProvider.h
-    virtual QIcon getIcon(void) const override;
+    QIcon getIcon() const override;
+
+    /* Check whether the object accept reordering of its children during drop.*/
+    bool acceptReorderingObjects() const override { return true; };
 
 protected:
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     /// a second icon for the Assembly type
     const char* aPixmap;
 
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
+using ViewProviderPartPython = ViewProviderFeaturePythonT<ViewProviderPart>;
 
 } // namespace Gui
 

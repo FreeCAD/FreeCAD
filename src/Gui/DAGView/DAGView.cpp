@@ -22,32 +22,26 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost_bind_bind.hpp>
 #include <QAbstractEventDispatcher>
 #include <QVBoxLayout>
+#include <memory>
 #endif
 
-#include <memory>
-
-#include <sstream>
-
-#include <Base/Console.h>
-
-#include <App/Document.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 
-#include "DAGModel.h"
 #include "DAGView.h"
+#include "DAGModel.h"
+
 
 using namespace Gui;
 using namespace DAG;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 DAG::DockWindow::DockWindow(Gui::Document* gDocumentIn, QWidget* parent): Gui::DockWindow(gDocumentIn, parent)
 {
   dagView = new View(this);
-  QVBoxLayout *layout = new QVBoxLayout();
+  auto layout = new QVBoxLayout();
   layout->addWidget(dagView);
   this->setLayout(layout);
 }
@@ -56,16 +50,17 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 {
   this->setRenderHint(QPainter::Antialiasing, true);
   this->setRenderHint(QPainter::TextAntialiasing, true);
-  conActive = Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, bp::_1));
-  conDelete = Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
-  
+  //NOLINTBEGIN
+  conActive = Application::Instance->signalActiveDocument.connect(std::bind(&View::slotActiveDocument, this, sp::_1));
+  conDelete = Application::Instance->signalDeleteDocument.connect(std::bind(&View::slotDeleteDocument, this, sp::_1));
+  //NOLINTEND
+
   //just update the dagview when the gui process is idle.
-  connect(QAbstractEventDispatcher::instance(), SIGNAL(awake()), this, SLOT(awakeSlot()));
+  connect(QAbstractEventDispatcher::instance(), &QAbstractEventDispatcher::awake,
+          this, &View::awakeSlot);
 }
 
-View::~View()
-{
-}
+View::~View() = default;
 
 void View::slotActiveDocument(const Document &documentIn)
 {
@@ -86,7 +81,7 @@ void View::slotActiveDocument(const Document &documentIn)
 
 void View::slotDeleteDocument(const Document &documentIn)
 {
-  ModelMap::iterator it = modelMap.find(&documentIn);
+  ModelMap::const_iterator it = modelMap.find(&documentIn);
   if (it != modelMap.end())
     modelMap.erase(it);
 }
@@ -119,7 +114,8 @@ void View::onSelectionChanged(const SelectionChanges& msg)
     return;
   }
   auto doc = Gui::Application::Instance->getDocument(msg.pDocName);
-  if (!doc) return;
+  if (!doc)
+      return;
   auto &model = modelMap[doc];
   if(!model)
     model = std::make_shared<Model>(this, *doc);

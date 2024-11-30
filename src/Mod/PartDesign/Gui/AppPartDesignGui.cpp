@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,83 +20,82 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 
 #include "Workbench.h"
-#include "ViewProviderPocket.h"
-#include "ViewProviderHole.h"
+#include "ViewProviderBase.h"
 #include "ViewProviderBody.h"
-#include "ViewProviderSketchBased.h"
-#include "ViewProviderPad.h"
+#include "ViewProviderBoolean.h"
 #include "ViewProviderChamfer.h"
-#include "ViewProviderFillet.h"
-#include "ViewProviderDraft.h"
-#include "ViewProviderDressUp.h"
-#include "ViewProviderRevolution.h"
-#include "ViewProviderGroove.h"
-#include "ViewProviderMirrored.h"
-#include "ViewProviderLinearPattern.h"
-#include "ViewProviderPolarPattern.h"
-#include "ViewProviderScaled.h"
-#include "ViewProviderMultiTransform.h"
-#include "ViewProviderTransformed.h"
-#include "ViewProviderDatumPoint.h"
+#include "ViewProviderDatumCS.h"
 #include "ViewProviderDatumLine.h"
 #include "ViewProviderDatumPlane.h"
-#include "ViewProviderBoolean.h"
-#include "ViewProviderPrimitive.h"
-#include "ViewProviderDatumCS.h"
-#include "ViewProviderThickness.h"
-#include "ViewProviderPipe.h"
-#include "ViewProviderLoft.h"
+#include "ViewProviderDatumPoint.h"
+#include "ViewProviderDraft.h"
+#include "ViewProviderDressUp.h"
+#include "ViewProviderFillet.h"
+#include "ViewProviderGroove.h"
 #include "ViewProviderHelix.h"
+#include "ViewProviderHole.h"
+#include "ViewProviderLinearPattern.h"
+#include "ViewProviderLoft.h"
+#include "ViewProviderMirrored.h"
+#include "ViewProviderMultiTransform.h"
+#include "ViewProviderPad.h"
+#include "ViewProviderPipe.h"
+#include "ViewProviderPocket.h"
+#include "ViewProviderPolarPattern.h"
+#include "ViewProviderPrimitive.h"
+#include "ViewProviderRevolution.h"
+#include "ViewProviderScaled.h"
 #include "ViewProviderShapeBinder.h"
-#include "ViewProviderBase.h"
+#include "ViewProviderSketchBased.h"
+#include "ViewProviderThickness.h"
+#include "ViewProviderTransformed.h"
+
 
 // use a different name to CreateCommand()
-void CreatePartDesignCommands(void);
-void CreatePartDesignBodyCommands(void);
-void CreatePartDesignPrimitiveCommands(void);
+void CreatePartDesignCommands();
+void CreatePartDesignBodyCommands();
+void CreatePartDesignPrimitiveCommands();
 
 void loadPartDesignResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(PartDesign);
+    Q_INIT_RESOURCE(PartDesign_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace PartDesignGui {
-class Module : public Py::ExtensionModule<Module>
+namespace PartDesignGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("PartDesignGui")
+    Module()
+        : Py::ExtensionModule<Module>("PartDesignGui")
     {
-        initialize("This module is the PartDesignGui module."); // register with Python
+        initialize("This module is the PartDesignGui module.");  // register with Python
     }
-
-    virtual ~Module() {}
 
 private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
 /* Python entry */
@@ -104,16 +103,16 @@ PyMOD_INIT_FUNC(PartDesignGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     try {
         Base::Interpreter().runString("import PartGui");
         Base::Interpreter().runString("import SketcherGui");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = PartDesignGui::initModule();
@@ -124,11 +123,13 @@ PyMOD_INIT_FUNC(PartDesignGui)
     CreatePartDesignBodyCommands();
     CreatePartDesignPrimitiveCommands();
 
+    // clang-format off
     PartDesignGui::Workbench                 ::init();
     PartDesignGui::ViewProvider              ::init();
     PartDesignGui::ViewProviderPython        ::init();
     PartDesignGui::ViewProviderBody          ::init();
     PartDesignGui::ViewProviderSketchBased   ::init();
+    PartDesignGui::ViewProviderExtrude       ::init();
     PartDesignGui::ViewProviderPocket        ::init();
     PartDesignGui::ViewProviderHole          ::init();
     PartDesignGui::ViewProviderPad           ::init();
@@ -160,8 +161,9 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderLoft          ::init();
     PartDesignGui::ViewProviderHelix         ::init();
     PartDesignGui::ViewProviderBase          ::init();
+    // clang-format on
 
-     // add resources and reloads the translators
+    // add resources and reloads the translators
     loadPartDesignResource();
 
     PyMOD_Return(mod);

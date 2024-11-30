@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-#include <assert.h>
-#include <QGraphicsScene>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
+# include <QPainterPath>
+# include <QPainterPathStroker>
 #endif
 
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Gui/Control.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "PreferencesGui.h"
 #include "QGIEdge.h"
+#include "PreferencesGui.h"
+#include "TaskLineDecor.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -48,12 +48,16 @@ QGIEdge::QGIEdge(int index) :
     isHiddenEdge(false),
     isSmoothEdge(false)
 {
+    setFlag(QGraphicsItem::ItemIsFocusable, true);      // to get key press events
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+
     m_width = 1.0;
     setCosmetic(isCosmetic);
     setFill(Qt::NoBrush);
 }
 
-//NOTE this refers to Qt cosmetic lines
+// NOTE this refers to Qt cosmetic lines (a line with minimum width),
+// not FreeCAD cosmetic lines
 void QGIEdge::setCosmetic(bool state)
 {
 //    Base::Console().Message("QGIE::setCosmetic(%d)\n", state);
@@ -84,23 +88,20 @@ void QGIEdge::setPrettyNormal() {
 
 QColor QGIEdge::getHiddenColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("HiddenColor", 0x000000FF));
-    return fcColor.asValue<QColor>();
+    App::Color fcColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("HiddenColor", 0x000000FF));
+    return PreferencesGui::getAccessibleQColor(fcColor.asValue<QColor>());
 }
 
 Qt::PenStyle QGIEdge::getHiddenStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     //Qt::PenStyle - NoPen, Solid, Dashed, ...
-    //Preferences::General - Solid, Dashed                                     
-    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",0) + 1);
+    //Preferences::General - Solid, Dashed
+    // Dashed lines should use ISO Line #2 instead of Qt::DashedLine
+    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("General")->GetInt("HiddenLine", 0) + 1);
     return hidStyle;
 }
 
- double QGIEdge::getEdgeFuzz(void) const
+ double QGIEdge::getEdgeFuzz() const
 {
     return PreferencesGui::edgeFuzz();
 }
@@ -120,11 +121,25 @@ QPainterPath QGIEdge::shape() const
     return outline;
 }
 
-void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
+void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+    QGIView *parent = dynamic_cast<QGIView *>(parentItem());
+    if (parent && parent->getViewObject() && parent->getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        TechDraw::DrawViewPart *baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());
+        std::vector<std::string> edgeName(1, DrawUtil::makeGeomName("Edge", getProjIndex()));
 
-    //~ painter->drawRect(boundingRect());          //good for debugging
+        Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat, edgeName));
+    }
+}
 
-    QGIPrimPath::paint (painter, &myOption, widget);
+void QGIEdge::setLinePen(QPen linePen)
+{
+    m_pen = linePen;
+}
+
+void QGIEdge::setCurrentPen()
+{
+    m_pen.setWidthF(m_width);
+    m_pen.setColor(m_colCurrent);
 }

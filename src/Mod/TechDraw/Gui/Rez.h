@@ -26,8 +26,11 @@
 #include <QPointF>
 #include <QRectF>
 #include <QSize>
-#include <Base/Vector3D.h>
+
 #include <Base/Tools2D.h>
+#include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace TechDrawGui
 {

@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+#include <Gui/MenuManager.h>
+#include <Gui/ToolBarManager.h>
 
 #include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
+
 
 using namespace PointsGui;
 
-#if 0 // needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Points tools");
     qApp->translate("Workbench", "&Points");
 #endif
@@ -41,18 +38,14 @@ using namespace PointsGui;
 /// @namespace PointsGui @class Workbench
 TYPESYSTEM_SOURCE(PointsGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    Gui::ToolBarItem* pnt = new Gui::ToolBarItem( root );
+    Gui::ToolBarItem* pnt = new Gui::ToolBarItem(root);
     pnt->setCommand("Points tools");
     *pnt << "Points_Import"
          << "Points_Export"
@@ -68,7 +61,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 {
     // point tools
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
-    Gui::ToolBarItem* pnt = new Gui::ToolBarItem( root );
+    Gui::ToolBarItem* pnt = new Gui::ToolBarItem(root);
     pnt->setCommand("Points tools");
     *pnt << "Points_Import"
          << "Points_Export"

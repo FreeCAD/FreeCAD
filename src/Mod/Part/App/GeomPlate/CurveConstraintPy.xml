@@ -77,32 +77,41 @@ Raises an exception if  the  curve  is  not  on  a  surface
     </Methode>
     <Methode Name="setG2Criterion">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu> Allows you to set the G2 criterion. This is the law
+ defining the greatest difference in curvature allowed
+ between the constraint and the target surface. If this
+ criterion is not set, TolCurv, the curvature tolerance from
+ the constructor, is used.
+ Raises   ConstructionError if  the  point  is  not  on  the  surface
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="curve3d">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu> Returns a 3d curve associated the surface resulting of the constraints</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setCurve2dOnSurf">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu> loads a 2d curve associated the surface resulting of the constraints
+</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="curve2dOnSurf">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu> Returns a 2d curve associated the surface resulting of the constraints</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setProjectedCurve">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu> loads a 2d curve  resulting from the normal projection of
+ the curve on the initial surface</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="projectedCurve">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu> Returns the projected curve resulting from the normal projection of the
+ curve on the initial surface</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="NbPoints">
@@ -116,19 +125,22 @@ the number of points.</UserDocu>
     </Attribute>
     <Attribute Name="FirstParameter" ReadOnly="true">
         <Documentation>
-            <UserDocu></UserDocu>
+            <UserDocu> This function returns the first parameter of the curve.
+The first parameter is the lowest parametric value for the curve, which defines the starting point of the curve.</UserDocu>
         </Documentation>
         <Parameter Name="FirstParameter" Type="Float"/>
     </Attribute>
     <Attribute Name="LastParameter" ReadOnly="true">
         <Documentation>
-            <UserDocu></UserDocu>
+            <UserDocu> This function returns the last parameter of the curve.
+The last parameter is the highest parametric value for the curve, which defines the ending point of the curve.</UserDocu>
         </Documentation>
         <Parameter Name="LastParameter" Type="Float"/>
     </Attribute>
     <Attribute Name="Length" ReadOnly="true">
         <Documentation>
-            <UserDocu></UserDocu>
+            <UserDocu> This function returns the length of the curve.
+The length of the curve is a geometric property that indicates how long the curve is in the space.</UserDocu>
         </Documentation>
         <Parameter Name="Length" Type="Float"/>
     </Attribute>

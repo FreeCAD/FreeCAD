@@ -31,26 +31,21 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Bnd_Box.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
-# include <BRep_Tool.hxx>
+# include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-# include <Standard_Version.hxx>
 #endif
 
-#include "ViewProviderAddSub.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/PartDesign/App/FeatureAddSub.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
 
+#include "ViewProviderAddSub.h"
 
 
 using namespace PartDesignGui;
@@ -126,12 +121,9 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
         Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
 
         // create or use the mesh on the data structure
-#if OCC_VERSION_HEX >= 0x060600
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
         BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
-#else
-        BRepMesh_IncrementalMesh(cShape, deflection);
-#endif
+
         // We must reset the location here because the transformation data
         // are set in the placement property
         TopLoc_Location aLoc;
@@ -248,7 +240,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     // not sufficient to only revert the mask mode. Also the child
     // number of the switch node must be reverted.
     if (onoff) {
-        if(pcModeSwitch->getChild(getDefaultMode()) == previewShape) 
+        if(pcModeSwitch->getChild(getDefaultMode()) == previewShape)
             return;
         displayMode = getActiveDisplayMode();
         whichChild = pcModeSwitch->whichChild.getValue();
@@ -256,7 +248,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     }
 
     if (!onoff) {
-        if(pcModeSwitch->getChild(getDefaultMode()) != previewShape) 
+        if(pcModeSwitch->getChild(getDefaultMode()) != previewShape)
             return;
         setDisplayMaskMode(displayMode.c_str());
         pcModeSwitch->whichChild.setValue(whichChild);

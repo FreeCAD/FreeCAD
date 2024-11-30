@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMTEXT_H
 #define DRAWINGGUI_QGCUSTOMTEXT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPointF>
@@ -42,14 +44,17 @@ class TechDrawGuiExport QGCustomText : public QGraphicsTextItem
 {
 public:
     explicit QGCustomText(QGraphicsItem* parent = nullptr);
-    ~QGCustomText() {}
+    ~QGCustomText() override {}
 
     enum {Type = QGraphicsItem::UserType + 130};
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
-    virtual QRectF boundingRect() const override;
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
+    QRectF boundingRect() const override;
     QRectF tightBoundingRect() const;
     QPointF tightBoundingAdjust() const;
+    // void setPos(const QPointF &pos);
+    // void setPos(qreal x, qreal y);
+    // QPointF pos() const;
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
@@ -63,12 +68,12 @@ public:
     virtual void justifyRightAt(QPointF centerPos, bool vCenter = true);
     virtual void justifyRightAt(double cX, double cY, bool vCenter = true);
 
-    virtual double getHeight(void);
-    virtual double getWidth(void);
-    
-    virtual QColor getNormalColor(void);
-    virtual QColor getPreColor(void);
-    virtual QColor getSelectColor(void);
+    virtual double getHeight();
+    virtual double getWidth();
+
+    virtual QColor getNormalColor();
+    virtual QColor getPreColor();
+    virtual QColor getSelectColor();
     virtual void setColor(QColor c);
 
     virtual void setTightBounding(bool tight);
@@ -77,11 +82,11 @@ public:
     void makeMark(Base::Vector3d v);
 
 protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-    Base::Reference<ParameterGrp> getParmGroup(void);
+    Base::Reference<ParameterGrp> getParmGroup();
 
     bool isHighlighted;
     bool tightBounding;  // Option to use tighter boundingRect(), works only for plaintext QGCustomText

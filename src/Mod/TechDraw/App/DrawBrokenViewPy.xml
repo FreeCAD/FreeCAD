@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewPartPy"
+    Name="DrawBrokenViewPy"
+    Twin="DrawBrokenView"
+    TwinPointer="DrawBrokenView"
+    Include="Mod/TechDraw/App/DrawBrokenView.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewPartPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing broken views</UserDocu>
+    </Documentation>
+    <Methode Name="mapPoint3dToView">
+      <Documentation>
+        <UserDocu>point2d = mapPoint3dToView(point3d) - returns the position of the 3d point within the broken view.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="mapPoint2dFromView">
+      <Documentation>
+        <UserDocu>point2d = mapPoint2dFromView(point3d) - returns the position of the 2d point within an unbroken view.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCompressedCenter">
+      <Documentation>
+        <UserDocu>point3d = getCompressedCenter() - returns the geometric center of the source shapes after break cuts and gap compression.</UserDocu>
+      </Documentation>
+    </Methode>
+   <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

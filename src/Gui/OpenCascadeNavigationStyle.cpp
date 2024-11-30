@@ -20,28 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
-# include "InventorAll.h"
-# include <QAction>
-# include <QActionGroup>
+# include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
-# include <QByteArray>
-# include <QCursor>
-# include <QList>
-# include <QMenu>
-# include <QMetaObject>
-# include <QRegExp>
 #endif
 
-#include <App/Application.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
-#include "Application.h"
-#include "MenuManager.h"
-#include "MouseSelection.h"
+
 
 using namespace Gui;
 
@@ -51,13 +38,9 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE(Gui::OpenCascadeNavigationStyle, Gui::UserNavigationStyle)
 
-OpenCascadeNavigationStyle::OpenCascadeNavigationStyle()
-{
-}
+OpenCascadeNavigationStyle::OpenCascadeNavigationStyle() = default;
 
-OpenCascadeNavigationStyle::~OpenCascadeNavigationStyle()
-{
-}
+OpenCascadeNavigationStyle::~OpenCascadeNavigationStyle() = default;
 
 const char* OpenCascadeNavigationStyle::mouseButtons(ViewerMode mode)
 {
@@ -80,7 +63,9 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
-    if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
+    if (this->isSeekMode()) {
+        return inherited::processSoEvent(ev);
+    }
     // Switch off viewing mode
     if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
@@ -116,13 +101,13 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent * const event = static_cast<const SoKeyboardEvent *>(ev);
+        auto const event = static_cast<const SoKeyboardEvent *>(ev);
         processed = processKeyboardEvent(event);
     }
 
     // Mouse Button / Spaceball Button handling
     if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+        const auto event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -154,16 +139,17 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
             // If we are in edit mode then simply ignore the RMB events
             // to pass the event to the base class.
             this->lockrecenter = true;
-            if (!viewer->isEditing()) {
-                // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events
+
+            // Don't show the context menu after dragging, panning or zooming
+            if (!press && (hasDragged || hasPanned || hasZoomed)) {
+                processed = true;
+            }
+            else if (!press && !viewer->isEditing()) {
                 if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {
-                        if (!press) { // release right mouse button
-                            this->openPopupMenu(event->getPosition());
-                        }
+                        this->openPopupMenu(event->getPosition());
                     }
                 }
             }
@@ -184,9 +170,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
         case SoMouseButtonEvent::BUTTON3:
             if (press) {
                 this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
+                setupPanningPlane(getCamera());
                 this->lockrecenter = false;
             }
             else if (this->currentmode == NavigationStyle::PANNING) {
@@ -217,7 +201,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
-        const SoLocation2Event * const event = (const SoLocation2Event *) ev;
+        const auto event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             // OCCT uses horizontal mouse position, not vertical
             // this->zoomByCursor(posn, prevnormalized);
@@ -245,7 +229,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
+        const auto event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -266,6 +250,9 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::PANNING;
         break;
     case CTRLDOWN|BUTTON2DOWN:
+        if (newmode != NavigationStyle::DRAGGING) {
+            saveCursorPosition(ev);
+        }
         newmode = NavigationStyle::DRAGGING;
         break;
     case BUTTON2DOWN:
@@ -273,6 +260,17 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     default:
         break;
+    }
+
+    // Process when selection button is pressed together with other buttons that could trigger different actions.
+    if (this->button1down && (this->button2down || this->button3down || this->ctrldown)) {
+        processed = true;
+    }
+
+    // Prevent interrupting rubber-band selection in sketcher
+    if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
+        newmode = NavigationStyle::SELECTION;
+        processed = false;
     }
 
     if (newmode != curmode) {

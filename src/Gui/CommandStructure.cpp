@@ -24,17 +24,17 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
-#include <QMessageBox>
 #endif
 
-#include "App/Part.h"
-#include "App/Document.h"
+#include <App/GroupExtension.h>
+#include <App/Document.h>
+
 #include "Command.h"
+#include "ActiveObjectList.h"
 #include "Application.h"
 #include "Document.h"
-#include "MDIView.h"
 #include "ViewProviderDocumentObject.h"
-
+#include "Selection.h"
 
 using namespace Gui;
 
@@ -50,7 +50,9 @@ StdCmdPart::StdCmdPart()
 {
     sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create part");
-    sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
+    sToolTipText  = QT_TR_NOOP("A Part is a general purpose container to keep together a group of objects so that they "
+                               "act as a unit in the 3D view. It is meant to arrange objects that have a Part "
+                               "TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.");
     sWhatsThis    = "Std_Part";
     sStatusTip    = sToolTipText;
     sPixmap       = "Geofeaturegroup";
@@ -76,7 +78,7 @@ void StdCmdPart::activated(int iMsg)
     updateActive();
 }
 
-bool StdCmdPart::isActive(void)
+bool StdCmdPart::isActive()
 {
     return hasActiveDocument();
 }
@@ -91,7 +93,9 @@ StdCmdGroup::StdCmdGroup()
 {
     sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create group");
-    sToolTipText  = QT_TR_NOOP("Create a new group for ordering objects");
+    sToolTipText = QT_TR_NOOP("A Group is a general purpose container to group objects in the "
+                              "Tree view, regardless of their data type. It is a simple folder to organize "
+                              "the objects in a model.");
     sWhatsThis    = "Std_Group";
     sStatusTip    = sToolTipText;
     sPixmap       = "folder";
@@ -114,23 +118,73 @@ void StdCmdGroup::activated(int iMsg)
     Gui::Document* gui = Application::Instance->activeDocument();
     App::Document* app = gui->getDocument();
     ViewProvider* vp = gui->getViewProvider(app->getActiveObject());
-    if (vp && vp->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+    if (vp && vp->isDerivedFrom<ViewProviderDocumentObject>())
         gui->signalScrollToObject(*static_cast<ViewProviderDocumentObject*>(vp));
 }
 
-bool StdCmdGroup::isActive(void)
+bool StdCmdGroup::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// Std_VarSet
+//===========================================================================
+DEF_STD_CMD_A(StdCmdVarSet)
+
+StdCmdVarSet::StdCmdVarSet()
+  : Command("Std_VarSet")
+{
+    sGroup        = "Structure";
+    sMenuText     = QT_TR_NOOP("Create a variable set");
+    sToolTipText  = QT_TR_NOOP("A Variable Set is an object that maintains a set of properties to be used as "
+                               "variables.");
+    sWhatsThis    = "Std_VarSet";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "VarSet";
+}
+
+void StdCmdVarSet::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a variable set"));
+
+    std::string VarSetName;
+    VarSetName = getUniqueObjectName("VarSet");
+    doCommand(Doc,"App.activeDocument().addObject('App::VarSet','%s')",VarSetName.c_str());
+
+    // add the varset to a group if it is selected
+    auto sels = Selection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
+                                           ResolveMode::OldStyleElement, true);
+    if (sels.size() == 1) {
+        App::DocumentObject *obj = sels[0].getObject();
+        auto group = obj->getExtension<App::GroupExtension>();
+        if (group) {
+            Gui::Document* docGui = Application::Instance->activeDocument();
+            App::Document* doc = docGui->getDocument();
+            group->addObject(doc->getObject(VarSetName.c_str()));
+        }
+    }
+    commitCommand();
+
+    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", VarSetName.c_str());
+}
+
+bool StdCmdVarSet::isActive()
 {
     return hasActiveDocument();
 }
 
 namespace Gui {
 
-void CreateStructureCommands(void)
+void CreateStructureCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new StdCmdPart());
     rcCmdMgr.addCommand(new StdCmdGroup());
+    rcCmdMgr.addCommand(new StdCmdVarSet());
 }
 
 } // namespace Gui

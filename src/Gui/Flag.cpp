@@ -28,9 +28,10 @@
 # include <Inventor/nodes/SoCamera.h>
 #endif
 #include <Inventor/SbVec2s.h>
-#include "View3DInventorViewer.h"
 
 #include "Flag.h"
+#include "View3DInventorViewer.h"
+
 
 using namespace Gui;
 
@@ -45,43 +46,25 @@ Flag::Flag(QWidget* parent)
   : QtGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
 {
     this->setFixedHeight(20);
-#if defined(HAVE_QT5_OPENGL)
     setAutoFillBackground(true);
-#endif
 }
 
-Flag::~Flag()
-{
-}
+Flag::~Flag() = default;
 
 void Flag::initializeGL()
 {
     const QPalette& p = this->palette();
-#if !defined(HAVE_QT5_OPENGL)
-    qglClearColor(p.color(QPalette::Window));
-#else
     QColor c(p.color(QPalette::Window));
     glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF());
-#endif
 }
 
 void Flag::paintGL()
 {
-#if !defined(HAVE_QT5_OPENGL)
-    const QPalette& p = this->palette();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    qglColor(p.color(QPalette::Text));
-    renderText(10,15,this->text);
-#else
     QOpenGLWidget::paintGL();
-#endif
 }
 
 void Flag::paintEvent(QPaintEvent* e)
 {
-#if !defined(HAVE_QT5_OPENGL)
-    QtGLWidget::paintEvent(e);
-#else
     const QPalette& p = this->palette();
     QColor c(p.color(QPalette::Text));
 
@@ -92,7 +75,6 @@ void Flag::paintEvent(QPaintEvent* e)
     painter.setPen(c);
     painter.drawText(10, 15, this->text);
     painter.end();
-#endif
 }
 
 void Flag::resizeGL(int width, int height)
@@ -125,9 +107,6 @@ void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
 
     GLPainter p;
     p.begin(v->getGLWidget());
-#if !defined(HAVE_QT5_OPENGL)
-    p.setDrawBuffer(GL_BACK);
-#endif
 
     // the line
     p.setLineWidth(1.0f);
@@ -151,20 +130,26 @@ void Flag::resizeEvent(QResizeEvent* e)
 void Flag::mouseMoveEvent(QMouseEvent *e)
 {
     if (e->buttons() & Qt::LeftButton) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         move(e->globalPos() - dragPosition);
+#else
+        move(e->globalPosition().toPoint() - dragPosition);
+#endif
         e->accept();
-#if defined(HAVE_QT5_OPENGL)
-        View3DInventorViewer* viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
+        auto viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
         if (viewer)
             viewer->getSoRenderManager()->scheduleRedraw();
-#endif
     }
 }
 
 void Flag::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         dragPosition = e->globalPos() - frameGeometry().topLeft();
+#else
+        dragPosition = e->globalPosition().toPoint() - frameGeometry().topLeft();
+#endif
         e->accept();
     }
 }
@@ -196,7 +181,7 @@ QSize Flag::sizeHint() const
     QRect r = metric.boundingRect(text);
     w = std::max<int>(w, r.width()+20);
     h = std::max<int>(h, r.height());
-    return QSize(w, h);
+    return {w, h};
 }
 
 // ------------------------------------------------------------------------
@@ -204,7 +189,7 @@ QSize Flag::sizeHint() const
 FlagLayout::FlagLayout(QWidget *parent, int margin, int spacing)
     : QLayout(parent)
 {
-    setMargin(margin);
+    setContentsMargins(margin, margin, margin, margin);
     setSpacing(spacing);
 }
 
@@ -251,7 +236,7 @@ QLayoutItem *FlagLayout::itemAt(int index) const
     if (wrapper)
         return wrapper->item;
     else
-        return 0;
+        return nullptr;
 }
 
 QSize FlagLayout::minimumSize() const
@@ -267,8 +252,7 @@ void FlagLayout::setGeometry(const QRect &rect)
     QLayout::setGeometry(rect);
 
     // left side
-    for (int i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (ItemWrapper *wrapper : list) {
         QLayoutItem *item = wrapper->item;
         Position position = wrapper->position;
 
@@ -288,8 +272,7 @@ void FlagLayout::setGeometry(const QRect &rect)
     // right side
     topHeight = 0;
     bottomHeight = 0;
-    for (int i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (ItemWrapper *wrapper : list) {
         QLayoutItem *item = wrapper->item;
         Position position = wrapper->position;
 
@@ -319,7 +302,7 @@ QLayoutItem *FlagLayout::takeAt(int index)
         ItemWrapper *layoutStruct = list.takeAt(index);
         return layoutStruct->item;
     }
-    return 0;
+    return nullptr;
 }
 
 void FlagLayout::add(QLayoutItem *item, Position position)
@@ -331,8 +314,7 @@ QSize FlagLayout::calculateSize(SizeType sizeType) const
 {
     QSize totalSize;
 
-    for (int i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (ItemWrapper *wrapper : list) {
         QSize itemSize;
 
         if (sizeType == MinimumSize)
@@ -349,7 +331,7 @@ QSize FlagLayout::calculateSize(SizeType sizeType) const
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLFlagWindow, Gui::GLGraphicsItem)
 
-GLFlagWindow::GLFlagWindow(View3DInventorViewer* view) : _viewer(view), _flagLayout(0)
+GLFlagWindow::GLFlagWindow(View3DInventorViewer* view) : _viewer(view), _flagLayout(nullptr)
 {
 }
 
@@ -371,10 +353,8 @@ void GLFlagWindow::deleteFlags()
                 flag->deleteLater();
             }
         }
-#if defined(HAVE_QT5_OPENGL)
         if (ct > 0)
             _viewer->getSoRenderManager()->scheduleRedraw();
-#endif
     }
 }
 
@@ -395,9 +375,7 @@ void GLFlagWindow::removeFlag(Flag* item)
 {
     if (_flagLayout) {
         _flagLayout->removeWidget(item);
-#if defined(HAVE_QT5_OPENGL)
         _viewer->getSoRenderManager()->scheduleRedraw();
-#endif
     }
 }
 
@@ -407,7 +385,7 @@ Flag* GLFlagWindow::getFlag(int index) const
         QWidget* flag = _flagLayout->itemAt(index)->widget();
         return qobject_cast<Flag*>(flag);
     }
-    return 0;
+    return nullptr;
 }
 
 int GLFlagWindow::countFlags() const

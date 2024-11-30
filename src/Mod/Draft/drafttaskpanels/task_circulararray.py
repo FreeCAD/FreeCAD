@@ -34,10 +34,9 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
-import draftutils.utils as utils
-
 from FreeCAD import Units as U
-from draftutils.messages import _msg, _wrn, _err, _log
+from draftutils import params
+from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -74,8 +73,8 @@ class TaskPanelCircularArray:
 
     See Also
     --------
-    * https://forum.freecadweb.org/viewtopic.php?f=10&t=40007
-    * https://forum.freecadweb.org/viewtopic.php?t=5374#p43038
+    * https://forum.freecad.org/viewtopic.php?f=10&t=40007
+    * https://forum.freecad.org/viewtopic.php?t=5374#p43038
     """
 
     def __init__(self):
@@ -136,8 +135,8 @@ class TaskPanelCircularArray:
         self.form.input_c_z.setProperty('rawValue', self.center.z)
         self.form.input_c_z.setProperty('unit', length_unit)
 
-        self.fuse = utils.get_param("Draft_array_fuse", False)
-        self.use_link = utils.get_param("Draft_array_Link", True)
+        self.fuse = params.get_param("Draft_array_fuse")
+        self.use_link = params.get_param("Draft_array_Link")
 
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
@@ -168,16 +167,6 @@ class TaskPanelCircularArray:
         self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
         self.form.checkbox_link.stateChanged.connect(self.set_link)
 
-        # Old style for Qt4, avoid!
-        # QtCore.QObject.connect(self.form.button_reset,
-        #                        QtCore.SIGNAL("clicked()"),
-        #                        self.reset_point)
-        # QtCore.QObject.connect(self.form.checkbox_fuse,
-        #                        QtCore.SIGNAL("stateChanged(int)"),
-        #                        self.set_fuse)
-        # QtCore.QObject.connect(self.form.checkbox_link,
-        #                        QtCore.SIGNAL("stateChanged(int)"),
-        #                        self.set_link)
 
     def accept(self):
         """Execute when clicking the OK button or Enter key."""
@@ -202,7 +191,6 @@ class TaskPanelCircularArray:
         if self.valid_input:
             self.create_object()
             # The internal function already displays messages
-            # self.print_messages()
             self.finish()
 
     def validate_input(self, selection,
@@ -337,10 +325,6 @@ class TaskPanelCircularArray:
         self.form.input_c_z.setProperty('rawValue', 0)
 
         self.center = self.get_center()
-        _msg(translate("draft","Center reset:")
-             + " ({0}, {1}, {2})".format(self.center.x,
-                                         self.center.y,
-                                         self.center.z))
 
     def print_fuse_state(self, fuse):
         """Print the fuse state translated."""
@@ -353,8 +337,7 @@ class TaskPanelCircularArray:
     def set_fuse(self):
         """Execute as a callback when the fuse checkbox changes."""
         self.fuse = self.form.checkbox_fuse.isChecked()
-        self.print_fuse_state(self.fuse)
-        utils.set_param("Draft_array_fuse", self.fuse)
+        params.set_param("Draft_array_fuse", self.fuse)
 
     def print_link_state(self, use_link):
         """Print the link state translated."""
@@ -367,8 +350,8 @@ class TaskPanelCircularArray:
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
         self.use_link = self.form.checkbox_link.isChecked()
-        self.print_link_state(self.use_link)
-        utils.set_param("Draft_array_Link", self.use_link)
+        params.set_param("Draft_array_Link", self.use_link)
+
 
     def print_messages(self):
         """Print messages about the operation."""
@@ -402,10 +385,8 @@ class TaskPanelCircularArray:
 
         point: Base::Vector3
             is a vector that arrives by the callback.
-        plane: WorkingPlane
-            is a `WorkingPlane` instance, for example,
-            `App.DraftWorkingPlane`. It is not used at the moment,
-            but could be used to set up the grid.
+        plane: WorkingPlane.PlaneGui
+            is a working plane instance. Not used at the moment.
         mask: str
             is a string that specifies which coordinate is being
             edited. It is used to restrict edition of a single coordinate.
@@ -488,7 +469,6 @@ class TaskPanelCircularArray:
 
     def reject(self):
         """Execute when clicking the Cancel button or pressing Escape."""
-        _msg(translate("draft","Aborted:") + " {}".format(translate("draft","Circular array")))
         self.finish()
 
     def finish(self):

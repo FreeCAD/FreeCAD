@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>382</width>
-    <height>491</height>
+    <width>350</width>
+    <height>334</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -46,18 +46,36 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="hLayout1_3">
+    <layout class="QHBoxLayout" name="hLayout1">
      <item>
-      <widget class="QPushButton" name="btnAdd">
+      <widget class="QToolButton" name="btnAdd">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Add</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnRemove">
+      <widget class="QToolButton" name="btnRemove">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Remove</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -87,67 +105,84 @@
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Rotation about X-Axis</string>
+        <widget class="QGroupBox" name="groupBox_0">
+         <property name="title">
+          <string>System Rotation</string>
+         </property>
+         <layout class="QGridLayout" name="horizontalLayout_7">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>X:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+          <widget class="Gui::DoubleSpinBox" name="spb_rot_axis_x">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="singleStep">
+            <double>0.10000000000000</double>
            </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="sp_X">
-           <property name="minimum">
-            <number>-360</number>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Y:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+          <widget class="Gui::DoubleSpinBox" name="spb_rot_axis_y">
+           <property name="keyboardTracking">
+            <bool>false</bool>
            </property>
-           <property name="maximum">
-            <number>360</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
-         <item>
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string>Rotation about Y-Axis</string>
+           <property name="singleStep">
+            <double>0.10000000000000</double>
            </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="sp_Y">
-           <property name="minimum">
-            <number>-360</number>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Z:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+          <widget class="Gui::DoubleSpinBox" name="spb_rot_axis_z">
+           <property name="keyboardTracking">
+            <bool>false</bool>
            </property>
-           <property name="maximum">
-            <number>360</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <widget class="QLabel" name="label_11">
-           <property name="text">
-            <string>Rotation about Z-Axis</string>
+           <property name="singleStep">
+            <double>0.10000000000000</double>
            </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="sp_Z">
-           <property name="minimum">
-            <number>-360</number>
-           </property>
-           <property name="maximum">
-            <number>360</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="lb_angle">
+            <property name="text">
+             <string>Angle:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::QuantitySpinBox" name="qsb_rot_angle">
+            <property name="unit" stdset="0">
+             <string notr="true">deg</string>
+            </property>
+            <property name="minimum">
+             <double>-360.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>360.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox">
@@ -189,6 +224,18 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

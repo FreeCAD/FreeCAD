@@ -24,27 +24,21 @@ import FreeCADGui as Gui
 from PySide import QtGui
 from PySide import QtCore
 
-timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
 statusBar = mw.statusBar()
 p = App.ParamGet("User parameter:Tux/NavigationIndicator")
 pView = App.ParamGet("User parameter:BaseApp/Preferences/View")
+pMWin = App.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
 
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text):
-        "convenience function for Qt 4 translator"
-        return QtGui.QApplication.translate(context, text, None, _encoding)
-except AttributeError:
-    def translate(context, text):
-        "convenience function for Qt 5 translator"
-        return QtGui.QApplication.translate(context, text, None)
+def translate(context, text):
+    "convenience function for Qt 5/6 translator"
+    return QtGui.QApplication.translate(context, text, None)
 
 
 class IndicatorButton(QtGui.QPushButton):
     """Detect language change events."""
+
     def __init__(self, parent=None):
         super(IndicatorButton, self).__init__()
 
@@ -55,6 +49,33 @@ class IndicatorButton(QtGui.QPushButton):
             onTooltip()
             self.adjustSize()
         return super(IndicatorButton, self).changeEvent(event)
+
+    def onChange(self, paramGrp, param):
+        if param == "NavigationStyle":
+            setCurrent()
+
+    def mousePressEvent(self, event):
+        RePopulateIcons()
+        return super(IndicatorButton, self).mousePressEvent(event)
+
+
+def RePopulateIcons():
+    curStyleSheet = pMWin.GetString("StyleSheet")
+    if "dark" in curStyleSheet.lower():
+        StyleSheetType = "light"
+    else:
+        StyleSheetType = "dark"
+
+    a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_" + StyleSheetType + ".svg"))
+    a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))
+    a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_" + StyleSheetType + ".svg"))
+    a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_" + StyleSheetType + ".svg"))
+    a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_" + StyleSheetType + ".svg"))
+    a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_" + StyleSheetType + ".svg"))
+    a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_" + StyleSheetType + ".svg"))
+    a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
+    a9.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
+    a10.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -75,261 +96,482 @@ def retranslateUi():
     t0 = translate("NavigationIndicator", "Navigation style not recognized.")
 
     global t1
-    t1 = "<p align='center'><b>Blender</b> " + text06 + """</p>
+    t1 = (
+        "<p align='center'><b>Blender</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationBlender_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_LeftRight.svg'></td>
      </tr>
     </table>
-    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
 
     global t2
-    t2 = "<p align='center'><b>CAD</b> " + text06 + """</p>
+    t2 = (
+        "<p align='center'><b>CAD</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationCAD_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationCAD_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationCAD_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationCAD_RotateAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationCAD_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
      </tr>
     </table>
-    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
 
     global t3
-    t3 = "<p align='center'><b>Gesture</b> " + text06 + """</p>
+    t3 = (
+        "<p align='center'><b>Gesture</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text05 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text05
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationGesture_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_RotateAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_Tilt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_LeftMove.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_LeftRight.svg'></td>
      </tr>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text05 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text05
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationGesture_SelectTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_ZoomTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_RotateTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_PanTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_PanTouchAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_TiltTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_SelectTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_ZoomTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_RotateTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_PanTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_PanTouchAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_TiltTouch.svg'></td>
      </tr>
     </table>
-    <p><small><b>""" + text02 + ":</b> " + text07 + """<br>
-    <b>""" + text08 + ":</b> " + text09 + "</small></p>"
+    <p><small><b>"""
+        + text02
+        + ":</b> "
+        + text07
+        + """<br>
+    <b>"""
+        + text08
+        + ":</b> "
+        + text09
+        + "</small></p>"
+    )
 
     global t4
-    t4 = "<p align='center'><b>MayaGesture</b> " + text06 + """</p>
+    t4 = (
+        "<p align='center'><b>MayaGesture</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text05 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text05
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Tilt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltLeftRight.svg'></td>
      </tr>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text05 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text05
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_SelectTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_ZoomTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_RotateTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_PanTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_PanTouchAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_TiltTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_SelectTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_ZoomTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_RotateTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_PanTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_PanTouchAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_TiltTouch.svg'></td>
      </tr>
     </table>
-    <p><small><b>""" + text02 + ":</b> " + text07 + """<br>
-    <b>""" + text08 + ":</b> " + text09 + "</small></p>"
+    <p><small><b>"""
+        + text02
+        + ":</b> "
+        + text07
+        + """<br>
+    <b>"""
+        + text08
+        + ":</b> "
+        + text09
+        + "</small></p>"
+    )
 
     global t5
-    t5 = "<p align='center'><b>OpenCascade</b> " + text06 + """</p>
+    t5 = (
+        "<p align='center'><b>OpenCascade</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_PanAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
      </tr>
     </table>"""
+    )
 
     global t6
-    t6 = "<p align='center'><b>OpenInventor</b> " + text06 + """</p>
+    t6 = (
+        "<p align='center'><b>OpenInventor</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
      </tr>
     </table>
-    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
 
     global t7
-    t7 = "<p align='center'><b>OpenSCAD</b> " + text06 + """</p>
+    t7 = (
+        "<p align='center'><b>OpenSCAD</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
      </tr>
     </table>"""
+    )
 
     global t8
-    t8 = "<p align='center'><b>Revit</b> " + text06 + """</p>
+    t8 = (
+        "<p align='center'><b>Revit</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationBlender_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationRevit_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationRevit_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_LeftRight.svg'></td>
      </tr>
     </table>
-    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
 
     global t9
-    t9 = "<p align='center'><b>TinkerCAD</b> " + text06 + """</p>
+    t9 = (
+        "<p align='center'><b>TinkerCAD</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationTinkerCAD_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTinkerCAD_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTinkerCAD_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTinkerCAD_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
      </tr>
     </table>"""
+    )
 
     global t10
-    t10 = "<p align='center'><b>Touchpad</b> " + text06 + """</p>
+    t10 = (
+        "<p align='center'><b>Touchpad</b> "
+        + text06
+        + """</p>
     <table>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationTouchpad_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_RotateAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftCtrlMove.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltMove.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMove.svg'></td>
      </tr>
      <tr>
-      <th><small>""" + text01 + """</small></th>
-      <th><small>""" + text02 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text03 + """</small></th>
-      <th><small>""" + text04 + """</small></th>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationTouchpad_SelectTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_ZoomTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_RotateTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_RotateTouchAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_PanTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_ShiftCtrlTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_AltTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_ShiftLeftTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_ShiftTouch.svg'></td>
      </tr>
     </table>
-    <p><small><b>""" + text02 + ":</b> " + text07 + "</p>"
+    <p><small><b>"""
+        + text02
+        + ":</b> "
+        + text07
+        + "</p>"
+    )
 
     menuSettings.setTitle(translate("NavigationIndicator", "Settings"))
     menuOrbit.setTitle(translate("NavigationIndicator", "Orbit style"))
     aCompact.setText(translate("NavigationIndicator", "Compact"))
     aTooltip.setText(translate("NavigationIndicator", "Tooltip"))
     aTurntable.setText(translate("NavigationIndicator", "Turntable"))
+    aFreeTurntable.setText(translate("NavigationIndicator", "Free Turntable"))
     aTrackball.setText(translate("NavigationIndicator", "Trackball"))
     a0.setText(translate("NavigationIndicator", "Undefined"))
 
@@ -358,9 +600,13 @@ aTurntable.setCheckable(True)
 aTrackball = QtGui.QAction(gOrbit)
 aTrackball.setObjectName("NavigationIndicator_Trackball")
 aTrackball.setCheckable(True)
+aFreeTurntable = QtGui.QAction(gOrbit)
+aFreeTurntable.setObjectName("NavigationIndicator_FreeTurntable")
+aFreeTurntable.setCheckable(True)
 
 menuOrbit.addAction(aTurntable)
 menuOrbit.addAction(aTrackball)
+menuOrbit.addAction(aFreeTurntable)
 
 menuSettings.addMenu(menuOrbit)
 menuSettings.addSeparator()
@@ -375,64 +621,56 @@ a0.setData("Undefined  ")
 a0.setObjectName("Indicator_NavigationUndefined")
 
 a1 = QtGui.QAction(gStyle)
-a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_dark.svg"))
 a1.setText("Blender  ")
 a1.setData("Gui::BlenderNavigationStyle")
 a1.setObjectName("Indicator_NavigationBlender")
 
 a2 = QtGui.QAction(gStyle)
-a2.setIcon(QtGui.QIcon(':/icons/NavigationCAD_dark.svg'))
 a2.setText("CAD  ")
 a2.setData("Gui::CADNavigationStyle")
 a2.setObjectName("Indicator_NavigationCAD")
 
 a3 = QtGui.QAction(gStyle)
-a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_dark.svg"))
 a3.setText("Gesture  ")
 a3.setData("Gui::GestureNavigationStyle")
 a3.setObjectName("Indicator_NavigationGesture")
 
 a4 = QtGui.QAction(gStyle)
-a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_dark.svg"))
 a4.setText("MayaGesture  ")
 a4.setData("Gui::MayaGestureNavigationStyle")
 a4.setObjectName("Indicator_NavigationMayaGesture")
 
 a5 = QtGui.QAction(gStyle)
-a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_dark.svg"))
 a5.setText("OpenCascade  ")
 a5.setData("Gui::OpenCascadeNavigationStyle")
 a5.setObjectName("Indicator_NavigationOpenCascade")
 
 a6 = QtGui.QAction(gStyle)
-a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_dark.svg"))
 a6.setText("OpenInventor  ")
 a6.setData("Gui::InventorNavigationStyle")
 a6.setObjectName("Indicator_NavigationOpenInventor")
 
 a7 = QtGui.QAction(gStyle)
-a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_dark.svg"))
 a7.setText("OpenSCAD  ")
 a7.setData("Gui::OpenSCADNavigationStyle")
 a7.setObjectName("Indicator_NavigationOpenSCAD")
 
 a8 = QtGui.QAction(gStyle)
-a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_dark.svg"))
 a8.setText("Revit  ")
 a8.setData("Gui::RevitNavigationStyle")
 a8.setObjectName("Indicator_NavigationRevit")
 
 a9 = QtGui.QAction(gStyle)
-a9.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_dark.svg"))
 a9.setText("TinkerCAD  ")
 a9.setData("Gui::TinkerCADNavigationStyle")
 a9.setObjectName("Indicator_NavigationTinkerCAD")
 
 a10 = QtGui.QAction(gStyle)
-a10.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_dark.svg"))
 a10.setText("Touchpad  ")
 a10.setData("Gui::TouchpadNavigationStyle")
 a10.setObjectName("Indicator_NavigationTouchpad")
+
+RePopulateIcons()
 
 menu.addMenu(menuSettings)
 menu.addSeparator()
@@ -447,6 +685,8 @@ menu.addAction(a7)
 menu.addAction(a8)
 menu.addAction(a9)
 menu.addAction(a10)
+
+pView.Attach(indicator)
 
 
 def onCompact():
@@ -499,45 +739,29 @@ def onOrbit():
 
     if aTurntable.isChecked():
         pView.SetInt("OrbitStyle", 0)
-    else:
+    elif aTrackball.isChecked():
         pView.SetInt("OrbitStyle", 1)
+    elif aFreeTurntable.isChecked():
+        pView.SetInt("OrbitStyle", 2)
 
 
 def onOrbitShow():
     """Set turntable or trackball orbit style."""
 
+    OrbitStyle = pView.GetInt("OrbitStyle", 1)
     gOrbit.blockSignals(True)
-    if pView.GetInt("OrbitStyle", 1):
-        aTrackball.setChecked(True)
-    else:
+    if OrbitStyle == 0:
         aTurntable.setChecked(True)
+    elif OrbitStyle == 1:
+        aTrackball.setChecked(True)
+    elif OrbitStyle == 2:
+        aFreeTurntable.setChecked(True)
     gOrbit.blockSignals(False)
 
 
 def onMenu(action):
     """Set navigation style on selection."""
-
-    s = False
-
-    if action and action.data() != "Undefined":
-        s = True
-        setCompact(action)
-        menu.setDefaultAction(action)
-        indicator.setIcon(action.icon())
-        indicator.setToolTip(action.toolTip())
-        pView.SetString("NavigationStyle", action.data())
-    else:
-        pass
-
-    if s:
-        a0.setVisible(False)
-    else:
-        a0.setVisible(True)
-        a0.setEnabled(True)
-        setCompact(a0)
-        menu.setDefaultAction(a0)
-        indicator.setIcon(a0.icon())
-        indicator.setToolTip(a0.toolTip())
+    pView.SetString("NavigationStyle", action.data())
 
 
 def setCurrent():
@@ -548,7 +772,7 @@ def setCurrent():
     actions = gStyle.actions()
     current = pView.GetString("NavigationStyle")
 
-    if current:
+    if current and current != "Undefined":
         for i in actions:
             if i.data() == current:
                 s = True
@@ -560,10 +784,6 @@ def setCurrent():
                 pass
     else:
         s = True
-        setCompact(a2) # set to style CAD
-        menu.setDefaultAction(a2)
-        indicator.setIcon(a2.icon())
-        indicator.setToolTip(a2.toolTip())
         pView.SetString("NavigationStyle", a2.data())
 
     if s:
@@ -588,7 +808,6 @@ if p.GetBool("Tooltip", 1):
 retranslateUi()
 onCompact()
 onTooltip()
-onOrbitShow()
 
 label = statusBar.children()[2]
 statusBar.removeWidget(label)
@@ -604,7 +823,3 @@ aCompact.triggered.connect(onCompact)
 aTooltip.triggered.connect(onTooltip)
 menuOrbit.aboutToShow.connect(onOrbitShow)
 menu.aboutToHide.connect(indicator.clearFocus)
-
-timer.setParent(indicator)
-timer.timeout.connect(setCurrent)
-timer.start(10000)

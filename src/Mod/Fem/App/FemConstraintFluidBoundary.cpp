@@ -21,54 +21,50 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepAdaptor_Curve.hxx>
 #include <Precision.hxx>
 #endif
 
+#include <Base/Console.h>
+
 #include "FemConstraintFluidBoundary.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
 
 using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint)
 
-// see forum topic: https://forum.freecadweb.org/viewtopic.php?&p=407901
+// clang-format off
+// see forum topic: https://forum.freecad.org/viewtopic.php?&p=407901
 
 // also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error
-static const char* BoundaryTypes[] = {"inlet","wall","outlet","interface","freestream", NULL};
-static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "partialSlip", "moving", NULL};
-static const char* InletSubtypes[] = {"unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate", NULL};
-static const char* OutletSubtypes[] = {"unspecific","totalPressure","staticPressure","uniformVelocity", "outFlow", NULL};
-static const char* InterfaceSubtypes[] = {"unspecific","symmetry","wedge","cyclic","empty", NULL};
-static const char* FreestreamSubtypes[] = {"unspecific", "freestream",NULL};
+static const char* BoundaryTypes[] = {"inlet","wall","outlet","interface","freestream", nullptr};
+static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "partialSlip", "moving", nullptr};
+static const char* InletSubtypes[] = {"unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate", nullptr};
+static const char* OutletSubtypes[] = {"unspecific","totalPressure","staticPressure","uniformVelocity", "outFlow", nullptr};
+static const char* InterfaceSubtypes[] = {"unspecific","symmetry","wedge","cyclic","empty", nullptr};
+static const char* FreestreamSubtypes[] = {"unspecific", "freestream",nullptr};
 
 // see Ansys fluet manual: Turbulence Specification method, if not specified, solver will guess a value based e.g. 0.05 for inlet length geometry",
-static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio","intensity&HydraulicDiameter",NULL};
+static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio","intensity&HydraulicDiameter",nullptr};
 /* only used in TaskFemConstraintFluidBoundary.cpp */
 
 // activate the heat transfer and radiation model in Solver object explorer
 // also defined in FoamCaseBuilder/HeatTransferBuilder.py, update simultaneously, heatFlux is not a standard OpenFOAM patch type
-static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "heatFlux", "HTC","coupled", NULL};
+static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "heatFlux", "HTC","coupled", nullptr};
 /* only used in TaskFemConstraintFluidBoundary.cpp
 static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer ()", "fixed value heat flux [K/m]",
             "mixed fixedGradient and fixedValue", "fixed heat flux [W/m2]", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", NULL};
 */
+// clang-format on
 
 ConstraintFluidBoundary::ConstraintFluidBoundary()
 {
-    /// momemtum boundary: pressure and velocity
+    // clang-format off
+    /// momentum boundary: pressure and velocity
     ADD_PROPERTY_TYPE(BoundaryType,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Basic boundary type like inlet, wall, outlet,etc");
     BoundaryType.setEnums(BoundaryTypes);
@@ -78,7 +74,7 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
     ADD_PROPERTY_TYPE(BoundaryValue,(0.0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Scaler value for the specific value subtype, like pressure, velocity magnitude");
     /// Direction should be allowed to edit in property editor, if no edge is available in CAD model
-    ADD_PROPERTY_TYPE(Direction,(0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Direction,(nullptr),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Vector direction of BoundaryValue");
     ADD_PROPERTY_TYPE(Reversed,(0),"FluidBoundary",(App::PropertyType)(App::Prop_ReadOnly|App::Prop_Output),
                       "To distinguish inlet (flow outward from solid) or outlet boundary condition");
@@ -100,20 +96,13 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
                       "Heat flux value for thermal boundary condition");
     ADD_PROPERTY_TYPE(HTCoeffValue,(0.0),"HeatTransfer",(App::PropertyType)(App::Prop_None),
                       "Heat transfer coefficient for convective boundary condition");
-    /// geometry rendering related properties
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                      "Points where arrows are drawn");
-    Points.setValues(std::vector<Base::Vector3d>());
     ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of arrows");
     naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indicate an invalid value
-    // property from: FemConstraintFixed object
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                      "Normals where symbols are drawn");
-    Normals.setValues(std::vector<Base::Vector3d>());
+    // clang-format on
 }
 
-App::DocumentObjectExecReturn *ConstraintFluidBoundary::execute(void)
+App::DocumentObjectExecReturn* ConstraintFluidBoundary::execute()
 {
     return Constraint::execute();
 }
@@ -135,40 +124,34 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
         else if (boundaryType == "freestream") {
             Subtype.setEnums(FreestreamSubtypes);
         }
-        else if(boundaryType == "inlet") {
+        else if (boundaryType == "inlet") {
             Subtype.setEnums(InletSubtypes);
         }
-        else if(boundaryType == "outlet") {
+        else if (boundaryType == "outlet") {
             Subtype.setEnums(OutletSubtypes);
         }
         else {
             Base::Console().Message(boundaryType.c_str());
             Base::Console().Message(" Error: this boundaryType is not defined\n");
         }
-        Subtype.setValue(1); // must set a default (0 or 1) as freestream has only 2 subtypes
+
+        // must set a default (0 or 1) as freestream has only 2 subtypes
+        Subtype.setValue(1);
         // need to trigger ViewProvider::updateData() for redraw in 3D view after this method
     }
-
-    //naturalDirectionVector is a private member of this class
-    if (prop == &References) {
-        std::vector<Base::Vector3d> points;
-        std::vector<Base::Vector3d> normals;
-        int scale = 1; //OvG: Enforce use of scale
-        if (getPoints(points, normals, &scale)) {
-            Points.setValues(points);
-            Normals.setValues(normals);
-            Scale.setValue(scale); //OvG: Scale
-            Points.touch(); // This triggers ViewProvider::updateData()
-        }
-    } else if (prop == &Direction) {
-        Base::Vector3d direction = getDirection(Direction);  // Fem::Constraint
-        if (direction.Length() < Precision::Confusion())  // if Direct has no link provided return Base::Vector3d(0,0,0);
+    else if (prop == &Direction) {
+        Base::Vector3d direction = getDirection(Direction);
+        // if Direct has no link provided return Base::Vector3d(0,0,0);
+        if (direction.Length() < Precision::Confusion()) {
             return;
+        }
         naturalDirectionVector = direction;
-        if (Reversed.getValue())
+        if (Reversed.getValue()) {
             direction = -direction;
+        }
         DirectionVector.setValue(direction);
-    } else if (prop == &Reversed) {
+    }
+    else if (prop == &Reversed) {
         // if the direction is invalid try to compute it again
         if (naturalDirectionVector.Length() < Precision::Confusion()) {
             naturalDirectionVector = getDirection(Direction);
@@ -176,16 +159,20 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
         if (naturalDirectionVector.Length() >= Precision::Confusion()) {
             if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
                 DirectionVector.setValue(-naturalDirectionVector);
-            } else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
+            }
+            else if (!Reversed.getValue()
+                     && (DirectionVector.getValue() != naturalDirectionVector)) {
                 DirectionVector.setValue(naturalDirectionVector);
             }
         }
-    } else if (prop == &NormalDirection) {
+    }
+    else if (prop == &NormalDirection) {
         // Set a default direction if no direction reference has been given
-        if (Direction.getValue() == NULL) {
+        if (!Direction.getValue()) {
             Base::Vector3d direction = NormalDirection.getValue();
-            if (Reversed.getValue())
+            if (Reversed.getValue()) {
                 direction = -direction;
+            }
             DirectionVector.setValue(direction);
             naturalDirectionVector = direction;
         }

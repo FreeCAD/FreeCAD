@@ -42,6 +42,22 @@ class TestChamfer(unittest.TestCase):
         self.Doc.recompute()
         self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
         self.assertEqual(len(self.MajorFaces), 8)
+        #test UseAllEdges property
+        self.Chamfer.UseAllEdges = True
+        self.Chamfer.Base = (self.Box, ['']) # no subobjects, should still work
+        self.Doc.recompute()
+        self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
+        self.assertEqual(len(self.MajorFaces), 8)
+        self.Chamfer.Base = (self.Box, ['Face50']) # non-existent face, test topo naming resilience
+        self.Doc.recompute()
+        self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
+        self.assertEqual(len(self.MajorFaces), 8)
+        self.Chamfer.UseAllEdges = False
+        self.Chamfer.Base = (self.Box, ['Face1'])
+        self.Doc.recompute()
+        self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
+        self.assertEqual(len(self.MajorFaces), 9)
+
 
     def tearDown(self):
         #closing doc

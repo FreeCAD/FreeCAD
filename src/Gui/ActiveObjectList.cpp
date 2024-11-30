@@ -19,24 +19,21 @@
 *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 *   USA                                                                   *
 *                                                                         *
-*   Juergen Riegel 2014                                                   *
 ***************************************************************************/
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-
-#endif
-
-#include <Base/Console.h>
-#include "ActiveObjectList.h"
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include "Tree.h"
 
-FC_LOG_LEVEL_INIT("MDIView",true,true)
+#include "ActiveObjectList.h"
+#include "TreeParams.h"
+
+
+FC_LOG_LEVEL_INIT("MDIView", true, true)
 
 using namespace Gui;
 
@@ -49,7 +46,7 @@ App::DocumentObject *ActiveObjectList::getObject(const ObjectInfo &info, bool re
     if (subname)
         *subname = info.subname;
     auto obj = info.obj;
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return nullptr;
     if (!info.subname.empty()) {
         obj = obj->getSubObject(info.subname.c_str());
@@ -69,7 +66,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
     if (!vp)
         return;
 
-    if (TreeParams::Instance()->TreeActiveAutoExpand()) {
+    if (TreeParams::getTreeActiveAutoExpand()) {
         vp->getDocument()->signalExpandObject(*vp, enable ? TreeItemMode::ExpandPath : TreeItemMode::CollapseItem,
                                               info.obj, info.subname.c_str());
     }
@@ -81,7 +78,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
 {
     ObjectInfo info;
     info.obj = nullptr;
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return info;
 
     if (subname) {
@@ -92,7 +89,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
         // If the input object is not from this document, it must be brought in
         // by some link type object of this document. We only accept the object
         // if we can find such object in the current selection.
-        auto sels = Gui::Selection().getSelection(_Doc->getDocument()->getName(),false);
+        auto sels = Gui::Selection().getSelection(_Doc->getDocument()->getName(), ResolveMode::NoResolve);
         for (auto &sel : sels) {
             if (sel.pObject == obj || sel.pObject->getLinkedObject(true)==obj) {
                 info.obj = sel.pObject;
@@ -114,10 +111,34 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
             if (info.obj)
                 break;
         }
+        if(!info.obj) {
+            // No selection is found, try to obtain the object hierarchy using
+            // DocumentObject::getParents()
+            unsigned long count = 0xffffffff;
+            for(auto &v : obj->getParents()) {
+                if(v.first->getDocument() != _Doc->getDocument())
+                    continue;
 
-        if (!info.obj && obj->getDocument()==_Doc->getDocument())
-            info.obj = obj;
+                // We prioritize on non-linked group object having the least
+                // hierarchies.
+                unsigned long cnt = v.first->getSubObjectList(v.second.c_str()).size();
+                if(v.first->getLinkedObject(false) != v.first)
+                    cnt &= 0x8000000;
+                if(cnt < count) {
+                    count = cnt;
+                    info.obj = v.first;
+                    info.subname = v.second;
+                }
+            }
+
+            if(!info.obj) {
+                if (obj->getDocument()!=_Doc->getDocument())
+                    return info;
+                info.obj = obj;
+            }
+        }
     }
+
     return info;
 }
 
@@ -163,11 +184,16 @@ bool Gui::ActiveObjectList::hasObject(const char*name)const
 
 void ActiveObjectList::objectDeleted(const ViewProviderDocumentObject &vp)
 {
-    //maybe boost::bimap or boost::multi_index
-    for (auto it = _ObjectMap.begin(); it != _ObjectMap.end(); ++it) {
-        if (it->second.obj == vp.getObject()) {
-            _ObjectMap.erase(it);
-            return;
+    // Hint: With C++20 std::erase_if for containers can be used
+    auto isEqual = [&vp](const auto& item) {
+        return item.second.obj == vp.getObject();
+    };
+    for (auto it = _ObjectMap.begin(); it != _ObjectMap.end();) {
+        if (isEqual(*it)) {
+            it = _ObjectMap.erase(it);
+        }
+        else {
+            ++it;
         }
     }
 }

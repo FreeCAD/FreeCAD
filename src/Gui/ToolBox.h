@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCKWND_TOOLBOX_H
 #define GUI_DOCKWND_TOOLBOX_H
 
-#include "DockWindow.h"
+#include <QWidget>
+#include <FCGlobal.h>
 
 class QToolBox;
 
@@ -59,8 +59,8 @@ class GuiExport ToolBox : public QWidget
   Q_OBJECT
 
 public:
-  ToolBox( QWidget *parent=0 );
-  virtual ~ToolBox();
+  ToolBox( QWidget *parent=nullptr );
+  ~ToolBox() override;
 
   int addItem ( QWidget * w, const QString & label );
   int addItem ( QWidget * item, const QIcon & iconSet, const QString & label );
@@ -93,7 +93,7 @@ public Q_SLOTS:
   void setCurrentWidget ( QWidget * item );
 
 protected:
-  void changeEvent(QEvent *e);
+  void changeEvent(QEvent *e) override;
 
 Q_SIGNALS:
   /** This signal is emitted when the current item changed.

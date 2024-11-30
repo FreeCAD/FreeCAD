@@ -20,33 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <gp_Pnt.hxx>
-# include <gp_Ax1.hxx>
-# include <BRep_Tool.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Vertex.hxx>
 # include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <Standard_Failure.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Vertex.hxx>
 #endif
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Base/VectorPy.h>
 #include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
 
-#include "PointPy.h"
 #include "TopoShapeVertexPy.h"
 #include "TopoShapeVertexPy.cpp"
+#include "PointPy.h"
+
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeVertexPy::representation(void) const
+std::string TopoShapeVertexPy::representation() const
 {
     std::stringstream str;
     str << "<Vertex object at " << getTopoShapePtr() << ">";
@@ -56,7 +54,7 @@ std::string TopoShapeVertexPy::representation(void) const
 
 PyObject *TopoShapeVertexPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of TopoShapeVertexPy and the Twin object 
+    // create a new instance of TopoShapeVertexPy and the Twin object
     return new TopoShapeVertexPy(new TopoShape);
 }
 
@@ -80,7 +78,6 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!success) {
         PyErr_Clear(); // set by PyArg_ParseTuple()
         if (PyArg_ParseTuple(args,"O!",&(Base::VectorPy::Type), &object)) {
-            // Note: must be static_cast, not reinterpret_cast
             Base::Vector3d* ptr = static_cast<Base::VectorPy*>(object)->getVectorPtr();
             x = ptr->x;
             y = ptr->y;
@@ -121,7 +118,7 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             TopoShape* ptr = static_cast<TopoShapePy*>(object)->getTopoShapePtr();
             TopoDS_Shape shape = ptr->getShape();
             if (!shape.IsNull() && shape.ShapeType() == TopAbs_VERTEX) {
-                TopoShapeVertexPy::PointerType vert = reinterpret_cast<TopoShapeVertexPy::PointerType>(_pcTwinPointer);
+                TopoShapeVertexPy::PointerType vert = getTopoShapePtr();
                 vert->setShape(ptr->getShape());
                 return 0;
             }
@@ -132,7 +129,7 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
     }
 
-    TopoShapeVertexPy::PointerType ptr = reinterpret_cast<TopoShapeVertexPy::PointerType>(_pcTwinPointer);
+    TopoShapeVertexPy::PointerType ptr = getTopoShapePtr();
     BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(x,y,z));
     TopoDS_Shape s = aBuilder.Vertex();
     ptr->setShape(s);
@@ -140,7 +137,7 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return 0;
 }
 
-Py::Float TopoShapeVertexPy::getTolerance(void) const
+Py::Float TopoShapeVertexPy::getTolerance() const
 {
     const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
     return Py::Float(BRep_Tool::Tolerance(v));
@@ -153,7 +150,7 @@ void TopoShapeVertexPy::setTolerance(Py::Float tol)
     aBuilder.UpdateVertex(v, (double)tol);
 }
 
-Py::Float TopoShapeVertexPy::getX(void) const
+Py::Float TopoShapeVertexPy::getX() const
 {
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
@@ -165,7 +162,7 @@ Py::Float TopoShapeVertexPy::getX(void) const
     }
 }
 
-Py::Float TopoShapeVertexPy::getY(void) const
+Py::Float TopoShapeVertexPy::getY() const
 {
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
@@ -177,7 +174,7 @@ Py::Float TopoShapeVertexPy::getY(void) const
     }
 }
 
-Py::Float TopoShapeVertexPy::getZ(void) const
+Py::Float TopoShapeVertexPy::getZ() const
 {
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
@@ -189,7 +186,7 @@ Py::Float TopoShapeVertexPy::getZ(void) const
     }
 }
 
-Py::Object TopoShapeVertexPy::getPoint(void) const
+Py::Object TopoShapeVertexPy::getPoint() const
 {
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
@@ -206,10 +203,10 @@ Py::Object TopoShapeVertexPy::getPoint(void) const
 
 PyObject *TopoShapeVertexPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeVertexPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

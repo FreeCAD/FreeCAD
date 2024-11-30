@@ -40,15 +40,14 @@ using namespace PartGui;
 
 PROPERTYITEM_SOURCE(PartGui::PropertyEnumAttacherItem)
 
-PropertyEnumAttacherItem::PropertyEnumAttacherItem()
-{
-}
+PropertyEnumAttacherItem::PropertyEnumAttacherItem() = default;
 
-QWidget* PropertyEnumAttacherItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+QWidget* PropertyEnumAttacherItem::createEditor(QWidget* parent,
+                                                const std::function<void()>& method) const
 {
     Gui::LabelButton* modeEditor = new Gui::LabelButton(parent);
-    QObject::connect(modeEditor, SIGNAL(valueChanged(const QVariant &)), receiver, method);
-    QObject::connect(modeEditor, SIGNAL(buttonClicked()), this, SLOT(openTask()));
+    QObject::connect(modeEditor, &Gui::LabelButton::valueChanged, method);
+    QObject::connect(modeEditor, &Gui::LabelButton::buttonClicked, this, &PropertyEnumAttacherItem::openTask);
     modeEditor->setDisabled(isReadOnly());
     return modeEditor;
 }
@@ -81,11 +80,11 @@ void PropertyEnumAttacherItem::openTask()
         if (prop) {
             App::PropertyContainer* parent = prop->getContainer();
 
-            if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            if (parent->isDerivedFrom<App::DocumentObject>()) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
                 Gui::ViewProvider* view = Gui::Application::Instance->getViewProvider(obj);
 
-                if (view->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
+                if (view->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
                     task = new TaskDlgAttacher(static_cast<Gui::ViewProviderDocumentObject*>(view));
                 }
             }

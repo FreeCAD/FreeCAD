@@ -1,68 +1,61 @@
 // FreeCAD_widget.cpp : Defines the entry point for the application.
 //
 
+#include "FreeCAD_widget.h"
 #include "stdafx.h"
 #include <Commdlg.h>
 #include <Shlobj.h>
-#include "FreeCAD_widget.h"
-#include <string>
 #include <sstream>
+#include <string>
 
 #define MAX_LOADSTRING 100
 
 // Global Variables:
-HINSTANCE hInst;								// current instance
-TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
-TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
+HINSTANCE hInst;                      // current instance
+TCHAR szTitle[MAX_LOADSTRING];        // The title bar text
+TCHAR szWindowClass[MAX_LOADSTRING];  // the main window class name
 
 // Forward declarations of functions included in this code module:
-ATOM				MyRegisterClass(HINSTANCE hInstance);
-BOOL				InitInstance(HINSTANCE, int);
-LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
-std::string         OnFileOpen(HWND, UINT, WPARAM, LPARAM);
-void                OnLoadFreeCAD(HWND, UINT, WPARAM, LPARAM);
-void                OnNewDocument(HWND);
-void                OnEmbedWidget(HWND hWnd);
+ATOM MyRegisterClass(HINSTANCE hInstance);
+BOOL InitInstance(HINSTANCE, int);
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
+std::string OnFileOpen(HWND, UINT, WPARAM, LPARAM);
+void OnLoadFreeCAD(HWND, UINT, WPARAM, LPARAM);
+void OnNewDocument(HWND);
+void OnEmbedWidget(HWND hWnd);
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
 
- 	// TODO: Place code here.
-	MSG msg;
-	HACCEL hAccelTable;
+    // TODO: Place code here.
+    MSG msg;
+    HACCEL hAccelTable;
 
-	// Initialize global strings
-	LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	LoadString(hInstance, IDC_FREECAD_WIDGET, szWindowClass, MAX_LOADSTRING);
-	MyRegisterClass(hInstance);
+    // Initialize global strings
+    LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
+    LoadString(hInstance, IDC_FREECAD_WIDGET, szWindowClass, MAX_LOADSTRING);
+    MyRegisterClass(hInstance);
 
-	// Perform application initialization:
-	if (!InitInstance (hInstance, nCmdShow))
-	{
-		return FALSE;
-	}
+    // Perform application initialization:
+    if (!InitInstance(hInstance, nCmdShow)) {
+        return FALSE;
+    }
 
-	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_FREECAD_WIDGET));
+    hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_FREECAD_WIDGET));
 
-	// Main message loop:
-	while (GetMessage(&msg, NULL, 0, 0))
-	{
-		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-	}
+    // Main message loop:
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg)) {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+    }
 
-	return (int) msg.wParam;
+    return (int)msg.wParam;
 }
-
 
 
 //
@@ -80,23 +73,23 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-	WNDCLASSEX wcex;
+    WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX);
+    wcex.cbSize = sizeof(WNDCLASSEX);
 
-	wcex.style			= CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc	= WndProc;
-	wcex.cbClsExtra		= 0;
-	wcex.cbWndExtra		= 0;
-	wcex.hInstance		= hInstance;
-	wcex.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_FREECAD_WIDGET));
-	wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
-	wcex.lpszMenuName	= MAKEINTRESOURCE(IDC_FREECAD_WIDGET);
-	wcex.lpszClassName	= szWindowClass;
-	wcex.hIconSm		= LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_FREECAD_WIDGET));
+    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.lpszMenuName = MAKEINTRESOURCE(IDC_FREECAD_WIDGET);
+    wcex.lpszClassName = szWindowClass;
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-	return RegisterClassEx(&wcex);
+    return RegisterClassEx(&wcex);
 }
 
 //
@@ -111,22 +104,30 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   HWND hWnd;
+    HWND hWnd;
 
-   hInst = hInstance; // Store instance handle in our global variable
+    hInst = hInstance;  // Store instance handle in our global variable
 
-   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
+    hWnd = CreateWindow(szWindowClass,
+                        szTitle,
+                        WS_OVERLAPPEDWINDOW,
+                        CW_USEDEFAULT,
+                        0,
+                        CW_USEDEFAULT,
+                        0,
+                        NULL,
+                        NULL,
+                        hInstance,
+                        NULL);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    if (!hWnd) {
+        return FALSE;
+    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
 
-   return TRUE;
+    return TRUE;
 }
 
 //
@@ -141,74 +142,70 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	int wmId, wmEvent;
-	PAINTSTRUCT ps;
-	HDC hdc;
+    int wmId, wmEvent;
+    PAINTSTRUCT ps;
+    HDC hdc;
 
-	switch (message)
-	{
-	case WM_COMMAND:
-		wmId    = LOWORD(wParam);
-		wmEvent = HIWORD(wParam);
-		// Parse the menu selections:
-		switch (wmId)
-		{
-		case IDM_ABOUT:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-			break;
-		case IDM_EXIT:
-			DestroyWindow(hWnd);
-			break;
-        case ID_FREECAD_LOAD:
-            OnLoadFreeCAD(hWnd, message, wParam, lParam);
+    switch (message) {
+        case WM_COMMAND:
+            wmId = LOWORD(wParam);
+            wmEvent = HIWORD(wParam);
+            // Parse the menu selections:
+            switch (wmId) {
+                case IDM_ABOUT:
+                    DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+                    break;
+                case IDM_EXIT:
+                    DestroyWindow(hWnd);
+                    break;
+                case ID_FREECAD_LOAD:
+                    OnLoadFreeCAD(hWnd, message, wParam, lParam);
+                    break;
+                case ID_FREECAD_NEWDOCUMENT:
+                    OnNewDocument(hWnd);
+                    break;
+                case ID_FREECAD_EMBEDWINDOW:
+                    OnEmbedWidget(hWnd);
+                    break;
+                default:
+                    return DefWindowProc(hWnd, message, wParam, lParam);
+            }
             break;
-        case ID_FREECAD_NEWDOCUMENT:
-            OnNewDocument(hWnd);
+        case WM_PAINT:
+            hdc = BeginPaint(hWnd, &ps);
+            // TODO: Add any drawing code here...
+            EndPaint(hWnd, &ps);
             break;
-        case ID_FREECAD_EMBEDWINDOW:
-            OnEmbedWidget(hWnd);
+        case WM_DESTROY:
+            PostQuitMessage(0);
             break;
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
-		}
-		break;
-	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		// TODO: Add any drawing code here...
-		EndPaint(hWnd, &ps);
-		break;
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-	return 0;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+    return 0;
 }
 
 // Message handler for about box.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
+    UNREFERENCED_PARAMETER(lParam);
+    switch (message) {
+        case WM_INITDIALOG:
+            return (INT_PTR)TRUE;
 
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
-		}
-		break;
-	}
-	return (INT_PTR)FALSE;
+        case WM_COMMAND:
+            if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL) {
+                EndDialog(hDlg, LOWORD(wParam));
+                return (INT_PTR)TRUE;
+            }
+            break;
+    }
+    return (INT_PTR)FALSE;
 }
 
 #include <Python.h>
 
-// See also https://www.freecadweb.org/wiki/Embedding_FreeCAD
+// See also https://www.freecad.org/wiki/Embedding_FreeCAD
 
 std::string OnFileOpen(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -221,12 +218,12 @@ std::string OnFileOpen(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     ITEMIDLIST* pList = SHBrowseForFolder(&bi);
     if (pList) {
-        char szFolder[MAX_PATH+1];
+        char szFolder[MAX_PATH + 1];
         SHGetPathFromIDList(pList, szFolder);
         path = szFolder;
         LPMALLOC pMalloc;
         if (S_OK == SHGetMalloc(&pMalloc)) {
-            pMalloc->Free( pList );
+            pMalloc->Free(pList);
         }
     }
 
@@ -240,15 +237,16 @@ void OnLoadFreeCAD(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         Py_Initialize();
         static int argc = 1;
         static wchar_t* app = L"CEmbed_FreeCADDlg";
-        static wchar_t *argv[2] = {app,0};
+        static wchar_t* argv[2] = {app, 0};
         PySys_SetArgv(argc, argv);
     }
 
     std::string path = OnFileOpen(hWnd, message, wParam, lParam);
     if (!path.empty()) {
         for (std::string::iterator it = path.begin(); it != path.end(); ++it) {
-            if (*it == '\\')
+            if (*it == '\\') {
                 *it = '/';
+            }
         }
         PyObject* main = PyImport_AddModule("__main__");
         PyObject* dict = PyModule_GetDict(main);
@@ -283,8 +281,7 @@ void OnNewDocument(HWND hWnd)
 {
     PyObject* main = PyImport_AddModule("__main__");
     PyObject* dict = PyModule_GetDict(main);
-    const char* cmd =
-        "FreeCAD.newDocument()\n";
+    const char* cmd = "FreeCAD.newDocument()\n";
 
     PyObject* result = PyRun_String(cmd, Py_file_input, dict, dict);
     if (result) {

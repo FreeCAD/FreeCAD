@@ -45,10 +45,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE(Gui::AxisOrigin,Base::BaseClass)
 
-AxisOrigin::AxisOrigin()
-    :size(6),pSize(4),dist(2),scale(1),lineSize(2),pointSize(4)
-{
-}
+AxisOrigin::AxisOrigin() = default;
 
 SoGroup *AxisOrigin::getNode() {
     if(node)
@@ -87,14 +84,14 @@ SoGroup *AxisOrigin::getNode() {
     pCoords->point.setNum(3);
     pCoords->point.setValues(0, 13, verts);
 
-    SoAutoZoomTranslation *zoom = new SoAutoZoomTranslation;
+    auto zoom = new SoAutoZoomTranslation;
     zoom->scaleFactor = scale;
 
-    SoDrawStyle* style = new SoDrawStyle();
+    auto style = new SoDrawStyle();
     style->lineWidth = lineSize;
     style->pointSize = pointSize;
 
-    SoMaterialBinding* matBinding = new SoMaterialBinding;
+    auto matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::PER_FACE_INDEXED;
 
     node->addChild(zoom);

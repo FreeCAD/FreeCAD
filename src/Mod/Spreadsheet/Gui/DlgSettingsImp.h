@@ -27,7 +27,8 @@
 #include <Gui/PropertyPage.h>
 #include <memory>
 
-namespace SpreadsheetGui {
+namespace SpreadsheetGui
+{
 class Ui_DlgSettings;
 
 /**
@@ -35,23 +36,23 @@ class Ui_DlgSettings;
  * for the Spreadsheet workbench.
  * /author TheMarkster, based on work by Jürgen Riegel
  */
-class DlgSettingsImp : public Gui::Dialog::PreferencePage
+class DlgSettingsImp: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
 public:
-    DlgSettingsImp( QWidget* parent = 0 );
-    ~DlgSettingsImp();
+    explicit DlgSettingsImp(QWidget* parent = nullptr);
+    ~DlgSettingsImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettings> ui;
 };
 
-} // namespace SpreadsheetGui
+}  // namespace SpreadsheetGui
 
-#endif // SPREADSHEETGUI_DLGSETTINGSIMP_H
+#endif  // SPREADSHEETGUI_DLGSETTINGSIMP_H

@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,8 +24,8 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint flow velocity document object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
+__url__ = "https://www.freecad.org"
 
 ## @package constraint_flowvelocity
 #  \ingroup FEM
@@ -38,46 +39,80 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintFlowVelocity"
 
     def __init__(self, obj):
-        super(ConstraintFlowVelocity, self).__init__(obj)
+        super().__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat",
-            "VelocityX",
-            "Parameter",
-            "Body heat flux"
+            "App::PropertyVelocity", "VelocityX", "Parameter", "Velocity in x-direction"
         )
+        obj.setPropertyStatus("VelocityX", "LockDynamic")
         obj.addProperty(
-            "App::PropertyBool",
-            "VelocityXEnabled",
+            "App::PropertyString",
+            "VelocityXFormula",
             "Parameter",
-            "Body heat flux"
+            "Velocity formula in x-direction",
         )
+        obj.setPropertyStatus("VelocityXFormula", "LockDynamic")
         obj.addProperty(
-            "App::PropertyFloat",
-            "VelocityY",
-            "Parameter",
-            "Body heat flux"
+            "App::PropertyBool", "VelocityXUnspecified", "Parameter", "Use velocity in x-direction"
         )
+        obj.setPropertyStatus("VelocityXUnspecified", "LockDynamic")
+        obj.VelocityXUnspecified = True
         obj.addProperty(
             "App::PropertyBool",
-            "VelocityYEnabled",
+            "VelocityXHasFormula",
             "Parameter",
-            "Body heat flux"
+            "Use formula for velocity in x-direction",
         )
+        obj.setPropertyStatus("VelocityXHasFormula", "LockDynamic")
+
         obj.addProperty(
-            "App::PropertyFloat",
-            "VelocityZ",
-            "Parameter",
-            "Body heat flux"
+            "App::PropertyVelocity", "VelocityY", "Parameter", "Velocity in y-direction"
         )
+        obj.setPropertyStatus("VelocityY", "LockDynamic")
+        obj.addProperty(
+            "App::PropertyString",
+            "VelocityYFormula",
+            "Parameter",
+            "Velocity formula in y-direction",
+        )
+        obj.setPropertyStatus("VelocityYFormula", "LockDynamic")
+        obj.addProperty(
+            "App::PropertyBool", "VelocityYUnspecified", "Parameter", "Use velocity in y-direction"
+        )
+        obj.setPropertyStatus("VelocityYUnspecified", "LockDynamic")
+        obj.VelocityYUnspecified = True
         obj.addProperty(
             "App::PropertyBool",
-            "VelocityZEnabled",
+            "VelocityYHasFormula",
             "Parameter",
-            "Body heat flux"
+            "Use formula for velocity in y-direction",
         )
+        obj.setPropertyStatus("VelocityYHasFormula", "LockDynamic")
+
+        obj.addProperty(
+            "App::PropertyVelocity", "VelocityZ", "Parameter", "Velocity in z-direction"
+        )
+        obj.setPropertyStatus("VelocityZ", "LockDynamic")
+        obj.addProperty(
+            "App::PropertyString",
+            "VelocityZFormula",
+            "Parameter",
+            "Velocity formula in z-direction",
+        )
+        obj.setPropertyStatus("VelocityZFormula", "LockDynamic")
+        obj.addProperty(
+            "App::PropertyBool", "VelocityZUnspecified", "Parameter", "Use velocity in z-direction"
+        )
+        obj.setPropertyStatus("VelocityZUnspecified", "LockDynamic")
+        obj.VelocityZUnspecified = True
         obj.addProperty(
             "App::PropertyBool",
-            "NormalToBoundary",
+            "VelocityZHasFormula",
             "Parameter",
-            "Body heat flux"
+            "Use formula for velocity in z-direction",
         )
+        obj.setPropertyStatus("VelocityZHasFormula", "LockDynamic")
+
+        obj.addProperty(
+            "App::PropertyBool", "NormalToBoundary", "Parameter", "Flow is in normal direction"
+        )
+        obj.setPropertyStatus("NormalToBoundary", "LockDynamic")

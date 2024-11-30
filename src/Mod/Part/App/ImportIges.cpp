@@ -20,44 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>
 # include <BRep_Builder.hxx>
-# include <Interface_Static.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
+# include <IGESBasic_Group.hxx>
+# include <IGESBasic_SingularSubfigure.hxx>
 # include <IGESControl_Controller.hxx>
 # include <IGESControl_Reader.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Shell.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Message_MsgFile.hxx>
-# include <TColStd_HSequenceOfTransient.hxx>
-# include <TColStd_HSequenceOfTransient.hxx>
-# include <IGESBasic_Group.hxx>
 # include <IGESSolid_ManifoldSolid.hxx>
-# include <IGESBasic_SingularSubfigure.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <Interface_EntityIterator.hxx>
-# include <Quantity_Color.hxx>
-# include <TCollection_ExtendedString.hxx>
+# include <Message_MsgFile.hxx>
 # include <Standard_Version.hxx>
+# include <TColStd_HSequenceOfTransient.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Shape.hxx>
+# include <Transfer_TransientProcess.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <XSControl_WorkSession.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Sequencer.h>
 
 #include "ImportIges.h"
 #include "PartFeature.h"
 #include "ProgressIndicator.h"
+
 
 using namespace Part;
 
@@ -85,7 +74,6 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
         // check file conformity and output stats
         aReader.PrintCheckLoad(Standard_True,IFSelect_GeneralInfo);
 
-#if 1
         std::string aName = fi.fileNamePure();
 #if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
@@ -130,79 +118,6 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
                 ("Part::Feature", name.c_str()));
             pcFeature->Shape.setValue(comp);
         }
-#else
-        // put all other free-flying shapes into a single compound
-        Standard_Boolean emptyComp = Standard_True;
-        BRep_Builder builder;
-        TopoDS_Compound comp;
-        builder.MakeCompound(comp);
-
-        // get all entities
-        Handle(TColStd_HSequenceOfTransient) aRootList=aReader.GiveList("xst-transferrable-roots");
-        Base::SequencerLauncher seq("Reading IGES file...", aRootList->Length());
-        Standard_Integer j;
-        for (j=1; j<=aRootList->Length(); j++) {
-            seq.next();
-            Handle(IGESData_IGESEntity) igesEntity = Handle(IGESData_IGESEntity)::DownCast(aRootList->Value(j));
-            if (igesEntity.IsNull()) continue;
-            // clear any old shape
-            aReader.ClearShapes();
-
-#ifdef _DEBUG
-            std::string type = igesEntity->DynamicType()->Name();
-            (void)type;
-#endif
-
-            // is it a group, singular sub-figure or solid?
-            if (igesEntity->IsKind(STANDARD_TYPE(IGESBasic_Group)) ||
-                igesEntity->IsKind(STANDARD_TYPE(IGESBasic_SingularSubfigure)) ||
-                igesEntity->IsKind(STANDARD_TYPE(IGESSolid_ManifoldSolid))) {
-                try {
-                    if (aReader.TransferEntity(igesEntity)) {
-                        if (aReader.NbShapes()>0) {
-                            // get the shape
-                            std::string aName = fi.fileNamePure();
-                            if (igesEntity->HasShortLabel()) {
-                                Handle(TCollection_HAsciiString) aLabel=igesEntity->ShortLabel();
-                                aName = aLabel->ToCString();
-                            }
-                            TopoDS_Shape aShape=aReader.OneShape();
-                            App::DocumentObject* obj = pcDoc->addObject("Part::Feature", aName.c_str());
-                            obj->Label.setValue(aName);
-                            static_cast<Part::Feature*>(obj)->Shape.setValue(aShape);
-                            int iColor;
-                            if (igesEntity->RankColor()>-1) {
-                                iColor = igesEntity->RankColor();
-                            }
-                        }
-                    }
-                }
-                catch (Standard_Failure) {
-                }
-            }
-            // normal shapes
-            else {
-                try {
-                    if (aReader.TransferEntity(igesEntity)) {
-                        if (aReader.NbShapes()>0) {
-                            TopoDS_Shape aShape=aReader.OneShape();
-                            builder.Add(comp, aShape);
-                            emptyComp = Standard_False;
-                        }
-                    }
-                }
-                catch (Standard_Failure) {
-                }
-            }
-        }
-
-        if (!emptyComp) {
-            std::string name = fi.fileNamePure();
-            Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject
-                ("Part::Feature", name.c_str()));
-            pcFeature->Shape.setValue(comp);
-        }
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());

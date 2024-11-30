@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderScaled.h"
 #include "TaskScaledParameters.h"
 
@@ -35,4 +32,16 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderScaled,PartDesignGui::ViewProviderTra
 
 TaskDlgFeatureParameters *ViewProviderScaled::getEditDialog() {
     return new TaskDlgScaledParameters (this);
+}
+
+void ViewProviderScaled::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit scaled"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
+
+const std::string & ViewProviderScaled::featureName() const
+{
+    static const std::string name = "Scaled";
+    return name;
 }

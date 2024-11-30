@@ -29,54 +29,68 @@
 
 class Ui_TaskThicknessParameters;
 
-namespace PartDesignGui {
+namespace PartDesign
+{
+class Thickness;
+}
 
-class TaskThicknessParameters : public TaskDressUpParameters
+namespace PartDesignGui
+{
+
+class TaskThicknessParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
-    ~TaskThicknessParameters();
+    explicit TaskThicknessParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
+    ~TaskThicknessParameters() override;
 
-    double getValue(void) const;
-    bool getReversed(void) const;
-    bool getIntersection(void) const;
-    int  getMode(void) const;
-    int  getJoinType(void) const;
+    void apply() override;
+
+    double getValue() const;
+    bool getReversed() const;
+    bool getIntersection() const;
+    int getMode() const;
+    int getJoinType() const;
 
 private Q_SLOTS:
     void onValueChanged(double angle);
     void onModeChanged(int mode);
     void onJoinTypeChanged(int join);
-    void onReversedChanged(bool reversed);
-    void onIntersectionChanged(bool intersection);
-    void onRefDeleted(void);
+    void onReversedChanged(bool on);
+    void onIntersectionChanged(bool on);
+    void onRefDeleted() override;
 
 protected:
-    virtual void clearButtons(const selectionModes notThis);
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void setButtons(const selectionModes mode) override;
+    void changeEvent(QEvent* e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
+private:
+    void addContainerWidget();
+    void initControls();
+    void setupConnections();
+    PartDesign::Thickness* onBeforeChange();
+    void onAfterChange(PartDesign::Thickness* obj);
 
 private:
     std::unique_ptr<Ui_TaskThicknessParameters> ui;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgThicknessParameters : public TaskDlgDressUpParameters
+class TaskDlgThicknessParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgThicknessParameters(ViewProviderThickness *ThicknessView);
-    ~TaskDlgThicknessParameters();
+    explicit TaskDlgThicknessParameters(ViewProviderThickness* ThicknessView);
+    ~TaskDlgThicknessParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

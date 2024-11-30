@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 // Implement FileWriter which puts files into a directory
 // write a property to file only when it has been modified
 // implement xml meta file
@@ -28,46 +27,41 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/interprocess/sync/file_lock.hpp>
 # include <QApplication>
 # include <QCloseEvent>
 # include <QDateTime>
 # include <QDebug>
 # include <QDir>
-# include <QFile>
+# include <QDomDocument>
 # include <QFileInfo>
 # include <QHeaderView>
+# include <QList>
+# include <QMap>
 # include <QMenu>
 # include <QMessageBox>
-# include <QPushButton>
+# include <QSet>
 # include <QTextStream>
 # include <QTreeWidgetItem>
-# include <QMap>
-# include <QSet>
-# include <QList>
 # include <QVector>
 # include <sstream>
 #endif
 
-#include <Base/Console.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include <Base/Exception.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/DlgCheckableMessageBox.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+
 #include "DocumentRecovery.h"
 #include "ui_DocumentRecovery.h"
 #include "WaitCursor.h"
 
-#include <Base/Exception.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-
-#include <QDomDocument>
-#include <QDirIterator>
-#include <boost/interprocess/sync/file_lock.hpp>
-
-FC_LOG_LEVEL_INIT("Gui",true,true)
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -148,7 +142,7 @@ namespace Gui { namespace Dialog {
 class DocumentRecoveryPrivate
 {
 public:
-    typedef QMap<QString, QString> XmlConfig;
+    using XmlConfig = QMap<QString, QString>;
 
     enum Status {
         Unknown = 0, /*!< The file is not available */
@@ -163,7 +157,7 @@ public:
         QString label;
         QString fileName;
         QString tooltip;
-        Status status;
+        Status status = Unknown;
     };
     Ui_DocumentRecovery ui;
     bool recovered;
@@ -181,6 +175,8 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
   : QDialog(parent), d_ptr(new DocumentRecoveryPrivate())
 {
     d_ptr->ui.setupUi(this);
+    connect(d_ptr->ui.buttonCleanup, &QPushButton::clicked,
+            this, &DocumentRecovery::onButtonCleanupClicked);
     d_ptr->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start Recovery"));
     d_ptr->ui.treeWidget->header()->setSectionResizeMode(QHeaderView::Stretch);
 
@@ -192,7 +188,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
         if (info.status == DocumentRecoveryPrivate::Created) {
             d_ptr->recoveryInfo << info;
 
-            QTreeWidgetItem* item = new QTreeWidgetItem(d_ptr->ui.treeWidget);
+            auto item = new QTreeWidgetItem(d_ptr->ui.treeWidget);
             item->setText(0, info.label);
             item->setToolTip(0, info.tooltip);
             item->setText(1, tr("Not yet recovered"));
@@ -204,9 +200,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
     this->adjustSize();
 }
 
-DocumentRecovery::~DocumentRecovery()
-{
-}
+DocumentRecovery::~DocumentRecovery() = default;
 
 bool DocumentRecovery::foundDocuments() const
 {
@@ -337,7 +331,7 @@ void DocumentRecovery::accept()
                             << docs[i]->Label.getValue() << "'");
                 }
                 else {
-                    DocumentRecoveryCleaner().clearDirectory(xfi.absolutePath());
+                    DocumentRecoveryCleaner().clearDirectory(QFileInfo(xfi.absolutePath()));
                     QDir().rmdir(xfi.absolutePath());
                 }
 
@@ -361,7 +355,9 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
     QFile file(info.xmlFile);
     if (file.open(QFile::WriteOnly)) {
         QTextStream str(&file);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         str.setCodec("UTF-8");
+#endif
         str << "<?xml version='1.0' encoding='utf-8'?>\n"
             << "<AutoRecovery SchemaVersion=\"1\">\n";
         switch (info.status) {
@@ -502,7 +498,7 @@ void DocumentRecovery::contextMenuEvent(QContextMenuEvent* ev)
     QList<QTreeWidgetItem*> items = d_ptr->ui.treeWidget->selectedItems();
     if (!items.isEmpty()) {
         QMenu menu;
-        menu.addAction(tr("Delete"), this, SLOT(onDeleteSection()));
+        menu.addAction(tr("Delete"), this, &DocumentRecovery::onDeleteSection);
         menu.exec(ev->globalPos());
     }
 }
@@ -539,7 +535,7 @@ void DocumentRecovery::onDeleteSection()
     }
 }
 
-void DocumentRecovery::on_buttonCleanup_clicked()
+void DocumentRecovery::onButtonCleanupClicked()
 {
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
@@ -559,7 +555,8 @@ void DocumentRecovery::on_buttonCleanup_clicked()
 
     DocumentRecoveryHandler handler;
     handler.checkForPreviousCrashes(std::bind(&DocumentRecovery::cleanup, this, sp::_1, sp::_2, sp::_3));
-    QMessageBox::information(this, tr("Finished"), tr("Transient directories deleted."));
+    DlgCheckableMessageBox::showMessage(tr("Delete"), tr("Transient directories deleted."));
+    reject();
 }
 
 void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QString& lockFile)
@@ -577,8 +574,10 @@ void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QS
 
 bool DocumentRecoveryFinder::checkForPreviousCrashes()
 {
+    //NOLINTBEGIN
     DocumentRecoveryHandler handler;
     handler.checkForPreviousCrashes(std::bind(&DocumentRecoveryFinder::checkDocumentDirs, this, sp::_1, sp::_2, sp::_3));
+    //NOLINTEND
 
     return showRecoveryDialogIfNeeded();
 }
@@ -652,12 +651,12 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
 
     QString exeName = QString::fromStdString(App::Application::getExecutableName());
     QList<QFileInfo> locks = tmp.entryInfoList();
-    for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
-        QString bn = it->baseName();
+    for (const QFileInfo&  it : locks) {
+        QString bn = it.baseName();
         // ignore the lock file for this instance
-        QString pid = QString::number(QCoreApplication::applicationPid());
+        QString pid = QString::number(App::Application::applicationPid());
         if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
-            QString fn = it->absoluteFilePath();
+            QString fn = it.absoluteFilePath();
 
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
             boost::interprocess::file_lock flock(fn.toUtf8());
@@ -666,7 +665,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
 #endif
             if (flock.try_lock()) {
                 // OK, this file is a leftover from a previous crash
-                QString crashed_pid = bn.mid(exeName.length()+1);
+                QString crashed_pid = bn.mid(exeName.length() + 1);
                 // search for transient directories with this PID
                 QString filter;
                 QTextStream str(&filter);
@@ -675,7 +674,10 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
                 tmp.setFilter(QDir::Dirs);
                 QList<QFileInfo> dirs = tmp.entryInfoList();
 
-                callableFunc(tmp, dirs, it->fileName());
+                callableFunc(tmp, dirs, it.fileName());
+            }
+            else {
+                Base::Console().Log("Failed to lock file %s\n", fn.toUtf8().constData());
             }
         }
     }
@@ -728,7 +730,7 @@ void DocumentRecoveryCleaner::subtractFiles(QStringList& files)
 void DocumentRecoveryCleaner::subtractDirs(QFileInfoList& dirs)
 {
     if (!ignoreDirs.isEmpty() && !dirs.isEmpty()) {
-        for (const auto& it : ignoreDirs) {
+        for (const auto& it : std::as_const(ignoreDirs)) {
             dirs.removeOne(it);
         }
     }

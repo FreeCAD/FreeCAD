@@ -20,36 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 # include <QButtonGroup>
 # include <QMessageBox>
 # include <QTextStream>
 # include <sstream>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "ViewProviderExt.h"
-#include "ui_TaskShapeBuilder.h"
-#include "TaskShapeBuilder.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "TaskShapeBuilder.h"
+#include "ui_TaskShapeBuilder.h"
+#include "BoxSelection.h"
 
 
 using namespace PartGui;
@@ -59,16 +56,16 @@ namespace PartGui {
     {
     public:
         enum Type {VERTEX, EDGE, FACE, ALL};
-        Type mode;
+        Type mode{ALL};
         ShapeSelection()
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), mode(ALL)
+            : Gui::SelectionFilterGate(nullPointer())
         {
         }
         void setMode(Type mode)
         {
             this->mode = mode;
         }
-        bool allow(App::Document*, App::DocumentObject* obj, const char*sSubName)
+        bool allow(App::Document*, App::DocumentObject* obj, const char*sSubName) override
         {
             if (!obj || !obj->isDerivedFrom(Part::Feature::getClassTypeId()))
                 return false;
@@ -95,14 +92,13 @@ public:
     Ui_TaskShapeBuilder ui;
     QButtonGroup bg;
     ShapeSelection* gate;
+    BoxSelection selection;
     Private()
     {
         Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
         Gui::Command::runCommand(Gui::Command::App, "import Part");
     }
-    ~Private()
-    {
-    }
+    ~Private() = default;
 };
 
 /* TRANSLATOR PartGui::ShapeBuilderWidget */
@@ -121,8 +117,17 @@ ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
     d->bg.addButton(d->ui.radioButtonSolidFromShell, 5);
     d->bg.setExclusive(true);
 
-    connect(&d->bg, SIGNAL(buttonClicked(int)),
-            this, SLOT(switchMode(int)));
+    connect(d->ui.selectButton, &QPushButton::clicked,
+            this, &ShapeBuilderWidget::onSelectButtonClicked);
+    connect(d->ui.createButton, &QPushButton::clicked,
+            this, &ShapeBuilderWidget::onCreateButtonClicked);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(&d->bg, qOverload<int>(&QButtonGroup::buttonClicked),
+            this, &ShapeBuilderWidget::switchMode);
+#else
+    connect(&d->bg, &QButtonGroup::idClicked,
+            this, &ShapeBuilderWidget::switchMode);
+#endif
 
     d->gate = new ShapeSelection();
     Gui::Selection().addSelectionGate(d->gate);
@@ -147,7 +152,7 @@ void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
                 bool blocked = blockSelection(true);
                 App::Document* doc = App::GetApplication().getDocument(msg.pDocName);
                 App::DocumentObject* obj = doc->getObject(msg.pObjectName);
-                if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                if (obj->isDerivedFrom<Part::Feature>()) {
                     TopoDS_Shape myShape = static_cast<Part::Feature*>(obj)->Shape.getValue();
                     TopTools_IndexedMapOfShape all_faces;
                     TopExp::MapShapes(myShape, TopAbs_FACE, all_faces);
@@ -167,11 +172,12 @@ void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void ShapeBuilderWidget::on_createButton_clicked()
+void ShapeBuilderWidget::onCreateButtonClicked()
 {
     int mode = d->bg.checkedId();
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (!doc) return;
+    if (!doc)
+        return;
 
     try {
         if (mode == 0) {
@@ -197,6 +203,23 @@ void ShapeBuilderWidget::on_createButton_clicked()
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
+    }
+}
+
+void ShapeBuilderWidget::onSelectButtonClicked()
+{
+    int id = d->bg.checkedId();
+    if (id == 0 || id == 2) {
+        d->selection.start(TopAbs_VERTEX);
+    }
+    else if (id == 1 || id == 3) {
+        d->selection.start(TopAbs_EDGE);
+    }
+    else if (id == 4) {
+        d->selection.start(TopAbs_FACE);
+    }
+    else {
+        QMessageBox::warning(this, tr("Unsupported"), tr("Box selection for shells is not supported"));
     }
 }
 
@@ -234,7 +257,7 @@ void ShapeBuilderWidget::createEdgeFromVertex()
         "if _.isNull(): raise RuntimeError('Failed to create edge')\n"
         "App.ActiveDocument.addObject('Part::Feature','Edge').Shape=_\n"
         "del _\n"
-    ).arg(elements[0]).arg(elements[1]);
+    ).arg(elements[0], elements[1]);
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edge"));
@@ -402,25 +425,23 @@ void ShapeBuilderWidget::createShellFromFace()
     }
 
     std::vector<Gui::SelectionObject> sel = faceFilter.Result[0];
-    std::vector<Gui::SelectionObject>::iterator it;
-    std::vector<std::string>::const_iterator jt;
 
     QString list;
     QTextStream str(&list);
     if (d->ui.checkFaces->isChecked()) {
-        std::set<App::DocumentObject*> obj;
-        for (it=sel.begin();it!=sel.end();++it)
-            obj.insert(it->getObject());
+        std::set<const App::DocumentObject*> obj;
+        for (const auto& it : sel)
+            obj.insert(it.getObject());
         str << "[]";
-        for (std::set<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-            str << "+ App.ActiveDocument." << (*it)->getNameInDocument() << ".Shape.Faces";
+        for (auto it : obj) {
+            str << "+ App.ActiveDocument." << it->getNameInDocument() << ".Shape.Faces";
         }
     }
     else {
         str << "[";
-        for (it=sel.begin();it!=sel.end();++it) {
-            for (jt=it->getSubNames().begin();jt!=it->getSubNames().end();++jt) {
-                str << "App.ActiveDocument." << it->getFeatName() << ".Shape." << jt->c_str() << ", ";
+        for (const auto& it : sel) {
+            for (const auto& jt : it.getSubNames()) {
+                str << "App.ActiveDocument." << it.getFeatName() << ".Shape." << jt.c_str() << ", ";
             }
         }
         str << "]";
@@ -578,16 +599,10 @@ void ShapeBuilderWidget::changeEvent(QEvent *e)
 TaskShapeBuilder::TaskShapeBuilder()
 {
     widget = new ShapeBuilderWidget();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Shapebuilder"),
-        widget->windowTitle(), true, 0);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Shapebuilder"), widget);
 }
 
-TaskShapeBuilder::~TaskShapeBuilder()
-{
-}
+TaskShapeBuilder::~TaskShapeBuilder() = default;
 
 void TaskShapeBuilder::open()
 {

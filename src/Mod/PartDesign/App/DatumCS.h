@@ -25,6 +25,7 @@
 #define PARTDESIGN_DATUMCS_H
 
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesign
 {
@@ -35,9 +36,9 @@ class PartDesignExport CoordinateSystem : public Part::Datum
 
 public:
     CoordinateSystem();
-    virtual ~CoordinateSystem();
+    ~CoordinateSystem() override;
 
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderDatumCoordinateSystem";
     }
 
@@ -45,7 +46,7 @@ public:
     Base::Vector3d getYAxis();
     Base::Vector3d getZAxis();
 
-    virtual App::DocumentObject *getSubObject(const char *subname, 
+    App::DocumentObject *getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
 };
 

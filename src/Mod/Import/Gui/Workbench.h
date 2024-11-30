@@ -26,25 +26,26 @@
 
 #include <Gui/Workbench.h>
 
-namespace ImportGui {
+namespace ImportGui
+{
 
 /**
  * @author Werner Mayer
  */
-class Workbench : public Gui::StdWorkbench
+class Workbench: public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Workbench();
-    virtual ~Workbench();
+    ~Workbench() override;
 
 protected:
-    Gui::ToolBarItem* setupToolBars() const;
-    Gui::ToolBarItem* setupCommandBars() const;
+    Gui::ToolBarItem* setupToolBars() const override;
+    Gui::ToolBarItem* setupCommandBars() const override;
 };
 
-} // namespace ImportGui
+}  // namespace ImportGui
 
 
-#endif // IMPORT_WORKBENCH_H 
+#endif  // IMPORT_WORKBENCH_H
