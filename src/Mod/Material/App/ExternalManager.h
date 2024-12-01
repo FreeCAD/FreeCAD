@@ -35,11 +35,14 @@ namespace Materials
 class Material;
 class Model;
 
-class MaterialsExport ExternalManager
+class MaterialsExport ExternalManager: public ParameterGrp::ObserverType
 {
 public:
 
     static ExternalManager* getManager();
+
+    /// Observer message from the ParameterGrp
+    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
     // Library management
     std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> libraries();
@@ -62,7 +65,6 @@ public:
     void migrateMaterial(const QString& libraryName,
                      const QString& path,
                      const std::shared_ptr<Material>& material);
-
 
 private:
     ExternalManager();

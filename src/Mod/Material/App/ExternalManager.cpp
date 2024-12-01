@@ -47,24 +47,36 @@ QMutex ExternalManager::_mutex;
 
 ExternalManager::ExternalManager()
 {
-    getConfiguration();
-    instantiate();
+    _hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    _hGrp->Attach(this);
 
-    // _hGrp = App::GetApplication().GetParameterGroupByPath(
-    //     "User parameter:BaseApp/Preferences/Mod/Material/Database");
-    // _useDatabase = _hGrp->GetBool("UseDatabase", false);
-    // _hGrp->Attach(this);
+    getConfiguration();
 }
 
 ExternalManager::~ExternalManager()
 {
-    // _hGrp->Detach(this);
+    _hGrp->Detach(this);
+}
+
+void ExternalManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
+{
+    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+    if (strcmp(Reason, "Current") == 0) {
+        Base::Console().Log("Current external manager changed\n");
+
+        if (_instantiated) {
+            // The old manager object will be deleted when reconnecting
+            _instantiated = false;
+        }
+        getConfiguration();
+    }
 }
 
 void ExternalManager::getConfiguration()
 {
-    _hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    // _hGrp = App::GetApplication().GetParameterGroupByPath(
+    //     "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
     auto current = _hGrp->GetASCII("Current", "None");
     if (current == "None") {
         _moduleName = "";
@@ -84,19 +96,23 @@ void ExternalManager::instantiate()
 {
     _instantiated = false;
     Base::Console().Log("Loading external manager...\n");
-    // std::string module, group;
+
+    if (_moduleName.empty() || _className.empty()) {
+        Base::Console().Log("External module not defined\n");
+        return;
+    }
+
     try {
         Base::PyGILStateLocker lock;
         Py::Module mod(PyImport_ImportModule(_moduleName.c_str()), true);
-        // Py::Module mod(_moduleName);
+
         if (mod.isNull()) {
-            PyErr_SetString(PyExc_ImportError, "Cannot load module");
+            // PyErr_SetString(PyExc_ImportError, "Cannot load module");
             Base::Console().Log(" failed\n");
             return;
         }
 
         Py::Callable managerClass(mod.getAttr(_className));
-        // _managerObject.set(Py::Object(managerClass.apply()));
         _managerObject = managerClass.apply();
         if (_managerObject.hasAttr("APIVersion")) {
             Base::Console().Log("\tFound APIVersion()\n");

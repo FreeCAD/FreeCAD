@@ -74,17 +74,23 @@ void ModelManagerExternal::refresh()
 std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerExternal::getLibraries()
 {
     auto libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibrary>>>();
-    auto externalLibraries = ExternalManager::getManager()->libraries();
-    for (auto& entry : *externalLibraries) {
-        auto libName = std::get<0>(entry);
-        auto icon = std::get<1>(entry);
-        auto readOnly = std::get<2>(entry);
-        Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
-                            libName.toStdString().c_str(),
-                            icon.toStdString().c_str(),
-                            readOnly ? "true" : "false");
-        auto library = std::make_shared<ModelLibrary>(libName, QString(), icon, readOnly);
-        libraryList->push_back(library);
+    try {
+        auto externalLibraries = ExternalManager::getManager()->libraries();
+        for (auto& entry : *externalLibraries) {
+            auto libName = std::get<0>(entry);
+            auto icon = std::get<1>(entry);
+            auto readOnly = std::get<2>(entry);
+            Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
+                                libName.toStdString().c_str(),
+                                icon.toStdString().c_str(),
+                                readOnly ? "true" : "false");
+            auto library = std::make_shared<ModelLibrary>(libName, QString(), icon, readOnly);
+            libraryList->push_back(library);
+        }
+    }
+    catch (const LibraryNotFound& e) {
+    }
+    catch (const ConnectionError& e) {
     }
 
     return libraryList;
@@ -115,6 +121,10 @@ std::shared_ptr<Model> ModelManagerExternal::getModel(const QString& uuid)
         return model;
     }
     catch (const ModelNotFound& e) {
+        _cache.emplace(uuid, nullptr);
+        return nullptr;
+    }
+    catch (const ConnectionError& e) {
         _cache.emplace(uuid, nullptr);
         return nullptr;
     }
