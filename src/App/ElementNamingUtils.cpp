@@ -4,96 +4,119 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 
-const char *Data::isMappedElement(const char *name) {
-    if(name && boost::starts_with(name, ELEMENT_MAP_PREFIX))
+const char* Data::isMappedElement(const char* name)
+{
+    if (name && boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
         return name + ELEMENT_MAP_PREFIX_SIZE;
+    }
     return nullptr;
 }
 
-std::string Data::newElementName(const char *name) {
-    if(!name)
+std::string Data::newElementName(const char* name)
+{
+    if (!name) {
         return {};
-    const char *dot = strrchr(name,'.');
-    if(!dot || dot==name)
+    }
+    const char* dot = strrchr(name, '.');
+    if (!dot || dot == name) {
         return name;
-    const char *c = dot-1;
-    for(;c!=name;--c) {
-        if(*c == '.') {
+    }
+    const char* c = dot - 1;
+    for (; c != name; --c) {
+        if (*c == '.') {
             ++c;
             break;
         }
     }
-    if(isMappedElement(c))
-        return std::string(name,dot-name);
+    if (isMappedElement(c)) {
+        return std::string(name, dot - name);
+    }
     return name;
 }
 
-std::string Data::oldElementName(const char *name) {
-    if(!name)
+std::string Data::oldElementName(const char* name)
+{
+    if (!name) {
         return {};
-    const char *dot = strrchr(name,'.');
-    if(!dot || dot==name)
+    }
+    const char* dot = strrchr(name, '.');
+    if (!dot || dot == name) {
         return name;
-    const char *c = dot-1;
-    for(;c!=name;--c) {
-        if(*c == '.') {
+    }
+    const char* c = dot - 1;
+    for (; c != name; --c) {
+        if (*c == '.') {
             ++c;
             break;
         }
     }
-    if(isMappedElement(c))
-        return std::string(name,c-name)+(dot+1);
+    if (isMappedElement(c)) {
+        return std::string(name, c - name) + (dot + 1);
+    }
     return name;
 }
 
-std::string Data::noElementName(const char *name) {
-    if(!name)
+std::string Data::noElementName(const char* name)
+{
+    if (!name) {
         return {};
+    }
     auto element = findElementName(name);
-    if(element)
-        return std::string(name,element-name);
+    if (element) {
+        return std::string(name, element - name);
+    }
     return name;
 }
 
-const char *Data::findElementName(const char *subname) {
+const char* Data::findElementName(const char* subname)
+{
     // skip leading dots
-    while(subname && subname[0] == '.')
+    while (subname && subname[0] == '.') {
         ++subname;
-    if(!subname || !subname[0] || isMappedElement(subname))
+    }
+    if (!subname || !subname[0] || isMappedElement(subname)) {
         return subname;
-    const char *dot = strrchr(subname,'.');
-    if(!dot)
+    }
+    const char* dot = strrchr(subname, '.');
+    if (!dot) {
         return subname;
-    const char *element = dot+1;
-    if(dot==subname || isMappedElement(element))
+    }
+    const char* element = dot + 1;
+    if (dot == subname || isMappedElement(element)) {
         return element;
-    for(--dot;dot!=subname;--dot) {
-        if(*dot == '.') {
+    }
+    for (--dot; dot != subname; --dot) {
+        if (*dot == '.') {
             ++dot;
             break;
         }
     }
-    if(isMappedElement(dot))
+    if (isMappedElement(dot)) {
         return dot;
+    }
     return element;
 }
 
-bool Data::hasMissingElement(const char *subname) {
-    if(!subname)
+bool Data::hasMissingElement(const char* subname)
+{
+    if (!subname) {
         return false;
-    auto dot = strrchr(subname,'.');
-    if(dot)
-        subname = dot+1;
+    }
+    auto dot = strrchr(subname, '.');
+    if (dot) {
+        subname = dot + 1;
+    }
     return boost::starts_with(subname, MISSING_PREFIX);
 }
 
-const char *Data::hasMappedElementName(const char *subname) {
+const char* Data::hasMappedElementName(const char* subname)
+{
     return isMappedElement(findElementName(subname));
 }
 
-const std::string Data::indexSuffix(int index, const char *label)
+const std::string Data::indexSuffix(int index, const char* label)
 {
-    if ( index < 2 ) {  // Don't add a suffix for item #1, begin appending at 2
+    if (index < 2) {  // Don't add a suffix for item #1, begin appending at 2
         return {""};
     }
     std::string name(label);

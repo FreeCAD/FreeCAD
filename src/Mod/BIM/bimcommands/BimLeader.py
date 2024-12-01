@@ -35,7 +35,7 @@ translate = FreeCAD.Qt.translate
 class BIM_Leader(gui_lines.Line):
 
     def __init__(self):
-        super(BIM_Leader, self).__init__(wiremode=True)
+        super().__init__(mode="leader")
 
     def GetResources(self):
         return {
@@ -48,7 +48,9 @@ class BIM_Leader(gui_lines.Line):
         }
 
     def Activated(self):
-        super(BIM_Leader, self).Activated(name="Leader", icon="Draft_Wire")
+        super().Activated(
+            name="Leader", icon="BIM_Leader", task_title=translate("BIM", "Leader")
+        )
 
     def finish(self, closed=False, cont=False):
         import DraftVecUtils

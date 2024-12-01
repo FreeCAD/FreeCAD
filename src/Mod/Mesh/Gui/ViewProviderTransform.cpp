@@ -53,17 +53,17 @@ ViewProviderMeshTransform::~ViewProviderMeshTransform()
     pcTransformerDragger->unref();
 }
 
-void ViewProviderMeshTransform::attach(App::DocumentObject* pcFeat)
+void ViewProviderMeshTransform::attach(App::DocumentObject* obj)
 {
     // creates the standard viewing modes
-    ViewProviderMesh::attach(pcFeat);
+    ViewProviderMesh::attach(obj);
 
-    SoSeparator* pcEditRoot = new SoSeparator();
+    auto pcEditRoot = new SoSeparator();
 
     // flat shaded (Normal) ------------------------------------------
-    SoDrawStyle* pcFlatStyle = new SoDrawStyle();
+    auto pcFlatStyle = new SoDrawStyle();
     pcFlatStyle->style = SoDrawStyle::FILLED;
-    SoNormalBinding* pcBinding = new SoNormalBinding();
+    auto pcBinding = new SoNormalBinding();
     pcBinding->value = SoNormalBinding::PER_FACE;
 
     pcEditRoot->addChild(pcTransformerDragger);

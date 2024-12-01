@@ -46,8 +46,7 @@ const char* TransactionalObject::detachFromDocument()
     return "";
 }
 
-void TransactionalObject::onBeforeChangeProperty(Document *doc, const Property *prop)
+void TransactionalObject::onBeforeChangeProperty(Document* doc, const Property* prop)
 {
     doc->onBeforeChangeProperty(this, prop);
 }
-

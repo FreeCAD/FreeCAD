@@ -638,6 +638,38 @@ void ViewProviderFeaturePythonImp::onChanged(const App::Property* prop)
     }
 }
 
+void ViewProviderFeaturePythonImp::onBeforeChange(const App::Property* prop)
+{
+    if(py_onBeforeChange.isNone())
+        return;
+
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        if (has__object__) {
+            Py::Tuple args(1);
+            const char* prop_name = object->getPropertyName(prop);
+            if (prop_name) {
+                args.setItem(0, Py::String(prop_name));
+                Base::pyCall(py_onBeforeChange.ptr(),args.ptr());
+            }
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            const char* prop_name = object->getPropertyName(prop);
+            if (prop_name) {
+                args.setItem(1, Py::String(prop_name));
+                Base::pyCall(py_onBeforeChange.ptr(),args.ptr());
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
 void ViewProviderFeaturePythonImp::startRestoring()
 {
 }

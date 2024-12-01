@@ -43,7 +43,7 @@ namespace MeshCore
 class MeshSearchNeighbours
 {
 public:
-    explicit MeshSearchNeighbours(const MeshKernel& rclM, float fSampleDistance = 1.0f);
+    explicit MeshSearchNeighbours(const MeshKernel& rclM, float fSampleDistance = 1.0F);
     ~MeshSearchNeighbours() = default;
     /** Re-initilaizes internal structures. */
     void Reinit(float fSampleDistance);

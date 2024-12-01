@@ -13,8 +13,8 @@ def check_socket(host, port):
         return sock.connect_ex((host, port)) == 0
 
 def main():
-    # DO NOT CHECK 5678 or debugpy will break
-    # Check other port manually opened instead
+    # DO NOT CHECK the actual port 5678/5879 or debugpy will break
+    # Check that the other port 39999 used as a flag is manually opened instead
     attempt_counter = 0
     while (not check_socket('localhost', 39999)) and attempt_counter < MAX_ATTEMPTS:
         time.sleep(RETRY_DELAY_S)

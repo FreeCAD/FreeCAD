@@ -207,7 +207,7 @@ PROPERTY_SOURCE(Mesh::FixDeformations, Mesh::FixDefects)
 
 FixDeformations::FixDeformations()
 {
-    ADD_PROPERTY(MaxAngle, (5.0f));
+    ADD_PROPERTY(MaxAngle, (5.0F));
 }
 
 App::DocumentObjectExecReturn* FixDeformations::execute()
@@ -260,7 +260,7 @@ PROPERTY_SOURCE(Mesh::FillHoles, Mesh::FixDefects)
 FillHoles::FillHoles()
 {
     ADD_PROPERTY(FillupHolesOfLength, (0));
-    ADD_PROPERTY(MaxArea, (0.1f));
+    ADD_PROPERTY(MaxArea, (0.1F));
 }
 
 App::DocumentObjectExecReturn* FillHoles::execute()

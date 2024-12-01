@@ -210,6 +210,9 @@
         <property name="toolTip">
          <string>Width of the notification in pixels</string>
         </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
         <property name="minimum">
          <number>300</number>
         </property>

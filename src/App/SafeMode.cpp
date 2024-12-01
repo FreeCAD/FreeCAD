@@ -30,9 +30,10 @@
 
 #include "SafeMode.h"
 
-static QTemporaryDir * tempDir = nullptr;
+static QTemporaryDir* tempDir = nullptr;
 
-static bool _createTemporaryBaseDir() {
+static bool _createTemporaryBaseDir()
+{
     tempDir = new QTemporaryDir();
     if (!tempDir->isValid()) {
         delete tempDir;
@@ -43,7 +44,7 @@ static bool _createTemporaryBaseDir() {
 
 static void _replaceDirs()
 {
-    auto &config = App::GetApplication().Config();
+    auto& config = App::GetApplication().Config();
 
     auto const temp_base = tempDir->path().toStdString();
     auto const dirs = {
@@ -70,10 +71,12 @@ void SafeMode::StartSafeMode()
     }
 }
 
-bool SafeMode::SafeModeEnabled() {
+bool SafeMode::SafeModeEnabled()
+{
     return tempDir;
 }
 
-void SafeMode::Destruct() {
+void SafeMode::Destruct()
+{
     delete tempDir;
 }

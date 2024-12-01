@@ -50,8 +50,7 @@ private Q_SLOTS:
 protected:
     double getLength() const;
     void setButtons(const selectionModes mode) override;
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:

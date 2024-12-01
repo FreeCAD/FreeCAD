@@ -411,7 +411,11 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
         femelement_table_array = np.zeros_like(referenced_femelements)
         femelement_table_array[list(femelement_table)] = 1
         remaining_femelements_array = femelement_table_array > referenced_femelements
-        remaining_femelements = [i.item() for i in np.nditer(remaining_femelements_array.nonzero())]
+        (non_zeros,) = remaining_femelements_array.nonzero()
+        if non_zeros.size:
+            remaining_femelements = [i.item() for i in np.nditer(non_zeros)]
+        else:
+            remaining_femelements = []
         count_femelements += len(remaining_femelements)
         for fem_object in fem_objects:
             obj = fem_object["Object"]

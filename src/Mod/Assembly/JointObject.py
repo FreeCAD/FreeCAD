@@ -28,6 +28,7 @@ import Part
 
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from collections.abc import Sequence
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -511,7 +512,11 @@ class Joint:
             joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
 
     def migrationScript4(self, joint):
-        if hasattr(joint, "Reference1") and joint.Reference1[0] is not None:
+        if (
+            hasattr(joint, "Reference1")
+            and isinstance(joint.Reference1, Sequence)
+            and joint.Reference1[0] is not None
+        ):
             doc_name = joint.Reference1[0].Document.Name
             sub1 = joint.Reference1[1][0]
             sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub1)
@@ -521,7 +526,11 @@ class Joint:
             if sub1 != joint.Reference1[1][0] or sub2 != joint.Reference1[1][1]:
                 joint.Reference1 = (joint.Reference1[0], [sub1, sub2])
 
-        if hasattr(joint, "Reference2") and joint.Reference2[0] is not None:
+        if (
+            hasattr(joint, "Reference2")
+            and isinstance(joint.Reference2, Sequence)
+            and joint.Reference2[0] is not None
+        ):
             doc_name = joint.Reference2[0].Document.Name
             sub1 = joint.Reference2[1][0]
             sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub1)

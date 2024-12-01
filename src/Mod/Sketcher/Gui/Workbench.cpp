@@ -537,7 +537,8 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 {
     SketcherAddWorkspaceFillets(consaccel);
     SketcherAddWorkspaceCurveEdition(consaccel);
-    consaccel << "Sketcher_External"
+    consaccel << "Sketcher_Projection"
+              << "Sketcher_Intersection"
               << "Sketcher_CarbonCopy"
               << "Separator"
               << "Sketcher_SelectOrigin"
@@ -564,7 +565,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
 {
     SketcherAddWorkspaceFillets(consaccel);
     SketcherAddWorkspaceCurveEdition(consaccel);
-    consaccel << "Sketcher_External"
+    consaccel << "Sketcher_CompExternal"
               << "Sketcher_CarbonCopy"
               << "Separator"
               << "Sketcher_Translate"

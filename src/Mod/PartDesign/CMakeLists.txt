@@ -34,6 +34,7 @@ set(PartDesign_OtherScripts
 
 set(PartDesign_TestScripts
     PartDesignTests/__init__.py
+    PartDesignTests/TestActiveObject.py
     PartDesignTests/TestDatum.py
     PartDesignTests/TestShapeBinder.py
     PartDesignTests/TestPad.py

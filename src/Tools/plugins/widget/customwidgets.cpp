@@ -371,7 +371,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     addButton = new QPushButton(this);
     addButton->setMinimumSize(QSize(30, 30));
     QIcon icon;
-    icon.addFile(QString::fromUtf8(":/icons/button_right.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    icon.addFile(QString::fromUtf8(":/icons/button_right.svg"), QSize(), QIcon::Normal, QIcon::Off);
     addButton->setIcon(icon);
     gridLayout = new QGridLayout(this);
     gridLayout->addWidget(addButton, 1, 1, 1, 1);
@@ -384,7 +384,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     removeButton = new QPushButton(this);
     removeButton->setMinimumSize(QSize(30, 30));
     QIcon icon1;
-    icon1.addFile(QString::fromUtf8(":/icons/button_left.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    icon1.addFile(QString::fromUtf8(":/icons/button_left.svg"), QSize(), QIcon::Normal, QIcon::Off);
     removeButton->setIcon(icon1);
     removeButton->setAutoDefault(true);
     removeButton->setDefault(false);
@@ -394,7 +394,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     upButton = new QPushButton(this);
     upButton->setMinimumSize(QSize(30, 30));
     QIcon icon3;
-    icon3.addFile(QString::fromUtf8(":/icons/button_up.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    icon3.addFile(QString::fromUtf8(":/icons/button_up.svg"), QSize(), QIcon::Normal, QIcon::Off);
     upButton->setIcon(icon3);
 
     gridLayout->addWidget(upButton, 3, 1, 1, 1);
@@ -402,7 +402,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     downButton = new QPushButton(this);
     downButton->setMinimumSize(QSize(30, 30));
     QIcon icon2;
-    icon2.addFile(QString::fromUtf8(":/icons/button_down.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    icon2.addFile(QString::fromUtf8(":/icons/button_down.svg"), QSize(), QIcon::Normal, QIcon::Off);
     downButton->setIcon(icon2);
     downButton->setAutoDefault(true);
 

@@ -40,21 +40,21 @@
 namespace Data
 {
 
-/// The IndexedName class provides a very memory-efficient data structure to hold a name and an index
-/// value, and to perform various comparisons and validations of those values. The name must only
-/// consist of upper- and lower-case ASCII characters and the underscore ('_') character. The index
-/// must be a positive integer. The string representation of this IndexedName is the name followed by
-/// the index, with no spaces between: an IndexedName may be constructed from this string. For
-/// example "EDGE1" or "FACE345" might be the names of elements that use an IndexedName. If there is
-/// then an "EDGE2", only a pointer to the original stored name "EDGE" is retained.
+/// The IndexedName class provides a very memory-efficient data structure to hold a name and an
+/// index value, and to perform various comparisons and validations of those values. The name must
+/// only consist of upper- and lower-case ASCII characters and the underscore ('_') character. The
+/// index must be a positive integer. The string representation of this IndexedName is the name
+/// followed by the index, with no spaces between: an IndexedName may be constructed from this
+/// string. For example "EDGE1" or "FACE345" might be the names of elements that use an IndexedName.
+/// If there is then an "EDGE2", only a pointer to the original stored name "EDGE" is retained.
 ///
 /// The memory efficiency of the class comes from re-using the same character storage for names that
 /// match, while retaining their differing indices. This is achieved by either using user-provided
 /// const char * names (provided as a list of typeNames and presumed to never be deallocated), or by
 /// maintaining an internal list of names that have been used before, and can be re-used later.
-class AppExport IndexedName {
+class AppExport IndexedName
+{
 public:
-
     /// Construct from a name and an optional index. If the name contains an index it is read, but
     /// is used as the index *only* if _index parameter is unset. If the _index parameter is given
     /// it overrides any trailing integer in the name. Index must be positive, and name must contain
@@ -64,7 +64,7 @@ public:
     /// \param name The new name - ASCII letters and underscores only, with optional integer suffix.
     /// This memory will be copied into a new internal storage location and need not be persistent.
     /// \param _index The new index - if provided, it overrides any suffix provided by name
-    explicit IndexedName(const char *name = nullptr, int _index = 0)
+    explicit IndexedName(const char* name = nullptr, int _index = 0)
         : index(0)
     {
         assert(_index >= 0);
@@ -93,9 +93,11 @@ public:
     /// \param allowOthers Whether a name not in allowedTypeNames is permitted. If true (the
     /// default) then a name not in allowedTypeNames is added to a static internal storage vector
     /// so that it can be re-used later without additional memory allocation.
-    IndexedName(const char *name,
-                const std::vector<const char*> & allowedTypeNames,
-                bool allowOthers=true) : type(""), index(0)
+    IndexedName(const char* name,
+                const std::vector<const char*>& allowedTypeNames,
+                bool allowOthers = true)
+        : type("")
+        , index(0)
     {
         set(name, -1, allowedTypeNames, allowOthers);
     }
@@ -105,7 +107,9 @@ public:
     /// is made.
     ///
     /// \param data The QByteArray to copy the data from
-    explicit IndexedName(const QByteArray & data) : type(""), index(0)
+    explicit IndexedName(const QByteArray& data)
+        : type("")
+        , index(0)
     {
         set(data.constData(), data.size());
     }
@@ -117,8 +121,9 @@ public:
     /// \param name The name of the object. This memory is NOT copied and must be persistent.
     /// \param index A positive, non-zero integer
     /// \return An IndexedName with the given name and index, re-using the existing memory for name
-    static IndexedName fromConst(const char *name, int index) {
-        assert (index >= 0);
+    static IndexedName fromConst(const char* name, int index)
+    {
+        assert(index >= 0);
         IndexedName res;
         res.type = name;
         res.index = index;
@@ -130,7 +135,7 @@ public:
     ///
     /// \param buffer A (possibly non-empty) string buffer to append the name to.
     /// \return A const char pointer to the name we appended to the buffer.
-    const char * appendToStringBuffer(std::string & buffer) const
+    const char* appendToStringBuffer(std::string& buffer) const
     {
         // Note! buffer is not cleared on purpose.
         std::size_t offset = buffer.size();
@@ -153,7 +158,7 @@ public:
 
     /// An indexedName is represented as the simple concatenation of the name and its index, e.g.
     /// "EDGE1" or "FACE42".
-    friend std::ostream & operator<<(std::ostream & stream, const IndexedName & indexedName)
+    friend std::ostream& operator<<(std::ostream& stream, const IndexedName& indexedName)
     {
         stream << indexedName.type;
         if (indexedName.index > 0) {
@@ -163,15 +168,14 @@ public:
     }
 
     /// True only if both the name and index compare exactly equal.
-    bool operator==(const IndexedName & other) const
+    bool operator==(const IndexedName& other) const
     {
         return this->index == other.index
-            && (this->type == other.type
-                || std::strcmp(this->type, other.type)==0);
+            && (this->type == other.type || std::strcmp(this->type, other.type) == 0);
     }
 
     /// Increments the index by the given offset. Does not affect the text part of the name.
-    IndexedName & operator+=(int offset)
+    IndexedName& operator+=(int offset)
     {
         this->index += offset;
         assert(this->index >= 0);
@@ -179,7 +183,7 @@ public:
     }
 
     /// Pre-increment operator: increases the index of this element by one.
-    IndexedName & operator++()
+    IndexedName& operator++()
     {
         ++this->index;
         return *this;
@@ -187,7 +191,7 @@ public:
 
     /// Pre-decrement operator: decreases the index of this element by one. Must not make the index
     /// negative (only checked when compiled in debug mode).
-    IndexedName & operator--()
+    IndexedName& operator--()
     {
         --this->index;
         assert(this->index >= 0);
@@ -195,13 +199,13 @@ public:
     }
 
     /// True if either the name or the index compare not equal.
-    bool operator!=(const IndexedName & other) const
+    bool operator!=(const IndexedName& other) const
     {
         return !(this->operator==(other));
     }
 
     /// Equivalent to C++20's operator <=>
-    int compare(const IndexedName & other) const
+    int compare(const IndexedName& other) const
     {
         int res = std::strcmp(this->type, other.type);
         if (res != 0) {
@@ -218,7 +222,7 @@ public:
 
     /// Provided to enable sorting operations: the comparison is first lexicographical for the text
     /// element of the names, then numerical for the indices.
-    bool operator<(const IndexedName & other) const
+    bool operator<(const IndexedName& other) const
     {
         return compare(other) < 0;
     }
@@ -235,25 +239,41 @@ public:
     }
 
     /// Get a pointer to text part of the name - does NOT make a copy, returns direct memory access
-    const char * getType() const { return this->type; }
+    const char* getType() const
+    {
+        return this->type;
+    }
 
     /// Get the numerical part of the name
-    int getIndex() const { return this->index; }
+    int getIndex() const
+    {
+        return this->index;
+    }
 
     /// Set the numerical part of the name (note that there is no equivalent function to allow
     /// changing the text part of the name, which is immutable once created).
     ///
     /// \param input The new index. Must be a positive non-zero integer
-    void setIndex(int input) { assert(input>=0); this->index = input; }
+    void setIndex(int input)
+    {
+        assert(input >= 0);
+        this->index = input;
+    }
 
     /// A name is considered "null" if its text component is an empty string.
     // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
     // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-    bool isNull() const { return this->type[0] == '\0'; }
+    bool isNull() const
+    {
+        return this->type[0] == '\0';
+    }
 
     /// Boolean conversion provides the opposite of isNull(), yielding true when the text part of
     /// the name is NOT the empty string.
-    explicit operator bool() const { return !isNull(); }
+    explicit operator bool() const
+    {
+        return !isNull();
+    }
 
 protected:
     /// Apply the IndexedName rules and either store the characters of a new type or a reference to
@@ -268,13 +288,13 @@ protected:
     /// \param allowOthers If true (the default), then if name is not in allowedNames it is allowed,
     /// and it is added to internal storage (making a copy of the name if this is its first
     /// occurrence).
-    void set(const char *name,
+    void set(const char* name,
              int length = -1,
-             const std::vector<const char *> & allowedNames = {},
+             const std::vector<const char*>& allowedNames = {},
              bool allowOthers = true);
 
 private:
-    const char * type;
+    const char* type;
     int index;
 };
 
@@ -285,13 +305,13 @@ private:
 struct ByteArray
 {
     explicit ByteArray(QByteArray other)
-        :bytes(std::move(other))
+        : bytes(std::move(other))
     {}
 
     ByteArray(const ByteArray& other) = default;
 
     ByteArray(ByteArray&& other) noexcept
-        :bytes(std::move(other.bytes))
+        : bytes(std::move(other.bytes))
     {}
 
     ~ByteArray() = default;
@@ -304,17 +324,19 @@ struct ByteArray
         bytes = copy;
     }
 
-    bool operator==(const ByteArray& other) const {
+    bool operator==(const ByteArray& other) const
+    {
         return bytes == other.bytes;
     }
 
-    ByteArray &operator=(const ByteArray & other) {
+    ByteArray& operator=(const ByteArray& other)
+    {
         bytes.clear();
         bytes.append(other.bytes.constData(), other.bytes.size());
         return *this;
     }
 
-    ByteArray &operator= (ByteArray&& other) noexcept
+    ByteArray& operator=(ByteArray&& other) noexcept
     {
         bytes = std::move(other.bytes);
         return *this;
@@ -337,6 +359,6 @@ struct ByteArrayHasher
     }
 };
 
-}
+}  // namespace Data
 
-#endif // APP_INDEXEDNAME_H
+#endif  // APP_INDEXEDNAME_H

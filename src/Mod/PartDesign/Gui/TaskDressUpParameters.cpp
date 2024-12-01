@@ -319,11 +319,10 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
-bool TaskDressUpParameters::KeyEvent(QEvent *e)
+bool TaskDressUpParameters::event(QEvent* event)
 {
-    // in case another instance takes key events, accept the overridden key event
-    if (e && e->type() == QEvent::ShortcutOverride) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+    if (event->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);  // NOLINT
         if (deleteAction && Gui::QtTools::matches(kevent, deleteAction->shortcut())) {
             kevent->accept();
             return true;
@@ -333,22 +332,24 @@ bool TaskDressUpParameters::KeyEvent(QEvent *e)
             return true;
         }
     }
-    // if we have a Del key, trigger the deleteAction
-    else if (e && e->type() == QEvent::KeyPress) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
-        if (deleteAction && deleteAction->isEnabled() &&
-            Gui::QtTools::matches(kevent, deleteAction->shortcut())) {
-            deleteAction->trigger();
-            return true;
-        }
-        if (addAllEdgesAction && addAllEdgesAction->isEnabled() &&
-            Gui::QtTools::matches(kevent, addAllEdgesAction->shortcut())) {
-            addAllEdgesAction->trigger();
-            return true;
-        }
+
+    return TaskBox::event(event);
+}
+
+void TaskDressUpParameters::keyPressEvent(QKeyEvent* ke)
+{
+    if (deleteAction && deleteAction->isEnabled() &&
+        Gui::QtTools::matches(ke, deleteAction->shortcut())) {
+        deleteAction->trigger();
+        return;
+    }
+    if (addAllEdgesAction && addAllEdgesAction->isEnabled() &&
+        Gui::QtTools::matches(ke, addAllEdgesAction->shortcut())) {
+        addAllEdgesAction->trigger();
+        return;
     }
 
-    return TaskDressUpParameters::event(e);
+    TaskBox::keyPressEvent(ke);
 }
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const
@@ -379,22 +380,28 @@ void TaskDressUpParameters::hideOnError()
         showObject();
 }
 
-void TaskDressUpParameters::hideObject()
+void TaskDressUpParameters::setDressUpVisibility(bool visible)
 {
     App::DocumentObject* base = getBase();
-    if(base) {
-        DressUpView->getObject()->Visibility.setValue(false);
-        base->Visibility.setValue(true);
+    if (base) {
+        App::DocumentObject* duv = DressUpView->getObject();
+        if (duv->Visibility.getValue() != visible) {
+            duv->Visibility.setValue(visible);
+        }
+        if (base->Visibility.getValue() == visible) {
+            base->Visibility.setValue(!visible);
+        }
     }
+}
+
+void TaskDressUpParameters::hideObject()
+{
+    setDressUpVisibility(false);
 }
 
 void TaskDressUpParameters::showObject()
 {
-    App::DocumentObject* base = getBase();
-    if (base) {
-        DressUpView->getObject()->Visibility.setValue(true);
-        base->Visibility.setValue(false);
-    }
+    setDressUpVisibility(true);
 }
 
 ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const

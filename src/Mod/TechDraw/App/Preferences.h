@@ -150,6 +150,8 @@ public:
 
     static Qt::KeyboardModifiers balloonDragModifiers();
     static void setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers);
+
+    static bool switchOnClick();
 };
 
 

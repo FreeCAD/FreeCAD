@@ -133,7 +133,7 @@ bool MeshEvalOrientation::Evaluate()
     const MeshFacetArray& rFAry = _rclMesh.GetFacets();
     MeshFacetArray::_TConstIterator iBeg = rFAry.begin();
     MeshFacetArray::_TConstIterator iEnd = rFAry.end();
-    for (MeshFacetArray::_TConstIterator it = iBeg; it != iEnd; ++it) {
+    for (auto it = iBeg; it != iEnd; ++it) {
         for (int i = 0; i < 3; i++) {
             if (it->_aulNeighbours[i] != FACET_INDEX_MAX) {
                 const MeshFacet& rclFacet = iBeg[it->_aulNeighbours[i]];
@@ -215,7 +215,7 @@ std::vector<FacetIndex> MeshEvalOrientation::GetIndices() const
         // In the currently visited component we have found less than 40% as correct
         // oriented and the rest as false oriented. So, we decide that it should be the other
         // way round and swap the indices of this component.
-        if (uComplement.size() < static_cast<unsigned long>(0.4f * static_cast<float>(ulVisited))) {
+        if (uComplement.size() < static_cast<unsigned long>(0.4F * static_cast<float>(ulVisited))) {
             uIndices.erase(uIndices.begin() + wrongFacets, uIndices.end());
             uIndices.insert(uIndices.end(), uComplement.begin(), uComplement.end());
         }
@@ -318,13 +318,13 @@ struct Edge_Less
         if (x.p0 < y.p0) {
             return true;
         }
-        else if (x.p0 > y.p0) {
+        if (x.p0 > y.p0) {
             return false;
         }
-        else if (x.p1 < y.p1) {
+        if (x.p1 < y.p1) {
             return true;
         }
-        else if (x.p1 > y.p1) {
+        if (x.p1 > y.p1) {
             return false;
         }
         return false;
@@ -629,14 +629,12 @@ bool MeshEvalSelfIntersection::Evaluate()
 
         MeshGeomFacet facet1, facet2;
         Base::Vector3f pt1, pt2;
-        for (std::vector<FacetIndex>::iterator it = aulGridElements.begin();
-             it != aulGridElements.end();
-             ++it) {
+        for (auto it = aulGridElements.begin(); it != aulGridElements.end(); ++it) {
             const Base::BoundBox3f& box1 = boxes[*it];
             cMFI.Set(*it);
             facet1 = *cMFI;
             const MeshFacet& rface1 = rFaces[*it];
-            for (std::vector<FacetIndex>::iterator jt = it; jt != aulGridElements.end(); ++jt) {
+            for (auto jt = it; jt != aulGridElements.end(); ++jt) {
                 if (jt == it) {  // the identical facet
                     continue;
                 }
@@ -735,14 +733,12 @@ void MeshEvalSelfIntersection::GetIntersections(
 
         MeshGeomFacet facet1, facet2;
         Base::Vector3f pt1, pt2;
-        for (std::vector<FacetIndex>::iterator it = aulGridElements.begin();
-             it != aulGridElements.end();
-             ++it) {
+        for (auto it = aulGridElements.begin(); it != aulGridElements.end(); ++it) {
             const Base::BoundBox3f& box1 = boxes[*it];
             cMFI.Set(*it);
             facet1 = *cMFI;
             const MeshFacet& rface1 = rFaces[*it];
-            for (std::vector<FacetIndex>::iterator jt = it; jt != aulGridElements.end(); ++jt) {
+            for (auto jt = it; jt != aulGridElements.end(); ++jt) {
                 if (jt == it) {  // the identical facet
                     continue;
                 }
@@ -977,9 +973,8 @@ void MeshKernel::RebuildNeighbours(FacetIndex index)
     edges.reserve(3 * (this->_aclFacetArray.size() - index));
 
     // build up an array of edges
-    MeshFacetArray::_TConstIterator pI;
-    MeshFacetArray::_TConstIterator pB = this->_aclFacetArray.begin();
-    for (pI = pB + index; pI != this->_aclFacetArray.end(); ++pI) {
+    auto pB = this->_aclFacetArray.begin();
+    for (auto pI = pB + index; pI != this->_aclFacetArray.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item {};
             item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
@@ -1054,9 +1049,9 @@ void MeshKernel::RebuildNeighbours()
 
 MeshEigensystem::MeshEigensystem(const MeshKernel& rclB)
     : MeshEvaluation(rclB)
-    , _cU(1.0f, 0.0f, 0.0f)
-    , _cV(0.0f, 1.0f, 0.0f)
-    , _cW(0.0f, 0.0f, 1.0f)
+    , _cU(1.0F, 0.0F, 0.0F)
+    , _cV(0.0F, 1.0F, 0.0F)
+    , _cW(0.0F, 0.0F, 1.0F)
 {
     // use the values of world coordinates as default
     Base::BoundBox3f box = _rclMesh.GetBoundBox();
@@ -1108,7 +1103,7 @@ bool MeshEigensystem::Evaluate()
 {
     CalculateLocalSystem();
 
-    float xmin = 0.0f, xmax = 0.0f, ymin = 0.0f, ymax = 0.0f, zmin = 0.0f, zmax = 0.0f;
+    float xmin = 0.0F, xmax = 0.0F, ymin = 0.0F, ymax = 0.0F, zmin = 0.0F, zmax = 0.0F;
 
     Base::Vector3f clVect, clProj;
     float fH {};
@@ -1122,7 +1117,7 @@ bool MeshEigensystem::Evaluate()
         fH = clVect.Length();
 
         // point vectors in the same direction ?
-        if ((clVect * _cU) < 0.0f) {
+        if ((clVect * _cU) < 0.0F) {
             fH = -fH;
         }
 
@@ -1136,7 +1131,7 @@ bool MeshEigensystem::Evaluate()
         fH = clVect.Length();
 
         // point vectors in the same direction ?
-        if ((clVect * _cV) < 0.0f) {
+        if ((clVect * _cV) < 0.0F) {
             fH = -fH;
         }
 
@@ -1150,7 +1145,7 @@ bool MeshEigensystem::Evaluate()
         fH = clVect.Length();
 
         // point vectors in the same direction ?
-        if ((clVect * _cW) < 0.0f) {
+        if ((clVect * _cW) < 0.0F) {
             fH = -fH;
         }
 
@@ -1203,17 +1198,17 @@ void MeshEigensystem::CalculateLocalSystem()
     }
 
     // avoid ambiguities concerning directions
-    if (fSumU < 0.0f) {
-        _cU *= -1.0f;
+    if (fSumU < 0.0F) {
+        _cU *= -1.0F;
     }
-    if (fSumV < 0.0f) {
-        _cV *= -1.0f;
+    if (fSumV < 0.0F) {
+        _cV *= -1.0F;
     }
-    if (fSumW < 0.0f) {
-        _cW *= -1.0f;
+    if (fSumW < 0.0F) {
+        _cW *= -1.0F;
     }
 
-    if ((_cU % _cV) * _cW < 0.0f) {
+    if ((_cU % _cV) * _cW < 0.0F) {
         _cW = -_cW;  // make a right-handed system
     }
 }

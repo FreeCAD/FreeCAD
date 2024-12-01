@@ -206,7 +206,7 @@ private:
         // If not, use the preference, if that exists, else default to 0.1mm.
         auto hGrp(App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Mesh"));
-        auto fTolerance(hGrp->GetFloat("MaxDeviationExport", 0.1f));
+        auto fTolerance(hGrp->GetFloat("MaxDeviationExport", 0.1F));
 
         int exportAmfCompressed(hGrp->GetBool("ExportAmfCompressed", true));
         bool export3mfModel(hGrp->GetBool("Export3mfModel", true));
@@ -319,12 +319,12 @@ private:
         MeshObject* mesh = nullptr;
 
         do {
-            float length = 10.0f;
-            float width = 10.0f;
-            float height = 10.0f;
-            float edgelen = -1.0f;
+            float length = 10.0F;
+            float width = 10.0F;
+            float height = 10.0F;
+            float edgelen = -1.0F;
             if (PyArg_ParseTuple(args.ptr(), "|ffff", &length, &width, &height, &edgelen)) {
-                if (edgelen < 0.0f) {
+                if (edgelen < 0.0F) {
                     mesh = MeshObject::createCube(length, width, height);
                 }
                 else {
@@ -359,8 +359,8 @@ private:
             y = x;
         }
 
-        float hx = x / 2.0f;
-        float hy = y / 2.0f;
+        float hx = x / 2.0F;
+        float hy = y / 2.0F;
 
         std::vector<MeshCore::MeshGeomFacet> TriaList;
         TriaList.emplace_back(Base::Vector3f(-hx, -hy, 0.0),
@@ -376,7 +376,7 @@ private:
     }
     Py::Object createSphere(const Py::Tuple& args)
     {
-        float radius = 5.0f;
+        float radius = 5.0F;
         int sampling = 50;
         if (!PyArg_ParseTuple(args.ptr(), "|fi", &radius, &sampling)) {
             throw Py::Exception();
@@ -390,8 +390,8 @@ private:
     }
     Py::Object createEllipsoid(const Py::Tuple& args)
     {
-        float radius1 = 2.0f;
-        float radius2 = 4.0f;
+        float radius1 = 2.0F;
+        float radius2 = 4.0F;
         int sampling = 50;
         if (!PyArg_ParseTuple(args.ptr(), "|ffi", &radius1, &radius2, &sampling)) {
             throw Py::Exception();
@@ -405,10 +405,10 @@ private:
     }
     Py::Object createCylinder(const Py::Tuple& args)
     {
-        float radius = 2.0f;
-        float length = 10.0f;
+        float radius = 2.0F;
+        float length = 10.0F;
         int closed = 1;
-        float edgelen = 1.0f;
+        float edgelen = 1.0F;
         int sampling = 50;
         if (!PyArg_ParseTuple(args.ptr(),
                               "|ffifi",
@@ -428,11 +428,11 @@ private:
     }
     Py::Object createCone(const Py::Tuple& args)
     {
-        float radius1 = 2.0f;
-        float radius2 = 4.0f;
-        float len = 10.0f;
+        float radius1 = 2.0F;
+        float radius2 = 4.0F;
+        float len = 10.0F;
         int closed = 1;
-        float edgelen = 1.0f;
+        float edgelen = 1.0F;
         int sampling = 50;
         if (!PyArg_ParseTuple(args.ptr(),
                               "|fffifi",
@@ -453,8 +453,8 @@ private:
     }
     Py::Object createTorus(const Py::Tuple& args)
     {
-        float radius1 = 10.0f;
-        float radius2 = 2.0f;
+        float radius1 = 10.0F;
+        float radius2 = 2.0F;
         int sampling = 50;
         if (!PyArg_ParseTuple(args.ptr(), "|ffi", &radius1, &radius2, &sampling)) {
             throw Py::Exception();
@@ -557,7 +557,7 @@ private:
         // residuals
         std::vector<Base::Vector3f> local = polyFit.GetLocalPoints();
         Py::Tuple r(local.size());
-        for (std::vector<Base::Vector3f>::iterator it = local.begin(); it != local.end(); ++it) {
+        for (auto it = local.begin(); it != local.end(); ++it) {
             double z = polyFit.Value(it->x, it->y);
             double d = it->z - z;
             r.setItem(it - local.begin(), Py::Float(d));
@@ -598,7 +598,8 @@ private:
             throw Py::RuntimeError("Too few points");
         }
 
-        Wm4::Box3d mobox = Wm4::ContMinBox(points.size(), &(points[0]), 0.001, Wm4::Query::QT_REAL);
+        Wm4::Box3d mobox =
+            Wm4::ContMinBox(points.size(), points.data(), 0.001, Wm4::Query::QT_REAL);
         Py::Tuple result(7);
         Base::Vector3d v;
 

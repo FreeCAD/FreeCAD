@@ -26,8 +26,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cstdlib>
-# include <unordered_set>
+#include <cstdlib>
+#include <unordered_set>
 #endif
 
 #include "IndexedName.h"
@@ -37,17 +37,17 @@ using namespace Data;
 /// Check whether the input character is an underscore or an ASCII letter a-Z or A-Z
 inline bool isInvalidChar(char test)
 {
-    return test != '_' && (test < 'a' || test > 'z' ) && (test < 'A' || test > 'Z');
+    return test != '_' && (test < 'a' || test > 'z') && (test < 'A' || test > 'Z');
 }
 
 /// Get the integer suffix of name. Returns a tuple of (suffix, suffixPosition). Calling code
-/// should check to ensure that suffixPosition is not equal to nameLength (in which case there was no
-/// suffix).
+/// should check to ensure that suffixPosition is not equal to nameLength (in which case there was
+/// no suffix).
 ///
 /// \param name The name to check
 /// \param nameLength The length of the string in name
 /// \returns An integer pair of the suffix itself and the position of that suffix in name
-std::pair<int,int> getIntegerSuffix(const char *name, int nameLength)
+std::pair<int, int> getIntegerSuffix(const char* name, int nameLength)
 {
     int suffixPosition {nameLength - 1};
 
@@ -68,11 +68,10 @@ std::pair<int,int> getIntegerSuffix(const char *name, int nameLength)
     return std::make_pair(suffix, suffixPosition);
 }
 
-void IndexedName::set(
-    const char* name,
-    int length,
-    const std::vector<const char*>& allowedNames,
-    bool allowOthers)
+void IndexedName::set(const char* name,
+                      int length,
+                      const std::vector<const char*>& allowedNames,
+                      bool allowOthers)
 {
     // Storage for names that we weren't given external storage for
     static std::unordered_set<ByteArray, ByteArrayHasher> NameSet;
@@ -90,22 +89,22 @@ void IndexedName::set(
     // underscore. If any other character appears, reject the entire string.
     // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
     // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-    if (std::any_of(name, name+suffixPosition, isInvalidChar)) {
+    if (std::any_of(name, name + suffixPosition, isInvalidChar)) {
         this->type = "";
         return;
     }
 
-    // If a list of allowedNames was provided, see if our set name matches one of those allowedNames: if it
-    // does, reference that memory location and return.
-    for (const auto *typeName : allowedNames) {
+    // If a list of allowedNames was provided, see if our set name matches one of those
+    // allowedNames: if it does, reference that memory location and return.
+    for (const auto* typeName : allowedNames) {
         if (std::strncmp(name, typeName, suffixPosition) == 0) {
             this->type = typeName;
             return;
         }
     }
 
-    // If the type was NOT in the list of allowedNames, but the caller has set the allowOthers flag to
-    // true, then add the new type to the static NameSet (if it is not already there).
+    // If the type was NOT in the list of allowedNames, but the caller has set the allowOthers flag
+    // to true, then add the new type to the static NameSet (if it is not already there).
     if (allowOthers) {
         auto res = NameSet.insert(ByteArray(QByteArray::fromRawData(name, suffixPosition)));
         if (res.second /*The insert succeeded (the type was new)*/) {

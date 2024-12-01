@@ -67,9 +67,9 @@ void Approximation::GetMgcVectorArray(std::vector<Wm4::Vector3<double>>& rcPts) 
     }
 }
 
-void Approximation::AddPoint(const Base::Vector3f& rcVector)
+void Approximation::AddPoint(const Base::Vector3f& point)
 {
-    _vPoints.push_back(rcVector);
+    _vPoints.push_back(point);
     _bIsFitted = false;
 }
 
@@ -104,7 +104,7 @@ Base::Vector3f Approximation::GetGravity() const
         for (const auto& vPoint : _vPoints) {
             clGravity += vPoint;
         }
-        clGravity *= 1.0f / float(_vPoints.size());
+        clGravity *= 1.0F / float(_vPoints.size());
     }
     return clGravity;
 }
@@ -263,7 +263,7 @@ float PlaneFit::Fit()
     }
 
     // make a right-handed system
-    if ((_vDirU % _vDirV) * _vDirW < 0.0f) {
+    if ((_vDirU % _vDirV) * _vDirW < 0.0F) {
         Base::Vector3f tmp = _vDirU;
         _vDirU = _vDirV;
         _vDirV = tmp;
@@ -285,9 +285,8 @@ Base::Vector3f PlaneFit::GetBase() const
     if (_bIsFitted) {
         return _vBase;
     }
-    else {
-        return Base::Vector3f();
-    }
+
+    return Base::Vector3f();
 }
 
 Base::Vector3f PlaneFit::GetDirU() const
@@ -295,9 +294,8 @@ Base::Vector3f PlaneFit::GetDirU() const
     if (_bIsFitted) {
         return _vDirU;
     }
-    else {
-        return Base::Vector3f();
-    }
+
+    return Base::Vector3f();
 }
 
 Base::Vector3f PlaneFit::GetDirV() const
@@ -305,9 +303,8 @@ Base::Vector3f PlaneFit::GetDirV() const
     if (_bIsFitted) {
         return _vDirV;
     }
-    else {
-        return Base::Vector3f();
-    }
+
+    return Base::Vector3f();
 }
 
 Base::Vector3f PlaneFit::GetNormal() const
@@ -315,9 +312,8 @@ Base::Vector3f PlaneFit::GetNormal() const
     if (_bIsFitted) {
         return _vDirW;
     }
-    else {
-        return Base::Vector3f();
-    }
+
+    return Base::Vector3f();
 }
 
 float PlaneFit::GetDistanceToPlane(const Base::Vector3f& rcPoint) const
@@ -339,7 +335,7 @@ float PlaneFit::GetStdDeviation() const
         return FLOAT_MAX;
     }
 
-    float fSumXi = 0.0f, fSumXi2 = 0.0f, fMean = 0.0f, fDist = 0.0f;
+    float fSumXi = 0.0F, fSumXi2 = 0.0F, fMean = 0.0F, fDist = 0.0F;
 
     float ulPtCt = float(CountPoints());
     std::list<Base::Vector3f>::const_iterator cIt;
@@ -350,8 +346,8 @@ float PlaneFit::GetStdDeviation() const
         fSumXi2 += (fDist * fDist);
     }
 
-    fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    fMean = (1.0F / ulPtCt) * fSumXi;
+    return sqrt((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 float PlaneFit::GetSignedStdDeviation() const
@@ -373,7 +369,7 @@ float PlaneFit::GetSignedStdDeviation() const
     for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
         clGravity += *cIt;
     }
-    clGravity *= (1.0f / ulPtCt);
+    clGravity *= (1.0F / ulPtCt);
 
     for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
         if ((clGravity - *cIt).Length() < fMinDist) {
@@ -387,15 +383,15 @@ float PlaneFit::GetSignedStdDeviation() const
 
     // which side
     if ((clPt - clGravity) * GetNormal() > 0) {
-        fFactor = 1.0f;
+        fFactor = 1.0F;
     }
     else {
-        fFactor = -1.0f;
+        fFactor = -1.0F;
     }
 
-    fMean = 1.0f / ulPtCt * fSumXi;
+    fMean = 1.0F / ulPtCt * fSumXi;
 
-    return fFactor * sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    return fFactor * sqrt((ulPtCt / (ulPtCt - 3.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void PlaneFit::ProjectToPlane()
@@ -510,9 +506,8 @@ double QuadraticFit::GetCoeff(std::size_t ulIndex) const
     if (_bIsFitted) {
         return _fCoeff[ulIndex];
     }
-    else {
-        return double(FLOAT_MAX);
-    }
+
+    return double(FLOAT_MAX);
 }
 
 float QuadraticFit::Fit()
@@ -522,7 +517,7 @@ float QuadraticFit::Fit()
     if (CountPoints() > 0) {
         std::vector<Wm4::Vector3<double>> cPts;
         GetMgcVectorArray(cPts);
-        fResult = (float)Wm4::QuadraticFit3<double>(CountPoints(), &(cPts[0]), _fCoeff);
+        fResult = (float)Wm4::QuadraticFit3<double>(CountPoints(), cPts.data(), _fCoeff);
         _fLastResult = fResult;
 
         _bIsFitted = true;
@@ -610,9 +605,8 @@ void QuadraticFit::CalcZValues(double x, double y, double& dZ1, double& dZ2) con
         dZ2 = double(FLOAT_MAX);
         return;
     }
-    else {
-        dDisk = sqrt(dDisk);
-    }
+
+    dDisk = sqrt(dDisk);
 
     dZ1 = 0.5 * ((-_fCoeff[3] - _fCoeff[8] * x - _fCoeff[9] * y + dDisk) / _fCoeff[6]);
     dZ2 = 0.5 * ((-_fCoeff[3] - _fCoeff[8] * x - _fCoeff[9] * y - dDisk) / _fCoeff[6]);
@@ -710,9 +704,8 @@ double SurfaceFit::PolynomFit()
     transform.reserve(_vPoints.size());
 
     double dW2 = 0;
-    for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it != _vPoints.end();
-         ++it) {
-        Base::Vector3d clPoint = Base::convertTo<Base::Vector3d>(*it);
+    for (const auto& it : _vPoints) {
+        Base::Vector3d clPoint = Base::convertTo<Base::Vector3d>(it);
         clPoint.TransformToCoordinateSystem(bs, ex, ey);
         transform.push_back(clPoint);
         double dU = clPoint.x;
@@ -1058,7 +1051,7 @@ struct LMCylinderFunctor
             operator()(xMinus, fvecMinus);
 
             Eigen::VectorXd fvecDiff(values());
-            fvecDiff = (fvecPlus - fvecMinus) / (2.0f * epsilon);
+            fvecDiff = (fvecPlus - fvecMinus) / (2.0F * epsilon);
 
             fjac.block(0, i, values(), 1) = fvecDiff;
         }
@@ -1276,9 +1269,8 @@ Base::Vector3f CylinderFit::GetBase() const
     if (_bIsFitted) {
         return _vBase;
     }
-    else {
-        return Base::Vector3f();
-    }
+
+    return Base::Vector3f();
 }
 
 Base::Vector3f CylinderFit::GetAxis() const
@@ -1286,9 +1278,8 @@ Base::Vector3f CylinderFit::GetAxis() const
     if (_bIsFitted) {
         return _vAxis;
     }
-    else {
-        return Base::Vector3f();
-    }
+
+    return Base::Vector3f();
 }
 
 float CylinderFit::GetDistanceToCylinder(const Base::Vector3f& rcPoint) const
@@ -1310,7 +1301,7 @@ float CylinderFit::GetStdDeviation() const
         return FLOAT_MAX;
     }
 
-    float fSumXi = 0.0f, fSumXi2 = 0.0f, fMean = 0.0f, fDist = 0.0f;
+    float fSumXi = 0.0F, fSumXi2 = 0.0F, fMean = 0.0F, fDist = 0.0F;
 
     float ulPtCt = float(CountPoints());
     std::list<Base::Vector3f>::const_iterator cIt;
@@ -1321,8 +1312,8 @@ float CylinderFit::GetStdDeviation() const
         fSumXi2 += (fDist * fDist);
     }
 
-    fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    fMean = (1.0F / ulPtCt) * fSumXi;
+    return sqrt((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void CylinderFit::GetBounding(Base::Vector3f& bottom, Base::Vector3f& top) const
@@ -1392,9 +1383,8 @@ float SphereFit::GetRadius() const
     if (_bIsFitted) {
         return _fRadius;
     }
-    else {
-        return FLOAT_MAX;
-    }
+
+    return FLOAT_MAX;
 }
 
 Base::Vector3f SphereFit::GetCenter() const
@@ -1402,9 +1392,8 @@ Base::Vector3f SphereFit::GetCenter() const
     if (_bIsFitted) {
         return _vCenter;
     }
-    else {
-        return Base::Vector3f();
-    }
+
+    return Base::Vector3f();
 }
 
 float SphereFit::Fit()
@@ -1483,7 +1472,7 @@ float SphereFit::GetStdDeviation() const
         return FLOAT_MAX;
     }
 
-    float fSumXi = 0.0f, fSumXi2 = 0.0f, fMean = 0.0f, fDist = 0.0f;
+    float fSumXi = 0.0F, fSumXi2 = 0.0F, fMean = 0.0F, fDist = 0.0F;
 
     float ulPtCt = float(CountPoints());
     std::list<Base::Vector3f>::const_iterator cIt;
@@ -1494,8 +1483,8 @@ float SphereFit::GetStdDeviation() const
         fSumXi2 += (fDist * fDist);
     }
 
-    fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    fMean = (1.0F / ulPtCt) * fSumXi;
+    return sqrt((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void SphereFit::ProjectToSphere()
@@ -1531,15 +1520,14 @@ float PolynomialFit::Fit()
     x.reserve(_vPoints.size());
     y.reserve(_vPoints.size());
     z.reserve(_vPoints.size());
-    for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it != _vPoints.end();
-         ++it) {
-        x.push_back(it->x);
-        y.push_back(it->y);
-        z.push_back(it->z);
+    for (const auto& it : _vPoints) {
+        x.push_back(it.x);
+        y.push_back(it.y);
+        z.push_back(it.z);
     }
 
     try {
-        float* coeff = Wm4::PolyFit3<float>(_vPoints.size(), &(x[0]), &(y[0]), &(z[0]), 2, 2);
+        float* coeff = Wm4::PolyFit3<float>(_vPoints.size(), x.data(), y.data(), z.data(), 2, 2);
         for (int i = 0; i < 9; i++) {
             _fCoeff[i] = coeff[i];
         }
@@ -1548,7 +1536,7 @@ float PolynomialFit::Fit()
         return FLOAT_MAX;
     }
 
-    return 0.0f;
+    return 0.0F;
 }
 
 float PolynomialFit::Value(float x, float y) const

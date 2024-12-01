@@ -120,16 +120,16 @@ class Hatch(DraftObject):
                         mtx = App.Placement(cen, rot).Matrix
                     face = face.transformShape(mtx.inverse()).Faces[0]
 
-                    # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
-                    # Lines in a hatch pattern are also checked. In the code below 9999 is
-                    # used. With extra scaling based on that value a 1000m x 1000m rectangle
-                    # can be hatched. Tested with pattern: Diagonal4, and pattern scale: 1000.
-                    # With a limit of 9999.9 the same test fails.
-                    if face.BoundBox.DiagonalLength > 9999:
-                        extra_scale = 9999 / face.BoundBox.DiagonalLength
-                    else:
-                        extra_scale = 1.0
-                    face.scale(extra_scale)
+                # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
+                # Lines in a hatch pattern are also checked. In the code below 9999 is
+                # used. With extra scaling based on that value a 1000m x 1000m rectangle
+                # can be hatched. Tested with pattern: Diagonal4, and pattern scale: 1000.
+                # With a limit of 9999.9 the same test fails.
+                if face.BoundBox.DiagonalLength > 9999:
+                    extra_scale = 9999 / face.BoundBox.DiagonalLength
+                else:
+                    extra_scale = 1.0
+                face.scale(extra_scale)
                 if obj.Rotation.Value:
                     face.rotate(App.Vector(), App.Vector(0, 0, 1), -obj.Rotation)
                 shape = TechDraw.makeGeomHatch(face, obj.Scale * extra_scale, obj.Pattern, obj.File)

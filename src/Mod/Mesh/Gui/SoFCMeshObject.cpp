@@ -210,11 +210,11 @@ SbBool SoSFMeshObject::readValue(SoInput* in)
     int32_t countPt {};
     in->read(countPt);
     std::vector<float> verts(countPt);
-    in->readBinaryArray(&(verts[0]), countPt);
+    in->readBinaryArray(verts.data(), countPt);
 
     MeshCore::MeshPointArray rPoints;
     rPoints.reserve(countPt / 3);
-    for (std::vector<float>::iterator it = verts.begin(); it != verts.end();) {
+    for (auto it = verts.begin(); it != verts.end();) {
         Base::Vector3f p;
         p.x = *it;
         ++it;
@@ -228,11 +228,11 @@ SbBool SoSFMeshObject::readValue(SoInput* in)
     int32_t countFt {};
     in->read(countFt);
     std::vector<int32_t> faces(countFt);
-    in->readBinaryArray(&(faces[0]), countFt);
+    in->readBinaryArray(faces.data(), countFt);
 
     MeshCore::MeshFacetArray rFacets;
     rFacets.reserve(countFt / 3);
-    for (std::vector<int32_t>::iterator it = faces.begin(); it != faces.end();) {
+    for (auto it = faces.begin(); it != faces.end();) {
         MeshCore::MeshFacet f;
         f._aulPoints[0] = *it;
         ++it;
@@ -282,7 +282,7 @@ void SoSFMeshObject::writeValue(SoOutput* out) const
 
     int32_t countPt = (int32_t)verts.size();
     out->write(countPt);
-    out->writeBinaryArray(&(verts[0]), countPt);
+    out->writeBinaryArray(verts.data(), countPt);
 
     const MeshCore::MeshFacetArray& rFacets = value->getKernel().GetFacets();
     std::vector<uint32_t> faces;
@@ -295,7 +295,7 @@ void SoSFMeshObject::writeValue(SoOutput* out) const
 
     int32_t countFt = (int32_t)faces.size();
     out->write(countFt);
-    out->writeBinaryArray((const int32_t*)&(faces[0]), countFt);
+    out->writeBinaryArray((const int32_t*)faces.data(), countFt);
 }
 
 // -------------------------------------------------------
@@ -319,8 +319,8 @@ void SoFCMeshObjectElement::set(SoState* const state,
                                 SoNode* const node,
                                 const Mesh::MeshObject* const mesh)
 {
-    SoFCMeshObjectElement* elem =
-        (SoFCMeshObjectElement*)SoReplacedElement::getElement(state, classStackIndex, node);
+    SoFCMeshObjectElement* elem = static_cast<SoFCMeshObjectElement*>(
+        SoReplacedElement::getElement(state, classStackIndex, node));
     if (elem) {
         elem->mesh = mesh;
         elem->nodeId = node->getNodeId();
@@ -334,7 +334,8 @@ const Mesh::MeshObject* SoFCMeshObjectElement::get(SoState* const state)
 
 const SoFCMeshObjectElement* SoFCMeshObjectElement::getInstance(SoState* state)
 {
-    return (const SoFCMeshObjectElement*)SoElement::getConstElement(state, classStackIndex);
+    return static_cast<const SoFCMeshObjectElement*>(
+        SoElement::getConstElement(state, classStackIndex));
 }
 
 void SoFCMeshObjectElement::print(FILE* /* file */) const
@@ -377,7 +378,7 @@ void SoFCMeshPickNode::notify(SoNotList* list)
             MeshCore::MeshAlgorithm alg(meshObject->getKernel());
             float fAvgLen = alg.GetAverageEdgeLength();
             delete meshGrid;
-            meshGrid = new MeshCore::MeshFacetGrid(meshObject->getKernel(), 5.0f * fAvgLen);
+            meshGrid = new MeshCore::MeshFacetGrid(meshObject->getKernel(), 5.0F * fAvgLen);
         }
     }
 }
@@ -452,7 +453,7 @@ void SoFCMeshGridNode::GLRender(SoGLRenderAction* /*action*/)
     float dx = (maxX - minX) / (float)u;
     float dy = (maxY - minY) / (float)v;
     float dz = (maxZ - minZ) / (float)w;
-    glColor3f(0.0f, 1.0f, 0.0);
+    glColor3f(0.0F, 1.0F, 0.0);
     glBegin(GL_LINES);
     for (short i = 0; i < u + 1; i++) {
         for (short j = 0; j < v + 1; j++) {
@@ -733,9 +734,7 @@ void SoFCMeshObjectShape::drawFaces(const Mesh::MeshObject* mesh,
         glBegin(GL_TRIANGLES);
         if (ccw) {
             // counterclockwise ordering
-            for (MeshCore::MeshFacetArray::_TConstIterator it = rFacets.begin();
-                 it != rFacets.end();
-                 ++it) {
+            for (auto it = rFacets.begin(); it != rFacets.end(); ++it) {
                 const MeshCore::MeshPoint& v0 = rPoints[it->_aulPoints[0]];
                 const MeshCore::MeshPoint& v1 = rPoints[it->_aulPoints[1]];
                 const MeshCore::MeshPoint& v2 = rPoints[it->_aulPoints[2]];
@@ -807,16 +806,14 @@ void SoFCMeshObjectShape::drawPoints(const Mesh::MeshObject* mesh,
     const MeshCore::MeshFacetArray& rFacets = mesh->getKernel().GetFacets();
     int mod = rFacets.size() / renderTriangleLimit + 1;
 
-    float size = std::min<float>((float)mod, 3.0f);
+    float size = std::min<float>((float)mod, 3.0F);
     glPointSize(size);
 
     if (needNormals) {
         glBegin(GL_POINTS);
         int ct = 0;
         if (ccw) {
-            for (MeshCore::MeshFacetArray::_TConstIterator it = rFacets.begin();
-                 it != rFacets.end();
-                 ++it, ct++) {
+            for (auto it = rFacets.begin(); it != rFacets.end(); ++it, ct++) {
                 if (ct % mod == 0) {
                     const MeshCore::MeshPoint& v0 = rPoints[it->_aulPoints[0]];
                     const MeshCore::MeshPoint& v1 = rPoints[it->_aulPoints[1]];
@@ -830,18 +827,16 @@ void SoFCMeshObjectShape::drawPoints(const Mesh::MeshObject* mesh,
 
                     // Calculate the center point p=(v0+v1+v2)/3
                     float p[3];
-                    p[0] = (v0.x + v1.x + v2.x) / 3.0f;
-                    p[1] = (v0.y + v1.y + v2.y) / 3.0f;
-                    p[2] = (v0.z + v1.z + v2.z) / 3.0f;
+                    p[0] = (v0.x + v1.x + v2.x) / 3.0F;
+                    p[1] = (v0.y + v1.y + v2.y) / 3.0F;
+                    p[2] = (v0.z + v1.z + v2.z) / 3.0F;
                     glNormal3fv(n);
                     glVertex3fv(p);
                 }
             }
         }
         else {
-            for (MeshCore::MeshFacetArray::_TConstIterator it = rFacets.begin();
-                 it != rFacets.end();
-                 ++it, ct++) {
+            for (auto it = rFacets.begin(); it != rFacets.end(); ++it, ct++) {
                 if (ct % mod == 0) {
                     const MeshCore::MeshPoint& v0 = rPoints[it->_aulPoints[0]];
                     const MeshCore::MeshPoint& v1 = rPoints[it->_aulPoints[1]];
@@ -855,9 +850,9 @@ void SoFCMeshObjectShape::drawPoints(const Mesh::MeshObject* mesh,
 
                     // Calculate the center point p=(v0+v1+v2)/3
                     float p[3];
-                    p[0] = (v0.x + v1.x + v2.x) / 3.0f;
-                    p[1] = (v0.y + v1.y + v2.y) / 3.0f;
-                    p[2] = (v0.z + v1.z + v2.z) / 3.0f;
+                    p[0] = (v0.x + v1.x + v2.x) / 3.0F;
+                    p[1] = (v0.y + v1.y + v2.y) / 3.0F;
+                    p[2] = (v0.z + v1.z + v2.z) / 3.0F;
                     glNormal3fv(n);
                     glVertex3fv(p);
                 }
@@ -868,17 +863,16 @@ void SoFCMeshObjectShape::drawPoints(const Mesh::MeshObject* mesh,
     else {
         glBegin(GL_POINTS);
         int ct = 0;
-        for (MeshCore::MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end();
-             ++it, ct++) {
+        for (auto it = rFacets.begin(); it != rFacets.end(); ++it, ct++) {
             if (ct % mod == 0) {
                 const MeshCore::MeshPoint& v0 = rPoints[it->_aulPoints[0]];
                 const MeshCore::MeshPoint& v1 = rPoints[it->_aulPoints[1]];
                 const MeshCore::MeshPoint& v2 = rPoints[it->_aulPoints[2]];
                 // Calculate the center point p=(v0+v1+v2)/3
                 float p[3];
-                p[0] = (v0.x + v1.x + v2.x) / 3.0f;
-                p[1] = (v0.y + v1.y + v2.y) / 3.0f;
-                p[2] = (v0.z + v1.z + v2.z) / 3.0f;
+                p[0] = (v0.x + v1.x + v2.x) / 3.0F;
+                p[1] = (v0.y + v1.y + v2.y) / 3.0F;
+                p[2] = (v0.z + v1.z + v2.z) / 3.0F;
                 glVertex3fv(p);
             }
         }
@@ -932,8 +926,8 @@ void SoFCMeshObjectShape::renderFacesGLArray(SoGLRenderAction* action)
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, &(index_array[0]));
+    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
+    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -947,8 +941,8 @@ void SoFCMeshObjectShape::renderCoordsGLArray(SoGLRenderAction* action)
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
-    glDrawElements(GL_POINTS, cnt, GL_UNSIGNED_INT, &(index_array[0]));
+    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
+    glDrawElements(GL_POINTS, cnt, GL_UNSIGNED_INT, index_array.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -1203,7 +1197,7 @@ void SoFCMeshObjectShape::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& c
     }
     else {
         box.setBounds(SbVec3f(0, 0, 0), SbVec3f(0, 0, 0));
-        center.setValue(0.0f, 0.0f, 0.0f);
+        center.setValue(0.0F, 0.0F, 0.0F);
     }
 }
 
@@ -1426,16 +1420,14 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject* mesh,
         mesh->getSegment(this->index.getValue()).getIndices();
     int mod = rSegm.size() / renderTriangleLimit + 1;
 
-    float size = std::min<float>((float)mod, 3.0f);
+    float size = std::min<float>((float)mod, 3.0F);
     glPointSize(size);
 
     if (needNormals) {
         glBegin(GL_POINTS);
         int ct = 0;
         if (ccw) {
-            for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin();
-                 it != rSegm.end();
-                 ++it, ct++) {
+            for (auto it = rSegm.begin(); it != rSegm.end(); ++it, ct++) {
                 if (ct % mod == 0) {
                     const MeshCore::MeshFacet& f = rFacets[*it];
                     const MeshCore::MeshPoint& v0 = rPoints[f._aulPoints[0]];
@@ -1450,18 +1442,16 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject* mesh,
 
                     // Calculate the center point p=(v0+v1+v2)/3
                     float p[3];
-                    p[0] = (v0.x + v1.x + v2.x) / 3.0f;
-                    p[1] = (v0.y + v1.y + v2.y) / 3.0f;
-                    p[2] = (v0.z + v1.z + v2.z) / 3.0f;
+                    p[0] = (v0.x + v1.x + v2.x) / 3.0F;
+                    p[1] = (v0.y + v1.y + v2.y) / 3.0F;
+                    p[2] = (v0.z + v1.z + v2.z) / 3.0F;
                     glNormal3fv(n);
                     glVertex3fv(p);
                 }
             }
         }
         else {
-            for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin();
-                 it != rSegm.end();
-                 ++it, ct++) {
+            for (auto it = rSegm.begin(); it != rSegm.end(); ++it, ct++) {
                 if (ct % mod == 0) {
                     const MeshCore::MeshFacet& f = rFacets[*it];
                     const MeshCore::MeshPoint& v0 = rPoints[f._aulPoints[0]];
@@ -1476,9 +1466,9 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject* mesh,
 
                     // Calculate the center point p=(v0+v1+v2)/3
                     float p[3];
-                    p[0] = (v0.x + v1.x + v2.x) / 3.0f;
-                    p[1] = (v0.y + v1.y + v2.y) / 3.0f;
-                    p[2] = (v0.z + v1.z + v2.z) / 3.0f;
+                    p[0] = (v0.x + v1.x + v2.x) / 3.0F;
+                    p[1] = (v0.y + v1.y + v2.y) / 3.0F;
+                    p[2] = (v0.z + v1.z + v2.z) / 3.0F;
                     glNormal3fv(n);
                     glVertex3fv(p);
                 }
@@ -1489,8 +1479,7 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject* mesh,
     else {
         glBegin(GL_POINTS);
         int ct = 0;
-        for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end();
-             ++it, ct++) {
+        for (auto it = rSegm.begin(); it != rSegm.end(); ++it, ct++) {
             if (ct % mod == 0) {
                 const MeshCore::MeshFacet& f = rFacets[*it];
                 const MeshCore::MeshPoint& v0 = rPoints[f._aulPoints[0]];
@@ -1498,9 +1487,9 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject* mesh,
                 const MeshCore::MeshPoint& v2 = rPoints[f._aulPoints[2]];
                 // Calculate the center point p=(v0+v1+v2)/3
                 float p[3];
-                p[0] = (v0.x + v1.x + v2.x) / 3.0f;
-                p[1] = (v0.y + v1.y + v2.y) / 3.0f;
-                p[2] = (v0.z + v1.z + v2.z) / 3.0f;
+                p[0] = (v0.x + v1.x + v2.x) / 3.0F;
+                p[1] = (v0.y + v1.y + v2.y) / 3.0F;
+                p[2] = (v0.z + v1.z + v2.z) / 3.0F;
                 glVertex3fv(p);
             }
         }
@@ -1605,7 +1594,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
 void SoFCMeshSegmentShape::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
 {
     box.setBounds(SbVec3f(0, 0, 0), SbVec3f(0, 0, 0));
-    center.setValue(0.0f, 0.0f, 0.0f);
+    center.setValue(0.0F, 0.0F, 0.0F);
 
     SoState* state = action->getState();
     const Mesh::MeshObject* mesh = SoFCMeshObjectElement::get(state);
@@ -1694,7 +1683,7 @@ void SoFCMeshObjectBoundary::drawLines(const Mesh::MeshObject* mesh) const
     // When rendering open edges use the given line width * 3
     GLfloat lineWidth {};
     glGetFloatv(GL_LINE_WIDTH, &lineWidth);
-    glLineWidth(3.0f * lineWidth);
+    glLineWidth(3.0F * lineWidth);
 
     // Use the data structure directly and not through MeshFacetIterator as this
     // class is quite slowly (at least for rendering)
@@ -1779,7 +1768,7 @@ void SoFCMeshObjectBoundary::computeBBox(SoAction* action, SbBox3f& box, SbVec3f
     }
     else {
         box.setBounds(SbVec3f(0, 0, 0), SbVec3f(0, 0, 0));
-        center.setValue(0.0f, 0.0f, 0.0f);
+        center.setValue(0.0F, 0.0F, 0.0F);
     }
 }
 

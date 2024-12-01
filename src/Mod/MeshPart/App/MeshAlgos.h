@@ -23,10 +23,6 @@
 #ifndef _MeshAlgos_h_
 #define _MeshAlgos_h_
 
-#ifdef FC_USE_GTS
-#include <gts.h>
-#endif
-
 #include <vector>
 
 #include "CurveProjector.h"
@@ -56,10 +52,6 @@ public:
     static void offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize);
     static void offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zmax, float zmin);
 
-    /** Coarsen the mesh
-     */
-    static void coarsen(MeshCore::MeshKernel* Mesh, float f);
-
     /** makes a boolean add
      * The int Type stears the boolean oberation: 0=add;1=intersection;2=diff
      */
@@ -67,18 +59,6 @@ public:
                                          MeshCore::MeshKernel* Mesh2,
                                          MeshCore::MeshKernel* pResult,
                                          int Type = 0);
-
-#ifdef FC_USE_GTS
-
-    /** Creates a GTS Surface from a MeshKernel
-     */
-    static GtsSurface* createGTSSurface(MeshCore::MeshKernel* Mesh);
-
-    /** Creates a GTS Surface from a MeshKernel
-     */
-
-    static void fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* pSurface);
-#endif
 
     static void cutByShape(const TopoDS_Shape& aShape,
                            const MeshCore::MeshKernel* pMesh,

@@ -79,7 +79,19 @@ def fillet(lEdges, r, chamfer=False):
     curveType = getCurveType(rndEdges[0])
     curveType = getCurveType(rndEdges[1], curveType)
 
-    lVertexes = rndEdges[0].Vertexes + [rndEdges[1].Vertexes[-1]]
+    # Part.__sortEdges__() does not reverse edges. There is no guarantee that
+    # the endpoint of the 1st edge is the corner point.
+    edge1_sta, edge1_end = [rndEdges[0].Vertexes[i].Point for i in [0, -1]]
+    edge2_sta, edge2_end = [rndEdges[1].Vertexes[i].Point for i in [0, -1]]
+    tol = 1e-7
+    if edge1_sta.isEqual(edge2_sta, tol):
+        lVertexes = [rndEdges[0].Vertexes[-1], rndEdges[0].Vertexes[0], rndEdges[1].Vertexes[-1]]
+    elif edge1_sta.isEqual(edge2_end, tol):
+        lVertexes = [rndEdges[0].Vertexes[-1], rndEdges[0].Vertexes[0], rndEdges[1].Vertexes[0]]
+    elif edge1_end.isEqual(edge2_sta, tol):
+        lVertexes = [rndEdges[0].Vertexes[0], rndEdges[0].Vertexes[-1], rndEdges[1].Vertexes[-1]]
+    else:
+        lVertexes = [rndEdges[0].Vertexes[0], rndEdges[0].Vertexes[-1], rndEdges[1].Vertexes[0]]
 
     if len(curveType['Line']) == 2:
         # Deals with 2-line-edges lists

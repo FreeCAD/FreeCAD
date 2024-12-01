@@ -38,6 +38,7 @@
 #include <QSysInfo>
 #include <QTextBrowser>
 #include <QTextStream>
+#include <QTimer>
 #include <Inventor/C/basic.h>
 #endif
 
@@ -706,6 +707,13 @@ void AboutDialog::copyToClipboard()
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
+
+    auto copytext = ui->copyButton->text();
+    ui->copyButton->setText(tr("Copied!"));
+    const int timeout = 2000;
+    QTimer::singleShot(timeout, this, [this, copytext]() {
+        ui->copyButton->setText(copytext);
+    });
 }
 
 // ----------------------------------------------------------------------------

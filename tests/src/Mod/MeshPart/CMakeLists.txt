@@ -7,6 +7,7 @@ target_include_directories(MeshPart_tests_run PUBLIC
     ${VTK_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
+target_link_directories(MeshPart_tests_run PUBLIC ${OCC_LIBRARY_DIR})
 
 target_link_libraries(MeshPart_tests_run
     gtest_main

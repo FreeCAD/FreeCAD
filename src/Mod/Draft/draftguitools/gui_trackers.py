@@ -1214,10 +1214,45 @@ class gridTracker(Tracker):
             blue = col
         return col, red, green, blue, gtrans
 
+    def get_human_figure(self, loc=None):
+        """Return a list of points defining a human figure,
+        optionally translated to a given location.
+        Based on "HumanFigure.brep" from the BIM Workbench.
+        """
+        pts = [
+            Vector (131.2, 0.0, 175.8), Vector (135.7, 0.0, 211.7), Vector (142.1, 0.0, 229.3),
+            Vector (154.0, 0.0, 276.3), Vector (163.6, 0.0, 333.4), Vector (173.8, 0.0, 411.5),
+            Vector (186.0, 0.0, 491.7), Vector (200.2, 0.0, 591.8), Vector (215.4, 0.0, 714.8),
+            Vector (224.1, 0.0, 650.0), Vector (234.1, 0.0, 575.8), Vector (251.9, 0.0, 425.5),
+            Vector (240.8, 0.0, 273.3), Vector (235.9, 0.0, 243.2), Vector (197.3, 0.0, 81.7),
+            Vector (188.8, 0.0, 37.6), Vector (195.1, 0.0, 0.0), Vector (278.8, 0.0, 0.0),
+            Vector (294.5, 0.0, 121.0), Vector (308.4, 0.0, 184.3), Vector (318.1, 0.0, 225.4),
+            Vector (322.0, 0.0, 235.2), Vector (340.1, 0.0, 283.5), Vector (349.0, 0.0, 341.4),
+            Vector (354.2, 0.0, 523.7), Vector (383.1, 0.0, 719.7), Vector (399.6, 0.0, 820.3),
+            Vector (381.2, 0.0, 1029.6), Vector (385.6, 0.0, 1164.0), Vector (390.1, 0.0, 1184.6),
+            Vector (398.3, 0.0, 1201.9), Vector (430.2, 0.0, 1273.1), Vector (438.2, 0.0, 1321.2),
+            Vector (441.3, 0.0, 1368.2), Vector (428.1, 0.0, 1405.3), Vector (395.0, 0.0, 1424.3),
+            Vector (365.5, 0.0, 1446.6), Vector (349.8, 0.0, 1460.2), Vector (345.6, 0.0, 1476.7),
+            Vector (337.9, 0.0, 1570.3), Vector (332.8, 0.0, 1624.7), Vector (322.2, 0.0, 1666.9),
+            Vector (216.2, 0.0, 1680.2), Vector (163.5, 0.0, 1559.1), Vector (179.8, 0.0, 1475.5),
+            Vector (195.6, 0.0, 1459.9), Vector (193.1, 0.0, 1447.8), Vector (171.0, 0.0, 1429.4),
+            Vector (132.3, 0.0, 1399.8), Vector (96.8, 0.0, 1374.7), Vector (74.0, 0.0, 1275.1),
+            Vector (46.2, 0.0, 1095.6), Vector (38.0, 0.0, 1041.5), Vector (25.2, 0.0, 958.5),
+            Vector (15.9, 0.0, 889.7), Vector (2.5, 0.0, 842.1), Vector (-5.8, 0.0, 785.4),
+            Vector (15.8, 0.0, 755.1), Vector (38.0, 0.0, 750.4), Vector (45.0, 0.0, 755.4),
+            Vector (53.1, 0.0, 736.1), Vector (76.4, 0.0, 572.2), Vector (83.6, 0.0, 512.0),
+            Vector (81.3, 0.0, 499.0), Vector (74.0, 0.0, 460.9), Vector (61.9, 0.0, 363.4),
+            Vector (53.4, 0.0, 269.3), Vector (44.5, 0.0, 179.7), Vector (25.6, 0.0, 121.6),
+            Vector (0.6, 0.0, 76.5), Vector (-23.7, 0.0, 54.5), Vector (-43.8, 0.0, 33.5),
+            Vector (-25.6, 0.0, 0.0), Vector (117.9, 0.0, 0.0), Vector (131.2, 0.0, 175.8)
+        ]
+        if loc:
+            pts = [p.add(loc) for p in pts]
+        return pts
+
     def displayHumanFigure(self, wp):
         """ Display the human figure at the grid corner.
         The silhouette is displayed only if:
-        - BIM Workbench is available;
         - preference BaseApp/Preferences/Mod/Draft/gridBorder is True;
         - preference BaseApp/Preferences/Mod/Draft/gridShowHuman is True;
         - the working plane normal is vertical.
@@ -1229,15 +1264,10 @@ class gridTracker(Tracker):
         if params.get_param("gridBorder") \
                 and params.get_param("gridShowHuman") \
                 and wp.axis.getAngle(FreeCAD.Vector(0,0,1)) < 0.001:
-            try:
-                import BimProjectManager
-                loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
-                hpts = BimProjectManager.getHuman(loc)
-                pts.extend([tuple(p) for p in hpts])
-                pidx.append(len(hpts))
-            except Exception:
-                # BIM not installed
-                return
+            loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
+            hpts = self.get_human_figure(loc)
+            pts.extend([tuple(p) for p in hpts])
+            pidx.append(len(hpts))
         self.human.numVertices.deleteValues(0)
         self.coords_human.point.setValues(pts)
         self.human.numVertices.setValues(pidx)

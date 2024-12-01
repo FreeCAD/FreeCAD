@@ -67,26 +67,26 @@ ViewProviderMeshTransformDemolding::~ViewProviderMeshTransformDemolding()
     pcTrackballDragger->unref();
 }
 
-void ViewProviderMeshTransformDemolding::attach(App::DocumentObject* pcFeat)
+void ViewProviderMeshTransformDemolding::attach(App::DocumentObject* obj)
 {
     // creates the standard viewing modes
-    ViewProviderMesh::attach(pcFeat);
+    ViewProviderMesh::attach(obj);
 
-    SoGroup* pcDemoldRoot = new SoGroup();
+    auto pcDemoldRoot = new SoGroup();
 
-    SoDrawStyle* pcFlatStyle = new SoDrawStyle();
+    auto pcFlatStyle = new SoDrawStyle();
     pcFlatStyle->style = SoDrawStyle::FILLED;
     pcDemoldRoot->addChild(pcFlatStyle);
 
     // dragger
-    SoSeparator* surroundsep = new SoSeparator;
+    auto surroundsep = new SoSeparator;
 
-    SoSurroundScale* ss = new SoSurroundScale;
+    auto ss = new SoSurroundScale;
     ss->numNodesUpToReset = 1;
     ss->numNodesUpToContainer = 2;
     surroundsep->addChild(ss);
 
-    SoAntiSquish* antisquish = new SoAntiSquish;
+    auto antisquish = new SoAntiSquish;
     antisquish->sizing = SoAntiSquish::AVERAGE_DIMENSION;
     surroundsep->addChild(antisquish);
 
@@ -97,7 +97,7 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject* pcFeat)
     pcTransformDrag = new SoTransform();
 
 
-    SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
+    auto pcMatBinding = new SoMaterialBinding;
 
     pcMatBinding->value = SoMaterialBinding::PER_FACE_INDEXED;
     pcColorMat = new SoMaterial;
@@ -116,15 +116,24 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject* pcFeat)
 
     calcNormalVector();
     calcMaterialIndex(SbRotation());
+    setCenterPoint();
+}
+
+void ViewProviderMeshTransformDemolding::setCenterPoint()
+{
     // getting center point
-    center = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().GetCenter();
+    const Mesh::MeshObject& mesh = getMeshObject();
+    const MeshCore::MeshKernel& kernel = mesh.getKernel();
+    Base::BoundBox3f bbox = kernel.GetBoundBox();
+    center = bbox.GetCenter();
 }
 
 void ViewProviderMeshTransformDemolding::calcNormalVector()
 {
-    const MeshKernel& cMesh = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel();
+    const Mesh::MeshObject& mesh = getMeshObject();
+    const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
-    MeshFacetIterator cFIt(cMesh);
+    MeshFacetIterator cFIt(kernel);
     for (cFIt.Init(); cFIt.More(); cFIt.Next()) {
         const MeshGeomFacet& rFace = *cFIt;
 
@@ -144,12 +153,14 @@ void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation& rot
     }
 }
 
-void ViewProviderMeshTransformDemolding::sValueChangedCallback(void* This, SoDragger*)
+void ViewProviderMeshTransformDemolding::sValueChangedCallback(void* This,
+                                                               [[maybe_unused]] SoDragger* dragger)
 {
     static_cast<ViewProviderMeshTransformDemolding*>(This)->valueChangedCallback();
 }
 
-void ViewProviderMeshTransformDemolding::sDragEndCallback(void* This, SoDragger*)
+void ViewProviderMeshTransformDemolding::sDragEndCallback(void* This,
+                                                          [[maybe_unused]] SoDragger* dragger)
 {
     static_cast<ViewProviderMeshTransformDemolding*>(This)->DragEndCallback();
 }

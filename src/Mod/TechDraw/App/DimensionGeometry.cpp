@@ -365,6 +365,7 @@ void arcPoints::dump(const std::string& text) const
 
 areaPoint::areaPoint() :
     area(0.0),
+    actualArea(0.0),
     center(Base::Vector3d())
 {
 }
@@ -373,6 +374,7 @@ areaPoint& areaPoint::operator=(const areaPoint& ap)
 {
     area = ap.area;
     center = ap.center;
+    actualArea = ap.actualArea;
     return *this;
 }
 
@@ -383,8 +385,12 @@ void areaPoint::move(const Base::Vector3d& offset)
 
 void areaPoint::project(const DrawViewPart* dvp)
 {
-    area = area * dvp->getScale();
     center = dvp->projectPoint(center) * dvp->getScale();
+}
+
+void areaPoint::invertY()
+{
+    center = DU::invertY(center);
 }
 
 void areaPoint::dump(const std::string& text) const

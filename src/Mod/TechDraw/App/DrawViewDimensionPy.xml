@@ -38,6 +38,11 @@
         <UserDocu>getAnglePoints() - returns list of points for angle Dimension</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getAreaPoints">
+      <Documentation>
+        <UserDocu>getAreaPoints() - returns list of values (center, filled area, actual area) for area Dimension.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getArrowPositions">
       <Documentation>
         <UserDocu>getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View </UserDocu>

@@ -211,7 +211,7 @@ private:
     };
 
 private:
-    void notify(SoNotList* list) override;
+    void notify(SoNotList* node) override;
     Binding findMaterialBinding(SoState* const state) const;
     // Draw faces
     void drawFaces(const Mesh::MeshObject*,

@@ -835,8 +835,7 @@ private:
         const TopoDS_Shape& shape = pShape->getTopoShapePtr()->getShape();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(pcObjDir)->value();
         Base::Vector3d centroid = ShapeUtils::findCentroidVec(shape, dir);
-        PyObject* result = nullptr;
-        result = new Base::VectorPy(new Base::Vector3d(centroid));
+        PyObject* result = new Base::VectorPy(new Base::Vector3d(centroid));
         return Py::asObject(result);
     }
 

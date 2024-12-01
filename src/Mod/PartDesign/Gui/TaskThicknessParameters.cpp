@@ -245,11 +245,6 @@ TaskThicknessParameters::~TaskThicknessParameters()
     }
 }
 
-bool TaskThicknessParameters::event(QEvent* e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
-}
-
 void TaskThicknessParameters::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);

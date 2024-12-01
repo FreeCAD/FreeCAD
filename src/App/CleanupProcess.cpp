@@ -31,7 +31,7 @@ using namespace App;
 
 namespace
 {
-    static std::list<std::function<void()>> cleanup_funcs;  // NOLINT
+static std::list<std::function<void()>> cleanup_funcs;  // NOLINT
 }
 
 void CleanupProcess::registerCleanup(const std::function<void()>& func)

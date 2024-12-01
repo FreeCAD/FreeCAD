@@ -198,7 +198,10 @@
         <file>icons/geometry/Sketcher_CreateTriangle.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>
-        <file>icons/geometry/Sketcher_External.svg</file>
+        <file>icons/geometry/Sketcher_Projection.svg</file>
+        <file>icons/geometry/Sketcher_Projection_Constr.svg</file>
+        <file>icons/geometry/Sketcher_Intersection.svg</file>
+        <file>icons/geometry/Sketcher_Intersection_Constr.svg</file>
         <file>icons/geometry/Sketcher_Split.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction_Constr.svg</file>
@@ -250,6 +253,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_Symmetry.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Extension.svg</file>
         <file>icons/pointers/Sketcher_Pointer_External.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_External_Intersection.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Heptagon.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Hexagon.svg</file>
         <file>icons/pointers/Sketcher_Pointer_InsertKnot.svg</file>

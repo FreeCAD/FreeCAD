@@ -262,7 +262,7 @@ public:
      * Find topologic independent components with maximum \a count facets
      * and returns an array of the indices.
      */
-    void FindComponents(unsigned long count, std::vector<FacetIndex>& aInds);
+    void FindComponents(unsigned long count, std::vector<FacetIndex>& findIndices);
     /**
      * Removes topologic independent components with maximum \a count facets.
      */
@@ -286,7 +286,7 @@ private:
      * Splits the neighbour facet of \a ulFacetPos on side \a uSide.
      */
     void
-    SplitNeighbourFacet(FacetIndex ulFacetPos, unsigned short uSide, const Base::Vector3f rPoint);
+    SplitNeighbourFacet(FacetIndex ulFacetPos, unsigned short uFSide, const Base::Vector3f& rPoint);
     void SplitFacetOnOneEdge(FacetIndex ulFacetPos, const Base::Vector3f& rP1);
     void SplitFacetOnTwoEdges(FacetIndex ulFacetPos,
                               const Base::Vector3f& rP1,
@@ -315,7 +315,7 @@ private:
 
     struct Vertex_Less
     {
-        bool operator()(const Base::Vector3f& x, const Base::Vector3f& y) const;
+        bool operator()(const Base::Vector3f& u, const Base::Vector3f& v) const;
     };
 
     // cache

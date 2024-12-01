@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <string>
+#include <string>
 #endif
 
 #include <App/Document.h>
@@ -36,7 +36,7 @@
 
 
 #ifndef M_PI
-# define M_PI       3.14159265358979323846
+#define M_PI 3.14159265358979323846
 #endif
 
 using namespace App;
@@ -44,100 +44,116 @@ using namespace App;
 
 PROPERTY_SOURCE(App::Origin, App::DocumentObject)
 
-Origin::Origin() : extension(this) {
-    ADD_PROPERTY_TYPE ( OriginFeatures, (nullptr), 0, App::Prop_Hidden,
-            "Axis and baseplanes controlled by the origin" );
+Origin::Origin()
+    : extension(this)
+{
+    ADD_PROPERTY_TYPE(OriginFeatures,
+                      (nullptr),
+                      0,
+                      App::Prop_Hidden,
+                      "Axis and baseplanes controlled by the origin");
 
-    setStatus(App::NoAutoExpand,true);
+    setStatus(App::NoAutoExpand, true);
     extension.initExtension(this);
 }
 
 
 Origin::~Origin() = default;
 
-App::OriginFeature *Origin::getOriginFeature( const char *role) const {
-    const auto & features = OriginFeatures.getValues ();
-    auto featIt = std::find_if (features.begin(), features.end(),
-            [role] (App::DocumentObject *obj) {
-                return obj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) &&
-                    strcmp (static_cast<App::OriginFeature *>(obj)->Role.getValue(), role) == 0;
-            } );
+App::OriginFeature* Origin::getOriginFeature(const char* role) const
+{
+    const auto& features = OriginFeatures.getValues();
+    auto featIt = std::find_if(features.begin(), features.end(), [role](App::DocumentObject* obj) {
+        return obj->isDerivedFrom(App::OriginFeature::getClassTypeId())
+            && strcmp(static_cast<App::OriginFeature*>(obj)->Role.getValue(), role) == 0;
+    });
     if (featIt != features.end()) {
-        return static_cast<App::OriginFeature *>(*featIt);
-    } else {
+        return static_cast<App::OriginFeature*>(*featIt);
+    }
+    else {
 
         std::stringstream err;
-        err << "Origin \"" << getFullName () << "\" doesn't contain feature with role \""
-            << role << '"';
-        throw Base::RuntimeError ( err.str().c_str () );
+        err << "Origin \"" << getFullName() << "\" doesn't contain feature with role \"" << role
+            << '"';
+        throw Base::RuntimeError(err.str().c_str());
     }
 }
 
-App::Line *Origin::getAxis( const char *role ) const {
-    App::OriginFeature *feat = getOriginFeature (role);
-    if ( feat->isDerivedFrom(App::Line::getClassTypeId () ) ) {
-        return static_cast<App::Line *> (feat);
-    } else {
+App::Line* Origin::getAxis(const char* role) const
+{
+    App::OriginFeature* feat = getOriginFeature(role);
+    if (feat->isDerivedFrom(App::Line::getClassTypeId())) {
+        return static_cast<App::Line*>(feat);
+    }
+    else {
         std::stringstream err;
-        err << "Origin \"" << getFullName () << "\" contains bad Axis object for role \""
-            << role << '"';
-        throw Base::RuntimeError ( err.str().c_str () );
+        err << "Origin \"" << getFullName() << "\" contains bad Axis object for role \"" << role
+            << '"';
+        throw Base::RuntimeError(err.str().c_str());
     }
 }
 
-App::Plane *Origin::getPlane( const char *role ) const {
-    App::OriginFeature *feat = getOriginFeature (role);
-    if ( feat->isDerivedFrom(App::Plane::getClassTypeId () ) ) {
-        return static_cast<App::Plane *> (feat);
-    } else {
+App::Plane* Origin::getPlane(const char* role) const
+{
+    App::OriginFeature* feat = getOriginFeature(role);
+    if (feat->isDerivedFrom(App::Plane::getClassTypeId())) {
+        return static_cast<App::Plane*>(feat);
+    }
+    else {
         std::stringstream err;
-        err << "Origin \"" << getFullName () << "\" contains bad Plane object for role \""
-            << role << '"';
-        throw Base::RuntimeError ( err.str().c_str () );
+        err << "Origin \"" << getFullName() << "\" contains bad Plane object for role \"" << role
+            << '"';
+        throw Base::RuntimeError(err.str().c_str());
     }
 }
 
-bool Origin::hasObject (const DocumentObject *obj) const {
-    const auto & features = OriginFeatures.getValues ();
-    return std::find (features.begin(), features.end(), obj) != features.end ();
+bool Origin::hasObject(const DocumentObject* obj) const
+{
+    const auto& features = OriginFeatures.getValues();
+    return std::find(features.begin(), features.end(), obj) != features.end();
 }
 
-short Origin::mustExecute() const {
-    if (OriginFeatures.isTouched ()) {
+short Origin::mustExecute() const
+{
+    if (OriginFeatures.isTouched()) {
         return 1;
-    } else {
+    }
+    else {
         return DocumentObject::mustExecute();
     }
 }
 
-App::DocumentObjectExecReturn *Origin::execute() {
-    try { // try to find all base axis and planes in the origin
-        for (const char* role: AxisRoles) {
-            App::Line *axis = getAxis (role);
+App::DocumentObjectExecReturn* Origin::execute()
+{
+    try {  // try to find all base axis and planes in the origin
+        for (const char* role : AxisRoles) {
+            App::Line* axis = getAxis(role);
             assert(axis);
             (void)axis;
         }
-        for (const char* role: PlaneRoles) {
-            App::Plane *plane = getPlane (role);
+        for (const char* role : PlaneRoles) {
+            App::Plane* plane = getPlane(role);
             assert(plane);
             (void)plane;
         }
-    } catch (const Base::Exception &ex) {
-        setError ();
-        return new App::DocumentObjectExecReturn ( ex.what () );
+    }
+    catch (const Base::Exception& ex) {
+        setError();
+        return new App::DocumentObjectExecReturn(ex.what());
     }
 
-    return DocumentObject::execute ();
+    return DocumentObject::execute();
 }
 
-void Origin::setupObject () {
-    const static struct {
+void Origin::setupObject()
+{
+    const static struct
+    {
         const Base::Type type;
-        const char *role;
-	const QString label;
+        const char* role;
+        const QString label;
         Base::Rotation rot;
-    }
-    setupData [] = {
+    } setupData[] = {
         // clang-format off
         {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
         {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1,1,1), M_PI*2/3)},
@@ -148,39 +164,40 @@ void Origin::setupObject () {
         // clang-format on
     };
 
-    App::Document *doc = getDocument ();
+    App::Document* doc = getDocument();
 
-    std::vector<App::DocumentObject *> links;
-    for (auto data: setupData) {
-        std::string objName = doc->getUniqueObjectName ( data.role );
-        App::DocumentObject *featureObj = doc->addObject ( data.type.getName(), objName.c_str () );
+    std::vector<App::DocumentObject*> links;
+    for (auto data : setupData) {
+        std::string objName = doc->getUniqueObjectName(data.role);
+        App::DocumentObject* featureObj = doc->addObject(data.type.getName(), objName.c_str());
 
-        assert ( featureObj && featureObj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) );
+        assert(featureObj && featureObj->isDerivedFrom(App::OriginFeature::getClassTypeId()));
 
-	QByteArray byteArray = data.label.toUtf8();
+        QByteArray byteArray = data.label.toUtf8();
         featureObj->Label.setValue(byteArray.constData());
 
-        App::OriginFeature *feature = static_cast <App::OriginFeature *> ( featureObj );
-        feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), data.rot ) );
-        feature->Role.setValue ( data.role );
+        App::OriginFeature* feature = static_cast<App::OriginFeature*>(featureObj);
+        feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
+        feature->Role.setValue(data.role);
 
-        links.push_back (feature);
+        links.push_back(feature);
     }
 
-    OriginFeatures.setValues (links);
+    OriginFeatures.setValues(links);
 }
 
-void Origin::unsetupObject () {
-    const auto &objsLnk = OriginFeatures.getValues ();
+void Origin::unsetupObject()
+{
+    const auto& objsLnk = OriginFeatures.getValues();
     // Copy to set to assert we won't call methode more then one time for each object
-    std::set<App::DocumentObject *> objs (objsLnk.begin(), objsLnk.end());
+    std::set<App::DocumentObject*> objs(objsLnk.begin(), objsLnk.end());
     // Remove all controlled objects
-    for (auto obj: objs ) {
+    for (auto obj : objs) {
         // Check that previous deletes wasn't inderectly removed one of our objects
-        const auto &objsLnk = OriginFeatures.getValues ();
-        if ( std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
-            if ( ! obj->isRemoving() ) {
-                obj->getDocument()->removeObject (obj->getNameInDocument());
+        const auto& objsLnk = OriginFeatures.getValues();
+        if (std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
+            if (!obj->isRemoving()) {
+                obj->getDocument()->removeObject(obj->getNameInDocument());
             }
         }
     }
@@ -194,19 +211,25 @@ Origin::OriginExtension::OriginExtension(Origin* obj)
     Group.setStatus(Property::Transient, true);
 }
 
-void Origin::OriginExtension::initExtension(ExtensionContainer* obj) {
+void Origin::OriginExtension::initExtension(ExtensionContainer* obj)
+{
     App::GroupExtension::initExtension(obj);
 }
 
-bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                                                    PyObject **pyobj, Base::Matrix4D *mat, bool, int depth) const {
+bool Origin::OriginExtension::extensionGetSubObject(DocumentObject*& ret,
+                                                    const char* subname,
+                                                    PyObject** pyobj,
+                                                    Base::Matrix4D* mat,
+                                                    bool,
+                                                    int depth) const
+{
     if (!subname || subname[0] == '\0') {
         return false;
     }
 
     // mapping of object name to role name
     std::string name(subname);
-    for (int i=0; i<3; i++) {
+    for (int i = 0; i < 3; i++) {
         if (name.rfind(Origin::AxisRoles[i], 0) == 0) {
             name = Origin::AxisRoles[i];
             break;
@@ -219,14 +242,17 @@ bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const 
 
     try {
         ret = obj->getOriginFeature(name.c_str());
-        if (!ret)
+        if (!ret) {
             return false;
-        const char *dot = strchr(subname, '.');
-        if (dot)
-            subname = dot+1;
-        else
+        }
+        const char* dot = strchr(subname, '.');
+        if (dot) {
+            subname = dot + 1;
+        }
+        else {
             subname = "";
-        ret = ret->getSubObject(subname, pyobj, mat, true, depth+1);
+        }
+        ret = ret->getSubObject(subname, pyobj, mat, true, depth + 1);
         return true;
     }
     catch (const Base::Exception& e) {

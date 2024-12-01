@@ -17,13 +17,13 @@ hostage in demands for "bounties" will not be entertained. Contact the FPA at fp
 
 ## Supported Versions
 
-FreeCAD implements security fixes to the current release series, and to the current development on the master branch.
+FreeCAD implements security fixes to the current release series, and to the current development on the main branch.
 
 | Version | Supported          |
 |---------| ------------------ |
-| 0.22dev | :white_check_mark: |
-| 0.21    | :white_check_mark: |
-| < 0.21  | :x:                |
+| 1.1dev  | :white_check_mark: |
+| 1.0     | :white_check_mark: |
+| < 1.0   | :x:                |
 
 ## Reporting a Vulnerability
 

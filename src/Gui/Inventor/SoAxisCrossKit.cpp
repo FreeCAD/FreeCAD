@@ -23,9 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # else

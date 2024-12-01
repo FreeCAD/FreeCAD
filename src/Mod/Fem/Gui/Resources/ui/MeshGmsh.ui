@@ -156,6 +156,9 @@
             <property name="lineWrapMode">
              <enum>QTextEdit::NoWrap</enum>
             </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="5" column="0">

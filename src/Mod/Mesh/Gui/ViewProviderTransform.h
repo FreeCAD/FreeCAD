@@ -59,7 +59,7 @@ public:
      * Extracts the mesh data from the feature \a pcFeature and creates
      * an Inventor node \a SoNode with these data.
      */
-    void attach(App::DocumentObject*) override;
+    void attach(App::DocumentObject* obj) override;
 
     /// set the viewing mode
     void setDisplayMode(const char* ModeName) override;

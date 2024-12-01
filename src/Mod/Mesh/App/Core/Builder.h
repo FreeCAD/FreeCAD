@@ -114,7 +114,7 @@ private:
     void RemoveUnreferencedPoints();
 
 public:
-    explicit MeshBuilder(MeshKernel& rclM);
+    explicit MeshBuilder(MeshKernel& kernel);
     ~MeshBuilder();
 
     MeshBuilder(const MeshBuilder&) = delete;
