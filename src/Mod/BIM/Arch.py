@@ -125,6 +125,7 @@ def makeFloor(objectslist=None,baseobj=None,name=None):
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Level")
     obj.IfcType = "Building Storey"
+    obj.CompositionType = "ELEMENT"
     return obj
 
 
@@ -136,6 +137,7 @@ def makeBuilding(objectslist=None,baseobj=None,name=None):
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Building")
     obj.IfcType = "Building"
+    obj.CompositionType = "ELEMENT"
     t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
     obj.BuildingType = ArchBuildingPart.BuildingTypes
@@ -162,8 +164,10 @@ def convertFloors(floor=None):
             nobj = makeBuildingPart(obj.Group)
             if Draft.getType(obj) == "Floor":
                 nobj.IfcType = "Building Storey"
+                nobj.CompositionType = "ELEMENT"
             else:
                 nobj.IfcType = "Building"
+                nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
                 nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
@@ -477,8 +481,8 @@ def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",profile[2])
-    obj.Label = profile[2]
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython", "Profile")
+    obj.Label = profile[2] + "_"
     if profile[3]=="C":
         ArchProfile._ProfileC(obj, profile)
     elif profile[3]=="H":

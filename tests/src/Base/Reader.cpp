@@ -11,6 +11,7 @@
 #include <array>
 #include <boost/filesystem.hpp>
 #include <fstream>
+#include <xercesc/util/PlatformUtils.hpp>
 
 namespace fs = boost::filesystem;
 
@@ -19,7 +20,7 @@ class ReaderTest: public ::testing::Test
 protected:
     void SetUp() override
     {
-        xercesc_3_2::XMLPlatformUtils::Initialize();
+        XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
         _tempDir = fs::temp_directory_path();
         std::string filename = "unit_test_Reader.xml";
         _tempFile = _tempDir / filename;

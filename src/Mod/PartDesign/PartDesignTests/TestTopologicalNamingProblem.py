@@ -635,7 +635,56 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Assert UpToFace element map is correct
         self.assertEqual(self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap),
                          (8, 18, 12))
-        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count(";"), 7)
+        # Assertions modified/added while reviewing PR#17119 by CalligaroV
+        # Previously the condition counted the number of ";" (element map operations prefix)
+        # If the number of operations changes then the number of ";" will change accordingly
+        #
+        # However, it is more useful to count the number of times an elemement name is
+        # present in the MappedName of an element (a MappedName is definined also using the
+        # element names - "Vertex*", "Edge*", "Face*" - used by an OCCT operation to generate
+        # output elements)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face10"), 3)
+
+    def testPartDesignBinderRevolution(self):
+        doc = self.Doc
+        body = doc.addObject('PartDesign::Body', 'Body')
+        sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
+        sketch.AttachmentSupport = (doc.getObject('XY_Plane'), [''])
+        sketch.MapMode = 'FlatFace'
+        doc.recompute()
+
+        geoList = []
+        geoList.append(Part.LineSegment(App.Vector(-44.107212, 34.404858, 0.000000), App.Vector(-44.107212, 9.881049, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(-44.107212, 9.881049, 0.0000000), App.Vector(-10.297691, 9.881049, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(-10.297691, 9.881049, 0.0000000), App.Vector(-10.297691, 34.404858, 0.00000)))
+        geoList.append(Part.LineSegment(App.Vector(-10.297691, 34.404858, 0.000000), App.Vector(-44.107212, 34.404858, 0.00000)))
+        sketch.addGeometry(geoList, False)
+        del geoList
+
+        constraintList = []
+        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        constraintList.append(Sketcher.Constraint('Vertical', 0))
+        constraintList.append(Sketcher.Constraint('Vertical', 2))
+        constraintList.append(Sketcher.Constraint('Horizontal', 1))
+        constraintList.append(Sketcher.Constraint('Horizontal', 3))
+        sketch.addConstraint(constraintList)
+        del constraintList
+
+        doc.recompute()
+        binder = body.newObject('PartDesign::ShapeBinder','ShapeBinder')
+        binder.Support = [sketch, (''),]
+        binder.Visibility = False
+        doc.recompute()
+        revolve = body.newObject('PartDesign::Revolution','Revolution')
+        revolve.Profile = (doc.getObject('ShapeBinder'), ['',])
+        revolve.ReferenceAxis = (doc.getObject('Y_Axis'), [''])
+        revolve.Angle = 360.0
+        doc.recompute()
+        self.assertTrue(revolve.isValid())
 
     def testPartDesignElementMapLoft(self):
         # Arrange
@@ -767,10 +816,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 55)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 51)
         self.assertEqual(body.Shape.ElementMapSize, 51)
         self.assertEqual(sketch.Shape.ElementMapSize, 12)
-        self.assertEqual(pocket.Shape.ElementMapSize, 55)
+        self.assertEqual(pocket.Shape.ElementMapSize, 51)
         self.assertNotEqual(
             pocket.Shape.ElementReverseMap["Vertex1"], "Vertex1"
         )  # NewName, not OldName
@@ -914,6 +963,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         helix = self.Doc.addObject("PartDesign::SubtractiveHelix", "SubHelix")
         helix.Profile = sketch
         helix.ReferenceAxis = (self.Doc.getObject("Sketch"), ["V_Axis"])
+        helix.Reversed = True
         body.addObject(sketch)
         body.addObject(helix)
         self.Doc.recompute()
@@ -1855,7 +1905,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
         vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 64)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 62)
         self.assertEqual(len(reverseMap), 62)
         self.assertEqual(len(faces), 12)
         self.assertEqual(len(edges), 30)

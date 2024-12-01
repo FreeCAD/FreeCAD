@@ -433,7 +433,7 @@ class Snapper:
                         # or vertices.
                         snaps.extend(self.snapToNearUnprojected(point))
 
-            elif Draft.getType(obj) == "Dimension":
+            elif Draft.getType(obj) in ("LinearDimension", "AngularDimension"):
                 # for dimensions we snap to their 2 points:
                 snaps.extend(self.snapToDim(obj))
 
@@ -537,10 +537,12 @@ class Snapper:
 
     def snapToDim(self, obj):
         snaps = []
-        if obj.ViewObject:
-            if hasattr(obj.ViewObject.Proxy, "p2") and hasattr(obj.ViewObject.Proxy, "p3"):
-                snaps.append([obj.ViewObject.Proxy.p2, 'endpoint', self.toWP(obj.ViewObject.Proxy.p2)])
-                snaps.append([obj.ViewObject.Proxy.p3, 'endpoint', self.toWP(obj.ViewObject.Proxy.p3)])
+        if self.isEnabled("Endpoint") \
+                and obj.ViewObject \
+                and hasattr(obj.ViewObject.Proxy, "p2") \
+                and hasattr(obj.ViewObject.Proxy, "p3"):
+            snaps.append([obj.ViewObject.Proxy.p2, 'endpoint', self.toWP(obj.ViewObject.Proxy.p2)])
+            snaps.append([obj.ViewObject.Proxy.p3, 'endpoint', self.toWP(obj.ViewObject.Proxy.p3)])
         return snaps
 
 
@@ -1152,8 +1154,6 @@ class Snapper:
         # src/Mod/Mesh/Gui/MeshSelection.cpp
         # src/Mod/Sketcher/Gui/CommandConstraints.cpp
 
-        # The code below follows the Sketcher example.
-
         #   +--------+
         #   |  base  |          vertical offset = 0.5*w
         # w |        +--------+
@@ -1174,14 +1174,8 @@ class Snapper:
             tail_icon = QtGui.QPixmap(tail_icon_name).scaledToWidth(width)
             qp.drawPixmap(width, 0.5 * width, tail_icon)
         qp.end()
-        hot_x = 8
-        hot_y = 8
         new_icon.setDevicePixelRatio(dpr)
-        # Only X11 needs hot point coordinates to be scaled:
-        if QtGui.QGuiApplication.platformName() == "xcb":
-            hot_x *= dpr
-            hot_x *= dpr
-        return QtGui.QCursor(new_icon, hot_x, hot_y)
+        return QtGui.QCursor(new_icon, 8, 8)
 
     def setCursor(self, mode=None):
         """Set or reset the cursor to the given mode or resets."""

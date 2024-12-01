@@ -7,14 +7,14 @@
       <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Aynı yapılandırılabilir nesneye başvuran tüm bağlantılara CopyOnChange kurulumunun uygulanıp 
+      <translation>Aynı yapılandırılabilir nesneye başvuran tüm bağlantılara CopyOnChange kurulumunun uygulanıp
 uygulanmayacağına ilişkin son kullanıcı seçimini saklar</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="459"/>
+      <location filename="../../Application.cpp" line="468"/>
       <source>Unnamed</source>
       <translation>İsimsiz</translation>
     </message>
@@ -24,32 +24,32 @@ uygulanmayacağına ilişkin son kullanıcı seçimini saklar</translation>
     <message>
       <location filename="../../Origin.cpp" line="142"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>X-ekseni</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="143"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Y-ekseni</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="144"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Z-ekseni</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="145"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY-düzlemi</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="146"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ-düzlemi</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="147"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ-düzlemi</translation>
     </message>
   </context>
   <context>

@@ -368,23 +368,7 @@ void CmdPartCommon::activated(int iMsg)
     std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
 
-    //test if selected object is a compound, and if it is, look how many children it has...
-    std::size_t numShapes = 0;
-    if (Sel.size() == 1){
-        numShapes = 1; //to be updated later in code, if
-        Gui::SelectionObject selobj = Sel[0];
-        TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
-        if (sh.ShapeType() == TopAbs_COMPOUND) {
-            numShapes = 0;
-            TopoDS_Iterator it(sh);
-            for (; it.More(); it.Next()) {
-                ++numShapes;
-            }
-        }
-    } else {
-        numShapes = Sel.size();
-    }
-    if (numShapes < 2) {
+    if (Sel.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between."));
         return;
@@ -450,12 +434,15 @@ void CmdPartFuse::activated(int iMsg)
         numShapes = 1; //to be updated later in code
         Gui::SelectionObject selobj = Sel[0];
         TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
-        if (sh.ShapeType() == TopAbs_COMPOUND) {
+        while (numShapes==1 && sh.ShapeType() == TopAbs_COMPOUND) {
             numShapes = 0;
             TopoDS_Iterator it(sh);
+            TopoDS_Shape last;
             for (; it.More(); it.Next()) {
                 ++numShapes;
+                last = it.Value();
             }
+            sh = last;
         }
     } else {
         numShapes = Sel.size();
@@ -2094,8 +2081,8 @@ CmdColorPerFace::CmdColorPerFace()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Color per face");
-    sToolTipText  = QT_TR_NOOP("Set the color of each individual face "
+    sMenuText     = QT_TR_NOOP("Appearance per face");
+    sToolTipText  = QT_TR_NOOP("Set the appearance of each individual face "
                                "of the selected object.");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Part_ColorPerFace";

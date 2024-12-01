@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include "PropertyContainer.h"
@@ -49,12 +49,13 @@ std::string PropertyContainerPy::representation() const
     return {"<property container>"};
 }
 
-PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
+PyObject* PropertyContainerPy::getPropertyByName(PyObject* args)
 {
-    char *pstr;
-    int checkOwner=0;
-    if (!PyArg_ParseTuple(args, "s|i", &pstr, &checkOwner))
+    char* pstr {};
+    int checkOwner = 0;
+    if (!PyArg_ParseTuple(args, "s|i", &pstr, &checkOwner)) {
         return nullptr;
+    }
 
     if (checkOwner < 0 || checkOwner > 2) {
         PyErr_SetString(PyExc_ValueError, "'checkOwner' expected in the range [0, 2]");
@@ -67,76 +68,87 @@ PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
         return nullptr;
     }
 
-    if (!checkOwner || (checkOwner==1 && prop->getContainer()==getPropertyContainerPtr()))
+    if (!checkOwner || (checkOwner == 1 && prop->getContainer() == getPropertyContainerPtr())) {
         return prop->getPyObject();
+    }
 
-    Py::TupleN res(Py::asObject(prop->getContainer()->getPyObject()), Py::asObject(prop->getPyObject()));
+    Py::TupleN res(Py::asObject(prop->getContainer()->getPyObject()),
+                   Py::asObject(prop->getPyObject()));
 
     return Py::new_reference_to(res);
 }
 
-PyObject*  PropertyContainerPy::getPropertyTouchList(PyObject *args)
+PyObject* PropertyContainerPy::getPropertyTouchList(PyObject* args)
 {
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))
+    char* pstr {};
+    if (!PyArg_ParseTuple(args, "s", &pstr)) {
         return nullptr;
+    }
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (prop && prop->isDerivedFrom(PropertyLists::getClassTypeId())) {
-        const auto &touched = static_cast<PropertyLists*>(prop)->getTouchList();
+        const auto& touched = static_cast<PropertyLists*>(prop)->getTouchList();
         Py::Tuple ret(touched.size());
-        int i=0;
-        for(int idx : touched)
-            ret.setItem(i++,Py::Long(idx));
+        int i = 0;
+        for (int idx : touched) {
+            ret.setItem(i++, Py::Long(idx));
+        }
         return Py::new_reference_to(ret);
     }
-    else if (!prop) {
-        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
-        return nullptr;
-    }
-    else {
-        PyErr_Format(PyExc_AttributeError, "Property '%s' is not of list type", pstr);
-        return nullptr;
-    }
-}
-
-PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
-{
-    Py::List ret;
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))
-        return nullptr;
-
-    Property* prop =  getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
         PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
         return nullptr;
     }
 
-    short Type =  prop->getType();
-    if (Type & Prop_ReadOnly)
+    PyErr_Format(PyExc_AttributeError, "Property '%s' is not of list type", pstr);
+    return nullptr;
+}
+
+PyObject* PropertyContainerPy::getTypeOfProperty(PyObject* args)
+{
+    Py::List ret;
+    char* pstr {};
+    if (!PyArg_ParseTuple(args, "s", &pstr)) {
+        return nullptr;
+    }
+
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return nullptr;
+    }
+
+    short Type = prop->getType();
+    if (Type & Prop_ReadOnly) {
         ret.append(Py::String("ReadOnly"));
-    if (Type & Prop_Transient)
+    }
+    if (Type & Prop_Transient) {
         ret.append(Py::String("Transient"));
-    if (Type & Prop_Hidden)
+    }
+    if (Type & Prop_Hidden) {
         ret.append(Py::String("Hidden"));
-    if (Type & Prop_Output)
+    }
+    if (Type & Prop_Output) {
         ret.append(Py::String("Output"));
-    if (Type & Prop_NoRecompute)
+    }
+    if (Type & Prop_NoRecompute) {
         ret.append(Py::String("NoRecompute"));
-    if (Type & Prop_NoPersist)
+    }
+    if (Type & Prop_NoPersist) {
         ret.append(Py::String("NoPersist"));
+    }
 
     return Py::new_reference_to(ret);
 }
 
-PyObject*  PropertyContainerPy::getTypeIdOfProperty(PyObject *args)
+PyObject* PropertyContainerPy::getTypeIdOfProperty(PyObject* args)
 {
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))
+    char* pstr {};
+    if (!PyArg_ParseTuple(args, "s", &pstr)) {
         return nullptr;
+    }
 
-    Property* prop =  getPropertyContainerPtr()->getPropertyByName(pstr);
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
         PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
         return nullptr;
@@ -146,10 +158,10 @@ PyObject*  PropertyContainerPy::getTypeIdOfProperty(PyObject *args)
     return Py::new_reference_to(str);
 }
 
-PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
+PyObject* PropertyContainerPy::setEditorMode(PyObject* args)
 {
-    char* name;
-    short type;
+    char* name {};
+    short type {};
     if (PyArg_ParseTuple(args, "sh", &name, &type)) {
         App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
         if (!prop) {
@@ -166,7 +178,7 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
     }
 
     PyErr_Clear();
-    PyObject *iter;
+    PyObject* iter {};
     if (PyArg_ParseTuple(args, "sO", &name, &iter)) {
         if (PyTuple_Check(iter) || PyList_Check(iter)) {
             Py::Sequence seq(iter);
@@ -180,12 +192,14 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             std::bitset<32> status(prop->getStatus());
             status.reset(Property::ReadOnly);
             status.reset(Property::Hidden);
-            for (Py::Sequence::iterator it = seq.begin();it!=seq.end();++it) {
+            for (Py::Sequence::iterator it = seq.begin(); it != seq.end(); ++it) {
                 std::string str = static_cast<std::string>(Py::String(*it));
-                if (str == "ReadOnly")
+                if (str == "ReadOnly") {
                     status.set(Property::ReadOnly);
-                else if (str == "Hidden")
+                }
+                else if (str == "Hidden") {
                     status.set(Property::Hidden);
+                }
             }
             prop->setStatusValue(status.to_ulong());
 
@@ -193,13 +207,15 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
         }
     }
 
-    PyErr_SetString(PyExc_TypeError, "First argument must be str, second can be int, list or tuple");
+    PyErr_SetString(PyExc_TypeError,
+                    "First argument must be str, second can be int, list or tuple");
     return nullptr;
 }
 
-static const std::map<std::string, int> &getStatusMap() {
-    static std::map<std::string,int> statusMap;
-    if(statusMap.empty()) {
+static const std::map<std::string, int>& getStatusMap()
+{
+    static std::map<std::string, int> statusMap;
+    if (statusMap.empty()) {
         statusMap["Immutable"] = Property::Immutable;
         statusMap["ReadOnly"] = Property::ReadOnly;
         statusMap["Hidden"] = Property::Hidden;
@@ -217,12 +233,13 @@ static const std::map<std::string, int> &getStatusMap() {
     return statusMap;
 }
 
-PyObject* PropertyContainerPy::setPropertyStatus(PyObject *args)
+PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
 {
     char* name {};
     PyObject* pyValue {};
-    if (!PyArg_ParseTuple(args, "sO", &name, &pyValue))
+    if (!PyArg_ParseTuple(args, "sO", &name, &pyValue)) {
         return nullptr;
+    }
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
     if (!prop) {
@@ -247,7 +264,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject *args)
     for (const auto& item : items) {
         bool value = true;
         if (item.isString()) {
-            const auto &statusMap = getStatusMap();
+            const auto& statusMap = getStatusMap();
             auto v = static_cast<std::string>(Py::String(item));
             if (v.size() > 1 && v[0] == '-') {
                 value = false;
@@ -288,17 +305,19 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject *args)
     Py_Return;
 }
 
-PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
+PyObject* PropertyContainerPy::getPropertyStatus(PyObject* args)
 {
     const char* name = "";
-    if (!PyArg_ParseTuple(args, "|s", &name))
+    if (!PyArg_ParseTuple(args, "|s", &name)) {
         return nullptr;
+    }
 
     Py::List ret;
-    const auto &statusMap = getStatusMap();
+    const auto& statusMap = getStatusMap();
     if (!name[0]) {
-        for(auto &v : statusMap)
+        for (auto& v : statusMap) {
             ret.append(Py::String(v.first.c_str()));
+        }
     }
     else {
         App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
@@ -308,32 +327,37 @@ PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
         }
 
         auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
-        if (linkProp && linkProp->testFlag(App::PropertyLinkBase::LinkAllowPartial))
+        if (linkProp && linkProp->testFlag(App::PropertyLinkBase::LinkAllowPartial)) {
             ret.append(Py::String("AllowPartial"));
+        }
 
         std::bitset<32> bits(prop->getStatus());
-        for(size_t i=1; i<bits.size(); ++i) {
-            if(!bits[i]) continue;
+        for (size_t i = 1; i < bits.size(); ++i) {
+            if (!bits[i]) {
+                continue;
+            }
             bool found = false;
-            for(auto &v : statusMap) {
-                if(v.second == static_cast<int>(i)) {
+            for (auto& v : statusMap) {
+                if (v.second == static_cast<int>(i)) {
                     ret.append(Py::String(v.first.c_str()));
                     found = true;
                     break;
                 }
             }
-            if (!found)
+            if (!found) {
                 ret.append(Py::Int(static_cast<long>(i)));
+            }
         }
     }
     return Py::new_reference_to(ret);
 }
 
-PyObject*  PropertyContainerPy::getEditorMode(PyObject *args)
+PyObject* PropertyContainerPy::getEditorMode(PyObject* args)
 {
-    char* name;
-    if (!PyArg_ParseTuple(args, "s", &name))
+    char* name {};
+    if (!PyArg_ParseTuple(args, "s", &name)) {
         return nullptr;
+    }
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
     if (!prop) {
@@ -343,20 +367,23 @@ PyObject*  PropertyContainerPy::getEditorMode(PyObject *args)
 
     Py::List ret;
     if (prop) {
-        short Type =  prop->getType();
-        if ((prop->testStatus(Property::ReadOnly)) || (Type & Prop_ReadOnly))
+        short Type = prop->getType();
+        if ((prop->testStatus(Property::ReadOnly)) || (Type & Prop_ReadOnly)) {
             ret.append(Py::String("ReadOnly"));
-        if ((prop->testStatus(Property::Hidden)) || (Type & Prop_Hidden))
+        }
+        if ((prop->testStatus(Property::Hidden)) || (Type & Prop_Hidden)) {
             ret.append(Py::String("Hidden"));
+        }
     }
     return Py::new_reference_to(ret);
 }
 
-PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)
+PyObject* PropertyContainerPy::getGroupOfProperty(PyObject* args)
 {
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))
+    char* pstr {};
+    if (!PyArg_ParseTuple(args, "s", &pstr)) {
         return nullptr;
+    }
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
@@ -365,37 +392,44 @@ PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)
     }
 
     const char* Group = getPropertyContainerPtr()->getPropertyGroup(prop);
-    if (Group)
+    if (Group) {
         return Py::new_reference_to(Py::String(Group));
-    else
+    }
+    else {
         return Py::new_reference_to(Py::String(""));
+    }
 }
 
-PyObject*  PropertyContainerPy::setGroupOfProperty(PyObject *args)
+PyObject* PropertyContainerPy::setGroupOfProperty(PyObject* args)
 {
-    char *pstr;
-    char *group;
-    if (!PyArg_ParseTuple(args, "ss", &pstr, &group))
+    char* pstr {};
+    char* group {};
+    if (!PyArg_ParseTuple(args, "ss", &pstr, &group)) {
         return nullptr;
+    }
 
-    PY_TRY {
+    PY_TRY
+    {
         Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(pstr);
         if (!prop) {
-            PyErr_Format(PyExc_AttributeError, "Property container has no dynamic property '%s'", pstr);
+            PyErr_Format(PyExc_AttributeError,
+                         "Property container has no dynamic property '%s'",
+                         pstr);
             return nullptr;
         }
-        prop->getContainer()->changeDynamicProperty(prop,group,nullptr);
+        prop->getContainer()->changeDynamicProperty(prop, group, nullptr);
         Py_Return;
     }
     PY_CATCH
 }
 
 
-PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
+PyObject* PropertyContainerPy::getDocumentationOfProperty(PyObject* args)
 {
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))
+    char* pstr {};
+    if (!PyArg_ParseTuple(args, "s", &pstr)) {
         return nullptr;
+    }
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
@@ -404,36 +438,43 @@ PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
     }
 
     const char* docstr = getPropertyContainerPtr()->getPropertyDocumentation(prop);
-    if (docstr)
+    if (docstr) {
         return Py::new_reference_to(Py::String(docstr));
-    else
+    }
+    else {
         return Py::new_reference_to(Py::String(""));
+    }
 }
 
-PyObject*  PropertyContainerPy::setDocumentationOfProperty(PyObject *args)
+PyObject* PropertyContainerPy::setDocumentationOfProperty(PyObject* args)
 {
-    char *pstr;
-    char *doc;
-    if (!PyArg_ParseTuple(args, "ss", &pstr, &doc))
+    char* pstr {};
+    char* doc {};
+    if (!PyArg_ParseTuple(args, "ss", &pstr, &doc)) {
         return nullptr;
+    }
 
-    PY_TRY {
+    PY_TRY
+    {
         Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(pstr);
         if (!prop) {
-            PyErr_Format(PyExc_AttributeError, "Property container has no dynamic property '%s'", pstr);
+            PyErr_Format(PyExc_AttributeError,
+                         "Property container has no dynamic property '%s'",
+                         pstr);
             return nullptr;
         }
-        prop->getContainer()->changeDynamicProperty(prop,nullptr,doc);
+        prop->getContainer()->changeDynamicProperty(prop, nullptr, doc);
         Py_Return;
     }
     PY_CATCH
 }
 
-PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
+PyObject* PropertyContainerPy::getEnumerationsOfProperty(PyObject* args)
 {
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))
+    char* pstr {};
+    if (!PyArg_ParseTuple(args, "s", &pstr)) {
         return nullptr;
+    }
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
@@ -441,13 +482,14 @@ PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
         return nullptr;
     }
 
-    PropertyEnumeration *enumProp = dynamic_cast<PropertyEnumeration*>(prop);
-    if (!enumProp)
+    PropertyEnumeration* enumProp = dynamic_cast<PropertyEnumeration*>(prop);
+    if (!enumProp) {
         Py_Return;
+    }
 
     std::vector<std::string> enumerations = enumProp->getEnumVector();
     Py::List ret;
-    for (const auto & it : enumerations) {
+    for (const auto& it : enumerations) {
         ret.append(Py::String(it));
     }
     return Py::new_reference_to(ret);
@@ -456,24 +498,30 @@ PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
 Py::List PropertyContainerPy::getPropertiesList() const
 {
     Py::List ret;
-    std::map<std::string,Property*> Map;
+    std::map<std::string, Property*> Map;
 
     getPropertyContainerPtr()->getPropertyMap(Map);
 
-    for (std::map<std::string,Property*>::const_iterator It=Map.begin(); It!=Map.end(); ++It)
-        ret.append(Py::String(It->first));
+    for (const auto& It : Map) {
+        ret.append(Py::String(It.first));
+    }
 
     return ret;
 }
 
 
-PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwds)
+PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds)
 {
     int compression = 3;
-    const char* property;
-    static const std::array<const char *, 3> kwds_def {"Property", "Compression", nullptr};
+    const char* property {};
+    static const std::array<const char*, 3> kwds_def {"Property", "Compression", nullptr};
     PyErr_Clear();
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "s|i",
+                                             kwds_def,
+                                             &property,
+                                             &compression)) {
         return nullptr;
     }
 
@@ -483,35 +531,36 @@ PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwd
         return nullptr;
     }
 
-    //setup the stream. the in flag is needed to make "read" work
-    std::stringstream stream(std::stringstream::out | std::stringstream::in | std::stringstream::binary);
+    // setup the stream. the in flag is needed to make "read" work
+    std::stringstream stream(std::stringstream::out | std::stringstream::in
+                             | std::stringstream::binary);
     try {
         prop->dumpToStream(stream, compression);
     }
     catch (...) {
-       PyErr_SetString(PyExc_IOError, "Unable to parse content into binary representation");
-       return nullptr;
+        PyErr_SetString(PyExc_IOError, "Unable to parse content into binary representation");
+        return nullptr;
     }
 
-    //build the byte array with correct size
-    if (!stream.seekp(0, stream.end)) {
+    // build the byte array with correct size
+    if (!stream.seekp(0, std::stringstream::end)) {
         PyErr_SetString(PyExc_IOError, "Unable to find end of stream");
         return nullptr;
     }
 
     std::stringstream::pos_type offset = stream.tellp();
-    if (!stream.seekg(0, stream.beg)) {
+    if (!stream.seekg(0, std::stringstream::beg)) {
         PyErr_SetString(PyExc_IOError, "Unable to find begin of stream");
         return nullptr;
     }
 
     PyObject* ba = PyByteArray_FromStringAndSize(nullptr, offset);
 
-    //use the buffer protocol to access the underlying array and write into it
+    // use the buffer protocol to access the underlying array and write into it
     Py_buffer buf = Py_buffer();
     PyObject_GetBuffer(ba, &buf, PyBUF_WRITABLE);
     try {
-        if(!stream.read((char*)buf.buf, offset)) {
+        if (!stream.read((char*)buf.buf, offset)) {
             PyErr_SetString(PyExc_IOError, "Error copying data into byte array");
             return nullptr;
         }
@@ -526,12 +575,13 @@ PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwd
     return ba;
 }
 
-PyObject* PropertyContainerPy::restorePropertyContent(PyObject *args)
+PyObject* PropertyContainerPy::restorePropertyContent(PyObject* args)
 {
-    PyObject* buffer;
-    char* property;
-    if( !PyArg_ParseTuple(args, "sO", &property, &buffer) )
+    PyObject* buffer {};
+    char* property {};
+    if (!PyArg_ParseTuple(args, "sO", &property, &buffer)) {
         return nullptr;
+    }
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(property);
     if (!prop) {
@@ -539,28 +589,29 @@ PyObject* PropertyContainerPy::restorePropertyContent(PyObject *args)
         return nullptr;
     }
 
-    //check if it really is a buffer
-    if( !PyObject_CheckBuffer(buffer) ) {
+    // check if it really is a buffer
+    if (!PyObject_CheckBuffer(buffer)) {
         PyErr_SetString(PyExc_TypeError, "Must be a buffer object");
         return nullptr;
     }
 
     Py_buffer buf;
-    if(PyObject_GetBuffer(buffer, &buf, PyBUF_SIMPLE) < 0)
+    if (PyObject_GetBuffer(buffer, &buf, PyBUF_SIMPLE) < 0) {
         return nullptr;
+    }
 
-    if(!PyBuffer_IsContiguous(&buf, 'C')) {
+    if (!PyBuffer_IsContiguous(&buf, 'C')) {
         PyErr_SetString(PyExc_TypeError, "Buffer must be contiguous");
         return nullptr;
     }
 
-    //check if it really is a buffer
+    // check if it really is a buffer
     try {
         using Device = boost::iostreams::basic_array_source<char>;
         boost::iostreams::stream<Device> stream((char*)buf.buf, buf.len);
         prop->restoreFromStream(stream);
     }
-    catch(...) {
+    catch (...) {
         PyErr_SetString(PyExc_IOError, "Unable to restore content");
         return nullptr;
     }
@@ -568,13 +619,13 @@ PyObject* PropertyContainerPy::restorePropertyContent(PyObject *args)
     Py_Return;
 }
 
-PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
+PyObject* PropertyContainerPy::getCustomAttributes(const char* attr) const
 {
     // search in PropertyList
-    if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
+    if (FC_LOG_INSTANCE.level() > FC_LOGLEVEL_TRACE) {
         FC_TRACE("Get property " << attr);
     }
-    Property *prop = getPropertyContainerPtr()->getPropertyByName(attr);
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop) {
         PyObject* pyobj = prop->getPyObject();
         if (!pyobj && PyErr_Occurred()) {
@@ -583,44 +634,49 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         }
         return pyobj;
     }
-    else if (Base::streq(attr, "__dict__")) {
+    if (Base::streq(attr, "__dict__")) {
         // get the properties to the C++ PropertyContainer class
-        std::map<std::string,App::Property*> Map;
+        std::map<std::string, App::Property*> Map;
         getPropertyContainerPtr()->getPropertyMap(Map);
 
         Py::Dict dict;
-        for (const auto & it : Map) {
+        for (const auto& it : Map) {
             dict.setItem(it.first, Py::String(""));
         }
         return Py::new_reference_to(dict);
     }
-    ///FIXME: For v0.20: Do not use stuff from Part module here!
-    else if(Base::streq(attr,"Shape") && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    /// FIXME: For v0.20: Do not use stuff from Part module here!
+    if (Base::streq(attr, "Shape")
+         && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         // Special treatment of Shape property
-        static PyObject *_getShape = nullptr;
-        if(!_getShape) {
+        static PyObject* _getShape = nullptr;
+        if (!_getShape) {
             _getShape = Py_None;
-            PyObject *mod = PyImport_ImportModule("Part");
-            if(!mod) {
+            PyObject* mod = PyImport_ImportModule("Part");
+            if (!mod) {
                 PyErr_Clear();
-            } else {
+            }
+            else {
                 Py::Object pyMod = Py::asObject(mod);
-                if(pyMod.hasAttr("getShape"))
+                if (pyMod.hasAttr("getShape")) {
                     _getShape = Py::new_reference_to(pyMod.getAttr("getShape"));
+                }
             }
         }
-        if(_getShape != Py_None) {
+        if (_getShape != Py_None) {
             Py::Tuple args(1);
-            args.setItem(0,Py::Object(const_cast<PropertyContainerPy*>(this)));
+            args.setItem(0, Py::Object(const_cast<PropertyContainerPy*>(this)));
             auto res = PyObject_CallObject(_getShape, args.ptr());
-            if(!res)
+            if (!res) {
                 PyErr_Clear();
+            }
             else {
-                Py::Object pyres(res,true);
-                if(pyres.hasAttr("isNull")) {
+                Py::Object pyres(res, true);
+                if (pyres.hasAttr("isNull")) {
                     Py::Callable func(pyres.getAttr("isNull"));
-                    if(!func.apply().isTrue())
+                    if (!func.apply().isTrue()) {
                         return Py::new_reference_to(res);
+                    }
                 }
             }
         }
@@ -629,13 +685,13 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
     return nullptr;
 }
 
-int PropertyContainerPy::setCustomAttributes(const char* attr, PyObject *obj)
+int PropertyContainerPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
     // search in PropertyList
-    Property *prop = getPropertyContainerPtr()->getPropertyByName(attr);
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop) {
         // Read-only attributes must not be set over its Python interface
-        if(prop->testStatus(Property::Immutable)) {
+        if (prop->testStatus(Property::Immutable)) {
             std::stringstream s;
             s << "Object attribute '" << attr << "' is read-only";
             throw Py::AttributeError(s.str());

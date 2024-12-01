@@ -600,7 +600,7 @@
       <location filename="../../AttacherTexts.cpp" line="152"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan est fait tangent à la surface au niveau du sommet.</translation>
+      <translation>Le plan est tangent à la surface au niveau du sommet.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="154"/>
@@ -612,7 +612,7 @@
       <location filename="../../AttacherTexts.cpp" line="155"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan est fait tangent à une arête. Le lien optionnel vers un sommet définit où.</translation>
+      <translation>Le plan est tangent à l'arête. Le lien facultatif entre les sommets définit l'endroit où le plan est tangent.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="157"/>
@@ -1191,7 +1191,7 @@
     <message>
       <location filename="../../Command.cpp" line="2063"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2064"/>
@@ -1209,7 +1209,7 @@
     <message>
       <location filename="../../Command.cpp" line="2096"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2097"/>
@@ -1227,7 +1227,7 @@
     <message>
       <location filename="../../Command.cpp" line="1246"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1247"/>
@@ -1245,7 +1245,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="106"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="107"/>
@@ -1265,7 +1265,7 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="130"/>
@@ -1275,7 +1275,7 @@
     <message>
       <location filename="../../Command.cpp" line="131"/>
       <source>Create a box solid without dialog</source>
-      <translation>Créer une boîte solide sans boîte de dialogue</translation>
+      <translation>Créer une boîte sans fenêtre de dialogue</translation>
     </message>
   </context>
   <context>
@@ -1283,7 +1283,7 @@
     <message>
       <location filename="../../Command.cpp" line="170"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="171"/>
@@ -1293,7 +1293,7 @@
     <message>
       <location filename="../../Command.cpp" line="172"/>
       <source>Create a box solid without dialog</source>
-      <translation>Créer une boîte solide sans boîte de dialogue</translation>
+      <translation>Créer une boîte sans fenêtre de dialogue</translation>
     </message>
   </context>
   <context>
@@ -1301,7 +1301,7 @@
     <message>
       <location filename="../../Command.cpp" line="1537"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1538"/>
@@ -1319,7 +1319,7 @@
     <message>
       <location filename="../../Command.cpp" line="1442"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1443"/>
@@ -1337,7 +1337,7 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
@@ -1355,7 +1355,7 @@
     <message>
       <location filename="../../Command.cpp" line="734"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="735"/>
@@ -1373,7 +1373,7 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
@@ -1391,7 +1391,7 @@
     <message>
       <location filename="../../Command.cpp" line="1736"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1737"/>
@@ -1409,7 +1409,7 @@
     <message>
       <location filename="../../Command.cpp" line="616"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -1427,7 +1427,7 @@
     <message>
       <location filename="../../Command.cpp" line="841"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="842"/>
@@ -1445,7 +1445,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="190"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="191"/>
@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../Command.cpp" line="1498"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1499"/>
@@ -1483,7 +1483,7 @@
     <message>
       <location filename="../../Command.cpp" line="298"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="299"/>
@@ -1501,7 +1501,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="64"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="65"/>
@@ -1521,7 +1521,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="413"/>
@@ -1539,7 +1539,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="325"/>
@@ -1557,7 +1557,7 @@
     <message>
       <location filename="../../Command.cpp" line="1009"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
@@ -1575,7 +1575,7 @@
     <message>
       <location filename="../../Command.cpp" line="1277"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
@@ -1593,7 +1593,7 @@
     <message>
       <location filename="../../Command.cpp" line="1414"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1415"/>
@@ -1611,7 +1611,7 @@
     <message>
       <location filename="../../Command.cpp" line="433"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="434"/>
@@ -1621,7 +1621,7 @@
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>Make a union of several shapes</source>
-      <translation>Exécuter l'union de plusieurs formes</translation>
+      <translation>Unir plusieurs formes</translation>
     </message>
   </context>
   <context>
@@ -1629,17 +1629,17 @@
     <message>
       <location filename="../../Command.cpp" line="946"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation>Importer un fichier CAD...</translation>
+      <translation>Importer un fichier de CAO...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Imports a CAD file</source>
-      <translation>Importe un fichier d'un format de CAO</translation>
+      <translation>Importer un fichier d'un format de CAO</translation>
     </message>
   </context>
   <context>
@@ -1647,12 +1647,12 @@
     <message>
       <location filename="../../Command.cpp" line="1057"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1058"/>
       <source>Import curve network...</source>
-      <translation>Importer réseau de courbes...</translation>
+      <translation>Importer un réseau de courbes...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1059"/>
@@ -1665,17 +1665,17 @@
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Loft...</source>
-      <translation>Lissage...</translation>
+      <translation>Créer un lissage...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
       <source>Utility to loft</source>
-      <translation>Lissage d'une série de profils</translation>
+      <translation>Lisser une série de profils</translation>
     </message>
   </context>
   <context>
@@ -1683,7 +1683,7 @@
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
@@ -1701,7 +1701,7 @@
     <message>
       <location filename="../../Command.cpp" line="1105"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1106"/>
@@ -1719,7 +1719,7 @@
     <message>
       <location filename="../../Command.cpp" line="1470"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -1737,7 +1737,7 @@
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1625"/>
@@ -1755,7 +1755,7 @@
     <message>
       <location filename="../../Command.cpp" line="1681"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1682"/>
@@ -1773,7 +1773,7 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -1791,7 +1791,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
@@ -1809,7 +1809,7 @@
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
@@ -1827,7 +1827,7 @@
     <message>
       <location filename="../../Command.cpp" line="2165"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2166"/>
@@ -1849,7 +1849,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="353"/>
@@ -1867,7 +1867,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1184"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
@@ -1885,7 +1885,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1386"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1387"/>
@@ -1903,7 +1903,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1958"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1959"/>
@@ -1921,7 +1921,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="898"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="899"/>
@@ -1952,7 +1952,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="106"/>
@@ -1970,7 +1970,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="222"/>
@@ -1988,7 +1988,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="56"/>
@@ -2006,7 +2006,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="148"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="149"/>
@@ -2026,7 +2026,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1596"/>
@@ -2044,7 +2044,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1828"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1829"/>
@@ -2072,7 +2072,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="232"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="233"/>
@@ -2092,7 +2092,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="297"/>
@@ -2116,7 +2116,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Part Cut</source>
-      <translation>Part Soustraction</translation>
+      <translation>Soustraction de pièces</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
@@ -2204,7 +2204,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
       <translation>Convertir le maillage</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>Modifier l'ancrage</translation>
     </message>
@@ -2214,7 +2214,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
       <translation>Changer les couleurs des faces</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>Lissage</translation>
     </message>
@@ -2245,7 +2245,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
       <translation>Solide</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="367"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>Balayage</translation>
     </message>
@@ -2597,7 +2597,7 @@ Remarque : la position est exprimée localement par rapport à l'objet auquel il
     <message>
       <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation>Décochez cette case pour ignorer les objets invisibles lors de l'exportation, ce qui est utile pour les CAO qui ne prennent pas en charge l'invisibilité du style STEP.</translation>
+      <translation>Décocher cette case pour ignorer les objets invisibles lors de l'exportation, ce qui est utile pour les outils de CAO qui ne prennent pas en charge l'invisibilité du style STEP.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="104"/>
@@ -2662,7 +2662,8 @@ la taille du fichier STEP résultant.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Définir l'orientation pour qu'elle corresponde à celle d'une arête droite. Astuce : pour tenir compte de la longueur de l’arête, définir les deux longueurs à zéro.</translation>
+      <translation>Définir l'orientation pour qu'elle corresponde à celle d'une arête droite.
+Astuce : pour tenir compte de la longueur de l’arête, définir les deux longueurs à zéro.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="48"/>
@@ -2723,29 +2724,29 @@ la taille du fichier STEP résultant.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
       <source>Along:</source>
-      <translation>Extrusion primaire :</translation>
+      <translation>Extrusion le long de :</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative).
 If both lengths are zero, magnitude of direction is used.</source>
       <translation>Longueur à extruder le long de la direction (peut être négative).
-Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</translation>
+Si les deux longueurs sont nulles, la norme de la direction est utilisée.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
       <source>Against:</source>
-      <translation>Contre :</translation>
+      <translation>Extrusion opposée :</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="243"/>
       <source>Length to extrude against the direction (can be negative).</source>
-      <translation>Longueur à extruder dans le sens inverse (peut être négative).</translation>
+      <translation>Longueur à extruder dans le sens opposé (peut être négative).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation>Distribuer la longueur d’extrusion également des deux cotés.</translation>
+      <translation>Répartir la longueur de l'extrusion de manière égale des deux côtés.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="265"/>
@@ -2755,7 +2756,7 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
     <message>
       <location filename="../../DlgExtrusion.ui" line="277"/>
       <source>Taper angle along</source>
-      <translation>Angle de dépouille le long de</translation>
+      <translation>Angle de dépouille</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="290"/>
@@ -2765,12 +2766,12 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
     <message>
       <location filename="../../DlgExtrusion.ui" line="306"/>
       <source>Taper angle against</source>
-      <translation>Angle de dépouille par rapport à</translation>
+      <translation>Angle de dépouille opposé</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="319"/>
       <source>Taper (draft) angle against extrusion direction</source>
-      <translation>Angle de dépouille par rapport au sens d'extrusion</translation>
+      <translation>Angle de dépouille opposé à la direction de l'extrusion</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
@@ -2780,7 +2781,7 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
     <message>
       <location filename="../../DlgExtrusion.ui" line="340"/>
       <source>Create solid</source>
-      <translation>Solide</translation>
+      <translation>Créer le solide</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
@@ -3148,9 +3149,9 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Si cette option est cochée, aucune fusion composée ne sera effectuée pendant la lecture du fichier (plus lent mais plus détaillé).</translation>
+      <translation>Si cette case est cochée, aucune fusion de composés ne sera faite au cours de la lecture du fichier (plus lent mais plus détaillé).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -3885,7 +3886,7 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgRevolution.ui" line="146"/>
       <location filename="../../DlgRevolution.ui" line="187"/>
       <source>Click to set this as axis</source>
-      <translation>Cliquez pour définir ceci comme axe</translation>
+      <translation>Cliquer pour définir ceci comme un axe</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="149"/>
@@ -4352,27 +4353,27 @@ le vecteur normal du plan de l'esquisse sera utilisé</translation>
       <translation>Profils sélectionnés</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>Trop peu d'éléments</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Au moins deux sommets, arêtes, fils ou faces sont requis.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="213"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="242"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Sommet/arête/polyligne/face</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>Lissage</translation>
     </message>
@@ -4601,7 +4602,7 @@ au risque que tous les objets coupés auront la même couleur.</translation>
       <location filename="../../SectionCutting.ui" line="544"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
-      <translation>Lorsque la boîte de dialogue sera fermée, seules les coupes créées seront visibles</translation>
+      <translation>Lorsque la fenêtre de dialogue sera fermée, seules les coupes créées seront visibles.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="548"/>
@@ -4662,7 +4663,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select only one part object</source>
-      <translation>Sélectionnez seulement un objet pièce</translation>
+      <translation>Sélectionner une seule pièce</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="536"/>
@@ -4726,70 +4727,70 @@ only created cuts will be visible</source>
       <translation>Profils sélectionnés</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>Trop peu d'éléments</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation>Au moins une arête ou un fil est requis.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>Sélection non valide</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation>Sélectionner une ou plusieurs arêtes à partir d'un seul objet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' ne peut pas servir de profil et de trajectoire.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="379"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
-      <translation>Fait</translation>
+      <translation>Valider</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation>Sélectionner une ou plusieurs arêtes connectées
-dans la vue 3D et appuyez sur "Fait"</translation>
+      <translation>Sélectionner une ou plusieurs arêtes connectées dans la vue 3D
+et appuyer sur "Valider".</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>Trajectoire de balayage</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation>La trajectoire de balayage sélectionnée n'est pas valide.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="456"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation>Sommet/polyligne</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="457"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>Balayage</translation>
     </message>
@@ -4983,33 +4984,33 @@ Remarque : la position est exprimée dans le système de coordonnées local de l
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1028"/>
       <source>Shape Content</source>
       <translation>Contenu de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Settings</source>
       <translation>Paramètres</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Sauter cette page de paramètres et exécuter la vérification de la géométrie automatiquement.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
       <source>Default: false</source>
       <translation>Par défaut : faux</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Run boolean operation check</source>
       <translation>Exécuter la vérification de l’opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5019,12 +5020,12 @@ manqué. Ces erreurs ne signifient pas toujours que l’objet vérifié est inut
 Valeur par défaut : faux</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
       <source>Single-threaded</source>
       <translation>Exécution sur un seul thread</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Lancer la vérification de la géométrie avec un seul thread.
@@ -5032,23 +5033,23 @@ C'est plus lent, mais plus stable.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Log errors</source>
       <translation>Journal des erreurs</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Les logs d'erreurs vers la Vue rapport.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Expand shape content</source>
       <translation>Développer le contenu de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Développer le contenu de la forme. Les modifications prendront effet la
@@ -5056,12 +5057,12 @@ prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Advanced shape content</source>
       <translation>Contenu avancé de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Afficher le contenu avancé de la forme. Les modifications prendront effet la
@@ -5069,123 +5070,123 @@ prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Vérifications des différentes opérations booléennes :</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Bad type</source>
       <translation>Mauvais type d'argument</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1110"/>
       <source>Self-intersect</source>
       <translation>Auto-intersection</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
       <source>Too small edge</source>
       <translation>Arête trop petite</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1126"/>
       <source>Nonrecoverable face</source>
       <translation>Face non-récupérable</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1134"/>
       <source>Continuity</source>
       <translation>Continuité</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Incompatibility of face</source>
       <translation>Incompatibilité de face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Incompatibility of vertex</source>
       <translation>Incompatibilité de sommet</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Incompatibility of edge</source>
       <translation>Incompatibilité d’arête</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Invalid curve on surface</source>
       <translation>Courbe de surface non valable</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Vérifier la présence de mauvais types d'arguments.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Skip this settings page</source>
       <translation>Passer cette page de paramètres</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Vérifier la présence d'auto-intersections.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Vérifier la présence d'arêtes trop petites.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Vérifier la présence de faces non récupérables. 
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Vérifier la continuité.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1143"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Vérifier la présence de faces incompatibles.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Vérifier la présence de sommets incompatibles.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1159"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Vérifier la présence d'arêtes incompatibles.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1167"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Vérifier la présence de courbes invalides sur des surfaces.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
       <source>Run check</source>
       <translation>Lancer la vérification</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1236"/>
       <source>Results</source>
       <translation>Résultats</translation>
     </message>
@@ -5214,22 +5215,22 @@ Valeur par défaut : true</translation>
       <translation>Vérifier la géométrie</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>Invalide</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation>Vérification</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 traités sur %2 sélectionnés</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n formes invalides.</numerusform>
@@ -5237,9 +5238,29 @@ Valeur par défaut : true</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation>Objet vérifié</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="612"/>
+      <source>Tolerance information</source>
+      <translation type="unfinished">Tolerance information</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="617"/>
+      <source>Global Minimum</source>
+      <translation type="unfinished">Global Minimum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="622"/>
+      <source>Global Average</source>
+      <translation type="unfinished">Global Average</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="627"/>
+      <source>Global Maximum</source>
+      <translation type="unfinished">Global Maximum</translation>
     </message>
   </context>
   <context>
@@ -5252,7 +5273,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1119"/>
       <source>Datum dialog: Input error</source>
-      <translation>Boîte de dialogue du point de référence : erreur de saisie</translation>
+      <translation>Fenêtre de dialogue du point de référence : erreur de saisie</translation>
     </message>
   </context>
   <context>
@@ -5302,12 +5323,12 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="42"/>
       <source>Skin</source>
-      <translation>Peau</translation>
+      <translation>Objet creux</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="47"/>
       <source>Pipe</source>
-      <translation>Tuyau</translation>
+      <translation>Tube</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
@@ -5435,7 +5456,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
       <source>Create solid</source>
-      <translation>Solide</translation>
+      <translation>Créer le solide</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
@@ -5443,7 +5464,7 @@ Valeur par défaut : true</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="482"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Sélectionnez au moins un profil dans la liste, puis une arête ou une polyligne dans la vue 3D comme trajectoire.</translation>
@@ -5489,12 +5510,12 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="187"/>
       <source>Select faces of the source object and press 'Done'</source>
-      <translation>Sélectionner des faces de l'objet source et cliquer sur "Terminé"</translation>
+      <translation>Sélectionner des faces de l'objet source et cliquer sur "Valider"</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="190"/>
       <source>Done</source>
-      <translation>Fait</translation>
+      <translation>Valider</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="255"/>
@@ -5887,7 +5908,7 @@ Voulez-vous continuer ?</translation>
       <translation>Opération booléenne : non valide</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="726"/>
       <source>Invalid</source>
       <translation>Invalide</translation>
     </message>
@@ -5914,7 +5935,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="622"/>
       <source>Edit thickness</source>
-      <translation>Modifier l'épaisseur</translation>
+      <translation>Modifier l'évidement</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="94"/>
@@ -5947,7 +5968,7 @@ Voulez-vous continuer ?</translation>
       <translation>Modifier la projection</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation>Définir l'apparence par face...</translation>
     </message>
@@ -5955,57 +5976,57 @@ Voulez-vous continuer ?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>&amp;Part</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>&amp;Simple</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp;Paramétrique</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>Solides</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>Outils de pièces</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>Opérations booléennes</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>Primitives</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>Joindre</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>Scinder</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>Composés</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation>Créer une copie</translation>
     </message>
@@ -6234,7 +6255,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
       <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation>{} ne peut pas être ancré. Vous pouvez toujours utiliser la boîte de dialogue d'édition de l'ancrage pour aligner l'objet, mais l'ancrage ne sera pas paramétrique.</translation>
+      <translation>{} ne peut pas être ancré. Vous pouvez toujours utiliser la fenêtre de dialogue d'édition de l'ancrage pour aligner l'objet, mais l'ancrage ne sera pas paramétrique.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
@@ -6455,7 +6476,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
       <source>Boolean fragments</source>
-      <translation>Éléments booléens</translation>
+      <translation>Fragments booléens</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
@@ -6464,7 +6485,7 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Créer un objet "Éléments booléens" à partir de deux ou plusieurs objets sélectionnés ou des formes à l'intérieur d'un composé.
+      <translation>Créer un objet "Fragments booléens" à partir de deux ou plusieurs objets sélectionnés ou des formes à l'intérieur d'un composé.
 Il s'agit d'une union booléenne qui est ensuite coupée aux intersections des formes originales.
 Un "filtre de composé" peut être utilisé pour extraire différents morceaux.</translation>
     </message>
@@ -6676,7 +6697,7 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
       <location filename="../../CommandFilter.cpp" line="249"/>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
-      <translation>Tous les filtres de sélection ont été effacés</translation>
+      <translation>Supprimer tous les filtres</translation>
     </message>
   </context>
   <context>
@@ -6793,7 +6814,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
       <source>Box selection</source>
-      <translation>Sélection par une boîte</translation>
+      <translation>Sélectionner par une boîte</translation>
     </message>
   </context>
   <context>
@@ -6802,6 +6823,52 @@ by dragging a selection rectangle in the 3D view</source>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Don't show this dialog again</source>
       <translation>Ne plus afficher ce dialogue</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Le calcul du résultat a échoué avec une erreur :</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Cliquez sur "Continuer" pour créer tout de même la fonction ou sur "Interrompre" pour annuler.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
+      <source>Bad selection</source>
+      <translation>Sélection non valide</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
+      <source>Continue</source>
+      <translation>Continuer</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceSet</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
+      <source>Set Tolerance</source>
+      <translation type="unfinished">Set Tolerance</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
+      <source>Set Tolerance for selected objects.</source>
+      <translation type="unfinished">Set Tolerance for selected objects.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
+      <source>Select at least one object or compounds</source>
+      <translation type="unfinished">Select at least one object or compounds</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <source>Bad selection</source>
+      <translation>Sélection non valide</translation>
     </message>
   </context>
 </TS>

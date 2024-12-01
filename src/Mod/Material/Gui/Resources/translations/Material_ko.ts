@@ -55,12 +55,12 @@
       <translation type="unfinished">2D Array</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="76"/>
+      <location filename="../../Array2D.cpp" line="78"/>
       <source>Delete row</source>
       <translation type="unfinished">Delete row</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="134"/>
+      <location filename="../../Array2D.cpp" line="140"/>
       <source>Context menu</source>
       <translation type="unfinished">Context menu</translation>
     </message>
@@ -204,17 +204,17 @@
   <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="214"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
       <source>Basic Appearance</source>
       <translation type="unfinished">Basic Appearance</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="219"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
       <source>Texture Appearance</source>
       <translation type="unfinished">Texture Appearance</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="224"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
       <source>All Materials</source>
       <translation type="unfinished">All Materials</translation>
     </message>
@@ -259,7 +259,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
       <source>Appearance</source>
-      <translation>설정</translation>
+      <translation>외관</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="107"/>
@@ -295,6 +295,11 @@
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
       <translation type="unfinished">Shininess</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="248"/>
+      <source>Transparency</source>
+      <translation>투명한 정도</translation>
     </message>
   </context>
   <context>
@@ -342,7 +347,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to clipboard</source>
-      <translation>클립보드에 복사하기</translation>
+      <translation>오림판에 복사하기</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -357,7 +362,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal Name: </source>
-      <translation type="unfinished">Internal Name: </translation>
+      <translation>내부 이름: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
@@ -472,7 +477,7 @@
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
       <source>Default Material</source>
-      <translation type="unfinished">Default Material</translation>
+      <translation>기본 재료</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
@@ -540,71 +545,71 @@ will be listed as available.</translation>
       <translation type="unfinished">User directory</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="152"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="155"/>
       <source>Card sorting and duplicates</source>
       <translation type="unfinished">Card sorting and duplicates</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="158"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
       <source>Duplicate cards will be deleted from the displayed material card list.</source>
       <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="164"/>
       <source>Delete card duplicates</source>
       <translation type="unfinished">Delete card duplicates</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="177"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="180"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation type="unfinished">Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="181"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="184"/>
       <source>Sort by resources</source>
       <translation type="unfinished">Sort by resources</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="200"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="203"/>
       <source>Material Selector</source>
-      <translation type="unfinished">Material Selector</translation>
+      <translation>재료 선택기</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="206"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="289"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="209"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="292"/>
       <source>Show favorites</source>
       <translation type="unfinished">Show favorites</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="222"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="305"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="225"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="308"/>
       <source>Show recent</source>
       <translation type="unfinished">Show recent</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="238"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="321"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="241"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="324"/>
       <source>Show empty libraries</source>
       <translation type="unfinished">Show empty libraries</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="254"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="337"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="257"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="340"/>
       <source>Show empty folders</source>
       <translation type="unfinished">Show empty folders</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="267"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="350"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="270"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="353"/>
       <source>Show legacy files</source>
       <translation type="unfinished">Show legacy files</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="283"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="286"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>재료 편집기</translation>
     </message>
   </context>
   <context>
@@ -612,7 +617,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="14"/>
       <source>Image</source>
-      <translation>이미지</translation>
+      <translation>화상</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="30"/>
@@ -647,7 +652,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.cpp" line="218"/>
       <source>Image files (*.svg);;All files (*)</source>
-      <translation type="unfinished">Image files (*.svg);;All files (*)</translation>
+      <translation>화상 파일 (*.svg);;모든 파일 (*)</translation>
     </message>
   </context>
   <context>
@@ -690,8 +695,8 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="476"/>
-      <location filename="../../MaterialSave.cpp" line="486"/>
+      <location filename="../../MaterialSave.cpp" line="482"/>
+      <location filename="../../MaterialSave.cpp" line="492"/>
       <source>New Folder</source>
       <translation type="unfinished">New Folder</translation>
     </message>
@@ -706,62 +711,62 @@ If unchecked, they will be sorted by their name.</translation>
       <translation type="unfinished">Save as Inherited</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="89"/>
+      <location filename="../../MaterialSave.cpp" line="91"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="184"/>
+      <location filename="../../MaterialSave.cpp" line="190"/>
       <source>Are you sure you want to save over &apos;%1&apos;?</source>
       <translation type="unfinished">Are you sure you want to save over &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="187"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation type="unfinished">Saving over the original file may cause other documents to break. This is not recommended.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="209"/>
+      <location filename="../../MaterialSave.cpp" line="215"/>
       <source>Confirm Save As New Material</source>
       <translation type="unfinished">Confirm Save As New Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="211"/>
+      <location filename="../../MaterialSave.cpp" line="217"/>
       <source>Save as new material</source>
       <translation type="unfinished">Save as new material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="214"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
       <translation type="unfinished">This material already exists in this library. Would you like to save as a new material?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="236"/>
+      <location filename="../../MaterialSave.cpp" line="242"/>
       <source>Confirm Save As Copy</source>
       <translation type="unfinished">Confirm Save As Copy</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="238"/>
+      <location filename="../../MaterialSave.cpp" line="244"/>
       <source>Save as Copy</source>
       <translation type="unfinished">Save as Copy</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="241"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
       <translation type="unfinished">Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="244"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save Copy</source>
       <translation type="unfinished">Save Copy</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="251"/>
       <source>Save As New</source>
       <translation type="unfinished">Save As New</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="526"/>
+      <location filename="../../MaterialSave.cpp" line="532"/>
       <source>Context menu</source>
       <translation type="unfinished">Context menu</translation>
     </message>
@@ -871,7 +876,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
       <source>Appearance</source>
-      <translation>설정</translation>
+      <translation>외관</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="286"/>
@@ -884,76 +889,76 @@ If unchecked, they will be sorted by their name.</translation>
       <translation type="unfinished">Delete appearance model</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="481"/>
+      <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
       <translation>이름없음</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="603"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
       <translation type="unfinished">Old Format Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="605"/>
+      <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
       <translation type="unfinished">This file is in the old material card format.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="687"/>
+      <location filename="../../MaterialsEditor.cpp" line="690"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation type="unfinished">This card uses the old format and must be saved before use</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="745"/>
-      <location filename="../../MaterialsEditor.cpp" line="777"/>
-      <location filename="../../MaterialsEditor.cpp" line="1051"/>
-      <location filename="../../MaterialsEditor.cpp" line="1113"/>
+      <location filename="../../MaterialsEditor.cpp" line="748"/>
+      <location filename="../../MaterialsEditor.cpp" line="780"/>
+      <location filename="../../MaterialsEditor.cpp" line="1054"/>
+      <location filename="../../MaterialsEditor.cpp" line="1116"/>
       <source>Property</source>
       <translation>속성</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="746"/>
-      <location filename="../../MaterialsEditor.cpp" line="778"/>
-      <location filename="../../MaterialsEditor.cpp" line="1052"/>
-      <location filename="../../MaterialsEditor.cpp" line="1114"/>
+      <location filename="../../MaterialsEditor.cpp" line="749"/>
+      <location filename="../../MaterialsEditor.cpp" line="781"/>
+      <location filename="../../MaterialsEditor.cpp" line="1055"/>
+      <location filename="../../MaterialsEditor.cpp" line="1117"/>
       <source>Value</source>
       <translation>값</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="747"/>
-      <location filename="../../MaterialsEditor.cpp" line="779"/>
-      <location filename="../../MaterialsEditor.cpp" line="1053"/>
-      <location filename="../../MaterialsEditor.cpp" line="1115"/>
+      <location filename="../../MaterialsEditor.cpp" line="750"/>
+      <location filename="../../MaterialsEditor.cpp" line="782"/>
+      <location filename="../../MaterialsEditor.cpp" line="1056"/>
+      <location filename="../../MaterialsEditor.cpp" line="1118"/>
       <source>Type</source>
       <translation>유형</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="843"/>
+      <location filename="../../MaterialsEditor.cpp" line="846"/>
       <source>Favorites</source>
       <translation type="unfinished">Favorites</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="850"/>
+      <location filename="../../MaterialsEditor.cpp" line="853"/>
       <source>Recent</source>
       <translation type="unfinished">Recent</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1116"/>
+      <location filename="../../MaterialsEditor.cpp" line="1119"/>
       <source>Units</source>
       <translation>단위</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1283"/>
+      <location filename="../../MaterialsEditor.cpp" line="1286"/>
       <source>Context menu</source>
       <translation type="unfinished">Context menu</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1285"/>
+      <location filename="../../MaterialsEditor.cpp" line="1288"/>
       <source>Inherit from</source>
       <translation type="unfinished">Inherit from</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1289"/>
+      <location filename="../../MaterialsEditor.cpp" line="1292"/>
       <source>Inherit new material</source>
       <translation type="unfinished">Inherit new material</translation>
     </message>
@@ -1032,7 +1037,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="441"/>
       <source>Appearance</source>
-      <translation>설정</translation>
+      <translation>외관</translation>
     </message>
   </context>
   <context>
@@ -1048,7 +1053,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>재료 편집기</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
@@ -1109,11 +1114,6 @@ If unchecked, they will be sorted by their name.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="54"/>
-      <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
-    </message>
-    <message>
       <location filename="../../DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
       <translation>재료</translation>
@@ -1133,55 +1133,55 @@ If unchecked, they will be sorted by their name.</translation>
       <translation>재료</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="181"/>
+      <location filename="../../MaterialSave.cpp" line="187"/>
       <source>Confirm Overwrite</source>
       <translation type="unfinished">Confirm Overwrite</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="370"/>
-      <location filename="../../MaterialSave.cpp" line="371"/>
+      <location filename="../../MaterialSave.cpp" line="376"/>
+      <location filename="../../MaterialSave.cpp" line="377"/>
       <source>No writeable library</source>
       <translation type="unfinished">No writeable library</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="558"/>
+      <location filename="../../MaterialSave.cpp" line="564"/>
       <source>Are you sure you want to delete &apos;%1&apos;?</source>
       <translation type="unfinished">Are you sure you want to delete &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="562"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Removing this will also remove all contents.</source>
       <translation type="unfinished">Removing this will also remove all contents.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="606"/>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>You must save the material before using it.</source>
       <translation type="unfinished">You must save the material before using it.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1310"/>
+      <location filename="../../MaterialsEditor.cpp" line="1313"/>
       <source>Unsaved Material</source>
       <translation type="unfinished">Unsaved Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1311"/>
+      <location filename="../../MaterialsEditor.cpp" line="1314"/>
       <source>Do you want to save your changes to the material before closing?</source>
       <translation type="unfinished">Do you want to save your changes to the material before closing?</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1313"/>
+      <location filename="../../MaterialsEditor.cpp" line="1316"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
       <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="166"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="555"/>
+      <location filename="../../MaterialSave.cpp" line="561"/>
       <source>Confirm Delete</source>
       <translation type="unfinished">Confirm Delete</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="168"/>
+      <location filename="../../Array2D.cpp" line="174"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Are you sure you want to delete the row?</source>
       <translation type="unfinished">Are you sure you want to delete the row?</translation>

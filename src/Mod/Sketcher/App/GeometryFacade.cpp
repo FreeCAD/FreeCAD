@@ -155,7 +155,7 @@ int GeometryFacade::getId(const Part::Geometry* geometry)
 void GeometryFacade::setId(Part::Geometry* geometry, int id)
 {
     auto gf = GeometryFacade::getFacade(geometry);
-    return gf->setId(id);
+    gf->setId(id);
 }
 
 bool GeometryFacade::getConstruction(const Part::Geometry* geometry)
@@ -171,7 +171,7 @@ void GeometryFacade::setConstruction(Part::Geometry* geometry, bool construction
     throwOnNullPtr(geometry);
 
     auto gf = GeometryFacade::getFacade(geometry);
-    return gf->setConstruction(construction);
+    gf->setConstruction(construction);
 }
 
 bool GeometryFacade::isInternalType(const Part::Geometry* geometry, InternalType::InternalType type)

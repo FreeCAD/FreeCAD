@@ -423,7 +423,7 @@ El valor más pequeño es 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading:</source>
-      <translation>Graduación del tamaño de malla:</translation>
+      <translation>Gradación del tamaño de malla:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>

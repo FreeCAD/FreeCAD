@@ -90,7 +90,7 @@ public:
     /// Returns a list of all possible modes
     std::vector<std::string> getDisplayModes() const override;
     /// Updates the mesh feature representation
-    void updateData(const App::Property*) override;
+    void updateData(const App::Property* prop) override;
     /// Returns a pixmap for the associated feature type
     QIcon getIcon() const override;
     /// Once the color bar settinhs has been changed this method gets called to update the feature's

@@ -28,6 +28,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
 #include <Base/Tools.h>
 
 #include "DlgAddProperty.h"
@@ -110,6 +111,13 @@ void DlgAddProperty::accept()
 
     if(ui->chkAppend->isChecked())
         name = group + "_" + name;
+
+    if (App::ExpressionParser::isTokenAUnit(name) || App::ExpressionParser::isTokenAConstant(name)) {
+        QMessageBox::critical(getMainWindow(),
+            QObject::tr("Invalid name"),
+            QObject::tr("The property name is a reserved word."));
+        return;
+    }
 
     for(auto c : containers) {
         auto prop = c->getPropertyByName(name.c_str());

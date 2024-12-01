@@ -95,7 +95,7 @@ Py::Long EdgePy::getIndex() const
 
 PyObject* EdgePy::intersectWithEdge(PyObject* args)
 {
-    PyObject* object;
+    PyObject* object {};
     if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object)) {
         return nullptr;
     }

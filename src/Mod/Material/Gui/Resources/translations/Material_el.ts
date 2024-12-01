@@ -55,12 +55,12 @@
       <translation>2D Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="76"/>
+      <location filename="../../Array2D.cpp" line="78"/>
       <source>Delete row</source>
       <translation>Διαγραφή σειράς</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="134"/>
+      <location filename="../../Array2D.cpp" line="140"/>
       <source>Context menu</source>
       <translation>Μενού πλαισίου</translation>
     </message>
@@ -204,17 +204,17 @@
   <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="214"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
       <source>Basic Appearance</source>
       <translation>Βασική Εμφάνιση</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="219"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
       <source>Texture Appearance</source>
       <translation>Εμφάνιση Υφής</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="224"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
       <source>All Materials</source>
       <translation>Όλα Τα Υλικά</translation>
     </message>
@@ -295,6 +295,11 @@
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
       <translation>Γυαλάδα</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="248"/>
+      <source>Transparency</source>
+      <translation>Διαφάνεια</translation>
     </message>
   </context>
   <context>
@@ -540,69 +545,69 @@ will be listed as available.</source>
       <translation>Ευρετήριο χρήστη</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="152"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="155"/>
       <source>Card sorting and duplicates</source>
       <translation>Ταξινόμηση και αντίγραφα καρτών</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="158"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
       <source>Duplicate cards will be deleted from the displayed material card list.</source>
       <translation>Οι διπλότυπες κάρτες θα διαγραφούν από την εμφανιζόμενη λίστα υλικού.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="164"/>
       <source>Delete card duplicates</source>
       <translation>Διαγραφή διπλότυπων καρτών</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="177"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="180"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation>Οι κάρτες υλικών εμφανίζονται ταξινομημένες με βάση την πηγή τους (τοποθεσίες).
 Αν δεν επιλεχθεί, θα ταξινομηθούν με βάση το όνομά τους.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="181"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="184"/>
       <source>Sort by resources</source>
       <translation>Ταξινόμηση κατά πηγή</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="200"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="203"/>
       <source>Material Selector</source>
       <translation>Επιλογέας Υλικού</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="206"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="289"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="209"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="292"/>
       <source>Show favorites</source>
       <translation>Προβολή αγαπημένων</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="222"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="305"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="225"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="308"/>
       <source>Show recent</source>
       <translation>Εμφάνιση Πρόσφατων</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="238"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="321"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="241"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="324"/>
       <source>Show empty libraries</source>
       <translation>Εμφάνιση κενών βιβλιοθηκών</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="254"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="337"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="257"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="340"/>
       <source>Show empty folders</source>
       <translation>Εμφάνιση κενών φακέλων</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="267"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="350"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="270"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="353"/>
       <source>Show legacy files</source>
       <translation>Εμφάνιση αρχείων παλαιού τύπου</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="283"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="286"/>
       <source>Material Editor</source>
       <translation>Επεξεργαστής Υλικού</translation>
     </message>
@@ -690,8 +695,8 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="476"/>
-      <location filename="../../MaterialSave.cpp" line="486"/>
+      <location filename="../../MaterialSave.cpp" line="482"/>
+      <location filename="../../MaterialSave.cpp" line="492"/>
       <source>New Folder</source>
       <translation>Νέος Φάκελος</translation>
     </message>
@@ -706,64 +711,64 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Αποθήκευση ως Κληρονομούμενο</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="89"/>
+      <location filename="../../MaterialSave.cpp" line="91"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="184"/>
+      <location filename="../../MaterialSave.cpp" line="190"/>
       <source>Are you sure you want to save over &apos;%1&apos;?</source>
       <translation>Είστε βέβαιοι ότι θέλετε να αποθηκεύσετε πάνω από &apos;%1&apos;;</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="187"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Η αποθήκευση πάνω από το αρχικό αρχείο μπορεί να προκαλέσει τη διακοπή της λειτουργίας άλλων εγγράφων. 
 Αυτό δε συνιστάται.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="209"/>
+      <location filename="../../MaterialSave.cpp" line="215"/>
       <source>Confirm Save As New Material</source>
       <translation>Επιβεβαίωση Αποθήκευσης Ως Νέο Υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="211"/>
+      <location filename="../../MaterialSave.cpp" line="217"/>
       <source>Save as new material</source>
       <translation>Αποθήκευση ως νέο υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="214"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
       <translation>Αυτό το υλικό υπάρχει ήδη σε αυτή τη βιβλιοθήκη. 
 Θα θέλατε να το αποθηκεύσετε ως νέο υλικό;</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="236"/>
+      <location filename="../../MaterialSave.cpp" line="242"/>
       <source>Confirm Save As Copy</source>
       <translation>Επιβεβαίωση Αποθήκευσης Ως Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="238"/>
+      <location filename="../../MaterialSave.cpp" line="244"/>
       <source>Save as Copy</source>
       <translation>Αποθήκευση ενός Αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="241"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
       <translation>Δε συνιστάται η αποθήκευση αντιγράφου, καθώς μπορεί να καταστρέψει άλλα έγγραφα. Προτείνουμε να αποθηκεύσετε ως νέο υλικό.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="244"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save Copy</source>
       <translation>Αποθήκευση αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="251"/>
       <source>Save As New</source>
       <translation>Αποθήκευση ως Νέο</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="526"/>
+      <location filename="../../MaterialSave.cpp" line="532"/>
       <source>Context menu</source>
       <translation>Μενού πλαισίου</translation>
     </message>
@@ -886,76 +891,76 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Διαγραφή μοντέλου εμφάνισης</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="481"/>
+      <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
       <translation>Ανώνυμο</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="603"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
       <translation>Υλικό Παλαιάς Μορφής</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="605"/>
+      <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
       <translation>Αυτό το αρχείο έχει την παλιά μορφή κάρτας υλικού.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="687"/>
+      <location filename="../../MaterialsEditor.cpp" line="690"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>Αυτή η κάρτα χρησιμοποιεί την παλιά μορφή και πρέπει να αποθηκευτεί πριν από τη χρήση</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="745"/>
-      <location filename="../../MaterialsEditor.cpp" line="777"/>
-      <location filename="../../MaterialsEditor.cpp" line="1051"/>
-      <location filename="../../MaterialsEditor.cpp" line="1113"/>
+      <location filename="../../MaterialsEditor.cpp" line="748"/>
+      <location filename="../../MaterialsEditor.cpp" line="780"/>
+      <location filename="../../MaterialsEditor.cpp" line="1054"/>
+      <location filename="../../MaterialsEditor.cpp" line="1116"/>
       <source>Property</source>
       <translation>Ιδιότητα</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="746"/>
-      <location filename="../../MaterialsEditor.cpp" line="778"/>
-      <location filename="../../MaterialsEditor.cpp" line="1052"/>
-      <location filename="../../MaterialsEditor.cpp" line="1114"/>
+      <location filename="../../MaterialsEditor.cpp" line="749"/>
+      <location filename="../../MaterialsEditor.cpp" line="781"/>
+      <location filename="../../MaterialsEditor.cpp" line="1055"/>
+      <location filename="../../MaterialsEditor.cpp" line="1117"/>
       <source>Value</source>
       <translation>Τιμή</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="747"/>
-      <location filename="../../MaterialsEditor.cpp" line="779"/>
-      <location filename="../../MaterialsEditor.cpp" line="1053"/>
-      <location filename="../../MaterialsEditor.cpp" line="1115"/>
+      <location filename="../../MaterialsEditor.cpp" line="750"/>
+      <location filename="../../MaterialsEditor.cpp" line="782"/>
+      <location filename="../../MaterialsEditor.cpp" line="1056"/>
+      <location filename="../../MaterialsEditor.cpp" line="1118"/>
       <source>Type</source>
       <translation>Τύπος</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="843"/>
+      <location filename="../../MaterialsEditor.cpp" line="846"/>
       <source>Favorites</source>
       <translation>Αγαπημένα</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="850"/>
+      <location filename="../../MaterialsEditor.cpp" line="853"/>
       <source>Recent</source>
       <translation>Πρόσφατα</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1116"/>
+      <location filename="../../MaterialsEditor.cpp" line="1119"/>
       <source>Units</source>
       <translation>Μονάδες</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1283"/>
+      <location filename="../../MaterialsEditor.cpp" line="1286"/>
       <source>Context menu</source>
       <translation>Μενού πλαισίου</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1285"/>
+      <location filename="../../MaterialsEditor.cpp" line="1288"/>
       <source>Inherit from</source>
       <translation>Κληρονόμηση από</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1289"/>
+      <location filename="../../MaterialsEditor.cpp" line="1292"/>
       <source>Inherit new material</source>
       <translation>Κληρονόμηση νέου υλικού</translation>
     </message>
@@ -1111,11 +1116,6 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="54"/>
-      <source>Display properties</source>
-      <translation>Εμφάνιση ιδιοτήτων</translation>
-    </message>
-    <message>
       <location filename="../../DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
       <translation>Υλικό</translation>
@@ -1135,55 +1135,55 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="181"/>
+      <location filename="../../MaterialSave.cpp" line="187"/>
       <source>Confirm Overwrite</source>
       <translation>Επιβεβαίωση Αντικατάστασης</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="370"/>
-      <location filename="../../MaterialSave.cpp" line="371"/>
+      <location filename="../../MaterialSave.cpp" line="376"/>
+      <location filename="../../MaterialSave.cpp" line="377"/>
       <source>No writeable library</source>
       <translation>Καμία εγγράψιμη βιβλιοθήκη</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="558"/>
+      <location filename="../../MaterialSave.cpp" line="564"/>
       <source>Are you sure you want to delete &apos;%1&apos;?</source>
       <translation>Είστε βέβαιοι ότι θέλετε να διαγράψετε &apos;%1&apos;;</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="562"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Η Αφαίρεση αυτού, θα αφαιρέσει επίσης όλα τα περιεχόμενα.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="606"/>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>You must save the material before using it.</source>
       <translation>Πρέπει να αποθηκεύσετε το υλικό πριν το χρησιμοποιήσετε.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1310"/>
+      <location filename="../../MaterialsEditor.cpp" line="1313"/>
       <source>Unsaved Material</source>
       <translation>Μη Αποθηκευμένο Υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1311"/>
+      <location filename="../../MaterialsEditor.cpp" line="1314"/>
       <source>Do you want to save your changes to the material before closing?</source>
       <translation>Θέλετε να αποθηκεύσετε τις αλλαγές σας στο υλικό πριν από το κλείσιμο;</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1313"/>
+      <location filename="../../MaterialsEditor.cpp" line="1316"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
       <translation>Αν don&apos;t αποθηκεύσετε, οι αλλαγές σας θα χαθούν.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="166"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="555"/>
+      <location filename="../../MaterialSave.cpp" line="561"/>
       <source>Confirm Delete</source>
       <translation>Επιβεβαίωση διαγραφής</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="168"/>
+      <location filename="../../Array2D.cpp" line="174"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Are you sure you want to delete the row?</source>
       <translation>Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν τη σειρά;</translation>

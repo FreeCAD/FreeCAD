@@ -174,6 +174,8 @@ private:
         /** Observer for parameter group. */
         void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
+        void updateFromParameter(const char* property);
+
     private:
         void
         updateBoolProperty(const std::string& string, App::Property* property, bool defaultvalue);
@@ -715,7 +717,8 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
-    static void camSensCB(void* data, SoSensor*);  // camera sensor callback
+    static void camSensCB(void* data, SoSensor*);        // camera sensor callback
+    static void camSensDeleteCB(void* data, SoSensor*);  // camera sensor callback
     void onCameraChanged(SoCamera* cam);
     //@}
 

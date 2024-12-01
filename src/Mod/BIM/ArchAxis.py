@@ -398,7 +398,7 @@ class _ViewProviderAxis:
                                     except Exception:
                                         # workaround for pivy SoInput.setBuffer() bug
                                         buf = buf.replace("\n","")
-                                        pts = re.findall("point \[(.*?)\]",buf)[0]
+                                        pts = re.findall(r"point \[(.*?)\]",buf)[0]
                                         pts = pts.split(",")
                                         pc = []
                                         for point in pts:
@@ -578,6 +578,8 @@ class _ViewProviderAxis:
         return True
 
     def setupContextMenu(self, vobj, menu):
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         QtCore.QObject.connect(actionEdit,

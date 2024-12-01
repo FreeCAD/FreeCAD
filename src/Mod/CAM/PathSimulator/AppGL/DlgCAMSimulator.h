@@ -23,6 +23,10 @@
 #ifndef PATHSIMULATOR_CAMSimulatorGui_H
 #define PATHSIMULATOR_CAMSimulatorGui_H
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4251)
+#endif
+
 #include <Mod/Part/App/TopoShape.h>
 #include <QWindow>
 #include <QOpenGLExtraFunctions>

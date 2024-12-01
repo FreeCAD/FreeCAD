@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 
+#include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 #include <Base/Console.h>
@@ -210,6 +211,7 @@ enum eDXFGroupCode_t
     eUCSXDirection = 111,
     eUCSYDirection = 112,
     eExtrusionDirection = 210,
+    eComment = 999,
 
     // The following apply to points and directions in text DXF files to identify the three
     // coordinates
@@ -685,12 +687,12 @@ protected:
     // notification popup "Log" goes to a log somewhere and not to the screen/user at all
 
     template<typename... args>
-    void ImportError(const char* format, args&&... argValues) const
+    static void ImportError(const char* format, args&&... argValues)
     {
         Base::ConsoleSingleton::Instance().Warning(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
-    void ImportObservation(const char* format, args&&... argValues) const
+    static void ImportObservation(const char* format, args&&... argValues)
     {
         Base::ConsoleSingleton::Instance().Message(format, std::forward<args>(argValues)...);
     }
@@ -922,5 +924,25 @@ public:
         return m_entityAttributes.m_LineType[0] == 'h' || m_entityAttributes.m_LineType[0] == 'H';
     }
     static App::Color ObjectColor(ColorIndex_t colorIndex);  // as rgba value
+
+#ifdef DEBUG
+protected:
+    static PyObject* PyObject_GetAttrString(PyObject* o, const char* attr_name)
+    {
+        PyObject* result = ::PyObject_GetAttrString(o, attr_name);
+        if (result == nullptr) {
+            ImportError("Unable to get Attribute '%s'\n", attr_name);
+            PyErr_Clear();
+        }
+        return result;
+    }
+    static void PyObject_SetAttrString(PyObject* o, const char* attr_name, PyObject* v)
+    {
+        if (::PyObject_SetAttrString(o, attr_name, v) != 0) {
+            ImportError("Unable to set Attribute '%s'\n", attr_name);
+            PyErr_Clear();
+        }
+    }
+#endif
 };
 #endif

@@ -95,8 +95,6 @@ jobs:
                             libboost-thread-dev                         \
                             libcoin-dev                                 \
                             libeigen3-dev                               \
-                            libgts-bin                                  \
-                            libgts-dev                                  \
                             libkdtree++-dev                             \
                             libmedc-dev                                 \
                             libocct-data-exchange-dev                   \
@@ -152,6 +150,7 @@ jobs:
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
+          qt_major_version: 5
       - name: Restore Compiler Cache
         uses: actions/cache@v4
         with:

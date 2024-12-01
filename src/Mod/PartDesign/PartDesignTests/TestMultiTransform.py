@@ -29,6 +29,7 @@ App = FreeCAD
 class TestMultiTransform(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestMultiTransform")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
 
     def testMultiTransform(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -69,6 +70,7 @@ class TestMultiTransform(unittest.TestCase):
         # Arrange
         Doc = self.Doc
         Body = Doc.addObject('PartDesign::Body','Body')
+        Body.AllowCompound = False
         # Make first offset cube Pad
         PadSketch = Doc.addObject('Sketcher::SketchObject', 'SketchPad')
         Body.addObject(PadSketch)
@@ -132,5 +134,6 @@ class TestMultiTransform(unittest.TestCase):
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestMultiTransform")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
         #print ("omit closing document for debugging")
 

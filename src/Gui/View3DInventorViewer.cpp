@@ -91,6 +91,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Base/Tools2D.h>
 #include <Quarter/devices/InputDevice.h>
 #include <Quarter/eventhandlers/EventFilter.h>
 
@@ -98,14 +99,14 @@
 #include "Application.h"
 #include "Document.h"
 #include "GLPainter.h"
+#include "Inventor/SoAxisCrossKit.h"
+#include "Inventor/SoFCBackgroundGradient.h"
+#include "Inventor/SoFCBoundingBox.h"
 #include "MainWindow.h"
 #include "Multisample.h"
 #include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "Selection.h"
-#include "SoAxisCrossKit.h"
-#include "SoFCBackgroundGradient.h"
-#include "SoFCBoundingBox.h"
 #include "SoFCDB.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCOffscreenRenderer.h"
@@ -127,9 +128,9 @@
 #include "Utilities.h"
 
 
-FC_LOG_LEVEL_INIT("3DViewer",true,true)
+FC_LOG_LEVEL_INIT("3DViewer", true, true)
 
-//#define FC_LOGGING_CB
+// #define FC_LOGGING_CB
 
 using namespace Gui;
 
@@ -656,11 +657,10 @@ static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, 
     Q_UNUSED(dpr)
 #endif
 #ifdef HAS_QTBUG_95434
-    QPixmap pixmap;
     if (qGuiApp->platformName() == QLatin1String("wayland")) {
         QImage img = bitmap.toImage();
         img.convertTo(QImage::Format_ARGB32);
-        pixmap = QPixmap::fromImage(img);
+        QPixmap pixmap = QPixmap::fromImage(img);
         pixmap.setMask(mask);
         return QCursor(pixmap, hotX, hotY);
     }
@@ -1073,7 +1073,11 @@ void View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* vp, int Mod
 {
     this->editViewProvider = vp;
     this->editViewProvider->setEditViewer(this, ModNum);
+
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     this->navigation->findBoundingSphere();
+#endif
+
     addEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
 }
 
@@ -1536,7 +1540,9 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
         }
     }
 
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     navigation->findBoundingSphere();
+#endif
 }
 
 void View3DInventorViewer::savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const
@@ -2652,14 +2658,82 @@ SbVec2f View3DInventorViewer::getNormalizedPosition(const SbVec2s& pnt) const
     return {pX, pY};
 }
 
-SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(const SbVec2s& pnt, Base::Placement& plc) const
+Base::BoundBox2d View3DInventorViewer::getViewportOnXYPlaneOfPlacement(Base::Placement plc) const
+{
+    auto projBBox = Base::BoundBox3d();
+    projBBox.SetVoid();
+
+    SoCamera* pCam = this->getSoRenderManager()->getCamera();
+
+    if (!pCam) {
+        // Return empty box.
+        return Base::BoundBox2d(0, 0, 0, 0);
+    }
+
+    Base::Vector3d pos = plc.getPosition();
+    Base::Rotation rot = plc.getRotation();
+
+    // Transform the plane LCS into the global one.
+    Base::Vector3d zAxis(0, 0, 1);
+    rot.multVec(zAxis, zAxis);
+
+    // Get the position and convert Base::Vector3d to SbVec3f
+    SbVec3f planeNormal(zAxis.x, zAxis.y, zAxis.z);
+    SbVec3f planePosition(pos.x, pos.y, pos.z);
+    SbPlane xyPlane(planeNormal, planePosition);
+
+    const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
+    SbViewVolume vol = pCam->getViewVolume();
+
+    float fRatio = vp.getViewportAspectRatio();
+    float dX, dY;
+    vp.getViewportSize().getValue(dX, dY);
+
+    // Projects a pair of normalized coordinates on the XY plane.
+    auto projectPoint =
+            [&](float x, float y) {
+                if (fRatio > 1.f) {
+                    x = (x - 0.5f * dX) * fRatio + 0.5f * dX;
+                }
+                else if (fRatio < 1.f) {
+                    y = (y - 0.5f * dY) / fRatio + 0.5f * dY;
+                }
+
+                SbLine line;
+                vol.projectPointToLine(SbVec2f(x, y), line);
+
+                SbVec3f pt;
+                // Intersection point on the XY plane.
+                if (!xyPlane.intersect(line, pt)) {
+                    return;
+                }
+
+                projBBox.Add(Base::convertTo<Base::Vector3d>(pt));
+            };
+
+    // Project the four corners of the viewport plane.
+    projectPoint(0.f, 0.f);
+    projectPoint(1.f, 0.f);
+    projectPoint(0.f, 1.f);
+    projectPoint(1.f, 1.f);
+
+    if (!projBBox.IsValid()) {
+        // Return empty box.
+        return Base::BoundBox2d(0, 0, 0, 0);
+    }
+
+    plc.invert();
+    Base::ViewOrthoProjMatrix proj(plc.toMatrix());
+    return projBBox.ProjectBox(&proj);
+}
+
+SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(const SbVec2s& pnt, const Base::Placement& plc) const
 {
     SbVec2f pnt2d = getNormalizedPosition(pnt);
     SoCamera* pCam = this->getSoRenderManager()->getCamera();
 
     if (!pCam) {
-        // return invalid point
-        return {};
+        throw Base::RuntimeError("No camera node found");
     }
 
     SbViewVolume  vol = pCam->getViewVolume();
@@ -2669,23 +2743,19 @@ SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(const SbVec2s& pnt, B
     // Calculate the plane using plc
     Base::Rotation rot = plc.getRotation();
     Base::Vector3d normalVector = rot.multVec(Base::Vector3d(0, 0, 1));
-    SbVec3f planeNormal(normalVector.x, normalVector.y, normalVector.z);
+    SbVec3f planeNormal = Base::convertTo<SbVec3f>(normalVector);
 
     // Get the position and convert Base::Vector3d to SbVec3f
     Base::Vector3d pos = plc.getPosition();
-    SbVec3f planePosition(pos.x, pos.y, pos.z);
+    SbVec3f planePosition = Base::convertTo<SbVec3f>(pos);
     SbPlane xyPlane(planeNormal, planePosition);
 
     SbVec3f pt;
     if (xyPlane.intersect(line, pt)) {
         return pt; // Intersection point on the XY plane
     }
-    else {
-        // No intersection found
-        return {};
-    }
 
-    return pt;
+    throw Base::RuntimeError("No intersection found");
 }
 
 SbVec3f projectPointOntoPlane(const SbVec3f& point, const SbPlane& plane) {
@@ -3352,7 +3422,7 @@ void View3DInventorViewer::alignToSelection()
         return;
     }
 
-    const auto selection = Selection().getSelection();
+    const auto selection = Selection().getSelection(nullptr, ResolveMode::NoResolve);
 
     // Empty selection
     if (selection.empty()) {
@@ -3367,13 +3437,19 @@ void View3DInventorViewer::alignToSelection()
     // Get the geo feature
     App::GeoFeature* geoFeature = nullptr;
     App::ElementNamePair elementName;
-    App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
+    App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, true, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
     if (!geoFeature) {
         return;
     }
 
+    const auto globalPlacement = App::GeoFeature::getGlobalPlacement(selection[0].pResolvedObject, selection[0].pObject, elementName.oldName);
+    const auto rotation = globalPlacement.getRotation() * geoFeature->Placement.getValue().getRotation().inverse();
+    const auto splitSubName = Base::Tools::splitSubName(elementName.oldName);
+    const auto geoFeatureSubName = !splitSubName.empty() ? splitSubName.back() : "";
+
     Base::Vector3d direction;
-    if (geoFeature->getCameraAlignmentDirection(direction, selection[0].SubName)) {
+    if (geoFeature->getCameraAlignmentDirection(direction, geoFeatureSubName.c_str())) {
+        rotation.multVec(direction, direction);
         const auto orientation = SbRotation(SbVec3f(0, 0, 1), Base::convertTo<SbVec3f>(direction));
         setCameraOrientation(orientation);
     }

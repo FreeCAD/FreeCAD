@@ -82,18 +82,18 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1788"/>
       <source>Insert 3-Point Angle Dimension</source>
-      <translation type="unfinished">Insert 3-Point Angle Dimension</translation>
+      <translation>Indsæt vinkel mellem 3 punkter</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="670"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="671"/>
+      <location filename="../../Command.cpp" line="688"/>
       <source>Insert Active View (3D View)</source>
       <translation>Indsæt aktiv visning (3D-visning)</translation>
     </message>
@@ -127,30 +127,30 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1640"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1641"/>
       <source>Insert BIM Workbench Object</source>
-      <translation type="unfinished">Insert BIM Workbench Object</translation>
+      <translation>Indsæt BIM-arbejdsbænkobjekt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1624"/>
+      <location filename="../../Command.cpp" line="1642"/>
       <source>Insert a View of a Section Plane from BIM Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from BIM Workbench</translation>
+      <translation>Indsæt tegning af tværsnit fra BIM-arbejdsbænk</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1247"/>
+      <location filename="../../Command.cpp" line="1264"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1248"/>
+      <location filename="../../Command.cpp" line="1265"/>
       <source>Insert Balloon Annotation</source>
       <translation>Indsæt ballonannotering</translation>
     </message>
@@ -176,58 +176,58 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1311"/>
+      <location filename="../../Command.cpp" line="1328"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1312"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>Insert Clip Group</source>
-      <translation type="unfinished">Insert Clip Group</translation>
+      <translation>Indsæt udsnitsgruppe</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1348"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1349"/>
+      <location filename="../../Command.cpp" line="1366"/>
       <source>Add View to Clip Group</source>
-      <translation type="unfinished">Add View to Clip Group</translation>
+      <translation>Tilføj tegning til udsnitsgruppe</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1449"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1450"/>
       <source>Remove View from Clip Group</source>
-      <translation type="unfinished">Remove View from Clip Group</translation>
+      <translation>Fjern tegning fra udsnitsgruppe</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="855"/>
+      <location filename="../../Command.cpp" line="872"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="856"/>
+      <location filename="../../Command.cpp" line="873"/>
       <source>Insert Complex Section View</source>
-      <translation type="unfinished">Insert Complex Section View</translation>
+      <translation>Indsæt tegning af komplekst tværsnit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="857"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>Insert a Complex Section View</source>
-      <translation type="unfinished">Insert a Complex Section View</translation>
+      <translation>Indsæt visning af komplekst tværsnit</translation>
     </message>
   </context>
   <context>
@@ -295,12 +295,12 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="998"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="982"/>
+      <location filename="../../Command.cpp" line="999"/>
       <source>Insert Detail View</source>
       <translation>Indsæt detaljevisning</translation>
     </message>
@@ -343,40 +343,40 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1559"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1560"/>
+      <location filename="../../Command.cpp" line="1578"/>
       <source>Insert Draft Workbench Object</source>
-      <translation type="unfinished">Insert Draft Workbench Object</translation>
+      <translation>Indsæt objekt fra Draft-arbejdsbænk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1561"/>
+      <location filename="../../Command.cpp" line="1579"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
+      <translation>Indsæt visning af objekt fra Draft-arbejdsbænk</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1798"/>
+      <location filename="../../Command.cpp" line="1816"/>
       <source>File</source>
       <translation>Fil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1799"/>
+      <location filename="../../Command.cpp" line="1817"/>
       <source>Export Page as DXF</source>
       <translation>Eksporter side som DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1833"/>
+      <location filename="../../Command.cpp" line="1851"/>
       <source>Save DXF file</source>
       <translation>Gem som DXF-fil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1852"/>
       <source>DXF (*.dxf)</source>
       <translation type="unfinished">DXF (*.dxf)</translation>
     </message>
@@ -384,12 +384,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1757"/>
+      <location filename="../../Command.cpp" line="1775"/>
       <source>File</source>
       <translation>Fil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1758"/>
+      <location filename="../../Command.cpp" line="1776"/>
       <source>Export Page as SVG</source>
       <translation>Eksporter side som SVG</translation>
     </message>
@@ -409,7 +409,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1664"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>Forlæng en kosmetisk- eller centerlinje i begge ender:&lt;br&gt;- Specificér difference afstanden (valgfrit)&lt;br&gt;- Vælg en linje&lt;br&gt;- Tryk på dette værktøj</translation>
+      <translation>Forlæng en kosmetisk- eller centerlinje i begge ender:&lt;br&gt;- Fastsæt difference afstanden (valgfrit)&lt;br&gt;- Vælg en linje&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -427,7 +427,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1768"/>
       <source>Select several faces then click this tool</source>
-      <translation type="unfinished">Select several faces then click this tool</translation>
+      <translation>Vælg flere flader, klik herefter dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -445,7 +445,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Fordel horisontale dimensioner jævnt:&lt;br&gt;- Angiv kaskadeafstand (valgfrit)&lt;br&gt;- Vælg 2 eller flere horisontale dimensioner&lt;br&gt;- Den første dimension definerer placeringen&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -465,7 +465,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="978"/>
       <location filename="../../CommandExtensionDims.cpp" line="1232"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Fordel horisontale dimensioner jævnt:&lt;br&gt;- Angiv kaskadeafstand (valgfrit)&lt;br&gt;- Vælg 2 eller flere horisontale dimensioner&lt;br&gt;- Den første dimension definerer placeringen&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -518,12 +518,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2185"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Lav horisontal rejfningsdimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2186"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Lav en horisontal størrelse og vinkel for en refjning:&lt;br&gt; Vælg to punkter&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -536,12 +536,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="781"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Tilpas linjeattributter</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="782"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</translation>
+      <translation>Tilpas attributterne af kosmetiske linjer og centerlinjer:&lt;br&gt;- Fastsæt linjeattributterne (valgfrit)&lt;br&gt;- Vælg et eller flere linjer&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -561,7 +561,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="250"/>
       <location filename="../../CommandExtensionPack.cpp" line="353"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj centerlinjer til cirkler og buer:&lt;br&gt;- Fastsæt linjeattributterne (valgfrit)&lt;br&gt;- Vælg et eller flere cirkler eller buer&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -579,7 +579,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="284"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj centerlinjer til cirkler og buer:&lt;br&gt;- Fastsæt linjeattributterne (valgfrit)&lt;br&gt;- Vælg et eller flere cirkler eller buer&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -592,12 +592,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1533"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Lav horisontale kædedimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1534"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj en sekvens af flugtende horisontale dimensioner:&lt;br&gt;- Vælg tre eller flere punkter&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -629,13 +629,13 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1309"/>
       <location filename="../../CommandExtensionDims.cpp" line="1607"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Lav horisontale kædedimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1310"/>
       <location filename="../../CommandExtensionDims.cpp" line="1608"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj en sekvens af flugtende horisontale dimensioner:&lt;br&gt;- Vælg tre eller flere punkter&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -649,13 +649,13 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="2083"/>
       <location filename="../../CommandExtensionDims.cpp" line="2252"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Lav horisontal rejfningsdimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2084"/>
       <location filename="../../CommandExtensionDims.cpp" line="2253"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Lav en horisontal størrelse og vinkel for en rejfning:&lt;br&gt; Vælg to punkter&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -688,12 +688,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2285"/>
       <source>Create Arc Length Dimension</source>
-      <translation type="unfinished">Create Arc Length Dimension</translation>
+      <translation>Lav buelængdedimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2286"/>
       <source>Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</translation>
+      <translation>Lav en buelængdedimension:&lt;br&gt;- Vælg en enkel bue&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -747,13 +747,13 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1376"/>
       <location filename="../../CommandExtensionDims.cpp" line="1614"/>
       <source>Create Vertical Chain Dimensions</source>
-      <translation type="unfinished">Create Vertical Chain Dimensions</translation>
+      <translation>Lav vertikale kædedimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1377"/>
       <location filename="../../CommandExtensionDims.cpp" line="1615"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Lav en sekvens af flugtende vertikale dimensioner:&lt;br&gt;- Vælg tre eller flere punkter&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -767,13 +767,13 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="2152"/>
       <location filename="../../CommandExtensionDims.cpp" line="2259"/>
       <source>Create Vertical Chamfer Dimension</source>
-      <translation type="unfinished">Create Vertical Chamfer Dimension</translation>
+      <translation>Lav vertikal rejfningsdimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2153"/>
       <location filename="../../CommandExtensionDims.cpp" line="2260"/>
       <source>Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Lav en vertikal størrelse og vinkeldimensionering for rejfning:&lt;br&gt;- Vælg to punkter&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -787,7 +787,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1759"/>
       <location filename="../../CommandExtensionDims.cpp" line="2009"/>
       <source>Create Vertical Coordinate Dimensions</source>
-      <translation type="unfinished">Create Vertical Coordinate Dimensions</translation>
+      <translation>Lav vertikale koordinatdimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1760"/>
@@ -806,12 +806,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2336"/>
       <source>Customize Format Label</source>
-      <translation type="unfinished">Customize Format Label</translation>
+      <translation>Definér labelformat</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2337"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
-      <translation type="unfinished">Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</translation>
+      <translation>Vælg en dimension eller en ballon&lt;br&gt;    - Tryk på dette værktøj&lt;br&gt;    - Rediger formatfeltet med tastatur og/eller specialknapper</translation>
     </message>
   </context>
   <context>
@@ -825,13 +825,13 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="504"/>
       <location filename="../../CommandExtensionDims.cpp" line="611"/>
       <source>Decrease Decimal Places</source>
-      <translation type="unfinished">Decrease Decimal Places</translation>
+      <translation>Formindsk decimalpladser</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="505"/>
       <location filename="../../CommandExtensionDims.cpp" line="612"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Formindsk antallet af decimalpladser af dimensionsteksten:&lt;br&gt;- Vælg et eller flere dimensioner&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -849,7 +849,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1108"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj en kosmetisk linje baseret på to punkter:&lt;br&gt;- Fastsæt linjeattributterne (valgfrit)&lt;br&gt;- Vælg punkt 1 (centerpunkt)&lt;br&gt;- Vælg punkt 2 (radius)&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -869,7 +869,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="943"/>
       <location filename="../../CommandExtensionPack.cpp" line="1196"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj en kosmetisk bue gående mod uret baseret på 3 punkter:&lt;br&gt;- Fastsæt linjeattributter (valgfrit)&lt;br&gt;- Vælg punkt 1 (centerpunkt)&lt;br&gt;- Vælg punkt 2 (radius og startvinkel)&lt;br&gt;- Vælg punkt 3 (slutvinkel)&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -889,7 +889,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1007"/>
       <location filename="../../CommandExtensionPack.cpp" line="1186"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj en kosmetisk cirkel baseret på to punkter:&lt;br&gt;- Fastsæt linjeattributten (valgfrit)&lt;br&gt;- Vælg punkt 1 (centerpunkt)&lt;br&gt;- Vælg punkt 2 (radius)&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -903,17 +903,17 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1072"/>
       <location filename="../../CommandExtensionPack.cpp" line="1205"/>
       <source>Add Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">Add Cosmetic Circle 3 Points</translation>
+      <translation>Tilføj 3-punktet kosmetisk cirkel</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1073"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj en kosmetisk cirkel baseret på 3 punkter&lt;br&gt;- Vælg linjeattributten (valgfrit)&lt;br&gt;- Vælg 3 punkter&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1207"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj en kosmetisk cirkel baseret på 3 punkter:&lt;br&gt;- Fastsæt linjeattributterne (valgfrit)&lt;br&gt;- Vælg 3 punkter&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -933,7 +933,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1594"/>
       <location filename="../../CommandExtensionPack.cpp" line="1733"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>Forlæng en kosmetisk- eller centerlinje i begge ender:&lt;br&gt;- Specificér difference afstanden (valgfrit)&lt;br&gt;- Vælg en linje&lt;br&gt;- Tryk på dette værktøj</translation>
+      <translation>Forlæng en kosmetisk- eller centerlinje i begge ender:&lt;br&gt;- Fastsæt difference afstanden (valgfrit)&lt;br&gt;- Vælg en linje&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -947,13 +947,13 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="173"/>
       <location filename="../../CommandExtensionPack.cpp" line="361"/>
       <source>Add Bolt Circle Centerlines</source>
-      <translation type="unfinished">Add Bolt Circle Centerlines</translation>
+      <translation>Tilføj centerlinje til boltkrans</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="174"/>
       <location filename="../../CommandExtensionPack.cpp" line="362"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj centerlinjer til et cirkulært mønster af cirkler:&lt;br&gt;- Fastsæt linjeattributterne (valgfrit)&lt;br&gt;-Vælg 3 eller flere cirkler, der skaber er cirkulært mønster&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -973,7 +973,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="472"/>
       <location filename="../../CommandExtensionDims.cpp" line="605"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Forøg antallet af decimalpladser i dimensionsteksten:&lt;br&gt;- Vælg et eller flere dimensioner&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -991,7 +991,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="538"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Forøg antallet af decimalpladser i dimensionsteksten:&lt;br&gt;- Vælg et eller flere dimensioner&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -1005,13 +1005,13 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="156"/>
       <location filename="../../CommandExtensionDims.cpp" line="395"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
+      <translation>Indsæt &apos;⌀&apos; præfiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="157"/>
       <location filename="../../CommandExtensionDims.cpp" line="396"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Indsæt et &apos;⌀&apos;-symbol ved begyndelsen af dimensionens tekst:&lt;br&gt;- Vælg et eller flere dimensioner&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -1024,12 +1024,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="314"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
+      <translation>Indsæt &apos;⌀&apos; præfiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="315"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Indsæt et &apos;⌀&apos;-symbol ved begyndelsen af dimensionens tekst:&lt;br&gt;- Vælg et eller flere dimensioner&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -1043,7 +1043,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="189"/>
       <location filename="../../CommandExtensionDims.cpp" line="402"/>
       <source>Insert &apos;□&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
+      <translation>Indsæt &apos;□&apos;-præfiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="190"/>
@@ -1138,7 +1138,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="828"/>
       <source>Position Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Position Horizontal Chain Dimensions</translation>
+      <translation>Placér horisontale kædedimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="829"/>
@@ -1157,7 +1157,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="664"/>
       <location filename="../../CommandExtensionDims.cpp" line="903"/>
       <source>Position Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Position Horizontal Chain Dimensions</translation>
+      <translation>Placér horisontale kædedimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="665"/>
@@ -1333,13 +1333,13 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="408"/>
       <location filename="../../CommandExtensionPack.cpp" line="688"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Side View</translation>
+      <translation>Tilføj kosmetisk gevindhulssidevisning</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="409"/>
       <location filename="../../CommandExtensionPack.cpp" line="690"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj et kosmetisk gevind til sidevisning af hul:&lt;br&gt;- Fastsæt linjeattributterne (valgfrit)&lt;br&gt;- Vælg 2 parallelle linjer&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -1352,12 +1352,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="605"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Side View</translation>
+      <translation>Tilføj kosmetisk gevindhulssidevisning</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="606"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj et kosmetisk gevind til sidevisning af hul:&lt;br&gt;- Fastsæt linjeattributterne (valgfrit)&lt;br&gt;- Vælg 2 parallelle linjer&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -1370,12 +1370,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="842"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">Add Cosmetic Intersection Vertex(es)</translation>
+      <translation>Tilføj kosmetiske skæringspunkter</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="844"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</translation>
+      <translation>Tilføj kosmetiske punkter til skæringer mellem markerede linjer:&lt;br&gt;- Vælg to linjer&lt;br&gt;- Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -1417,25 +1417,25 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="170"/>
+      <location filename="../../CommandDecorate.cpp" line="171"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="171"/>
+      <location filename="../../CommandDecorate.cpp" line="172"/>
       <source>Apply Geometric Hatch to Face</source>
-      <translation type="unfinished">Apply Geometric Hatch to Face</translation>
+      <translation>Anvend geometrisk skravering til flade</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="74"/>
+      <location filename="../../CommandDecorate.cpp" line="75"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="75"/>
+      <location filename="../../CommandDecorate.cpp" line="76"/>
       <source>Hatch a Face using Image File</source>
       <translation>Skravér en flade med billedfil</translation>
     </message>
@@ -1450,7 +1450,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1645"/>
       <source>Insert Horizontal Dimension</source>
-      <translation type="unfinished">Insert Horizontal Dimension</translation>
+      <translation>Indsæt horisontal dimension</translation>
     </message>
   </context>
   <context>
@@ -1469,28 +1469,28 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="241"/>
+      <location filename="../../CommandDecorate.cpp" line="242"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="242"/>
+      <location filename="../../CommandDecorate.cpp" line="243"/>
       <source>Insert Bitmap Image</source>
       <translation>Indsæt bitmap-billede</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="243"/>
-      <location filename="../../CommandDecorate.cpp" line="245"/>
+      <location filename="../../CommandDecorate.cpp" line="244"/>
+      <location filename="../../CommandDecorate.cpp" line="246"/>
       <source>Insert Bitmap from a file into a page</source>
-      <translation type="unfinished">Insert Bitmap from a file into a page</translation>
+      <translation>Indsæt bitmap på siden fra en fil</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="260"/>
+      <location filename="../../CommandDecorate.cpp" line="261"/>
       <source>Select an Image File</source>
       <translation>Vælg en billedfil</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="262"/>
+      <location filename="../../CommandDecorate.cpp" line="263"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>Billedfiler (*.jpg *.jpeg *.png *.bmp);;Alle filer (*)</translation>
     </message>
@@ -1531,7 +1531,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1598"/>
       <source>Insert Length Dimension</source>
-      <translation type="unfinished">Insert Length Dimension</translation>
+      <translation>Indsæt længdedimension</translation>
     </message>
   </context>
   <context>
@@ -1544,7 +1544,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1886"/>
       <source>Link Dimension to 3D Geometry</source>
-      <translation type="unfinished">Link Dimension to 3D Geometry</translation>
+      <translation>Forbind dimension med 3D-geometri</translation>
     </message>
   </context>
   <context>
@@ -1563,12 +1563,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawPageDefault</name>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="109"/>
       <source>Insert Default Page</source>
       <translation>Indsæt standard side</translation>
     </message>
@@ -1576,35 +1576,35 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="170"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="167"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>Insert Page using Template</source>
       <translation>Indsæt side med skabelon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="180"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Select a Template File</source>
       <translation>Vælg skabelonfil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="181"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Skabelon (*.svg)</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawPrintAll</name>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Print All Pages</source>
       <translation>Print alle sider</translation>
     </message>
@@ -1612,32 +1612,32 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
+      <location filename="../../Command.cpp" line="1880"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1862"/>
+      <location filename="../../Command.cpp" line="1881"/>
       <source>Project shape...</source>
-      <translation type="unfinished">Project shape...</translation>
+      <translation>Projekter form...</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1025"/>
+      <location filename="../../Command.cpp" line="1042"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1026"/>
+      <location filename="../../Command.cpp" line="1043"/>
       <source>Insert Projection Group</source>
-      <translation>Indsæt projektionsgruppe</translation>
+      <translation>Indsæt afbildningsgruppe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1027"/>
+      <location filename="../../Command.cpp" line="1044"/>
       <source>Insert multiple linked views of drawable object(s)</source>
-      <translation type="unfinished">Insert multiple linked views of drawable object(s)</translation>
+      <translation>Indsæt flere forbundne visninger af tegnbare objekt(er)</translation>
     </message>
   </context>
   <context>
@@ -1669,12 +1669,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Redraw Page</source>
       <translation>Genoptegn side</translation>
     </message>
@@ -1695,22 +1695,22 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="700"/>
+      <location filename="../../Command.cpp" line="717"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="701"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Insert a simple or complex Section View</source>
-      <translation type="unfinished">Insert a simple or complex Section View</translation>
+      <translation>Indsæt simpelt eller komplekst tværsnit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="766"/>
+      <location filename="../../Command.cpp" line="783"/>
       <source>Section View</source>
-      <translation type="unfinished">Section View</translation>
+      <translation>Tværsnittegning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="770"/>
+      <location filename="../../Command.cpp" line="787"/>
       <source>Complex Section</source>
       <translation>Komplekst tværsnit</translation>
     </message>
@@ -1718,12 +1718,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="793"/>
+      <location filename="../../Command.cpp" line="810"/>
       <source>Insert Section View</source>
       <translation>Indsæt tværsnit visning</translation>
     </message>
@@ -1744,17 +1744,17 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1693"/>
+      <location filename="../../Command.cpp" line="1711"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1694"/>
+      <location filename="../../Command.cpp" line="1712"/>
       <source>Insert Spreadsheet View</source>
       <translation>Indsæt regnearksvisning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1695"/>
+      <location filename="../../Command.cpp" line="1713"/>
       <source>Insert View to a spreadsheet</source>
       <translation type="unfinished">Insert View to a spreadsheet</translation>
     </message>
@@ -1800,22 +1800,22 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="143"/>
       <source>Stack Top</source>
-      <translation type="unfinished">Stack Top</translation>
+      <translation>Flyt øverst</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="147"/>
       <source>Stack Bottom</source>
-      <translation type="unfinished">Stack Bottom</translation>
+      <translation>Flyt nederst</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="151"/>
       <source>Stack Up</source>
-      <translation type="unfinished">Stack Up</translation>
+      <translation>Flyt op</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="155"/>
       <source>Stack Down</source>
-      <translation type="unfinished">Stack Down</translation>
+      <translation>Flyt ned</translation>
     </message>
   </context>
   <context>
@@ -1865,17 +1865,17 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1505"/>
+      <location filename="../../Command.cpp" line="1522"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1506"/>
+      <location filename="../../Command.cpp" line="1523"/>
       <source>Insert SVG Symbol</source>
-      <translation type="unfinished">Insert SVG Symbol</translation>
+      <translation>Indsæt SVG-symbol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1507"/>
+      <location filename="../../Command.cpp" line="1524"/>
       <source>Insert symbol from an SVG file</source>
       <translation>Indsæt symbol fra en SVG-fil</translation>
     </message>
@@ -1883,15 +1883,15 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="294"/>
+      <location filename="../../CommandDecorate.cpp" line="296"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="295"/>
-      <location filename="../../CommandDecorate.cpp" line="296"/>
+      <location filename="../../CommandDecorate.cpp" line="297"/>
+      <location filename="../../CommandDecorate.cpp" line="298"/>
       <source>Turn View Frames On/Off</source>
-      <translation type="unfinished">Turn View Frames On/Off</translation>
+      <translation>Slå visningsrammer til/fra</translation>
     </message>
   </context>
   <context>
@@ -1923,17 +1923,17 @@ Left clicking on empty space will validate the current Dimension. Right clicking
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="298"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>Insert View</source>
       <translation>Indsæt visning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="299"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Insert a View in current page.
 Selected objects, spreadsheets or Arch WB section planes will be added.
 Without a selection, a file browser lets you select a SVG or image file.</source>
@@ -1942,14 +1942,14 @@ Selected objects, spreadsheets or Arch WB section planes will be added.
 Without a selection, a file browser lets you select a SVG or image file.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="425"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
       <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="426"/>
+      <location filename="../../Command.cpp" line="431"/>
       <source>Do not show this message again</source>
-      <translation type="unfinished">Do not show this message again</translation>
+      <translation>Vis ikke denne besked igen</translation>
     </message>
   </context>
   <context>
@@ -1968,77 +1968,77 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="121"/>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="195"/>
       <source>Drawing create page</source>
       <translation type="unfinished">Drawing create page</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Create BIM View</source>
-      <translation type="unfinished">Create BIM View</translation>
+      <translation>Lav BIM-visning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="489"/>
       <source>Create view</source>
       <translation>Lav visning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="636"/>
       <source>Create broken view</source>
       <translation type="unfinished">Create broken view</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1109"/>
+      <location filename="../../Command.cpp" line="1126"/>
       <source>Create Projection Group</source>
-      <translation type="unfinished">Create Projection Group</translation>
+      <translation>Lav afbildningsgruppe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Create Clip</source>
-      <translation type="unfinished">Create Clip</translation>
+      <translation>Lav udsnit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1418"/>
       <source>ClipGroupAdd</source>
       <translation type="unfinished">ClipGroupAdd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1472"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>ClipGroupRemove</source>
       <translation type="unfinished">ClipGroupRemove</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1841"/>
+      <location filename="../../Command.cpp" line="1859"/>
       <source>Save page to DXF</source>
-      <translation type="unfinished">Save page to DXF</translation>
+      <translation>Gem side til DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="449"/>
-      <location filename="../../Command.cpp" line="1532"/>
+      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="1550"/>
       <source>Create Symbol</source>
-      <translation type="unfinished">Create Symbol</translation>
+      <translation>Lav symbol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1595"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>Create DraftView</source>
-      <translation type="unfinished">Create DraftView</translation>
+      <translation>Lav Draft-visning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1669"/>
+      <location filename="../../Command.cpp" line="1687"/>
       <source>Create ArchView</source>
-      <translation type="unfinished">Create ArchView</translation>
+      <translation>Lav Arch-visning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
-      <location filename="../../Command.cpp" line="1719"/>
+      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Create spreadsheet view</source>
-      <translation type="unfinished">Create spreadsheet view</translation>
+      <translation>Lav Spreadsheet-visning</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="395"/>
+      <location filename="../../PagePrinter.cpp" line="404"/>
       <source>Save page to dxf</source>
-      <translation type="unfinished">Save page to dxf</translation>
+      <translation>Gem side som DXF</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="341"/>
@@ -2053,7 +2053,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="551"/>
       <source>Create Annotation</source>
-      <translation type="unfinished">Create Annotation</translation>
+      <translation>Lav annotering</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="241"/>
@@ -2076,27 +2076,27 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="798"/>
       <source>Add Area dimension</source>
-      <translation type="unfinished">Add Area dimension</translation>
+      <translation>Tilføj arealdimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="809"/>
       <location filename="../../CommandCreateDims.cpp" line="1104"/>
       <location filename="../../CommandCreateDims.cpp" line="1205"/>
       <source>Add Distance dimension</source>
-      <translation type="unfinished">Add Distance dimension</translation>
+      <translation>Tilføj afstandsdimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="818"/>
       <location filename="../../CommandCreateDims.cpp" line="924"/>
       <location filename="../../CommandCreateDims.cpp" line="1185"/>
       <source>Add DistanceX Chamfer dimension</source>
-      <translation type="unfinished">Add DistanceX Chamfer dimension</translation>
+      <translation>Tilføj X-dimension for rejfning</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="829"/>
       <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <source>Add horizontal chain dimensions</source>
-      <translation type="unfinished">Add horizontal chain dimensions</translation>
+      <translation>Tilføj horisontale kædedimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="834"/>
@@ -2109,12 +2109,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandCreateDims.cpp" line="842"/>
       <location filename="../../CommandCreateDims.cpp" line="846"/>
       <source>Add 3-points angle dimension</source>
-      <translation type="unfinished">Add 3-points angle dimension</translation>
+      <translation>Tilføj 3-punkts vinkeldimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="856"/>
       <source>Add horizontal chain dimension</source>
-      <translation type="unfinished">Add horizontal chain dimension</translation>
+      <translation>Tilføj horisontal kædedimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="871"/>
@@ -2126,12 +2126,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandCreateDims.cpp" line="897"/>
       <location filename="../../CommandCreateDims.cpp" line="912"/>
       <source>Add length dimension</source>
-      <translation type="unfinished">Add length dimension</translation>
+      <translation>Tilføj længdedimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="935"/>
       <source>Add Angle dimension</source>
-      <translation type="unfinished">Add Angle dimension</translation>
+      <translation>Tilføj vinkeldimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="950"/>
@@ -2146,13 +2146,13 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1089"/>
       <source>Add Radius dimension</source>
-      <translation type="unfinished">Add Radius dimension</translation>
+      <translation>Tilføj radiusdimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="989"/>
       <location filename="../../CommandCreateDims.cpp" line="1023"/>
       <source>Add Arc Length dimension</source>
-      <translation type="unfinished">Add Arc Length dimension</translation>
+      <translation>Tilføj buelængdedimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="999"/>
@@ -2167,27 +2167,27 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1048"/>
       <source>Add edge length dimension</source>
-      <translation type="unfinished">Add edge length dimension</translation>
+      <translation>Tilføj linjelængdedimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1093"/>
       <source>Add Diameter dimension</source>
-      <translation type="unfinished">Add Diameter dimension</translation>
+      <translation>Tilføj diameterdimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1188"/>
       <source>Add DistanceX dimension</source>
-      <translation type="unfinished">Add DistanceX dimension</translation>
+      <translation>Tilføj X-afstandsdimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1195"/>
       <source>Add DistanceY Chamfer dimension</source>
-      <translation type="unfinished">Add DistanceY Chamfer dimension</translation>
+      <translation>Tilføj Y-dimension for rejfning</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1198"/>
       <source>Add DistanceY dimension</source>
-      <translation type="unfinished">Add DistanceY dimension</translation>
+      <translation>Tilføj Y-afstandsdimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1243"/>
@@ -2202,12 +2202,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1290"/>
       <source>Add horizontal coord dimensions</source>
-      <translation type="unfinished">Add horizontal coord dimensions</translation>
+      <translation>Tilføj horisontale kædedimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1297"/>
       <source>Add vertical chain dimensions</source>
-      <translation type="unfinished">Add vertical chain dimensions</translation>
+      <translation>Tilføj vertikale kædedimensioner</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1301"/>
@@ -2231,55 +2231,55 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2307"/>
-      <location filename="../../CommandCreateDims.cpp" line="2473"/>
+      <location filename="../../CommandCreateDims.cpp" line="2472"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>Lav dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="202"/>
+      <location filename="../../TaskHatch.cpp" line="203"/>
       <source>Create Hatch</source>
       <translation>Lav skravering</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="237"/>
+      <location filename="../../TaskHatch.cpp" line="240"/>
       <source>Update Hatch</source>
       <translation>Opdater skravering</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="121"/>
+      <location filename="../../CommandDecorate.cpp" line="122"/>
       <source>Remove old Hatch</source>
       <translation>Fjern gammel skravering</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="200"/>
+      <location filename="../../CommandDecorate.cpp" line="201"/>
       <source>Create GeomHatch</source>
       <translation type="unfinished">Create GeomHatch</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="269"/>
-      <location filename="../../Command.cpp" line="464"/>
+      <location filename="../../CommandDecorate.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="471"/>
       <source>Create Image</source>
       <translation>Lav billede</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="497"/>
+      <location filename="../../QGIViewBalloon.cpp" line="510"/>
       <source>Drag Balloon</source>
       <translation>Flyt ballon</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="831"/>
+      <location filename="../../QGIViewDimension.cpp" line="875"/>
       <source>Drag Dimension</source>
       <translation type="unfinished">Drag Dimension</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="572"/>
+      <location filename="../../QGSPage.cpp" line="589"/>
       <source>Create Balloon</source>
       <translation>Lav ballon</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="269"/>
+      <location filename="../../TaskActiveView.cpp" line="268"/>
       <source>Create ActiveView</source>
-      <translation type="unfinished">Create ActiveView</translation>
+      <translation>Tilføj aktiv visning</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="177"/>
@@ -2289,27 +2289,27 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="193"/>
       <source>Create Cosmetic Circle</source>
-      <translation type="unfinished">Create Cosmetic Circle</translation>
+      <translation>Lav kosmetisk cirkel</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="267"/>
       <source>Update CosmeticCircle</source>
-      <translation type="unfinished">Update CosmeticCircle</translation>
+      <translation>Opdatér kosmetisk cirkel</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="253"/>
       <source>Update CosmeticLine</source>
-      <translation type="unfinished">Update CosmeticLine</translation>
+      <translation>Opdatér kosmetisk linje</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="435"/>
       <source>Create Detail View</source>
-      <translation type="unfinished">Create Detail View</translation>
+      <translation>Lav detaljevisning</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="477"/>
       <source>Update Detail</source>
-      <translation type="unfinished">Update Detail</translation>
+      <translation>Opdatér detalje</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="348"/>
@@ -2334,12 +2334,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskSectionView.cpp" line="505"/>
       <source>Create SectionView</source>
-      <translation type="unfinished">Create SectionView</translation>
+      <translation>Lav tværsnitsvisning</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="560"/>
       <source>Create ComplexSection</source>
-      <translation type="unfinished">Create ComplexSection</translation>
+      <translation>Lav komplekst tværsnit</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="653"/>
@@ -2350,12 +2350,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="561"/>
       <source>Create WeldSymbol</source>
-      <translation type="unfinished">Create WeldSymbol</translation>
+      <translation>Lav svejsesymbol</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="569"/>
       <source>Edit WeldSymbol</source>
-      <translation type="unfinished">Edit WeldSymbol</translation>
+      <translation>Redigér svejsesymbol</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="138"/>
@@ -2365,17 +2365,17 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="110"/>
       <source>TechDraw Insert Prefix</source>
-      <translation type="unfinished">TechDraw Insert Prefix</translation>
+      <translation>TechDraw Indsæt præfiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="136"/>
       <source>Insert Prefix</source>
-      <translation type="unfinished">Insert Prefix</translation>
+      <translation>Indsæt præfiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="252"/>
       <source>TechDraw Remove Prefix</source>
-      <translation type="unfinished">TechDraw Remove Prefix</translation>
+      <translation>TechDraw Fjern præfiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="256"/>
@@ -2385,7 +2385,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="442"/>
       <source>Increase/Decrease Decimal</source>
-      <translation type="unfinished">Increase/Decrease Decimal</translation>
+      <translation>Forøg/formindsk decimal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="637"/>
@@ -2465,17 +2465,17 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="107"/>
       <source>TechDraw Hole Circle</source>
-      <translation type="unfinished">TechDraw Hole Circle</translation>
+      <translation>TechDraw Hulcirkel</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="128"/>
       <source>Bolt Circle Centerlines</source>
-      <translation type="unfinished">Bolt Circle Centerlines</translation>
+      <translation>Boltkranscenterlinje</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="206"/>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>TechDraw Cirkelcenterlinjer</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="209"/>
@@ -2525,27 +2525,27 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="797"/>
       <source>TechDraw Change Line Attributes</source>
-      <translation type="unfinished">TechDraw Change Line Attributes</translation>
+      <translation>TechDraw Tilpas linjeattributter</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="800"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Tilpas linjeattributter</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="858"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">TechDraw Cosmetic Intersection Vertex(es)</translation>
+      <translation>TechDraw Kosmetiske skæringspunkter</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="861"/>
       <source>Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">Cosmetic Intersection Vertex(es)</translation>
+      <translation>Kosmetiske skæringspunkter</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="904"/>
       <source>TechDraw Cosmetic Arc</source>
-      <translation type="unfinished">TechDraw Cosmetic Arc</translation>
+      <translation>TechDraw Kosmetisk bue</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="907"/>
@@ -2555,7 +2555,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="977"/>
       <source>TechDraw Cosmetic Circle</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle</translation>
+      <translation>TechDraw Kosmetisk cirkel</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="980"/>
@@ -2600,12 +2600,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1511"/>
       <source>Extend/Shorten Line</source>
-      <translation type="unfinished">Extend/Shorten Line</translation>
+      <translation>Forlæng/forkort linje</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1780"/>
       <source>TechDraw calculate selected area</source>
-      <translation type="unfinished">TechDraw calculate selected area</translation>
+      <translation>TechDraw Beregn markerede areal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1822"/>
@@ -2615,12 +2615,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1912"/>
       <source>TechDraw calculate selected arc length</source>
-      <translation type="unfinished">TechDraw calculate selected arc length</translation>
+      <translation>TechDraw Beregn markede buelængde</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1949"/>
       <source>Calculate Edge Length</source>
-      <translation type="unfinished">Calculate Edge Length</translation>
+      <translation>Beregn linjelængde</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="191"/>
@@ -2628,14 +2628,14 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation type="unfinished">Customize Format</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="369"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="398"/>
       <source>Surface Finish Symbols</source>
       <translation type="unfinished">Surface Finish Symbols</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="406"/>
       <source>Create Centerline</source>
-      <translation type="unfinished">Create Centerline</translation>
+      <translation>Lav centerlinje</translation>
     </message>
   </context>
   <context>
@@ -2643,12 +2643,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="158"/>
       <source>View Direction as Angle</source>
-      <translation type="unfinished">View Direction as Angle</translation>
+      <translation>Visningsretning ved vinkel</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="160"/>
       <source>The view direction angle relative to +X in the BaseView.</source>
-      <translation type="unfinished">The view direction angle relative to +X in the BaseView.</translation>
+      <translation>Visningsvinkel relativ til +X i grundvisning.</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="162"/>
@@ -2727,12 +2727,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../mrichtextedit.ui" line="221"/>
       <source>Link (CTRL+L)</source>
-      <translation type="unfinished">Link (CTRL+L)</translation>
+      <translation>Forbind (CTRL+L)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="224"/>
       <source>Link</source>
-      <translation>Link</translation>
+      <translation>Forbind</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="257"/>
@@ -2767,7 +2767,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../mrichtextedit.ui" line="332"/>
       <source>Strike Out</source>
-      <translation type="unfinished">Strike Out</translation>
+      <translation>Udstreg</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="362"/>
@@ -2777,7 +2777,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../mrichtextedit.ui" line="388"/>
       <source>Ordered list (CTRL+=)</source>
-      <translation type="unfinished">Ordered list (CTRL+=)</translation>
+      <translation>Sorteret liste (CTRL+=)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="414"/>
@@ -2878,12 +2878,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../mrichtextedit.cpp" line="371"/>
       <source>Create a link</source>
-      <translation type="unfinished">Create a link</translation>
+      <translation>Lav link</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="372"/>
       <source>Link URL:</source>
-      <translation type="unfinished">Link URL:</translation>
+      <translation>Link URL:</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="705"/>
@@ -2909,245 +2909,245 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandAnnotate.cpp" line="1577"/>
       <location filename="../../CommandCreateDims.cpp" line="2279"/>
       <location filename="../../CommandCreateDims.cpp" line="2288"/>
-      <location filename="../../Command.cpp" line="603"/>
-      <location filename="../../Command.cpp" line="613"/>
-      <location filename="../../Command.cpp" line="829"/>
-      <location filename="../../Command.cpp" line="946"/>
-      <location filename="../../Command.cpp" line="953"/>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="996"/>
-      <location filename="../../Command.cpp" line="1095"/>
-      <location filename="../../Command.cpp" line="1361"/>
+      <location filename="../../Command.cpp" line="620"/>
+      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="846"/>
+      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="970"/>
+      <location filename="../../Command.cpp" line="975"/>
+      <location filename="../../Command.cpp" line="1013"/>
+      <location filename="../../Command.cpp" line="1112"/>
       <location filename="../../Command.cpp" line="1378"/>
-      <location filename="../../Command.cpp" line="1383"/>
-      <location filename="../../Command.cpp" line="1392"/>
-      <location filename="../../Command.cpp" line="1445"/>
-      <location filename="../../Command.cpp" line="1464"/>
-      <location filename="../../Command.cpp" line="1575"/>
-      <location filename="../../Command.cpp" line="1650"/>
-      <location filename="../../Command.cpp" line="1656"/>
-      <location filename="../../Command.cpp" line="1707"/>
+      <location filename="../../Command.cpp" line="1395"/>
+      <location filename="../../Command.cpp" line="1400"/>
+      <location filename="../../Command.cpp" line="1409"/>
+      <location filename="../../Command.cpp" line="1462"/>
+      <location filename="../../Command.cpp" line="1481"/>
+      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1668"/>
+      <location filename="../../Command.cpp" line="1674"/>
+      <location filename="../../Command.cpp" line="1725"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Forkert markering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="614"/>
-      <location filename="../../Command.cpp" line="1096"/>
+      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="1113"/>
       <source>No Shapes, Groups or Links in this selection</source>
       <translation type="unfinished">No Shapes, Groups or Links in this selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="566"/>
+      <location filename="../../Command.cpp" line="581"/>
       <source>Empty selection</source>
-      <translation type="unfinished">Empty selection</translation>
+      <translation>Ingen markering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="444"/>
       <source>Select a SVG or Image file to open</source>
-      <translation type="unfinished">Select a SVG or Image file to open</translation>
+      <translation>Vælg SVG- eller billedfil til åbning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="447"/>
       <source>SVG or Image files</source>
-      <translation type="unfinished">SVG or Image files</translation>
+      <translation>SVG- eller billedfiler</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="582"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
       <translation type="unfinished">Please select objects to break or a base view and break definition objects.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="604"/>
+      <location filename="../../Command.cpp" line="621"/>
       <source>No Break objects found in this selection</source>
       <translation type="unfinished">No Break objects found in this selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
-      <location filename="../../Command.cpp" line="997"/>
+      <location filename="../../Command.cpp" line="847"/>
+      <location filename="../../Command.cpp" line="1014"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation type="unfinished">Select at least 1 DrawViewPart object as Base.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="964"/>
       <source>I do not know what base view to use.</source>
-      <translation type="unfinished">I do not know what base view to use.</translation>
+      <translation>Ved ikke hvilken grundvisning, der skal bruges.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="971"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
-      <translation type="unfinished">No Base View, Shapes, Groups or Links in this selection</translation>
+      <translation>Ingen grundvisning, former, grupper eller forbindelser i markeringen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../Command.cpp" line="976"/>
       <source>No profile object found in selection</source>
       <translation type="unfinished">No profile object found in selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1651"/>
+      <location filename="../../Command.cpp" line="1669"/>
       <source>Please select only 1 BIM Section.</source>
       <translation type="unfinished">Please select only 1 BIM Section.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1657"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>No BIM Sections in selection.</source>
       <translation type="unfinished">No BIM Sections in selection.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="368"/>
-      <location filename="../../CommandDecorate.cpp" line="375"/>
-      <location filename="../../CommandDecorate.cpp" line="382"/>
+      <location filename="../../CommandDecorate.cpp" line="370"/>
+      <location filename="../../CommandDecorate.cpp" line="377"/>
+      <location filename="../../CommandDecorate.cpp" line="384"/>
       <location filename="../../CommandCreateDims.cpp" line="2093"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../CommandCreateDims.cpp" line="2551"/>
-      <location filename="../../CommandCreateDims.cpp" line="2559"/>
-      <location filename="../../CommandCreateDims.cpp" line="2568"/>
-      <location filename="../../Command.cpp" line="1163"/>
-      <location filename="../../Command.cpp" line="1170"/>
-      <location filename="../../Command.cpp" line="1178"/>
-      <location filename="../../Command.cpp" line="1190"/>
+      <location filename="../../CommandCreateDims.cpp" line="2550"/>
+      <location filename="../../CommandCreateDims.cpp" line="2558"/>
+      <location filename="../../CommandCreateDims.cpp" line="2567"/>
+      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1207"/>
       <location filename="../../CommandExtensionPack.cpp" line="1796"/>
       <location filename="../../CommandExtensionPack.cpp" line="1926"/>
       <source>Incorrect selection</source>
-      <translation type="unfinished">Incorrect selection</translation>
+      <translation>Forkert markering</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2552"/>
-      <location filename="../../Command.cpp" line="1164"/>
+      <location filename="../../CommandCreateDims.cpp" line="2551"/>
+      <location filename="../../Command.cpp" line="1181"/>
       <source>Select an object first</source>
       <translation>Vælg et objekt først</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2560"/>
-      <location filename="../../Command.cpp" line="1171"/>
+      <location filename="../../CommandCreateDims.cpp" line="2559"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>Too many objects selected</source>
       <translation>For mange objekter valgt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2569"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../CommandCreateDims.cpp" line="2568"/>
+      <location filename="../../Command.cpp" line="1196"/>
       <source>Create a page first.</source>
-      <translation type="unfinished">Create a page first.</translation>
+      <translation>Lav en side først.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2094"/>
       <location filename="../../CommandCreateDims.cpp" line="2388"/>
-      <location filename="../../Command.cpp" line="1191"/>
+      <location filename="../../Command.cpp" line="1208"/>
       <source>No View of a Part in selection.</source>
       <translation type="unfinished">No View of a Part in selection.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1362"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Select one Clip group and one View.</source>
-      <translation type="unfinished">Select one Clip group and one View.</translation>
+      <translation>Vælg en udsnitsgruppe og en visning.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1379"/>
+      <location filename="../../Command.cpp" line="1396"/>
       <source>Select exactly one View to add to group.</source>
       <translation type="unfinished">Select exactly one View to add to group.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1401"/>
       <source>Select exactly one Clip group.</source>
-      <translation type="unfinished">Select exactly one Clip group.</translation>
+      <translation>Vælg præcis én udsnitsgruppe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1393"/>
+      <location filename="../../Command.cpp" line="1410"/>
       <source>Clip and View must be from same Page.</source>
-      <translation type="unfinished">Clip and View must be from same Page.</translation>
+      <translation>Udsnit og visning skal være fra samme side.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1446"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Select exactly one View to remove from Group.</source>
-      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
+      <translation>Vælg præcis én visning til fjerning fra gruppe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1482"/>
       <source>View does not belong to a Clip</source>
-      <translation type="unfinished">View does not belong to a Clip</translation>
+      <translation>Visning hører ikke til noget udsnit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1524"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>Choose an SVG file to open</source>
       <translation>Vælg en SVG-fil for at åbne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="1544"/>
       <source>Scalable Vector Graphic</source>
       <translation type="unfinished">Scalable Vector Graphic</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
-      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="1544"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Alle filer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1576"/>
+      <location filename="../../Command.cpp" line="1594"/>
       <source>Select at least one object.</source>
       <translation>Vælg mindst et objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+      <translation>Vælg præcis en Spreadsheet-objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1782"/>
+      <location filename="../../Command.cpp" line="1800"/>
       <source>No Drawing View</source>
       <translation type="unfinished">No Drawing View</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1783"/>
+      <location filename="../../Command.cpp" line="1801"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation type="unfinished">Open Drawing View before attempting export to SVG.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1818"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Can not export selection</source>
-      <translation>Kan ikke eksportere valg</translation>
+      <translation>Kan ikke eksportere markering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1819"/>
+      <location filename="../../Command.cpp" line="1837"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation type="unfinished">Page contains DrawViewArch which will not be exported. Continue?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2433"/>
+      <location filename="../../CommandCreateDims.cpp" line="2432"/>
       <source>Ellipse Curve Warning</source>
-      <translation type="unfinished">Ellipse Curve Warning</translation>
+      <translation>Ellipsekurveadvarsel</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2444"/>
+      <location filename="../../CommandCreateDims.cpp" line="2443"/>
       <source>BSpline Curve Warning</source>
-      <translation type="unfinished">BSpline Curve Warning</translation>
+      <translation>B-spline-kurveadvarsel</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="389"/>
-      <location filename="../../CommandDecorate.cpp" line="395"/>
+      <location filename="../../CommandDecorate.cpp" line="391"/>
+      <location filename="../../CommandDecorate.cpp" line="397"/>
       <location filename="../../CommandCreateDims.cpp" line="1925"/>
       <location filename="../../CommandCreateDims.cpp" line="1932"/>
       <location filename="../../CommandCreateDims.cpp" line="2133"/>
       <location filename="../../CommandCreateDims.cpp" line="2148"/>
       <location filename="../../CommandCreateDims.cpp" line="2226"/>
-      <location filename="../../CommandCreateDims.cpp" line="2403"/>
-      <location filename="../../CommandCreateDims.cpp" line="2419"/>
+      <location filename="../../CommandCreateDims.cpp" line="2402"/>
+      <location filename="../../CommandCreateDims.cpp" line="2418"/>
       <location filename="../../TaskDimRepair.cpp" line="125"/>
       <location filename="../../TaskDimRepair.cpp" line="137"/>
       <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../TaskDimension.cpp" line="442"/>
       <source>Incorrect Selection</source>
-      <translation>Forkert valg</translation>
+      <translation>Forkert markering</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2455"/>
+      <location filename="../../CommandCreateDims.cpp" line="2454"/>
       <source>BSpline Curve Error</source>
-      <translation type="unfinished">BSpline Curve Error</translation>
+      <translation>B-spline-kurvefejl</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2109"/>
       <source>Selection contains both 2d and 3d geometry</source>
-      <translation type="unfinished">Selection contains both 2d and 3d geometry</translation>
+      <translation>Markeringen har både 2D- og 3D-geometri</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2134"/>
@@ -3165,39 +3165,39 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation type="unfinished">There is no Dimension in your selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2404"/>
+      <location filename="../../CommandCreateDims.cpp" line="2403"/>
       <source>Can not make 2D dimension from selection</source>
       <translation type="unfinished">Can not make 2D dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2420"/>
+      <location filename="../../CommandCreateDims.cpp" line="2419"/>
       <source>Can not make 3D dimension from selection</source>
-      <translation type="unfinished">Can not make 3D dimension from selection</translation>
+      <translation>Kan ikke lave 3D-dimension ud fra markerede</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2434"/>
+      <location filename="../../CommandCreateDims.cpp" line="2433"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation type="unfinished">Selected edge is an Ellipse. Value will be approximate. Continue?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2445"/>
+      <location filename="../../CommandCreateDims.cpp" line="2444"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation type="unfinished">Selected edge is a B-spline. Value will be approximate. Continue?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2456"/>
+      <location filename="../../CommandCreateDims.cpp" line="2455"/>
       <source>Selected edge is a B-spline and a radius/diameter can not be calculated.</source>
       <translation type="unfinished">Selected edge is a B-spline and a radius/diameter can not be calculated.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1926"/>
       <source>There is no 3D object in your selection</source>
-      <translation type="unfinished">There is no 3D object in your selection</translation>
+      <translation>Der er ikke nok 3D-objekter i markeringen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1933"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
-      <translation type="unfinished">There are no 3D Edges or Vertices in your selection</translation>
+      <translation>Der er ikke 3D-linjer eller punkter i markeringen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2280"/>
@@ -3249,16 +3249,16 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandExtensionDims.cpp" line="1546"/>
       <location filename="../../CommandExtensionDims.cpp" line="1939"/>
       <location filename="../../CommandExtensionDims.cpp" line="2198"/>
-      <location filename="../../Command.cpp" line="712"/>
-      <location filename="../../Command.cpp" line="805"/>
-      <location filename="../../Command.cpp" line="868"/>
+      <location filename="../../Command.cpp" line="729"/>
+      <location filename="../../Command.cpp" line="822"/>
+      <location filename="../../Command.cpp" line="885"/>
       <location filename="../../CommandExtensionPack.cpp" line="296"/>
       <location filename="../../CommandExtensionPack.cpp" line="619"/>
       <location filename="../../CommandExtensionPack.cpp" line="1122"/>
       <location filename="../../CommandExtensionPack.cpp" line="1371"/>
       <location filename="../../CommandExtensionPack.cpp" line="1677"/>
       <source>Task In Progress</source>
-      <translation type="unfinished">Task In Progress</translation>
+      <translation>Job i gang</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="108"/>
@@ -3300,16 +3300,16 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandExtensionDims.cpp" line="1547"/>
       <location filename="../../CommandExtensionDims.cpp" line="1940"/>
       <location filename="../../CommandExtensionDims.cpp" line="2199"/>
-      <location filename="../../Command.cpp" line="713"/>
-      <location filename="../../Command.cpp" line="806"/>
-      <location filename="../../Command.cpp" line="869"/>
+      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="823"/>
+      <location filename="../../Command.cpp" line="886"/>
       <location filename="../../CommandExtensionPack.cpp" line="297"/>
       <location filename="../../CommandExtensionPack.cpp" line="620"/>
       <location filename="../../CommandExtensionPack.cpp" line="1123"/>
       <location filename="../../CommandExtensionPack.cpp" line="1372"/>
       <location filename="../../CommandExtensionPack.cpp" line="1678"/>
       <source>Close active task dialog and try again.</source>
-      <translation type="unfinished">Close active task dialog and try again.</translation>
+      <translation>Luk aktive opgavedialog og prøv igen.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="122"/>
@@ -3337,15 +3337,15 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandAnnotate.cpp" line="1254"/>
       <location filename="../../CommandAnnotate.cpp" line="1428"/>
       <location filename="../../CommandAnnotate.cpp" line="1435"/>
-      <location filename="../../CommandAnnotate.cpp" line="1711"/>
-      <location filename="../../CommandAnnotate.cpp" line="1724"/>
+      <location filename="../../CommandAnnotate.cpp" line="1712"/>
+      <location filename="../../CommandAnnotate.cpp" line="1725"/>
       <source>Wrong Selection</source>
-      <translation type="unfinished">Wrong Selection</translation>
+      <translation>Forkert valg</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="123"/>
       <source>Can not attach leader.  No base View selected.</source>
-      <translation type="unfinished">Can not attach leader.  No base View selected.</translation>
+      <translation>Kan ikke vedhæfte ledelinje. Ingen grundvisning valgt.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="128"/>
@@ -3353,7 +3353,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandAnnotate.cpp" line="907"/>
       <location filename="../../CommandAnnotate.cpp" line="1046"/>
       <source>You must select a base View for the line.</source>
-      <translation type="unfinished">You must select a base View for the line.</translation>
+      <translation>Du skal vælge en grundvisning til linjen.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="320"/>
@@ -3365,7 +3365,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandAnnotate.cpp" line="721"/>
       <location filename="../../CommandAnnotate.cpp" line="914"/>
       <source>No base View in Selection.</source>
-      <translation type="unfinished">No base View in Selection.</translation>
+      <translation>Ingen grundvisning blandt markerede.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="754"/>
@@ -3375,19 +3375,19 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="764"/>
       <source>No CenterLine in selection.</source>
-      <translation type="unfinished">No CenterLine in selection.</translation>
+      <translation>Ingen centerlinje i valg.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="770"/>
       <location filename="../../CommandAnnotate.cpp" line="841"/>
       <location filename="../../CommandAnnotate.cpp" line="953"/>
       <source>Selection is not a CenterLine.</source>
-      <translation>Det valgte er ikke en centerlinje.</translation>
+      <translation>Det markerede er ikke en centerlinje.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="850"/>
       <source>Selection not understood.</source>
-      <translation type="unfinished">Selection not understood.</translation>
+      <translation>Markeringen kunne ikke forstås.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="941"/>
@@ -3397,38 +3397,38 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="963"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
-      <translation type="unfinished">Need 2 Vertices or 1 CenterLine.</translation>
+      <translation>Kræver 2 punkter og 1 centerlinje.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandAnnotate.cpp" line="1174"/>
       <source>Selection is empty.</source>
-      <translation>Selektion er tom.</translation>
+      <translation>Der er ingen markering.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1054"/>
       <source>Not enough points in selection.</source>
-      <translation type="unfinished">Not enough points in selection.</translation>
+      <translation>Ikke nok punkter i markerede.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1074"/>
       <source>Selection is not a Cosmetic Line.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Line.</translation>
+      <translation>Markerede er ikke en kosmetisk linje.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1110"/>
       <source>You must select 2 Vertexes.</source>
-      <translation type="unfinished">You must select 2 Vertexes.</translation>
+      <translation>Du skal vælge 2 punkter.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1197"/>
       <source>You must select a base View for the circle.</source>
-      <translation type="unfinished">You must select a base View for the circle.</translation>
+      <translation>Du skal markere en grundvisning til cirklen.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1255"/>
       <source>Please select a center for the circle.</source>
-      <translation type="unfinished">Please select a center for the circle.</translation>
+      <translation>Vælg venligst et center for cirklen.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1310"/>
@@ -3444,22 +3444,22 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1365"/>
       <source>Unknown object type in selection</source>
-      <translation type="unfinished">Unknown object type in selection</translation>
+      <translation>Ukendt objekttype i markering</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1436"/>
       <source>No View in Selection.</source>
-      <translation type="unfinished">No View in Selection.</translation>
+      <translation>Ingen visning i markering.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1429"/>
       <source>You must select a View and/or lines.</source>
-      <translation type="unfinished">You must select a View and/or lines.</translation>
+      <translation>Du skal vælge en visning og/eller linjer.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1219"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</translation>
+      <translation>Markerede er ikke en kosmetisk cirkel eller en kosmetisk cirkelbue.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1514"/>
@@ -3472,71 +3472,71 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation type="unfinished">Select exactly one Leader line or one Weld symbol.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1638"/>
+      <location filename="../../CommandAnnotate.cpp" line="1639"/>
       <source>SurfaceFinishSymbols</source>
       <translation type="unfinished">SurfaceFinishSymbols</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1639"/>
+      <location filename="../../CommandAnnotate.cpp" line="1640"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation type="unfinished">Selected object is not a part view, nor a leader line</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1712"/>
+      <location filename="../../CommandAnnotate.cpp" line="1713"/>
       <source>No Part View in Selection</source>
       <translation type="unfinished">No Part View in Selection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1725"/>
+      <location filename="../../CommandAnnotate.cpp" line="1726"/>
       <source>No %1 in Selection</source>
-      <translation type="unfinished">No %1 in Selection</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="109"/>
-      <source>Replace Hatch?</source>
-      <translation type="unfinished">Replace Hatch?</translation>
+      <translation>Ingen %1 i markering</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="110"/>
+      <source>Replace Hatch?</source>
+      <translation>Erstat skravering?</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="111"/>
       <source>Some Faces in selection are already hatched.  Replace?</source>
-      <translation type="unfinished">Some Faces in selection are already hatched.  Replace?</translation>
+      <translation>Nogle flader i markering er allerede skraveret. Erstat?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="316"/>
+      <location filename="../../CommandDecorate.cpp" line="318"/>
       <source>No TechDraw Page</source>
-      <translation type="unfinished">No TechDraw Page</translation>
+      <translation>Ingen TechDraw-side</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="317"/>
+      <location filename="../../CommandDecorate.cpp" line="319"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation type="unfinished">Need a TechDraw Page for this command</translation>
+      <translation>Kræver en TechDraw-side til denne kommando</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="369"/>
+      <location filename="../../CommandDecorate.cpp" line="371"/>
       <source>Select a Face first</source>
       <translation>Vælg en flade først</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="376"/>
+      <location filename="../../CommandDecorate.cpp" line="378"/>
       <source>No TechDraw object in selection</source>
-      <translation>Ingen TechDraw-objekter i selektion</translation>
+      <translation>Ingen TechDraw-objekter blandt markerede</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="383"/>
+      <location filename="../../CommandDecorate.cpp" line="385"/>
       <source>Create a page to insert.</source>
       <translation>Lav en side til indsætning.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="390"/>
-      <location filename="../../CommandDecorate.cpp" line="396"/>
+      <location filename="../../CommandDecorate.cpp" line="392"/>
+      <location filename="../../CommandDecorate.cpp" line="398"/>
       <source>No Faces to hatch in this selection</source>
-      <translation>Ingen flader i denne selektion</translation>
+      <translation>Ingen flader blandt markerede</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="306"/>
       <location filename="../../DrawGuiUtil.cpp" line="340"/>
       <source>No page found</source>
-      <translation type="unfinished">No page found</translation>
+      <translation>Ingen sider fundet</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="307"/>
@@ -3549,28 +3549,28 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation type="unfinished">No Drawing Pages in document.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="315"/>
+      <location filename="../../MDIViewPage.cpp" line="347"/>
       <source>PDF (*.pdf)</source>
       <translation type="unfinished">PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="316"/>
-      <location filename="../../MDIViewPage.cpp" line="503"/>
+      <location filename="../../MDIViewPage.cpp" line="348"/>
+      <location filename="../../MDIViewPage.cpp" line="556"/>
       <source>All Files (*.*)</source>
       <translation>Alle filer (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="350"/>
       <source>Export Page As PDF</source>
-      <translation type="unfinished">Export Page As PDF</translation>
+      <translation>Eksportér side som PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="502"/>
+      <location filename="../../MDIViewPage.cpp" line="555"/>
       <source>SVG (*.svg)</source>
       <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="505"/>
+      <location filename="../../MDIViewPage.cpp" line="558"/>
       <source>Export page as SVG</source>
       <translation>Eksportér sider som SVG</translation>
     </message>
@@ -3594,7 +3594,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TemplateTextField.cpp" line="51"/>
       <source>Click to update text</source>
-      <translation type="unfinished">Click to update text</translation>
+      <translation>Tryk for at opdatere tekst</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="220"/>
@@ -3609,14 +3609,14 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskRichAnno.cpp" line="140"/>
       <source>Rich text creator</source>
-      <translation type="unfinished">Rich text creator</translation>
+      <translation>Rich Text-fremstiller</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
       <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
-      <translation type="unfinished">Rich text editor</translation>
+      <translation>Rich Text-redigering</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="109"/>
@@ -3629,29 +3629,29 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>Vælg et symbol</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="91"/>
+      <location filename="../../TaskActiveView.cpp" line="93"/>
       <source>ActiveView to TD View</source>
       <translation type="unfinished">ActiveView to TD View</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="107"/>
+      <location filename="../../TaskActiveView.cpp" line="109"/>
       <source>No Main Window</source>
-      <translation type="unfinished">No Main Window</translation>
+      <translation>Intet hovedvindue</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="108"/>
+      <location filename="../../TaskActiveView.cpp" line="110"/>
       <source>Can not find the main window</source>
-      <translation type="unfinished">Can not find the main window</translation>
+      <translation>Kan ikke finde hovedvindue</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="142"/>
+      <location filename="../../TaskActiveView.cpp" line="144"/>
       <source>No 3D Viewer</source>
-      <translation type="unfinished">No 3D Viewer</translation>
+      <translation>Ingen 3D-visning</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="143"/>
+      <location filename="../../TaskActiveView.cpp" line="145"/>
       <source>Can not find a 3D viewer</source>
-      <translation type="unfinished">Can not find a 3D viewer</translation>
+      <translation>Kan ikke finde nogen 3D-visning</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="169"/>
@@ -3752,7 +3752,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandExtensionDims.cpp" line="643"/>
       <location filename="../../CommandExtensionDims.cpp" line="952"/>
       <source>No horizontal dimensions selected</source>
-      <translation type="unfinished">No horizontal dimensions selected</translation>
+      <translation>Ingen horisontale dimensioner markeret</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="694"/>
@@ -3764,7 +3764,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandExtensionDims.cpp" line="704"/>
       <location filename="../../CommandExtensionDims.cpp" line="1018"/>
       <source>No vertical dimensions selected</source>
-      <translation type="unfinished">No vertical dimensions selected</translation>
+      <translation>Ingen vertikale dimensioner valgte</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="756"/>
@@ -3799,12 +3799,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1274"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
-      <translation type="unfinished">TechDraw Create Horizontal Chain Dimension</translation>
+      <translation>TechDraw Lav horisontal kædedimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1340"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Chain Dimension</translation>
+      <translation>TechDraw Lav vertikal kædedimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1406"/>
@@ -3834,12 +3834,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Chamfer Dimension</translation>
+      <translation>TechDraw Lav vertikal rejfningsdimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2299"/>
       <source>TechDraw Create Arc Length Dimension</source>
-      <translation type="unfinished">TechDraw Create Arc Length Dimension</translation>
+      <translation>TechDraw Lav buelængdedimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2349"/>
@@ -3855,7 +3855,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandExtensionDims.cpp" line="2422"/>
       <location filename="../../CommandExtensionPack.cpp" line="2066"/>
       <source>Selection is empty</source>
-      <translation>Intet valgt</translation>
+      <translation>Intet markeret</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2438"/>
@@ -3866,7 +3866,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="124"/>
       <source>TechDraw Hole Circle</source>
-      <translation type="unfinished">TechDraw Hole Circle</translation>
+      <translation>TechDraw Hulcirkel</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="125"/>
@@ -3876,12 +3876,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1797"/>
       <source>No faces in selection.</source>
-      <translation>Ingen flader valgt.</translation>
+      <translation>Ingen flader markeret.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1927"/>
       <source>No edges in selection.</source>
-      <translation type="unfinished">No edges in selection.</translation>
+      <translation>Ingen linjer blandt markerede.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2151"/>
@@ -3891,29 +3891,29 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2152"/>
       <source>Please select two straight lines</source>
-      <translation type="unfinished">Please select two straight lines</translation>
+      <translation>Vælg venligst 2 rette linjer</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="146"/>
       <location filename="../../TaskDimension.cpp" line="161"/>
       <source>Missing Dimension</source>
-      <translation type="unfinished">Missing Dimension</translation>
+      <translation>Manglende dimension</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="147"/>
       <location filename="../../TaskDimension.cpp" line="162"/>
       <source>Dimension not found.  Was it deleted? Can not continue.</source>
-      <translation type="unfinished">Dimension not found.  Was it deleted? Can not continue.</translation>
+      <translation>Dimension ikke fundet. Er den blevet slettet? Fortsættelse ikke muligt.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="443"/>
       <source>Select 2 Vertexes or 1 Edge</source>
-      <translation type="unfinished">Select 2 Vertexes or 1 Edge</translation>
+      <translation>Marker 2 punkter og 1 linje</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="229"/>
       <source>Please select a Line Group</source>
-      <translation type="unfinished">Please select a Line Group</translation>
+      <translation>Markér venligst en linjegruppe</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="240"/>
@@ -3921,75 +3921,75 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
  thin: %2
  graphic: %3
  thick: %4</source>
-      <translation type="unfinished">%1 defines these line widths:
- thin: %2
- graphic: %3
- thick: %4</translation>
+      <translation>%1 definerer følgende linjetykkelser
+ tynd: %2
+ grafisk: %3
+ tyk: %4</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="97"/>
+      <location filename="../../TaskHatch.cpp" line="98"/>
       <source>Create Face Hatch</source>
       <translation>Lav fladeskravering</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="109"/>
+      <location filename="../../TaskHatch.cpp" line="110"/>
       <source>Edit Face Hatch</source>
       <translation>Redigér skravering</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="247"/>
-      <source>Method</source>
-      <translation type="unfinished">Method</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="253"/>
-      <source>Addition</source>
-      <translation type="unfinished">Addition</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="262"/>
-      <source>Average roughness</source>
-      <translation type="unfinished">Average roughness</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="268"/>
-      <source>Roughness sampling length</source>
-      <translation type="unfinished">Roughness sampling length</translation>
-    </message>
-    <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="277"/>
+      <source>Method</source>
+      <translation>Metode</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="283"/>
+      <source>Addition</source>
+      <translation>Addition</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="292"/>
+      <source>Average roughness</source>
+      <translation>Gennemsnitlig ruhed</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="298"/>
+      <source>Roughness sampling length</source>
+      <translation>Ruhedsstikprøvelængde</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="307"/>
       <source>Lay symbol</source>
       <translation type="unfinished">Lay symbol</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="285"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="315"/>
       <source>Minimum roughness grade number</source>
       <translation type="unfinished">Minimum roughness grade number</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="295"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="325"/>
       <source>Maximum roughness grade number</source>
       <translation type="unfinished">Maximum roughness grade number</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="67"/>
       <source>Dimension Repair</source>
-      <translation type="unfinished">Dimension Repair</translation>
+      <translation>Dimensionsreperation</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <source>Can not use references from a different View</source>
-      <translation type="unfinished">Can not use references from a different View</translation>
+      <translation>Kan ikke bruge referencer fra en anden visning</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <source>Can not make a dimension from selection</source>
-      <translation type="unfinished">Can not make a dimension from selection</translation>
+      <translation>Kan ikke dimension fra markerede</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
       <source>Can not make dimension from selection</source>
-      <translation type="unfinished">Can not make dimension from selection</translation>
+      <translation>Kan ikke dimension fra markerede</translation>
     </message>
     <message>
       <location filename="../../AppTechDrawGui.cpp" line="171"/>
@@ -4005,30 +4005,30 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="119"/>
       <source>Create Cosmetic Circle</source>
-      <translation type="unfinished">Create Cosmetic Circle</translation>
+      <translation>Lav kosmetisk cirkel</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="163"/>
       <source>Edit Cosmetic Circle</source>
-      <translation type="unfinished">Edit Cosmetic Circle</translation>
+      <translation>Redigér kosmetisk cirkel</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="183"/>
       <source>Parameter Error</source>
-      <translation type="unfinished">Parameter Error</translation>
+      <translation>Parameterfejl</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="332"/>
+      <location filename="../../PagePrinter.cpp" line="338"/>
       <source>Document Name:</source>
-      <translation type="unfinished">Document Name:</translation>
+      <translation>Dokumentnavn:</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="170"/>
+      <location filename="../../TaskProjGroup.cpp" line="181"/>
       <source>Projection Group</source>
-      <translation type="unfinished">Projection Group</translation>
+      <translation>Afbildningsgruppe</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="180"/>
+      <location filename="../../TaskProjGroup.cpp" line="191"/>
       <source>Part View</source>
       <translation type="unfinished">Part View</translation>
     </message>
@@ -4065,22 +4065,22 @@ den har et svejsesymbol, der ville blive ødelagt.</translation>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="152"/>
       <source>You cannot delete the anchor view of a projection group.</source>
-      <translation type="unfinished">You cannot delete the anchor view of a projection group.</translation>
+      <translation>Du kan ikke slette en fastgjort visning i en afbildningsgruppe.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="161"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a section view that would become broken.</translation>
+      <translation>Du kan ikke slette denne visning, da den har en tværsnitsvisning, der vil gå i stykker.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="169"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a detail view that would become broken.</translation>
+      <translation>Du kan ikke slette denne visning, da den har den detaljevisning, der vil gå i stykker.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="177"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a leader line that would become broken.</translation>
+      <translation>Du kan ikke slette denne visning, da den har en ledelinje, der vil gå i stykker.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="206"/>
@@ -4099,7 +4099,7 @@ section or detail views, or leader lines that would get broken:</source>
       <location filename="../../ViewProviderProjGroup.cpp" line="156"/>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
-      <translation>Projektionsgruppen er ikke tom, hvorfor
+      <translation>Afbildningsgruppen er ikke tom, hvorfor
 flg. refererende objekter kan gå tabt:</translation>
     </message>
     <message>
@@ -4135,7 +4135,7 @@ det har en flisesvejsning, der ville blive ødelagt.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="92"/>
       <source>Crop To Height</source>
-      <translation type="unfinished">Crop To Height</translation>
+      <translation>Beksær til højde</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
@@ -4150,7 +4150,7 @@ det har en flisesvejsning, der ville blive ødelagt.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="137"/>
       <source>Solid Background</source>
-      <translation type="unfinished">Solid Background</translation>
+      <translation>Gennemfarvet baggrund</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="147"/>
@@ -4160,7 +4160,7 @@ det har en flisesvejsning, der ville blive ødelagt.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="160"/>
       <source>Crop To Width</source>
-      <translation type="unfinished">Crop To Width</translation>
+      <translation>Beskær til bredde</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="167"/>
@@ -4170,7 +4170,7 @@ det har en flisesvejsning, der ville blive ødelagt.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="134"/>
       <source>Paint background yes/no</source>
-      <translation type="unfinished">Paint background yes/no</translation>
+      <translation>Mal baggrunden ja/nej</translation>
     </message>
   </context>
   <context>
@@ -4188,12 +4188,12 @@ det har en flisesvejsning, der ville blive ødelagt.</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="43"/>
       <source>From Page</source>
-      <translation type="unfinished">From Page</translation>
+      <translation>Oprindelsesside</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To Page</source>
-      <translation type="unfinished">To Page</translation>
+      <translation>Destinationsside</translation>
     </message>
   </context>
   <context>
@@ -4201,7 +4201,7 @@ det har en flisesvejsning, der ville blive ødelagt.</translation>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="488"/>
       <source> updates pending</source>
-      <translation type="unfinished"> updates pending</translation>
+      <translation> opdateringer afventer</translation>
     </message>
   </context>
   <context>
@@ -4209,7 +4209,7 @@ det har en flisesvejsning, der ville blive ødelagt.</translation>
     <message>
       <location filename="../../TaskSectionView.cpp" line="154"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Ingen retning sat</translation>
     </message>
   </context>
   <context>
@@ -4290,12 +4290,12 @@ Angle, surface finish, root</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="213"/>
       <source>Flips the sides</source>
-      <translation type="unfinished">Flips the sides</translation>
+      <translation>Ombytter siderne</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="216"/>
       <source>Flip Sides</source>
-      <translation type="unfinished">Flip Sides</translation>
+      <translation>Ombyt sider</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="238"/>
@@ -4334,7 +4334,7 @@ at the kink in the leader line</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="274"/>
       <source>Tail Text</source>
-      <translation type="unfinished">Tail Text</translation>
+      <translation>Haletekst</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="287"/>
@@ -4344,14 +4344,14 @@ at the kink in the leader line</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="294"/>
       <source>Symbol Directory</source>
-      <translation type="unfinished">Symbol Directory</translation>
+      <translation>Symbolmappe</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="301"/>
       <source>Directory path for welding symbols.
 This directory will be used for the symbol selection.</source>
-      <translation type="unfinished">Directory path for welding symbols.
-This directory will be used for the symbol selection.</translation>
+      <translation>Mappesti til svejsesymboler.
+Denne mappe vil blive brugt til valg af symboler.</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="308"/>
@@ -4374,7 +4374,7 @@ This directory will be used for the symbol selection.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
       <source>Select a Page that should be used</source>
-      <translation type="unfinished">Select a Page that should be used</translation>
+      <translation>Vælg en side, der skal bruges</translation>
     </message>
   </context>
   <context>
@@ -4419,7 +4419,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="70"/>
       <source>Debug Section</source>
-      <translation type="unfinished">Debug Section</translation>
+      <translation>Fejlfind tværsnit</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="274"/>
@@ -4429,7 +4429,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="277"/>
       <source>Debug Detail</source>
-      <translation type="unfinished">Debug Detail</translation>
+      <translation>Fejlfind detalje</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="131"/>
@@ -4498,12 +4498,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="231"/>
       <source>Max SVG Hatch Tiles</source>
-      <translation type="unfinished">Max SVG Hatch Tiles</translation>
+      <translation>Maks SVG-skraveringsklinker</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="412"/>
       <source>Max PAT Hatch Segments</source>
-      <translation type="unfinished">Max PAT Hatch Segments</translation>
+      <translation>Maks PAT-skraveringssegmenter</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="147"/>
@@ -4542,7 +4542,72 @@ Then you need to increase the tile limit.</translation>
       <translation type="unfinished">Overlap Edges Scrub Passes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="455"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="449"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="452"/>
+      <source>Behaviour Overrides</source>
+      <translation type="unfinished">Behaviour Overrides</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="460"/>
+      <source>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</source>
+      <translation type="unfinished">Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
+      <source>Use Default</source>
+      <translation type="unfinished">Use Default</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
+      <source>Balloon Drag</source>
+      <translation type="unfinished">Balloon Drag</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="487"/>
+      <source>Check this box to include the Alt key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Alt key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="490"/>
+      <source>Alt</source>
+      <translation type="unfinished">Alt</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="497"/>
+      <source>Check this box to include the Shift key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Shift key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="500"/>
+      <source>Shift</source>
+      <translation type="unfinished">Shift</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="507"/>
+      <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Meta/Start/Super key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="510"/>
+      <source>Meta</source>
+      <translation type="unfinished">Meta</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="517"/>
+      <source>Check this box to include the Control key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Control key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="520"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="538"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4553,22 +4618,22 @@ Then you need to increase the tile limit.</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="26"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Annotering</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="627"/>
       <source>Section Line Style</source>
-      <translation type="unfinished">Section Line Style</translation>
+      <translation>Tvæstnitlinjestil</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="80"/>
       <source>Section Cut Surface</source>
-      <translation type="unfinished">Section Cut Surface</translation>
+      <translation>Tværsnitskåret flade</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="353"/>
       <source>Default appearance of cut surface in section view</source>
-      <translation type="unfinished">Default appearance of cut surface in section view</translation>
+      <translation>Standard udseende af skåret flade i tværsnitvisning</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="366"/>
@@ -4578,7 +4643,7 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="371"/>
       <source>Solid Color</source>
-      <translation type="unfinished">Solid Color</translation>
+      <translation>Enkel farve</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="376"/>
@@ -4598,7 +4663,7 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="206"/>
       <source>Show Section Line in Source View</source>
-      <translation type="unfinished">Show Section Line in Source View</translation>
+      <translation>Vis tværsnitlinje på kildevisning</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="56"/>
@@ -4621,6 +4686,11 @@ Then you need to increase the tile limit.</translation>
       <translation type="unfinished">Include Cut Line in Section Annotation</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
+      <source>Balloon Leader Kink Length</source>
+      <translation type="unfinished">Balloon Leader Kink Length</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
       <translation type="unfinished">Broken View Break Type</translation>
@@ -4633,17 +4703,17 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="469"/>
       <source>ZigZag Lines</source>
-      <translation type="unfinished">ZigZag Lines</translation>
+      <translation>Zigzag-linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="474"/>
       <source>Simple Lines</source>
-      <translation type="unfinished">Simple Lines</translation>
+      <translation>Simple linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="493"/>
       <source>Lines</source>
-      <translation type="unfinished">Lines</translation>
+      <translation>Linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="547"/>
@@ -4658,17 +4728,17 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="752"/>
       <source>Line Width Group</source>
-      <translation type="unfinished">Line Width Group</translation>
+      <translation>Linjetykkelsesgruppe</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="227"/>
       <source>Detail View Outline Shape</source>
-      <translation type="unfinished">Detail View Outline Shape</translation>
+      <translation>Detaljevisningsomridsform</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="395"/>
       <source>Outline shape for detail views</source>
-      <translation type="unfinished">Outline shape for detail views</translation>
+      <translation>Omridsform for detaljevisning</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="700"/>
@@ -4678,17 +4748,17 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="612"/>
       <source>Line style of detail highlight on base view</source>
-      <translation type="unfinished">Line style of detail highlight on base view</translation>
+      <translation>Linjetype for detaljemarkering på grundvisning</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="615"/>
       <source>Detail Highlight Style</source>
-      <translation type="unfinished">Detail Highlight Style</translation>
+      <translation>Detaljemarkeringstype</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="534"/>
       <source>Center Line Style</source>
-      <translation type="unfinished">Center Line Style</translation>
+      <translation>Centerlinjestil</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="346"/>
@@ -4698,7 +4768,7 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="414"/>
       <source>Shape of balloon annotations</source>
-      <translation type="unfinished">Shape of balloon annotations</translation>
+      <translation>Figur for ballonnoter</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="111"/>
@@ -4718,17 +4788,12 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="93"/>
       <source>Style for balloon leader line ends</source>
-      <translation type="unfinished">Style for balloon leader line ends</translation>
+      <translation>Type for ballonledelinjeende</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation type="unfinished">Length of horizontal portion of Balloon leader</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
-      <source>Ballon Leader Kink Length</source>
-      <translation type="unfinished">Ballon Leader Kink Length</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
@@ -4758,7 +4823,7 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="322"/>
       <source>Show arc center marks in views</source>
-      <translation type="unfinished">Show arc center marks in views</translation>
+      <translation>Vis buecentermarkeringer i visninger</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="325"/>
@@ -4793,12 +4858,12 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="664"/>
       <source>Line Standard</source>
-      <translation type="unfinished">Line Standard</translation>
+      <translation>Linjestandard</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="764"/>
       <source>Line End Cap Shape</source>
-      <translation type="unfinished">Line End Cap Shape</translation>
+      <translation>Linjeendeform</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="682"/>
@@ -4814,7 +4879,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="695"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>Rund</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="705"/>
@@ -4903,7 +4968,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="347"/>
       <source>Section line color</source>
-      <translation type="unfinished">Section line color</translation>
+      <translation>Tværsnitlinjefarve</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="216"/>
@@ -4913,7 +4978,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="112"/>
       <source>Background color around pages</source>
-      <translation type="unfinished">Background color around pages</translation>
+      <translation>Baggrundsfarve rundt om sider</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="404"/>
@@ -4923,7 +4988,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="327"/>
       <source>Hatch image color</source>
-      <translation type="unfinished">Hatch image color</translation>
+      <translation>Skraveringbilledefarve</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
@@ -4953,7 +5018,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="267"/>
       <source>Monochrome text color</source>
-      <translation type="unfinished">Monochrome text color</translation>
+      <translation>Monokrom tekstfarve</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="428"/>
@@ -4968,7 +5033,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="300"/>
       <source>Use a light color for dark text and dark color for light text.</source>
-      <translation type="unfinished">Use a light color for dark text and dark color for light text.</translation>
+      <translation>Brug en lys farve til mørk tekst og en mørk farve til lys tekst.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="145"/>
@@ -4978,12 +5043,12 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="204"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Punkt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="572"/>
       <source>Color of vertices in views</source>
-      <translation type="unfinished">Color of vertices in views</translation>
+      <translation>Farve af punkter i visninger</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="392"/>
@@ -4998,7 +5063,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Leaderline</source>
-      <translation type="unfinished">Leaderline</translation>
+      <translation>Ledelinje</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="461"/>
@@ -5018,17 +5083,17 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="492"/>
       <source>Object faces will be transparent</source>
-      <translation type="unfinished">Object faces will be transparent</translation>
+      <translation>Objektflader vil være transperante</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="495"/>
       <source>Transparent Faces</source>
-      <translation type="unfinished">Transparent Faces</translation>
+      <translation>Transperante flader</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="223"/>
       <source>Face color (if not transparent)</source>
-      <translation type="unfinished">Face color (if not transparent)</translation>
+      <translation>Fladefarve (hvis ikke transperant)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="87"/>
@@ -5038,7 +5103,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Template Underline</source>
-      <translation type="unfinished">Template Underline</translation>
+      <translation>Skabelonunderlinje</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="678"/>
@@ -5057,7 +5122,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="181"/>
       <source>Standard and Style</source>
-      <translation type="unfinished">Standard and Style</translation>
+      <translation>Standard og type</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="109"/>
@@ -5087,22 +5152,22 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="356"/>
       <source>Use system setting for number of decimals</source>
-      <translation type="unfinished">Use system setting for number of decimals</translation>
+      <translation>Brug systemindstillinger for antallet af decimaler</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="359"/>
       <source>Use Global Decimals</source>
-      <translation type="unfinished">Use Global Decimals</translation>
+      <translation>Brug globale decimaler</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</source>
-      <translation type="unfinished">Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</translation>
+      <translation>Kontrollerer afstanden mellem dimensionspunkterne og starten er forlængelseslinjen for ASME-dimensioner.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
-      <translation type="unfinished">Controls the size of spacing between dimension line and dimension text for ISO dimensions.</translation>
+      <translation>Kontrollerer afstanden mellem dimensionspunkterne og starten er forlængelseslinjen for ISO-dimensioner.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
@@ -5117,7 +5182,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="543"/>
       <source>Dimensioning tools:</source>
-      <translation type="unfinished">Dimensioning tools:</translation>
+      <translation>Dimensioneringsværktøjer:</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="550"/>
@@ -5171,7 +5236,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="67"/>
       <source>Dimension Format</source>
-      <translation type="unfinished">Dimension Format</translation>
+      <translation>Dimensionsformat</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="408"/>
@@ -5296,7 +5361,7 @@ Multiplier of &apos;Font Size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="184"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Diameter</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="185"/>
@@ -5324,7 +5389,7 @@ Multiplier of &apos;Font Size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="52"/>
       <source>Update With 3D (global policy)</source>
-      <translation type="unfinished">Update With 3D (global policy)</translation>
+      <translation>Opdater med 3D (global politik)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="74"/>
@@ -5336,7 +5401,7 @@ can override the global &apos;Update With 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="78"/>
       <source>Allow Page Override (global policy)</source>
-      <translation type="unfinished">Allow Page Override (global policy)</translation>
+      <translation>Tillad sideoverskrivning (global politik)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="105"/>
@@ -5348,19 +5413,18 @@ This can slow down the response time.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="109"/>
       <source>Keep Page Up To Date</source>
-      <translation type="unfinished">Keep Page Up To Date</translation>
+      <translation>Hold side opdateret</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="136"/>
       <source>Automatically distribute secondary views
 for ProjectionGroups</source>
-      <translation type="unfinished">Automatically distribute secondary views
-for ProjectionGroups</translation>
+      <translation>Automatisk fordeling af sekundære visninger for projektionsgrupper</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="140"/>
       <source>Auto-distribute Secondary Views</source>
-      <translation type="unfinished">Auto-distribute Secondary Views</translation>
+      <translation>Auto-distribuér sekundære visninger</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="167"/>
@@ -5377,7 +5441,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="185"/>
       <source>Label Font*</source>
-      <translation type="unfinished">Label Font*</translation>
+      <translation>Labelskrifttype*</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="220"/>
@@ -5397,17 +5461,17 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="301"/>
       <source>Conventions</source>
-      <translation type="unfinished">Conventions</translation>
+      <translation>Konventioner</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="322"/>
       <source>Projection Group Angle</source>
-      <translation type="unfinished">Projection Group Angle</translation>
+      <translation>Afbildningsgruppevinkel</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="335"/>
       <source>Use first- or third-angle multiview projection convention</source>
-      <translation type="unfinished">Use first- or third-angle multiview projection convention</translation>
+      <translation>Brug først- og tredjevinkels multivisning af afbildningskonvention</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="358"/>
@@ -5432,7 +5496,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
       <source>Section Line Convention</source>
-      <translation type="unfinished">Section Line Convention</translation>
+      <translation>Tværsnitlinjekonvention</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="421"/>
@@ -5442,22 +5506,22 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="460"/>
       <source>Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</source>
-      <translation type="unfinished">Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</translation>
+      <translation>Foretrukken SVG- eller bitmapfil for skravering. Denne værdi vil også angive mappen ved valg af skraveringsmønster. Du kan bruge dette til at finde skraveringfiler i en lokal mappe.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="627"/>
       <source>Default Template</source>
-      <translation type="unfinished">Default Template</translation>
+      <translation>Standard skabelon</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="498"/>
       <source>Default template file for new pages</source>
-      <translation type="unfinished">Default template file for new pages</translation>
+      <translation>Standard skabelon for nye sider</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="586"/>
       <source>Template Directory</source>
-      <translation type="unfinished">Template Directory</translation>
+      <translation>Skabelonmappe</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="570"/>
@@ -5467,12 +5531,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="620"/>
       <source>Hatch Pattern File</source>
-      <translation type="unfinished">Hatch Pattern File</translation>
+      <translation>Skraveringsmønsterfil</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="676"/>
       <source>Line Group File</source>
-      <translation type="unfinished">Line Group File</translation>
+      <translation>Linjegruppefil</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="479"/>
@@ -5482,12 +5546,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="516"/>
       <source>Welding Directory</source>
-      <translation type="unfinished">Welding Directory</translation>
+      <translation>Svejsemappe</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="548"/>
       <source>Default directory for welding symbols</source>
-      <translation type="unfinished">Default directory for welding symbols</translation>
+      <translation>Standard mappe for svejsesymboler</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="447"/>
@@ -5497,12 +5561,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="529"/>
       <source>Default PAT pattern definition file for geometric hatching</source>
-      <translation type="unfinished">Default PAT pattern definition file for geometric hatching</translation>
+      <translation>Standard PAT-mønsterdefineringsfil for geometrisk skravering</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="688"/>
       <source>Pattern Name</source>
-      <translation type="unfinished">Pattern Name</translation>
+      <translation>Mønsternavn</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="652"/>
@@ -5527,7 +5591,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="639"/>
       <source>Symbol Directory</source>
-      <translation type="unfinished">Symbol Directory</translation>
+      <translation>Symbolmappe</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="655"/>
@@ -5547,12 +5611,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="729"/>
       <source>Show Grid</source>
-      <translation type="unfinished">Show Grid</translation>
+      <translation>Vis gitter</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="750"/>
       <source>Grid Spacing</source>
-      <translation type="unfinished">Grid Spacing</translation>
+      <translation>Gitterafstand</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="757"/>
@@ -5567,12 +5631,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="801"/>
       <source>If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</source>
-      <translation type="unfinished">If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</translation>
+      <translation>Hvis slået til vil klik uden Ctrl ikke fjerne eksisterende markering af punkter/linjer/flader</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="804"/>
       <source>Enable Multiselection Mode</source>
-      <translation type="unfinished">Enable Multiselection Mode</translation>
+      <translation>Slå multimarkeringsfunktion til</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="831"/>
@@ -5601,6 +5665,31 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="898"/>
+      <source>Snapping</source>
+      <translation>Sammenklikning</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="906"/>
+      <source>Check this box if you want views to snap into alignment when being dragged.</source>
+      <translation type="unfinished">Check this box if you want views to snap into alignment when being dragged.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="909"/>
+      <source>Snap View Alignment</source>
+      <translation>Sammenklik flugtning af visninger</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="938"/>
+      <source>View Snapping Factor</source>
+      <translation type="unfinished">View Snapping Factor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="945"/>
+      <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
+      <translation type="unfinished">When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="993"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5632,7 +5721,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="83"/>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Synlig</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="103"/>
@@ -5648,28 +5737,28 @@ Fast, but result is a collection of short straight lines.</translation>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="176"/>
       <source>Show Hard Lines</source>
-      <translation type="unfinished">Show Hard Lines</translation>
+      <translation>Vis hårde linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="173"/>
       <source>Show hidden hard and outline edges</source>
-      <translation type="unfinished">Show hidden hard and outline edges</translation>
+      <translation>Vis hårde linjer og omridslinjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="200"/>
       <source>Show smooth lines</source>
-      <translation type="unfinished">Show smooth lines</translation>
+      <translation>Vis bløde linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="203"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="233"/>
       <source>Show Smooth Lines</source>
-      <translation type="unfinished">Show Smooth Lines</translation>
+      <translation>Vis bløde linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="230"/>
       <source>Show hidden smooth edges</source>
-      <translation type="unfinished">Show hidden smooth edges</translation>
+      <translation>Vis skjulte bløde linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="257"/>
@@ -5696,7 +5785,7 @@ Fast, but result is a collection of short straight lines.</translation>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="317"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="344"/>
       <source>Show UV ISO Lines</source>
-      <translation type="unfinished">Show UV ISO Lines</translation>
+      <translation>Vis UV ISO-konturlinjer</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="341"/>
@@ -5706,7 +5795,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="368"/>
       <source>ISO Count</source>
-      <translation type="unfinished">ISO Count</translation>
+      <translation>ISO-tælling</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="387"/>
@@ -5735,17 +5824,17 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
       <source>Default scale for new pages</source>
-      <translation type="unfinished">Default scale for new pages</translation>
+      <translation>Standard skalering for nye sider</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="106"/>
       <source>View Scale Type</source>
-      <translation type="unfinished">View Scale Type</translation>
+      <translation>Visningsskaleringstype</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="128"/>
       <source>Default scale for new views</source>
-      <translation type="unfinished">Default scale for new views</translation>
+      <translation>Standard skalering for nye visninger</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="138"/>
@@ -5810,7 +5899,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="387"/>
       <source>Welding Symbol Scale</source>
-      <translation type="unfinished">Welding Symbol Scale</translation>
+      <translation>Svejsesymbolsskalering</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="394"/>
@@ -5826,91 +5915,79 @@ Fast, but result is a collection of short straight lines.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="90"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation type="unfinished">Toggle &amp;Keep Updated</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Frames</source>
       <translation type="unfinished">Toggle &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
-      <translation type="unfinished">&amp;Export SVG</translation>
+      <translation>&amp;Eksportér SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>Export DXF</source>
       <translation>Eksportér DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export PDF</source>
       <translation>Eksporter PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Print All Pages</source>
       <translation>Print alle sider</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="409"/>
+      <location filename="../../MDIViewPage.cpp" line="465"/>
       <source>Different orientation</source>
-      <translation type="unfinished">Different orientation</translation>
+      <translation>Forskellig orientering</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="410"/>
+      <location filename="../../MDIViewPage.cpp" line="466"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation  than the drawing.
-Do you want to continue?</translation>
+      <translation>Denne printer bruger en anden orientering end tegningen. Vil du gerne fortsætte?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="419"/>
+      <location filename="../../MDIViewPage.cpp" line="475"/>
       <source>Different paper size</source>
-      <translation type="unfinished">Different paper size</translation>
+      <translation>Forskellig papirstørrelse</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="420"/>
+      <location filename="../../MDIViewPage.cpp" line="476"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+      <translation>Denne printer bruger en anden sidestørrelse end tegningen. Vil du gerne fortsætte?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="434"/>
-      <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="435"/>
-      <source>Can not open file %1 for writing.</source>
-      <translation type="unfinished">Can not open file %1 for writing.</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="526"/>
+      <location filename="../../MDIViewPage.cpp" line="579"/>
       <source>Save DXF file</source>
       <translation>Gem som DXF-fil</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="527"/>
+      <location filename="../../MDIViewPage.cpp" line="580"/>
       <source>DXF (*.dxf)</source>
       <translation type="unfinished">DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="547"/>
+      <location filename="../../MDIViewPage.cpp" line="607"/>
       <source>Save PDF file</source>
-      <translation type="unfinished">Save PDF file</translation>
+      <translation>Gem PDF-fil</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="548"/>
+      <location filename="../../MDIViewPage.cpp" line="608"/>
       <source>PDF (*.pdf)</source>
       <translation type="unfinished">PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1092"/>
+      <location filename="../../MDIViewPage.cpp" line="1152"/>
       <source>Selected:</source>
       <translation>Valgt:</translation>
     </message>
@@ -5920,22 +5997,22 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../SymbolChooser.ui" line="17"/>
       <source>Symbol Chooser</source>
-      <translation type="unfinished">Symbol Chooser</translation>
+      <translation>Symbolvælger</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.ui" line="26"/>
       <source>Select a symbol that should be used</source>
-      <translation type="unfinished">Select a symbol that should be used</translation>
+      <translation>Vælg et symbol, der skal bruges</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.ui" line="48"/>
       <source>Symbol Dir</source>
-      <translation type="unfinished">Symbol Dir</translation>
+      <translation>Symbolmappe</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.ui" line="55"/>
       <source>Directory to welding symbols.</source>
-      <translation type="unfinished">Directory to welding symbols.</translation>
+      <translation>Mappe til svejsesymboler.</translation>
     </message>
   </context>
   <context>
@@ -5963,7 +6040,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Color for &apos;Text&apos;</source>
-      <translation type="unfinished">Color for &apos;Text&apos;</translation>
+      <translation>Farve for &apos;tekst&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
@@ -5973,17 +6050,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="76"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation>Skriftstørrelse for &apos;tekst&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble Shape:</source>
-      <translation type="unfinished">Bubble Shape:</translation>
+      <translation>Ballonfigur:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Shape of the balloon bubble</source>
-      <translation type="unfinished">Shape of the balloon bubble</translation>
+      <translation>Ballonfigur</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="106"/>
@@ -6028,7 +6105,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="181"/>
       <source>Shape Scale:</source>
-      <translation type="unfinished">Shape Scale:</translation>
+      <translation>Figurskalering:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="194"/>
@@ -6038,32 +6115,32 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="213"/>
       <source>End Symbol:</source>
-      <translation type="unfinished">End Symbol:</translation>
+      <translation>Slutsymbol:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="220"/>
       <source>End symbol for the balloon line</source>
-      <translation type="unfinished">End symbol for the balloon line</translation>
+      <translation>Slutsymbol for ballonlinjen</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="227"/>
       <source>End Symbol Scale:</source>
-      <translation type="unfinished">End Symbol Scale:</translation>
+      <translation>Slutsymbolskalering:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="240"/>
       <source>End symbol scale factor</source>
-      <translation type="unfinished">End symbol scale factor</translation>
+      <translation>Slutsymbolskaleringsfaktor</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="259"/>
       <source>Line Visible:</source>
-      <translation type="unfinished">Line Visible:</translation>
+      <translation>Linje synlig:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="266"/>
       <source>Whether the leader line is visible or not</source>
-      <translation type="unfinished">Whether the leader line is visible or not</translation>
+      <translation>Hvorvidt ledelinjen er synlig eller ej</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="273"/>
@@ -6083,17 +6160,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="305"/>
       <source>Leader line width</source>
-      <translation type="unfinished">Leader line width</translation>
+      <translation>Ledelinjetykkelse</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="324"/>
       <source>Leader Kink Length:</source>
-      <translation type="unfinished">Leader Kink Length:</translation>
+      <translation>Ledelinjeknæklængde:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="343"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>Længde af ballonledelinjeknæk</translation>
     </message>
   </context>
   <context>
@@ -6101,12 +6178,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="17"/>
       <source>Center Line</source>
-      <translation type="unfinished">Center Line</translation>
+      <translation>Centerlinje</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="29"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>Grundvisning</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="52"/>
@@ -6116,12 +6193,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="83"/>
       <source>Orientation</source>
-      <translation type="unfinished">Orientation</translation>
+      <translation>Orientering</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="89"/>
       <source>Top to Bottom line</source>
-      <translation type="unfinished">Top to Bottom line</translation>
+      <translation>Fra top til bund-linje</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="92"/>
@@ -6131,7 +6208,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="108"/>
       <source>Left to Right line</source>
-      <translation type="unfinished">Left to Right line</translation>
+      <translation>Fra venstre til højre-linje</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="111"/>
@@ -6162,7 +6239,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="240"/>
       <source>Move line -Left or +Right</source>
-      <translation type="unfinished">Move line -Left or +Right</translation>
+      <translation>Flyt linje -venstre eller +højre</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="253"/>
@@ -6182,7 +6259,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="273"/>
       <source>Rotate line +CCW or -CW</source>
-      <translation type="unfinished">Rotate line +CCW or -CW</translation>
+      <translation>Rotér linje +mod uret eller -med uret</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="289"/>
@@ -6192,7 +6269,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="302"/>
       <source>Make the line a little longer.</source>
-      <translation type="unfinished">Make the line a little longer.</translation>
+      <translation>Lav linjen en smule længere.</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="308"/>
@@ -6225,18 +6302,18 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="36"/>
       <source>Object Selection</source>
-      <translation type="unfinished">Object Selection</translation>
+      <translation>Objektmarkering</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="44"/>
       <source>Objects to section</source>
-      <translation type="unfinished">Objects to section</translation>
+      <translation>Objekter til tværsnit</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="51"/>
       <location filename="../../TaskComplexSection.ui" line="79"/>
       <source>Use Selection</source>
-      <translation>Brug selektion</translation>
+      <translation>Brug markering</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="58"/>
@@ -6246,12 +6323,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="91"/>
       <source>Section Parameters</source>
-      <translation type="unfinished">Section Parameters</translation>
+      <translation>Tværsnitsparametre</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="105"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation type="unfinished">Scale Page/Auto/Custom</translation>
+      <translation>Skalering side/auto/brugerdefineret</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="109"/>
@@ -6261,7 +6338,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="114"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatisk</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="119"/>
@@ -6276,18 +6353,18 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="134"/>
       <source>Scale Type</source>
-      <translation type="unfinished">Scale Type</translation>
+      <translation>Skaleringstype</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="160"/>
       <source>Projection Strategy</source>
-      <translation type="unfinished">Projection Strategy</translation>
+      <translation>Afbildningsstrategi</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="185"/>
       <location filename="../../TaskComplexSection.ui" line="192"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Forskydning</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="197"/>
@@ -6297,27 +6374,27 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="202"/>
       <source>NoParallel</source>
-      <translation type="unfinished">NoParallel</translation>
+      <translation>Ej parallel</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="210"/>
       <source>Identifier</source>
-      <translation type="unfinished">Identifier</translation>
+      <translation>Identifikator</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="223"/>
       <source>Identifier for this section</source>
-      <translation type="unfinished">Identifier for this section</translation>
+      <translation>Identifikator for dette tværsnit</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="230"/>
       <source>BaseView</source>
-      <translation type="unfinished">BaseView</translation>
+      <translation>BaseVisning</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="255"/>
       <source>Set View Direction</source>
-      <translation type="unfinished">Set View Direction</translation>
+      <translation>Set visningretning</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="272"/>
@@ -6342,7 +6419,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="385"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Forhåndsvisning</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="393"/>
@@ -6352,7 +6429,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="396"/>
       <source>Live Update</source>
-      <translation type="unfinished">Live Update</translation>
+      <translation>Løbende opdatering</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="403"/>
@@ -6367,18 +6444,18 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="174"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Ingen retning sat</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="562"/>
       <location filename="../../TaskComplexSection.cpp" line="704"/>
       <source>ComplexSection</source>
-      <translation type="unfinished">ComplexSection</translation>
+      <translation>Komplekst tværsnit</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="715"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
-      <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
+      <translation>Kan ikke fortsætte. Objekt * %1 eller %2 ikke fundet.</translation>
     </message>
   </context>
   <context>
@@ -6391,7 +6468,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCosVertex.ui" line="26"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>Grundvisning</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="66"/>
@@ -6421,29 +6498,29 @@ Do you want to continue?</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="160"/>
-      <location filename="../../TaskCosVertex.cpp" line="253"/>
+      <location filename="../../TaskCosVertex.cpp" line="249"/>
       <source>Pick Points</source>
       <translation>Vælg punkter</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="174"/>
       <source>Pick a point for cosmetic vertex</source>
-      <translation type="unfinished">Pick a point for cosmetic vertex</translation>
+      <translation>Vælg en placering for kosmetisk punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="177"/>
       <source>Escape picking</source>
-      <translation type="unfinished">Escape picking</translation>
+      <translation>Undslip markering</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="202"/>
       <source>Left click to set a point</source>
-      <translation type="unfinished">Left click to set a point</translation>
+      <translation>Venstreklik for at sætte et punkt</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="281"/>
+      <location filename="../../TaskCosVertex.cpp" line="277"/>
       <source>In progress edit abandoned. Start over.</source>
-      <translation type="unfinished">In progress edit abandoned. Start over.</translation>
+      <translation>Igangværende redigering forladt. Start forfra.</translation>
     </message>
   </context>
   <context>
@@ -6451,7 +6528,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="26"/>
       <source>Cosmetic Line</source>
-      <translation type="unfinished">Cosmetic Line</translation>
+      <translation>Kosmetisk linje</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="34"/>
@@ -6504,37 +6581,37 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="41"/>
       <source>Straightness</source>
-      <translation type="unfinished">Straightness</translation>
+      <translation>Retlinjehed</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="51"/>
       <source>Flatness</source>
-      <translation type="unfinished">Flatness</translation>
+      <translation>Fladhed</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="61"/>
       <source>Circularity</source>
-      <translation type="unfinished">Circularity</translation>
+      <translation>Cirkulæritet</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="71"/>
       <source>Cylindricity</source>
-      <translation type="unfinished">Cylindricity</translation>
+      <translation>Cylindricitet</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="81"/>
       <source>Parallelism</source>
-      <translation type="unfinished">Parallelism</translation>
+      <translation>Parallelitet</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="91"/>
       <source>Perpendicularity</source>
-      <translation type="unfinished">Perpendicularity</translation>
+      <translation>Perpendikulæritet</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="101"/>
       <source>Angularity</source>
-      <translation type="unfinished">Angularity</translation>
+      <translation>Vinkelstilling</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="116"/>
@@ -6574,12 +6651,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="188"/>
       <source>Modifiers</source>
-      <translation type="unfinished">Modifiers</translation>
+      <translation>Modificører</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="202"/>
       <source>derived geometry element</source>
-      <translation type="unfinished">derived geometry element</translation>
+      <translation>afbildt geometrisk element</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="217"/>
@@ -6619,7 +6696,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="322"/>
       <source>Projected tolerance zone</source>
-      <translation type="unfinished">Projected tolerance zone</translation>
+      <translation>Projekteret tolerancezone</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="337"/>
@@ -6659,7 +6736,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="428"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Diameter</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="438"/>
@@ -6714,7 +6791,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="543"/>
       <source>Slope</source>
-      <translation type="unfinished">Slope</translation>
+      <translation>Hældning</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="553"/>
@@ -6729,7 +6806,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="573"/>
       <source>Plus - Minus</source>
-      <translation type="unfinished">Plus - Minus</translation>
+      <translation>Plus - Minus</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="583"/>
@@ -6739,62 +6816,62 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="593"/>
       <source>Left/right arrow</source>
-      <translation type="unfinished">Left/right arrow</translation>
+      <translation>Venstre-/højrepil</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="603"/>
       <source>Downward arrow</source>
-      <translation type="unfinished">Downward arrow</translation>
+      <translation>Nedadgående pil</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="613"/>
       <source>Multiplication sign</source>
-      <translation type="unfinished">Multiplication sign</translation>
+      <translation>Multiplikationstegn</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="625"/>
       <source>Greek Letters</source>
-      <translation type="unfinished">Greek Letters</translation>
+      <translation>Græske bogstaver</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="634"/>
       <source>Capital delta</source>
-      <translation type="unfinished">Capital delta</translation>
+      <translation>Stort delta</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="644"/>
       <source>Capital sigma</source>
-      <translation type="unfinished">Capital sigma</translation>
+      <translation>Stort sigma</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="654"/>
       <source>Capital omega</source>
-      <translation type="unfinished">Capital omega</translation>
+      <translation>Stort omega</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="664"/>
       <source>Small mu</source>
-      <translation type="unfinished">Small mu</translation>
+      <translation>Stort mu</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="674"/>
       <source>Small sigma</source>
-      <translation type="unfinished">Small sigma</translation>
+      <translation>Lille sigma</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="684"/>
       <source>Small phi</source>
-      <translation type="unfinished">Small phi</translation>
+      <translation>Lille phi</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="694"/>
       <source>Small omega</source>
-      <translation type="unfinished">Small omega</translation>
+      <translation>Lille omega</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="708"/>
       <source>Format:</source>
-      <translation type="unfinished">Format:</translation>
+      <translation>Format:</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
@@ -6812,17 +6889,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="14"/>
       <source>Detail Anchor</source>
-      <translation type="unfinished">Detail Anchor</translation>
+      <translation>Detaljefastgørrelse</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="26"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>Grundvisning</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="49"/>
       <source>Detail View</source>
-      <translation type="unfinished">Detail View</translation>
+      <translation>Detaljevisning</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="80"/>
@@ -6843,7 +6920,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="134"/>
       <source>x position of detail highlight within view</source>
-      <translation type="unfinished">x position of detail highlight within view</translation>
+      <translation>x-position af detaljefremhævning indenfor visning</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="153"/>
@@ -6853,7 +6930,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="160"/>
       <source>y position of detail highlight within view</source>
-      <translation type="unfinished">y position of detail highlight within view</translation>
+      <translation>y-position af detaljefremhævning indenfor visning</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="176"/>
@@ -6863,12 +6940,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="183"/>
       <source>size of detail view</source>
-      <translation type="unfinished">size of detail view</translation>
+      <translation>størrelse af detaljevisning</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="202"/>
       <source>Scale Type</source>
-      <translation type="unfinished">Scale Type</translation>
+      <translation>Skaleringstype</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="209"/>
@@ -6876,10 +6953,10 @@ Do you want to continue?</translation>
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
 Custom: custom scale factor is used</source>
-      <translation type="unfinished">Page: scale factor of page is used
-Automatic: if the detail view is larger than the page,
-                   it will be scaled down to fit into the page
-Custom: custom scale factor is used</translation>
+      <translation>Side: skaleringsfaktor for siden bliver brugt
+Automatisk: hvis detaljevisningen er større en siden,
+                   så vil den blive nedskaleret til pasning på siden
+Brugerdefineret: indtastet skaleringsfaktor bliver brugt</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="216"/>
@@ -6889,7 +6966,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="221"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatisk</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="226"/>
@@ -6904,7 +6981,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="244"/>
       <source>scale factor for detail view</source>
-      <translation type="unfinished">scale factor for detail view</translation>
+      <translation>skaleringsfaktor for detaljevisning</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="266"/>
@@ -6927,7 +7004,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="20"/>
       <source>Tolerancing</source>
-      <translation type="unfinished">Tolerancing</translation>
+      <translation>Tolerancesætning</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
@@ -6952,7 +7029,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="38"/>
       <source>Assign same value to over and under tolerance</source>
-      <translation type="unfinished">Assign same value to over and under tolerance</translation>
+      <translation>Angiv samme værdi til over- og undertolerance</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="48"/>
@@ -6964,9 +7041,8 @@ Custom: custom scale factor is used</translation>
       <source>Overtolerance value
 If &apos;Equal Tolerance&apos; is checked this is also
 the negated value for &apos;Under Tolerance&apos;.</source>
-      <translation type="unfinished">Overtolerance value
-If &apos;Equal Tolerance&apos; is checked this is also
-the negated value for &apos;Under Tolerance&apos;.</translation>
+      <translation>Overtoleranceværdi
+Hvis &apos;samme tolerance&apos; er afkrydset, så er dette også en virkningsløs værdi for &apos;undertolerance&apos;.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="79"/>
@@ -7067,7 +7143,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="249"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation>Skriftstørrelse for &apos;tekst&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="271"/>
@@ -7102,7 +7178,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="310"/>
       <source>Lines</source>
-      <translation type="unfinished">Lines</translation>
+      <translation>Linjer</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="318"/>
@@ -7144,7 +7220,7 @@ be used instead of the dimension value</translation>
       <location filename="../../TaskDimension.ui" line="364"/>
       <location filename="../../TaskDimension.ui" line="407"/>
       <source>Use selection</source>
-      <translation>Brug selektion</translation>
+      <translation>Brug markering</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="371"/>
@@ -7185,17 +7261,17 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="38"/>
       <source>Define your pattern</source>
-      <translation type="unfinished">Define your pattern</translation>
+      <translation>Definér mønster</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="46"/>
       <source>Pattern File</source>
-      <translation type="unfinished">Pattern File</translation>
+      <translation>Mønsterfil</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="59"/>
       <source>The PAT file containing your pattern</source>
-      <translation type="unfinished">The PAT file containing your pattern</translation>
+      <translation>PAT-filen indeholdende dit mønster</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="77"/>
@@ -7205,7 +7281,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="97"/>
       <source>Pattern Name</source>
-      <translation type="unfinished">Pattern Name</translation>
+      <translation>Mønsternavn</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
@@ -7215,12 +7291,12 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="117"/>
       <source>Name of pattern within file</source>
-      <translation type="unfinished">Name of pattern within file</translation>
+      <translation>Navnet på mønsteret i filen</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="124"/>
       <source>Line Width</source>
-      <translation type="unfinished">Line Width</translation>
+      <translation>Linjetykkelse</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="223"/>
@@ -7230,17 +7306,17 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="70"/>
       <source>Pattern Scale</source>
-      <translation type="unfinished">Pattern Scale</translation>
+      <translation>Mønsterskalering</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="201"/>
       <source>Enlarges/shrinks the pattern</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern</translation>
+      <translation>Forstørrer/-mindsker mønsteret</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="153"/>
       <source>Thickness of lines within the pattern</source>
-      <translation type="unfinished">Thickness of lines within the pattern</translation>
+      <translation>Tykkelse af linjer indenfor mønsteret</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="188"/>
@@ -7250,7 +7326,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="90"/>
       <source>Color of pattern lines</source>
-      <translation type="unfinished">Color of pattern lines</translation>
+      <translation>Mønsterlinjefarve</translation>
     </message>
   </context>
   <context>
@@ -7258,12 +7334,12 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="26"/>
       <source>Apply Hatch to Face</source>
-      <translation type="unfinished">Apply Hatch to Face</translation>
+      <translation>Anvend skravering på flade</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="41"/>
       <source>Pattern Parameters</source>
-      <translation type="unfinished">Pattern Parameters</translation>
+      <translation>Mønsterparametre</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="114"/>
@@ -7273,27 +7349,27 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
       <source>Select an SVG or Bitmap file</source>
-      <translation type="unfinished">Select an SVG or Bitmap file</translation>
+      <translation>Vælg en SVG- eller bitmapfil</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="55"/>
       <source>Choose an SVG or Bitmap file as a pattern</source>
-      <translation type="unfinished">Choose an SVG or Bitmap file as a pattern</translation>
+      <translation>Vælg en SVG- eller bitmapfil som mønster</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
       <source>Enlarges/shrinks the pattern (SVG Only)</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern (SVG Only)</translation>
+      <translation>Forstørrer/-mindsker mønsteret (SVG kun)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
       <source>Color of pattern lines (SVG Only)</source>
-      <translation type="unfinished">Color of pattern lines (SVG Only)</translation>
+      <translation>Farve for mønsterlinjer (SVG kun)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="159"/>
       <source>SVG Pattern Scale</source>
-      <translation type="unfinished">SVG Pattern Scale</translation>
+      <translation>SVG-mønsterskalering</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="166"/>
@@ -7308,17 +7384,17 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="140"/>
       <source>Rotation the pattern (degrees)</source>
-      <translation type="unfinished">Rotation the pattern (degrees)</translation>
+      <translation>Rotation af mønster (grader)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
       <source>Svg Line Color</source>
-      <translation type="unfinished">Svg Line Color</translation>
+      <translation>SVG-linjefarve</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
       <source>Pattern File</source>
-      <translation type="unfinished">Pattern File</translation>
+      <translation>Mønsterfil</translation>
     </message>
   </context>
   <context>
@@ -7331,7 +7407,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="38"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>Grundvisning</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="93"/>
@@ -7434,12 +7510,12 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
       <location filename="../../TaskLeaderLine.cpp" line="751"/>
       <location filename="../../TaskLeaderLine.cpp" line="773"/>
       <source>Edit points</source>
-      <translation type="unfinished">Edit points</translation>
+      <translation>Redigér punkter</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="521"/>
       <source>Edit Points</source>
-      <translation type="unfinished">Edit Points</translation>
+      <translation>Redigér punkter</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="538"/>
@@ -7471,12 +7547,12 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="650"/>
       <source>Press OK or Cancel to continue</source>
-      <translation type="unfinished">Press OK or Cancel to continue</translation>
+      <translation>Tryk OK eller annulér for at fortsætte</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="768"/>
       <source>In progress edit abandoned. Start over.</source>
-      <translation type="unfinished">In progress edit abandoned. Start over.</translation>
+      <translation>Igangværende redigering forladt. Start forfra.</translation>
     </message>
   </context>
   <context>
@@ -7484,7 +7560,7 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="26"/>
       <source>Line Decoration</source>
-      <translation type="unfinished">Line Decoration</translation>
+      <translation>Linjedekorering</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="92"/>
@@ -7494,7 +7570,7 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="52"/>
       <source>Lines</source>
-      <translation type="unfinished">Lines</translation>
+      <translation>Linjer</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
@@ -7514,17 +7590,17 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="99"/>
       <source>The use of the Qt line style is being phased out.  Please use a standard line style instead.</source>
-      <translation type="unfinished">The use of the Qt line style is being phased out.  Please use a standard line style instead.</translation>
+      <translation>Brugen af Qt-linjestil bliver udfaset. Brug venligst en standardlinjestil i stedet.</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="145"/>
       <source>Thickness of pattern lines.</source>
-      <translation type="unfinished">Thickness of pattern lines.</translation>
+      <translation>Tykkelse af mønsterlinjer.</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="158"/>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Synlig</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="72"/>
@@ -7542,42 +7618,42 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskLinkDim.ui" line="26"/>
       <source>Link Dimension</source>
-      <translation type="unfinished">Link Dimension</translation>
+      <translation>Forbind dimensioner</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="54"/>
       <source>Link This 3D Geometry</source>
-      <translation type="unfinished">Link This 3D Geometry</translation>
+      <translation>Forbind denne til 3D-geometri</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="67"/>
       <source>Feature1:</source>
-      <translation type="unfinished">Feature1:</translation>
+      <translation>Objekt1:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="87"/>
       <source>Geometry1:</source>
-      <translation type="unfinished">Geometry1:</translation>
+      <translation>Geometri1:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="107"/>
       <source>Feature2:</source>
-      <translation type="unfinished">Feature2:</translation>
+      <translation>Objekt2:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
       <source>Geometry2:</source>
-      <translation type="unfinished">Geometry2:</translation>
+      <translation>Geometri2:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
       <source>To These Dimensions</source>
-      <translation type="unfinished">To These Dimensions</translation>
+      <translation>Til disse dimensioner</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.cpp" line="58"/>
       <source>Available</source>
-      <translation type="unfinished">Available</translation>
+      <translation>Tilgængelig</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.cpp" line="59"/>
@@ -7590,7 +7666,7 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="26"/>
       <source>Projection Group</source>
-      <translation type="unfinished">Projection Group</translation>
+      <translation>Afbildningsgruppe</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="120"/>
@@ -7600,12 +7676,12 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="126"/>
       <source>Spin clock wise</source>
-      <translation type="unfinished">Spin clock wise</translation>
+      <translation>Drej med uret</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="552"/>
       <source>Projection</source>
-      <translation type="unfinished">Projection</translation>
+      <translation>Afbildning</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="559"/>
@@ -7636,12 +7712,12 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="41"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation type="unfinished">Scale Page/Auto/Custom</translation>
+      <translation>Skalering side/auto/brugerdefineret</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="50"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatisk</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="55"/>
@@ -7651,12 +7727,12 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="76"/>
       <source>Scale Numerator</source>
-      <translation type="unfinished">Scale Numerator</translation>
+      <translation>Målestoktæller</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="99"/>
       <source>Scale Denominator</source>
-      <translation type="unfinished">Scale Denominator</translation>
+      <translation>Målestoknævner</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="153"/>
@@ -7666,7 +7742,7 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="174"/>
       <source>Spin counter clock wise</source>
-      <translation type="unfinished">Spin counter clock wise</translation>
+      <translation>Drej mod uret</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="195"/>
@@ -7676,32 +7752,32 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="224"/>
       <source>Current primary view direction</source>
-      <translation type="unfinished">Current primary view direction</translation>
+      <translation>Nuværende primære visningsretning</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="231"/>
       <source>Rotate right</source>
-      <translation type="unfinished">Rotate right</translation>
+      <translation>Rotér til højre</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="252"/>
       <source>Set document front view as primary direction.</source>
-      <translation type="unfinished">Set document front view as primary direction.</translation>
+      <translation>Set dokumentfrontvisning som den primære retning.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="282"/>
       <source>Rotate down</source>
-      <translation type="unfinished">Rotate down</translation>
+      <translation>Rotér nedad</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="303"/>
       <source>Set direction of the camera, or selected face if any, as primary direction.</source>
-      <translation type="unfinished">Set direction of the camera, or selected face if any, as primary direction.</translation>
+      <translation>Sæt retning af kameraet, eller markerede flader hvis nogle, som den primære retning.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="333"/>
       <source>Secondary Projections</source>
-      <translation type="unfinished">Secondary Projections</translation>
+      <translation>Sekundære afbildninger</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="339"/>
@@ -7710,8 +7786,8 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="646"/>
-      <location filename="../../TaskProjGroup.cpp" line="653"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Top</source>
       <translation>Top</translation>
     </message>
@@ -7722,8 +7798,8 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="648"/>
-      <location filename="../../TaskProjGroup.cpp" line="650"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>Left</source>
       <translation>Venstre</translation>
     </message>
@@ -7734,14 +7810,14 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="648"/>
-      <location filename="../../TaskProjGroup.cpp" line="650"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>Right</source>
       <translation>Højre</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="651"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Rear</source>
       <translation>Bag</translation>
     </message>
@@ -7752,8 +7828,8 @@ Du kan vælge yderligere punkter for at få linjesegmenter.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="646"/>
-      <location filename="../../TaskProjGroup.cpp" line="653"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Bottom</source>
       <translation>Bund</translation>
     </message>
@@ -7772,7 +7848,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="587"/>
       <source>Auto Distribute</source>
-      <translation type="unfinished">Auto Distribute</translation>
+      <translation>Autofordel</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="608"/>
@@ -7782,12 +7858,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="640"/>
       <source>Horizontal space between borders of projections</source>
-      <translation type="unfinished">Horizontal space between borders of projections</translation>
+      <translation>Horisontal afstand mellem rammer i projektioner</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="687"/>
       <source>Vertical space between borders of projections</source>
-      <translation type="unfinished">Vertical space between borders of projections</translation>
+      <translation>Vertikal afstand mellem rammer i projektioner</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="668"/>
@@ -7795,31 +7871,31 @@ using the given X/Y Spacing</translation>
       <translation>Y-mellemrum</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="645"/>
-      <location filename="../../TaskProjGroup.cpp" line="654"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>FrontTopLeft</source>
       <translation type="unfinished">FrontTopLeft</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="645"/>
-      <location filename="../../TaskProjGroup.cpp" line="654"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>FrontBottomRight</source>
       <translation type="unfinished">FrontBottomRight</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="647"/>
-      <location filename="../../TaskProjGroup.cpp" line="652"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontTopRight</source>
       <translation type="unfinished">FrontTopRight</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="647"/>
-      <location filename="../../TaskProjGroup.cpp" line="652"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontBottomLeft</source>
       <translation type="unfinished">FrontBottomLeft</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="649"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
       <source>Front</source>
       <translation>Front</translation>
     </message>
@@ -7829,22 +7905,22 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjection.ui" line="14"/>
       <source>Project shapes</source>
-      <translation type="unfinished">Project shapes</translation>
+      <translation>Projekter former</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="22"/>
       <source>Visible sharp edges</source>
-      <translation type="unfinished">Visible sharp edges</translation>
+      <translation>Synlige skarpe kanter</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="32"/>
       <source>Visible smooth edges</source>
-      <translation type="unfinished">Visible smooth edges</translation>
+      <translation>Synlige bløde kanter</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="42"/>
       <source>Visible sewn edges</source>
-      <translation type="unfinished">Visible sewn edges</translation>
+      <translation>Synlige syede kanter</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="52"/>
@@ -7859,22 +7935,22 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjection.ui" line="72"/>
       <source>Hidden sharp edges</source>
-      <translation type="unfinished">Hidden sharp edges</translation>
+      <translation>Skjulte hårde linjer</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="79"/>
       <source>Hidden smooth edges</source>
-      <translation type="unfinished">Hidden smooth edges</translation>
+      <translation>Skjulte bløde linjer</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="86"/>
       <source>Hidden sewn edges</source>
-      <translation type="unfinished">Hidden sewn edges</translation>
+      <translation>Skjulte syede linjer</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="93"/>
       <source>Hidden outline edges</source>
-      <translation type="unfinished">Hidden outline edges</translation>
+      <translation>Skjulte omridslinjer</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="100"/>
@@ -7894,7 +7970,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjection.cpp" line="70"/>
       <source>No active view</source>
-      <translation type="unfinished">No active view</translation>
+      <translation>Ingen aktiv visning</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.cpp" line="71"/>
@@ -7922,7 +7998,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="56"/>
       <source>Cosmetic</source>
-      <translation type="unfinished">Cosmetic</translation>
+      <translation>Kosmetisk</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="73"/>
@@ -7935,32 +8011,32 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="26"/>
       <source>Rich Text Annotation Block</source>
-      <translation type="unfinished">Rich Text Annotation Block</translation>
+      <translation>Rich Text-annoteringsblok</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="53"/>
       <source>Base Feature</source>
-      <translation type="unfinished">Base Feature</translation>
+      <translation>Grundobjekt</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="67"/>
       <source>Max Width</source>
-      <translation type="unfinished">Max Width</translation>
+      <translation>Maks bredde</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="74"/>
       <source>Maximal width, if -1 then automatic width</source>
-      <translation type="unfinished">Maximal width, if -1 then automatic width</translation>
+      <translation>Maks bredde; automatisk hvis -1</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="102"/>
       <source>Start Rich Text Editor</source>
-      <translation type="unfinished">Start Rich Text Editor</translation>
+      <translation>Start Rich Text-redigering</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="121"/>
       <source>Show Frame</source>
-      <translation type="unfinished">Show Frame</translation>
+      <translation>Vis ramme</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="138"/>
@@ -8025,7 +8101,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="181"/>
       <source>Input the annotation text directly or start the rich text editor</source>
-      <translation type="unfinished">Input the annotation text directly or start the rich text editor</translation>
+      <translation>Indsæt annoteringstekst med det samme eller start Rich Text-redigering</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="283"/>
@@ -8058,12 +8134,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="81"/>
       <source>Scale Type</source>
-      <translation type="unfinished">Scale Type</translation>
+      <translation>Skaleringstype</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="94"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation type="unfinished">Scale Page/Auto/Custom</translation>
+      <translation>Skalering side/auto/brugerdefineret</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="98"/>
@@ -8073,7 +8149,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="103"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatisk</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="108"/>
@@ -8093,7 +8169,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="150"/>
       <source>Set View Direction</source>
-      <translation type="unfinished">Set View Direction</translation>
+      <translation>Set visningretning</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="167"/>
@@ -8138,7 +8214,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="468"/>
       <source>Live Update</source>
-      <translation type="unfinished">Live Update</translation>
+      <translation>Løbende opdatering</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="295"/>
@@ -8148,7 +8224,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="298"/>
       <source>Section Plane Location</source>
-      <translation type="unfinished">Section Plane Location</translation>
+      <translation>Tværsnitsplanplacering</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="318"/>
@@ -8169,19 +8245,19 @@ using the given X/Y Spacing</translation>
       <location filename="../../TaskSectionView.cpp" line="435"/>
       <source>%n update(s) pending</source>
       <translation type="unfinished">
-        <numerusform>%n update(s) pending</numerusform>
+        <numerusform>%n opdatering(er) venter</numerusform>
         <numerusform>%n update(s) pending</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="445"/>
       <source>Nothing to apply. No section direction picked yet</source>
-      <translation type="unfinished">Nothing to apply. No section direction picked yet</translation>
+      <translation>Intet at anvende. Ingen tværsnitsretning valgt endnu</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="647"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
-      <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
+      <translation>Kan ikke fortsætte. Objekt * %1 eller %2 ikke fundet.</translation>
     </message>
   </context>
   <context>
@@ -8189,12 +8265,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="26"/>
       <source>Line attributes</source>
-      <translation type="unfinished">Line attributes</translation>
+      <translation>Linjeattributter</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
       <source>Line style:</source>
-      <translation type="unfinished">Line style:</translation>
+      <translation>Linjetype:</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="48"/>
@@ -8204,17 +8280,17 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="55"/>
       <source>Thin 0,18</source>
-      <translation type="unfinished">Thin 0,18</translation>
+      <translation>Tynd 0,18</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="68"/>
       <source>Middle 0,35</source>
-      <translation type="unfinished">Middle 0,35</translation>
+      <translation>Middel 0,35</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="84"/>
       <source>Thick 0,70</source>
-      <translation type="unfinished">Thick 0,70</translation>
+      <translation>Tyk 0,70</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="104"/>
@@ -8224,7 +8300,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="124"/>
       <source>Cascade spacing</source>
-      <translation type="unfinished">Cascade spacing</translation>
+      <translation>Kaskadeafstand</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="138"/>
@@ -8234,74 +8310,74 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.cpp" line="115"/>
       <source>Select line attributes</source>
-      <translation type="unfinished">Select line attributes</translation>
+      <translation>Vælg linjeattributter</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::TaskSurfaceFinishSymbols</name>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="230"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="246"/>
       <source>Surface Finish Symbols</source>
       <translation type="unfinished">Surface Finish Symbols</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="34"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="61"/>
       <source>Material removal prohibited, whole part</source>
       <translation type="unfinished">Material removal prohibited, whole part</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="44"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="95"/>
       <source>Any method allowed, whole part</source>
       <translation type="unfinished">Any method allowed, whole part</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="54"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="129"/>
       <source>Material removal required, whole part</source>
       <translation type="unfinished">Material removal required, whole part</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="64"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="163"/>
       <source>Material removal required</source>
       <translation>Materialefjerning påkrævet</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="74"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="197"/>
       <source>Material removal prohibited</source>
       <translation>Materialefjerning forbudt</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="84"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="231"/>
       <source>Any method allowed</source>
-      <translation type="unfinished">Any method allowed</translation>
+      <translation>Enhver metode tilladt</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="255"/>
       <source>Rotation angle</source>
       <translation>Rotationsvinkel</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="265"/>
       <source>Use ISO standard</source>
       <translation>Brug ISO-standard</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="278"/>
       <source>Use ASME standard</source>
       <translation>Brug ASME-standard</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="98"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="248"/>
       <source>Symbol angle:</source>
       <translation>Symbolvinkel:</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="118"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="268"/>
       <source>ISO</source>
       <translation type="unfinished">ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="281"/>
       <source>ASME</source>
       <translation>ASME</translation>
     </message>
@@ -8414,7 +8490,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="28"/>
       <source>Text Name:</source>
-      <translation type="unfinished">Text Name:</translation>
+      <translation>Tekstnavn:</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="35"/>
@@ -8434,12 +8510,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>
       <source>Autofill</source>
-      <translation type="unfinished">Autofill</translation>
+      <translation>Auto-udfyldning</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value.</source>
-      <translation type="unfinished">The autofill replacement value.</translation>
+      <translation>Erstatningsværdien for autoudfyldning.</translation>
     </message>
   </context>
   <context>
@@ -8447,7 +8523,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Adds a Centerline between 2 Lines</source>
-      <translation type="unfinished">Adds a Centerline between 2 Lines</translation>
+      <translation>Tilføjer en centerlinje mellem 2 linjer</translation>
     </message>
   </context>
   <context>
@@ -8455,15 +8531,15 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="659"/>
       <source>Adds a Centerline between 2 Points</source>
-      <translation type="unfinished">Adds a Centerline between 2 Points</translation>
+      <translation>Tilføjer en centerlinje mellem 2 punkter</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="772"/>
+      <location filename="../../Command.cpp" line="789"/>
       <source>Insert complex Section View</source>
-      <translation type="unfinished">Insert complex Section View</translation>
+      <translation>Indsæt kompleks tværsnitvisning</translation>
     </message>
   </context>
   <context>
@@ -8471,7 +8547,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="284"/>
       <source>Inserts a Cosmetic Vertex into a View</source>
-      <translation type="unfinished">Inserts a Cosmetic Vertex into a View</translation>
+      <translation>Indsæt kosmetisk punkt på visning</translation>
     </message>
   </context>
   <context>
@@ -8522,7 +8598,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="767"/>
+      <location filename="../../Command.cpp" line="784"/>
       <source>Insert simple Section View</source>
       <translation type="unfinished">Insert simple Section View</translation>
     </message>
@@ -8602,12 +8678,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Add Lines</source>
-      <translation type="unfinished">Add Lines</translation>
+      <translation>Tilføj linjer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Add Vertices</source>
-      <translation type="unfinished">Add Vertices</translation>
+      <translation>Tilføj punkter</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -8622,12 +8698,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Attributes</source>
-      <translation type="unfinished">TechDraw Attributes</translation>
+      <translation>TechDraw Attributter</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>TechDraw Centerlines</source>
-      <translation type="unfinished">TechDraw Centerlines</translation>
+      <translation>TechDraw Centerlinjer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -8637,7 +8713,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>TechDraw Pages</source>
-      <translation type="unfinished">TechDraw Pages</translation>
+      <translation>TechDraw Sider</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -8647,12 +8723,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>TechDraw Views</source>
-      <translation type="unfinished">TechDraw Views</translation>
+      <translation>TechDraw Visninger</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Dimensions</source>
-      <translation type="unfinished">TechDraw Dimensions</translation>
+      <translation>TechDraw Dimensioner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -8662,37 +8738,37 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw File Access</source>
-      <translation type="unfinished">TechDraw File Access</translation>
+      <translation>TechDraw Filadgang</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Decoration</source>
-      <translation type="unfinished">TechDraw Decoration</translation>
+      <translation>TechDraw Dekoration</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Annotation</source>
-      <translation type="unfinished">TechDraw Annotation</translation>
+      <translation>TechDraw Annotering</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Views From Other Workbenches</source>
-      <translation type="unfinished">Views From Other Workbenches</translation>
+      <translation>Visninger fra andre arbejdsbænke</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Clipped Views</source>
-      <translation type="unfinished">Clipped Views</translation>
+      <translation>Udsnittede visninger</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>Hatching</source>
-      <translation type="unfinished">Hatching</translation>
+      <translation>Skravering</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="64"/>
       <source>Symbols</source>
-      <translation type="unfinished">Symbols</translation>
+      <translation>Symboler</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
@@ -8710,17 +8786,17 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Flyt visning til en ny side</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="48"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Flyt visning til en anden side</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="80"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Vælg visning, som skal flyttes fra liste.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="81"/>
@@ -8730,7 +8806,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="103"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Vælg oprindelsesside.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="104"/>
@@ -8741,7 +8817,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="126"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Vælg destinationsside.</translation>
     </message>
   </context>
   <context>
@@ -8754,22 +8830,22 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Del en visning med en anden side</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Del visning med en anden side</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="48"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Visning, som skal deles</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="80"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Vælg visning, som skal deles fra liste.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="81"/>
@@ -8779,7 +8855,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="103"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Vælg oprindelsesside.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="104"/>
@@ -8790,7 +8866,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="127"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Vælg destinationsside.</translation>
     </message>
   </context>
   <context>
@@ -8798,7 +8874,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="14"/>
       <source>Dimension Repair</source>
-      <translation type="unfinished">Dimension Repair</translation>
+      <translation>Dimensionsreperation</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="20"/>
@@ -8813,27 +8889,27 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="35"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Label</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="86"/>
       <source>Replace References with Current Selection</source>
-      <translation type="unfinished">Replace References with Current Selection</translation>
+      <translation>Erstat referencer med nuværende markering</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="98"/>
       <source>References 2D</source>
-      <translation type="unfinished">References 2D</translation>
+      <translation>Refererer 2D</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="106"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Objekt</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="119"/>
       <source>The View that owns this Dimension</source>
-      <translation type="unfinished">The View that owns this Dimension</translation>
+      <translation>Visningen, der ejer denne dimension</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="138"/>
@@ -8848,7 +8924,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="187"/>
       <source>References 3D</source>
-      <translation type="unfinished">References 3D</translation>
+      <translation>Refererer 3D</translation>
     </message>
   </context>
   <context>
@@ -8874,7 +8950,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2211"/>
       <source>Repair Dimension References</source>
-      <translation type="unfinished">Repair Dimension References</translation>
+      <translation>Reparer dimensionsreferencer</translation>
     </message>
   </context>
   <context>
@@ -8897,7 +8973,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="237"/>
       <source>Repair Dimension</source>
-      <translation type="unfinished">Repair Dimension</translation>
+      <translation>Reparer dimension</translation>
     </message>
   </context>
   <context>
@@ -8964,7 +9040,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="45"/>
       <source>press fit</source>
-      <translation type="unfinished">press fit</translation>
+      <translation>prespasning</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="92"/>
@@ -8997,7 +9073,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="36"/>
       <source>Open Circle</source>
-      <translation type="unfinished">Open Circle</translation>
+      <translation>Åben cirkel</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="37"/>
@@ -9074,19 +9150,18 @@ using the given X/Y Spacing</translation>
       <location filename="../../ViewProviderBalloon.cpp" line="183"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
-      <translation type="unfinished">You cannot delete this balloon now because
-there is an open task dialog.</translation>
+      <translation>Du kan ikke slette denne ballon nu, da der er en åben opgavedialog.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBalloon.cpp" line="186"/>
       <source>Can Not Delete</source>
-      <translation type="unfinished">Can Not Delete</translation>
+      <translation>Kan ikke slette</translation>
     </message>
   </context>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Page</source>
       <translation>Side</translation>
     </message>
@@ -9094,7 +9169,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>Template</source>
       <translation>Skabelon</translation>
     </message>
@@ -9102,7 +9177,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Visning</translation>
     </message>
@@ -9110,7 +9185,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>View</source>
       <translation>Visning</translation>
     </message>
@@ -9118,47 +9193,47 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
-      <translation type="unfinished">Section</translation>
+      <translation>Tvæsnit</translation>
     </message>
   </context>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Section</source>
-      <translation type="unfinished">Section</translation>
+      <translation>Tværsnit</translation>
     </message>
   </context>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Detail</source>
-      <translation type="unfinished">Detail</translation>
+      <translation>Detalje</translation>
     </message>
   </context>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>ActiveView</source>
-      <translation type="unfinished">ActiveView</translation>
+      <translation>Aktiv visining</translation>
     </message>
   </context>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Annotering</translation>
     </message>
   </context>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Image</source>
       <translation>Billede</translation>
     </message>
@@ -9166,7 +9241,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Symbol</source>
       <translation>Symboler</translation>
     </message>
@@ -9174,15 +9249,15 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Arch</source>
-      <translation type="unfinished">Arch</translation>
+      <translation>Arch</translation>
     </message>
   </context>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Draft</source>
       <translation>Udkast</translation>
     </message>
@@ -9190,15 +9265,15 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>LeaderLine</source>
-      <translation type="unfinished">LeaderLine</translation>
+      <translation>Ledelinje</translation>
     </message>
   </context>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Balloon</source>
       <translation>Ballon</translation>
     </message>
@@ -9206,7 +9281,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Dimension</source>
       <translation>Dimension</translation>
     </message>
@@ -9214,7 +9289,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Extent</source>
       <translation type="unfinished">Extent</translation>
     </message>
@@ -9222,7 +9297,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Hatch</source>
       <translation>Skravering</translation>
     </message>
@@ -9230,9 +9305,9 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>GeomHatch</source>
-      <translation type="unfinished">GeomHatch</translation>
+      <translation>Geometrisk skravering</translation>
     </message>
   </context>
   <context>
@@ -9255,22 +9330,22 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
       <source>2d Point</source>
-      <translation type="unfinished">2d Point</translation>
+      <translation>2D-punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
       <source>Treat the center point as a 3d point and project it onto the parent View.</source>
-      <translation type="unfinished">Treat the center point as a 3d point and project it onto the parent View.</translation>
+      <translation>Behandel centerpunkt som et 3D-punkt og projektér det over på forældreside.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="80"/>
       <source>3d Point</source>
-      <translation type="unfinished">3d Point</translation>
+      <translation>3D-punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="90"/>
       <source>Circle Center</source>
-      <translation type="unfinished">Circle Center</translation>
+      <translation>Cirkelcenter</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="101"/>
@@ -9290,22 +9365,22 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="147"/>
       <source>Radius:</source>
-      <translation type="unfinished">Radius:</translation>
+      <translation>Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="205"/>
       <source>Start Angle:</source>
-      <translation type="unfinished">Start Angle:</translation>
+      <translation>Startvinkel:</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="212"/>
       <source>Check this box to make an arc from start angle to end angle in a clockwise direction.</source>
-      <translation type="unfinished">Check this box to make an arc from start angle to end angle in a clockwise direction.</translation>
+      <translation>Afkryds denne boks, for at lave en bue fra start vinkel til slut vinkel med retning med uret.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="215"/>
       <source>Clockwise Angle</source>
-      <translation type="unfinished">Clockwise Angle</translation>
+      <translation>Vinkel, med uret</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="195"/>
@@ -9315,7 +9390,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="188"/>
       <source>End Angle:</source>
-      <translation type="unfinished">End Angle:</translation>
+      <translation>Slutvinkel:</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="171"/>
@@ -9325,12 +9400,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="181"/>
       <source>Arc of Circle</source>
-      <translation type="unfinished">Arc of Circle</translation>
+      <translation>Cirkelbue</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="182"/>
       <source>Radius must be non-zero positive number</source>
-      <translation type="unfinished">Radius must be non-zero positive number</translation>
+      <translation>Radius skal være et tal større end nul</translation>
     </message>
   </context>
   <context>
@@ -9356,12 +9431,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1897"/>
       <source>Calculate the arc length of selected edges</source>
-      <translation type="unfinished">Calculate the arc length of selected edges</translation>
+      <translation>Beregn buelængde fra valgte linjer</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1898"/>
       <source>Select several edges&lt;br&gt;    - click this tool</source>
-      <translation type="unfinished">Select several edges&lt;br&gt;    - click this tool</translation>
+      <translation>Vælg flere linjer&lt;br&gt;    - Vælg dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -9374,7 +9449,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="31"/>
       <source>Position from the view center</source>
-      <translation type="unfinished">Position from the view center</translation>
+      <translation>Placering fra visningscentrum</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="34"/>
@@ -9384,17 +9459,17 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
       <source>X-Offset</source>
-      <translation type="unfinished">X-Offset</translation>
+      <translation>X-forskydning</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="55"/>
       <source>Y-Offset</source>
-      <translation type="unfinished">Y-Offset</translation>
+      <translation>Y-forskydning</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
       <source>Enter X offset value</source>
-      <translation type="unfinished">Enter X offset value</translation>
+      <translation>Indtast x-forskydningværdi</translation>
     </message>
   </context>
   <context>
@@ -9402,7 +9477,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="77"/>
       <source>Add an offset vertex</source>
-      <translation type="unfinished">Add an offset vertex</translation>
+      <translation>Tilføj forskudt punkt</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
@@ -9410,15 +9485,15 @@ there is an open task dialog.</translation>
                 - select one vertex&lt;br&gt;
                 - start the tool&lt;br&gt;
                 - enter offset values in panel</source>
-      <translation type="unfinished">Create an offset vertex&lt;br&gt;
-                - select one vertex&lt;br&gt;
-                - start the tool&lt;br&gt;
-                - enter offset values in panel</translation>
+      <translation>Lav et forskudt punkt &lt;br&gt;
+                - vælg et punkt&lt;br&gt;
+                - start værktøjet&lt;br&gt;
+                - indtast forskydningen i panelet</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="45"/>
       <source>Add offset vertex</source>
-      <translation type="unfinished">Add offset vertex</translation>
+      <translation>Tilføj forskudt punkt</translation>
     </message>
   </context>
   <context>
@@ -9426,7 +9501,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="50"/>
       <source>Update template fields</source>
-      <translation type="unfinished">Update template fields</translation>
+      <translation>Opdatér skabelonfelter</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="54"/>
@@ -9436,7 +9511,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="136"/>
       <source>Fill Template Fields in </source>
-      <translation type="unfinished">Fill Template Fields in </translation>
+      <translation>Udfyld skabelonfelter</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="143"/>
@@ -9446,7 +9521,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="352"/>
       <source>Update All</source>
-      <translation type="unfinished">Update All</translation>
+      <translation>Opdatér alt</translation>
     </message>
   </context>
   <context>
@@ -9454,22 +9529,22 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="81"/>
       <source> file does not contain the correct field names therefore exiting</source>
-      <translation type="unfinished"> file does not contain the correct field names therefore exiting</translation>
+      <translation> fil har ikke de korrekte feltnavne, afslutter derfor</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="87"/>
       <source> file has not been found therefore exiting</source>
-      <translation type="unfinished"> file has not been found therefore exiting</translation>
+      <translation> fil blev ikke fundet, afslutter derfor</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="108"/>
       <source>View or Projection Group missing</source>
-      <translation type="unfinished">View or Projection Group missing</translation>
+      <translation>Visning eller projektionsgruppe mangler</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="382"/>
       <source>Corresponding template fields missing</source>
-      <translation type="unfinished">Corresponding template fields missing</translation>
+      <translation>Korresponderende skabelonfelter mangler</translation>
     </message>
   </context>
   <context>
@@ -9477,28 +9552,28 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
       <source>No vertex selected</source>
-      <translation type="unfinished">No vertex selected</translation>
+      <translation>Intet punkt markeret</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
       <source>Select at least </source>
-      <translation type="unfinished">Select at least </translation>
+      <translation>Markér mindst </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
       <source> vertexes</source>
-      <translation type="unfinished"> vertexes</translation>
+      <translation> punkter</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
       <source>No edge selected</source>
-      <translation type="unfinished">No edge selected</translation>
+      <translation>Ingen linjer valgt</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
       <source> edges</source>
-      <translation type="unfinished"> edges</translation>
+      <translation> linjer</translation>
     </message>
   </context>
   <context>
@@ -9622,7 +9697,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="91"/>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Synlig</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="92"/>
@@ -9657,7 +9732,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="98"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>Leder</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="99"/>
@@ -9677,32 +9752,32 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="102"/>
       <source>Break1</source>
-      <translation type="unfinished">Break1</translation>
+      <translation>Opdeling 1</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="103"/>
       <source>Break2</source>
-      <translation type="unfinished">Break2</translation>
+      <translation>Opdeling 2</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="104"/>
       <source>Phantom</source>
-      <translation type="unfinished">Phantom</translation>
+      <translation>Fantom</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="105"/>
       <source>Stitch1</source>
-      <translation type="unfinished">Stitch1</translation>
+      <translation>Syning1</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="106"/>
       <source>Stitch2</source>
-      <translation type="unfinished">Stitch2</translation>
+      <translation>Syning2</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="107"/>
       <source>Chain</source>
-      <translation type="unfinished">Chain</translation>
+      <translation>Kæde</translation>
     </message>
   </context>
   <context>
@@ -9710,7 +9785,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="51"/>
       <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <translation>Placér tværsnitsvisning</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="59"/>
@@ -9719,11 +9794,11 @@ there is an open task dialog.</translation>
                 - Click this tool&lt;br&gt;
                 - optional: select one edge in the section view and it&apos;s corresponding vertex in the base view&lt;br&gt;
                   Click this tool</source>
-      <translation type="unfinished">Orthogonally align a section view with its source view:&lt;br&gt;
-                - Select a single section view&lt;br&gt;
-                - Click this tool&lt;br&gt;
-                - optional: select one edge in the section view and it&apos;s corresponding vertex in the base view&lt;br&gt;
-                  Click this tool</translation>
+      <translation>Ortogonal flugtning af tværsnitsvisning med kildevisning&lt;br&gt;
+                - Vælg et enkelt tværsnit&lt;br&gt;
+                - Tryk på dette værktøj&lt;br&gt;
+                - valgfrit: vælg en linje i tværsnitsvisningen og dets korresponderende punkt i en grundvisning&lt;br&gt;
+                  Tryk på dette værktøj</translation>
     </message>
   </context>
   <context>
@@ -9737,7 +9812,7 @@ there is an open task dialog.</translation>
       <location filename="../../CommandExtensionDims.cpp" line="222"/>
       <location filename="../../CommandExtensionDims.cpp" line="409"/>
       <source>Insert &apos;n×&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;n×&apos; Prefix</translation>
+      <translation>Indsæt &apos;n×&apos;-præfiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="223"/>
@@ -9749,7 +9824,7 @@ there is an open task dialog.</translation>
   <context>
     <name>Preferences</name>
     <message>
-      <location filename="../../../App/Preferences.cpp" line="451"/>
+      <location filename="../../../App/Preferences.cpp" line="466"/>
       <source>The LineStandard parameter is invalid. Using zero instead.</source>
       <translation type="unfinished">The LineStandard parameter is invalid. Using zero instead.</translation>
     </message>
@@ -9760,65 +9835,64 @@ there is an open task dialog.</translation>
       <location filename="../../ViewProviderDimension.cpp" line="301"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
-      <translation type="unfinished">You cannot delete this dimension now because
-there is an open task dialog.</translation>
+      <translation>Du kan ikke slette den dimension nu, da der er en åben opgavedialog.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDimension.cpp" line="304"/>
       <source>Can Not Delete</source>
-      <translation type="unfinished">Can Not Delete</translation>
+      <translation>Kan ikke slette</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="538"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="539"/>
+      <location filename="../../Command.cpp" line="540"/>
       <source>Insert Broken View</source>
-      <translation type="unfinished">Insert Broken View</translation>
+      <translation>Indsæt opdelt visning</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="920"/>
+      <location filename="../../TaskProjGroup.cpp" line="955"/>
       <source>Direction</source>
       <translation>Retning</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="925"/>
+      <location filename="../../TaskProjGroup.cpp" line="960"/>
       <source>X: </source>
       <translation type="unfinished">X: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="933"/>
+      <location filename="../../TaskProjGroup.cpp" line="968"/>
       <source>Y: </source>
       <translation type="unfinished">Y: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="941"/>
+      <location filename="../../TaskProjGroup.cpp" line="976"/>
       <source>Z: </source>
       <translation type="unfinished">Z: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="957"/>
+      <location filename="../../TaskProjGroup.cpp" line="992"/>
       <source>OK</source>
       <translation>Ok</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="958"/>
+      <location filename="../../TaskProjGroup.cpp" line="993"/>
       <source>Cancel</source>
       <translation>Annuller</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="964"/>
+      <location filename="../../TaskProjGroup.cpp" line="999"/>
       <source>Rotate by</source>
-      <translation type="unfinished">Rotate by</translation>
+      <translation>Rotér med</translation>
     </message>
   </context>
   <context>
@@ -9844,7 +9918,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1835"/>
       <source>Insert Area Annotation</source>
-      <translation type="unfinished">Insert Area Annotation</translation>
+      <translation>Indsæt arealannotering</translation>
     </message>
   </context>
   <context>
@@ -9857,12 +9931,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>Zigzag</translation>
     </message>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>Simpelt</translation>
     </message>
   </context>
   <context>

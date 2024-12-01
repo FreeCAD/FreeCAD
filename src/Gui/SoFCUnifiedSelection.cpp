@@ -79,6 +79,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "Application.h"
 #include "Document.h"
+#include "DocumentObserver.h"
 #include "MainWindow.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
@@ -602,12 +603,21 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     std::string objectName = objname;
 
     if (ctrlDown) {
-        if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve))
+        if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve)) {
             Gui::Selection().rmvSelection(docname, objname, info.element.c_str(), &sels);
+            return true;
+        }
         else {
+            // Changing the selection may result in destroying this view provider.
+            // So, make sure that the object still exists afterwards (#17965)
+            ViewProviderWeakPtrT guard(vpd);
             getFullSubElementName(subName);
             bool ok = Gui::Selection().addSelection(docname, objname,
                                                     subName.c_str(), pt[0], pt[1], pt[2], &sels);
+            if (guard.expired()) {
+                return false;
+            }
+
             if (ok && mymode == OFF) {
                 snprintf(buf, 512, "Selected: %s.%s.%s (%g, %g, %g)",
                          docname, objname, info.element.c_str(), fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,
@@ -625,7 +635,8 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
                     type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
             }
         }
-    } else {
+    }
+    else {
         // Hierarchy ascending
         //
         // If the clicked subelement is already selected, check if there is an
@@ -698,6 +709,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
             getMainWindow()->showMessage(QString::fromLatin1(buf));
         }
     }
+
     if (pPath) {
         FC_TRACE("applying action");
         SoSelectionElementAction action(type);

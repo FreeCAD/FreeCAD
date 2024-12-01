@@ -325,6 +325,16 @@ struct BaseExport Tools
     static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
     static std::string currentDateTimeString();
+
+    static std::vector<std::string> splitSubName(const std::string& subname);
+};
+
+struct BaseExport ZipTools
+{
+    /**
+     * @brief rewrite Rewrite a zip file under a new name.
+     */
+    static void rewrite(const std::string& source, const std::string& target);
 };
 
 
