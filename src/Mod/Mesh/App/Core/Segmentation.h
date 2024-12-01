@@ -100,13 +100,13 @@ public:
     MeshDistancePlanarSegment& operator=(const MeshDistancePlanarSegment&) = delete;
     MeshDistancePlanarSegment& operator=(MeshDistancePlanarSegment&&) = delete;
 
-    bool TestFacet(const MeshFacet& rclFacet) const override;
+    bool TestFacet(const MeshFacet& face) const override;
     const char* GetType() const override
     {
         return "Plane";
     }
     void Initialize(FacetIndex) override;
-    void AddFacet(const MeshFacet& rclFacet) override;
+    void AddFacet(const MeshFacet& face) override;
 
 private:
     Base::Vector3f basepoint;
@@ -242,14 +242,14 @@ public:
     MeshDistanceGenericSurfaceFitSegment&
     operator=(MeshDistanceGenericSurfaceFitSegment&&) = delete;
 
-    bool TestFacet(const MeshFacet& rclFacet) const override;
+    bool TestFacet(const MeshFacet& face) const override;
     const char* GetType() const override
     {
         return fitter->GetType();
     }
     void Initialize(FacetIndex) override;
     bool TestInitialFacet(FacetIndex) const override;
-    void AddFacet(const MeshFacet& rclFacet) override;
+    void AddFacet(const MeshFacet& face) override;
     std::vector<float> Parameters() const;
 
 private:

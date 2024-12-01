@@ -72,7 +72,7 @@ struct color_traits
     }
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
-        return color_type{red, green, blue, alpha};
+        return color_type {red, green, blue, alpha};
     }
 
 private:
@@ -146,7 +146,7 @@ public:
     template<typename T>
     static uint32_t asPackedRGBA(const T& color)
     {
-        color_traits<T> ct{color};
+        color_traits<T> ct {color};
         return (ct.red() << 24) | (ct.green() << 16) | (ct.blue() << 8) | ct.alpha();
     }
 
@@ -162,7 +162,7 @@ public:
     template<typename T>
     static uint32_t asPackedRGB(const T& color)
     {
-        color_traits<T> ct{color};
+        color_traits<T> ct {color};
         return (ct.red() << 24) | (ct.green() << 16) | (ct.blue() << 8);
     }
 
@@ -179,7 +179,7 @@ public:
     template<typename T>
     void setValue(const T& q)
     {
-        color_traits<T> ct{q};
+        color_traits<T> ct {q};
         set(ct.redF(), ct.greenF(), ct.blueF());
     }
     /**

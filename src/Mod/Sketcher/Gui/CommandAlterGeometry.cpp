@@ -115,6 +115,9 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSplineByInterpolation");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CarbonCopy");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompExternal");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Projection");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Intersection");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_ToggleConstruction");
 }
 
@@ -158,8 +161,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         selection =
             getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
-        Sketcher::SketchObject* Obj =
-            static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+        auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1) {
@@ -185,13 +187,13 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         bool verticesonly = true;
 
         for (const auto& subname : SubNames) {
-            if (subname.size() > 4 && subname.substr(0, 4) == "Edge") {
+            if ((subname.size() > 4 && subname.substr(0, 4) == "Edge")
+                || (subname.size() > 12 && subname.substr(0, 12) == "ExternalEdge")) {
                 verticesonly = false;
             }
         }
 
-        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-             ++it) {
+        for (const auto& subname : SubNames) {
             // It was decided to provide a special behaviour:
             // Vertices will only be toggled to/from construction IF ONLY
             // vertices are within the group.
@@ -205,13 +207,17 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
 
             // only handle edges
-            if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-                int GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+            if (subname.size() > 4 && subname.substr(0, 4) == "Edge") {
+                int geoId = std::atoi(subname.substr(4, 4000).c_str()) - 1;
                 // issue the actual commands to toggle
-                Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", GeoId);
+                Gui::cmdAppObjectArgs(Obj, "toggleConstruction(%d) ", geoId);
             }
-            else if (verticesonly && it->size() > 6 && it->substr(0, 6) == "Vertex") {
-                int vertexId = std::atoi(it->substr(6, 4000).c_str()) - 1;
+            else if (subname.size() > 12 && subname.substr(0, 12) == "ExternalEdge") {
+                int geoId = GeoEnum::RefExt - std::atoi(subname.substr(12, 4000).c_str()) + 1;
+                Gui::cmdAppObjectArgs(Obj, "toggleConstruction(%d) ", geoId);
+            }
+            else if (verticesonly && subname.size() > 6 && subname.substr(0, 6) == "Vertex") {
+                int vertexId = std::atoi(subname.substr(6, 4000).c_str()) - 1;
 
                 int geoId;
                 PointPos pos;
@@ -221,9 +227,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
                 if (geo && geo->is<Part::GeomPoint>()) {
                     // issue the actual commands to toggle
-                    Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                          "toggleConstruction(%d) ",
-                                          geoId);
+                    Gui::cmdAppObjectArgs(Obj, "toggleConstruction(%d) ", geoId);
                 }
             }
         }

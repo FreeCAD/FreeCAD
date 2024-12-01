@@ -42,10 +42,18 @@
 #include <vector>
 #include <unordered_map>
 
+// boost
+#include <boost/algorithm/string/predicate.hpp>
+
 // Qt (should never include GUI files, only QtCore)
+#include <QByteArray>
+#include <QCryptographicHash>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QStandardPaths>
+#include <QUrl>
 
 #endif  // _PreComp_
 #endif  // START_PRECOMPILED_H

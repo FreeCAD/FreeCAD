@@ -120,8 +120,8 @@ public:
 
     void setGrid();
 
-    QGSPage* getQGSPage(void) { return m_graphicsScene; }
-    QGVPage* getQGVPage(void) { return m_graphicsView; }
+    QGSPage* getQGSPage(void) const { return m_graphicsScene; }
+    QGVPage* getQGVPage(void) const { return m_graphicsView; }
 
     ViewProviderPageExtension* getVPPExtension() const;
 
@@ -129,6 +129,7 @@ public:
 
     void fixSceneDependencies();
 
+    void redrawPage() const;
 
 protected:
     bool setEdit(int ModNum) override;

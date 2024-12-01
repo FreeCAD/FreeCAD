@@ -71,7 +71,9 @@ class ViewProviderWorkingPlaneProxy:
         vobj.Transparency = 70
         vobj.LineWidth = 1
 
-        vobj.LineColor = params.get_param_arch("ColorHelpers") & 0xFFFFFF00
+        ch = params.get_param_arch("ColorHelpers")
+        if ch:
+            vobj.LineColor = ch & 0xFFFFFF00
 
         vobj.Proxy = self
         vobj.RestoreView = True

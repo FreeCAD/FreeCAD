@@ -53,7 +53,7 @@ namespace sp = std::placeholders;
 MeshCurvature::MeshCurvature(const MeshKernel& kernel)
     : myKernel(kernel)
     , myMinPoints(20)
-    , myRadius(0.5f)
+    , myRadius(0.5F)
 {
     mySegment.resize(kernel.CountFacets());
     std::generate(mySegment.begin(), mySegment.end(), Base::iotaGen<FacetIndex>(0));
@@ -62,7 +62,7 @@ MeshCurvature::MeshCurvature(const MeshKernel& kernel)
 MeshCurvature::MeshCurvature(const MeshKernel& kernel, std::vector<FacetIndex> segm)
     : myKernel(kernel)
     , myMinPoints(20)
-    , myRadius(0.5f)
+    , myRadius(0.5F)
     , mySegment(std::move(segm))
 {}
 
@@ -319,9 +319,9 @@ void MeshCurvature::ComputePerVertex()
 
     // compute vertex based curvatures
     Wm4::MeshCurvature<double> meshCurv(myKernel.CountPoints(),
-                                        &(aPnts[0]),
+                                        aPnts.data(),
                                         myKernel.CountFacets(),
-                                        &(aIdx[0]));
+                                        aIdx.data());
 
     // get curvature information now
     const Wm4::Vector3<double>* aMaxCurvDir = meshCurv.GetMaxDirections();
@@ -401,7 +401,7 @@ CurvatureInfo FacetCurvature::Compute(FacetIndex index) const
         }
         float min_points = myMinPoints;
         float use_points = point_indices.size();
-        searchDist = searchDist * sqrt(min_points / use_points);
+        searchDist = searchDist * std::sqrt(min_points / use_points);
     } while ((point_indices.size() < myMinPoints) && (attempts++ < 3));
 
     std::vector<Base::Vector3f> fitPoints;

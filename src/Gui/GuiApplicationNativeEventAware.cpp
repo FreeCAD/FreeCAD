@@ -33,7 +33,7 @@
 
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
   #if defined(SPNAV_USE_X11)
     #include "3Dconnexion/GuiNativeEventLinuxX11.h"
   #else

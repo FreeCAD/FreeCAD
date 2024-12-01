@@ -73,7 +73,7 @@ void MeshBuilder::Initialize(size_t ctFacets, bool deletion)
         // memory with 10% surcharge To save memory we hold an array with iterators that point to
         // the right vertex (insertion order) in the set, instead of holding the vertex array twice.
         size_t ctPoints = ctFacets / 2;
-        _pointsIterator.reserve(static_cast<size_t>(float(ctPoints) * 1.10f));
+        _pointsIterator.reserve(static_cast<size_t>(float(ctPoints) * 1.10F));
         _ptIdx = 0;
     }
     else {
@@ -90,7 +90,7 @@ void MeshBuilder::Initialize(size_t ctFacets, bool deletion)
         size_t newCtFacets = _meshKernel._aclFacetArray.size() + ctFacets;
         _meshKernel._aclFacetArray.reserve(newCtFacets);
         size_t ctPoints = newCtFacets / 2;
-        _pointsIterator.reserve(static_cast<size_t>(float(ctPoints) * 1.10f));
+        _pointsIterator.reserve(static_cast<size_t>(float(ctPoints) * 1.10F));
     }
 
     this->_seq = new Base::SequencerLauncher("create mesh structure...", ctFacets * 2);
@@ -132,7 +132,7 @@ void MeshBuilder::AddFacet(Base::Vector3f* facetPoints, unsigned char flag, unsi
 
     // adjust circulation direction
     if ((((facetPoints[1] - facetPoints[0]) % (facetPoints[2] - facetPoints[0])) * facetPoints[3])
-        < 0.0f) {
+        < 0.0F) {
         std::swap(facetPoints[1], facetPoints[2]);
     }
 
@@ -306,15 +306,14 @@ struct MeshFastBuilder::Private
             if (x != rhs.x) {
                 return x < rhs.x;
             }
-            else if (y != rhs.y) {
+            if (y != rhs.y) {
                 return y < rhs.y;
             }
-            else if (z != rhs.z) {
+            if (z != rhs.z) {
                 return z < rhs.z;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     };
 

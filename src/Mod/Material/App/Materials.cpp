@@ -1108,6 +1108,16 @@ bool Material::hasLegacyProperties() const
     return !_legacy.empty();
 }
 
+bool Material::hasPhysicalProperties() const
+{
+    return !_physicalUuids.isEmpty();
+}
+
+bool Material::hasAppearanceProperties() const
+{
+    return !_appearanceUuids.isEmpty();
+}
+
 bool Material::isInherited(const QString& uuid) const
 {
     if (_physicalUuids.contains(uuid)) {

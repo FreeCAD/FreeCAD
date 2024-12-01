@@ -250,7 +250,7 @@ private:
 
     std::unordered_map<App::DocumentObject*, MbDPartData> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
-    std::vector<std::shared_ptr<MbD::ASMTPart>> dragMbdParts;
+    std::vector<App::DocumentObject*> draggedParts;
 
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 

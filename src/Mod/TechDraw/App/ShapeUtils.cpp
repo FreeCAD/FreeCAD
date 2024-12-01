@@ -222,6 +222,7 @@ Base::Vector3d ShapeUtils::findCentroidVec(const TopoDS_Shape& shape, const gp_A
     return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
+
 //!scales & mirrors a shape about a center
 TopoDS_Shape ShapeUtils::mirrorShapeVec(const TopoDS_Shape& input, const Base::Vector3d& inputCenter,
                                       double scale)
@@ -347,6 +348,34 @@ TopoDS_Shape ShapeUtils::fromQt(const TopoDS_Shape& inShape)
     xFromQt.SetTransformation(Qt, OXYZ);
     BRepBuilderAPI_Transform mkTrf(inShape, xFromQt);
     return mkTrf.Shape();
+}
+
+//! specialization offromQt for Faces. should be templated?
+TopoDS_Face ShapeUtils::fromQtAsFace(const TopoDS_Shape& inShape)
+{
+    auto flippedShape = ShapeUtils::fromQt(inShape);
+
+    TopoDS_Face foundFace;
+    TopExp_Explorer expFaces(flippedShape, TopAbs_FACE);
+    if (expFaces.More()) {
+        foundFace = TopoDS::Face(expFaces.Current());
+    }
+
+    return foundFace;
+}
+
+//! specialization offromQt for Wire. should be templated?
+TopoDS_Wire ShapeUtils::fromQtAsWire(const TopoDS_Shape& inShape)
+{
+    auto flippedShape = ShapeUtils::fromQt(inShape);
+
+    TopoDS_Wire foundWire;
+    TopExp_Explorer expWires(flippedShape, TopAbs_WIRE);
+    if (expWires.More()) {
+        foundWire = TopoDS::Wire(expWires.Current());
+    }
+
+    return foundWire;
 }
 
 //! transforms a shape defined in conventional coordinates coordinates into one defined by

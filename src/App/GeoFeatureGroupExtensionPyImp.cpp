@@ -36,7 +36,7 @@ std::string GeoFeatureGroupExtensionPy::representation() const
     return {"<GeoFeatureGroup object>"};
 }
 
-PyObject *GeoFeatureGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* GeoFeatureGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -45,5 +45,3 @@ int GeoFeatureGroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObje
 {
     return 0;
 }
-
-

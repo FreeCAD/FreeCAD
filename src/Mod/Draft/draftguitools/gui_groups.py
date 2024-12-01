@@ -235,18 +235,16 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
 
         # Otherwise it builds a list of layers, with names and icons,
         # including the options "None" and "Add new layer".
-        self.groups = [translate("draft", "None")]
-        gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
+        grps = [o for o in self.doc.Objects if utils.get_type(o) == "Layer"]
         if params.get_param("AutogroupAddGroups"):
-            gn.extend(groups.get_group_names())
-        self.groups.extend(gn)
+            grps.extend([o for o in self.doc.Objects if groups.is_group(o)])
+        grps.sort(key=lambda grp: grp.Label)
+        self.groups = [translate("draft", "None")] + [o.Name for o in grps]
         self.labels = [translate("draft", "None")]
         self.icons = [self.ui.getIcon(":/icons/button_invalid.svg")]
-        for g in gn:
-            o = self.doc.getObject(g)
-            if o:
-                self.labels.append(o.Label)
-                self.icons.append(o.ViewObject.Icon)
+        for grp in grps:
+            self.labels.append(grp.Label)
+            self.icons.append(grp.ViewObject.Icon)
         self.labels.append(translate("draft", "Add new Layer"))
         self.icons.append(self.ui.getIcon(":/icons/document-new.svg"))
 

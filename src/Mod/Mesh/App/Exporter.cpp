@@ -393,17 +393,14 @@ public:
                 if (a.z == b.z) {
                     return false;
                 }
-                else {
-                    return a.z < b.z;
-                }
+
+                return a.z < b.z;
             }
-            else {
-                return a.y < b.y;
-            }
+
+            return a.y < b.y;
         }
-        else {
-            return a.x < b.x;
-        }
+
+        return a.x < b.x;
     }
 };
 

@@ -111,6 +111,22 @@ PyObject* DrawViewDimensionPy::getAnglePoints(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
+
+PyObject* DrawViewDimensionPy::getAreaPoints(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewDimension* dvd = getDrawViewDimensionPtr();
+    areaPoint pts = dvd->getAreaPoint();
+    Py::List ret;
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.getCenter()))));
+    ret.append(Py::asObject(PyFloat_FromDouble(pts.getFilledArea())));
+    ret.append(Py::asObject(PyFloat_FromDouble(pts.getActualArea())));
+    return Py::new_reference_to(ret);
+}
+
 PyObject* DrawViewDimensionPy::getArrowPositions(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {

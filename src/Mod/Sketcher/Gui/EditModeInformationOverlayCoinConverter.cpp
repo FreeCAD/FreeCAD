@@ -61,7 +61,9 @@ void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geom
 {
 
     if (geometry->is<Part::GeomBSplineCurve>()) {
-        // at this point all calculations relate to BSplineCurves
+        if (geoid < 0) {
+            return;
+        }
         calculate<CalculationType::BSplineDegree>(geometry, geoid);
         calculate<CalculationType::BSplineControlPolygon>(geometry, geoid);
         calculate<CalculationType::BSplineCurvatureComb>(geometry, geoid);

@@ -50,7 +50,7 @@ class BSpline(gui_lines.Line):
     """Gui command for the BSpline tool."""
 
     def __init__(self):
-        super(BSpline, self).__init__(wiremode=True)
+        super(BSpline, self).__init__(mode="wire")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -109,7 +109,7 @@ class BSpline(gui_lines.Line):
                 self.pos = arg["Position"]
                 self.node.append(self.point)
                 self.drawUpdate(self.point)
-                if not self.isWire and len(self.node) == 2:
+                if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # DNC: allows to close the curve

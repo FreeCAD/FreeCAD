@@ -26,8 +26,6 @@
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include "TaskSketchBasedParameters.h"
-#include "ViewProviderRevolution.h"
-#include "ViewProviderGroove.h"
 
 
 class Ui_TaskRevolutionParameters;
@@ -38,19 +36,22 @@ class Property;
 
 namespace Gui {
 class ViewProvider;
+class ViewProviderOrigin;
 }
 
 namespace PartDesignGui {
+class ViewProviderRevolution;
+class ViewProviderGroove;
 
 class TaskRevolutionParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskRevolutionParameters(ViewProvider* RevolutionView,
-                                      const char *pixname,
-                                      QString title = tr("Revolution parameters"),
-                                      QWidget* parent = nullptr);
+    TaskRevolutionParameters(ViewProvider* RevolutionView,
+                             const char *pixname,
+                             const QString& title,
+                             QWidget* parent = nullptr);
     ~TaskRevolutionParameters() override;
 
     void apply() override;
@@ -63,7 +64,9 @@ public:
      * list (if necessary), and selected. If the list is empty, it will be refilled anyway.
      */
     void fillAxisCombo(bool forceRefill = false);
-    void addAxisToCombo(App::DocumentObject *linkObj, std::string linkSubname, QString itemText);
+    void addAxisToCombo(App::DocumentObject *linkObj,
+                        const std::string& linkSubname,
+                        const QString& itemText);
 
 private Q_SLOTS:
     void onAngleChanged(double);
@@ -72,7 +75,7 @@ private Q_SLOTS:
     void onMidplane(bool);
     void onReversed(bool);
     void onModeChanged(int);
-    void onButtonFace(const bool pressed = true);
+    void onButtonFace(bool pressed = true);
     void onFaceName(const QString& text);
 
 protected:
@@ -82,9 +85,10 @@ protected:
     bool getMidplane() const;
     bool getReversed() const;
     QString getFaceName() const;
-    void setupDialog(void);
+    void setupDialog();
     void setCheckboxes(PartDesign::Revolution::RevolMethod mode);
 
+private:
     //mirrors of revolution's or groove's properties
     //should have been done by inheriting revolution and groove from common class...
     App::PropertyAngle* propAngle;
@@ -101,6 +105,7 @@ private:
     // TODO: This is common with extrude. Maybe send to superclass.
     void translateFaceName();
     void clearFaceName();
+    Gui::ViewProviderOrigin* getOriginView() const;
 
 private:
     std::unique_ptr<Ui_TaskRevolutionParameters> ui;
@@ -119,7 +124,6 @@ private:
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 };
 
-/// simulation dialog for the TaskView
 class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
@@ -127,6 +131,7 @@ class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
 public:
     explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProviderRevolution *RevolutionView);
 };
+
 class TaskDlgGrooveParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
@@ -134,6 +139,7 @@ class TaskDlgGrooveParameters : public TaskDlgSketchBasedParameters
 public:
     explicit TaskDlgGrooveParameters(PartDesignGui::ViewProviderGroove *GrooveView);
 };
+
 } //namespace PartDesignGui
 
 #endif // GUI_TASKVIEW_TASKAPPERANCE_H

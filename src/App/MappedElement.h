@@ -46,13 +46,13 @@ struct AppExport MappedElement
     MappedElement() = default;
 
     MappedElement(const IndexedName& idx, MappedName n)
-        : index(idx),
-          name(std::move(n))
+        : index(idx)
+        , name(std::move(n))
     {}
 
     MappedElement(MappedName n, const IndexedName& idx)
-        : index(idx),
-          name(std::move(n))
+        : index(idx)
+        , name(std::move(n))
     {}
 
     ~MappedElement() = default;
@@ -60,8 +60,8 @@ struct AppExport MappedElement
     MappedElement(const MappedElement& other) = default;
 
     MappedElement(MappedElement&& other) noexcept
-        : index(other.index),
-          name(std::move(other.name))
+        : index(other.index)
+        , name(std::move(other.name))
     {}
 
     MappedElement& operator=(MappedElement&& other) noexcept
@@ -99,16 +99,18 @@ struct AppExport MappedElement
     }
 };
 
-struct AppExport HistoryItem {
-    App::DocumentObject *obj;
+struct AppExport HistoryItem
+{
+    App::DocumentObject* obj;
     long tag;
     Data::MappedName element;
     Data::IndexedName index;
     std::vector<Data::MappedName> intermediates;
-    HistoryItem(App::DocumentObject *obj, const Data::MappedName &name);
+    HistoryItem(App::DocumentObject* obj, const Data::MappedName& name);
 };
 
-struct AppExport ElementNameComparator {
+struct AppExport ElementNameComparator
+{
     /** Comparison function to make topo name more stable
      *
      * The sorting decomposes the name into either of the following two forms
@@ -121,10 +123,10 @@ struct AppExport ElementNameComparator {
      * The reason for this is to prevent names with bigger digits (which usually means
      * they come later in history) from coming earlier when sorting.
      */
-    bool operator()(const MappedName & leftName, const MappedName & rightName) const;
+    bool operator()(const MappedName& leftName, const MappedName& rightName) const;
 };
 
-}// namespace Data
+}  // namespace Data
 
 
-#endif// APP_MAPPED_ELEMENT_H
+#endif  // APP_MAPPED_ELEMENT_H

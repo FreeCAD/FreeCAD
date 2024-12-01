@@ -18,10 +18,10 @@ struct ElementNamePair
 
     ElementNamePair() = default;
 
-    ElementNamePair(std::string newNameStr, std::string oldNameStr) :
-        newName(std::move(newNameStr)), oldName(std::move(oldNameStr))
-    {
-    }
+    ElementNamePair(std::string newNameStr, std::string oldNameStr)
+        : newName(std::move(newNameStr))
+        , oldName(std::move(oldNameStr))
+    {}
 
     bool operator==(const ElementNamePair& other) const
     {
@@ -34,7 +34,7 @@ struct ElementNamePair
     }
 };
 
-}
+}  // namespace App
 
 // clang-format off
 namespace Data
@@ -101,4 +101,4 @@ AppExport const std::string indexSuffix(int index, const char *label=ELEMENT_MAP
 }  // namespace Data
 // clang-format on
 
-#endif // ELEMENT_NAMING_UTILS_H
+#endif  // ELEMENT_NAMING_UTILS_H

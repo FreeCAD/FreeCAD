@@ -35,15 +35,14 @@ using namespace App;
 
 // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 Color::Color(float red, float green, float blue, float alpha)
-  : r(red)
-  , g(green)
-  , b(blue)
-  , a(alpha)
-{
-}
+    : r(red)
+    , g(green)
+    , b(blue)
+    , a(alpha)
+{}
 
 Color::Color(uint32_t rgba)
-  : Color{}
+    : Color {}
 {
     setPackedValue(rgba);
 }
@@ -159,7 +158,7 @@ bool Color::fromHexString(const std::string& hex)
     if (hex.size() == 7) {
         std::stringstream ss(hex);
         unsigned int rgb;
-        char ch{};
+        char ch {};
 
         ss >> ch >> std::hex >> rgb;
         int rc = (rgb >> 16) & 0xff;
@@ -176,13 +175,13 @@ bool Color::fromHexString(const std::string& hex)
     if (hex.size() == 9) {
         std::stringstream ss(hex);
         unsigned int rgba;
-        char ch{};
+        char ch {};
 
         ss >> ch >> std::hex >> rgba;
         int rc = (rgba >> 24) & 0xff;
         int gc = (rgba >> 16) & 0xff;
         int bc = (rgba >> 8) & 0xff;
-        int ac =  rgba & 0xff;
+        int ac = rgba & 0xff;
 
         r = rc / 255.0F;
         g = gc / 255.0F;

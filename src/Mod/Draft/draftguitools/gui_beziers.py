@@ -55,7 +55,7 @@ class BezCurve(gui_lines.Line):
     """Gui command for the Bézier Curve tool."""
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super().__init__(mode="wire")
         self.degree = None
 
     def GetResources(self):
@@ -121,7 +121,7 @@ class BezCurve(gui_lines.Line):
                 # if mod(len(cpoints), 2) == 0
                 # then create 2 handle points?
                 self.drawUpdate(self.point)
-                if not self.isWire and len(self.node) == 2:
+                if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # does this make sense for a BCurve?
@@ -241,7 +241,7 @@ class CubicBezCurve(gui_lines.Line):
     """
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super().__init__(mode="wire")
         self.degree = 3
         self.old_EnableSelection = True
 
@@ -320,7 +320,7 @@ class CubicBezCurve(gui_lines.Line):
                     # if mod(len(cpoints), 2) == 0
                     # then create 2 handle points?
                     self.drawUpdate(self.point)
-                    if not self.isWire and len(self.node) == 2:
+                    if self.mode == "line" and len(self.node) == 2:
                         self.finish(cont=None, closed=False)
                     # does this make sense for a BCurve?
                     if len(self.node) > 2:
@@ -357,7 +357,7 @@ class CubicBezCurve(gui_lines.Line):
                     # if mod(len(cpoints),2) == 0
                     # then create 2 handle points?
                     self.drawUpdate(self.point)
-                    if not self.isWire and len(self.node) == 2:
+                    if self.mode == "line" and len(self.node) == 2:
                         self.finish(cont=None, closed=False)
                     # Does this make sense for a BCurve?
                     if len(self.node) > 2:

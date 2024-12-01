@@ -43,11 +43,11 @@
 
 #include "NavigationStyle.h"
 #include "Application.h"
+#include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
 #include "NavigationAnimator.h"
 #include "NavigationAnimation.h"
-#include "SoMouseWheelEvent.h"
 #include "View3DInventorViewer.h"
 
 using namespace Gui;
@@ -62,7 +62,7 @@ public:
         FreeTurntable
     };
 
-    static constexpr float defaultSphereRadius = 0.8;
+    static constexpr float defaultSphereRadius = 0.8F;
 
     FCSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = true)
         : SbSphereSheetProjector(sph, orienttoeye)

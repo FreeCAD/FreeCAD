@@ -45,7 +45,7 @@ using namespace App;
 // Property
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence)
+TYPESYSTEM_SOURCE_ABSTRACT(App::Property, Base::Persistence)
 
 //**************************************************************************
 // Construction/Destruction
@@ -54,9 +54,8 @@ static std::atomic<int64_t> _PropID;
 
 // Here is the implementation! Description should take place in the header file!
 Property::Property()
-  : _id(++_PropID)
-{
-}
+    : _id(++_PropID)
+{}
 
 Property::~Property() = default;
 
@@ -75,16 +74,21 @@ bool Property::isValidName(const char* name)
     return name && name[0] != '\0';
 }
 
-std::string Property::getFullName() const {
+std::string Property::getFullName() const
+{
     std::string name;
-    if(myName) {
-        if(father)
+    if (myName) {
+        if (father) {
             name = father->getFullName() + ".";
-        else
+        }
+        else {
             name = "?.";
+        }
         name += myName;
-    }else
+    }
+    else {
         return "?";
+    }
     return name;
 }
 
@@ -116,9 +120,11 @@ std::string Property::getFileName(const char* postfix, const char* prefix) const
 short Property::getType() const
 {
     short type = 0;
-#define GET_PTYPE(_name) do {\
-        if(testStatus(App::Property::Prop##_name)) type|=Prop_##_name;\
-    }while(0)
+#define GET_PTYPE(_name)                                                                           \
+    do {                                                                                           \
+        if (testStatus(App::Property::Prop##_name))                                                \
+            type |= Prop_##_name;                                                                  \
+    } while (0)
     GET_PTYPE(ReadOnly);
     GET_PTYPE(Hidden);
     GET_PTYPE(Output);
@@ -128,10 +134,13 @@ short Property::getType() const
     return type;
 }
 
-void Property::syncType(unsigned type) {
-#define SYNC_PTYPE(_name) do{\
-        if(type & Prop_##_name) StatusBits.set((size_t)Prop##_name);\
-    }while(0)
+void Property::syncType(unsigned type)
+{
+#define SYNC_PTYPE(_name)                                                                          \
+    do {                                                                                           \
+        if (type & Prop_##_name)                                                                   \
+            StatusBits.set((size_t)Prop##_name);                                                   \
+    } while (0)
     SYNC_PTYPE(ReadOnly);
     SYNC_PTYPE(Transient);
     SYNC_PTYPE(Hidden);
@@ -150,32 +159,33 @@ const char* Property::getDocumentation() const
     return father->getPropertyDocumentation(this);
 }
 
-void Property::setContainer(PropertyContainer *Father)
+void Property::setContainer(PropertyContainer* Father)
 {
     father = Father;
 }
 
-void Property::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void Property::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
     path.setValue(value);
 }
 
-const boost::any Property::getPathValue(const ObjectIdentifier &path) const
+const boost::any Property::getPathValue(const ObjectIdentifier& path) const
 {
     return path.getValue();
 }
 
-void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
+void Property::getPaths(std::vector<ObjectIdentifier>& paths) const
 {
     paths.emplace_back(getContainer(), getName());
 }
 
-ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
+ObjectIdentifier Property::canonicalPath(const ObjectIdentifier& p) const
 {
     return p;
 }
 
-namespace App {
+namespace App
+{
 /*!
  * \brief The PropertyCleaner struct
  * Make deleting dynamic property safer by postponing its destruction.
@@ -186,43 +196,51 @@ namespace App {
  * removed property, and only deleting them when no onChanged() call is
  * active.
  */
-struct PropertyCleaner {
-    explicit PropertyCleaner(Property *p)
+struct PropertyCleaner
+{
+    explicit PropertyCleaner(Property* p)
         : prop(p)
     {
         ++_PropCleanerCounter;
     }
-    ~PropertyCleaner() {
-        if(--_PropCleanerCounter)
+    ~PropertyCleaner()
+    {
+        if (--_PropCleanerCounter) {
             return;
+        }
         bool found = false;
         while (!_RemovedProps.empty()) {
             auto p = _RemovedProps.back();
             _RemovedProps.pop_back();
-            if(p != prop)
+            if (p != prop) {
                 delete p;
-            else
+            }
+            else {
                 found = true;
+            }
         }
 
-        if (found)
+        if (found) {
             _RemovedProps.push_back(prop);
+        }
     }
-    static void add(Property *prop) {
+    static void add(Property* prop)
+    {
         _RemovedProps.push_back(prop);
     }
 
-    Property *prop;
+    Property* prop;
 
     static std::vector<Property*> _RemovedProps;
     static int _PropCleanerCounter;
 };
-}
+}  // namespace App
 
 std::vector<Property*> PropertyCleaner::_RemovedProps;
 int PropertyCleaner::_PropCleanerCounter = 0;
 
-void Property::destroy(Property *p) {
+void Property::destroy(Property* p)
+{
     if (p) {
         // Is it necessary to nullify the container? May cause crash if any
         // onChanged() caller assumes a non-null container.
@@ -253,8 +271,8 @@ void Property::hasSetValue()
     PropertyCleaner guard(this);
     if (father) {
         father->onChanged(this);
-        if(!testStatus(Busy)) {
-            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
+        if (!testStatus(Busy)) {
+            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits, Busy);
             signalChanged(*this);
         }
     }
@@ -263,16 +281,17 @@ void Property::hasSetValue()
 
 void Property::aboutToSetValue()
 {
-    if (father)
+    if (father) {
         father->onBeforeChange(this);
+    }
 }
 
-void Property::verifyPath(const ObjectIdentifier &p) const
+void Property::verifyPath(const ObjectIdentifier& p) const
 {
     p.verify(*this);
 }
 
-Property *Property::Copy() const
+Property* Property::Copy() const
 {
     // have to be reimplemented by a subclass!
     assert(0);
@@ -285,7 +304,8 @@ void Property::Paste(const Property& /*from*/)
     assert(0);
 }
 
-void Property::setStatusValue(unsigned long status) {
+void Property::setStatusValue(unsigned long status)
+{
     // clang-format off
     static const unsigned long mask =
          (1<<PropDynamic)
@@ -303,26 +323,31 @@ void Property::setStatusValue(unsigned long status) {
     unsigned long oldStatus = StatusBits.to_ulong();
     StatusBits = decltype(StatusBits)(status);
 
-    if(father) {
-        static unsigned long _signalMask = (1<<ReadOnly) | (1<<Hidden);
-        if((status & _signalMask) != (oldStatus & _signalMask))
-            father->onPropertyStatusChanged(*this,oldStatus);
+    if (father) {
+        static unsigned long _signalMask = (1 << ReadOnly) | (1 << Hidden);
+        if ((status & _signalMask) != (oldStatus & _signalMask)) {
+            father->onPropertyStatusChanged(*this, oldStatus);
+        }
     }
 }
 
-void Property::setStatus(Status pos, bool on) {
+void Property::setStatus(Status pos, bool on)
+{
     auto bits = StatusBits;
-    bits.set(pos,on);
+    bits.set(pos, on);
     setStatusValue(bits.to_ulong());
 }
 
-bool Property::isSame(const Property &other) const {
-    if(&other == this)
+bool Property::isSame(const Property& other) const
+{
+    if (&other == this) {
         return true;
-    if(other.getTypeId() != getTypeId() || getMemSize() != other.getMemSize())
+    }
+    if (other.getTypeId() != getTypeId() || getMemSize() != other.getMemSize()) {
         return false;
+    }
 
-    Base::StringWriter writer,writer2;
+    Base::StringWriter writer, writer2;
     Save(writer);
     other.Save(writer2);
     return writer.getString() == writer2.getString();
@@ -333,9 +358,10 @@ bool Property::isSame(const Property &other) const {
 // PropertyListsBase
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void PropertyListsBase::_setPyObject(PyObject *value) {
+void PropertyListsBase::_setPyObject(PyObject* value)
+{
     std::vector<int> indices;
-    std::vector<PyObject *> vals;
+    std::vector<PyObject*> vals;
     Py::Object pySeq;
 
     if (PyDict_Check(value)) {
@@ -344,42 +370,48 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
         vals.reserve(size);
         indices.reserve(size);
         int listSize = getSize();
-        for(auto it=dict.begin();it!=dict.end();++it) {
-            const auto &item = *it;
-            PyObject *key = item.first.ptr();
-            if(!PyLong_Check(key))
+        for (auto it = dict.begin(); it != dict.end(); ++it) {
+            const auto& item = *it;
+            PyObject* key = item.first.ptr();
+            if (!PyLong_Check(key)) {
                 throw Base::TypeError("expect key type to be integer");
+            }
             long idx = PyLong_AsLong(key);
-            if(idx<-1 || idx>listSize)
+            if (idx < -1 || idx > listSize) {
                 throw Base::ValueError("index out of bound");
-            if(idx==-1 || idx==listSize) {
+            }
+            if (idx == -1 || idx == listSize) {
                 idx = listSize;
                 ++listSize;
             }
             indices.push_back(idx);
             vals.push_back(item.second.ptr());
         }
-    } else {
-        if (PySequence_Check(value))
+    }
+    else {
+        if (PySequence_Check(value)) {
             pySeq = value;
+        }
         else {
-            PyObject *iter = PyObject_GetIter(value);
-            if(iter) {
-                Py::Object pyIter(iter,true);
-                pySeq = Py::asObject(PySequence_Fast(iter,""));
-            } else {
+            PyObject* iter = PyObject_GetIter(value);
+            if (iter) {
+                Py::Object pyIter(iter, true);
+                pySeq = Py::asObject(PySequence_Fast(iter, ""));
+            }
+            else {
                 PyErr_Clear();
                 vals.push_back(value);
             }
         }
-        if(!pySeq.isNone()) {
+        if (!pySeq.isNone()) {
             Py::Sequence seq(pySeq);
             vals.reserve(seq.size());
-            for(auto it=seq.begin();it!=seq.end();++it)
+            for (auto it = seq.begin(); it != seq.end(); ++it) {
                 vals.push_back((*it).ptr());
+            }
         }
     }
-    setPyValues(vals,indices);
+    setPyValues(vals, indices);
 }
 
 
@@ -388,4 +420,4 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
 // PropertyLists
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property)
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists, App::Property)

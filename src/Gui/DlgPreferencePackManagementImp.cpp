@@ -53,25 +53,27 @@ void DlgPreferencePackManagementImp::showEvent(QShowEvent* event)
     // Separate out user-saved packs from installed packs: we can remove individual user-saved packs,
     // but can only disable individual installed packs (though we can completely uninstall the pack's
     // containing Addon by redirecting to the Addon Manager).
-    auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
-    auto modDirectory = fs::path(App::Application::getUserAppDataDir()) / "Mod";
-    auto resourcePath = fs::path(App::Application::getResourceDir()) / "Gui" / "PreferencePacks";
+    auto savedPreferencePacksDirectory = Application::Instance->prefPackManager()->getSavedPreferencePacksPath();
+    auto modDirectories = Application::Instance->prefPackManager()->modPaths();
+    auto resourcePath = Application::Instance->prefPackManager()->getResourcePreferencePacksPath();
 
     // The displayed tree has two levels: at the toplevel is either "User-Saved Packs" or the name
     // of the addon containing the pack. Beneath those are the individual packs themselves. The tree view shows
     // "Hide"/"Show" for packs installed as a Mod, and "Delete" for packs in the user-saved pack
     // section.
-    auto userPacks = getPacksFromDirectory(savedPreferencePacksDirectory);
+    auto userPacks = Application::Instance->prefPackManager()->getPacksFromDirectory(savedPreferencePacksDirectory);
 
-    auto builtinPacks = getPacksFromDirectory(resourcePath);
+    auto builtinPacks = Application::Instance->prefPackManager()->getPacksFromDirectory(resourcePath);
 
     std::map<std::string, std::vector<std::string>> installedPacks;
-    if (fs::exists(modDirectory) && fs::is_directory(modDirectory)) {
-        for (const auto& mod : fs::directory_iterator(modDirectory)) {
-            auto packs = getPacksFromDirectory(mod);
-            if (!packs.empty()) {
-                auto modName = mod.path().filename().string();
-                installedPacks.emplace(modName, packs);
+    for (const auto& modDirectory : modDirectories) {
+        if (fs::exists(modDirectory) && fs::is_directory(modDirectory)) {
+            for (const auto& mod : fs::directory_iterator(modDirectory)) {
+                auto packs = Application::Instance->prefPackManager()->getPacksFromDirectory(mod);
+                if (!packs.empty()) {
+                    auto modName = Base::FileInfo::pathToString(mod.path().filename());
+                    installedPacks.emplace(modName, packs);
+                }
             }
         }
     }
@@ -96,8 +98,7 @@ void DlgPreferencePackManagementImp::showEvent(QShowEvent* event)
         addTreeNode(installedPack.first, installedPack.second, TreeWidgetType::ADDON);
     }
 
-    if (event)
-        QDialog::showEvent(event);
+    QDialog::showEvent(event);
 }
 
 void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const std::vector<std::string> &contents, TreeWidgetType twt)
@@ -149,29 +150,6 @@ void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const 
         ui->treeWidget->setItemWidget(item, 1, button);
     }
 }
-
-std::vector<std::string> DlgPreferencePackManagementImp::getPacksFromDirectory(const fs::path& path) const
-{
-    std::vector<std::string> results;
-    auto packageMetadataFile = path / "package.xml";
-    if (fs::exists(packageMetadataFile) && fs::is_regular_file(packageMetadataFile)) {
-        try {
-            App::Metadata metadata(packageMetadataFile);
-            auto content = metadata.content();
-            for (const auto& item : content) {
-                if (item.first == "preferencepack") {
-                    results.push_back(item.second.name());
-                }
-            }
-        }
-        catch (...) {
-            // Failed to read the metadata, or to create the preferencePack based on it...
-            Base::Console().Error(("Failed to read " + packageMetadataFile.string()).c_str());
-        }
-    }
-    return results;
-}
-
 
 void DlgPreferencePackManagementImp::deleteUserPack(const std::string& name)
 {

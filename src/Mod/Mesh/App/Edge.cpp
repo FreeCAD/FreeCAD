@@ -66,14 +66,8 @@ Edge::~Edge() = default;
 
 Edge& Edge::operator=(const Edge& e)
 {
-    MeshCore::MeshGeomEdge::operator=(e);
-    Mesh = e.Mesh;
-    Index = e.Index;
-    for (int i = 0; i < 2; i++) {
-        PIndex[i] = e.PIndex[i];
-        NIndex[i] = e.NIndex[i];
-    }
-
+    Edge c = e;
+    *this = std::move(c);
     return *this;
 }
 

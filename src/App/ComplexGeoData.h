@@ -37,7 +37,7 @@
 #include "StringHasher.h"
 
 #ifdef __GNUC__
-# include <cstdint>
+#include <cstdint>
 #endif
 
 
@@ -45,16 +45,18 @@ namespace Base
 {
 class Placement;
 class Rotation;
-template <class _Precision> class BoundBox3;// NOLINT
+template<class _Precision>
+class BoundBox3;  // NOLINT
 using BoundBox3d = BoundBox3<double>;
-}
+}  // namespace Base
 
 namespace Data
 {
 
-//struct MappedChildElements;
+// struct MappedChildElements;
 /// Option for App::GeoFeature::searchElementCache()
-enum class SearchOption {
+enum class SearchOption
+{
     /// Whether to compare shape geometry
     CheckGeometry = 1,
     SingleResult = 2,
@@ -67,11 +69,11 @@ typedef Base::Flags<SearchOption> SearchOptions;
  */
 class AppExport Segment: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();// NOLINT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
     ~Segment() override = default;
-    virtual std::string getName() const=0;
+    virtual std::string getName() const = 0;
 };
 
 enum ElementMapResetPolicy
@@ -84,12 +86,22 @@ enum ElementMapResetPolicy
  */
 class AppExport ComplexGeoData: public Base::Persistence, public Base::Handled
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();// NOLINT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
-    struct Line  {uint32_t I1; uint32_t I2;};
-    struct Facet {uint32_t I1; uint32_t I2; uint32_t I3;};
-    struct Domain {
+    struct Line
+    {
+        uint32_t I1;
+        uint32_t I2;
+    };
+    struct Facet
+    {
+        uint32_t I1;
+        uint32_t I2;
+        uint32_t I3;
+    };
+    struct Domain
+    {
         std::vector<Base::Vector3d> points;
         std::vector<Facet> facets;
     };
@@ -105,26 +117,24 @@ public:
      *  List of different sub-element types
      *  its NOT a list of the sub-elements itself
      */
-    virtual std::vector<const char*> getElementTypes() const=0;
-    virtual unsigned long countSubElements(const char* Type) const=0;
+    virtual std::vector<const char*> getElementTypes() const = 0;
+    virtual unsigned long countSubElements(const char* Type) const = 0;
     /// Returns a generic element type and index. The determined element type isn't
     /// necessarily supported by this geometry.
     static std::pair<std::string, unsigned long> getTypeAndIndex(const char* Name);
     /// get the sub-element by type and number
-    virtual Segment* getSubElement(const char* Type, unsigned long) const=0;
+    virtual Segment* getSubElement(const char* Type, unsigned long) const = 0;
     /// get sub-element by combined name
     virtual Segment* getSubElementByName(const char* Name) const;
     /** Get lines from segment */
-    virtual void getLinesFromSubElement(
-        const Segment*,
-        std::vector<Base::Vector3d> &Points,
-        std::vector<Line> &lines) const;
+    virtual void getLinesFromSubElement(const Segment*,
+                                        std::vector<Base::Vector3d>& Points,
+                                        std::vector<Line>& lines) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubElement(
-        const Segment*,
-        std::vector<Base::Vector3d> &Points,
-        std::vector<Base::Vector3d> &PointNormals,
-        std::vector<Facet> &faces) const;
+    virtual void getFacesFromSubElement(const Segment*,
+                                        std::vector<Base::Vector3d>& Points,
+                                        std::vector<Base::Vector3d>& PointNormals,
+                                        std::vector<Facet>& faces) const;
     //@}
 
     /** @name Placement control */
@@ -147,7 +157,7 @@ public:
      * This method has to be handled by the child classes.
      * the actual placement and matrix is not part of this class.
      */
-    virtual void setTransform(const Base::Matrix4D& rclTrf)=0;
+    virtual void setTransform(const Base::Matrix4D& rclTrf) = 0;
     /** Return the current matrix
      * This method has to be handled by the child classes.
      * the actual placement and matrix is not part of this class.
@@ -158,7 +168,7 @@ public:
     /** @name Modification */
     //@{
     /// Applies a transformation on the real geometric data type
-    virtual void transformGeometry(const Base::Matrix4D &rclMat) = 0;
+    virtual void transformGeometry(const Base::Matrix4D& rclMat) = 0;
     //@}
 
     /** @name Getting basic geometric entities */
@@ -166,21 +176,25 @@ public:
     /// Get the standard accuracy to be used with getPoints, getLines or getFaces
     virtual double getAccuracy() const;
     /// Get the bound box
-    virtual Base::BoundBox3d getBoundBox() const=0;
+    virtual Base::BoundBox3d getBoundBox() const = 0;
     /** Get point from line object intersection  */
-    virtual Base::Vector3d getPointFromLineIntersection(
-        const Base::Vector3f& base,
-        const Base::Vector3f& dir) const;
+    virtual Base::Vector3d getPointFromLineIntersection(const Base::Vector3f& base,
+                                                        const Base::Vector3f& dir) const;
     /** Get points from object with given accuracy */
-    virtual void getPoints(std::vector<Base::Vector3d> &Points,
-        std::vector<Base::Vector3d> &Normals,
-        double Accuracy, uint16_t flags=0) const;
+    virtual void getPoints(std::vector<Base::Vector3d>& Points,
+                           std::vector<Base::Vector3d>& Normals,
+                           double Accuracy,
+                           uint16_t flags = 0) const;
     /** Get lines from object with given accuracy */
-    virtual void getLines(std::vector<Base::Vector3d> &Points,std::vector<Line> &lines,
-        double Accuracy, uint16_t flags=0) const;
+    virtual void getLines(std::vector<Base::Vector3d>& Points,
+                          std::vector<Line>& lines,
+                          double Accuracy,
+                          uint16_t flags = 0) const;
     /** Get faces from object with given accuracy */
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
-        double Accuracy, uint16_t flags=0) const;
+    virtual void getFaces(std::vector<Base::Vector3d>& Points,
+                          std::vector<Facet>& faces,
+                          double Accuracy,
+                          uint16_t flags = 0) const;
     /** Get the center of gravity
      * If this method is implemented then true is returned and the center of gravity.
      * The default implementation only returns false.
@@ -188,7 +202,7 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
-    static const std::string &elementMapPrefix();
+    static const std::string& elementMapPrefix();
 
     /** @name Element name mapping */
     //@{
@@ -200,8 +214,7 @@ public:
      *
      * @return Returns an indexed name.
      */
-    IndexedName getIndexedName(const MappedName & name,
-                               ElementIDRefs *sid = nullptr) const;
+    IndexedName getIndexedName(const MappedName& name, ElementIDRefs* sid = nullptr) const;
 
     /** Get element mapped name
      *
@@ -212,9 +225,9 @@ public:
      * @param sid: optional output of and App::StringID involved forming this mapped name
      * @return Returns the mapped name.
      */
-    MappedName getMappedName(const IndexedName & element,
+    MappedName getMappedName(const IndexedName& element,
                              bool allowUnmapped = false,
-                             ElementIDRefs *sid = nullptr) const;
+                             ElementIDRefs* sid = nullptr) const;
 
     /** Return a pair of indexed name and mapped name
      *
@@ -233,9 +246,8 @@ public:
      * it will be treated as indexed name. Or else, it will be treated as
      * mapped name.
      */
-    MappedElement getElementName(const char * name,
-                                 ElementIDRefs *sid = nullptr,
-                                 bool copy = false) const;
+    MappedElement
+    getElementName(const char* name, ElementIDRefs* sid = nullptr, bool copy = false) const;
 
     /** Add a sub-element name mapping.
      *
@@ -259,11 +271,13 @@ public:
                               const MappedName& name,
                               long masterTag,
                               const ElementIDRefs* sid = nullptr,
-                              bool overwrite = false) {
-        return _elementMap -> setElementName(element, name, masterTag, sid, overwrite);
+                              bool overwrite = false)
+    {
+        return _elementMap->setElementName(element, name, masterTag, sid, overwrite);
     }
 
-    bool hasElementMap() {
+    bool hasElementMap()
+    {
         return _elementMap != nullptr;
     }
 
@@ -276,8 +290,8 @@ public:
      * @return a list of mapped names of the give element along with their
      * associated string ID references
      */
-    std::vector<std::pair<MappedName, ElementIDRefs> >
-    getElementMappedNames(const IndexedName & element, bool needUnmapped=false) const;
+    std::vector<std::pair<MappedName, ElementIDRefs>>
+    getElementMappedNames(const IndexedName& element, bool needUnmapped = false) const;
 
     /// Hash the child element map postfixes to shorten element name from hierarchical maps
     void hashChildMaps();
@@ -286,29 +300,31 @@ public:
     bool hasChildElementMap() const;
 
     /// Append the Tag (if and only if it is non zero) into the element map
-    virtual void reTagElementMap(long tag,
-                                 App::StringHasherRef hasher,
-                                 const char *postfix=nullptr) {
+    virtual void
+    reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix = nullptr)
+    {
         (void)tag;
         (void)hasher;
         (void)postfix;
     }
 
     // NOTE: getElementHistory is now in ElementMap
-    long getElementHistory(const MappedName & name,
-                           MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const {
-        if ( _elementMap != nullptr ) {
+    long getElementHistory(const MappedName& name,
+                           MappedName* original = nullptr,
+                           std::vector<MappedName>* history = nullptr) const
+    {
+        if (_elementMap != nullptr) {
             return _elementMap->getElementHistory(name, Tag, original, history);
         }
         return 0;
     };
 
-    void setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children);
+    void setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements>& children);
     std::vector<Data::ElementMap::MappedChildElements> getMappedChildElements() const;
 
-    char elementType(const Data::MappedName &) const;
-    char elementType(const Data::IndexedName &) const;
-    char elementType(const char *name) const;
+    char elementType(const Data::MappedName&) const;
+    char elementType(const Data::IndexedName&) const;
+    char elementType(const char* name) const;
 
     /** Reset/swap the element map
      *
@@ -322,19 +338,19 @@ public:
     std::vector<MappedElement> getElementMap() const;
 
     /// Set the entire element map
-    void setElementMap(const std::vector<MappedElement> &elements);
+    void setElementMap(const std::vector<MappedElement>& elements);
 
     /// Get the current element map size
-    size_t getElementMapSize(bool flush=true) const;
+    size_t getElementMapSize(bool flush = true) const;
 
     /// Return the higher level element names of the given element
-    virtual std::vector<IndexedName> getHigherElements(const char *name, bool silent=false) const;
+    virtual std::vector<IndexedName> getHigherElements(const char* name, bool silent = false) const;
 
     /// Return the current element map version
     virtual std::string getElementMapVersion() const;
 
     /// Return true to signal element map version change
-    virtual bool checkElementMapVersion(const char * ver) const;
+    virtual bool checkElementMapVersion(const char* ver) const;
 
     /// Check if the given sub-name only contains an element name
     static bool isElementName(const char* subName)
@@ -359,15 +375,21 @@ public:
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
-    void SaveDocFile(Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
-    unsigned int getMemSize () const override;
-    void setPersistenceFileName(const char *name) const;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
+    unsigned int getMemSize() const override;
+    void setPersistenceFileName(const char* name) const;
     virtual void beforeSave() const;
-    bool isRestoreFailed() const { return _restoreFailed; }
-    void resetRestoreFailure() const { _restoreFailed = true; }
+    bool isRestoreFailed() const
+    {
+        return _restoreFailed;
+    }
+    void resetRestoreFailure() const
+    {
+        _restoreFailed = true;
+    }
     //@}
 
     /**
@@ -382,51 +404,60 @@ public:
     const std::string dumpElementMap() const;
 
 protected:
-
     /// from local to outside
     inline Base::Vector3d transformPointToOutside(const Base::Vector3f& vec) const
     {
+        // clang-format off
         return getTransform() * Base::Vector3d(static_cast<double>(vec.x),
                                                static_cast<double>(vec.y),
                                                static_cast<double>(vec.z));
+        // clang-format on
     }
     /// from local to outside
     template<typename Vec>
     inline std::vector<Base::Vector3d> transformPointsToOutside(const std::vector<Vec>& input) const
     {
+        // clang-format off
         std::vector<Base::Vector3d> output;
         output.reserve(input.size());
         Base::Matrix4D mat(getTransform());
-        std::transform(input.cbegin(), input.cend(), std::back_inserter(output), [&mat](const Vec& vec) {
-            return mat * Base::Vector3d(static_cast<double>(vec.x),
-                                        static_cast<double>(vec.y),
-                                        static_cast<double>(vec.z));
-        });
+        std::transform(input.cbegin(), input.cend(), std::back_inserter(output),
+                       [&mat](const Vec& vec) {
+                           return mat * Base::Vector3d(static_cast<double>(vec.x),
+                                                       static_cast<double>(vec.y),
+                                                       static_cast<double>(vec.z));
+                       });
 
         return output;
+        // clang-format on
     }
     inline Base::Vector3d transformVectorToOutside(const Base::Vector3f& vec) const
     {
+        // clang-format off
         Base::Matrix4D mat(getTransform());
         mat.setCol(3, Base::Vector3d());
         return mat * Base::Vector3d(static_cast<double>(vec.x),
-                                    static_cast<double>(vec.y),
-                                    static_cast<double>(vec.z));
+                                   static_cast<double>(vec.y),
+                                   static_cast<double>(vec.z));
+        // clang-format on
     }
     template<typename Vec>
     std::vector<Base::Vector3d> transformVectorsToOutside(const std::vector<Vec>& input) const
     {
+        // clang-format off
         std::vector<Base::Vector3d> output;
         output.reserve(input.size());
         Base::Matrix4D mat(getTransform());
         mat.setCol(3, Base::Vector3d());
-        std::transform(input.cbegin(), input.cend(), std::back_inserter(output), [&mat](const Vec& vec) {
-            return mat * Base::Vector3d(static_cast<double>(vec.x),
-                                        static_cast<double>(vec.y),
-                                        static_cast<double>(vec.z));
-        });
+        std::transform(input.cbegin(), input.cend(), std::back_inserter(output),
+                       [&mat](const Vec& vec) {
+                           return mat * Base::Vector3d(static_cast<double>(vec.x),
+                                                       static_cast<double>(vec.y),
+                                                       static_cast<double>(vec.z));
+                       });
 
         return output;
+        // clang-format on
     }
     /// from local to inside
     inline Base::Vector3f transformPointToInside(const Base::Vector3d& vec) const
@@ -438,23 +469,25 @@ protected:
                               static_cast<float>(tmp.y),
                               static_cast<float>(tmp.z));
     }
+
 public:
-    mutable long Tag{0};
+    mutable long Tag {0};
 
     /// String hasher for element name shortening
     mutable App::StringHasherRef Hasher;
 
 protected:
-
-    void restoreStream(std::istream & stream, std::size_t count);
+    void restoreStream(std::istream& stream, std::size_t count);
     void readElements(Base::XMLReader& reader, size_t count);
 
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
     {
+        // clang-format off
         return getTransform() * Base::Vector3d(static_cast<double>(vec.x),
                                                static_cast<double>(vec.y),
                                                static_cast<double>(vec.z));
+        // clang-format on
     }
     /// from local to inside
     inline Base::Vector3f transformToInside(const Base::Vector3d& vec) const
@@ -468,8 +501,8 @@ protected:
     }
 
 protected:
-    ElementMapPtr elementMap(bool flush=true) const;
-    ElementMapPtr ensureElementMap(bool flush=true);
+    ElementMapPtr elementMap(bool flush = true) const;
+    ElementMapPtr ensureElementMap(bool flush = true);
 
 private:
     ElementMapPtr _elementMap;
@@ -479,7 +512,7 @@ protected:
     mutable bool _restoreFailed = false;
 };
 
-} //namespace App
+}  // namespace Data
 
 ENABLE_BITMASK_OPERATORS(Data::SearchOption)
 #endif

@@ -593,15 +593,6 @@ PyObject* MeshPy::section(PyObject* args, PyObject* kwds)
     return Py::new_reference_to(outer);
 }
 
-PyObject* MeshPy::coarsen(PyObject* args)
-{
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return nullptr;
-}
-
 PyObject* MeshPy::translate(PyObject* args)
 {
     float x {};

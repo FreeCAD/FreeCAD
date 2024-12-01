@@ -135,7 +135,7 @@ inline bool MeshSearchNeighbourFacetsVisitor::Visit(const MeshFacet& rclFacet,
 class MeshExport MeshTopFacetVisitor: public MeshFacetVisitor
 {
 public:
-    MeshTopFacetVisitor(std::vector<FacetIndex>& raulNB)
+    explicit MeshTopFacetVisitor(std::vector<FacetIndex>& raulNB)
         : _raulNeighbours(raulNB)
     {}
     ~MeshTopFacetVisitor() override = default;

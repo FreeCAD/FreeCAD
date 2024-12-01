@@ -86,7 +86,11 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
 
     Fem::FemMesh newMesh;
 
-    Part::Feature* feat = Shape.getValue<Part::Feature*>();
+    const Part::Feature* feat = Shape.getValue<Part::Feature*>();
+    if (!feat) {
+        return App::DocumentObject::StdReturn;
+    }
+
     TopoDS_Shape shape = feat->Shape.getValue();
 
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(), shape, true);

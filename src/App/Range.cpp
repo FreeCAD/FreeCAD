@@ -40,7 +40,8 @@ using namespace App;
 const int App::CellAddress::MAX_ROWS = 16384;
 const int App::CellAddress::MAX_COLUMNS = 26 * 26 + 26;
 
-namespace App {
+namespace App
+{
 // From a given cell address the '$' must be at within the first
 // few characters
 bool maybeAbsolute(std::string_view address)
@@ -50,9 +51,9 @@ bool maybeAbsolute(std::string_view address)
     address = address.substr(0, MAX_COLUMNS_LETTERS + 1);
     return address.find("$") != std::string_view::npos;
 }
-}
+}  // namespace App
 
-Range::Range(const char * range, bool normalize)
+Range::Range(const char* range, bool normalize)
 {
     std::string from;
     std::string to;
@@ -97,7 +98,7 @@ Range::Range(int _row_begin, int _col_begin, int _row_end, int _col_end, bool no
     col_curr = col_begin;
 }
 
-Range::Range(const CellAddress &from, const CellAddress &to, bool normalize)
+Range::Range(const CellAddress& from, const CellAddress& to, bool normalize)
     : row_begin(from.row())
     , col_begin(from.col())
     , row_end(to.row())
@@ -128,8 +129,9 @@ bool Range::next()
         return true;
     }
     if (col_curr < col_end) {
-        if (row_curr == row_end + 1)
+        if (row_curr == row_end + 1) {
             return false;
+        }
         row_curr = row_begin;
         ++col_curr;
         return true;
@@ -138,14 +140,14 @@ bool Range::next()
 }
 
 /**
-  * @brief Decode a row specification into a 0-based integer.
-  *
-  * @param rowstr Row specified as a string, with "1" being the first row.
-  *
-  * @returns The row.
-  */
+ * @brief Decode a row specification into a 0-based integer.
+ *
+ * @param rowstr Row specified as a string, with "1" being the first row.
+ *
+ * @returns The row.
+ */
 
-int App::decodeRow(const std::string &rowstr, bool silent)
+int App::decodeRow(const std::string& rowstr, bool silent)
 {
     int row = validRow(rowstr);
 
@@ -159,10 +161,11 @@ int App::decodeRow(const std::string &rowstr, bool silent)
 /**
  * Assumes well-formed input. A through ZZZ. 0-based output
  */
-int columnStringToNum(const std::string &colstr) {
+int columnStringToNum(const std::string& colstr)
+{
     double out {0};
     int pos {0};
-    for (auto chr = colstr.crbegin(); chr != colstr.crend(); chr++){
+    for (auto chr = colstr.crbegin(); chr != colstr.crend(); chr++) {
         out += (*chr - 'A' + 1) * std::pow(26, pos++);
     }
 
@@ -170,15 +173,15 @@ int columnStringToNum(const std::string &colstr) {
 }
 
 /**
-  * @brief Decode a column name string into a 0-based integer.
-  *
-  * @param colstr input string.
-  *
-  * @returns The column.
-  *
-  */
+ * @brief Decode a column name string into a 0-based integer.
+ *
+ * @param colstr input string.
+ *
+ * @returns The column.
+ *
+ */
 
-int App::decodeColumn( const std::string &colstr, bool silent )
+int App::decodeColumn(const std::string& colstr, bool silent)
 {
     if (validColumn(colstr)) {
         return columnStringToNum(colstr);
@@ -192,19 +195,19 @@ int App::decodeColumn( const std::string &colstr, bool silent )
 }
 
 /**
-  * @brief Determine whether a row specification is valid or not.
-  *
-  * @param rowstr Row specified as a string, with "1" being the first row.
-  *
-  * @returns 0 or positive on success, -1 on error.
-  */
+ * @brief Determine whether a row specification is valid or not.
+ *
+ * @param rowstr Row specified as a string, with "1" being the first row.
+ *
+ * @returns 0 or positive on success, -1 on error.
+ */
 
-int App::validRow(const std::string &rowstr)
+int App::validRow(const std::string& rowstr)
 {
-    char * end;
+    char* end;
     int i = strtol(rowstr.c_str(), &end, 10);
 
-    if (i <=0 || i > CellAddress::MAX_ROWS || *end) {
+    if (i <= 0 || i > CellAddress::MAX_ROWS || *end) {
         return -1;
     }
 
@@ -212,30 +215,30 @@ int App::validRow(const std::string &rowstr)
 }
 
 /**
-  * @brief Determine if a string is a valid column specification.
-  *
-  * @param colstr input string.
-  *
-  * @returns true if valid, false if not.
-  *
-  */
+ * @brief Determine if a string is a valid column specification.
+ *
+ * @param colstr input string.
+ *
+ * @returns true if valid, false if not.
+ *
+ */
 
-bool App::validColumn( const std::string &colstr )
+bool App::validColumn(const std::string& colstr)
 {
     return boost::regex_match(colstr, boost::regex("[A-Z]{1,3}"));
 }
 
 /**
-  * @brief Convert a string address into integer \a row and \a column.
-  * row and col are 0-based.
-  *
-  * This function will throw an exception if the specified \a address is invalid.
-  *
-  * @param strAddress Address to parse.
-  *
-  */
+ * @brief Convert a string address into integer \a row and \a column.
+ * row and col are 0-based.
+ *
+ * This function will throw an exception if the specified \a address is invalid.
+ *
+ * @param strAddress Address to parse.
+ *
+ */
 
-App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
+App::CellAddress App::stringToAddress(const char* strAddress, bool silent)
 {
     assert(strAddress);
 
@@ -243,24 +246,24 @@ App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
     boost::cmatch cm;
 
     if (boost::regex_match(strAddress, cm, e)) {
-        bool absCol = (cm[1].first[0]=='$');
-        std::string r,c;
+        bool absCol = (cm[1].first[0] == '$');
+        std::string r, c;
         if (absCol) {
-            c = std::string(cm[1].first+1,cm[1].second);
+            c = std::string(cm[1].first + 1, cm[1].second);
         }
         else {
-            c = std::string(cm[1].first,cm[1].second);
+            c = std::string(cm[1].first, cm[1].second);
         }
 
-        bool absRow = (cm[2].first[0]=='$');
+        bool absRow = (cm[2].first[0] == '$');
         if (absRow) {
-            r = std::string(cm[2].first+1,cm[2].second);
+            r = std::string(cm[2].first + 1, cm[2].second);
         }
         else {
-            r = std::string(cm[2].first,cm[2].second);
+            r = std::string(cm[2].first, cm[2].second);
         }
 
-        return CellAddress(decodeRow(r,silent), decodeColumn(c,silent), absRow, absCol);
+        return CellAddress(decodeRow(r, silent), decodeColumn(c, silent), absRow, absCol);
     }
     else if (silent) {
         return CellAddress();
@@ -270,10 +273,10 @@ App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
 }
 
 /**
-  * @brief Convert given \a cell address into its string representation.
-  *
-  * @returns Address given as a string.
-  */
+ * @brief Convert given \a cell address into its string representation.
+ *
+ * @returns Address given as a string.
+ */
 
 std::string App::CellAddress::toString(Cell cell) const
 {
@@ -311,7 +314,8 @@ std::string App::CellAddress::toString(Cell cell) const
  * If the passed string is a valid and absolute cell address it will be assigned to this instance.
  * \return True if it's an absolute cell address and false otherwise
  */
-bool App::CellAddress::parseAbsoluteAddress(const char *address) {
+bool App::CellAddress::parseAbsoluteAddress(const char* address)
+{
     if (maybeAbsolute(address)) {
         CellAddress addr = stringToAddress(address, true);
         if (addr.isValid()) {
@@ -321,4 +325,3 @@ bool App::CellAddress::parseAbsoluteAddress(const char *address) {
     }
     return false;
 }
-

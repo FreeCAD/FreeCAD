@@ -644,7 +644,7 @@ void SketcherSettingsAppearance::loadSettings()
     }
     ui->InternalPattern->setCurrentIndex(index);
 
-    pattern = hGrp->GetInt("ExternalPattern", 0b1110010011100100);
+    pattern = hGrp->GetInt("ExternalPattern", 0b1111110011111100);
     index = ui->ExternalPattern->findData(QVariant(pattern));
     if (index < 0) {
         index = 0;

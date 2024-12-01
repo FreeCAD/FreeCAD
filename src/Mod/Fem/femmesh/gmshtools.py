@@ -219,7 +219,10 @@ class GmshTools:
         self.write_gmsh_input_files()
 
     def compute(self):
-        command_list = ["-v", "4", "-", self.temp_file_geo]
+        log_level = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetString(
+            "LogVerbosity", "3"
+        )
+        command_list = ["-v", log_level, "-", self.temp_file_geo]
         self.process.start(self.gmsh_bin, command_list)
         return self.process
 

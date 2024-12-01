@@ -29,9 +29,7 @@
 # include <Standard_Failure.hxx>
 #endif
 
-#include <App/Application.h>
 #include <App/DocumentObject.h>
-#include <Base/Parameter.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
@@ -44,6 +42,8 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
+extern bool getPDRefineModelParameter();
+
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 
 const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",nullptr};
@@ -54,9 +54,8 @@ Boolean::Boolean()
     Type.setEnums(TypeEnums);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", true));
+    this->Refine.setValue(getPDRefineModelParameter());
+
     ADD_PROPERTY_TYPE(UsePlacement,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Apply the placement of the second ( tool ) object");
     this->UsePlacement.setValue(false);
 

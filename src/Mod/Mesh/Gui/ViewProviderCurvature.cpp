@@ -93,6 +93,7 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
 
     App::Material mat;
     const SbColor* cols {};
+    // NOLINTBEGIN
     if (pcColorMat->ambientColor.getNum() == 1) {
         cols = pcColorMat->ambientColor.getValues(0);
         mat.ambientColor.setPackedValue(cols[0].getPackedValue());
@@ -117,6 +118,7 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
         const float* trans = pcColorMat->transparency.getValues(0);
         mat.transparency = trans[0];
     }
+    // NOLINTEND
 
     ADD_PROPERTY(TextureMaterial, (mat));
     SelectionStyle.setValue(1);  // BBOX
@@ -162,10 +164,12 @@ void ViewProviderMeshCurvature::show()
     pcColorStyle->style = SoDrawStyle::FILLED;
 }
 
-void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInfo)
+void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* prop)
 {
-    std::vector<float> aMinValues, aMaxValues;
-    const std::vector<Mesh::CurvatureInfo>& fCurvInfo = pCurvInfo->getValues();
+    // NOLINTBEGIN(readability-magic-numbers)
+    std::vector<float> aMinValues;
+    std::vector<float> aMaxValues;
+    const std::vector<Mesh::CurvatureInfo>& fCurvInfo = prop->getValues();
     aMinValues.reserve(fCurvInfo.size());
     aMaxValues.reserve(fCurvInfo.size());
 
@@ -191,7 +195,7 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
     float fRMin = -1.0F;
     for (const auto& mIt : aHistogram) {
         if ((float)mIt.second / (float)aMinValues.size() > 0.15F) {
-            fRMin = mIt.first * (fMax - fMin) / 10.0F + fMin;
+            fRMin = float(mIt.first) * (fMax - fMin) / 10.0F + fMin;
             break;
         }
     }
@@ -207,13 +211,13 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
     }
 
     float fRMax = 1.0F;
-    for (std::map<int, int>::reverse_iterator rIt2 = aHistogram.rbegin(); rIt2 != aHistogram.rend();
-         ++rIt2) {
+    for (auto rIt2 = aHistogram.rbegin(); rIt2 != aHistogram.rend(); ++rIt2) {
         if ((float)rIt2->second / (float)aMaxValues.size() > 0.15F) {
-            fRMax = rIt2->first * (fMax - fMin) / 10.0F + fMin;
+            fRMax = float(rIt2->first) * (fMax - fMin) / 10.0F + fMin;
             break;
         }
     }
+    // NOLINTEND(readability-magic-numbers)
 
     float fAbs = std::max<float>(fabs(fRMin), fabs(fRMax));
     fRMin = -fAbs;
@@ -228,15 +232,17 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
 {
     // we get this for any object for that a property has changed. Thus, we must regard that object
     // which is linked by our link property
-    App::DocumentObject* object = static_cast<Mesh::Curvature*>(pcObject)->Source.getValue();
+    App::DocumentObject* object = dynamic_cast<Mesh::Curvature*>(pcObject)->Source.getValue();
     if (object == &Obj) {
-        const Mesh::PropertyMeshKernel& mesh = static_cast<Mesh::Feature*>(object)->Mesh;
-        if ((&mesh) == (&Prop)) {
-            const Mesh::MeshObject& kernel = mesh.getValue();
-            pcColorMat->diffuseColor.setNum((int)kernel.countPoints());
-            pcColorMat->transparency.setNum((int)kernel.countPoints());
-            // make sure to recompute the feature
-            static_cast<Mesh::Curvature*>(pcObject)->Source.touch();
+        if (auto meshObject = dynamic_cast<Mesh::Feature*>(object)) {
+            const Mesh::PropertyMeshKernel& mesh = meshObject->Mesh;
+            if ((&mesh) == (&Prop)) {
+                const Mesh::MeshObject& kernel = mesh.getValue();
+                pcColorMat->diffuseColor.setNum((int)kernel.countPoints());
+                pcColorMat->transparency.setNum((int)kernel.countPoints());
+                // make sure to recompute the feature
+                dynamic_cast<Mesh::Curvature*>(pcObject)->Source.touch();
+            }
         }
     }
 }
@@ -254,19 +260,19 @@ void ViewProviderMeshCurvature::attach(App::DocumentObject* pcFeat)
     inherited::attach(pcFeat);
     attachDocument(pcFeat->getDocument());
 
-    SoShapeHints* flathints = new SoShapeHints;
+    auto flathints = new SoShapeHints;
     flathints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     flathints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
 
-    SoGroup* pcColorShadedRoot = new SoGroup();
+    auto pcColorShadedRoot = new SoGroup();
     pcColorShadedRoot->addChild(flathints);
 
     // color shaded
-    SoDrawStyle* pcFlatStyle = new SoDrawStyle();
+    auto pcFlatStyle = new SoDrawStyle();
     pcFlatStyle->style = SoDrawStyle::FILLED;
     pcColorShadedRoot->addChild(pcFlatStyle);
 
-    SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
+    auto pcMatBinding = new SoMaterialBinding;
     pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
     pcColorShadedRoot->addChild(pcColorMat);
     pcColorShadedRoot->addChild(pcMatBinding);
@@ -275,9 +281,8 @@ void ViewProviderMeshCurvature::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcColorShadedRoot, "ColorShaded");
 
     // Check for an already existing color bar
-    Gui::SoFCColorBar* pcBar =
-        ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
-    if (pcBar) {
+    auto node = findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId());
+    if (auto pcBar = dynamic_cast<Gui::SoFCColorBar*>(node)) {
         float fMin = pcColorBar->getMinValue();
         float fMax = pcColorBar->getMaxValue();
 
@@ -296,9 +301,8 @@ void ViewProviderMeshCurvature::attach(App::DocumentObject* pcFeat)
 void ViewProviderMeshCurvature::updateData(const App::Property* prop)
 {
     // set to the expected size
-    if (prop->isDerivedFrom<App::PropertyLink>()) {
-        Mesh::Feature* object =
-            static_cast<const App::PropertyLink*>(prop)->getValue<Mesh::Feature*>();
+    if (auto link = dynamic_cast<const App::PropertyLink*>(prop)) {
+        auto object = link->getValue<Mesh::Feature*>();
         Gui::coinRemoveAllChildren(this->pcLinkRoot);
         if (object) {
             const Mesh::MeshObject& kernel = object->Mesh.getValue();
@@ -308,23 +312,19 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             // get the view provider of the associated mesh feature
             App::Document* rDoc = pcObject->getDocument();
             Gui::Document* pDoc = Gui::Application::Instance->getDocument(rDoc);
-            ViewProviderMesh* view = static_cast<ViewProviderMesh*>(pDoc->getViewProvider(object));
-            this->pcLinkRoot->addChild(view->getHighlightNode());
+            if (auto view = dynamic_cast<ViewProviderMesh*>(pDoc->getViewProvider(object))) {
+                this->pcLinkRoot->addChild(view->getHighlightNode());
 
-            Base::Placement p =
-                static_cast<Mesh::Feature*>(view->getObject())->Placement.getValue();
-            ViewProviderMesh::updateTransform(p, pcTransform);
+                auto mesh = dynamic_cast<Mesh::Feature*>(view->getObject());
+                Base::Placement plm = mesh->Placement.getValue();
+                ViewProviderMesh::updateTransform(plm, pcTransform);
+            }
         }
     }
-    else if (prop->is<Mesh::PropertyCurvatureList>()) {
-        const Mesh::PropertyCurvatureList* curv =
-            static_cast<const Mesh::PropertyCurvatureList*>(prop);
+    else if (auto curv = dynamic_cast<const Mesh::PropertyCurvatureList*>(prop)) {
         if (curv->getSize() < 3) {  // invalid array
             return;
         }
-#if 0  // FIXME: Do not always change the range
-        init(curv); // init color bar
-#endif
         setActiveMode();
     }
 }
@@ -337,7 +337,6 @@ SoSeparator* ViewProviderMeshCurvature::getFrontRoot() const
 void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
 {
     using PropertyMap = std::map<std::string, App::Property*>;
-    Mesh::PropertyCurvatureList* pCurvInfo = nullptr;
     PropertyMap Map;
     pcObject->getPropertyMap(Map);
 
@@ -350,20 +349,22 @@ void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
         return;  // cannot display this feature type due to missing curvature property
     }
 
-    pCurvInfo = static_cast<Mesh::PropertyCurvatureList*>(it->second);
+    auto pCurvInfo = dynamic_cast<Mesh::PropertyCurvatureList*>(it->second);
 
     // curvature values
     std::vector<float> fValues = pCurvInfo->getCurvature(mode);
-    pcColorMat->diffuseColor.setNum(fValues.size());
-    pcColorMat->transparency.setNum(fValues.size());
+    pcColorMat->diffuseColor.setNum(int(fValues.size()));
+    pcColorMat->transparency.setNum(int(fValues.size()));
 
     SbColor* diffcol = pcColorMat->diffuseColor.startEditing();
     float* transp = pcColorMat->transparency.startEditing();
 
     for (auto const& value : fValues | boost::adaptors::indexed(0)) {
         App::Color c = pcColorBar->getColor(value.value());
+        // NOLINTBEGIN
         diffcol[value.index()].setValue(c.r, c.g, c.b);
         transp[value.index()] = c.transparency();
+        // NOLINTEND
     }
 
     pcColorMat->diffuseColor.finishEditing();
@@ -459,7 +460,7 @@ public:
 
     static void run(void* data, SoSensor* sensor)
     {
-        Annotation* self = static_cast<Annotation*>(data);
+        auto self = static_cast<Annotation*>(data);
         self->show();
         delete self;
         delete sensor;
@@ -469,22 +470,21 @@ public:
     {
         App::Document* doc = vp->getObject()->getDocument();
 
-        std::vector<App::DocumentObject*> groups =
-            doc->getObjectsOfType(App::DocumentObjectGroup::getClassTypeId());
+        auto groups = doc->getObjectsOfType<App::DocumentObjectGroup>();
         App::DocumentObjectGroup* group = nullptr;
         std::string internalname = "CurvatureGroup";
         for (const auto& it : groups) {
             if (internalname == it->getNameInDocument()) {
-                group = static_cast<App::DocumentObjectGroup*>(it);
+                group = it;
                 break;
             }
         }
         if (!group) {
-            group = static_cast<App::DocumentObjectGroup*>(
+            group = dynamic_cast<App::DocumentObjectGroup*>(
                 doc->addObject("App::DocumentObjectGroup", internalname.c_str()));
         }
 
-        App::AnnotationLabel* anno = static_cast<App::AnnotationLabel*>(
+        auto anno = dynamic_cast<App::AnnotationLabel*>(
             group->addObject("App::AnnotationLabel", internalname.c_str()));
         QStringList lines = s.split(QLatin1String("\n"));
         std::vector<std::string> text;
@@ -510,13 +510,13 @@ private:
 
 void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback* n)
 {
-    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    auto view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
     const SoEvent* ev = n->getEvent();
     if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
-        const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(ev);
+        const auto mbe = static_cast<const SoMouseButtonEvent*>(ev);  // NOLINT
 
-        // Mark all incoming mouse button events as handled, especially, to deactivate the selection
-        // node
+        // Mark all incoming mouse button events as handled, especially, to deactivate the
+        // selection node
         n->getAction()->setHandled();
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
             && mbe->getState() == SoButtonEvent::UP) {
@@ -552,28 +552,26 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (!vp || !vp->isDerivedFrom<ViewProviderMeshCurvature>()) {
-                return;
-            }
-            ViewProviderMeshCurvature* self = static_cast<ViewProviderMeshCurvature*>(vp);
-            const SoDetail* detail = point->getDetail(point->getPath()->getTail());
-            if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
-                const SoFaceDetail* facedetail = static_cast<const SoFaceDetail*>(detail);
-                // get the curvature info of the three points of the picked facet
-                int index1 = facedetail->getPoint(0)->getCoordinateIndex();
-                int index2 = facedetail->getPoint(1)->getCoordinateIndex();
-                int index3 = facedetail->getPoint(2)->getCoordinateIndex();
-                std::string info = self->curvatureInfo(true, index1, index2, index3);
-                QString text = QString::fromLatin1(info.c_str());
-                if (addflag) {
-                    SbVec3f pt = point->getPoint();
-                    SbVec3f nl = point->getNormal();
-                    Annotation* anno = new Annotation(self, text, pt, nl);
-                    SoIdleSensor* sensor = new SoIdleSensor(Annotation::run, anno);
-                    sensor->schedule();
-                }
-                else {
-                    Gui::ToolTip::showText(QCursor::pos(), text);
+            if (auto self = dynamic_cast<ViewProviderMeshCurvature*>(vp)) {
+                const SoDetail* detail = point->getDetail(point->getPath()->getTail());
+                if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
+                    const auto facedetail = static_cast<const SoFaceDetail*>(detail);  // NOLINT
+                    // get the curvature info of the three points of the picked facet
+                    int index1 = facedetail->getPoint(0)->getCoordinateIndex();
+                    int index2 = facedetail->getPoint(1)->getCoordinateIndex();
+                    int index3 = facedetail->getPoint(2)->getCoordinateIndex();
+                    std::string info = self->curvatureInfo(true, index1, index2, index3);
+                    QString text = QString::fromLatin1(info.c_str());
+                    if (addflag) {
+                        SbVec3f pt = point->getPoint();
+                        SbVec3f nl = point->getNormal();
+                        auto anno = new Annotation(self, text, pt, nl);
+                        auto sensor = new SoIdleSensor(Annotation::run, anno);
+                        sensor->schedule();
+                    }
+                    else {
+                        Gui::ToolTip::showText(QCursor::pos(), text);
+                    }
                 }
             }
         }
@@ -588,19 +586,17 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
         Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-        if (!vp || !vp->isDerivedFrom<ViewProviderMeshCurvature>()) {
-            return;
-        }
-        ViewProviderMeshCurvature* that = static_cast<ViewProviderMeshCurvature*>(vp);
-        const SoDetail* detail = point->getDetail(point->getPath()->getTail());
-        if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
-            const SoFaceDetail* facedetail = static_cast<const SoFaceDetail*>(detail);
-            // get the curvature info of the three points of the picked facet
-            int index1 = facedetail->getPoint(0)->getCoordinateIndex();
-            int index2 = facedetail->getPoint(1)->getCoordinateIndex();
-            int index3 = facedetail->getPoint(2)->getCoordinateIndex();
-            std::string info = that->curvatureInfo(false, index1, index2, index3);
-            Gui::getMainWindow()->setPaneText(1, QString::fromLatin1(info.c_str()));
+        if (auto self = dynamic_cast<ViewProviderMeshCurvature*>(vp)) {
+            const SoDetail* detail = point->getDetail(point->getPath()->getTail());
+            if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
+                const auto facedetail = static_cast<const SoFaceDetail*>(detail);  // NOLINT
+                // get the curvature info of the three points of the picked facet
+                int index1 = facedetail->getPoint(0)->getCoordinateIndex();
+                int index2 = facedetail->getPoint(1)->getCoordinateIndex();
+                int index3 = facedetail->getPoint(2)->getCoordinateIndex();
+                std::string info = self->curvatureInfo(false, index1, index2, index3);
+                Gui::getMainWindow()->setPaneText(1, QString::fromLatin1(info.c_str()));
+            }
         }
     }
 }
@@ -611,8 +607,7 @@ ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, int index2, in
     // get the curvature info of the three points of the picked facet
     App::Property* prop = pcObject->getPropertyByName("CurvInfo");
     std::stringstream str;
-    if (prop && prop->is<Mesh::PropertyCurvatureList>()) {
-        Mesh::PropertyCurvatureList* curv = static_cast<Mesh::PropertyCurvatureList*>(prop);
+    if (auto curv = dynamic_cast<Mesh::PropertyCurvatureList*>(prop)) {
         const Mesh::CurvatureInfo& cVal1 = (*curv)[index1];
         const Mesh::CurvatureInfo& cVal2 = (*curv)[index2];
         const Mesh::CurvatureInfo& cVal3 = (*curv)[index3];
@@ -638,9 +633,11 @@ ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, int index2, in
             fVal3 = cVal3.fMaxCurvature * cVal3.fMinCurvature;
         }
         else if (mode == "Mean curvature") {
+            // NOLINTBEGIN(readability-magic-numbers)
             fVal1 = 0.5F * (cVal1.fMaxCurvature + cVal1.fMinCurvature);
             fVal2 = 0.5F * (cVal2.fMaxCurvature + cVal2.fMinCurvature);
             fVal3 = 0.5F * (cVal3.fMaxCurvature + cVal3.fMinCurvature);
+            // NOLINTEND(readability-magic-numbers)
         }
         else if (mode == "Absolute curvature") {
             fVal1 = fabs(cVal1.fMaxCurvature) > fabs(cVal1.fMinCurvature) ? cVal1.fMaxCurvature
@@ -659,12 +656,13 @@ ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, int index2, in
                 str << mode << ": <" << fVal1 << ", " << fVal2 << ", " << fVal3 << ">";
             }
             else {
+                const int prec = 5;
                 str.setf(std::ios::fixed | std::ios::showpoint);
-                str.precision(5);
+                str.precision(prec);
                 str << mode << std::endl
-                    << "v1: " << std::setw(5) << fVal1 << std::endl
-                    << "v2: " << std::setw(5) << fVal2 << std::endl
-                    << "v3: " << std::setw(5) << fVal3;
+                    << "v1: " << std::setw(prec) << fVal1 << std::endl
+                    << "v2: " << std::setw(prec) << fVal2 << std::endl
+                    << "v3: " << std::setw(prec) << fVal3;
             }
         }
         else if (!detail) {

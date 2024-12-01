@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="DocumentObjectExtensionPy" 
-      Name="GroupExtensionPy" 
-      Twin="GroupExtension" 
-      TwinPointer="GroupExtension" 
-      Include="App/DocumentObjectGroup.h" 
-      Namespace="App" 
-      FatherInclude="App/DocumentObjectExtensionPy.h" 
+  <PythonExport
+      Father="DocumentObjectExtensionPy"
+      Name="GroupExtensionPy"
+      Twin="GroupExtension"
+      TwinPointer="GroupExtension"
+      Include="App/DocumentObjectGroup.h"
+      Namespace="App"
+      FatherInclude="App/DocumentObjectExtensionPy.h"
       FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />

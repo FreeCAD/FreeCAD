@@ -24,12 +24,12 @@ class ColorPerFaceTest(unittest.TestCase):
         box = self.doc.addObject("Part::Box","Box")
         self.doc.recompute()
 
-        box.ViewObject.DiffuseColor = [(1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,1.,0.,0.),
-                                       (1.,1.,0.,0.)]
+        box.ViewObject.DiffuseColor = [(1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,1.,0.,1.),
+                                       (1.,1.,0.,1.)]
 
         box.Visibility = False
         self.doc.recompute()
@@ -56,12 +56,12 @@ class ColorPerFaceTest(unittest.TestCase):
         box = self.doc.addObject("Part::Box","Box")
         self.doc.recompute()
 
-        box.ViewObject.DiffuseColor = [(1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,1.,0.,0.),
-                                       (1.,1.,0.,0.)]
+        box.ViewObject.DiffuseColor = [(1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,1.,0.,1.),
+                                       (1.,1.,0.,1.)]
 
         link = self.doc.addObject('App::Link','Link')
         link.setLink(box)
@@ -93,12 +93,12 @@ class ColorPerFaceTest(unittest.TestCase):
         box = self.doc.addObject("Part::Box","Box")
         self.doc.recompute()
 
-        box.ViewObject.DiffuseColor = [(1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,0.,0.,0.),
-                                       (1.,1.,0.,0.),
-                                       (1.,1.,0.,0.)]
+        box.ViewObject.DiffuseColor = [(1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,0.,0.,1.),
+                                       (1.,1.,0.,1.),
+                                       (1.,1.,0.,1.)]
 
         box.ViewObject.Transparency = 35
         self.assertEqual(box.ViewObject.Transparency, 35)
@@ -129,8 +129,8 @@ class ColorPerFaceTest(unittest.TestCase):
         """
         box = self.doc.addObject("Part::Box","Box")
         cyl = self.doc.addObject("Part::Cylinder","Cylinder")
-        box.ViewObject.ShapeColor = (1.,0.,0.,0.)
-        cyl.ViewObject.ShapeColor = (1.,0.,0.,0.)
+        box.ViewObject.ShapeColor = (1.,0.,0.,1.)
+        cyl.ViewObject.ShapeColor = (1.,0.,0.,1.)
         self.doc.recompute()
 
         bp = BOPFeatures.BOPFeatures(self.doc)
@@ -161,13 +161,13 @@ class ColorPerFaceTest(unittest.TestCase):
 
         self.assertEqual(len(fuse.Shape.Faces), 11)
         self.assertEqual(len(fuse.ViewObject.DiffuseColor), 11)
-        self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.,0.,0.,0.))
+        self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.,0.,0.,1.))
 
     def testMultiFuseSaveRestore(self):
         box = self.doc.addObject("Part::Box","Box")
         cyl = self.doc.addObject("Part::Cylinder","Cylinder")
-        box.ViewObject.ShapeColor = (1.,0.,0.,0.)
-        cyl.ViewObject.ShapeColor = (1.,0.,0.,0.)
+        box.ViewObject.ShapeColor = (1.,0.,0.,1.)
+        cyl.ViewObject.ShapeColor = (1.,0.,0.,1.)
         self.doc.recompute()
 
         bp = BOPFeatures.BOPFeatures(self.doc)
@@ -176,7 +176,7 @@ class ColorPerFaceTest(unittest.TestCase):
         fuse.Refine = False
         self.doc.recompute()
 
-        fuse.ViewObject.DiffuseColor = [(1.,0.,0.,0.)] * 11
+        fuse.ViewObject.DiffuseColor = [(1.,0.,0.,1.)] * 11
 
         self.doc.saveAs(self.fileName)
         App.closeDocument(self.doc.Name)
@@ -186,7 +186,7 @@ class ColorPerFaceTest(unittest.TestCase):
         fuse = self.doc.ActiveObject
         self.assertEqual(len(fuse.Shape.Faces), 11)
         self.assertEqual(len(fuse.ViewObject.DiffuseColor), 11)
-        self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.,0.,0.,0.))
+        self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.,0.,0.,1.))
 
         sa = coin.SoSearchAction()
         sa.setType(coin.SoMaterialBinding.getClassTypeId())

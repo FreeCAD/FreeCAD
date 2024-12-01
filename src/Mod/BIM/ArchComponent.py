@@ -1498,6 +1498,8 @@ class ViewProviderComponent:
             The context menu already assembled prior to this method being
             called.
         """
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         self.contextMenuAddEdit(menu)
         self.contextMenuAddToggleSubcomponents(menu)
 
@@ -1643,7 +1645,7 @@ class ArchSelectionObserver:
                         self.origin.ViewObject.Transparency = 0
                         self.origin.ViewObject.Selectable = True
                     self.watched.ViewObject.hide()
-                FreeCADGui.activateWorkbench("ArchWorkbench")
+                FreeCADGui.activateWorkbench("BIMWorkbench")
                 if hasattr(FreeCAD,"ArchObserver"):
                     FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
                     del FreeCAD.ArchObserver

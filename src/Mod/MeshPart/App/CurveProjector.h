@@ -23,10 +23,6 @@
 #ifndef _CurveProjector_h_
 #define _CurveProjector_h_
 
-#ifdef FC_USE_GTS
-#include <gts.h>
-#endif
-
 #include <TopoDS_Edge.hxx>
 
 #include <Mod/Mesh/App/Mesh.h>

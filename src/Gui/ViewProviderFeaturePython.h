@@ -72,6 +72,7 @@ public:
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);
     void onChanged(const App::Property* prop);
+    void onBeforeChange(const App::Property* prop);
     void startRestoring();
     void finishRestoring();
     ValueT onDelete(const std::vector<std::string> & sub);
@@ -149,6 +150,7 @@ private:
     FC_PY_ELEMENT(attach) \
     FC_PY_ELEMENT(updateData) \
     FC_PY_ELEMENT(onChanged) \
+    FC_PY_ELEMENT(onBeforeChange) \
     FC_PY_ELEMENT(startRestoring) \
     FC_PY_ELEMENT(finishRestoring) \
     FC_PY_ELEMENT(onDelete) \
@@ -517,6 +519,11 @@ protected:
 
         imp->onChanged(prop);
         ViewProviderT::onChanged(prop);
+    }
+    void onBeforeChange(const App::Property* prop) override
+    {
+        imp->onBeforeChange(prop);
+        ViewProviderT::onBeforeChange(prop);
     }
     /// is called by the document when the provider goes in edit mode
     bool setEdit(int ModNum) override

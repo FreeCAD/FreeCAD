@@ -130,16 +130,11 @@ class BIM_ProjectManager:
             ).Value
         human = None
         if self.form.addHumanFigure.isChecked():
-            # TODO ; fix loading of human shape
-            humanpath = os.path.join(
-                os.path.dirname(__file__), "geometry", "human figure.brep"
-            )
-            if os.path.exists(humanpath):
-                humanshape = Part.Shape()
-                humanshape.importBrep(humanpath)
-                human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-                human.Shape = humanshape
-                human.Placement.move(FreeCAD.Vector(500, 500, 0))
+            humanshape = Part.Shape()
+            humanshape.importBrep(":/geometry/HumanFigure.brep")
+            human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
+            human.Shape = humanshape
+            human.Placement.move(FreeCAD.Vector(500, 500, 0))
         if self.form.groupBuilding.isChecked():
             building = Arch.makeBuilding()
             if site:
@@ -712,21 +707,6 @@ class BIM_ProjectManager:
                 + "\n"
             )
             self.reject()
-
-
-def getHuman(loc=None):
-    """Return a list of points defining a human figure,
-    optionally translated to a given location"""
-
-    import Part
-
-    humanshape = Part.Shape()
-    humanpath = os.path.join(os.path.dirname(__file__), "geometry", "human figure.brep")
-    humanshape.importBrep(humanpath)
-    pts = [v.Point for v in humanshape.Vertexes]
-    if loc:
-        pts = [p.add(loc) for p in pts]
-    return pts
 
 
 FreeCADGui.addCommand("BIM_ProjectManager", BIM_ProjectManager())

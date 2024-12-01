@@ -323,7 +323,7 @@ void CmdTechDrawView::activated(int iMsg)
     auto* vpp = dynamic_cast<ViewProviderPage*>
         (Gui::Application::Instance->getViewProvider(page));
     if (vpp) {
-        vpp->switchToMdiViewPage();
+        vpp->show();
     }
 
 
@@ -1793,14 +1793,16 @@ void CmdTechDrawExportPageSVG::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
 
-    if (dvp && dvp->getMDIViewPage()) {
-        dvp->getMDIViewPage()->saveSVG();
+    if (vpPage) {
+        vpPage->show();  // make sure a mdi will be available
+        vpPage->getMDIViewPage()->saveSVG();
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Drawing View"),
-                             QObject::tr("Open Drawing View before attempting export to SVG."));
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("No Drawing Page"),
+                             QObject::tr("FreeCAD could not find a page to export"));
         return;
     }
 }

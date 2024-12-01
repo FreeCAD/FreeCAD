@@ -22,10 +22,33 @@
 
 #include "PreCompiled.h"
 
+#include "Mod/Sketcher/App/ExternalGeometryFacade.h"
+
 #include "EditModeCoinManagerParameters.h"
 
 
 using namespace SketcherGui;
+
+int GeometryLayerParameters::getSubLayerIndex(const int geoId,
+                                              const Sketcher::GeometryFacade* geom) const
+{
+    bool isConstruction = geom->getConstruction();
+    bool isInternal = geom->isInternalAligned();
+    bool isExternal = geoId <= Sketcher::GeoEnum::RefExt;
+    if (isExternal) {
+        auto egf = Sketcher::ExternalGeometryFacade::getFacade(geom->clone());
+        if (egf->testFlag(Sketcher::ExternalGeometryExtension::Defining)) {
+            // Defining external are added to the Normal sublayers because they
+            // share the same line style.
+            return static_cast<int>(SubLayer::Normal);
+        }
+    }
+
+    return static_cast<int>(isExternal           ? SubLayer::External
+                                : isInternal     ? SubLayer::Internal
+                                : isConstruction ? SubLayer::Construction
+                                                 : SubLayer::Normal);
+}
 
 SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);       // #00FF00 -> (  0,255,  0)
 SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);       // ##7f7f7f -> (127,127,127)

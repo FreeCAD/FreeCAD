@@ -47,7 +47,6 @@ class MeshKernel;
 namespace Mesh
 {
 
-class Property;
 class MeshFeaturePy;
 
 /** Base class of all mesh feature classes in FreeCAD.

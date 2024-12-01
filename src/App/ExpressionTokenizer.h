@@ -34,12 +34,14 @@ class AppExport ExpressionTokenizer
 public:
     QString perform(const QString& text, int pos);
 
-    void getPrefixRange(int &start, int &end) const {
+    void getPrefixRange(int& start, int& end) const
+    {
         start = prefixStart;
         end = prefixEnd;
     }
 
-    void updatePrefixEnd(int end) {
+    void updatePrefixEnd(int end)
+    {
         prefixEnd = end;
     }
 
@@ -48,6 +50,6 @@ private:
     int prefixEnd = 0;
 };
 
-}
+}  // namespace App
 
-#endif //EXPRESSIONTOKENIZER_H
+#endif  // EXPRESSIONTOKENIZER_H

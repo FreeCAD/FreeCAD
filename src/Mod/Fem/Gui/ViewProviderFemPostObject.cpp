@@ -719,9 +719,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
         c = m_colorBar->getColor(value);
         diffcol[i].setValue(c.r, c.g, c.b);
-        transp[i] = std::max(c.a, overallTransp);
+        transp[i] = std::max(c.transparency(), overallTransp);
         edgeDiffcol[i].setValue(cEdge.r, cEdge.g, cEdge.b);
-        edgeTransp[i] = std::max(cEdge.a, overallTransp);
+        edgeTransp[i] = std::max(cEdge.transparency(), overallTransp);
     }
 
     m_material->diffuseColor.finishEditing();

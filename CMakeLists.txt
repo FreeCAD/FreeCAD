@@ -22,6 +22,7 @@ if(FREECAD_USE_CCACHE)
     find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
     if(CCACHE_PROGRAM)
         set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+        message(NOTICE "-- Using ccache found at: " ${CCACHE_PROGRAM})
     endif()
 endif()
 

@@ -46,9 +46,6 @@
 #include <fstream>
 #include <ios>
 
-#ifdef FC_USE_GTS
-#include <gts.h>
-#endif
 // STL
 #include <algorithm>
 #include <iomanip>

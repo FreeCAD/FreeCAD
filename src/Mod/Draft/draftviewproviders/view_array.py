@@ -56,7 +56,9 @@ class ViewProviderDraftArray(ViewProviderDraft):
         obj = vobj.Object
         if obj.Base is not None:
             colors = gui_utils.get_diffuse_color(obj.Base)
-            if colors:
+            if not colors:
+                return
+            if len(colors) > 1:
                 n = 1
                 if hasattr(obj, "ArrayType"):
                     if obj.ArrayType == "ortho":
@@ -68,7 +70,7 @@ class ViewProviderDraftArray(ViewProviderDraft):
                 elif hasattr(obj, "Count"):
                     n = obj.Count
                 colors = colors * n
-                vobj.DiffuseColor = colors
+            vobj.DiffuseColor = colors
 
 
 # Alias for compatibility with v0.18 and earlier

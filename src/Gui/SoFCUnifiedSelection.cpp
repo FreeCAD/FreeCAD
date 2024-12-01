@@ -79,6 +79,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "Application.h"
 #include "Document.h"
+#include "DocumentObserver.h"
 #include "MainWindow.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
@@ -607,9 +608,16 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
             return true;
         }
         else {
+            // Changing the selection may result in destroying this view provider.
+            // So, make sure that the object still exists afterwards (#17965)
+            ViewProviderWeakPtrT guard(vpd);
             getFullSubElementName(subName);
             bool ok = Gui::Selection().addSelection(docname, objname,
                                                     subName.c_str(), pt[0], pt[1], pt[2], &sels);
+            if (guard.expired()) {
+                return false;
+            }
+
             if (ok && mymode == OFF) {
                 snprintf(buf, 512, "Selected: %s.%s.%s (%g, %g, %g)",
                          docname, objname, info.element.c_str(), fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,

@@ -26,9 +26,7 @@
 # include <Standard_Failure.hxx>
 #endif
 
-#include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
-#include <Base/Parameter.h>
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureAddSub.h"
@@ -39,6 +37,7 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
+extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::Feature)
 
@@ -46,10 +45,7 @@ FeatureAddSub::FeatureAddSub()
 {
     ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
     ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", true));
+    this->Refine.setValue(getPDRefineModelParameter());
 }
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()

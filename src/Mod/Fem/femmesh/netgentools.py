@@ -111,7 +111,9 @@ NetgenTools.run_netgen(**{params})
             "heal": self.obj.HealShape,
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
+            "second_order_linear": self.obj.SecondOrderLinear,
             "result_file": self.result_file,
+            "mesh_region": self.get_mesh_region(),
         }
 
     def compute(self):
@@ -121,12 +123,33 @@ NetgenTools.run_netgen(**{params})
         return self.process
 
     @staticmethod
-    def run_netgen(brep_file, threads, heal, params, second_order, result_file):
-
+    def run_netgen(
+        brep_file,
+        threads,
+        heal,
+        params,
+        second_order,
+        second_order_linear,
+        result_file,
+        mesh_region,
+    ):
         geom = occ.OCCGeometry(brep_file)
         ngcore.SetNumThreads(threads)
 
+        shape = geom.shape
+        for items, l in mesh_region:
+            for t, n in items:
+                if t == "Vertex":
+                    shape.vertices.vertices[n - 1].maxh = l
+                elif t == "Edge":
+                    shape.edges.edges[n - 1].maxh = l
+                elif t == "Face":
+                    shape.faces.faces[n - 1].maxh = l
+                elif t == "Solid":
+                    shape.solids.solids[n - 1].maxh = l
+
         with ngcore.TaskManager():
+            geom = occ.OCCGeometry(shape)
             if heal:
                 geom.Heal()
             mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
@@ -145,6 +168,8 @@ NetgenTools.run_netgen(**{params})
             return None
 
         if second_order:
+            if second_order_linear:
+                mesh.SetGeometry(None)
             mesh.SecondOrder()
 
         coords = mesh.Coordinates()
@@ -317,6 +342,22 @@ NetgenTools.run_netgen(**{params})
             params["optsteps3d"] = 5
 
         return params
+
+    def get_mesh_region(self):
+        from Part import Shape as PartShape
+
+        result = []
+        for reg in self.obj.MeshRegionList:
+            for s, sub_list in reg.References:
+                if s.isDerivedFrom("App::GeoFeature") and isinstance(
+                    s.getPropertyOfGeometry(), PartShape
+                ):
+                    geom = s.getPropertyOfGeometry()
+                    sub_obj = [s.getSubObject(_) for _ in sub_list]
+                    sub_sh = geom.findSubShape(sub_obj)
+                    l = reg.CharacteristicLength.getValueAs("mm").Value
+                    result.append((sub_sh, l))
+        return result
 
     @staticmethod
     def version():
