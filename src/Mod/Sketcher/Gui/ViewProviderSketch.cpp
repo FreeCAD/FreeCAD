@@ -2987,6 +2987,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     Sketcher::SketchObject* sketch = getSketchObject();
+
+    if(sketch->isFreezed()) {
+        return false; // Disallow edit of a frozen sketch
+    }
+
     if (!sketch->evaluateConstraints()) {
         QMessageBox box(Gui::getMainWindow());
         box.setIcon(QMessageBox::Critical);
