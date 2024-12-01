@@ -223,8 +223,11 @@ class _Wall(ArchComponent.Component):
         self.Type = "Wall"
 
     def dumps(self):
-        super().dumps()
-        return self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev
+        dump = super().dumps()
+        if not isinstance(dump, tuple):
+            dump = (dump,)  #Python Tuple With One Item
+        dump = dump + (self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev)
+        return dump
 
     def loads(self,state):
         super().loads(state)  # do nothing as of 2024.11.28
