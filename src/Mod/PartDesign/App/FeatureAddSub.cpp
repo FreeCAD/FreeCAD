@@ -60,6 +60,29 @@ short FeatureAddSub::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
+
+bool FeatureAddSub::onlyHasToRefine() const
+{
+    if( ! Refine.isTouched()){
+        return false;
+    }
+    if (rawShape.isNull()){
+        return false;
+    }
+    std::vector<App::Property*> propList;
+    getPropertyList(propList);
+    for (auto prop : propList){
+        if (prop != &Refine
+            /*&& prop != &SuppressedShape*/
+            && prop->isTouched()){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
 TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError) const
 {
     if (this->Refine.getValue()) {
