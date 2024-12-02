@@ -57,6 +57,7 @@ public:
     MaterialManager();
     ~MaterialManager() override;
 
+    static void cleanup();
     static void refresh();
 
     // Defaults
