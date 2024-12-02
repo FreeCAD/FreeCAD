@@ -315,6 +315,8 @@ class _Wall(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         import Part
         import DraftGeomUtils
