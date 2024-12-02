@@ -4,7 +4,7 @@ apt-get install --no-install-recommends --yes build-essential cmake doxygen git 
     libboost-graph-dev libboost-iostreams-dev libboost-program-options-dev \
     libboost-python-dev libboost-regex-dev libboost-serialization-dev \
     libboost-thread-dev libcoin-dev libeigen3-dev libgtkglext1-dev \
-    libgts-dev libkdtree++-dev libkml-dev libmedc-dev libocct-data-exchange-dev \
+    libkdtree++-dev libkml-dev libmedc-dev libocct-data-exchange-dev \
     libocct-draw-dev libocct-foundation-dev libocct-modeling-algorithms-dev \
     libocct-modeling-data-dev libocct-ocaf-dev libocct-visualization-dev \
     libopencv-dev libproj-dev libpyside2-dev libqt5svg5-dev\
