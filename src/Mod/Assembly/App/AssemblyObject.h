@@ -26,9 +26,6 @@
 #define ASSEMBLY_AssemblyObject_H
 
 
-#include <GeomAbs_CurveType.hxx>
-#include <GeomAbs_SurfaceType.hxx>
-
 #include <Mod/Assembly/AssemblyGlobal.h>
 
 #include <App/FeaturePython.h>
@@ -62,77 +59,13 @@ namespace Assembly
 class AssemblyLink;
 class JointGroup;
 class ViewGroup;
+enum class JointType;
+
 
 struct ObjRef
 {
     App::DocumentObject* obj;
     App::PropertyXLinkSub* ref;
-};
-
-// This enum has to be the same as the one in JointObject.py
-enum class JointType
-{
-    Fixed,
-    Revolute,
-    Cylindrical,
-    Slider,
-    Ball,
-    Distance,
-    Parallel,
-    Perpendicular,
-    Angle,
-    RackPinion,
-    Screw,
-    Gears,
-    Belt,
-};
-
-enum class DistanceType
-{
-    PointPoint,
-
-    LineLine,
-    LineCircle,
-    CircleCircle,
-
-    PlanePlane,
-    PlaneCylinder,
-    PlaneSphere,
-    PlaneCone,
-    PlaneTorus,
-    CylinderCylinder,
-    CylinderSphere,
-    CylinderCone,
-    CylinderTorus,
-    ConeCone,
-    ConeTorus,
-    ConeSphere,
-    TorusTorus,
-    TorusSphere,
-    SphereSphere,
-
-    PointPlane,
-    PointCylinder,
-    PointSphere,
-    PointCone,
-    PointTorus,
-
-    LinePlane,
-    LineCylinder,
-    LineSphere,
-    LineCone,
-    LineTorus,
-
-    CurvePlane,
-    CurveCylinder,
-    CurveSphere,
-    CurveCone,
-    CurveTorus,
-
-    PointLine,
-    PointCurve,
-
-    Other,
 };
 
 class AssemblyExport AssemblyObject: public App::Part
@@ -257,42 +190,6 @@ private:
     bool bundleFixed;
     // void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property
     // *prop) override;
-
-public:
-    // ---------------- Utils -------------------
-    // Can't put the functions by themselves in AssemblyUtils.cpp :
-    // see https://forum.freecad.org/viewtopic.php?p=729577#p729577
-
-    static void swapJCS(App::DocumentObject* joint);
-
-    static bool isEdgeType(App::DocumentObject* obj, std::string& elName, GeomAbs_CurveType type);
-    static bool isFaceType(App::DocumentObject* obj, std::string& elName, GeomAbs_SurfaceType type);
-    static double getFaceRadius(App::DocumentObject* obj, std::string& elName);
-    static double getEdgeRadius(App::DocumentObject* obj, std::string& elName);
-
-    static DistanceType getDistanceType(App::DocumentObject* joint);
-
-    static JointGroup* getJointGroup(const App::Part* part);
-
-    // getters to get from properties
-    static void setJointActivated(App::DocumentObject* joint, bool val);
-    static bool getJointActivated(App::DocumentObject* joint);
-    static double getJointDistance(App::DocumentObject* joint);
-    static double getJointDistance2(App::DocumentObject* joint);
-    static JointType getJointType(App::DocumentObject* joint);
-    static std::string getElementFromProp(App::DocumentObject* obj, const char* propName);
-    static std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);
-    static App::DocumentObject* getObjFromProp(App::DocumentObject* joint, const char* propName);
-    static App::DocumentObject* getObjFromRef(App::DocumentObject* obj, std::string& sub);
-    static App::DocumentObject* getObjFromRef(App::PropertyXLinkSub* prop);
-    static App::DocumentObject* getObjFromRef(App::DocumentObject* joint, const char* propName);
-    App::DocumentObject* getMovingPartFromRef(App::DocumentObject* obj, std::string& sub);
-    App::DocumentObject* getMovingPartFromRef(App::PropertyXLinkSub* prop);
-    App::DocumentObject* getMovingPartFromRef(App::DocumentObject* joint, const char* propName);
-    static App::DocumentObject* getLinkedObjFromRef(App::DocumentObject* joint,
-                                                    const char* propName);
-    static std::vector<std::string> getSubAsList(App::PropertyXLinkSub* prop);
-    static std::vector<std::string> getSubAsList(App::DocumentObject* joint, const char* propName);
 };
 
 // using AssemblyObjectPython = App::FeaturePythonT<AssemblyObject>;
