@@ -31,7 +31,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -159,7 +158,7 @@ void TaskSectionView::setUiEdit()
     //    Base::Console().Message("TSV::setUiEdit()\n");
     setWindowTitle(QObject::tr("Edit Section View"));
     std::string temp = m_section->SectionSymbol.getValue();
-    QString qTemp = Base::Tools::fromStdString(temp);
+    QString qTemp = QString::fromStdString(temp);
     ui->leSymbol->setText(qTemp);
 
     ui->sbScale->setValue(m_section->getScale());
@@ -188,7 +187,7 @@ void TaskSectionView::setUiEdit()
 void TaskSectionView::setUiCommon(Base::Vector3d origin)
 {
     std::string temp = m_base->getNameInDocument();
-    QString qTemp = Base::Tools::fromStdString(temp);
+    QString qTemp = QString::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
 
     ui->sbOrgX->setUnit(Base::Unit::Length);
@@ -441,7 +440,7 @@ bool TaskSectionView::apply(bool forceUpdate)
     if (m_dirName.empty()) {
         //this should never happen
         std::string msg =
-            Base::Tools::toStdString(tr("Nothing to apply. No section direction picked yet"));
+            tr("Nothing to apply. No section direction picked yet").toStdString();
         Base::Console().Error((msg + "\n").c_str());
         return false;
     }
@@ -512,7 +511,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         // we pluck the generated suffix from the object name and append it to "Section" to generate
         // unique Labels
         QString qTemp = ui->leSymbol->text();
-        std::string temp = Base::Tools::toStdString(qTemp);
+        std::string temp = qTemp.toStdString();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
@@ -592,7 +591,7 @@ void TaskSectionView::updateSectionView()
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
 
         QString qTemp = ui->leSymbol->text();
-        std::string temp = Base::Tools::toStdString(qTemp);
+        std::string temp = qTemp.toStdString();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
@@ -635,14 +634,14 @@ std::string TaskSectionView::makeSectionLabel(QString symbol)
     const std::string objectName("SectionView");
     std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
     std::string uniqueLabel = "Section" + uniqueSuffix;
-    std::string temp = Base::Tools::toStdString(symbol);
+    std::string temp = symbol.toStdString();
     return ( uniqueLabel + " " + temp + " - " + temp );
 }
 
 void TaskSectionView::failNoObject(void)
 {
-    QString qsectionName = Base::Tools::fromStdString(m_sectionName);
-    QString qbaseName = Base::Tools::fromStdString(m_baseName);
+    QString qsectionName = QString::fromStdString(m_sectionName);
+    QString qbaseName = QString::fromStdString(m_baseName);
     QString msg = tr("Can not continue. Object * %1 or %2 not found.").arg(qsectionName, qbaseName);
     QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Operation Failed"), msg);
     Gui::Control().closeDialog();

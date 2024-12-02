@@ -46,7 +46,6 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -136,7 +135,7 @@ void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
-    setObjectName(Base::Tools::fromStdString(name));
+    setObjectName(QString::fromStdString(name));
 }
 
 void MDIViewPage::setDocumentName(const std::string& name) { m_documentName = name; }
@@ -480,7 +479,7 @@ void MDIViewPage::saveSVG()
         return;
     }
     static_cast<void>(blockSelection(true));// avoid to be notified by itself
-    saveSVG(Base::Tools::toStdString(fn));
+    saveSVG(fn.toStdString());
     static_cast<void>(blockSelection(false));
 }
 
