@@ -58,6 +58,7 @@ macro(PrintFinalReport)
 
     simple(Compiler "${CMAKE_CXX_COMPILER} (${CMAKE_CXX_COMPILER_VERSION})")
     value(CMAKE_VERSION)
+    conditional(ccache CCACHE_PROGRAM "not enabled" ${CCACHE_PROGRAM})
     simple(prefix ${CMAKE_INSTALL_PREFIX})
     simple(bindir ${CMAKE_INSTALL_BINDIR})
     simple(datadir ${CMAKE_INSTALL_DATADIR})
