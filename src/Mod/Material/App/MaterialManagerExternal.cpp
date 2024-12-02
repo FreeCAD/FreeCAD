@@ -38,7 +38,7 @@ using namespace Materials;
 /* TRANSLATOR Material::Materials */
 
 QMutex MaterialManagerExternal::_mutex;
-LRU::Cache<QString, std::shared_ptr<Material>> MaterialManagerExternal::_cache(DEFAULT_CACHE_SIZE);
+LRU::Cache<std::string, std::shared_ptr<Material>> MaterialManagerExternal::_cache(DEFAULT_CACHE_SIZE);
 
 TYPESYSTEM_SOURCE(Materials::MaterialManagerExternal, Base::BaseClass)
 
@@ -114,20 +114,20 @@ void MaterialManagerExternal::createLibrary(const QString& libraryName,
 
 std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const QString& uuid) const
 {
-    if (_cache.contains(uuid)) {
-        return _cache.lookup(uuid);
+    if (_cache.contains(uuid.toStdString())) {
+        return _cache.lookup(uuid.toStdString());
     }
     try {
         auto material = ExternalManager::getManager()->getMaterial(uuid);
-        _cache.emplace(uuid, material);
+        _cache.emplace(uuid.toStdString(), material);
         return material;
     }
     catch (const MaterialNotFound& e) {
-        _cache.emplace(uuid, nullptr);
+        _cache.emplace(uuid.toStdString(), nullptr);
         return nullptr;
     }
     catch (const ConnectionError& e) {
-        _cache.emplace(uuid, nullptr);
+        _cache.emplace(uuid.toStdString(), nullptr);
         return nullptr;
     }
 }
@@ -136,7 +136,7 @@ void MaterialManagerExternal::addMaterial(const QString& libraryName,
                                           const QString& path,
                                           const std::shared_ptr<Material>& material)
 {
-    _cache.erase(material->getUUID());
+    _cache.erase(material->getUUID().toStdString());
     ExternalManager::getManager()->addMaterial(libraryName, path, material);
 }
 
@@ -144,7 +144,7 @@ void MaterialManagerExternal::migrateMaterial(const QString& libraryName,
                                           const QString& path,
                                           const std::shared_ptr<Material>& material)
 {
-    _cache.erase(material->getUUID());
+    _cache.erase(material->getUUID().toStdString());
     ExternalManager::getManager()->migrateMaterial(libraryName, path, material);
 }
 

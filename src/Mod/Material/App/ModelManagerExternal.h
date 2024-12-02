@@ -71,7 +71,10 @@ private:
     static void initCache();
 
     static QMutex _mutex;
-    static LRU::Cache<QString, std::shared_ptr<Model>> _cache;
+
+    // Older platforms (Ubuntu 20.04) can't use QString as the index
+    // due to a lack of a move constructor
+    static LRU::Cache<std::string, std::shared_ptr<Model>> _cache;
 };
 
 }  // namespace Materials

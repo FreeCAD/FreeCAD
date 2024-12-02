@@ -90,7 +90,7 @@ void MaterialManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp:
     }
 }
 
-void MaterialManagerLocal::cleanup()
+void MaterialManager::cleanup()
 {
     if (_localManager) {
         _localManager->cleanup();

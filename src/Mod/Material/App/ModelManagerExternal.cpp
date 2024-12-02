@@ -35,7 +35,7 @@
 using namespace Materials;
 
 QMutex ModelManagerExternal::_mutex;
-LRU::Cache<QString, std::shared_ptr<Model>> ModelManagerExternal::_cache(DEFAULT_CACHE_SIZE);
+LRU::Cache<std::string, std::shared_ptr<Model>> ModelManagerExternal::_cache(DEFAULT_CACHE_SIZE);
 
 TYPESYSTEM_SOURCE(Materials::ModelManagerExternal, Base::BaseClass)
 
@@ -111,21 +111,21 @@ void ModelManagerExternal::createLibrary(const QString& libraryName,
 
 std::shared_ptr<Model> ModelManagerExternal::getModel(const QString& uuid)
 {
-    if (_cache.contains(uuid)) {
-        return _cache.lookup(uuid);
+    if (_cache.contains(uuid.toStdString())) {
+        return _cache.lookup(uuid.toStdString());
     }
     try
     {
         auto model = ExternalManager::getManager()->getModel(uuid);
-        _cache.emplace(uuid, model);
+        _cache.emplace(uuid.toStdString(), model);
         return model;
     }
     catch (const ModelNotFound& e) {
-        _cache.emplace(uuid, nullptr);
+        _cache.emplace(uuid.toStdString(), nullptr);
         return nullptr;
     }
     catch (const ConnectionError& e) {
-        _cache.emplace(uuid, nullptr);
+        _cache.emplace(uuid.toStdString(), nullptr);
         return nullptr;
     }
 }
@@ -134,7 +134,7 @@ void ModelManagerExternal::addModel(const QString& libraryName,
                                     const QString& path,
                                     const std::shared_ptr<Model>& model)
 {
-    _cache.erase(model->getUUID());
+    _cache.erase(model->getUUID().toStdString());
     ExternalManager::getManager()->addModel(libraryName, path, model);
 }
 
@@ -142,7 +142,7 @@ void ModelManagerExternal::migrateModel(const QString& libraryName,
                                     const QString& path,
                                     const std::shared_ptr<Model>& model)
 {
-    _cache.erase(model->getUUID());
+    _cache.erase(model->getUUID().toStdString());
     ExternalManager::getManager()->migrateModel(libraryName, path, model);
 }
 
