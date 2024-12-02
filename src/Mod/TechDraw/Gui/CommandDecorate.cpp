@@ -108,7 +108,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {
             QMessageBox::StandardButton rc =
                     QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace Hatch?"),
-                            QObject::tr("Some Faces in selection are already hatched.  Replace?"));
+                            QObject::tr("Some Faces in selection are already hatched. Replace?"));
             if (rc == QMessageBox::StandardButton::NoButton) {
                 return;
             }

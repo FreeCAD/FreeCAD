@@ -135,7 +135,7 @@ void TaskDimRepair::slotUseSelection()
     if (geometryRefs2d == isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make a dimension from selection"));
+                             QObject::tr("Can not make dimension from selection"));
         return;
     }
     //what 3d geometry configuration did we receive?
