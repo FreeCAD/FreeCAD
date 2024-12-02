@@ -35,6 +35,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
         </property>
         <property name="title">
          <string>Enable pop-up notifications</string>
+        </property>
         <property name="suffix">
          <string> px</string>
         </property>
