@@ -20,58 +20,59 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL
-#define VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL
+#ifndef VIEWPROVIDEDATUM_H_BYJRZNDL
+#define VIEWPROVIDEDATUM_H_BYJRZNDL
 
 #include "ViewProviderGeometryObject.h"
 
-class SoAsciiText;
+class SoText2;
 class SoScale;
 
 namespace Gui
 {
 
-/**
- * View provider associated with an App::OriginFeature.
- */
-class GuiExport ViewProviderOriginFeature: public ViewProviderGeometryObject {
-    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOriginFeature);
+    class SoShapeScale;
 
-public:
-    /// The display size of the feature
-    App::PropertyFloat  Size;
+    /**
+     * View provider associated with an App::DatumElement.
+     */
+    class GuiExport ViewProviderDatum : public ViewProviderGeometryObject {
+        PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDatum);
 
-    ViewProviderOriginFeature ();
-    ~ViewProviderOriginFeature () override;
+    public:
+        ViewProviderDatum();
+        ~ViewProviderDatum() override;
 
-    /// Get point derived classes will add their specific stuff
-    SoSeparator * getOriginFeatureRoot () { return pOriginFeatureRoot; }
+        /// Get point derived classes will add their specific stuff
+        SoSeparator* getRoot() { return pRoot; }
 
-    /// Get pointer to the text label associated with the feature
-    SoAsciiText * getLabel () { return pLabel; }
+        /// Get pointer to the text label associated with the feature
+        SoText2* getLabel() { return pLabel; }
 
-    void attach(App::DocumentObject *) override;
-    void updateData(const App::Property *) override;
-    std::vector<std::string> getDisplayModes () const override;
-    void setDisplayMode (const char* ModeName) override;
+        void attach(App::DocumentObject*) override;
+        std::vector<std::string> getDisplayModes() const override;
+        void setDisplayMode(const char* ModeName) override;
 
-    /// @name Suppress ViewProviderGeometryObject's behaviour
-    ///@{
-    bool setEdit ( int ) override
-        { return false; }
-    void unsetEdit ( int ) override
+        /// @name Suppress ViewProviderGeometryObject's behaviour
+        ///@{
+        bool setEdit(int) override
+        {
+            return false;
+        }
+        void unsetEdit(int) override
         { }
-    ///@}
+        ///@}
 
-protected:
-    void onChanged ( const App::Property* prop ) override;
-    bool onDelete ( const std::vector<std::string> & ) override;
-protected:
-    SoSeparator    * pOriginFeatureRoot;
-    SoScale        * pScale;
-    SoAsciiText    * pLabel;
-};
+    protected:
+        void onChanged(const App::Property* prop) override;
+        bool onDelete(const std::vector<std::string>&) override;
+    protected:
+        SoSeparator* pRoot;
+        SoShapeScale* soScale;
+        SoText2* pLabel;
+        double lineThickness;
+    };
 
 } /* Gui */
 
-#endif /* end of include guard: VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL */
+#endif /* end of include guard: VIEWPROVIDEDATUM_H_BYJRZNDL */

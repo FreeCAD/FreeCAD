@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ORIGINFEATURE_H
-#define ORIGINFEATURE_H
+#include "PreCompiled.h"
 
-#include "GeoFeature.h"
+#ifndef _PreComp_
+# include <Inventor/nodes/SoSphere.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTranslation.h>
+#endif
 
-namespace App
+#include "ViewProviderPoint.h"
+#include "ViewProviderCoordinateSystem.h"
+
+using namespace Gui;
+
+PROPERTY_SOURCE(Gui::ViewProviderPoint, Gui::ViewProviderDatum)
+
+ViewProviderPoint::ViewProviderPoint()
 {
+    sPixmap = "Std_Point";  // Set the icon for the point
+}
 
-class Origin;
+ViewProviderPoint::~ViewProviderPoint() = default;
 
-/** Plane Object
- *  Used to define planar support for all kind of operations in the document space
- */
-class AppExport OriginFeature: public App::GeoFeature
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+void ViewProviderPoint::attach(App::DocumentObject * obj) {
+    ViewProviderDatum::attach(obj);
 
-public:
-    /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
-    PropertyString Role;
+    // The coordinates for the point (single vertex at the origin)
+    static const SbVec3f point = SbVec3f(0, 0, 0);
 
-    /// Constructor
-    OriginFeature();
-    ~OriginFeature() override;
+    SoSeparator* sep = getRoot();
 
-    /// Finds the origin object this plane belongs to
-    App::Origin* getOrigin();
-};
+    auto pCoords = new SoCoordinate3();
+    pCoords->point.setNum(1);
+    pCoords->point.setValue(point);
+    sep->addChild(pCoords);
 
-class AppExport Plane: public App::OriginFeature
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+    auto sphere = new SoSphere();
+    sphere->radius.setValue(1.0);
+    sep->addChild(sphere);
 
-public:
-    const char* getViewProviderName() const override
-    {
-        return "Gui::ViewProviderPlane";
-    }
-};
-
-class AppExport Line: public App::OriginFeature
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
-
-public:
-    const char* getViewProviderName() const override
-    {
-        return "Gui::ViewProviderLine";
-    }
-};
-
-}  // namespace App
-
-#endif /* end of include guard: ORIGINFEATURE_H */
+    // Add pick style to define how the point can be selected
+    auto ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::BOUNDING_BOX);
+    sep->addChild(ps);
+}

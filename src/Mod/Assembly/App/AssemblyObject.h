@@ -243,7 +243,6 @@ public:
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
 
     std::vector<AssemblyLink*> getSubAssemblies();
-    void updateGroundedJointsPlacements();
 
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;

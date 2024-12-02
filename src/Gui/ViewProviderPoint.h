@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,43 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#include "OriginFeature.h"
-#include "Document.h"
-#include "Origin.h"
+#ifndef GUI_ViewProviderPoint_H
+#define GUI_ViewProviderPoint_H
 
+#include "ViewProviderDatum.h"
 
-using namespace App;
-
-PROPERTY_SOURCE(App::OriginFeature, App::GeoFeature)
-PROPERTY_SOURCE(App::Plane, App::OriginFeature)
-PROPERTY_SOURCE(App::Line, App::OriginFeature)
-
-OriginFeature::OriginFeature()
+namespace Gui
 {
-    ADD_PROPERTY_TYPE(Role, (""), 0, App::Prop_ReadOnly, "Role of the feature in the Origin");
 
-    // Set placement to read-only
-    Placement.setStatus(Property::Hidden, true);
-}
+class GuiExport ViewProviderPoint : public ViewProviderDatum {
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPoint);
+public:
+    /// Constructor
+    ViewProviderPoint();
+    ~ViewProviderPoint() override;
 
-OriginFeature::~OriginFeature() = default;
+    void attach ( App::DocumentObject * ) override;
+};
 
-Origin* OriginFeature::getOrigin()
-{
-    App::Document* doc = getDocument();
-    auto origins = doc->getObjectsOfType(App::Origin::getClassTypeId());
+} //namespace Gui
 
-    auto originIt = std::find_if(origins.begin(), origins.end(), [this](DocumentObject* origin) {
-        assert(origin->isDerivedFrom(App::Origin::getClassTypeId()));
-        return static_cast<App::Origin*>(origin)->hasObject(this);
-    });
-    if (originIt == origins.end()) {
-        return nullptr;
-    }
-    else {
-        assert((*originIt)->isDerivedFrom(App::Origin::getClassTypeId()));
-        return static_cast<App::Origin*>(*originIt);
-    }
-}
+
+#endif // GUI_ViewProviderPoint_H

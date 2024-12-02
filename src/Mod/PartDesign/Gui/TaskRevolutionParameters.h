@@ -36,7 +36,7 @@ class Property;
 
 namespace Gui {
 class ViewProvider;
-class ViewProviderOrigin;
+class ViewProviderCoordinateSystem;
 }
 
 namespace PartDesignGui {
@@ -105,7 +105,7 @@ private:
     // TODO: This is common with extrude. Maybe send to superclass.
     void translateFaceName();
     void clearFaceName();
-    Gui::ViewProviderOrigin* getOriginView() const;
+    Gui::ViewProviderCoordinateSystem* getOriginView() const;
 
 private:
     std::unique_ptr<Ui_TaskRevolutionParameters> ui;

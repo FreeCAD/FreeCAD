@@ -29,7 +29,7 @@
 #include <QString>
 #endif
 
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>

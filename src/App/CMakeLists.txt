@@ -167,7 +167,7 @@ SET(Document_CPP_SRCS
     InventorObject.cpp
     Placement.cpp
     ProjectFile.cpp
-    OriginFeature.cpp
+    Datums.cpp
     Range.cpp
     Transactions.cpp
     TransactionalObject.cpp
@@ -213,7 +213,7 @@ SET(Document_HPP_SRCS
     InventorObject.h
     Placement.h
     ProjectFile.h
-    OriginFeature.h
+    Datums.h
     Range.h
     Transactions.h
     TransactionalObject.h

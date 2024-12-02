@@ -32,7 +32,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -108,13 +108,13 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     }
 }
 
-Gui::ViewProviderOrigin* TaskRevolutionParameters::getOriginView() const
+Gui::ViewProviderCoordinateSystem* TaskRevolutionParameters::getOriginView() const
 {
     // show the parts coordinate system axis for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject());
     if (body) {
         App::Origin *origin = body->getOrigin();
-        return dynamic_cast<ViewProviderOrigin*>(
+        return dynamic_cast<ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
      }
 
