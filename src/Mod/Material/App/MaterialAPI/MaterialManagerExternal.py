@@ -91,7 +91,7 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def changeIcon(self, icon: str) -> None:
+    def changeIcon(self, name: str, icon: str) -> None:
         """Change the library icon
 
         Change the library icon"""
@@ -106,14 +106,14 @@ class MaterialManagerExternal(ABC):
 
     @abstractmethod
     def libraryModels(self, library: str) -> list:
-        """Returns a list of models managed by this interface
+        """Returns a list of models managed by this library
 
         Each list entry is a tuple containing the UUID, path, and name of the model"""
         pass
 
     @abstractmethod
     def libraryMaterials(self, library: str) -> list:
-        """Returns a list of materials managed by this interface
+        """Returns a list of materials managed by this library
 
         Each list entry is a tuple containing the UUID, path, and name of the material"""
         pass

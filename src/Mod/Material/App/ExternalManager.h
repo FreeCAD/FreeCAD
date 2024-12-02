@@ -46,9 +46,16 @@ public:
 
     // Library management
     std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> libraries();
-    void createLibrary(const QString& libraryName,
-                       const QString& icon,
-                       bool readOnly = true);
+    std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> modelLibraries();
+    std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> materialLibraries();
+    void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
+    void renameLibrary(const QString& libraryName, const QString& newName);
+    void changeIcon(const QString& libraryName, const QString& icon);
+    void removeLibrary(const QString& libraryName);
+    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    libraryModels(const QString& libraryName);
+    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    libraryMaterials(const QString& libraryName);
 
     // Model management
     std::shared_ptr<Model> getModel(const QString& uuid);
