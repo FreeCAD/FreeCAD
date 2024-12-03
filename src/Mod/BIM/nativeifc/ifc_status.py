@@ -327,6 +327,8 @@ def unlock_document():
     from nativeifc import ifc_tools  # lazy loading
 
     doc = FreeCAD.ActiveDocument
+    if not doc:
+        return
     if "IfcFilePath" in doc.PropertiesList:
         # this is a locked document
         doc.openTransaction("Unlock document")
@@ -356,6 +358,8 @@ def lock_document():
     from PySide import QtCore
 
     doc = FreeCAD.ActiveDocument
+    if not doc:
+        return
     products = []
     spatial = []
     ifcfile = None
