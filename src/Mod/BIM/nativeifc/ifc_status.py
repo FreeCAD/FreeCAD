@@ -59,11 +59,11 @@ def set_status_widget(statuswidget):
     on_toggle_lock(checked, noconvert=True)
     lock_button.triggered.connect(on_toggle_lock)
     set_properties_editor(statuswidget)
-    
+
 
 def set_properties_editor(statuswidget):
     """Adds additional buttons to the properties editor"""
-    
+
     if hasattr(statuswidget, "propertybuttons"):
         statuswidget.propertybuttons.show()
     else:
@@ -138,7 +138,7 @@ def on_add_property():
         t = translate("BIM","No Property set provided")
         FreeCAD.Console.PrintError(t+"\n")
     ptype = form.field_type.currentIndex()
-    ptype = ["IfcLabel", "IfcBoolean", 
+    ptype = ["IfcLabel", "IfcBoolean",
              "IfcInteger", "IfcReal",
              "IfcLengthMeasure", "IfcAreaMeasure"][ptype]
     fctype = ifc_psets.get_freecad_type(ptype)
@@ -160,7 +160,7 @@ def on_add_pset():
                 for row in reader:
                     result[row[0]] = row[1:]
         return result
-    
+
     def get_fcprop(ifcprop):
         if ifcprop == "IfcLengthMeasure":
             return "App::PropertyDistance"

@@ -404,7 +404,7 @@ class BIM_IfcProperties:
                                     obj.addProperty(fctype, pname, pset, ptype+":"+pname)
                                     ifc_psets.edit_pset(obj, pname, force=True)
                                 if pvalue:
-                                    setattr(obj, pname, pvalue) 
+                                    setattr(obj, pname, pvalue)
                     elif not hasattr(obj, "IfcProperties"):
                         obj.addProperty(
                             "App::PropertyMap",

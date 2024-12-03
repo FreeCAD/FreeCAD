@@ -225,4 +225,3 @@ def setStatusIcons(show=True):
                 statuswidget.toggleViewAction().setVisible(False)
                 if hasattr(statuswidget, "propertybuttons"):
                     statuswidget.propertybuttons.hide()
-    
