@@ -639,8 +639,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Previously the condition counted the number of ";" (element map operations prefix)
         # If the number of operations changes then the number of ";" will change accordingly
         #
-        # However, it is more useful to count the number of times an elemement name is
-        # present in the MappedName of an element (a MappedName is definined also using the
+        # However, it is more useful to count the number of times an element name is
+        # present in the MappedName of an element (a MappedName is defined also using the
         # element names - "Vertex*", "Edge*", "Face*" - used by an OCCT operation to generate
         # output elements)
         self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)

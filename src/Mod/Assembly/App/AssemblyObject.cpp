@@ -1565,7 +1565,7 @@ AssemblyObject::MbDPartData AssemblyObject::getMbDData(App::DocumentObject* part
     MbDPartData data = {mbdPart, Base::Placement()};
     objectPartMap[part] = data;  // Store the association
 
-    // Associate other objects conneted with fixed joints
+    // Associate other objects connected with fixed joints
     if (bundleFixed) {
         auto addConnectedFixedParts = [&](App::DocumentObject* currentPart, auto& self) -> void {
             std::vector<App::DocumentObject*> joints = getJointsOfPart(currentPart);
