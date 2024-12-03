@@ -525,6 +525,8 @@ def add_properties(
         obj.ShapeMode = shapemode
         if not obj.isDerivedFrom("Part::Feature"):
             obj.setPropertyStatus("ShapeMode", "Hidden")
+    if ifcentity.is_a("IfcProduct"):
+        obj.addProperty("App::PropertyLink", "Type", "IFC")
     attr_defs = ifcentity.wrapped_data.declaration().as_entity().all_attributes()
     try:
         info_ifcentity = ifcentity.get_info()
@@ -1190,7 +1192,7 @@ def get_subvolume(obj):
 def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
     """Creates a relationship between an IFC object and a parent IFC object"""
 
-    if isinstance(parent, FreeCAD.DocumentObject):
+    if isinstance(parent, (FreeCAD.DocumentObject, FreeCAD.Document)):
         parent_element = get_ifc_element(parent)
     else:
         parent_element = parent
@@ -1373,8 +1375,9 @@ def migrate_schema(ifcfile, schema):
     return newfile, table
 
 
-def remove_ifc_element(obj):
-    """removes the IFC data associated with an object"""
+def remove_ifc_element(obj,delete_obj=False):
+    """removes the IFC data associated with an object.
+    If delete_obj is True, the FreeCAD object is also deleted"""
 
     # This function can become pure IFC
 
@@ -1382,6 +1385,8 @@ def remove_ifc_element(obj):
     element = get_ifc_element(obj)
     if ifcfile and element:
         api_run("root.remove_product", ifcfile, product=element)
+        if delete_obj:
+            obj.Document.removeObject(obj.Name)
         return True
     return False
 
