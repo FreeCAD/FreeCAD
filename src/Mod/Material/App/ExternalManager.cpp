@@ -35,6 +35,7 @@
 #include "Exceptions.h"
 #include "ExternalManager.h"
 #include "MaterialPy.h"
+#include "ModelLibrary.h"
 #include "ModelPy.h"
 
 
@@ -518,11 +519,27 @@ std::shared_ptr<Model> ExternalManager::getModel(const QString& uuid)
             Py::Tuple result(libraries.apply(args));  // ignore return for now
 
             Py::Object uuidObject = result.getItem(0);
-            Py::Object libraryObject = result.getItem(1);
+            Py::Tuple libraryObject(result.getItem(1));
             Py::Object modelObject = result.getItem(2);
+
+            Py::Object pyName = libraryObject.getItem(0);
+            Py::Object pyIcon = libraryObject.getItem(1);
+            Py::Object readOnly = libraryObject.getItem(2);
+
+            QString name;
+            if (!pyName.isNone()) {
+                name = QString::fromStdString(pyName.as_string());
+            }
+            QString icon;
+            if (!pyIcon.isNone()) {
+                icon = QString::fromStdString(pyIcon.as_string());
+            }
+            auto library =
+                std::make_shared<ModelLibrary>(name, QString(), icon, readOnly.as_bool());
 
             Model* model = static_cast<ModelPy*>(*modelObject)->getModelPtr();
             model->setUUID(uuid);
+            model->setLibrary(library);
             auto shared = std::make_shared<Model>(*model);
 
             return shared;

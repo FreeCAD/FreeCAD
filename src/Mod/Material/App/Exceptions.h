@@ -228,6 +228,24 @@ public:
     ~InvalidMaterial() noexcept override = default;
 };
 
+class InvalidLibrary: public Base::Exception
+{
+public:
+    InvalidLibrary()
+    {
+        this->setMessage("Invalid library");
+    }
+    explicit InvalidLibrary(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit InvalidLibrary(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~InvalidLibrary() noexcept override = default;
+};
+
 class InvalidIndex: public Base::Exception
 {
 public:

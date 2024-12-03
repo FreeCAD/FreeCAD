@@ -52,6 +52,27 @@ bool Library::operator==(const Library& library) const
     return (getName() == library.getName()) && (_directory == library._directory);
 }
 
+void Library::validate(const Library& remote) const
+{
+    if (getName() != remote.getName()) {
+        throw InvalidLibrary("Library names don't match");
+    }
+    if (getIconPath() != remote.getIconPath()) {
+        Base::Console().Log("Icon path 1 '%s'\n", getIconPath().toStdString().c_str());
+        Base::Console().Log("Icon path 2 '%s'\n", remote.getIconPath().toStdString().c_str());
+        throw InvalidLibrary("Library icon paths don't match");
+    }
+
+    // Local and remote paths will differ
+    if (!remote.getDirectory().isEmpty()) {
+        throw InvalidLibrary("Remote library should not have a path");
+    }
+
+    if (isReadOnly() != remote.isReadOnly()) {
+        throw InvalidLibrary("Library readonly settings don't match");
+    }
+}
+
 QString Library::getLocalPath(const QString& path) const
 {
     QString filePath = getDirectoryPath();

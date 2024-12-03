@@ -59,7 +59,13 @@ void DlgSettingsExternal::saveSettings()
 
 QString DlgSettingsExternal::toPerCent(double value) const
 {
-    int pc = value * 100.0;
+    int pc;
+    if (value < 0.0) {
+        pc = 0;
+    }
+    else {
+        pc = value * 100.0;
+    }
     QString pcString;
     pcString.setNum(pc);
     pcString += QLatin1String("%");

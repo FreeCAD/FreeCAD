@@ -146,9 +146,14 @@ bool Model::validate(const std::shared_ptr<Model>& other) const
         return true;
     }
 
-    // if (*_library != *(other->_library)) {
-    //     return false;
-    // }
+    try {
+        _library->validate(*(other->_library));
+    }
+    catch (const InvalidLibrary& e)
+    {
+        // throw InvalidModel("Model libraries don't match");
+        throw InvalidModel(e.what());
+    }
 
     // std::map<QString, ModelProperty> _properties;
     if (_type != other->_type) {
