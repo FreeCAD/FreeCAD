@@ -71,8 +71,8 @@ class ifc_vp_object:
 
     def getIcon(self):
         from PySide import QtCore, QtGui  # lazy import
-        
-        rclass = self.Object.IfcClass.replace("StandardCase","") 
+
+        rclass = self.Object.IfcClass.replace("StandardCase","")
         ifcicon = ":/icons/IFC/" + rclass + ".svg"
         if QtCore.QFile.exists(ifcicon):
             if getattr(self, "ifcclass", "") != rclass:
@@ -95,6 +95,7 @@ class ifc_vp_object:
         from nativeifc import ifc_tools  # lazy import
         from nativeifc import ifc_psets
         from nativeifc import ifc_materials
+        from nativeifc import ifc_types
         from PySide import QtCore, QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
@@ -150,11 +151,14 @@ class ifc_vp_object:
             action_material = QtGui.QAction(icon, "Load material",menu)
             action_material.triggered.connect(self.addMaterial)
             actions.append(action_material)
+        if ifc_types.is_typable(self.Object):
+            action_type = QtGui.QAction(icon, "Convert to type", menu)
+            action_type.triggered.connect(self.convertToType)
+            actions.append(action_type)
         if actions:
             ifc_menu = QtGui.QMenu("IFC")
             ifc_menu.setIcon(icon)
-            for a in actions:
-                ifc_menu.addAction(a)
+            ifc_menu.addActions(actions)
             menu.addMenu(ifc_menu)
 
         # generic actions
@@ -362,6 +366,11 @@ class ifc_vp_object:
         self.Object.Document.recompute()
 
     def doubleClicked(self, vobj):
+        """On double-click"""
+
+        self.expandProperties(vobj)
+
+    def expandProperties(self, vobj):
         """Expands everything that needs to be expanded"""
 
         from nativeifc import ifc_geometry  # lazy import
@@ -369,12 +378,14 @@ class ifc_vp_object:
         from nativeifc import ifc_psets  # lazy import
         from nativeifc import ifc_materials  # lazy import
         from nativeifc import ifc_layers  # lazy import
+        from nativeifc import ifc_types  # lazy import
 
         # generic data loading
         ifc_geometry.add_geom_properties(vobj.Object)
         ifc_psets.show_psets(vobj.Object)
         ifc_materials.show_material(vobj.Object)
         ifc_layers.add_layers(vobj.Object)
+        ifc_types.show_type(vobj.Object)
 
         # expand children
         if self.hasChildren(vobj.Object):
@@ -389,6 +400,16 @@ class ifc_vp_object:
                 vobj.Object.Document.recompute()
                 return True
         return None
+
+    def convertToType(self):
+        """Converts this object to a type"""
+
+        if not hasattr(self, "Object"):
+            return
+        from nativeifc import ifc_types
+        ifc_types.convert_to_type(self.Object)
+        self.Object.Document.recompute()
+
 
 
 class ifc_vp_document(ifc_vp_object):
