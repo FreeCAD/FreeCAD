@@ -30,7 +30,7 @@ jobs:
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
           # trunk-ignore(yamllint/line-length)
-          exempt-issue-labels: 'Status: Confirmed', 'Priority: High', 'Priority: Critical', 'Blocker', 'Type: Feature'
+          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,Type: Feature'
           remove-stale-when-updated: true
           stale-issue-message: |
             Hi! This issue hasn’t seen activity in a while. If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) to see if the problem is resolved.
@@ -60,7 +60,7 @@ jobs:
           operations-per-run: 30  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          only-labels: 'Status: Needs feedback', 'Status: Needs test on dev version', 'Status: Needs steps to reproduce'
+          only-labels: 'Status: Needs feedback,Status: Needs test on dev version,Status: Needs steps to reproduce'
           remove-stale-when-updated: true
           stale-issue-message: |
             Hi! This issue hasn’t seen activity in a while despite the need for further feedback.
