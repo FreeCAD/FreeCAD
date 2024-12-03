@@ -59,10 +59,10 @@ public:
     /// mode table
     enum SelectMode
     {
-        STATUS_SEEK_First,  /**< enum value ----. */
-        STATUS_SEEK_Second, /**< enum value ----. */
-        STATUS_SEEK_Third,  /**< enum value ----. */
-        STATUS_SEEK_Fourth, /**< enum value ----. */
+        STATUS_SEEK_First,
+        STATUS_SEEK_Second,
+        STATUS_SEEK_Third,
+        STATUS_SEEK_Fourth,
         STATUS_Close
     };
 
