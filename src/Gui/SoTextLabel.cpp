@@ -388,7 +388,6 @@ void SoFrameLabel::setIcon(const QPixmap &pixMap)
     drawImage();
 }
 
-
 void SoFrameLabel::notify(SoNotList * list)
 {
     SoField *f = list->getLastField();
@@ -468,7 +467,6 @@ void SoFrameLabel::drawImage()
 
     if (drawIcon) {
         painter.drawImage(QPoint(padding, paddingIconV), iconImg); 
-        
     }
 
     painter.setPen(front);
@@ -495,6 +493,11 @@ void SoFrameLabel::drawImage()
  */
 void SoFrameLabel::GLRender(SoGLRenderAction *action)
 {
+    SoState * state = action->getState();
+
+    const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);
+    this->backgroundColor.setValue(diffuse);
+
     inherited::GLRender(action);
 }
 
