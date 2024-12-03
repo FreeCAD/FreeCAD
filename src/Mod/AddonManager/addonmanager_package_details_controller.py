@@ -88,6 +88,7 @@ class PackageDetailsController(QtCore.QObject):
         """The main entry point for this class, shows the package details and related buttons
         for the provided repo."""
         self.addon = repo
+        # TODO: manage multiple urls here instead of passing to function
         self.readme_controller.set_addon(repo, 0)
         self.changelog_controller.set_addon(repo, 1)
         self.contrib_controller.set_addon(repo, 2)
