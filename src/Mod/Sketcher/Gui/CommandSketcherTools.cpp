@@ -1193,7 +1193,7 @@ public:
     /// mode table
     enum SelectMode
     {
-        STATUS_SEEK_First, /**< enum value ----. */
+        STATUS_SEEK_First,
         STATUS_End
     };
 
@@ -1769,7 +1769,7 @@ public:
     /// mode table
     enum SelectMode
     {
-        STATUS_SEEK_First, /**< enum value ----. */
+        STATUS_SEEK_First,
         STATUS_End
     };
 
