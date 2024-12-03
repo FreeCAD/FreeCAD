@@ -157,7 +157,7 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
         doc.recompute()
 
     def expandLinkManually(self, link):
-        # Shoud not be necessary
+        # Should not be necessary
         # This is a workaround of https://github.com/FreeCAD/FreeCAD/issues/17904
         mw = Gui.getMainWindow()
         trees = mw.findChildren(QtGui.QTreeWidget)

@@ -300,7 +300,7 @@ def add_property(ifcfile, pset, name, value=""):
 
 
 def get_freecad_type(ptype):
-    """Returns a FreeCAD property type correspinding to an IFC property type"""
+    """Returns a FreeCAD property type corresponding to an IFC property type"""
 
     conv = read_properties_conversion()
     for key, values in conv.items():
@@ -310,7 +310,7 @@ def get_freecad_type(ptype):
 
 
 def get_ifc_type(fctype):
-    """Returns an IFC property type correspinding to a FreeCAD property type"""
+    """Returns an IFC property type corresponding to a FreeCAD property type"""
 
     conv = read_properties_conversion()
     for key, values in conv.items():
