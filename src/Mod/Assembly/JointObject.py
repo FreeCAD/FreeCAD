@@ -1237,10 +1237,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jType = JointTypes[self.jForm.jointType.currentIndex()]
         self.jForm.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
-        self.jForm.reverseRotCheckbox.setChecked(self.jType == "Gears")
-        self.jForm.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
-
-        self.jForm.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
 
         if jointObj:
             Gui.Selection.clearSelection()
@@ -1267,8 +1263,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.createJointObject()
             self.visibilityBackup = False
 
-        self.adaptUi()
-
         self.jForm.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
         self.jForm.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.jForm.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
@@ -1279,6 +1273,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         bind = Gui.ExpressionBinding(self.jForm.rotationSpinbox).bind(
             self.joint, "Offset2.Rotation.Yaw"
         )
+
+        self.jForm.reverseRotCheckbox.setChecked(self.jType == "Gears")
+        self.jForm.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
+
+        self.jForm.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
+
         self.jForm.offset1Button.clicked.connect(self.onOffset1Clicked)
         self.jForm.offset2Button.clicked.connect(self.onOffset2Clicked)
         self.jForm.PushButtonReverse.clicked.connect(self.onReverseClicked)
@@ -1296,6 +1296,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         bind = Gui.ExpressionBinding(self.jForm.limitLenMaxSpinbox).bind(self.joint, "LengthMax")
         bind = Gui.ExpressionBinding(self.jForm.limitRotMinSpinbox).bind(self.joint, "AngleMin")
         bind = Gui.ExpressionBinding(self.jForm.limitRotMaxSpinbox).bind(self.joint, "AngleMax")
+        
+        self.adaptUi()
 
         if self.creating:
             # This has to be after adaptUi so that properties default values are adapted
