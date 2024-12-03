@@ -111,7 +111,7 @@ False if TestPathPropertyBag.__name__ else True
 False if TestPathRotationGenerator.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathStock.__name__ else True
-False if TestPathTapGenerator. __name__ else True
+False if TestPathTapGenerator.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathThreadMillingGenerator.__name__ else True
 False if TestPathToolBit.__name__ else True
