@@ -70,7 +70,7 @@ class ifc_object:
                 obj.ViewObject.signalChangeIcon()
         elif obj.getGroupOfProperty(prop) == "Geometry":
             self.edit_geometry(obj, prop)
-        elif obj.getGroupOfProperty(prop) not in ["Base", "IFC", "", "Geometry"]:
+        elif obj.getGroupOfProperty(prop) not in ["Base", "IFC", "", "Geometry", "PhysicalProperties"]:
             # Treat all property groups outside the default ones as Psets
             # print("DEBUG: editinog pset prop",prop)
             self.edit_pset(obj, prop)
