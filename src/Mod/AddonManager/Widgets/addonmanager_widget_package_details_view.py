@@ -90,6 +90,9 @@ class PackageDetailsView(QtWidgets.QWidget):
         super().__init__(parent)
         self.button_bar = None
         self.readme_browser = None
+        self.changelog_browser = None
+        self.contributing_browser = None
+        self.license_browser = None
         self.message_label = None
         self.location_label = None
         self.url_label = None
