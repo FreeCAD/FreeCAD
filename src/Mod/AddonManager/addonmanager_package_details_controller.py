@@ -41,7 +41,7 @@ from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdat
 from addonmanager_git import GitManager, NoGitFound
 from Addon import Addon
 from change_branch import ChangeBranchDialog
-from addonmanager_readme_controller import ReadmeController
+from addonmanager_readme_controller import DocumentController
 from Widgets.addonmanager_widget_package_details_view import UpdateInformation, WarningFlags
 
 translate = fci.translate
@@ -60,10 +60,10 @@ class PackageDetailsController(QtCore.QObject):
     def __init__(self, widget=None):
         super().__init__()
         self.ui = widget
-        self.readme_controller = ReadmeController(self.ui.readme_browser)
-        self.changelog_controller = ReadmeController(self.ui.changelog_browser)
-        self.contrib_controller = ReadmeController(self.ui.contrib_browser)
-        self.license_controller = ReadmeController(self.ui.license_browser)
+        self.readme_controller = DocumentController(self.ui.readme_browser)
+        self.changelog_controller = DocumentController(self.ui.changelog_browser)
+        self.contrib_controller = DocumentController(self.ui.contrib_browser)
+        self.license_controller = DocumentController(self.ui.license_browser)
         self.worker = None
         self.addon = None
         self.update_check_thread = None

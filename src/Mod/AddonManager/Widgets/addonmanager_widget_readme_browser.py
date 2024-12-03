@@ -42,7 +42,7 @@ from PySide import QtCore, QtGui, QtWidgets
 from typing import Optional
 
 
-class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
+class WidgetDocumentBrowser(QtWidgets.QTextBrowser):
     """A QTextBrowser widget that emits signals for each requested image resource, allowing an external controller
     to load and re-deliver those images. Once all resources have been re-delivered, the original data is redisplayed
     with the images in-line. Call setUrl prior to calling setMarkdown or setHtml to ensure URLs are resolved

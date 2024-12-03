@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" A Qt Widget for displaying Addon README information """
+"""A Qt Widget for displaying Addon README information"""
 
 import FreeCAD
 from Addon import Addon
@@ -44,7 +44,7 @@ class ReadmeDataType(IntEnum):
     Html = 2
 
 
-class ReadmeController(QtCore.QObject):
+class DocumentController(QtCore.QObject):
     """A class that can provide README data from an Addon, possibly loading external resources such
     as images"""
 

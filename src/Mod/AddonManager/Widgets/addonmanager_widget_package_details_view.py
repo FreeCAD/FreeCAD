@@ -53,7 +53,7 @@ except ImportError:
 from PySide import QtCore, QtWidgets
 
 from .addonmanager_widget_addon_buttons import WidgetAddonButtons
-from .addonmanager_widget_readme_browser import WidgetReadmeBrowser
+from .addonmanager_widget_readme_browser import WidgetDocumentBrowser
 from .addonmanager_colors import warning_color_string, attention_color_string, bright_color_string
 
 
@@ -113,10 +113,10 @@ class PackageDetailsView(QtWidgets.QWidget):
         self.location_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
 
         self.tab_widget = QtWidgets.QTabWidget(self)
-        self.readme_browser = WidgetReadmeBrowser(self)
-        self.changelog_browser = WidgetReadmeBrowser(self)
-        self.contrib_browser = WidgetReadmeBrowser(self)
-        self.license_browser = WidgetReadmeBrowser(self)
+        self.readme_browser = WidgetDocumentBrowser(self)
+        self.changelog_browser = WidgetDocumentBrowser(self)
+        self.contrib_browser = WidgetDocumentBrowser(self)
+        self.license_browser = WidgetDocumentBrowser(self)
 
         self.tab_widget.addTab(self.readme_browser, translate("AddonsInstaller", "README"))
         self.tab_widget.addTab(self.changelog_browser, translate("AddonsInstaller", "CHANGELOG"))
