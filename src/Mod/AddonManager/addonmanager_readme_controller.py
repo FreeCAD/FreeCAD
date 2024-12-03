@@ -25,7 +25,9 @@
 
 import FreeCAD
 from Addon import Addon
+from addonmanager_metadata import MetadataReader
 import addonmanager_utilities as utils
+import xml.etree.ElementTree
 
 from enum import IntEnum, Enum, auto
 from html.parser import HTMLParser
@@ -36,6 +38,8 @@ import NetworkManager
 translate = FreeCAD.Qt.translate
 
 from PySide import QtCore, QtGui
+
+import addonmanager_freecad_interface as fci
 
 
 class ReadmeDataType(IntEnum):
@@ -83,6 +87,17 @@ class DocumentController(QtCore.QObject):
                 )
                 return
         else:
+            # TODO: multiple urls
+            package_url = utils.get_metadata_url(repo)
+            try:
+                metadata = MetadataReader.from_url(package_url)
+            except xml.etree.ElementTree.ParseError:
+                fci.Console.PrintWarning(
+                    "An invalid or corrupted package.xml file was downloaded for"
+                )
+                fci.Console.PrintWarning(f" {package_url}... ignoring the bad data.\n")
+
+            # Attempt to read URLs from online `package.xml` file, else use hardcoded guesses
             if document == 0:  # README
                 self.url = utils.get_readme_url(repo)
             elif document == 1:  # CHANGELOG
