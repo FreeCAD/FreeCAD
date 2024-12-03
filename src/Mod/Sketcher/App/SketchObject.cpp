@@ -1340,9 +1340,10 @@ int SketchObject::diagnoseAdditionalConstraints(
     return lastDoF;
 }
 
-int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative,
+int SketchObject::movePoint(std::vector<GeoElementId> moved, const Base::Vector3d& toPoint, bool relative,
                             bool updateGeoBeforeMoving)
 {
+
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -1369,7 +1370,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         return -1;
 
     // move the point and solve
-    lastSolverStatus = solvedSketch.movePoint(GeoId, PosId, toPoint, relative);
+    lastSolverStatus = solvedSketch.movePoint(moved, toPoint, relative);
 
     // moving the point can not result in a conflict that we did not have
     // or a redundancy that we did not have before, or a change of DoF
@@ -1378,16 +1379,23 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
         // Constraints.acceptGeometry(getCompleteGeometry());
-        for (std::vector<Part::Geometry*>::iterator it = geomlist.begin(); it != geomlist.end();
-             ++it) {
-            if (*it)
-                delete *it;
+        for (auto* geo :  geomlist) {
+            if (geo){
+                delete geo;
+            }
         }
     }
 
     solvedSketch.resetInitMove();// reset solver point moving mechanism
 
     return lastSolverStatus;
+}
+
+int SketchObject::movePoint(int geoId, PointPos pos, const Base::Vector3d& toPoint, bool relative,
+    bool updateGeoBeforeMoving)
+{
+    std::vector<GeoElementId> moved = { GeoElementId(geoId, pos) };
+    return movePoint(moved, toPoint, relative, updateGeoBeforeMoving);
 }
 
 template <>

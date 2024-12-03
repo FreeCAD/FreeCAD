@@ -1167,6 +1167,58 @@ PyObject* SketchObjectPy::setLabelDistance(PyObject* args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::moveGeometries(PyObject* args)
+{
+    PyObject* pyList;
+    PyObject* pcObj;
+    int relative = 0;
+
+    // Parse arguments: list of pairs, Base::VectorPy, optional relative flag
+    if (!PyArg_ParseTuple(args,
+                          "O!O!|i",
+                          &PyList_Type,
+                          &pyList,  // List of pairs (geoId, pointPos)
+                          &(Base::VectorPy::Type),
+                          &pcObj,        // Target vector
+                          &relative)) {  // Optional relative flag
+        return nullptr;
+    }
+
+    // Convert Python list to std::vector<GeoElementId>
+    std::vector<GeoElementId> moved;
+    Py_ssize_t listSize = PyList_Size(pyList);
+
+    for (Py_ssize_t i = 0; i < listSize; ++i) {
+        PyObject* pyPair = PyList_GetItem(pyList, i);  // Borrowed reference
+
+        if (!PyTuple_Check(pyPair) || PyTuple_Size(pyPair) != 2) {
+            PyErr_SetString(PyExc_ValueError, "List must contain pairs (geoId, pointPos).");
+            return nullptr;
+        }
+
+        int geoId = PyLong_AsLong(PyTuple_GetItem(pyPair, 0));
+        int pointPos = PyLong_AsLong(PyTuple_GetItem(pyPair, 1));
+
+        if (PyErr_Occurred()) {
+            PyErr_SetString(PyExc_ValueError, "Invalid geoId or pointPos in the list.");
+            return nullptr;
+        }
+
+        moved.emplace_back(GeoElementId(geoId, static_cast<Sketcher::PointPos>(pointPos)));
+    }
+
+    // Convert Python vector to Base::Vector3d
+    Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
+
+    // Call the C++ method
+    if (this->getSketchObjectPtr()->movePoint(moved, v1, (relative > 0))) {
+        PyErr_SetString(PyExc_ValueError, "Failed to move geometries.");
+        return nullptr;
+    }
+
+    Py_RETURN_NONE;
+}
+
 PyObject* SketchObjectPy::movePoint(PyObject* args)
 {
     PyObject* pcObj;

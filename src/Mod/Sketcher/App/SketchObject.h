@@ -352,6 +352,10 @@ public:
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
+    int movePoint(std::vector<GeoElementId> moved,
+                  const Base::Vector3d& toPoint,
+                  bool relative = false,
+                  bool updateGeoBeforeMoving = false);
     int movePoint(int GeoId,
                   PointPos PosId,
                   const Base::Vector3d& toPoint,
@@ -687,6 +691,8 @@ public: /* Solver exposed interface */
     }
     /// Forwards a request for a temporary initMove to the solver using the current sketch state as
     /// a reference (enables dragging)
+
+    inline int initTemporaryMove(std::vector<GeoElementId> moved, bool fine = true);
     inline int initTemporaryMove(int geoId, PointPos pos, bool fine = true);
     /// Forwards a request for a temporary initBSplinePieceMove to the solver using the current
     /// sketch state as a reference (enables dragging)
@@ -698,6 +704,9 @@ public: /* Solver exposed interface */
      * state as a reference (enables dragging). NOTE: A temporary move operation must always be
      * preceded by a initTemporaryMove() operation.
      */
+    inline int moveTemporaryPoint(std::vector<GeoElementId> moved,
+                                  Base::Vector3d toPoint,
+                                  bool relative = false);
     inline int
     moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
     /// forwards a request to update an extension of a geometry of the solver to the solver.
@@ -1061,16 +1070,19 @@ private:
     mutable std::map<std::string, std::string> internalElementMap;
 };
 
-inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine /*=true*/)
+inline int SketchObject::initTemporaryMove(std::vector<GeoElementId> moved, bool fine /*=true*/)
 {
-    // if a previous operation did not update the geometry (including geometry extensions)
-    // or constraints (including any deleted pointer, as in renameConstraint) of the solver,
-    // here we update them before starting a temporary operation.
     if (solverNeedsUpdate) {
         solve();
     }
 
-    return solvedSketch.initMove(geoId, pos, fine);
+    return solvedSketch.initMove(moved, fine);
+}
+
+inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine /*=true*/)
+{
+    std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
+    return initTemporaryMove(moved, fine);
 }
 
 inline int SketchObject::initTemporaryBSplinePieceMove(int geoId,
@@ -1088,12 +1100,19 @@ inline int SketchObject::initTemporaryBSplinePieceMove(int geoId,
     return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
 }
 
+inline int SketchObject::moveTemporaryPoint(std::vector<GeoElementId> moved,
+                                            Base::Vector3d toPoint,
+                                            bool relative /*=false*/)
+{
+    return solvedSketch.movePoint(moved, toPoint, relative);
+}
 inline int SketchObject::moveTemporaryPoint(int geoId,
                                             PointPos pos,
                                             Base::Vector3d toPoint,
                                             bool relative /*=false*/)
 {
-    return solvedSketch.movePoint(geoId, pos, toPoint, relative);
+    std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
+    return moveTemporaryPoint(moved, toPoint, relative);
 }
 
 
