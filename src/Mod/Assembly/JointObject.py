@@ -1237,7 +1237,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jType = JointTypes[self.jForm.jointType.currentIndex()]
         self.jForm.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
-
         if jointObj:
             Gui.Selection.clearSelection()
             self.creating = False
@@ -1296,7 +1295,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         bind = Gui.ExpressionBinding(self.jForm.limitLenMaxSpinbox).bind(self.joint, "LengthMax")
         bind = Gui.ExpressionBinding(self.jForm.limitRotMinSpinbox).bind(self.joint, "AngleMin")
         bind = Gui.ExpressionBinding(self.jForm.limitRotMaxSpinbox).bind(self.joint, "AngleMax")
-        
+
         self.adaptUi()
 
         if self.creating:
