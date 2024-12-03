@@ -245,7 +245,8 @@ static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
     return item;
 }
 
-void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& type)
+void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
+                                     [[maybe_unused]]std::string& type)
 {
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
