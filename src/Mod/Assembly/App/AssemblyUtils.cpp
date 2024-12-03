@@ -739,7 +739,7 @@ Base::Placement getPlacementFromProp(App::DocumentObject* obj, const char* propN
     return plc;
 }
 
-/* // Currently unused
+// Currently unused
 Base::Placement* getTargetPlacementRelativeTo(
     App::DocumentObject* targetObj, App::DocumentObject* part, App::DocumentObject* container,
     bool inContainerBranch, bool ignorePlacement = false)
