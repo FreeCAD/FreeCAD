@@ -43,13 +43,6 @@ jobs:
               - **Blog**: https://blog.freecad.org
               - **Wiki**: https://wiki.freecad.org
 
-      - name: 'Print outputs'
-        run: |
-          for key in steps.stale_issues.outputs
-            do
-              printf '%s: %s\n' "${key}" "${steps.stale_issues.outputs[key]}"
-            done
-
       - name: '🧹 Close stale requested feedback issues'
         id: awaiting_issues
         uses: actions/stale@v9.0.0
@@ -73,10 +66,3 @@ jobs:
               - **Forum**: https://forum.freecad.org
               - **Blog**: https://blog.freecad.org
               - **Wiki**: https://wiki.freecad.org
-
-      - name: 'Print outputs'
-        run: |
-          for key in steps.awaiting_issues.outputs
-            do
-              printf '%s: %s\n' "${key}" "${steps.awaiting_issues.outputs[key]}"
-            done
