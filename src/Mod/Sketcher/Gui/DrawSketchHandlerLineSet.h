@@ -554,6 +554,7 @@ public:
                         static_cast<int>(lastEndPosId),
                         firstCurve,
                         static_cast<int>(firstPosId));
+                    firstsegment = true;
                 }
                 Gui::Command::commitCommand();
 
