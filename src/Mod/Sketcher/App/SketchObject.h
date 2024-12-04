@@ -363,6 +363,8 @@ public:
     template<class geomType>
     static Base::Vector3d getPointForGeometry(const geomType* geo, PointPos PosId)
     {
+        (void)geo;
+        (void)PosId;
         return Base::Vector3d();
     }
 
