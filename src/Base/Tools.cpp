@@ -115,14 +115,13 @@ std::tuple<uint, uint> Base::UniqueNameManager::decomposeName(const std::string&
                                                               std::string& baseNameOut,
                                                               std::string& nameSuffixOut) const
 {
-    std::string::const_iterator suffixStart = GetNameSuffixStartPosition(name);
-    nameSuffixOut = name.substr(suffixStart - name.cbegin());
-    std::string::const_iterator digitsStart = suffixStart;
-    while (digitsStart > name.cbegin() && isdigit(digitsStart[-1])) {
-        --digitsStart;
-    }
-    baseNameOut = name.substr(0, digitsStart - name.cbegin());
-    uint digitCount = suffixStart - digitsStart;
+    auto suffixStart = std::make_reverse_iterator(GetNameSuffixStartPosition(name));
+    nameSuffixOut = name.substr(name.crend() - suffixStart);
+    auto digitsStart = std::find_if_not(suffixStart, name.crend(), [](char c) {
+        return std::isdigit(c);
+    });
+    baseNameOut = name.substr(0, name.crend() - digitsStart);
+    uint digitCount = digitsStart - suffixStart;
     if (digitCount == 0) {
         // No digits in name
         return std::tuple<uint, uint> {0, 0};
@@ -130,7 +129,7 @@ std::tuple<uint, uint> Base::UniqueNameManager::decomposeName(const std::string&
     else {
         return std::tuple<uint, uint> {
             digitCount,
-            std::stol(name.substr(digitsStart - name.cbegin(), digitCount))};
+            std::stoul(name.substr(name.crend() - digitsStart, digitCount))};
     }
 }
 void Base::UniqueNameManager::addExactName(const std::string& name)
@@ -144,11 +143,8 @@ void Base::UniqueNameManager::addExactName(const std::string& name)
     auto baseNameEntry = UniqueSeeds.find(baseName);
     if (baseNameEntry == UniqueSeeds.end()) {
         // First use of baseName
-        baseNameEntry = UniqueSeeds
-                            .insert(std::pair<std::string, std::vector<PiecewiseSparseIntegerSet>>(
-                                baseName,
-                                std::vector<PiecewiseSparseIntegerSet>()))
-                            .first;
+        baseNameEntry =
+            UniqueSeeds.emplace(baseName, std::vector<PiecewiseSparseIntegerSet>()).first;
     }
     if (digitCount >= baseNameEntry->second.size()) {
         // First use of this digitCount
@@ -207,21 +203,25 @@ void Base::UniqueNameManager::removeExactName(const std::string& name)
         // name must not be registered, so nothing to do.
         return;
     }
-    int maxDigitCount = baseNameEntry->second.size();
-    if (digitCount >= maxDigitCount) {
+    auto& digitValueSets = baseNameEntry->second;
+    if (digitCount >= digitValueSets.size()) {
         // First use of this digitCount, name must not be registered, so nothing to do.
         return;
     }
-    PiecewiseSparseIntegerSet& baseNameAndDigitCountEntry = baseNameEntry->second[digitCount];
-    baseNameAndDigitCountEntry.Remove(digitsValue);
-    // Prune empty vector entries
-    while (--maxDigitCount >= 0 && !baseNameEntry->second[maxDigitCount].Any())
-        ;
-    if (maxDigitCount < 0) {
+    digitValueSets[digitCount].Remove(digitsValue);
+    // an element of digitValueSets may now be newly empty and so may other elements below it
+    // Prune off all such trailing empty entries.
+    auto lastNonemptyEntry = std::find_if(digitValueSets.crbegin(),
+                                          digitValueSets.crend(),
+                                          [](auto& it) {
+                                              return it.Any();
+                                          });
+    if (lastNonemptyEntry == digitValueSets.crend()) {
+        // All entries are empty, so the entire baseName can be forgotten.
         UniqueSeeds.erase(baseName);
     }
     else {
-        baseNameEntry->second.resize(maxDigitCount + 1);
+        digitValueSets.resize(digitValueSets.crend() - lastNonemptyEntry);
     }
 }
 

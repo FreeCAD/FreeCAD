@@ -70,13 +70,10 @@ void DynamicProperty::getPropertyNamedList(
     }
 }
 
-bool DynamicProperty::visitProperties(std::function<bool(Property*)> visitor) const {
+void DynamicProperty::visitProperties(std::function<void(Property*)> visitor) const {
     for (auto& v : props.get<0>()) {
-        if (!visitor(v.property)) {
-            return false;
-        }
+        visitor(v.property);
     }
-    return true;
 }
 
 void DynamicProperty::getPropertyMap(std::map<std::string,Property*>& Map) const
@@ -307,24 +304,21 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
 
 std::string DynamicProperty::getUniquePropertyName(PropertyContainer& pc, const char* Name) const
 {
-    std::string CleanName = Base::Tools::getIdentifier(Name);
+    std::string cleanName = Base::Tools::getIdentifier(Name);
 
     // We test if the property already exists by finding it, which is not much more expensive than
     // having a separate propertyExists(name) method. This avoids building the UniqueNameManager
     // (which could also tell if the name exists) except in the relatively rare condition of
     // the name already existing.
-    if (pc.getPropertyByName(CleanName.c_str()) != nullptr) {
-        Base::UniqueNameManager names;
-        // Build the index of existing names.
-        pc.visitProperties([&](Property* prop) -> bool {
-            names.addExactName(prop->getName());
-            return true;
-        });
-        return names.makeUniqueName(CleanName);
+    if (pc.getPropertyByName(cleanName.c_str()) == nullptr) {
+        return cleanName;
     }
-    else {
-        return CleanName;
-    }
+    Base::UniqueNameManager names;
+    // Build the index of existing names.
+    pc.visitProperties([&](Property* prop) {
+        names.addExactName(prop->getName());
+    });
+    return names.makeUniqueName(cleanName);
 }
 
 void DynamicProperty::save(const Property* prop, Base::Writer& writer) const

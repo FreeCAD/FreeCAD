@@ -2255,37 +2255,40 @@ bool Document::saveToFile(const char* filename) const
 
 void Document::registerLabel(const std::string& newLabel)
 {
-    if (newLabel.size() != 0) {
-        if (!d->objectLabelManager.containsName(newLabel)) {
-            // First occurrence of label. We make no entry in objectLabelCounts when the count is one.
-            d->objectLabelManager.addExactName(newLabel);
+    if (newLabel.empty()) {
+        return;
+    }
+    if (!d->objectLabelManager.containsName(newLabel)) {
+        // First occurrence of label. We make no entry in objectLabelCounts when the count is one.
+        d->objectLabelManager.addExactName(newLabel);
+    }
+    else {
+        auto it = d->objectLabelCounts.find(newLabel);
+        if (it != d->objectLabelCounts.end()) {
+            // There is a count already greater then one, so increment it
+            it->second++;
         }
         else {
-            auto it = d->objectLabelCounts.find(newLabel);
-            if (it != d->objectLabelCounts.end()) {
-                // There is a count already greater then one, so increment it
-                it->second++;
-            }
-            else {
-                // There is no count entry, which implies one, so register a count of two
-                d->objectLabelCounts.insert(std::pair(newLabel, 2));
-            }
+            // There is no count entry, which implies one, so register a count of two
+            d->objectLabelCounts.insert(std::pair(newLabel, 2));
         }
     }
 }
 
 void Document::unregisterLabel(const std::string& oldLabel)
 {
-    if (oldLabel.size() != 0) {
-        auto it = d->objectLabelCounts.find(oldLabel);
-        if (it == d->objectLabelCounts.end()) {
-            // Missing count implies a count of one, or an unregistered name
-            d->objectLabelManager.removeExactName(oldLabel);
-        }
-        else if (--it->second == 1) {
-            // Decremented to one, remove the count entry
-            d->objectLabelCounts.erase(it);
-        }
+    if (oldLabel.empty()) {
+        return;
+    }
+    auto it = d->objectLabelCounts.find(oldLabel);
+    if (it == d->objectLabelCounts.end()) {
+        // Missing count implies a count of one, or an unregistered name
+        d->objectLabelManager.removeExactName(oldLabel);
+        return;
+    }
+    if (--it->second == 1) {
+        // Decremented to one, remove the count entry
+        d->objectLabelCounts.erase(it);
     }
 }
 
@@ -2296,7 +2299,7 @@ bool Document::containsLabel(const std::string& label)
 
 std::string Document::makeUniqueLabel(const std::string& modelLabel)
 {
-    if (modelLabel.size() == 0) {
+    if (modelLabel.empty()) {
         return std::string();
     }
 
@@ -3886,8 +3889,8 @@ bool Document::containsObject(const DocumentObject* pcObject) const
     // We could look for the object in objectMap (keyed by object name),
     // or search in objectArray (a O(n) vector search) but looking by Id
     // in objectIdMap would be fastest.
-    return d->objectIdMap.find(pcObject->getID()) != d->objectIdMap.end()
-        && d->objectIdMap[pcObject->getID()] == pcObject;
+    auto found = d->objectIdMap.find(pcObject->getID());
+    return found != d->objectIdMap.end() && found->second == pcObject;
 }
 
 /// Remove an object out of the document
@@ -4344,15 +4347,13 @@ std::string Document::getUniqueObjectName(const char* proposedName) const
     if (!proposedName || *proposedName == '\0') {
         return {};
     }
-    std::string CleanName = Base::Tools::getIdentifier(proposedName);
+    std::string cleanName = Base::Tools::getIdentifier(proposedName);
 
-    if (!d->objectNameManager.containsName(CleanName)) {
+    if (!d->objectNameManager.containsName(cleanName)) {
         // Not in use yet, name is OK
-        return CleanName;
+        return cleanName;
     }
-    else {
-        return d->objectNameManager.makeUniqueName(CleanName, 3);
-    }
+    return d->objectNameManager.makeUniqueName(cleanName, 3);
 }
 
     std::tuple<uint, uint>
