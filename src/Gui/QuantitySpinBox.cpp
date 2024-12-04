@@ -405,10 +405,18 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
     resizeWidget();
 }
 
-void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
+void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text()))
+    const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
+
+    if (isEnter && !isNormalized()) {
+        normalize();
+        return;
+    }
+
+    if (!handleKeyEvent(event->text())) {
         QAbstractSpinBox::keyPressEvent(event);
+    }
 }
 
 void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
@@ -475,6 +483,24 @@ double QuantitySpinBox::rawValue() const
 {
     Q_D(const QuantitySpinBox);
     return d->quantity.getValue();
+}
+
+void QuantitySpinBox::normalize()
+{
+    // this does not really change the value, only the representation
+    QSignalBlocker blocker(this);
+
+    Q_D(const QuantitySpinBox);
+    return setValue(d->quantity);
+}
+
+bool QuantitySpinBox::isNormalized()
+{
+    static const QRegularExpression operators(QStringLiteral("[+\\-/*]"),
+                                              QRegularExpression::CaseInsensitiveOption);
+
+    Q_D(const QuantitySpinBox);
+    return !d->validStr.contains(operators);
 }
 
 void QuantitySpinBox::setValue(const Base::Quantity& value)
@@ -884,6 +910,7 @@ void QuantitySpinBox::focusInEvent(QFocusEvent * event)
 void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
 {
     validateInput();
+    normalize();
 
     QToolTip::hideText();
     QAbstractSpinBox::focusOutEvent(event);
