@@ -869,17 +869,17 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     // Despite our efforts to make a unique label, onBeforeLabelChange can change it.
     onBeforeChangeLabel(newLabel);
 
-    if (oldLabel != newLabel && !getDocument()->testStatus(App::Document::Restoring)) {
-        // Only update label reference if we are not restoring. When
-        // importing (which also counts as restoring), it is possible the
+    if (oldLabel == newLabel || getDocument()->testStatus(App::Document::Restoring)) {
+        // Don't update label reference if we are restoring or if the label is unchanged.
+        // When importing (which also counts as restoring), it is possible the
         // new object changes its label. However, we cannot update label
-        // references here, because object restoring is not based on
+        // references here, because object being restored is not based on
         // dependency order. It can only be done in afterRestore().
         //
         // See PropertyLinkBase::restoreLabelReference() for more details.
-        return PropertyLinkBase::updateLabelReferences(this, newLabel.c_str());
+        return {};
     }
-    return {};
+    return PropertyLinkBase::updateLabelReferences(this, newLabel.c_str());
 }
 
 void DocumentObject::onEarlyChange(const Property* prop)

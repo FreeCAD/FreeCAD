@@ -92,12 +92,10 @@ void PropertyContainer::getPropertyList(std::vector<Property*> &List) const
     getPropertyData().getPropertyList(this,List);
 }
 
-bool PropertyContainer::visitProperties(std::function<bool(Property *)> visitor) const
+void PropertyContainer::visitProperties(std::function<void(Property *)> visitor) const
 {
-    if (!dynamicProps.visitProperties(visitor)) {
-        return false;
-    }
-    return getPropertyData().visitProperties(this, visitor);
+    dynamicProps.visitProperties(visitor);
+    getPropertyData().visitProperties(this, visitor);
 }
 
 void PropertyContainer::getPropertyNamedList(std::vector<std::pair<const char*, Property*> > &List) const
@@ -627,16 +625,14 @@ void PropertyData::getPropertyNamedList(OffsetBase offsetBase,
     }
 }
 
-bool PropertyData::visitProperties(OffsetBase offsetBase,
-                                   std::function<bool(Property*)> visitor) const
+void PropertyData::visitProperties(OffsetBase offsetBase,
+                                   std::function<void(Property*)> visitor) const
 {
     merge();
-    for (auto& spec : propertyData.get<0>()) {
-        if (!visitor(reinterpret_cast<Property*>(spec.Offset + offsetBase.getOffset()))) {
-            return false;
-        }
-    }
-    return true;
+    char* offset = offsetBase.getOffset();
+    for (const auto& spec : propertyData.get<0>()) {
+        visitor(reinterpret_cast<Property*>(spec.Offset + offset));
+    };
 }
 
 /** \defgroup PropFrame Property framework

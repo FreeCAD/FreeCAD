@@ -87,9 +87,8 @@ public:
     void getPropertyList(std::vector<Property*>& List) const;
     /// get all properties with their names
     void getPropertyNamedList(std::vector<std::pair<const char*, Property*>>& List) const;
-    // Call the given visitor for each property, stops and returns false if the visitor returns
-    // false This is undefined if the collection of Properties is changed
-    bool visitProperties(std::function<bool(Property*)> visitor) const;
+    // See PropertyContainer::visitProperties for semantics
+    void visitProperties(std::function<void(Property*)> visitor) const;
     /// Get all properties of the class (including parent)
     void getPropertyMap(std::map<std::string, Property*>& Map) const;
     /// Find a dynamic property by its name

@@ -872,18 +872,15 @@ void Sheet::getPropertyNamedList(std::vector<std::pair<const char*, Property*>>&
     }
 }
 
-bool Sheet::visitProperties(std::function<bool(App::Property*)> visitor) const
+void Sheet::visitProperties(std::function<void(App::Property*)> visitor) const
 {
-    if (!DocumentObject::visitProperties(visitor)) {
-        return false;
-    }
-    for (auto& v : cells.aliasProp) {
+    DocumentObject::visitProperties(visitor);
+    for (const auto& v : cells.aliasProp) {
         auto prop = getProperty(v.first);
-        if (prop && !visitor(prop)) {
-            return false;
+        if (prop != nullptr) {
+            visitor(prop);
         }
-    }
-    return true;
+    };
 }
 
 void Sheet::touchCells(Range range)
