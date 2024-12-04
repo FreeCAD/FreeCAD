@@ -47,6 +47,7 @@ ExternalManager* ExternalManager::_manager = nullptr;
 QMutex ExternalManager::_mutex;
 
 ExternalManager::ExternalManager()
+    : _instantiated(false)
 {
     _hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");

@@ -484,9 +484,7 @@ void MaterialManager::validateMigration(const std::shared_ptr<Materials::Materia
 
         auto material = _localManager->getMaterial(uuid);
         auto externalMaterial = _externalManager->getMaterial(uuid);
-        if (!material->validate(externalMaterial)) {
-            throw InvalidMaterial();
-        }
+        material->validate(externalMaterial);
     }
 }
 

@@ -235,9 +235,7 @@ void ModelManager::validateMigration(const std::shared_ptr<Materials::ModelLibra
 
         auto model = _localManager->getModel(uuid);
         auto externalModel = _externalManager->getModel(uuid);
-        if (!model->validate(externalModel)) {
-            throw InvalidModel();
-        }
+        model->validate(externalModel);
     }
 }
 

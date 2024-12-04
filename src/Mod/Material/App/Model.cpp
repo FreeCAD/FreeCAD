@@ -107,6 +107,43 @@ bool ModelProperty::operator==(const ModelProperty& other) const
         && (_inheritance == other._inheritance);
 }
 
+void ModelProperty::validate(const ModelProperty& other) const
+{
+    if (_name != other._name) {
+        throw InvalidProperty("Model names don't match");
+    }
+    if (getDisplayName() != other.getDisplayName()) {
+        Base::Console().Log("Local display name '%s'\n", getDisplayName().toStdString().c_str());
+        Base::Console().Log("Remote display name '%s'\n",
+                            other.getDisplayName().toStdString().c_str());
+        throw InvalidProperty("Model display names don't match");
+    }
+    if (_propertyType != other._propertyType) {
+        throw InvalidProperty("Model property types don't match");
+    }
+    if (_units != other._units) {
+        throw InvalidProperty("Model units don't match");
+    }
+    if (_url != other._url) {
+        throw InvalidProperty("Model URLs don't match");
+    }
+    if (_description != other._description) {
+        throw InvalidProperty("Model descriptions don't match");
+    }
+    if (_inheritance != other._inheritance) {
+        throw InvalidProperty("Model inheritance don't match");
+    }
+
+    if (_columns.size() != other._columns.size()) {
+        Base::Console().Log("Local property column count %d\n", _columns.size());
+        Base::Console().Log("Remote property column count %d\n", other._columns.size());
+        throw InvalidProperty("Model property column counts don't match");
+    }
+    for (int i = 0; i < _columns.size(); i++) {
+        _columns[i].validate(other._columns[i]);
+    }
+}
+
 TYPESYSTEM_SOURCE(Materials::Model, Base::BaseClass)
 
 Model::Model()
@@ -140,18 +177,13 @@ ModelProperty& Model::operator[](const QString& key)
     }
 }
 
-bool Model::validate(const std::shared_ptr<Model>& other) const
+void Model::validate(const std::shared_ptr<Model>& other) const
 {
-    if (this == &(*other)) {
-        return true;
-    }
-
     try {
         _library->validate(*(other->_library));
     }
     catch (const InvalidLibrary& e)
     {
-        // throw InvalidModel("Model libraries don't match");
         throw InvalidModel(e.what());
     }
 
@@ -185,6 +217,13 @@ bool Model::validate(const std::shared_ptr<Model>& other) const
     }
 
     // Need to compare properties
-
-    return true;
+    if (_properties.size() != other->_properties.size()) {
+        // Base::Console().Log("Local property count %d\n", _properties.size());
+        // Base::Console().Log("Remote property count %d\n", other->_properties.size());
+        throw InvalidModel("Model property counts don't match");
+    }
+    for (auto& property : _properties) {
+        auto& remote = other->_properties[property.first];
+        property.second.validate(remote);
+    }
 }

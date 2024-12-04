@@ -228,6 +228,24 @@ public:
     ~InvalidMaterial() noexcept override = default;
 };
 
+class InvalidProperty: public Base::Exception
+{
+public:
+    InvalidProperty()
+    {
+        this->setMessage("Invalid property");
+    }
+    explicit InvalidProperty(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit InvalidProperty(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~InvalidProperty() noexcept override = default;
+};
+
 class InvalidLibrary: public Base::Exception
 {
 public:

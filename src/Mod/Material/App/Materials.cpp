@@ -1693,7 +1693,13 @@ App::Material Material::getMaterialAppearance() const
     return material;
 }
 
-bool Material::validate(const std::shared_ptr<Material>& other) const
+void Material::validate(const std::shared_ptr<Material>& other) const
 {
-    return true;
+
+    try {
+        _library->validate(*(other->_library));
+    }
+    catch (const InvalidLibrary& e) {
+        throw InvalidMaterial(e.what());
+    }
 }

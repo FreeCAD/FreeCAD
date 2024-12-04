@@ -143,6 +143,8 @@ public:
         return !operator==(other);
     }
 
+    void validate(const ModelProperty& other) const;
+
 private:
     QString _name;
     QString _displayName;
@@ -306,7 +308,7 @@ public:
         return _properties.cend();
     }
 
-    bool validate(const std::shared_ptr<Model>& other) const;
+    void validate(const std::shared_ptr<Model>& other) const;
 
 private:
     std::shared_ptr<ModelLibrary> _library;

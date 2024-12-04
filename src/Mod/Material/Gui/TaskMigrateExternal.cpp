@@ -138,6 +138,14 @@ void DlgMigrateExternal::migrate()
         statusUpdate(QString::fromStdString(e.what()));
         statusUpdate(tr("Aborted"));
     }
+    catch (const Materials::InvalidProperty& e) {
+        statusUpdate(QString::fromStdString(e.what()));
+        statusUpdate(tr("Aborted"));
+    }
+    catch (const Base::Exception& e) {
+        statusUpdate(QString::fromStdString(e.what()));
+        statusUpdate(tr("Unknown exception - Aborted"));
+    }
 }
 
 void DlgMigrateExternal::statusUpdate(const QString& status)
