@@ -2628,13 +2628,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         self.PadSketch.trim(2, App.Vector(7.337847, -25.000000, 0))
         self.PadSketch.addConstraint(Sketcher.Constraint("Equal", 3, 1))
-        self.PadSketch.addConstraint(Sketcher.Constraint("Horizontal", 5))
-        self.PadSketch.addConstraint(Sketcher.Constraint("Radius", 4, 73.031111))
-        self.PadSketch.setDatum(18, App.Units.Quantity("70.000000 mm"))
-        self.PadSketch.addConstraint(
+        radConstr = self.PadSketch.addConstraint(Sketcher.Constraint("Radius", 4, 73.031111))
+        self.PadSketch.setDatum(radConstr, App.Units.Quantity("70.000000 mm"))
+        distYConstr = self.PadSketch.addConstraint(
             Sketcher.Constraint("DistanceY", 4, 3, -1, 1, 88.867210)
         )
-        self.PadSketch.setDatum(19, App.Units.Quantity("80.000000 mm"))
+        self.PadSketch.setDatum(distYConstr, App.Units.Quantity("80.000000 mm"))
 
         self.Doc.recompute()
         self.assertTrue(self.Sketch001.isValid())
