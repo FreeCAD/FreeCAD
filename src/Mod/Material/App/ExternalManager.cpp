@@ -34,6 +34,7 @@
 
 #include "Exceptions.h"
 #include "ExternalManager.h"
+#include "MaterialLibrary.h"
 #include "MaterialPy.h"
 #include "ModelLibrary.h"
 #include "ModelPy.h"
@@ -618,6 +619,56 @@ void ExternalManager::migrateModel(const QString& libraryName,
 //
 //=====
 
+std::shared_ptr<Material> ExternalManager::getMaterial(const QString& uuid)
+{
+    connect();
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("getMaterial")) {
+            Base::Console().Log("\tgetMaterial()\n");
+            Py::Callable libraries(_managerObject.getAttr("getMaterial"));
+            Py::Tuple args(1);
+            args.setItem(0, Py::String(uuid.toStdString()));
+            Py::Tuple result(libraries.apply(args));
+
+            Py::Object uuidObject = result.getItem(0);
+            Py::Tuple libraryObject(result.getItem(1));
+            Py::Object materialObject = result.getItem(2);
+
+            Py::Object pyName = libraryObject.getItem(0);
+            Py::Object pyIcon = libraryObject.getItem(1);
+            Py::Object readOnly = libraryObject.getItem(2);
+
+            QString name;
+            if (!pyName.isNone()) {
+                name = QString::fromStdString(pyName.as_string());
+            }
+            QString icon;
+            if (!pyIcon.isNone()) {
+                icon = QString::fromStdString(pyIcon.as_string());
+            }
+            auto library =
+                std::make_shared<MaterialLibrary>(name, QString(), icon, readOnly.as_bool());
+
+            Material* material = static_cast<MaterialPy*>(*materialObject)->getMaterialPtr();
+            material->setUUID(uuid);
+            material->setLibrary(library);
+            auto shared = std::make_shared<Material>(*material);
+
+            return shared;
+        }
+        else {
+            Base::Console().Log("\tgetMaterial() not found\n");
+            throw ConnectionError();
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw MaterialNotFound(e1.what());
+    }
+}
+
 void ExternalManager::addMaterial(const QString& libraryName,
                                   const QString& path,
                                   const std::shared_ptr<Material>& material)
@@ -674,39 +725,5 @@ void ExternalManager::migrateMaterial(const QString& libraryName,
     catch (Py::Exception& e) {
         Base::PyException e1;  // extract the Python error text
         throw CreationError(e1.what());
-    }
-}
-
-std::shared_ptr<Material> ExternalManager::getMaterial(const QString& uuid)
-{
-    connect();
-
-    Base::PyGILStateLocker lock;
-    try {
-        if (_managerObject.hasAttr("getMaterial")) {
-            Base::Console().Log("\tgetMaterial()\n");
-            Py::Callable libraries(_managerObject.getAttr("getMaterial"));
-            Py::Tuple args(1);
-            args.setItem(0, Py::String(uuid.toStdString()));
-            Py::Tuple result(libraries.apply(args));  // ignore return for now
-
-            Py::Object uuidObject = result.getItem(0);
-            Py::Object libraryObject = result.getItem(1);
-            Py::Object modelObject = result.getItem(2);
-
-            // Model* model = static_cast<ModelPy*>(*modelObject)->getModelPtr();
-            // model->setUUID(uuid);
-            // auto shared = std::make_shared<Model>(*model);
-
-            return nullptr;
-        }
-        else {
-            Base::Console().Log("\tgetMaterial() not found\n");
-            throw ConnectionError();
-        }
-    }
-    catch (Py::Exception& e) {
-        Base::PyException e1;  // extract the Python error text
-        throw MaterialNotFound(e1.what());
     }
 }

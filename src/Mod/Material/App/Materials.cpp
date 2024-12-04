@@ -39,6 +39,26 @@
 
 using namespace Materials;
 
+void validateMaterialPath(const QString& local, const QString& remote)
+{
+    if (local == remote) {
+        return;
+    }
+
+    auto index = local.lastIndexOf(QLatin1String(".FCMat"), -1, Qt::CaseInsensitive);
+    if (index > 0) {
+        auto path = local;
+        path.truncate(index);
+
+        if (path != remote) {
+            Base::Console().Log("Directory:\n\t'%s'\n\t'%s'\n",
+                                local.toStdString().c_str(),
+                                remote.toStdString().c_str());
+            // throw InvalidMaterial("Material directories don't match");
+        }
+    }
+}
+
 /* TRANSLATOR Material::Materials */
 
 TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
@@ -1701,5 +1721,67 @@ void Material::validate(const std::shared_ptr<Material>& other) const
     }
     catch (const InvalidLibrary& e) {
         throw InvalidMaterial(e.what());
+    }
+
+    validateMaterialPath(_directory, other->_directory);
+    if (_uuid != other->_uuid) {
+        throw InvalidMaterial("Model UUIDs don't match");
+    }
+    if (_name != other->_name) {
+        throw InvalidMaterial("Model names don't match");
+    }
+    if (_author != other->_author) {
+        throw InvalidMaterial("Model authors don't match");
+    }
+    if (_license != other->_license) {
+        throw InvalidMaterial("Model licenses don't match");
+    }
+    if (_parentUuid != other->_parentUuid) {
+        throw InvalidMaterial("Model parents don't match");
+    }
+    if (_description != other->_description) {
+        throw InvalidMaterial("Model descriptions don't match");
+    }
+    if (_url != other->_url) {
+        throw InvalidMaterial("Model URLs don't match");
+    }
+    if (_reference != other->_reference) {
+        throw InvalidMaterial("Model references don't match");
+    }
+
+    if (_tags.size() != other->_tags.size()) {
+        Base::Console().Log("Local tags count %d\n", _tags.size());
+        Base::Console().Log("Remote tags count %d\n", other->_tags.size());
+        throw InvalidMaterial("Material tags counts don't match");
+    }
+    if (!other->_tags.contains(_tags)) {
+        throw InvalidMaterial("Material tags don't match");
+    }
+
+    if (_physicalUuids.size() != other->_physicalUuids.size()) {
+        Base::Console().Log("Local physical model count %d\n", _physicalUuids.size());
+        Base::Console().Log("Remote physical model count %d\n", other->_physicalUuids.size());
+        throw InvalidMaterial("Material physical model counts don't match");
+    }
+    if (!other->_physicalUuids.contains(_physicalUuids)) {
+        throw InvalidMaterial("Material physical models don't match");
+    }
+
+    if (_physicalUuids.size() != other->_physicalUuids.size()) {
+        Base::Console().Log("Local appearance model count %d\n", _physicalUuids.size());
+        Base::Console().Log("Remote appearance model count %d\n", other->_physicalUuids.size());
+        throw InvalidMaterial("Material appearance model counts don't match");
+    }
+    if (!other->_physicalUuids.contains(_physicalUuids)) {
+        throw InvalidMaterial("Material appearance models don't match");
+    }
+
+    if (_allUuids.size() != other->_allUuids.size()) {
+        Base::Console().Log("Local model count %d\n", _allUuids.size());
+        Base::Console().Log("Remote model count %d\n", other->_allUuids.size());
+        throw InvalidMaterial("Material model counts don't match");
+    }
+    if (!other->_allUuids.contains(_allUuids)) {
+        throw InvalidMaterial("Material models don't match");
     }
 }

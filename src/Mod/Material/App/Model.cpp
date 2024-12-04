@@ -33,6 +33,26 @@
 
 using namespace Materials;
 
+void validateModelPath(const QString& local, const QString& remote)
+{
+    if (local == remote) {
+        return;
+    }
+
+    auto index = local.lastIndexOf(QLatin1String(".yml"), -1, Qt::CaseInsensitive);
+    if (index > 0) {
+        auto path = local;
+        path.truncate(index);
+
+        if (path != remote) {
+            Base::Console().Log("Directory:\n\t'%s'\n\t'%s'\n",
+                                local.toStdString().c_str(),
+                                remote.toStdString().c_str());
+            // throw InvalidModel("Model directories don't match");
+        }
+    }
+}
+
 TYPESYSTEM_SOURCE(Materials::ModelProperty, Base::BaseClass)
 
 ModelProperty::ModelProperty()
@@ -194,12 +214,7 @@ void Model::validate(const std::shared_ptr<Model>& other) const
     if (_name != other->_name) {
         throw InvalidModel("Model names don't match");
     }
-    if (_directory != other->_directory) {
-        Base::Console().Log("Directory:\n\t'%s'\n\t'%s'\n",
-                            _directory.toStdString().c_str(),
-                            other->_directory.toStdString().c_str());
-        // throw InvalidModel("Model directories don't match");
-    }
+    validateModelPath(_directory, other->_directory);
     if (_uuid != other->_uuid) {
         throw InvalidModel("Model UUIDs don't match");
     }
