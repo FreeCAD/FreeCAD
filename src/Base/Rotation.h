@@ -170,9 +170,12 @@ public:
      * @param priorityOrder sets which directions are followed. It is a string
      * like "ZXY". This means, Z direction is followed precisely; X direction is
      * corrected to be perpendicular to Z direction, and used; Y direction
-     * argument is ignored altogether (Y direction is generated from Z and X).
+     * argument is usually ignored altogether (Y direction is generated from Z and X).
      *
-     * If only one vector provided is nonzero, the other two directions are picked automatically.
+     * If a vector is unusable for some reason. For example a null vector or a secondary
+     * vector parallel to primary vector. Then a default vector is used.
+     * For example (0,1,0) for ydir.
+     * As a last resort the third character of priorityOrder is used.
      */
     static Rotation makeRotationByAxes(Vector3d xdir,
                                        Vector3d ydir,
