@@ -3492,7 +3492,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
         return arePointsWithinPrecision(point, pp);
     };
-
+#if 0
     // Checks whether preexisting constraints must be converted to new constraints.
     // Preexisting point on object constraints get converted to coincidents, unless an end-to-end
     // tangency is more relevant. returns by reference:
@@ -3510,7 +3510,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
          * also make sure that the PointOnObject constraint is deleted. The below loop ensures this,
          * also in case the ordering of the constraints is first Tangent and then PointOnObject. */
     };
-
+#endif
     // makes an equality constraint between GeoId1 and GeoId2
     auto constrainAsEqual = [this](int GeoId1, int GeoId2) {
         auto newConstr = std::make_unique<Sketcher::Constraint>();
@@ -3595,7 +3595,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     std::vector<int> newIds;
     std::vector<Part::Geometry*> newGeos;
     std::vector<const Part::Geometry*> newGeosAsConsts;
-    bool oldGeoIsConstruction = GeometryFacade::getConstruction(geoAsCurve);
 
     if (isClosedCurve(geo)) {
         startPointRemains = false;
