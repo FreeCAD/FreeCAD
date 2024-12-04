@@ -56,6 +56,8 @@ class License:
 
 class UrlType(IntEnum):
     bugtracker = 0
+    changelog = auto()
+    contributing = auto()
     discussion = auto()
     documentation = auto()
     readme = auto()
@@ -249,6 +251,7 @@ def get_repo_url_from_metadata(metadata: Metadata) -> str:
     for url in metadata.url:
         if url.type == UrlType.repository:
             return url.location
+    return ""
 
 
 class MetadataReader:
