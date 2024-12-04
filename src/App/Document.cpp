@@ -4065,9 +4065,9 @@ void Document::_removeObject(DocumentObject* pcObject)
     pcObject->setStatus(ObjectStatus::Remove, false);  // Unset the bit to be on the safe side
     d->objectIdMap.erase(pcObject->_Id);
     d->objectNameManager.removeExactName(pos->first);
+    unregisterLabel(pos->second->Label.getStrValue());
     d->objectMap.erase(pos);
 
-    unregisterLabel(pos->second->Label.getStrValue());
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin();
          it != d->objectArray.end();
          ++it) {
