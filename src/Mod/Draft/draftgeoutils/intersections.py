@@ -49,8 +49,43 @@ def findIntersection(edge1, edge2,
 
     You can also feed 4 points instead of `edge1` and `edge2`.
     If `dts` is used, `Shape.section()` is used.
-    """
 
+    Parameters
+    ----------
+    edge1
+        Part.Edge, Circle, Line -> the first edge.
+        Base::Vector3 -> the starting point of the first line. In which case
+            `infinite1` must also be a point.
+    edge2
+        Part.Edge, Circle, Line -> the second edge.
+        Base::Vector3 -> the ending point of the second line. In which case
+            `infinite2` must also be a point.
+        the second edge. In case of a point, `infinite2` must also be a point.
+    infinite1
+        bool, optional -> whether `edge1` should be continued to infinity.
+        Default to `False`.
+        Base::Vector3 -> if `edge1` is a point, must also be a point.
+    infinite2
+        bool, optional -> whether `edge2` should be continued to infinity.
+        Default to `False`.
+        Base::Vector3 -> if `edge2` is a point, must also be a point.
+    ex1: bool, optional
+        In case `edge1` is a point, indicate whether the line should be
+        continued to infinity. Default to `False`
+    ex2: bool, optional
+        In case `edge2` is a point, indicate whether the line should be
+        continued to infinity. Default to `False`
+    dts: bool, optional
+        NOT_DOCUMENTED. Default to `True`
+    findAll: bool, optional
+        In case either `edge1` or `edge2` is a circle, indicates whether
+        to find all intersection points. Default to `False`
+
+    Returns
+    -------
+    list
+        A list of intersection points
+    """
     def getLineIntersections(pt1, pt2, pt3, pt4, infinite1, infinite2):
         if pt1:
             # first check if we don't already have coincident endpoints
