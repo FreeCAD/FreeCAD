@@ -261,6 +261,9 @@ class Trimex(gui_base_original.Modifier):
         dvec = self.point.sub(self.newpoint)
         if not shift:
             delta = DraftVecUtils.project(dvec, self.normal)
+            if delta.Length < 1e-7:
+                # Use the normal if self.newpoint is coplanar with the face:
+                delta = self.normal * dvec.Length
         else:
             delta = dvec
         if self.force and delta.Length:
@@ -420,7 +423,7 @@ class Trimex(gui_base_original.Modifier):
 
         if self.extrudeMode:
             delta = self.extrude(self.shift, real=True)
-            # print("delta", delta)
+            #print("delta", delta)
             self.doc.openTransaction("Extrude")
             Gui.addModule("Draft")
             obj = Draft.extrude(self.obj, delta, solid=True)
