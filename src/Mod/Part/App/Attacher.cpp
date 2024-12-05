@@ -1901,6 +1901,11 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
         case mmMidpoint: {
             Base::Placement placement;
 
+            // special case for planes
+            if (auto plane = dynamic_cast<App::Plane*>(objs[0])) {
+                return plane->Placement.getValue() * attachmentOffset;
+            }
+
             auto shape = shapes.front();
             auto geom = Geometry::fromShape(shape->getShape());
 
@@ -1929,7 +1934,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                             line->tangent(middle, direction);
                         }
 
-                        placement.setRotation(Base::Rotation::fromNormalVector(-direction));
+                        placement.setRotation(Base::Rotation::fromNormalVector(direction));
                     }
                 }
                 break;
@@ -1941,8 +1946,10 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                         placement.setPosition(sphere->getLocation());
                     } else if (auto cone = dynamic_cast<GeomCone*>(geom.get())) {
                         placement.setPosition(cone->getApex());
+                    } else if (auto com = shape->centerOfGravity()) {
+                        placement.setPosition(*com);
                     } else {
-                        placement.setPosition(shape->centerOfGravity().value());
+                        placement.setPosition(shape->getBoundBox().GetCenter());
                     }
 
                     if (auto rotation = surface->getRotation()) {

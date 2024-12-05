@@ -33,7 +33,10 @@ Base::Placement AttacherSubObjectPlacement::calculate(App::SubObjectT object,
                                                          Base::Placement basePlacement) const
 {
     attacher->setReferences({object});
-    return basePlacement.inverse() * attacher->calculateAttachedPlacement(basePlacement);
+
+    auto calculatedAttachment = attacher->calculateAttachedPlacement(basePlacement);
+
+    return basePlacement.inverse() * calculatedAttachment;
 }
 
 std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentObject* object) const

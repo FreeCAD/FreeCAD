@@ -101,9 +101,7 @@ TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
 
     vp->resetTransformOrigin();
 
-    if (auto geoFeature = vp->getObject<App::GeoFeature>()) {
-        originalPlacement = geoFeature->Placement.getValue();
-    }
+    originalPlacement = vp->getObjectPlacement();
 
     setupGui();
 }
@@ -400,23 +398,29 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
         return;
     }
 
+    if (!msg.pOriginalMsg) {
+        // this should not happen! Original should contain unresolved message.
+        return;
+    }
+
     auto doc = Application::Instance->getDocument(msg.pDocName);
     auto obj = doc->getDocument()->getObject(msg.pObjectName);
 
-    auto globalPlacement = App::GeoFeature::getGlobalPlacement(obj);
+    auto orgDoc = Application::Instance->getDocument(msg.pOriginalMsg->pDocName);
+    auto orgObj = orgDoc->getDocument()->getObject(msg.pOriginalMsg->pObjectName);
+
+    auto globalPlacement = App::GeoFeature::getGlobalPlacement(obj, orgObj, msg.pOriginalMsg->pSubName);
     auto localPlacement = App::GeoFeature::getPlacementFromProp(obj, "Placement");
     auto rootPlacement = App::GeoFeature::getGlobalPlacement(vp->getObject());
+    auto attachedPlacement = subObjectPlacementProvider->calculate(msg.Object, localPlacement);
 
-    auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement
-        * subObjectPlacementProvider->calculate(msg.Object, localPlacement);
+    auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement * attachedPlacement;
 
     switch (selectionMode) {
-        case SelectionMode::SelectTransformOrigin: {auto label = msg.pOriginalMsg
-        ? QStringLiteral("%1#%2.%3")
-              .arg(QLatin1String(msg.pOriginalMsg->pObjectName),
-                   QLatin1String(msg.pObjectName),
-                   QLatin1String(msg.pSubName))
-        : QStringLiteral("%1.%2").arg(QLatin1String(msg.pObjectName), QLatin1String(msg.pSubName));
+        case SelectionMode::SelectTransformOrigin: {auto label = QStringLiteral("%1#%2.%3")
+                     .arg(QLatin1String(msg.pOriginalMsg->pObjectName),
+                          QLatin1String(msg.pObjectName),
+                          QLatin1String(msg.pSubName));
 
 
             ui->referenceLineEdit->setText(label);
@@ -491,7 +495,7 @@ void TaskTransform::updateTransformOrigin()
                 return {};
             case PlacementMode::Centroid:
                 if (const auto com = centerOfMassProvider->ofDocumentObject(vp->getObject())) {
-                    return Base::Placement {*com, {}};
+                    return {*com, {}};
                 }
                 return {};
             case PlacementMode::Custom:
