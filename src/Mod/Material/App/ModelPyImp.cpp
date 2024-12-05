@@ -34,42 +34,8 @@ using namespace Materials;
 // returns a string which represents the object e.g. when printed in python
 std::string ModelPy::representation() const
 {
-    ModelPy::PointerType ptr = getModelPtr();
     std::stringstream str;
-    str << "Property [Name=(";
-    str << ptr->getName().toStdString();
-    str << "), UUID=(";
-    str << ptr->getUUID().toStdString();
-    auto library = ptr->getLibrary();
-    if (library) {
-        str << "), Library Name=(";
-        str << ptr->getLibrary()->getName().toStdString();
-        str << "), Library Root=(";
-        str << ptr->getLibrary()->getDirectoryPath().toStdString();
-        str << "), Library Icon=(";
-        str << ptr->getLibrary()->getIconPath().toStdString();
-    }
-    str << "), Directory=(";
-    str << ptr->getDirectory().toStdString();
-    str << "), URL=(";
-    str << ptr->getURL().toStdString();
-    str << "), DOI=(";
-    str << ptr->getDOI().toStdString();
-    str << "), Description=(";
-    str << ptr->getDescription().toStdString();
-    str << "), Inherits=[";
-    auto& inherited = getModelPtr()->getInheritance();
-    for (auto it = inherited.begin(); it != inherited.end(); it++) {
-        QString uuid = *it;
-        if (it != inherited.begin()) {
-            str << "), UUID=(";
-        }
-        else {
-            str << "UUID=(";
-        }
-        str << uuid.toStdString() << ")";
-    }
-    str << "]]";
+    str << "<Model object at " << getModelPtr() << ">";
 
     return str.str();
 }
@@ -135,7 +101,7 @@ void ModelPy::setType(Py::String arg)
 
 Py::String ModelPy::getDirectory() const
 {
-    return Py::String(getModelPtr()->getDirectoryPath().toStdString());
+    return Py::String(getModelPtr()->getDirectory().toStdString());
 }
 
 void ModelPy::setDirectory(Py::String arg)

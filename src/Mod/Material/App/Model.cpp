@@ -181,11 +181,37 @@ Model::Model(std::shared_ptr<ModelLibrary> library,
     , _type(type)
     , _name(name)
     , _directory(directory)
+    , _filename(_filename)
     , _uuid(uuid)
     , _description(description)
     , _url(url)
     , _doi(doi)
 {}
+
+QString Model::getDirectory() const
+{
+    return _directory;
+}
+
+void Model::setDirectory(const QString& directory)
+{
+    _directory = directory;
+}
+
+QString Model::getFilename() const
+{
+    return _filename;
+}
+
+void Model::setFilename(const QString& filename)
+{
+    _filename = filename;
+}
+
+QString Model::getFilePath() const
+{
+    return QDir(_directory + QLatin1String("/") + _filename).absolutePath();
+}
 
 ModelProperty& Model::operator[](const QString& key)
 {

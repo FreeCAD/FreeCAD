@@ -189,10 +189,9 @@ public:
     {
         return _library;
     }
-    QString getDirectory() const
-    {
-        return _directory;
-    }
+    QString getDirectory() const;
+    QString getFilename() const;
+    QString getFilePath() const;
     QString getUUID() const
     {
         return _uuid;
@@ -249,10 +248,8 @@ public:
     {
         _library = library;
     }
-    void setDirectory(const QString& directory)
-    {
-        _directory = directory;
-    }
+    void setDirectory(const QString& directory);
+    void setFilename(const QString& filename);
     void setUUID(const QString& uuid)
     {
         _uuid = uuid;
@@ -464,6 +461,7 @@ protected:
 private:
     std::shared_ptr<MaterialLibrary> _library;
     QString _directory;
+    QString _filename;
     QString _uuid;
     QString _name;
     QString _author;

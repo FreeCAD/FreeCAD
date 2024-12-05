@@ -182,12 +182,12 @@ public:
     {
         return _library;
     }
-    const QString getBase() const
+    QString getBase() const
     {
         return (_type == ModelType_Physical) ? QLatin1String("Model")
                                              : QLatin1String("AppearanceModel");
     }
-    const QString getName() const
+    QString getName() const
     {
         return _name;
     }
@@ -195,27 +195,22 @@ public:
     {
         return _type;
     }
-    const QString getDirectory() const
-    {
-        return _directory;
-    }
-    const QString getDirectoryPath() const
-    {
-        return QDir(_directory).absolutePath();
-    }
-    const QString getUUID() const
+    QString getDirectory() const;
+    QString getFilename() const;
+    QString getFilePath() const;
+    QString getUUID() const
     {
         return _uuid;
     }
-    const QString getDescription() const
+    QString getDescription() const
     {
         return _description;
     }
-    const QString getURL() const
+    QString getURL() const
     {
         return _url;
     }
-    const QString getDOI() const
+    QString getDOI() const
     {
         return _doi;
     }
@@ -232,10 +227,8 @@ public:
     {
         _name = name;
     }
-    void setDirectory(const QString& directory)
-    {
-        _directory = directory;
-    }
+    void setDirectory(const QString& directory);
+    void setFilename(const QString& filename);
     void setUUID(const QString& uuid)
     {
         _uuid = uuid;
@@ -315,6 +308,7 @@ private:
     ModelType _type;
     QString _name;
     QString _directory;
+    QString _filename;
     QString _uuid;
     QString _description;
     QString _url;

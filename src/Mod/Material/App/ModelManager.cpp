@@ -161,9 +161,9 @@ std::shared_ptr<Model> ModelManager::getModel(const QString& uuid) const
 {
     if (_useExternal) {
         auto model = _externalManager->getModel(uuid);
-        // if (model) {
-        //     return model;
-        // }
+        if (model) {
+            return model;
+        }
     }
     // We really want to return the local model if not found, such as for User folder models
     return _localManager->getModel(uuid);

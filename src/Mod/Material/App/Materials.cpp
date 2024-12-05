@@ -496,6 +496,7 @@ Material::Material(const std::shared_ptr<MaterialLibrary>& library,
 Material::Material(const Material& other)
     : _library(other._library)
     , _directory(other._directory)
+    , _filename(other._filename)
     , _uuid(other._uuid)
     , _name(other._name)
     , _author(other._author)
@@ -531,6 +532,31 @@ Material::Material(const Material& other)
     for (auto& it : other._legacy) {
         _legacy[it.first] = it.second;
     }
+}
+
+QString Material::getDirectory() const
+{
+    return _directory;
+}
+
+void Material::setDirectory(const QString& directory)
+{
+    _directory = directory;
+}
+
+QString Material::getFilename() const
+{
+    return _filename;
+}
+
+void Material::setFilename(const QString& filename)
+{
+    _filename = filename;
+}
+
+QString Material::getFilePath() const
+{
+    return QDir(_directory + QLatin1String("/") + _filename).absolutePath();
 }
 
 QString Material::getAuthorAndLicense() const
@@ -1504,6 +1530,7 @@ Material& Material::operator=(const Material& other)
 
     _library = other._library;
     _directory = other._directory;
+    _filename = other._filename;
     _uuid = other._uuid;
     _name = other._name;
     _author = other._author;

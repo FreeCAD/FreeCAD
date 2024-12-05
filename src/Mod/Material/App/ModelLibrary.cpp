@@ -24,6 +24,8 @@
 #include <string>
 #endif
 
+#include <QFileInfo>
+
 #include <App/Application.h>
 
 #include "Exceptions.h"
@@ -65,9 +67,11 @@ std::shared_ptr<Model> ModelLibrary::getModelByPath(const QString& path) const
 std::shared_ptr<Model> ModelLibrary::addModel(const Model& model, const QString& path)
 {
     QString filePath = getRelativePath(path);
+    QFileInfo info(filePath);
     std::shared_ptr<Model> newModel = std::make_shared<Model>(model);
     newModel->setLibrary(getptr());
-    newModel->setDirectory(filePath);
+    newModel->setDirectory(info.dir().absolutePath());
+    newModel->setFilename(info.fileName());
 
     (*_modelPathMap)[filePath] = newModel;
 
