@@ -98,9 +98,7 @@ TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
 
     vp->resetTransformOrigin();
 
-    if (auto geoFeature = vp->getObject<App::GeoFeature>()) {
-        originalPlacement = geoFeature->Placement.getValue();
-    }
+    originalPlacement = vp->getObjectPlacement();
 
     setupGui();
 }
@@ -398,7 +396,7 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
 
     auto globalPlacement = static_cast<App::GeoFeature*>(obj)->globalPlacement();
     auto localPlacement = static_cast<App::GeoFeature*>(obj)->Placement.getValue();
-    auto rootPlacement = vp->getObject<App::GeoFeature>()->Placement.getValue();
+    auto rootPlacement = vp->getObjectPlacement();
 
     auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement
         * subObjectPlacementProvider->calculate(msg.Object, localPlacement);
@@ -484,7 +482,7 @@ void TaskTransform::updateTransformOrigin()
                 return {};
             case PlacementMode::Centroid:
                 if (const auto com = centerOfMassProvider->ofDocumentObject(vp->getObject())) {
-                    return Base::Placement {*com, {}};
+                    return {*com, {}};
                 }
                 return {};
             case PlacementMode::Custom:
