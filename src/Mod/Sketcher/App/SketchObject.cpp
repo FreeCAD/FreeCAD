@@ -7709,7 +7709,7 @@ int SketchObject::delExternal(const std::vector<int>& ExtGeoIds)
 {
     std::set<long> geoIds;
     for (int ExtGeoId : ExtGeoIds) {
-        int GeoId = ExtGeoId > 0 ? GeoEnum::RefExt - ExtGeoId : ExtGeoId;
+        int GeoId = ExtGeoId >= 0 ? GeoEnum::RefExt - ExtGeoId : ExtGeoId;
         if (GeoId > GeoEnum::RefExt || -GeoId - 1 >= ExternalGeo.getSize())
             return -1;
 
