@@ -77,6 +77,7 @@ public:
     void updatePlacementFromDragger();
     void updateTransformFromDragger();
 
+    Base::Placement getObjectPlacement() const;
     Base::Placement getDraggerPlacement() const;
     void setDraggerPlacement(const Base::Placement& placement);
 

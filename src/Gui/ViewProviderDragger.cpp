@@ -49,6 +49,7 @@
 #include "ViewProviderDragger.h"
 #include "Utilities.h"
 
+#include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
 
 using namespace Gui;
@@ -208,9 +209,7 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
         csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
         auto mat = viewer->getDocument()->getEditingTransform();
-        if (auto geoFeature = getObject<App::GeoFeature>()) {
-            mat *= geoFeature->Placement.getValue().inverse().toMatrix();
-        }
+        mat *= getObjectPlacement().inverse().toMatrix();
 
         viewer->getDocument()->setEditingTransform(mat);
         viewer->setupEditingRoot(csysDragger, &mat);
@@ -249,13 +248,13 @@ void ViewProviderDragger::dragMotionCallback(void* data, SoDragger* d)
 
 void ViewProviderDragger::updatePlacementFromDragger()
 {
-    const auto geoFeature = getObject<App::GeoFeature>();
+    const auto placement = getObject()->getPropertyByName<App::PropertyPlacement>("Placement");
 
-    if (!geoFeature) {
+    if (!placement) {
         return;
     }
 
-    geoFeature->Placement.setValue(getDraggerPlacement() * getTransformOrigin().inverse());
+    placement->setValue(getDraggerPlacement() * getTransformOrigin().inverse());
 }
 
 void ViewProviderDragger::updateTransformFromDragger()
@@ -264,6 +263,15 @@ void ViewProviderDragger::updateTransformFromDragger()
 
     pcTransform->translation.setValue(Base::convertTo<SbVec3f>(placement.getPosition()));
     pcTransform->rotation.setValue(Base::convertTo<SbRotation>(placement.getRotation()));
+}
+
+Base::Placement ViewProviderDragger::getObjectPlacement() const
+{
+    if (auto placement = getObject()->getPropertyByName<App::PropertyPlacement>("Placement")) {
+        return placement->getValue();
+    }
+
+    return {};
 }
 
 Base::Placement ViewProviderDragger::getDraggerPlacement() const
@@ -314,7 +322,7 @@ void ViewProviderDragger::updateDraggerPosition()
         return;
     }
 
-    auto placement = getObject<App::GeoFeature>()->Placement.getValue() * getTransformOrigin();
+    auto placement = getObjectPlacement() * getTransformOrigin();
 
     setDraggerPlacement(placement);
 }
