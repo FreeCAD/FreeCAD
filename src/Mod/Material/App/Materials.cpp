@@ -1087,24 +1087,12 @@ QString Material::getAppearanceValueString(const QString& name) const
 
 bool Material::hasPhysicalProperty(const QString& name) const
 {
-    try {
-        static_cast<void>(_physical.at(name));
-    }
-    catch (std::out_of_range const&) {
-        return false;
-    }
-    return true;
+    return _physical.find(name) != _physical.end();
 }
 
 bool Material::hasAppearanceProperty(const QString& name) const
 {
-    try {
-        static_cast<void>(_appearance.at(name));
-    }
-    catch (std::out_of_range const&) {
-        return false;
-    }
-    return true;
+    return _appearance.find(name) != _appearance.end();
 }
 
 bool Material::hasNonLegacyProperty(const QString& name) const
@@ -1118,6 +1106,16 @@ bool Material::hasNonLegacyProperty(const QString& name) const
 bool Material::hasLegacyProperties() const
 {
     return !_legacy.empty();
+}
+
+bool Material::hasPhysicalProperties() const
+{
+    return !_physicalUuids.isEmpty();
+}
+
+bool Material::hasAppearanceProperties() const
+{
+    return !_appearanceUuids.isEmpty();
 }
 
 bool Material::isInherited(const QString& uuid) const

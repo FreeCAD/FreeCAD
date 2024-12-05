@@ -32,6 +32,75 @@ protected:
     void TearDown() override
     {}
 
+    std::string getDocumentXml() const
+    {
+        return R"x(<?xml version='1.0' encoding='utf-8'?>
+<Document SchemaVersion="4" ProgramVersion="0.22R35485 +5758 (Git)" FileVersion="1" Uid="2795701f-8074-4bb6-b707-b2c97acf4128" StringHasher="1">
+  <StringHasher saveall="0" threshold="0" count="0" new="1"/>
+  <StringHasher2  count="1">
+<![CDATA[
+-1.0 0:Shape cache
+]]>
+  </StringHasher2>
+  <Properties Count="1" TransientCount="0">
+    <Property name="Uid" type="App::PropertyUUID" status="16777217">
+      <Uuid value="2795701f-8074-4bb6-b707-b2c97acf4128"/>
+    </Property>
+  </Properties>
+  <Objects Count="1" Dependencies="1">
+    <ObjectDeps Name="Sketch" Count="0"/>
+    <Object type="Sketcher::SketchObject" name="Sketch" id="11" revision="16711878" />
+  </Objects>
+  <ObjectData Count="1">
+    <Object name="Sketch" Extensions="True">
+      <Properties Count="1" TransientCount="0">
+        <Property name="Shape" type="Part::PropertyPartShape">
+          <Part HasherIndex="0" ElementMap="1.15.70200.4" file="Sketch.Shape.brp"/>
+          <ElementMap new="1" count="1"><Element key="Dummy" value="Dummy"/></ElementMap>
+          <ElementMap2 count="8">
+<![CDATA[
+1 PostfixCount 3
+Edge
+Vertex
+;SKT
+
+MapCount 1
+
+ElementMap 1 1 2
+
+Edge
+
+ChildCount 0
+
+NameCount 5
+0
+;g1.3 0
+;g2.3 0
+;g3.3 0
+;g4.3 0
+
+Vertex
+
+ChildCount 0
+
+NameCount 5
+0
+;g1v1.3 0
+;g1v2.3 0
+;g2v2.3 0
+;g3v2.3 0
+
+EndMap
+]]>
+          </ElementMap2>
+        </Property>
+      </Properties>
+    </Object>
+  </ObjectData>
+</Document>
+)x";
+    }
+
     Common* _common = nullptr;  // NOLINT Can't be private in a test framework
 };
 
@@ -181,4 +250,22 @@ TEST_F(PropertyTopoShapeTest, testPropertyShapeCachePyObj)
     EXPECT_EQ(PyList_Size(pyObjOutErased), 2);  // setPyObject removed Face2 and Face3
     Py_XDECREF(pyObjOut);
     Py_XDECREF(pyObjOutErased);
+}
+
+TEST_F(PropertyTopoShapeTest, testRestore)
+{
+    // Test case for https://github.com/FreeCAD/FreeCAD/pull/16576
+    std::stringstream str(getDocumentXml());
+    Base::XMLReader reader("Document.xml", str);
+    App::StringHasher hasher;
+    hasher.Restore(reader);
+
+    Part::PropertyPartShape prop;
+    prop.Restore(reader);
+
+    EXPECT_STREQ(reader.localName(), "ElementMap2");
+    EXPECT_EQ(reader.level(), 5);
+    EXPECT_EQ(reader.getAttributeCount(), 1);
+    EXPECT_TRUE(reader.isValid());
+    EXPECT_TRUE(reader.isEndOfElement());
 }

@@ -79,9 +79,9 @@ ViewProviderMeshFaceSet::~ViewProviderMeshFaceSet()
     pcMeshFaces->unref();
 }
 
-void ViewProviderMeshFaceSet::attach(App::DocumentObject* pcFeat)
+void ViewProviderMeshFaceSet::attach(App::DocumentObject* obj)
 {
-    ViewProviderMesh::attach(pcFeat);
+    ViewProviderMesh::attach(obj);
 
     pcShapeGroup->addChild(pcMeshCoord);
     pcShapeGroup->addChild(pcMeshFaces);
@@ -89,20 +89,19 @@ void ViewProviderMeshFaceSet::attach(App::DocumentObject* pcFeat)
     // read the threshold from the preferences
     Base::Reference<ParameterGrp> hGrp =
         Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
-    int size = hGrp->GetInt("RenderTriangleLimit", -1);
+    long size = hGrp->GetInt("RenderTriangleLimit", -1);
     if (size > 0) {
-        pcMeshShape->renderTriangleLimit = (unsigned int)(pow(10.0F, size));
-        static_cast<SoFCIndexedFaceSet*>(pcMeshFaces)->renderTriangleLimit =
-            (unsigned int)(pow(10.0F, size));
+        unsigned int limit = (unsigned int)(pow(10.0F, size));  // NOLINT
+        pcMeshShape->renderTriangleLimit = limit;
+        static_cast<SoFCIndexedFaceSet*>(pcMeshFaces)->renderTriangleLimit = limit;
     }
 }
 
 void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
 {
     ViewProviderMesh::updateData(prop);
-    if (prop->is<Mesh::PropertyMeshKernel>()) {
-        const Mesh::MeshObject* mesh =
-            static_cast<const Mesh::PropertyMeshKernel*>(prop)->getValuePtr();
+    if (const auto* meshProp = dynamic_cast<const Mesh::PropertyMeshKernel*>(prop)) {
+        const Mesh::MeshObject* mesh = meshProp->getValuePtr();
 
         bool direct = MeshRenderer::shouldRenderDirectly(mesh->countFacets() > this->triangleCount);
         if (direct) {
@@ -163,21 +162,23 @@ void ViewProviderMeshFaceSet::showOpenEdges(bool show)
         }
         else {
             pcOpenEdge->addChild(pcMeshCoord);
-            SoIndexedLineSet* lines = new SoIndexedLineSet;
+            auto lines = new SoIndexedLineSet;
             pcOpenEdge->addChild(lines);
 
             // Build up the lines with indices to the list of vertices 'pcMeshCoord'
             int index = 0;
-            const MeshCore::MeshKernel& rMesh =
-                static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue().getKernel();
-            const MeshCore::MeshFacetArray& rFaces = rMesh.GetFacets();
+            const Mesh::MeshObject& mesh = getMeshObject();
+            const MeshCore::MeshKernel& kernel = mesh.getKernel();
+            const MeshCore::MeshFacetArray& rFaces = kernel.GetFacets();
             for (const auto& rFace : rFaces) {
                 for (int i = 0; i < 3; i++) {
+                    // NOLINTBEGIN
                     if (rFace._aulNeighbours[i] == MeshCore::FACET_INDEX_MAX) {
                         lines->coordIndex.set1Value(index++, rFace._aulPoints[i]);
                         lines->coordIndex.set1Value(index++, rFace._aulPoints[(i + 1) % 3]);
                         lines->coordIndex.set1Value(index++, SO_END_LINE_INDEX);
                     }
+                    // NOLINTEND
                 }
             }
         }

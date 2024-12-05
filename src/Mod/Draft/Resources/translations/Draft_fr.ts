@@ -1994,12 +1994,12 @@ Cette valeur est la longueur maximale du segment.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation>Cette boîte de dialogue de préférences sera affichée lors de l'importation/exportation de fichiers DXF</translation>
+      <translation>Cette fenêtre de dialogue de préférences sera affichée lors de l'importation/exportation de fichiers DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation>Afficher la boîte de dialogue lors de l'importation et l'exportation</translation>
+      <translation>Afficher la fenêtre de dialogue lors de l'importation et l'exportation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="45"/>
@@ -2826,32 +2826,32 @@ soit nécessaire d'appuyer sur la touche pour l'aimantation.</translation>
     <name>draft</name>
     <message>
       <location filename="../../DraftGui.py" line="58"/>
-      <location filename="../../DraftGui.py" line="540"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <source>Relative</source>
       <translation>Relatif</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="59"/>
-      <location filename="../../DraftGui.py" line="545"/>
+      <location filename="../../DraftGui.py" line="550"/>
       <source>Global</source>
       <translation>Global</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="60"/>
-      <location filename="../../DraftGui.py" line="563"/>
-      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="568"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>Continue</source>
       <translation>Continuer</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
-      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="576"/>
       <source>Close</source>
       <translation>Fermer</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="62"/>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <location filename="../../draftguitools/gui_move.py" line="216"/>
       <location filename="../../draftguitools/gui_rotate.py" line="287"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
@@ -2907,7 +2907,7 @@ soit nécessaire d'appuyer sur la touche pour l'aimantation.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="72"/>
-      <location filename="../../DraftGui.py" line="577"/>
+      <location filename="../../DraftGui.py" line="582"/>
       <source>Select edge</source>
       <translation>Sélectionner une arête</translation>
     </message>
@@ -2923,7 +2923,7 @@ soit nécessaire d'appuyer sur la touche pour l'aimantation.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="75"/>
-      <location filename="../../DraftGui.py" line="573"/>
+      <location filename="../../DraftGui.py" line="578"/>
       <source>Wipe</source>
       <translation>Effacer</translation>
     </message>
@@ -3004,286 +3004,286 @@ soit nécessaire d'appuyer sur la touche pour l'aimantation.</translation>
       <translation>Position :</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="491"/>
-      <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="496"/>
+      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
       <translation>Aucun</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="518"/>
+      <location filename="../../DraftGui.py" line="523"/>
       <source>active command:</source>
       <translation>commande active :</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="520"/>
+      <location filename="../../DraftGui.py" line="525"/>
       <source>Active Draft command</source>
       <translation>Commande active de Draft</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="521"/>
+      <location filename="../../DraftGui.py" line="526"/>
       <source>X coordinate of next point</source>
       <translation>Coordonnée X du point suivant</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="522"/>
+      <location filename="../../DraftGui.py" line="527"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="523"/>
+      <location filename="../../DraftGui.py" line="528"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="529"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="525"/>
+      <location filename="../../DraftGui.py" line="530"/>
       <source>Y coordinate of next point</source>
       <translation>Coordonnée Y du point suivant</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="526"/>
+      <location filename="../../DraftGui.py" line="531"/>
       <source>Z coordinate of next point</source>
       <translation>Coordonnée Z du point suivant</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>Enter point</source>
       <translation>Entrer un point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Entrer un nouveau point avec les coordonnées indiquées</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>Length</source>
       <translation>Longueur</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
+      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="232"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="537"/>
       <source>Length of current segment</source>
       <translation>Longueur du segment en cours</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Angle of current segment</source>
       <translation>Angle du segment en cours</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../DraftGui.py" line="541"/>
       <source>Check this to lock the current angle</source>
       <translation>Cocher cette case pour verrouiller l’angle en cours</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="537"/>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="542"/>
+      <location filename="../../DraftGui.py" line="810"/>
       <source>Radius</source>
       <translation>Rayon</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Radius of Circle</source>
       <translation>Rayon du cercle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="548"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>Coordonnées relatives au dernier point ou à l'origine du système de coordonnées
 si c'est le premier point à définir</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="548"/>
+      <location filename="../../DraftGui.py" line="553"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Coordonnées par rapport au système de coordonnées globales.
 Décocher pour utiliser le système de coordonnées du plan de travail.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="550"/>
+      <location filename="../../DraftGui.py" line="555"/>
       <source>Filled</source>
       <translation>Remplir</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="554"/>
+      <location filename="../../DraftGui.py" line="559"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation>Cocher ceci si l'objet doit apparaître comme rempli, sinon il apparaîtra comme filaire.
 Non disponible si l'option de préférence de Draft "Utiliser les primitives de Part" est activée.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="556"/>
+      <location filename="../../DraftGui.py" line="561"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="558"/>
+      <location filename="../../DraftGui.py" line="563"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Termine l'opération de dessin ou de l'édition en cours</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="561"/>
+      <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Si cette option est cochée, la commande ne se terminera pas tant que
 vous n'aurez pas appuyé à nouveau sur le bouton de commande.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
+      <location filename="../../DraftGui.py" line="571"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Si cette option est cochée, un décalage de type OCC sera effectué au lieu du décalage classique.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="567"/>
+      <location filename="../../DraftGui.py" line="572"/>
       <source>OCC-style offset</source>
       <translation>Décalage de style OCC</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="569"/>
+      <location filename="../../DraftGui.py" line="574"/>
       <source>Undo</source>
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>Si cette option est cochée, les objets seront copiés au lieu d'être déplacés.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="570"/>
+      <location filename="../../DraftGui.py" line="575"/>
       <source>Undo the last segment</source>
       <translation>Annuler le dernier segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="577"/>
       <source>Finishes and closes the current line</source>
       <translation>Finit et ferme la ligne en cours</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="574"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Effacer les segments existants de cette ligne et reprendre à partir du dernier point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="575"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>Set WP</source>
       <translation>Définir le plan de travail</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="576"/>
+      <location filename="../../DraftGui.py" line="581"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Réorienter le plan de travail sur le dernier segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Sélectionner une arête existante qui sera mesurée par cette dimension</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Sides</source>
       <translation>Côtés</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Number of sides</source>
       <translation>Nombre de côtés</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="589"/>
       <source>Modify subelements</source>
       <translation>Modifier les sous-éléments</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Si cette option est cochée, les sous-éléments seront modifiés plutôt que les objets en entier.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="586"/>
+      <location filename="../../DraftGui.py" line="591"/>
       <source>Create text</source>
       <translation>Créer un texte</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="587"/>
+      <location filename="../../DraftGui.py" line="592"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>Appuyer sur ce bouton pour créer l'objet texte ou terminer votre texte avec deux lignes vides</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="609"/>
+      <location filename="../../DraftGui.py" line="614"/>
       <source>Change default style for new objects</source>
       <translation>Changer le style par défaut pour les nouveaux objets</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="610"/>
+      <location filename="../../DraftGui.py" line="615"/>
       <source>Toggle construction mode</source>
       <translation>Activer/désactiver le mode construction</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="616"/>
+      <location filename="../../DraftGui.py" line="1477"/>
+      <location filename="../../DraftGui.py" line="1492"/>
       <source>Autogroup off</source>
       <translation>Groupement automatique désactivé</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="688"/>
+      <location filename="../../DraftGui.py" line="693"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
       <translation>Ligne</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="696"/>
+      <location filename="../../DraftGui.py" line="701"/>
       <source>DWire</source>
       <translation>Polyligne</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <location filename="../../draftguitools/gui_rotate.py" line="290"/>
       <source>Rotate</source>
       <translation>Pivoter</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="728"/>
+      <location filename="../../DraftGui.py" line="733"/>
       <source>Point</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="756"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Label</source>
       <translation>Étiquette</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="758"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Label type</source>
       <translation>Type d'étiquette</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../draftguitools/gui_offset.py" line="241"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
@@ -3291,71 +3291,71 @@ vous n'aurez pas appuyé à nouveau sur le bouton de commande.</translation>
       <translation>Décaler</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
-      <location filename="../../DraftGui.py" line="797"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
+      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="802"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="227"/>
       <source>Distance</source>
       <translation>Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
-      <location filename="../../DraftGui.py" line="798"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
+      <location filename="../../DraftGui.py" line="785"/>
+      <location filename="../../DraftGui.py" line="803"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Offset distance</source>
       <translation>Distance de décalage</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="794"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Trimex</source>
       <translation>Ajuster ou prolonger</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="872"/>
-      <location filename="../../DraftGui.py" line="873"/>
-      <location filename="../../DraftGui.py" line="874"/>
-      <location filename="../../DraftGui.py" line="876"/>
       <location filename="../../DraftGui.py" line="877"/>
       <location filename="../../DraftGui.py" line="878"/>
+      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="881"/>
+      <location filename="../../DraftGui.py" line="882"/>
+      <location filename="../../DraftGui.py" line="883"/>
       <source>Local {}</source>
       <translation>{} local</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="880"/>
-      <location filename="../../DraftGui.py" line="881"/>
-      <location filename="../../DraftGui.py" line="882"/>
-      <location filename="../../DraftGui.py" line="884"/>
       <location filename="../../DraftGui.py" line="885"/>
       <location filename="../../DraftGui.py" line="886"/>
+      <location filename="../../DraftGui.py" line="887"/>
+      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
+      <location filename="../../DraftGui.py" line="891"/>
       <source>Global {}</source>
       <translation>{} global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1485"/>
       <source>Autogroup:</source>
       <translation>Groupement automatique :</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1624"/>
       <source>Modify objects</source>
       <translation>Modifier des objets</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1773"/>
       <source>Faces</source>
       <translation>Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1774"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1775"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1776"/>
       <source>Facebinder elements</source>
       <translation>Éléments d'une surface liée</translation>
     </message>
@@ -4130,41 +4130,46 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="120"/>
       <source>This object is not supported.</source>
-      <translation type="unfinished">This object is not supported.</translation>
+      <translation>Cet objet n'est pas pris en compte.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="143"/>
       <source>Only a single face can be extruded.</source>
-      <translation type="unfinished">Only a single face can be extruded.</translation>
+      <translation>Une seule face peut être extrudée.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="158"/>
+      <source>Trimex is not supported yet on this type of object.</source>
+      <translation type="unfinished">Trimex is not supported yet on this type of object.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="188"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Choisir la distance</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="234"/>
       <source>Offset angle</source>
       <translation>Angle de décalage</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="500"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Impossible d'ajuster ces objets, seuls les polylignes et les arcs de Draft sont pris en charge.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Impossible d'ajuster ces objets, trop de polylignes</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="522"/>
       <source>These objects don't intersect.</source>
       <translation>Ces objets ne se recoupent pas.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
       <source>Too many intersection points.</source>
       <translation>Trop de points d'intersection.</translation>
     </message>
@@ -4818,17 +4823,17 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
       <translation>a changé le type de la propriété "Tracking"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="175"/>
+      <location filename="../../draftobjects/shapestring.py" line="178"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation>Forme à partir d'un texte : l'angle oblique doit être entre -80 et +80 degrés</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="187"/>
+      <location filename="../../draftobjects/shapestring.py" line="190"/>
       <source>ShapeString: string has no wires</source>
       <translation>Forme à partir d'un texte : la chaîne de caractères n'a pas de polylignes</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="221"/>
+      <location filename="../../draftobjects/shapestring.py" line="223"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation>Forme à partir d'un texte : la création de la face a échoué pour un caractère</translation>
     </message>
@@ -4870,39 +4875,39 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
       <translation>a ajouté la propriété "Fuse"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="466"/>
+      <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
       <translation>Le décalage de départ est trop important par rapport à la longueur de la courbe. Utiliser zéro à la place.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="472"/>
+      <location filename="../../draftobjects/patharray.py" line="484"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
       <translation>Le décalage de la fin est trop important par rapport à la longueur de la courbe moins le décalage du début. Utiliser zéro à la place.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="549"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>La longueur du vecteur tangent est zéro. La copie est non alignée.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="563"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>La longueur du vecteur normal est zéro. Utiliser un axe par défaut à la place.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="591"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Les vecteurs tangents et normaux sont parallèles. La normale est remplacée par un axe par défaut.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="581"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>Impossible de calculer le vecteur normal. Utiliser la normale par défaut à la place.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="597"/>
       <source>AlignMode {} is not implemented</source>
       <translation>Le mode aligner {} n'est pas implémenté</translation>
     </message>
@@ -5243,24 +5248,24 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
       <translation>Mauvaise saisie : cela doit être un nombre compris entre 0 et 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="491"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>Activer ce calque</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>Sélectionner les contenus des calques</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="535"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="549"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>Fusionner les calques en double</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="541"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="594"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>Ajouter un nouveau calque</translation>
     </message>
@@ -5384,53 +5389,53 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
       <translation>Trouvé un objet avec plusieurs faces coplanaires : améliorez-les</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="488"/>
+      <location filename="../../draftfunctions/upgrade.py" line="489"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation>Un objet non-paramétrique a été trouvé : le dessiner</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="499"/>
+      <location filename="../../draftfunctions/upgrade.py" line="500"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation>1 esquisse fermée trouvée : créer une face à partir de celle-ci</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="504"/>
+      <location filename="../../draftfunctions/upgrade.py" line="505"/>
       <source>Found closed wires: creating faces</source>
       <translation>Plusieurs polylignes fermées trouvées : créer des faces</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="509"/>
+      <location filename="../../draftfunctions/upgrade.py" line="510"/>
       <source>Found several wires or edges: wiring them</source>
       <translation>Plusieurs polylignes ou arêtes trouvées : les joindre</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="511"/>
-      <location filename="../../draftfunctions/upgrade.py" line="546"/>
+      <location filename="../../draftfunctions/upgrade.py" line="512"/>
+      <location filename="../../draftfunctions/upgrade.py" line="540"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation>Plusieurs objets non traitables trouvés : créer un composé</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="516"/>
+      <location filename="../../draftfunctions/upgrade.py" line="517"/>
       <source>trying: closing it</source>
       <translation>essayer : le fermer</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="518"/>
+      <location filename="../../draftfunctions/upgrade.py" line="519"/>
       <source>Found 1 open wire: closing it</source>
       <translation>1 polyligne ouverte trouvée : la fermer</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="536"/>
+      <location filename="../../draftfunctions/upgrade.py" line="530"/>
       <source>Found 1 object: draftifying it</source>
       <translation>1 objet trouvé : l'ébaucher</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="541"/>
+      <location filename="../../draftfunctions/upgrade.py" line="535"/>
       <source>Found points: creating compound</source>
       <translation>Plusieurs points trouvés : créer un composé</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="549"/>
+      <location filename="../../draftfunctions/upgrade.py" line="543"/>
       <source>Unable to upgrade these objects.</source>
       <translation>Impossible de mettre à jour ces objets.</translation>
     </message>
@@ -5519,7 +5524,7 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="80"/>
       <source>This may lead to the opening of various windows</source>
-      <translation>Cela peut conduire à l'ouverture de différentes fenêtres</translation>
+      <translation>Cela peut conduire à l'ouverture de différentes fenêtres.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="111"/>
@@ -5537,7 +5542,7 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
       <translation>Sélectionner 3 sommets, une ou plusieurs formes ou un objet pour définir un plan de travail.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="182"/>
+      <location filename="../../draftutils/params.py" line="194"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation>Voulez-vous mettre à jour les options des motifs SVG
@@ -5564,7 +5569,7 @@ des objets existants dans tous les documents ouverts ?</translation>
       <translation>propriétés de la vue mises à jour</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5653,7 +5658,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, répondez Oui.</t
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -5925,12 +5930,12 @@ Installer l’extension de la bibliothèque DXF manuellement depuis le menu Outi
   <context>
     <name>importOCA</name>
     <message>
-      <location filename="../../importOCA.py" line="414"/>
+      <location filename="../../importOCA.py" line="413"/>
       <source>OCA: found no data to export</source>
       <translation>OCA : aucune donnée à exporter</translation>
     </message>
     <message>
-      <location filename="../../importOCA.py" line="459"/>
+      <location filename="../../importOCA.py" line="458"/>
       <source>successfully exported</source>
       <translation>exporté avec succès</translation>
     </message>
@@ -5938,7 +5943,7 @@ Installer l’extension de la bibliothèque DXF manuellement depuis le menu Outi
   <context>
     <name>ImportAirfoilDAT</name>
     <message>
-      <location filename="../../importAirfoilDAT.py" line="164"/>
+      <location filename="../../importAirfoilDAT.py" line="163"/>
       <source>Did not find enough coordinates</source>
       <translation>Il n'a pas été trouvé suffisamment de coordonnées.</translation>
     </message>

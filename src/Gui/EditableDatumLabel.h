@@ -25,6 +25,7 @@
 #define GUI_EDITABLEDATUMLABEL_H
 
 #include <QObject>
+#include <QPointer>
 #include <Gui/QuantitySpinBox.h>
 
 #include "SoDatumLabel.h"
@@ -98,7 +99,7 @@ private:
 private:
     SoSeparator* root;
     SoTransform* transform;
-    View3DInventorViewer* viewer;
+    QPointer<View3DInventorViewer> viewer;
     QuantitySpinBox* spinBox;
     SoNodeSensor* cameraSensor;
     SbVec3f midpos;

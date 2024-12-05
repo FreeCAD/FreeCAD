@@ -74,7 +74,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
-        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
+        ui->expression->setText(QString::fromStdString(expression->toString()));
     }
     else {
         QVariant text = parent->property("text");
@@ -118,6 +118,15 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
 DlgExpressionInput::~DlgExpressionInput()
 {
+    disconnect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
+               this, &DlgExpressionInput::onCheckVarSets);
+    disconnect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
+               this, &DlgExpressionInput::onVarSetSelected);
+    disconnect(ui->lineEditGroup, &QLineEdit::textChanged,
+               this, &DlgExpressionInput::onTextChangedGroup);
+    disconnect(ui->lineEditPropNew, &QLineEdit::textChanged,
+               this, &DlgExpressionInput::namePropChanged);
+
     delete ui;
 }
 
@@ -305,7 +314,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
                 ui->msg->setText(msg);
             }
             else {
-                ui->msg->setText(Base::Tools::fromStdString(result->toString()));
+                ui->msg->setText(QString::fromStdString(result->toString()));
             }
 
         }
@@ -425,6 +434,11 @@ static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
     if (name != Base::Tools::getIdentifier(name)) {
         message << "Invalid property name (must only contain alphanumericals, underscore, "
                 << "and must not start with digit";
+        return false;
+    }
+
+    if (ExpressionParser::isTokenAUnit(name) || ExpressionParser::isTokenAConstant(name)) {
+        message << name << " is a reserved word";
         return false;
     }
 

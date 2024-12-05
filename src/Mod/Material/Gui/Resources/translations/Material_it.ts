@@ -55,12 +55,12 @@
       <translation>Serie 2D</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="76"/>
+      <location filename="../../Array2D.cpp" line="78"/>
       <source>Delete row</source>
       <translation>Elimina riga</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="134"/>
+      <location filename="../../Array2D.cpp" line="140"/>
       <source>Context menu</source>
       <translation>Menu contestuale</translation>
     </message>
@@ -204,17 +204,17 @@
   <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="214"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
       <source>Basic Appearance</source>
       <translation>Aspetto di base</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="219"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
       <source>Texture Appearance</source>
       <translation>Aspetto texture</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="224"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
       <source>All Materials</source>
       <translation>Tutti i materiali</translation>
     </message>
@@ -694,8 +694,8 @@ Se non selezionato, saranno ordinate per il loro nome.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="476"/>
-      <location filename="../../MaterialSave.cpp" line="486"/>
+      <location filename="../../MaterialSave.cpp" line="482"/>
+      <location filename="../../MaterialSave.cpp" line="492"/>
       <source>New Folder</source>
       <translation>Nuova Cartella</translation>
     </message>
@@ -710,62 +710,62 @@ Se non selezionato, saranno ordinate per il loro nome.</translation>
       <translation>Salva come ereditato</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="89"/>
+      <location filename="../../MaterialSave.cpp" line="91"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="184"/>
+      <location filename="../../MaterialSave.cpp" line="190"/>
       <source>Are you sure you want to save over &apos;%1&apos;?</source>
       <translation>Sei sicuro di voler salvare su &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="187"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Il salvataggio sul file originale potrebbe causare il danneggiamento di altri documenti. Questo non è raccomandato.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="209"/>
+      <location filename="../../MaterialSave.cpp" line="215"/>
       <source>Confirm Save As New Material</source>
       <translation>Conferma Salva Come Nuovo Materiale</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="211"/>
+      <location filename="../../MaterialSave.cpp" line="217"/>
       <source>Save as new material</source>
       <translation>Salva come nuovo materiale</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="214"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
       <translation>Questo materiale esiste già in questa libreria. Vuoi salvare come nuovo materiale?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="236"/>
+      <location filename="../../MaterialSave.cpp" line="242"/>
       <source>Confirm Save As Copy</source>
       <translation>Conferma Salva Come Copia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="238"/>
+      <location filename="../../MaterialSave.cpp" line="244"/>
       <source>Save as Copy</source>
       <translation>Salva come Copia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="241"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
       <translation>Il salvataggio di una copia non è raccomandato in quanto potrebbe danneggiare altri documenti. Si consiglia di salvare come nuovo materiale.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="244"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save Copy</source>
       <translation>Salva Copia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="251"/>
       <source>Save As New</source>
       <translation>Salva Come Nuovo</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="526"/>
+      <location filename="../../MaterialSave.cpp" line="532"/>
       <source>Context menu</source>
       <translation>Menu contestuale</translation>
     </message>
@@ -888,76 +888,76 @@ Se non selezionato, saranno ordinate per il loro nome.</translation>
       <translation>Elimina modello di aspetto</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="481"/>
+      <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
       <translation>Senza nome</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="603"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
       <translation>Materiale nel vecchio formato</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="605"/>
+      <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
       <translation>Questo file è nel vecchio formato di scheda materiale.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="687"/>
+      <location filename="../../MaterialsEditor.cpp" line="690"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>Questa scheda usa il vecchio formato e deve essere salvata prima dell'uso</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="745"/>
-      <location filename="../../MaterialsEditor.cpp" line="777"/>
-      <location filename="../../MaterialsEditor.cpp" line="1051"/>
-      <location filename="../../MaterialsEditor.cpp" line="1113"/>
+      <location filename="../../MaterialsEditor.cpp" line="748"/>
+      <location filename="../../MaterialsEditor.cpp" line="780"/>
+      <location filename="../../MaterialsEditor.cpp" line="1054"/>
+      <location filename="../../MaterialsEditor.cpp" line="1116"/>
       <source>Property</source>
       <translation>Proprietà</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="746"/>
-      <location filename="../../MaterialsEditor.cpp" line="778"/>
-      <location filename="../../MaterialsEditor.cpp" line="1052"/>
-      <location filename="../../MaterialsEditor.cpp" line="1114"/>
+      <location filename="../../MaterialsEditor.cpp" line="749"/>
+      <location filename="../../MaterialsEditor.cpp" line="781"/>
+      <location filename="../../MaterialsEditor.cpp" line="1055"/>
+      <location filename="../../MaterialsEditor.cpp" line="1117"/>
       <source>Value</source>
       <translation>Valore</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="747"/>
-      <location filename="../../MaterialsEditor.cpp" line="779"/>
-      <location filename="../../MaterialsEditor.cpp" line="1053"/>
-      <location filename="../../MaterialsEditor.cpp" line="1115"/>
+      <location filename="../../MaterialsEditor.cpp" line="750"/>
+      <location filename="../../MaterialsEditor.cpp" line="782"/>
+      <location filename="../../MaterialsEditor.cpp" line="1056"/>
+      <location filename="../../MaterialsEditor.cpp" line="1118"/>
       <source>Type</source>
       <translation>Tipo</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="843"/>
+      <location filename="../../MaterialsEditor.cpp" line="846"/>
       <source>Favorites</source>
       <translation>Preferiti</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="850"/>
+      <location filename="../../MaterialsEditor.cpp" line="853"/>
       <source>Recent</source>
       <translation>Recenti</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1116"/>
+      <location filename="../../MaterialsEditor.cpp" line="1119"/>
       <source>Units</source>
       <translation>Unità</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1283"/>
+      <location filename="../../MaterialsEditor.cpp" line="1286"/>
       <source>Context menu</source>
       <translation>Menu contestuale</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1285"/>
+      <location filename="../../MaterialsEditor.cpp" line="1288"/>
       <source>Inherit from</source>
       <translation>Eredita da</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1289"/>
+      <location filename="../../MaterialsEditor.cpp" line="1292"/>
       <source>Inherit new material</source>
       <translation>Eredita nuovo materiale</translation>
     </message>
@@ -1113,11 +1113,6 @@ Se non selezionato, saranno ordinate per il loro nome.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="54"/>
-      <source>Display properties</source>
-      <translation>Visualizza proprietà</translation>
-    </message>
-    <message>
       <location filename="../../DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
       <translation>Materiale</translation>
@@ -1137,55 +1132,55 @@ Se non selezionato, saranno ordinate per il loro nome.</translation>
       <translation>Materiale</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="181"/>
+      <location filename="../../MaterialSave.cpp" line="187"/>
       <source>Confirm Overwrite</source>
       <translation>Conferma sovrascrittura</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="370"/>
-      <location filename="../../MaterialSave.cpp" line="371"/>
+      <location filename="../../MaterialSave.cpp" line="376"/>
+      <location filename="../../MaterialSave.cpp" line="377"/>
       <source>No writeable library</source>
       <translation>Nessuna libreria scrivibile</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="558"/>
+      <location filename="../../MaterialSave.cpp" line="564"/>
       <source>Are you sure you want to delete &apos;%1&apos;?</source>
       <translation>Sei sicuro di voler eliminare &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="562"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Rimuovendo questo saranno rimossi anche tutti i contenuti.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="606"/>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>You must save the material before using it.</source>
       <translation>Devi salvare il materiale prima di usarlo.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1310"/>
+      <location filename="../../MaterialsEditor.cpp" line="1313"/>
       <source>Unsaved Material</source>
       <translation>Materiale non salvato</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1311"/>
+      <location filename="../../MaterialsEditor.cpp" line="1314"/>
       <source>Do you want to save your changes to the material before closing?</source>
       <translation>Vuoi salvare le modifiche al materiale prima di chiudere?</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1313"/>
+      <location filename="../../MaterialsEditor.cpp" line="1316"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
       <translation>Non salvando, tutte le modifiche andranno perse.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="166"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="555"/>
+      <location filename="../../MaterialSave.cpp" line="561"/>
       <source>Confirm Delete</source>
       <translation>Conferma Eliminazione</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="168"/>
+      <location filename="../../Array2D.cpp" line="174"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Are you sure you want to delete the row?</source>
       <translation>Sei sicuro di voler eliminare la riga?</translation>

@@ -272,11 +272,6 @@ TaskDraftParameters::~TaskDraftParameters()
     }
 }
 
-bool TaskDraftParameters::event(QEvent* e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
-}
-
 void TaskDraftParameters::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);

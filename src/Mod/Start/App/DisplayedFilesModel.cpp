@@ -23,14 +23,22 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/algorithm/string/predicate.hpp>
 #include <QByteArray>
+#include <QCryptographicHash>
+#include <QDateTime>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QStandardPaths>
+#include <QUrl>
 #endif
 
 #include "DisplayedFilesModel.h"
 #include <App/Application.h>
 #include <App/ProjectFile.h>
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
 
 using namespace Start;
 
@@ -80,6 +88,73 @@ FileStats fileInfoFromFreeCADFile(const std::string& path)
     return result;
 }
 
+std::string getThumbnailsImage()
+{
+    return "thumbnails/Thumbnail.png";
+}
+
+QString getThumbnailsName()
+{
+#if defined(Q_OS_LINUX)
+    return QString::fromLatin1("thumbnails/normal");
+#else
+    return QString::fromLatin1("FreeCADStartThumbnails");
+#endif
+}
+
+QDir getThumnailsParentDir()
+{
+    return {QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
+}
+
+QString getThumbnailsDir()
+{
+    QDir dir = getThumnailsParentDir();
+    return dir.absoluteFilePath(getThumbnailsName());
+}
+
+void createThumbnailsDir()
+{
+    QString name = getThumbnailsName();
+    QDir dir(getThumnailsParentDir());
+    if (!dir.exists(name)) {
+        dir.mkpath(name);
+    }
+}
+
+QString getMD5Hash(const std::string& path)
+{
+    // Use MD5 hash as specified here:
+    // https://specifications.freedesktop.org/thumbnail-spec/0.8.0/thumbsave.html
+    QUrl url(QString::fromStdString(path));
+    url.setScheme(QString::fromLatin1("file"));
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    hash.addData(url.toEncoded());
+    QByteArray ba = hash.result().toHex();
+    return QString::fromLatin1(ba);
+}
+
+QString getUniquePNG(const std::string& path)
+{
+    QDir dir = getThumbnailsDir();
+    QString md5 = getMD5Hash(path) + QLatin1String(".png");
+    return dir.absoluteFilePath(md5);
+}
+
+bool useCachedPNG(const std::string& image, const std::string& project)
+{
+    Base::FileInfo f1(image);
+    Base::FileInfo f2(project);
+    if (!f1.exists()) {
+        return false;
+    }
+    if (!f2.exists()) {
+        return false;
+    }
+
+    return f1.lastModified() > f2.lastModified();
+}
+
 /// Load the thumbnail image data (if any) that is stored in an FCStd file.
 /// \returns The image bytes, or an empty QByteArray (if no thumbnail was stored)
 QByteArray loadFCStdThumbnail(const std::string& pathToFCStdFile)
@@ -87,9 +162,20 @@ QByteArray loadFCStdThumbnail(const std::string& pathToFCStdFile)
     App::ProjectFile proj(pathToFCStdFile);
     if (proj.loadDocument()) {
         try {
-            std::string thumbnailFile = proj.extractInputFile("thumbnails/Thumbnail.png");
-            if (!thumbnailFile.empty()) {
-                auto inputFile = QFile(QString::fromStdString(thumbnailFile));
+            std::string thumbnailFile = getUniquePNG(pathToFCStdFile).toStdString();
+            if (!useCachedPNG(thumbnailFile, pathToFCStdFile)) {
+                static std::string thumb = getThumbnailsImage();
+                if (proj.containsFile(thumb)) {
+                    createThumbnailsDir();
+                    Base::FileInfo fi(thumbnailFile);
+                    Base::ofstream str(fi, std::ios::out | std::ios::binary);
+                    proj.readInputFileDirect(thumb, str);
+                    str.close();
+                }
+            }
+
+            auto inputFile = QFile(QString::fromStdString(thumbnailFile));
+            if (inputFile.exists()) {
                 inputFile.open(QIODevice::OpenModeFlag::ReadOnly);
                 return inputFile.readAll();
             }
@@ -115,6 +201,19 @@ FileStats getFileInfo(const std::string& path)
     result.insert(std::make_pair(DisplayedFilesModelRoles::baseName, file.fileName()));
     return result;
 }
+
+bool freecadCanOpen(const QString& extension)
+{
+    std::string ext = extension.toStdString();
+    auto importTypes = App::GetApplication().getImportTypes();
+    return std::find_if(importTypes.begin(),
+                        importTypes.end(),
+                        [&ext](const auto& item) {
+                            return boost::iequals(item, ext);
+                        })
+        != importTypes.end();
+}
+
 }  // namespace
 
 DisplayedFilesModel::DisplayedFilesModel(QObject* parent)
@@ -177,13 +276,6 @@ QVariant DisplayedFilesModel::data(const QModelIndex& index, int roleAsInt) cons
     return {};
 }
 
-bool freecadCanOpen(const QString& extension)
-{
-    auto importTypes = App::GetApplication().getImportTypes();
-    return std::find(importTypes.begin(), importTypes.end(), extension.toStdString())
-        != importTypes.end();
-}
-
 void DisplayedFilesModel::addFile(const QString& filePath)
 {
     QFileInfo qfi(filePath);
@@ -194,7 +286,7 @@ void DisplayedFilesModel::addFile(const QString& filePath)
         return;
     }
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
-    if (qfi.completeSuffix() == QLatin1String("FCStd")) {
+    if (qfi.suffix().toLower() == QLatin1String("fcstd")) {
         auto thumbnail = loadFCStdThumbnail(filePath.toStdString());
         if (!thumbnail.isEmpty()) {
             _imageCache.insert(filePath, thumbnail);

@@ -70,8 +70,16 @@ class ifc_vp_object:
                 obj.ViewObject.DiffuseColor = colors
 
     def getIcon(self):
-        if self.Object.IfcClass == "IfcGroup":
-            from PySide import QtGui
+        from PySide import QtCore, QtGui  # lazy import
+        
+        rclass = self.Object.IfcClass.replace("StandardCase","") 
+        ifcicon = ":/icons/IFC/" + rclass + ".svg"
+        if QtCore.QFile.exists(ifcicon):
+            if getattr(self, "ifcclass", "") != rclass:
+                self.ifcclass = rclass
+                self.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
+            return getattr(self, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
+        elif self.Object.IfcClass == "IfcGroup":
             return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
         elif self.Object.ShapeMode == "Shape":
             return ":/icons/IFC_object.svg"
@@ -89,6 +97,9 @@ class ifc_vp_object:
         from nativeifc import ifc_materials
         from PySide import QtCore, QtGui  # lazy import
 
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         icon = QtGui.QIcon(":/icons/IFC.svg")
         element = ifc_tools.get_ifc_element(vobj.Object)
         ifc_menu = None
@@ -100,17 +111,17 @@ class ifc_vp_object:
                 FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
                 == vobj.Object
             ):
-                action_activate = QtGui.QAction(icon, "Deactivate container")
+                action_activate = QtGui.QAction(icon, "Deactivate container",menu)
             else:
-                action_activate = QtGui.QAction(icon, "Make active container")
+                action_activate = QtGui.QAction(icon, "Make active container",menu)
             action_activate.triggered.connect(self.activate)
             menu.addAction(action_activate)
         if self.hasChildren(vobj.Object):
-            action_expand = QtGui.QAction(icon, "Expand children")
+            action_expand = QtGui.QAction(icon, "Expand children",menu)
             action_expand.triggered.connect(self.expandChildren)
             actions.append(action_expand)
         if vobj.Object.Group:
-            action_shrink = QtGui.QAction(icon, "Collapse children")
+            action_shrink = QtGui.QAction(icon, "Collapse children",menu)
             action_shrink.triggered.connect(self.collapseChildren)
             actions.append(action_shrink)
         if vobj.Object.ShapeMode == "Shape":
@@ -121,22 +132,22 @@ class ifc_vp_object:
         action_shape.triggered.connect(self.switchShape)
         actions.append(action_shape)
         if vobj.Object.ShapeMode == "None":
-            action_coin = QtGui.QAction(icon, "Load representation")
+            action_coin = QtGui.QAction(icon, "Load representation",menu)
             action_coin.triggered.connect(self.switchCoin)
             actions.append(action_coin)
         if element and ifc_tools.has_representation(element):
-            action_geom = QtGui.QAction(icon, "Add geometry properties")
+            action_geom = QtGui.QAction(icon, "Add geometry properties",menu)
             action_geom.triggered.connect(self.addGeometryProperties)
             actions.append(action_geom)
-        action_tree = QtGui.QAction(icon, "Show geometry tree")
+        action_tree = QtGui.QAction(icon, "Show geometry tree",menu)
         action_tree.triggered.connect(self.showTree)
         actions.append(action_tree)
         if ifc_psets.has_psets(self.Object):
-            action_props = QtGui.QAction(icon, "Expand property sets")
+            action_props = QtGui.QAction(icon, "Expand property sets",menu)
             action_props.triggered.connect(self.showProps)
             actions.append(action_props)
         if ifc_materials.get_material(self.Object):
-            action_material = QtGui.QAction(icon, "Load material")
+            action_material = QtGui.QAction(icon, "Load material",menu)
             action_material.triggered.connect(self.addMaterial)
             actions.append(action_material)
         if actions:
@@ -148,7 +159,7 @@ class ifc_vp_object:
 
         # generic actions
         ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
-        action_group = QtGui.QAction(ficon, "Create group...")
+        action_group = QtGui.QAction(ficon, "Create group...",menu)
         action_group.triggered.connect(self.createGroup)
         menu.addAction(action_group)
 
@@ -396,6 +407,9 @@ class ifc_vp_document(ifc_vp_object):
 
         from PySide import QtCore, QtGui  # lazy import
 
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         ifc_menu = super().setupContextMenu(vobj, menu)
         if not ifc_menu:
             ifc_menu = menu
@@ -426,10 +440,11 @@ class ifc_vp_document(ifc_vp_object):
 
         from nativeifc import ifc_tools  # lazy import
 
-        get_filepath(self.Object)
-        ifc_tools.save(self.Object)
-        self.replace_file(self.Object, sf)
-        self.Object.Document.recompute()
+        sf = get_filepath(self.Object)
+        if sf:
+            ifc_tools.save(self.Object)
+            self.replace_file(self.Object, sf)
+            self.Object.Document.recompute()
 
     def replace_file(self, obj, newfile):
         """Asks the user if the attached file path needs to be replaced"""
@@ -575,6 +590,9 @@ class ifc_vp_material:
         from nativeifc import ifc_psets
         from PySide import QtCore, QtGui  # lazy import
 
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if ifc_psets.has_psets(self.Object):
             action_props = QtGui.QAction(icon, "Expand property sets", menu)
@@ -634,5 +652,5 @@ def get_filepath(project):
         if not sf.lower().endswith(".ifc"):
             sf += ".ifc"
         project.IfcFilePath = sf
-        return True
-    return False
+        return sf
+    return None

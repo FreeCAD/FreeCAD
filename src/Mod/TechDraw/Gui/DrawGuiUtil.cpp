@@ -164,7 +164,7 @@ void DrawGuiUtil::loadLineStandardsChoices(QComboBox* combo)
     combo->clear();
     std::vector<std::string> choices = LineGenerator::getAvailableLineStandards();
     for (auto& entry : choices) {
-        QString qentry = Base::Tools::fromStdString(entry);
+        QString qentry = QString::fromStdString(entry);
         combo->addItem(qentry);
     }
 }
@@ -201,7 +201,7 @@ void DrawGuiUtil::loadLineGroupChoices(QComboBox* combo)
     std::stringstream ss(lgRecord);
     std::vector<QString> lgNames;
     while (std::getline(ss, lgRecord, ',')) {
-        lgNames.push_back(Base::Tools::fromStdString(lgRecord));
+        lgNames.push_back(QString::fromStdString(lgRecord));
     }
     // fill the combobox with the found names
     for (auto& name : lgNames) {

@@ -74,19 +74,28 @@ class CommandCreateView:
         if not assembly:
             return
 
-        self.panel = TaskAssemblyCreateView()
-        Gui.Control.showDialog(self.panel)
+        Gui.addModule("CommandCreateView")  # NOLINT
+        Gui.doCommand("panel = CommandCreateView.TaskAssemblyCreateView()")
+        self.panel = Gui.doCommandEval("panel")
+        Gui.doCommandGui("Gui.Control.showDialog(panel)")
 
 
 ######### Exploded View Object ###########
 class ExplodedView:
     def __init__(self, expView):
-        expView.addProperty(
-            "App::PropertyLinkList", "Moves", "Exploded View", "Move objects of the exploded view."
-        )
         expView.Proxy = self
+        expView.addExtension("App::GroupExtensionPython")
 
         self.stepsChangedCallback = None
+
+    def onDocumentRestored(self, expView):
+        self.migrationScript(expView)
+
+    def migrationScript(self, expView):
+        if hasattr(expView, "Moves"):
+            expView.addExtension("App::GroupExtensionPython")
+            expView.Group = expView.Moves
+            expView.removeProperty("Moves")
 
     def dumps(self):
         return None
@@ -95,7 +104,7 @@ class ExplodedView:
         return None
 
     def onChanged(self, viewObj, prop):
-        if prop == "Moves" and hasattr(self, "stepsChangedCallback"):
+        if prop == "Group" and hasattr(self, "stepsChangedCallback"):
             if self.stepsChangedCallback is not None:
                 self.stepsChangedCallback()
 
@@ -111,7 +120,7 @@ class ExplodedView:
         positions = []  # [[p1start, p1end], [p2start, p2end], ...]
         if com is None:
             com, size = UtilsAssembly.getComAndSize(self.getAssembly(viewObj))
-        for move in viewObj.Moves:
+        for move in viewObj.Group:
             positions = positions + move.Proxy.applyStep(move, com, size)
 
         return positions
@@ -190,7 +199,7 @@ class ViewProviderExplodedView:
         return None
 
     def claimChildren(self):
-        return self.app_obj.Moves
+        return self.app_obj.Group
 
     def doubleClicked(self, vobj):
         task = Gui.Control.activeTaskDialog()
@@ -440,7 +449,7 @@ class ExplodedViewSelGate:
             # Objects within the assembly.
             return True
 
-        if obj in self.viewObj.Moves:
+        if obj in self.viewObj.Group:
             # Enable selection of steps object
             return True
 
@@ -493,7 +502,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         if viewObj:
             App.setActiveTransaction("Edit Exploded View")
             self.viewObj = viewObj
-            for move in self.viewObj.Moves:
+            for move in self.viewObj.Group:
                 move.Visibility = True
             self.onMovesChanged()
 
@@ -522,8 +531,13 @@ class TaskAssemblyCreateView(QtCore.QObject):
     def accept(self):
         self.deactivate()
         UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
-        for move in self.viewObj.Moves:
+        for move in self.viewObj.Group:
             move.Visibility = False
+        commands = ""
+        for move in self.viewObj.Group:
+            more = UtilsAssembly.generatePropertySettings(move)
+            commands = commands + more
+        Gui.doCommand(commands[:-1])  # Don't use the last \n
         App.closeActiveTransaction()
         return True
 
@@ -627,7 +641,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.viewObj.Proxy.applyMoves(self.viewObj, self.com, self.size)
 
         self.form.stepList.clear()
-        for move in self.viewObj.Moves:
+        for move in self.viewObj.Group:
             self.form.stepList.addItem(move.Name)
 
     def onItemClicked(self, item):
@@ -695,16 +709,27 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.blockDraggerMove = False
 
     def createExplodedViewObject(self):
-        view_group = UtilsAssembly.getViewGroup(self.assembly)
-        self.viewObj = view_group.newObject("App::FeaturePython", "Exploded View")
 
-        ExplodedView(self.viewObj)
-        ViewProviderExplodedView(self.viewObj.ViewObject)
+        Gui.addModule("UtilsAssembly")
+        commands = (
+            f'assembly = App.ActiveDocument.getObject("{self.assembly.Name}")\n'
+            "view_group = UtilsAssembly.getViewGroup(assembly)\n"
+            'viewObj = view_group.newObject("App::FeaturePython", "Exploded View")\n'
+            "CommandCreateView.ExplodedView(viewObj)"
+        )
+        Gui.doCommand(commands)
+        self.viewObj = Gui.doCommandEval("viewObj")
+        Gui.doCommandGui("CommandCreateView.ViewProviderExplodedView(viewObj.ViewObject)")
 
     def createExplodedStepObject(self, moveType_index=0):
-        self.currentStep = self.assembly.newObject("App::FeaturePython", "Move")
-        ExplodedViewStep(self.currentStep, moveType_index)
-        ViewProviderExplodedViewStep(self.currentStep.ViewObject)
+        commands = (
+            f'assembly = App.ActiveDocument.getObject("{self.assembly.Name}")\n'
+            'currentStep = assembly.newObject("App::FeaturePython", "Move")\n'
+            f"CommandCreateView.ExplodedViewStep(currentStep, {moveType_index})"
+        )
+        Gui.doCommand(commands)
+        self.currentStep = Gui.doCommandEval("currentStep")
+        Gui.doCommandGui("CommandCreateView.ViewProviderExplodedViewStep(currentStep.ViewObject)")
 
         self.currentStep.MovementTransform = App.Placement()
 
@@ -715,10 +740,10 @@ class TaskAssemblyCreateView(QtCore.QObject):
             listOfSubs.append(ref[1][0])
         self.currentStep.References = [self.selectedRefs[0][0], listOfSubs]
 
-        # Note: self.viewObj.Moves.append(self.currentStep) does not work
-        listOfMoves = self.viewObj.Moves
+        # Note: self.viewObj.Group.append(self.currentStep) does not work
+        listOfMoves = self.viewObj.Group
         listOfMoves.append(self.currentStep)
-        self.viewObj.Moves = listOfMoves
+        self.viewObj.Group = listOfMoves
 
     def dismissCurrentStep(self):
         if self.currentStep is None:
@@ -727,7 +752,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         for obj, init_plc in zip(self.selectedObjs, self.selectedObjsInitPlc):
             obj.Placement = init_plc
 
-        self.currentStep.Document.removeObject(self.currentStep.Name)
+        Gui.doCommand(f'App.ActiveDocument.removeObject("{self.currentStep.Name}")')
         self.currentStep = None
 
         Gui.Selection.clearSelection()
@@ -826,10 +851,10 @@ class TaskAssemblyCreateView(QtCore.QObject):
                     sorted_indexes = sorted(selected_indexes, key=lambda x: x.row(), reverse=True)
                     for index in sorted_indexes:
                         row = index.row()
-                        if row < len(self.viewObj.Moves):
-                            move = self.viewObj.Moves[row]
+                        if row < len(self.viewObj.Group):
+                            move = self.viewObj.Group[row]
                             # First remove the link from the viewObj
-                            self.viewObj.Moves.remove(move)
+                            self.viewObj.Group.remove(move)
                             # Delete the object
                             move.Document.removeObject(move.Name)
 

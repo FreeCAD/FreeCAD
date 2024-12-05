@@ -44,6 +44,7 @@
 #include "EditModeGeometryCoinConverter.h"
 #include "EditModeGeometryCoinManager.h"
 #include "ViewProviderSketchCoinAttorney.h"
+#include "Mod/Sketcher/App/ExternalGeometryFacade.h"
 
 
 using namespace SketcherGui;
@@ -401,6 +402,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                     ViewProviderSketchCoinAttorney::isCurveSelected(viewProvider, GeoId);
                 bool preselected = (preselectcurve == GeoId);
                 bool constrainedElement = isFullyConstraintElement(GeoId);
+                bool isExternal = GeoId < -1;
 
                 if (selected || preselected) {
                     color[i] = selected ? (preselected ? drawingParameters.PreselectSelectedColor
@@ -413,8 +415,16 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                             SbVec3f(x, y, viewOrientationFactor * drawingParameters.zHighLine);
                     }
                 }
-                else if (geometryLayerParameters.isExternalSubLayer(t)) {
-                    color[i] = drawingParameters.CurveExternalColor;
+                else if (isExternal) {
+                    auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
+                    auto egf = ExternalGeometryFacade::getFacade(geom->clone());
+                    auto ref = egf->getRef();
+                    if (egf->testFlag(ExternalGeometryExtension::Missing)) {
+                        color[i] = drawingParameters.InvalidSketchColor;
+                    }
+                    else {
+                        color[i] = drawingParameters.CurveExternalColor;
+                    }
                     for (int k = j; j < k + indexes; j++) {
                         verts[j].getValue(x, y, z);
                         verts[j] = SbVec3f(x, y, viewOrientationFactor * zExtLine);

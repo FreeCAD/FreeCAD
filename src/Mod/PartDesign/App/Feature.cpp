@@ -32,11 +32,11 @@
 # include <TopoDS.hxx>
 #endif
 
+#include "App/OriginFeature.h"
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/FeaturePythonPyImp.h>
 #include <App/ElementNamingUtils.h>
-#include "App/OriginFeature.h"
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Console.h>
 
 #include "Feature.h"
@@ -49,6 +49,14 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 namespace PartDesign {
 
+bool getPDRefineModelParameter()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    return hGrp->GetBool("RefineModel", true);
+}
+
+// ------------------------------------------------------------------------------------------------
 
 PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 
@@ -66,6 +74,8 @@ Feature::Feature()
 
 App::DocumentObjectExecReturn* Feature::recompute()
 {
+    setMaterialToBodyMaterial();
+
     SuppressedShape.setValue(TopoShape());
 
     if (!Suppressed.getValue()) {
@@ -95,6 +105,18 @@ App::DocumentObjectExecReturn* Feature::recompute()
         Shape.setValue(getBaseTopoShape(true));
     }
     return App::DocumentObject::StdReturn;
+}
+
+void Feature::setMaterialToBodyMaterial()
+{
+    auto body = getFeatureBody();
+    if (body) {
+        // Ensure the part has the same material as the body
+        auto feature = dynamic_cast<Part::Feature*>(body);
+        if (feature) {
+            copyMaterial(feature);
+        }
+    }
 }
 
 void Feature::updateSuppressedShape()
@@ -128,7 +150,7 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-TopoShape Feature::getSolid(const TopoShape& shape)
+TopoShape Feature::getSolid(const TopoShape& shape) const
 {
     if (shape.isNull()) {
         throw Part::NullShapeException("Null shape");
@@ -166,6 +188,14 @@ void Feature::onChanged(const App::Property *prop)
                         body->insertObject(BaseFeature.getValue(), this);
                 }
             }
+        } else if (prop == &ShapeMaterial) {
+            auto body = Body::findBodyOf(this);
+            if (body) {
+                if (body->ShapeMaterial.getValue().getUUID()
+                    != ShapeMaterial.getValue().getUUID()) {
+                    body->ShapeMaterial.setValue(ShapeMaterial.getValue());
+                }
+            }
         }
     }
     Part::Feature::onChanged(prop);
@@ -196,7 +226,7 @@ bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_Shape
 }
 
 
-Feature::SingleSolidRuleMode Feature::singleSolidRuleMode()
+Feature::SingleSolidRuleMode Feature::singleSolidRuleMode() const
 {
     auto body = getFeatureBody();
 
@@ -375,7 +405,7 @@ Body* Feature::getFeatureBody() const {
     return nullptr;
 }
 
-App::DocumentObject *Feature::getSubObject(const char *subname, 
+App::DocumentObject *Feature::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     if (subname && subname != Data::findElementName(subname)) {
@@ -400,7 +430,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
                         // an inverse transform.
                         _mat = Placement.getValue().inverse().toMatrix();
                         if (pmat)
-                            *pmat *= _mat; 
+                            *pmat *= _mat;
                         else
                             pmat = &_mat;
                     }

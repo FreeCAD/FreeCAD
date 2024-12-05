@@ -355,7 +355,7 @@ def assign_groups(children):
 
 
 def get_children(
-    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False
+    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False, iftype=None
 ):
     """Returns the direct descendants of an object"""
 
@@ -373,9 +373,12 @@ def get_children(
             children.extend([rel.RelatedOpeningElement])
         for rel in getattr(ifcentity, "HasFillings", []):
             children.extend([rel.RelatedBuildingElement])
-    return filter_elements(
+    result = filter_elements(
         children, ifcfile, expand=expand, spaces=True, assemblies=assemblies
     )
+    if iftype:
+        result = [r for r in result if r.is_a(ifctype)]
+    return result
 
 
 def get_object(element, document=None):
@@ -411,6 +414,8 @@ def get_ifcfile(obj):
             if getattr(project, "Proxy", None):
                 project.Proxy.ifcfile = ifcfile
             return ifcfile
+        else:
+            FreeCAD.Console.PrintError("Error: No IFC file attached to this project")
     return None
 
 
@@ -667,7 +672,11 @@ def get_ifc_element(obj, ifcfile=None):
     if not ifcfile:
         ifcfile = get_ifcfile(obj)
     if ifcfile and hasattr(obj, "StepId"):
-        return ifcfile.by_id(obj.StepId)
+        try:
+            return ifcfile.by_id(obj.StepId)
+        except RuntimeError:
+            # entity not found
+            pass
     return None
 
 
@@ -738,6 +747,21 @@ def set_attribute(ifcfile, element, attribute, value):
 
     # This function can become pure IFC
 
+    def differs(val1, val2):
+        if val1 == val2:
+            return False
+        if not val1 and not val2:
+            return False
+        if val1 is None and "NOTDEFINED" in str(val2).upper():
+            return False
+        if val1 is None and "UNDEFINED" in str(val2).upper():
+            return False
+        if val2 is None and "NOTDEFINED" in str(val1).upper():
+            return False
+        if val2 is None and "UNDEFINED" in str(val1).upper():
+            return False
+        return True
+
     if not ifcfile or not element:
         return False
     if isinstance(value, FreeCAD.Units.Quantity):
@@ -767,7 +791,7 @@ def set_attribute(ifcfile, element, attribute, value):
         ):
             # do not consider default FreeCAD names given to unnamed alements
             return False
-        if getattr(element, attribute) != value:
+        if differs(getattr(element, attribute, None),value):
             FreeCAD.Console.PrintLog(
                 "Changing IFC attribute value of "
                 + str(attribute)
@@ -784,27 +808,36 @@ def set_colors(obj, colors):
     """Sets the given colors to an object"""
 
     if FreeCAD.GuiUp and colors:
+        try:
+            vobj = obj.ViewObject
+        except ReferenceError:
+            # Object was probably deleted
+            return
         # ifcopenshell issues (-1,-1,-1) colors if not set
         if isinstance(colors[0], (tuple, list)):
             colors = [tuple([abs(d) for d in c]) for c in colors]
         else:
             colors = [abs(c) for c in colors]
-        if hasattr(obj.ViewObject, "ShapeColor"):
-            if isinstance(colors[0], (tuple, list)):
-                obj.ViewObject.ShapeColor = colors[0][:3]
-                if len(colors[0]) > 3:
-                    obj.ViewObject.Transparency = int(colors[0][3] * 100)
-            else:
-                obj.ViewObject.ShapeColor = colors[:3]
-                if len(colors) > 3:
-                    obj.ViewObject.Transparency = int(colors[3] * 100)
-        if hasattr(obj.ViewObject, "DiffuseColor"):
-            # strip out transparency value because it currently gives ugly
-            # results in FreeCAD when combining transparent and non-transparent objects
-            if all([len(c) > 3 and c[3] != 0 for c in colors]):
-                obj.ViewObject.DiffuseColor = colors
-            else:
-                obj.ViewObject.DiffuseColor = [c[:3] for c in colors]
+        if hasattr(vobj, "ShapeColor"):
+            # 1.0 materials
+            if not isinstance(colors[0], (tuple, list)):
+                colors = [colors]
+            # set the first color to opaque otherwise it spoils object transparency
+            if len(colors) > 1:
+                #colors[0] = colors[0][:3] + (0.0,)
+                # TEMP HACK: if multiple colors, set everything to opaque because it looks wrong
+                colors = [color[:3] + (0.0,) for color in colors]
+            sapp = []
+            for color in colors:
+                sapp_mat = FreeCAD.Material()
+                if len(color) < 4:
+                    sapp_mat.DiffuseColor = color + (1.0,)
+                else:
+                    sapp_mat.DiffuseColor = color[:3] + (1.0 - color[3],)
+                sapp_mat.Transparency = color[3] if len(color) > 3 else 0.0
+                sapp.append(sapp_mat)
+            #print(vobj.Object.Label,[[m.DiffuseColor,m.Transparency] for m in sapp])
+            vobj.ShapeAppearance = sapp
 
 
 def get_body_context_ids(ifcfile):
@@ -849,9 +882,15 @@ def get_freecad_matrix(ios_matrix):
 
     # https://github.com/IfcOpenShell/IfcOpenShell/issues/1440
     # https://pythoncvc.net/?cat=203
+    # https://github.com/IfcOpenShell/IfcOpenShell/issues/4832#issuecomment-2158583873
     m_l = list()
     for i in range(3):
-        line = list(ios_matrix[i::3])
+        if len(ios_matrix) == 16:
+            # IfcOpenShell 0.8
+            line = list(ios_matrix[i::4])
+        else:
+            # IfcOpenShell 0.7
+            line = list(ios_matrix[i::3])
         line[-1] *= SCALE
         m_l.extend(line)
     return FreeCAD.Matrix(*m_l)
@@ -940,14 +979,17 @@ def save(obj, filepath=None):
     obj.Modified = False
 
 
-def aggregate(obj, parent):
-    """Takes any FreeCAD object and aggregates it to an existing IFC object"""
+def aggregate(obj, parent, mode=None):
+    """Takes any FreeCAD object and aggregates it to an existing IFC object.
+    Mode can be 'opening' to force-create a subtraction"""
 
     proj = get_project(parent)
     if not proj:
         FreeCAD.Console.PrintError("The parent object is not part of an IFC project\n")
         return
     ifcfile = get_ifcfile(proj)
+    if not ifcfile:
+        return
     product = None
     stepid = getattr(obj, "StepId", None)
     if stepid:
@@ -964,11 +1006,14 @@ def aggregate(obj, parent):
         newobj = obj
         new = False
     else:
-        product = create_product(obj, parent, ifcfile)
+        ifcclass = None
+        if mode == "opening":
+            ifcclass = "IfcOpeningElement"
+        product = create_product(obj, parent, ifcfile, ifcclass)
         shapemode = getattr(parent, "ShapeMode", DEFAULT_SHAPEMODE)
         newobj = create_object(product, obj.Document, ifcfile, shapemode)
         new = True
-    create_relationship(obj, newobj, parent, product, ifcfile)
+    create_relationship(obj, newobj, parent, product, ifcfile, mode)
     base = getattr(obj, "Base", None)
     if base:
         # make sure the base is used only by this object before deleting
@@ -985,6 +1030,13 @@ def aggregate(obj, parent):
             layer = FreeCAD.ActiveDocument.getObject(autogroup)
             if hasattr(layer, "StepId"):
                 ifc_layers.add_to_layer(newobj, layer)
+    # aggregate dependent objects
+    for child in obj.InList:
+        if hasattr(child,"Host") and child.Host == obj:
+            aggregate(child, newobj)
+        elif hasattr(child,"Hosts") and obj in child.Hosts:
+            #op = create_product(child, newobj, ifcfile, ifcclass="IfcOpeningElement")
+            aggregate(child, newobj)
     delete = not (PARAMS.GetBool("KeepAggregated", False))
     if new and delete and base:
         obj.Document.removeObject(base.Name)
@@ -1018,7 +1070,7 @@ def create_product(obj, parent, ifcfile, ifcclass=None):
     description = getattr(obj, "Description", None)
     if not ifcclass:
         ifcclass = get_ifctype(obj)
-    representation, placement = create_representation(obj, ifcfile)
+    representation, placement, shapetype = create_representation(obj, ifcfile)
     product = api_run("root.create_entity", ifcfile, ifc_class=ifcclass, name=name)
     set_attribute(ifcfile, product, "Description", description)
     set_attribute(ifcfile, product, "ObjectPlacement", placement)
@@ -1026,7 +1078,26 @@ def create_product(obj, parent, ifcfile, ifcclass=None):
     # IfcProductDefinitionShape already and not an IfcShapeRepresentation
     # api_run("geometry.assign_representation", ifcfile, product=product, representation=representation)
     set_attribute(ifcfile, product, "Representation", representation)
-    # TODO treat subtractions/additions
+    # additions
+    if hasattr(obj,"Additions") and shapetype in ["extrusion","no shape"]:
+        for addobj in obj.Additions:
+            r2,p2,c2 = create_representation(addobj, ifcfile)
+            cl2 = get_ifctype(addobj)
+            addprod = api_run("root.create_entity", ifcfile, ifc_class=cl2, name=addobj.Label)
+            set_attribute(ifcfile, addprod, "Description", getattr(addobj, "Description", ""))
+            set_attribute(ifcfile, addprod, "ObjectPlacement", p2)
+            set_attribute(ifcfile, addprod, "Representation", r2)
+            create_relationship(None, addobj, product, addprod, ifcfile)
+    # subtractions
+    if hasattr(obj,"Subtractions") and shapetype in ["extrusion","no shape"]:
+        for subobj in obj.Subtractions:
+            r3,p3,c3 = create_representation(subobj, ifcfile)
+            cl3 = "IfcOpeningElement"
+            subprod = api_run("root.create_entity", ifcfile, ifc_class=cl3, name=subobj.Label)
+            set_attribute(ifcfile, subprod, "Description", getattr(subobj, "Description", ""))
+            set_attribute(ifcfile, subprod, "ObjectPlacement", p3)
+            set_attribute(ifcfile, subprod, "Representation", r3)
+            create_relationship(None, subobj, product, subprod, ifcfile)
     return product
 
 
@@ -1047,18 +1118,12 @@ def create_representation(obj, ifcfile):
     exportIFC.surfstyles = {}
     exportIFC.shapedefs = {}
     exportIFC.ifcopenshell = ifcopenshell
-    try:
-        exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
-    except:
-        FreeCAD.Console.PrintError(
-            "ERROR: You need a more recent version of FreeCAD >= 0.20.3\n"
-        )
-        return
+    exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
     prefs, context = get_export_preferences(ifcfile)
     representation, placement, shapetype = exportIFC.getRepresentation(
         ifcfile, context, obj, preferences=prefs
     )
-    return representation, placement
+    return representation, placement, shapetype
 
 
 def get_ifctype(obj):
@@ -1096,12 +1161,12 @@ def get_subvolume(obj):
 
     tempface = None
     tempobj = None
-    subvolume = None
+    tempshape = None
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "getSubVolume"):
         tempshape = obj.Proxy.getSubVolume(obj)
     elif hasattr(obj, "Subvolume") and obj.Subvolume:
         tempshape = obj.Subvolume
-    if subvolume:
+    if tempshape:
         if len(tempshape.Faces) == 6:
             # We assume the standard output of ArchWindows
             faces = sorted(tempshape.Faces, key=lambda f: f.CenterOfMass.z)
@@ -1117,20 +1182,30 @@ def get_subvolume(obj):
         else:
             tempobj = obj.Document.addObject("Part::Feature", "Opening")
             tempobj.Shape = tempshape
+    if tempobj:
+        tempobj.recompute()
     return tempface, tempobj
 
 
-def create_relationship(old_obj, obj, parent, element, ifcfile):
+def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
     """Creates a relationship between an IFC object and a parent IFC object"""
 
-    parent_element = get_ifc_element(parent)
+    if isinstance(parent, FreeCAD.DocumentObject):
+        parent_element = get_ifc_element(parent)
+    else:
+        parent_element = parent
     # case 1: element inside spatiual structure
     if parent_element.is_a("IfcSpatialStructureElement") and element.is_a("IfcElement"):
         # first remove the FreeCAD object from any parent
-        for old_par in old_obj.InList:
-            if hasattr(old_par, "Group") and old_obj in old_par.Group:
-                old_par.Group = [o for o in old_par.Group if o != old_obj]
-        api_run("spatial.unassign_container", ifcfile, product=element)
+        if old_obj:
+            for old_par in old_obj.InList:
+                if hasattr(old_par, "Group") and old_obj in old_par.Group:
+                    old_par.Group = [o for o in old_par.Group if o != old_obj]
+            try:
+                api_run("spatial.unassign_container", ifcfile, products=[element])
+            except:
+                # older version of IfcOpenShell
+                api_run("spatial.unassign_container", ifcfile, product=element)
         if element.is_a("IfcOpeningElement"):
             uprel = api_run(
                 "void.add_opening",
@@ -1139,38 +1214,62 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                 element=parent_element,
             )
         else:
-            uprel = api_run(
-                "spatial.assign_container",
-                ifcfile,
-                product=element,
-                relating_structure=parent_element,
-            )
-    # case 2: dooe/window inside element
+            try:
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    products=[element],
+                    relating_structure=parent_element,
+                )
+            except:
+                # older version of ifcopenshell
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    product=element,
+                    relating_structure=parent_element,
+                )
+    # case 2: door/window inside element
     # https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/annex/annex-e/wall-with-opening-and-window.htm
     elif parent_element.is_a("IfcElement") and element.is_a() in [
         "IfcDoor",
         "IfcWindow",
     ]:
-        tempface, tempobj = get_subvolume(old_obj)
-        if tempobj:
-            opening = create_product(tempobj, parent, ifcfile, "IfcOpeningElement")
-            old_obj.Document.removeObject(tempobj.Name)
-            if tempface:
-                old_obj.Document.removeObject(tempface.Name)
-            api_run(
-                "void.add_opening", ifcfile, opening=opening, element=parent_element
-            )
-            api_run("void.add_filling", ifcfile, opening=opening, element=element)
+        if old_obj:
+            tempface, tempobj = get_subvolume(old_obj)
+            if tempobj:
+                opening = create_product(tempobj, parent, ifcfile, "IfcOpeningElement")
+                set_attribute(ifcfile, product, "Name", "Opening")
+                old_obj.Document.removeObject(tempobj.Name)
+                if tempface:
+                    old_obj.Document.removeObject(tempface.Name)
+                api_run(
+                    "void.add_opening", ifcfile, opening=opening, element=parent_element
+                )
+                api_run("void.add_filling", ifcfile, opening=opening, element=element)
         # windows must also be part of a spatial container
-        api_run("spatial.unassign_container", ifcfile, product=element)
+        try:
+            api_run("spatial.unassign_container", ifcfile, products=[element])
+        except:
+            # old version of IfcOpenShell
+            api_run("spatial.unassign_container", ifcfile, product=element)
         if parent_element.ContainedInStructure:
             container = parent_element.ContainedInStructure[0].RelatingStructure
-            uprel = api_run(
-                "spatial.assign_container",
-                ifcfile,
-                product=element,
-                relating_structure=container,
-            )
+            try:
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    products=[element],
+                    relating_structure=container,
+                )
+            except:
+                # old version of IfcOpenShell
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    product=element,
+                    relating_structure=container,
+                )
         elif parent_element.Decomposes:
             container = parent_element.Decomposes[0].RelatingObject
             try:
@@ -1188,6 +1287,12 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                     product=element,
                     relating_object=container,
                 )
+    # case 4: void element
+    elif (parent_element.is_a("IfcElement") and element.is_a("IfcOpeningElement"))\
+    or (mode == "opening"):
+        uprel = api_run(
+            "void.add_opening", ifcfile, opening=element, element=parent_element
+        )
     # case 3: element aggregated inside other element
     else:
         try:
@@ -1210,7 +1315,7 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                 product=element,
                 relating_object=parent_element,
             )
-    if hasattr(parent.Proxy, "addObject"):
+    if hasattr(parent, "Proxy") and hasattr(parent.Proxy, "addObject"):
         parent.Proxy.addObject(parent, obj)
     return uprel
 

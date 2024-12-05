@@ -30,11 +30,28 @@ Note: Not implemented.</UserDocu>
     <Methode Name="getGlobalPlacement">
       <Documentation>
         <UserDocu>getGlobalPlacement() -> Base.Placement
+Deprecated: This function does not handle Links correctly. Use getGlobalPlacementOf instead.
 
 Returns the placement of the object in the global coordinate space, respecting all stacked
 relationships.
 Note: This function is not available during recompute, as there the placements of parents
 can change after the execution of this object, rendering the result wrong.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getGlobalPlacementOf" Static="true">
+      <Documentation>
+        <UserDocu>getGlobalPlacementOf(targetObj, rootObj, subname) -> Base.Placement
+Selection example: obj = "part1" sub = "linkToPart2.LinkToBody.Pad.face1"
+
+Global placement of Pad in this context :
+getGlobalPlacementOf(pad, part1, "linkToPart2.LinkToBody.Pad.face1")
+
+Global placement of linkToPart2 in this context :
+getGlobalPlacementOf(linkToPart2, part1, "linkToPart2.LinkToBody.Pad.face1")
+
+Returns the placement of the object in the global coordinate space, respecting all stacked
+relationships.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getPropertyNameOfGeometry">

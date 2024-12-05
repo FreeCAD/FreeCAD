@@ -98,11 +98,6 @@ lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="coarsen">
-			<Documentation>
-				<UserDocu>Coarse the mesh</UserDocu>
-			</Documentation>
-		</Methode>
 		<Methode Name="translate">
 			<Documentation>
 				<UserDocu>Apply a translation to the mesh</UserDocu>

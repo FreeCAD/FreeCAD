@@ -147,10 +147,9 @@ class _Fence(ArchComponent.Component):
         obj.Shape = compound
 
     def calculateNumberOfSections(self, pathLength, sectionLength, postLength):
-        withoutLastPost = pathLength - postLength
         realSectionLength = sectionLength + postLength
 
-        return math.ceil(withoutLastPost / realSectionLength)
+        return math.ceil(pathLength / realSectionLength)
 
     def calculatePostPlacements(self, obj, pathwire, rotation):
         postWidth = obj.Post.Shape.BoundBox.YMax
@@ -159,7 +158,7 @@ class _Fence(ArchComponent.Component):
         transformationVector = FreeCAD.Vector(0, - postWidth / 2, 0)
 
         return patharray.placements_on_path(rotation, pathwire,
-                                            obj.NumberOfSections + 1,
+                                            obj.NumberOfPosts,
                                             transformationVector, True)
 
     def calculatePosts(self, obj, postPlacements):
@@ -204,11 +203,12 @@ class _Fence(ArchComponent.Component):
 
             sectionCopy = obj.Section.Shape.copy()
 
-            if sectionLength > sectionLine.length():
+            if sectionLength > sectionLine.length() - postLength:
                 # Part.show(Part.Shape([sectionLine]), 'line')
                 sectionCopy = self.clipSection(
                     sectionCopy, sectionLength, sectionLine.length() - postLength)
 
+            sectionCopy = Part.Compound([sectionCopy])  # nest in compound to ensure correct Placement
             sectionCopy.Placement = placement
 
             shapes.append(sectionCopy)

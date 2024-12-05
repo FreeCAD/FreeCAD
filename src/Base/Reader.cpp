@@ -181,6 +181,8 @@ bool Base::XMLReader::read()
 void Base::XMLReader::readElement(const char* ElementName)
 {
     bool ok {};
+
+    endCharStream();
     int currentLevel = Level;
     std::string currentName = LocalName;
     do {
@@ -248,6 +250,8 @@ bool Base::XMLReader::isEndOfDocument() const
 
 void Base::XMLReader::readEndElement(const char* ElementName, int level)
 {
+    endCharStream();
+
     // if we are already at the end of the current element
     if ((ReadType == EndElement || ReadType == StartEndElement) && ElementName
         && LocalName == ElementName && (level < 0 || level == Level)) {
@@ -433,6 +437,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // failure.
                 Base::Console().Error("Reading failed from embedded file: %s\n",
                                       entry->toString().c_str());
+                FailedFiles.push_back(jt->FileName);
             }
             // Go to the next registered file name
             it = jt + 1;
@@ -466,6 +471,12 @@ const char* Base::XMLReader::addFile(const char* Name, Base::Persistence* Object
 const std::vector<std::string>& Base::XMLReader::getFilenames() const
 {
     return FileNames;
+}
+
+bool Base::XMLReader::hasReadFailed(const std::string& filename) const
+{
+    auto it = std::find(FailedFiles.begin(), FailedFiles.end(), filename);
+    return (it != FailedFiles.end());
 }
 
 bool Base::XMLReader::isRegistered(Base::Persistence* Object) const

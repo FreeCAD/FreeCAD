@@ -220,6 +220,9 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of coin.SoNode failed");
+        }
         auto node = static_cast<SoNode*>(ptr);
         _viewer->setSceneGraph(node);
         return Py::None();
@@ -397,6 +400,9 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
         if(pynode!=Py_None) {
             void* ptr = nullptr;
             Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", pynode, &ptr, 0);
+            if (!ptr) {
+                throw Py::RuntimeError("Conversion of coin.SoNode failed");
+            }
             node = static_cast<SoNode*>(ptr);
         }
         _viewer->setupEditingRoot(node,mat);

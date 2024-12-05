@@ -389,11 +389,12 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             }
         }
     } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
+        // Toponaming 09/2024:  Original code has an infrastructure for document parameters we aren't bringing in:
         // if(App::DocumentParams::getWarnRecomputeOnRestore()) {
-        if( true ) {
-            FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
-            owner->getDocument()->addRecomputeObject(owner);
-        }
+        // However, this warning appeared on all files without element maps, and is now superseded by a user dialog
+        // after loading that is triggered by any call to addRecomputeObject()
+        // FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
+        owner->getDocument()->addRecomputeObject(owner);
     }
 
     if (!shape.isNull() || !_Shape.isNull()) {

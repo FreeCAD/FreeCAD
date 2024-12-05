@@ -51,6 +51,36 @@ else:
 translate = FreeCAD.Qt.translate
 
 
+def _caclulatePathDirection(mode, side):
+    """Calculates the path direction from cut mode and cut side"""
+    # NB: at the time of writing, we need py3.8 compat, thus not using py3.10 pattern machting
+    if mode == "Conventional" and side == "Inside":
+        return "CW"
+    elif mode == "Conventional" and side == "Outside":
+        return "CCW"
+    elif mode == "Climb" and side == "Inside":
+        return "CCW"
+    elif mode == "Climb" and side == "Outside":
+        return "CW"
+    else:
+        raise ValueError(f"No mapping for '{mode}'/'{side}'")
+
+
+def _caclulateCutMode(direction, side):
+    """Calculates the cut mode from path direction and cut side"""
+    # NB: at the time of writing, we need py3.8 compat, thus not using py3.10 pattern machting
+    if direction == "CW" and side == "Inside":
+        return "Conventional"
+    elif direction == "CW" and side == "Outside":
+        return "Climb"
+    elif direction == "CCW" and side == "Inside":
+        return "Climb"
+    elif direction == "CCW" and side == "Outside":
+        return "Conventional"
+    else:
+        raise ValueError(f"No mapping for '{direction}'/'{side}'")
+
+
 class ObjectHelix(PathCircularHoleBase.ObjectOp):
     """Proxy class for Helix operations."""
 
@@ -68,13 +98,17 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Direction": [
-                (translate("CAM_Helix", "Climb"), "Climb"),
-                (translate("CAM_Helix", "Conventional"), "Conventional"),
+                (translate("CAM_Helix", "CW"), "CW"),
+                (translate("CAM_Helix", "CCW"), "CCW"),
             ],  # this is the direction that the profile runs
             "StartSide": [
                 (translate("PathProfile", "Outside"), "Outside"),
                 (translate("PathProfile", "Inside"), "Inside"),
             ],  # side of profile that cutter is on in relation to direction of profile
+            "CutMode": [
+                (translate("CAM_Helix", "Climb"), "Climb"),
+                (translate("CAM_Helix", "Conventional"), "Conventional"),
+            ],  # whether the tool "rolls" with or against the feed direction along the profile
         }
 
         if dataType == "raw":
@@ -103,15 +137,28 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)",
+                "The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)",
             ),
         )
+        obj.setEditorMode("Direction", ["ReadOnly", "Hidden"])
+        obj.setPropertyStatus("Direction", ["ReadOnly", "Output"])
 
         obj.addProperty(
             "App::PropertyEnumeration",
             "StartSide",
             "Helix Drill",
             QT_TRANSLATE_NOOP("App::Property", "Start cutting from the inside or outside"),
+        )
+
+        # TODO: revise property description once v1.0 release string freeze is lifted
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "CutMode",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)",
+            ),
         )
 
         obj.addProperty(
@@ -163,9 +210,34 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 ),
             )
 
+        if not hasattr(obj, "CutMode"):
+            # TODO: consolidate the duplicate definitions from opOnDocumentRestored and
+            # initCircularHoleOperation once back on the main line
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "CutMode",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)",
+                ),
+            )
+            obj.CutMode = ["Climb", "Conventional"]
+            if obj.Direction in ["Climb", "Conventional"]:
+                # For some month, late in the v1.0 release cycle, we had the cut mode assigned
+                # to the direction (see PR#14364). Let's fix files created in this time as well.
+                new_dir = "CW" if obj.Direction == "Climb" else "CCW"
+                obj.Direction = ["CW", "CCW"]
+                obj.Direction = new_dir
+            obj.CutMode = _caclulateCutMode(obj.Direction, obj.StartSide)
+            obj.setEditorMode("Direction", ["ReadOnly", "Hidden"])
+            obj.setPropertyStatus("Direction", ["ReadOnly", "Output"])
+
     def circularHoleExecute(self, obj, holes):
         """circularHoleExecute(obj, holes) ... generate helix commands for each hole in holes"""
         Path.Log.track()
+        obj.Direction = _caclulatePathDirection(obj.CutMode, obj.StartSide)
+
         self.commandlist.append(Path.Command("(helix cut operation)"))
 
         self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
@@ -217,8 +289,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
+    """Returns property names for which the "Setup Sheet" should provide defaults."""
     setup = []
-    setup.append("Direction")
+    setup.append("CutMode")
     setup.append("StartSide")
     setup.append("StepOver")
     setup.append("StartRadius")

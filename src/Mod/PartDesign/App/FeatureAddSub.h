@@ -40,6 +40,11 @@ public:
         Subtractive
     };
 
+    enum class RefineErrorPolicy {
+        Raise = 0,
+        Warn
+    };
+
     FeatureAddSub();
 
     Type getAddSubType();
@@ -51,10 +56,15 @@ public:
     Part::PropertyPartShape   AddSubShape;
     App::PropertyBool Refine;
 
+
 protected:
     Type addSubType{Additive};
 
-   TopoShape refineShapeIfActive(const TopoShape&) const;
+    //store the shape before refinement
+    TopoShape rawShape;
+
+    bool onlyHasToRefine() const;
+    TopoShape refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError = RefineErrorPolicy::Raise) const;
 };
 
 using FeatureAddSubPython = App::FeaturePythonT<FeatureAddSub>;

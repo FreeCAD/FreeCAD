@@ -54,6 +54,9 @@ Defaults are to open the wiki in the desktop browser
 """
 
 import os
+import re
+import urllib.request
+import urllib.error
 import FreeCAD
 
 
@@ -101,7 +104,7 @@ def show(page, view=None, conv=None):
     """
 
     page = underscore_page(page)
-    location = get_location(page)
+    location, _pagename = get_location(page)
     FreeCAD.Console.PrintLog("Help: opening " + location + "\n")
     if not location:
         FreeCAD.Console.PrintError(LOCTXT + "\n")
@@ -109,7 +112,10 @@ def show(page, view=None, conv=None):
     md = get_contents(location)
     html = convert(md, conv)
     baseurl = get_uri(location)
-    pagename = os.path.basename(page.replace("_", " ").replace(".md", ""))
+    if _pagename != "":
+        pagename = _pagename
+    else:
+        pagename = os.path.basename(page.replace("_", " ").replace(".md", ""))
     title = translate("Help", "Help") + ": " + pagename
     if FreeCAD.GuiUp:
         if PREFS.GetBool("optionTab", False) and get_qtwebwidgets():
@@ -150,40 +156,77 @@ def get_uri(location):
     return baseurl
 
 
-def get_location(page):
-    """retrieves the location (online or offline) of a given page"""
+def location_url(url_localized: str, url_english: str) -> tuple:
+    """
+    Returns localized documentation url and page name, if they exist,
+    otherwise defaults to english version.
+    Page name is gotten from:
+      a) Name/* metadata tag on raw markdown files from github,
+         Wiki translators should make sure to add it.
+      b) <title> HTML tag
+    """
+    try:
+        req = urllib.request.Request(url_localized)
+        with urllib.request.urlopen(req) as response:
+            html = response.read().decode("utf-8")
+            if re.search(MD_RAW_URL, url_localized):
+                pagename_match = re.search(r"Name/.*?:\s*(.+)", html)
+            else:
+                # Pages from FreeCAD Wiki fall here
+                pagename_match = re.search(r"<title>(.*?) - .*?</title>", html)
+            if pagename_match is not None:
+                return (url_localized, pagename_match.group(1))
+            else:
+                return (url_localized, "")
+    except urllib.error.HTTPError as e:
+        return (url_english, "")
+
+
+def get_location(page) -> tuple:
+    """retrieves the location (online or offline) of a given page. Returns the location and the page name"""
 
     location = ""
     if page.startswith("http"):
-        return page
+        # NOTE: This gets activated when you open a link on the built-in browser, since
+        # we don't know the URL, using location_url() fallback to the HTML <title> tag
+        return location_url(page, page)
     if page.startswith("file://"):
-        return page[7:]
+        return (page[7:], "")
     # offline location
     if os.path.exists(page):
-        return page
+        return (page, "")
     page = page.replace(".md", "")
     page = page.replace(" ", "_")
     page = page.replace("wiki/", "")
     page = page.split("#")[0]
     suffix = PREFS.GetString("Suffix", "")
+    pagename = ""
     if suffix:
         if not suffix.startswith("/"):
             suffix = "/" + suffix
     if PREFS.GetBool("optionWiki", True):  # default
-        location = WIKI_URL + "/" + page + suffix
+        location, pagename = location_url(WIKI_URL + "/" + page + suffix, WIKI_URL + "/" + page)
     elif PREFS.GetBool("optionMarkdown", False):
         if PREFS.GetBool("optionBrowser", False):
             location = MD_RENDERED_URL
         else:
             location = MD_RAW_URL
         if suffix:
-            location += "/" + MD_TRANSLATIONS_FOLDER + suffix
-        location += "/" + page + ".md"
+            location, pagename = location_url(
+                location + "/" + MD_TRANSLATIONS_FOLDER + suffix + "/" + page + ".md",
+                location + "/" + page + ".md",
+            )
+        else:
+            location += "/" + page + ".md"
     elif PREFS.GetBool("optionGithub", False):
         location = MD_RENDERED_URL
         if suffix:
-            location += "/" + MD_TRANSLATIONS_FOLDER + suffix
-        location += "/" + page + ".md"
+            location, pagename = location_url(
+                location + "/" + MD_TRANSLATIONS_FOLDER + suffix + "/" + page + ".md",
+                location + "/" + page + ".md",
+            )
+        else:
+            location += "/" + page + ".md"
     elif PREFS.GetBool("optionCustom", False):
         location = PREFS.GetString("Location", "")
         if not location:
@@ -195,7 +238,7 @@ def get_location(page):
                 "wiki",
             )
         location = os.path.join(location, page + ".md")
-    return location
+    return (location, pagename)
 
 
 def show_browser(url):

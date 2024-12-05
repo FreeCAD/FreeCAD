@@ -179,19 +179,6 @@
           <number>2</number>
          </property>
          <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
             <spacer name="verticalSpacer">
@@ -248,6 +235,19 @@
            </item>
           </layout>
          </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
       </item>
@@ -294,7 +294,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontalSpacer1">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>

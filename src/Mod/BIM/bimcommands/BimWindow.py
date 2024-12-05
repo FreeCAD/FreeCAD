@@ -225,7 +225,7 @@ class Arch_Window:
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        gui_utils.end_all_events()
+        # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
         return
 

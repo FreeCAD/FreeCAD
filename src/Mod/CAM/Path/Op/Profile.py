@@ -102,7 +102,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "Profile",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The direction that the toolpath should go around the part ClockWise (Climb) or CounterClockWise (Conventional)",
+                    "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)",
                 ),
             ),
             (
@@ -188,8 +188,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Direction": [
-                (translate("PathProfile", "Climb"), "Climb"),
-                (translate("PathProfile", "Conventional"), "Conventional"),
+                (translate("PathProfile", "CW"), "CW"),
+                (translate("PathProfile", "CCW"), "CCW"),
             ],  # this is the direction that the profile runs
             "HandleMultipleFeatures": [
                 (translate("PathProfile", "Collectively"), "Collectively"),
@@ -225,7 +225,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """areaOpPropertyDefaults(obj, job) ... returns a dictionary of default values
         for the operation's properties."""
         return {
-            "Direction": "Climb",
+            "Direction": "CW",
             "HandleMultipleFeatures": "Collectively",
             "JoinType": "Round",
             "MiterLimit": 0.1,
@@ -338,11 +338,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Reverse the direction for holes
         if isHole:
-            direction = "Climb" if obj.Direction == "Conventional" else "Conventional"
+            direction = "CW" if obj.Direction == "CCW" else "CCW"
         else:
             direction = obj.Direction
 
-        if direction == "Conventional":
+        if direction == "CCW":
             params["orientation"] = 0
         else:
             params["orientation"] = 1
@@ -351,7 +351,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if obj.UseComp:
             offset = self.radius + obj.OffsetExtra.Value
         if offset == 0.0:
-            if direction == "Conventional":
+            if direction == "CCW":
                 params["orientation"] = 1
             else:
                 params["orientation"] = 0

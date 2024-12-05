@@ -67,6 +67,7 @@ public:
     {
         return false;
     }
+    void autoClosedOnClosedView() override;
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override

@@ -434,7 +434,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="202"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>Морате прелазити преко геометрије (предизбора)  cа мишем,да би кориcтили ову команду.Погледајте документацију за детаље.</translation>
+      <translation>Мораш лебдети мишем изнад геометрије (Предизбор), да би користио ову команду. Погледај документацију за детаље.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="294"/>

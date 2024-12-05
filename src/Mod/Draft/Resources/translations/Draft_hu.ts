@@ -2653,7 +2653,7 @@ ha a globális koordináta-rendszer X, Y vagy Z tengelyekkel megegyeznek</transl
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="234"/>
       <source>Subelement mode</source>
-      <translation>Al-elem mód</translation>
+      <translation>Részelem mód</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="247"/>
@@ -2825,32 +2825,32 @@ ha a globális koordináta-rendszer X, Y vagy Z tengelyekkel megegyeznek</transl
     <name>draft</name>
     <message>
       <location filename="../../DraftGui.py" line="58"/>
-      <location filename="../../DraftGui.py" line="540"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <source>Relative</source>
       <translation>Relatív</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="59"/>
-      <location filename="../../DraftGui.py" line="545"/>
+      <location filename="../../DraftGui.py" line="550"/>
       <source>Global</source>
       <translation>Globális</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="60"/>
-      <location filename="../../DraftGui.py" line="563"/>
-      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="568"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>Continue</source>
       <translation>Tovább</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
-      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="576"/>
       <source>Close</source>
       <translation>Bezárás</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="62"/>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <location filename="../../draftguitools/gui_move.py" line="216"/>
       <location filename="../../draftguitools/gui_rotate.py" line="287"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
@@ -2862,7 +2862,7 @@ ha a globális koordináta-rendszer X, Y vagy Z tengelyekkel megegyeznek</transl
     <message>
       <location filename="../../DraftGui.py" line="63"/>
       <source>Subelement mode</source>
-      <translation>Al-elem mód</translation>
+      <translation>Részelem mód</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="64"/>
@@ -2906,7 +2906,7 @@ ha a globális koordináta-rendszer X, Y vagy Z tengelyekkel megegyeznek</transl
     </message>
     <message>
       <location filename="../../DraftGui.py" line="72"/>
-      <location filename="../../DraftGui.py" line="577"/>
+      <location filename="../../DraftGui.py" line="582"/>
       <source>Select edge</source>
       <translation>Él kiválasztása</translation>
     </message>
@@ -2922,7 +2922,7 @@ ha a globális koordináta-rendszer X, Y vagy Z tengelyekkel megegyeznek</transl
     </message>
     <message>
       <location filename="../../DraftGui.py" line="75"/>
-      <location filename="../../DraftGui.py" line="573"/>
+      <location filename="../../DraftGui.py" line="578"/>
       <source>Wipe</source>
       <translation>Radíroz</translation>
     </message>
@@ -3003,285 +3003,285 @@ ha a globális koordináta-rendszer X, Y vagy Z tengelyekkel megegyeznek</transl
       <translation>Helyzet:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="491"/>
-      <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="496"/>
+      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
       <translation>Egyik sem</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="518"/>
+      <location filename="../../DraftGui.py" line="523"/>
       <source>active command:</source>
       <translation>aktív parancs:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="520"/>
+      <location filename="../../DraftGui.py" line="525"/>
       <source>Active Draft command</source>
       <translation>Aktív tervezési parancs</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="521"/>
+      <location filename="../../DraftGui.py" line="526"/>
       <source>X coordinate of next point</source>
       <translation>Következő pont X koordinátája</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="522"/>
+      <location filename="../../DraftGui.py" line="527"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="523"/>
+      <location filename="../../DraftGui.py" line="528"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="529"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="525"/>
+      <location filename="../../DraftGui.py" line="530"/>
       <source>Y coordinate of next point</source>
       <translation>Következő pont Y koordinátája</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="526"/>
+      <location filename="../../DraftGui.py" line="531"/>
       <source>Z coordinate of next point</source>
       <translation>Következő pont Z koordinátája</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>Enter point</source>
       <translation>Pont megadása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Adjon meg egy új pontot a megadott koordinátákkal</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>Length</source>
       <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
+      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="232"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="537"/>
       <source>Length of current segment</source>
       <translation>Aktuális szakasz hossza</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Angle of current segment</source>
       <translation>Aktuális szakasz szöge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../DraftGui.py" line="541"/>
       <source>Check this to lock the current angle</source>
       <translation>Ellenőrizze ezt az aktuális szög rögzítéséhez</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="537"/>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="542"/>
+      <location filename="../../DraftGui.py" line="810"/>
       <source>Radius</source>
       <translation>Sugár</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Radius of Circle</source>
       <translation>A kör sugara</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="548"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>Koordináták az utolsó ponthoz vagy a koordináta rendszer kezdő koordinátáihoz viszonyítva,
 ha ez az első beállítási pont</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="548"/>
+      <location filename="../../DraftGui.py" line="553"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Koordináták a globális koordináta rendszerhez viszonyítva.
 A jelölőnégyzet kiiktatása a munkasík koordináta rendszer használatához</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="550"/>
+      <location filename="../../DraftGui.py" line="555"/>
       <source>Filled</source>
       <translation>Kitöltött</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="554"/>
+      <location filename="../../DraftGui.py" line="559"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation>Jelölje be, ha a tárgynak kitöltöttként kell megjelennie, különben drótvázként jelenik meg.
 Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve van</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="556"/>
+      <location filename="../../DraftGui.py" line="561"/>
       <source>Finish</source>
       <translation>Befejezés</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="558"/>
+      <location filename="../../DraftGui.py" line="563"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Befejezi az aktuális rajz vagy szerkesztési műveletet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="561"/>
+      <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Ha bejelölt, akkor a parancs nem fejeződik be, amíg újra meg nem nyomja a parancs gombot</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
+      <location filename="../../DraftGui.py" line="571"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Ha bejelölt, egy OCC-stílusú eltolás lesz végrehajtva a klasszikus eltolás helyett</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="567"/>
+      <location filename="../../DraftGui.py" line="572"/>
       <source>OCC-style offset</source>
       <translation>OCC-stílusú eltolás</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="569"/>
+      <location filename="../../DraftGui.py" line="574"/>
       <source>Undo</source>
       <translation>Visszavonás</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>Ha bejelöli, a tárgyak másolását eredményezi mozgatás helyett</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="570"/>
+      <location filename="../../DraftGui.py" line="575"/>
       <source>Undo the last segment</source>
       <translation>Utolsó szakasz visszaállítása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="577"/>
       <source>Finishes and closes the current line</source>
       <translation>A folyamatban lévő vonal befejezése és lezárása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="574"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Kiradírozza a meglévő szakaszt ebből a vonalból és ismét az utolsó ponttól kezdi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="575"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>Set WP</source>
       <translation>WP beállítás</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="576"/>
+      <location filename="../../DraftGui.py" line="581"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>A munkasík tájolásának megváltoztatása az utolsó szakaszon</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Ezzel a mérettel történő méréshez válasszon ki egy létező élt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Sides</source>
       <translation>Oldalak</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Number of sides</source>
       <translation>Oldalak száma</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="589"/>
       <source>Modify subelements</source>
-      <translation>Alelemek módosítása</translation>
+      <translation>Részelemek módosítása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation>Ha bejelölt, akkor az al-elemek lesznek módosítva a teljes tárgyak helyett</translation>
+      <translation>Ha bejelölt, akkor az részelemek lesznek módosítva a teljes tárgyak helyett</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="586"/>
+      <location filename="../../DraftGui.py" line="591"/>
       <source>Create text</source>
       <translation>Szöveg létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="587"/>
+      <location filename="../../DraftGui.py" line="592"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>Nyomja meg ezt a gombot a szöveges tárgy létrehozásához, vagy fejezze be a szöveget két üres vonallal</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="609"/>
+      <location filename="../../DraftGui.py" line="614"/>
       <source>Change default style for new objects</source>
       <translation>Új tárgyak alapértelmezett stílusának módosítása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="610"/>
+      <location filename="../../DraftGui.py" line="615"/>
       <source>Toggle construction mode</source>
       <translation>Építési mód váltása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="616"/>
+      <location filename="../../DraftGui.py" line="1477"/>
+      <location filename="../../DraftGui.py" line="1492"/>
       <source>Autogroup off</source>
       <translation>Autócsoportosítás kikapcsolása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="688"/>
+      <location filename="../../DraftGui.py" line="693"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
       <translation>Vonal</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="696"/>
+      <location filename="../../DraftGui.py" line="701"/>
       <source>DWire</source>
       <translation>Terv-vonal</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Circle</source>
       <translation>Kör</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Arc</source>
       <translation>Ív</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <location filename="../../draftguitools/gui_rotate.py" line="290"/>
       <source>Rotate</source>
       <translation>Forgatás</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="728"/>
+      <location filename="../../DraftGui.py" line="733"/>
       <source>Point</source>
       <translation>Pont</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="756"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Label</source>
       <translation>Felirat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="758"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Label type</source>
       <translation>Címke típus</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../draftguitools/gui_offset.py" line="241"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
@@ -3289,71 +3289,71 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Eltolás</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
-      <location filename="../../DraftGui.py" line="797"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
+      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="802"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="227"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
-      <location filename="../../DraftGui.py" line="798"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
+      <location filename="../../DraftGui.py" line="785"/>
+      <location filename="../../DraftGui.py" line="803"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Offset distance</source>
       <translation>Eltolás távolsága</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="794"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Trimex</source>
       <translation>Levág-Bővít (trimex)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="872"/>
-      <location filename="../../DraftGui.py" line="873"/>
-      <location filename="../../DraftGui.py" line="874"/>
-      <location filename="../../DraftGui.py" line="876"/>
       <location filename="../../DraftGui.py" line="877"/>
       <location filename="../../DraftGui.py" line="878"/>
+      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="881"/>
+      <location filename="../../DraftGui.py" line="882"/>
+      <location filename="../../DraftGui.py" line="883"/>
       <source>Local {}</source>
       <translation>Helyi {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="880"/>
-      <location filename="../../DraftGui.py" line="881"/>
-      <location filename="../../DraftGui.py" line="882"/>
-      <location filename="../../DraftGui.py" line="884"/>
       <location filename="../../DraftGui.py" line="885"/>
       <location filename="../../DraftGui.py" line="886"/>
+      <location filename="../../DraftGui.py" line="887"/>
+      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
+      <location filename="../../DraftGui.py" line="891"/>
       <source>Global {}</source>
       <translation>Globális {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1485"/>
       <source>Autogroup:</source>
       <translation>Autocsoport:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1624"/>
       <source>Modify objects</source>
       <translation>Tárgyak módosítása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1773"/>
       <source>Faces</source>
       <translation>Felületek</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1774"/>
       <source>Remove</source>
       <translation>Eltávolítás</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1775"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1776"/>
       <source>Facebinder elements</source>
       <translation>Felülettároló elemek</translation>
     </message>
@@ -3754,7 +3754,7 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <location filename="../../draftguitools/gui_move.py" line="222"/>
       <location filename="../../draftguitools/gui_rotate.py" line="293"/>
       <source>Some subelements could not be moved.</source>
-      <translation>Egyes alelemeket nem lehetett áthelyezni.</translation>
+      <translation>Egyes részelemeket nem lehetett áthelyezni.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="85"/>
@@ -4129,41 +4129,46 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="120"/>
       <source>This object is not supported.</source>
-      <translation type="unfinished">This object is not supported.</translation>
+      <translation>Ez a tárgy nem támogatott.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="143"/>
       <source>Only a single face can be extruded.</source>
-      <translation type="unfinished">Only a single face can be extruded.</translation>
+      <translation>Csak egyetlen felületet lehet kihúzni.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="158"/>
+      <source>Trimex is not supported yet on this type of object.</source>
+      <translation type="unfinished">Trimex is not supported yet on this type of object.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="188"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Távolság kiválasztása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="234"/>
       <source>Offset angle</source>
       <translation>Eltolási szög</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="500"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Nem lehet vágni a tárgyakat, csak tervrajz vonalak és ívek támogatottak.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Nem lehet ezeket a tárgyakat vágni, túl sok drótváz</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="522"/>
       <source>These objects don't intersect.</source>
       <translation>Ezek a tárgyak nem metszik egymást.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
       <source>Too many intersection points.</source>
       <translation>Túl sok metszési pont.</translation>
     </message>
@@ -4388,7 +4393,7 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="209"/>
       <source>Some subelements could not be scaled.</source>
-      <translation>Egyes al-elemeket nem lehetett méretezni.</translation>
+      <translation>Egyes részelemeket nem lehetett méretezni.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="339"/>
@@ -4817,17 +4822,17 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
       <translation>a 'Nyomonkövetés' tulajdonság típusa megváltozott</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="175"/>
+      <location filename="../../draftobjects/shapestring.py" line="178"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation>Szövegalakzat: a ferde szögnek a -80 és +80 fok közötti tartományban kell lennie</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="187"/>
+      <location filename="../../draftobjects/shapestring.py" line="190"/>
       <source>ShapeString: string has no wires</source>
       <translation>ShapeString: A karakterláncnak nincsenek dróthálói</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="221"/>
+      <location filename="../../draftobjects/shapestring.py" line="223"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation>Alak a szövegből: a felület létrehozása sikertelen az egyik karakter esetében</translation>
     </message>
@@ -4869,39 +4874,39 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
       <translation>hozzáadta a 'Fuse' tulajdonságot</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="466"/>
+      <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
       <translation>Eltolás kezdete túl nagy az útvonal hosszához képest. Helyette nullát használjunk.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="472"/>
+      <location filename="../../draftobjects/patharray.py" line="484"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
       <translation>Eltolás vége túl nagy az útvonal hossza mínusz Eltolás kezdete. Helyette nullát használjunk.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="549"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>A vektor érintőjének hossza nulla. A másolat nem lesz hozzáigazítva.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="563"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>A aktuális vektor hossza nulla. Helyette az alapértelmezett tengely használata.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="591"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Az érintő és a normálvektorok párhuzamosak. Aktuális helyébe az alapértelmezett tengely lép.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="581"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>Nem lehet kiszámítani az aktuális vektort. Helyette az alapértelmezett aktuális értéket használja.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="597"/>
       <source>AlignMode {} is not implemented</source>
       <translation>A {} igazítási mód nincs implementálva</translation>
     </message>
@@ -5070,7 +5075,7 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     <message>
       <location filename="../../draftmake/make_label.py" line="251"/>
       <source>Wrong input: subelement {} not in object.</source>
-      <translation>Hibás bemenet: az alelem {} nincs a tárgyban.</translation>
+      <translation>Hibás bemenet: a részelem {} nincs a tárgyban.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="259"/>
@@ -5242,24 +5247,24 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
       <translation>Hibás bemenet: 0 és 100 közötti számnak kell lennie.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="491"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>Ennek a rétegnek az aktiválása</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>Réteg tartalom kijelölése</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="535"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="549"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>Megsokszorozott rétegek egyesítése</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="541"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="594"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>Új réteg hozzáadása</translation>
     </message>
@@ -5383,53 +5388,53 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
       <translation>Több csatlakozott felülettel rendelkező tárgyat talált: finomítja ezeket</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="488"/>
+      <location filename="../../draftfunctions/upgrade.py" line="489"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation>Találtunk 1 nem parametrikus tárgyat: tervrajzzá alakít</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="499"/>
+      <location filename="../../draftfunctions/upgrade.py" line="500"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation>1 zárt vázlat tárgyat talált: létrehoz belőle egy felületet</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="504"/>
+      <location filename="../../draftfunctions/upgrade.py" line="505"/>
       <source>Found closed wires: creating faces</source>
       <translation>Zárt drótvázat talált: létrehoz felületeket</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="509"/>
+      <location filename="../../draftfunctions/upgrade.py" line="510"/>
       <source>Found several wires or edges: wiring them</source>
       <translation>Több élt vagy szakaszt talált: összeköti őket</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="511"/>
-      <location filename="../../draftfunctions/upgrade.py" line="546"/>
+      <location filename="../../draftfunctions/upgrade.py" line="512"/>
+      <location filename="../../draftfunctions/upgrade.py" line="540"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation>Találtam több nem kezelhető tárgyat: kapcsolat létrehozása</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="516"/>
+      <location filename="../../draftfunctions/upgrade.py" line="517"/>
       <source>trying: closing it</source>
       <translation>próbálja: bezárni</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="518"/>
+      <location filename="../../draftfunctions/upgrade.py" line="519"/>
       <source>Found 1 open wire: closing it</source>
       <translation>1 nyílt szakaszt talált: bezárja</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="536"/>
+      <location filename="../../draftfunctions/upgrade.py" line="530"/>
       <source>Found 1 object: draftifying it</source>
       <translation>Talált 1 tárgyat: tervrajzzá alakít</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="541"/>
+      <location filename="../../draftfunctions/upgrade.py" line="535"/>
       <source>Found points: creating compound</source>
       <translation>Pontokat talált: kapcsolat létrehozása</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="549"/>
+      <location filename="../../draftfunctions/upgrade.py" line="543"/>
       <source>Unable to upgrade these objects.</source>
       <translation>Nem lehet frissíteni ezeket a tárgyakat.</translation>
     </message>
@@ -5536,7 +5541,7 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
       <translation>Válasszon ki 3 csúcsot, egy vagy több alakzatot vagy egy tárgyat a munkasík meghatározásához</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="182"/>
+      <location filename="../../draftutils/params.py" line="194"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation>Szeretné frissíteni a meglévő tárgyak SVG minta kehetőségeket az összes megnyitott dokumentumban?</translation>
@@ -5562,7 +5567,7 @@ of existing objects in all opened documents?</source>
       <translation>frissített nézeti tulajdonságok</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5652,7 +5657,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -5778,7 +5783,7 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="159"/>
       <source>Modify subelements</source>
-      <translation>Alelemek módosítása</translation>
+      <translation>Részelemek módosítása</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="160"/>
@@ -5925,12 +5930,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>importOCA</name>
     <message>
-      <location filename="../../importOCA.py" line="414"/>
+      <location filename="../../importOCA.py" line="413"/>
       <source>OCA: found no data to export</source>
       <translation>OCA: nem talált exportálandó adatot</translation>
     </message>
     <message>
-      <location filename="../../importOCA.py" line="459"/>
+      <location filename="../../importOCA.py" line="458"/>
       <source>successfully exported</source>
       <translation>sikeresen exportálva</translation>
     </message>
@@ -5938,7 +5943,7 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>ImportAirfoilDAT</name>
     <message>
-      <location filename="../../importAirfoilDAT.py" line="164"/>
+      <location filename="../../importAirfoilDAT.py" line="163"/>
       <source>Did not find enough coordinates</source>
       <translation>Nem találtam elég koordinátát</translation>
     </message>

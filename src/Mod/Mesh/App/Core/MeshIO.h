@@ -122,37 +122,37 @@ public:
     /// Loads the file, decided by extension
     bool LoadAny(const char* FileName);
     /// Loads from a stream and the given format
-    bool LoadFormat(std::istream& str, MeshIO::Format fmt);
+    bool LoadFormat(std::istream& input, MeshIO::Format fmt);
     /** Loads an STL file either in binary or ASCII format.
      * Therefore the file header gets checked to decide if the file is binary or not.
      */
-    bool LoadSTL(std::istream& rstrIn);
+    bool LoadSTL(std::istream& input);
     /** Loads an ASCII STL file. */
-    bool LoadAsciiSTL(std::istream& rstrIn);
+    bool LoadAsciiSTL(std::istream& input);
     /** Loads a binary STL file. */
-    bool LoadBinarySTL(std::istream& rstrIn);
+    bool LoadBinarySTL(std::istream& input);
     /** Loads an OBJ Mesh file. */
-    bool LoadOBJ(std::istream& rstrIn);
+    bool LoadOBJ(std::istream& input);
     /** Loads an OBJ Mesh file. */
-    bool LoadOBJ(std::istream& rstrIn, const char* filename);
+    bool LoadOBJ(std::istream& input, const char* filename);
     /** Loads an SMF Mesh file. */
-    bool LoadSMF(std::istream& rstrIn);
+    bool LoadSMF(std::istream& input);
     /** Loads an OFF Mesh file. */
-    bool LoadOFF(std::istream& rstrIn);
+    bool LoadOFF(std::istream& input);
     /** Loads a PLY Mesh file. */
-    bool LoadPLY(std::istream& rstrIn);
+    bool LoadPLY(std::istream& input);
     /** Loads the mesh object from an XML file. */
     void LoadXML(Base::XMLReader& reader);
     /** Loads the mesh object from a 3MF file. */
-    bool Load3MF(std::istream& str);
+    bool Load3MF(std::istream& input);
     /** Loads a node from an OpenInventor file. */
-    bool LoadMeshNode(std::istream& rstrIn);
+    bool LoadMeshNode(std::istream& input);
     /** Loads an OpenInventor file. */
-    bool LoadInventor(std::istream& rstrIn);
+    bool LoadInventor(std::istream& input);
     /** Loads a Nastran file. */
-    bool LoadNastran(std::istream& rstrIn);
+    bool LoadNastran(std::istream& input);
     /** Loads a Cadmould FE file. */
-    bool LoadCadmouldFE(std::ifstream& rstrIn);
+    bool LoadCadmouldFE(std::ifstream& input);
 
     static std::vector<std::string> supportedMeshFormats();
     static MeshIO::Format getFormat(const char* FileName);
@@ -208,53 +208,53 @@ public:
     bool SaveFormat(std::ostream& str, MeshIO::Format fmt) const;
 
     /** Saves the mesh object into an ASCII STL file. */
-    bool SaveAsciiSTL(std::ostream& rstrOut) const;
+    bool SaveAsciiSTL(std::ostream& output) const;
     /** Saves the mesh object into a binary STL file. */
-    bool SaveBinarySTL(std::ostream& rstrOut) const;
+    bool SaveBinarySTL(std::ostream& output) const;
     /** Saves the mesh object into an OBJ file. */
-    bool SaveOBJ(std::ostream& rstrOut) const;
+    bool SaveOBJ(std::ostream& output) const;
     /** Saves the mesh object into an OBJ file. */
-    bool SaveOBJ(std::ostream& rstrOut, const char* filename) const;
+    bool SaveOBJ(std::ostream& output, const char* filename) const;
     /** Saves the mesh object into an SMF file. */
-    bool SaveSMF(std::ostream& rstrOut) const;
+    bool SaveSMF(std::ostream& output) const;
     /** Saves the mesh object into an OFF file. */
-    bool SaveOFF(std::ostream& rstrOut) const;
+    bool SaveOFF(std::ostream& output) const;
     /** Saves the mesh object into a binary PLY file. */
-    bool SaveBinaryPLY(std::ostream& rstrOut) const;
+    bool SaveBinaryPLY(std::ostream& output) const;
     /** Saves the mesh object into an ASCII PLY file. */
-    bool SaveAsciiPLY(std::ostream& rstrOut) const;
+    bool SaveAsciiPLY(std::ostream& output) const;
     /** Saves the mesh object into an asymptote file. */
-    bool SaveAsymptote(std::ostream& rstrOut) const;
+    bool SaveAsymptote(std::ostream& output) const;
     /** Saves the mesh object into an XML file. */
     void SaveXML(Base::Writer& writer) const;
     /** Saves the mesh object into a 3MF file. */
-    bool Save3MF(std::ostream& str) const;
+    bool Save3MF(std::ostream& output) const;
     /** Saves a node to an OpenInventor file. */
-    bool SaveMeshNode(std::ostream& rstrIn);
+    bool SaveMeshNode(std::ostream& output);
     /** Writes an IDTF file. */
-    bool SaveIDTF(std::ostream& rstrOut) const;
+    bool SaveIDTF(std::ostream& str) const;
     /** Writes an MGL file. */
-    bool SaveMGL(std::ostream& rstrOut) const;
+    bool SaveMGL(std::ostream& str) const;
     /** Writes an OpenInventor file. */
-    bool SaveInventor(std::ostream& rstrOut) const;
+    bool SaveInventor(std::ostream& output) const;
     /** Writes an X3D file. */
-    bool SaveX3D(std::ostream& rstrOut) const;
+    bool SaveX3D(std::ostream& output) const;
     /** Writes an X3dom file. */
-    bool SaveX3DOM(std::ostream& rstrOut) const;
+    bool SaveX3DOM(std::ostream& output) const;
     /** Writes a VRML file. */
-    bool SaveVRML(std::ostream& rstrOut) const;
+    bool SaveVRML(std::ostream& output) const;
     /** Writes a Nastran file. */
-    bool SaveNastran(std::ostream& rstrOut) const;
+    bool SaveNastran(std::ostream& output) const;
     /** Writes a Cadmould FE file. */
-    bool SaveCadmouldFE(std::ostream& rstrOut) const;
+    bool SaveCadmouldFE(std::ostream& output) const;
     /** Writes a python module which creates a mesh */
-    bool SavePython(std::ostream& rstrOut) const;
+    bool SavePython(std::ostream& str) const;
 
     static std::vector<std::string> supportedMeshFormats();
 
 protected:
     /** Writes an X3D file. */
-    bool SaveX3DContent(std::ostream& rstrOut, bool exportViewpoints) const;
+    bool SaveX3DContent(std::ostream& out, bool exportViewpoints) const;
 
 private:
     const MeshKernel& _rclMesh; /**< reference to mesh data structure */

@@ -92,6 +92,7 @@ public:
 
     Part::PropertyTopoShapeList SavedGeometry;
     App::PropertyVectorList BoxCorners;
+    App::PropertyBool UseActualArea;
 
     enum RefType
     {
@@ -143,8 +144,8 @@ public:
     static int
     getRefTypeSubElements(const std::vector<std::string>&);  // Vertex-Vertex, Edge, Edge-Edge
 
-    void setReferences2d(ReferenceVector refs);
-    void setReferences3d(ReferenceVector refs);
+    void setReferences2d(const ReferenceVector& refs);
+    void setReferences3d(const ReferenceVector& refs);
     ReferenceVector getReferences2d() const;
     ReferenceVector getReferences3d() const;
     bool hasGoodReferences() const
@@ -211,6 +212,10 @@ public:
     void saveFeatureBox();
     Base::BoundBox3d getSavedBox();
     Base::BoundBox3d getFeatureBox();
+
+    static double getActualArea(const TopoDS_Face& face);
+    static double getFilledArea(const TopoDS_Face& face);
+    static Base::Vector3d getFaceCenter(const TopoDS_Face& face);
 
 protected:
     void handleChangedPropertyType(Base::XMLReader&, const char*, App::Property*) override;

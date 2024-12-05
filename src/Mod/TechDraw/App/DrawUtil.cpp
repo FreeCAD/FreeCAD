@@ -61,7 +61,6 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
@@ -1861,8 +1860,7 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
         suffix = uniqueName.substr(baseName.length(), uniqueName.length() - baseName.length());
     }
     QString qTranslated = qApp->translate(context.c_str(), baseName.c_str());
-    std::string ssTranslated = Base::Tools::toStdString(qTranslated);
-    return ssTranslated + suffix;
+    return qTranslated.toStdString() + suffix;
 }
 
 // true if owner->element is a cosmetic vertex
@@ -1898,6 +1896,18 @@ bool DrawUtil::isCenterLine(App::DocumentObject* owner, std::string element)
     }
     return false;
 }
+
+//! convert a filespec (string) containing '\' to only use '/'.
+//! prevents situation where '\' is interpreted as an escape of the next character in Python
+//! commands.
+std::string DrawUtil::cleanFilespecBackslash(const std::string& filespec)
+{
+    std::string forwardSlash{"/"};
+    boost::regex rxBackslash("\\\\");    //this rx really means match to a single '\'
+    std::string noBackslash = boost::regex_replace(filespec, rxBackslash, forwardSlash);
+    return noBackslash;
+}
+
 
 //============================
 // various debugging routines.

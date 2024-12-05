@@ -38,7 +38,6 @@
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 
 #include "Sheet.h"
 #include "SheetObserver.h"
@@ -342,7 +341,8 @@ bool Sheet::exportToFile(const std::string& filename,
 
         std::string str = field.str();
 
-        if (quoteChar && str.find(quoteChar) != std::string::npos) {
+        if (quoteChar
+            && str.find_first_of(std::string(quoteChar, delimiter)) != std::string::npos) {
             writeEscaped(str, quoteChar, escapeChar, file);
         }
         else {
@@ -906,7 +906,7 @@ void Sheet::recomputeCell(CellAddress p)
     catch (const Base::Exception& e) {
         QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
 
-        setStringProperty(p, Base::Tools::toStdString(msg));
+        setStringProperty(p, msg.toStdString());
         if (cell) {
             cell->setException(e.what());
         }
