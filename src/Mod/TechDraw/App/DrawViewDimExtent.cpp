@@ -53,7 +53,7 @@ DrawViewDimExtent::DrawViewDimExtent(void)
     Source.setScope(App::LinkScope::Global);
 
     //Source3d is a candidate for deprecation as References3D contains the same information
-    ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "3d geometry to be dimensioned");
+    ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "3D geometry to be dimensioned");
     Source3d.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(DirExtent ,(0), "", App::Prop_Output, "Horizontal / Vertical");
 

@@ -84,10 +84,10 @@ class BIM_Tutorial:
             self.pixempty = QtGui.QPixmap()
 
             # fire the loading after displaying the widget
-            from DraftGui import todo
+            from draftutils import todo
 
             # self.load()
-            # todo.delay(self.load,None)
+            # todo.ToDo.delay(self.load,None)
             QtCore.QTimer.singleShot(1000, self.load)
 
     def load(self, arg=None):

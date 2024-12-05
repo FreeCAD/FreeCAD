@@ -29,7 +29,6 @@
 #include <sstream>
 #endif
 
-#include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintSpring.h>
@@ -262,7 +261,7 @@ std::string TaskFemConstraintSpring::getTangentialStiffness() const
 
 std::string TaskFemConstraintSpring::getElmerStiffness() const
 {
-    return Base::Tools::toStdString(ui->cb_elmer_stiffness->currentText());
+    return ui->cb_elmer_stiffness->currentText().toStdString();
 }
 
 void TaskFemConstraintSpring::changeEvent(QEvent*)

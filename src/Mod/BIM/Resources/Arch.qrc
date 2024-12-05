@@ -185,6 +185,8 @@
         <file>ui/ParametersWindowFixed.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowStash.svg</file>
+        <file>ui/dialogAddPSet.ui</file>
+        <file>ui/dialogAddProperty.ui</file>
         <file>ui/dialogClasses.ui</file>
         <file>ui/dialogClassification.ui</file>
         <file>ui/dialogConvertDocument.ui</file>

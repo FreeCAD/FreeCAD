@@ -189,11 +189,11 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
 
     for (auto joint : allJoints) {
         // getLinkObjFromProp returns nullptr if the property doesn't exist.
-        App::DocumentObject* obj1 = AssemblyObject::getObjFromRef(joint, "Reference1");
-        App::DocumentObject* obj2 = AssemblyObject::getObjFromRef(joint, "Reference2");
-        App::DocumentObject* part1 = assemblyPart->getMovingPartFromRef(joint, "Reference1");
-        App::DocumentObject* part2 = assemblyPart->getMovingPartFromRef(joint, "Reference2");
-        App::DocumentObject* obj3 = AssemblyObject::getObjFromProp(joint, "ObjectToGround");
+        App::DocumentObject* part1 = getMovingPartFromRef(assemblyPart, joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(assemblyPart, joint, "Reference2");
+        App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
+        App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
+        App::DocumentObject* obj3 = getObjFromProp(joint, "ObjectToGround");
         if (obj == obj1 || obj == obj2 || obj == part1 || obj == part2 || obj == obj3) {
             if (!prompted) {
                 prompted = true;
@@ -662,13 +662,13 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                 }
 
                 App::DocumentObject* selRoot = selObj.getObject();
-                App::DocumentObject* obj = assemblyPart->getObjFromRef(selRoot, subNamesStr);
+                App::DocumentObject* obj = getObjFromRef(selRoot, subNamesStr);
                 if (!obj) {
                     // In case of sub-assembly, the jointgroup would trigger the dragger.
                     continue;
                 }
                 App::DocumentObject* part =
-                    assemblyPart->getMovingPartFromRef(selRoot, subNamesStr);
+                    getMovingPartFromRef(assemblyPart, selRoot, subNamesStr);
 
                 if (!canDragObjectIn3d(part)) {
                     continue;
@@ -694,7 +694,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
         App::DocumentObject* selRoot = Gui::Selection().getPreselection().Object.getObject();
         std::string sub = Gui::Selection().getPreselection().pSubName;
 
-        App::DocumentObject* obj = assemblyPart->getMovingPartFromRef(selRoot, sub);
+        App::DocumentObject* obj = getMovingPartFromRef(assemblyPart, selRoot, sub);
         if (canDragObjectIn3d(obj)) {
 
             bool alreadyIn = false;
@@ -760,7 +760,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             return DragMode::TranslationNoSolve;
         }
 
-        JointType jointType = AssemblyObject::getJointType(movingJoint);
+        JointType jointType = getJointType(movingJoint);
         if (jointType == JointType::Fixed) {
             // If fixed joint we need to find the upstream joint to find move mode.
             // For example : Gnd -(revolute)- A -(fixed)- B : if user try to move B, then we should
@@ -793,7 +793,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
                 docsToMove.emplace_back(upPart, pPlc->getValue(), selRoot, subs[0]);
             }
 
-            jointType = AssemblyObject::getJointType(movingJoint);
+            jointType = getJointType(movingJoint);
         }
 
         const char* plcPropName = (pName == "Reference1") ? "Placement1" : "Placement2";
@@ -807,7 +807,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         if (!ref) {
             return DragMode::Translation;
         }
-        auto* obj = assemblyPart->getObjFromRef(movingJoint, pName.c_str());
+        auto* obj = getObjFromRef(movingJoint, pName.c_str());
         Base::Placement global_plc = App::GeoFeature::getGlobalPlacement(obj, ref);
         jcsGlobalPlc = global_plc * jcsPlc;
 
@@ -830,7 +830,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         }
         else if (jointType == JointType::Distance) {
             //  depends on the type of distance. For example plane-plane:
-            DistanceType distanceType = AssemblyObject::getDistanceType(movingJoint);
+            DistanceType distanceType = getDistanceType(movingJoint);
             if (distanceType == DistanceType::PlanePlane || distanceType == DistanceType::Other) {
                 return DragMode::TranslationOnPlane;
             }

@@ -34,7 +34,6 @@
 #include <Base/Console.h>
 #include <Base/Quantity.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 
@@ -1090,7 +1089,6 @@ App::Color Cell::decodeColor(const std::string& color, const App::Color& default
 // roughly based on Spreadsheet/Gui/SheetModel.cpp
 std::string Cell::getFormattedQuantity()
 {
-    std::string result;
     QString qFormatted;
     App::CellAddress thisCell = getAddress();
     Property* prop = owner->sheet()->getPropertyByName(thisCell.toString().c_str());
@@ -1111,7 +1109,7 @@ std::string Cell::getFormattedQuantity()
             if (computedUnit.isEmpty() || computedUnit == du.unit) {
                 QString number =
                     QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-                qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
             }
         }
     }
@@ -1124,7 +1122,7 @@ std::string Cell::getFormattedQuantity()
         if (hasDisplayUnit) {
             QString number =
                 QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
     else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
@@ -1137,9 +1135,8 @@ std::string Cell::getFormattedQuantity()
         if (hasDisplayUnit) {
             QString number =
                 QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
-    result = Base::Tools::toStdString(qFormatted);
-    return result;
+    return qFormatted.toStdString();
 }

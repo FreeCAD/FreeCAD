@@ -74,7 +74,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
-        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
+        ui->expression->setText(QString::fromStdString(expression->toString()));
     }
     else {
         QVariant text = parent->property("text");
@@ -314,7 +314,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
                 ui->msg->setText(msg);
             }
             else {
-                ui->msg->setText(Base::Tools::fromStdString(result->toString()));
+                ui->msg->setText(QString::fromStdString(result->toString()));
             }
 
         }

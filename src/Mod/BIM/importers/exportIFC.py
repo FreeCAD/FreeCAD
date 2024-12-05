@@ -2362,6 +2362,10 @@ def getRepresentation(
             # actual ifcmaterial)
             shapecolor = obj.ViewObject.ShapeColor[:3]
             transparency = obj.ViewObject.Transparency/100.0
+            if transparency == 1:
+                # fix buggy fully transparent materials
+                # TODO there is some problem somewhere in ShapeAppearance that needs solving.
+                transparency = 0.
             if hasattr(obj.ViewObject,"DiffuseColor"):
                 diffusecolor = obj.ViewObject.DiffuseColor
         if shapecolor and (shapetype != "clone"): # cloned objects are already colored

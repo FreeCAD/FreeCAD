@@ -129,13 +129,13 @@ public:
             if (value.isValid())
                 return value;
             else
-                return Base::Tools::fromStdString(
+                return QString::fromStdString(
                     Sketcher::PropertyConstraintList::getConstraintName(constraint->Name,
                                                                         ConstraintNbr));
         }
         else if (role == Qt::DisplayRole) {
             QString name =
-                Base::Tools::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
+                QString::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
                     constraint->Name, ConstraintNbr));
 
             switch (constraint->Type) {
@@ -342,7 +342,7 @@ public:
             App::PropertyExpressionEngine::ExpressionInfo expr_info = sketch->getExpression(path);
 
             if (expr_info.expression)
-                return Base::Tools::fromStdString(expr_info.expression->toString());
+                return QString::fromStdString(expr_info.expression->toString());
             else
                 return QVariant();
         }
@@ -1210,7 +1210,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     const Sketcher::Constraint* v = vals[it->ConstraintNbr];
     const std::string currConstraintName = v->Name;
 
-    const std::string basename = Base::Tools::toStdString(it->data(Qt::EditRole).toString());
+    const std::string basename = it->data(Qt::EditRole).toString().toStdString();
 
     std::string newName(
         Sketcher::PropertyConstraintList::getConstraintName(basename, it->ConstraintNbr));
@@ -1710,7 +1710,7 @@ void TaskSketcherConstraints::slotConstraintsChanged()
         QAbstractItemModel* model = ui->listWidgetConstraints->model();
         auto tmpBlock = model->blockSignals(true);
         it->setHidden(!visible);
-        it->setData(Qt::EditRole, Base::Tools::fromStdString(constraint->Name));
+        it->setData(Qt::EditRole, QString::fromStdString(constraint->Name));
         model->blockSignals(tmpBlock);
     }
 }

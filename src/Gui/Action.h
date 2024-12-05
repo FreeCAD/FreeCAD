@@ -93,11 +93,11 @@ public:
     /** Obtain the menu text of a given command
      * @param cmd: input command
      * @return Return the command menu text that is stripped with its mnemonic
-     * symbol '&' and ending punctuations
+     * symbol '&' and ending punctuation
      */
     static QString commandMenuText(const Command *cmd);
 
-    /// Clean the title by stripping the mnemonic symbol '&' and ending punctuations
+    /// Clean the title by stripping the mnemonic symbol '&' and ending punctuation
     static QString cleanTitle(const QString &title);
 
     Command *command() const {

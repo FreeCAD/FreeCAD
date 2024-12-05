@@ -90,6 +90,8 @@ class _Frame(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         if not obj.Base:
             return

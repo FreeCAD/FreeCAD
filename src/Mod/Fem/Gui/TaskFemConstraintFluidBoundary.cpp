@@ -115,7 +115,7 @@ void initComboBox(QComboBox* combo,
     int iItem = 1;  // the first one is "unspecific" (index 0)
     combo->clear();
     for (unsigned int it = 0; it < textItems.size(); it++) {
-        combo->insertItem(it, Base::Tools::fromStdString(textItems[it]));
+        combo->insertItem(it, QString::fromStdString(textItems[it]));
         if (sItem == textItems[it]) {
             iItem = it;
         }
@@ -309,7 +309,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             else {
                 ui->tabTurbulenceBoundary->setEnabled(true);
                 ui->labelTurbulenceSpecification->setText(
-                    Base::Tools::fromStdString(pTurbulenceModel->getValueAsString()));
+                    QString::fromStdString(pTurbulenceModel->getValueAsString()));
                 initComboBox(ui->comboTurbulenceSpecification,
                              pcConstraint->TurbulenceSpecification.getEnumVector(),
                              pcConstraint->TurbulenceSpecification.getValueAsString());
@@ -382,7 +382,7 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
         static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
-    std::string boundaryType = Base::Tools::toStdString(ui->comboBoundaryType->currentText());
+    std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
     // std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();
 
     // Update subtypes, any change here should be written back to FemConstraintFluidBoundary.cpp
@@ -431,8 +431,8 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
 void TaskFemConstraintFluidBoundary::updateSubtypeUI()
 {
 
-    std::string boundaryType = Base::Tools::toStdString(ui->comboBoundaryType->currentText());
-    std::string subtype = Base::Tools::toStdString(ui->comboSubtype->currentText());
+    std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
+    std::string subtype = ui->comboSubtype->currentText().toStdString();
 
     if (boundaryType == "inlet" || boundaryType == "outlet") {
         ui->tabBasicBoundary->setEnabled(true);
@@ -502,8 +502,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
     ui->labelHelpText->setText(
         tr(TurbulenceSpecificationHelpTexts[ui->comboTurbulenceSpecification->currentIndex()]));
     /// hide/disable UI only happened in constructor, update helptext and label text here
-    std::string turbulenceSpec =
-        Base::Tools::toStdString(ui->comboTurbulenceSpecification->currentText());
+    std::string turbulenceSpec = ui->comboTurbulenceSpecification->currentText().toStdString();
     ui->labelTurbulentIntensityValue->setText(tr("Intensity [0~1]"));
     if (turbulenceSpec == "intensity&DissipationRate") {
         ui->labelTurbulentLengthValue->setText(tr("Dissipation Rate [m2/s3]"));
@@ -531,8 +530,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
     ui->labelHelpText->setText(
         tr(ThermalBoundaryHelpTexts[ui->comboThermalBoundaryType->currentIndex()]));
     // to hide/disable UI according to subtype
-    std::string thermalBoundaryType =
-        Base::Tools::toStdString(ui->comboThermalBoundaryType->currentText());
+    std::string thermalBoundaryType = ui->comboThermalBoundaryType->currentText().toStdString();
     ui->spinHTCoeffValue->setEnabled(false);
     ui->spinTemperatureValue->setEnabled(false);
     ui->spinHeatFluxValue->setEnabled(false);
@@ -704,12 +702,12 @@ void TaskFemConstraintFluidBoundary::onCheckReverse(const bool pressed)
 
 std::string TaskFemConstraintFluidBoundary::getBoundaryType() const
 {
-    return Base::Tools::toStdString(ui->comboBoundaryType->currentText());
+    return ui->comboBoundaryType->currentText().toStdString();
 }
 
 std::string TaskFemConstraintFluidBoundary::getSubtype() const
 {
-    return Base::Tools::toStdString(ui->comboSubtype->currentText());
+    return ui->comboSubtype->currentText().toStdString();
 }
 
 double TaskFemConstraintFluidBoundary::getBoundaryValue() const
@@ -730,7 +728,7 @@ std::string TaskFemConstraintFluidBoundary::getTurbulenceModel() const
 
 std::string TaskFemConstraintFluidBoundary::getTurbulenceSpecification() const
 {
-    return Base::Tools::toStdString(ui->comboTurbulenceSpecification->currentText());
+    return ui->comboTurbulenceSpecification->currentText().toStdString();
 }
 
 double TaskFemConstraintFluidBoundary::getTurbulentIntensityValue() const
@@ -755,7 +753,7 @@ bool TaskFemConstraintFluidBoundary::getHeatTransferring() const
 
 std::string TaskFemConstraintFluidBoundary::getThermalBoundaryType() const
 {
-    return Base::Tools::toStdString(ui->comboThermalBoundaryType->currentText());
+    return ui->comboThermalBoundaryType->currentText().toStdString();
 }
 
 double TaskFemConstraintFluidBoundary::getTemperatureValue() const

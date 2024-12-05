@@ -37,9 +37,8 @@ from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from CAMTests.TestPathGeom import TestPathGeom
 from CAMTests.TestPathLanguage import TestPathLanguage
 from CAMTests.TestPathOpDeburr import TestPathOpDeburr
-
-# from CAMTests.TestPathHelix import TestPathHelix
 from CAMTests.TestPathHelpers import TestPathHelpers
+from CAMTests.TestPathHelix import TestPathHelix
 from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
 from CAMTests.TestPathLog import TestPathLog
 from CAMTests.TestPathOpUtil import TestPathOpUtil
@@ -98,7 +97,7 @@ False if TestPathOpDeburr.__name__ else True
 False if TestPathDrillable.__name__ else True
 False if TestPathGeom.__name__ else True
 False if TestPathHelpers.__name__ else True
-# False if TestPathHelix.__name__ else True
+False if TestPathHelix.__name__ else True
 False if TestPathLog.__name__ else True
 False if TestPathOpUtil.__name__ else True
 # False if TestPathPost.__name__ else True
