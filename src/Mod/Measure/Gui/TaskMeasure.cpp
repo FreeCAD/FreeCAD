@@ -90,7 +90,7 @@ TaskMeasure::TaskMeasure()
     autoSaveAction->setCheckable(true);
     autoSaveAction->setChecked(mAutoSave);
     autoSaveAction->setToolTip(tr("Auto saving of the last measurement when starting a new "
-                                  "measurement. Use SHIFT to temporarly invert the behaviour."));
+                                  "measurement. Use SHIFT to temporarily invert the behaviour."));
     connect(autoSaveAction, &QAction::triggered, this, &TaskMeasure::autoSaveChanged);
 
     newMeasurementBehaviourAction = new QAction(tr("Additive Selection"));
