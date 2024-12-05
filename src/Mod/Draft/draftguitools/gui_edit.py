@@ -340,8 +340,11 @@ class Edit(gui_base_original.Modifier):
         self.running = False
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
-        QtCore.QTimer.singleShot(0, Gui.ActiveDocument.resetEdit)
+        QtCore.QTimer.singleShot(0, self.reset_edit)
 
+    def reset_edit(self):
+        if Gui.ActiveDocument is not None:
+            Gui.ActiveDocument.resetEdit()
 
     # -------------------------------------------------------------------------
     # SCENE EVENTS CALLBACKS
@@ -356,8 +359,12 @@ class Edit(gui_base_original.Modifier):
         """
         remove selection callback if it exists
         """
-        if self.selection_callback:
-            self.view.removeEventCallback("SoEvent", self.selection_callback)
+        try:
+            if self.selection_callback:
+                self.view.removeEventCallback("SoEvent", self.selection_callback)
+        except RuntimeError:
+            # the view has been deleted already
+            pass
         self.selection_callback = None
 
     def register_editing_callbacks(self):
@@ -380,18 +387,22 @@ class Edit(gui_base_original.Modifier):
         """
         remove callbacks used during editing if they exist
         """
-        if self._keyPressedCB:
-            self.view.removeEventCallbackSWIG(coin.SoKeyboardEvent.getClassTypeId(), self._keyPressedCB)
-            self._keyPressedCB = None
-            #App.Console.PrintMessage("Draft edit keyboard callback unregistered \n")
-        if self._mouseMovedCB:
-            self.view.removeEventCallbackSWIG(coin.SoLocation2Event.getClassTypeId(), self._mouseMovedCB)
-            self._mouseMovedCB = None
-            #App.Console.PrintMessage("Draft edit location callback unregistered \n")
-        if self._mousePressedCB:
-            self.view.removeEventCallbackSWIG(coin.SoMouseButtonEvent.getClassTypeId(), self._mousePressedCB)
-            self._mousePressedCB = None
-            #App.Console.PrintMessage("Draft edit mouse button callback unregistered \n")
+        try:
+            if self._keyPressedCB:
+                self.view.removeEventCallbackSWIG(coin.SoKeyboardEvent.getClassTypeId(), self._keyPressedCB)
+                #App.Console.PrintMessage("Draft edit keyboard callback unregistered \n")
+            if self._mouseMovedCB:
+                self.view.removeEventCallbackSWIG(coin.SoLocation2Event.getClassTypeId(), self._mouseMovedCB)
+                #App.Console.PrintMessage("Draft edit location callback unregistered \n")
+            if self._mousePressedCB:
+                self.view.removeEventCallbackSWIG(coin.SoMouseButtonEvent.getClassTypeId(), self._mousePressedCB)
+                #App.Console.PrintMessage("Draft edit mouse button callback unregistered \n")
+        except RuntimeError:
+            # the view has been deleted already
+            pass
+        self._keyPressedCB = None
+        self._mouseMovedCB = None
+        self._mousePressedCB = None
 
     # -------------------------------------------------------------------------
     # SCENE EVENT HANDLERS
