@@ -211,11 +211,10 @@ void Base::UniqueNameManager::removeExactName(const std::string& name)
     digitValueSets[digitCount].Remove(digitsValue);
     // an element of digitValueSets may now be newly empty and so may other elements below it
     // Prune off all such trailing empty entries.
-    auto lastNonemptyEntry = std::find_if(digitValueSets.crbegin(),
-                                          digitValueSets.crend(),
-                                          [](auto& it) {
-                                              return it.Any();
-                                          });
+    auto lastNonemptyEntry =
+        std::find_if(digitValueSets.crbegin(), digitValueSets.crend(), [](auto& it) {
+            return it.Any();
+        });
     if (lastNonemptyEntry == digitValueSets.crend()) {
         // All entries are empty, so the entire baseName can be forgotten.
         UniqueSeeds.erase(baseName);
