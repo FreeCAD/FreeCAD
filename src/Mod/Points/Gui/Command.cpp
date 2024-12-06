@@ -105,8 +105,7 @@ void CmdPointsImport::activated(int iMsg)
          *  origin had inaccuracies in the relative positioning of the points due to
          *  imprecise floating point variables used in COIN
          **/
-        Points::Feature* pcFtr =
-            dynamic_cast<Points::Feature*>(doc->getDocument()->getActiveObject());
+        auto* pcFtr = dynamic_cast<Points::Feature*>(doc->getDocument()->getActiveObject());
         if (pcFtr) {
             auto points = pcFtr->Points.getValue();
             auto bbox = points.getBoundBox();
