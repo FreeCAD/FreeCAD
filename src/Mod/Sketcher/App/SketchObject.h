@@ -352,15 +352,15 @@ public:
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
-    int movePoint(std::vector<GeoElementId> moved,
-                  const Base::Vector3d& toPoint,
-                  bool relative = false,
-                  bool updateGeoBeforeMoving = false);
-    int movePoint(int GeoId,
-                  PointPos PosId,
-                  const Base::Vector3d& toPoint,
-                  bool relative = false,
-                  bool updateGeoBeforeMoving = false);
+    int moveGeometries(std::vector<GeoElementId> geoEltIds,
+                       const Base::Vector3d& toPoint,
+                       bool relative = false,
+                       bool updateGeoBeforeMoving = false);
+    int moveGeometry(int GeoId,
+                     PointPos PosId,
+                     const Base::Vector3d& toPoint,
+                     bool relative = false,
+                     bool updateGeoBeforeMoving = false);
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
@@ -704,11 +704,11 @@ public: /* Solver exposed interface */
      * state as a reference (enables dragging). NOTE: A temporary move operation must always be
      * preceded by a initTemporaryMove() operation.
      */
-    inline int moveTemporaryPoint(std::vector<GeoElementId> moved,
-                                  Base::Vector3d toPoint,
-                                  bool relative = false);
+    inline int moveGeometriesTemporary(std::vector<GeoElementId> moved,
+                                       Base::Vector3d toPoint,
+                                       bool relative = false);
     inline int
-    moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
+    moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
     /// forwards a request to update an extension of a geometry of the solver to the solver.
     inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension>&& ext)
     {
@@ -999,7 +999,7 @@ private:
 
     /** this internal flag indicate that an operation modifying the geometry, but not the DoF of the
        sketch took place (e.g. toggle construction), so if next action is a movement of a point
-       (movePoint), the geometry must be updated first.
+       (moveGeometry), the geometry must be updated first.
     */
     bool solverNeedsUpdate;
 
@@ -1100,19 +1100,19 @@ inline int SketchObject::initTemporaryBSplinePieceMove(int geoId,
     return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
 }
 
-inline int SketchObject::moveTemporaryPoint(std::vector<GeoElementId> moved,
-                                            Base::Vector3d toPoint,
-                                            bool relative /*=false*/)
+inline int SketchObject::moveGeometriesTemporary(std::vector<GeoElementId> geoEltIds,
+                                                 Base::Vector3d toPoint,
+                                                 bool relative /*=false*/)
 {
-    return solvedSketch.movePoint(moved, toPoint, relative);
+    return solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
 }
-inline int SketchObject::moveTemporaryPoint(int geoId,
-                                            PointPos pos,
-                                            Base::Vector3d toPoint,
-                                            bool relative /*=false*/)
+inline int SketchObject::moveGeometryTemporary(int geoId,
+                                               PointPos pos,
+                                               Base::Vector3d toPoint,
+                                               bool relative /*=false*/)
 {
     std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
-    return moveTemporaryPoint(moved, toPoint, relative);
+    return moveGeometriesTemporary(moved, toPoint, relative);
 }
 
 

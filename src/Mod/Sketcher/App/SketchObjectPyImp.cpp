@@ -1185,7 +1185,7 @@ PyObject* SketchObjectPy::moveGeometries(PyObject* args)
     }
 
     // Convert Python list to std::vector<GeoElementId>
-    std::vector<GeoElementId> moved;
+    std::vector<GeoElementId> geoEltIds;
     Py_ssize_t listSize = PyList_Size(pyList);
 
     for (Py_ssize_t i = 0; i < listSize; ++i) {
@@ -1204,14 +1204,14 @@ PyObject* SketchObjectPy::moveGeometries(PyObject* args)
             return nullptr;
         }
 
-        moved.emplace_back(GeoElementId(geoId, static_cast<Sketcher::PointPos>(pointPos)));
+        geoEltIds.emplace_back(GeoElementId(geoId, static_cast<Sketcher::PointPos>(pointPos)));
     }
 
     // Convert Python vector to Base::Vector3d
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
     // Call the C++ method
-    if (this->getSketchObjectPtr()->movePoint(moved, v1, (relative > 0))) {
+    if (this->getSketchObjectPtr()->moveGeometries(geoEltIds, v1, (relative > 0))) {
         PyErr_SetString(PyExc_ValueError, "Failed to move geometries.");
         return nullptr;
     }
@@ -1219,7 +1219,7 @@ PyObject* SketchObjectPy::moveGeometries(PyObject* args)
     Py_RETURN_NONE;
 }
 
-PyObject* SketchObjectPy::movePoint(PyObject* args)
+PyObject* SketchObjectPy::moveGeometry(PyObject* args)
 {
     PyObject* pcObj;
     int GeoId, PointType;
@@ -1237,10 +1237,10 @@ PyObject* SketchObjectPy::movePoint(PyObject* args)
 
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
-    if (this->getSketchObjectPtr()->movePoint(GeoId,
-                                              static_cast<Sketcher::PointPos>(PointType),
-                                              v1,
-                                              (relative > 0))) {
+    if (this->getSketchObjectPtr()->moveGeometry(GeoId,
+                                                 static_cast<Sketcher::PointPos>(PointType),
+                                                 v1,
+                                                 (relative > 0))) {
         std::stringstream str;
         str << "Not able to move point with the id and type: (" << GeoId << ", " << PointType
             << ")";

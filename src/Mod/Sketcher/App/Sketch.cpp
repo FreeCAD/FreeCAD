@@ -4765,7 +4765,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
     return ret;
 }
 
-int Sketch::initMove(std::vector<GeoElementId> moved, bool fine)
+int Sketch::initMove(std::vector<GeoElementId> geoEltIds, bool fine)
 {
     if (hasConflicts()) {
         // don't try to move sketches that contain conflicting constraints
@@ -4782,7 +4782,7 @@ int Sketch::initMove(std::vector<GeoElementId> moved, bool fine)
     // (emplace_back in the for loop below) will trigger reallocation.
     // Which will corrupt pointers we're storing.
     size_t reserveSize = 0;
-    for (auto& pair : moved) {
+    for (auto& pair : geoEltIds) {
         int geoId = checkGeoId(pair.GeoId);
         Sketcher::PointPos pos = pair.Pos;
         if (Geoms[geoId].type == BSpline && (pos == PointPos::none || pos == PointPos::mid)) {
@@ -4795,7 +4795,7 @@ int Sketch::initMove(std::vector<GeoElementId> moved, bool fine)
     }
     MoveParameters.reserve(reserveSize);
 
-    for (auto& pair : moved) {
+    for (auto& pair : geoEltIds) {
         int geoId = checkGeoId(pair.GeoId);
         Sketcher::PointPos pos = pair.Pos;
 
@@ -4959,7 +4959,7 @@ int Sketch::initMove(std::vector<GeoElementId> moved, bool fine)
                 p0.y = &MoveParameters.emplace_back(*center.y);
                 GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
             }
-            else if (pos == PointPos::none && moved.size() > 1) {
+            else if (pos == PointPos::none && geoEltIds.size() > 1) {
                 // When group dragging, arcs should move without modification.
                 GCS::Point p2;
                 GCS::Point& sp = Points[Geoms[geoId].startPointId];
@@ -5015,8 +5015,8 @@ int Sketch::initMove(std::vector<GeoElementId> moved, bool fine)
 
 int Sketch::initMove(int geoId, PointPos pos, bool fine)
 {
-    std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
-    return initMove(moved, fine);
+    std::vector<GeoElementId> geoEltIds = {GeoElementId(geoId, pos)};
+    return initMove(geoEltIds, fine);
 }
 
 void Sketch::resetInitMove()
@@ -5093,7 +5093,9 @@ int Sketch::initBSplinePieceMove(int geoId,
     return 0;
 }
 
-int Sketch::movePoint(std::vector<GeoElementId> moved, Base::Vector3d toPoint, bool relative)
+int Sketch::moveGeometries(std::vector<GeoElementId> geoEltIds,
+                           Base::Vector3d toPoint,
+                           bool relative)
 {
     if (hasConflicts()) {
         // don't try to move sketches that contain conflicting constraints
@@ -5101,7 +5103,7 @@ int Sketch::movePoint(std::vector<GeoElementId> moved, Base::Vector3d toPoint, b
     }
 
     if (!isInitMove) {
-        initMove(moved);
+        initMove(geoEltIds);
         initToPoint = toPoint;
         moveStep = 0;
     }
@@ -5113,7 +5115,7 @@ int Sketch::movePoint(std::vector<GeoElementId> moved, Base::Vector3d toPoint, b
             else {
                 // I am getting too far away from the original solution so reinit the solution
                 if ((toPoint - initToPoint).Length() > 20 * moveStep) {
-                    initMove(moved);
+                    initMove(geoEltIds);
                     initToPoint = toPoint;
                 }
             }
@@ -5128,7 +5130,7 @@ int Sketch::movePoint(std::vector<GeoElementId> moved, Base::Vector3d toPoint, b
     }
     else {
         size_t i = 0;
-        for (auto& pair : moved) {
+        for (auto& pair : geoEltIds) {
             if (i >= MoveParameters.size()) {
                 break;
             }
@@ -5204,10 +5206,10 @@ int Sketch::movePoint(std::vector<GeoElementId> moved, Base::Vector3d toPoint, b
     return solve();
 }
 
-int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
+int Sketch::moveGeometry(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
 {
-    std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
-    return movePoint(moved, toPoint, relative);
+    std::vector<GeoElementId> geoEltIds = {GeoElementId(geoId, pos)};
+    return moveGeometries(geoEltIds, toPoint, relative);
 }
 
 int Sketch::setDatum(int /*constrId*/, double /*value*/)

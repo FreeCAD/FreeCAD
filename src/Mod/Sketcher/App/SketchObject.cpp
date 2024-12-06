@@ -1340,7 +1340,7 @@ int SketchObject::diagnoseAdditionalConstraints(
     return lastDoF;
 }
 
-int SketchObject::movePoint(std::vector<GeoElementId> moved, const Base::Vector3d& toPoint, bool relative,
+int SketchObject::moveGeometries(std::vector<GeoElementId> geoEltIds, const Base::Vector3d& toPoint, bool relative,
                             bool updateGeoBeforeMoving)
 {
 
@@ -1370,7 +1370,7 @@ int SketchObject::movePoint(std::vector<GeoElementId> moved, const Base::Vector3
         return -1;
 
     // move the point and solve
-    lastSolverStatus = solvedSketch.movePoint(moved, toPoint, relative);
+    lastSolverStatus = solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
 
     // moving the point can not result in a conflict that we did not have
     // or a redundancy that we did not have before, or a change of DoF
@@ -1391,11 +1391,11 @@ int SketchObject::movePoint(std::vector<GeoElementId> moved, const Base::Vector3
     return lastSolverStatus;
 }
 
-int SketchObject::movePoint(int geoId, PointPos pos, const Base::Vector3d& toPoint, bool relative,
+int SketchObject::moveGeometry(int geoId, PointPos pos, const Base::Vector3d& toPoint, bool relative,
     bool updateGeoBeforeMoving)
 {
-    std::vector<GeoElementId> moved = { GeoElementId(geoId, pos) };
-    return movePoint(moved, toPoint, relative, updateGeoBeforeMoving);
+    std::vector<GeoElementId> geoEltIds = { GeoElementId(geoId, pos) };
+    return moveGeometries(geoEltIds, toPoint, relative, updateGeoBeforeMoving);
 }
 
 template <>
@@ -2785,14 +2785,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             if (dist1.Length() < dist2.Length()) {
                 filletPosId1 = PointPos::start;
                 filletPosId2 = PointPos::end;
-                movePoint(GeoId1, PosId1, p1, false, true);
-                movePoint(GeoId2, PosId2, p2, false, true);
+                moveGeometry(GeoId1, PosId1, p1, false, true);
+                moveGeometry(GeoId2, PosId2, p2, false, true);
             }
             else {
                 filletPosId1 = PointPos::end;
                 filletPosId2 = PointPos::start;
-                movePoint(GeoId1, PosId1, p2, false, true);
-                movePoint(GeoId2, PosId2, p1, false, true);
+                moveGeometry(GeoId1, PosId1, p2, false, true);
+                moveGeometry(GeoId2, PosId2, p1, false, true);
             }
 
             auto tangent1 = std::make_unique<Sketcher::Constraint>();
@@ -3280,14 +3280,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             if (dist1 < dist2) {
                 filletPosId1 = PointPos::start;
                 filletPosId2 = PointPos::end;
-                movePoint(GeoId1, PosId1, p1, false, true);
-                movePoint(GeoId2, PosId2, p2, false, true);
+                moveGeometry(GeoId1, PosId1, p1, false, true);
+                moveGeometry(GeoId2, PosId2, p2, false, true);
             }
             else {
                 filletPosId1 = PointPos::end;
                 filletPosId2 = PointPos::start;
-                movePoint(GeoId1, PosId1, p2, false, true);
-                movePoint(GeoId2, PosId2, p1, false, true);
+                moveGeometry(GeoId1, PosId1, p2, false, true);
+                moveGeometry(GeoId2, PosId2, p1, false, true);
             }
 
             auto* tangent1 = new Sketcher::Constraint();
@@ -3385,7 +3385,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
             newPoint.Normalize();
             newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
             newPoint = newPoint + endVec;
-            retcode = movePoint(GeoId, Sketcher::PointPos::start, newPoint, false, true);
+            retcode = moveGeometry(GeoId, Sketcher::PointPos::start, newPoint, false, true);
         }
         else if (endpoint == PointPos::end) {
             Base::Vector3d newPoint = endVec - startVec;
@@ -3393,7 +3393,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
             newPoint.Normalize();
             newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
             newPoint = newPoint + startVec;
-            retcode = movePoint(GeoId, Sketcher::PointPos::end, newPoint, false, true);
+            retcode = moveGeometry(GeoId, Sketcher::PointPos::end, newPoint, false, true);
         }
     }
     else if (geom->is<Part::GeomArcOfCircle>()) {

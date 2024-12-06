@@ -1658,7 +1658,7 @@ void ViewProviderSketch::doDragStep(double x, double y)
         }
     }
 
-    if (getSketchObject()->moveTemporaryPoint(drag.Dragged, vec, drag.relative) == 0) {
+    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == 0) {
         setPositionText(Base::Vector2d(x, y));
         draw(true, false);
     }

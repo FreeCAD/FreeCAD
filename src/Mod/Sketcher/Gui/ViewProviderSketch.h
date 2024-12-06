@@ -601,7 +601,7 @@ public:
      * -> inline void setRecalculateInitialSolutionWhileMovingPoint(bool
      * recalculateInitialSolutionWhileMovingPoint)
      * -> inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true)
-     * -> inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool
+     * -> inline int moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool
      * relative=false)
      * -> inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> &&
      * ext)
