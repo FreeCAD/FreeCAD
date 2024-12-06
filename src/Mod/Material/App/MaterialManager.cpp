@@ -451,8 +451,8 @@ void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::Materia
                                     library->getIconPath(),
                                     library->isReadOnly());
 
-    auto models = _localManager->libraryMaterials(library->getName());
-    for (auto& tuple : *models) {
+    auto materials = _localManager->libraryMaterials(library->getName());
+    for (auto& tuple : *materials) {
         auto uuid = std::get<0>(tuple);
         auto path = std::get<1>(tuple);
         auto name = std::get<2>(tuple);

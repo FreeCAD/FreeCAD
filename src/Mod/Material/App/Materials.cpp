@@ -39,26 +39,6 @@
 
 using namespace Materials;
 
-void validateMaterialPath(const QString& local, const QString& remote)
-{
-    if (local == remote) {
-        return;
-    }
-
-    auto index = local.lastIndexOf(QLatin1String(".FCMat"), -1, Qt::CaseInsensitive);
-    if (index > 0) {
-        auto path = local;
-        path.truncate(index);
-
-        if (path != remote) {
-            Base::Console().Log("Directory:\n\t'%s'\n\t'%s'\n",
-                                local.toStdString().c_str(),
-                                remote.toStdString().c_str());
-            // throw InvalidMaterial("Material directories don't match");
-        }
-    }
-}
-
 /* TRANSLATOR Material::Materials */
 
 TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
@@ -1750,7 +1730,12 @@ void Material::validate(const std::shared_ptr<Material>& other) const
         throw InvalidMaterial(e.what());
     }
 
-    validateMaterialPath(_directory, other->_directory);
+    if (_directory != other->_directory) {
+        throw InvalidMaterial("Model directories don't match");
+    }
+    if (!other->_filename.isEmpty()) {
+        throw InvalidMaterial("Remote filename is not empty");
+    }
     if (_uuid != other->_uuid) {
         throw InvalidMaterial("Model UUIDs don't match");
     }

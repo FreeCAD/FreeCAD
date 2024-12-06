@@ -70,7 +70,7 @@ std::shared_ptr<Model> ModelLibrary::addModel(const Model& model, const QString&
     QFileInfo info(filePath);
     std::shared_ptr<Model> newModel = std::make_shared<Model>(model);
     newModel->setLibrary(getptr());
-    newModel->setDirectory(info.dir().absolutePath());
+    newModel->setDirectory(getLibraryPath(filePath, info.fileName()));
     newModel->setFilename(info.fileName());
 
     (*_modelPathMap)[filePath] = newModel;

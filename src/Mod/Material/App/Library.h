@@ -91,6 +91,7 @@ public:
 
     QString getLocalPath(const QString& path) const;
     QString getRelativePath(const QString& path) const;
+    QString getLibraryPath(const QString& path, const QString& filename) const;
     bool isRoot(const QString& path) const;
 
     // Validate a remote library against this one (a local library)

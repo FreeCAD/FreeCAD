@@ -370,7 +370,7 @@ MaterialLibraryLocal::addMaterial(const std::shared_ptr<Material>& material, con
     QFileInfo info(filePath);
     std::shared_ptr<Material> newMaterial = std::make_shared<Material>(*material);
     newMaterial->setLibrary(getptr());
-    newMaterial->setDirectory(info.dir().absolutePath());
+    newMaterial->setDirectory(getLibraryPath(filePath, info.fileName()));
     newMaterial->setFilename(info.fileName());
 
     (*_materialPathMap)[filePath] = newMaterial;

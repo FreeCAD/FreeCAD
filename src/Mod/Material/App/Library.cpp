@@ -128,3 +128,16 @@ QString Library::getRelativePath(const QString& path) const
 
     return filePath;
 }
+
+QString Library::getLibraryPath(const QString& path, const QString& filename) const
+{
+    QString filePath(path);
+    if (filePath.endsWith(filename)) {
+        filePath = filePath.left(filePath.length() - filename.length());
+    }
+    if (filePath.endsWith(QLatin1String("/"))) {
+        filePath = filePath.left(filePath.length() - 1);
+    }
+
+    return filePath;
+}
