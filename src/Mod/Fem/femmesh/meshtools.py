@@ -1585,7 +1585,6 @@ def get_contact_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj)
 # ***** tie faces ****************************************************************************
 def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
     # see comment get_contact_obj_faces
-    # solid mesh is same as contact, but face mesh is not allowed for tie
     # TODO get rid of duplicate code for contact and tie
 
     slave_faces, master_faces = [], []
