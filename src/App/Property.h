@@ -97,10 +97,11 @@ public:
         PropOutput = 27,       // corresponding to Prop_Output
         PropStaticEnd = 28,
 
-        User1 = 28,  // user-defined status
-        User2 = 29,  // user-defined status
-        User3 = 30,  // user-defined status
-        User4 = 31   // user-defined status
+        User1 = 28,    // user-defined status
+        User2 = 29,    // user-defined status
+        User3 = 30,    // user-defined status
+        Exposed = 31,  // user-defined status
+
     };
 
     Property();

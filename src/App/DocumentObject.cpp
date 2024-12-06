@@ -734,6 +734,19 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub& linkTo) const
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
 }
 
+bool DocumentObject::isExposed(const Property* prop) const
+{
+    return prop->testStatus(Property::Exposed);
+}
+
+bool DocumentObject::isExposed() const
+{
+    std::vector<Property*> allProps;
+    getPropertyList(allProps);
+    return std::any_of(allProps.begin(), allProps.end(),
+                       [this](Property* prop) { return isExposed(prop); });
+}
+
 void DocumentObject::onLostLinkToObject(DocumentObject*)
 {}
 
