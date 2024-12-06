@@ -43,7 +43,7 @@ def purge_results(analysis):
         analysis group as a container for all  objects needed for the analysis
     """
 
-    # if analysis typ check is used result mesh
+    # if analysis type check is used, result mesh
     # without result obj is created in the analysis
     # we could run into trouble in one loop because
     # we will delete objects and try to access them later
@@ -68,6 +68,15 @@ def purge_results(analysis):
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
 
+    # result pipeline and filter
+    for m in analysis.Group:
+        if is_of_type(m, "Fem::FemPostPipeline"):
+            # delete associated filters
+            for filter_obj in m.Filter:
+                analysis.Document.removeObject(filter_obj.Name)
+            # delete the pipeline itself
+            analysis.Document.removeObject(m.Name)
+    analysis.Document.recompute()
 
 def reset_mesh_deformation(resultobj):
     """Resets result mesh deformation.
