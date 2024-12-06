@@ -78,6 +78,7 @@ def purge_results(analysis):
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
 
+
 def reset_mesh_deformation(resultobj):
     """Resets result mesh deformation.
 
