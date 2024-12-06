@@ -169,7 +169,7 @@ void FemPostPipeline::onChanged(const Property* prop)
         // dependent on mode
         ++it;
         for (; it != objs.end(); ++it) {
-            FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
+            auto* nextFilter = static_cast<FemPostFilter*>(*it);
 
             if (Mode.getValue() == 0) {  // serial mode
                 if (nextFilter->Input.getValue() != filter) {
