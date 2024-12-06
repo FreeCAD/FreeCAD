@@ -369,7 +369,7 @@ class NativeIFCTest(unittest.TestCase):
         self.assertTrue(len(lays_after) == len(lays_before) + 1, "Layers failed")
 
     def test15_Psets(self):
-        FreeCAD.Console.PrintMessage(NativeIFC "15: Psets...")
+        FreeCAD.Console.PrintMessage("NativeIFC 15: Psets...")
         clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
