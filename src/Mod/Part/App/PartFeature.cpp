@@ -1064,6 +1064,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                     shape = TopoShape(tag, hasher, _shape);
                 }
             }
+
             if (!shape.isNull()) {
                 shape.transformShape(mat * linkMat, false, true);
                 return shape;
