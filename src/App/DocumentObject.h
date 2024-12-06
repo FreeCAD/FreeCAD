@@ -513,7 +513,12 @@ public:
     {
         return false;
     }
-
+    /// Handle Label changes, including forcing unique label values,
+    /// signalling OnBeforeLabelChange, and arranging to update linked references,
+    /// on the assumption that after returning the label will indeed be changed to
+    /// the (altered) value of newLabel.
+    /// Returns a vector of referenging (linking) properties as produced by
+    /// PropertyLinkBase::updateLabelReferences which is needed for undo/redo purposes.
     std::vector<std::pair<Property*, std::unique_ptr<Property>>>
     onProposedLabelChange(std::string& newLabel);
     /*** Called to let object itself control relabeling
