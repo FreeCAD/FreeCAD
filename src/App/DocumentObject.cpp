@@ -576,6 +576,48 @@ std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
     return ret;
 }
 
+bool DocumentObject::onlyReferencedByExposedIn(const App::DocumentObject *obj) const {
+    // returns true is this is only referenced by exposed properties in obj
+    std::vector<Property*> propsObj;
+    obj->getPropertyList(propsObj);
+    for (auto prop : propsObj) {
+        auto link = dynamic_cast<PropertyLinkBase*>(prop);
+        std::vector<DocumentObject*> objsReferencedByObj;
+        if(link && strcmp(link->getName(), "ExpressionEngine") != 0) {
+            link->getLinks(objsReferencedByObj);
+        }
+        if (std::find(objsReferencedByObj.begin(), objsReferencedByObj.end(), this)
+            != objsReferencedByObj.end()) {
+            // a regular link is referencing this
+            return false;
+        }
+    }
+
+
+    auto expressions = obj->ExpressionEngine.getExpressions();
+    for (const auto& pair : expressions) {
+        const App::Expression* exp = pair.second;
+        for (const auto& id : exp->getIdentifiers()) {
+            Property* prop = id.first.getProperty();
+            if (prop && prop->getContainer() == this && !isExposed(prop)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+std::set<App::DocumentObject*> DocumentObject::getInListWithoutExposed() const {
+    std::set<App::DocumentObject*> ret;
+    for (auto& obj : _inList) {
+        if (!onlyReferencedByExposedIn(obj)) {
+            ret.insert(obj);
+        }
+    }
+    return ret;
+}
+
 void _getOutListRecursive(std::set<DocumentObject*>& objSet,
                           const DocumentObject* obj,
                           const DocumentObject* checkObj,
