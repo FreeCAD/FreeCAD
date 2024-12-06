@@ -911,22 +911,34 @@ ExpressionDeps Expression::getDeps(int option)  const {
 }
 
 void Expression::getDepObjects(
-        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels) const
+        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels, bool excludeExposed) const
 {
     for(auto &v : getIdentifiers()) {
         bool hidden = v.second;
         const ObjectIdentifier &var = v.first;
         std::vector<std::string> strings;
-        for(auto &dep : var.getDep(false, &strings)) {
+        for(auto &dep : var.getDep(true, &strings)) {
             DocumentObject *obj = dep.first;
             if (!obj->testStatus(ObjectStatus::Remove)) {
                 if (labels) {
                     std::copy(strings.begin(), strings.end(), std::back_inserter(*labels));
                 }
 
-                auto res = deps.insert(std::make_pair(obj, hidden));
-                if (!hidden || res.second)
-                    res.first->second = hidden;
+                bool include = true;
+                if (excludeExposed) {
+                    auto propNames = dep.second;
+                    include = !std::all_of(propNames.begin(), propNames.end(),
+                                                      [obj](const std::string& propName) {
+                                                          App::Property* prop = obj->getPropertyByName(propName.c_str());
+                                                          return prop && obj->isExposed(prop);
+                                                      });
+                }
+
+                if (include) {
+                    auto res = deps.insert(std::make_pair(obj, hidden));
+                    if (!hidden || res.second)
+                        res.first->second = hidden;
+                }
             }
 
             strings.clear();
@@ -934,9 +946,10 @@ void Expression::getDepObjects(
     }
 }
 
-std::map<App::DocumentObject*,bool> Expression::getDepObjects(std::vector<std::string> *labels)  const {
+std::map<App::DocumentObject*, bool> Expression::getDepObjects(std::vector<std::string>* labels,
+                                                               bool excludeExposed) const {
     std::map<App::DocumentObject*,bool> deps;
-    getDepObjects(deps,labels);
+    getDepObjects(deps,labels, excludeExposed);
     return deps;
 }
 
