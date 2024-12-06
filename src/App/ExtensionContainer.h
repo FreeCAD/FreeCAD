@@ -182,6 +182,8 @@ public:
     const char* getPropertyName(const Property* prop) const override;
     /// get all properties of the class (including properties of the parent)
     void getPropertyMap(std::map<std::string, Property*>& Map) const override;
+    /// See PropertyContainer::visitProperties for semantics
+    void visitProperties(std::function<void(Property*)> visitor) const override;
     /// get all properties of the class (including properties of the parent)
     void getPropertyList(std::vector<Property*>& List) const override;
 
