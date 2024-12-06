@@ -58,6 +58,7 @@ from CAMTests.TestPathPropertyBag import TestPathPropertyBag
 from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
 from CAMTests.TestPathSetupSheet import TestPathSetupSheet
 from CAMTests.TestPathStock import TestPathStock
+from CAMTests.TestPathTapGenerator import TestPathTapGenerator
 from CAMTests.TestPathThreadMilling import TestPathThreadMilling
 from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
 from CAMTests.TestPathToolBit import TestPathToolBit
@@ -110,6 +111,7 @@ False if TestPathPropertyBag.__name__ else True
 False if TestPathRotationGenerator.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathStock.__name__ else True
+False if TestPathTapGenerator.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathThreadMillingGenerator.__name__ else True
 False if TestPathToolBit.__name__ else True
