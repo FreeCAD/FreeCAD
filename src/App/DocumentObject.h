@@ -344,6 +344,12 @@ public:
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList& linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
 
+    /// check if the property is exposed
+    bool isExposed(const Property* prop) const;
+    /// check whether any of the properties in the container are exposed
+    bool isExposed() const;
+
+
     /** Return the element map version of the geometry data stored in the given property
      *
      * @param prop: the geometry property to query for element map version
