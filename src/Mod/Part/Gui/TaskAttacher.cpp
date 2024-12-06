@@ -34,7 +34,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/ObjectIdentifier.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -65,7 +65,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
     if (!obj)
         return QObject::tr("No reference selected");
 
-    if (obj->isDerivedFrom<App::OriginFeature>() ||
+    if (obj->isDerivedFrom<App::DatumElement>() ||
         obj->isDerivedFrom<Part::Datum>())
         // App::Plane, Line or Datum feature
         return QString::fromLatin1(obj->getNameInDocument());
@@ -374,7 +374,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::string subname = msg.pSubName;
 
         // Remove subname for planes and datum features
-        if (selObj->isDerivedFrom<App::OriginFeature>() ||
+        if (selObj->isDerivedFrom<App::DatumElement>() ||
             selObj->isDerivedFrom<Part::Datum>())
             subname = "";
 

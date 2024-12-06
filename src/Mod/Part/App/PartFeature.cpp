@@ -31,6 +31,7 @@
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
@@ -63,7 +64,7 @@
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/ElementNamingUtils.h>
 #include <App/Placement.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
@@ -1017,6 +1018,14 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                     BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
+                }
+                shape = TopoShape(tag, hasher, _shape);
+            }
+            else if (linked->isDerivedFrom(App::Point::getClassTypeId())) {
+                static TopoDS_Shape _shape;
+                if (_shape.IsNull()) {
+                    BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));
+                    _shape = builder.Shape();
                 }
                 shape = TopoShape(tag, hasher, _shape);
             }

@@ -34,7 +34,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureMirrored.h>
 
@@ -90,7 +90,7 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
     if (body) {
         try {
             App::Origin* origin = body->getOrigin();
-            auto vpOrigin = static_cast<ViewProviderOrigin*>(
+            auto vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(false, true);
         }
@@ -225,7 +225,7 @@ TaskMirroredParameters::~TaskMirroredParameters()
         PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         if (body) {
             App::Origin* origin = body->getOrigin();
-            auto vpOrigin = static_cast<ViewProviderOrigin*>(
+            auto vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }
