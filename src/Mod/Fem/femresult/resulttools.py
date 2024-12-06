@@ -64,8 +64,9 @@ def purge_results(analysis):
 
     # output text object
     for m in analysis.Group:
-        if is_of_type(m, "App::TextDocument") and (m.Name.startswith("ccx_dat_file") or 
-        m.Name.startswith("SolverElmerOutput")):
+        if is_of_type(m, "App::TextDocument") and (
+            m.Name.startswith("ccx_dat_file") or m.Name.startswith("SolverElmerOutput")
+        ):
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
 
