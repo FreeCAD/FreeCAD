@@ -346,7 +346,7 @@ public:
     void addExactName(const std::string& name);
     std::string makeUniqueName(const std::string& modelName, int minDigits = 0) const;
 
-    // Remove a rgistered name so it can be generated again.
+    // Remove a registered name so it can be generated again.
     // Nothing happens if you try to remove a non-registered name.
     void removeExactName(const std::string& name);
 

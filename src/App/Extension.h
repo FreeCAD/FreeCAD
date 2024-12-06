@@ -254,7 +254,7 @@ public:
     virtual const char* extensionGetPropertyName(const Property* prop) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyMap(std::map<std::string,Property*> &Map) const;
-    // See PropertyContainer::visitProperties for semantics
+    /// See PropertyContainer::visitProperties for semantics
     virtual void extensionVisitProperties(std::function<void(Property*)> visitor) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyList(std::vector<Property*> &List) const;

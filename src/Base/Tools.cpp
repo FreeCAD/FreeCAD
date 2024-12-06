@@ -188,8 +188,6 @@ std::string Base::UniqueNameManager::makeUniqueName(const std::string& modelName
     return namePrefix + digits + nameSuffix;
 }
 
-// Remove a rgistered name so it can be generated again.
-// Nothing happens if you try to remove a non-registered name.
 void Base::UniqueNameManager::removeExactName(const std::string& name)
 {
     std::string baseName;

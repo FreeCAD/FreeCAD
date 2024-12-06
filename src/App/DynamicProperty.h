@@ -87,7 +87,7 @@ public:
     void getPropertyList(std::vector<Property*>& List) const;
     /// get all properties with their names
     void getPropertyNamedList(std::vector<std::pair<const char*, Property*>>& List) const;
-    // See PropertyContainer::visitProperties for semantics
+    /// See PropertyContainer::visitProperties for semantics
     void visitProperties(std::function<void(Property*)> visitor) const;
     /// Get all properties of the class (including parent)
     void getPropertyMap(std::map<std::string, Property*>& Map) const;
