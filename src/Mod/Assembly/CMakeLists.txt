@@ -1,3 +1,9 @@
+if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
+)
+endif ()
+
 add_subdirectory(App)
 
 if(BUILD_GUI)
