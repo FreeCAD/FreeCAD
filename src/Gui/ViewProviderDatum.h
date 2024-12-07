@@ -44,10 +44,10 @@ namespace Gui
         ~ViewProviderDatum() override;
 
         /// Get point derived classes will add their specific stuff
-        SoSeparator* getRoot() { return pRoot; }
+        SoSeparator* getDatumRoot() const { return pRoot; }
 
         /// Get pointer to the text label associated with the feature
-        SoText2* getLabel() { return pLabel; }
+        SoText2* getLabel() const { return pLabel; }
 
         void attach(App::DocumentObject*) override;
         std::vector<std::string> getDisplayModes() const override;
