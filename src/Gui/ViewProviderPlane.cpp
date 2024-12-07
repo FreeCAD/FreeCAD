@@ -114,7 +114,7 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
     // indexes used to create the edges
     static const int32_t lines[6] = { 0, 1, 2, 3, 0, -1 };
 
-    SoSeparator* sep = getRoot();
+    SoSeparator* sep = getDatumRoot();
 
     auto pCoords = new SoCoordinate3();
     pCoords->point.setNum(4);

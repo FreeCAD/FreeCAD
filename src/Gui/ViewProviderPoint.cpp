@@ -52,7 +52,7 @@ void ViewProviderPoint::attach(App::DocumentObject * obj) {
     // The coordinates for the point (single vertex at the origin)
     static const SbVec3f point = SbVec3f(0, 0, 0);
 
-    SoSeparator* sep = getRoot();
+    SoSeparator* sep = getDatumRoot();
 
     auto pCoords = new SoCoordinate3();
     pCoords->point.setNum(1);

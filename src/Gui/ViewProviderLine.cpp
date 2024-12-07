@@ -94,7 +94,7 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
     // indexes used to create the edges
     static const int32_t lines[4] = { 0, 1, -1 };
 
-    SoSeparator *sep = getRoot();
+    SoSeparator *sep = getDatumRoot();
 
     auto pCoords = new SoCoordinate3 ();
     pCoords->point.setNum (2);
