@@ -72,9 +72,6 @@ public:
     ///unify children visuals
     void onChanged(const App::Property* prop) override;
 
-    /// Update the sizes of origin and datums
-    void updateOriginDatumSize ();
-
     /**
      * Return the bounding box of visible features
      * @note datums are counted as their base point only
@@ -89,9 +86,6 @@ public:
     void dropObject(App::DocumentObject*) override;
 
 protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj, const App::Property& prop );
-
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);
     /// Set Feature viewprovider into visual body mode
@@ -99,9 +93,6 @@ protected:
 
 private:
     static const char* BodyModeEnum[];
-
-    boost::signals2::connection connectChangedObjectApp;
-    boost::signals2::connection connectChangedObjectGui;
 };
 
 

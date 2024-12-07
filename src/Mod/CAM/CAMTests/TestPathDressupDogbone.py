@@ -59,7 +59,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify bones are inserted for simple moves."""
         base = TestProfile(
             "Inside",
-            "Climb",
+            "CW",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -84,7 +84,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify bones are inserted if hole ends with rapid move out."""
         base = TestProfile(
             "Inside",
-            "Climb",
+            "CW",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -175,7 +175,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify no bone is inserted for straight move interrupted by plunge."""
         base = TestProfile(
             "Inside",
-            "Climb",
+            "CW",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -197,7 +197,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify can handle comments between moves"""
         base = TestProfile(
             "Inside",
-            "Climb",
+            "CW",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -220,7 +220,7 @@ class TestDressupDogbone(PathTestBase):
 
         base = TestProfile(
             "Inside",
-            "Climb",
+            "CW",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -246,7 +246,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify can handle noops between moves"""
         base = TestProfile(
             "Inside",
-            "Climb",
+            "CW",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -269,7 +269,7 @@ class TestDressupDogbone(PathTestBase):
 
         base = TestProfile(
             "Inside",
-            "Climb",
+            "CW",
             """
         G0 X10 Y10 Z10
         G1 Z0

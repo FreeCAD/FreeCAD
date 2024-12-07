@@ -403,7 +403,7 @@ private:
                         else {
                             // We should be able to handle cases where rotation is 90 or 180, but
                             // this is segfaulting. The same is reported in
-                            // SketchObject::addSymmetric. There's apparantly a problem with
+                            // SketchObject::addSymmetric. There's apparently a problem with
                             // creation of DistanceX/Y. On top of the segfault the DistanceX/Y flips
                             // the new geometry.
                             /*if (cstr->Type == DistanceX || cstr->Type == DistanceY) {

@@ -124,6 +124,9 @@ public:
 
     bool isValidAlias(const std::string& candidate);
 
+    // checks whether candidate is of form A1, C4, etc.
+    bool isValidCellAddressName(const std::string& candidate);
+
     std::vector<App::CellAddress> getUsedCells() const;
 
     std::tuple<App::CellAddress, App::CellAddress> getUsedRange() const;

@@ -414,6 +414,8 @@ def get_ifcfile(obj):
             if getattr(project, "Proxy", None):
                 project.Proxy.ifcfile = ifcfile
             return ifcfile
+        else:
+            FreeCAD.Console.PrintError("Error: No IFC file attached to this project")
     return None
 
 
@@ -523,6 +525,8 @@ def add_properties(
         obj.ShapeMode = shapemode
         if not obj.isDerivedFrom("Part::Feature"):
             obj.setPropertyStatus("ShapeMode", "Hidden")
+    if ifcentity.is_a("IfcProduct"):
+        obj.addProperty("App::PropertyLink", "Type", "IFC")
     attr_defs = ifcentity.wrapped_data.declaration().as_entity().all_attributes()
     try:
         info_ifcentity = ifcentity.get_info()
@@ -745,6 +749,21 @@ def set_attribute(ifcfile, element, attribute, value):
 
     # This function can become pure IFC
 
+    def differs(val1, val2):
+        if val1 == val2:
+            return False
+        if not val1 and not val2:
+            return False
+        if val1 is None and "NOTDEFINED" in str(val2).upper():
+            return False
+        if val1 is None and "UNDEFINED" in str(val2).upper():
+            return False
+        if val2 is None and "NOTDEFINED" in str(val1).upper():
+            return False
+        if val2 is None and "UNDEFINED" in str(val1).upper():
+            return False
+        return True
+
     if not ifcfile or not element:
         return False
     if isinstance(value, FreeCAD.Units.Quantity):
@@ -774,7 +793,7 @@ def set_attribute(ifcfile, element, attribute, value):
         ):
             # do not consider default FreeCAD names given to unnamed alements
             return False
-        if getattr(element, attribute) != value:
+        if differs(getattr(element, attribute, None),value):
             FreeCAD.Console.PrintLog(
                 "Changing IFC attribute value of "
                 + str(attribute)
@@ -802,22 +821,25 @@ def set_colors(obj, colors):
         else:
             colors = [abs(c) for c in colors]
         if hasattr(vobj, "ShapeColor"):
-            if isinstance(colors[0], (tuple, list)):
-                vobj.ShapeColor = colors[0][:3]
-                # do not set transparency when the object has more than one color
-                #if len(colors[0]) > 3:
-                #    vobj.Transparency = int(colors[0][3] * 100)
-            else:
-                vobj.ShapeColor = colors[:3]
-                if len(colors) > 3:
-                    vobj.Transparency = int(colors[3] * 100)
-        if hasattr(vobj, "DiffuseColor"):
-            # strip out transparency value because it currently gives ugly
-            # results in FreeCAD when combining transparent and non-transparent objects
-            if all([len(c) > 3 and c[3] != 0 for c in colors]):
-                vobj.DiffuseColor = colors
-            else:
-                vobj.DiffuseColor = [c[:3] for c in colors]
+            # 1.0 materials
+            if not isinstance(colors[0], (tuple, list)):
+                colors = [colors]
+            # set the first color to opaque otherwise it spoils object transparency
+            if len(colors) > 1:
+                #colors[0] = colors[0][:3] + (0.0,)
+                # TEMP HACK: if multiple colors, set everything to opaque because it looks wrong
+                colors = [color[:3] + (0.0,) for color in colors]
+            sapp = []
+            for color in colors:
+                sapp_mat = FreeCAD.Material()
+                if len(color) < 4:
+                    sapp_mat.DiffuseColor = color + (1.0,)
+                else:
+                    sapp_mat.DiffuseColor = color[:3] + (1.0 - color[3],)
+                sapp_mat.Transparency = color[3] if len(color) > 3 else 0.0
+                sapp.append(sapp_mat)
+            #print(vobj.Object.Label,[[m.DiffuseColor,m.Transparency] for m in sapp])
+            vobj.ShapeAppearance = sapp
 
 
 def get_body_context_ids(ifcfile):
@@ -959,14 +981,17 @@ def save(obj, filepath=None):
     obj.Modified = False
 
 
-def aggregate(obj, parent):
-    """Takes any FreeCAD object and aggregates it to an existing IFC object"""
+def aggregate(obj, parent, mode=None):
+    """Takes any FreeCAD object and aggregates it to an existing IFC object.
+    Mode can be 'opening' to force-create a subtraction"""
 
     proj = get_project(parent)
     if not proj:
         FreeCAD.Console.PrintError("The parent object is not part of an IFC project\n")
         return
     ifcfile = get_ifcfile(proj)
+    if not ifcfile:
+        return
     product = None
     stepid = getattr(obj, "StepId", None)
     if stepid:
@@ -983,11 +1008,14 @@ def aggregate(obj, parent):
         newobj = obj
         new = False
     else:
-        product = create_product(obj, parent, ifcfile)
+        ifcclass = None
+        if mode == "opening":
+            ifcclass = "IfcOpeningElement"
+        product = create_product(obj, parent, ifcfile, ifcclass)
         shapemode = getattr(parent, "ShapeMode", DEFAULT_SHAPEMODE)
         newobj = create_object(product, obj.Document, ifcfile, shapemode)
         new = True
-    create_relationship(obj, newobj, parent, product, ifcfile)
+    create_relationship(obj, newobj, parent, product, ifcfile, mode)
     base = getattr(obj, "Base", None)
     if base:
         # make sure the base is used only by this object before deleting
@@ -1161,10 +1189,10 @@ def get_subvolume(obj):
     return tempface, tempobj
 
 
-def create_relationship(old_obj, obj, parent, element, ifcfile):
+def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
     """Creates a relationship between an IFC object and a parent IFC object"""
 
-    if isinstance(parent, FreeCAD.DocumentObject):
+    if isinstance(parent, (FreeCAD.DocumentObject, FreeCAD.Document)):
         parent_element = get_ifc_element(parent)
     else:
         parent_element = parent
@@ -1213,6 +1241,7 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
             tempface, tempobj = get_subvolume(old_obj)
             if tempobj:
                 opening = create_product(tempobj, parent, ifcfile, "IfcOpeningElement")
+                set_attribute(ifcfile, product, "Name", "Opening")
                 old_obj.Document.removeObject(tempobj.Name)
                 if tempface:
                     old_obj.Document.removeObject(tempface.Name)
@@ -1261,7 +1290,8 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                     relating_object=container,
                 )
     # case 4: void element
-    elif parent_element.is_a("IfcElement") and element.is_a("IfcOpeningElement"):
+    elif (parent_element.is_a("IfcElement") and element.is_a("IfcOpeningElement"))\
+    or (mode == "opening"):
         uprel = api_run(
             "void.add_opening", ifcfile, opening=element, element=parent_element
         )
@@ -1345,8 +1375,9 @@ def migrate_schema(ifcfile, schema):
     return newfile, table
 
 
-def remove_ifc_element(obj):
-    """removes the IFC data associated with an object"""
+def remove_ifc_element(obj,delete_obj=False):
+    """removes the IFC data associated with an object.
+    If delete_obj is True, the FreeCAD object is also deleted"""
 
     # This function can become pure IFC
 
@@ -1354,6 +1385,8 @@ def remove_ifc_element(obj):
     element = get_ifc_element(obj)
     if ifcfile and element:
         api_run("root.remove_product", ifcfile, product=element)
+        if delete_obj:
+            obj.Document.removeObject(obj.Name)
         return True
     return False
 

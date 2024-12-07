@@ -59,10 +59,12 @@ class DraftAnnotation(object):
         Check if new properties are present after the object is restored
         in order to migrate older objects.
         """
-        if not hasattr(obj, "ViewObject"):
+        if not getattr(obj, "ViewObject", None):
             return
         vobj = obj.ViewObject
-        if not vobj:
+        if not getattr(vobj, "Proxy", None):
+            # Object was saved without GUI.
+            # onDocumentRestored in the object class should restore the ViewObject.
             return
         if hasattr(vobj, "ScaleMultiplier") and hasattr(vobj, "AnnotationStyle"):
             return

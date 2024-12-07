@@ -139,7 +139,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
     std::vector<std::string> subs;
 
     if (getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
-        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
+        PartDesign::ShapeBinder::getFilteredReferences(&getObject<PartDesign::ShapeBinder>()->Support, obj, subs);
     else
         return;
 
@@ -278,7 +278,7 @@ bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject*,
 std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, App::DocumentObject* owner,
     const char* subname, const std::vector<std::string>& elements)
 {
-    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    auto self = getObject<PartDesign::SubShapeBinder>();
     if (!self)
         return {};
     std::map<App::DocumentObject*, std::vector<std::string> > values;
@@ -327,7 +327,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
         updatePlacement(true);
         break;
     case SelectObject: {
-        auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+        auto self = getObject<PartDesign::SubShapeBinder>();
         if (!self || !self->Support.getValue())
             break;
 
@@ -355,7 +355,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
 }
 
 void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
-    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    auto self = getObject<PartDesign::SubShapeBinder>();
     if (!self || !self->Support.getValue())
         return;
 

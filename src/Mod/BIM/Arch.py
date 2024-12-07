@@ -187,8 +187,8 @@ def convertFloors(floor=None):
             obj.Label = obj.Label+" to delete"
             nobj.Label = label
     for n in todel:
-        from DraftGui import todo
-        todo.delay(FreeCAD.ActiveDocument.removeObject,n)
+        from draftutils import todo
+        todo.ToDo.delay(FreeCAD.ActiveDocument.removeObject,n)
 
 
 def makeCurtainWall(baseobj=None,name=None):
@@ -1090,7 +1090,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
 
     import ArchWindow
     import Draft
-    from DraftGui import todo
+    from draftutils import todo
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -1141,5 +1141,5 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
     if obj.Base and FreeCAD.GuiUp:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
-        todo.delay(ArchWindow.recolorize,[obj.Document.Name,obj.Name])
+        todo.ToDo.delay(ArchWindow.recolorize,[obj.Document.Name,obj.Name])
     return obj

@@ -45,7 +45,7 @@ def generate(
     step_over,
     tool_diameter,
     inner_radius=0.0,
-    direction="Climb",
+    direction="CW",
     startAt="Outside",
 ):
     """generate(edge, hole_radius, inner_radius, step_over) ... generate helix commands.
@@ -96,7 +96,7 @@ def generate(
     elif startAt not in ["Inside", "Outside"]:
         raise ValueError("Invalid value for parameter 'startAt'")
 
-    elif direction not in ["Climb", "Conventional"]:
+    elif direction not in ["CW", "CCW"]:
         raise ValueError("Invalid value for parameter 'direction'")
 
     if type(step_over) not in [float, int]:
@@ -145,7 +145,7 @@ def generate(
 
     def helix_cut_r(r):
         commandlist = []
-        arc_cmd = "G2" if direction == "Climb" else "G3"
+        arc_cmd = "G2" if direction == "CW" else "G3"
         commandlist.append(Path.Command("G0", {"X": startPoint.x + r, "Y": startPoint.y}))
         commandlist.append(Path.Command("G1", {"Z": startPoint.z}))
         for i in range(1, turncount + 1):

@@ -168,7 +168,7 @@ QByteArray loadFCStdThumbnail(const std::string& pathToFCStdFile)
                 if (proj.containsFile(thumb)) {
                     createThumbnailsDir();
                     Base::FileInfo fi(thumbnailFile);
-                    Base::ofstream str(fi, std::ios::in | std::ios::binary);
+                    Base::ofstream str(fi, std::ios::out | std::ios::binary);
                     proj.readInputFileDirect(thumb, str);
                     str.close();
                 }

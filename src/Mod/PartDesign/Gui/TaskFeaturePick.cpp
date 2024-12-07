@@ -31,13 +31,13 @@
 
 #include <App/Document.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -139,9 +139,9 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         }
 
         // check if we need to set any origin in temporary visibility mode
-        if (*statusIt != invalidShape
-            && (*objIt)->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
-            App::Origin* origin = static_cast<App::OriginFeature*>(*objIt)->getOrigin();
+        auto* datum = dynamic_cast<App::DatumElement*>(*objIt);
+        if (*statusIt != invalidShape && datum) {
+            App::Origin* origin = dynamic_cast<App::Origin*>(datum->getLCS());
             if (origin) {
                 if ((*objIt)->isDerivedFrom(App::Plane::getClassTypeId())) {
                     originVisStatus[origin].set(planeBit, true);
@@ -157,7 +157,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     for (const auto& originPair : originVisStatus) {
         const auto& origin = originPair.first;
 
-        Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*>(
+        Gui::ViewProviderCoordinateSystem* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(originVisStatus[origin][axisBit],
@@ -175,7 +175,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
 TaskFeaturePick::~TaskFeaturePick()
 {
-    for (Gui::ViewProviderOrigin* vpo : origins) {
+    for (Gui::ViewProviderCoordinateSystem* vpo : origins) {
         vpo->resetTemporaryVisibility();
     }
 }
@@ -573,7 +573,7 @@ void TaskFeaturePick::onDoubleClick(QListWidgetItem* item)
 
 void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
-    std::vector<Gui::ViewProviderOrigin*>::iterator it;
+    std::vector<Gui::ViewProviderCoordinateSystem*>::iterator it;
     it = std::find(origins.begin(), origins.end(), &Obj);
     if (it != origins.end()) {
         origins.erase(it);

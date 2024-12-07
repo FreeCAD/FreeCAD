@@ -32,6 +32,7 @@
 
 #include <FCGlobal.h>
 
+// NOLINTBEGIN(readability-magic-numbers)
 namespace App
 {
 
@@ -53,6 +54,10 @@ struct color_traits
     float blueF() const
     {
         return static_cast<float>(ct.blueF());
+    }
+    float alphaF() const
+    {
+        return static_cast<float>(ct.alphaF());
     }
     int red() const
     {
@@ -180,7 +185,7 @@ public:
     void setValue(const T& q)
     {
         color_traits<T> ct {q};
-        set(ct.redF(), ct.greenF(), ct.blueF());
+        set(ct.redF(), ct.greenF(), ct.blueF(), ct.alphaF());
     }
     /**
      * returns a template type e.g. Qt color equivalent to FC color
@@ -192,8 +197,18 @@ public:
         // clang-format off
         return color_traits<T>::makeColor(int(std::lround(r * 255.0F)),
                                           int(std::lround(g * 255.0F)),
-                                          int(std::lround(b * 255.0F)));
+                                          int(std::lround(b * 255.0F)),
+                                          int(std::lround(a * 255.0F)));
         // clang-format on
+    }
+    /**
+     * creates FC Color from template type, e.g. Qt QColor
+     */
+    template<typename T>
+    static Color fromValue(const T& q)
+    {
+        color_traits<T> ct {q};
+        return Color(ct.redF(), ct.greenF(), ct.blueF(), ct.alphaF());
     }
     /**
      * returns color as hex color "#RRGGBB"
@@ -212,5 +227,6 @@ public:
 };
 
 }  // namespace App
+// NOLINTEND(readability-magic-numbers)
 
 #endif  // APP_COLOR_H

@@ -199,7 +199,7 @@ bool ViewProviderFemAnalysis::setEdit(int ModNum)
         //            Gui::Control().showDialog(padDlg);
         //        else
 
-        // Fem::FemAnalysis* pcAna = static_cast<Fem::FemAnalysis*>(this->getObject());
+        // Fem::FemAnalysis* pcAna = this->getObject<Fem::FemAnalysis>();
         // Gui::Control().showDialog(new TaskDlgAnalysis(pcAna));
         // return true;
         return false;

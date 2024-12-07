@@ -93,9 +93,9 @@ class BIM_Convert_TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         if idx:
-            from DraftGui import todo
+            from draftutils import todo
 
-            todo.delay(FreeCADGui.Control.closeDialog, None)
+            todo.ToDo.delay(FreeCADGui.Control.closeDialog, None)
         return True
 
 

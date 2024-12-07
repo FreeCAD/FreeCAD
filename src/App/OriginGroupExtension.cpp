@@ -114,14 +114,15 @@ App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject
         return nullptr;
     }
 
-    bool isOriginFeature = obj->isDerivedFrom(App::OriginFeature::getClassTypeId());
+    bool isOriginFeature = obj->isDerivedFrom(App::DatumElement::getClassTypeId());
 
     auto list = obj->getInList();
     for (auto o : list) {
         if (o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
             return o;
         }
-        else if (isOriginFeature && o->isDerivedFrom(App::Origin::getClassTypeId())) {
+        else if (isOriginFeature
+                 && o->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
             auto result = getGroupOfObject(o);
             if (result) {
                 return result;
@@ -221,17 +222,25 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
     std::vector<App::DocumentObject*> result;
     std::vector<App::Property*> list;
     obj->getPropertyList(list);
+    auto isOriginFeature = [](App::DocumentObject* obj) -> bool {
+        // Check if the object is a DatumElement
+        if (auto* datumElement = dynamic_cast<App::DatumElement*>(obj)) {
+            // Check if the DatumElement is an origin
+            return datumElement->isOriginFeature();
+        }
+        return false;
+    };
+
     for (App::Property* prop : list) {
         if (prop->isDerivedFrom<App::PropertyLink>()) {
 
             auto p = static_cast<App::PropertyLink*>(prop);
-            if (!p->getValue()
-                || !p->getValue()->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
+            if (!p->getValue() || !isOriginFeature(p->getValue())) {
                 continue;
             }
 
-            p->setValue(getOrigin()->getOriginFeature(
-                static_cast<OriginFeature*>(p->getValue())->Role.getValue()));
+            p->setValue(getOrigin()->getDatumElement(
+                static_cast<DatumElement*>(p->getValue())->Role.getValue()));
         }
         else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
             auto p = static_cast<App::PropertyLinkList*>(prop);
@@ -239,12 +248,12 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
             std::vector<App::DocumentObject*> result;
             bool changed = false;
             for (App::DocumentObject* o : vec) {
-                if (!o || !o->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
+                if (!isOriginFeature(o)) {
                     result.push_back(o);
                 }
                 else {
-                    result.push_back(getOrigin()->getOriginFeature(
-                        static_cast<OriginFeature*>(o)->Role.getValue()));
+                    result.push_back(getOrigin()->getDatumElement(
+                        static_cast<DatumElement*>(o)->Role.getValue()));
                     changed = true;
                 }
             }
@@ -254,14 +263,13 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
         }
         else if (prop->isDerivedFrom<App::PropertyLinkSub>()) {
             auto p = static_cast<App::PropertyLinkSub*>(prop);
-            if (!p->getValue()
-                || !p->getValue()->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
+            if (!p->getValue() || !isOriginFeature(p->getValue())) {
                 continue;
             }
 
             std::vector<std::string> subValues = p->getSubValues();
-            p->setValue(getOrigin()->getOriginFeature(
-                            static_cast<OriginFeature*>(p->getValue())->Role.getValue()),
+            p->setValue(getOrigin()->getDatumElement(
+                            static_cast<DatumElement*>(p->getValue())->Role.getValue()),
                         subValues);
         }
         else if (prop->isDerivedFrom<App::PropertyLinkSubList>()) {
@@ -269,9 +277,9 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
             auto vec = p->getSubListValues();
             bool changed = false;
             for (auto& v : vec) {
-                if (v.first && v.first->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
-                    v.first = getOrigin()->getOriginFeature(
-                        static_cast<OriginFeature*>(v.first)->Role.getValue());
+                if (isOriginFeature(v.first)) {
+                    v.first = getOrigin()->getDatumElement(
+                        static_cast<DatumElement*>(v.first)->Role.getValue());
                     changed = true;
                 }
             }

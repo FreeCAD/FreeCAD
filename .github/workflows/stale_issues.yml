@@ -1,0 +1,68 @@
+# This workflow warns and then closes issues that have had no activity for a
+# specified amount of time. You can adjust the behavior by modifying this file.
+# For more information, see:
+#   https://github.com/marketplace/actions/close-stale-issues
+#   https://github.com/actions/stale/blob/master/action.yml
+#   https://github.com/actions/stale
+---
+name: 'Stale Issues'
+on:  # yamllint disable-line rule:truthy
+  schedule:
+    - cron: '0 0 * * *'  # Run at 00:00 UTC every day
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write  # for actions/stale to close stale issues
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: '🧹 Tag & close stale issues'
+        id: stale_issues
+        uses: actions/stale@v9.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-issue-stale: 90
+          days-before-close: 20
+          operations-per-run: 100  # max num of ops per run
+          stale-issue-label: 'Status: Stale'
+          close-issue-label: 'Status: Auto-closing'
+          # trunk-ignore(yamllint/line-length)
+          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,Type: Feature'
+          remove-stale-when-updated: true
+          stale-issue-message: |
+            Hi! This issue hasn’t seen activity in a while. If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) to see if the problem is resolved.
+
+            If the issue persists, let us know by adding a comment with any updates or details. Otherwise, we’ll close this issue automatically in 20 days to keep our backlog tidy. Feel free to comment anytime to keep it open. Closed issues can always be reopened.
+            Thanks for helping improve FreeCAD!
+
+            Access additional [FreeCAD](https://freecad.org) resources:
+              - **Forum**: https://forum.freecad.org
+              - **Blog**: https://blog.freecad.org
+              - **Wiki**: https://wiki.freecad.org
+
+      - name: '🧹 Close stale requested feedback issues'
+        id: awaiting_issues
+        uses: actions/stale@v9.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-issue-stale: 20
+          days-before-close: 20
+          operations-per-run: 30  # max num of ops per run
+          stale-issue-label: 'Status: Stale'
+          close-issue-label: 'Status: Auto-closing'
+          only-labels: 'Status: Needs feedback,Status: Needs test on dev version,Status: Needs steps to reproduce'
+          remove-stale-when-updated: true
+          stale-issue-message: |
+            Hi! This issue hasn’t seen activity in a while despite the need for further feedback.
+            If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) to see if the problem is resolved.
+
+            If the issue persists, let us know by adding a comment with any updates or details. Otherwise, we’ll close this issue automatically in 20 days to keep our backlog tidy. Feel free to comment anytime to keep it open. Closed issues can always be reopened.
+            Thanks for helping improve FreeCAD!
+
+            Access additional [FreeCAD](https://freecad.org) resources:
+              - **Forum**: https://forum.freecad.org
+              - **Blog**: https://blog.freecad.org
+              - **Wiki**: https://wiki.freecad.org

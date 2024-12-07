@@ -42,7 +42,7 @@
 # include <gp_Pln.hxx>
 #endif
 
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>

@@ -33,7 +33,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/Type.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -1846,7 +1845,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
         qUserString.chop(2);
         qUserString.append(QString::fromUtf8("²"));
     }
-    std::string sUserString = Base::Tools::toStdString(qUserString);
+    std::string sUserString = qUserString.toStdString();
 
     // set the attributes in the data tab's fields
     //    balloon->SourceView.setValue(objFeat);

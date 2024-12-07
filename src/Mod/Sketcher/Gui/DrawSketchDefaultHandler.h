@@ -776,7 +776,7 @@ protected:
                     } break;
                     case Sketcher::Tangent: {
                         Sketcher::SketchObject* Obj =
-                            static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+                            sketchgui->getObject<Sketcher::SketchObject>();
 
                         const Part::Geometry* geom1 = Obj->getGeometry(geoId1);
                         const Part::Geometry* geom2 = Obj->getGeometry(ac.GeoId);

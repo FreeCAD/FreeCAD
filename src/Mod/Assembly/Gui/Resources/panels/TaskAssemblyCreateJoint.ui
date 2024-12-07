@@ -141,7 +141,7 @@
      <item>
       <widget class="QPushButton" name="offset1Button">
        <property name="toolTip">
-        <string>By clicking this button, you can set the attachement offset of the first marker (coordinate system) of the joint.</string>
+        <string>By clicking this button, you can set the attachment offset of the first marker (coordinate system) of the joint.</string>
        </property>
        <property name="text">
         <string></string>
@@ -162,7 +162,7 @@
      <item>
       <widget class="QPushButton" name="offset2Button">
        <property name="toolTip">
-        <string>By clicking this button, you can set the attachement offset of the second marker (coordinate system) of the joint.</string>
+        <string>By clicking this button, you can set the attachment offset of the second marker (coordinate system) of the joint.</string>
        </property>
        <property name="text">
         <string></string>

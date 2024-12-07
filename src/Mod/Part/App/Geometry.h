@@ -209,8 +209,15 @@ public:
       The default implementation does the same as \ref toBSpline.
       In sub-classes this can be reimplemented to create a real
       NURBS curve and not just an approximation.
-     */
+    */
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
+    /*!
+     * \brief createArc Generates a curve that is an arc of this curve between given parameters
+     * \param first Parameter at start of arc
+     * \param last Parameter at end of arc. This may be < `first` for periodic curves.
+     * \return the new curve
+     */
+    virtual GeomCurve* createArc(double first, double last) const;
     bool tangent(double u, gp_Dir&) const;
     bool tangent(double u, Base::Vector3d& dir) const;
     Base::Vector3d pointAtParameter(double u) const;
@@ -293,6 +300,8 @@ public:
 
     ~GeomBSplineCurve() override;
     Geometry *copy() const override;
+
+    GeomCurve* createArc(double first, double last) const override;
 
    /*!
     * Interpolate a spline passing through the given points without tangency.
@@ -430,6 +439,7 @@ public:
     ~GeomTrimmedCurve() override;
     Geometry *copy() const override;
 
+    GeomCurve* createArc(double first, double last) const override;
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
     void Save(Base::Writer &/*writer*/) const override;
@@ -514,6 +524,7 @@ public:
     ~GeomCircle() override;
     Geometry *copy() const override;
 
+    GeomCurve* createArc(double first, double last) const override;
     double getRadius() const;
     void setRadius(double Radius);
 
@@ -575,6 +586,7 @@ public:
     ~GeomEllipse() override;
     Geometry *copy() const override;
 
+    GeomCurve* createArc(double first, double last) const override;
     double getMajorRadius() const;
     void setMajorRadius(double Radius);
     double getMinorRadius() const;
@@ -641,7 +653,8 @@ public:
     GeomHyperbola();
     explicit GeomHyperbola(const Handle(Geom_Hyperbola)&);
     ~GeomHyperbola() override;
-    Geometry *copy() const override;
+    Geometry* copy() const override;
+    GeomCurve* createArc(double first, double last) const override;
 
     double getMajorRadius() const;
     void setMajorRadius(double Radius);
@@ -705,7 +718,8 @@ public:
     GeomParabola();
     explicit GeomParabola(const Handle(Geom_Parabola)&);
     ~GeomParabola() override;
-    Geometry *copy() const override;
+    Geometry* copy() const override;
+    GeomCurve* createArc(double first, double last) const override;
 
     double getFocal() const;
     void setFocal(double length);

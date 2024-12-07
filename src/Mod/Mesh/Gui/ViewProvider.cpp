@@ -771,8 +771,8 @@ void ViewProviderMesh::exportMesh(const char* filename, const char* fmt) const
         mat.diffuseColor.emplace_back(c[0], c[1], c[2]);
     }
 
-    Mesh::MeshObject mesh = static_cast<Mesh::Feature*>(getObject())->Mesh.getValue();
-    mesh.setPlacement(static_cast<Mesh::Feature*>(getObject())->globalPlacement());
+    Mesh::MeshObject mesh = getObject<Mesh::Feature>()->Mesh.getValue();
+    mesh.setPlacement(getObject<Mesh::Feature>()->globalPlacement());
     if (mat.diffuseColor.size() == mesh.countPoints()) {
         mat.binding = MeshCore::MeshIO::PER_VERTEX;
     }
@@ -976,7 +976,7 @@ public:
         App::Document* doc = gui->getDocument();
 
         auto cpy = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
-        auto org = static_cast<Mesh::Feature*>(mesh->getObject());
+        auto org = mesh->getObject<Mesh::Feature>();
         cpy->Label.setValue(org->Label.getValue());
         cpy->Mesh.setValue(org->Mesh.getValue());
 
@@ -1023,9 +1023,8 @@ void ViewProviderMesh::clipMeshCallback(void* ud, SoEventCallback* cb)
                 SoCamera* cam = view->getSoRenderManager()->getCamera();
                 SbViewVolume vv = cam->getViewVolume();
                 Gui::ViewVolumeProjection proj(vv);
-                proj.setTransform(static_cast<Mesh::Feature*>(self->getObject())
-                                      ->Placement.getValue()
-                                      .toMatrix());
+                proj.setTransform(
+                    self->getObject<Mesh::Feature>()->Placement.getValue().toMatrix());
                 if (role == Gui::SelectionRole::Inner) {
                     self->cutMesh(clPoly, proj, true);
                     commitCommand = true;
@@ -1093,9 +1092,8 @@ void ViewProviderMesh::trimMeshCallback(void* ud, SoEventCallback* cb)
                 SoCamera* cam = view->getSoRenderManager()->getCamera();
                 SbViewVolume vv = cam->getViewVolume();
                 Gui::ViewVolumeProjection proj(vv);
-                proj.setTransform(static_cast<Mesh::Feature*>(self->getObject())
-                                      ->Placement.getValue()
-                                      .toMatrix());
+                proj.setTransform(
+                    self->getObject<Mesh::Feature>()->Placement.getValue().toMatrix());
                 if (role == Gui::SelectionRole::Inner) {
                     self->trimMesh(clPoly, proj, true);
                     commitCommand = true;
@@ -1181,8 +1179,7 @@ void ViewProviderMesh::partMeshCallback(void* ud, SoEventCallback* cb)
             auto that = static_cast<ViewProviderMesh*>(view);
             if (that->getEditingMode() > -1) {
                 that->finishEditing();
-                Base::Placement plm =
-                    static_cast<Mesh::Feature*>(that->getObject())->Placement.getValue();
+                Base::Placement plm = that->getObject<Mesh::Feature>()->Placement.getValue();
                 plm.invert();
                 MeshCore::MeshKernel copyToolMesh(toolMesh);
                 copyToolMesh.Transform(plm.toMatrix());
@@ -1255,8 +1252,7 @@ void ViewProviderMesh::segmMeshCallback(void* ud, SoEventCallback* cb)
             auto that = static_cast<ViewProviderMesh*>(view);
             if (that->getEditingMode() > -1) {
                 that->finishEditing();
-                Base::Placement plm =
-                    static_cast<Mesh::Feature*>(that->getObject())->Placement.getValue();
+                Base::Placement plm = that->getObject<Mesh::Feature>()->Placement.getValue();
                 plm.invert();
                 MeshCore::MeshKernel copyToolMesh(toolMesh);
                 copyToolMesh.Transform(plm.toMatrix());

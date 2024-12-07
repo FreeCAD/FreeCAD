@@ -32,6 +32,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import DraftGeomUtils
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 from draftutils import params
 
 
@@ -39,7 +40,7 @@ class Rectangle(DraftObject):
     """The Rectangle object"""
 
     def __init__(self, obj):
-        super(Rectangle, self).__init__(obj, "Rectangle")
+        super().__init__(obj, "Rectangle")
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Length of the rectangle")
         obj.addProperty("App::PropertyDistance", "Length", "Draft", _tip)
@@ -70,6 +71,12 @@ class Rectangle(DraftObject):
         obj.Height=1
         obj.Rows=1
         obj.Columns=1
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_rectangle", vp_class="ViewProviderRectangle"
+        )
 
     def execute(self, obj):
         """This method is run when the object is created or recomputed."""

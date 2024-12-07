@@ -66,7 +66,7 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
     if (ModNum == ViewProvider::Default) {
         // Here we should prevent edit of a Feature with missing base
         // Otherwise it could call unhandled exception.
-        PartDesign::DressUp* dressUp = static_cast<PartDesign::DressUp*>(getObject());
+        PartDesign::DressUp* dressUp = getObject<PartDesign::DressUp>();
         assert (dressUp);
         if (dressUp->getBaseObject (/*silent =*/ true)) {
             return ViewProvider::setEdit(ModNum);
@@ -86,7 +86,7 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
 
 void ViewProviderDressUp::highlightReferences(const bool on)
 {
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(getObject());
+    PartDesign::DressUp* pcDressUp = getObject<PartDesign::DressUp>();
     Part::Feature* base = pcDressUp->getBaseObject (/*silent =*/ true);
     if (!base)
         return;

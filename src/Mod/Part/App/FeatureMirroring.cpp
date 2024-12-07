@@ -40,7 +40,7 @@
 
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <App/Link.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 
 #include "FeatureMirroring.h"
 #include "DatumFeature.h"

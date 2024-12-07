@@ -37,9 +37,8 @@ from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from CAMTests.TestPathGeom import TestPathGeom
 from CAMTests.TestPathLanguage import TestPathLanguage
 from CAMTests.TestPathOpDeburr import TestPathOpDeburr
-
-# from CAMTests.TestPathHelix import TestPathHelix
 from CAMTests.TestPathHelpers import TestPathHelpers
+from CAMTests.TestPathHelix import TestPathHelix
 from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
 from CAMTests.TestPathLog import TestPathLog
 from CAMTests.TestPathOpUtil import TestPathOpUtil
@@ -59,6 +58,7 @@ from CAMTests.TestPathPropertyBag import TestPathPropertyBag
 from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
 from CAMTests.TestPathSetupSheet import TestPathSetupSheet
 from CAMTests.TestPathStock import TestPathStock
+from CAMTests.TestPathTapGenerator import TestPathTapGenerator
 from CAMTests.TestPathThreadMilling import TestPathThreadMilling
 from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
 from CAMTests.TestPathToolBit import TestPathToolBit
@@ -98,7 +98,7 @@ False if TestPathOpDeburr.__name__ else True
 False if TestPathDrillable.__name__ else True
 False if TestPathGeom.__name__ else True
 False if TestPathHelpers.__name__ else True
-# False if TestPathHelix.__name__ else True
+False if TestPathHelix.__name__ else True
 False if TestPathLog.__name__ else True
 False if TestPathOpUtil.__name__ else True
 # False if TestPathPost.__name__ else True
@@ -111,6 +111,7 @@ False if TestPathPropertyBag.__name__ else True
 False if TestPathRotationGenerator.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathStock.__name__ else True
+False if TestPathTapGenerator.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathThreadMillingGenerator.__name__ else True
 False if TestPathToolBit.__name__ else True
