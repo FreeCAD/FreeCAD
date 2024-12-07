@@ -69,8 +69,7 @@ TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed* C
 
     /* Note: */
     // Get the feature data
-    Fem::ConstraintFixed* pcConstraint =
-        static_cast<Fem::ConstraintFixed*>(ConstraintView->getObject());
+    Fem::ConstraintFixed* pcConstraint = ConstraintView->getObject<Fem::ConstraintFixed>();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -111,8 +110,7 @@ void TaskFemConstraintFixed::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintFixed* pcConstraint =
-        static_cast<Fem::ConstraintFixed*>(ConstraintView->getObject());
+    Fem::ConstraintFixed* pcConstraint = ConstraintView->getObject<Fem::ConstraintFixed>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -183,8 +181,7 @@ void TaskFemConstraintFixed::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintFixed* pcConstraint =
-        static_cast<Fem::ConstraintFixed*>(ConstraintView->getObject());
+    Fem::ConstraintFixed* pcConstraint = ConstraintView->getObject<Fem::ConstraintFixed>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;

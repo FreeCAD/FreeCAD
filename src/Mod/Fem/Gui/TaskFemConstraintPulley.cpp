@@ -68,8 +68,7 @@ TaskFemConstraintPulley::TaskFemConstraintPulley(ViewProviderFemConstraintPulley
     ui->spinTensionForce->blockSignals(true);
 
     // Get the feature data
-    Fem::ConstraintPulley* pcConstraint =
-        static_cast<Fem::ConstraintPulley*>(ConstraintView->getObject());
+    Fem::ConstraintPulley* pcConstraint = ConstraintView->getObject<Fem::ConstraintPulley>();
     double otherdia = pcConstraint->OtherDiameter.getValue();
     double centerdist = pcConstraint->CenterDistance.getValue();
     bool isdriven = pcConstraint->IsDriven.getValue();
@@ -110,29 +109,25 @@ TaskFemConstraintPulley::TaskFemConstraintPulley(ViewProviderFemConstraintPulley
 
 void TaskFemConstraintPulley::onOtherDiameterChanged(double l)
 {
-    Fem::ConstraintPulley* pcConstraint =
-        static_cast<Fem::ConstraintPulley*>(ConstraintView->getObject());
+    Fem::ConstraintPulley* pcConstraint = ConstraintView->getObject<Fem::ConstraintPulley>();
     pcConstraint->OtherDiameter.setValue(l);
 }
 
 void TaskFemConstraintPulley::onCenterDistanceChanged(double l)
 {
-    Fem::ConstraintPulley* pcConstraint =
-        static_cast<Fem::ConstraintPulley*>(ConstraintView->getObject());
+    Fem::ConstraintPulley* pcConstraint = ConstraintView->getObject<Fem::ConstraintPulley>();
     pcConstraint->CenterDistance.setValue(l);
 }
 
 void TaskFemConstraintPulley::onTensionForceChanged(double force)
 {
-    Fem::ConstraintPulley* pcConstraint =
-        static_cast<Fem::ConstraintPulley*>(ConstraintView->getObject());
+    Fem::ConstraintPulley* pcConstraint = ConstraintView->getObject<Fem::ConstraintPulley>();
     pcConstraint->TensionForce.setValue(force);
 }
 
 void TaskFemConstraintPulley::onCheckIsDriven(const bool pressed)
 {
-    Fem::ConstraintPulley* pcConstraint =
-        static_cast<Fem::ConstraintPulley*>(ConstraintView->getObject());
+    Fem::ConstraintPulley* pcConstraint = ConstraintView->getObject<Fem::ConstraintPulley>();
     pcConstraint->IsDriven.setValue(pressed);
 }
 

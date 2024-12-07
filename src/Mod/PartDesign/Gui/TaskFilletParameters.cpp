@@ -54,7 +54,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    PartDesign::Fillet* pcFillet = DressUpView->getObject<PartDesign::Fillet>();
     bool useAllEdges = pcFillet->UseAllEdges.getValue();
     ui->checkBoxUseAllEdges->setChecked(useAllEdges);
     ui->buttonRefSel->setEnabled(!useAllEdges);

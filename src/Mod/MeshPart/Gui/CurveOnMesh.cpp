@@ -263,7 +263,7 @@ public:
     }
     void createGrid()
     {
-        Mesh::Feature* mf = static_cast<Mesh::Feature*>(mesh->getObject());
+        Mesh::Feature* mf = mesh->getObject<Mesh::Feature>();
         const Mesh::MeshObject& meshObject = mf->Mesh.getValue();
         kernel = meshObject.getKernel();
         kernel.Transform(meshObject.getTransform());

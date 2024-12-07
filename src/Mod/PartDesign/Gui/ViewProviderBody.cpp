@@ -184,7 +184,7 @@ bool ViewProviderBody::doubleClicked()
 //
 //    // Highlight active body and all its features
 //    //Base::Console().Error("ViewProviderBody::updateTree()\n");
-//    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+//    PartDesign::Body* body = getObject<PartDesign::Body>();
 //    bool active = body->IsActive.getValue();
 //    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");
 //    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
@@ -209,7 +209,7 @@ bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
 
 void ViewProviderBody::updateData(const App::Property* prop)
 {
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    PartDesign::Body* body = getObject<PartDesign::Body>();
 
     if (prop == &body->Group || prop == &body->BaseFeature) {
         //ensure all model features are in visual body mode
@@ -237,7 +237,7 @@ void ViewProviderBody::updateData(const App::Property* prop)
 void ViewProviderBody::onChanged(const App::Property* prop) {
 
     if(prop == &DisplayModeBody) {
-        auto body = dynamic_cast<PartDesign::Body*>(getObject());
+        auto body = getObject<PartDesign::Body>();
 
         if ( DisplayModeBody.getValue() == 0 )  {
             //if we are in an override mode we need to make sure to come out, because
@@ -342,7 +342,7 @@ bool ViewProviderBody::canDropObjects() const
 {
     // if the BaseFeature property is marked as hidden or read-only then
     // it's not allowed to modify it.
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    PartDesign::Body* body = getObject<PartDesign::Body>();
     if (body->BaseFeature.testStatus(App::Property::Status::Hidden))
         return false;
     if (body->BaseFeature.testStatus(App::Property::Status::ReadOnly))
@@ -375,7 +375,7 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderBody::dropObject(App::DocumentObject* obj)
 {
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    PartDesign::Body* body = getObject<PartDesign::Body>();
     if (obj->isDerivedFrom<Part::Part2DObject>()) {
         body->addObject(obj);
     }

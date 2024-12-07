@@ -173,7 +173,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
     else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
-        auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
+        auto geometry = getObject<App::GeoFeature>();
         if (geometry && prop == &geometry->Placement) {
             const App::PropertyComplexGeoData* data = geometry->getPropertyOfGeometry();
             if (data) {
@@ -185,8 +185,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
     }
     else if (std::string(prop->getName()) == "ShapeMaterial") {
         // Set the appearance from the material
-        auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
-        if (geometry) {
+        if (auto geometry = getObject<App::GeoFeature>()) {
             /*
              * Change the appearance only if the appearance hasn't been set explicitly. A cached
              * material appearance is used to see if the current appearance matches the last

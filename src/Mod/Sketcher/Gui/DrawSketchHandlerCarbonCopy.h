@@ -171,8 +171,7 @@ public:
 
                     Gui::Command::commitCommand();
 
-                    tryAutoRecomputeIfNotSolve(
-                        static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                    tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                     Gui::Selection().clearSelection();
                     /* this is ok not to call to purgeHandler

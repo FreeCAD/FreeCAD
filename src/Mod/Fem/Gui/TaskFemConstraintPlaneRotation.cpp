@@ -79,7 +79,7 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(
     /* Note: */
     // Get the feature data
     Fem::ConstraintPlaneRotation* pcConstraint =
-        static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintPlaneRotation>();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -138,7 +138,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
             return;
         }
         Fem::ConstraintPlaneRotation* pcConstraint =
-            static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+            ConstraintView->getObject<Fem::ConstraintPlaneRotation>();
         std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
         std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -218,7 +218,7 @@ void TaskFemConstraintPlaneRotation::removeFromSelection()
         return;
     }
     Fem::ConstraintPlaneRotation* pcConstraint =
-        static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintPlaneRotation>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
