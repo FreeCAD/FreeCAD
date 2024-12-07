@@ -848,6 +848,25 @@ void RecentFilesAction::appendFile(const QString& filename)
     _pimpl->trySaveUserParameter();
 }
 
+static QString numberToLabel(int number) {
+    if (number > 0 && number < 10) { // NOLINT: *-magic-numbers
+        return QString::fromLatin1("&%1").arg(number);
+    }
+    if (number == 10) { // NOLINT: *-magic-numbers
+        return QString::fromLatin1("1&0");
+    }
+    // If we have a number greater than 10, we start using the alphabet.
+    // So 11 becomes 'A' and so on.
+    constexpr char lettersStart = 11;
+    constexpr char lettersEnd = lettersStart + ('Z' - 'A');
+    if (number >= lettersStart && number < lettersEnd) {
+        QChar letter = QChar::fromLatin1('A' + (number - lettersStart));
+        return QString::fromLatin1("%1 (&%2)").arg(number).arg(letter);
+    }
+    // Not enough accelerators to cover this number.
+    return QString::fromLatin1("%1").arg(number);
+}
+
 /**
  * Set the list of recent files. For each item an action object is
  * created and added to this action group.
@@ -858,8 +877,9 @@ void RecentFilesAction::setFiles(const QStringList& files)
 
     int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
     for (int index = 0; index < numRecentFiles; index++) {
+        QString numberLabel = numberToLabel(index + 1);
         QFileInfo fi(files[index]);
-        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(index+1).arg(fi.fileName()));
+        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(numberLabel).arg(fi.fileName()));
         recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index]));
         recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
         recentFiles[index]->setData(QVariant(index));
@@ -1020,7 +1040,8 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     auto accel_col = QString::fromStdString(shortcut_modifiers);
     for (int index = 0; index < numRecentFiles; index++) {
         QFileInfo fi(files[index]);
-        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(index+1).arg(fi.completeBaseName()));
+        QString numberLabel = numberToLabel(index + 1);
+        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(numberLabel).arg(fi.completeBaseName()));
         recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
         recentFiles[index]->setData(QVariant(index));
         QString accel(tr("none"));

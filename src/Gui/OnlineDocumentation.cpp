@@ -322,7 +322,7 @@ StdCmdPythonHelp::StdCmdPythonHelp()
     , server(nullptr)
 {
     sGroup = "Tools";
-    sMenuText = QT_TR_NOOP("Automatic Python Modules Documentation");
+    sMenuText = QT_TR_NOOP("Automatic Python &Modules Documentation");
     sToolTipText = QT_TR_NOOP("Opens the Python Modules documentation");
     sWhatsThis = "Std_PythonHelp";
     sStatusTip = sToolTipText;

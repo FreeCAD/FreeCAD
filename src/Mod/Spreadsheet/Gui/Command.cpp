@@ -58,7 +58,7 @@ CmdSpreadsheetMergeCells::CmdSpreadsheetMergeCells()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Merge cells");
+    sMenuText = QT_TR_NOOP("&Merge cells");
     sToolTipText = QT_TR_NOOP("Merge selected cells");
     sWhatsThis = "Spreadsheet_MergeCells";
     sStatusTip = sToolTipText;
@@ -119,7 +119,7 @@ CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Split cell");
+    sMenuText = QT_TR_NOOP("Sp&lit cell");
     sToolTipText = QT_TR_NOOP("Split previously merged cells");
     sWhatsThis = "Spreadsheet_SplitCell";
     sStatusTip = sToolTipText;
@@ -140,7 +140,7 @@ void CmdSpreadsheetSplitCell::activated(int iMsg)
 
             if (current.isValid()) {
                 std::string address = CellAddress(current.row(), current.column()).toString();
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split cell"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Sp&lit cell"));
                 Gui::Command::doCommand(Gui::Command::Doc,
                                         "App.ActiveDocument.%s.splitCell('%s')",
                                         sheet->getNameInDocument(),
@@ -181,7 +181,7 @@ CmdSpreadsheetImport::CmdSpreadsheetImport()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Import spreadsheet");
+    sMenuText = QT_TR_NOOP("&Import spreadsheet");
     sToolTipText = QT_TR_NOOP("Import CSV file into spreadsheet");
     sWhatsThis = "Spreadsheet_Import";
     sStatusTip = sToolTipText;
@@ -234,7 +234,7 @@ CmdSpreadsheetExport::CmdSpreadsheetExport()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Export spreadsheet");
+    sMenuText = QT_TR_NOOP("&Export spreadsheet");
     sToolTipText = QT_TR_NOOP("Export spreadsheet to CSV file");
     sWhatsThis = "Spreadsheet_Export";
     sStatusTip = sToolTipText;
@@ -280,7 +280,7 @@ CmdSpreadsheetAlignLeft::CmdSpreadsheetAlignLeft()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align left");
+    sMenuText = QT_TR_NOOP("Align &left");
     sToolTipText = QT_TR_NOOP("Left-align contents of selected cells");
     sWhatsThis = "Spreadsheet_AlignLeft";
     sStatusTip = sToolTipText;
@@ -337,7 +337,7 @@ CmdSpreadsheetAlignCenter::CmdSpreadsheetAlignCenter()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align center");
+    sMenuText = QT_TR_NOOP("Align &center");
     sToolTipText = QT_TR_NOOP("Center-align contents of selected cells");
     sWhatsThis = "Spreadsheet_AlignCenter";
     sStatusTip = sToolTipText;
@@ -394,7 +394,7 @@ CmdSpreadsheetAlignRight::CmdSpreadsheetAlignRight()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align right");
+    sMenuText = QT_TR_NOOP("Align &right");
     sToolTipText = QT_TR_NOOP("Right-align contents of selected cells");
     sWhatsThis = "Spreadsheet_AlignRight";
     sStatusTip = sToolTipText;
@@ -451,7 +451,7 @@ CmdSpreadsheetAlignTop::CmdSpreadsheetAlignTop()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align top");
+    sMenuText = QT_TR_NOOP("Align &top");
     sToolTipText = QT_TR_NOOP("Top-align contents of selected cells");
     sWhatsThis = "Spreadsheet_AlignTop";
     sStatusTip = sToolTipText;
@@ -508,7 +508,7 @@ CmdSpreadsheetAlignBottom::CmdSpreadsheetAlignBottom()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align bottom");
+    sMenuText = QT_TR_NOOP("Align &bottom");
     sToolTipText = QT_TR_NOOP("Bottom-align contents of selected cells");
     sWhatsThis = "Spreadsheet_AlignBottom";
     sStatusTip = sToolTipText;
@@ -565,7 +565,7 @@ CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Vertically center-align");
+    sMenuText = QT_TR_NOOP("&Vertically center-align");
     sToolTipText = QT_TR_NOOP("Vertically center-align contents of selected cells");
     sWhatsThis = "Spreadsheet_AlignVCenter";
     sStatusTip = sToolTipText;
@@ -622,7 +622,7 @@ CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Bold text");
+    sMenuText = QT_TR_NOOP("&Bold text");
     sToolTipText = QT_TR_NOOP("Set text in selected cells bold");
     sWhatsThis = "Spreadsheet_StyleBold";
     sStatusTip = sToolTipText;
@@ -706,7 +706,7 @@ CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Italic text");
+    sMenuText = QT_TR_NOOP("&Italic text");
     sToolTipText = QT_TR_NOOP("Set text in selected cells italic");
     sWhatsThis = "Spreadsheet_StyleItalic";
     sStatusTip = sToolTipText;
@@ -790,7 +790,7 @@ CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Underline text");
+    sMenuText = QT_TR_NOOP("&Underline text");
     sToolTipText = QT_TR_NOOP("Underline text in selected cells");
     sWhatsThis = "Spreadsheet_StyleUnderline";
     sStatusTip = sToolTipText;
@@ -945,7 +945,7 @@ CmdCreateSpreadsheet::CmdCreateSpreadsheet()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Create spreadsheet");
+    sMenuText = QT_TR_NOOP("&Create spreadsheet");
     sToolTipText = QT_TR_NOOP("Create a new spreadsheet");
     sWhatsThis = "Spreadsheet_CreateSheet";
     sStatusTip = sToolTipText;
