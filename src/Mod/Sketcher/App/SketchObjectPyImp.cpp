@@ -555,38 +555,23 @@ PyObject* SketchObjectPy::carbonCopy(PyObject* args)
 
 PyObject* SketchObjectPy::addExternal(PyObject* args)
 {
-    char* ObjectName;
-    char* SubName;
-    PyObject* defining;      // this is an optional argument default false
-    PyObject* intersection;  // this is an optional argument default false
-    bool isDefining;
-    bool isIntersection;
+    char* ObjectName = nullptr;
+    char* SubName = nullptr;
+    PyObject* defining = Py_False;
+    PyObject* intersection = Py_False;
     if (!PyArg_ParseTuple(args,
-                          "ssO!O!",
+                          "ss|O!O!",
                           &ObjectName,
                           &SubName,
                           &PyBool_Type,
                           &defining,
                           &PyBool_Type,
                           &intersection)) {
-        if (!PyArg_ParseTuple(args, "ssO!", &ObjectName, &SubName, &PyBool_Type, &defining)) {
-            PyErr_Clear();
-            if (!PyArg_ParseTuple(args, "ss", &ObjectName, &SubName)) {
-                return nullptr;
-            }
-            else {
-                isDefining = false;
-            }
-        }
-        else {
-            isDefining = Base::asBoolean(defining);
-        }
-        isIntersection = false;
+        return nullptr;
     }
-    else {
-        isDefining = Base::asBoolean(defining);
-        isIntersection = Base::asBoolean(intersection);
-    }
+
+    bool isDefining = Base::asBoolean(defining);
+    bool isIntersection = Base::asBoolean(intersection);
 
     // get the target object for the external link
     Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
