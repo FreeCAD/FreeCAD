@@ -73,9 +73,14 @@ bool ReaderPLY::ReadFormat(std::istream& str)
     char space_format_version {};
     str >> space_format_string >> std::ws >> format_string >> space_format_version >> std::ws
         >> version;
-    if (!std::isspace(space_format_string) || !std::isspace(space_format_version)) {
+
+    // clang-format off
+    if (std::isspace(static_cast<unsigned char>(space_format_string)) == 0 ||
+        std::isspace(static_cast<unsigned char>(space_format_version)) == 0) {
         return false;
     }
+    // clang-format on
+
     if (format_string == "ascii") {
         format = ascii;
     }
@@ -100,9 +105,14 @@ bool ReaderPLY::ReadElement(std::istream& str, std::string& element)
     char space_element_name {};
     char space_name_count {};
     str >> space_element_name >> std::ws >> name >> space_name_count >> std::ws >> count;
-    if (!std::isspace(space_element_name) || !std::isspace(space_name_count)) {
+
+    // clang-format off
+    if (std::isspace(static_cast<unsigned char>(space_element_name)) == 0 ||
+        std::isspace(static_cast<unsigned char>(space_name_count)) == 0) {
         return false;
     }
+    // clang-format on
+
     if (name == "vertex") {
         element = name;
         v_count = count;
@@ -300,20 +310,20 @@ bool ReaderPLY::VerifyVertexProperty()
     PropertyComp property;
     std::size_t num_x = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& p) {
-                                          return property(p, coord_x);
+                                      [&property](const std::pair<Property, int>& prop) {
+                                          return property(prop, coord_x);
                                       });
 
     std::size_t num_y = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& p) {
-                                          return property(p, coord_y);
+                                      [&property](const std::pair<Property, int>& prop) {
+                                          return property(prop, coord_y);
                                       });
 
     std::size_t num_z = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& p) {
-                                          return property(p, coord_z);
+                                      [&property](const std::pair<Property, int>& prop) {
+                                          return property(prop, coord_z);
                                       });
 
     return ((num_x == 1) && (num_y == 1) && (num_z == 1));
@@ -325,20 +335,20 @@ bool ReaderPLY::VerifyColorProperty()
     PropertyComp property;
     std::size_t num_r = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& p) {
-                                          return property(p, color_r);
+                                      [&property](const std::pair<Property, int>& prop) {
+                                          return property(prop, color_r);
                                       });
 
     std::size_t num_g = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& p) {
-                                          return property(p, color_g);
+                                      [&property](const std::pair<Property, int>& prop) {
+                                          return property(prop, color_g);
                                       });
 
     std::size_t num_b = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& p) {
-                                          return property(p, color_b);
+                                      [&property](const std::pair<Property, int>& prop) {
+                                          return property(prop, color_b);
                                       });
 
     std::size_t rgb_colors = num_r + num_g + num_b;
@@ -411,26 +421,26 @@ bool ReaderPLY::ReadVertexes(std::istream& input)
                 case int8:
                 case int16:
                 case int32: {
-                    int v {};
-                    str >> v >> std::ws;
-                    prop_values[it.first] = static_cast<float>(v);
+                    int vt {};
+                    str >> vt >> std::ws;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 case uint8:
                 case uint16:
                 case uint32: {
-                    unsigned int v {};
-                    str >> v >> std::ws;
-                    prop_values[it.first] = static_cast<float>(v);
+                    unsigned int vt {};
+                    str >> vt >> std::ws;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 case float32: {
-                    float v {};
-                    str >> v >> std::ws;
-                    prop_values[it.first] = v;
+                    float vt {};
+                    str >> vt >> std::ws;
+                    prop_values[it.first] = vt;
                 } break;
                 case float64: {
-                    double v {};
-                    str >> v >> std::ws;
-                    prop_values[it.first] = static_cast<float>(v);
+                    double vt {};
+                    str >> vt >> std::ws;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 default:
                     return false;
@@ -459,8 +469,8 @@ bool ReaderPLY::ReadFaces(std::istream& input)
 
         std::array<int, count_props> v_indices {};
         std::size_t index = count_props;
-        for (int& v : v_indices) {
-            str >> v >> std::ws;
+        for (int& vt : v_indices) {
+            str >> vt >> std::ws;
             if (--index > 0 && str.eof()) {
                 return false;
             }
@@ -516,44 +526,44 @@ bool ReaderPLY::ReadVertexes(Base::InputStream& is)
         for (const auto& it : vertex_props) {
             switch (it.second) {
                 case int8: {
-                    int8_t v {};
-                    is >> v;
-                    prop_values[it.first] = static_cast<float>(v);
+                    int8_t vt {};
+                    is >> vt;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 case uint8: {
-                    uint8_t v {};
-                    is >> v;
-                    prop_values[it.first] = static_cast<float>(v);
+                    uint8_t vt {};
+                    is >> vt;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 case int16: {
-                    int16_t v {};
-                    is >> v;
-                    prop_values[it.first] = static_cast<float>(v);
+                    int16_t vt {};
+                    is >> vt;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 case uint16: {
-                    uint16_t v {};
-                    is >> v;
-                    prop_values[it.first] = static_cast<float>(v);
+                    uint16_t vt {};
+                    is >> vt;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 case int32: {
-                    int32_t v {};
-                    is >> v;
-                    prop_values[it.first] = static_cast<float>(v);
+                    int32_t vt {};
+                    is >> vt;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 case uint32: {
-                    uint32_t v {};
-                    is >> v;
-                    prop_values[it.first] = static_cast<float>(v);
+                    uint32_t vt {};
+                    is >> vt;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 case float32: {
-                    float v {};
-                    is >> v;
-                    prop_values[it.first] = v;
+                    float vt {};
+                    is >> vt;
+                    prop_values[it.first] = vt;
                 } break;
                 case float64: {
-                    double v {};
-                    is >> v;
-                    prop_values[it.first] = static_cast<float>(v);
+                    double vt {};
+                    is >> vt;
+                    prop_values[it.first] = static_cast<float>(vt);
                 } break;
                 default:
                     return false;
@@ -568,13 +578,13 @@ bool ReaderPLY::ReadVertexes(Base::InputStream& is)
 
 bool ReaderPLY::ReadFaces(Base::InputStream& is)
 {
-    unsigned char n {};
+    unsigned char num {};
     uint32_t f1 {};
     uint32_t f2 {};
     uint32_t f3 {};
     for (std::size_t i = 0; i < f_count; i++) {
-        is >> n;
-        if (n == 3) {
+        is >> num;
+        if (num == 3) {
             is >> f1 >> f2 >> f3;
             if (f1 < v_count && f2 < v_count && f3 < v_count) {
                 meshFacets.push_back(MeshFacet(f1, f2, f3));
@@ -582,41 +592,43 @@ bool ReaderPLY::ReadFaces(Base::InputStream& is)
             for (auto it : face_props) {
                 switch (it) {
                     case int8: {
-                        int8_t v {};
-                        is >> v;
+                        int8_t vt {};
+                        is >> vt;
                     } break;
                     case uint8: {
-                        uint8_t v {};
-                        is >> v;
+                        uint8_t vt {};
+                        is >> vt;
                     } break;
                     case int16: {
-                        int16_t v {};
-                        is >> v;
+                        int16_t vt {};
+                        is >> vt;
                     } break;
                     case uint16: {
-                        uint16_t v {};
-                        is >> v;
+                        uint16_t vt {};
+                        is >> vt;
                     } break;
                     case int32: {
-                        int32_t v {};
-                        is >> v;
+                        int32_t vt {};
+                        is >> vt;
                     } break;
                     case uint32: {
-                        uint32_t v {};
-                        is >> v;
+                        uint32_t vt {};
+                        is >> vt;
                     } break;
                     case float32: {
-                        is >> n;
-                        float v {};
-                        for (unsigned char j = 0; j < n; j++) {
-                            is >> v;
+                        unsigned char cnt {};
+                        is >> cnt;
+                        float vt {};
+                        for (unsigned char j = 0; j < cnt; j++) {
+                            is >> vt;
                         }
                     } break;
                     case float64: {
-                        is >> n;
-                        double v {};
-                        for (unsigned char j = 0; j < n; j++) {
-                            is >> v;
+                        unsigned char cnt {};
+                        is >> cnt;
+                        double vt {};
+                        for (unsigned char j = 0; j < cnt; j++) {
+                            is >> vt;
                         }
                     } break;
                     default:
