@@ -1515,108 +1515,30 @@ Py::Object View3DInventorPy::getObjectInfoRay(const Py::Tuple& args)
     if (PyArg_ParseTuple(args.ptr(), "O!O!", &Base::VectorPy::Type, &vs,
                                        &Base::VectorPy::Type,  &vd)) {
         Base::Vector3d* startvec = static_cast<Base::VectorPy*>(vs)->getVectorPtr();
-        vsx = startvec->x;
-        vsy = startvec->y;
-        vsz = startvec->z;
         Base::Vector3d* dirvec = static_cast<Base::VectorPy*>(vd)->getVectorPtr();
-        vdx = dirvec->x;
-        vdy = dirvec->y;
-        vdz = dirvec->z;
+        try {
+            RayPickInfo pinfo = getView3DIventorPtr()->getObjInfoRay(startvec, dirvec);
+            Py::Dict dict;
+            if (pinfo.isValid) {
+                dict.setItem("PickedPoint", Py::asObject(new Base::VectorPy(pinfo.point)));
+                dict.setItem("Document", Py::String(pinfo.document));
+                dict.setItem("Object", Py::String(pinfo.object));
+                dict.setItem("ParentObject",Py::String(pinfo.parentObject.value_or("None")));
+                dict.setItem("Component",Py::String(pinfo.component.value_or("None")));
+                dict.setItem("SubName",Py::String(pinfo.subName.value_or("None")));
+            }
+
+            return dict;
+        }
+        catch (const Py::Exception&) {
+            throw;
+        }
     }
     else {
         PyErr_Clear();
         if (!PyArg_ParseTuple(args.ptr(), "dddddd", &vsx,&vsy,&vsz,&vdx,&vdy,&vdz)) {
-            throw Py::TypeError("Wrong arguments, two Vectors or six floats expected expected");
+            throw Py::TypeError("Wrong arguments, two Vectors or six floats expected");
         }
-    }
-
-    try {
-
-        // As this method could be called during a SoHandleEventAction scene
-        // graph traversal we must not use a second SoHandleEventAction as
-        // we will get Coin warnings because of multiple scene graph traversals
-        // which is regarded as error-prone.
-        SoRayPickAction action(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getViewportRegion());
-        action.setRay(SbVec3f(vsx, vsy, vsz), SbVec3f(vdx, vdy, vdz));
-        action.apply(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getSceneGraph());
-        SoPickedPoint *Point = action.getPickedPoint();
-
-        Py::Object ret = Py::None();
-        if (Point) {
-            Py::Dict dict;
-            SbVec3f pt = Point->getPoint();
-            dict.setItem("x", Py::Float(pt[0]));
-            dict.setItem("y", Py::Float(pt[1]));
-            dict.setItem("z", Py::Float(pt[2]));
-
-            ViewProvider *vp = getView3DIventorPtr()->getViewer()->getViewProviderByPath(Point->getPath());
-            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-                if (!vp->isSelectable())
-                    return ret;
-                auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                if (vp->useNewSelectionModel()) {
-                    std::string subname;
-                    if (!vp->getElementPicked(Point,subname))
-                        return ret;
-                    auto obj = vpd->getObject();
-                    if (!obj)
-                        return ret;
-                    if (!subname.empty()) {
-                        App::ElementNamePair elementName;
-                        auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
-                        if (!sobj)
-                            return ret;
-                        if (sobj != obj) {
-                            dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
-                            dict.setItem("SubName",Py::String(subname));
-                            obj = sobj;
-                        }
-                        subname = !elementName.oldName.empty()?elementName.oldName:elementName.newName;
-                    }
-                    dict.setItem("Document",
-                        Py::String(obj->getDocument()->getName()));
-                    dict.setItem("Object",
-                        Py::String(obj->getNameInDocument()));
-                    dict.setItem("Component",Py::String(subname));
-                }
-                else {
-                    dict.setItem("Document",
-                        Py::String(vpd->getObject()->getDocument()->getName()));
-                    dict.setItem("Object",
-                        Py::String(vpd->getObject()->getNameInDocument()));
-                    // search for a SoFCSelection node
-                    SoFCDocumentObjectAction objaction;
-                    objaction.apply(Point->getPath());
-                    if (objaction.isHandled()) {
-                        dict.setItem("Component",
-                            Py::String(objaction.componentName.getString()));
-                    }
-                }
-
-                // ok, found the node of interest
-                ret = dict;
-            }
-            else {
-                // custom nodes not in a VP: search for a SoFCSelection node
-                SoFCDocumentObjectAction objaction;
-                objaction.apply(Point->getPath());
-                if (objaction.isHandled()) {
-                    dict.setItem("Document",
-                        Py::String(objaction.documentName.getString()));
-                    dict.setItem("Object",
-                        Py::String(objaction.objectName.getString()));
-                    dict.setItem("Component",
-                        Py::String(objaction.componentName.getString()));
-                    // ok, found the node of interest
-                    ret = dict;
-                }
-            }
-        }
-
-        return ret;
-    }
-    catch (const Py::Exception&) {
-        throw;
     }
 }
 
