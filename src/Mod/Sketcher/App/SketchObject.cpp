@@ -4556,7 +4556,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     std::string sketchArchType ("Sketcher::SketchObjectPython");
 
     // Only applicable to sketches
-    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId() 
+    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()
         && sketchArchType != pObj->getTypeId().getName()) {
         if (rsn) {
             *rsn = rlNotASketch;
