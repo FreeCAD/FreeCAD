@@ -31,7 +31,7 @@ jobs:
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
           # trunk-ignore(yamllint/line-length)
-          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,Type: Feature'
+          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
@@ -80,7 +80,7 @@ jobs:
           operations-per-run: 30  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker'
+          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,no-auto-close'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
@@ -108,7 +108,7 @@ jobs:
           operations-per-run: 30  # max num of ops per run
           stale-pr-label: 'Status: Stale'
           close-pr-label: 'Status: Auto-closing'
-          exempt-pr-labels: 'Needs backport,✋ On hold,Priority: High, Priority: Critical'
+          exempt-pr-labels: 'Needs backport,✋ On hold,Priority: High, Priority: Critical,no-auto-close'
           remove-stale-when-updated: true
           ascending: true
           stale-pr-message: |
