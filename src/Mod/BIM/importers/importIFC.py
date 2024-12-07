@@ -878,7 +878,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     if hasattr(obj.ViewObject,"ShapeColor"):
                         obj.ViewObject.ShapeColor = tuple(colors[pid][0:3])
                     if hasattr(obj.ViewObject,"Transparency"):
-                        obj.ViewObject.Transparency = colors[pid][3]
+                        obj.ViewObject.Transparency = 1.0 - colors[pid][3]
 
             # if preferences['DEBUG'] is on, recompute after each shape
             if preferences['DEBUG']: doc.recompute()
