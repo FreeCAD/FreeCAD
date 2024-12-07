@@ -35,12 +35,13 @@ translate = FreeCAD.Qt.translate
 class BIM_TDView:
     def GetResources(self):
         return {
-            "Pixmap": "techdraw-ArchView",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_TDView", "View"),
+            "Pixmap": "BIM_InsertView",
+            "MenuText": QT_TRANSLATE_NOOP("BIM_TDView", "Insert view"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDView",
-                "Creates a TechDraw view from a section plane or 2D objects",
+                "Inserts a drawing view on a page",
             ),
+            'Accel': "V, I",
         }
 
     def IsActive(self):
