@@ -836,7 +836,7 @@ def set_colors(obj, colors):
                     sapp_mat.DiffuseColor = color + (1.0,)
                 else:
                     sapp_mat.DiffuseColor = color[:3] + (1.0 - color[3],)
-                sapp_mat.Transparency = color[3] if len(color) > 3 else 0.0
+                sapp_mat.Transparency = 1.0 - color[3] if len(color) > 3 else 0.0
                 sapp.append(sapp_mat)
             #print(vobj.Object.Label,[[m.DiffuseColor,m.Transparency] for m in sapp])
             vobj.ShapeAppearance = sapp

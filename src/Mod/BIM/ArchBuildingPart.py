@@ -625,7 +625,7 @@ class ViewProviderBuildingPart:
                     if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
                         colors.extend(child.ViewObject.DiffuseColor)
                     else:
-                        c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
+                        c = child.ViewObject.ShapeColor[:3]+(1.0 - child.ViewObject.Transparency/100.0,)
                         for i in range(len(child.Shape.Faces)):
                             colors.append(c)
         return colors
