@@ -30,6 +30,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+from draftutils import gui_utils
 from draftutils import params
 from draftobjects.base import DraftObject
 
@@ -38,7 +39,7 @@ class BezCurve(DraftObject):
     """The BezCurve object"""
 
     def __init__(self, obj):
-        super(BezCurve, self).__init__(obj, "BezCurve")
+        super().__init__(obj, "BezCurve")
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The points of the Bezier curve")
@@ -74,6 +75,12 @@ class BezCurve(DraftObject):
         obj.Continuity = []
         #obj.setEditorMode("Degree", 2)
         obj.setEditorMode("Continuity", 1)
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_bezcurve", vp_class="ViewProviderBezCurve"
+        )
 
     def execute(self, fp):
         if self.props_changed_placement_only():

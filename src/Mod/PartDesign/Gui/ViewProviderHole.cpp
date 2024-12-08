@@ -51,7 +51,7 @@ ViewProviderHole::~ViewProviderHole() = default;
 std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::Hole*>(getObject())->Profile.getValue());
+    temp.push_back(getObject<PartDesign::Hole>()->Profile.getValue());
 
     return temp;
 }
@@ -107,7 +107,7 @@ bool ViewProviderHole::setEdit(int ModNum)
 bool ViewProviderHole::onDelete(const std::vector<std::string> &s)
 {
     // get the Sketch
-    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(getObject());
+    PartDesign::Hole* pcHole = getObject<PartDesign::Hole>();
     Sketcher::SketchObject *pcSketch = nullptr;
     if (pcHole->Profile.getValue())
         pcSketch = static_cast<Sketcher::SketchObject*>(pcHole->Profile.getValue());

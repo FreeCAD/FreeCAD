@@ -36,6 +36,7 @@ of the objects or the 3D view.
 
 ## \addtogroup draftutils
 # @{
+import importlib
 import math
 import os
 
@@ -465,6 +466,39 @@ def apply_current_style(objs):
                     setattr(vobj, prop, style[prop][1] & 0xFFFFFF00)
                 else:
                     setattr(vobj, prop, style[prop][1])
+
+
+def restore_view_object(obj, vp_module, vp_class, format=True, format_ref=None):
+    """Restore the ViewObject if the object was saved without the GUI.
+
+    Parameters
+    ----------
+    obj: App::DocumentObject
+        Object whose ViewObject needs to be restored.
+
+    vp_module: string
+        View provider module. Must be in the draftviewproviders directory.
+
+    vp_class: string
+        View provider class.
+
+    format: bool, optional
+        Defaults to `True`.
+        If `True` the `format_object` function is called to update the
+        properties of the ViewObject.
+
+    format_ref: App::DocumentObject, optional
+        Defaults to `None`.
+        Reference object to copy ViewObject properties from.
+    """
+    if not getattr(obj, "ViewObject", None):
+        return
+    vobj = obj.ViewObject
+    if not getattr(vobj, "Proxy", None):
+        vp_module = importlib.import_module("draftviewproviders." + vp_module)
+        getattr(vp_module, vp_class)(vobj)
+        if format:
+            format_object(obj, format_ref)
 
 
 def format_object(target, origin=None):

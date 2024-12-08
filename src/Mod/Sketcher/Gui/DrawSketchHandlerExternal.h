@@ -23,7 +23,7 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
 #define SKETCHERGUI_DrawSketchHandlerExternal_H
 
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
 
 #include <Gui/Notifications.h>
@@ -178,8 +178,7 @@ public:
                     // because we only redraw a changed Sketch if the solver geometry amount is the
                     // same as the SkethObject geometry amount (as this avoids other issues). This
                     // solver is a very low cost one anyway (there is actually nothing to solve).
-                    tryAutoRecomputeIfNotSolve(
-                        static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                    tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                     Gui::Selection().clearSelection();
                     /* this is ok not to call to purgeHandler

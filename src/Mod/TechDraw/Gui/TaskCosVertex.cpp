@@ -27,7 +27,6 @@
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -110,7 +109,7 @@ void TaskCosVertex::setUiPrimary()
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
     }
     ui->pbTracker->setText(tr("Point Picker"));
     ui->pbTracker->setEnabled(true);

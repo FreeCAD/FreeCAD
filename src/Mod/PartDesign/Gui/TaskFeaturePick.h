@@ -30,7 +30,7 @@
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 
 
 namespace PartDesignGui {
@@ -87,7 +87,7 @@ protected:
 private:
     std::unique_ptr<Ui_TaskFeaturePick> ui;
     QWidget* proxy;
-    std::vector<Gui::ViewProviderOrigin*> origins;
+    std::vector<Gui::ViewProviderCoordinateSystem*> origins;
     bool doSelection;
     std::string documentName;
 

@@ -1193,7 +1193,7 @@ public:
     /// mode table
     enum SelectMode
     {
-        STATUS_SEEK_First, /**< enum value ----. */
+        STATUS_SEEK_First,
         STATUS_End
     };
 
@@ -1280,7 +1280,7 @@ public:
             }
 
             tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                sketchgui->getObject<Sketcher::SketchObject>());
             EditCurve.clear();
             drawEdit(EditCurve);
 
@@ -1294,7 +1294,7 @@ private:
     void activated() override
     {
         setCursor(QPixmap(cursor_createcopy), 7, 7);
-        Origin = static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
+        Origin = sketchgui->getObject<Sketcher::SketchObject>()
                      ->getPoint(OriginGeoId, OriginPos);
         EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
     }
@@ -1769,7 +1769,7 @@ public:
     /// mode table
     enum SelectMode
     {
-        STATUS_SEEK_First, /**< enum value ----. */
+        STATUS_SEEK_First,
         STATUS_End
     };
 
@@ -1862,7 +1862,7 @@ public:
                 sugConstr1.clear();
             }
             tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                sketchgui->getObject<Sketcher::SketchObject>());
 
             EditCurve.clear();
             drawEdit(EditCurve);
@@ -1877,7 +1877,7 @@ private:
     void activated() override
     {
         setCursor(QPixmap(cursor_createrectangulararray), 7, 7);
-        Origin = static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
+        Origin = sketchgui->getObject<Sketcher::SketchObject>()
                      ->getPoint(OriginGeoId, OriginPos);
         EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
     }

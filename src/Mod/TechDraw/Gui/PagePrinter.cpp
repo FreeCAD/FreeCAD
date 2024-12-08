@@ -348,7 +348,7 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     filespec = DU::cleanFilespecBackslash(filespec);
 
     // set up the pdfwriter
-    QString outputFile = Base::Tools::fromStdString(filespec);
+    QString outputFile = QString::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
     QPageLayout pageLayout = pdfWriter.pageLayout();
     auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
@@ -396,7 +396,7 @@ void PagePrinter::saveSVG(ViewProviderPage* vpPage, const std::string& file)
     }
     auto filespec = Base::Tools::escapeEncodeFilename(file);
     filespec = DU::cleanFilespecBackslash(file);
-    QString filename = Base::Tools::fromStdString(filespec);
+    QString filename = QString::fromStdString(filespec);
 
     auto ourScene = vpPage->getQGSPage();
     ourScene->setExportingSvg(true);
@@ -416,9 +416,10 @@ void PagePrinter::saveDXF(ViewProviderPage* vpPage, const std::string& inFileNam
 {
     TechDraw::DrawPage* page = vpPage->getDrawPage();
     std::string PageName = page->getNameInDocument();
+
     auto filespec = Base::Tools::escapeEncodeFilename(inFileName);
     filespec = DU::cleanFilespecBackslash(filespec);
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     Gui::Command::doCommand(Gui::Command::Doc, "import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,
                             "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")",

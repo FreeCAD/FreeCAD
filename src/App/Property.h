@@ -71,7 +71,7 @@ public:
         LockDynamic = 8,         // prevent being removed from dynamic property
         NoModify = 9,            // prevent causing Gui::Document::setModified()
         PartialTrigger = 10,     // allow change in partial doc
-        NoRecompute = 11,        // touch owner for recompute on property change
+        NoRecompute = 11,        // don't touch owner for recompute on property change
         Single = 12,             // for save/load of floating point numbers
         Ordered = 13,            // for PropertyLists whether the order of the elements is
                                  // relevant for the container using it

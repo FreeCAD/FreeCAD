@@ -117,6 +117,9 @@ endif(BUILD_POINTS)
 if(BUILD_SKETCHER)
   list (APPEND TestExecutables Sketcher_tests_run)
 endif(BUILD_SKETCHER)
+if(BUILD_SPREADSHEET)
+  list (APPEND TestExecutables Spreadsheet_tests_run)
+endif()
 
 # -------------------------
 

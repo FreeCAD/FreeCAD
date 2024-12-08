@@ -68,6 +68,12 @@ FeaturePrimitive::FeaturePrimitive()
 
 App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& primitive)
 {
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     try {
         //transform the primitive in the correct coordinance
         FeatureAddSub::execute();
@@ -126,6 +132,9 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
         }
+        // store shape before refinement
+        this->rawShape = boolOp;
+      
         if (solidBoolOp == base){
             //solidBoolOp is misplaced but boolOp is ok
             Shape.setValue(boolOp);

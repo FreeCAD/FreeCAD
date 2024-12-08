@@ -56,7 +56,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    PartDesign::Chamfer* pcChamfer = DressUpView->getObject<PartDesign::Chamfer>();
 
     setUpUI(pcChamfer);
 

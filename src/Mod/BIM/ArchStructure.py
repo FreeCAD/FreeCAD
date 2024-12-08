@@ -741,6 +741,8 @@ class _Structure(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         base = None
         pl = obj.Placement

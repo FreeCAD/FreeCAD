@@ -26,10 +26,13 @@
         <file>icons/Assembly_JointGroup.svg</file>
         <file>icons/Assembly_ExplodedView.svg</file>
         <file>icons/Assembly_ExplodedViewGroup.svg</file>
+        <file>icons/Assembly_CreateSimulation.svg</file>
+        <file>icons/Assembly_SimulationGroup.svg</file>
         <file>panels/TaskAssemblyCreateBom.ui</file>
         <file>panels/TaskAssemblyCreateJoint.ui</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>
         <file>panels/TaskAssemblyCreateView.ui</file>
+        <file>panels/TaskAssemblyCreateSimulation.ui</file>
         <file>preferences/Assembly.ui</file>
         <file>icons/Assembly_CreateJointDistance.svg</file>
         <file>icons/AssemblyWorkbench.svg</file>

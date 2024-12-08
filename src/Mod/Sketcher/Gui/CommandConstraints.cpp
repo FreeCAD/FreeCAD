@@ -3691,7 +3691,7 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair>& selSeq, 
             SketcherGui::ViewProviderSketch* sketchgui =
                 static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
 
-            auto Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+            auto Obj = sketchgui->getObject<Sketcher::SketchObject>();
 
             // check if the edge already has a Block constraint
             const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();

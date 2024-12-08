@@ -142,6 +142,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/comparams_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_post.py
+    Path/Post/scripts/dynapath_4060_post.py
     Path/Post/scripts/estlcam_post.py
     Path/Post/scripts/example_pre.py
     Path/Post/scripts/fablin_post.py
@@ -195,6 +196,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Slot.py
     Path/Op/Surface.py
     Path/Op/SurfaceSupport.py
+    Path/Op/Tapping.py
     Path/Op/ThreadMilling.py
     Path/Op/Util.py
     Path/Op/Vcarve.py
@@ -226,6 +228,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Slot.py
     Path/Op/Gui/Stop.py
     Path/Op/Gui/Surface.py
+    Path/Op/Gui/Tapping.py
     Path/Op/Gui/ThreadMilling.py
     Path/Op/Gui/Vcarve.py
     Path/Op/Gui/Waterline.py
@@ -244,6 +247,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/drill.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/rotation.py
+    Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
     Path/Base/Generator/toolchange.py
 )
@@ -258,6 +262,7 @@ SET(Tools_SRCS
 )
 
 SET(Tools_Bit_SRCS
+    Tools/Bit/375-16_Tap.fctb
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/5mm-thread-cutter.fctb
     Tools/Bit/5mm_Drill.fctb
@@ -282,6 +287,7 @@ SET(Tools_Shape_SRCS
     Tools/Shape/endmill.fcstd
     Tools/Shape/probe.fcstd
     Tools/Shape/slittingsaw.fcstd
+    Tools/Shape/tap.fcstd
     Tools/Shape/thread-mill.fcstd
     Tools/Shape/v-bit.fcstd
 )
@@ -329,6 +335,7 @@ SET(Tests_SRCS
     CAMTests/TestPathRotationGenerator.py
     CAMTests/TestPathSetupSheet.py
     CAMTests/TestPathStock.py
+    CAMTests/TestPathTapGenerator.py
     CAMTests/TestPathToolChangeGenerator.py
     CAMTests/TestPathThreadMilling.py
     CAMTests/TestPathThreadMillingGenerator.py
@@ -347,6 +354,10 @@ SET(Tests_SRCS
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
+)
+
+SET(Tests_Fixtures
+    CAMTests/Fixtures/OpHelix_v0-21.FCStd
 )
 
 SET(PathImages_Ops
@@ -411,6 +422,7 @@ ADD_CUSTOM_TARGET(PathScripts ALL
 SET(test_files
   ${Path_Scripts}
   ${Tests_SRCS}
+  ${Tests_Fixtures}
 )
 
 ADD_CUSTOM_TARGET(Tests ALL
@@ -534,6 +546,13 @@ INSTALL(
         ${Tests_SRCS}
     DESTINATION
         Mod/CAM/CAMTests
+)
+
+INSTALL(
+    FILES
+        ${Tests_Fixtures}
+    DESTINATION
+        Mod/CAM/CAMTests/Fixtures
 )
 
 INSTALL(

@@ -29,7 +29,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -96,7 +95,7 @@ TaskHatch::~TaskHatch()
 void TaskHatch::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Face Hatch"));
-    ui->fcFile->setFileName(Base::Tools::fromStdString(DrawHatch::prefSvgHatch()));
+    ui->fcFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
     ui->fcFile->setFilter(QString::fromUtf8(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     ui->sbScale->setValue(1.0);
@@ -108,7 +107,7 @@ void TaskHatch::setUiPrimary()
 void TaskHatch::setUiEdit()
 {
     setWindowTitle(QObject::tr("Edit Face Hatch"));
-    ui->fcFile->setFileName(Base::Tools::fromStdString(m_saveFile));
+    ui->fcFile->setFileName(QString::fromStdString(m_saveFile));
     ui->fcFile->setFilter(QString::fromUtf8(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     ui->sbScale->setValue(m_saveScale);
@@ -144,7 +143,7 @@ void TaskHatch::restoreHatchState()
 
 void TaskHatch::onFileChanged()
 {
-    m_file = Base::Tools::toStdString(ui->fcFile->fileName());
+    m_file = ui->fcFile->fileName().toStdString();
     apply();
 }
 
@@ -209,7 +208,7 @@ void TaskHatch::createHatch()
     m_hatch = static_cast<TechDraw::DrawHatch *>(doc->getObject(FeatName.c_str()));
     m_hatch->Source.setValue(m_dvp, m_subs);
 
-    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    auto filespec = ui->fcFile->fileName().toStdString();
     filespec = DU::cleanFilespecBackslash(filespec);
     Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),
@@ -239,7 +238,7 @@ void TaskHatch::updateHatch()
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
 
-    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    auto filespec = ui->fcFile->fileName().toStdString();
     filespec = DU::cleanFilespecBackslash(filespec);
     Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),

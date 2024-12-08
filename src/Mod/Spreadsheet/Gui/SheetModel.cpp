@@ -57,12 +57,12 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
     aliasBgColor =
-        QColor(Base::Tools::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e")));
-    textFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("TextColor", "#000000")));
+        QColor(QString::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e")));
+    textFgColor = QColor(QString::fromStdString(hGrp->GetASCII("TextColor", "#000000")));
     positiveFgColor =
-        QColor(Base::Tools::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
+        QColor(QString::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
     negativeFgColor =
-        QColor(Base::Tools::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
+        QColor(QString::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
 }
 
 SheetModel::~SheetModel()
@@ -145,7 +145,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
     if (!cell->hasException() && role == Qt::ToolTipRole) {
         std::string alias;
         if (cell->getAlias(alias)) {
-            return QVariant(Base::Tools::fromStdString(alias));
+            return QVariant(QString::fromStdString(alias));
         }
     }
 #endif
@@ -153,7 +153,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
     if (cell->hasException()) {
         switch (role) {
             case Qt::ToolTipRole: {
-                QString txt(Base::Tools::fromStdString(cell->getException()).toHtmlEscaped());
+                QString txt(QString::fromStdString(cell->getException()).toHtmlEscaped());
                 return QVariant(QString::fromLatin1("<pre>%1</pre>").arg(txt));
             }
             case Qt::DisplayRole: {
@@ -367,7 +367,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                                                Base::UnitsApi::getDecimals());
                         // QString number = QString::number(floatProp->getValue() /
                         // displayUnit.scaler);
-                        v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                        v = number + QString::fromStdString(" " + displayUnit.stringRep);
                     }
                     else {
                         v = QString::fromUtf8("#ERR: unit");
@@ -439,7 +439,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                                                         'f',
                                                         Base::UnitsApi::getDecimals());
                     // QString number = QString::number(d / displayUnit.scaler);
-                    v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                    v = number + QString::fromStdString(" " + displayUnit.stringRep);
                 }
                 else if (!isInteger) {
                     v = QLocale::system().toString(d, 'f', Base::UnitsApi::getDecimals());

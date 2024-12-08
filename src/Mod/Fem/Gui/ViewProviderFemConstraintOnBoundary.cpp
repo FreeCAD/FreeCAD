@@ -43,7 +43,7 @@ ViewProviderFemConstraintOnBoundary::~ViewProviderFemConstraintOnBoundary() = de
 
 void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 {
-    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(this->getObject());
+    Fem::Constraint* pcConstraint = this->getObject<Fem::Constraint>();
     const auto& subSets = pcConstraint->References.getSubListValues();
 
     for (auto& subSet : subSets) {

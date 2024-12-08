@@ -30,7 +30,6 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 
@@ -262,7 +261,7 @@ void QGITile::setFont(QFont f, double fSizePx)
 
 void QGITile::setFont(std::string fName, double fSizePx)
 {
-    QString qFName = Base::Tools::fromStdString(fName);
+    QString qFName = QString::fromStdString(fName);
     QFont f(qFName);
     setFont(f, fSizePx);
 }

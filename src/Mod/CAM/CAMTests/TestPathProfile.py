@@ -123,7 +123,7 @@ class TestPathProfile(PathTestBase):
         profile.processCircles = True
         profile.processHoles = True
         profile.UseComp = True
-        profile.Direction = "Climb"
+        profile.Direction = "CW"
         _addViewProvider(profile)
         self.doc.recompute()
 
@@ -162,7 +162,7 @@ class TestPathProfile(PathTestBase):
         profile.processCircles = True
         profile.processHoles = True
         profile.UseComp = False
-        profile.Direction = "Climb"
+        profile.Direction = "CW"
         _addViewProvider(profile)
         self.doc.recompute()
 
@@ -205,7 +205,7 @@ class TestPathProfile(PathTestBase):
         profile.processCircles = True
         profile.processHoles = True
         profile.UseComp = True
-        profile.Direction = "Climb"
+        profile.Direction = "CW"
         profile.OffsetExtra = -profile.OpToolDiameter / 2.0
         _addViewProvider(profile)
         self.doc.recompute()

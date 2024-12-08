@@ -173,6 +173,11 @@ public:
     //@{
     /// find a property by its name
     Property* getPropertyByName(const char* name) const override;
+    /// find a property by its name, dynamic cased to specified type
+    template<typename T>
+    T* getPropertyByName(const char* name) const {
+        return dynamic_cast<T*>(this->getPropertyByName(name));
+    }
     /// get the name of a property
     const char* getPropertyName(const Property* prop) const override;
     /// get all properties of the class (including properties of the parent)

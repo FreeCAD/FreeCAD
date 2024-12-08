@@ -639,8 +639,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Previously the condition counted the number of ";" (element map operations prefix)
         # If the number of operations changes then the number of ";" will change accordingly
         #
-        # However, it is more useful to count the number of times an elemement name is
-        # present in the MappedName of an element (a MappedName is definined also using the
+        # However, it is more useful to count the number of times an element name is
+        # present in the MappedName of an element (a MappedName is defined also using the
         # element names - "Vertex*", "Edge*", "Face*" - used by an OCCT operation to generate
         # output elements)
         self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)
@@ -2628,13 +2628,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         self.PadSketch.trim(2, App.Vector(7.337847, -25.000000, 0))
         self.PadSketch.addConstraint(Sketcher.Constraint("Equal", 3, 1))
-        self.PadSketch.addConstraint(Sketcher.Constraint("Horizontal", 5))
-        self.PadSketch.addConstraint(Sketcher.Constraint("Radius", 4, 73.031111))
-        self.PadSketch.setDatum(18, App.Units.Quantity("70.000000 mm"))
-        self.PadSketch.addConstraint(
+        radConstr = self.PadSketch.addConstraint(Sketcher.Constraint("Radius", 4, 73.031111))
+        self.PadSketch.setDatum(radConstr, App.Units.Quantity("70.000000 mm"))
+        distYConstr = self.PadSketch.addConstraint(
             Sketcher.Constraint("DistanceY", 4, 3, -1, 1, 88.867210)
         )
-        self.PadSketch.setDatum(19, App.Units.Quantity("80.000000 mm"))
+        self.PadSketch.setDatum(distYConstr, App.Units.Quantity("80.000000 mm"))
 
         self.Doc.recompute()
         self.assertTrue(self.Sketch001.isValid())

@@ -108,7 +108,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {
             QMessageBox::StandardButton rc =
                     QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace Hatch?"),
-                            QObject::tr("Some Faces in selection are already hatched.  Replace?"));
+                            QObject::tr("Some Faces in selection are already hatched. Replace?"));
             if (rc == QMessageBox::StandardButton::NoButton) {
                 return;
             }
@@ -267,7 +267,7 @@ void CmdTechDrawImage::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Image");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
-    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(fileName));
+    auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
