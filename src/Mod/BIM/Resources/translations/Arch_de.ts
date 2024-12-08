@@ -3284,7 +3284,7 @@ Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
 However, some BIM applications will use this factor to choose which
 unit to work with when opening the file.</source>
-      <translation>Die Einheit, in die deine IFC-Datei exportiert wird. Beachten Sie, dass IFC-Daten IMMER im metrischen System erzeugt werden; angloamerikanische Einheiten werden durch einen Umrechnungsfaktor erzeugt. Beim Öffnen bieten einige BIM-Anwendungen die Möglichkeit das Maß-System zu wählen, mit dem gearbeiten werden sollen.</translation>
+      <translation>Die Einheit, in die deine IFC-Datei exportiert wird. Bitte beachten, dass IFC-Daten IMMER im metrischen System erzeugt werden; angloamerikanische Einheiten werden durch einen Umrechnungsfaktor erzeugt. Beim Öffnen bieten einige BIM-Anwendungen die Möglichkeit das Maß-System zu wählen, mit dem gearbeiten werden sollen.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="329"/>
@@ -7510,7 +7510,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="244"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation>Wenn wahr, wird Geräte-Leistung automatisch von den in diesem Raum enthaltenen Geräten gefüllt</translation>
+      <translation>Wenn wahr, wird Geräteleistung automatisch von den in diesem Raum enthaltenen Geräten gefüllt</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="246"/>
