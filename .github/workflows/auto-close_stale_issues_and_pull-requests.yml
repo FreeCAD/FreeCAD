@@ -113,13 +113,13 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-stale: -1
           days-before-issue-stale: -1
-          day-before-issue-close: -1
+          days-before-issue-close: -1
           days-before-pr-stale: 150
           days-before-pr-close: 90
           operations-per-run: 30  # max num of ops per run
           stale-pr-label: 'Status: Stale'
           close-pr-label: 'Status: Auto-closing'
-          exempt-pr-labels: 'Needs backport,✋ On hold,Priority: High, Priority: Critical,no-auto-close'
+          exempt-pr-labels: 'Needs backport,Priority: High,Priority: Critical,no-auto-close'
           remove-stale-when-updated: true
           ascending: true
           stale-pr-message: |
