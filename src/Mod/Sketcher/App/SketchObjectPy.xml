@@ -253,7 +253,7 @@ carbonCopy(objName:str, asConstruction=True)
         <UserDocu>
 Add a link to an external geometry.
 
-addExternal(objName:str, subName:str, bool:defining, bool:intersection)
+addExternal(objName:str, subName:str, defining:bool=False, intersection:bool=False)
 
     Args:
         objName: The name of the document object to reference.
