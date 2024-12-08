@@ -57,17 +57,17 @@ jobs:
     with:
       artifactBasename: Ubuntu_20-04-${{ github.run_id }}
 
-  Ubuntu_22-04_Conda:
+  Ubuntu_24-04_Conda:
     needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu2204Conda.yml
+    uses: ./.github/workflows/sub_buildUbuntu2404Conda.yml
     with:
-      artifactBasename: Ubuntu_22-04_Conda-${{ github.run_id }}
+      artifactBasename: Ubuntu_24-04_Conda-${{ github.run_id }}
 
-  Ubuntu_22-04_Conda_Qt6:
+  Ubuntu_24-04_Conda_Qt6:
     needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu2204CondaQt6.yml
+    uses: ./.github/workflows/sub_buildUbuntu2404CondaQt6.yml
     with:
-      artifactBasename: Ubuntu_22-04_Conda-Qt6-${{ github.run_id }}
+      artifactBasename: Ubuntu_24-04_Conda-Qt6-${{ github.run_id }}
 
   Windows:
     needs: [Prepare]
@@ -97,7 +97,7 @@ jobs:
         MacOS_13_Conda_Apple,
         # MacOS_13_Conda_Intel,
         Ubuntu_20-04,
-        Ubuntu_22-04_Conda,
+        Ubuntu_24-04_Conda,
         Windows,
         # Windows_Conda,
         Lint
