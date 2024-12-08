@@ -95,6 +95,7 @@ public:
     Py::Object getObjectInfo(const Py::Tuple&);
     Py::Object getObjectsInfo(const Py::Tuple&);
     Py::Object getSize();
+    Py::Object getObjectInfoRay(const Py::Tuple&);
     Py::Object getPointOnFocalPlane(const Py::Tuple&);
     Py::Object projectPointToLine(const Py::Tuple&);
     Py::Object getPointOnViewport(const Py::Tuple&);
