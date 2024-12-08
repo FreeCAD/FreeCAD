@@ -405,7 +405,7 @@ def get_diffuse_color(objs):
                 return obj.ViewObject.DiffuseColor
             else:
                 col = obj.ViewObject.ShapeColor
-                col = (col[0], col[1], col[2], obj.ViewObject.Transparency / 100.0)
+                col = (col[0], col[1], col[2], 1.0 - obj.ViewObject.Transparency / 100.0)
                 return [col] * len(obj.Shape.Faces)
         elif obj.hasExtension("App::GeoFeatureGroupExtension"):
             cols = []
