@@ -99,7 +99,7 @@ class Proxy(solverbase.Proxy):
             "Order of time stepping method 'BDF'",
         )
         # according to the Elmer manual recommended is order 2
-        # possible ranage is 1 - 5
+        # possible range is 1 - 5
         obj.BDFOrder = (2, 1, 5, 1)
 
         obj.addProperty(
@@ -155,6 +155,33 @@ class Proxy(solverbase.Proxy):
         obj.addProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
 
         obj.addProperty("App::PropertyLink", "ElmerOutput", "Base", "", 4 | 8)
+
+        obj.addProperty(
+            "App::PropertyBool", "BinaryOutput", "Result File", "Save result in binary format"
+        )
+        obj.BinaryOutput = False
+
+        obj.addProperty(
+            "App::PropertyBool", "SaveGeometryIndex", "Result File", "Save geometry IDs"
+        )
+        obj.SaveGeometryIndex = False
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        try:
+            obj.getPropertyByName("BinaryOutput")
+        except FreeCAD.Base.PropertyError:
+            obj.addProperty(
+                "App::PropertyBool", "BinaryOutput", "Result File", "Save result in binary format"
+            )
+            obj.BinaryOutput = False
+        try:
+            obj.getPropertyByName("SaveGeometryIndex")
+        except FreeCAD.Base.PropertyError:
+            obj.addProperty(
+                "App::PropertyBool", "SaveGeometryIndex", "Result File", "Save geometry IDs"
+            )
+            obj.SaveGeometryIndex = False
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
