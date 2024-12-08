@@ -1044,7 +1044,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     SO_KIT_ADD_CATALOG_ENTRY(annotation, So3DAnnotation, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, "", TRUE);
-
+    SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, TRUE, annotation, "", TRUE);
     // Translator
 
     SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
@@ -1308,6 +1308,9 @@ SoFCCSysDragger::SoFCCSysDragger()
     SoScale* localScaleNode = SO_GET_ANY_PART(this, "scaleNode", SoScale);
     localScaleNode->scaleFactor.connectFrom(&scaleEngine->vector);
     autoScaleResult.connectFrom(&draggerSize);
+
+    SoPickStyle* localPickStyle = SO_GET_ANY_PART(this, "pickStyle", SoPickStyle);
+    localPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
 
     addValueChangedCallback(&SoFCCSysDragger::valueChangedCB);
 

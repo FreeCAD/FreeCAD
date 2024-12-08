@@ -217,6 +217,7 @@ class GuiExport SoFCCSysDragger : public SoDragger
     SO_KIT_HEADER(SoFCCSysDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(annotation);
     SO_KIT_CATALOG_ENTRY_HEADER(scaleNode);
+    SO_KIT_CATALOG_ENTRY_HEADER(pickStyle);
     // Translator
     SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorSwitch);
