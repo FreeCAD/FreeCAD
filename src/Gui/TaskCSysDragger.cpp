@@ -50,6 +50,8 @@
 #include "TaskCSysDragger.h"
 #include "ui_TaskCSysDragger.h"
 
+#include <Inventor/nodes/SoPickStyle.h>
+
 using namespace Gui;
 
 namespace
@@ -112,6 +114,8 @@ TaskTransform::~TaskTransform()
     Gui::Application::Instance->commandManager()
         .getCommandByName("Std_PerspectiveCamera")
         ->setEnabled(true);
+
+    savePreferences();
 }
 
 void TaskTransform::dragStartCallback(void*, SoDragger*)
@@ -241,10 +245,27 @@ void TaskTransform::setupGui()
                             ui->transformOriginLayout,
                             ui->referencePickerLayout});
 
+    loadPreferences();
+
     updateInputLabels();
     updateDraggerLabels();
     updateIncrements();
     updatePositionAndRotationUi();
+}
+
+void TaskTransform::loadPreferences()
+{
+    double lastTranslationIncrement = hGrp->GetFloat("LastTranslationIncrement", 1.0);
+    double lastRotationIncrement = hGrp->GetFloat("LastRotationIncrement", 5.0);
+
+    ui->translationIncrementSpinBox->setValue(lastTranslationIncrement);
+    ui->rotationIncrementSpinBox->setValue(lastRotationIncrement);
+}
+
+void TaskTransform::savePreferences()
+{
+    hGrp->SetFloat("LastTranslationIncrement", ui->translationIncrementSpinBox->rawValue());
+    hGrp->SetFloat("LastRotationIncrement", ui->rotationIncrementSpinBox->rawValue());
 }
 
 void TaskTransform::updatePositionAndRotationUi() const
@@ -331,22 +352,30 @@ void TaskTransform::setSelectionMode(SelectionMode mode)
 {
     Gui::Selection().clearSelection();
 
+    SoPickStyle* draggerPickStyle = SO_GET_PART(dragger, "pickStyle", SoPickStyle);
+
     ui->pickTransformOriginButton->setText(tr("Pick reference"));
     ui->alignToOtherObjectButton->setText(tr("Move to other object"));
 
     switch (mode) {
         case SelectionMode::SelectTransformOrigin:
+            draggerPickStyle->style = SoPickStyle::UNPICKABLE;
+            draggerPickStyle->setOverride(true);
             blockSelection(false);
             ui->referenceLineEdit->setText(tr("Select face, edge or vertex..."));
             ui->pickTransformOriginButton->setText(tr("Cancel"));
             break;
 
         case SelectionMode::SelectAlignTarget:
+            draggerPickStyle->style = SoPickStyle::UNPICKABLE;
+            draggerPickStyle->setOverride(true);
             ui->alignToOtherObjectButton->setText(tr("Cancel"));
             blockSelection(false);
             break;
 
         case SelectionMode::None:
+            draggerPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
+            draggerPickStyle->setOverride(false);
             blockSelection(true);
             break;
     }
@@ -383,7 +412,10 @@ TaskTransform::CoordinateSystem TaskTransform::currentCoordinateSystem() const
 
 void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
 {
-    if (msg.Type != SelectionChanges::AddSelection) {
+    const auto isSupportedMessage =
+        msg.Type == SelectionChanges::AddSelection || msg.Type == SelectionChanges::SetPreselect;
+
+    if (!isSupportedMessage) {
         return;
     }
 
@@ -401,20 +433,24 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
     auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement
         * subObjectPlacementProvider->calculate(msg.Object, localPlacement);
 
-    switch (selectionMode) {
-        case SelectionMode::SelectTransformOrigin: {auto label = msg.pOriginalMsg
+    auto label = msg.pOriginalMsg
         ? QStringLiteral("%1#%2.%3")
               .arg(QLatin1String(msg.pOriginalMsg->pObjectName),
                    QLatin1String(msg.pObjectName),
                    QLatin1String(msg.pSubName))
-        : QStringLiteral("%1.%2").arg(QLatin1String(msg.pObjectName), QLatin1String(msg.pSubName));
+        : QStringLiteral("%1.%2").arg(QLatin1String(msg.pObjectName),
+                                      QLatin1String(msg.pSubName));
 
-
-            ui->referenceLineEdit->setText(label);
-
-            customTransformOrigin = selectedObjectPlacement;
-
-            updateTransformOrigin();
+    switch (selectionMode) {
+        case SelectionMode::SelectTransformOrigin: {
+            if (msg.Type == SelectionChanges::AddSelection) {
+                ui->referenceLineEdit->setText(label);
+                customTransformOrigin = selectedObjectPlacement;
+                updateTransformOrigin();
+                setSelectionMode(SelectionMode::None);
+            } else {
+                vp->setTransformOrigin(selectedObjectPlacement);
+            }
 
             break;
         }
@@ -422,8 +458,12 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
         case SelectionMode::SelectAlignTarget: {
             vp->setDraggerPlacement(rootPlacement * selectedObjectPlacement);
 
-            vp->updateTransformFromDragger();
-            vp->updatePlacementFromDragger();
+            if (msg.Type == SelectionChanges::AddSelection) {
+                vp->updateTransformFromDragger();
+                vp->updatePlacementFromDragger();
+
+                setSelectionMode(SelectionMode::None);
+            }
 
             break;
         }
@@ -432,9 +472,6 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
             // no-op
             break;
     }
-
-
-    setSelectionMode(SelectionMode::None);
 }
 
 void TaskTransform::onAlignRotationChanged()
@@ -495,7 +532,8 @@ void TaskTransform::updateTransformOrigin()
     ui->referencePickerWidget->setVisible(placementMode == PlacementMode::Custom);
 
     if (placementMode == PlacementMode::Custom && !customTransformOrigin.has_value()) {
-        onPickTransformOrigin();
+        setSelectionMode(SelectionMode::SelectTransformOrigin);
+        return;
     }
 
     auto transformOrigin = getTransformOrigin(placementMode);
