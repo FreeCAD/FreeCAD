@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>548</width>
-    <height>762</height>
+    <height>795</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -255,7 +255,7 @@
         <property name="toolTip">
          <string>Base color for all elements</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color alpha="128">
           <red>226</red>
           <green>232</green>
@@ -335,7 +335,7 @@
         <property name="toolTip">
          <string>The color of the rotation center indicator</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color alpha="51">
           <red>255</red>
           <green>0</green>
@@ -572,7 +572,7 @@ Free Turntable: the part will be rotated around the z-axis.</string>
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="Gui::PrefUnitSpinBox" name="qspinNewDocScale" native="true">
+       <widget class="Gui::PrefUnitSpinBox" name="qspinNewDocScale">
         <property name="toolTip">
          <string>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</string>
@@ -580,20 +580,20 @@ The value is the diameter of the sphere to fit on the screen.</string>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000010000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>10000000.000000000000000</double>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>100.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>NewDocumentCameraScale</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>
-        </property>
-        <property name="rawValue" stdset="0">
-         <double>100.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -712,6 +712,28 @@ Mouse tilting is not disabled by this setting.</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DisableTouchTilt</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="spaceMouseDevice">
+     <property name="title">
+      <string>Space mouse</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="legacySpaceMouseDevices">
+        <property name="text">
+         <string>Enable support of legacy space mouse devices</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LegacySpaceMouseDevices</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>

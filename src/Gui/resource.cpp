@@ -51,7 +51,7 @@
 #include "DlgActionsImp.h"
 #include "DlgKeyboardImp.h"
 
-#ifndef USE_3DCONNEXION_NAVLIB
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
 #include "DlgCustomizeSpaceball.h"
 #include "DlgCustomizeSpNavSettings.h"
 #endif
@@ -98,7 +98,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new CustomPageProducer<DlgCustomKeyboardImp>;
     new CustomPageProducer<DlgCustomToolbarsImp>;
     new CustomPageProducer<DlgCustomActionsImp>;
-#ifndef USE_3DCONNEXION_NAVLIB
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     new CustomPageProducer<DlgCustomizeSpNavSettings>;
     new CustomPageProducer<DlgCustomizeSpaceball>;
 #endif
