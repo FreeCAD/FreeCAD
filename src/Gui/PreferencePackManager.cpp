@@ -504,12 +504,11 @@ static void copyTemplateParameters(/*const*/ ParameterManager& templateParameter
     }
 }
 
-void PreferencePackManager::save(const std::string& name, const std::vector<TemplateFile>& templates)
+void PreferencePackManager::save(const std::string& name, const std::string& directory, const std::vector<TemplateFile>& templates)
 {
     if (templates.empty())
         return;
 
-    AddPackToMetadata(name);
 
     // Create the config file
     auto outputParameterManager = ParameterManager::Create();
@@ -519,9 +518,17 @@ void PreferencePackManager::save(const std::string& name, const std::vector<Temp
         templateParameterManager->LoadDocument(Base::FileInfo::pathToString(t.path).c_str());
         copyTemplateParameters(*templateParameterManager, *outputParameterManager);
     }
-    auto savedPreferencePacksDirectory = getSavedPreferencePacksPath();
-    auto cfgFilename = savedPreferencePacksDirectory / name / (name + ".cfg");
-    outputParameterManager->SaveDocument(Base::FileInfo::pathToString(cfgFilename).c_str());
+
+    std::string cfgFilename;
+    if (directory.empty()) {
+        AddPackToMetadata(name);
+        auto savedPreferencePacksDirectory = getSavedPreferencePacksPath();
+        cfgFilename = Base::FileInfo::pathToString(savedPreferencePacksDirectory / name / (name + ".cfg"));
+    }
+    else {
+        cfgFilename = Base::FileInfo::pathToString(fs::path(directory) / (name + ".cfg"));
+    }
+    outputParameterManager->SaveDocument(cfgFilename.c_str());
 }
 
 static std::vector<fs::path> scanForTemplateFolders(const std::string& groupName, const fs::path& entry)
