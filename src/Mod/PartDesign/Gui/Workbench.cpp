@@ -94,11 +94,9 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
         }
 
         if (strcmp(recipient, "Tree") == 0) {
-
             Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
             if (activeView ) {
-
                 if (feature->isDerivedFrom<PartDesign::Body>()){
                     *item   << "Std_ToggleFreeze";
                 }
@@ -125,11 +123,9 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                             break;
                         }
                     }
-
                     if (addMoveFeature) {
                         *item   << "PartDesign_MoveFeature";
                     }
-
                     if (addMoveFeatureInTree) {
                         *item   << "PartDesign_MoveFeatureInTree";
                     }
