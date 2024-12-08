@@ -315,36 +315,27 @@ class Component(ArchIFC.IfcProduct):
         prop: string
             The name of the property that has changed.
         """
+        
+        import math
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if prop == "Placement":
-            if hasattr(self,"oldPlacement"):
-                if self.oldPlacement:
-                    deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
-                    if deltap.Length == 0:
-                        deltap = None
-                    deltar = obj.Placement.Rotation * self.oldPlacement.Rotation.inverted()
-                    if deltar.Angle < 0.0001:
-                        deltar = None
-                    for child in self.getMovableChildren(obj):
-                        if deltar:
-                            import math
-                            # Code for V1.0:
-                            # child.Placement.rotate(self.oldPlacement.Base,
-                                                   # deltar.Axis,
-                                                   # math.degrees(deltar.Angle),
-                                                   # comp=True)
-
-                            # Workaround solution for V0.20.3 backport:
-                            # See: https://forum.freecad.org/viewtopic.php?p=613196#p613196
-                            offset_rotation = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0),
-                                                                FreeCAD.Rotation(deltar.Axis, math.degrees(deltar.Angle)),
-                                                                self.oldPlacement.Base)
-                            child.Placement = offset_rotation * child.Placement
-                            # End workaround solution.
-                        if deltap:
-                            child.Placement.move(deltap)
+            if hasattr(self,"oldPlacement") and self.oldPlacement != obj.Placement:
+                deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
+                if deltap.Length == 0:
+                    deltap = None
+                deltar = obj.Placement.Rotation * self.oldPlacement.Rotation.inverted()
+                if deltar.Angle < 0.0001:
+                    deltar = None
+                for child in self.getMovableChildren(obj):
+                    if deltar:
+                        child.Placement.rotate(self.oldPlacement.Base,
+                                               deltar.Axis,
+                                               math.degrees(deltar.Angle),
+                                               comp=True)
+                    if deltap:
+                        child.Placement.move(deltap)
 
     def getMovableChildren(self,obj):
         """Find the component's children set to move with their host.
