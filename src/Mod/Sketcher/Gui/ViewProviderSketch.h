@@ -38,6 +38,7 @@
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/Gui/ViewProviderGridExtension.h>
 #include <Mod/Sketcher/App/GeoList.h>
+#include <Mod/Sketcher/App/GeoEnum.h>
 
 #include "PropertyVisualLayerList.h"
 
@@ -261,13 +262,12 @@ private:
     class Drag
     {
     public:
-        enum SpecialValues
-        {
-            InvalidPoint = -1,
-            InvalidCurve = -1
-        };
-
         Drag()
+        {
+            reset();
+        }
+
+        void reset()
         {
             resetVector();
             resetIds();
@@ -282,28 +282,15 @@ private:
 
         void resetIds()
         {
-            DragPoint = InvalidPoint;
-            DragCurve = InvalidCurve;
+            Dragged.clear();
             DragConstraintSet.clear();
-        }
-
-        bool isDragPointValid()
-        {
-            return DragPoint > InvalidPoint;
-        }
-        bool isDragCurveValid()
-        {
-            return DragCurve > InvalidCurve;
         }
 
         double xInit, yInit;  // starting point of the dragging operation
         bool relative;        // whether the dragging move vector is relative or absolute
 
-
-        int DragPoint;  // dragged point id (only positive integers)
-        int DragCurve;  // dragged curve id (only positive integers), negative external curves
-                        // cannot be dragged.
-        std::set<int> DragConstraintSet;  // dragged constraints ids
+        std::vector<Sketcher::GeoElementId> Dragged;  // dragged geometries
+        std::set<int> DragConstraintSet;              // dragged constraints ids
     };
 
     // TODO: Selection and Preselection should use a same structure. Probably Drag should use the
@@ -553,8 +540,7 @@ public:
         STATUS_SELECT_Constraint,      /**< enum value a constraint was selected. */
         STATUS_SELECT_Cross,           /**< enum value the base coordinate system was selected. */
         STATUS_SELECT_Wire,            /**< enum value and edge was double clicked. */
-        STATUS_SKETCH_DragPoint,       /**< enum value while dragging a point. */
-        STATUS_SKETCH_DragCurve,       /**< enum value while dragging a curve. */
+        STATUS_SKETCH_Drag,            /**< enum value while dragging curves and or points. */
         STATUS_SKETCH_DragConstraint,  /**< enum value while dragging a compatible constraint. */
         STATUS_SKETCH_UseHandler,      /**< enum value a DrawSketchHandler is in control. */
         STATUS_SKETCH_StartRubberBand, /**< enum value for initiating a rubber band selection */
@@ -615,7 +601,7 @@ public:
      * -> inline void setRecalculateInitialSolutionWhileMovingPoint(bool
      * recalculateInitialSolutionWhileMovingPoint)
      * -> inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true)
-     * -> inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool
+     * -> inline int moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool
      * relative=false)
      * -> inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> &&
      * ext)
@@ -790,6 +776,15 @@ private:
     void resetPreselectPoint();
 
     bool setPreselect(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+    //@}
+
+    /** @name dragging functions */
+    //@{
+    /// dragging helpers
+    void initDragging(int geoId, Sketcher::PointPos pos, Gui::View3DInventorViewer* viewer);
+    void doDragStep(double x, double y);
+    void commitDragMove(double x, double y);
+
     //@}
 
     /** @name Selection functions */
