@@ -1621,10 +1621,10 @@ void PropertyString::setPathValue(const ObjectIdentifier& path, const boost::any
         setValue(std::to_string(App::any_cast<float>(value)));
     }
     else if (value.type() == typeid(Quantity)) {
-        setValue(boost::any_cast<Quantity>(value).getUserString().toUtf8().constData());
+        setValue(boost::any_cast<Quantity>(value).getUserString().c_str());
     }
     else if (value.type() == typeid(std::string)) {
-        setValue(boost::any_cast<const std::string&>(value));
+        setValue(boost::any_cast<const std::string &>(value));
     }
     else {
         Base::PyGILStateLocker lock;

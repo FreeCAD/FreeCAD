@@ -248,12 +248,12 @@ const std::string TaskFemConstraintSpring::getReferences() const
 
 std::string TaskFemConstraintSpring::getNormalStiffness() const
 {
-    return ui->qsb_norm->value().getSafeUserString().toStdString();
+    return ui->qsb_norm->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintSpring::getTangentialStiffness() const
 {
-    return ui->qsb_tan->value().getSafeUserString().toStdString();
+    return ui->qsb_tan->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintSpring::getElmerStiffness() const

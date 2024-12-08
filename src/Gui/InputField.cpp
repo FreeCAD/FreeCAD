@@ -169,10 +169,10 @@ void InputField::updateText(const Base::Quantity& quant)
     }
 
     double dFactor;
-    QString unitStr;
-    QString txt = quant.getUserString(dFactor, unitStr);
+    std::string unitStr;
+    std::string txt = quant.getUserString(dFactor, unitStr);
     actUnitValue = quant.getValue()/dFactor;
-    setText(txt);
+    setText(QString::fromStdString(txt));
 }
 
 void InputField::resizeEvent(QResizeEvent *)
@@ -256,7 +256,7 @@ void InputField::newInput(const QString & text)
             }
         }
         else
-            res = Quantity::parse(input);
+            res = Quantity::parse(input.toStdString());
     }
     catch(Base::Exception &e){
         QString errorText = QString::fromLatin1(e.what());
@@ -292,7 +292,7 @@ void InputField::newInput(const QString & text)
     }
 
     double dFactor;
-    QString unitStr;
+    std::string unitStr;
     res.getUserString(dFactor, unitStr);
     actUnitValue = res.getValue()/dFactor;
     // Preserve previous format
@@ -456,7 +456,7 @@ const Base::Unit& InputField::getUnit() const
 /// get stored, valid quantity as a string
 QString InputField::getQuantityString() const
 {
-    return actQuantity.getUserString();
+    return QString::fromStdString(actQuantity.getUserString());
 }
 
 /// set, validate and display quantity from a string. Must match existing units.
@@ -471,18 +471,18 @@ void InputField::setQuantityString(const QString& text)
 QString InputField::rawText() const
 {
     double  factor;
-    QString unit;
+    std::string unit;
     double value = actQuantity.getValue();
     actQuantity.getUserString(factor, unit);
-    return QString::fromLatin1("%1 %2").arg(value / factor).arg(unit);
+    return QString::fromLatin1("%1 %2").arg(value / factor).arg(QString::fromStdString(unit));
 }
 
 /// expects the string in C locale and internally converts it into the OS-specific locale
 void InputField::setRawText(const QString& text)
 {
-    Base::Quantity quant = Base::Quantity::parse(text);
+    Base::Quantity quant = Base::Quantity::parse(text.toStdString());
     // Input and then format the quantity
-    newInput(quant.getUserString());
+    newInput(QString::fromStdString(quant.getUserString()));
     updateText(actQuantity);
 }
 
@@ -533,7 +533,7 @@ void InputField::setMinimum(double m)
 void InputField::setUnitText(const QString& str)
 {
     try {
-        Base::Quantity quant = Base::Quantity::parse(str);
+        Base::Quantity quant = Base::Quantity::parse(str.toStdString());
         setUnit(quant.getUnit());
     }
     catch (...) {
@@ -544,9 +544,9 @@ void InputField::setUnitText(const QString& str)
 QString InputField::getUnitText()
 {
     double dFactor;
-    QString unitStr;
+    std::string unitStr;
     actQuantity.getUserString(dFactor, unitStr);
-    return unitStr;
+    return QString::fromStdString(unitStr);
 }
 
 int InputField::getPrecision() const
@@ -632,11 +632,11 @@ void InputField::focusInEvent(QFocusEvent *event)
 void InputField::focusOutEvent(QFocusEvent *event)
 {
     try {
-        if (Quantity::parse(this->text()).getUnit().isEmpty()) {
+        if (Quantity::parse(this->text().toStdString()).getUnit().isEmpty()) {
             // if user didn't enter a unit, we virtually compensate
             // the multiplication factor induced by user unit system
             double factor;
-            QString unitStr;
+            std::string unitStr;
             actQuantity.getUserString(factor, unitStr);
             actQuantity = actQuantity * factor;
         }
@@ -644,7 +644,7 @@ void InputField::focusOutEvent(QFocusEvent *event)
     catch (const Base::ParserError&) {
         // do nothing, let apply the last known good value
     }
-    this->setText(actQuantity.getUserString());
+    this->setText(QString::fromStdString(actQuantity.getUserString()));
     QLineEdit::focusOutEvent(event);
 }
 
@@ -655,35 +655,29 @@ void InputField::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    double val = actUnitValue;
+
     switch (event->key()) {
     case Qt::Key_Up:
-        {
-            double val = actUnitValue + StepSize;
-            if (val > Maximum)
-                val = Maximum;
-            double dFactor;
-            QString unitStr;
-            actQuantity.getUserString(dFactor, unitStr);
-            this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
-            event->accept();
-        }
+        val += StepSize;
+        if (val > Maximum)
+            val = Maximum;
         break;
     case Qt::Key_Down:
-        {
-            double val = actUnitValue - StepSize;
-            if (val < Minimum)
-                val = Minimum;
-            double dFactor;
-            QString unitStr;
-            actQuantity.getUserString(dFactor, unitStr);
-            this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
-            event->accept();
-        }
+        val -= StepSize;
+        if (val < Minimum)
+            val = Minimum;
         break;
     default:
         QLineEdit::keyPressEvent(event);
-        break;
+        return;
     }
+
+    double dFactor;
+    std::string unitStr;
+    actQuantity.getUserString(dFactor, unitStr);
+    this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(QString::fromStdString(unitStr)));
+    event->accept();
 }
 
 void InputField::wheelEvent (QWheelEvent * event)
@@ -705,10 +699,10 @@ void InputField::wheelEvent (QWheelEvent * event)
         val = Minimum;
 
     double dFactor;
-    QString unitStr;
+    std::string unitStr;
     actQuantity.getUserString(dFactor, unitStr);
 
-    this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
+    this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(QString::fromStdString(unitStr)));
     selectNumber();
     event->accept();
 }
@@ -737,10 +731,10 @@ QValidator::State InputField::validate(QString& input, int& pos) const
         Quantity res;
         QString text = input;
         fixup(text);
-        res = Quantity::parse(text);
+        res = Quantity::parse(text.toStdString());
 
         double factor;
-        QString unitStr;
+        std::string unitStr;
         res.getUserString(factor, unitStr);
         double value = res.getValue()/factor;
         // disallow to enter numbers out of range

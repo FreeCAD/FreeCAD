@@ -306,12 +306,12 @@ const std::string TaskFemConstraintTemperature::getReferences() const
 
 std::string TaskFemConstraintTemperature::get_temperature() const
 {
-    return ui->qsb_temperature->value().getSafeUserString().toStdString();
+    return ui->qsb_temperature->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintTemperature::get_cflux() const
 {
-    return ui->qsb_cflux->value().getSafeUserString().toStdString();
+    return ui->qsb_cflux->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintTemperature::get_constraint_type() const
