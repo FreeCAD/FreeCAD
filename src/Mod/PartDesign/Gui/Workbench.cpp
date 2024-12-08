@@ -85,9 +85,9 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
         body = PartDesignGui::getBodyFor (feature, false, false, true);
         // lote of assertion so feature should be marked as a tip
-        if ( selection.size () == 1 && feature && (
-            ( feature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) && body ) ||
-            ( feature->isDerivedFrom ( Part::Feature::getClassTypeId () ) && body &&
+        if ( selection.size() == 1 && feature && body && (
+            feature->isDerivedFrom<PartDesign::Feature>() ||
+            ( feature->isDerivedFrom<Part::Feature>() &&
               body->BaseFeature.getValue() == feature )
         ) ) {
             *item << "PartDesign_MoveTip";
@@ -97,7 +97,12 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
             Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
-            if ( !selection.empty() && activeView ) {
+            if (activeView ) {
+
+                if (feature->isDerivedFrom<PartDesign::Body>()){
+                    *item   << "Std_ToggleFreeze";
+                }
+
                 bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
                                         PartDesign::Body::getClassTypeId () ) > 0;
 
