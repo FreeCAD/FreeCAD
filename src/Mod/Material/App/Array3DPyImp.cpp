@@ -44,7 +44,7 @@ using namespace Materials;
 std::string Array3DPy::representation() const
 {
     std::stringstream str;
-    str << "<Array3D object at " << getMaterial3DArrayPtr() << ">";
+    str << "<Array3D object at " << getArray3DPtr() << ">";
 
     return str.str();
 }
@@ -52,7 +52,7 @@ std::string Array3DPy::representation() const
 PyObject* Array3DPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    return new Array3DPy(new Material3DArray());
+    return new Array3DPy(new Array3D());
 }
 
 // constructor method
@@ -64,7 +64,7 @@ int Array3DPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 Py::List Array3DPy::getArray() const
 {
     Py::List list;
-    auto array = getMaterial3DArrayPtr()->getArray();
+    auto array = getArray3DPtr()->getArray();
 
     for (auto& depth : array) {
         Py::List depthList;
@@ -83,24 +83,29 @@ Py::List Array3DPy::getArray() const
     return list;
 }
 
+Py::Int Array3DPy::getDimensions() const
+{
+    return Py::Int(3);
+}
+
 Py::Int Array3DPy::getColumns() const
 {
-    return Py::Int(getMaterial3DArrayPtr()->columns());
+    return Py::Int(getArray3DPtr()->columns());
 }
 
 Py::Int Array3DPy::getDepth() const
 {
-    return Py::Int(getMaterial3DArrayPtr()->depth());
+    return Py::Int(getArray3DPtr()->depth());
 }
 
 PyObject* Array3DPy::getRows(PyObject* args)
 {
-    int depth = getMaterial3DArrayPtr()->currentDepth();
+    int depth = getArray3DPtr()->currentDepth();
     if (!PyArg_ParseTuple(args, "|i", &depth)) {
         return nullptr;
     }
 
-    return PyLong_FromLong(getMaterial3DArrayPtr()->rows(depth));
+    return PyLong_FromLong(getArray3DPtr()->rows(depth));
 }
 
 PyObject* Array3DPy::getValue(PyObject* args)
@@ -113,7 +118,7 @@ PyObject* Array3DPy::getValue(PyObject* args)
     }
 
     try {
-        auto value = getMaterial3DArrayPtr()->getValue(depth, row, column);
+        auto value = getArray3DPtr()->getValue(depth, row, column);
         return new Base::QuantityPy(new Base::Quantity(value));
     }
     catch (const InvalidIndex&) {
@@ -131,13 +136,38 @@ PyObject* Array3DPy::getDepthValue(PyObject* args)
     }
 
     try {
-        auto value = getMaterial3DArrayPtr()->getDepthValue(depth);
+        auto value = getArray3DPtr()->getDepthValue(depth);
         return new Base::QuantityPy(new Base::Quantity(value));
     }
     catch (const InvalidIndex&) {
     }
 
     PyErr_SetString(PyExc_IndexError, "Invalid array index");
+    return nullptr;
+}
+
+PyObject* Array3DPy::setValue(PyObject* args)
+{
+    int depth;
+    int row;
+    int column;
+    PyObject* valueObj;
+    if (PyArg_ParseTuple(args, "iiiO!", &depth, &row, &column, &PyUnicode_Type, &valueObj)) {
+        Py::String item(valueObj);
+        QString value(QString::fromStdString(item.as_string()));
+        try {
+            // QVariant variant = QVariant::fromValue(Base::Quantity::parse(value));
+            getArray3DPtr()->setValue(depth, row, column, Base::Quantity::parse(value));
+        }
+        catch (const InvalidIndex&) {
+            Base::Console().Log("depth %d, row %d, column %d\n", depth, row, column);
+            PyErr_SetString(PyExc_IndexError, "Invalid array index");
+            return nullptr;
+        }
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Expected (integer, integer, integer, string) arguments");
     return nullptr;
 }
 

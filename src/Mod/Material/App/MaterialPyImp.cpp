@@ -481,13 +481,13 @@ PyObject* MaterialPy::getPhysicalValue(PyObject* args)
 
     if (property->getType() == MaterialValue::Array2D) {
         auto value =
-            std::static_pointer_cast<Materials::Material2DArray>(property->getMaterialValue());
-        return new Array2DPy(new Material2DArray(*value));
+            std::static_pointer_cast<Materials::Array2D>(property->getMaterialValue());
+        return new Array2DPy(new Array2D(*value));
     }
     if (property->getType() == MaterialValue::Array3D) {
         auto value =
-            std::static_pointer_cast<Materials::Material3DArray>(property->getMaterialValue());
-        return new Array3DPy(new Material3DArray(*value));
+            std::static_pointer_cast<Materials::Array3D>(property->getMaterialValue());
+        return new Array3DPy(new Array3D(*value));
     }
 
     QVariant value = property->getValue();
@@ -502,8 +502,7 @@ PyObject* MaterialPy::setPhysicalValue(PyObject* args)
         return nullptr;
     }
 
-    getMaterialPtr()->setPhysicalValue(QString::fromStdString(name),
-                                         QString::fromStdString(value));
+    getMaterialPtr()->setPhysicalValue(QString::fromStdString(name), QString::fromStdString(value));
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -515,7 +514,27 @@ PyObject* MaterialPy::getAppearanceValue(PyObject* args)
         return nullptr;
     }
 
-    QVariant value = getMaterialPtr()->getAppearanceValue(QString::fromStdString(name));
+    if (!getMaterialPtr()->hasAppearanceProperty(QString::fromStdString(name))) {
+        Py_RETURN_NONE;
+    }
+
+    auto property = getMaterialPtr()->getAppearanceProperty(QString::fromStdString(name));
+    if (!property) {
+        Py_RETURN_NONE;
+    }
+
+    if (property->getType() == MaterialValue::Array2D) {
+        auto value =
+            std::static_pointer_cast<Materials::Array2D>(property->getMaterialValue());
+        return new Array2DPy(new Array2D(*value));
+    }
+    if (property->getType() == MaterialValue::Array3D) {
+        auto value =
+            std::static_pointer_cast<Materials::Array3D>(property->getMaterialValue());
+        return new Array3DPy(new Array3D(*value));
+    }
+
+    QVariant value = property->getValue();
     return _pyObjectFromVariant(value);
 }
 
@@ -537,14 +556,43 @@ PyObject* MaterialPy::setValue(PyObject* args)
 {
     char* name;
     char* value;
-    if (!PyArg_ParseTuple(args, "ss", &name, &value)) {
-        return nullptr;
+    PyObject* listObj;
+    PyObject* arrayObj;
+    if (PyArg_ParseTuple(args, "ss", &name, &value)) {
+        Base::Console().Log("MaterialPy::setValue('%s', '%s')\n", name, value);
+        getMaterialPtr()->setValue(QString::fromStdString(name), QString::fromStdString(value));
+        Py_Return;
     }
 
-    Base::Console().Log("MaterialPy::setValue('%s', '%s')\n", name, value);
-    getMaterialPtr()->setValue(QString::fromStdString(name), QString::fromStdString(value));
-    Py_INCREF(Py_None);
-    return Py_None;
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "sO!", &name, &PyList_Type, &listObj)) {
+        QList<QVariant> variantList;
+        Py::List list(listObj);
+        for (auto itemObj : list) {
+            Py::String item(itemObj);
+            QString value(QString::fromStdString(item.as_string()));
+            QVariant variant = QVariant::fromValue(value);
+            variantList.append(variant);
+        }
+
+        getMaterialPtr()->setValue(QString::fromStdString(name), variantList);
+        Py_Return;
+    }
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "sO!", &name, &(Array2DPy::Type), &arrayObj)) {
+        Base::Console().Log("Array2D\n");
+        auto array = static_cast<Array2DPy*>(arrayObj);
+        // auto shared = std::make_shared<Array2D>(array);
+        QVariant variant = QVariant::fromValue(array);
+
+        getMaterialPtr()->setValue(QString::fromStdString(name), variant);
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_TypeError,
+                    "Either a string, a list, or an array are expected");
+    return nullptr;
 }
 
 Py::Dict MaterialPy::getPropertyObjects() const
@@ -555,7 +603,33 @@ Py::Dict MaterialPy::getPropertyObjects() const
     for (auto& it : properties) {
         QString key = it.first;
         auto materialProperty = it.second;
-        dict.setItem(Py::String(key.toStdString()), Py::Object(new MaterialPropertyPy(new MaterialProperty(materialProperty)), true));
+
+        // if (materialProperty->getType() == MaterialValue::Array2D) {
+        //     auto value = std::static_pointer_cast<Materials::Array2D>(
+        //         materialProperty->getMaterialValue());
+        //     dict.setItem(Py::String(key.toStdString()),
+        //                  Py::Object(new Array2DPy(new Array2D(*value)), true));
+        // }
+        // else if (materialProperty->getType() == MaterialValue::Array3D) {
+        //     auto value = std::static_pointer_cast<Materials::Array3D>(
+        //         materialProperty->getMaterialValue());
+        //     dict.setItem(Py::String(key.toStdString()),
+        //                  Py::Object(new Array3DPy(new Array3D(*value)), true));
+        // }
+        // else {
+            dict.setItem(
+                Py::String(key.toStdString()),
+                Py::Object(new MaterialPropertyPy(new MaterialProperty(materialProperty)), true));
+        // }
+    }
+
+    properties = getMaterialPtr()->getAppearanceProperties();
+    for (auto& it : properties) {
+        QString key = it.first;
+        auto materialProperty = it.second;
+        dict.setItem(
+            Py::String(key.toStdString()),
+            Py::Object(new MaterialPropertyPy(new MaterialProperty(materialProperty)), true));
     }
 
     return dict;

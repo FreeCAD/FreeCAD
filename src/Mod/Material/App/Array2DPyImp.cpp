@@ -44,7 +44,7 @@ using namespace Materials;
 std::string Array2DPy::representation() const
 {
     std::stringstream str;
-    str << "<Array2D object at " << getMaterial2DArrayPtr() << ">";
+    str << "<Array2D object at " << getArray2DPtr() << ">";
 
     return str.str();
 }
@@ -52,7 +52,7 @@ std::string Array2DPy::representation() const
 PyObject* Array2DPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    return new Array2DPy(new Material2DArray());
+    return new Array2DPy(new Array2D());
 }
 
 // constructor method
@@ -65,7 +65,7 @@ Py::List Array2DPy::getArray() const
 {
     Py::List list;
 
-    auto array = getMaterial2DArrayPtr()->getArray();
+    auto array = getArray2DPtr()->getArray();
 
     for (auto& row : array) {
         Py::List rowList;
@@ -81,14 +81,29 @@ Py::List Array2DPy::getArray() const
     return list;
 }
 
+Py::Int Array2DPy::getDimensions() const
+{
+    return Py::Int(2);
+}
+
 Py::Int Array2DPy::getRows() const
 {
-    return Py::Int(getMaterial2DArrayPtr()->rows());
+    return Py::Int(getArray2DPtr()->rows());
+}
+
+void Array2DPy::setRows(Py::Int arg)
+{
+    getArray2DPtr()->setMinRows(arg);
 }
 
 Py::Int Array2DPy::getColumns() const
 {
-    return Py::Int(getMaterial2DArrayPtr()->columns());
+    return Py::Int(getArray2DPtr()->columns());
+}
+
+void Array2DPy::setColumns(Py::Int arg)
+{
+    getArray2DPtr()->setColumns(arg);
 }
 
 PyObject* Array2DPy::getRow(PyObject* args)
@@ -101,7 +116,7 @@ PyObject* Array2DPy::getRow(PyObject* args)
     try {
         Py::List list;
 
-        auto arrayRow = getMaterial2DArrayPtr()->getRow(row);
+        auto arrayRow = getArray2DPtr()->getRow(row);
         for (auto& column : *arrayRow) {
             auto quantity =
                 new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
@@ -126,7 +141,7 @@ PyObject* Array2DPy::getValue(PyObject* args)
     }
 
     try {
-        auto value = getMaterial2DArrayPtr()->getValue(row, column);
+        auto value = getArray2DPtr()->getValue(row, column);
         return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
     }
     catch (const InvalidIndex&) {
@@ -134,6 +149,41 @@ PyObject* Array2DPy::getValue(PyObject* args)
 
     PyErr_SetString(PyExc_IndexError, "Invalid array index");
     return nullptr;
+}
+
+PyObject* Array2DPy::setValue(PyObject* args)
+{
+    int row;
+    int column;
+    PyObject* valueObj;
+    if (PyArg_ParseTuple(args, "iiO!", &row, &column, &PyUnicode_Type, &valueObj)) {
+        Py::String item(valueObj);
+        QString value(QString::fromStdString(item.as_string()));
+        try {
+            QVariant variant = QVariant::fromValue(Base::Quantity::parse(value));
+            getArray2DPtr()->setValue(row, column, variant);
+        }
+        catch (const InvalidIndex&) {
+            Base::Console().Log("row %d, column %d\n", row, column);
+            PyErr_SetString(PyExc_IndexError, "Invalid array index");
+            return nullptr;
+        }
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Expected (integer, integer, string) arguments");
+    return nullptr;
+}
+
+PyObject* Array2DPy::setMinRows(PyObject* args)
+{
+    int rows;
+    if (!PyArg_ParseTuple(args, "i", &rows)) {
+        return nullptr;
+    }
+
+    getArray2DPtr()->setMinRows(rows);
+    Py_Return;
 }
 
 PyObject* Array2DPy::getCustomAttributes(const char* /*attr*/) const

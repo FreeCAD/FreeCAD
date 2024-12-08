@@ -103,8 +103,8 @@ private:
     static std::shared_ptr<QList<QVariant>> readList(const YAML::Node& node,
                                                      bool isImageList = false);
     static std::shared_ptr<QList<QVariant>> readImageList(const YAML::Node& node);
-    static std::shared_ptr<Material2DArray> read2DArray(const YAML::Node& node, int columns);
-    static std::shared_ptr<Material3DArray> read3DArray(const YAML::Node& node, int columns);
+    static std::shared_ptr<Array2D> read2DArray(const YAML::Node& node, int columns);
+    static std::shared_ptr<Array3D> read3DArray(const YAML::Node& node, int columns);
 
     YAML::Node _model;
 };

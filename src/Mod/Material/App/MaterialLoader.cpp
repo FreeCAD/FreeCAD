@@ -98,9 +98,9 @@ std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readImageList(const YAML::No
     return readList(node, true);
 }
 
-std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node& node, int columns)
+std::shared_ptr<Array2D> MaterialYamlEntry::read2DArray(const YAML::Node& node, int columns)
 {
-    auto array2d = std::make_shared<Material2DArray>();
+    auto array2d = std::make_shared<Array2D>();
     array2d->setColumns(columns);
 
     if (node.size() == 1 || node.size() == 2) {
@@ -126,9 +126,9 @@ std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node
     return array2d;
 }
 
-std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node& node, int columns)
+std::shared_ptr<Array3D> MaterialYamlEntry::read3DArray(const YAML::Node& node, int columns)
 {
-    auto array3d = std::make_shared<Material3DArray>();
+    auto array3d = std::make_shared<Array3D>();
     array3d->setColumns(columns - 1);  // First column is third dimension
 
     if (node.size() == 1 || node.size() == 2) {

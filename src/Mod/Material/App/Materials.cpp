@@ -67,11 +67,11 @@ void MaterialProperty::copyValuePtr(const std::shared_ptr<MaterialValue>& value)
 {
     if (value->getType() == MaterialValue::Array2D) {
         _valuePtr =
-            std::make_shared<Material2DArray>(*(std::static_pointer_cast<Material2DArray>(value)));
+            std::make_shared<Array2D>(*(std::static_pointer_cast<Array2D>(value)));
     }
     else if (value->getType() == MaterialValue::Array3D) {
         _valuePtr =
-            std::make_shared<Material3DArray>(*(std::static_pointer_cast<Material3DArray>(value)));
+            std::make_shared<Array3D>(*(std::static_pointer_cast<Array3D>(value)));
     }
     else {
         _valuePtr = std::make_shared<MaterialValue>(*value);
@@ -207,12 +207,12 @@ void MaterialProperty::setType(const QString& type)
         throw UnknownValueType();
     }
     if (mappedType == MaterialValue::Array2D) {
-        auto arrayPtr = std::make_shared<Material2DArray>();
+        auto arrayPtr = std::make_shared<Array2D>();
         arrayPtr->setColumns(columns());
         _valuePtr = arrayPtr;
     }
     else if (mappedType == MaterialValue::Array3D) {
-        auto arrayPtr = std::make_shared<Material3DArray>();
+        auto arrayPtr = std::make_shared<Array3D>();
         // First column is third dimension
         arrayPtr->setColumns(columns() - 1);
         _valuePtr = arrayPtr;
@@ -446,6 +446,23 @@ bool MaterialProperty::operator==(const MaterialProperty& other) const
         return (*_valuePtr == *other._valuePtr);
     }
     return false;
+}
+
+void MaterialProperty::validate(const MaterialProperty& other) const {
+    Base::Console().Log("Property '%s'\n", getName().toStdString().c_str());
+    Base::Console().Log("\tLocal value '%s'\n", getString().toStdString().c_str());
+    Base::Console().Log("\tRemote value '%s'\n", other.getString().toStdString().c_str());
+
+    _valuePtr->validate(*other._valuePtr);
+
+    if (_columns.size() != other._columns.size()) {
+        Base::Console().Log("Local property column count %d\n", _columns.size());
+        Base::Console().Log("Remote property column count %d\n", other._columns.size());
+        throw InvalidProperty("Model property column counts don't match");
+    }
+    for (int i = 0; i < _columns.size(); i++) {
+        _columns[i].validate(other._columns[i]);
+    }
 }
 
 TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
@@ -1795,5 +1812,22 @@ void Material::validate(const std::shared_ptr<Material>& other) const
     }
     if (!other->_allUuids.contains(_allUuids)) {
         throw InvalidMaterial("Material models don't match");
+    }
+
+    // Need to compare properties
+    if (_physical.size() != other->_physical.size()) {
+        throw InvalidMaterial("Material physical property counts don't match");
+    }
+    for (auto& property : _physical) {
+        auto& remote = other->_physical[property.first];
+        property.second->validate(*remote);
+    }
+
+    if (_appearance.size() != other->_appearance.size()) {
+        throw InvalidMaterial("Material appearance property counts don't match");
+    }
+    for (auto& property : _appearance) {
+        auto& remote = other->_appearance[property.first];
+        property.second->validate(*remote);
     }
 }

@@ -144,7 +144,7 @@ public:
         return !operator==(other);
     }
 
-    // void save(QTextStream& stream);
+    void validate(const MaterialProperty& other) const;
 
     // Define precision for displaying floating point values
     static int const PRECISION;
