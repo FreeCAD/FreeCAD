@@ -61,6 +61,7 @@ public:
     void update();
     void close();
     bool apply();
+    bool apply(bool reset);
     bool reject() override;
     void reset();
 
@@ -77,10 +78,15 @@ private:
     QComboBox* modeSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
     QLabel* showDeltaLabel {nullptr};
+    QAction* autoSaveAction {nullptr};
+    QAction* newMeasurementBehaviourAction {nullptr};
+    QToolButton* mSettings {nullptr};
 
     void removeObject();
     void onModeChanged(int index);
     void showDeltaChanged(int checkState);
+    void autoSaveChanged(bool checked);
+    void newMeasurementBehaviourChanged(bool checked);
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
@@ -94,6 +100,7 @@ private:
 
     // Stores if delta measures shall be shown
     bool delta = true;
+    bool mAutoSave = false;
 };
 
 }  // namespace Gui
