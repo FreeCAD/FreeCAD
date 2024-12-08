@@ -58,6 +58,8 @@ public:
 
     static TopoDS_Shape getLocatedShape(const App::DocumentObject* docObj);
 
+    static bool checkShape(const App::DocumentObject* shapeObj, TopoDS_Shape shape);
+
 protected:
 
 private:
