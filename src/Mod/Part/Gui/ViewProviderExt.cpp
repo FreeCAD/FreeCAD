@@ -341,13 +341,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &_diffuseColor) {
         // Used to load the old DiffuseColor values asynchronously
-        // v0.21 used the alpha channel to store transparency values
         std::vector<App::Color> colors = _diffuseColor.getValues();
         std::vector<float> transparencies;
         transparencies.resize(static_cast<int>(colors.size()));
         for (int i = 0; i < static_cast<int>(colors.size()); i++) {
-            transparencies[i] = colors[i].a;
-            colors[i].a = 1.0;
+            transparencies[i] = colors[i].transparency();
+            colors[i].a = 1.0F;
         }
         ShapeAppearance.setDiffuseColors(colors);
         ShapeAppearance.setTransparencies(transparencies);
@@ -665,7 +664,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
 
     if(!element || !element[0]) {
         auto color = ShapeAppearance.getDiffuseColor();
-        color.a = Transparency.getValue()/100.0f;
+        color.setTransparency(Transparency.getValue()/100.0F);
         ret["Face"] = color;
         ret["Edge"] = LineColor.getValue();
         ret["Vertex"] = PointColor.getValue();
@@ -676,7 +675,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
         auto size = ShapeAppearance.getSize();
         if(element[4]=='*') {
             auto color = ShapeAppearance.getDiffuseColor();
-            color.a = Transparency.getValue()/100.0f;
+            color.setTransparency(Transparency.getValue()/100.0F);
             bool singleColor = true;
             for(int i=0;i<size;++i) {
                 if (ShapeAppearance.getDiffuseColor(i) != color) {
@@ -688,7 +687,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             }
             if(size && singleColor) {
                 color = ShapeAppearance.getDiffuseColor(0);
-                color.a = Transparency.getValue()/100.0f;
+                color.setTransparency(Transparency.getValue()/100.0F);
                 ret.clear();
             }
             ret["Face"] = color;
@@ -699,7 +698,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             else
                 ret[element] = ShapeAppearance.getDiffuseColor();
             if(size==1)
-                ret[element].a = Transparency.getValue()/100.0f;
+                ret[element].setTransparency(Transparency.getValue()/100.0F);
         }
     } else if (boost::starts_with(element,"Edge")) {
         auto size = LineColorArray.getSize();

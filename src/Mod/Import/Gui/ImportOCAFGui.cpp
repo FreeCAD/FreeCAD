@@ -51,7 +51,7 @@ void ImportOCAFGui::applyFaceColors(Part::Feature* part, const std::vector<App::
 
     if (colors.size() == 1) {
         vp->ShapeAppearance.setDiffuseColor(colors.front());
-        vp->Transparency.setValue(100 * colors.front().a);
+        vp->Transparency.setValue(100 * colors.front().transparency());
     }
     else {
         vp->ShapeAppearance.setDiffuseColors(colors);
