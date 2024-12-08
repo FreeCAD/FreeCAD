@@ -51,7 +51,7 @@ def makeInvoluteGear(name):
     return obj
 
 
-class _CommandInvoluteGear:
+class CommandInvoluteGear:
     "GUI command to create an InvoluteGear"
     def GetResources(self):
         return {'Pixmap'  : 'PartDesign_InternalExternalGear',
@@ -277,7 +277,3 @@ class _InvoluteGearTaskPanel:
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
-
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('PartDesign_InvoluteGear',_CommandInvoluteGear())
