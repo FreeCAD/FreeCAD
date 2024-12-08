@@ -134,6 +134,8 @@ private:
 
     std::optional<Base::Placement> customTransformOrigin {};
     Base::Placement originalPlacement {};
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
 };
 
 class TaskCSysDragger: public Gui::TaskView::TaskDialog
