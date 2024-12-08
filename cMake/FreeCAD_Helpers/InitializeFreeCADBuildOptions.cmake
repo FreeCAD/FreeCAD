@@ -180,8 +180,16 @@ macro(InitializeFreeCADBuildOptions)
         #set(FREECAD_USE_EXTERNAL_SMESH ON )
     endif (FREECAD_BUILD_DEBIAN)
 
-    if(BUILD_FEM)
-        set(BUILD_SMESH ON )
+    if(BUILD_FEM OR BUILD_MESH_PART)
+        set(FREECAD_USE_SMESH ON)
+        if(FREECAD_USE_EXTERNAL_SMESH)
+            set(BUILD_SMESH OFF)
+        else()
+            set(BUILD_SMESH ON)
+        endif()
+    else()
+        set(FREECAD_USE_SMESH OFF)
+        set(BUILD_SMESH OFF)
     endif()
 
     # force build directory to be different to source directory

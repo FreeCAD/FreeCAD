@@ -1,9 +1,9 @@
-if (BUILD_SMESH)
+if (SMESH_FOUND)
     add_definitions(-DHAVE_SMESH)
     if(SMESH_VERSION_MAJOR LESS_EQUAL 9 AND SMESH_VERSION_MINOR LESS 10 )
       add_definitions(-DHAVE_MEFISTO)
     endif()
-endif(BUILD_SMESH)
+endif(SMESH_FOUND)
 
 if(BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
