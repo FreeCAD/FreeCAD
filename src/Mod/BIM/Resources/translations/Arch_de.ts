@@ -2525,12 +2525,12 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="571"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation>Wenn diese Option aktiviert ist, wird der Text, der in der Zwischenablage gespeichert wird das Gerät enthalten. Andernfalls wird es eine einfache Zahl ausgedrückt in internen Einheiten (Millimeter)</translation>
+      <translation>Wenn diese Option aktiviert ist, wird der in die Zwischenablage geschrieben Text die Einheit enthalten. Andernfalls wird er eine einfache Zahl sein, ausgedrückt in internen Einheiten (Millimeter)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="574"/>
       <source>Include unit when sending measurements to clipboard</source>
-      <translation>Gerät beim Senden von Messungen in die Zwischenablage einschließen</translation>
+      <translation>Einheit beim Senden von Messungen in die Zwischenablage einschließen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="14"/>
@@ -3284,7 +3284,7 @@ Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
 However, some BIM applications will use this factor to choose which
 unit to work with when opening the file.</source>
-      <translation>Die Einheit, in die deine IFC-Datei exportiert wird. Bitte beachte, dass IFC-Daten im metrischen System erzeugt werden. angloamerikanische Einheiten werden durch Umwandlung erzeugt. Beim Öffnen bieten einige BIM-Anwendungen die Möglichkeit das Maß-System zu wählen, mit dem gearbeiten werden sollen.</translation>
+      <translation>Die Einheit, in die deine IFC-Datei exportiert wird. Beachten Sie, dass IFC-Daten IMMER im metrischen System erzeugt werden; angloamerikanische Einheiten werden durch einen Umrechnungsfaktor erzeugt. Beim Öffnen bieten einige BIM-Anwendungen die Möglichkeit das Maß-System zu wählen, mit dem gearbeiten werden sollen.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="329"/>
@@ -7500,7 +7500,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="240"/>
       <source>The electric power needed to light this space in Watts</source>
-      <translation>Die notwendige elektrische Energie in Watt, um diesen Raum zu beleuchten</translation>
+      <translation>Die notwendige elektrische Leistung in Watt, um diesen Raum zu beleuchten</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="242"/>
@@ -7510,7 +7510,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="244"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation>Wenn wahr, wird Geräteenergie automatisch von den in diesem Raum enthaltenen Geräten gefüllt</translation>
+      <translation>Wenn wahr, wird Geräte-Leistung automatisch von den in diesem Raum enthaltenen Geräten gefüllt</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="246"/>
