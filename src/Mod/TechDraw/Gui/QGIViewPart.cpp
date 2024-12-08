@@ -396,8 +396,9 @@ void QGIViewPart::drawAllEdges()
                     // hidden line without a format
                     item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
                                                                        vp->LineWidth.getValue()));
-                     item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
-                     item->setZValue(ZVALUE::HIDEDGE);
+                    item->setHiddenEdge(true);
+                    item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
+                    item->setZValue(ZVALUE::HIDEDGE);
                 } else {
                     // unformatted visible line, draw as continuous line
                     item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
