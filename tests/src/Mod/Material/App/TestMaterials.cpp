@@ -37,6 +37,7 @@
 #include <src/App/InitApplication.h>
 
 #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/MaterialValue.h>
 #include <Mod/Material/App/Model.h>
 #include <Mod/Material/App/ModelManager.h>
 #include <Mod/Material/App/ModelUuids.h>
@@ -223,7 +224,9 @@ TEST_F(TestMaterial, TestAddAppearanceModel)
 QString parseQuantity(const char *string)
 {
     QString value = QString::fromStdString(string);
-    return Base::Quantity::parse(value).getUserString();
+    auto quantity = Base::Quantity::parse(value);
+    quantity.setFormat(Materials::MaterialValue::getQuantityFormat());
+    return quantity.getUserString();
 }
 
 TEST_F(TestMaterial, TestCalculiXSteel)
