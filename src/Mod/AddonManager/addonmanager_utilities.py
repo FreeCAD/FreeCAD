@@ -38,9 +38,10 @@ from urllib.parse import urlparse
 try:
     from PySide import QtCore, QtGui, QtWidgets
 except ImportError:
-    QtCore = None
-    QtWidgets = None
-    QtGui = None
+    try:
+        from PySide6 import QtCore, QtGui, QtWidgets
+    except ImportError:
+        from PySide2 import QtCore, QtGui, QtWidgets
 
 import addonmanager_freecad_interface as fci
 
@@ -397,7 +398,7 @@ def blocking_get(url: str, method=None) -> bytes:
     return p
 
 
-def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
+def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.CompletedProcess:
     """Wrap subprocess call so it can be interrupted gracefully."""
     creation_flags = 0
     if hasattr(subprocess, "CREATE_NO_WINDOW"):
@@ -417,14 +418,25 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
     stdout = ""
     stderr = ""
     return_code = None
+    counter = 0
     while return_code is None:
+        counter += 1
         try:
-            stdout, stderr = p.communicate(timeout=10)
+            stdout, stderr = p.communicate(
+                timeout=1
+            )  # one second timeout allows interrupting the run once per second
             return_code = p.returncode
         except subprocess.TimeoutExpired:
-            if QtCore.QThread.currentThread().isInterruptionRequested():
+            if (
+                hasattr(QtCore, "QThread")
+                and QtCore.QThread.currentThread().isInterruptionRequested()
+            ):
                 p.kill()
                 raise ProcessInterrupted()
+            if counter >= timeout_secs:  # The real timeout
+                p.kill()
+                stdout, stderr = p.communicate()
+                return_code = -1
     if return_code is None or return_code != 0:
         raise subprocess.CalledProcessError(
             return_code if return_code is not None else -1, args, stdout, stderr
