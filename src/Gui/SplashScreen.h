@@ -23,6 +23,7 @@
 #ifndef GUI_SPLASHSCREEN_H
 #define GUI_SPLASHSCREEN_H
 
+#include <list>
 #include <QSplashScreen>
 
 namespace Gui
@@ -43,6 +44,7 @@ public:
     ~SplashScreen() override;
 
     void setShowMessages(bool on);
+    void pushMessage(const QString& msg);
 
     static QPixmap splashImage();
 
@@ -51,6 +53,11 @@ protected:
 
 private:
     SplashObserver* messages;
+    std::list<QString> lines;
+    std::list<QString>::size_type lineCount;
+    int lineSpacing;
+    int startX, startY;
+    QColor textColor;
 };
 
 }  // namespace Gui
