@@ -411,6 +411,17 @@ PropertyElectricPotential::PropertyElectricPotential()
 }
 
 //**************************************************************************
+// PropertyElectricFlux
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricFlux, App::PropertyQuantity)
+
+PropertyElectricFlux::PropertyElectricFlux()
+{
+    setUnit(Base::Unit::ElectricFlux);
+}
+
+//**************************************************************************
 // PropertyFrequency
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
