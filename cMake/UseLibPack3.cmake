@@ -15,11 +15,17 @@ set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/swig.exe CACHE FILEPATH "Swig" FO
 find_package(Qt6 REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 Qt ${Qt6_VERSION}")
 
+if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.1.0")
+    find_package(pybind11 REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/share/cmake/pybind11 NO_DEFAULT_PATH)
+    message(STATUS "Found LibPack 3 pybind11 ${pybind11_VERSION}")
+    set(FREECAD_USE_PYBIND11 ON)
+endif()
+
 find_package(XercesC REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 XercesC ${XercesC_VERSION}")
 
 find_package(yaml-cpp REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
-message(STATUS "Found LibPack 3 yaml-cpp ${XercesC_VERSION}")
+message(STATUS "Found LibPack 3 yaml-cpp ${yaml-cpp_VERSION}")
 
 find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 Coin ${Coin_VERSION}")
