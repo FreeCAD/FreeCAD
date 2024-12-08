@@ -36,27 +36,103 @@ except ImportError:
 
 # Get whatever version of PySide we can
 try:
-    import PySide  # Use the FreeCAD wrapper
+    from PySide import QtCore, QtGui, QtWidgets  # Use the FreeCAD wrapper
 except ImportError:
     try:
-        import PySide6  # Outside FreeCAD, try Qt6 first
-
-        PySide = PySide6
+        from PySide6 import QtCore, QtGui, QtWidgets  # Outside FreeCAD, try Qt6 first
     except ImportError:
-        import PySide2  # Fall back to Qt5 (if this fails, Python will kill this module's import)
+        from PySide2 import QtCore, QtGui, QtWidgets  # Fall back to Qt5
 
-        PySide = PySide2
-
-from PySide import QtCore, QtGui, QtWidgets
+from dataclasses import dataclass
 
 _TOTAL_INCREMENTS = 1000
 
 
+class Progress:
+    """Represents progress through a process composed of multiple sub-tasks."""
+
+    def __init__(
+        self,
+        *,
+        status_text: str = "",
+        number_of_tasks: int = 1,
+        current_task: int = 0,
+        current_task_progress: float = 0.0,
+    ):
+        if number_of_tasks < 1:
+            raise ValueError(f"Number of tasks must be at least one, not {number_of_tasks}")
+        if current_task < 0 or current_task >= number_of_tasks:
+            raise ValueError(
+                "Current task must be between 0 and the number of tasks "
+                f"({number_of_tasks}), not {current_task}"
+            )
+        if current_task_progress < 0.0:
+            current_task_progress = 0.0
+        elif current_task_progress > 100.0:
+            current_task_progress = 100.0
+        self.status_text: str = status_text
+        self._number_of_tasks: int = number_of_tasks
+        self._current_task: int = current_task
+        self._current_task_progress: float = current_task_progress
+
+    @property
+    def number_of_tasks(self):
+        return self._number_of_tasks
+
+    @number_of_tasks.setter
+    def number_of_tasks(self, value: int):
+        if not isinstance(value, int):
+            raise TypeError("Number of tasks must be an integer")
+        if value < 1:
+            raise ValueError("Number of tasks must be at least one")
+        self._number_of_tasks = value
+
+    @property
+    def current_task(self):
+        """The current task (zero-indexed, always less than the number of tasks)"""
+        return self._current_task
+
+    @current_task.setter
+    def current_task(self, value: int):
+        if not isinstance(value, int):
+            raise TypeError("Current task must be an integer")
+        if value < 0:
+            raise ValueError("Current task must be at least zero")
+        if value >= self._number_of_tasks:
+            raise ValueError("Current task must be less than the total number of tasks")
+        self._current_task = value
+
+    @property
+    def current_task_progress(self):
+        """Current task progress, guaranteed to be in the range [0.0, 100.0]. Attempts to set a
+        value outside that range are clamped to the range."""
+        return self._current_task_progress
+
+    @current_task_progress.setter
+    def current_task_progress(self, value: float):
+        """Set the current task's progress. Rather than raising an exception when the value is
+        outside the expected range of [0,100], clamp the task progress to allow for some
+        floating point imprecision in its calculation."""
+        if value < 0.0:
+            value = 0.0
+        elif value > 100.0:
+            value = 100.0
+        self._current_task_progress = value
+
+    def next_task(self) -> None:
+        """Increment the task counter and reset the progress"""
+        self.current_task += 1
+        self.current_task_progress = 0.0
+
+    def overall_progress(self) -> float:
+        """Gets the overall progress as a fractional value in the range [0, 1]"""
+        base = self._current_task / self._number_of_tasks
+        fraction = self._current_task_progress / (100.0 * self._number_of_tasks)
+        return base + fraction
+
+
 class WidgetProgressBar(QtWidgets.QWidget):
-    """A multipart progress bar widget, including a stop button and a status label. Defaults to a
-    single range with 100 increments, but can be configured with any number of major and minor
-    ranges. Clicking the stop button will emit a signal, but does not otherwise affect the
-    widget."""
+    """A multipart progress bar widget, including a stop button and a status label."""
 
     stop_clicked = QtCore.Signal()
 
@@ -87,8 +163,6 @@ class WidgetProgressBar(QtWidgets.QWidget):
         self.vertical_layout.setContentsMargins(0, 0, 0, 0)
         self.horizontal_layout.setContentsMargins(0, 0, 0, 0)
 
-    def set_status(self, status: str):
-        self.status_label.setText(status)
-
-    def set_value(self, value: int):
-        self.progress_bar.setValue(value)
+    def set_progress(self, progress: Progress) -> None:
+        self.status_label.setText(progress.status_text)
+        self.progress_bar.setValue(progress.overall_progress() * _TOTAL_INCREMENTS)
