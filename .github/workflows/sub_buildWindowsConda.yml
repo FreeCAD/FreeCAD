@@ -71,12 +71,16 @@ jobs:
         with:
           activate-environment: .conda/freecad
           environment-file: conda/conda-env.yaml
+          conda-remove-defaults: true
           channels: conda-forge
           channel-priority: true
           miniforge-version: latest
+          mamba-version: "*"
+          use-mamba: true
       - name: Install FreeCAD dependencies
         env:
           CONDA_VERBOSITY: 2
+          MAMBA_ROOT_PREFIX: "/home/runner/miniconda3"
         run: |
           conda config --add envs_dirs $PWD/.conda
           mamba-devenv --no-prune -f conda/environment.devenv.yml

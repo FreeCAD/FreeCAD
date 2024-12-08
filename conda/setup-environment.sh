@@ -1,7 +1,14 @@
 #!/bin/sh
 
-# create the conda environment as a subdirectory
-mamba env create -p .conda/freecad -f conda/conda-env.yaml
+set -e
+set -x
+
+# create the conda environment as a subdirectory x
+if [ ! -d ".conda/freecad" ]; then
+    mamba env create -p .conda/freecad -f conda/conda-env.yaml
+else
+    mamba env update -p .conda/freecad -f conda/conda-env.yaml
+fi
 
 # add the environment subdirectory to the conda configuration
 conda config --add envs_dirs $CONDA_PREFIX/envs
