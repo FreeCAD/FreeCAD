@@ -41,7 +41,7 @@ from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdat
 from addonmanager_git import GitManager, NoGitFound
 from Addon import Addon
 from change_branch import ChangeBranchDialog
-from addonmanager_readme_controller import ReadmeController
+from addonmanager_readme_controller import DocumentController
 from Widgets.addonmanager_widget_package_details_view import UpdateInformation, WarningFlags
 
 translate = fci.translate
@@ -60,7 +60,10 @@ class PackageDetailsController(QtCore.QObject):
     def __init__(self, widget=None):
         super().__init__()
         self.ui = widget
-        self.readme_controller = ReadmeController(self.ui.readme_browser)
+        self.readme_controller = DocumentController(self.ui.readme_browser)
+        self.changelog_controller = DocumentController(self.ui.changelog_browser)
+        self.contrib_controller = DocumentController(self.ui.contrib_browser)
+        self.license_controller = DocumentController(self.ui.license_browser)
         self.worker = None
         self.addon = None
         self.update_check_thread = None
@@ -85,7 +88,11 @@ class PackageDetailsController(QtCore.QObject):
         """The main entry point for this class, shows the package details and related buttons
         for the provided repo."""
         self.addon = repo
-        self.readme_controller.set_addon(repo)
+        # TODO: manage multiple urls here instead of passing to function
+        self.readme_controller.set_addon(repo, 0)
+        self.changelog_controller.set_addon(repo, 1)
+        self.contrib_controller.set_addon(repo, 2)
+        self.license_controller.set_addon(repo, 3)
         self.original_disabled_state = self.addon.is_disabled()
         if repo is not None:
             self.ui.button_bar.show()

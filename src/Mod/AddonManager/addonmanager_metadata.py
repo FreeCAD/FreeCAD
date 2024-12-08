@@ -26,6 +26,7 @@ https://wiki.FreeCAD.org/Package_metadata"""
 
 from __future__ import annotations
 
+import requests
 from dataclasses import dataclass, field
 from enum import IntEnum, auto
 from typing import Tuple, Dict, List, Optional
@@ -55,6 +56,8 @@ class License:
 
 class UrlType(IntEnum):
     bugtracker = 0
+    changelog = auto()
+    contributing = auto()
     discussion = auto()
     documentation = auto()
     readme = auto()
@@ -248,6 +251,7 @@ def get_repo_url_from_metadata(metadata: Metadata) -> str:
     for url in metadata.url:
         if url.type == UrlType.repository:
             return url.location
+    return ""
 
 
 class MetadataReader:
@@ -259,6 +263,14 @@ class MetadataReader:
         with open(filename, "rb") as f:
             data = f.read()
             return MetadataReader.from_bytes(data)
+
+    @staticmethod
+    def from_url(url: str) -> Metadata:
+        """A convenience function for loading the Metadata from a raw URL"""
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.content
+        return MetadataReader.from_bytes(data)
 
     @staticmethod
     def from_bytes(data: bytes) -> Metadata:
