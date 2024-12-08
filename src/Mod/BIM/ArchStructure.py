@@ -752,7 +752,7 @@ class _Structure(ArchComponent.Component):
         super().loads(state)  # do nothing as of 2024.11.28
         if state == None:
             return
-        elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28 
+        elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
             return
         elif state[0] == 'Structure':
             self.ArchSkPropSetPickedUuid = state[1]
@@ -807,7 +807,7 @@ class _Structure(ArchComponent.Component):
             if hasattr(baseProxy,"getPropertySet"):
                 # get full list of PropertySet
                 propSetListCur = baseProxy.getPropertySet(obj.Base)
-                # get updated name (if any) of the selected PropertySet 
+                # get updated name (if any) of the selected PropertySet
                 propSetSelectedNameCur = baseProxy.getPropertySet(obj.Base,
                                          propSetUuid=propSetPickedUuidPrev)
         if propSetSelectedNameCur:  # True if selection is not deleted
@@ -1138,11 +1138,11 @@ class _Structure(ArchComponent.Component):
                 obj.Nodes = self.nodes
         ArchComponent.Component.onChanged(self,obj,prop)
 
-        if (prop == "ArchSketchPropertySet" 
+        if (prop == "ArchSketchPropertySet"
             and Draft.getType(obj.Base) == "ArchSketch"):
             baseProxy = obj.Base.Proxy
             if hasattr(baseProxy,"getPropertySet"):
-                uuid = baseProxy.getPropertySet(obj, 
+                uuid = baseProxy.getPropertySet(obj,
                                  propSetName=obj.ArchSketchPropertySet)
                 self.ArchSkPropSetPickedUuid = uuid
         if (hasattr(obj,"ArchSketchData") and obj.ArchSketchData
