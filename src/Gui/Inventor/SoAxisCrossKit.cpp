@@ -51,10 +51,9 @@
 #endif
 
 #include "SoAxisCrossKit.h"
-
+#include "SoDevicePixelRatioElement.h"
 
 using namespace Gui;
-
 
 SO_KIT_SOURCE(SoShapeScale)
 
@@ -101,6 +100,9 @@ SoShapeScale::GLRender(SoGLRenderAction * action)
         float nsize = this->scaleFactor.getValue() / float(vp.getViewportSizePixels()[0]);
         SoModelMatrixElement::get(state).multVecMatrix(center, center); // world coords
         float sf = vv.getWorldToScreenScale(center, nsize);
+
+        sf *= SoDevicePixelRatioElement::get(state);
+
         SbVec3f v(sf, sf, sf);
         if (scale->scaleFactor.getValue() != v){
             scale->scaleFactor = v;
