@@ -555,6 +555,17 @@ PropertyMagnetization::PropertyMagnetization()
 }
 
 //**************************************************************************
+// PropertyElectromagneticPotential
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectromagneticPotential, App::PropertyQuantity)
+
+PropertyElectromagneticPotential::PropertyElectromagneticPotential()
+{
+    setUnit(Base::Unit::ElectromagneticPotential);
+}
+
+//**************************************************************************
 // PropertyMass
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
