@@ -606,7 +606,7 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Duplicate selected object");
+    sMenuText       = QT_TR_NOOP("Duplicate selected &object");
     sToolTipText    = QT_TR_NOOP("Duplicates the selected object and adds it to the active body");
     sWhatsThis      = "PartDesign_DuplicateSelection";
     sStatusTip      = sToolTipText;

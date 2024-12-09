@@ -2081,7 +2081,7 @@ CmdColorPerFace::CmdColorPerFace()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Appearance per face");
+    sMenuText     = QT_TR_NOOP("Appearance per &face");
     sToolTipText  = QT_TR_NOOP("Set the appearance of each individual face "
                                "of the selected object.");
     sStatusTip    = sToolTipText;
@@ -2183,7 +2183,7 @@ CmdPartSectionCut::CmdPartSectionCut()
 {
     sAppModule = "Part";
     sGroup = "View";
-    sMenuText = QT_TR_NOOP("Persistent section cut");
+    sMenuText = QT_TR_NOOP("Persiste&nt section cut");
     sToolTipText = QT_TR_NOOP("Creates a persistent section cut of visible part objects");
     sWhatsThis = "Part_SectionCut";
     sStatusTip = sToolTipText;
