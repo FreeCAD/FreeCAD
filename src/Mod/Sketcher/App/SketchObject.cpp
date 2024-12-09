@@ -1340,9 +1340,10 @@ int SketchObject::diagnoseAdditionalConstraints(
     return lastDoF;
 }
 
-int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative,
+int SketchObject::moveGeometries(std::vector<GeoElementId> geoEltIds, const Base::Vector3d& toPoint, bool relative,
                             bool updateGeoBeforeMoving)
 {
+
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -1369,7 +1370,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         return -1;
 
     // move the point and solve
-    lastSolverStatus = solvedSketch.movePoint(GeoId, PosId, toPoint, relative);
+    lastSolverStatus = solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
 
     // moving the point can not result in a conflict that we did not have
     // or a redundancy that we did not have before, or a change of DoF
@@ -1378,16 +1379,23 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
         // Constraints.acceptGeometry(getCompleteGeometry());
-        for (std::vector<Part::Geometry*>::iterator it = geomlist.begin(); it != geomlist.end();
-             ++it) {
-            if (*it)
-                delete *it;
+        for (auto* geo :  geomlist) {
+            if (geo){
+                delete geo;
+            }
         }
     }
 
     solvedSketch.resetInitMove();// reset solver point moving mechanism
 
     return lastSolverStatus;
+}
+
+int SketchObject::moveGeometry(int geoId, PointPos pos, const Base::Vector3d& toPoint, bool relative,
+    bool updateGeoBeforeMoving)
+{
+    std::vector<GeoElementId> geoEltIds = { GeoElementId(geoId, pos) };
+    return moveGeometries(geoEltIds, toPoint, relative, updateGeoBeforeMoving);
 }
 
 template <>
@@ -2777,14 +2785,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             if (dist1.Length() < dist2.Length()) {
                 filletPosId1 = PointPos::start;
                 filletPosId2 = PointPos::end;
-                movePoint(GeoId1, PosId1, p1, false, true);
-                movePoint(GeoId2, PosId2, p2, false, true);
+                moveGeometry(GeoId1, PosId1, p1, false, true);
+                moveGeometry(GeoId2, PosId2, p2, false, true);
             }
             else {
                 filletPosId1 = PointPos::end;
                 filletPosId2 = PointPos::start;
-                movePoint(GeoId1, PosId1, p2, false, true);
-                movePoint(GeoId2, PosId2, p1, false, true);
+                moveGeometry(GeoId1, PosId1, p2, false, true);
+                moveGeometry(GeoId2, PosId2, p1, false, true);
             }
 
             auto tangent1 = std::make_unique<Sketcher::Constraint>();
@@ -3272,14 +3280,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             if (dist1 < dist2) {
                 filletPosId1 = PointPos::start;
                 filletPosId2 = PointPos::end;
-                movePoint(GeoId1, PosId1, p1, false, true);
-                movePoint(GeoId2, PosId2, p2, false, true);
+                moveGeometry(GeoId1, PosId1, p1, false, true);
+                moveGeometry(GeoId2, PosId2, p2, false, true);
             }
             else {
                 filletPosId1 = PointPos::end;
                 filletPosId2 = PointPos::start;
-                movePoint(GeoId1, PosId1, p2, false, true);
-                movePoint(GeoId2, PosId2, p1, false, true);
+                moveGeometry(GeoId1, PosId1, p2, false, true);
+                moveGeometry(GeoId2, PosId2, p1, false, true);
             }
 
             auto* tangent1 = new Sketcher::Constraint();
@@ -3377,7 +3385,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
             newPoint.Normalize();
             newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
             newPoint = newPoint + endVec;
-            retcode = movePoint(GeoId, Sketcher::PointPos::start, newPoint, false, true);
+            retcode = moveGeometry(GeoId, Sketcher::PointPos::start, newPoint, false, true);
         }
         else if (endpoint == PointPos::end) {
             Base::Vector3d newPoint = endVec - startVec;
@@ -3385,7 +3393,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
             newPoint.Normalize();
             newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
             newPoint = newPoint + startVec;
-            retcode = movePoint(GeoId, Sketcher::PointPos::end, newPoint, false, true);
+            retcode = moveGeometry(GeoId, Sketcher::PointPos::end, newPoint, false, true);
         }
     }
     else if (geom->is<Part::GeomArcOfCircle>()) {
@@ -4549,30 +4557,38 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
 bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject* pObj, bool& xinv,
                                        bool& yinv, eReasonList* rsn) const
 {
-    if (rsn)
+    if (rsn) {
         *rsn = rlAllowed;
+    }
+
+    std::string sketchArchType ("Sketcher::SketchObjectPython");
 
     // Only applicable to sketches
-    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()) {
-        if (rsn)
+    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()
+        && sketchArchType != pObj->getTypeId().getName()) {
+        if (rsn) {
             *rsn = rlNotASketch;
+        }
         return false;
     }
+
 
     SketchObject* psObj = static_cast<SketchObject*>(pObj);
 
     // Sketches outside of the Document are NOT allowed
     if (this->getDocument() != pDoc) {
-        if (rsn)
+        if (rsn) {
             *rsn = rlOtherDoc;
+        }
         return false;
     }
 
     // circular reference prevention
     try {
         if (!(this->testIfLinkDAGCompatible(pObj))) {
-            if (rsn)
+            if (rsn) {
                 *rsn = rlCircularReference;
+            }
             return false;
         }
     }

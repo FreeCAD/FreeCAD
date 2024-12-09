@@ -172,17 +172,17 @@ def edit_pset(obj, prop, value=None, force=False):
             ptype = ptype.split(":", 1)[0]
     else:
         ptype = obj.getTypeIdOfProperty(prop)
-        if ifcprop == "App::PropertyDistance":
+        if ptype == "App::PropertyDistance":
             ptype = "IfcLengthMeasure"
-        elif ifcprop == "App::PropertyLength":
+        elif ptype == "App::PropertyLength":
             ptype = "IfcPositiveLengthMeasure"
-        elif ifcprop == "App::PropertyBool":
+        elif ptype == "App::PropertyBool":
             ptype = "IfcBoolean"
-        elif ifcprop == "App::PropertyInteger":
+        elif ptype == "App::PropertyInteger":
             ptype = "IfcInteger"
-        elif ifcprop == "App::PropertyFloat":
+        elif ptype == "App::PropertyFloat":
             ptype = "IfcReal"
-        elif ifcprop == "App::PropertyArea":
+        elif ptype == "App::PropertyArea":
             ptype = "IfcAreaMeasure"
         else:
             # default

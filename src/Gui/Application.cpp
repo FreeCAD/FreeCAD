@@ -560,8 +560,15 @@ Application::Application(bool GUIenabled)
     _pcWorkbenchDictionary = PyDict_New();
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    // Instantiate the 3Dconnexion controller
-    pNavlibInterface = new NavlibInterface();
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        // Instantiate the 3Dconnexion controller
+        pNavlibInterface = new NavlibInterface();
+    }
+    else {
+        pNavlibInterface = nullptr;
+    }
 #endif
 
     if (GUIenabled) {
@@ -2295,7 +2302,9 @@ void Application::runApplication()
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    Instance->pNavlibInterface->enableNavigation();
+    if (Instance->pNavlibInterface) {
+        Instance->pNavlibInterface->enableNavigation();
+    }
 #endif
 
     runEventLoop(mainApp);
