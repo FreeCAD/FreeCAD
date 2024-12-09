@@ -4557,30 +4557,38 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
 bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject* pObj, bool& xinv,
                                        bool& yinv, eReasonList* rsn) const
 {
-    if (rsn)
+    if (rsn) {
         *rsn = rlAllowed;
+    }
+
+    std::string sketchArchType ("Sketcher::SketchObjectPython");
 
     // Only applicable to sketches
-    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()) {
-        if (rsn)
+    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()
+        && sketchArchType != pObj->getTypeId().getName()) {
+        if (rsn) {
             *rsn = rlNotASketch;
+        }
         return false;
     }
+
 
     SketchObject* psObj = static_cast<SketchObject*>(pObj);
 
     // Sketches outside of the Document are NOT allowed
     if (this->getDocument() != pDoc) {
-        if (rsn)
+        if (rsn) {
             *rsn = rlOtherDoc;
+        }
         return false;
     }
 
     // circular reference prevention
     try {
         if (!(this->testIfLinkDAGCompatible(pObj))) {
-            if (rsn)
+            if (rsn) {
                 *rsn = rlCircularReference;
+            }
             return false;
         }
     }
