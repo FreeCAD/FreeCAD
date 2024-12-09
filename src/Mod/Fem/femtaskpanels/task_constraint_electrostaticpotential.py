@@ -180,7 +180,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         else:
             self._paramWidget.neumannBC_RB.click()
 
-        self._paramWidget.surfacechargedensityQSB.setProperty("value", self.obj.SurfaceChargeDensity)
+        self._paramWidget.surfacechargedensityQSB.setProperty(
+            "value", self.obj.SurfaceChargeDensity
+        )
         FreeCADGui.ExpressionBinding(self._paramWidget.surfacechargedensityQSB).bind(
             self.obj, "SurfaceChargeDensity"
         )
@@ -242,10 +244,14 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.Dirichlet = self._paramWidget.dirichletBC_RB.isChecked()
 
         try:
-            self.obj.SurfaceChargeDensity = self._paramWidget.surfacechargedensityQSB.property("value")
+            self.obj.SurfaceChargeDensity = self._paramWidget.surfacechargedensityQSB.property(
+                "value"
+            )
         except ValueError:
             FreeCAD.Console.PrintMessage(
                 "Wrong input. Not recognised input: '{}' "
-                "SurfaceChargeDensity has not been set.\n".format(self._paramWidget.surfacechargedensityQSB.text())
+                "SurfaceChargeDensity has not been set.\n".format(
+                    self._paramWidget.surfacechargedensityQSB.text()
+                )
             )
             self.obj.SurfaceChargeDensity = "0.0 s*A/(mm^2)"

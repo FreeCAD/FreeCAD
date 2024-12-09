@@ -142,10 +142,7 @@ class ESwriter:
                                     obj.Potential = savePotential * 1e6
                                 potential = float(obj.Potential.getValueAs("V"))
                                 self.write.boundary(name, "Potential", potential)
-                    elif (
-                        not obj.Dirichlet
-                        and hasattr(obj, "SurfaceChargeDensity")
-                    ):
+                    elif not obj.Dirichlet and hasattr(obj, "SurfaceChargeDensity"):
                         sc_density = float(obj.SurfaceChargeDensity.getValueAs("A*s/m^2"))
                         self.write.boundary(name, "Surface Charge Density", sc_density)
                     if obj.PotentialConstant:
