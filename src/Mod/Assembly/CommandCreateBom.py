@@ -327,6 +327,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         Gui.addModule("UtilsAssembly")
         if assembly is not None:
             commands = (
+                "assembly = UtilsAssembly.activeAssembly()\n"
                 "bom_group = UtilsAssembly.getBomGroup(assembly)\n"
                 'bomObj = bom_group.newObject("Assembly::BomObject", "Bill of Materials")'
             )
@@ -411,14 +412,26 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             )
             + "\n"
         )
+        export_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Export:") + "</b>")
+        export_text = QtWidgets.QLabel(
+            " - "
+            + translate(
+                "Assembly",
+                "The exported file format can be customized in the Spreadsheet workbench preferences.",
+            )
+            + "\n"
+        )
 
         options_text.setWordWrap(True)
         columns_text.setWordWrap(True)
+        export_text.setWordWrap(True)
 
         layout.addWidget(options_title)
         layout.addWidget(options_text)
         layout.addWidget(columns_title)
         layout.addWidget(columns_text)
+        layout.addWidget(export_title)
+        layout.addWidget(export_text)
 
         help_dialog.setLayout(layout)
         help_dialog.setFixedWidth(500)

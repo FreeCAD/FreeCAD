@@ -112,45 +112,49 @@ void FileCardDelegate::paint(QPainter* painter,
     thumbnail->setFixedSize(thumbnailSize, thumbnailSize);
     thumbnail->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
 
+    QString style = QStringLiteral("");
+
     _widget->setProperty("state", QStringLiteral(""));
     if (option.state & QStyle::State_Selected) {
         _widget->setProperty("state", QStringLiteral("pressed"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getSelectionColor();
-            _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                       " border: 2px solid rgb(%1, %2, %3);"
-                                                       " border-radius: 4px;"
-                                                       " padding: 2px;"
-                                                       "}")
-                                       .arg(color.red())
-                                       .arg(color.green())
-                                       .arg(color.blue()));
+            style = QString::fromLatin1("QWidget#thumbnailWidget {"
+                                        " border: 2px solid rgb(%1, %2, %3);"
+                                        " border-radius: 4px;"
+                                        " padding: 2px;"
+                                        "}")
+                        .arg(color.red())
+                        .arg(color.green())
+                        .arg(color.blue());
         }
     }
     else if (option.state & QStyle::State_MouseOver) {
         _widget->setProperty("state", QStringLiteral("hovered"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getBorderColor();
-            _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                       " border: 2px solid rgb(%1, %2, %3);"
-                                                       " border-radius: 4px;"
-                                                       " padding: 2px;"
-                                                       "}")
-                                       .arg(color.red())
-                                       .arg(color.green())
-                                       .arg(color.blue()));
+            style = QString::fromLatin1("QWidget#thumbnailWidget {"
+                                        " border: 2px solid rgb(%1, %2, %3);"
+                                        " border-radius: 4px;"
+                                        " padding: 2px;"
+                                        "}")
+                        .arg(color.red())
+                        .arg(color.green())
+                        .arg(color.blue());
         }
     }
     else if (qApp->styleSheet().isEmpty()) {
         QColor color = getBackgroundColor();
-        _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                   " background-color: rgb(%1, %2, %3);"
-                                                   " border-radius: 8px;"
-                                                   "}")
-                                   .arg(color.red())
-                                   .arg(color.green())
-                                   .arg(color.blue()));
+        style = QString::fromLatin1("QWidget#thumbnailWidget {"
+                                    " background-color: rgb(%1, %2, %3);"
+                                    " border-radius: 8px;"
+                                    "}")
+                    .arg(color.red())
+                    .arg(color.green())
+                    .arg(color.blue());
     }
+
+    _widget->setStyleSheet(style);
 
     auto elided =
         painter->fontMetrics().elidedText(baseName, Qt::TextElideMode::ElideRight, cardWidth);

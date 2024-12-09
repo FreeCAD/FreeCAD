@@ -386,7 +386,8 @@ class TaskPanelOrthoArray:
         the delayed functions, and perform cleanup.
         """
         # App.ActiveDocument.commitTransaction()
-        Gui.ActiveDocument.resetEdit()
+        if Gui.ActiveDocument is not None:
+            Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
 

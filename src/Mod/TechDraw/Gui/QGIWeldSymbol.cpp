@@ -28,7 +28,6 @@
 #endif
 
 #include <Base/Console.h>
-#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawTile.h>
@@ -254,7 +253,7 @@ void QGIWeldSymbol::drawTailText()
     if (!vp) {
         return;
     }
-    QString qFontName = Base::Tools::fromStdString(vp->Font.getValue());
+    QString qFontName = QString::fromStdString(vp->Font.getValue());
     int fontSize = QGIView::exactFontSize(vp->Font.getValue(),
                                           vp->FontSize.getValue());
 

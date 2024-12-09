@@ -2118,7 +2118,7 @@ bool CDxfRead::ReadText()
         // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
     }
     else {
-        ImportError("Unable to process encoding for TEXT/MTEXT '%s'", textPrefix);
+        ImportError("Unable to process encoding for TEXT/MTEXT '%s'\n", textPrefix);
     }
     repeat_last_record();
     return true;
@@ -2357,26 +2357,29 @@ bool CDxfRead::get_next_record()
         return m_not_eof;
     }
 
-    if ((*m_ifs).eof()) {
-        m_not_eof = false;
-        return false;
-    }
+    do {
+        if ((*m_ifs).eof()) {
+            m_not_eof = false;
+            return false;
+        }
 
-    std::getline(*m_ifs, m_record_data);
-    ++m_line;
-    int temp = 0;
-    if (!ParseValue<int>(this, &temp)) {
-        ImportError("CDxfRead::get_next_record() Failed to get integer record type from '%s'\n",
-                    m_record_data);
-        return false;
-    }
-    m_record_type = (eDXFGroupCode_t)temp;
-    if ((*m_ifs).eof()) {
-        return false;
-    }
+        std::getline(*m_ifs, m_record_data);
+        ++m_line;
+        int temp = 0;
+        if (!ParseValue<int>(this, &temp)) {
+            ImportError("CDxfRead::get_next_record() Failed to get integer record type from '%s'\n",
+                        m_record_data);
+            return false;
+        }
+        m_record_type = (eDXFGroupCode_t)temp;
+        if ((*m_ifs).eof()) {
+            return false;
+        }
 
-    std::getline(*m_ifs, m_record_data);
-    ++m_line;
+        std::getline(*m_ifs, m_record_data);
+        ++m_line;
+    } while (m_record_type == eComment);
+
     // Remove any carriage return at the end of m_str which may occur because of inconsistent
     // handling of LF vs. CRLF line termination.
     auto last = m_record_data.rbegin();

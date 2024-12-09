@@ -34,6 +34,7 @@
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -47,6 +48,7 @@
 #include <Geom_Plane.hxx>
 #include <Geom2d_Curve.hxx>
 #include <Geom2dAPI_ProjectPointOnCurve.hxx>
+#include <ShapeAnalysis.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
@@ -206,6 +208,9 @@ DrawViewDimension::DrawViewDimension()
         (App::Prop_None),
         "Feature bounding box corners as of last reference update.  Used by autocorrect");
 
+    // changing the references in the property editor will only cause problems
+    References2D.setStatus(App::Property::ReadOnly, true);
+    References3D.setStatus(App::Property::ReadOnly, true);
 
     // hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly, true);
@@ -220,6 +225,11 @@ DrawViewDimension::DrawViewDimension()
     // by default EqualTolerance is true, thus make UnderTolerance read-only
     UnderTolerance.setStatus(App::Property::ReadOnly, true);
     FormatSpecUnderTolerance.setStatus(App::Property::ReadOnly, true);
+
+    // legacy behaviour if this is false
+    ADD_PROPERTY_TYPE(UseActualArea, (true), "Area", App::Prop_Output,
+                      "If true, area dimensions return the area of the face minus the areas of any enclosed faces. \
+                       If false, the area of the face's outer boundary is returned.");
 
     measurement = new Measure::Measurement();
     // TODO: should have better initial datumLabel position than (0, 0) in the DVP?? something
@@ -274,6 +284,7 @@ void DrawViewDimension::resetArea()
 {
     m_areaPoint.center = Base::Vector3d(0, 0, 0);
     m_areaPoint.area = 0.0;
+    m_areaPoint.actualArea = 0.0;
 }
 
 void DrawViewDimension::onChanged(const App::Property* prop)
@@ -454,7 +465,7 @@ short DrawViewDimension::mustExecute() const
 App::DocumentObjectExecReturn* DrawViewDimension::execute()
 {
     if (!okToProceed()) {
-        // if we set an error here, it will be triggering many times during
+        // if we set an error here, it will be triggered many times during
         // document load.
         return  DrawView::execute();
     }
@@ -464,11 +475,10 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
         m_referencesCorrect = autocorrectReferences();
     }
     if (!m_referencesCorrect) {
-        m_referencesCorrect = true;
-        new App::DocumentObjectExecReturn("Autocorrect failed to fix broken references", this);
+        // this test needs Phase 2 of auto correct to be useful
+        Base::Console().Log("The references for %s have changed and autocorrect could not match the geometry\n", Label.getValue());
     }
 
-    // references are good, we can proceed
     resetLinear();
     resetAngular();
     resetArc();
@@ -684,7 +694,6 @@ double DrawViewDimension::getDimValue()
 //! retrieve the dimension value for "true" dimensions. The returned value is in internal units (mm).
 double DrawViewDimension::getTrueDimValue() const
 {
-    //    Base::Console().Message("DVD::getTrueDimValue()\n");
     double result = 0.0;
 
     if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
@@ -761,7 +770,17 @@ double DrawViewDimension::getProjectedDimValue() const
         result = legAngle;
     }
     else if (Type.isValue("Area")) {
-        result = m_areaPoint.area / scale / scale;
+        // 2d reference makes scaled values in areaPoint
+        // 3d reference makes actual values in areaPoint :p
+        double divisor{scale / scale};
+        if (has3DReferences()) {
+            divisor = 1.0;
+        }
+        if (UseActualArea.getValue()) {
+           result = m_areaPoint.actualArea / divisor;
+        } else {
+            result = m_areaPoint.area / divisor;
+        }
     }
 
     return result;
@@ -1076,9 +1095,9 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
         else {
             // fubar - can't have non-circular spline as target of Diameter dimension, but this is
             // already checked, so something has gone badly wrong.
-            Base::Console().Error("%s: can not make a Circle from this BSpline edge\n",
+            Base::Console().Error("%s: can not make a Circle from this B-spline edge\n",
                                   getNameInDocument());
-            throw Base::RuntimeError("Bad BSpline geometry for arc dimension");
+            throw Base::RuntimeError("Bad B-spline geometry for arc dimension");
         }
     }
     else {
@@ -1154,7 +1173,7 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             pts.isArc = isArc;
             BRepAdaptor_Curve adaptCircle(circleEdge);
             if (adaptCircle.GetType() != GeomAbs_Circle) {
-                throw Base::RuntimeError("failed to get circle from bspline");
+                throw Base::RuntimeError("failed to get circle from B-spline");
             }
             gp_Circ circle = adapt.Circle();
             // TODO: same code as above. reuse opportunity.
@@ -1177,7 +1196,7 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             }
         }
         else {
-            throw Base::RuntimeError("failed to make circle from bspline");
+            throw Base::RuntimeError("failed to make circle from B-spline");
         }
     }
     else {
@@ -1381,26 +1400,70 @@ areaPoint DrawViewDimension::getAreaParameters(ReferenceVector references)
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (4)";
             throw Base::RuntimeError(ssMessage.str());
         }
+        auto dvp = static_cast<DrawViewPart*>(refObject);
 
-        pts.area = face->getArea();
-        pts.center = face->getCenter();
+        auto filteredFaces  = GeometryUtils::findHolesInFace(dvp, references.front().getSubName());
+        auto perforatedFace = GeometryUtils::makePerforatedFace(face, filteredFaces);
+
+        // these areas are scaled because the source geometry is scaled, but it makes no sense to
+        // report a scaled area.
+        auto unscale = getViewPart()->getScale() * getViewPart()->getScale();
+        pts.area = face->getArea() / unscale;     // this will be the 2d area as projected onto the page? not really filled area?
+        pts.actualArea = getActualArea(perforatedFace)  / unscale;
+        pts.center = getFaceCenter(perforatedFace);
+        pts.invertY();      // geometry class is over, back to -Y up/.
     }
     else {
-        // this is a 3d reference
+        // this is a 3d reference. perforations should be handled for us by OCC
         TopoDS_Shape geometry = references[0].getGeometry();
         if (geometry.IsNull() || geometry.ShapeType() != TopAbs_FACE) {
             throw Base::RuntimeError("Geometry for dimension reference is null.");
         }
         const TopoDS_Face& face = TopoDS::Face(geometry);
 
-        GProp_GProps props;
-        BRepGProp::SurfaceProperties(face, props);
-        pts.area = props.Mass();
-        pts.center = DrawUtil::toVector3d(props.CentreOfMass());
+        // these areas are unscaled as the source is 3d geometry.
+        pts.area = getFilledArea(face);
+        pts.actualArea = getActualArea(face);
+        pts.center = getFaceCenter(face);
+        pts.move(getViewPart()->getCurrentCentroid());
+        pts.project(getViewPart());
     }
 
     return pts;
 }
+
+
+//! returns the center of mass of a face (density = k)
+Base::Vector3d DrawViewDimension::getFaceCenter(const TopoDS_Face& face)
+{
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(face, props);
+    auto center = DrawUtil::toVector3d(props.CentreOfMass());
+    return center;
+}
+
+
+//! returns the "net" area of a face (area of the face's outer boundary less the area of any holes)
+double DrawViewDimension::getActualArea(const TopoDS_Face& face)
+{
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(face, props);
+    return props.Mass();
+}
+
+
+//! returns the "gross" area of a face (area of the face's outer boundary)
+double DrawViewDimension::getFilledArea(const TopoDS_Face& face)
+{
+    TopoDS_Wire outerwire = ShapeAnalysis::OuterWire(face);
+    if (outerwire.IsNull()) {
+        return 0.0;
+    }
+
+    double area = ShapeAnalysis::ContourArea(outerwire);
+    return area;
+}
+
 
 DrawViewPart* DrawViewDimension::getViewPart() const
 {
@@ -1675,7 +1738,7 @@ pointPair DrawViewDimension::closestPoints(TopoDS_Shape s1, TopoDS_Shape s2) con
 }
 
 // set the reference property from a reference vector
-void DrawViewDimension::setReferences2d(ReferenceVector refsAll)
+void DrawViewDimension::setReferences2d(const ReferenceVector& refsAll)
 {
     // Base::Console().Message("DVD::setReferences2d(%d)\n", refs.size());
     std::vector<App::DocumentObject*> objects;
@@ -1690,10 +1753,11 @@ void DrawViewDimension::setReferences2d(ReferenceVector refsAll)
     }
 
     References2D.setValues(objects, subNames);
+    m_referencesCorrect = true;
 }
 
 // set the reference property from a reference vector
-void DrawViewDimension::setReferences3d(ReferenceVector refsAll)
+void DrawViewDimension::setReferences3d(const ReferenceVector &refsAll)
 {
     // Base::Console().Message("DVD::setReferences3d()\n");
     if (refsAll.empty() && !References3D.getValues().empty()) {
@@ -1724,6 +1788,7 @@ void DrawViewDimension::setReferences3d(ReferenceVector refsAll)
     }
 
     References3D.setValues(objects, subNames);
+    m_referencesCorrect = true;
 }
 
 //! add Dimension 3D references to measurement

@@ -64,7 +64,7 @@ std::vector<FacetIndex> MeshEvalInvalids::GetIndices() const
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     FacetIndex ind = 0;
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
+    for (auto it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
         if (!it->IsValid()) {
             aInds.push_back(ind);
         }
@@ -108,7 +108,7 @@ struct Vertex_EqualTo
         if ((*x) < (*y)) {
             return false;
         }
-        else if ((*y) < (*x)) {
+        if ((*y) < (*x)) {
             return false;
         }
         return true;
@@ -132,16 +132,14 @@ bool MeshEvalDuplicatePoints::Evaluate()
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     std::vector<VertexIterator> vertices;
     vertices.reserve(rPoints.size());
-    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+    for (auto it = rPoints.begin(); it != rPoints.end(); ++it) {
         vertices.push_back(it);
     }
 
     // if there are two adjacent vertices which have the same coordinates
     std::sort(vertices.begin(), vertices.end(), Vertex_Less());
-    if (std::adjacent_find(vertices.begin(), vertices.end(), Vertex_EqualTo()) < vertices.end()) {
-        return false;
-    }
-    return true;
+    return (std::adjacent_find(vertices.begin(), vertices.end(), Vertex_EqualTo())
+            == vertices.end());
 }
 
 std::vector<PointIndex> MeshEvalDuplicatePoints::GetIndices() const
@@ -152,7 +150,7 @@ std::vector<PointIndex> MeshEvalDuplicatePoints::GetIndices() const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     std::vector<VertexIterator> vertices;
     vertices.reserve(rPoints.size());
-    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+    for (auto it = rPoints.begin(); it != rPoints.end(); ++it) {
         vertices.push_back(it);
     }
 
@@ -182,7 +180,7 @@ bool MeshFixDuplicatePoints::Fixup()
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     std::vector<VertexIterator> vertices;
     vertices.reserve(rPoints.size());
-    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+    for (auto it = rPoints.begin(); it != rPoints.end(); ++it) {
         vertices.push_back(it);
     }
 
@@ -196,7 +194,7 @@ bool MeshFixDuplicatePoints::Fixup()
     while (next < vertices.end()) {
         next = std::adjacent_find(next, vertices.end(), pred);
         if (next < vertices.end()) {
-            std::vector<VertexIterator>::iterator first = next;
+            auto first = next;
             PointIndex first_index = *first - rPoints.begin();
             ++next;
             while (next < vertices.end() && pred(*first, *next)) {
@@ -212,7 +210,7 @@ bool MeshFixDuplicatePoints::Fixup()
     MeshFacetArray& rFacets = _rclMesh._aclFacetArray;
     for (auto& it : rFacets) {
         for (PointIndex& point : it._aulPoints) {
-            std::map<PointIndex, PointIndex>::iterator pt = mapPointIndex.find(point);
+            auto pt = mapPointIndex.find(point);
             if (pt != mapPointIndex.end()) {
                 point = pt->second;
             }
@@ -244,7 +242,7 @@ std::vector<PointIndex> MeshEvalNaNPoints::GetIndices() const
 {
     std::vector<PointIndex> aInds;
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
-    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+    for (auto it = rPoints.begin(); it != rPoints.end(); ++it) {
         if (boost::math::isnan(it->x) || boost::math::isnan(it->y) || boost::math::isnan(it->z)) {
             aInds.push_back(it - rPoints.begin());
         }
@@ -257,7 +255,7 @@ bool MeshFixNaNPoints::Fixup()
 {
     std::vector<PointIndex> aInds;
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
-    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+    for (auto it = rPoints.begin(); it != rPoints.end(); ++it) {
         if (boost::math::isnan(it->x) || boost::math::isnan(it->y) || boost::math::isnan(it->z)) {
             aInds.push_back(it - rPoints.begin());
         }
@@ -325,21 +323,20 @@ struct MeshFacet_Less
         if (x0 < y0) {
             return true;
         }
-        else if (x0 > y0) {
+        if (x0 > y0) {
             return false;
         }
-        else if (x1 < y1) {
+        if (x1 < y1) {
             return true;
         }
-        else if (x1 > y1) {
+        if (x1 > y1) {
             return false;
         }
-        else if (x2 < y2) {
+        if (x2 < y2) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 };
 
@@ -359,8 +356,8 @@ struct MeshFacet_EqualTo
                     && x->_aulPoints[2] == y->_aulPoints[(i + 2) % 3]) {
                     return true;
                 }
-                else if (x->_aulPoints[1] == y->_aulPoints[(i + 2) % 3]
-                         && x->_aulPoints[2] == y->_aulPoints[(i + 1) % 3]) {
+                if (x->_aulPoints[1] == y->_aulPoints[(i + 2) % 3]
+                    && x->_aulPoints[2] == y->_aulPoints[(i + 1) % 3]) {
                     return true;
                 }
             }
@@ -374,7 +371,7 @@ bool MeshEvalDuplicateFacets::Evaluate()
 {
     std::set<FaceIterator, MeshFacet_Less> aFaces;
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
+    for (auto it = rFaces.begin(); it != rFaces.end(); ++it) {
         std::pair<std::set<FaceIterator, MeshFacet_Less>::iterator, bool> pI = aFaces.insert(it);
         if (!pI.second) {
             return false;
@@ -436,7 +433,7 @@ bool MeshFixDuplicateFacets::Fixup()
 
     // get all facets
     std::set<FaceIterator, MeshFacet_Less> aFaceSet;
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, uIndex++) {
+    for (auto it = rFaces.begin(); it != rFaces.end(); ++it, uIndex++) {
         std::pair<std::set<FaceIterator, MeshFacet_Less>::iterator, bool> pI = aFaceSet.insert(it);
         if (!pI.second) {
             aRemoveFaces.push_back(uIndex);
@@ -460,7 +457,7 @@ bool MeshEvalInternalFacets::Evaluate()
     // get all facets
     std::set<FaceIterator, MeshFacet_Less> aFaceSet;
     MeshFacetArray::_TConstIterator first = rFaces.begin();
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, uIndex++) {
+    for (auto it = rFaces.begin(); it != rFaces.end(); ++it, uIndex++) {
         std::pair<std::set<FaceIterator, MeshFacet_Less>::iterator, bool> pI = aFaceSet.insert(it);
         if (!pI.second) {
             // collect both elements
@@ -935,7 +932,7 @@ bool MeshEvalFoldsOnSurface::Evaluate()
     this->indices.clear();
     const MeshFacetArray& rFAry = _rclMesh.GetFacets();
     unsigned long ct = 0;
-    for (MeshFacetArray::const_iterator it = rFAry.begin(); it != rFAry.end(); ++it, ct++) {
+    for (auto it = rFAry.begin(); it != rFAry.end(); ++it, ct++) {
         for (int i = 0; i < 3; i++) {
             FacetIndex n1 = it->_aulNeighbours[i];
             FacetIndex n2 = it->_aulNeighbours[(i + 1) % 3];
@@ -943,8 +940,8 @@ bool MeshEvalFoldsOnSurface::Evaluate()
             if (n1 != FACET_INDEX_MAX && n2 != FACET_INDEX_MAX) {
                 Base::Vector3f v2 = _rclMesh.GetFacet(n1).GetNormal();
                 Base::Vector3f v3 = _rclMesh.GetFacet(n2).GetNormal();
-                if (v2 * v3 > 0.0f) {
-                    if (v1 * v2 < -0.1f && v1 * v3 < -0.1f) {
+                if (v2 * v3 > 0.0F) {
+                    if (v1 * v2 < -0.1F && v1 * v3 < -0.1F) {
                         indices.push_back(n1);
                         indices.push_back(n2);
                         indices.push_back(ct);
@@ -974,14 +971,14 @@ bool MeshEvalFoldsOnBoundary::Evaluate()
     // the angle to the neighbour is more than 60 degree
     this->indices.clear();
     const MeshFacetArray& rFacAry = _rclMesh.GetFacets();
-    for (MeshFacetArray::_TConstIterator it = rFacAry.begin(); it != rFacAry.end(); ++it) {
+    for (auto it = rFacAry.begin(); it != rFacAry.end(); ++it) {
         if (it->CountOpenEdges() == 2) {
             for (FacetIndex nbIndex : it->_aulNeighbours) {
                 if (nbIndex != FACET_INDEX_MAX) {
                     MeshGeomFacet f1 = _rclMesh.GetFacet(*it);
                     MeshGeomFacet f2 = _rclMesh.GetFacet(nbIndex);
                     float cos_angle = f1.GetNormal() * f2.GetNormal();
-                    if (cos_angle <= 0.5f) {  // ~ 60 degree
+                    if (cos_angle <= 0.5F) {  // ~ 60 degree
                         indices.push_back(it - rFacAry.begin());
                     }
                 }
@@ -1028,7 +1025,7 @@ bool MeshEvalFoldOversOnSurface::Evaluate()
                     && f_it->HasSameOrientation(f_beg[index2])) {
                     n1 = _rclMesh.GetFacet(index1).GetNormal();
                     n2 = _rclMesh.GetFacet(index2).GetNormal();
-                    if (n1 * n2 < -0.5f) {  // angle > 120 deg
+                    if (n1 * n2 < -0.5F) {  // angle > 120 deg
                         this->indices.push_back(f_it - f_beg);
                         break;
                     }
@@ -1091,7 +1088,7 @@ std::vector<FacetIndex> MeshEvalRangeFacet::GetIndices() const
     FacetIndex ulCtFacets = rFaces.size();
 
     FacetIndex ind = 0;
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
+    for (auto it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
         for (FacetIndex nbIndex : it->_aulNeighbours) {
             if ((nbIndex >= ulCtFacets) && (nbIndex < FACET_INDEX_MAX)) {
                 aInds.push_back(ind);
@@ -1137,7 +1134,7 @@ std::vector<PointIndex> MeshEvalRangePoint::GetIndices() const
     PointIndex ulCtPoints = _rclMesh.CountPoints();
 
     PointIndex ind = 0;
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
+    for (auto it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
         if (std::find_if(it->_aulPoints,
                          it->_aulPoints + 3,
                          [ulCtPoints](PointIndex i) {
@@ -1195,7 +1192,7 @@ std::vector<FacetIndex> MeshEvalCorruptedFacets::GetIndices() const
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     FacetIndex ind = 0;
 
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
+    for (auto it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
         if (it->IsDegenerated()) {
             aInds.push_back(ind);
         }
@@ -1240,7 +1237,7 @@ bool MeshEvalPointOnEdge::Evaluate()
                 edge._aclPoints[1] = points[facet._aulPoints[(i + 1) % 3]];
 
                 if (edge.GetBoundBox().IsInBox(points[idx])) {
-                    if (edge.IsPointOf(points[idx], 0.001f)) {
+                    if (edge.IsPointOf(points[idx], 0.001F)) {
                         return true;
                     }
                 }

@@ -525,13 +525,13 @@ class BIM_Classification:
                     currentItem.parent.children.append(currentItem)
                 if "</Item>" in l:
                     currentItem = currentItem.parent
-                elif currentItem and re.findall("<ID>(.*?)</ID>", l):
-                    currentItem.ID = re.findall("<ID>(.*?)</ID>", l)[0]
-                elif currentItem and re.findall("<Name>(.*?)</Name>", l):
-                    currentItem.Name = re.findall("<Name>(.*?)</Name>", l)[0]
+                elif currentItem and re.findall(r"<ID>(.*?)</ID>", l):
+                    currentItem.ID = re.findall(r"<ID>(.*?)</ID>", l)[0]
+                elif currentItem and re.findall(r"<Name>(.*?)</Name>", l):
+                    currentItem.Name = re.findall(r"<Name>(.*?)</Name>", l)[0]
                 elif (
                     currentItem
-                    and re.findall("<Description>(.*?)</Description>", l)
+                    and re.findall(r"<Description>(.*?)</Description>", l)
                     and not currentItem.Name
                 ):
                     currentItem.Name = re.findall(

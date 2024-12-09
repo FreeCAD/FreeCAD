@@ -221,18 +221,18 @@ def deformat(text):
         The deformatted string.
     """
     # remove ACAD string formatation
-    # t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
+    # t = re.sub(r'{([^!}]([^}]|\n)*)}', '', text)
     # print("input text: ",text)
     t = text.strip("{}")
-    t = re.sub("\\\\.*?;", "", t)
+    t = re.sub(r"\\\\.*?;", "", t)
     # replace UTF codes by utf chars
     sts = re.split("\\\\(U\\+....)", t)
     t = u"".join(sts)
     # replace degrees, diameters chars
-    t = re.sub('%%d', u'°', t)
-    t = re.sub('%%c', u'Ø', t)
-    t = re.sub('%%D', u'°', t)
-    t = re.sub('%%C', u'Ø', t)
+    t = re.sub(r'%%d', u'°', t)
+    t = re.sub(r'%%c', u'Ø', t)
+    t = re.sub(r'%%D', u'°', t)
+    t = re.sub(r'%%C', u'Ø', t)
     # print("output text: ", t)
     return t
 
@@ -1807,7 +1807,7 @@ def drawInsert(insert, num=None, clone=False):
     return None
 
 
-def drawLayerBlock(objlist):
+def drawLayerBlock(objlist, name="LayerBlock"):
     """Return a Draft Block (compound) from the given object list.
 
     Parameters
@@ -1836,7 +1836,9 @@ def drawLayerBlock(objlist):
     obj = None
     if (dxfCreateDraft or dxfCreateSketch) and isObj:
         try:
-            obj = Draft.make_block(objlist)
+            # obj = Draft.make_block(objlist)
+            obj = doc.addObject("Part::Compound", name)
+            obj.Links = objlist
         except Part.OCCError:
             pass
     else:
@@ -1942,7 +1944,7 @@ def addObject(shape, name="Shape", layer=None):
             else:
                 l = layerObjects[lay]
             l.append(newob)
-            
+
 
 
     formatObject(newob)
@@ -2739,17 +2741,13 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         formatObject(newob, insert)
             num += 1
 
-    # Move layer contents to layers
-    for (l, contents) in layerObjects.items():
-        l.Group += contents
-
     # Make blocks, if any
     if dxfMakeBlocks:
         print("creating layerblocks...")
         for k, l in layerBlocks.items():
-            shape = drawLayerBlock(l)
+            shape = drawLayerBlock(l, "LayerBlock_" + k)
             if shape:
-                newob = addObject(shape, k)
+                newob = addObject(shape, "LayerBlock_" + k, k)
     del layerBlocks
 
     # Hide block objects, if any
@@ -2757,6 +2755,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         if o.ViewObject:
             o.ViewObject.hide()
     del blockobjects
+
+    # Move layer contents to layers
+    for (l, contents) in layerObjects.items():
+        l.Group += contents
 
     # Finishing
     print("done processing")
@@ -3934,7 +3936,7 @@ def exportPage(page, filename):
         f = pyopen(page.Template, "rb")
         svgtemplate = f.read()
         f.close()
-        editables = re.findall("freecad:editable=\"(.*?)\"", svgtemplate)
+        editables = re.findall(r"freecad:editable=\"(.*?)\"", svgtemplate)
         values = page.EditableTexts
         for i in range(len(editables)):
             if len(values) > i:
@@ -3953,7 +3955,7 @@ def exportPage(page, filename):
     blocks = ""
     entities = ""
     r12 = False
-    ver = re.findall("\\$ACADVER\n.*?\n(.*?)\n", template)
+    ver = re.findall(r"\\$ACADVER\n.*?\n(.*?)\n", template)
     if ver:
         # at the moment this is not used.
         # TODO: if r12, do not print ellipses or splines
@@ -3969,7 +3971,7 @@ def exportPage(page, filename):
     if entities:
         template = template.replace("999\n$entities", entities[:-1])
     c = dxfcounter()
-    pat = re.compile("(_handle_)")
+    pat = re.compile(r"(_handle_)")
     template = pat.sub(c.incr, template)
     f = pyopen(filename, "w")
     f.write(template)

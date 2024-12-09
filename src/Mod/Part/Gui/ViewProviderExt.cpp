@@ -346,7 +346,6 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         std::vector<float> transparencies;
         transparencies.resize(static_cast<int>(colors.size()));
         for (int i = 0; i < static_cast<int>(colors.size()); i++) {
-            Base::Console().Log("%d: %f\n", i, colors[i].a);
             transparencies[i] = colors[i].a;
             colors[i].a = 1.0;
         }
@@ -976,7 +975,7 @@ void ViewProviderPartExt::updateVisual()
         // For very big objects the computed deflection can become very high and thus leads to a useless
         // tessellation. To avoid this the upper limit is set to 20.0
         // See also forum: https://forum.freecad.org/viewtopic.php?t=77521
-        deflection = std::min(deflection, 20.0);
+        //deflection = std::min(deflection, 20.0);
 
         // create or use the mesh on the data structure
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;

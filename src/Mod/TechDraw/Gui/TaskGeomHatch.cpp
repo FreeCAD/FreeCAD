@@ -27,7 +27,6 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -94,7 +93,7 @@ void TaskGeomHatch::initUi()
 
 void TaskGeomHatch::onFileChanged()
 {
-    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    auto filespec = ui->fcFile->fileName().toStdString();
     m_file = DU::cleanFilespecBackslash(filespec);
     std::vector<std::string> names = PATLineSpec::getPatternList(m_file);
     QStringList qsNames = listToQ(names);

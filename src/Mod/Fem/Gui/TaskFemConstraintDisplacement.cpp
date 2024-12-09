@@ -89,7 +89,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
 
     // Get the feature data
     Fem::ConstraintDisplacement* pcConstraint =
-        static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintDisplacement>();
     Base::Quantity fStates[6] {};
     const char* sStates[3] {};
     bool bStates[10] {};
@@ -241,7 +241,7 @@ void TaskFemConstraintDisplacement::addToSelection()
         return;
     }
     Fem::ConstraintDisplacement* pcConstraint =
-        static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintDisplacement>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -312,7 +312,7 @@ void TaskFemConstraintDisplacement::removeFromSelection()
         return;
     }
     Fem::ConstraintDisplacement* pcConstraint =
-        static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintDisplacement>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;

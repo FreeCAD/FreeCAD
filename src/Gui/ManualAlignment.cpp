@@ -47,18 +47,17 @@
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
+#include <Gui/Inventor/SoAxisCrossKit.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SplitView3DInventor.h>
+#include <Gui/Tools.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/WaitCursor.h>
-
 #include "ManualAlignment.h"
-#include "BitmapFactory.h"
-#include "SoAxisCrossKit.h"
-#include "Tools.h"
 
 
 using namespace Gui;
@@ -241,7 +240,7 @@ Base::BoundBox3d AlignmentGroup::getBoundingBox() const
     std::vector<Gui::ViewProviderDocumentObject*>::const_iterator it;
     for (it = this->_views.begin(); it != this->_views.end(); ++it) {
         if ((*it)->isDerivedFrom(Gui::ViewProviderGeometryObject::getClassTypeId())) {
-            auto geo = static_cast<App::GeoFeature*>((*it)->getObject());
+            auto geo = (*it)->getObject<App::GeoFeature>();
             const App::PropertyComplexGeoData* prop = geo->getPropertyOfGeometry();
             if (prop)
                 box.Add(prop->getBoundingBox());

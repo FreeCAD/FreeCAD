@@ -71,9 +71,15 @@ public:
     inline const std::vector<Base::Vector3d> getPickedPoints() const { return SelPoses; }
 
     /// returns the selected DocumentObject or NULL if the object is already deleted
-    const App::DocumentObject *getObject() const;
+    const App::DocumentObject* getObject() const;
+    /// returns the selected DocumentObject or NULL if the object is already deleted
+    template <class T>
+    const T* getObject() const { return dynamic_cast<T*>(getObject()); };
     /// returns the selected DocumentObject or NULL if the object is already deleted
     App::DocumentObject *getObject();
+    /// returns the selected DocumentObject if it is of T type or null otherwise
+    template <class T>
+    T* getObject() { return dynamic_cast<T*>(getObject()); }
 
     /// check the selected object is a special type or derived of
     bool isObjectTypeOf(const Base::Type& typeId) const;

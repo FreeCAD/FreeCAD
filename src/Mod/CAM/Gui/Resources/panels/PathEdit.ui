@@ -394,7 +394,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
        <item row="3" column="0">
         <widget class="QCheckBox" name="splitOutput">
          <property name="toolTip">
-          <string>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</string>
+          <string>If multiple coordinate systems are in use, setting this to TRUE will cause the G-code to be written to multiple output files as controlled by the 'order by' property. For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</string>
          </property>
          <property name="whatsThis">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.

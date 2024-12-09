@@ -23,7 +23,6 @@
 #ifndef Fem_FemPostPipeline_H
 #define Fem_FemPostPipeline_H
 
-#include "FemPostFilter.h"
 #include "FemPostFunction.h"
 #include "FemPostObject.h"
 #include "FemResultObject.h"
@@ -34,7 +33,7 @@
 namespace Fem
 {
 
-class FemExport FemPostPipeline: public Fem::FemPostFilter
+class FemExport FemPostPipeline: public Fem::FemPostObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostPipeline);
 

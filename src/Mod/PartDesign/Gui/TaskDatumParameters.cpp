@@ -90,7 +90,7 @@ bool TaskDlgDatumParameters::reject() {
 
 bool TaskDlgDatumParameters::accept() {
 
-    Part::Datum* pcDatum = static_cast<Part::Datum*>(ViewProvider->getObject());
+    Part::Datum* pcDatum = ViewProvider->getObject<Part::Datum>();
     auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
     auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;

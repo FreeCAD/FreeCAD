@@ -56,7 +56,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    PartDesign::Chamfer* pcChamfer = DressUpView->getObject<PartDesign::Chamfer>();
 
     setUpUI(pcChamfer);
 
@@ -291,11 +291,6 @@ TaskChamferParameters::~TaskChamferParameters()
         Base::PyException e;  // extract the Python error text
         e.ReportException();
     }
-}
-
-bool TaskChamferParameters::event(QEvent* e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
 }
 
 void TaskChamferParameters::changeEvent(QEvent* e)

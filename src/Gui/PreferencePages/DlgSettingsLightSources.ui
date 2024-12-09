@@ -294,7 +294,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontalSpacer1">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>

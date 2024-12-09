@@ -45,13 +45,13 @@ class Extension;
 // clang-format off
 enum PropertyType
 {
-  Prop_None        = 0, /*!< No special property type */
-  Prop_ReadOnly    = 1, /*!< Property is read-only in the editor */
-  Prop_Transient   = 2, /*!< Property content won't be saved to file, but still saves name, type and status */
-  Prop_Hidden      = 4, /*!< Property won't appear in the editor */
-  Prop_Output      = 8, /*!< Modified property doesn't touch its parent container */
-  Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
-  Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
+    Prop_None        = 0, /*!< No special property type */
+    Prop_ReadOnly    = 1, /*!< Property is read-only in the editor */
+    Prop_Transient   = 2, /*!< Property content won't be saved to file, but still saves name, type and status */
+    Prop_Hidden      = 4, /*!< Property won't appear in the editor */
+    Prop_Output      = 8, /*!< Modified property doesn't touch its parent container */
+    Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
+    Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
 };
 // clang-format on
 
@@ -91,25 +91,27 @@ struct AppExport PropertyData
       const void* m_container;
   };
 
-  // A multi index container for holding the property spec, with the following
-  // index,
-  // * a sequence, to preserve creation order
-  // * hash index on property name
-  // * hash index on property pointer offset
-  mutable bmi::multi_index_container<
-      PropertySpec,
-      bmi::indexed_by<
-          bmi::sequenced<>,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
-              CStringHasher,
-              CStringHasher
-          >,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, short, &PropertySpec::Offset>
-          >
-      >
-  > propertyData;
+    // clang-format off
+    // A multi index container for holding the property spec, with the following
+    // index,
+    // * a sequence, to preserve creation order
+    // * hash index on property name
+    // * hash index on property pointer offset
+    mutable bmi::multi_index_container<
+        PropertySpec,
+        bmi::indexed_by<
+            bmi::sequenced<>,
+            bmi::hashed_unique<
+                bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
+                CStringHasher,
+                CStringHasher
+            >,
+            bmi::hashed_unique<
+                bmi::member<PropertySpec, short, &PropertySpec::Offset>
+            >
+        >
+    > propertyData;
+    // clang-format on
 
   mutable bool parentMerged = false;
 
@@ -269,6 +271,7 @@ private:
   static PropertyData propertyData;
 };
 
+// clang-format off
 /// Property define
 #define _ADD_PROPERTY(_name,_prop_, _defaultval_) \
   do { \
@@ -345,6 +348,7 @@ template<> void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
   _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr(); \
 }
+// clang-format on
 
 } // namespace App
 

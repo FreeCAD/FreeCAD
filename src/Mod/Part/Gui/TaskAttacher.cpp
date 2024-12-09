@@ -34,7 +34,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/ObjectIdentifier.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -65,7 +65,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
     if (!obj)
         return QObject::tr("No reference selected");
 
-    if (obj->isDerivedFrom<App::OriginFeature>() ||
+    if (obj->isDerivedFrom<App::DatumElement>() ||
         obj->isDerivedFrom<Part::Datum>())
         // App::Plane, Line or Datum feature
         return QString::fromLatin1(obj->getNameInDocument());
@@ -374,7 +374,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::string subname = msg.pSubName;
 
         // Remove subname for planes and datum features
-        if (selObj->isDerivedFrom<App::OriginFeature>() ||
+        if (selObj->isDerivedFrom<App::DatumElement>() ||
             selObj->isDerivedFrom<Part::Datum>())
             subname = "";
 
@@ -1073,9 +1073,9 @@ TaskDlgAttacher::~TaskDlgAttacher() = default;
 
 void TaskDlgAttacher::open()
 {
-    Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
-    if (!document->hasPendingCommand())
-        document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    if (!Gui::Command::hasPendingCommand()) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    }
 }
 
 void TaskDlgAttacher::clicked(int)
@@ -1113,7 +1113,7 @@ bool TaskDlgAttacher::accept()
         Gui::cmdAppObject(obj, "recompute()");
 
         Gui::cmdGuiDocument(obj, "resetEdit()");
-        document->commitCommand();
+        Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QCoreApplication::translate("Exception", e.what()));
@@ -1129,7 +1129,7 @@ bool TaskDlgAttacher::reject()
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        document->abortCommand();
+        Gui::Command::abortCommand();
         Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
     }

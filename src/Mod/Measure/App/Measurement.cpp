@@ -50,10 +50,6 @@
 #include "MeasurementPy.h"
 
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 using namespace Measure;
 using namespace Base;
 using namespace Part;
@@ -126,68 +122,63 @@ MeasureType Measurement::findType()
     int other = 0;
 
     for (; obj != objects.end(); ++obj, ++subEl) {
-
-        // Check if solid object
-        if (strcmp((*subEl).c_str(), "") == 0) {
-            vols++;
+        TopoDS_Shape refSubShape;
+        try {
+            refSubShape = Part::Feature::getShape(*obj, (*subEl).c_str(), true);
+            if (refSubShape.IsNull()) {
+                return MeasureType::Invalid;
+            }
         }
-        else {
+        catch (Standard_Failure& e) {
+            std::stringstream errorMsg;
 
-            TopoDS_Shape refSubShape;
-            try {
-                refSubShape = Part::Feature::getShape(*obj, (*subEl).c_str(), true);
-                if (refSubShape.IsNull()) {
-                    return MeasureType::Invalid;
+            errorMsg << "Measurement - getType - " << e.GetMessageString() << std::endl;
+            throw Base::CADKernelError(e.GetMessageString());
+        }
+
+        switch (refSubShape.ShapeType()) {
+            case TopAbs_VERTEX: {
+                verts++;
+            } break;
+            case TopAbs_EDGE: {
+                edges++;
+                TopoDS_Edge edge = TopoDS::Edge(refSubShape);
+                BRepAdaptor_Curve sf(edge);
+
+                if (sf.GetType() == GeomAbs_Line) {
+                    lines++;
                 }
-            }
-            catch (Standard_Failure& e) {
-                std::stringstream errorMsg;
+                else if (sf.GetType() == GeomAbs_Circle) {
+                    circles++;
+                }
+            } break;
+            case TopAbs_FACE: {
+                faces++;
+                TopoDS_Face face = TopoDS::Face(refSubShape);
+                BRepAdaptor_Surface sf(face);
 
-                errorMsg << "Measurement - getType - " << e.GetMessageString() << std::endl;
-                throw Base::CADKernelError(e.GetMessageString());
-            }
-
-            switch (refSubShape.ShapeType()) {
-                case TopAbs_VERTEX: {
-                    verts++;
-                } break;
-                case TopAbs_EDGE: {
-                    edges++;
-                    TopoDS_Edge edge = TopoDS::Edge(refSubShape);
-                    BRepAdaptor_Curve sf(edge);
-
-                    if (sf.GetType() == GeomAbs_Line) {
-                        lines++;
-                    }
-                    else if (sf.GetType() == GeomAbs_Circle) {
-                        circles++;
-                    }
-                } break;
-                case TopAbs_FACE: {
-                    faces++;
-                    TopoDS_Face face = TopoDS::Face(refSubShape);
-                    BRepAdaptor_Surface sf(face);
-
-                    if (sf.GetType() == GeomAbs_Plane) {
-                        planes++;
-                    }
-                    else if (sf.GetType() == GeomAbs_Cylinder) {
-                        cylinders++;
-                    }
-                    else if (sf.GetType() == GeomAbs_Sphere) {
-                        spheres++;
-                    }
-                    else if (sf.GetType() == GeomAbs_Cone) {
-                        cones++;
-                    }
-                    else if (sf.GetType() == GeomAbs_Torus) {
-                        torus++;
-                    }
-                } break;
-                default:
-                    other++;
-                    break;
-            }
+                if (sf.GetType() == GeomAbs_Plane) {
+                    planes++;
+                }
+                else if (sf.GetType() == GeomAbs_Cylinder) {
+                    cylinders++;
+                }
+                else if (sf.GetType() == GeomAbs_Sphere) {
+                    spheres++;
+                }
+                else if (sf.GetType() == GeomAbs_Cone) {
+                    cones++;
+                }
+                else if (sf.GetType() == GeomAbs_Torus) {
+                    torus++;
+                }
+            } break;
+            case TopAbs_SOLID: {
+                vols++;
+            } break;
+            default:
+                other++;
+                break;
         }
     }
 
@@ -291,7 +282,7 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject* rootObj, const char* sub
 {
     std::vector<std::string> names = Base::Tools::splitSubName(subName);
 
-    if (names.empty() || names.back() == "") {
+    if (names.empty()) {
         TopoDS_Shape shape = Part::Feature::getShape(rootObj);
         if (shape.IsNull()) {
             throw Part::NullShapeException("null shape in measurement");
@@ -525,7 +516,7 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
                 gp_Lin l2r = gp_Lin(pnt1First, dir2r);  // (B')
                 Standard_Real aRad = l1.Angle(l2);
                 double aRadr = l1.Angle(l2r);
-                return std::min(aRad, aRadr) * 180 / M_PI;
+                return Base::toDegrees<double>(std::min(aRad, aRadr));
             }
             else {
                 throw Base::RuntimeError("Measurement references must both be lines");
@@ -554,7 +545,7 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
             gp_Lin line0 = gp_Lin(gEnd0, gDir0);
             gp_Lin line1 = gp_Lin(gEnd1, gDir1);
             double radians = line0.Angle(line1);
-            return radians * 180 / M_PI;
+            return Base::toDegrees<double>(radians);
         }
     }
     throw Base::RuntimeError("Unexpected error for angle measurement");

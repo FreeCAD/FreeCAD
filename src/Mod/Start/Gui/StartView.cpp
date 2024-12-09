@@ -30,6 +30,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QListView>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QWidget>
@@ -41,14 +42,16 @@
 #include "FileCardView.h"
 #include "FirstStartWidget.h"
 #include "FlowLayout.h"
-#include "Gui/Workbench.h"
-#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/ModuleIO.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <gsl/pointers>
 
 using namespace StartGui;
@@ -65,42 +68,116 @@ struct NewButton
     QString iconPath;
 };
 
-gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
+class NewFileButton: public QPushButton
 {
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25));       // NOLINT
-    const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));   // NOLINT
-    const auto cardLabelWith = static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
-    auto button = gsl::owner<QPushButton*>(new QPushButton());
-    auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(button));
-    auto iconLabel = gsl::owner<QLabel*>(new QLabel(button));
-    mainLayout->addWidget(iconLabel);
-    QIcon baseIcon(newButton.iconPath);
-    iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
-    iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
+public:
+    NewFileButton(const NewButton& newButton)
+    {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Start");
+        const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25));  // NOLINT
+        const auto newFileIconSize =
+            static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));  // NOLINT
+        const auto cardLabelWith =
+            static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
-    auto textLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout);
-    auto textLabelLine1 = gsl::owner<QLabel*>(new QLabel(button));
-    textLabelLine1->setText(newButton.heading);
-    textLabelLine1->setStyleSheet(QLatin1String("font-weight: bold;"));
-    auto textLabelLine2 = gsl::owner<QLabel*>(new QLabel(button));
-    textLabelLine2->setText(newButton.description);
-    textLabelLine2->setWordWrap(true);
-    textLayout->addWidget(textLabelLine1);
-    textLayout->addWidget(textLabelLine2);
-    textLayout->setSpacing(0);
-    mainLayout->addItem(textLayout);
+        auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(this));
+        auto iconLabel = gsl::owner<QLabel*>(new QLabel(this));
+        mainLayout->addWidget(iconLabel);
+        QIcon baseIcon(newButton.iconPath);
+        iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
+        iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
 
-    mainLayout->addStretch();
+        auto textLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout);
+        auto textLabelLine1 = gsl::owner<QLabel*>(new QLabel(this));
+        textLabelLine1->setText(newButton.heading);
+        textLabelLine1->setStyleSheet(QLatin1String("font-weight: bold;"));
+        auto textLabelLine2 = gsl::owner<QLabel*>(new QLabel(this));
+        textLabelLine2->setText(newButton.description);
+        textLabelLine2->setWordWrap(true);
+        textLayout->addWidget(textLabelLine1);
+        textLayout->addWidget(textLabelLine2);
+        textLayout->setSpacing(0);
+        mainLayout->addItem(textLayout);
 
-    button->setMinimumHeight(newFileIconSize + cardSpacing);
-    button->setMinimumWidth(newFileIconSize + cardLabelWith);
-    return button;
-}
+        mainLayout->addStretch();
+
+        this->setMinimumHeight(newFileIconSize + cardSpacing);
+        this->setMinimumWidth(newFileIconSize + cardLabelWith);
+
+        updateStyle();
+    }
+
+    void updateStyle()
+    {
+        QString style = QStringLiteral("");
+        if (qApp->styleSheet().isEmpty()) {
+            style = fileCardStyle();
+        }
+        setStyleSheet(style);  // This will trigger a changeEvent
+    }
+
+    void changeEvent(QEvent* event) override
+    {
+        if (!changeInProgress && event->type() == QEvent::StyleChange) {
+            changeInProgress = true;  // Block recursive calls.
+            updateStyle();
+            changeInProgress = false;
+        }
+
+        QPushButton::changeEvent(event);
+    }
+
+
+    QString fileCardStyle() const
+    {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Start");
+
+        auto getUserColor = [&hGrp](QColor color, const char* parameter) {
+            uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+            packed = hGrp->GetUnsigned(parameter, packed);
+            color = App::Color::fromPackedRGB<QColor>(packed);
+            return color;
+        };
+
+        QColor background(221, 221, 221);  // NOLINT
+        background = getUserColor(background, "FileCardBackgroundColor");
+
+        QColor hovered(98, 160, 234);  // NOLINT
+        hovered = getUserColor(hovered, "FileCardBorderColor");
+
+        QColor pressed(38, 162, 105);  // NOLINT
+        pressed = getUserColor(pressed, "FileCardSelectionColor");
+
+        return QString::fromLatin1("QPushButton {"
+                                   " background-color: rgb(%1, %2, %3);"
+                                   " border-radius: 8px;"
+                                   "}"
+                                   "QPushButton:hover {"
+                                   " border: 2px solid rgb(%4, %5, %6);"
+                                   "}"
+                                   "QPushButton:pressed {"
+                                   " border: 2px solid rgb(%7, %8, %9);"
+                                   "}")
+            .arg(background.red())
+            .arg(background.green())
+            .arg(background.blue())
+            .arg(hovered.red())
+            .arg(hovered.green())
+            .arg(hovered.blue())
+            .arg(pressed.red())
+            .arg(pressed.green())
+            .arg(pressed.blue());
+    }
+
+private:
+    bool changeInProgress = false;
+};
 
 }  // namespace
+
 
 StartView::StartView(QWidget* parent)
     : Gui::MDIView(nullptr, parent)
@@ -122,14 +199,13 @@ StartView::StartView(QWidget* parent)
     firstStartScrollArea->setWidgetResizable(true);
 
     auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout(firstStartScrollWidget));
-    firstStartRegion->addStretch();
+    firstStartRegion->setAlignment(Qt::AlignCenter);
     auto firstStartWidget = gsl::owner<FirstStartWidget*>(new FirstStartWidget(this));
     connect(firstStartWidget,
             &FirstStartWidget::dismissed,
             this,
             &StartView::firstStartWidgetDismissed);
     firstStartRegion->addWidget(firstStartWidget);
-    firstStartRegion->addStretch();
     _contents->addWidget(firstStartScrollArea);
 
     // Documents page
@@ -209,36 +285,30 @@ StartView::StartView(QWidget* parent)
 
 void StartView::configureNewFileButtons(QLayout* layout) const
 {
-    auto newEmptyFile = createNewButton({tr("Empty file"),
-                                         tr("Create a new empty FreeCAD file"),
-                                         QLatin1String(":/icons/document-new.svg")});
-    auto openFile = createNewButton({tr("Open File"),
-                                     tr("Open an existing CAD file or 3D model"),
-                                     QLatin1String(":/icons/document-open.svg")});
-    auto partDesign = createNewButton({tr("Parametric Part"),
-                                       tr("Create a part with the Part Design workbench"),
-                                       QLatin1String(":/icons/PartDesignWorkbench.svg")});
-    auto assembly = createNewButton({tr("Assembly"),
-                                     tr("Create an assembly project"),
-                                     QLatin1String(":/icons/AssemblyWorkbench.svg")});
-    auto draft = createNewButton({tr("2D Draft"),
-                                  tr("Create a 2D Draft with the Draft workbench"),
-                                  QLatin1String(":/icons/DraftWorkbench.svg")});
-    auto arch = createNewButton({tr("BIM/Architecture"),
-                                 tr("Create an architectural project"),
-                                 QLatin1String(":/icons/BIMWorkbench.svg")});
-
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    if (hGrp->GetBool("FileCardUseStyleSheet", true)) {
-        QString style = fileCardStyle();
-        newEmptyFile->setStyleSheet(style);
-        openFile->setStyleSheet(style);
-        partDesign->setStyleSheet(style);
-        assembly->setStyleSheet(style);
-        draft->setStyleSheet(style);
-        arch->setStyleSheet(style);
-    }
+    auto newEmptyFile =
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("Empty file"),
+                                                      tr("Create a new empty FreeCAD file"),
+                                                      QLatin1String(":/icons/document-new.svg")}));
+    auto openFile =
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("Open File"),
+                                                      tr("Open an existing CAD file or 3D model"),
+                                                      QLatin1String(":/icons/document-open.svg")}));
+    auto partDesign = gsl::owner<NewFileButton*>(
+        new NewFileButton({tr("Parametric Part"),
+                           tr("Create a part with the Part Design workbench"),
+                           QLatin1String(":/icons/PartDesignWorkbench.svg")}));
+    auto assembly = gsl::owner<NewFileButton*>(
+        new NewFileButton({tr("Assembly"),
+                           tr("Create an assembly project"),
+                           QLatin1String(":/icons/AssemblyWorkbench.svg")}));
+    auto draft = gsl::owner<NewFileButton*>(
+        new NewFileButton({tr("2D Draft"),
+                           tr("Create a 2D Draft with the Draft workbench"),
+                           QLatin1String(":/icons/DraftWorkbench.svg")}));
+    auto arch =
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("BIM/Architecture"),
+                                                      tr("Create an architectural project"),
+                                                      QLatin1String(":/icons/BIMWorkbench.svg")}));
 
     // TODO: Ensure all of the required WBs are actually available
     layout->addWidget(partDesign);
@@ -254,52 +324,6 @@ void StartView::configureNewFileButtons(QLayout* layout) const
     connect(assembly, &QPushButton::clicked, this, &StartView::newAssemblyFile);
     connect(draft, &QPushButton::clicked, this, &StartView::newDraftFile);
     connect(arch, &QPushButton::clicked, this, &StartView::newArchFile);
-}
-
-QString StartView::fileCardStyle() const
-{
-    if (!qApp->styleSheet().isEmpty()) {
-        return {};
-    }
-
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-
-    auto getUserColor = [&hGrp](QColor color, const char* parameter) {
-        uint32_t packed = App::Color::asPackedRGB<QColor>(color);
-        packed = hGrp->GetUnsigned(parameter, packed);
-        color = App::Color::fromPackedRGB<QColor>(packed);
-        return color;
-    };
-
-    QColor background(221, 221, 221);  // NOLINT
-    background = getUserColor(background, "FileCardBackgroundColor");
-
-    QColor hovered(98, 160, 234);  // NOLINT
-    hovered = getUserColor(hovered, "FileCardBorderColor");
-
-    QColor pressed(38, 162, 105);  // NOLINT
-    pressed = getUserColor(pressed, "FileCardSelectionColor");
-
-    return QString::fromLatin1("QPushButton {"
-                               " background-color: rgb(%1, %2, %3);"
-                               " border-radius: 8px;"
-                               "}"
-                               "QPushButton:hover {"
-                               " border: 2px solid rgb(%4, %5, %6);"
-                               "}"
-                               "QPushButton:pressed {"
-                               " border: 2px solid rgb(%7, %8, %9);"
-                               "}")
-        .arg(background.red())
-        .arg(background.green())
-        .arg(background.blue())
-        .arg(hovered.red())
-        .arg(hovered.green())
-        .arg(hovered.blue())
-        .arg(pressed.red())
-        .arg(pressed.green())
-        .arg(pressed.blue());
 }
 
 void StartView::configureFileCardWidget(QListView* fileCardWidget)
@@ -431,14 +455,10 @@ void StartView::postStart(PostStartBehavior behavior) const
 
 void StartView::fileCardSelected(const QModelIndex& index)
 {
-    auto file = index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
-    std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.toStdString().c_str());
-    escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
-    auto command = std::string("FreeCAD.loadFile('") + escapedstr + "')";
     try {
-        Base::Interpreter().runString(command.c_str());
-        Gui::Application::checkForRecomputes();
-        postStart(PostStartBehavior::doNotSwitchWorkbench);
+        auto filename =
+            index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
+        Gui::ModuleIO::verifyAndOpenFile(filename);
     }
     catch (Base::PyException& e) {
         Base::Console().Error(e.getMessage().c_str());
@@ -477,6 +497,17 @@ void StartView::firstStartWidgetDismissed()
 
 void StartView::changeEvent(QEvent* event)
 {
+    _openFirstStart->setEnabled(true);
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+        if (view) {
+            Gui::View3DInventorViewer* viewer = view->getViewer();
+            if (viewer->isEditing()) {
+                _openFirstStart->setEnabled(false);
+            }
+        }
+    }
     if (event->type() == QEvent::LanguageChange) {
         this->retranslateUi();
     }

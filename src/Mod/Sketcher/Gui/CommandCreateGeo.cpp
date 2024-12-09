@@ -29,7 +29,7 @@
 #include <QString>
 #endif
 
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -1434,31 +1434,124 @@ public:
     }
 };
 
-// ======================================================================================
+// Group for external tools =============================================
 
-DEF_STD_CMD_A(CmdSketcherExternal)
+class CmdSketcherCompExternal: public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompExternal()
+        : GroupCommand("Sketcher_CompExternal")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Create external");
+        sToolTipText = QT_TR_NOOP("Create external edges linked to external geometries.");
+        sWhatsThis = "Sketcher_CompExternal";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
 
-CmdSketcherExternal::CmdSketcherExternal()
-    : Command("Sketcher_External")
+        setCheckable(false);
+
+        addCommand("Sketcher_Projection");
+        addCommand("Sketcher_Intersection");
+    }
+
+    void updateAction(int mode) override
+    {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+        if (!pcAction) {
+            return;
+        }
+
+        QList<QAction*> al = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        switch (static_cast<GeometryCreationMode>(mode)) {
+            case GeometryCreationMode::Normal:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Projection"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Intersection"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+            case GeometryCreationMode::Construction:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Projection_Constr"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Intersection_Constr"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+        }
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcherCompExternal";
+    }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
+};
+
+// Externals - Projection ==================================================================
+
+DEF_STD_CMD_AU(CmdSketcherProjection)
+
+CmdSketcherProjection::CmdSketcherProjection()
+    : Command("Sketcher_Projection")
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create external geometry");
-    sToolTipText = QT_TR_NOOP("Create an edge linked to an external geometry");
-    sWhatsThis = "Sketcher_External";
+    sMenuText = QT_TR_NOOP("Create external projection geometry");
+    sToolTipText = QT_TR_NOOP("Create the projection edges of an external geometry.\n"
+                              "External edges can be either defining or construction geometries.\n"
+                              "You can use the toggle construction tool.");
+    sWhatsThis = "Sketcher_Projection";
     sStatusTip = sToolTipText;
-    sPixmap = "Sketcher_External";
+    sPixmap = "Sketcher_Projection";
     sAccel = "G, X";
     eType = ForEdit;
 }
 
-void CmdSketcherExternal::activated(int iMsg)
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherProjection, "Sketcher_Projection")
+
+void CmdSketcherProjection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerExternal>());
 }
 
-bool CmdSketcherExternal::isActive()
+bool CmdSketcherProjection::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+// Externals - Intersection ==================================================================
+
+DEF_STD_CMD_AU(CmdSketcherIntersection)
+
+CmdSketcherIntersection::CmdSketcherIntersection()
+    : Command("Sketcher_Intersection")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create external intersection geometry");
+    sToolTipText =
+        QT_TR_NOOP("Create the intersection edges of an external geometry with the sketch plane.\n"
+                   "External edges can be either defining or construction geometries.\n"
+                   "You can use the toggle construction tool.");
+    sWhatsThis = "Sketcher_Intersection";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Intersection";
+    sAccel = "G, I";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherIntersection, "Sketcher_Intersection")
+
+void CmdSketcherIntersection::activated(int)
+{
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerExternal>(true));
+}
+
+bool CmdSketcherIntersection::isActive(void)
 {
     return isCommandActive(getActiveGuiDocument());
 }
@@ -2066,7 +2159,9 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherExtend());
     rcCmdMgr.addCommand(new CmdSketcherSplit());
     rcCmdMgr.addCommand(new CmdSketcherCompCurveEdition());
-    rcCmdMgr.addCommand(new CmdSketcherExternal());
+    rcCmdMgr.addCommand(new CmdSketcherProjection());
+    rcCmdMgr.addCommand(new CmdSketcherIntersection());
+    rcCmdMgr.addCommand(new CmdSketcherCompExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
     rcCmdMgr.addCommand(new CmdSketcherCompLine());
 }

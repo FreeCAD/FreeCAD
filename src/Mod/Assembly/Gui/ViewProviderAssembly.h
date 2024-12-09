@@ -60,6 +60,7 @@ struct MovingObject
                  std::string& s)
         : obj(o)
         , plc(p)
+        , ref(nullptr)
         , rootObj(ro)
         , sub(s)
     {}
@@ -67,9 +68,8 @@ struct MovingObject
     // Default constructor
     MovingObject()
         : obj(nullptr)
-        , plc(Base::Placement())
+        , ref(nullptr)
         , rootObj(nullptr)
-        , sub("")
     {}
 
     ~MovingObject()
@@ -103,6 +103,7 @@ public:
     QIcon getIcon() const override;
 
     bool doubleClicked() override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool onDelete(const std::vector<std::string>& subNames) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
@@ -129,7 +130,7 @@ public:
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
     bool keyPressed(bool pressed, int key) override;
     /// is called when the provider is in edit and the mouse is moved
-    bool mouseMove(const SbVec2s& pos, Gui::View3DInventorViewer* viewer) override;
+    bool mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer) override;
     /// is called when the Provider is in edit and the mouse is clicked
     bool mouseButtonPressed(int Button,
                             bool pressed,
@@ -203,7 +204,6 @@ public:
     bool enableMovement;
     bool moveOnlyPreselected;
     bool moveInCommand;
-    bool jointVisibilityBackup;
     bool ctrlPressed;
 
     long lastClickTime;  // Store last click time as milliseconds
@@ -218,6 +218,7 @@ public:
 
     App::DocumentObject* movingJoint;
 
+    std::vector<std::pair<App::DocumentObject*, bool>> jointVisibilitiesBackup;
     std::vector<std::pair<App::DocumentObject*, double>> objectMasses;
     std::vector<MovingObject> docsToMove;
 
@@ -225,6 +226,10 @@ public:
     SoSwitch* asmDraggerSwitch = nullptr;
     SoFieldSensor* translationSensor = nullptr;
     SoFieldSensor* rotationSensor = nullptr;
+
+private:
+    bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
+    void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
 };
 
 }  // namespace AssemblyGui
