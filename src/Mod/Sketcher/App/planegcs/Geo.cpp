@@ -1141,7 +1141,7 @@ double BSpline::splineValue(double x, size_t k, unsigned int p, VEC_D& d, const 
         }
     }
 
-    return d[p];
+    return p < d.size() ? d[p] : 0.0;
 }
 
 void BSpline::setupFlattenedKnots()
