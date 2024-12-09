@@ -21,7 +21,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-from PySide import QtCore, QtWidgets
+import sys
+
+try:
+    from PySide import QtCore, QtWidgets
+except ImportError:
+    try:
+        from PySide6 import QtCore, QtWidgets
+    except ImportError:
+        from PySide2 import QtCore, QtWidgets
+
+sys.path.append("../../")  # For running in standalone mode during testing
 
 from AddonManagerTest.app.mocks import SignalCatcher
 
