@@ -176,7 +176,7 @@ namespace Gui {
          *
          * If the named preferencePack does not exist, this creates it on disk. If it does exist, this overwrites the original.
          */
-        void save(const std::string& name, const std::vector<TemplateFile>& templates);
+        void save(const std::string& name, const std::string& directory, const std::vector<TemplateFile>& templates);
 
 
         std::vector<TemplateFile> templateFiles(bool rescan = false);
