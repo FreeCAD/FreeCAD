@@ -252,6 +252,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *symbols << "TechDraw_SurfaceFinishSymbols";
     *symbols << "TechDraw_HoleShaftFit";
 
+
+    Gui::MenuItem* aligning = new Gui::MenuItem;
+    aligning->setCommand("Aligning");
+    *aligning << "TechDraw_AlignVertexesVertically";
+    *aligning << "TechDraw_AlignVertexesHorizontally";
+
     // main menu
     draw->setCommand("TechDraw");
     *draw << pages;
@@ -267,6 +273,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << symbols;
     *draw << "Separator";
     *draw << stacking;
+    *draw << aligning;
     *draw << "Separator";
     *draw << toolattrib;
     *draw << toolcenter;
