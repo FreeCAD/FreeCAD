@@ -27,7 +27,6 @@
 #endif
 
 #include <Base/Console.h> // for FC_LOG_LEVEL_INIT
-#include <Base/Tools.h>
 
 #include "DlgPageChooser.h"
 #include "ui_DlgPageChooser.h"
@@ -72,8 +71,8 @@ void DlgPageChooser::fillList(std::vector<std::string> labels, std::vector<std::
     int labelCount = labels.size();
     int i = 0;
     for (; i < labelCount; i++) {
-        qLabel = Base::Tools::fromStdString(labels[i]);
-        qName = Base::Tools::fromStdString(names[i]);
+        qLabel = QString::fromStdString(labels[i]);
+        qName = QString::fromStdString(names[i]);
         qText = QString::fromUtf8("%1 (%2)").arg(qLabel, qName);
         item = new QListWidgetItem(qText, ui->lwPages);
         item->setData(Qt::UserRole, qName);

@@ -583,7 +583,9 @@ protected:
     void initNOnViewParameters(int n)
     {
         Gui::View3DInventorViewer* viewer = handler->getViewer();
-        Base::Placement placement = handler->sketchgui->getSketchObject()->globalPlacement();
+
+        auto doc = Gui::Application::Instance->editDocument();
+        auto placement = Base::Placement(doc->getEditingTransform());
 
         onViewParameters.clear();
 

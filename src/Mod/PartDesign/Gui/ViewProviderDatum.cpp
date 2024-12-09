@@ -48,7 +48,7 @@
 #include <Gui/Control.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -66,7 +66,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
 
 // static data
-const double ViewProviderDatum::defaultSize = Gui::ViewProviderOrigin::defaultSize ();
+const double ViewProviderDatum::defaultSize = Gui::ViewProviderCoordinateSystem::defaultSize ();
 
 ViewProviderDatum::ViewProviderDatum()
 {
@@ -289,7 +289,7 @@ bool ViewProviderDatum::doubleClicked()
     Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
 
-    Part::Datum* pcDatum = static_cast<Part::Datum*>(getObject());
+    Part::Datum* pcDatum = getObject<Part::Datum>();
     PartDesign::Body* activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     auto datumBody = PartDesignGui::getBodyFor(pcDatum, false);
 

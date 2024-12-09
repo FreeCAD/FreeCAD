@@ -91,10 +91,9 @@ void Workbench::activated()
                                  workbenchHelper.get(),
                                  &WorkbenchHelper::setForegroundColor);
             }
-            foregroundColor->setToolTip(QObject::tr("Set cell(s) foreground color"));
-            foregroundColor->setWhatsThis(
-                QObject::tr("Sets the Spreadsheet cell(s) foreground color"));
-            foregroundColor->setStatusTip(QObject::tr("Set cell(s) foreground color"));
+            foregroundColor->setToolTip(QObject::tr("Set cell(s) text color"));
+            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) text color"));
+            foregroundColor->setStatusTip(QObject::tr("Set cell(s) text color"));
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
@@ -140,7 +139,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
             if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set foreground color"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set text color"));
                 for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(Gui::Command::Doc,
                                             "App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))",

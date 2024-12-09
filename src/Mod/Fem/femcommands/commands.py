@@ -893,7 +893,7 @@ class _ResultsPurge(CommandManager):
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ResultsPurge", "Purges all results from active analysis"
         )
-        self.is_active = "with_results"
+        self.is_active = "with_analysis"
 
     def Activated(self):
         import femresult.resulttools as resulttools

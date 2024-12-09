@@ -41,8 +41,7 @@ QIcon ViewProviderPathShape::getIcon() const
 
 std::vector<App::DocumentObject*> ViewProviderPathShape::claimChildren() const
 {
-    return std::vector<App::DocumentObject*>(
-        static_cast<Path::FeatureShape*>(getObject())->Sources.getValues());
+    return std::vector<App::DocumentObject*>(getObject<Path::FeatureShape>()->Sources.getValues());
 }
 
 bool ViewProviderPathShape::canDragObjects() const
@@ -57,7 +56,7 @@ bool ViewProviderPathShape::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderPathShape::dragObject(App::DocumentObject* obj)
 {
-    Path::FeatureShape* feature = static_cast<Path::FeatureShape*>(getObject());
+    Path::FeatureShape* feature = getObject<Path::FeatureShape>();
     std::vector<App::DocumentObject*> sources = feature->Sources.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end();
          ++it) {
@@ -81,7 +80,7 @@ bool ViewProviderPathShape::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderPathShape::dropObject(App::DocumentObject* obj)
 {
-    Path::FeatureShape* feature = static_cast<Path::FeatureShape*>(getObject());
+    Path::FeatureShape* feature = getObject<Path::FeatureShape>();
     std::vector<App::DocumentObject*> sources = feature->Sources.getValues();
     sources.push_back(obj);
     feature->Sources.setValues(sources);
@@ -105,7 +104,7 @@ void ViewProviderPathShape::updateData(const App::Property* prop)
 bool ViewProviderPathShape::onDelete(const std::vector<std::string>&)
 {
     // get the input shapes
-    Path::FeatureShape* feature = static_cast<Path::FeatureShape*>(getObject());
+    Path::FeatureShape* feature = getObject<Path::FeatureShape>();
     std::vector<App::DocumentObject*> pShapes = feature->Sources.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end();
          ++it) {

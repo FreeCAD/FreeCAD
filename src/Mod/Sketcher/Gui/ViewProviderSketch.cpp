@@ -2987,6 +2987,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     Sketcher::SketchObject* sketch = getSketchObject();
+
+    if(sketch->isFreezed()) {
+        return false; // Disallow edit of a frozen sketch
+    }
+
     if (!sketch->evaluateConstraints()) {
         QMessageBox box(Gui::getMainWindow());
         box.setIcon(QMessageBox::Critical);
@@ -4337,7 +4342,8 @@ void ViewProviderSketch::generateContextMenu()
              << "Sketcher_Trimming"
              << "Sketcher_Extend"
              << "Separator"
-             << "Sketcher_External"
+             << "Sketcher_Projection"
+             << "Sketcher_Intersection"
              << "Separator"
              << "Sketcher_CompDimensionTools"
              << "Sketcher_CompConstrainTools"

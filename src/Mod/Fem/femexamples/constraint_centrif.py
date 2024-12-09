@@ -172,7 +172,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [(geom_obj, ("Face4", "Face12"))]
+    con_fixed.References = [(geom_obj, ("Face6", "Face14"))]
     analysis.addObject(con_fixed)
 
     # constraint centrif

@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -170,9 +169,9 @@ void TaskCenterLine::setUiPrimary()
 
     if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
         for (auto& s: m_subNames) {
-            QString listItem = Base::Tools::fromStdString(s);
+            QString listItem = QString::fromStdString(s);
             ui->lstSubList->addItem(listItem);
         }
     }
@@ -212,8 +211,8 @@ void TaskCenterLine::setUiEdit()
     setWindowTitle(QObject::tr("Edit Center Line"));
     if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
-        QString listItem = Base::Tools::fromStdString(m_edgeName);
+        ui->leBaseView->setText(QString::fromStdString(baseName));
+        QString listItem = QString::fromStdString(m_edgeName);
         ui->lstSubList->addItem(listItem);
     }
     ui->cpLineColor->setColor(m_cl->m_format.getColor().asValue<QColor>());

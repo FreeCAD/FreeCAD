@@ -113,7 +113,7 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
 
     // 3d geometry
     Part::TopoShape shape = Part::Feature::getTopoShape(getObject());
-    auto geoFeat = dynamic_cast<App::GeoFeature*>(getObject());
+    auto geoFeat = getObject<App::GeoFeature>();
     if (geoFeat) {
         shape.setPlacement(geoFeat->globalPlacement());
     }
@@ -132,7 +132,7 @@ TopoDS_Shape ReferenceEntry::getGeometry2d() const
     // Base::Console().Message("RE::getGeometry2d()\n");
     std::string gType;
     try {
-        auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());   //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
+        auto dvp = getObject<TechDraw::DrawViewPart>();   //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
         gType = geomType();
         if (gType == "Vertex") {
             // getVertex throws on not found, but we want to return null
@@ -228,7 +228,7 @@ Part::TopoShape ReferenceEntry::asCanonicalTopoShape() const
     }
 
     // this is a 2d reference
-    auto dvp = static_cast<DrawViewPart*>(getObject()); //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
+    auto dvp = getObject<DrawViewPart>(); //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
     auto rawTopoShape = asTopoShape();
     return ReferenceEntry::asCanonicalTopoShape(rawTopoShape, *dvp);
 }
@@ -277,7 +277,7 @@ std::string ReferenceEntry::geomType() const
 GeomType ReferenceEntry::geomEdgeType() const
 {
     int geoId = TechDraw::DrawUtil::getIndexFromName(getSubName());
-    auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
+    auto dvp = getObject<TechDraw::DrawViewPart>();
     BaseGeomPtr geom = dvp->getGeomByIndex(geoId);
 
     if (geomType() == "Edge" && geom) {
@@ -331,7 +331,7 @@ bool ReferenceEntry::hasGeometry() const
 //! check if this 2d reference has valid geometry in the model
 bool ReferenceEntry::hasGeometry2d() const
 {
-    auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());   //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
+    auto dvp = getObject<TechDraw::DrawViewPart>();   //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
     if (getSubName().empty()) {
         return false;
     }

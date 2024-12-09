@@ -35,7 +35,6 @@
 
 #include <App/ExpressionParser.h>
 #include <App/PropertyUnits.h>
-#include <Base/Tools.h>
 
 #include "SpinBox.h"
 #include "Command.h"
@@ -108,7 +107,7 @@ void ExpressionSpinBox::showValidExpression(ExpressionSpinBox::Number number)
         p.setColor(QPalette::Text, Qt::lightGray);
         lineedit->setPalette(p);
     }
-    iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+    iconLabel->setExpressionText(QString::fromStdString(getExpression()->toString()));
 }
 
 void ExpressionSpinBox::clearExpression()

@@ -176,7 +176,7 @@ def isAligned(edge, axis="x"):
 
 
 def getQuad(face):
-    """Return a list of 3 vectors if the face is a quad, ortherwise None.
+    """Return a list of 3 vectors if the face is a quad, otherwise None.
 
     Returns
     -------

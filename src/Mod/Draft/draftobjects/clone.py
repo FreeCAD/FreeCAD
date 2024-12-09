@@ -31,15 +31,15 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
-
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 
 
 class Clone(DraftObject):
     """The Clone object"""
 
     def __init__(self,obj):
-        super(Clone, self).__init__(obj, "Clone")
+        super().__init__(obj, "Clone")
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The objects included in this clone")
@@ -58,6 +58,13 @@ class Clone(DraftObject):
                         "Draft", _tip)
 
         obj.Scale = App.Vector(1,1,1)
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        ref = obj.Objects[0] if obj.Objects else None
+        gui_utils.restore_view_object(
+            obj, vp_module="view_clone", vp_class="ViewProviderClone", format_ref=ref
+        )
 
     def join(self,obj,shapes):
         fuse = getattr(obj, 'Fuse', False)

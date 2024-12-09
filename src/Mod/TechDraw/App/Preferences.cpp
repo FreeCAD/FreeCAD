@@ -651,3 +651,8 @@ void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
 }
 
 
+//! if true, automatically switch to TD workbench when a Page is set in edit (double click)
+bool Preferences::switchOnClick()
+{
+    return getPreferenceGroup("General")->GetBool("SwitchToWB", true);
+}

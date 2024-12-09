@@ -788,7 +788,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                     stringList.back().resize(stringList.back().size() - trim.size());
                 }
                 while (stringListIter != stringList.end()) {
-                    resultList << Base::Tools::fromStdString(*stringListIter);
+                    resultList << QString::fromStdString(*stringListIter);
                     ++stringListIter;
                 }
             }
@@ -797,7 +797,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                 if (!lastElem.empty()) {
                     // erase the separator
                     lastElem.erase(lastElem.begin());
-                    resultList << Base::Tools::fromStdString(lastElem);
+                    resultList << QString::fromStdString(lastElem);
                 }
                 else {
                     // add empty string to allow completion after "." or "#"

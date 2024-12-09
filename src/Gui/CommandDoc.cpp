@@ -1577,7 +1577,8 @@ void StdCmdPlacement::activated(int iMsg)
 
 bool StdCmdPlacement::isActive()
 {
-    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    return (sel.size() == 1 && ! sel.front()->isFreezed());
 }
 
 //===========================================================================
@@ -1611,7 +1612,8 @@ void StdCmdTransformManip::activated(int iMsg)
 
 bool StdCmdTransformManip::isActive()
 {
-    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 1;
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    return (sel.size() == 1 && ! sel.front()->isFreezed());
 }
 
 //===========================================================================

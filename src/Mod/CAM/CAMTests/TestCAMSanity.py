@@ -31,7 +31,6 @@ from Path.Main.Sanity.ImageBuilder import (
 import os
 import Path.Post.Command as PathPost
 from Path.Post.Processor import PostProcessor
-import imghdr
 import unittest
 from unittest.mock import patch, MagicMock
 import urllib
@@ -82,6 +81,7 @@ class TestCAMSanity(PathTestBase):
     # This test fails  A headless image generation routine is needed.
     # def test40(self):
     #     """Test image generation"""
+    #     import imghdr  # fixme: not available in python3.13
     #     path = FreeCAD.getUserMacroDir()
     #     image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(path)
     #     file_name = image_builder.build_image(self.doc.getObject("Box"), "theBox")

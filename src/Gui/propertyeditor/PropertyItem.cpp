@@ -4419,7 +4419,7 @@ void PropertyFileItem::setEditorData(QWidget* editor, const QVariant& data) cons
         std::string filter = propFile->getFilter();
         auto fc = qobject_cast<Gui::FileChooser*>(editor);
         if (!filter.empty()) {
-            fc->setFilter(Base::Tools::fromStdString(filter));
+            fc->setFilter(QString::fromStdString(filter));
         }
         fc->setFileName(data.toString());
     }

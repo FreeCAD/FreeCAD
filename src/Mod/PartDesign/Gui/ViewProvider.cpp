@@ -214,7 +214,7 @@ QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
 {
-    PartDesign::Feature* feature = static_cast<PartDesign::Feature*>(getObject());
+    PartDesign::Feature* feature = getObject<PartDesign::Feature>();
 
     App::DocumentObject* previousfeat = feature->BaseFeature.getValue();
 

@@ -138,7 +138,7 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         svgTemplate->translateLabel("DrawSVGTemplate", "Template", svgTemplate->getNameInDocument());
 
         page->Template.setValue(svgTemplate);
-        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(templateFileName));
+        auto filespec = DU::cleanFilespecBackslash(templateFileName.toStdString());
         svgTemplate->Template.setValue(filespec);
 
         updateActive();
@@ -209,7 +209,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         svgTemplate->translateLabel("DrawSVGTemplate", "Template", svgTemplate->getNameInDocument());
 
         page->Template.setValue(svgTemplate);
-        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(templateFileName));
+        auto filespec = DU::cleanFilespecBackslash(templateFileName.toStdString());
         svgTemplate->Template.setValue(filespec);
 
         updateActive();
@@ -323,7 +323,7 @@ void CmdTechDrawView::activated(int iMsg)
     auto* vpp = dynamic_cast<ViewProviderPage*>
         (Gui::Application::Instance->getViewProvider(page));
     if (vpp) {
-        vpp->switchToMdiViewPage();
+        vpp->show();
     }
 
 
@@ -453,7 +453,7 @@ void CmdTechDrawView::activated(int iMsg)
                     || filename.endsWith(QString::fromLatin1(".svgz"), Qt::CaseInsensitive)) {
                     std::string FeatName = getUniqueObjectName("Symbol");
                     filename = Base::Tools::escapeEncodeFilename(filename);
-                    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
+                    auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
                     doCommand(Doc, "f = open(\"%s\", 'r')", filespec.c_str());
                     doCommand(Doc, "svg = f.read()");
@@ -469,7 +469,7 @@ void CmdTechDrawView::activated(int iMsg)
                 else {
                     std::string FeatName = getUniqueObjectName("Image");
                     filename = Base::Tools::escapeEncodeFilename(filename);
-                    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
+                    auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
                     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
                     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
@@ -1417,7 +1417,7 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "ClipGroupAdd"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add clip group"));
     doCommand(Doc, "App.activeDocument().%s.ViewObject.Visibility = False", ViewName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", ClipName.c_str(),
               ViewName.c_str());
@@ -1488,7 +1488,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "ClipGroupRemove"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Remove clip group"));
     doCommand(Doc, "App.activeDocument().%s.ViewObject.Visibility = False", ViewName.c_str());
     doCommand(Doc, "App.activeDocument().%s.removeView(App.activeDocument().%s)", ClipName.c_str(),
               ViewName.c_str());
@@ -1548,7 +1548,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
     if (!filename.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Symbol");
         filename = Base::Tools::escapeEncodeFilename(filename);
-        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
+        auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
         doCommand(Doc, "f = open(\"%s\", 'r')", (const char*)filespec.c_str());
         doCommand(Doc, "svg = f.read()");
@@ -1793,14 +1793,16 @@ void CmdTechDrawExportPageSVG::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
 
-    if (dvp && dvp->getMDIViewPage()) {
-        dvp->getMDIViewPage()->saveSVG();
+    if (vpPage) {
+        vpPage->show();  // make sure a mdi will be available
+        vpPage->getMDIViewPage()->saveSVG();
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Drawing View"),
-                             QObject::tr("Open Drawing View before attempting export to SVG."));
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("No Drawing Page"),
+                             QObject::tr("FreeCAD could not find a page to export"));
         return;
     }
 }
@@ -1851,7 +1853,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
+        QString::fromUtf8("DXF (*.dxf)"));
 
     if (fileName.isEmpty()) {
         return;
@@ -1861,7 +1863,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     doCommand(Doc, "import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
-    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(fileName));
+    auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
     doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")", PageName.c_str(),
               filespec.c_str());
     commitCommand();

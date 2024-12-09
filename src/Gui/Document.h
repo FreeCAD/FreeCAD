@@ -256,6 +256,8 @@ public:
     void resetEdit();
     /// reset edit of this document
     void _resetEdit();
+    /// set if the edit asks for restore or not.
+    void setEditRestore(bool val);
     /// get the in edit ViewProvider or NULL
     ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=nullptr,
             std::string *subname=nullptr, int *mode=nullptr, std::string *subElement=nullptr) const;

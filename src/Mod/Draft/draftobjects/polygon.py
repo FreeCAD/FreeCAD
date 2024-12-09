@@ -33,6 +33,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import DraftGeomUtils
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 from draftutils import params
 
 
@@ -40,7 +41,7 @@ class Polygon(DraftObject):
     """The Polygon object"""
 
     def __init__(self, obj):
-        super(Polygon, self).__init__(obj, "Polygon")
+        super().__init__(obj, "Polygon")
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Number of faces")
@@ -74,6 +75,10 @@ class Polygon(DraftObject):
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 0
         obj.Radius = 1
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(obj, vp_module="view_base", vp_class="ViewProviderDraft")
 
     def execute(self, obj):
         if self.props_changed_placement_only():

@@ -2034,7 +2034,7 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
             return;
     }
     const char *icon;
-    auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
+    auto element = getObject<App::LinkElement>();
     if(element)
         icon = _LinkElementIcon;
     else if(!ext->getLinkedObjectProperty() && ext->getElementListProperty())
@@ -2380,7 +2380,7 @@ bool ViewProviderLink::getDetailPath(
 }
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
-    auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
+    auto element = getObject<App::LinkElement>();
     if (element && !element->canDelete())
         return false;
     auto ext = getLinkExtension();

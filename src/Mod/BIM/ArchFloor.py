@@ -413,8 +413,8 @@ class _ViewProviderFloor:
 
         if hasattr(self,"Object"):
             import ArchBuildingPart
-            from DraftGui import todo
-            todo.delay(ArchBuildingPart.convertFloors,self.Object)
+            from draftutils import todo
+            todo.ToDo.delay(ArchBuildingPart.convertFloors,self.Object)
 
 
 if FreeCAD.GuiUp:
