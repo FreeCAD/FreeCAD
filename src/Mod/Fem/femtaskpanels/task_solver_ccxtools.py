@@ -381,13 +381,11 @@ class _TaskPanel:
             # Set up for multi-threading. Note: same functionality as ccx_tools.py/start_ccx()
             ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
             env = QtCore.QProcessEnvironment.systemEnvironment()
-            num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", 1)
-            if num_cpu_pref > 1:
+            num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", 0)
+            if num_cpu_pref >= 1:
                 env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
             else:
-                cpu_count = os.cpu_count()
-                if cpu_count is not None and cpu_count > 1:
-                    env.insert("OMP_NUM_THREADS", str(cpu_count))
+                env.insert("OMP_NUM_THREADS", str(QtCore.QThread.idealThreadCount()))
             self.Calculix.setProcessEnvironment(env)
 
             self.cwd = QtCore.QDir.currentPath()
