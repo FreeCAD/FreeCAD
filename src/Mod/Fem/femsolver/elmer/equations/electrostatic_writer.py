@@ -55,8 +55,8 @@ class ESwriter:
             s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
         if equation.CalculateElectricField is True:
             s["Calculate Electric Field"] = equation.CalculateElectricField
-        if equation.CalculateSurfaceChargeDensity is True:
-            s["Calculate Electric Flux"] = equation.CalculateSurfaceChargeDensity
+        if equation.CalculateElectricFlux is True:
+            s["Calculate Electric Flux"] = equation.CalculateElectricFlux
         if equation.CalculateSurfaceCharge is True:
             s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
         if equation.ConstantWeights is True:
