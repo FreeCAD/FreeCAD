@@ -1,0 +1,14 @@
+<RCC>
+    <qresource>
+        <file>icons/TextWorkbench.svg</file>
+        <file>icons/Text_ShapeText.svg</file>
+        <file>icons/dialogs/Text_Settings.svg</file>
+        <file>icons/general/Text_EditText.svg</file>
+        <file>icons/general/Text_LeaveText.svg</file>
+        <file>icons/general/Text_MapText.svg</file>
+        <file>icons/general/Text_NewText.svg</file>
+        <file>icons/general/Text_ReorientText.svg</file>
+        <file>icons/general/Text_ViewSection.svg</file>
+        <file>icons/general/Text_ViewText.svg</file>
+    </qresource>
+</RCC>
