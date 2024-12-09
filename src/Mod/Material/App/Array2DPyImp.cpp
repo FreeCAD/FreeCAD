@@ -93,7 +93,7 @@ Py::Int Array2DPy::getRows() const
 
 void Array2DPy::setRows(Py::Int arg)
 {
-    getArray2DPtr()->setMinRows(arg);
+    getArray2DPtr()->setRows(arg);
 }
 
 Py::Int Array2DPy::getColumns() const
@@ -173,17 +173,6 @@ PyObject* Array2DPy::setValue(PyObject* args)
 
     PyErr_SetString(PyExc_TypeError, "Expected (integer, integer, string) arguments");
     return nullptr;
-}
-
-PyObject* Array2DPy::setMinRows(PyObject* args)
-{
-    int rows;
-    if (!PyArg_ParseTuple(args, "i", &rows)) {
-        return nullptr;
-    }
-
-    getArray2DPtr()->setMinRows(rows);
-    Py_Return;
 }
 
 PyObject* Array2DPy::getCustomAttributes(const char* /*attr*/) const

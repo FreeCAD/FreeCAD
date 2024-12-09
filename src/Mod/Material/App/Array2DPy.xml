@@ -54,10 +54,5 @@
         <UserDocu>Set the value at the given row and column</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="setMinRows" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Ensures the array has a minimum row count</UserDocu>
-      </Documentation>
-    </Methode>
   </PythonExport>
 </GenerateModel>

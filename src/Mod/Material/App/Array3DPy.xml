@@ -27,17 +27,17 @@
       </Documentation>
       <Parameter Name="Dimensions" Type="Int"/>
     </Attribute>
-    <Attribute Name="Columns" ReadOnly="true">
+    <Attribute Name="Columns" ReadOnly="false">
       <Documentation>
         <UserDocu>The number of columns in the array.</UserDocu>
       </Documentation>
       <Parameter Name="Columns" Type="Int"/>
     </Attribute>
-    <Attribute Name="Depth" ReadOnly="true">
+    <Attribute Name="Depth" ReadOnly="false">
       <Documentation>
         <UserDocu>The depth of the array (3rd dimension).</UserDocu>
       </Documentation>
-      <Parameter Name="Columns" Type="Int"/>
+      <Parameter Name="Depth" Type="Int"/>
     </Attribute>
     <Methode Name="getRows" ReadOnly="true">
       <Documentation>
@@ -54,9 +54,19 @@
         <UserDocu>Get the column value at the given depth</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setDepthValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the column value at the given depth</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="setValue" ReadOnly="true">
       <Documentation>
         <UserDocu>Set the value at the given depth, row, and column</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setRows" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the number of rows at the given depth</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

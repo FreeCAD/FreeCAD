@@ -93,9 +93,19 @@ Py::Int Array3DPy::getColumns() const
     return Py::Int(getArray3DPtr()->columns());
 }
 
+void Array3DPy::setColumns(Py::Int arg)
+{
+    getArray3DPtr()->setColumns(arg);
+}
+
 Py::Int Array3DPy::getDepth() const
 {
     return Py::Int(getArray3DPtr()->depth());
+}
+
+void Array3DPy::setDepth(Py::Int arg)
+{
+    getArray3DPtr()->setDepth(arg);
 }
 
 PyObject* Array3DPy::getRows(PyObject* args)
@@ -146,6 +156,27 @@ PyObject* Array3DPy::getDepthValue(PyObject* args)
     return nullptr;
 }
 
+PyObject* Array3DPy::setDepthValue(PyObject* args)
+{
+    int depth;
+    PyObject* valueObj;
+    if (PyArg_ParseTuple(args, "iO!", &depth, &PyUnicode_Type, &valueObj)) {
+        Py::String item(valueObj);
+        QString value(QString::fromStdString(item.as_string()));
+        try {
+            getArray3DPtr()->setDepthValue(depth, Base::Quantity::parse(value));
+        }
+        catch (const InvalidIndex&) {
+            PyErr_SetString(PyExc_IndexError, "Invalid array index");
+            return nullptr;
+        }
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Expected (integer, string) arguments");
+    return nullptr;
+}
+
 PyObject* Array3DPy::setValue(PyObject* args)
 {
     int depth;
@@ -169,6 +200,18 @@ PyObject* Array3DPy::setValue(PyObject* args)
 
     PyErr_SetString(PyExc_TypeError, "Expected (integer, integer, integer, string) arguments");
     return nullptr;
+}
+
+PyObject* Array3DPy::setRows(PyObject* args)
+{
+    int depth;
+    int rows;
+    if (!PyArg_ParseTuple(args, "ii", &depth, &rows)) {
+        return nullptr;
+    }
+
+    getArray3DPtr()->setRows(depth, rows);
+    Py_Return;
 }
 
 PyObject* Array3DPy::getCustomAttributes(const char* /*attr*/) const

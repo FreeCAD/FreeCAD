@@ -450,8 +450,8 @@ bool MaterialProperty::operator==(const MaterialProperty& other) const
 
 void MaterialProperty::validate(const MaterialProperty& other) const {
     Base::Console().Log("Property '%s'\n", getName().toStdString().c_str());
-    Base::Console().Log("\tLocal value '%s'\n", getString().toStdString().c_str());
-    Base::Console().Log("\tRemote value '%s'\n", other.getString().toStdString().c_str());
+    // Base::Console().Log("\tLocal value '%s'\n", getString().toStdString().c_str());
+    // Base::Console().Log("\tRemote value '%s'\n", other.getString().toStdString().c_str());
 
     _valuePtr->validate(*other._valuePtr);
 

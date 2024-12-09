@@ -169,7 +169,7 @@ public:
     void addRow(const std::shared_ptr<QList<QVariant>>& row);
     void insertRow(int index, const std::shared_ptr<QList<QVariant>>& row);
     void deleteRow(int row);
-    void setMinRows(int rowCount);
+    void setRows(int rowCount);
 
     void setValue(int row, int column, const QVariant& value);
     QVariant getValue(int row, int column) const;
@@ -193,7 +193,10 @@ class MaterialsExport Array3D: public MaterialValue
 
 public:
     Array3D();
+    Array3D(const Array3D& other);
     ~Array3D() override = default;
+
+    Array3D& operator=(const Array3D& other);
 
     bool isNull() const override;
 
@@ -245,6 +248,8 @@ public:
     {
         _columns = size;
     }
+    void setDepth(int depthCount);
+    void setRows(int depth, int rowCount);
 
     void setValue(int depth, int row, int column, const Base::Quantity& value);
     void setValue(int row, int column, const Base::Quantity& value);
@@ -260,6 +265,8 @@ public:
     QString getYAMLString() const override;
 
 protected:
+    void deepCopy(const Array3D& other);
+
     QList<std::pair<Base::Quantity, std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>>>
         _rowMap;
     int _currentDepth;

@@ -583,8 +583,19 @@ PyObject* MaterialPy::setValue(PyObject* args)
     if (PyArg_ParseTuple(args, "sO!", &name, &(Array2DPy::Type), &arrayObj)) {
         Base::Console().Log("Array2D\n");
         auto array = static_cast<Array2DPy*>(arrayObj);
-        // auto shared = std::make_shared<Array2D>(array);
-        QVariant variant = QVariant::fromValue(array);
+        auto shared = std::make_shared<Array2D>(*array->getArray2DPtr());
+        QVariant variant = QVariant::fromValue(shared);
+
+        getMaterialPtr()->setValue(QString::fromStdString(name), variant);
+        Py_Return;
+    }
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "sO!", &name, &(Array3DPy::Type), &arrayObj)) {
+        Base::Console().Log("Array3D\n");
+        auto array = static_cast<Array3DPy*>(arrayObj);
+        auto shared = std::make_shared<Array3D>(*array->getArray3DPtr());
+        QVariant variant = QVariant::fromValue(shared);
 
         getMaterialPtr()->setValue(QString::fromStdString(name), variant);
         Py_Return;

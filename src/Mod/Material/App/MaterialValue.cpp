@@ -478,7 +478,7 @@ void Array2D::deleteRow(int row)
     _rows.erase(_rows.begin() + row);
 }
 
-void Array2D::setMinRows(int rowCount)
+void Array2D::setRows(int rowCount)
 {
     while (rows() < rowCount) {
         auto row = std::make_shared<QList<QVariant>>();
@@ -589,6 +589,46 @@ Array3D::Array3D()
     // setType(Array3D);
 }
 
+Array3D::Array3D(const Array3D& other)
+    : MaterialValue(other)
+    , _currentDepth(other._currentDepth)
+    , _columns(other._columns)
+{
+    deepCopy(other);
+}
+
+Array3D& Array3D::operator=(const Array3D& other)
+{
+    if (this == &other) {
+        return *this;
+    }
+
+    MaterialValue::operator=(other);
+    _columns = other._columns;
+    _currentDepth = other._currentDepth;
+
+    deepCopy(other);
+
+    return *this;
+}
+
+void Array3D::deepCopy(const Array3D& other)
+{
+    // Deep copy
+    _rowMap.clear();
+    for (auto& depthTable : other._rowMap) {
+        auto depth = addDepth(depthTable.first);
+        auto rows = depthTable.second;
+        for (auto row : *rows) {
+            auto newRow = std::make_shared<QList<Base::Quantity>>();
+            for (auto column : *row) {
+                newRow->append(column);
+            }
+            addRow(depth, newRow);
+        }
+    }
+}
+
 bool Array3D::isNull() const
 {
     return depth() <= 0;
@@ -618,7 +658,14 @@ void Array3D::validateRow(int level, int row) const
 }
 
 void Array3D::validate(const Array3D& other) const
-{}
+{
+    if (depth() != other.depth()) {
+        throw InvalidProperty("Material property value row counts don't match");
+    }
+    if (columns() != other.columns()) {
+        throw InvalidProperty("Material property value column counts don't match");
+    }
+}
 
 const std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>&
 Array3D::getTable(const Base::Quantity& depth) const
@@ -724,6 +771,15 @@ void Array3D::deleteDepth(int depth)
     _rowMap.erase(_rowMap.begin() + depth);
 }
 
+void Array3D::setDepth(int depthCount)
+{
+    Base::Quantity dummy;
+    dummy.setInvalid();
+    while (depth() < depthCount) {
+        addDepth(dummy);
+    }
+}
+
 void Array3D::insertRow(int depth,
                                 int row,
                                 const std::shared_ptr<QList<Base::Quantity>>& rowData)
@@ -775,6 +831,20 @@ int Array3D::rows(int depth) const
     validateDepth(depth);
 
     return getTable(depth)->size();
+}
+
+void Array3D::setRows(int depth, int rowCount)
+{
+    Base::Quantity dummy;
+    dummy.setInvalid();
+
+    while (rows(depth) < rowCount) {
+        auto row = std::make_shared<QList<Base::Quantity>>();
+        for (int i = 0; i < columns(); i++) {
+            row->append(dummy);
+        }
+        addRow(depth, row);
+    }
 }
 
 void Array3D::setValue(int depth, int row, int column, const Base::Quantity& value)
