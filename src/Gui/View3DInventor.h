@@ -44,7 +44,8 @@ class View3DPy;
 class View3DSettings;
 class NaviCubeSettings;
 
-struct RayPickInfo {
+struct RayPickInfo
+{
     bool isValid;
     Base::Vector3d point;
     std::string document;
@@ -53,7 +54,6 @@ struct RayPickInfo {
     std::optional<std::string> component;
     std::optional<std::string> subName;
 };
-
 class GuiExport GLOverlayWidget : public QWidget
 {
     Q_OBJECT

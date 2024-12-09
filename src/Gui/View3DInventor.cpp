@@ -777,92 +777,96 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     }
 }
 
-RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec,
-                                             Base::Vector3d* dirvec)
+RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector3d* dirvec)
 {
-    double vsx,vsy,vsz;
-    double vdx,vdy,vdz;
+    double vsx, vsy, vsz;
+    double vdx, vdy, vdz;
     vsx = startvec->x;
     vsy = startvec->y;
     vsz = startvec->z;
     vdx = dirvec->x;
     vdy = dirvec->y;
     vdz = dirvec->z;
+    // near plane clipping is required to avoid false intersections
+    float near = 0.1;
 
-    RayPickInfo ret = {
-        .isValid = false,
-        .point = Base::Vector3d(),
-        .document = "",
-        .object= "",
-        .parentObject = std::nullopt,
-        .component = std::nullopt,
-        .subName = std::nullopt
-    };
+    RayPickInfo ret = {.isValid = false,
+                       .point = Base::Vector3d(),
+                       .document = "",
+                       .object = "",
+                       .parentObject = std::nullopt,
+                       .component = std::nullopt,
+                       .subName = std::nullopt};
     SoRayPickAction action(getViewer()->getSoRenderManager()->getViewportRegion());
-    action.setRay(SbVec3f(vsx, vsy, vsz), SbVec3f(vdx, vdy, vdz));
+    action.setRay(SbVec3f(vsx, vsy, vsz), SbVec3f(vdx, vdy, vdz), near);
     action.apply(getViewer()->getSoRenderManager()->getSceneGraph());
-    SoPickedPoint *Point = action.getPickedPoint();
+    SoPickedPoint* Point = action.getPickedPoint();
 
-    if (Point) {
-        ret.point = Base::convertTo<Base::Vector3d>(Point->getPoint());
-        ViewProvider *vp = getViewer()->getViewProviderByPath(Point->getPath());
-        if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-            if (!vp->isSelectable())
+    if (!Point) {
+        return ret;
+    }
+
+    ret.point = Base::convertTo<Base::Vector3d>(Point->getPoint());
+    ViewProvider* vp = getViewer()->getViewProviderByPath(Point->getPath());
+    if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if (!vp->isSelectable()) {
+            return ret;
+        }
+        auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
+        if (vp->useNewSelectionModel()) {
+            std::string subname;
+            if (!vp->getElementPicked(Point, subname)) {
                 return ret;
-            auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
-            if (vp->useNewSelectionModel()) {
-                std::string subname;
-                if (!vp->getElementPicked(Point,subname))
-                    return ret;
-                auto obj = vpd->getObject();
-                if (!obj)
-                    return ret;
-                if (!subname.empty()) {
-                    App::ElementNamePair elementName;
-                    auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
-                    if (!sobj)
-                        return ret;
-                    if (sobj != obj) {
-                        ret.parentObject = obj->getExportName();
-                        ret.subName = subname;
-                        obj = sobj;
-                    }
-                    subname = !elementName.oldName.empty()?elementName.oldName:elementName.newName;
-                }
-                ret.document = obj->getDocument()->getName();
-                ret.object = obj->getNameInDocument();
-                ret.component = subname;
-                ret.isValid = true;
             }
-            else {
-                ret.document = vpd->getObject()->getDocument()->getName();
-                ret.object = vpd->getObject()->getNameInDocument();
-                // search for a SoFCSelection node
-                SoFCDocumentObjectAction objaction;
-                objaction.apply(Point->getPath());
-                if (objaction.isHandled()) {
-                    ret.component = objaction.componentName.getString();
-                }
+            auto obj = vpd->getObject();
+            if (!obj) {
+                return ret;
             }
-            // ok, found the node of interest
+            if (!subname.empty()) {
+                App::ElementNamePair elementName;
+                auto sobj = App::GeoFeature::resolveElement(obj, subname.c_str(), elementName);
+                if (!sobj) {
+                    return ret;
+                }
+                if (sobj != obj) {
+                    ret.parentObject = obj->getExportName();
+                    ret.subName = subname;
+                    obj = sobj;
+                }
+                subname = !elementName.oldName.empty() ? elementName.oldName : elementName.newName;
+            }
+            ret.document = obj->getDocument()->getName();
+            ret.object = obj->getNameInDocument();
+            ret.component = subname;
             ret.isValid = true;
         }
         else {
-            // custom nodes not in a VP: search for a SoFCSelection node
+            ret.document = vpd->getObject()->getDocument()->getName();
+            ret.object = vpd->getObject()->getNameInDocument();
+            // search for a SoFCSelection node
             SoFCDocumentObjectAction objaction;
             objaction.apply(Point->getPath());
             if (objaction.isHandled()) {
-                ret.document = objaction.documentName.getString();
-                ret.object = objaction.objectName.getString();
                 ret.component = objaction.componentName.getString();
-                // ok, found the node of interest
-                ret.isValid = true;
             }
+        }
+        // ok, found the node of interest
+        ret.isValid = true;
+    }
+    else {
+        // custom nodes not in a VP: search for a SoFCSelection node
+        SoFCDocumentObjectAction objaction;
+        objaction.apply(Point->getPath());
+        if (objaction.isHandled()) {
+            ret.document = objaction.documentName.getString();
+            ret.object = objaction.objectName.getString();
+            ret.component = objaction.componentName.getString();
+            // ok, found the node of interest
+            ret.isValid = true;
         }
     }
     return ret;
 }
-
 
 bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
 {

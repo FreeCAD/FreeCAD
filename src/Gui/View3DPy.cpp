@@ -161,7 +161,7 @@ void View3DInventorPy::init_type()
     add_varargs_method("getObjectInfoRay",&View3DInventorPy::getObjectInfoRay,
         "getObjectInfoRay(tuple(3D vector,3D vector) or tuple of 6 floats) -> dictionary or None\n"
         "\n"
-        "Vectors represent start point and direction of intesecion ray\n"
+        "Vectors represent start point and direction of intersection ray\n"
         "Return a dictionary with the name of document, object and component. The\n"
         "dictionary also contains the coordinates of the appropriate 3d point of\n"
         "the underlying geometry in the scenegraph.\n"
@@ -1510,25 +1510,36 @@ Py::Object View3DInventorPy::getObjectInfoRay(const Py::Tuple& args)
 {
     PyObject* vs;
     PyObject* vd;
-    double vsx,vsy,vsz;
-    double vdx,vdy,vdz;
-    if (PyArg_ParseTuple(args.ptr(), "O!O!", &Base::VectorPy::Type, &vs,
-                                       &Base::VectorPy::Type,  &vd)) {
+    double vsx, vsy, vsz;
+    double vdx, vdy, vdz;
+    Py::Object ret = Py::None();
+    if (PyArg_ParseTuple(args.ptr(),
+                         "O!O!",
+                         &Base::VectorPy::Type,
+                         &vs,
+                         &Base::VectorPy::Type,
+                         &vd)) {
         Base::Vector3d* startvec = static_cast<Base::VectorPy*>(vs)->getVectorPtr();
         Base::Vector3d* dirvec = static_cast<Base::VectorPy*>(vd)->getVectorPtr();
         try {
             RayPickInfo pinfo = getView3DIventorPtr()->getObjInfoRay(startvec, dirvec);
-            Py::Dict dict;
-            if (pinfo.isValid) {
-                dict.setItem("PickedPoint", Py::asObject(new Base::VectorPy(pinfo.point)));
-                dict.setItem("Document", Py::String(pinfo.document));
-                dict.setItem("Object", Py::String(pinfo.object));
-                dict.setItem("ParentObject",Py::String(pinfo.parentObject.value_or("None")));
-                dict.setItem("Component",Py::String(pinfo.component.value_or("None")));
-                dict.setItem("SubName",Py::String(pinfo.subName.value_or("None")));
+            if (!pinfo.isValid) {
+                return ret;
             }
-
-            return dict;
+            Py::Dict dict;
+            dict.setItem("PickedPoint", Py::asObject(new Base::VectorPy(pinfo.point)));
+            dict.setItem("Document", Py::String(pinfo.document));
+            dict.setItem("Object", Py::String(pinfo.object));
+            if (pinfo.parentObject) {
+                dict.setItem("ParentObject", Py::String(pinfo.parentObject.value()));
+            }
+            if (pinfo.component) {
+                dict.setItem("Component", Py::String(pinfo.component.value()));
+            }
+            if (pinfo.subName) {
+                dict.setItem("SubName", Py::String(pinfo.subName.value()));
+            }
+            ret = dict;
         }
         catch (const Py::Exception&) {
             throw;
@@ -1536,10 +1547,11 @@ Py::Object View3DInventorPy::getObjectInfoRay(const Py::Tuple& args)
     }
     else {
         PyErr_Clear();
-        if (!PyArg_ParseTuple(args.ptr(), "dddddd", &vsx,&vsy,&vsz,&vdx,&vdy,&vdz)) {
+        if (!PyArg_ParseTuple(args.ptr(), "dddddd", &vsx, &vsy, &vsz, &vdx, &vdy, &vdz)) {
             throw Py::TypeError("Wrong arguments, two Vectors or six floats expected");
         }
     }
+    return ret;
 }
 
 Py::Object View3DInventorPy::getSize()
