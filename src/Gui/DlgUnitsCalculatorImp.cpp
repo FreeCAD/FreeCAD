@@ -92,15 +92,15 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
           << Base::Unit::ElectricalCapacitance << Base::Unit::ElectricalInductance
           << Base::Unit::ElectricalConductance << Base::Unit::ElectricalResistance
           << Base::Unit::ElectricalConductivity << Base::Unit::ElectricCharge
-          << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential
-          << Base::Unit::ElectricFlux << Base::Unit::Force
+          << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential << Base::Unit::Force
           << Base::Unit::Frequency << Base::Unit::HeatFlux << Base::Unit::InverseArea
           << Base::Unit::InverseLength << Base::Unit::InverseVolume
           << Base::Unit::KinematicViscosity << Base::Unit::Length << Base::Unit::LuminousIntensity
           << Base::Unit::Mass << Base::Unit::MagneticFieldStrength << Base::Unit::MagneticFlux
           << Base::Unit::MagneticFluxDensity << Base::Unit::Magnetization << Base::Unit::Power
           << Base::Unit::Pressure << Base::Unit::SpecificEnergy << Base::Unit::SpecificHeat
-          << Base::Unit::Stiffness << Base::Unit::Temperature << Base::Unit::ThermalConductivity
+          << Base::Unit::Stiffness << Base::Unit::SurfaceChargeDensity 
+          << Base::Unit::Temperature << Base::Unit::ThermalConductivity
           << Base::Unit::ThermalExpansionCoefficient << Base::Unit::ThermalTransferCoefficient
           << Base::Unit::TimeSpan << Base::Unit::VacuumPermittivity << Base::Unit::Velocity
           << Base::Unit::Volume << Base::Unit::VolumeFlowRate

@@ -62,7 +62,7 @@ QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant,
         unitString = QString::fromLatin1("V");
         factor = 1000000;
     }
-    else if (unit == Unit::ElectricFlux) {
+    else if (unit == Unit::SurfaceChargeDensity) {
         unitString = QString::fromLatin1("A*s/m^2");
         factor = 1e-6;
     }

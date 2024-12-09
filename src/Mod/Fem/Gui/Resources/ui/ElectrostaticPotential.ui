@@ -15,9 +15,9 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
-    <widget class="QRadioButton" name="diricletBC_RB">
+    <widget class="QRadioButton" name="dirichletBC_RB">
      <property name="text">
-      <string>Diriclet</string>
+      <string>Dirichlet</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -38,7 +38,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QGroupBox" name="diricletGB">
+    <widget class="QGroupBox" name="dirichletGB">
      <property name="title">
       <string/>
      </property>
@@ -65,12 +65,6 @@
          <widget class="Gui::QuantitySpinBox" name="potentialQSB">
           <property name="enabled">
            <bool>false</bool>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Electric potential</string>
@@ -658,9 +652,9 @@ Note: has no effect if a solid was selected</string>
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="electricfluxLbl">
+         <widget class="QLabel" name="surfacechargedensityLbl">
           <property name="text">
-           <string>Electric Flux:</string>
+           <string>Surface Charge Density:</string>
           </property>
          </widget>
         </item>
@@ -678,15 +672,9 @@ Note: has no effect if a solid was selected</string>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::QuantitySpinBox" name="electricfluxQSB">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
+         <widget class="Gui::QuantitySpinBox" name="surfacechargedensityQSB">
           <property name="toolTip">
-           <string>Electric Flux, in terms of the Electric Surface Charge density</string>
+           <string>Surface Charge density</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>

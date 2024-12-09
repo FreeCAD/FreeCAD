@@ -89,11 +89,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         )
 
     def _BCtype_clicked(self, button):
-        self._BCtype(button == self._paramWidget.diricletBC_RB)
+        self._BCtype(button == self._paramWidget.dirichletBC_RB)
 
-    def _BCtype(self, isDiriclet):
-        self._paramWidget.neumannGB.setEnabled(not isDiriclet)
-        self._paramWidget.diricletGB.setEnabled(isDiriclet)
+    def _BCtype(self, isDirichlet):
+        self._paramWidget.neumannGB.setEnabled(not isDirichlet)
+        self._paramWidget.dirichletGB.setEnabled(isDirichlet)
 
     def _vectorField_visibility(self, visible):
         self._paramWidget.vectorFieldGB.setVisible(visible)
@@ -173,16 +173,16 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             not self._paramWidget.capacitanceBodyBox.isChecked()
         )
 
-        # neumann/diriclet radiogroup selection
+        # neumann/dirichlet radiogroup selection
         self._paramWidget.BCtypeBG.buttonClicked.connect(self._BCtype_clicked)
-        if self.obj.Diriclet:
-            self._paramWidget.diricletBC_RB.click()
+        if self.obj.Dirichlet:
+            self._paramWidget.dirichletBC_RB.click()
         else:
             self._paramWidget.neumannBC_RB.click()
 
-        self._paramWidget.electricfluxQSB.setProperty("value", self.obj.ElectricFlux)
-        FreeCADGui.ExpressionBinding(self._paramWidget.electricfluxQSB).bind(
-            self.obj, "ElectricFlux"
+        self._paramWidget.surfacechargedensityQSB.setProperty("value", self.obj.SurfaceChargeDensity)
+        FreeCADGui.ExpressionBinding(self._paramWidget.surfacechargedensityQSB).bind(
+            self.obj, "SurfaceChargeDensity"
         )
 
     def _applyPotentialChanges(self, enabledBox, potentialQSB):
@@ -239,13 +239,13 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self._paramWidget.capacitanceBody_spinBox.setEnabled(True)
             self.obj.CapacitanceBody = self._paramWidget.capacitanceBody_spinBox.value()
 
-        self.obj.Diriclet = self._paramWidget.diricletBC_RB.isChecked()
+        self.obj.Dirichlet = self._paramWidget.dirichletBC_RB.isChecked()
 
         try:
-            self.obj.ElectricFlux = self._paramWidget.electricfluxQSB.property("value")
+            self.obj.SurfaceChargeDensity = self._paramWidget.surfacechargedensityQSB.property("value")
         except ValueError:
             FreeCAD.Console.PrintMessage(
                 "Wrong input. Not recognised input: '{}' "
-                "ElectricFlux has not been set.\n".format(self._paramWidget.electricfluxQSB.text())
+                "SurfaceChargeDensity has not been set.\n".format(self._paramWidget.surfacechargedensityQSB.text())
             )
-            self.obj.ElectricFlux = "0.0 s*A/(mm^2)"
+            self.obj.SurfaceChargeDensity = "0.0 s*A/(mm^2)"

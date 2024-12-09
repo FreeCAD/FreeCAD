@@ -2060,7 +2060,6 @@ void Application::initTypes()
     App::PropertyElectricCharge             ::init();
     App::PropertyElectricCurrent            ::init();
     App::PropertyElectricPotential          ::init();
-    App::PropertyElectricFlux               ::init();
     App::PropertyFrequency                  ::init();
     App::PropertyForce                      ::init();
     App::PropertyHeatFlux                   ::init();
@@ -2085,6 +2084,7 @@ void Application::initTypes()
     App::PropertyStiffness                  ::init();
     App::PropertyStiffnessDensity           ::init();
     App::PropertyStress                     ::init();
+    App::PropertySurfaceChargeDensity       ::init();
     App::PropertyTemperature                ::init();
     App::PropertyThermalConductivity        ::init();
     App::PropertyThermalExpansionCoefficient::init();

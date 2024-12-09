@@ -377,18 +377,18 @@ public:
     ~PropertyElectricPotential() override = default;
 };
 
-/** ElectricFlux property
- * This is a property for electric fluxes used in Neumann boundary conditions.
- * It is basically a float property. On the Gui it has units of A*s/mm^2, i.e.
- * C/mm^2, thus a surface charge density.
+/** SurfaceChargeDensity property
+ * This is a property for surface charge density used in Neumann boundary
+ * conditions.  It is basically a float property. On the Gui it has units of
+ * A*s/mm^2, i.e.  C/mm^2.
  */
-class AppExport PropertyElectricFlux: public PropertyQuantity
+class AppExport PropertySurfaceChargeDensity: public PropertyQuantity
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyElectricFlux();
-    ~PropertyElectricFlux() override = default;
+    PropertySurfaceChargeDensity();
+    ~PropertySurfaceChargeDensity() override = default;
 };
 
 /** Frequency property

@@ -515,8 +515,8 @@ QString Unit::getTypeString() const
     if (*this == Unit::ElectricPotential) {
         return QString::fromLatin1("ElectricPotential");
     }
-    if (*this == Unit::ElectricFlux) {
-        return QString::fromLatin1("ElectricFlux");
+    if (*this == Unit::SurfaceChargeDensity) {
+        return QString::fromLatin1("SurfaceChargeDensity");
     }
     if (*this == Unit::Frequency) {
         return QString::fromLatin1("Frequency");
@@ -659,7 +659,6 @@ const Unit Unit::ElectricalInductance       (2, 1, -2, -2);
 const Unit Unit::ElectricalResistance       (2, 1, -3, -2);
 const Unit Unit::ElectricCharge             (0, 0, 1, 1);
 const Unit Unit::ElectricPotential          (2, 1, -3, -1);
-const Unit Unit::ElectricFlux               (-2, 0, 1, 1);
 const Unit Unit::Force                      (1, 1, -2);
 const Unit Unit::Frequency                  (0, 0, -1);
 const Unit Unit::HeatFlux                   (0, 1, -3, 0, 0);
@@ -680,6 +679,7 @@ const Unit Unit::SpecificHeat               (2, 0, -2, 0, -1);
 const Unit Unit::Stiffness                  (0, 1, -2);
 const Unit Unit::StiffnessDensity           (-2, 1, -2);
 const Unit Unit::Stress                     (-1,1,-2);
+const Unit Unit::SurfaceChargeDensity       (-2, 0, 1, 1);
 const Unit Unit::ThermalConductivity        (1, 1, -3, 0, -1);
 const Unit Unit::ThermalExpansionCoefficient(0, 0, 0, 0, -1);
 const Unit Unit::ThermalTransferCoefficient (0, 1, -3, 0, -1);

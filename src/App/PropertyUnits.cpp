@@ -411,14 +411,14 @@ PropertyElectricPotential::PropertyElectricPotential()
 }
 
 //**************************************************************************
-// PropertyElectricFlux
+// PropertySurfaceChargeDensity
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyElectricFlux, App::PropertyQuantity)
+TYPESYSTEM_SOURCE(App::PropertySurfaceChargeDensity, App::PropertyQuantity)
 
-PropertyElectricFlux::PropertyElectricFlux()
+PropertySurfaceChargeDensity::PropertySurfaceChargeDensity()
 {
-    setUnit(Base::Unit::ElectricFlux);
+    setUnit(Base::Unit::SurfaceChargeDensity);
 }
 
 //**************************************************************************

@@ -55,8 +55,8 @@ class ESwriter:
             s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
         if equation.CalculateElectricField is True:
             s["Calculate Electric Field"] = equation.CalculateElectricField
-        if equation.CalculateElectricFlux is True:
-            s["Calculate Electric Flux"] = equation.CalculateElectricFlux
+        if equation.CalculateSurfaceChargeDensity is True:
+            s["Calculate Electric Flux"] = equation.CalculateSurfaceChargeDensity
         if equation.CalculateSurfaceCharge is True:
             s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
         if equation.ConstantWeights is True:
@@ -125,7 +125,7 @@ class ESwriter:
                     # output the FreeCAD label as comment
                     if obj.Label:
                         self.write.boundary(name, "! FreeCAD Name", obj.Label)
-                    if not hasattr(obj, "Diriclet") or obj.Diriclet == True:
+                    if obj.Dirichlet:
                         if obj.PotentialEnabled:
                             if hasattr(obj, "Potential"):
                                 # Potential was once a float and scaled not fitting SI units
@@ -143,12 +143,11 @@ class ESwriter:
                                 potential = float(obj.Potential.getValueAs("V"))
                                 self.write.boundary(name, "Potential", potential)
                     elif (
-                        hasattr(obj, "Diriclet")
-                        and obj.Diriclet == False
-                        and hasattr(obj, "ElectricFlux")
+                        not obj.Dirichlet
+                        and hasattr(obj, "SurfaceChargeDensity")
                     ):
-                        flux = float(obj.ElectricFlux.getValueAs("A*s/m^2"))
-                        self.write.boundary(name, "Electric Flux", flux)
+                        sc_density = float(obj.SurfaceChargeDensity.getValueAs("A*s/m^2"))
+                        self.write.boundary(name, "Surface Charge Density", sc_density)
                     if obj.PotentialConstant:
                         self.write.boundary(name, "Potential Constant", True)
                     if obj.ElectricInfinity:
