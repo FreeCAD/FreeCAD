@@ -33,7 +33,7 @@
 #include <App/PropertyLinks.h>
 #include "SimulationGroup.h"
 
-#include <3rdParty/OndselSolver/OndselSolver/enum.h>
+#include <OndselSolver/enum.h>
 
 namespace MbD
 {
