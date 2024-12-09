@@ -51,10 +51,9 @@
 #endif
 
 #include "SoAxisCrossKit.h"
-
+#include "SoDevicePixelRatioElement.h"
 
 using namespace Gui;
-
 
 SO_KIT_SOURCE(SoShapeScale)
 
@@ -85,24 +84,29 @@ SoShapeScale::initClass()
 void
 SoShapeScale::GLRender(SoGLRenderAction * action)
 {
-    SoState * state = action->getState();
-
-    SoScale * scale = static_cast<SoScale*>(this->getAnyPart(SbName("scale"), true));
+    auto* scale = static_cast<SoScale*>(this->getAnyPart(SbName("scale"), true));
     if (!this->active.getValue()) {
         SbVec3f v(1.0f, 1.0f, 1.0f);
-        if (scale->scaleFactor.getValue() != v)
+        if (scale->scaleFactor.getValue() != v){
             scale->scaleFactor = v;
+        }
     }
     else {
+        SoState* state = action->getState();
         const SbViewportRegion & vp = SoViewportRegionElement::get(state);
         const SbViewVolume & vv = SoViewVolumeElement::get(state);
+
         SbVec3f center(0.0f, 0.0f, 0.0f);
-        float nsize = this->scaleFactor.getValue() / float(vp.getViewportSizePixels()[1]);
+        float nsize = this->scaleFactor.getValue() / float(vp.getViewportSizePixels()[0]);
         SoModelMatrixElement::get(state).multVecMatrix(center, center); // world coords
         float sf = vv.getWorldToScreenScale(center, nsize);
+
+        sf *= SoDevicePixelRatioElement::get(state);
+
         SbVec3f v(sf, sf, sf);
-        if (scale->scaleFactor.getValue() != v)
+        if (scale->scaleFactor.getValue() != v){
             scale->scaleFactor = v;
+        }
     }
 
     inherited::GLRender(action);

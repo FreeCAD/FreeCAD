@@ -84,6 +84,7 @@
 #include "MDIViewPy.h"
 #include "Placement.h"
 #include "SoFCDB.h"
+#include "SoDevicePixelRatioElement.h"
 #include "Selection.h"
 #include "SelectionFilterPy.h"
 #include "SoQtOffscreenRendererPy.h"
@@ -2119,6 +2120,8 @@ void Application::initOpenInventor()
     SoDB::init();
     SIM::Coin3D::Quarter::Quarter::init();
     SoFCDB::init();
+    SoFCDB::init();
+    SoDevicePixelRatioElement::initClass();
 }
 
 void Application::runInitGuiScript()

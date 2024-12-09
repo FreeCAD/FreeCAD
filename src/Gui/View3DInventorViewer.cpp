@@ -107,6 +107,7 @@
 #include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "Selection.h"
+#include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCOffscreenRenderer.h"
@@ -2360,6 +2361,7 @@ void View3DInventorViewer::renderScene()
     // Render our scenegraph with the image.
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
     SoState* state = glra->getState();
+    SoDevicePixelRatioElement::set(state, devicePixelRatio());
     SoGLWidgetElement::set(state, qobject_cast<QtGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(state, glra);
     SoGLVBOActivatedElement::set(state, this->vboEnabled);
