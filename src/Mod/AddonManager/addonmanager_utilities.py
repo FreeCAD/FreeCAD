@@ -29,6 +29,7 @@ import platform
 import shutil
 import stat
 import subprocess
+import time
 import re
 import ctypes
 from typing import Optional, Any
@@ -418,13 +419,11 @@ def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.Com
     stdout = ""
     stderr = ""
     return_code = None
-    counter = 0
+    start_time = time.time()
     while return_code is None:
-        counter += 1
         try:
-            stdout, stderr = p.communicate(
-                timeout=1
-            )  # one second timeout allows interrupting the run once per second
+            # one second timeout allows interrupting the run once per second
+            stdout, stderr = p.communicate(timeout=1)
             return_code = p.returncode
         except subprocess.TimeoutExpired:
             if (
@@ -433,7 +432,7 @@ def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.Com
             ):
                 p.kill()
                 raise ProcessInterrupted()
-            if counter >= timeout_secs:  # The real timeout
+            if time.time() - start_time >= timeout_secs:  # The real timeout
                 p.kill()
                 stdout, stderr = p.communicate()
                 return_code = -1

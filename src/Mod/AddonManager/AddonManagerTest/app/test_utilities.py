@@ -194,26 +194,33 @@ class TestUtilities(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
 
     @patch("subprocess.Popen")
-    def test_run_interruptable_subprocess_timeout_ten_times(self, mock_popen):
-        """Ten times is the limit for an error to be raised (e.g. the real timeout is ten seconds)"""
+    def test_run_interruptable_subprocess_timeout_exceeded(self, mock_popen):
+        """Exceeding the set timeout gives a CalledProcessError exception"""
 
-        def raises_first_ten_times(timeout=0):
-            raises_first_ten_times.counter += 1
-            if not raises_first_ten_times.mock_access.kill.called:
-                if raises_first_ten_times.counter <= 10:
-                    raise subprocess.TimeoutExpired("Test", timeout)
-            return "Mocked stdout", "Mocked stderr"
+        def raises_one_time(timeout=0):
+            if not raises_one_time.raised:
+                raises_one_time.raised = True
+                raise subprocess.TimeoutExpired("Test", timeout)
+            return "Mocked stdout", None
 
-        raises_first_ten_times.counter = 0
+        raises_one_time.raised = False
+
+        def fake_time():
+            """Time that advances by one second every time it is called"""
+            fake_time.time += 1.0
+            return fake_time.time
+
+        fake_time.time = 0.0
 
         mock_process = MagicMock()
-        mock_process.communicate = raises_first_ten_times
-        raises_first_ten_times.mock_access = mock_process
+        mock_process.communicate = raises_one_time
+        raises_one_time.mock_access = mock_process
         mock_process.returncode = None
         mock_popen.return_value = mock_process
 
         with self.assertRaises(subprocess.CalledProcessError):
-            run_interruptable_subprocess(["arg0", "arg1"], 10)
+            with patch("time.time", fake_time):
+                run_interruptable_subprocess(["arg0", "arg1"], 0.1)
 
 
 if __name__ == "__main__":
