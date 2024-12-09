@@ -505,7 +505,6 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
     if (qPoints.empty()) {
         Base::Console().Warning("QGILeaderLine::getWayPointsFromFeature - no points\n");
     }
-    
     return qPoints;
 }
 
