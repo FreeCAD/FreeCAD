@@ -78,7 +78,6 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
 
-    float defaultSz = ViewProviderCoordinateSystem::defaultSize();
 
     // Create an external separator
     auto sep = new SoSeparator();
@@ -93,8 +92,8 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 
     // Setup font size
     auto font = new SoFont();
-    float fontRatio = 4.0f;
-    font->size.setValue(defaultSz / fontRatio);
+    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumFontSize", 15.0);
+    font->size.setValue(size);
     sep->addChild(font);
 
     // Create the selection node
@@ -135,7 +134,7 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     // Scale feature to the given size
     float sz = App::GetApplication()
         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-        ->GetFloat("LocalCoordinateSystemSize", 2.0);  // NOLINT
+        ->GetFloat("LocalCoordinateSystemSize", 1.0);  // NOLINT
 
     soScale->setPart("shape", sep);
     soScale->scaleFactor = sz;

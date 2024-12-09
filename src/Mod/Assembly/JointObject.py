@@ -999,7 +999,7 @@ class ViewProviderGroundedJoint:
         if groundedObj is None:
             return
 
-        self.scaleFactor = 1.5
+        self.scaleFactor = 3.0
 
         lockpadColorInt = Preferences.preferences().GetUnsigned("AssemblyConstraints", 0xCC333300)
         self.lockpadColor = coin.SoBaseColor()
