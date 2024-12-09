@@ -65,6 +65,7 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::SpecificHeat), "SpecificHeat");
     EXPECT_EQ(toString(Base::Unit::Stiffness), "Stiffness");
     EXPECT_EQ(toString(Base::Unit::Stress), "Pressure");  // same as Pressure
+    EXPECT_EQ(toString(Base::Unit::SurfaceChargeDensity), "SurfaceChargeDensity");
     EXPECT_EQ(toString(Base::Unit::Temperature), "Temperature");
     EXPECT_EQ(toString(Base::Unit::ThermalConductivity), "ThermalConductivity");
     EXPECT_EQ(toString(Base::Unit::ThermalExpansionCoefficient), "ThermalExpansionCoefficient");

@@ -377,6 +377,20 @@ public:
     ~PropertyElectricPotential() override = default;
 };
 
+/** SurfaceChargeDensity property
+ * This is a property for surface charge density used in Neumann boundary
+ * conditions.  It is basically a float property. On the Gui it has units of
+ * A*s/mm^2, i.e.  C/mm^2.
+ */
+class AppExport PropertySurfaceChargeDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertySurfaceChargeDensity();
+    ~PropertySurfaceChargeDensity() override = default;
+};
+
 /** Frequency property
  * This is a property for representing frequency. It is basically a float
  * property. On the Gui it has a quantity like 1/s or Hz.

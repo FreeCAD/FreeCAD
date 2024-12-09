@@ -2084,6 +2084,7 @@ void Application::initTypes()
     App::PropertyStiffness                  ::init();
     App::PropertyStiffnessDensity           ::init();
     App::PropertyStress                     ::init();
+    App::PropertySurfaceChargeDensity       ::init();
     App::PropertyTemperature                ::init();
     App::PropertyThermalConductivity        ::init();
     App::PropertyThermalExpansionCoefficient::init();

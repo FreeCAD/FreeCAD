@@ -411,6 +411,17 @@ PropertyElectricPotential::PropertyElectricPotential()
 }
 
 //**************************************************************************
+// PropertySurfaceChargeDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertySurfaceChargeDensity, App::PropertyQuantity)
+
+PropertySurfaceChargeDensity::PropertySurfaceChargeDensity()
+{
+    setUnit(Base::Unit::SurfaceChargeDensity);
+}
+
+//**************************************************************************
 // PropertyFrequency
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
