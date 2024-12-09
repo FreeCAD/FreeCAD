@@ -88,7 +88,7 @@ jobs:
           operations-per-run: 30  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,no-auto-close'
+          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
