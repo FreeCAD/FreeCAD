@@ -300,11 +300,11 @@
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="minimum">
-           <number>1</number>
+          <property name="toolTip">
+           <string>Set to zero to automatically use maximum number of available cores</string>
           </property>
-          <property name="maximum">
-           <number>40</number>
+          <property name="minimum">
+           <number>0</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AnalysisNumCPUs</cstring>
