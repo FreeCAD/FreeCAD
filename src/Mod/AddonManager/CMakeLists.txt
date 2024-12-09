@@ -69,7 +69,7 @@ SET(AddonManager_SRCS
     InitGui.py
     install_to_toolbar.py
     loading.html
-    manage_python_dependencies.py
+        addonmanager_python_deps_gui.py
     NetworkManager.py
     package_list.py
     PythonDependencyUpdateDialog.ui
