@@ -127,13 +127,13 @@ void MaterialValue::validate(const MaterialValue& other) const
         }
     }
     else if (_valueType == Array2D) {
-        auto a1 = _value.value<std::shared_ptr<Materials::Array2D>>();
-        auto a2 = other._value.value<std::shared_ptr<Materials::Array2D>>();
+        auto a1 = static_cast<const Materials::Array2D*>(this);
+        auto a2 = static_cast<const Materials::Array2D*>(&other);
         a1->validate(*a2);
     }
     else if (_valueType == Array3D) {
-        auto a1 = _value.value<std::shared_ptr<Materials::Array3D>>();
-        auto a2 = other._value.value<std::shared_ptr<Materials::Array3D>>();
+        auto a1 = static_cast<const Materials::Array3D*>(this);
+        auto a2 = static_cast<const Materials::Array3D*>(&other);
         a1->validate(*a2);
     }
     else if (!(_value.isNull() && other._value.isNull()) && (_value != other._value)) {
@@ -417,9 +417,11 @@ void Array2D::validateColumn(int column) const
 void Array2D::validate(const Array2D& other) const
 {
     if (rows() != other.rows()) {
+        Base::Console().Log("Local row count %d, remote %d\n", rows(), other.rows());
         throw InvalidProperty("Material property value row counts don't match");
     }
     if (columns() != other.columns()) {
+        Base::Console().Log("Local column count %d, remote %d\n", columns(), other.columns());
         throw InvalidProperty("Material property value column counts don't match");
     }
     try {

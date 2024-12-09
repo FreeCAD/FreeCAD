@@ -309,6 +309,7 @@ public:
 
     void setValue(const QString& name, const QString& value);
     void setValue(const QString& name, const QVariant& value);
+    void setValue(const QString& name, const std::shared_ptr<MaterialValue>& value);
 
     /*
      * Legacy values are thosed contained in old format files that don't fit in the new

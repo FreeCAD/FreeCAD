@@ -559,7 +559,6 @@ PyObject* MaterialPy::setValue(PyObject* args)
     PyObject* listObj;
     PyObject* arrayObj;
     if (PyArg_ParseTuple(args, "ss", &name, &value)) {
-        Base::Console().Log("MaterialPy::setValue('%s', '%s')\n", name, value);
         getMaterialPtr()->setValue(QString::fromStdString(name), QString::fromStdString(value));
         Py_Return;
     }
@@ -584,9 +583,8 @@ PyObject* MaterialPy::setValue(PyObject* args)
         Base::Console().Log("Array2D\n");
         auto array = static_cast<Array2DPy*>(arrayObj);
         auto shared = std::make_shared<Array2D>(*array->getArray2DPtr());
-        QVariant variant = QVariant::fromValue(shared);
 
-        getMaterialPtr()->setValue(QString::fromStdString(name), variant);
+        getMaterialPtr()->setValue(QString::fromStdString(name), shared);
         Py_Return;
     }
 
@@ -595,9 +593,8 @@ PyObject* MaterialPy::setValue(PyObject* args)
         Base::Console().Log("Array3D\n");
         auto array = static_cast<Array3DPy*>(arrayObj);
         auto shared = std::make_shared<Array3D>(*array->getArray3DPtr());
-        QVariant variant = QVariant::fromValue(shared);
 
-        getMaterialPtr()->setValue(QString::fromStdString(name), variant);
+        getMaterialPtr()->setValue(QString::fromStdString(name), shared);
         Py_Return;
     }
 

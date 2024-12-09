@@ -449,15 +449,9 @@ bool MaterialProperty::operator==(const MaterialProperty& other) const
 }
 
 void MaterialProperty::validate(const MaterialProperty& other) const {
-    Base::Console().Log("Property '%s'\n", getName().toStdString().c_str());
-    // Base::Console().Log("\tLocal value '%s'\n", getString().toStdString().c_str());
-    // Base::Console().Log("\tRemote value '%s'\n", other.getString().toStdString().c_str());
-
     _valuePtr->validate(*other._valuePtr);
 
     if (_columns.size() != other._columns.size()) {
-        Base::Console().Log("Local property column count %d\n", _columns.size());
-        Base::Console().Log("Remote property column count %d\n", other._columns.size());
         throw InvalidProperty("Model property column counts don't match");
     }
     for (int i = 0; i < _columns.size(); i++) {
@@ -980,6 +974,22 @@ void Material::setValue(const QString& name, const QVariant& value)
 {
     if (hasPhysicalProperty(name)) {
         setPhysicalValue(name, value);
+    }
+    else if (hasAppearanceProperty(name)) {
+        setAppearanceValue(name, value);
+    }
+    else {
+        throw PropertyNotFound();
+    }
+}
+
+void Material::setValue(const QString& name, const std::shared_ptr<MaterialValue>& value)
+{
+    if (hasPhysicalProperty(name)) {
+        setPhysicalValue(name, value);
+    }
+    else if (hasAppearanceProperty(name)) {
+        setAppearanceValue(name, value);
     }
     else {
         throw PropertyNotFound();
