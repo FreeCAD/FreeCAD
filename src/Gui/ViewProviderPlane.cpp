@@ -92,7 +92,7 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
         noRole = true;
     }
 
-    static const float size = ViewProviderCoordinateSystem::defaultSize() * 0.6; //NOLINT
+    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumPlaneSize", 40.0);
     static const float startSize = 0.25 * size; //NOLINT
 
 
