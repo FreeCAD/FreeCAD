@@ -53,6 +53,7 @@
 #include "GestureNavigationStyle.h"
 #include "NavigationStyle.h"
 #include "SelectionObject.h"
+#include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
 #include "SoFCColorGradient.h"
 #include "SoFCColorLegend.h"
@@ -94,6 +95,7 @@ SbBool Gui::SoFCDB::isInitialized()
 void Gui::SoFCDB::init()
 {
     SoInteraction                   ::init();
+    SoDevicePixelRatioElement       ::initClass();
     SoGLRenderActionElement         ::initClass();
     SoFCInteractiveElement          ::initClass();
     SoGLWidgetElement               ::initClass();
