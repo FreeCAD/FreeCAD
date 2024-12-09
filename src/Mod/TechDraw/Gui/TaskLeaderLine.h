@@ -91,7 +91,7 @@ protected:
     void setUiPrimary();
     void setUiEdit();
     void enableVPUi(bool enable);
-    void setEditCursor(QCursor cursor);
+    void setEditCursor(const QCursor& cursor);
 
     QGIView* findParentQGIV();
 

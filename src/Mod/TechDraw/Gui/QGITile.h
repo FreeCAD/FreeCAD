@@ -47,45 +47,49 @@ class TechDrawGuiExport QGITile : public QGIDecoration
 {
 public:
     explicit QGITile(TechDraw::DrawTileWeld*);
-    ~QGITile() override;
+    ~QGITile() override = default;
 
     enum {Type = QGraphicsItem::UserType + 325};
-    int type(void) const override { return Type;}
+    int type() const override { return Type;}
 
     QRectF boundingRect() const override;
 
-    void setTileTextLeft(std::string s);
-    void setTileTextRight(std::string s);
-    void setTileTextCenter(std::string s);
-    void setFont(QFont f, double fSizePx);
-    void setFont(std::string fName, double fSizePx);
-    void setSymbolFile(std::string s);
-    void setTilePosition(QPointF org, int r, int c);
-    void setTileScale(double s);
-    void setTailRight(bool b) { m_tailRight = b; }
-    void setAltWeld(bool b) { m_altWeld = b; }
-    bool isTailRight();
+    void setTileTextLeft(const std::string& text);
+    void setTileTextRight(const std::string& text);
+    void setTileTextCenter(const std::string& text);
+    void setFont(const QFont& font, double fSizePx);
+    void setFont(const std::string& fName, double fSizePx);
+    void setSymbolFile(const std::string& fileSpec);
+    void setTilePosition(QPointF org, int row, int col);
+    void setTileScale(double scale);
+    void setTailRight(bool state) { m_tailRight = state; }
+    void setAltWeld(bool state) { m_altWeld = state; }
+    bool isTailRight() const;
     void draw() override;
 
+    void setLocalAxes(Base::Vector3d xdir, Base::Vector3d ydir);
+    QPointF mapPointToRotation(Base::Vector3d pointIn);
+    QPointF calcTilePosition();
+
 protected:
-    QColor getTileColor(void) const;
+    QColor getTileColor() const;
     void setPrettyNormal();
     void setPrettyPre();
     void setPrettySel();
 
-    double getSymbolWidth(void) const;
-    double getSymbolHeight(void) const;
-    double getSymbolFactor(void) const;
+    double getSymbolWidth() const;
+    double getSymbolHeight() const;
+    double getSymbolFactor() const;
     QByteArray getSvgString(QString svgPath);
 
-    QString prefTextFont(void) const;
-    double prefFontSize(void) const;
-    void makeSymbol(void);
-    void makeText(void);
+    QString prefTextFont() const;
+    double prefFontSize() const;
+    void makeSymbol();
+    void makeText();
 
-    bool getAltWeld(void);
+    bool getAltWeld() const;
     bool isReadable(QString filePath);
-    std::string getStringFromFile(std::string inSpec);
+    std::string getStringFromFile(const std::string &inSpec);
 
 
 private:
@@ -109,6 +113,9 @@ private:
     bool               m_tailRight;
     bool               m_altWeld;
     TechDraw::DrawTileWeld* m_tileFeat;
+
+    Base::Vector3d     m_leaderXDirection;
+    Base::Vector3d     m_leaderYDirection;
 };
 
 }
