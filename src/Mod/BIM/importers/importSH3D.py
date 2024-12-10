@@ -23,18 +23,13 @@ __title__  = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
-import math
 import os
-import tempfile
 import xml.sax
 import zipfile
-from builtins import open as pyopen
 
 import FreeCAD
-import Arch
-import Draft
-import Mesh
-import Part
+from FreeCAD import Base
+
 
 ## @package importSH3D
 #  \ingroup ARCH
@@ -69,140 +64,16 @@ def insert(filename,docname):
 def read(filename):
     "reads the file and creates objects in the active document"
 
-    z = zipfile.ZipFile(filename)
-    homexml = z.read("Home.xml")
-    handler = SH3DHandler(z)
-    xml.sax.parseString(homexml,handler)
+    import BIM.importers.importSH3DHelper
+    if DEBUG:
+        from importlib import reload
+        reload(BIM.importers.importSH3DHelper)
+
+    pi = Base.ProgressIndicator()
+    try:
+        importer = BIM.importers.importSH3DHelper.SH3DImporter(pi)
+        importer.import_sh3d_from_filename(filename)
+    finally:
+        pi.stop()
+
     FreeCAD.ActiveDocument.recompute()
-    if not handler.makeIndividualWalls:
-        delete = []
-        walls = []
-        for k,lines in handler.lines.items():
-            sk = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","Walls_trace")
-            for l in lines:
-                for edge in l.Shape.Edges:
-                    sk.addGeometry(edge.Curve)
-                delete.append(l.Name)
-            FreeCAD.ActiveDocument.recompute()
-            k = k.split(";")
-            walls.append(Arch.makeWall(baseobj=sk,width=float(k[0]),height=float(k[1])))
-        for d in delete:
-            FreeCAD.ActiveDocument.removeObject(d)
-        w = walls.pop()
-        w.Additions = walls
-        w.Subtractions = handler.windows
-    g = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Furniture")
-    g.Group = handler.furniture
-    FreeCAD.ActiveDocument.recompute()
-
-
-class SH3DHandler(xml.sax.ContentHandler):
-
-    def __init__(self,z):
-
-        super().__init__()
-        self.makeIndividualWalls = False
-        self.z = z
-        self.windows = []
-        self.furniture = []
-        self.lines = {}
-
-    def startElement(self, tag, attributes):
-
-        if tag == "wall":
-            name = attributes["id"]
-            p1 = FreeCAD.Vector(float(attributes["xStart"])*10,float(attributes["yStart"])*10,0)
-            p2 = FreeCAD.Vector(float(attributes["xEnd"])*10,float(attributes["yEnd"])*10,0)
-            height = float(attributes["height"])*10
-            thickness = float(attributes["thickness"])*10
-            if DEBUG: print("Creating wall: ",name)
-            line = Draft.makeLine(p1,p2)
-            if self.makeIndividualWalls:
-                wall = Arch.makeWall(baseobj=line,width=thickness,height=height,name=name)
-                wall.Label = name
-            else:
-                self.lines.setdefault(str(thickness)+";"+str(height),[]).append(line)
-
-        elif tag == "pieceOfFurniture":
-            name = attributes["name"]
-            data = self.z.read(attributes["model"])
-            th,tf = tempfile.mkstemp(suffix=".obj")
-            f = pyopen(tf,"wb")
-            f.write(data)
-            f.close()
-            os.close(th)
-            m = Mesh.read(tf)
-            fx = (float(attributes["width"])/100)/m.BoundBox.XLength
-            fy = (float(attributes["height"])/100)/m.BoundBox.YLength
-            fz = (float(attributes["depth"])/100)/m.BoundBox.ZLength
-            mat = FreeCAD.Matrix()
-            mat.scale(1000*fx,1000*fy,1000*fz)
-            mat.rotateX(math.pi/2)
-            mat.rotateZ(math.pi)
-            if DEBUG: print("Creating furniture: ",name)
-            if "angle" in attributes:
-                mat.rotateZ(float(attributes["angle"]))
-            m.transform(mat)
-            os.remove(tf)
-            p = m.BoundBox.Center.negative()
-            p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
-            p = p.add(FreeCAD.Vector(0,0,m.BoundBox.Center.z-m.BoundBox.ZMin))
-            m.Placement.Base = p
-            obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",name)
-            obj.Mesh = m
-            self.furniture.append(obj)
-
-        elif tag == "doorOrWindow":
-            name = attributes["name"]
-            data = self.z.read(attributes["model"])
-            th,tf = tempfile.mkstemp(suffix=".obj")
-            f = pyopen(tf,"wb")
-            f.write(data)
-            f.close()
-            os.close(th)
-            m = Mesh.read(tf)
-            fx = (float(attributes["width"])/100)/m.BoundBox.XLength
-            fy = (float(attributes["height"])/100)/m.BoundBox.YLength
-            fz = (float(attributes["depth"])/100)/m.BoundBox.ZLength
-            mat = FreeCAD.Matrix()
-            mat.scale(1000*fx,1000*fy,1000*fz)
-            mat.rotateX(math.pi/2)
-            m.transform(mat)
-            b = m.BoundBox
-            v1 = FreeCAD.Vector(b.XMin,b.YMin-500,b.ZMin)
-            v2 = FreeCAD.Vector(b.XMax,b.YMin-500,b.ZMin)
-            v3 = FreeCAD.Vector(b.XMax,b.YMax+500,b.ZMin)
-            v4 = FreeCAD.Vector(b.XMin,b.YMax+500,b.ZMin)
-            sub = Part.makePolygon([v1,v2,v3,v4,v1])
-            sub = Part.Face(sub)
-            sub = sub.extrude(FreeCAD.Vector(0,0,b.ZLength))
-            os.remove(tf)
-            shape = Arch.getShapeFromMesh(m)
-            if not shape:
-                shape=Part.Shape()
-                shape.makeShapeFromMesh(m.Topology,0.100000)
-                shape = shape.removeSplitter()
-            if shape:
-                if DEBUG: print("Creating window: ",name)
-                if "angle" in attributes:
-                    shape.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
-                    sub.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
-                p = shape.BoundBox.Center.negative()
-                p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
-                p = p.add(FreeCAD.Vector(0,0,shape.BoundBox.Center.z-shape.BoundBox.ZMin))
-                if "elevation" in attributes:
-                    p = p.add(FreeCAD.Vector(0,0,float(attributes["elevation"])*10))
-                shape.translate(p)
-                sub.translate(p)
-                obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
-                obj.Shape = shape
-                subobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_sub")
-                subobj.Shape = sub
-                if FreeCAD.GuiUp:
-                    subobj.ViewObject.hide()
-                win = Arch.makeWindow(baseobj=obj,name=name)
-                win.Label = name
-                win.Subvolume = subobj
-                self.windows.append(win)
-            else:
-                print("importSH3D: Error creating shape for door/window "+name)
