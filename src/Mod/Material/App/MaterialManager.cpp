@@ -196,8 +196,26 @@ QString MaterialManager::defaultMaterialUUID()
 
 std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLibraries()
 {
-    _externalManager->getLibraries();
-    return _localManager->getLibraries();
+    // External libraries take precedence over local libraries
+    auto libMap = std::map<QString, std::shared_ptr<MaterialLibrary>>();
+    if (_useExternal) {
+        auto remoteLibraries = _externalManager->getLibraries();
+        for (auto& remote : *remoteLibraries) {
+            libMap.try_emplace(remote->getName(), remote);
+        }
+    }
+    auto localLibraries = _localManager->getLibraries();
+    for (auto& local : *localLibraries) {
+        libMap.try_emplace(local->getName(), local);
+    }
+
+    // Consolidate into a single list
+    auto libraries = std::make_shared<std::list<std::shared_ptr<MaterialLibrary>>>();
+    for (auto libEntry : libMap) {
+        libraries->push_back(libEntry.second);
+    }
+
+    return libraries;
 }
 
 std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
@@ -208,6 +226,18 @@ MaterialManager::getLocalLibraries()
 
 std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name) const
 {
+    if (_useExternal) {
+        try
+        {
+            auto lib = _externalManager->getLibrary(name);
+            if (lib) {
+                return lib;
+            }
+        }
+        catch (const LibraryNotFound& e) {
+        }
+    }
+    // We really want to return the local library if not found, such as for User folder models
     return _localManager->getLibrary(name);
 }
 
@@ -242,11 +272,33 @@ void MaterialManager::removeLibrary(const QString& libraryName)
 std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
 MaterialManager::libraryMaterials(const QString& libraryName)
 {
+    if (_useExternal) {
+        try
+        {
+            auto materials = _externalManager->libraryMaterials(libraryName);
+            if (materials) {
+                return materials;
+            }
+        }
+        catch (const LibraryNotFound& e) {
+        }
+    }
     return _localManager->libraryMaterials(libraryName);
 }
 
 bool MaterialManager::isLocalLibrary(const QString& libraryName)
 {
+    if (_useExternal) {
+        try
+        {
+            auto lib = _externalManager->getLibrary(libraryName);
+            if (lib) {
+                return false;
+            }
+        }
+        catch (const LibraryNotFound& e) {
+        }
+    }
     return true;
 }
 
@@ -347,6 +399,13 @@ MaterialManager::getLocalMaterials() const
 
 std::shared_ptr<Material> MaterialManager::getMaterial(const QString& uuid) const
 {
+    if (_useExternal) {
+        auto material = _externalManager->getMaterial(uuid);
+        if (material) {
+            return material;
+        }
+    }
+    // We really want to return the local material if not found, such as for User folder models
     return _localManager->getMaterial(uuid);
 }
 

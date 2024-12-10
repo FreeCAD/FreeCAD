@@ -91,48 +91,27 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
         std::make_shared<std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
 
-    // Default implementation returns an empty tree
-    return materialTree;
-}
-
-/* TRANSLATOR Material::Materials */
-
-TYPESYSTEM_SOURCE(Materials::MaterialLibraryLocal, Materials::MaterialLibrary)
-
-MaterialLibraryLocal::MaterialLibraryLocal(const QString& libraryName,
-                                           const QString& dir,
-                                           const QString& icon,
-                                           bool readOnly)
-    : MaterialLibrary(libraryName, dir, icon, readOnly)
-    , _materialPathMap(std::make_unique<std::map<QString, std::shared_ptr<Material>>>())
-{
-    setLocal(true);
-}
-
-std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialLibraryLocal::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
-                                      const Materials::MaterialFilterOptions& options) const
-{
-    std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
-        std::make_shared<std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
-
-    for (auto& it : *_materialPathMap) {
-        auto filename = it.first;
-        auto material = it.second;
+    MaterialManager manager;
+    auto materials = manager.libraryMaterials(getName());
+    for (auto& it : *materials) {
+        auto uuid = std::get<0>(it);
+        auto path = std::get<1>(it);
+        auto filename = std::get<2>(it);
+        // Base::Console().Log("uuid '%s', path '%s', filename '%s'\n",
+        //                     uuid.toStdString().c_str(),
+        //                     path.toStdString().c_str(),
+        //                     filename.toStdString().c_str());
+        auto material = manager.getMaterial(uuid);
 
         if (materialInTree(material, filter, options)) {
-            QStringList list = filename.split(QString::fromStdString("/"));
+            QStringList list = path.split(QString::fromStdString("/"));
 
             // Start at the root
             std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> node =
                 materialTree;
             for (auto& itp : list) {
-                if (itp.endsWith(QString::fromStdString(".FCMat"))) {
-                    std::shared_ptr<MaterialTreeNode> child = std::make_shared<MaterialTreeNode>();
-                    child->setData(material);
-                    (*node)[itp] = child;
-                }
-                else {
+                // Base::Console().Log("itp '%s'\n", itp.toStdString().c_str());
+                if (!itp.isEmpty()) {
                     // Add the folder only if it's not already there
                     if (node->count(itp) == 0) {
                         auto mapPtr = std::make_shared<
@@ -148,42 +127,59 @@ MaterialLibraryLocal::getMaterialTree(const std::shared_ptr<Materials::MaterialF
                     }
                 }
             }
+            std::shared_ptr<MaterialTreeNode> child = std::make_shared<MaterialTreeNode>();
+            child->setData(material);
+            (*node)[material->getName()] = child;
         }
     }
 
-    // Empty folders aren't included in _materialPathMap, so we add them by looking at the file
-    // system
-    if (!filter || options.includeEmptyFolders()) {
-        if (isLocal()) {
-            auto& materialLibrary =
-                *(reinterpret_cast<const Materials::MaterialLibraryLocal*>(this));
-            auto folderList = MaterialLoader::getMaterialFolders(materialLibrary);
-            for (auto& folder : *folderList) {
-                QStringList list = folder.split(QString::fromStdString("/"));
+    // // Empty folders aren't included in _materialPathMap, so we add them by looking at the file
+    // // system
+    // if (!filter || options.includeEmptyFolders()) {
+    //     if (isLocal()) {
+    //         auto& materialLibrary =
+    //             *(reinterpret_cast<const Materials::MaterialLibraryLocal*>(this));
+    //         auto folderList = MaterialLoader::getMaterialFolders(materialLibrary);
+    //         for (auto& folder : *folderList) {
+    //             QStringList list = folder.split(QString::fromStdString("/"));
 
-                // Start at the root
-                auto node = materialTree;
-                for (auto& itp : list) {
-                    // Add the folder only if it's not already there
-                    if (node->count(itp) == 0) {
-                        std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-                            mapPtr = std::make_shared<
-                                std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
-                        std::shared_ptr<MaterialTreeNode> child =
-                            std::make_shared<MaterialTreeNode>();
-                        child->setFolder(mapPtr);
-                        (*node)[itp] = child;
-                        node = mapPtr;
-                    }
-                    else {
-                        node = (*node)[itp]->getFolder();
-                    }
-                }
-            }
-        }
-    }
+    //             // Start at the root
+    //             auto node = materialTree;
+    //             for (auto& itp : list) {
+    //                 // Add the folder only if it's not already there
+    //                 if (node->count(itp) == 0) {
+    //                     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+    //                         mapPtr = std::make_shared<
+    //                             std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
+    //                     std::shared_ptr<MaterialTreeNode> child =
+    //                         std::make_shared<MaterialTreeNode>();
+    //                     child->setFolder(mapPtr);
+    //                     (*node)[itp] = child;
+    //                     node = mapPtr;
+    //                 }
+    //                 else {
+    //                     node = (*node)[itp]->getFolder();
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     return materialTree;
+}
+
+/* TRANSLATOR Material::Materials */
+
+TYPESYSTEM_SOURCE(Materials::MaterialLibraryLocal, Materials::MaterialLibrary)
+
+MaterialLibraryLocal::MaterialLibraryLocal(const QString& libraryName,
+                                           const QString& dir,
+                                           const QString& icon,
+                                           bool readOnly)
+    : MaterialLibrary(libraryName, dir, icon, readOnly)
+    , _materialPathMap(std::make_unique<std::map<QString, std::shared_ptr<Material>>>())
+{
+    setLocal(true);
 }
 
 void MaterialLibraryLocal::createFolder(const QString& path)

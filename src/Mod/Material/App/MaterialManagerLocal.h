@@ -59,6 +59,7 @@ public:
 
     // Library management
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries();
     std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName,
                        const QString& directory,

@@ -301,6 +301,11 @@ ExternalManager::materialLibraries()
     return libList;
 }
 
+std::tuple<QString, QString, bool> ExternalManager::getLibrary(const QString& name) const
+{
+    throw LibraryNotFound("Not yet implemented");
+}
+
 void ExternalManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
 {
     connect();

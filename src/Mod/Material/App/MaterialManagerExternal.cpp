@@ -99,11 +99,65 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerExte
     return libraryList;
 }
 
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
+MaterialManagerExternal::getMaterialLibraries()
+{
+    auto libraryList = std::make_shared<std::list<std::shared_ptr<MaterialLibrary>>>();
+    try {
+        auto externalLibraries = ExternalManager::getManager()->materialLibraries();
+        for (auto& entry : *externalLibraries) {
+            auto libName = std::get<0>(entry);
+            auto icon = std::get<1>(entry);
+            auto readOnly = std::get<2>(entry);
+            Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
+                                libName.toStdString().c_str(),
+                                icon.toStdString().c_str(),
+                                readOnly ? "true" : "false");
+            auto library = std::make_shared<MaterialLibrary>(libName, icon, readOnly);
+            libraryList->push_back(library);
+        }
+    }
+    catch (const LibraryNotFound& e) {
+    }
+    catch (const ConnectionError& e) {
+    }
+
+    return libraryList;
+}
+
+std::shared_ptr<MaterialLibrary> MaterialManagerExternal::getLibrary(const QString& name) const
+{
+    try {
+        auto libTuple = ExternalManager::getManager()->getLibrary(name);
+        auto libName = std::get<0>(libTuple);
+        auto icon = std::get<1>(libTuple);
+        auto readOnly = std::get<2>(libTuple);
+        Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
+                            libName.toStdString().c_str(),
+                            icon.toStdString().c_str(),
+                            readOnly ? "true" : "false");
+        auto library = std::make_shared<MaterialLibrary>(libName, icon, readOnly);
+        return library;
+    }
+    catch (const LibraryNotFound& e) {
+        throw LibraryNotFound(e);
+    }
+    catch (const ConnectionError& e) {
+        throw LibraryNotFound(e.what());
+    }
+}
+
 void MaterialManagerExternal::createLibrary(const QString& libraryName,
                                             const QString& icon,
                                             bool readOnly)
 {
     ExternalManager::getManager()->createLibrary(libraryName, icon, readOnly);
+}
+
+std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+MaterialManagerExternal::libraryMaterials(const QString& libraryName)
+{
+    return ExternalManager::getManager()->libraryMaterials(libraryName);
 }
 
 //=====

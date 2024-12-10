@@ -48,6 +48,7 @@ public:
     std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> libraries();
     std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> modelLibraries();
     std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> materialLibraries();
+    std::tuple<QString, QString, bool> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     void renameLibrary(const QString& libraryName, const QString& newName);
     void changeIcon(const QString& libraryName, const QString& icon);

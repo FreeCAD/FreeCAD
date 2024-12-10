@@ -118,6 +118,15 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerLoca
     return _libraryList;
 }
 
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
+MaterialManagerLocal::getMaterialLibraries()
+{
+    if (_libraryList == nullptr) {
+        initLibraries();
+    }
+    return _libraryList;
+}
+
 std::shared_ptr<MaterialLibrary> MaterialManagerLocal::getLibrary(const QString& name) const
 {
     for (auto& library : *_libraryList) {

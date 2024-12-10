@@ -801,7 +801,7 @@ void MaterialsEditor::addRecents(QStandardItem* parent)
     for (auto& uuid : _recents) {
         try {
             auto material = getMaterialManager().getMaterial(uuid);
-            if (material->getLibrary()->isLocal()) {
+            // if (material->getLibrary()->isLocal()) {
                 QIcon icon = QIcon(material->getLibrary()->getIconPath());
                 auto card = new QStandardItem(icon, libraryPath(material));
                 card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
@@ -809,7 +809,7 @@ void MaterialsEditor::addRecents(QStandardItem* parent)
                 card->setData(QVariant(uuid), Qt::UserRole);
 
                 addExpanded(tree, parent, card);
-            }
+            // }
         }
         catch (const Materials::MaterialNotFound&) {
         }
@@ -1178,13 +1178,14 @@ QString MaterialsEditor::libraryPath(const std::shared_ptr<Materials::Material>&
     QString path;
     auto library = material->getLibrary();
     if (library) {
-        path = QString::fromLatin1("/%1/%2")
+        path = QString::fromLatin1("/%1/%2/%3")
                     .arg(library->getName())
-                    .arg(material->getDirectory());
+                    .arg(material->getDirectory())
+                    .arg(material->getName());
         return path;
     }
 
-    path = QString::fromLatin1("%1").arg(material->getDirectory());
+    path = QString::fromLatin1("%1/%2").arg(material->getDirectory()).arg(material->getName());
     return path;
 }
 

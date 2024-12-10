@@ -93,10 +93,6 @@ public:
                          bool readOnly = true);
     ~MaterialLibraryLocal() override = default;
 
-    std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
-                    const Materials::MaterialFilterOptions& options) const override;
-
     void createFolder(const QString& path);
     void renameFolder(const QString& oldPath, const QString& newPath);
     void deleteRecursive(const QString& path);
