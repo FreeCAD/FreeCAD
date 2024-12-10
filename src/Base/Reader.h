@@ -251,8 +251,8 @@ public:
     const char* addFile(const char* Name, Base::Persistence* Object);
     /// process the requested file writes
     void readFiles(zipios::ZipInputStream& zipstream) const;
-    /// get all registered file names
-    const std::vector<std::string>& getFilenames() const;
+    /// Returns whether reader has any registered filenames
+    bool hasFilenames() const;
     /// returns true if reading the file \a filename has failed
     bool hasReadFailed(const std::string& filename) const;
     bool isRegistered(Base::Persistence* Object) const;
@@ -364,7 +364,6 @@ public:
     std::vector<FileEntry> FileList;
 
 private:
-    std::vector<std::string> FileNames;
     mutable std::vector<std::string> FailedFiles;
 
     std::bitset<32> StatusBits;
