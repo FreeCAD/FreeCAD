@@ -212,6 +212,7 @@ class _Space(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
         obj.IfcType = "Space"
+        obj.CompositionType = "ELEMENT"
 
     def setProperties(self,obj):
 
@@ -260,6 +261,8 @@ class _Space(ArchComponent.Component):
     def execute(self,obj):
 
         if self.clone(obj):
+            return
+        if not self.ensureBase(obj):
             return
         self.getShape(obj)
 

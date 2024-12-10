@@ -1002,7 +1002,7 @@ void LinkView::setMaterial(int index, const App::Material *material) {
             return;
         }
         App::Color c = material->diffuseColor;
-        c.a = material->transparency;
+        c.setTransparency(material->transparency);
         pcLinkRoot->setColorOverride(c);
         for(int i=0;i<getSize();++i)
             setMaterial(i,nullptr);
@@ -1015,7 +1015,7 @@ void LinkView::setMaterial(int index, const App::Material *material) {
             return;
         }
         App::Color c = material->diffuseColor;
-        c.a = material->transparency;
+        c.setTransparency(material->transparency);
         info.pcRoot->setColorOverride(c);
     }
 }
@@ -2034,7 +2034,7 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
             return;
     }
     const char *icon;
-    auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
+    auto element = getObject<App::LinkElement>();
     if(element)
         icon = _LinkElementIcon;
     else if(!ext->getLinkedObjectProperty() && ext->getElementListProperty())
@@ -2380,7 +2380,7 @@ bool ViewProviderLink::getDetailPath(
 }
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
-    auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
+    auto element = getObject<App::LinkElement>();
     if (element && !element->canDelete())
         return false;
     auto ext = getLinkExtension();
@@ -3074,7 +3074,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     if(wildcard == "Face" || wildcard == "Face*" || wildcard.empty()) {
         if(wildcard.size()==4 || OverrideMaterial.getValue()) {
             App::Color c = ShapeMaterial.getValue().diffuseColor;
-            c.a = ShapeMaterial.getValue().transparency;
+            c.setTransparency(ShapeMaterial.getValue().transparency);
             colors["Face"] = c;
             if(wildcard.size()==4)
                 return colors;
@@ -3113,7 +3113,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         while(true) {
             if(wildcard!=ViewProvider::hiddenMarker() && vp->OverrideMaterial.getValue()) {
                 auto color = ShapeMaterial.getValue().diffuseColor;
-                color.a = ShapeMaterial.getValue().transparency;
+                color.setTransparency(ShapeMaterial.getValue().transparency);
                 colors.emplace(wildcard,color);
             }
             auto link = vp->getObject()->getLinkedObject(false);
@@ -3139,7 +3139,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
                     if(!overrides[i])
                         continue;
                     auto color = mat.diffuseColor;
-                    color.a = mat.transparency;
+                    color.setTransparency(mat.transparency);
                     colors.emplace(std::to_string(i)+"."+wildcard,color);
                 }
             }
@@ -3284,7 +3284,7 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
     if(hasFaceColor) {
         auto mat = ShapeMaterial.getValue();
         mat.diffuseColor = faceColor;
-        mat.transparency = faceColor.a;
+        mat.transparency = faceColor.transparency();
         ShapeMaterial.setStatus(App::Property::User3,true);
         ShapeMaterial.setValue(mat);
         ShapeMaterial.setStatus(App::Property::User3,false);

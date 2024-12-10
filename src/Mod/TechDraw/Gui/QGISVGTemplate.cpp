@@ -36,7 +36,6 @@
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -195,7 +194,7 @@ void QGISVGTemplate::createClickHandles()
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
             return true;
         }
-        std::string editableNameString = textMap[Base::Tools::toStdString(name)];
+        std::string editableNameString = textMap[name.toStdString()];
 
         // default box size
         double textHeight{0};
@@ -217,7 +216,7 @@ void QGISVGTemplate::createClickHandles()
         QFont fontForLength(Preferences::labelFontQString());
         fontForLength.setPixelSize(textHeight);
         textItemForLength.setFont(fontForLength);
-        textItemForLength.setPlainText(Base::Tools::fromStdString(editableNameString));
+        textItemForLength.setPlainText(QString::fromStdString(editableNameString));
         auto brect = textItemForLength.boundingRect();
         auto newLength = brect.width();
 

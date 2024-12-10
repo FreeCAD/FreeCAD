@@ -125,6 +125,7 @@ def makeFloor(objectslist=None,baseobj=None,name=None):
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Level")
     obj.IfcType = "Building Storey"
+    obj.CompositionType = "ELEMENT"
     return obj
 
 
@@ -136,6 +137,7 @@ def makeBuilding(objectslist=None,baseobj=None,name=None):
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Building")
     obj.IfcType = "Building"
+    obj.CompositionType = "ELEMENT"
     t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
     obj.BuildingType = ArchBuildingPart.BuildingTypes
@@ -162,8 +164,10 @@ def convertFloors(floor=None):
             nobj = makeBuildingPart(obj.Group)
             if Draft.getType(obj) == "Floor":
                 nobj.IfcType = "Building Storey"
+                nobj.CompositionType = "ELEMENT"
             else:
                 nobj.IfcType = "Building"
+                nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
                 nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
@@ -183,8 +187,8 @@ def convertFloors(floor=None):
             obj.Label = obj.Label+" to delete"
             nobj.Label = label
     for n in todel:
-        from DraftGui import todo
-        todo.delay(FreeCAD.ActiveDocument.removeObject,n)
+        from draftutils import todo
+        todo.ToDo.delay(FreeCAD.ActiveDocument.removeObject,n)
 
 
 def makeCurtainWall(baseobj=None,name=None):
@@ -1086,7 +1090,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
 
     import ArchWindow
     import Draft
-    from DraftGui import todo
+    from draftutils import todo
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -1137,5 +1141,5 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
     if obj.Base and FreeCAD.GuiUp:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
-        todo.delay(ArchWindow.recolorize,[obj.Document.Name,obj.Name])
+        todo.ToDo.delay(ArchWindow.recolorize,[obj.Document.Name,obj.Name])
     return obj

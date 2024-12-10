@@ -30,6 +30,7 @@ import json
 import os
 from typing import Dict
 from enum import Enum, auto
+import xml.etree.ElementTree
 
 from PySide import QtCore
 
@@ -52,8 +53,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
     """Scan through all available packages and see if our local copy of package.xml needs to be
     updated"""
 
-    status_message = QtCore.Signal(str)
-    progress_made = QtCore.Signal(int, int)
+    progress_made = QtCore.Signal(str, int, int)
     package_updated = QtCore.Signal(Addon)
 
     class RequestType(Enum):
@@ -165,18 +165,26 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         """Callback for handling a completed metadata file download."""
         if index in self.requests:
             self.requests_completed += 1
-            self.progress_made.emit(self.requests_completed, self.total_requests)
             request = self.requests.pop(index)
             if code == 200:  # HTTP success
                 self.updated_repos.add(request[0])  # mark this repo as updated
+                file = "unknown"
                 if request[1] == UpdateMetadataCacheWorker.RequestType.PACKAGE_XML:
                     self.process_package_xml(request[0], data)
+                    file = "package.xml"
                 elif request[1] == UpdateMetadataCacheWorker.RequestType.METADATA_TXT:
                     self.process_metadata_txt(request[0], data)
+                    file = "metadata.txt"
                 elif request[1] == UpdateMetadataCacheWorker.RequestType.REQUIREMENTS_TXT:
                     self.process_requirements_txt(request[0], data)
+                    file = "requirements.txt"
                 elif request[1] == UpdateMetadataCacheWorker.RequestType.ICON:
                     self.process_icon(request[0], data)
+                    file = "icon"
+                message = translate("AddonsInstaller", "Downloaded {} for {}").format(
+                    file, request[0].display_name
+                )
+                self.progress_made.emit(message, self.requests_completed, self.total_requests)
 
     def process_package_xml(self, repo: Addon, data: QtCore.QByteArray):
         """Process the package.xml metadata file"""
@@ -188,12 +196,14 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         with open(new_xml_file, "w", encoding="utf-8") as f:
             string_data = self._ensure_string(data, repo.name, "package.xml")
             f.write(string_data)
-        metadata = MetadataReader.from_file(new_xml_file)
+        try:
+            metadata = MetadataReader.from_file(new_xml_file)
+        except xml.etree.ElementTree.ParseError:
+            fci.Console.PrintWarning("An invalid or corrupted package.xml file was downloaded for")
+            fci.Console.PrintWarning(f" {self.name}... ignoring the bad data.\n")
+            return
         repo.set_metadata(metadata)
         FreeCAD.Console.PrintLog(f"Downloaded package.xml for {repo.name}\n")
-        self.status_message.emit(
-            translate("AddonsInstaller", "Downloaded package.xml for {}").format(repo.name)
-        )
 
         # Grab a new copy of the icon as well: we couldn't enqueue this earlier because
         # we didn't know the path to it, which is stored in the package.xml file.
@@ -245,10 +255,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
     def process_metadata_txt(self, repo: Addon, data: QtCore.QByteArray):
         """Process the metadata.txt metadata file"""
-        self.status_message.emit(
-            translate("AddonsInstaller", "Downloaded metadata.txt for {}").format(repo.display_name)
-        )
-
         f = self._ensure_string(data, repo.name, "metadata.txt")
         lines = f.splitlines()
         for line in lines:
@@ -285,12 +291,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
     def process_requirements_txt(self, repo: Addon, data: QtCore.QByteArray):
         """Process the requirements.txt metadata file"""
-        self.status_message.emit(
-            translate(
-                "AddonsInstaller",
-                "Downloaded requirements.txt for {}",
-            ).format(repo.display_name)
-        )
 
         f = self._ensure_string(data, repo.name, "requirements.txt")
         lines = f.splitlines()
@@ -306,9 +306,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
     def process_icon(self, repo: Addon, data: QtCore.QByteArray):
         """Convert icon data into a valid icon file and store it"""
-        self.status_message.emit(
-            translate("AddonsInstaller", "Downloaded icon for {}").format(repo.display_name)
-        )
         cache_file = repo.get_cached_icon_filename()
         with open(cache_file, "wb") as icon_file:
             icon_file.write(data.data())

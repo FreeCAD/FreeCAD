@@ -28,7 +28,8 @@
 #include "StockObject.h"
 #include "MillPathLine.h"
 #include <vector>
-
+#include <random>
+#include <algorithm>
 
 namespace MillSim
 {
@@ -52,9 +53,9 @@ public:
     void StartCloserGeometryPass(vec3 objColor);
     void RenderLightObject();
     void ScaleViewToStock(StockObject* obj);
-    void RenderResult();
+    void RenderResult(bool recalculate);
     void RenderResultStandard();
-    void RenderResultSSAO();
+    void RenderResultSSAO(bool recalculate);
     void SetupLinePathPass(int curSegment, bool isHidden);
     void TiltEye(float tiltStep);
     void RotateEye(float rotStep);
@@ -79,20 +80,19 @@ protected:
     void CreateDisplayFbos();
     void CreateSsaoFbos();
     void CreateFboQuad();
-    float Lerp(float a, float b, float f)
-    {
-        return a + f * (b - a);
-    }
+    void CreateGBufTex(GLenum texUnit, GLint intFormat, GLenum format, GLenum type, GLuint& texid);
+    void UniformHemisphere(vec3& randVec);
+    void UniformCircle(vec3& randVec);
 
 protected:
     // shaders
     Shader shader3D, shaderInv3D, shaderFlat, shaderSimFbo;
-    Shader shaderGeom, shaderSSAO, shaderLighting, shaderSSAOLighting, shaderSSAOBlur;
+    Shader shaderGeom, shaderSSAO, shaderSSAOLighting, shaderSSAOBlur;
     Shader shaderGeomCloser;
     Shader shaderLinePath;
-    vec3 lightColor = {0.8f, 0.9f, 1.0f};
+    vec3 lightColor = {0.5f, 0.6f, 0.7f};
     vec3 lightPos = {20.0f, 20.0f, 10.0f};
-    vec3 ambientCol = {0.6f, 0.6f, 0.7f};
+    vec3 ambientCol = {0.2f, 0.2f, 0.25f};
     vec4 pathLineColor = {0.0f, 0.9f, 0.0f, 1.0};
     vec3 pathLineColorPassed = {0.9f, 0.3f, 0.3f};
 
@@ -102,6 +102,12 @@ protected:
 
     mat4x4 mMatLookAt;
     StockObject mlightObject;
+
+    int mWidth;
+    int mHeight;
+
+    std::mt19937 generator;
+    std::uniform_real_distribution<float> distr01;
 
 
     float mEyeDistance = 30;
@@ -131,7 +137,7 @@ protected:
     unsigned int mSsaoBlurFbo;
     unsigned int mFboSsaoTexture;
     unsigned int mFboSsaoBlurTexture;
-    unsigned int mFboSsaoNoiseTexture;
+    unsigned int mFboRandTexture;
 };
 
 }  // namespace MillSim

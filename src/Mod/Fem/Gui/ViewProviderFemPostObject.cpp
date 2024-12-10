@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoPolygonOffset.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -175,7 +176,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
                       "Object Style",
                       App::Prop_None,
                       "Use plain color for edges on surface.");
-    ADD_PROPERTY_TYPE(LineWidth, (2), "Object Style", App::Prop_None, "Set wireframe line width.");
+    ADD_PROPERTY_TYPE(LineWidth, (1), "Object Style", App::Prop_None, "Set wireframe line width.");
     ADD_PROPERTY_TYPE(PointSize, (3), "Object Style", App::Prop_None, "Set node point size.");
 
 
@@ -305,12 +306,14 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     m_sepMarkerLine->addChild(m_lines);
 
     // face nodes
+    SoPolygonOffset* offset = new SoPolygonOffset();
     m_separator->addChild(m_shapeHints);
     m_separator->addChild(m_materialBinding);
     m_separator->addChild(m_material);
     m_separator->addChild(m_coordinates);
-    m_separator->addChild(m_faces);
     m_separator->addChild(m_sepMarkerLine);
+    m_separator->addChild(offset);
+    m_separator->addChild(m_faces);
 
     // Check for an already existing color bar
     Gui::SoFCColorBar* pcBar =
@@ -716,9 +719,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
         c = m_colorBar->getColor(value);
         diffcol[i].setValue(c.r, c.g, c.b);
-        transp[i] = std::max(c.a, overallTransp);
+        transp[i] = std::max(c.transparency(), overallTransp);
         edgeDiffcol[i].setValue(cEdge.r, cEdge.g, cEdge.b);
-        edgeTransp[i] = std::max(cEdge.a, overallTransp);
+        edgeTransp[i] = std::max(cEdge.transparency(), overallTransp);
     }
 
     m_material->diffuseColor.finishEditing();
@@ -758,7 +761,7 @@ void ViewProviderFemPostObject::WriteTransparency()
 
 void ViewProviderFemPostObject::updateData(const App::Property* p)
 {
-    Fem::FemPostObject* postObject = static_cast<Fem::FemPostObject*>(getObject());
+    Fem::FemPostObject* postObject = getObject<Fem::FemPostObject>();
     if (p == &postObject->Data) {
         updateVtk();
     }
@@ -843,7 +846,7 @@ bool ViewProviderFemPostObject::setupPipeline()
         return false;
     }
 
-    auto postObject = static_cast<Fem::FemPostObject*>(getObject());
+    auto postObject = getObject<Fem::FemPostObject>();
 
     vtkDataObject* data = postObject->Data.getValue();
     if (!data) {
@@ -900,7 +903,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
     bool ResetColorBarRange;
 
     // the point filter delivers a single value thus recoloring the bar is senseless
-    if (static_cast<Fem::FemPostObject*>(getObject())->getTypeId()
+    if (getObject<Fem::FemPostObject>()->getTypeId()
         == Base::Type::fromName("Fem::FemPostDataAtPointFilter")) {
         ResetColorBarRange = false;
     }

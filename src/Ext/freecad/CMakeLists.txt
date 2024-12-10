@@ -28,12 +28,14 @@ configure_file(__init__.py.template ${NAMESPACE_INIT})
 
 set(EXT_FILES
     freecad_doc.py
+    module_io.py
     part.py
     partdesign.py
     project_utility.py
     sketcher.py
     UiTools.py
     utils.py
+    utils_zip.py
 )
 
 foreach (it ${EXT_FILES})

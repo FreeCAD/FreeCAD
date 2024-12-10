@@ -282,27 +282,6 @@ struct BaseExport Tools
     static std::string escapeEncodeFilename(const std::string& s);
 
     /**
-     * @brief toStdString Convert a QString into a UTF-8 encoded std::string.
-     * @param s String to convert.
-     * @return A std::string encoded as UTF-8.
-     */
-    static inline std::string toStdString(const QString& s)
-    {
-        QByteArray tmp = s.toUtf8();
-        return {tmp.constData(), static_cast<size_t>(tmp.size())};
-    }
-
-    /**
-     * @brief fromStdString Convert a std::string encoded as UTF-8 into a QString.
-     * @param s std::string, expected to be UTF-8 encoded.
-     * @return String represented as a QString.
-     */
-    static inline QString fromStdString(const std::string& s)
-    {
-        return QString::fromUtf8(s.c_str(), static_cast<int>(s.size()));
-    }
-
-    /**
      * @brief quoted Creates a quoted string.
      * @param String to be quoted.
      * @return A quoted std::string.
@@ -327,6 +306,14 @@ struct BaseExport Tools
     static std::string currentDateTimeString();
 
     static std::vector<std::string> splitSubName(const std::string& subname);
+};
+
+struct BaseExport ZipTools
+{
+    /**
+     * @brief rewrite Rewrite a zip file under a new name.
+     */
+    static void rewrite(const std::string& source, const std::string& target);
 };
 
 

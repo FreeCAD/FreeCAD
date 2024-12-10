@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <algorithm>
+#include <cmath>
 #endif
 
 #include <Base/Sequencer.h>
@@ -34,12 +35,12 @@
 
 using namespace MeshCore;
 
-MeshTrimming::MeshTrimming(MeshKernel& rclM,
-                           const Base::ViewProjMethod* pclProj,
-                           const Base::Polygon2d& rclPoly)
-    : myMesh(rclM)
-    , myProj(pclProj)
-    , myPoly(rclPoly)
+MeshTrimming::MeshTrimming(MeshKernel& mesh,
+                           const Base::ViewProjMethod* proj,
+                           const Base::Polygon2d& poly)
+    : myMesh(mesh)
+    , myProj(proj)
+    , myPoly(poly)
 {}
 
 void MeshTrimming::SetInnerOrOuter(TMode tMode)
@@ -117,9 +118,8 @@ bool MeshTrimming::HasIntersection(const MeshGeomFacet& rclFacet) const
         if (myPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) == myInner) {
             return true;
         }
-        else {
-            clPoly.Add(Base::Vector2d(clPt2d.x, clPt2d.y));
-        }
+
+        clPoly.Add(Base::Vector2d(clPt2d.x, clPt2d.y));
     }
 
     // is corner of polygon inside the facet
@@ -195,7 +195,7 @@ bool MeshTrimming::IsPolygonPointInFacet(FacetIndex ulIndex, Base::Vector3f& clP
             w = fDetPAB / fDetABC;
 
             // point is on edge or no valid convex combination
-            if (u == 0.0f || v == 0.0f || w == 0.0f || fabs(u + v + w - 1.0f) >= 0.001f) {
+            if (u == 0.0F || v == 0.0F || w == 0.0F || std::fabs(u + v + w - 1.0F) >= 0.001F) {
                 return false;
             }
             // 3d point
@@ -266,7 +266,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(
                 float s = fSP4 / fP3P4;
 
                 // is intersection point convex combination?
-                if ((fabs(l + m - 1.0f) < 0.001f) && (fabs(r + s - 1.0f) < 0.001f)) {
+                if ((std::fabs(l + m - 1.0F) < 0.001F) && (std::fabs(r + s - 1.0F) < 0.001F)) {
                     Base::Vector3f clIntersection(m * clFac._aclPoints[j]
                                                   + l * clFac._aclPoints[(j + 1) % 3]);
 
@@ -431,7 +431,7 @@ bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos,
                     aclNewFacets.push_back(clNew);
                     break;
                 }
-                else if (myPoly.Contains(P2) == myInner) {
+                if (myPoly.Contains(P2) == myInner) {
                     MeshGeomFacet clNew;
                     clNew._aclPoints[0] = raclPoints[0];
                     clNew._aclPoints[1] = clFac._aclPoints[(j + 2) % 3];

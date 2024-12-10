@@ -1052,7 +1052,7 @@ def applyColorDict(doc,colordict=None):
                 if hasattr(obj.ViewObject,"ShapeColor"):
                     obj.ViewObject.ShapeColor = tuple(color[0:3])
                 if hasattr(obj.ViewObject,"Transparency") and (len(color) >= 4):
-                    obj.ViewObject.Transparency = color[3]
+                    obj.ViewObject.Transparency = 1.0 - color[3]
     else:
         print("No valid color dict to apply")
 

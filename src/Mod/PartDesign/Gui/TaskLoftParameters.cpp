@@ -72,7 +72,11 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        remove->setShortcut(QKeySequence(shortcut));
+    }
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
@@ -95,7 +99,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     }
 
     // add the profiles
-    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(LoftView->getObject());
+    PartDesign::Loft* loft = LoftView->getObject<PartDesign::Loft>();
     App::DocumentObject* profile = loft->Profile.getValue();
     if (profile) {
         Gui::Application::Instance->showViewProvider(profile);

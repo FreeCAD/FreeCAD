@@ -2648,7 +2648,7 @@ class OCL_Tool:
                 "bullnose": "BullCutter",
                 "drill": "ConeCutter",
                 "engraver": "ConeCutter",
-                "v-bit": "ConeCutter",
+                "v_bit": "ConeCutter",
                 "chamfer": "None",
             }
         self.toolMethod = "None"

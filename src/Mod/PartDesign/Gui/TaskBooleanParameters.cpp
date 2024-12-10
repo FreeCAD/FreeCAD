@@ -74,7 +74,7 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+    PartDesign::Boolean* pcBoolean = BooleanView->getObject<PartDesign::Boolean>();
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
     for (auto body : bodies) {
         QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
@@ -84,7 +84,11 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        action->setShortcut(QKeySequence(shortcut));
+    }
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
@@ -110,7 +114,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         // get the selected object
         PartDesign::Boolean* pcBoolean =
-            static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+            BooleanView->getObject<PartDesign::Boolean>();
         std::string body(msg.pObjectName);
         if (body.empty()) {
             return;
@@ -221,7 +225,7 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
 {
     if (checked) {
         PartDesign::Boolean* pcBoolean =
-            static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+            BooleanView->getObject<PartDesign::Boolean>();
         Gui::Document* doc = BooleanView->getDocument();
         BooleanView->hide();
         if (pcBoolean->Group.getValues().empty() && pcBoolean->BaseFeature.getValue()) {
@@ -252,7 +256,7 @@ void TaskBooleanParameters::onButtonBodyRemove(bool checked)
 
 void TaskBooleanParameters::onTypeChanged(int index)
 {
-    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+    PartDesign::Boolean* pcBoolean = BooleanView->getObject<PartDesign::Boolean>();
 
     switch (index) {
         case 0:
@@ -288,7 +292,7 @@ int TaskBooleanParameters::getType() const
 
 void TaskBooleanParameters::onBodyDeleted()
 {
-    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+    PartDesign::Boolean* pcBoolean = BooleanView->getObject<PartDesign::Boolean>();
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
     int index = ui->listWidgetBodies->currentRow();
     if (index < 0 && (size_t)index > bodies.size()) {
@@ -416,7 +420,7 @@ bool TaskDlgBooleanParameters::accept()
 bool TaskDlgBooleanParameters::reject()
 {
     // Show the bodies again
-    PartDesign::Boolean* obj = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+    PartDesign::Boolean* obj = BooleanView->getObject<PartDesign::Boolean>();
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
         if (obj->BaseFeature.getValue()) {

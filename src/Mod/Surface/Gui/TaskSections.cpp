@@ -66,7 +66,7 @@ bool ViewProviderSections::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
 
-        Surface::Sections* obj = static_cast<Surface::Sections*>(this->getObject());
+        Surface::Sections* obj = this->getObject<Surface::Sections>();
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 
@@ -279,7 +279,11 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj)
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        action->setShortcut(QKeySequence(shortcut));
+    }
     ui->listSections->addAction(action);
     connect(action, &QAction::triggered, this, &SectionsPanel::onDeleteEdge);
     ui->listSections->setContextMenuPolicy(Qt::ActionsContextMenu);

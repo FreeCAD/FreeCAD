@@ -31,7 +31,7 @@
 #endif
 
 #include <App/DocumentObject.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
@@ -61,8 +61,7 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     this->groupLayout()->addWidget(proxy);
 
     // Get the feature data
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
     auto force = pcConstraint->Force.getQuantityValue();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -127,8 +126,7 @@ void TaskFemConstraintForce::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -199,8 +197,7 @@ void TaskFemConstraintForce::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -320,8 +317,7 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 
     try {
         std::vector<std::string> direction(1, link.second);
-        Fem::ConstraintForce* pcConstraint =
-            static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+        Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
 
         // update the direction
         pcConstraint->Direction.setValue(link.first, direction);
@@ -336,8 +332,7 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 
 void TaskFemConstraintForce::onCheckReverse(const bool pressed)
 {
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
     pcConstraint->Reversed.setValue(pressed);
 }
 

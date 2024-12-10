@@ -24,7 +24,6 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -242,7 +241,7 @@ void TaskDetail::setUiFromFeat()
 //    Base::Console().Message("TD::setUIFromFeat()\n");
     if (m_baseFeat) {
         std::string baseName = getBaseFeat()->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
     }
 
     Base::Vector3d anchor;
@@ -485,7 +484,7 @@ void TaskDetail::updateDetail()
         double radius = ui->qsbRadius->rawValue();
         detailFeat->Radius.setValue(radius);
         QString qRef = ui->leReference->text();
-        std::string ref = Base::Tools::toStdString(qRef);
+        std::string ref = qRef.toStdString();
         detailFeat->Reference.setValue(ref);
 
         detailFeat->recomputeFeature();

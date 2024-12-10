@@ -335,6 +335,8 @@ public:
     bool hasNonLegacyProperty(const QString& name) const;
     bool hasLegacyProperty(const QString& name) const;
     bool hasLegacyProperties() const;
+    bool hasPhysicalProperties() const;
+    bool hasAppearanceProperties() const;
 
     // Test if the model is defined, and if values are provided for all properties
     bool hasModel(const QString& uuid) const;

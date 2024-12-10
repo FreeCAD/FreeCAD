@@ -446,14 +446,28 @@ void ExportOCAF::pushNode(int root_id,
                           std::vector<TDF_Label>& hierarchical_label,
                           std::vector<TopLoc_Location>& hierarchical_loc)
 {
-    TDF_Label root;
-    TDF_Label node;
-    root = hierarchical_label.at(root_id - 1);
-    node = hierarchical_label.at(node_id - 1);
+    auto isValidIndex = [&](std::size_t root, std::size_t node) {
+        // NOLINTBEGIN
+        if (root >= hierarchical_label.size()) {
+            return false;
+        }
+        if (node >= hierarchical_label.size() || node >= hierarchical_loc.size()) {
+            return false;
+        }
 
-    XCAFDoc_DocumentTool::ShapeTool(root)->AddComponent(root,
-                                                        node,
-                                                        hierarchical_loc.at(node_id - 1));
+        return true;
+        // NOLINTEND
+    };
+    if (isValidIndex(root_id - 1, node_id - 1)) {
+        TDF_Label root;
+        TDF_Label node;
+        TopLoc_Location locn;
+        root = hierarchical_label.at(root_id - 1);
+        node = hierarchical_label.at(node_id - 1);
+        locn = hierarchical_loc.at(node_id - 1);
+
+        XCAFDoc_DocumentTool::ShapeTool(root)->AddComponent(root, node, locn);
+    }
 }
 
 // ----------------------------------------------------------------------------

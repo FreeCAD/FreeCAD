@@ -578,7 +578,7 @@ void ElementView::changeLayer(int layer)
     doc->openTransaction("Geometry Layer Change");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-        auto sketchobject = dynamic_cast<Sketcher::SketchObject*>(ft->getObject());
+        auto sketchobject = ft->getObject<Sketcher::SketchObject>();
 
         auto geoids = getGeoIdsOfEdgesFromNames(sketchobject, ft->getSubNames());
 
@@ -1677,8 +1677,11 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
             selectVertex(item->isMidPointSelected, item->MidVertex);
         }
 
-        if (!elementSubNames.empty()) {
-            Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
+        for (const auto& elementSubName : elementSubNames) {
+            Gui::Selection().addSelection2(
+                doc_name.c_str(),
+                obj_name.c_str(),
+                sketchView->getSketchObject()->convertSubName(elementSubName).c_str());
         }
 
         this->blockSelection(block);

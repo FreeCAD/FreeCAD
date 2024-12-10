@@ -809,6 +809,275 @@ PyObject* FemMeshPy::addVolume(PyObject* args)
     return nullptr;
 }
 
+PyObject* FemMeshPy::addEdgeList(PyObject* args)
+{
+    PyObject* nodesObj = nullptr;
+    PyObject* npObj = nullptr;
+    ;
+    if (!PyArg_ParseTuple(args, "O!O!", &PyList_Type, &nodesObj, &PyList_Type, &npObj)) {
+        return nullptr;
+    }
+
+    Py::List nodesList(nodesObj);
+    Py::List npList(npObj);
+    SMESHDS_Mesh* meshDS = getFemMeshPtr()->getSMesh()->GetMeshDS();
+
+    std::vector<const SMDS_MeshNode*> nodes;
+    for (Py::List::iterator it = nodesList.begin(); it != nodesList.end(); ++it) {
+        Py::Long n(*it);
+        const SMDS_MeshNode* node = meshDS->FindNode(static_cast<int>(n));
+        if (!node) {
+            throw std::runtime_error("Failed to get node of the given indices");
+        }
+        nodes.push_back(node);
+    }
+
+    std::vector<const SMDS_MeshNode*>::iterator nodeIt = nodes.begin();
+    SMDS_MeshEdge* edge = nullptr;
+    Py::List result;
+    int np = 0;
+    for (Py::List::iterator it = npList.begin(); it != npList.end(); ++it, nodeIt += np) {
+        np = Py::Long(*it);
+        std::vector<const SMDS_MeshNode*> nodesElem(nodeIt, nodeIt + np);
+        switch (np) {
+            case 2:
+                edge = meshDS->AddEdge(nodesElem[0], nodesElem[1]);
+                break;
+            case 3:
+                edge = meshDS->AddEdge(nodesElem[0], nodesElem[1], nodesElem[2]);
+                break;
+            default:
+                PyErr_SetString(PyExc_TypeError, "Unknown node count, [2|3] are allowed");
+                return nullptr;
+        }
+        if (edge) {
+            result.append(Py::Long(edge->GetID()));
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Failed to add edge");
+            return nullptr;
+        }
+    }
+
+    return Py::new_reference_to(result);
+}
+
+
+PyObject* FemMeshPy::addFaceList(PyObject* args)
+{
+    PyObject* nodesObj = nullptr;
+    PyObject* npObj = nullptr;
+    ;
+    if (!PyArg_ParseTuple(args, "O!O!", &PyList_Type, &nodesObj, &PyList_Type, &npObj)) {
+        return nullptr;
+    }
+
+    Py::List nodesList(nodesObj);
+    Py::List npList(npObj);
+    SMESHDS_Mesh* meshDS = getFemMeshPtr()->getSMesh()->GetMeshDS();
+
+    std::vector<const SMDS_MeshNode*> nodes;
+    for (Py::List::iterator it = nodesList.begin(); it != nodesList.end(); ++it) {
+        Py::Long n(*it);
+        const SMDS_MeshNode* node = meshDS->FindNode(static_cast<int>(n));
+        if (!node) {
+            throw std::runtime_error("Failed to get node of the given indices");
+        }
+        nodes.push_back(node);
+    }
+
+    std::vector<const SMDS_MeshNode*>::iterator nodeIt = nodes.begin();
+    SMDS_MeshFace* face = nullptr;
+    Py::List result;
+    int np = 0;
+    for (Py::List::iterator it = npList.begin(); it != npList.end(); ++it, nodeIt += np) {
+        np = Py::Long(*it);
+        std::vector<const SMDS_MeshNode*> nodesElem(nodeIt, nodeIt + np);
+        switch (np) {
+            case 3:
+                face = meshDS->AddFace(nodesElem[0], nodesElem[1], nodesElem[2]);
+                break;
+            case 4:
+                face = meshDS->AddFace(nodesElem[0], nodesElem[1], nodesElem[2], nodesElem[3]);
+                break;
+            case 6:
+                face = meshDS->AddFace(nodesElem[0],
+                                       nodesElem[1],
+                                       nodesElem[2],
+                                       nodesElem[3],
+                                       nodesElem[4],
+                                       nodesElem[5]);
+                break;
+            case 8:
+                face = meshDS->AddFace(nodesElem[0],
+                                       nodesElem[1],
+                                       nodesElem[2],
+                                       nodesElem[3],
+                                       nodesElem[4],
+                                       nodesElem[5],
+                                       nodesElem[6],
+                                       nodesElem[7]);
+                break;
+            default:
+                PyErr_SetString(PyExc_TypeError, "Unknown node count, [3|4|6|8] are allowed");
+                return nullptr;
+        }
+        if (face) {
+            result.append(Py::Long(face->GetID()));
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Failed to add face");
+            return nullptr;
+        }
+    }
+
+    return Py::new_reference_to(result);
+}
+
+
+PyObject* FemMeshPy::addVolumeList(PyObject* args)
+{
+    PyObject* nodesObj = nullptr;
+    PyObject* npObj = nullptr;
+    ;
+    if (!PyArg_ParseTuple(args, "O!O!", &PyList_Type, &nodesObj, &PyList_Type, &npObj)) {
+        return nullptr;
+    }
+
+    Py::List nodesList(nodesObj);
+    Py::List npList(npObj);
+    SMESHDS_Mesh* meshDS = getFemMeshPtr()->getSMesh()->GetMeshDS();
+
+    std::vector<const SMDS_MeshNode*> nodes;
+    for (Py::List::iterator it = nodesList.begin(); it != nodesList.end(); ++it) {
+        Py::Long n(*it);
+        const SMDS_MeshNode* node = meshDS->FindNode(static_cast<int>(n));
+        if (!node) {
+            throw std::runtime_error("Failed to get node of the given indices");
+        }
+        nodes.push_back(node);
+    }
+
+    std::vector<const SMDS_MeshNode*>::iterator nodeIt = nodes.begin();
+    SMDS_MeshVolume* vol = nullptr;
+    Py::List result;
+    int np = 0;
+    for (Py::List::iterator it = npList.begin(); it != npList.end(); ++it, nodeIt += np) {
+        np = Py::Long(*it);
+        std::vector<const SMDS_MeshNode*> nodesElem(nodeIt, nodeIt + np);
+        switch (np) {
+            case 4:
+                vol = meshDS->AddVolume(nodesElem[0], nodesElem[1], nodesElem[2], nodesElem[3]);
+                break;
+            case 5:
+                vol = meshDS->AddVolume(nodesElem[0],
+                                        nodesElem[1],
+                                        nodesElem[2],
+                                        nodesElem[3],
+                                        nodesElem[4]);
+                break;
+            case 6:
+                vol = meshDS->AddVolume(nodesElem[0],
+                                        nodesElem[1],
+                                        nodesElem[2],
+                                        nodesElem[3],
+                                        nodesElem[4],
+                                        nodesElem[5]);
+                break;
+            case 8:
+                vol = meshDS->AddVolume(nodesElem[0],
+                                        nodesElem[1],
+                                        nodesElem[2],
+                                        nodesElem[3],
+                                        nodesElem[4],
+                                        nodesElem[5],
+                                        nodesElem[6],
+                                        nodesElem[7]);
+                break;
+            case 10:
+                vol = meshDS->AddVolume(nodesElem[0],
+                                        nodesElem[1],
+                                        nodesElem[2],
+                                        nodesElem[3],
+                                        nodesElem[4],
+                                        nodesElem[5],
+                                        nodesElem[6],
+                                        nodesElem[7],
+                                        nodesElem[8],
+                                        nodesElem[9]);
+                break;
+            case 13:
+                vol = meshDS->AddVolume(nodesElem[0],
+                                        nodesElem[1],
+                                        nodesElem[2],
+                                        nodesElem[3],
+                                        nodesElem[4],
+                                        nodesElem[5],
+                                        nodesElem[6],
+                                        nodesElem[7],
+                                        nodesElem[8],
+                                        nodesElem[9],
+                                        nodesElem[10],
+                                        nodesElem[11],
+                                        nodesElem[12]);
+                break;
+            case 15:
+                vol = meshDS->AddVolume(nodesElem[0],
+                                        nodesElem[1],
+                                        nodesElem[2],
+                                        nodesElem[3],
+                                        nodesElem[4],
+                                        nodesElem[5],
+                                        nodesElem[6],
+                                        nodesElem[7],
+                                        nodesElem[8],
+                                        nodesElem[9],
+                                        nodesElem[10],
+                                        nodesElem[11],
+                                        nodesElem[12],
+                                        nodesElem[13],
+                                        nodesElem[14]);
+                break;
+            case 20:
+                vol = meshDS->AddVolume(nodesElem[0],
+                                        nodesElem[1],
+                                        nodesElem[2],
+                                        nodesElem[3],
+                                        nodesElem[4],
+                                        nodesElem[5],
+                                        nodesElem[6],
+                                        nodesElem[7],
+                                        nodesElem[8],
+                                        nodesElem[9],
+                                        nodesElem[10],
+                                        nodesElem[11],
+                                        nodesElem[12],
+                                        nodesElem[13],
+                                        nodesElem[14],
+                                        nodesElem[15],
+                                        nodesElem[16],
+                                        nodesElem[17],
+                                        nodesElem[18],
+                                        nodesElem[19]);
+                break;
+            default:
+                PyErr_SetString(PyExc_TypeError,
+                                "Unknown node count, [4|5|6|8|10|13|15|20] are allowed");
+                return nullptr;
+        }
+        if (vol) {
+            result.append(Py::Long(vol->GetID()));
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Failed to add face");
+            return nullptr;
+        }
+    }
+
+    return Py::new_reference_to(result);
+}
+
+
 PyObject* FemMeshPy::copy(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {

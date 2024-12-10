@@ -186,7 +186,7 @@
 
 #include <OCAF/ImportExportSettings.h>
 #include "MeasureClient.h"
-
+#include <FuzzyHelper.h>
 
 namespace Part {
 extern PyObject* initModule();
@@ -562,6 +562,11 @@ PyMOD_INIT_FUNC(Part)
 
     OCAF::ImportExportSettings::initialize();
     Part::MeasureClient::initialize();
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    
+    Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",10.0));
     
     PyMOD_Return(partModule);
 }

@@ -69,7 +69,7 @@ bool ViewProviderFemConstraintGear::setEdit(int ModNum)
 
 void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
 {
-    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(this->getObject());
+    Fem::ConstraintGear* pcConstraint = this->getObject<Fem::ConstraintGear>();
 
     // Gets called whenever a property of the attached object changes
     if (prop == &pcConstraint->BasePoint) {

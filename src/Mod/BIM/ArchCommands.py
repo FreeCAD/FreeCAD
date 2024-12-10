@@ -165,6 +165,32 @@ def removeComponents(objectsList,host=None):
                     if FreeCAD.GuiUp:
                         if not Draft.getType(o) in ["Window","Roof"]:
                             setAsSubcomponent(o)
+                    # Making reference to BimWindow.Arch_Window:
+                    # Check if o and o.Base has Attachment Support, and
+                    # if the support is the host object itself - thus a cyclic
+                    # dependency and probably creating TNP.
+                    # If above is postive, remove its AttachmentSupport:
+                    if hasattr(o,"Base") and o.Base:
+                        objList = [o, o.Base]
+                    else:
+                        objList = [o]
+                    for i in objList:
+                        objHost = None
+                        if hasattr(i,"AttachmentSupport"):
+                            if i.AttachmentSupport:
+                                if isinstance(i.AttachmentSupport,tuple):
+                                    objHost = i.AttachmentSupport[0]
+                                elif isinstance(i.AttachmentSupport,list):
+                                    objHost = i.AttachmentSupport[0][0]
+                                else:
+                                    objHost = i.AttachmentSupport
+                            if objHost == host:
+                                msg = FreeCAD.Console.PrintMessage
+                                msg(i.Label + " is mapped to " + host.Label +
+                                    ", removing the former's Attachment " +
+                                    "Support to avoid cyclic dependency and " +
+                                    "TNP." + "\n")
+                                i.AttachmentSupport = None # remove
             host.Subtractions = s
         elif Draft.getType(host) in ["SectionPlane"]:
             a = host.Objects
@@ -582,7 +608,7 @@ def removeCurves(shape,dae=False,tolerance=5):
     with faceted segments. If dae is True, DAE triangulation options are used'''
     import Mesh
     if dae:
-        import importDAE
+        from importers import importDAE
         t = importDAE.triangulate(shape.cleaned())
     else:
         t = shape.cleaned().tessellate(tolerance)
@@ -744,6 +770,9 @@ def pruneIncluded(objectslist,strict=False):
                     elif parent.isDerivedFrom("PartDesign::Body") and obj == parent.BaseFeature:
                         # don't consider a PartDesign_Body with a PartDesign_Clone that references obj
                         pass
+                    elif parent.isDerivedFrom("PartDesign::SubShapeBinder") or (hasattr(parent, "TypeId") and parent.TypeId == "PartDesign::ShapeBinder"):
+                        # don't consider a PartDesign_SubShapeBinder or PartDesign_ShapeBinder referncing this object from another object
+                        pass
                     elif hasattr(parent,"Host") and parent.Host == obj:
                         pass
                     elif hasattr(parent,"Hosts") and obj in parent.Hosts:
@@ -765,7 +794,7 @@ def pruneIncluded(objectslist,strict=False):
         if toplevel:
             newlist.append(obj)
         else:
-            FreeCAD.Console.PrintLog("pruning "+obj.Label+"\n")
+            FreeCAD.Console.PrintWarning("pruning "+obj.Label+"\n")
     return newlist
 
 def getAllChildren(objectlist):

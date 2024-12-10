@@ -672,7 +672,7 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Todos (*)</translation>
@@ -683,12 +683,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Importar um arquivo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Exportar um arquivo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Mostrar planilha</translation>
     </message>
@@ -732,7 +732,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Planilha.meu_nome em vez de Planilha.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
       <translation>Planilha</translation>
     </message>
@@ -1036,25 +1036,25 @@ Padrão para: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="160"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Inserir %n coluna(s) à direita</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insere %n coluna(s) à direita</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Inserir %n colunas não contíguas</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insere %n colunas não sequenciais</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove column(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Remover coluna(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove coluna(s)</numerusform>
       </translation>
     </message>
     <message>
@@ -1157,7 +1157,8 @@ Padrão para: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="93"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
       <source>Unnamed</source>
       <translation>Sem nome</translation>
     </message>

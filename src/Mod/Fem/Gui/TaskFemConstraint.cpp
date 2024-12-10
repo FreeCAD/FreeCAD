@@ -103,7 +103,7 @@ const std::string TaskFemConstraint::getReferences(const std::vector<std::string
 
 const std::string TaskFemConstraint::getScale() const
 {
-    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
+    Fem::Constraint* pcConstraint = ConstraintView->getObject<Fem::Constraint>();
 
     return std::to_string(pcConstraint->Scale.getValue());
 }
@@ -131,7 +131,7 @@ void TaskFemConstraint::setSelection(QListWidgetItem* item)
 
 void TaskFemConstraint::onReferenceDeleted(const int row)
 {
-    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
+    Fem::Constraint* pcConstraint = ConstraintView->getObject<Fem::Constraint>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -168,7 +168,11 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
     // creates a context menu, a shortcut for it and connects it to a slot function
 
     deleteAction = new QAction(tr("Delete"), this);
-    deleteAction->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        deleteAction->setShortcut(QKeySequence(shortcut));
+    }
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);

@@ -370,11 +370,11 @@ def export(objectslist, filename, argstring):
             STORED_COMPENSATED_OBJ = commands
         # Find mill compensation
         if hasattr(obj, "Side") and hasattr(obj, "Direction"):
-            if obj.Side == "Outside" and obj.Direction == "Climb":
+            if obj.Side == "Outside" and obj.Direction == "CW":
                 Compensation = "L"
-            elif obj.Side == "Outside" and obj.Direction == "Conventional":
+            elif obj.Side == "Outside" and obj.Direction == "CCW":
                 Compensation = "R"
-            elif obj.Side != "Outside" and obj.Direction == "Climb":
+            elif obj.Side != "Outside" and obj.Direction == "CW":
                 Compensation = "R"
             else:
                 Compensation = "L"

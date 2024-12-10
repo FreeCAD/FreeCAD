@@ -429,6 +429,10 @@ class _ViewProviderArchSchedule:
         self.edit()
 
     def setupContextMenu(self, vobj, menu):
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         QtCore.QObject.connect(actionEdit,
@@ -529,8 +533,9 @@ class ArchScheduleTaskPanel:
                     item = QtGui.QTableWidgetItem([obj.Description,obj.Value,obj.Unit,obj.Objects,obj.Filter][i][j])
                     self.form.list.setItem(j,i,item)
             self.form.lineEditName.setText(self.obj.Label)
-            self.form.checkDetailed.setChecked(self.obj.DetailedResults)
             self.form.checkSpreadsheet.setChecked(self.obj.CreateSpreadsheet)
+            self.form.checkDetailed.setChecked(self.obj.DetailedResults)
+            self.form.checkAutoUpdate.setChecked(self.obj.AutoUpdate)
 
         # center over FreeCAD window
         mw = FreeCADGui.getMainWindow()

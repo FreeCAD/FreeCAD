@@ -68,6 +68,18 @@ PyObject* AssemblyObjectPy::solve(PyObject* args)
     return Py_BuildValue("i", ret);
 }
 
+PyObject* AssemblyObjectPy::generateSimulation(PyObject* args)
+{
+    PyObject* pyobj;
+
+    if (!PyArg_ParseTuple(args, "O", &pyobj)) {
+        return nullptr;
+    }
+    auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+    int ret = this->getAssemblyObjectPtr()->generateSimulation(obj);
+    return Py_BuildValue("i", ret);
+}
+
 PyObject* AssemblyObjectPy::ensureIdentityPlacements(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
@@ -75,6 +87,31 @@ PyObject* AssemblyObjectPy::ensureIdentityPlacements(PyObject* args)
     }
     this->getAssemblyObjectPtr()->ensureIdentityPlacements();
     Py_Return;
+}
+
+PyObject* AssemblyObjectPy::updateForFrame(PyObject* args)
+{
+    unsigned long index {};
+
+    if (!PyArg_ParseTuple(args, "k", &index)) {
+        throw Py::RuntimeError("updateForFrame requires an integer index");
+    }
+    PY_TRY
+    {
+        this->getAssemblyObjectPtr()->updateForFrame(index);
+    }
+    PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject* AssemblyObjectPy::numberOfFrames(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    size_t ret = this->getAssemblyObjectPtr()->numberOfFrames();
+    return Py_BuildValue("k", ret);
 }
 
 PyObject* AssemblyObjectPy::undoSolve(PyObject* args)
@@ -99,7 +136,7 @@ PyObject* AssemblyObjectPy::isPartConnected(PyObject* args)
 {
     PyObject* pyobj;
 
-    if (!PyArg_ParseTuple(args, "O", &pyobj)) {
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pyobj)) {
         return nullptr;
     }
     auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
@@ -111,7 +148,7 @@ PyObject* AssemblyObjectPy::isPartGrounded(PyObject* args)
 {
     PyObject* pyobj;
 
-    if (!PyArg_ParseTuple(args, "O", &pyobj)) {
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pyobj)) {
         return nullptr;
     }
     auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
@@ -124,7 +161,7 @@ PyObject* AssemblyObjectPy::isJointConnectingPartToGround(PyObject* args)
     PyObject* pyobj;
     char* pname;
 
-    if (!PyArg_ParseTuple(args, "Os", &pyobj, &pname)) {
+    if (!PyArg_ParseTuple(args, "O!s", &(App::DocumentObjectPy::Type), &pyobj, &pname)) {
         return nullptr;
     }
     auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
@@ -150,4 +187,16 @@ PyObject* AssemblyObjectPy::exportAsASMT(PyObject* args)
     this->getAssemblyObjectPtr()->exportAsASMT(fileName);
 
     Py_Return;
+}
+
+Py::List AssemblyObjectPy::getJoints() const
+{
+    Py::List ret;
+    std::vector<App::DocumentObject*> list = getAssemblyObjectPtr()->getJoints();
+
+    for (auto It : list) {
+        ret.append(Py::Object(It->getPyObject(), true));
+    }
+
+    return ret;
 }

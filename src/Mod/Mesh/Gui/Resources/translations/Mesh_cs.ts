@@ -2046,7 +2046,7 @@ to a smoother appearance.
       <location filename="../../Workbench.cpp" line="121"/>
       <location filename="../../Workbench.cpp" line="122"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>

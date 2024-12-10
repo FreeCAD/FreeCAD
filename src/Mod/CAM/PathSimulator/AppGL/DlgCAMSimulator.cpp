@@ -24,6 +24,7 @@
 
 #include "DlgCAMSimulator.h"
 #include "MillSimulation.h"
+#include "Gui/View3DInventorViewer.h"
 #include <Mod/Part/App/BRepMesh.h>
 #include <QDateTime>
 #include <QSurfaceFormat>
@@ -311,7 +312,10 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         QSurfaceFormat format;
         format.setVersion(4, 1);                         // Request OpenGL 4.1 - for MacOS
         format.setProfile(QSurfaceFormat::CoreProfile);  // Use the core profile = for MacOS
-        format.setSamples(16);
+        int samples = Gui::View3DInventorViewer::getNumSamples();
+        if (samples > 1) {
+            format.setSamples(samples);
+        }
         format.setSwapInterval(2);
         format.setDepthBufferSize(24);
         format.setStencilBufferSize(8);

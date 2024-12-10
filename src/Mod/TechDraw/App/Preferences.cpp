@@ -155,6 +155,21 @@ int Preferences::projectionAngle()
     return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First Angle
 }
 
+bool Preferences::groupAutoDistribute()
+{
+    return getPreferenceGroup("General")->GetBool("AutoDist", true);
+}
+
+double Preferences::groupSpaceX()
+{
+    return getPreferenceGroup("General")->GetFloat("GroupSpaceX", 15.0);
+}
+
+double Preferences::groupSpaceY()
+{
+    return getPreferenceGroup("General")->GetFloat("GroupSpaceY", 15.0);
+}
+
 int Preferences::lineGroup()
 {
     return getPreferenceGroup("Decorations")->GetInt("LineGroup", 3);  // FC 0.70mm
@@ -534,21 +549,16 @@ std::string Preferences::currentElementDefFile()
 int Preferences::LineCapStyle()
 {
     int currentIndex = LineCapIndex();
-    int result{0x20};
-        switch (currentIndex) {
+    switch (currentIndex) {
         case 0:
-            result = static_cast<Qt::PenCapStyle>(0x20);   //round;
-            break;
+            return static_cast<Qt::PenCapStyle>(0x20);   //round;
         case 1:
-            result = static_cast<Qt::PenCapStyle>(0x10);   //square;
-            break;
+            return static_cast<Qt::PenCapStyle>(0x10);   //square;
         case 2:
-            result = static_cast<Qt::PenCapStyle>(0x00);   //flat
-            break;
+            return static_cast<Qt::PenCapStyle>(0x00);   //flat
         default:
-            result = static_cast<Qt::PenCapStyle>(0x20);
+            return static_cast<Qt::PenCapStyle>(0x20);
     }
-    return result;
 }
 
 //! returns the line cap index without conversion to a Qt::PenCapStyle
@@ -612,3 +622,52 @@ double Preferences::SnapLimitFactor()
 }
 
 
+//! returns the key combination that simulates multiple selection. Traditionally Ctrl+pick, as that
+//! is how QGraphicsScene implements multiple selection.  This method is likely to only be used by
+//! developers.
+Qt::KeyboardModifiers Preferences::multiselectModifiers()
+{
+    uint iModifiers = getPreferenceGroup("General")->GetUnsigned("MultiselectModifiers", (uint)Qt::ControlModifier);
+    return (Qt::KeyboardModifiers)iModifiers;
+//    Qt::KeyboardModifiers testMods = Qt::ControlModifier;
+//    return testMods;
+}
+
+
+//! returns the key combination that modifies Balloon drag behaviour so that the bubble and leader
+//! are moved together.  Traditionally Ctrl+drag, but that can be in conflict with multi selection.
+Qt::KeyboardModifiers Preferences::balloonDragModifiers()
+{
+    uint iModifiers = getPreferenceGroup("General")->GetUnsigned("BalloonDragModifier", (uint)Qt::ControlModifier);
+    return (Qt::KeyboardModifiers)iModifiers;
+//    Qt::KeyboardModifiers testMods = Qt::ShiftModifier | Qt::ControlModifier;
+//    return testMods;
+}
+
+
+void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
+{
+    getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
+}
+
+//! if true, shapes are validated before use and problematic ones are skipped.
+//! validating shape takes time, but can prevent crashes/bad results in occt.
+//! this would normally be set to false and set to true to aid in debugging/support.
+bool Preferences::checkShapesBeforeUse()
+{
+    return getPreferenceGroup("General")->GetBool("CheckShapesBeforeUse", false);
+}
+
+
+//! if true, shapes which fail validation are saved as brep files
+bool Preferences::debugBadShape()
+{
+    return getPreferenceGroup("debug")->GetBool("debugBadShape", false);
+}
+
+
+//! if true, automatically switch to TD workbench when a Page is set in edit (double click)
+bool Preferences::switchOnClick()
+{
+    return getPreferenceGroup("General")->GetBool("SwitchToWB", true);
+}
