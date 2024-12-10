@@ -1,7 +1,7 @@
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-*,bugprone-*,
 performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,google-explicit-constructor,
-concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard,
+concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard,-readability-identifier-length,
 -readability-redundant-access-specifiers,-readability-qualified-auto,
 -cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-owning-memory,
 -readability-convert-member-functions-to-static,-bugprone-easily-swappable-parameters,
@@ -150,8 +150,6 @@ CheckOptions:
     value:           '0'
   - key:             concurrency-mt-unsafe.FunctionSet
     value:           any
-  - key:             readability-identifier-length.IgnoredExceptionVariableNames
-    value:           '^[e]$'
   - key:             google-readability-braces-around-statements.ShortStatementLines
     value:           '1'
   - key:             bugprone-reserved-identifier.AllowedIdentifiers
