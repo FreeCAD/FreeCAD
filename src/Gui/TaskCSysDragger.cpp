@@ -426,9 +426,9 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
     auto doc = Application::Instance->getDocument(msg.pDocName);
     auto obj = doc->getDocument()->getObject(msg.pObjectName);
 
-    auto globalPlacement = static_cast<App::GeoFeature*>(obj)->globalPlacement();
-    auto localPlacement = static_cast<App::GeoFeature*>(obj)->Placement.getValue();
-    auto rootPlacement = vp->getObjectPlacement();
+    auto globalPlacement = App::GeoFeature::getGlobalPlacement(obj);
+    auto localPlacement = App::GeoFeature::getPlacementFromProp(obj, "Placement");
+    auto rootPlacement = App::GeoFeature::getGlobalPlacement(vp->getObject());
 
     auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement
         * subObjectPlacementProvider->calculate(msg.Object, localPlacement);
