@@ -28,6 +28,7 @@
 #endif
 
 #include <App/DocumentObjectPy.h>
+#include <App/Expression.h>
 #include <Base/Console.h>
 #include <Base/Matrix.h>
 #include <Base/Tools.h>
@@ -428,12 +429,25 @@ void DocumentObject::getOutList(int options, std::vector<DocumentObject*>& res) 
     std::size_t size = res.size();
     for (auto prop : props) {
         auto link = dynamic_cast<PropertyLinkBase*>(prop);
-        if (link) {
+        if (link && strcmp(link->getName(), "ExpressionEngine") != 0) {
             link->getLinks(res, noHidden);
         }
     }
     if (!(options & OutListNoExpression)) {
-        ExpressionEngine.getLinks(res);
+        //ExpressionEngine.getLinks(res);
+        auto expressions = ExpressionEngine.getExpressions();
+        for (const auto& pair : expressions) {
+            const App::Expression* exp = pair.second;
+            for (const auto& id : exp->getIdentifiers()) {
+                Property* prop = id.first.getProperty();
+                if (prop) {
+                    DocumentObject* obj = dynamic_cast<DocumentObject*>(prop->getContainer());
+                    if (obj && !obj->isExposed(prop)) {
+                        res.push_back(obj);
+                    }
+                }
+            }
+        }
     }
 
     if (options & OutListNoXLinked) {
@@ -921,13 +935,22 @@ void DocumentObject::onChanged(const Property* prop)
     // set object touched if it is an input property
     if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
         && !prop->testStatus(Property::Output)) {
-        if (!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
-            StatusBits.set(ObjectStatus::Touch);
+        if (isExposed(prop)) {
+            // The property is exposed: Do not touch this object but the ones
+            // that depend on it.
+            for (auto obj : getInList()) {
+                obj->touch(false);
+            }
         }
-        // must execute on document recompute
-        if (!(prop->getType() & Prop_NoRecompute)) {
-            StatusBits.set(ObjectStatus::Enforce);
+        else {
+            if (!StatusBits.test(ObjectStatus::Touch)) {
+                FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+                StatusBits.set(ObjectStatus::Touch);
+            }
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
     }
 
