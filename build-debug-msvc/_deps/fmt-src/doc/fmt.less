@@ -1,0 +1,71 @@
+@import 'bootstrap.less';
+
+@header-bg: #094d75;
+@icon-font-path: "fonts/";
+
+html {
+  overflow-y: scroll;
+}
+
+.navbar {
+  border-radius: 0;
+  margin-bottom: 0;
+  background-color: darken(@header-bg, 10%);
+}
+
+.jumbotron {
+  #gradient > .vertical(@header-bg; darken(@header-bg, 2%); 50%; 50%);
+  background-size: 100% 4px;
+  background-color: @header-bg;
+  background-repeat: repeat-y;
+  color: white;
+  text-align: center;
+}
+
+div.sphinxsidebar {
+  margin-left: 0;
+}
+
+// Keep content not too wide for better readability.
+.navbar-content, .content {
+  .make-md-column-offset(1);
+  .make-md-column(10);
+  .make-lg-column-offset(2);
+  .make-lg-column(8);
+}
+
+.footer {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid @gray-lighter;
+  text-align: center;
+}
+
+// Indent descriptions of classes, functions and macros.
+.class dd, .function dd, .macro dd {
+  margin-left: 20px;
+}
+
+// Remove Bootstrap padding for Sphinx containers.
+.breathe-sectiondef.container {
+  padding: 0;
+}
+
+// Remove Bootstrap padding for Sphinx code elements in API signatures.
+.descclassname, .descname {
+  padding: 0;
+}
+
+// Override center alignment in tables.
+td {
+  text-align: left;
+}
+
+p.rubric {
+  margin-top: 10px;
+}
+
+.github-btn {
+  border: 0;
+  overflow: hidden;
+}

@@ -622,9 +622,9 @@ def add_properties(
                 obj.addProperty("App::PropertyString", attr, "IFC")
             if value is not None:
                 setattr(obj, attr, str(value))
-    # link Label2 and Description
-    if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
-        obj.setExpression("Label2", "Description")
+    # link Description  and Description
+    if "Description" not in obj.PropertiesList and hasattr(obj, "setExpression"):
+        obj.setExpression("Description ", "Description")
 
 
 def remove_unused_properties(obj):
