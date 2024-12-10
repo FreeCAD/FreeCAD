@@ -546,6 +546,19 @@ public:
     ~PropertyMagnetization() override = default;
 };
 
+/** ElectromagneticPotential property
+ * This is a property for representing electromagnetic potentials. It is basically a float
+ * property. On the Gui it has a quantity like Wb/m.
+ */
+class AppExport PropertyElectromagneticPotential: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectromagneticPotential();
+    ~PropertyElectromagneticPotential() override = default;
+};
+
 /** Mass property
  * This is a property for representing mass. It is basically a float
  * property. On the Gui it has a quantity like kg.
