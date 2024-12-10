@@ -27,6 +27,10 @@
 
 # include "QGIPrimPath.h"
 
+namespace Base {
+class Vector2d;
+}
+
 namespace TechDrawGui
 {
 
@@ -44,6 +48,9 @@ public:
 
     float getRadius() { return m_radius; }
     virtual void setRadius(float r);
+
+    Base::Vector2d toVector2d() const;
+    Base::Vector2d vector2dBetweenPoints(const QGIVertex* p2) const;
 
 protected:
     bool multiselectEligible() override { return true; }
