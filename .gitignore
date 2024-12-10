@@ -45,6 +45,9 @@ install_manifest.txt
 /Mod/
 /ZERO_CHECK.dir/
 /build/
+/build-debug/
+/build-debug-msvc/
+/build-debug-release/
 /cmake-build*/
 /src/Tools/offlinedoc/localwiki/
 /src/Tools/offlinedoc/*.txt
