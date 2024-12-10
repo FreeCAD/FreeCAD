@@ -19,12 +19,10 @@ TEST(BaseQuantity, TestValid)
 
 TEST(BaseQuantity, TestParse)
 {
-    Base::Quantity q1 = Base::Quantity::parse(QString::fromLatin1("1,234 kg"));
+    Base::Quantity q1 = Base::Quantity::parse("1,234 kg");
 
     EXPECT_EQ(q1, Base::Quantity(1.2340, Base::Unit::Mass));
-    EXPECT_THROW(
-        boost::ignore_unused(Base::Quantity::parse(QString::fromLatin1("1,234,500.12 kg"))),
-        Base::ParserError);
+    EXPECT_THROW(boost::ignore_unused(Base::Quantity::parse("1,234,500.12 kg")), Base::ParserError);
 }
 
 TEST(BaseQuantity, TestDim)
@@ -74,10 +72,10 @@ TEST(BaseQuantity, TestPow3DIV2)
 
 TEST(BaseQuantity, TestString)
 {
-    Base::Quantity q1 {2, QString::fromLatin1("kg*m/s^2")};
+    Base::Quantity q1 {2, "kg*m/s^2"};
     EXPECT_EQ(q1.getUnit(), Base::Unit::Force);
 
-    Base::Quantity q2 {2, QString::fromLatin1("kg*m^2/s^2")};
+    Base::Quantity q2 {2, "kg*m^2/s^2"};
     EXPECT_EQ(q2.getUnit(), Base::Unit::Work);
 }
 
@@ -91,7 +89,7 @@ TEST(BaseQuantity, TestCopy)
 TEST(BaseQuantity, TestEqual)
 {
     Base::Quantity q1 {1.0, Base::Unit::Force};
-    Base::Quantity q2 {1.0, QString::fromLatin1("kg*mm/s^2")};
+    Base::Quantity q2 {1.0, "kg*mm/s^2"};
 
     EXPECT_EQ(q1 == q1, true);
     EXPECT_EQ(q1 == q2, true);
@@ -100,7 +98,7 @@ TEST(BaseQuantity, TestEqual)
 TEST(BaseQuantity, TestNotEqual)
 {
     Base::Quantity q1 {1.0, Base::Unit::Force};
-    Base::Quantity q2 {2.0, QString::fromLatin1("kg*m/s^2")};
+    Base::Quantity q2 {2.0, "kg*m/s^2"};
     Base::Quantity q3 {1.0, Base::Unit::Work};
 
     EXPECT_EQ(q1 != q2, true);
@@ -110,7 +108,7 @@ TEST(BaseQuantity, TestNotEqual)
 TEST(BaseQuantity, TestLessOrGreater)
 {
     Base::Quantity q1 {1.0, Base::Unit::Force};
-    Base::Quantity q2 {2.0, QString::fromLatin1("kg*m/s^2")};
+    Base::Quantity q2 {2.0, "kg*m/s^2"};
     Base::Quantity q3 {2.0, Base::Unit::Work};
 
     EXPECT_EQ(q1 < q2, true);
@@ -192,10 +190,10 @@ TEST_F(Quantity, TestSchemeImperialTwo)
     Base::Quantity quantity {1.0, Base::Unit::Length};
 
     double factor {};
-    QString unitString;
+    std::string unitString;
     auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
-    QString result = scheme->schemaTranslate(quantity, factor, unitString);
-    EXPECT_EQ(result.toStdString(), "0.04 in");
+    std::string result = scheme->schemaTranslate(quantity, factor, unitString);
+    EXPECT_EQ(result, "0.04 in");
 }
 
 TEST_F(Quantity, TestSchemeImperialOne)
@@ -207,11 +205,11 @@ TEST_F(Quantity, TestSchemeImperialOne)
     quantity.setFormat(format);
 
     double factor {};
-    QString unitString;
+    std::string unitString;
     auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
-    QString result = scheme->schemaTranslate(quantity, factor, unitString);
+    std::string result = scheme->schemaTranslate(quantity, factor, unitString);
 
-    EXPECT_EQ(result.toStdString(), "0.0 in");
+    EXPECT_EQ(result, "0.0 in");
 }
 
 TEST_F(Quantity, TestSafeUserString)
@@ -223,9 +221,9 @@ TEST_F(Quantity, TestSafeUserString)
     format.precision = 1;
     quantity.setFormat(format);
 
-    QString result = quantity.getSafeUserString();
+    std::string result = quantity.getSafeUserString();
 
-    EXPECT_EQ(result.toStdString(), "1 mm");
+    EXPECT_EQ(result, "1 mm");
 
     Base::UnitsApi::setSchema(Base::UnitSystem::Imperial1);
 
@@ -234,13 +232,13 @@ TEST_F(Quantity, TestSafeUserString)
 
     result = quantity.getSafeUserString();
 
-    EXPECT_EQ(result.toStdString(), "1.0 \\'");
+    EXPECT_EQ(result, "1.0 \\'");
 
     quantity = Base::Quantity {25.4, Base::Unit::Length};
     quantity.setFormat(format);
 
     result = quantity.getSafeUserString();
 
-    EXPECT_EQ(result.toStdString(), "1.0 \\\"");
+    EXPECT_EQ(result, "1.0 \\\"");
 }
 // NOLINTEND

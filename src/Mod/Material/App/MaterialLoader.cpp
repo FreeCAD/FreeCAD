@@ -115,8 +115,7 @@ std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node
 
             auto row = std::make_shared<QList<QVariant>>();
             for (std::size_t j = 0; j < yamlRow.size(); j++) {
-                Base::Quantity qq =
-                    Base::Quantity::parse(QString::fromStdString(yamlRow[j].as<std::string>()));
+                Base::Quantity qq = Base::Quantity::parse(yamlRow[j].as<std::string>());
                 row->push_back(QVariant::fromValue(qq));
             }
             array2d->addRow(row);
@@ -141,8 +140,7 @@ std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node
         for (std::size_t depth = 0; depth < yamlArray.size(); depth++) {
             auto yamlDepth = yamlArray[depth];
             for (auto it = yamlDepth.begin(); it != yamlDepth.end(); it++) {
-                auto depthValue =
-                    Base::Quantity::parse(QString::fromStdString(it->first.as<std::string>()));
+                auto depthValue = Base::Quantity::parse(it->first.as<std::string>());
 
                 array3d->addDepth(depth, depthValue);
 
@@ -152,8 +150,7 @@ std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node
 
                     auto row = std::make_shared<QList<Base::Quantity>>();
                     for (std::size_t j = 0; j < yamlRow.size(); j++) {
-                        row->push_back(Base::Quantity::parse(
-                            QString::fromStdString(yamlRow[j].as<std::string>())));
+                        row->push_back(Base::Quantity::parse(yamlRow[j].as<std::string>()));
                     }
                     array3d->addRow(depth, row);
                 }
