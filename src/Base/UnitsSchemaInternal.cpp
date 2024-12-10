@@ -400,6 +400,10 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QStr
         unitString = QString::fromLatin1("A/m");
         factor = 1e-3;
     }
+    else if (unit == Unit::ElectromagneticPotential) {
+        unitString = QString::fromLatin1("Wb/m");
+        factor = 1e3;
+    }
     else if (unit == Unit::ElectricalConductance) {
         if (UnitValue < 1e-9) {
             unitString = QString::fromUtf8("\xC2\xB5S");
