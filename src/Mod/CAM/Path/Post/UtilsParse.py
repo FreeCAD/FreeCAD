@@ -318,6 +318,25 @@ def default_Q_parameter(
     return ""
 
 
+def default_rotary_parameter(
+    values: Values,
+    command: str,  # pylint: disable=unused-argument
+    param: str,
+    param_value: PathParameter,
+    current_location: PathParameters,
+) -> str:
+    """Process a rotarty parameter (such as A, B, and C)."""
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in current_location
+        and current_location[param] == param_value
+    ):
+        return ""
+    #  unlike other axis, rotary axis such as A, B, and C are always in degrees
+    #  and should not be converted when in --inches mode
+    return str(format(float(param_value), f'.{str(values["AXIS_PRECISION"])}f'))
+
+
 def default_S_parameter(
     values: Values,
     command: str,  # pylint: disable=unused-argument
@@ -473,9 +492,9 @@ def init_parameter_functions(parameter_functions: Dict[str, ParameterFunction]) 
     parameter: str
 
     default_parameter_functions = {
-        "A": default_axis_parameter,
-        "B": default_axis_parameter,
-        "C": default_axis_parameter,
+        "A": default_rotary_parameter,
+        "B": default_rotary_parameter,
+        "C": default_rotary_parameter,
         "D": default_D_parameter,
         "E": default_length_parameter,
         "F": default_F_parameter,
