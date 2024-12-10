@@ -272,12 +272,12 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
 
     default:
-        // Reset mode to SELECTION when button 3 is released
+        // Reset mode to IDLE when button 3 is released
         // This stops the DRAGGING when button 3 is released but SHIFT is still pressed
         // This stops the ZOOMING when button 3 is released but CTRL is still pressed
         if ((curmode == NavigationStyle::DRAGGING || curmode == NavigationStyle::ZOOMING)
             && !this->button3down) {
-            newmode = NavigationStyle::SELECTION;
+            newmode = NavigationStyle::IDLE;
         }
         break;
     }
