@@ -1,3 +1,0 @@
-# ignore artifacts from the build.sh script
-build-*/
-
