@@ -25,6 +25,7 @@
 import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
+import TechDraw
 import FreeCAD
 import time
 import json
@@ -649,19 +650,23 @@ def Execute(op, obj):
 
         path2d = convertTo2d(pathArray)
 
-        stockPaths = []
-        if hasattr(op.stock, "StockType") and op.stock.StockType == "CreateCylinder":
-            stockPaths.append([discretize(op.stock.Shape.Edges[0])])
-
-        else:
-            stockBB = op.stock.Shape.BoundBox
-            v = []
-            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMin, 0))
-            v.append(FreeCAD.Vector(stockBB.XMax, stockBB.YMin, 0))
-            v.append(FreeCAD.Vector(stockBB.XMax, stockBB.YMax, 0))
-            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMax, 0))
-            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMin, 0))
-            stockPaths.append([v])
+        # Find the edges of the stock and convert to a single (discretized) path
+        # Takes all stock faces, projects to XY plane, and uses the external wire of that
+        # Adapted from https://forum.freecad.org/viewtopic.php?t=69976
+        # project, create faces, merge, refine, re-export edges of result
+        shp = op.stock.Shape
+        # Project to XY plane
+        wires = [TechDraw.findShapeOutline(shp, 1, FreeCAD.Vector(0, 0, 1))]
+        # make the faces
+        faces = [Part.makeFace(w, "Part::FaceMakerCheese") for w in wires]
+        # fuse the faces
+        fusion = faces[0].fuse(faces[1:])  # fuses the first face to the remaining faces in the list
+        # refine fusion object to remove extra edges
+        refined = fusion.removeSplitter()
+        final_face = refined.Face1
+        outer_wire = final_face.OuterWire
+        # Part.show(outer_wire,"outer_wire")
+        stockPaths = [[outer_wire.discretize(QuasiDeflection=obj.Tolerance)]]
 
         stockPath2d = convertTo2d(stockPaths)
 
