@@ -551,6 +551,8 @@ SET(Part_SRCS
     PreCompiled.h
     ProgressIndicator.cpp
     ProgressIndicator.h
+    Services.cpp
+    Services.h
     TopoShape.cpp
     TopoShape.h
     TopoShapeCache.cpp
