@@ -106,13 +106,15 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     highlight->documentName = getObject()->getDocument()->getName();
     highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
 
+    // Visible features
+    auto visible = new SoSeparator();
     // Style for normal (visible) lines
     auto style = new SoDrawStyle();
     style->lineWidth = lineThickness;
-    highlight->addChild(style);
+    visible->addChild(style);
 
     // Visible lines
-    highlight->addChild(pRoot);
+    visible->addChild(pRoot);
 
     // Hidden features
     auto hidden = new SoAnnotation();
@@ -126,9 +128,9 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     // Hidden lines
     hidden->addChild(pRoot);
 
-    highlight->addChild(hidden);
+    visible->addChild(hidden);
 
-    sep->addChild(highlight);
+    sep->addChild(visible);
 
 
     // Scale feature to the given size
@@ -139,7 +141,9 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     soScale->setPart("shape", sep);
     soScale->scaleFactor = sz;
 
-    addDisplayMaskMode(soScale, "Base");
+    highlight->addChild(soScale);
+
+    addDisplayMaskMode(highlight, "Base");
 }
 
 

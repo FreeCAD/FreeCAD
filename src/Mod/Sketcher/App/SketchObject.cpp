@@ -8213,7 +8213,7 @@ static Part::Geometry *fitArcs(std::vector<std::unique_ptr<Part::Geometry> > &ar
                                double tol)
 {
     double radius = 0.0;
-    double m;
+    double m = 0.0;
     Base::Vector3d center;
     for (auto &geo : arcs) {
         if (auto arc = Base::freecad_dynamic_cast<Part::GeomArcOfCircle>(geo.get())) {
@@ -8228,27 +8228,27 @@ static Part::Geometry *fitArcs(std::vector<std::unique_ptr<Part::Geometry> > &ar
         } else
             return nullptr;
     }
-    if (radius == 0.0)
+    if (radius == 0.0) {
         return nullptr;
+    }
     if (P1.SquareDistance(P2) < Precision::Confusion()) {
         Part::GeomCircle* circle = new Part::GeomCircle();
         circle->setCenter(center);
         circle->setRadius(radius);
         return circle;
     }
-    else if (arcs.size() == 1) {
+    if (arcs.size() == 1) {
         auto res = arcs.front().release();
         arcs.clear();
         return res;
     }
-    else {
-        GeomLProp_CLProps prop(Handle(Geom_Curve)::DownCast(arcs.front()->handle()),m,0,Precision::Confusion());
-        gp_Pnt midPoint = prop.Value();
-        GC_MakeArcOfCircle arc(P1, midPoint, P2);
-        auto geo = new Part::GeomArcOfCircle();
-        geo->setHandle(arc.Value());
-        return geo;
-    }
+
+    GeomLProp_CLProps prop(Handle(Geom_Curve)::DownCast(arcs.front()->handle()),m,0,Precision::Confusion());
+    gp_Pnt midPoint = prop.Value();
+    GC_MakeArcOfCircle arc(P1, midPoint, P2);
+    auto geo = new Part::GeomArcOfCircle();
+    geo->setHandle(arc.Value());
+    return geo;
 }
 
 void SketchObject::validateExternalLinks()
