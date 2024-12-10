@@ -119,7 +119,7 @@ SheetTableView::SheetTableView(QWidget* parent)
     setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     connect(verticalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
-        QMenu menu{nullptr};
+        QMenu menu {nullptr};
         const auto selection = selectionModel()->selectedRows();
         const auto& [min, max] = selectedMinMaxRows(selection);
         if (bool isContiguous = max - min == selection.size() - 1) {
@@ -145,7 +145,7 @@ SheetTableView::SheetTableView(QWidget* parent)
     });
 
     connect(horizontalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
-        QMenu menu{nullptr};
+        QMenu menu {nullptr};
         const auto selection = selectionModel()->selectedColumns();
         const auto& [min, max] = selectedMinMaxColumns(selection);
         if (bool isContiguous = max - min == selection.size() - 1) {
@@ -179,7 +179,6 @@ SheetTableView::SheetTableView(QWidget* parent)
 
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
-
 
 
     contextMenu.addAction(actionProperties);
@@ -241,7 +240,7 @@ void SheetTableView::onBind()
 {
     auto ranges = selectedRanges();
     if (!ranges.empty() && ranges.size() <= 2) {
-        DlgBindSheet dlg{sheet, ranges};
+        DlgBindSheet dlg {sheet, ranges};
         dlg.exec();
     }
 }
@@ -252,16 +251,17 @@ void SheetTableView::onConfSetup()
     if (ranges.empty()) {
         return;
     }
-    DlgSheetConf dlg{sheet, ranges.back()};
+    DlgSheetConf dlg {sheet, ranges.back()};
     dlg.exec();
 }
 
 void SheetTableView::cellProperties()
 {
-    PropertiesDialog dialog{sheet, selectedRanges()};
+    PropertiesDialog dialog {sheet, selectedRanges()};
 
-    if (dialog.exec() == QDialog::Accepted)
+    if (dialog.exec() == QDialog::Accepted) {
         dialog.apply();
+    }
 }
 
 std::vector<Range> SheetTableView::selectedRanges() const

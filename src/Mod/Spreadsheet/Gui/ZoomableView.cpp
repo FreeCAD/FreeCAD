@@ -28,17 +28,20 @@
 #include "ui_Sheet.h"
 
 
-ZoomableView::ZoomableView(Ui::Sheet *ui) : QGraphicsView {}
-    , stv{ui->cells}
+ZoomableView::ZoomableView(Ui::Sheet* ui)
+    : QGraphicsView {}
+    , stv {ui->cells}
 {
-    if (!stv){
+    if (!stv) {
         Base::Console().DeveloperWarning("ZoomableView", "Failed to find a SheetTableView object");
         deleteLater();
         return;
-    } else {
-        QLayoutItem *li_stv = stv->parentWidget()->layout()->replaceWidget(stv, this);
-        if (li_stv == nullptr){
-            Base::Console().DeveloperWarning("ZoomableView", "Failed to replace the SheetTableView object");
+    }
+    else {
+        QLayoutItem* li_stv = stv->parentWidget()->layout()->replaceWidget(stv, this);
+        if (li_stv == nullptr) {
+            Base::Console().DeveloperWarning("ZoomableView",
+                                             "Failed to replace the SheetTableView object");
             deleteLater();
             return;
         }
@@ -60,10 +63,10 @@ ZoomableView::ZoomableView(Ui::Sheet *ui) : QGraphicsView {}
     stv->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     stv->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    QPointer <QScrollBar> dummySB_h{stv->horizontalScrollBar()}, dummySB_v{stv->verticalScrollBar()},
-                          realSB_h{ui->realSB_h}, realSB_v{ui->realSB_v};
+    QPointer<QScrollBar> dummySB_h {stv->horizontalScrollBar()},
+        dummySB_v {stv->verticalScrollBar()}, realSB_h {ui->realSB_h}, realSB_v {ui->realSB_v};
 
-    if (!dummySB_h || !dummySB_v || !realSB_h || !realSB_v){
+    if (!dummySB_h || !dummySB_v || !realSB_h || !realSB_v) {
         Base::Console().DeveloperWarning("ZoomableView", "Failed to identify the scrollbars");
         deleteLater();
         return;
@@ -85,27 +88,38 @@ ZoomableView::ZoomableView(Ui::Sheet *ui) : QGraphicsView {}
     connect(dummySB_h, &QAbstractSlider::valueChanged, this, &ZoomableView::updateView);
     connect(dummySB_v, &QAbstractSlider::valueChanged, this, &ZoomableView::updateView);
 
-    connect(this, &ZoomableView::zoomLevelChanged, ui->zoomTB, [zoomTB = ui->zoomTB](int new_zoomLevel){
-        zoomTB->setText(QStringLiteral("%1%").arg(new_zoomLevel)); });
+    connect(this,
+            &ZoomableView::zoomLevelChanged,
+            ui->zoomTB,
+            [zoomTB = ui->zoomTB](int new_zoomLevel) {
+                zoomTB->setText(QStringLiteral("%1%").arg(new_zoomLevel));
+            });
 
-    connect(this, &ZoomableView::zoomLevelChanged, ui->zoomSlider, [zoomSlider = ui->zoomSlider](int new_zoomLevel){
-        zoomSlider->blockSignals(true);
-        zoomSlider->setValue(new_zoomLevel);
-        zoomSlider->blockSignals(false); });
+    connect(this,
+            &ZoomableView::zoomLevelChanged,
+            ui->zoomSlider,
+            [zoomSlider = ui->zoomSlider](int new_zoomLevel) {
+                zoomSlider->blockSignals(true);
+                zoomSlider->setValue(new_zoomLevel);
+                zoomSlider->blockSignals(false);
+            });
 
     connect(ui->zoomPlus, &QToolButton::clicked, this, &ZoomableView::zoomIn);
     connect(ui->zoomSlider, &QSlider::valueChanged, this, &ZoomableView::setZoomLevel);
     connect(ui->zoomMinus, &QToolButton::clicked, this, &ZoomableView::zoomOut);
 
-    connect (ui->zoomTB, &QToolButton::clicked, ui->zoomSlider, [zoomSlider = ui->zoomSlider](){
+    connect(ui->zoomTB, &QToolButton::clicked, ui->zoomSlider, [zoomSlider = ui->zoomSlider]() {
         const QString title = tr("Zoom level"), label = tr("New zoom level:");
         constexpr int min = ZoomableView::min, max = ZoomableView::max, step = 10;
         const int val = zoomSlider->value();
         bool ok;
-        const int new_val = QInputDialog::getInt(zoomSlider, title, label, val, min, max, step, &ok);
+        const int new_val =
+            QInputDialog::getInt(zoomSlider, title, label, val, min, max, step, &ok);
 
-        if(ok)
-            zoomSlider->setValue(new_val); });
+        if (ok) {
+            zoomSlider->setValue(new_val);
+        }
+    });
 
     resetZoom();
 }
@@ -119,16 +133,16 @@ void ZoomableView::setZoomLevel(int new_zoomLevel)
 {
     checkLimits(new_zoomLevel);
 
-    if (m_zoomLevel == new_zoomLevel)
+    if (m_zoomLevel == new_zoomLevel) {
         return;
+    }
 
     m_zoomLevel = new_zoomLevel;
     updateView();
     Q_EMIT zoomLevelChanged(m_zoomLevel);
 }
 
-inline
-void ZoomableView::checkLimits(int &zoom_level)
+inline void ZoomableView::checkLimits(int& zoom_level)
 {
     zoom_level = qBound(ZoomableView::min, zoom_level, ZoomableView::max);
 }
@@ -145,9 +159,9 @@ void ZoomableView::zoomOut(void)
 
 void ZoomableView::resetZoom(void)
 {
-    constexpr const char *path = "User parameter:BaseApp/Preferences/Mod/Spreadsheet";
+    constexpr const char* path = "User parameter:BaseApp/Preferences/Mod/Spreadsheet";
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(path);
-    const int defaultZoomLevel = static_cast <int> ( hGrp->GetInt("DefaultZoomLevel", 100) );
+    const int defaultZoomLevel = static_cast<int>(hGrp->GetInt("DefaultZoomLevel", 100));
 
     setZoomLevel(defaultZoomLevel);
 }
@@ -157,9 +171,9 @@ void ZoomableView::updateView(void)
     /* QGraphicsView has hardcoded margins therefore we have to avoid fitInView
      * Find more information at https://bugreports.qt.io/browse/QTBUG-42331 */
 
-    const qreal scale_factor = static_cast <qreal> (m_zoomLevel) / 100.0,
-                new_w = static_cast <qreal> (viewport()->rect().width()) / scale_factor,
-                new_h = static_cast <qreal> (viewport()->rect().height()) / scale_factor;
+    const qreal scale_factor = static_cast<qreal>(m_zoomLevel) / 100.0,
+                new_w = static_cast<qreal>(viewport()->rect().width()) / scale_factor,
+                new_h = static_cast<qreal>(viewport()->rect().height()) / scale_factor;
 
     const QRectF new_geometry {0.0, 0.0, new_w, new_h};
 
@@ -173,31 +187,45 @@ void ZoomableView::updateView(void)
     centerOn(new_geometry.center());
 }
 
-void ZoomableView::keyPressEvent(QKeyEvent *event)
+void ZoomableView::keyPressEvent(QKeyEvent* event)
 {
-    if (event->modifiers() & Qt::ControlModifier)
-        switch (event->key()){
-            case Qt::Key_Plus:   zoomIn(); event->accept(); break;
-            case Qt::Key_Minus: zoomOut(); event->accept(); break;
-            case Qt::Key_0:   resetZoom(); event->accept(); break;
-            default: QGraphicsView::keyPressEvent(event);
+    if (event->modifiers() & Qt::ControlModifier) {
+        switch (event->key()) {
+            case Qt::Key_Plus:
+                zoomIn();
+                event->accept();
+                break;
+            case Qt::Key_Minus:
+                zoomOut();
+                event->accept();
+                break;
+            case Qt::Key_0:
+                resetZoom();
+                event->accept();
+                break;
+            default:
+                QGraphicsView::keyPressEvent(event);
         }
-    else
+    }
+    else {
         QGraphicsView::keyPressEvent(event);
+    }
 }
 
-void ZoomableView::resizeEvent (QResizeEvent *event)
+void ZoomableView::resizeEvent(QResizeEvent* event)
 {
-    QGraphicsView::resizeEvent (event);
+    QGraphicsView::resizeEvent(event);
     updateView();
 }
 
-void ZoomableView::wheelEvent(QWheelEvent *event)
+void ZoomableView::wheelEvent(QWheelEvent* event)
 {
     if (event->modifiers() & Qt::ControlModifier) {
         const int y = event->angleDelta().y();
         setZoomLevel(m_zoomLevel + (y > 0 ? zoom_step_mwheel : -zoom_step_mwheel));
         event->accept();
-    } else
+    }
+    else {
         QGraphicsView::wheelEvent(event);
+    }
 }
