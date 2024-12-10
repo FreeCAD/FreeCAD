@@ -127,7 +127,7 @@ FC_LOG_LEVEL_INIT("Sketch", true, true)
 
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
-SketchObject::SketchObject()
+SketchObject::SketchObject() : geoLastId(0)
 {
     ADD_PROPERTY_TYPE(
         Geometry, (nullptr), "Sketch", (App::PropertyType)(App::Prop_None), "Sketch geometry");
@@ -164,9 +164,6 @@ SketchObject::SketchObject()
                       "Sketch",
                       (App::PropertyType)(App::Prop_None),
                       "Tolerance for fitting arcs of projected external geometry");
-    geoLastId = 0;
-    geoHistoryLevel = 1;
-
     ADD_PROPERTY(InternalShape,
                  (Part::TopoShape()));
     ADD_PROPERTY_TYPE(MakeInternals,
