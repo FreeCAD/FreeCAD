@@ -109,7 +109,7 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
-    
+
     using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
