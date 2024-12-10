@@ -340,7 +340,7 @@ void DocumentRecovery::accept()
             }
         }
 
-        d->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Finish"));
+        d->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("&Finish"));
         d->ui.buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
         d->recovered = true;
     }

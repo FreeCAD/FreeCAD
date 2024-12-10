@@ -86,7 +86,7 @@ StdCmdSetAppearance::StdCmdSetAppearance()
     : Command("Std_SetAppearance")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Appearance...");
+    sMenuText = QT_TR_NOOP("&Appearance...");
     sToolTipText = QT_TR_NOOP("Sets the display properties of the selected object");
     sWhatsThis = "Std_SetAppearance";
     sStatusTip = QT_TR_NOOP("Sets the display properties of the selected object");
@@ -115,7 +115,7 @@ StdCmdSetMaterial::StdCmdSetMaterial()
     : Command("Std_SetMaterial")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Material...");
+    sMenuText = QT_TR_NOOP("&Material...");
     sToolTipText = QT_TR_NOOP("Sets the material of the selected object");
     sWhatsThis = "Std_SetMaterial";
     sStatusTip = QT_TR_NOOP("Sets the material of the selected object");
