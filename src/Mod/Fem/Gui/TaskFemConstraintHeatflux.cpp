@@ -401,29 +401,24 @@ const std::string TaskFemConstraintHeatflux::getReferences() const
 
 std::string TaskFemConstraintHeatflux::getAmbientTemp() const
 {
-    std::string temp;
     if (ui->rb_convection->isChecked()) {
-        temp = ui->qsb_ambienttemp_conv->value().getSafeUserString().toStdString();
+        return ui->qsb_ambienttemp_conv->value().getSafeUserString();
     }
-    else if (ui->rb_radiation->isChecked()) {
-        temp = ui->qsb_ambienttemp_rad->value().getSafeUserString().toStdString();
+    if (ui->rb_radiation->isChecked()) {
+        return ui->qsb_ambienttemp_rad->value().getSafeUserString();
     }
-    else {
-        auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
-        temp = obj->AmbientTemp.getQuantityValue().getSafeUserString().toStdString();
-    }
-
-    return temp;
+    auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
+    return obj->AmbientTemp.getQuantityValue().getSafeUserString();
 }
 
 std::string TaskFemConstraintHeatflux::getFilmCoef() const
 {
-    return ui->qsb_film_coef->value().getSafeUserString().toStdString();
+    return ui->qsb_film_coef->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintHeatflux::getDFlux() const
 {
-    return ui->qsb_heat_flux->value().getSafeUserString().toStdString();
+    return ui->qsb_heat_flux->value().getSafeUserString();
 }
 
 double TaskFemConstraintHeatflux::getEmissivity() const

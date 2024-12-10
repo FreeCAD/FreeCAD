@@ -68,7 +68,7 @@ public:
     std::string activeLanguage() const;
     /** Returns the locale (e.g. "de") to the given language name. */
     std::string locale(const std::string&) const;
-    /** Sets default Qt locale based on given language name **/
+    /** Sets default Qt and std locale based on given language name **/
     void setLocale(const std::string& = "") const;
     /** Returns a list of supported languages. */
     TStringList supportedLanguages() const;
