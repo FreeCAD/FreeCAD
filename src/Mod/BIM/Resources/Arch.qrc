@@ -1,23 +1,5 @@
 <RCC>
     <qresource>
-        <file>icons/IFC/IfcBeam.svg</file>
-        <file>icons/IFC/IfcBuilding.svg</file>
-        <file>icons/IFC/IfcBuildingStorey.svg</file>
-        <file>icons/IFC/IfcColumn.svg</file>
-        <file>icons/IFC/IfcCovering.svg</file>
-        <file>icons/IFC/IfcDoor.svg</file>
-        <file>icons/IFC/IfcFooting.svg</file>
-        <file>icons/IFC/IfcMember.svg</file>
-        <file>icons/IFC/IfcPile.svg</file>
-        <file>icons/IFC/IfcPlate.svg</file>
-        <file>icons/IFC/IfcRailing.svg</file>
-        <file>icons/IFC/IfcRamp.svg</file>
-        <file>icons/IFC/IfcRoof.svg</file>
-        <file>icons/IFC/IfcSite.svg</file>
-        <file>icons/IFC/IfcSlab.svg</file>
-        <file>icons/IFC/IfcStair.svg</file>
-        <file>icons/IFC/IfcWall.svg</file>
-        <file>icons/IFC/IfcWindow.svg</file>
         <file>icons/Arch_3Views.svg</file>
         <file>icons/Arch_Add.svg</file>
         <file>icons/Arch_Axis.svg</file>
@@ -163,64 +145,24 @@
         <file>icons/techdraw-ArchView.svg</file>
         <file>icons/techdraw-PageDefault.svg</file>
         <file>icons/warning.svg</file>
-        <file>ui/ArchMaterial.ui</file>
-        <file>ui/ArchMultiMaterial.ui</file>
-        <file>ui/ArchNest.ui</file>
-        <file>ui/ArchSchedule.ui</file>
-        <file>ui/BimServerTaskPanel.ui</file>
-        <file>ui/DialogBimServerLogin.ui</file>
-        <file>ui/DialogDisplayText.ui</file>
-        <file>ui/GitTaskPanel.ui</file>
-        <file>ui/ParametersBeam.svg</file>
-        <file>ui/ParametersDent.svg</file>
-        <file>ui/ParametersDoorGlass.svg</file>
-        <file>ui/ParametersDoorSimple.svg</file>
-        <file>ui/ParametersIbeam.svg</file>
-        <file>ui/ParametersOpening.svg</file>
-        <file>ui/ParametersPanel.svg</file>
-        <file>ui/ParametersPillar.svg</file>
-        <file>ui/ParametersSlab.svg</file>
-        <file>ui/ParametersStairs.svg</file>
-        <file>ui/ParametersWindowDouble.svg</file>
-        <file>ui/ParametersWindowFixed.svg</file>
-        <file>ui/ParametersWindowSimple.svg</file>
-        <file>ui/ParametersWindowStash.svg</file>
-        <file>ui/dialogClasses.ui</file>
-        <file>ui/dialogClassification.ui</file>
-        <file>ui/dialogConvertDocument.ui</file>
-        <file>ui/dialogCreateProject.ui</file>
-        <file>ui/dialogCustomProperties.ui</file>
-        <file>ui/dialogDiff.ui</file>
-        <file>ui/dialogExport.ui</file>
-        <file>ui/dialogIfcElements.ui</file>
-        <file>ui/dialogIfcProperties.ui</file>
-        <file>ui/dialogIfcPropertiesRedux.ui</file>
-        <file>ui/dialogIfcQuantities.ui</file>
-        <file>ui/dialogImport.ui</file>
-        <file>ui/dialogLayersIFC.ui</file>
-        <file>ui/dialogLibrary.ui</file>
-        <file>ui/dialogListWidget.ui</file>
-        <file>ui/dialogMaterialChooser.ui</file>
-        <file>ui/dialogNudgeValue.ui</file>
-        <file>ui/dialogPhases.ui</file>
-        <file>ui/dialogPreflight.ui</file>
-        <file>ui/dialogPreflightResults.ui</file>
-        <file>ui/dialogProjectManager.ui</file>
-        <file>ui/dialogQuantitySurveying.ui</file>
-        <file>ui/dialogReorder.ui</file>
-        <file>ui/dialogSetup.ui</file>
-        <file>ui/dialogSpaces.ui</file>
-        <file>ui/dialogTree.ui</file>
-        <file>ui/dialogTutorial.ui</file>
-        <file>ui/dialogViews.ui</file>
-        <file>ui/dialogWelcome.ui</file>
-        <file>ui/dialogWindows.ui</file>
-        <file>ui/preferences-arch.ui</file>
-        <file>ui/preferences-archdefaults.ui</file>
-        <file>ui/preferences-dae.ui</file>
-        <file>ui/preferences-ifc-export.ui</file>
-        <file>ui/preferences-ifc.ui</file>
-        <file>ui/preferencesNativeIFC.ui</file>
+        <file>icons/IFC/IfcBeam.svg</file>
+        <file>icons/IFC/IfcBuilding.svg</file>
+        <file>icons/IFC/IfcBuildingStorey.svg</file>
+        <file>icons/IFC/IfcColumn.svg</file>
+        <file>icons/IFC/IfcCovering.svg</file>
+        <file>icons/IFC/IfcDoor.svg</file>
+        <file>icons/IFC/IfcFooting.svg</file>
+        <file>icons/IFC/IfcMember.svg</file>
+        <file>icons/IFC/IfcPile.svg</file>
+        <file>icons/IFC/IfcPlate.svg</file>
+        <file>icons/IFC/IfcRailing.svg</file>
+        <file>icons/IFC/IfcRamp.svg</file>
+        <file>icons/IFC/IfcRoof.svg</file>
+        <file>icons/IFC/IfcSite.svg</file>
+        <file>icons/IFC/IfcSlab.svg</file>
+        <file>icons/IFC/IfcStair.svg</file>
+        <file>icons/IFC/IfcWall.svg</file>
+        <file>icons/IFC/IfcWindow.svg</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_ar.qm</file>
         <file>translations/Arch_be.qm</file>
@@ -264,5 +206,66 @@
         <file>translations/Arch_vi.qm</file>
         <file>translations/Arch_zh-CN.qm</file>
         <file>translations/Arch_zh-TW.qm</file>
+        <file>ui/ArchMaterial.ui</file>
+        <file>ui/ArchMultiMaterial.ui</file>
+        <file>ui/ArchNest.ui</file>
+        <file>ui/ArchSchedule.ui</file>
+        <file>ui/BimServerTaskPanel.ui</file>
+        <file>ui/DialogBimServerLogin.ui</file>
+        <file>ui/DialogDisplayText.ui</file>
+        <file>ui/GitTaskPanel.ui</file>
+        <file>ui/ParametersBeam.svg</file>
+        <file>ui/ParametersDent.svg</file>
+        <file>ui/ParametersDoorGlass.svg</file>
+        <file>ui/ParametersDoorSimple.svg</file>
+        <file>ui/ParametersIbeam.svg</file>
+        <file>ui/ParametersOpening.svg</file>
+        <file>ui/ParametersPanel.svg</file>
+        <file>ui/ParametersPillar.svg</file>
+        <file>ui/ParametersSlab.svg</file>
+        <file>ui/ParametersStairs.svg</file>
+        <file>ui/ParametersWindowDouble.svg</file>
+        <file>ui/ParametersWindowFixed.svg</file>
+        <file>ui/ParametersWindowSimple.svg</file>
+        <file>ui/ParametersWindowStash.svg</file>
+        <file>ui/dialogAddPSet.ui</file>
+        <file>ui/dialogAddProperty.ui</file>
+        <file>ui/dialogClasses.ui</file>
+        <file>ui/dialogClassification.ui</file>
+        <file>ui/dialogConvertDocument.ui</file>
+        <file>ui/dialogConvertType.ui</file>
+        <file>ui/dialogCreateProject.ui</file>
+        <file>ui/dialogCustomProperties.ui</file>
+        <file>ui/dialogDiff.ui</file>
+        <file>ui/dialogExport.ui</file>
+        <file>ui/dialogIfcElements.ui</file>
+        <file>ui/dialogIfcProperties.ui</file>
+        <file>ui/dialogIfcPropertiesRedux.ui</file>
+        <file>ui/dialogIfcQuantities.ui</file>
+        <file>ui/dialogImport.ui</file>
+        <file>ui/dialogLayersIFC.ui</file>
+        <file>ui/dialogLibrary.ui</file>
+        <file>ui/dialogListWidget.ui</file>
+        <file>ui/dialogMaterialChooser.ui</file>
+        <file>ui/dialogNudgeValue.ui</file>
+        <file>ui/dialogPhases.ui</file>
+        <file>ui/dialogPreflight.ui</file>
+        <file>ui/dialogPreflightResults.ui</file>
+        <file>ui/dialogProjectManager.ui</file>
+        <file>ui/dialogQuantitySurveying.ui</file>
+        <file>ui/dialogReorder.ui</file>
+        <file>ui/dialogSetup.ui</file>
+        <file>ui/dialogSpaces.ui</file>
+        <file>ui/dialogTree.ui</file>
+        <file>ui/dialogTutorial.ui</file>
+        <file>ui/dialogViews.ui</file>
+        <file>ui/dialogWelcome.ui</file>
+        <file>ui/dialogWindows.ui</file>
+        <file>ui/preferences-arch.ui</file>
+        <file>ui/preferences-archdefaults.ui</file>
+        <file>ui/preferences-dae.ui</file>
+        <file>ui/preferences-ifc-export.ui</file>
+        <file>ui/preferences-ifc.ui</file>
+        <file>ui/preferencesNativeIFC.ui</file>
     </qresource>
 </RCC>

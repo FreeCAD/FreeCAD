@@ -273,7 +273,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
                     auto contentAsQuantity = static_cast<App::PropertyQuantity*>(prop)->getQuantityValue();
                     auto ustring = contentAsQuantity.getUserString();
-                    field << Base::Tools::toStdString(ustring);
+                    field << ustring.toStdString();
                 } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
                            prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
                     std::string temp = cell->getFormattedQuantity();

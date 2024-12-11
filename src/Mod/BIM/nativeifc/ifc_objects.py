@@ -22,6 +22,9 @@
 
 """This module contains IFC object definitions"""
 
+import FreeCAD
+translate = FreeCAD.Qt.translate
+
 
 class ifc_object:
     """Base class for all IFC-based objects"""
@@ -52,6 +55,8 @@ class ifc_object:
             self.rebuild_classlist(obj, setprops=True)
         elif prop == "Schema":
             self.edit_schema(obj, obj.Schema)
+        elif prop == "Type":
+            self.edit_type(obj)
         elif prop == "Group":
             self.edit_group(obj)
         elif obj.getGroupOfProperty(prop) == "IFC":
@@ -70,7 +75,7 @@ class ifc_object:
                 obj.ViewObject.signalChangeIcon()
         elif obj.getGroupOfProperty(prop) == "Geometry":
             self.edit_geometry(obj, prop)
-        elif obj.getGroupOfProperty(prop) not in ["Base", "IFC", "", "Geometry"]:
+        elif obj.getGroupOfProperty(prop) not in ["Base", "IFC", "", "Geometry", "PhysicalProperties"]:
             # Treat all property groups outside the default ones as Psets
             # print("DEBUG: editinog pset prop",prop)
             self.edit_pset(obj, prop)
@@ -245,6 +250,42 @@ class ifc_object:
                     ifc_layers.add_to_layer(child, obj)
             if newlist != obj.Group:
                 obj.Group = newlist
+
+    def edit_type(self, obj):
+        """Edits the type of this object"""
+
+        from nativeifc import ifc_tools  # lazy import
+        from nativeifc import ifc_types
+
+        element = ifc_tools.get_ifc_element(obj)
+        ifcfile = ifc_tools.get_ifcfile(obj)
+        if not element or not ifcfile:
+            return
+        typerel = getattr(element, "IsTypedBy", None)
+        if obj.Type:
+            # verify the type is compatible -ex IFcWall in IfcWallType
+            if obj.Type.Class != element.is_a() + "Type":
+                t = translate("BIM","Error: Incompatible type")
+                FreeCAD.Console.PrintError(obj.Label+": "+t+": "+obj.Type.Class+"\n")
+                obj.Type = None
+                return
+            # change type
+            new_type = ifc_tools.get_ifc_element(obj.Type)
+            if not new_type:
+                return
+            for rel in typerel:
+                if rel.RelatingType == new_type:
+                    return
+            # assign the new type
+            ifc_tools.api_run("type.assign_type",
+                              ifcfile,
+                              related_objects=[element],
+                              relating_type=new_type
+            )
+        elif typerel:
+            # TODO remove type?
+            # Not doing anything right now because an unset Type property could screw the ifc file
+            pass
 
 
 class document_object:

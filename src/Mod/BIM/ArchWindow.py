@@ -429,6 +429,8 @@ class _Window(ArchComponent.Component):
             if hasattr(clonedProxy, "boxes"):
                 self.boxes = clonedProxy.boxes
             return
+        if not self.ensureBase(obj):
+            return
 
         import Part
         import DraftGeomUtils
@@ -739,8 +741,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 sapp_mat = base_sapp_mat
             else:
                 sapp_mat = FreeCAD.Material()  # ShapeAppearance material with default v0.21 properties.
-                sapp_mat.DiffuseColor = color[:3] + (0.0, )
-                sapp_mat.Transparency = color[3]
+                sapp_mat.DiffuseColor = color[:3] + (1.0, )
+                sapp_mat.Transparency = 1.0 - color[3]
             sapp.extend((sapp_mat, ) * len(solids[i].Faces))
 
         if clone is not None:

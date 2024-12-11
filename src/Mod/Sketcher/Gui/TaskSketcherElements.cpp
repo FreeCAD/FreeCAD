@@ -578,7 +578,7 @@ void ElementView::changeLayer(int layer)
     doc->openTransaction("Geometry Layer Change");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-        auto sketchobject = dynamic_cast<Sketcher::SketchObject*>(ft->getObject());
+        auto sketchobject = ft->getObject<Sketcher::SketchObject>();
 
         auto geoids = getGeoIdsOfEdgesFromNames(sketchobject, ft->getSubNames());
 

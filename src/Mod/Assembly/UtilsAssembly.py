@@ -80,18 +80,44 @@ def isDocTemporary(doc):
 
 def assembly_has_at_least_n_parts(n):
     assembly = activeAssembly()
-    i = 0
     if not assembly:
         assembly = activePart()
         if not assembly:
             return False
-    for obj in assembly.OutList:
-        # note : groundedJoints comes in the outlist so we filter those out.
-        if hasattr(obj, "Placement") and not hasattr(obj, "ObjectToGround"):
-            i = i + 1
-            if i == n:
-                return True
-    return False
+    i = number_of_components_in(assembly)
+    return i >= n
+
+
+def number_of_components_in(assembly):
+    if not assembly:
+        return 0
+    i = 0
+    for obj in assembly.Group:
+        if isLinkGroup(obj):
+            i = i + obj.ElementCount
+            continue
+
+        if obj.isDerivedFrom("Assembly::AssemblyObject") or obj.isDerivedFrom(
+            "Assembly::AssemblyLink"
+        ):
+            i = i + number_of_components_in(obj)
+            continue
+
+        if obj.isDerivedFrom("App::Link"):
+            obj = obj.getLinkedObject()
+
+        if not obj.isDerivedFrom("App::GeoFeature"):
+            continue
+
+        # if obj.isDerivedFrom("App::DatumElement") or obj.isDerivedFrom("App::LocalCoordinateSystem"):
+        if obj.isDerivedFrom("App::Origin"):
+            # after https://github.com/FreeCAD/FreeCAD/pull/16675 merges,
+            # replace the App::Origin test by the one above
+            continue
+
+        i = i + 1
+
+    return i
 
 
 def isLink(obj):
@@ -546,6 +572,20 @@ def color_from_unsigned(c):
     ]
 
 
+def getJointsOfType(asm, jointTypes):
+    if not (
+        asm.isDerivedFrom("Assembly::AssemblyObject") or asm.isDerivedFrom("Assembly::AssemblyLink")
+    ):
+        return []
+
+    joints = []
+    allJoints = asm.Joints
+    for joint in allJoints:
+        if joint.JointType in jointTypes:
+            joints.append(joint)
+    return joints
+
+
 def getBomGroup(assembly):
     bom_group = None
 
@@ -586,6 +626,20 @@ def getViewGroup(assembly):
         view_group = assembly.newObject("Assembly::ViewGroup", "Exploded Views")
 
     return view_group
+
+
+def getSimulationGroup(assembly):
+    sim_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::SimulationGroup":
+            sim_group = obj
+            break
+
+    if not sim_group:
+        sim_group = assembly.newObject("Assembly::SimulationGroup", "Simulations")
+
+    return sim_group
 
 
 def isAssemblyGrounded():
@@ -1221,6 +1275,24 @@ def addVertexToReference(ref, vertex_name):
             ref = [ref[0], subs]
 
     return ref
+
+
+def createPart(partName, doc):
+    if not doc:
+        raise ValueError("No active document to add a part to.")
+
+    part = doc.addObject("App::Part", partName)
+    body = part.newObject("PartDesign::Body", "Body")
+    # Gui.ActiveDocument.ActiveView.setActiveObject('pdbody', body)
+    sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+    sketch.MapMode = "FlatFace"
+    sketch.AttachmentSupport = [(body.Origin.OriginFeatures[3], "")]  # XY_Plane
+
+    # add a circle as a base shape for visualisation
+    sketch.addGeometry(Part.Circle(App.Vector(0, 0), App.Vector(0, 0, 1), 5), False)
+    doc.recompute()
+
+    return part, body
 
 
 def getLinkGroup(linkElement):

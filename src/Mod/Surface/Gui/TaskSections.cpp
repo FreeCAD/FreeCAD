@@ -66,7 +66,7 @@ bool ViewProviderSections::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
 
-        Surface::Sections* obj = static_cast<Surface::Sections*>(this->getObject());
+        Surface::Sections* obj = this->getObject<Surface::Sections>();
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 

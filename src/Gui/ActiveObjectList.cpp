@@ -184,11 +184,16 @@ bool Gui::ActiveObjectList::hasObject(const char*name)const
 
 void ActiveObjectList::objectDeleted(const ViewProviderDocumentObject &vp)
 {
-    //maybe boost::bimap or boost::multi_index
-    for (auto it = _ObjectMap.begin(); it != _ObjectMap.end(); ++it) {
-        if (it->second.obj == vp.getObject()) {
-            _ObjectMap.erase(it);
-            return;
+    // Hint: With C++20 std::erase_if for containers can be used
+    auto isEqual = [&vp](const auto& item) {
+        return item.second.obj == vp.getObject();
+    };
+    for (auto it = _ObjectMap.begin(); it != _ObjectMap.end();) {
+        if (isEqual(*it)) {
+            it = _ObjectMap.erase(it);
+        }
+        else {
+            ++it;
         }
     }
 }

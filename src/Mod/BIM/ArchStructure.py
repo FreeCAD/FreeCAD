@@ -715,6 +715,9 @@ class _Structure(ArchComponent.Component):
         if not "FaceMaker" in pl:
             obj.addProperty("App::PropertyEnumeration","FaceMaker","Structure",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
             obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
+        if not "ArchSketchData" in pl:
+            obj.addProperty("App::PropertyBool","ArchSketchData","Structure",QT_TRANSLATE_NOOP("App::Property","Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties"))
+            obj.ArchSketchData = True
         if not "ArchSketchEdges" in pl:  # PropertyStringList
             obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
         else:
@@ -726,12 +729,58 @@ class _Structure(ArchComponent.Component):
                 obj.removeProperty("ArchSketchEdges")
                 obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
                 obj.ArchSketchEdges = newStrValue
+        if not hasattr(obj,"ArchSketchPropertySet"):
+            obj.addProperty("App::PropertyEnumeration","ArchSketchPropertySet","Structure",QT_TRANSLATE_NOOP("App::Property","Select User Defined PropertySet to use in creating variant shape, with same ArchSketch "))
+            obj.ArchSketchPropertySet = ['Default']
+        if not hasattr(self,"ArchSkPropSetPickedUuid"):
+            self.ArchSkPropSetPickedUuid = ''
+        if not hasattr(self,"ArchSkPropSetListPrev"):
+            self.ArchSkPropSetListPrev = []
+
         self.Type = "Structure"
+
+
+    def dumps(self):  # Supercede Arch.Component.dumps()
+        dump = super().dumps()
+        if not isinstance(dump, tuple):
+           dump = (dump,)  #Python Tuple With One Item
+        dump = dump + (self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev)
+        return dump
+
+
+    def loads(self,state):
+        super().loads(state)  # do nothing as of 2024.11.28
+        if state == None:
+            return
+        elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
+            return
+        elif state[0] == 'Structure':
+            self.ArchSkPropSetPickedUuid = state[1]
+            self.ArchSkPropSetListPrev = state[2]
+        elif state[0] != 'Structure':  # model before merging super.dumps/loads()
+            self.ArchSkPropSetPickedUuid = state[0]
+            self.ArchSkPropSetListPrev = state[1]
+
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", 0)
+        else:
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", 0)
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
+
+        # set a flag to indicate onDocumentRestored() is run
+        self.onDocRestoredDone = True
+
 
     def execute(self,obj):
 
@@ -741,9 +790,44 @@ class _Structure(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         base = None
         pl = obj.Placement
+
+        # PropertySet support
+        propSetPickedUuidPrev = self.ArchSkPropSetPickedUuid
+        propSetListPrev = self.ArchSkPropSetListPrev
+        propSetSelectedNamePrev = obj.ArchSketchPropertySet
+        propSetSelectedNameCur = None
+        propSetListCur = None
+        if Draft.getType(obj.Base) == "ArchSketch":
+            baseProxy = obj.Base.Proxy
+            if hasattr(baseProxy,"getPropertySet"):
+                # get full list of PropertySet
+                propSetListCur = baseProxy.getPropertySet(obj.Base)
+                # get updated name (if any) of the selected PropertySet
+                propSetSelectedNameCur = baseProxy.getPropertySet(obj.Base,
+                                         propSetUuid=propSetPickedUuidPrev)
+        if propSetSelectedNameCur:  # True if selection is not deleted
+            if propSetListPrev != propSetListCur:
+                obj.ArchSketchPropertySet = propSetListCur
+                obj.ArchSketchPropertySet = propSetSelectedNameCur
+                self.ArchSkPropSetListPrev = propSetListCur
+            #elif propSetListPrev == propSetListCur:
+                #pass  #nothing to do in this case
+            # but if below, though (propSetListPrev == propSetListCur)
+            elif propSetSelectedNamePrev != propSetSelectedNameCur:
+                obj.ArchSketchPropertySet = propSetSelectedNameCur
+        else:  # True if selection is deleted
+            if propSetListCur:
+                if propSetListPrev != propSetListCur:
+                    obj.ArchSketchPropertySet = propSetListCur
+                    obj.ArchSketchPropertySet = 'Default'
+                #else:  # Seems no need ...
+                    #obj.PropertySet = 'Default'
+
         extdata = self.getExtrusionData(obj)
 
         if extdata:
@@ -849,19 +933,52 @@ class _Structure(ArchComponent.Component):
                         # ArchSketch feature :
                         # Get base shape wires, and faceMaker, for Structure (slab. etc.) from Base Objects if they store and provide by getStructureBaseShapeWires()
                         # (thickness, normal/extrusion, length, width, baseface maybe for later) of structure (slab etc.)
-                        structureBaseShapeWires = None
-                        baseShapeWires = None                   #baseSlabWires / baseSlabOpeningWires = None
+                        structureBaseShapeWires = []
+                        baseShapeWires = []                   #baseSlabWires / baseSlabOpeningWires = None
                         faceMaker = None
-                        if hasattr(obj.Base, 'Proxy'):
-                            if hasattr(obj.Base.Proxy, 'getStructureBaseShapeWires'):
-                                structureBaseShapeWires = obj.Base.Proxy.getStructureBaseShapeWires(obj.Base, archsketchEdges=obj.ArchSketchEdges)
-                                # provide selected edges, or groups, in obj.ArchSketchEdges for processing in getStructureBaseShapeWires() (getSortedClusters) as override
-                                # returned a {dict} ( or a [list] )
-                        # get slab wires; use original wires if structureBaseShapeWires() provided none
-                        if structureBaseShapeWires:  # would be false (none) if both base ArchSketch and obj do not have the edges stored / inputted by user
-                            # if structureBaseShapeWires is {dict}
-                            baseShapeWires = structureBaseShapeWires.get('slabWires')
-                            faceMaker = structureBaseShapeWires.get('faceMaker')
+
+                        if hasattr(obj.Base, 'Proxy') and obj.ArchSketchData and \
+                        hasattr(obj.Base.Proxy, 'getStructureBaseShapeWires'):
+                            propSetUuid = self.ArchSkPropSetPickedUuid
+
+                            # provide selected edges, or groups, in obj.ArchSketchEdges for processing in getStructureBaseShapeWires() (getSortedClusters) as override
+                            structureBaseShapeWires = obj.Base.Proxy.getStructureBaseShapeWires(obj.Base,
+                                                          propSetUuid=propSetUuid)
+                            # get slab wires; use original wires if structureBaseShapeWires() provided none
+                            if structureBaseShapeWires:  # would be false (none) if both base ArchSketch and obj do not have the edges stored / inputted by user
+                                # if structureBaseShapeWires is {dict}
+                                baseShapeWires = structureBaseShapeWires.get('slabWires')
+                                faceMaker = structureBaseShapeWires.get('faceMaker')
+                        elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                            skGeom = obj.Base.GeometryFacadeList
+                            skGeomEdges = []
+                            skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
+                            # Get ArchSketch edges to construct ArchStructure
+                            # No need to test obj.ArchSketchData ...
+                            for ig, geom  in enumerate(skGeom):
+                                # Construction mode edges should be ignored if
+                                # ArchSketchEdges, otherwise, ArchSketchEdges data
+                                # needs to take out those in Construction before
+                                # using as parameters.
+                                if (not obj.ArchSketchEdges and not geom.Construction) or str(ig) in obj.ArchSketchEdges:
+                                    # support Line, Arc, Circle, Ellipse for Sketch
+                                    # as Base at the moment
+                                    if isinstance(geom.Geometry, (Part.LineSegment,
+                                                  Part.Circle, Part.ArcOfCircle,
+                                                  Part.Ellipse)):
+                                        skGeomEdgesI = geom.Geometry.toShape()
+                                        skGeomEdges.append(skGeomEdgesI)
+                            clusterTransformed = []
+                            for cluster in Part.getSortedClusters(skGeomEdges):
+                                edgesTransformed = []
+                                for edge in cluster:
+                                    edge.Placement = edge.Placement.multiply(skPlacement)
+                                    edgesTransformed.append(edge)
+                                clusterTransformed.append(edgesTransformed)
+                            for clusterT in clusterTransformed:
+                                baseShapeWires.append(Part.Wire(clusterT))
+                            faceMaker = 'Bullseye'
+
                         if not baseShapeWires:
                             baseShapeWires = obj.Base.Shape.Wires
                         if faceMaker or (obj.FaceMaker != "None"):
@@ -934,14 +1051,14 @@ class _Structure(ArchComponent.Component):
                 if obj.Normal.Length:
                     normal = Vector(obj.Normal).normalize()
                 else:
-                    normal = baseface.Faces[0].normalAt(0, 0)  ## TODO to use ArchSketch's 'normal' for consistency
+                    normal = baseface.Faces[0].normalAt(0, 0)  # TODO to use ArchSketch's 'normal' for consistency
             base = None
             placement = None
             inverse_placement = None
             if len(baseface.Faces) > 1:
                 base = []
                 placement = []
-                hint = baseface.Faces[0].normalAt(0, 0)  ## TODO anything to do ?
+                hint = baseface.Faces[0].normalAt(0, 0)  # TODO anything to do ?
                 for f in baseface.Faces:
                     bf, pf = self.rebase(f, hint)
                     base.append(bf)
@@ -973,6 +1090,12 @@ class _Structure(ArchComponent.Component):
         return None
 
     def onChanged(self,obj,prop):
+
+        # check the flag indicating if onDocumentRestored() has been run; if
+        # not, no further code is run - as getExtrusionData() below return
+        # error when some properties are not added by onDocumentRestored()
+        if not hasattr(self,"onDocRestoredDone"):
+            return
 
         if hasattr(obj,"IfcType"):
             IfcType = obj.IfcType
@@ -1014,6 +1137,26 @@ class _Structure(ArchComponent.Component):
                 self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
                 obj.Nodes = self.nodes
         ArchComponent.Component.onChanged(self,obj,prop)
+
+        if (prop == "ArchSketchPropertySet"
+            and Draft.getType(obj.Base) == "ArchSketch"):
+            baseProxy = obj.Base.Proxy
+            if hasattr(baseProxy,"getPropertySet"):
+                uuid = baseProxy.getPropertySet(obj,
+                                 propSetName=obj.ArchSketchPropertySet)
+                self.ArchSkPropSetPickedUuid = uuid
+        if (hasattr(obj,"ArchSketchData") and obj.ArchSketchData
+            and Draft.getType(obj.Base) == "ArchSketch"):
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", 0)
+        else:
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", 0)
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
+
 
     def getNodeEdges(self,obj):
 

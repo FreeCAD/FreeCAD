@@ -30,7 +30,6 @@
 #endif // #ifndef _PreCmp_
 
 #include <Base/Console.h>
-#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
@@ -85,7 +84,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             // preset the autofill with the current value - something might have changed since this field was created
             m_autofillString = svgTemplate->getAutofillByEditableName(qName);
         }
-        ui.setAutofillContent(Base::Tools::toStdString(m_autofillString));
+        ui.setAutofillContent(m_autofillString.toStdString());
 
         if (ui.exec() == QDialog::Accepted) {
             QString qsClean = ui.getFieldContent();
@@ -93,7 +92,8 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             if (ui.getAutofillState()) {
                 if (svgTemplate) {
                     // unlikely, but something could have changed since we grabbed the autofill value
-                    QString autofillValue = svgTemplate->getAutofillByEditableName(qName);
+                    QString fieldName = QString::fromStdString(fieldNameStr);
+                    QString autofillValue = svgTemplate->getAutofillByEditableName(fieldName);
                     if (!autofillValue.isEmpty()) {
                         utf8Content = autofillValue.toUtf8().constData();
                     }

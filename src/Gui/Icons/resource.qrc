@@ -50,6 +50,9 @@
         <file>button_valid.svg</file>
         <file>button_invalid.svg</file>
         <file>media-playback-start.svg</file>
+        <file>media-playback-start-back.svg</file>
+        <file>media-playback-step.svg</file>
+        <file>media-playback-step-back.svg</file>
         <file>media-record.svg</file>
         <file>media-playback-stop.svg</file>
         <file>preferences-display.svg</file>
@@ -272,9 +275,6 @@
         <file>LinkArrayOverlay.svg</file>
         <file>LinkSubOverlay.svg</file>
         <file>LinkSubElement.svg</file>
-        <file>LinkArrayOverlay.xpm</file>
-        <file>LinkSubOverlay.xpm</file>
-        <file>LinkSubElement.xpm</file>
         <file>LinkSub.svg</file>
         <file>LinkReplace.svg</file>
         <file>LinkImport.svg</file>

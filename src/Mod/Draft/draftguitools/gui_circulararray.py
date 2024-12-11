@@ -124,11 +124,15 @@ class CircularArray(gui_base.GuiCommandBase):
         We should remove the callbacks that were added to the 3D view
         and then close the task panel.
         """
-        self.view.removeEventCallbackPivy(self.location,
-                                          self.callback_move)
-        self.view.removeEventCallbackPivy(self.mouse_event,
-                                          self.callback_click)
-        gui_utils.end_all_events()
+        try:
+            self.view.removeEventCallbackPivy(self.location, self.callback_move)
+            self.view.removeEventCallbackPivy(self.mouse_event, self.callback_click)
+            gui_utils.end_all_events()
+        except RuntimeError:
+            # the view has been deleted already
+            pass
+        self.callback_move = None
+        self.callback_click = None
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
             self.finish()

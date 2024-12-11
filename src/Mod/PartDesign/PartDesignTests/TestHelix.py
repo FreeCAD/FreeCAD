@@ -131,7 +131,7 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelix(self):
         """ Test giant helix """
-        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') if v.isnumeric() ]
         if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
             mine=-1
             maxe=10
@@ -173,7 +173,7 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelixAdditive(self):
         """ Test giant helix added to Cylinder """
-        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') if v.isnumeric() ]
         if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
             mine=-1
             maxe=8
@@ -223,7 +223,7 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelixSubtractive(self):
         """ Test giant helix subtracted from Cylinder """
-        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') if v.isnumeric() ]
         if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
             mine=-1
             maxe=8

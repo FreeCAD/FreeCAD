@@ -151,22 +151,28 @@ IF(SPNAV_FOUND)
         SET(FreeCADGui_SDK_SRCS
             3Dconnexion/GuiAbstractNativeEvent.cpp
             3Dconnexion/GuiNativeEventLinuxX11.cpp
-            )
+        )
         SET(FreeCADGui_SDK_MOC_HDRS
             3Dconnexion/GuiAbstractNativeEvent.h
             3Dconnexion/GuiNativeEventLinuxX11.h
-            )
+        )
     else(SPNAV_USE_X11)
         SET(FreeCADGui_SDK_SRCS
             3Dconnexion/GuiAbstractNativeEvent.cpp
             3Dconnexion/GuiNativeEventLinux.cpp
-            )
+        )
         SET(FreeCADGui_SDK_MOC_HDRS
             3Dconnexion/GuiAbstractNativeEvent.h
             3Dconnexion/GuiNativeEventLinux.h
-            )
+        )
     endif(SPNAV_USE_X11)
     SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+    list(APPEND FreeCADGui_connexion_SRCS
+        ${FreeCADGui_SDK_SRCS}
+    )
+    list(APPEND FreeCADGui_connexion_HDRS
+        ${FreeCADGui_SDK_MOC_HDRS}
+    )
 
     add_definitions(-DSPNAV_FOUND)
     include_directories(
@@ -270,30 +276,42 @@ SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
 # The 3D Connexion SDK files
 if(FREECAD_USE_3DCONNEXION AND MSVC)
-SET(FreeCADGui_SDK_SRCS
-    3Dconnexion/I3dMouseParams.h
-    3Dconnexion/MouseParameters.cpp
-    3Dconnexion/MouseParameters.h
-    3Dconnexion/GuiAbstractNativeEvent.cpp
-    3Dconnexion/GuiNativeEventWin32.cpp
-)
-SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-SET(FreeCADGui_SDK_MOC_HDRS
-  3Dconnexion/GuiAbstractNativeEvent.h
-  3Dconnexion/GuiNativeEventWin32.h
-)
+    SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/I3dMouseParams.h
+        3Dconnexion/MouseParameters.cpp
+        3Dconnexion/MouseParameters.h
+        3Dconnexion/GuiAbstractNativeEvent.cpp
+        3Dconnexion/GuiNativeEventWin32.cpp
+    )
+    SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+    SET(FreeCADGui_SDK_MOC_HDRS
+      3Dconnexion/GuiAbstractNativeEvent.h
+      3Dconnexion/GuiNativeEventWin32.h
+    )
+    list(APPEND FreeCADGui_connexion_SRCS
+        ${FreeCADGui_SDK_SRCS}
+    )
+    list(APPEND FreeCADGui_connexion_HDRS
+        ${FreeCADGui_SDK_MOC_HDRS}
+    )
 endif(FREECAD_USE_3DCONNEXION AND MSVC)
 
 if(FREECAD_USE_3DCONNEXION AND APPLE)
-SET(FreeCADGui_SDK_SRCS
-    3Dconnexion/GuiAbstractNativeEvent.cpp
-    3Dconnexion/GuiNativeEventMac.cpp
-)
-SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-SET(FreeCADGui_SDK_MOC_HDRS
-  3Dconnexion/GuiAbstractNativeEvent.h
-  3Dconnexion/GuiNativeEventMac.h
-)
+    SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/GuiAbstractNativeEvent.cpp
+        3Dconnexion/GuiNativeEventMac.cpp
+    )
+    SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+    SET(FreeCADGui_SDK_MOC_HDRS
+      3Dconnexion/GuiAbstractNativeEvent.h
+      3Dconnexion/GuiNativeEventMac.h
+    )
+    list(APPEND FreeCADGui_connexion_SRCS
+        ${FreeCADGui_SDK_SRCS}
+    )
+    list(APPEND FreeCADGui_connexion_HDRS
+        ${FreeCADGui_SDK_MOC_HDRS}
+    )
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
@@ -306,9 +324,15 @@ if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
         ${NAVLIB_STUB_DIR}/navlib_stub.c
     )
     SOURCE_GROUP("3Dconnexion Navlib" FILES ${FreeCADGui_SDK_SRCS})
-	SET(FreeCADGui_SDK_MOC_HDRS
+    SET(FreeCADGui_SDK_MOC_HDRS
         3Dconnexion/navlib/NavlibInterface.h
-	)
+    )
+    list(APPEND FreeCADGui_connexion_SRCS
+        ${FreeCADGui_SDK_SRCS}
+    )
+    list(APPEND FreeCADGui_connexion_HDRS
+        ${FreeCADGui_SDK_MOC_HDRS}
+    )
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
 set_property(SOURCE GraphvizView.h GraphvizView.cpp PROPERTY SKIP_AUTOMOC ON)
@@ -390,9 +414,9 @@ SET(Gui_UIC_SRCS
     VectorListEditor.ui
 )
 
-if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
-	list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
-endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+    list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
@@ -581,10 +605,10 @@ SET(Dialog_Customize_HPP_SRCS
     ListWidgetDragBugFix.h
 )
 
-if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
-	list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
-	list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
-endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+    list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
+    list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
+endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
 
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
@@ -595,9 +619,9 @@ SET(Dialog_Customize_SRCS
     DlgToolbars.ui
 )
 
-if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
-	list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
-endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+    list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
 
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
@@ -961,13 +985,14 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
-    ViewProviderOriginFeature.cpp
+    ViewProviderDatum.cpp
     ViewProviderPlane.cpp
+    ViewProviderPoint.cpp
     ViewProviderLine.cpp
     ViewProviderGeoFeatureGroup.cpp
     ViewProviderOriginGroup.cpp
     ViewProviderPart.cpp
-    ViewProviderOrigin.cpp
+    ViewProviderCoordinateSystem.cpp
     ViewProviderMaterialObject.cpp
     ViewProviderTextDocument.cpp
     ViewProviderTextureExtension.cpp
@@ -998,13 +1023,14 @@ SET(Viewprovider_SRCS
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
     ViewProviderPlacement.h
-    ViewProviderOriginFeature.h
+    ViewProviderDatum.h
     ViewProviderPlane.h
+    ViewProviderPoint.h
     ViewProviderLine.h
     ViewProviderGeoFeatureGroup.h
     ViewProviderOriginGroup.h
     ViewProviderPart.h
-    ViewProviderOrigin.h
+    ViewProviderCoordinateSystem.h
     ViewProviderMaterialObject.h
     ViewProviderTextDocument.h
     ViewProviderTextureExtension.h
@@ -1025,6 +1051,7 @@ SET(Inventor_CPP_SRCS
     Inventor/SoFCBackgroundGradient.cpp
     Inventor/SoFCBoundingBox.cpp
     Inventor/SoMouseWheelEvent.cpp
+    Inventor/SoFCTransform.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1039,6 +1066,7 @@ SET(Inventor_CPP_SRCS
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
+    SoDevicePixelRatioElement.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
@@ -1055,6 +1083,7 @@ SET(Inventor_SRCS
     Inventor/SoFCBackgroundGradient.h
     Inventor/SoFCBoundingBox.h
     Inventor/SoMouseWheelEvent.h
+    Inventor/SoFCTransform.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1069,6 +1098,7 @@ SET(Inventor_SRCS
     SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
+    SoDevicePixelRatioElement.h
     SoTextLabel.h
     SoDatumLabel.h
     SoTouchEvents.h
@@ -1293,11 +1323,11 @@ SET(FreeCADGui_SRCS
     StartupProcess.h
     TransactionObject.h
     ToolHandler.h
-    ${FreeCADGui_SDK_MOC_HDRS}
 )
 
 SET(FreeCADGui_SRCS
-    ${FreeCADGui_SDK_SRCS}
+    ${FreeCADGui_connexion_SRCS}
+    ${FreeCADGui_connexion_HDRS}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
     ${qsint_MOC_SRCS}
@@ -1396,7 +1426,7 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
-    #INSTALL(FILES Icons/freecad.xpm
+    #INSTALL(FILES
     #    Icons/freecad-icon-16.png
     #    Icons/freecad-icon-32.png
     #    Icons/freecad-icon-48.png
@@ -1410,7 +1440,7 @@ else(WIN32)
     INSTALL(FILES Icons/freecad-icon-48.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps RENAME org.freecad.FreeCAD.png)
     INSTALL(FILES Icons/freecad-icon-64.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps RENAME org.freecad.FreeCAD.png)
     INSTALL(FILES Icons/freecad.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps RENAME org.freecad.FreeCAD.svg)
-    INSTALL(FILES Icons/freecad.xpm DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pixmaps)
+    INSTALL(FILES Icons/freecad.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pixmaps)
     INSTALL(FILES Icons/freecad-doc.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes RENAME application-x-extension-fcstd.svg)
 endif(WIN32)
 

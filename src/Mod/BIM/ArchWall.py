@@ -212,9 +212,35 @@ class _Wall(ArchComponent.Component):
             obj.ArchSketchData = True
         if not "ArchSketchEdges" in lp:
             obj.addProperty("App::PropertyStringList","ArchSketchEdges","Wall",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."))
-
+        if not hasattr(obj,"ArchSketchPropertySet"):
+            obj.addProperty("App::PropertyEnumeration","ArchSketchPropertySet","Wall",QT_TRANSLATE_NOOP("App::Property","Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch "))
+            obj.ArchSketchPropertySet = ['Default']
+        if not hasattr(self,"ArchSkPropSetPickedUuid"):  # 'obj.Proxy', 'self' not works ?
+            self.ArchSkPropSetPickedUuid = ''
+        if not hasattr(self,"ArchSkPropSetListPrev"):
+            self.ArchSkPropSetListPrev = []
         self.connectEdges = []
         self.Type = "Wall"
+
+    def dumps(self):
+        dump = super().dumps()
+        if not isinstance(dump, tuple):
+            dump = (dump,)  #Python Tuple With One Item
+        dump = dump + (self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev)
+        return dump
+
+    def loads(self,state):
+        super().loads(state)  # do nothing as of 2024.11.28
+        if state == None:
+            return
+        elif state[0] == 'W':  # state[1] == 'a', behaviour before 2024.11.28
+            return
+        elif state[0] == 'Wall':
+            self.ArchSkPropSetPickedUuid = state[1]
+            self.ArchSkPropSetListPrev = state[2]
+        elif state[0] != 'Wall':  # model before merging super.dumps/loads()
+            self.ArchSkPropSetPickedUuid = state[0]
+            self.ArchSkPropSetListPrev = state[1]
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""
@@ -246,7 +272,7 @@ class _Wall(ArchComponent.Component):
             )
 
         if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
-            if hasattr(obj,"Width"):
+            if hasattr(obj,"Width"):	# TODO need test?
                 obj.setEditorMode("Width", ["ReadOnly"])
             if hasattr(obj,"Align"):
                 obj.setEditorMode("Align", ["ReadOnly"])
@@ -260,7 +286,8 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideOffset", ["ReadOnly"])
             if hasattr(obj,"ArchSketchEdges"):
                 obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
-
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", 0)
         else:
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", 0)
@@ -276,6 +303,8 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideOffset", 0)
             if hasattr(obj,"ArchSketchEdges"):
                 obj.setEditorMode("ArchSketchEdges", 0)
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
     def execute(self,obj):
         """Method run when the object is recomputed.
@@ -289,11 +318,46 @@ class _Wall(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         import Part
         import DraftGeomUtils
         base = None
         pl = obj.Placement
+
+        # PropertySet support
+        propSetPickedUuidPrev = self.ArchSkPropSetPickedUuid
+        propSetListPrev = self.ArchSkPropSetListPrev
+        propSetSelectedNamePrev = obj.ArchSketchPropertySet
+        propSetSelectedNameCur = None
+        propSetListCur = None
+        if Draft.getType(obj.Base) == "ArchSketch":
+            baseProxy = obj.Base.Proxy
+            if hasattr(baseProxy,"getPropertySet"):
+                # get full list of PropertySet
+                propSetListCur = baseProxy.getPropertySet(obj.Base)
+                # get updated name (if any) of the selected PropertySet 
+                propSetSelectedNameCur = baseProxy.getPropertySet(obj.Base,
+                                         propSetUuid=propSetPickedUuidPrev)
+        if propSetSelectedNameCur:  # True if selection is not deleted
+            if propSetListPrev != propSetListCur:
+                obj.ArchSketchPropertySet = propSetListCur
+                obj.ArchSketchPropertySet = propSetSelectedNameCur
+                self.ArchSkPropSetListPrev = propSetListCur
+            #elif propSetListPrev == propSetListCur:
+                #pass  #nothing to do in this case
+            # but if below, though (propSetListPrev == propSetListCur)
+            elif propSetSelectedNamePrev != propSetSelectedNameCur:
+                obj.ArchSketchPropertySet = propSetSelectedNameCur
+        else:  # True if selection is deleted
+            if propSetListCur:
+                if propSetListPrev != propSetListCur:
+                    obj.ArchSketchPropertySet = propSetListCur
+                    obj.ArchSketchPropertySet = 'Default'
+                #else:  # Seems no need ...
+                    #obj.PropertySet = 'Default'
+
         extdata = self.getExtrusionData(obj)
         if extdata:
             bplates = extdata[0]
@@ -366,7 +430,6 @@ class _Wall(ArchComponent.Component):
 
                                     for edge in baseEdges:
                                         while offset < (edge.Length-obj.Joint.Value):
-                                            #print i," Edge ",edge," : ",edge.Length," - ",offset
                                             if offset:
                                                 t = edge.tangentAt(offset)
                                                 p = t.cross(n)
@@ -484,6 +547,7 @@ class _Wall(ArchComponent.Component):
                             if obj.Length.Value != l:
                                 obj.Length = l
                                 self.oldLength = None # delete the stored value to prevent triggering base change below
+
         # set the Area property
         obj.Area = obj.Length.Value * obj.Height.Value
 
@@ -527,7 +591,6 @@ class _Wall(ArchComponent.Component):
             if (obj.Base and obj.Length.Value
                     and hasattr(self,"oldLength") and (self.oldLength is not None)
                     and (self.oldLength != obj.Length.Value)):
-
                 if hasattr(obj.Base,'Shape'):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
@@ -550,7 +613,15 @@ class _Wall(ArchComponent.Component):
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
 
-        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
+        if (prop == "ArchSketchPropertySet" 
+            and Draft.getType(obj.Base) == "ArchSketch"):
+            baseProxy = obj.Base.Proxy
+            if hasattr(baseProxy,"getPropertySet"):
+                uuid = baseProxy.getPropertySet(obj, 
+                                 propSetName=obj.ArchSketchPropertySet)
+                self.ArchSkPropSetPickedUuid = uuid
+        if (hasattr(obj,"ArchSketchData") and obj.ArchSketchData
+            and Draft.getType(obj.Base) == "ArchSketch"):
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", ["ReadOnly"])
             if hasattr(obj,"Align"):
@@ -565,7 +636,8 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideOffset", ["ReadOnly"])
             if hasattr(obj,"ArchSketchEdges"):
                 obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
-
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", 0)
         else:
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", 0)
@@ -581,6 +653,8 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideOffset", 0)
             if hasattr(obj,"ArchSketchEdges"):
                 obj.setEditorMode("ArchSketchEdges", 0)
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
@@ -603,6 +677,7 @@ class _Wall(ArchComponent.Component):
         return faces
 
     def getExtrusionData(self,obj):
+
         """Get data needed to extrude the wall from a base object.
 
         take the Base object, and find a base face to extrude
@@ -625,6 +700,8 @@ class _Wall(ArchComponent.Component):
         import DraftGeomUtils
         import ArchSketchObject
 
+        propSetUuid = self.ArchSkPropSetPickedUuid
+
         # If ArchComponent.Component.getExtrusionData() can successfully get
         # extrusion data, just use that.
         data = ArchComponent.Component.getExtrusionData(self,obj)
@@ -633,20 +710,18 @@ class _Wall(ArchComponent.Component):
                 # multifuses not considered here
                 return data
         length  = obj.Length.Value
-
         # TODO currently layers were not supported when len(basewires) > 0	##( or 1 ? )
         width = 0
-
         # Get width of each edge segment from Base Objects if they store it
         # (Adding support in SketchFeaturePython, DWire...)
         widths = []  # [] or None are both False
         if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
-            if hasattr(obj.Base, 'Proxy'):
+            if hasattr(obj.Base, 'Proxy'):  # TODO Any need to test ?
                 if hasattr(obj.Base.Proxy, 'getWidths'):
                     # Return a list of Width corresponding to indexes of sorted
                     # edges of Sketch.
-                    widths = obj.Base.Proxy.getWidths(obj.Base)
-
+                    widths = obj.Base.Proxy.getWidths(obj.Base,
+                                                      propSetUuid=propSetUuid)
         # Get width of each edge/wall segment from ArchWall.OverrideWidth if
         # Base Object does not provide it
         if not widths:
@@ -689,7 +764,8 @@ class _Wall(ArchComponent.Component):
                 if hasattr(obj.Base.Proxy, 'getAligns'):
                     # Return a list of Align corresponds to indexes of sorted
                     # edges of Sketch.
-                    aligns = obj.Base.Proxy.getAligns(obj.Base)
+                    aligns = obj.Base.Proxy.getAligns(obj.Base,
+                                                      propSetUuid=propSetUuid)
         # Get align of each edge/wall segment from ArchWall.OverrideAlign if
         # Base Object does not provide it
         if not aligns:
@@ -722,12 +798,12 @@ class _Wall(ArchComponent.Component):
         # (Adding support in SketchFeaturePython, DWire...)
         offsets = []  # [] or None are both False
         if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
-
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getOffsets'):
                     # Return a list of Offset corresponding to indexes of sorted
                     # edges of Sketch.
-                    offsets = obj.Base.Proxy.getOffsets(obj.Base)
+                    offsets = obj.Base.Proxy.getOffsets(obj.Base,
+                                                        propSetUuid=propSetUuid)
         # Get offset of each edge/wall segment from ArchWall.OverrideOffset if
         # Base Object does not provide it
         if not offsets:
@@ -826,8 +902,8 @@ class _Wall(ArchComponent.Component):
 
                     elif hasattr(obj.Base, 'Proxy') and obj.ArchSketchData and \
                     hasattr(obj.Base.Proxy, 'getWallBaseShapeEdgesInfo'):
-
-                        wallBaseShapeEdgesInfo = obj.Base.Proxy.getWallBaseShapeEdgesInfo(obj.Base)
+                        wallBaseShapeEdgesInfo = obj.Base.Proxy.getWallBaseShapeEdgesInfo(obj.Base,	
+                                                 propSetUuid=propSetUuid)
                         #get wall edges (not wires); use original edges if getWallBaseShapeEdgesInfo() provided none
                         if wallBaseShapeEdgesInfo:
                             self.basewires = wallBaseShapeEdgesInfo.get('wallAxis')  # 'wallEdges'  # widths, aligns, offsets?
@@ -843,10 +919,18 @@ class _Wall(ArchComponent.Component):
                         # Get ArchSketch edges to construct ArchWall
                         # No need to test obj.ArchSketchData ...
                         for ig, geom  in enumerate(skGeom):
-                            if not geom.Construction and (not obj.ArchSketchEdges or str(ig) in obj.ArchSketchEdges):
-                                # support Line, Arc, Circle, Ellipse for Sketch as Base at the moment
-                                if isinstance(geom.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse)):
+                            # Construction mode edges should be ignored if
+                            # ArchSketchEdges, otherwise, ArchSketchEdges data
+                            # needs to take out those in Construction before
+                            # using as parameters.
+                            if (not obj.ArchSketchEdges and not geom.Construction) or str(ig) in obj.ArchSketchEdges:
+                                # support Line, Arc, Circle, Ellipse for Sketch
+                                # as Base at the moment
+                                if isinstance(geom.Geometry, (Part.LineSegment,
+                                              Part.Circle, Part.ArcOfCircle,
+                                              Part.Ellipse)):
                                     skGeomEdgesI = geom.Geometry.toShape()
+
                                     skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
@@ -903,7 +987,6 @@ class _Wall(ArchComponent.Component):
                             self.basewires = [self.basewires[0] for l in layers]
                         layeroffset = 0
                         baseface = None
-
                         self.connectEdges = []
                         for i,wire in enumerate(self.basewires):
 
@@ -983,7 +1066,6 @@ class _Wall(ArchComponent.Component):
                                 # Get the 'offseted' wire taking into account
                                 # of Width and Align of each edge, and overall
                                 # Offset
-
                                 wNe2 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
@@ -1254,12 +1336,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                             cols = []
                             for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
-                                c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
+                                c = (c[0],c[1],c[2],1.0-obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:
                                     if "(" in mat.Material['DiffuseColor']:
                                         c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                 if 'Transparency' in mat.Material:
-                                    c = (c[0],c[1],c[2],float(mat.Material['Transparency']))
+                                    c = (c[0],c[1],c[2],1.0-float(mat.Material['Transparency']))
                                 cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
                             obj.ViewObject.DiffuseColor = cols
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)

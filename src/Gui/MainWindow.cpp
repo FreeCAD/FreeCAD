@@ -300,86 +300,6 @@ struct MainWindowP
     void restoreWindowState(const QByteArray &);
 };
 
-class MDITabbar : public QTabBar
-{
-public:
-    explicit MDITabbar( QWidget * parent = nullptr ) : QTabBar(parent)
-    {
-        menu = new QMenu(this);
-        setDrawBase(false);
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    }
-
-    ~MDITabbar() override
-    {
-        delete menu;
-    }
-
-protected:
-    void contextMenuEvent ( QContextMenuEvent * e ) override
-    {
-        menu->clear();
-        CommandManager& cMgr = Application::Instance->commandManager();
-        if (tabRect(currentIndex()).contains(e->pos()))
-            cMgr.getCommandByName("Std_CloseActiveWindow")->addTo(menu);
-        cMgr.getCommandByName("Std_CloseAllWindows")->addTo(menu);
-        menu->addSeparator();
-        cMgr.getCommandByName("Std_CascadeWindows")->addTo(menu);
-        cMgr.getCommandByName("Std_TileWindows")->addTo(menu);
-        menu->addSeparator();
-        cMgr.getCommandByName("Std_Windows")->addTo(menu);
-        menu->popup(e->globalPos());
-    }
-
-private:
-    QMenu* menu;
-};
-
-#if defined(Q_OS_WIN32)
-class MainWindowTabBar : public QTabBar
-{
-public:
-    MainWindowTabBar(QWidget *parent) : QTabBar(parent)
-    {
-        setExpanding(false);
-    }
-protected:
-    bool event(QEvent *e)
-    {
-        // show the tooltip if tab is too small to fit label
-        if (e->type() != QEvent::ToolTip)
-            return QTabBar::event(e);
-        QSize size = this->size();
-        QSize hint = sizeHint();
-        if (shape() == QTabBar::RoundedWest || shape() == QTabBar::RoundedEast) {
-            size.transpose();
-            hint.transpose();
-        }
-        if (size.width() < hint.width())
-            return QTabBar::event(e);
-        e->accept();
-        return true;
-    }
-    void tabInserted (int index)
-    {
-        // get all dock windows
-        QList<QDockWidget*> dw = getMainWindow()->findChildren<QDockWidget*>();
-        for (QList<QDockWidget*>::iterator it = dw.begin(); it != dw.end(); ++it) {
-            // compare tab text and window title to get the right dock window
-            if (this->tabText(index) == (*it)->windowTitle()) {
-                QWidget* dock = (*it)->widget();
-                if (dock) {
-                    QIcon icon = dock->windowIcon();
-                    if (!icon.isNull())
-                        setTabIcon(index, icon);
-                }
-                break;
-            }
-        }
-    }
-};
-#endif
-
 } // namespace Gui
 
 /* TRANSLATOR Gui::MainWindow */
@@ -464,8 +384,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    // d->actionLabel->setMinimumWidth(120);
-
     d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
@@ -1280,7 +1198,6 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
         subwindow->setParent(nullptr);
 
         assert(!d->mdiArea->subWindowList().contains(subwindow));
-        // d->mdiArea->removeSubWindow(parent);
     }
 
     if(close)
@@ -1896,19 +1813,6 @@ void MainWindow::saveWindowSettings(bool canDelay)
     int minor = (QT_VERSION >> 0x08) & 0xff;
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
-
-#if 0
-    config.beginGroup(qtver);
-    config.setValue(QStringLiteral("Size"), this->size());
-    config.setValue(QStringLiteral("Position"), this->pos());
-    config.setValue(QStringLiteral("Maximized"), this->isMaximized());
-    config.setValue(QStringLiteral("MainWindowState"), this->saveState());
-    config.setValue(QStringLiteral("StatusBar"), this->statusBar()->isVisible());
-    config.endGroup();
-#else
-    // We are migrating from saving qt main window layout state in QSettings to
-    // FreeCAD parameters, for more control.
-#endif
 
     Base::ConnectionBlocker block(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());

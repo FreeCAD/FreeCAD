@@ -30,6 +30,8 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QStandardPaths>
+#include <QUrl>
 #endif
 
 #include "DisplayedFilesModel.h"
@@ -93,12 +95,16 @@ std::string getThumbnailsImage()
 
 QString getThumbnailsName()
 {
+#if defined(Q_OS_LINUX)
+    return QString::fromLatin1("thumbnails/normal");
+#else
     return QString::fromLatin1("FreeCADStartThumbnails");
+#endif
 }
 
 QDir getThumnailsParentDir()
 {
-    return QDir::temp();
+    return {QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
 }
 
 QString getThumbnailsDir()
@@ -116,22 +122,23 @@ void createThumbnailsDir()
     }
 }
 
-QString getSha1Hash(const std::string& path)
+QString getMD5Hash(const std::string& path)
 {
-    QCryptographicHash hash(QCryptographicHash::Sha1);
-    hash.addData(path.c_str(), static_cast<int>(path.size()));
-    QByteArray ba1 = hash.result().toHex();
-    hash.reset();
-    hash.addData(ba1);
-    QByteArray ba2 = hash.result().toHex();
-    return QString::fromLatin1(ba2);
+    // Use MD5 hash as specified here:
+    // https://specifications.freedesktop.org/thumbnail-spec/0.8.0/thumbsave.html
+    QUrl url(QString::fromStdString(path));
+    url.setScheme(QString::fromLatin1("file"));
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    hash.addData(url.toEncoded());
+    QByteArray ba = hash.result().toHex();
+    return QString::fromLatin1(ba);
 }
 
 QString getUniquePNG(const std::string& path)
 {
     QDir dir = getThumbnailsDir();
-    QString sha1 = getSha1Hash(path) + QLatin1String(".png");
-    return dir.absoluteFilePath(sha1);
+    QString md5 = getMD5Hash(path) + QLatin1String(".png");
+    return dir.absoluteFilePath(md5);
 }
 
 bool useCachedPNG(const std::string& image, const std::string& project)
@@ -161,7 +168,7 @@ QByteArray loadFCStdThumbnail(const std::string& pathToFCStdFile)
                 if (proj.containsFile(thumb)) {
                     createThumbnailsDir();
                     Base::FileInfo fi(thumbnailFile);
-                    Base::ofstream str(fi);
+                    Base::ofstream str(fi, std::ios::out | std::ios::binary);
                     proj.readInputFileDirect(thumb, str);
                     str.close();
                 }
@@ -279,7 +286,7 @@ void DisplayedFilesModel::addFile(const QString& filePath)
         return;
     }
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
-    if (qfi.completeSuffix().toLower() == QLatin1String("fcstd")) {
+    if (qfi.suffix().toLower() == QLatin1String("fcstd")) {
         auto thumbnail = loadFCStdThumbnail(filePath.toStdString());
         if (!thumbnail.isEmpty()) {
             _imageCache.insert(filePath, thumbnail);

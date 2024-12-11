@@ -1095,9 +1095,9 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
         else {
             // fubar - can't have non-circular spline as target of Diameter dimension, but this is
             // already checked, so something has gone badly wrong.
-            Base::Console().Error("%s: can not make a Circle from this BSpline edge\n",
+            Base::Console().Error("%s: can not make a Circle from this B-spline edge\n",
                                   getNameInDocument());
-            throw Base::RuntimeError("Bad BSpline geometry for arc dimension");
+            throw Base::RuntimeError("Bad B-spline geometry for arc dimension");
         }
     }
     else {
@@ -1173,7 +1173,7 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             pts.isArc = isArc;
             BRepAdaptor_Curve adaptCircle(circleEdge);
             if (adaptCircle.GetType() != GeomAbs_Circle) {
-                throw Base::RuntimeError("failed to get circle from bspline");
+                throw Base::RuntimeError("failed to get circle from B-spline");
             }
             gp_Circ circle = adapt.Circle();
             // TODO: same code as above. reuse opportunity.
@@ -1196,7 +1196,7 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             }
         }
         else {
-            throw Base::RuntimeError("failed to make circle from bspline");
+            throw Base::RuntimeError("failed to make circle from B-spline");
         }
     }
     else {

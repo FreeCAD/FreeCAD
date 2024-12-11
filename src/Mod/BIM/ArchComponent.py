@@ -263,6 +263,8 @@ class Component(ArchIFC.IfcProduct):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
         if obj.Base:
             shape = self.spread(obj,obj.Base.Shape)
             if obj.Additions or obj.Subtractions:
@@ -313,36 +315,27 @@ class Component(ArchIFC.IfcProduct):
         prop: string
             The name of the property that has changed.
         """
+        
+        import math
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if prop == "Placement":
-            if hasattr(self,"oldPlacement"):
-                if self.oldPlacement:
-                    deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
-                    if deltap.Length == 0:
-                        deltap = None
-                    deltar = obj.Placement.Rotation * self.oldPlacement.Rotation.inverted()
-                    if deltar.Angle < 0.0001:
-                        deltar = None
-                    for child in self.getMovableChildren(obj):
-                        if deltar:
-                            import math
-                            # Code for V1.0:
-                            # child.Placement.rotate(self.oldPlacement.Base,
-                                                   # deltar.Axis,
-                                                   # math.degrees(deltar.Angle),
-                                                   # comp=True)
-
-                            # Workaround solution for V0.20.3 backport:
-                            # See: https://forum.freecad.org/viewtopic.php?p=613196#p613196
-                            offset_rotation = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0),
-                                                                FreeCAD.Rotation(deltar.Axis, math.degrees(deltar.Angle)),
-                                                                self.oldPlacement.Base)
-                            child.Placement = offset_rotation * child.Placement
-                            # End workaround solution.
-                        if deltap:
-                            child.Placement.move(deltap)
+            if hasattr(self,"oldPlacement") and self.oldPlacement != obj.Placement:
+                deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
+                if deltap.Length == 0:
+                    deltap = None
+                deltar = obj.Placement.Rotation * self.oldPlacement.Rotation.inverted()
+                if deltar.Angle < 0.0001:
+                    deltar = None
+                for child in self.getMovableChildren(obj):
+                    if deltar:
+                        child.Placement.rotate(self.oldPlacement.Base,
+                                               deltar.Axis,
+                                               math.degrees(deltar.Angle),
+                                               comp=True)
+                    if deltap:
+                        child.Placement.move(deltap)
 
     def getMovableChildren(self,obj):
         """Find the component's children set to move with their host.
@@ -1152,6 +1145,24 @@ class Component(ArchIFC.IfcProduct):
                     if obj in link.Hosts:
                         hosts.append(link)
         return hosts
+
+    def ensureBase(self, obj):
+        """Returns False if the object has a Base but of the wrong type.
+        Either returns True"""
+
+        if getattr(obj, "Base", None):
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                return True
+            elif obj.Base.isDerivedFrom("Mesh::Feature"):
+                return True
+            else:
+                import Part
+                if isinstance(getattr(obj.Base, "Shape", None), Part.Shape):
+                    return True
+                else:
+                    t = translate("Arch","Wrong base type")
+                    FreeCAD.Console.PrintError(obj.Label+": "+t+"\n")
+                    return False
 
 
 class ViewProviderComponent:

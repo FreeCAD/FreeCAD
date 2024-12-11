@@ -539,58 +539,82 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     QVector<QRgb> table = p.colorTable();
     if (!table.isEmpty()) {
         if (p.hasAlphaChannel()) {
-            if (p.allGray())
+            if (p.allGray()) {
                 numcomponents = 2;
-            else
+            }
+            else {
                 numcomponents = 4;
+            }
         }
         else {
-            if (p.allGray())
+            if (p.allGray()) {
                 numcomponents = 1;
-            else
+            }
+            else {
                 numcomponents = 3;
+            }
         }
     }
     else {
         numcomponents = buffersize / (size[0] * size[1]);
     }
 
+    int depth = numcomponents;
+
+    // Coin3D only supports up to 32-bit images
+    if (numcomponents == 8) {
+        numcomponents = 4;
+    }
+
     // allocate image data
     img.setValue(size, numcomponents, nullptr);
 
-    unsigned char * bytes = img.startEditing(size, numcomponents);
+    unsigned char* bytes = img.startEditing(size, numcomponents);
 
-    int width  = (int)size[0];
+    int width = (int)size[0];
     int height = (int)size[1];
 
-    for (int y = 0; y < height; y++)
-    {
-        unsigned char * line = &bytes[width*numcomponents*(height-(y+1))];
-        for (int x = 0; x < width; x++)
-        {
-            QRgb rgb = p.pixel(x,y);
-            switch (numcomponents)
-            {
-            default:
-                break;
-            case 1:
-                line[0] = qGray( rgb );
-                break;
-            case 2:
-                line[0] = qGray( rgb );
-                line[1] = qAlpha( rgb );
-                break;
-            case 3:
-                line[0] = qRed( rgb );
-                line[1] = qGreen( rgb );
-                line[2] = qBlue( rgb );
-                break;
-            case 4:
-                line[0] = qRed( rgb );
-                line[1] = qGreen( rgb );
-                line[2] = qBlue( rgb );
-                line[3] = qAlpha( rgb );
-                break;
+    for (int y = 0; y < height; y++) {
+        unsigned char* line = &bytes[width * numcomponents * (height - (y + 1))];
+        for (int x = 0; x < width; x++) {
+            QColor col = p.pixelColor(x,y);
+            switch (depth) {
+                default:
+                    break;
+                case 1:
+                {
+                    QRgb rgb = col.rgb();
+                    line[0] = qGray(rgb);
+                }   break;
+                case 2:
+                {
+                    QRgb rgb = col.rgba();
+                    line[0] = qGray(rgb);
+                    line[1] = qAlpha(rgb);
+                }   break;
+                case 3:
+                {
+                    QRgb rgb = col.rgb();
+                    line[0] = qRed(rgb);
+                    line[1] = qGreen(rgb);
+                    line[2] = qBlue(rgb);
+                }   break;
+                case 4:
+                {
+                    QRgb rgb = col.rgba();
+                    line[0] = qRed(rgb);
+                    line[1] = qGreen(rgb);
+                    line[2] = qBlue(rgb);
+                    line[3] = qAlpha(rgb);
+                }   break;
+                case 8:
+                {
+                    QRgba64 rgb = col.rgba64();
+                    line[0] = qRed(rgb);
+                    line[1] = qGreen(rgb);
+                    line[2] = qBlue(rgb);
+                    line[3] = qAlpha(rgb);
+                }   break;
             }
 
             line += numcomponents;

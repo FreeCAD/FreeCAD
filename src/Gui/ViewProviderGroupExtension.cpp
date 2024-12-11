@@ -98,7 +98,7 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
 
 void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
-    auto grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
+    auto grp = getExtendedViewProvider()->getObject();
     App::Document* doc = grp->getDocument();
 
     // build Python command for execution

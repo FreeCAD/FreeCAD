@@ -31,7 +31,7 @@ from .manager import init_doc
 
 def get_information():
     return {
-        "name": "CCX cantilever prescibed displacement",
+        "name": "CCX cantilever prescribed displacement",
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "displacement"],

@@ -557,8 +557,35 @@ PyObject* SketchObjectPy::addExternal(PyObject* args)
 {
     char* ObjectName;
     char* SubName;
-    if (!PyArg_ParseTuple(args, "ss", &ObjectName, &SubName)) {
-        return nullptr;
+    PyObject* defining;      // this is an optional argument default false
+    PyObject* intersection;  // this is an optional argument default false
+    bool isDefining;
+    bool isIntersection;
+    if (!PyArg_ParseTuple(args,
+                          "ssO!O!",
+                          &ObjectName,
+                          &SubName,
+                          &PyBool_Type,
+                          &defining,
+                          &PyBool_Type,
+                          &intersection)) {
+        if (!PyArg_ParseTuple(args, "ssO!", &ObjectName, &SubName, &PyBool_Type, &defining)) {
+            PyErr_Clear();
+            if (!PyArg_ParseTuple(args, "ss", &ObjectName, &SubName)) {
+                return nullptr;
+            }
+            else {
+                isDefining = false;
+            }
+        }
+        else {
+            isDefining = Base::asBoolean(defining);
+        }
+        isIntersection = false;
+    }
+    else {
+        isDefining = Base::asBoolean(defining);
+        isIntersection = Base::asBoolean(intersection);
     }
 
     // get the target object for the external link
@@ -579,7 +606,7 @@ PyObject* SketchObjectPy::addExternal(PyObject* args)
     }
 
     // add the external
-    if (skObj->addExternal(Obj, SubName) < 0) {
+    if (skObj->addExternal(Obj, SubName, isDefining, isIntersection) < 0) {
         std::stringstream str;
         str << "Not able to add external shape element " << SubName;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1140,7 +1167,59 @@ PyObject* SketchObjectPy::setLabelDistance(PyObject* args)
     Py_Return;
 }
 
-PyObject* SketchObjectPy::movePoint(PyObject* args)
+PyObject* SketchObjectPy::moveGeometries(PyObject* args)
+{
+    PyObject* pyList;
+    PyObject* pcObj;
+    int relative = 0;
+
+    // Parse arguments: list of pairs, Base::VectorPy, optional relative flag
+    if (!PyArg_ParseTuple(args,
+                          "O!O!|i",
+                          &PyList_Type,
+                          &pyList,  // List of pairs (geoId, pointPos)
+                          &(Base::VectorPy::Type),
+                          &pcObj,        // Target vector
+                          &relative)) {  // Optional relative flag
+        return nullptr;
+    }
+
+    // Convert Python list to std::vector<GeoElementId>
+    std::vector<GeoElementId> geoEltIds;
+    Py_ssize_t listSize = PyList_Size(pyList);
+
+    for (Py_ssize_t i = 0; i < listSize; ++i) {
+        PyObject* pyPair = PyList_GetItem(pyList, i);  // Borrowed reference
+
+        if (!PyTuple_Check(pyPair) || PyTuple_Size(pyPair) != 2) {
+            PyErr_SetString(PyExc_ValueError, "List must contain pairs (geoId, pointPos).");
+            return nullptr;
+        }
+
+        int geoId = PyLong_AsLong(PyTuple_GetItem(pyPair, 0));
+        int pointPos = PyLong_AsLong(PyTuple_GetItem(pyPair, 1));
+
+        if (PyErr_Occurred()) {
+            PyErr_SetString(PyExc_ValueError, "Invalid geoId or pointPos in the list.");
+            return nullptr;
+        }
+
+        geoEltIds.emplace_back(GeoElementId(geoId, static_cast<Sketcher::PointPos>(pointPos)));
+    }
+
+    // Convert Python vector to Base::Vector3d
+    Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
+
+    // Call the C++ method
+    if (this->getSketchObjectPtr()->moveGeometries(geoEltIds, v1, (relative > 0))) {
+        PyErr_SetString(PyExc_ValueError, "Failed to move geometries.");
+        return nullptr;
+    }
+
+    Py_RETURN_NONE;
+}
+
+PyObject* SketchObjectPy::moveGeometry(PyObject* args)
 {
     PyObject* pcObj;
     int GeoId, PointType;
@@ -1158,10 +1237,10 @@ PyObject* SketchObjectPy::movePoint(PyObject* args)
 
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
-    if (this->getSketchObjectPtr()->movePoint(GeoId,
-                                              static_cast<Sketcher::PointPos>(PointType),
-                                              v1,
-                                              (relative > 0))) {
+    if (this->getSketchObjectPtr()->moveGeometry(GeoId,
+                                                 static_cast<Sketcher::PointPos>(PointType),
+                                                 v1,
+                                                 (relative > 0))) {
         std::stringstream str;
         str << "Not able to move point with the id and type: (" << GeoId << ", " << PointType
             << ")";

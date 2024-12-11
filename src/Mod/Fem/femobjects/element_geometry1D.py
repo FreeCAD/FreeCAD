@@ -29,7 +29,11 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief element geometry 1D object
 
+from FreeCAD import Base
 from . import base_femelement
+from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class ElementGeometry1D(base_femelement.BaseFemElement):
@@ -38,55 +42,150 @@ class ElementGeometry1D(base_femelement.BaseFemElement):
     """
 
     Type = "Fem::ElementGeometry1D"
-    known_beam_types = ["Rectangular", "Circular", "Pipe"]
 
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
-            "App::PropertyLength",
-            "RectWidth",
-            "RectBeamSection",
-            "set width of the rectangular beam elements",
-        )
-        obj.setPropertyStatus("RectWidth", "LockDynamic")
+    def _get_properties(self):
+        prop = super()._get_properties()
 
-        obj.addProperty(
-            "App::PropertyLength",
-            "RectHeight",
-            "RectBeamSection",
-            "set height of therectangular beam elements",
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="RectWidth",
+                group="RectBeamSection",
+                doc="Set width of the rectangular beam elements",
+                value=0.0,
+            )
         )
-        obj.setPropertyStatus("RectHeight", "LockDynamic")
-
-        obj.addProperty(
-            "App::PropertyLength",
-            "CircDiameter",
-            "CircBeamSection",
-            "set diameter of the circular beam elements",
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="RectHeight",
+                group="RectBeamSection",
+                doc="Set height of there ctangular beam elements",
+                value=0.0,
+            )
         )
-        obj.setPropertyStatus("CircDiameter", "LockDynamic")
-
-        obj.addProperty(
-            "App::PropertyLength",
-            "PipeDiameter",
-            "PipeBeamSection",
-            "set outer diameter of the pipe beam elements",
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="CircDiameter",
+                group="CircBeamSection",
+                doc="Set diameter of the circular beam elements",
+                value=0.0,
+            )
         )
-        obj.setPropertyStatus("PipeDiameter", "LockDynamic")
-
-        obj.addProperty(
-            "App::PropertyLength",
-            "PipeThickness",
-            "PipeBeamSection",
-            "set thickness of the pipe beam elements",
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="PipeDiameter",
+                group="PipeBeamSection",
+                doc="Set outer diameter of the pipe beam elements",
+                value=0.0,
+            )
         )
-        obj.setPropertyStatus("PipeThickness", "LockDynamic")
-
-        obj.addProperty(
-            "App::PropertyEnumeration", "SectionType", "BeamSection", "select beam section type"
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="PipeThickness",
+                group="PipeBeamSection",
+                doc="Set thickness of the pipe beam elements",
+                value=0.0,
+            )
         )
-        obj.setPropertyStatus("SectionType", "LockDynamic")
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="Axis1Length",
+                group="EllipticalBeamSection",
+                doc="Set first principal axis length of the elliptical beam elements",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="Axis2Length",
+                group="EllipticalBeamSection",
+                doc="Set second principal axis length of the elliptical beam elements",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="BoxWidth",
+                group="BoxBeamSection",
+                doc="Set width of the box beam elements",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="BoxHeight",
+                group="BoxBeamSection",
+                doc="Set height of the box beam elements",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="BoxT1",
+                group="BoxBeamSection",
+                doc="Set thickness parameter t1 of the box beam elements",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="BoxT2",
+                group="BoxBeamSection",
+                doc="Set thickness parameter t2 of the box beam elements",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="BoxT3",
+                group="BoxBeamSection",
+                doc="Set thickness parameter t3 of the box beam elements",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="BoxT4",
+                group="BoxBeamSection",
+                doc="Set thickness parameter t4 of the box beam elements",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="SectionType",
+                group="BeamSection",
+                doc="Select beam section type",
+                value=["Rectangular", "Circular", "Pipe", "Elliptical", "Box"],
+            )
+        )
 
-        obj.SectionType = ElementGeometry1D.known_beam_types
-        obj.SectionType = "Rectangular"
+        return prop
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
+
+            if prop.name == "SectionType":
+                # refresh the list of known section types for old projects
+                obj.SectionType = prop.value

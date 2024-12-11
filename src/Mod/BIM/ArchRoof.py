@@ -601,6 +601,8 @@ class _Roof(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         pl = obj.Placement
         #self.baseface = None

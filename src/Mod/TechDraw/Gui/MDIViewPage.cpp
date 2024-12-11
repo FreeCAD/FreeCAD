@@ -46,7 +46,6 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -119,14 +118,11 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
     //NOLINTEND
 
-    m_pagePrinter = new PagePrinter(m_vpPage);
-    m_pagePrinter->setOwner(this);
 }
 
 MDIViewPage::~MDIViewPage()
 {
     connectDeletedObject.disconnect();
-    delete m_pagePrinter;
 }
 
 void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
@@ -134,15 +130,12 @@ void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
     m_scene = scene;
     setCentralWidget(viewWidget);//this makes viewWidget a Qt child of MDIViewPage
     QObject::connect(scene, &QGSPage::selectionChanged, this, &MDIViewPage::sceneSelectionChanged);
-    if (m_pagePrinter) {
-        m_pagePrinter->setScene(m_scene);
-    }
 }
 
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
-    setObjectName(Base::Tools::fromStdString(name));
+    setObjectName(QString::fromStdString(name));
 }
 
 void MDIViewPage::setDocumentName(const std::string& name) { m_documentName = name; }
@@ -309,35 +302,6 @@ void MDIViewPage::fixSceneDependencies()
 /// as file name selection and error messages
 /// PagePrinter handles the actual printing mechanics.
 
-/// save the page state so it can be restore after printing
-void MDIViewPage::savePageExportState(ViewProviderPage* page)
-{
-    auto guiDoc = page->getDocument();
-    if (!guiDoc) {
-        return;
-    }
-    m_docModStateBeforePrint = guiDoc->isModified();
-}
-/// ensure that the page reverts to its normal state after any changes made for printing.
-void MDIViewPage::resetPageExportState(ViewProviderPage* page) const
-{
-    auto pageFeature  = page->getDrawPage();
-    if (!pageFeature) {
-        // how did this happen?
-        return;
-    }
-
-    auto guiDoc = page->getDocument();
-    if (!guiDoc) {
-        return;
-    }
-    auto scene = page->getQGSPage();
-    scene->setExportingPdf(false);
-    scene->setExportingSvg(false);
-    guiDoc->setModified(m_docModStateBeforePrint);
-    pageFeature->redrawCommand();
-}
-
 
 /// overrides of MDIView print methods so that they print the QGraphicsScene instead
 /// of the COIN3d scenegraph.
@@ -354,72 +318,46 @@ void MDIViewPage::printPdf()
     }
 
     Gui::WaitCursor wc;
-    auto vpp = getViewProviderPage();
-    if (!vpp) {
-        // how did this happen?
-        return;
-    }
-
-    savePageExportState(vpp);
 
     std::string utf8Content = fn.toUtf8().constData();
-    if (m_pagePrinter) {
-        m_pagePrinter->printPdf(utf8Content);
-        resetPageExportState(vpp);
-    }
+    PagePrinter::printPdf(getViewProviderPage(), utf8Content);
 }
 
 void MDIViewPage::print()
 {
-    if (!m_pagePrinter) {
-        return;
-    }
-
-    auto vpp = getViewProviderPage();
-    if (!vpp) {
-        // how did this happen?
-        return;
-    }
-
-    savePageExportState(vpp);
-
-    m_pagePrinter->getPaperAttributes();
+    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (m_pagePrinter->getPaperSize() == QPageSize::Custom) {
-        printer.setPageSize(QPageSize(QSizeF(m_pagePrinter->getPageWidth(), m_pagePrinter->getPageHeight()), QPageSize::Millimeter));
+    if (pageAttr.pageSize() == QPageSize::Custom) {
+        printer.setPageSize(
+            QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
     else {
-        printer.setPageSize(QPageSize(m_pagePrinter->getPaperSize()));
+        printer.setPageSize(QPageSize(pageAttr.pageSize()));
     }
-    printer.setPageOrientation(m_pagePrinter->getOrientation());
+    printer.setPageOrientation(pageAttr.orientation());
 
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
-        resetPageExportState(vpp);
     }
 }
 
 void MDIViewPage::printPreview()
 {
-//    Base::Console().Message("MDIVP::printPreview()\n");
-
-    if (!m_pagePrinter) {
-        return;
-    }
-    m_pagePrinter->getPaperAttributes();
+    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (m_pagePrinter->getPaperSize() == QPageSize::Custom) {
-        printer.setPageSize(QPageSize(QSizeF(m_pagePrinter->getPageWidth(), m_pagePrinter->getPageHeight()), QPageSize::Millimeter));
+    if (pageAttr.pageSize() == QPageSize::Custom) {
+        printer.setPageSize(
+            QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
     else {
-        printer.setPageSize(QPageSize(m_pagePrinter->getPaperSize()));
+        printer.setPageSize(QPageSize(pageAttr.pageSize()));
     }
-    printer.setPageOrientation(m_pagePrinter->getOrientation());
+    printer.setPageOrientation(pageAttr.orientation());
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
@@ -429,18 +367,6 @@ void MDIViewPage::printPreview()
 
 void MDIViewPage::print(QPrinter* printer)
 {
-    // Base::Console().Message("MDIVP::print(printer)\n");
-    if (!m_pagePrinter) {
-        return;
-    }
-    auto vpp = getViewProviderPage();
-    if (!vpp) {
-        // how did this happen?
-        return;
-    }
-    savePageExportState(vpp);
-
-    m_pagePrinter->getPaperAttributes();
     // As size of the render area paperRect() should be used. When performing a real
     // print pageRect() may also work but the output is cropped at the bottom part.
     // So, independent whether pageRect() or paperRect() is used there is no scaling effect.
@@ -452,7 +378,9 @@ void MDIViewPage::print(QPrinter* printer)
     //
     // When showing the preview of a print paperRect() must be used because with pageRect()
     // a certain scaling effect can be observed and the content becomes smaller.
+
     QPaintEngine::Type paintType = printer->paintEngine()->type();
+    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
     if (printer->outputFormat() == QPrinter::NativeFormat) {
         QPageSize::PageSizeId psPrtSetting = printer->pageLayout().pageSize().id();
 
@@ -460,17 +388,17 @@ void MDIViewPage::print(QPrinter* printer)
         // care if it uses wrong printer settings
         bool doPrint = paintType != QPaintEngine::Picture;
 
-        if (doPrint && printer->pageLayout().orientation() != m_pagePrinter->getOrientation()) {
+        if (doPrint && printer->pageLayout().orientation() != pageAttr.orientation()) {
             int ret = QMessageBox::warning(
                 this, tr("Different orientation"),
-                tr("The printer uses a different orientation  than the drawing.\n"
+                tr("The printer uses a different orientation than the drawing.\n"
                    "Do you want to continue?"),
                 QMessageBox::Yes | QMessageBox::No);
             if (ret != QMessageBox::Yes) {
                 return;
             }
         }
-        if (doPrint && psPrtSetting != m_pagePrinter->getPaperSize()) {
+        if (doPrint && psPrtSetting != pageAttr.pageSize()) {
             int ret = QMessageBox::warning(
                 this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
@@ -482,17 +410,12 @@ void MDIViewPage::print(QPrinter* printer)
         }
     }
 
-    if (m_pagePrinter) {
-        m_pagePrinter->print(printer);
-        resetPageExportState(vpp);
-    }
-
+    PagePrinter::print(getViewProviderPage(), printer);
 }
 
-//static routine to print all pages in a document
+// static routine to print all pages in a document.  Used by PrintAll command in Command.cpp
 void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 {
-    // Base::Console().Message("MDIVP::printAll()\n");
     PagePrinter::printAll(printer, doc);
 }
 
@@ -538,21 +461,16 @@ void MDIViewPage::saveSVG(std::string filename)
 {
     auto vpp = getViewProviderPage();
     if (!vpp) {
-        // how did this happen?
         return;
     }
-    savePageExportState(vpp);
-    if (m_pagePrinter) {
-        m_pagePrinter->saveSVG(filename);
-        resetPageExportState(vpp);
-    }
+    PagePrinter::saveSVG(vpp, filename);
 }
 
 
 void MDIViewPage::saveSVG()
 {
     QStringList filter;
-    filter << QObject::tr("SVG (*.svg)");
+    filter << QStringLiteral("SVG (*.svg)");
     filter << QObject::tr("All Files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
@@ -561,15 +479,13 @@ void MDIViewPage::saveSVG()
         return;
     }
     static_cast<void>(blockSelection(true));// avoid to be notified by itself
-    saveSVG(Base::Tools::toStdString(fn));
+    saveSVG(fn.toStdString());
     static_cast<void>(blockSelection(false));
 }
 
 void MDIViewPage::saveDXF(std::string filename)
 {
-    if (m_pagePrinter) {
-        m_pagePrinter->saveDXF(filename);
-    }
+    PagePrinter::saveDXF(getViewProviderPage(), filename);
 }
 
 void MDIViewPage::saveDXF()
@@ -577,7 +493,7 @@ void MDIViewPage::saveDXF()
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
+        QString::fromUtf8("DXF (*.dxf)"));
     if (fileName.isEmpty()) {
         return;
     }
@@ -590,14 +506,9 @@ void MDIViewPage::savePDF(std::string filename)
 {
     auto vpp = getViewProviderPage();
     if (!vpp) {
-        // how did this happen?
         return;
     }
-    savePageExportState(vpp);
-    if (m_pagePrinter) {
-        m_pagePrinter->savePDF(filename);
-        resetPageExportState(vpp);
-    }
+    PagePrinter::savePDF(vpp, filename);
 }
 
 void MDIViewPage::savePDF()
@@ -605,7 +516,7 @@ void MDIViewPage::savePDF()
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save PDF file")), defaultDir,
-        QString::fromUtf8(QT_TR_NOOP("PDF (*.pdf)")));
+        QString::fromUtf8("PDF (*.pdf)"));
     if (fileName.isEmpty()) {
         return;
     }
@@ -614,7 +525,7 @@ void MDIViewPage::savePDF()
     savePDF(sFileName);
 }
 
-/// a slot for printing all the pages
+/// a slot for printing all the pages. just redirects to printAllPages
 void MDIViewPage::printAll()
 {
     MDIViewPage::printAllPages();

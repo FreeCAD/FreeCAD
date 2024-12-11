@@ -27,9 +27,10 @@
 
 ## \addtogroup draftobjects
 # @{
-import FreeCAD as App
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import FreeCAD as App
+from draftutils import gui_utils
 
 
 class WorkingPlaneProxy:
@@ -47,6 +48,11 @@ class WorkingPlaneProxy:
         obj.changeAttacherType("Attacher::AttachEnginePlane")
 
         self.Type = "WorkingPlaneProxy"
+
+    def onDocumentRestored(self, obj):
+        gui_utils.restore_view_object(
+            obj, vp_module="view_wpproxy", vp_class="ViewProviderWorkingPlaneProxy", format=False
+        )
 
     def execute(self,obj):
         import Part

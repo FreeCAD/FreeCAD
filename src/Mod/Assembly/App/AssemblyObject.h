@@ -26,14 +26,14 @@
 #define ASSEMBLY_AssemblyObject_H
 
 
-#include <GeomAbs_CurveType.hxx>
-#include <GeomAbs_SurfaceType.hxx>
-
 #include <Mod/Assembly/AssemblyGlobal.h>
 
 #include <App/FeaturePython.h>
 #include <App/Part.h>
 #include <App/PropertyLinks.h>
+#include "SimulationGroup.h"
+
+#include <3rdParty/OndselSolver/OndselSolver/enum.h>
 
 namespace MbD
 {
@@ -62,77 +62,13 @@ namespace Assembly
 class AssemblyLink;
 class JointGroup;
 class ViewGroup;
+enum class JointType;
+
 
 struct ObjRef
 {
     App::DocumentObject* obj;
     App::PropertyXLinkSub* ref;
-};
-
-// This enum has to be the same as the one in JointObject.py
-enum class JointType
-{
-    Fixed,
-    Revolute,
-    Cylindrical,
-    Slider,
-    Ball,
-    Distance,
-    Parallel,
-    Perpendicular,
-    Angle,
-    RackPinion,
-    Screw,
-    Gears,
-    Belt,
-};
-
-enum class DistanceType
-{
-    PointPoint,
-
-    LineLine,
-    LineCircle,
-    CircleCircle,
-
-    PlanePlane,
-    PlaneCylinder,
-    PlaneSphere,
-    PlaneCone,
-    PlaneTorus,
-    CylinderCylinder,
-    CylinderSphere,
-    CylinderCone,
-    CylinderTorus,
-    ConeCone,
-    ConeTorus,
-    ConeSphere,
-    TorusTorus,
-    TorusSphere,
-    SphereSphere,
-
-    PointPlane,
-    PointCylinder,
-    PointSphere,
-    PointCone,
-    PointTorus,
-
-    LinePlane,
-    LineCylinder,
-    LineSphere,
-    LineCone,
-    LineTorus,
-
-    CurvePlane,
-    CurveCylinder,
-    CurveSphere,
-    CurveCone,
-    CurveTorus,
-
-    PointLine,
-    PointCurve,
-
-    Other,
 };
 
 class AssemblyExport AssemblyObject: public App::Part
@@ -157,6 +93,9 @@ public:
     and redraw the joints Args : enableRedo : This store initial positions to enable undo while
     being in an active transaction (joint creation).*/
     int solve(bool enableRedo = false, bool updateJCS = true);
+    int generateSimulation(App::DocumentObject* sim);
+    int updateForFrame(size_t index, bool updateJCS = true);
+    size_t numberOfFrames();
     void preDrag(std::vector<App::DocumentObject*> dragParts);
     void doDragStep();
     void postDrag();
@@ -178,6 +117,7 @@ public:
 
     // Ondsel Solver interface
     std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
+    void create_mbdSimulationParameters(App::DocumentObject* sim);
     std::shared_ptr<MbD::ASMTPart>
     makeMbdPart(std::string& name, Base::Placement plc = Base::Placement(), double mass = 1.0);
     std::shared_ptr<MbD::ASMTPart> getMbDPart(App::DocumentObject* obj);
@@ -207,6 +147,9 @@ public:
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup() const;
     ViewGroup* getExplodedViewGroup() const;
+    template<typename T>
+    T* getGroup();
+
     std::vector<App::DocumentObject*>
     getJoints(bool updateJCS = true, bool delBadJoints = false, bool subJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
@@ -245,54 +188,21 @@ public:
     std::vector<AssemblyLink*> getSubAssemblies();
     void updateGroundedJointsPlacements();
 
+    std::vector<App::DocumentObject*> getMotionsFromSimulation(App::DocumentObject* sim);
+
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
 
     std::unordered_map<App::DocumentObject*, MbDPartData> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
     std::vector<App::DocumentObject*> draggedParts;
+    std::vector<App::DocumentObject*> motions;
 
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 
     bool bundleFixed;
     // void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property
     // *prop) override;
-
-public:
-    // ---------------- Utils -------------------
-    // Can't put the functions by themselves in AssemblyUtils.cpp :
-    // see https://forum.freecad.org/viewtopic.php?p=729577#p729577
-
-    static void swapJCS(App::DocumentObject* joint);
-
-    static bool isEdgeType(App::DocumentObject* obj, std::string& elName, GeomAbs_CurveType type);
-    static bool isFaceType(App::DocumentObject* obj, std::string& elName, GeomAbs_SurfaceType type);
-    static double getFaceRadius(App::DocumentObject* obj, std::string& elName);
-    static double getEdgeRadius(App::DocumentObject* obj, std::string& elName);
-
-    static DistanceType getDistanceType(App::DocumentObject* joint);
-
-    static JointGroup* getJointGroup(const App::Part* part);
-
-    // getters to get from properties
-    static void setJointActivated(App::DocumentObject* joint, bool val);
-    static bool getJointActivated(App::DocumentObject* joint);
-    static double getJointDistance(App::DocumentObject* joint);
-    static double getJointDistance2(App::DocumentObject* joint);
-    static JointType getJointType(App::DocumentObject* joint);
-    static std::string getElementFromProp(App::DocumentObject* obj, const char* propName);
-    static std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);
-    static App::DocumentObject* getObjFromProp(App::DocumentObject* joint, const char* propName);
-    static App::DocumentObject* getObjFromRef(App::DocumentObject* obj, std::string& sub);
-    static App::DocumentObject* getObjFromRef(App::PropertyXLinkSub* prop);
-    static App::DocumentObject* getObjFromRef(App::DocumentObject* joint, const char* propName);
-    App::DocumentObject* getMovingPartFromRef(App::DocumentObject* obj, std::string& sub);
-    App::DocumentObject* getMovingPartFromRef(App::PropertyXLinkSub* prop);
-    App::DocumentObject* getMovingPartFromRef(App::DocumentObject* joint, const char* propName);
-    static App::DocumentObject* getLinkedObjFromRef(App::DocumentObject* joint,
-                                                    const char* propName);
-    static std::vector<std::string> getSubAsList(App::PropertyXLinkSub* prop);
-    static std::vector<std::string> getSubAsList(App::DocumentObject* joint, const char* propName);
 };
 
 // using AssemblyObjectPython = App::FeaturePythonT<AssemblyObject>;

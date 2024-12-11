@@ -38,7 +38,7 @@
 #include <App/Document.h>
 #include <App/GroupExtension.h>
 #include <App/Link.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/ElementNamingUtils.h>
 #include <Mod/Part/App/TopoShape.h>
 
@@ -605,21 +605,34 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 if (!copyerror) {
                     std::vector<App::Property*> props;
                     getPropertyList(props);
-                    for (auto prop : props) {
-                        if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
-                            continue;
-                        auto p = copied->getPropertyByName(prop->getName());
-                        if (p && p->getContainer() == copied
-                            && p->getTypeId() == prop->getTypeId()
-                            && !p->isSame(*prop))
-                        {
-                            recomputeCopy = true;
-                            std::unique_ptr<App::Property> pcopy(prop->Copy());
-                            p->Paste(*pcopy);
+                    // lambda for copying values of copy-on-change properties
+                    const auto copyPropertyValues = [this, &recomputeCopy, &props, copied](const bool to_support) {
+                        for (auto prop : props) {
+                            if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
+                                continue;
+                            // we only copy read-only and output properties from support to binder
+                            if (!to_support && !(prop->testStatus(App::Property::Output) && prop->testStatus(App::Property::ReadOnly)))
+                                continue;
+                            auto p = copied->getPropertyByName(prop->getName());
+                            if (p && p->getContainer() == copied
+                                && p->getTypeId() == prop->getTypeId()
+                                && !p->isSame(*prop))
+                            {
+                                recomputeCopy = true;
+                                auto* const from = to_support ? prop : p;
+                                auto* const to = to_support ? p : prop;
+
+                                std::unique_ptr<App::Property> pcopy(from->Copy());
+                                to->Paste(*pcopy);
+                            }
                         }
-                    }
+                    };
+
+                    copyPropertyValues(true);
                     if (recomputeCopy && !copied->recomputeFeature(true))
                         copyerror = 2;
+                    if (!copyerror)
+                        copyPropertyValues(false);
                 }
                 obj = copied;
                 _CopiedLink.setValue(copied, l.getSubValues(false));

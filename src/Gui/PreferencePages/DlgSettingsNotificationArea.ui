@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>654</width>
-    <height>375</height>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,311 +15,299 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="GroupBox11">
+    <widget class="QGroupBox" name="NotificationAreaEnabled">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="title">
-      <string>Settings</string>
+      <string>Enable notification area</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="NotificationAreaEnabled">
-        <property name="toolTip">
-         <string>The Notification area will appear in the status bar</string>
-        </property>
-        <property name="text">
-         <string>Enable Notification Area</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>NotificationAreaEnabled</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="NonIntrusiveNotificationsEnabled">
-        <property name="toolTip">
-         <string>Non-intrusive notifications will appear next to the notification area in the status bar</string>
-        </property>
-        <property name="text">
-         <string>Enable non-intrusive notifications</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>NonIntrusiveNotificationsEnabled</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="GroupBoxSubscriptions">
-     <property name="title">
-      <string>Additional data sources</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_1">
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="developerErrorSubscriptionEnabled">
-        <property name="toolTip">
-         <string>Errors intended for developers will appear in the notification area</string>
-        </property>
-        <property name="text">
-         <string>Debug errors</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DeveloperErrorSubscriptionEnabled</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="developerWarningSubscriptionEnabled">
-        <property name="toolTip">
-         <string>Warnings intended for developers will appear in the notification area</string>
-        </property>
-        <property name="text">
-         <string>Debug warnings</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DeveloperWarningSubscriptionEnabled</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Non-Intrusive Notifications</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Minimum Duration:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Maximum Duration:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefSpinBox" name="maxDuration">
-        <property name="toolTip">
-         <string>Duration during which the notification will be shown (unless mouse buttons are clicked)</string>
-        </property>
-        <property name="suffix">
-         <string>s</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>120</number>
-        </property>
-        <property name="value">
-         <number>20</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>NotificationTime</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::PrefSpinBox" name="minDuration">
-        <property name="toolTip">
-         <string>Minimum duration during which the notification will be shown (unless notification clicked)</string>
-        </property>
-        <property name="suffix">
-         <string>s</string>
-        </property>
-        <property name="value">
-         <number>5</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>MinimumOnScreenTime</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Maximum Number of Notifications:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="Gui::PrefSpinBox" name="maxNotifications">
+       <widget class="QGroupBox" name="NonIntrusiveNotificationsEnabled">
         <property name="toolTip">
-         <string>Maximum number of notifications that will be simultaneously present on the screen</string>
+         <string>If checked, non-intrusive pop-up notifications will appear above the status bar, around the notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
+
+Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</string>
         </property>
-        <property name="value">
-         <number>15</number>
+        <property name="title">
+         <string>Enable pop-up notifications</string>
         </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>MaxOpenNotifications</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_width">
-        <property name="text">
-         <string>Notification width:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefSpinBox" name="notificationWidth">
-        <property name="toolTip">
-         <string>Width of the notification in pixels</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>300</number>
-        </property>
-        <property name="maximum">
-         <number>10000</number>
-        </property>
-        <property name="value">
-         <number>800</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>NotificiationWidth</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="Gui::PrefCheckBox" name="hideNonIntrusiveNotificationsWhenWindowDeactivated">
-        <property name="toolTip">
-         <string>Any open non-intrusive notifications will disappear when another window is activated</string>
-        </property>
-        <property name="text">
-         <string>Hide when other window is activated</string>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>HideNonIntrusiveNotificationsWhenWindowDeactivated</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="Gui::PrefCheckBox" name="preventNonIntrusiveNotificationsWhenWindowNotActive">
-        <property name="toolTip">
-         <string>Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</string>
-        </property>
-        <property name="text">
-         <string>Do not show when inactive</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>PreventNonIntrusiveNotificationsWhenWindowNotActive</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Message List</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="1">
-       <widget class="Gui::PrefSpinBox" name="maxWidgetMessages">
-        <property name="toolTip">
-         <string>Limit the number of messages that will be kept in the list. If 0 there is no limit.</string>
-        </property>
-        <property name="maximum">
-         <number>10000</number>
-        </property>
-        <property name="value">
-         <number>1000</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>MaxWidgetMessages</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Minimum duration:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>Maximum duration:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Gui::PrefSpinBox" name="maxDuration">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="suffix">
+            <string> s</string>
+           </property>
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>120</number>
+           </property>
+           <property name="value">
+            <number>20</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>NotificationTime</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="Gui::PrefSpinBox" name="minDuration">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="suffix">
+            <string> s</string>
+           </property>
+           <property name="value">
+            <number>5</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>MinimumOnScreenTime</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Maximum concurrent notification count:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="Gui::PrefSpinBox" name="maxNotifications">
+           <property name="toolTip">
+            <string>Maximum number of notifications that will be simultaneously present on the notification bubble.</string>
+           </property>
+           <property name="value">
+            <number>15</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>MaxOpenNotifications</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_width">
+           <property name="text">
+            <string>Notification bubble width:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::PrefSpinBox" name="notificationWidth">
+           <property name="toolTip">
+            <string>Width of the pop-up notification bubble in pixels.</string>
+           </property>
+           <property name="suffix">
+            <string> px</string>
+           </property>
+           <property name="prefix">
+            <string/>
+           </property>
+           <property name="minimum">
+            <number>300</number>
+           </property>
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+           <property name="value">
+            <number>800</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>NotificiationWidth</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="Gui::PrefCheckBox" name="hideNonIntrusiveNotificationsWhenWindowDeactivated">
+           <property name="toolTip">
+            <string>Any open pop-up notifications will disappear when another window is activated.</string>
+           </property>
+           <property name="text">
+            <string>Hide when other window is activated</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>HideNonIntrusiveNotificationsWhenWindowDeactivated</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="Gui::PrefCheckBox" name="preventNonIntrusiveNotificationsWhenWindowNotActive">
+           <property name="toolTip">
+            <string>Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</string>
+           </property>
+           <property name="text">
+            <string>Do not show when window is inactive</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>PreventNonIntrusiveNotificationsWhenWindowNotActive</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Maximum Messages (0 = no limit):</string>
+       <widget class="QGroupBox" name="GroupBoxSubscriptions">
+        <property name="toolTip">
+         <string>Additional notification sources to show in the notification area.</string>
         </property>
+        <property name="title">
+         <string>Additional data sources</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_1">
+         <item row="0" column="0">
+          <widget class="Gui::PrefCheckBox" name="developerErrorSubscriptionEnabled">
+           <property name="toolTip">
+            <string>Errors intended for developers will appear in the notification area.</string>
+           </property>
+           <property name="text">
+            <string>Debug errors</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>DeveloperErrorSubscriptionEnabled</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="Gui::PrefCheckBox" name="developerWarningSubscriptionEnabled">
+           <property name="toolTip">
+            <string>Warnings intended for developers will appear in the notification area.</string>
+           </property>
+           <property name="text">
+            <string>Debug warnings</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>DeveloperWarningSubscriptionEnabled</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="autoRemoveUserNotifications">
+       <widget class="QGroupBox" name="groupBox_2">
         <property name="toolTip">
-         <string>Removes the user notifications from the message list after the non-intrusive maximum duration has lapsed.</string>
+         <string>Controls the amount of notifications to show in the list.</string>
         </property>
-        <property name="text">
-         <string>Auto-remove User Notifications</string>
+        <property name="title">
+         <string>Notifications list</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>AutoRemoveUserNotifications</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>NotificationArea</cstring>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="1">
+          <widget class="Gui::PrefSpinBox" name="maxWidgetMessages">
+           <property name="toolTip">
+            <string>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</string>
+           </property>
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+           <property name="value">
+            <number>1000</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>MaxWidgetMessages</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Maximum notification count:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="Gui::PrefCheckBox" name="autoRemoveUserNotifications">
+           <property name="toolTip">
+            <string>Removes the user notifications from the notifications list after the maximum duration for pop-up notifications has lapsed.</string>
+           </property>
+           <property name="text">
+            <string>Auto-remove user notifications</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>AutoRemoveUserNotifications</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>NotificationArea</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

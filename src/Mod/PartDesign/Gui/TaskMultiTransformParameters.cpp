@@ -124,7 +124,7 @@ void TaskMultiTransformParameters::setupParameterUI(QWidget* widget)
     ui->buttonOK->hide();
 
     // Get the transformFeatures data
-    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = TransformedView->getObject<PartDesign::MultiTransform>();
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
 
@@ -190,7 +190,7 @@ void TaskMultiTransformParameters::onTransformDelete()
         return;  // Can't delete the hint...
     }
     int row = ui->listTransformFeatures->currentIndex().row();
-    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = TransformedView->getObject<PartDesign::MultiTransform>();
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
 
@@ -222,7 +222,7 @@ void TaskMultiTransformParameters::onTransformEdit()
                      // without OK'ing first
     ui->listTransformFeatures->currentItem()->setSelected(true);
     int row = ui->listTransformFeatures->currentIndex().row();
-    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = TransformedView->getObject<PartDesign::MultiTransform>();
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
 
@@ -410,7 +410,7 @@ void TaskMultiTransformParameters::finishAdd(std::string& newFeatName)
     // getOriginals().front()->getNameInDocument().c_str());
 
     setupTransaction();
-    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = TransformedView->getObject<PartDesign::MultiTransform>();
     if (editHint) {
         // Remove hint, first feature is being added
         ui->listTransformFeatures->model()->removeRow(0);
@@ -459,7 +459,7 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
 {
     setupTransaction();
     int row = ui->listTransformFeatures->currentIndex().row();
-    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = TransformedView->getObject<PartDesign::MultiTransform>();
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
 
@@ -521,7 +521,7 @@ void TaskMultiTransformParameters::onUpdateView(bool on)
 
 void TaskMultiTransformParameters::apply()
 {
-    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
+    auto pcMultiTransform = getObject<PartDesign::MultiTransform>();
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
     std::stringstream str;

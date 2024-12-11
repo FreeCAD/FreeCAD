@@ -715,8 +715,8 @@ void ViewProviderSketch::ensureFocus()
 void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 {
     if (Mode != STATUS_SELECT_Point && Mode != STATUS_SELECT_Edge
-        && Mode != STATUS_SELECT_Constraint && Mode != STATUS_SKETCH_DragPoint
-        && Mode != STATUS_SKETCH_DragCurve && Mode != STATUS_SKETCH_DragConstraint
+        && Mode != STATUS_SELECT_Constraint && Mode != STATUS_SKETCH_Drag
+        && Mode != STATUS_SKETCH_DragConstraint
         && Mode != STATUS_SKETCH_UseRubberBand) {
 
         Gui::MDIView* mdi = this->getActiveView();
@@ -766,24 +766,9 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                 }
                 return true;
             }
-            if (isInEditMode() && drag.isDragCurveValid()) {
+            if (isInEditMode() && !drag.Dragged.empty()) {
                 if (!pressed) {
-                    getSketchObject()->movePoint(
-                        drag.DragCurve, Sketcher::PointPos::none, Base::Vector3d(0, 0, 0), true);
-                    drag.DragCurve = Drag::InvalidCurve;
-                    resetPositionText();
-                    Mode = STATUS_NONE;
-                }
-                return true;
-            }
-            if (isInEditMode() && drag.isDragPointValid()) {
-                if (!pressed) {
-                    int GeoId;
-                    Sketcher::PointPos PosId;
-                    getSketchObject()->getGeoVertexIndex(drag.DragPoint, GeoId, PosId);
-                    getSketchObject()->movePoint(GeoId, PosId, Base::Vector3d(0, 0, 0), true);
-                    drag.DragPoint = Drag::InvalidPoint;
-                    resetPositionText();
+                    commitDragMove(drag.xInit, drag.yInit);
                     Mode = STATUS_NONE;
                 }
                 return true;
@@ -1053,111 +1038,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     Mode = STATUS_NONE;
                     return true;
-                case STATUS_SKETCH_DragPoint:
-                    if (drag.isDragPointValid()) {
-                        int GeoId;
-                        Sketcher::PointPos PosId;
-
-                        getSketchObject()->getGeoVertexIndex(drag.DragPoint, GeoId, PosId);
-
-                        if (GeoId != Sketcher::GeoEnum::GeoUndef
-                            && PosId != Sketcher::PointPos::none) {
-                            getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Point"));
-                            try {
-                                Gui::cmdAppObjectArgs(getObject(),
-                                                      "movePoint(%d,%d,App.Vector(%f,%f,0),%d)",
-                                                      GeoId,
-                                                      static_cast<int>(PosId),
-                                                      x - drag.xInit,
-                                                      y - drag.yInit,
-                                                      0);
-
-                                getDocument()->commitCommand();
-
-                                tryAutoRecomputeIfNotSolve(getSketchObject());
-                            }
-                            catch (const Base::Exception& e) {
-                                getDocument()->abortCommand();
-                                Base::Console().DeveloperError(
-                                    "ViewProviderSketch", "Drag point: %s\n", e.what());
-                            }
-                        }
-                        setPreselectPoint(drag.DragPoint);
-                        drag.DragPoint = Drag::InvalidPoint;
-                    }
-                    resetPositionText();
-                    Mode = STATUS_NONE;
-                    return true;
-                case STATUS_SKETCH_DragCurve:
-                    if (drag.isDragCurveValid()) {
-                        const Part::Geometry* geo = getSketchObject()->getGeometry(drag.DragCurve);
-                        if (geo->is<Part::GeomLineSegment>()
-                            || geo->is<Part::GeomArcOfCircle>()
-                            || geo->is<Part::GeomCircle>()
-                            || geo->is<Part::GeomEllipse>()
-                            || geo->is<Part::GeomArcOfEllipse>()
-                            || geo->is<Part::GeomArcOfParabola>()
-                            || geo->is<Part::GeomArcOfHyperbola>()
-                            || geo->is<Part::GeomBSplineCurve>()) {
-                            getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Curve"));
-
-                            auto geo = getSketchObject()->getGeometry(drag.DragCurve);
-                            auto gf = GeometryFacade::getFacade(geo);
-
-                            Base::Vector3d vec(x - drag.xInit, y - drag.yInit, 0);
-
-                            // BSpline weights have a radius corresponding to the weight value
-                            // However, in order for them proportional to the B-Spline size,
-                            // the scenograph has a size scalefactor times the weight
-                            // This code normalizes the information sent to the solver.
-                            if (gf->getInternalType() == InternalType::BSplineControlPoint) {
-                                auto circle = static_cast<const Part::GeomCircle*>(geo);
-                                Base::Vector3d center = circle->getCenter();
-
-                                Base::Vector3d dir = vec - center;
-
-                                double scalefactor = 1.0;
-
-                                if (circle->hasExtension(
-                                        SketcherGui::ViewProviderSketchGeometryExtension::
-                                            getClassTypeId())) {
-                                    auto vpext = std::static_pointer_cast<
-                                        const SketcherGui::ViewProviderSketchGeometryExtension>(
-                                        circle
-                                            ->getExtension(
-                                                SketcherGui::ViewProviderSketchGeometryExtension::
-                                                    getClassTypeId())
-                                            .lock());
-
-                                    scalefactor = vpext->getRepresentationFactor();
-                                }
-
-                                vec = center + dir / scalefactor;
-                            }
-
-                            try {
-                                Gui::cmdAppObjectArgs(getObject(),
-                                                      "movePoint(%d,%d,App.Vector(%f,%f,0),%d)",
-                                                      drag.DragCurve,
-                                                      static_cast<int>(Sketcher::PointPos::none),
-                                                      vec.x,
-                                                      vec.y,
-                                                      drag.relative ? 1 : 0);
-
-                                getDocument()->commitCommand();
-
-                                tryAutoRecomputeIfNotSolve(getSketchObject());
-                            }
-                            catch (const Base::Exception& e) {
-                                getDocument()->abortCommand();
-                                Base::Console().DeveloperError(
-                                    "ViewProviderSketch", "Drag curve: %s\n", e.what());
-                            }
-                        }
-                        preselection.PreselectCurve = drag.DragCurve;
-                        drag.DragCurve = Drag::InvalidCurve;
-                    }
-                    resetPositionText();
+                case STATUS_SKETCH_Drag:
+                    commitDragMove(x, y);
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_DragConstraint:
@@ -1313,8 +1195,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     generateContextMenu();
                     return true;
                 }
-                case STATUS_SKETCH_DragPoint:
-                case STATUS_SKETCH_DragCurve:
+                case STATUS_SKETCH_Drag:
                 case STATUS_SKETCH_DragConstraint:
                 case STATUS_SKETCH_StartRubberBand:
                 case STATUS_SKETCH_UseRubberBand:
@@ -1487,9 +1368,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
 
     bool preselectChanged = false;
     if (Mode != STATUS_SELECT_Point && Mode != STATUS_SELECT_Edge
-        && Mode != STATUS_SELECT_Constraint && Mode != STATUS_SKETCH_DragPoint
-        && Mode != STATUS_SKETCH_DragCurve && Mode != STATUS_SKETCH_DragConstraint
-        && Mode != STATUS_SKETCH_UseRubberBand) {
+        && Mode != STATUS_SELECT_Constraint && Mode != STATUS_SKETCH_Drag
+        && Mode != STATUS_SKETCH_DragConstraint && Mode != STATUS_SKETCH_UseRubberBand) {
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(cursorPos, viewer));
 
@@ -1505,19 +1385,12 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             }
             return false;
         case STATUS_SELECT_Point:
-            if (!getSolvedSketch().hasConflicts() && preselection.isPreselectPointValid()
-                && drag.DragPoint != preselection.PreselectPoint) {
-                Mode = STATUS_SKETCH_DragPoint;
-                drag.DragPoint = preselection.PreselectPoint;
-                int GeoId;
-                Sketcher::PointPos PosId;
+            if (!getSolvedSketch().hasConflicts() && preselection.isPreselectPointValid()) {
+                int geoId;
+                Sketcher::PointPos pos;
+                getSketchObject()->getGeoVertexIndex(preselection.PreselectPoint, geoId, pos);
 
-                getSketchObject()->getGeoVertexIndex(drag.DragPoint, GeoId, PosId);
-
-                if (GeoId != Sketcher::GeoEnum::GeoUndef && PosId != Sketcher::PointPos::none) {
-                    getSketchObject()->initTemporaryMove(GeoId, PosId, false);
-                    drag.resetVector();
-                }
+                initDragging(geoId, pos, viewer);
             }
             else {
                 Mode = STATUS_NONE;
@@ -1525,107 +1398,11 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             resetPreselectPoint();
             return true;
         case STATUS_SELECT_Edge:
-            if (!getSolvedSketch().hasConflicts() && preselection.isPreselectCurveValid()
-                && drag.DragCurve != preselection.PreselectCurve) {
-                Mode = STATUS_SKETCH_DragCurve;
-                drag.DragCurve = preselection.PreselectCurve;
-                const Part::Geometry* geo = getSketchObject()->getGeometry(drag.DragCurve);
+            if (!getSolvedSketch().hasConflicts() && preselection.isPreselectCurveValid()) {
+                int geoId = preselection.PreselectCurve;
+                Sketcher::PointPos pos = Sketcher::PointPos::none;
 
-                // BSpline Control points are edge draggable only if their radius is movable
-                // This is because dragging gives unwanted cosmetic results due to the scale ratio.
-                // This is an heuristic as it does not check all indirect routes.
-                if (GeometryFacade::isInternalType(geo, InternalType::BSplineControlPoint)) {
-                    if (geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
-                        auto solvext =
-                            std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
-                                geo->getExtension(
-                                       Sketcher::SolverGeometryExtension::getClassTypeId())
-                                    .lock());
-
-                        // Edge parameters are Independent, so weight won't move
-                        if (solvext->getEdge() == Sketcher::SolverGeometryExtension::Independent) {
-                            Mode = STATUS_NONE;
-                            return false;
-                        }
-
-                        // The B-Spline is constrained to be non-rational (equal weights), moving
-                        // produces a bad effect because OCCT will normalize the values of the
-                        // weights.
-                        auto grp = getSolvedSketch().getDependencyGroup(drag.DragCurve,
-                                                                        Sketcher::PointPos::none);
-
-                        int bsplinegeoid = -1;
-
-                        std::vector<int> polegeoids;
-
-                        for (auto c : getSketchObject()->Constraints.getValues()) {
-                            if (c->Type == Sketcher::InternalAlignment
-                                && c->AlignmentType == BSplineControlPoint
-                                && c->First == drag.DragCurve) {
-
-                                bsplinegeoid = c->Second;
-                                break;
-                            }
-                        }
-
-                        if (bsplinegeoid == -1) {
-                            Mode = STATUS_NONE;
-                            return false;
-                        }
-
-                        for (auto c : getSketchObject()->Constraints.getValues()) {
-                            if (c->Type == Sketcher::InternalAlignment
-                                && c->AlignmentType == BSplineControlPoint
-                                && c->Second == bsplinegeoid) {
-
-                                polegeoids.push_back(c->First);
-                            }
-                        }
-
-                        bool allingroup = true;
-
-                        for (auto polegeoid : polegeoids) {
-                            std::pair<int, Sketcher::PointPos> thispole =
-                                std::make_pair(polegeoid, Sketcher::PointPos::none);
-
-                            if (grp.find(thispole) == grp.end())// not found
-                                allingroup = false;
-                        }
-
-                        if (allingroup) {// it is constrained to be non-rational
-                            Mode = STATUS_NONE;
-                            return false;
-                        }
-                    }
-                }
-
-                if (geo->is<Part::GeomLineSegment>()
-                    || geo->is<Part::GeomBSplineCurve>()) {
-                    drag.relative = true;
-
-                    // Since the cursor moved from where it was clicked, and this is a relative
-                    // move, calculate the click position and use it as initial point.
-                    SbLine line2;
-                    getProjectingLine(DoubleClick::prvCursorPos, viewer, line2);
-                    getCoordsOnSketchPlane(
-                        line2.getPosition(), line2.getDirection(), drag.xInit, drag.yInit);
-                    snapManager->snap(drag.xInit, drag.yInit);
-                }
-                else {
-                    drag.resetVector();
-                }
-
-                if (geo->is<Part::GeomBSplineCurve>()) {
-                    getSketchObject()->initTemporaryBSplinePieceMove(
-                        drag.DragCurve,
-                        Sketcher::PointPos::none,
-                        Base::Vector3d(drag.xInit, drag.yInit, 0.0),
-                        false);
-                }
-                else {
-                    getSketchObject()->initTemporaryMove(
-                        drag.DragCurve, Sketcher::PointPos::none, false);
-                }
+                initDragging(geoId, pos, viewer);
             }
             else {
                 Mode = STATUS_NONE;
@@ -1639,64 +1416,10 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             drag.yInit = y;
             resetPreselectPoint();
             return true;
-        case STATUS_SKETCH_DragPoint:
-            if (drag.isDragPointValid()) {
-                // Base::Console().Log("Drag Point:%d\n",edit->DragPoint);
-                int GeoId;
-                Sketcher::PointPos PosId;
-                getSketchObject()->getGeoVertexIndex(drag.DragPoint, GeoId, PosId);
-                Base::Vector3d vec(x, y, 0);
-
-                if (GeoId != Sketcher::GeoEnum::GeoUndef && PosId != Sketcher::PointPos::none) {
-                    if (getSketchObject()->moveTemporaryPoint(GeoId, PosId, vec, false) == 0) {
-                        setPositionText(Base::Vector2d(x, y));
-                        draw(true, false);
-                    }
-                }
-            }
+        case STATUS_SKETCH_Drag: {
+            doDragStep(x, y);
             return true;
-        case STATUS_SKETCH_DragCurve:
-            if (drag.isDragCurveValid()) {
-                auto geo = getSketchObject()->getGeometry(drag.DragCurve);
-                auto gf = GeometryFacade::getFacade(geo);
-
-                Base::Vector3d vec(x - drag.xInit, y - drag.yInit, 0);
-
-                // BSpline weights have a radius corresponding to the weight value
-                // However, in order for them proportional to the B-Spline size,
-                // the scenograph has a size scalefactor times the weight
-                // This code normalizes the information sent to the solver.
-                if (gf->getInternalType() == InternalType::BSplineControlPoint) {
-                    auto circle = static_cast<const Part::GeomCircle*>(geo);
-                    Base::Vector3d center = circle->getCenter();
-
-                    Base::Vector3d dir = vec - center;
-
-                    double scalefactor = 1.0;
-
-                    if (circle->hasExtension(
-                            SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId())) {
-                        auto vpext = std::static_pointer_cast<
-                            const SketcherGui::ViewProviderSketchGeometryExtension>(
-                            circle
-                                ->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::
-                                                   getClassTypeId())
-                                .lock());
-
-                        scalefactor = vpext->getRepresentationFactor();
-                    }
-
-                    vec = center + dir / scalefactor;
-                }
-
-                if (getSketchObject()->moveTemporaryPoint(
-                        drag.DragCurve, Sketcher::PointPos::none, vec, drag.relative)
-                    == 0) {
-                    setPositionText(Base::Vector2d(x, y));
-                    draw(true, false);
-                }
-            }
-            return true;
+        }
         case STATUS_SKETCH_DragConstraint:
             if (!drag.DragConstraintSet.empty()) {
                 auto idset = drag.DragConstraintSet;
@@ -1736,6 +1459,291 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
     }
 
     return false;
+}
+
+void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::View3DInventorViewer* viewer)
+{
+    if (geoId < 0) {
+        return; // don't drag externals
+    }
+
+    drag.reset();
+    Mode = STATUS_SKETCH_Drag;
+    drag.Dragged.push_back(GeoElementId(geoId, pos));
+
+    // Adding selected geos that should be dragged as well.
+    for (auto& geoIdi : selection.SelCurvSet) {
+        if (geoIdi < 0) {
+            continue; //skip externals
+        }
+
+        if (geoIdi == geoId) {
+            // geoId is already added because it was the preselected.
+            // 2 cases : either the edge was added or a point of it.
+            // If its a point then we replace it by the edge.
+            // If it's the edge it's replaced by itself so it's ok.
+            drag.Dragged[0].Pos = Sketcher::PointPos::none;
+        }
+        else {
+            // For group dragging, we skip the internal geos.
+            const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
+            if (!GeometryFacade::isInternalAligned(geo)) {
+                drag.Dragged.push_back(GeoElementId(geoIdi));
+            }
+        }
+    }
+    for (auto& pointId : selection.SelPointSet) {
+        int geoIdi;
+        Sketcher::PointPos posi;
+        getSketchObject()->getGeoVertexIndex(pointId, geoIdi, posi);
+        if (geoIdi < 0) {
+            continue; //skip externals
+        }
+
+        bool add = true;
+        for (auto& pair : drag.Dragged) {
+            int geoIdj = pair.GeoId;
+            Sketcher::PointPos posj = pair.Pos;
+            if (geoIdi == geoIdj && (posi == posj || posj == Sketcher::PointPos::none)) {
+                add = false;
+                break;
+            }
+        }
+        if (add) {
+            drag.Dragged.push_back(GeoElementId(geoIdi, posi));
+        }
+    }
+
+    auto setRelative = [&]() {
+        drag.relative = true;
+
+        // Calculate the click position and use it as the initial point
+        SbLine line2;
+        getProjectingLine(DoubleClick::prvCursorPos, viewer, line2);
+        getCoordsOnSketchPlane(
+            line2.getPosition(), line2.getDirection(), drag.xInit, drag.yInit);
+        snapManager->snap(drag.xInit, drag.yInit);
+    };
+
+    if (drag.Dragged.size() == 1 && pos == Sketcher::PointPos::none) {
+        const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
+
+        // BSpline Control points are edge draggable only if their radius is movable
+        // This is because dragging gives unwanted cosmetic results due to the scale ratio.
+        // This is an heuristic as it does not check all indirect routes.
+        if (GeometryFacade::isInternalType(geo, InternalType::BSplineControlPoint)) {
+            if (geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
+                auto solvext =
+                    std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
+                        geo->getExtension(
+                            Sketcher::SolverGeometryExtension::getClassTypeId())
+                        .lock());
+
+                // Edge parameters are Independent, so weight won't move
+                if (solvext->getEdge() == Sketcher::SolverGeometryExtension::Independent) {
+                    Mode = STATUS_NONE;
+                    return;
+                }
+
+                // The B-Spline is constrained to be non-rational (equal weights), moving
+                // produces a bad effect because OCCT will normalize the values of the
+                // weights.
+                auto grp = getSolvedSketch().getDependencyGroup(geoId,
+                    Sketcher::PointPos::none);
+
+                int bsplinegeoid = -1;
+
+                std::vector<int> polegeoids;
+
+                for (auto c : getSketchObject()->Constraints.getValues()) {
+                    if (c->Type == Sketcher::InternalAlignment
+                        && c->AlignmentType == BSplineControlPoint
+                        && c->First == geoId) {
+
+                        bsplinegeoid = c->Second;
+                        break;
+                    }
+                }
+
+                if (bsplinegeoid == -1) {
+                    Mode = STATUS_NONE;
+                    return;
+                }
+
+                for (auto c : getSketchObject()->Constraints.getValues()) {
+                    if (c->Type == Sketcher::InternalAlignment
+                        && c->AlignmentType == BSplineControlPoint
+                        && c->Second == bsplinegeoid) {
+
+                        polegeoids.push_back(c->First);
+                    }
+                }
+
+                bool allingroup = true;
+
+                for (auto polegeoid : polegeoids) {
+                    std::pair<int, Sketcher::PointPos> thispole =
+                        std::make_pair(polegeoid, Sketcher::PointPos::none);
+
+                    if (grp.find(thispole) == grp.end())// not found
+                        allingroup = false;
+                }
+
+                if (allingroup) {// it is constrained to be non-rational
+                    Mode = STATUS_NONE;
+                    return;
+                }
+            }
+        }
+
+        if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()) {
+            setRelative();
+        }
+
+        if (geo->is<Part::GeomBSplineCurve>()) {
+            getSketchObject()->initTemporaryBSplinePieceMove(
+                geoId,
+                Sketcher::PointPos::none,
+                Base::Vector3d(drag.xInit, drag.yInit, 0.0),
+                false);
+            return;
+        }
+    }
+    else if (drag.Dragged.size() > 1) {
+        setRelative();
+    }
+
+    getSketchObject()->initTemporaryMove(drag.Dragged, false);
+}
+
+void ViewProviderSketch::doDragStep(double x, double y)
+{
+    Base::Vector3d vec(x - drag.xInit, y - drag.yInit, 0);
+
+    if (drag.Dragged.size() == 1) {
+        // special single bspline point handling.
+        Sketcher::PointPos PosId = drag.Dragged[0].Pos;
+
+        if (PosId == Sketcher::PointPos::none) {
+            int GeoId = drag.Dragged[0].GeoId;
+            auto geo = getSketchObject()->getGeometry(GeoId);
+            auto gf = GeometryFacade::getFacade(geo);
+
+            // BSpline weights have a radius corresponding to the weight value
+            // However, in order for them proportional to the B-Spline size,
+            // the scenograph has a size scalefactor times the weight
+            // This code normalizes the information sent to the solver.
+            if (gf->getInternalType() == InternalType::BSplineControlPoint) {
+                auto circle = static_cast<const Part::GeomCircle*>(geo);
+                Base::Vector3d center = circle->getCenter();
+
+                Base::Vector3d dir = vec - center;
+
+                double scalefactor = 1.0;
+
+                if (circle->hasExtension(
+                    SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId())) {
+                    auto vpext = std::static_pointer_cast<
+                        const SketcherGui::ViewProviderSketchGeometryExtension>(
+                            circle
+                            ->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::
+                                getClassTypeId())
+                            .lock());
+
+                    scalefactor = vpext->getRepresentationFactor();
+                }
+
+                vec = center + dir / scalefactor;
+            }
+        }
+    }
+
+    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == 0) {
+        setPositionText(Base::Vector2d(x, y));
+        draw(true, false);
+    }
+}
+
+void ViewProviderSketch::commitDragMove(double x, double y)
+{
+    const char* cmdName = (drag.Dragged.size() == 1) ?
+        (drag.Dragged[0].Pos == Sketcher::PointPos::none ?
+        QT_TRANSLATE_NOOP("Command", "Drag Curve") : QT_TRANSLATE_NOOP("Command", "Drag Point"))
+        : QT_TRANSLATE_NOOP("Command", "Drag geometries");
+
+    getDocument()->openCommand(cmdName);
+
+    Base::Vector3d vec(x - drag.xInit, y - drag.yInit, 0);
+
+    if (drag.Dragged.size() == 1) {
+        // special single bspline point handling.
+        Sketcher::PointPos PosId = drag.Dragged[0].Pos;
+
+        if (PosId == Sketcher::PointPos::none) {
+            int GeoId = drag.Dragged[0].GeoId;
+            auto geo = getSketchObject()->getGeometry(GeoId);
+            auto gf = GeometryFacade::getFacade(geo);
+
+            // BSpline weights have a radius corresponding to the weight value
+            // However, in order for them proportional to the B-Spline size,
+            // the scenograph has a size scalefactor times the weight
+            // This code normalizes the information sent to the solver.
+            if (gf->getInternalType() == InternalType::BSplineControlPoint) {
+                auto circle = static_cast<const Part::GeomCircle*>(geo);
+                Base::Vector3d center = circle->getCenter();
+
+                Base::Vector3d dir = vec - center;
+
+                double scalefactor = 1.0;
+
+                if (circle->hasExtension(
+                    SketcherGui::ViewProviderSketchGeometryExtension::
+                    getClassTypeId())) {
+                    auto vpext = std::static_pointer_cast<
+                        const SketcherGui::ViewProviderSketchGeometryExtension>(
+                            circle
+                            ->getExtension(
+                                SketcherGui::ViewProviderSketchGeometryExtension::
+                                getClassTypeId())
+                            .lock());
+
+                    scalefactor = vpext->getRepresentationFactor();
+                }
+
+                vec = center + dir / scalefactor;
+            }
+        }
+    }
+
+    std::stringstream cmd;
+    cmd << "moveGeometries(";
+    cmd << "[";
+    for (size_t i = 0; i < drag.Dragged.size(); ++i) {
+        if (i > 0) {
+            cmd << ", ";
+        }
+        cmd << "(" << drag.Dragged[i].GeoId << ", " << static_cast<int>(drag.Dragged[i].Pos) << ")";
+    }
+    cmd << "], App.Vector(" << vec.x << ", " << vec.y << ", 0)";
+
+    if (drag.relative) {
+        cmd << ", True";
+    }
+    cmd << ")";
+
+    try {
+        Gui::cmdAppObjectArgs(getObject(), cmd.str().c_str());
+    }
+    catch (const Base::Exception& e) {
+        getDocument()->abortCommand();
+        Base::Console().DeveloperError("ViewProviderSketch", "Drag: %s\n", e.what());
+    }
+
+    getDocument()->commitCommand();
+
+    tryAutoRecomputeIfNotSolve(getSketchObject());
+    drag.reset();
+    resetPositionText();
 }
 
 void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPos)
@@ -2987,6 +2995,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     Sketcher::SketchObject* sketch = getSketchObject();
+
+    if(sketch->isFreezed()) {
+        return false; // Disallow edit of a frozen sketch
+    }
+
     if (!sketch->evaluateConstraints()) {
         QMessageBox box(Gui::getMainWindow());
         box.setIcon(QMessageBox::Critical);
@@ -4337,7 +4350,8 @@ void ViewProviderSketch::generateContextMenu()
              << "Sketcher_Trimming"
              << "Sketcher_Extend"
              << "Separator"
-             << "Sketcher_External"
+             << "Sketcher_Projection"
+             << "Sketcher_Intersection"
              << "Separator"
              << "Sketcher_CompDimensionTools"
              << "Sketcher_CompConstrainTools"

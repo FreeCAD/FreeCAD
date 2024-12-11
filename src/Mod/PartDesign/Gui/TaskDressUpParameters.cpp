@@ -114,7 +114,7 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
     Gui::Selection().clearSelection();
 
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     App::DocumentObject* base = this->getBase();
 
     // TODO: Must we make a copy here instead of assigning to const char* ?
@@ -146,7 +146,7 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
         return;
     }
 
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     App::DocumentObject* base = pcDressUp->Base.getValue();
     if (!base) {
         return;
@@ -181,7 +181,7 @@ void TaskDressUpParameters::deleteRef(QListWidget* widget)
     // get the list of items to be deleted
     QList<QListWidgetItem*> selectedList = widget->selectedItems();
 
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
@@ -354,7 +354,7 @@ void TaskDressUpParameters::keyPressEvent(QKeyEvent* ke)
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const
 {
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> result = pcDressUp->Base.getSubValues();
     return result;
 }
@@ -380,22 +380,28 @@ void TaskDressUpParameters::hideOnError()
         showObject();
 }
 
-void TaskDressUpParameters::hideObject()
+void TaskDressUpParameters::setDressUpVisibility(bool visible)
 {
     App::DocumentObject* base = getBase();
-    if(base) {
-        DressUpView->getObject()->Visibility.setValue(false);
-        base->Visibility.setValue(true);
+    if (base) {
+        App::DocumentObject* duv = DressUpView->getObject();
+        if (duv->Visibility.getValue() != visible) {
+            duv->Visibility.setValue(visible);
+        }
+        if (base->Visibility.getValue() == visible) {
+            base->Visibility.setValue(!visible);
+        }
     }
+}
+
+void TaskDressUpParameters::hideObject()
+{
+    setDressUpVisibility(false);
 }
 
 void TaskDressUpParameters::showObject()
 {
-    App::DocumentObject* base = getBase();
-    if (base) {
-        DressUpView->getObject()->Visibility.setValue(true);
-        base->Visibility.setValue(false);
-    }
+    setDressUpVisibility(true);
 }
 
 ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
@@ -406,7 +412,7 @@ ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
 Part::Feature* TaskDressUpParameters::getBase() const
 {
     if (ViewProviderDressUp* vp = getDressUpView()) {
-        auto dressUp = dynamic_cast<PartDesign::DressUp*>(vp->getObject());
+        auto dressUp = vp->getObject<PartDesign::DressUp>();
         // Unlikely but this may throw an exception in case we are started to edit an object which
         // base feature was deleted. This exception will be likely unhandled inside the dialog and
         // pass upper. But an error message inside the report view is better than a SEGFAULT.
@@ -458,7 +464,7 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpV
     , parameter(nullptr)
 {
     assert(DressUpView);
-    auto pcDressUp = dynamic_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    auto pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     auto base = pcDressUp->Base.getValue();
     std::vector<std::string> newSubList;
     bool changed = false;

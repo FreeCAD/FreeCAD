@@ -255,7 +255,7 @@ void MeshSelection::fullSelection()
     // select the complete meshes
     std::list<ViewProviderMesh*> views = getViewProviders();
     for (auto view : views) {
-        Mesh::Feature* mf = static_cast<Mesh::Feature*>(view->getObject());
+        Mesh::Feature* mf = view->getObject<Mesh::Feature>();
         const Mesh::MeshObject* mo = mf->Mesh.getValuePtr();
         std::vector<Mesh::FacetIndex> faces(mo->countFacets());
         std::generate(faces.begin(), faces.end(), Base::iotaGen<Mesh::FacetIndex>(0));
@@ -277,7 +277,7 @@ bool MeshSelection::deleteSelection()
     bool selected = false;
     std::list<ViewProviderMesh*> views = getViewProviders();
     for (auto view : views) {
-        Mesh::Feature* mf = static_cast<Mesh::Feature*>(view->getObject());
+        Mesh::Feature* mf = view->getObject<Mesh::Feature>();
         unsigned long ct = MeshCore::MeshAlgorithm(mf->Mesh.getValue().getKernel())
                                .CountFacetFlag(MeshCore::MeshFacet::SELECTED);
         if (ct > 0) {
@@ -302,7 +302,7 @@ bool MeshSelection::deleteSelectionBorder()
     bool deletion = false;
     std::list<ViewProviderMesh*> views = getViewProviders();
     for (auto view : views) {
-        Mesh::Feature* mf = static_cast<Mesh::Feature*>(view->getObject());
+        Mesh::Feature* mf = view->getObject<Mesh::Feature>();
 
         // mark the selected facet as visited
         std::vector<Mesh::FacetIndex> selection;
@@ -361,7 +361,7 @@ void MeshSelection::selectComponent(int size)
 {
     std::list<ViewProviderMesh*> views = getViewProviders();
     for (auto view : views) {
-        Mesh::Feature* mf = static_cast<Mesh::Feature*>(view->getObject());
+        Mesh::Feature* mf = view->getObject<Mesh::Feature>();
         const Mesh::MeshObject* mo = mf->Mesh.getValuePtr();
 
         std::vector<std::vector<Mesh::FacetIndex>> segm;
@@ -383,7 +383,7 @@ void MeshSelection::deselectComponent(int size)
 {
     std::list<ViewProviderMesh*> views = getViewProviders();
     for (auto view : views) {
-        Mesh::Feature* mf = static_cast<Mesh::Feature*>(view->getObject());
+        Mesh::Feature* mf = view->getObject<Mesh::Feature>();
         const Mesh::MeshObject* mo = mf->Mesh.getValuePtr();
 
         std::vector<std::vector<Mesh::FacetIndex>> segm;
@@ -480,8 +480,7 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
     std::list<ViewProviderMesh*> views = self->getViewProviders();
     for (auto vp : views) {
         std::vector<Mesh::FacetIndex> faces;
-        const Mesh::MeshObject& mesh =
-            static_cast<Mesh::Feature*>(vp->getObject())->Mesh.getValue();
+        const Mesh::MeshObject& mesh = vp->getObject<Mesh::Feature>()->Mesh.getValue();
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
         // simply get all triangles under the polygon
@@ -489,7 +488,7 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
         SbViewVolume vv = cam->getViewVolume();
         Gui::ViewVolumeProjection proj(vv);
 
-        Base::Placement plm = static_cast<Mesh::Feature*>(vp->getObject())->Placement.getValue();
+        Base::Placement plm = vp->getObject<Mesh::Feature>()->Placement.getValue();
         proj.setTransform(plm.toMatrix());
         vp->getFacetsFromPolygon(polygon, proj, true, faces);
 

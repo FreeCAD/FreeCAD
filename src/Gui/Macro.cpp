@@ -80,6 +80,9 @@ bool MacroFile::commit()
 
     // sort import lines and avoid duplicates
     QTextStream str(&file);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    str.setCodec("UTF-8");
+#endif
     QStringList import;
     import << QString::fromLatin1("import FreeCAD");
     QStringList body;

@@ -178,6 +178,9 @@ protected:
      */
     PartDesign::Transformed* getObject() const;
 
+    template <class T>
+    T* getObject() const { return dynamic_cast<T*>(getObject()); }
+
     /// Get the sketch object of the first original either of the object associated with this
     /// feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSketchObject() const;
