@@ -90,6 +90,8 @@ protected:
 
     void onChanged(const App::Property* prop) override;
 
+    bool forwardToLink();
+
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.
@@ -97,6 +99,7 @@ protected:
     virtual TaskView::TaskDialog* getTransformDialog();
 
     CoinPtr<SoFCCSysDragger> csysDragger = nullptr;
+    ViewProvider *forwardedViewProvider = nullptr;
 
 private:
     static void dragStartCallback(void *data, SoDragger *d);
@@ -105,9 +108,6 @@ private:
 
     void updateDraggerPosition();
 
-    bool checkLink();
-
-    ViewProvider *_linkDragger = nullptr;
     Base::Placement draggerPlacement { };
 };
 

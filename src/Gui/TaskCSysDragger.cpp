@@ -382,6 +382,9 @@ void TaskTransform::setSelectionMode(SelectionMode mode)
             draggerPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
             draggerPickStyle->setOverride(false);
             blockSelection(true);
+
+            vp->setTransformOrigin(vp->getTransformOrigin());
+
             break;
     }
 
@@ -492,6 +495,11 @@ void TaskTransform::onAlignRotationChanged()
 
 void TaskTransform::onAlignToOtherObject()
 {
+    if (selectionMode == SelectionMode::SelectAlignTarget) {
+        setSelectionMode(SelectionMode::None);
+        return;
+    }
+
     setSelectionMode(SelectionMode::SelectAlignTarget);
 }
 

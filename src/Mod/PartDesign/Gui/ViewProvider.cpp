@@ -81,7 +81,16 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
 
 bool ViewProvider::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Transform) {
+        if (forwardToLink()) {
+            return true;
+        }
+
+        // this is feature so we need to forward the transform to the body
+        forwardedViewProvider = getBodyViewProvider();
+        return forwardedViewProvider->startEditing(ModNum);
+    }
+    else if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this feature the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -192,6 +201,22 @@ void ViewProvider::onChanged(const App::Property* prop) {
     }
 
     PartGui::ViewProviderPartExt::onChanged(prop);
+}
+
+Gui::ViewProvider* ViewProvider::startEditing(int ModNum)
+{
+    // in case of transform we forward the request to body
+    if (ModNum == Transform) {
+        forwardedViewProvider = nullptr;
+
+        if (!ViewProviderPart::startEditing(ModNum)) {
+            return nullptr;
+        }
+
+        return forwardedViewProvider;
+    }
+
+    return ViewProviderPart::startEditing(ModNum);
 }
 
 void ViewProvider::setTipIcon(bool onoff) {
