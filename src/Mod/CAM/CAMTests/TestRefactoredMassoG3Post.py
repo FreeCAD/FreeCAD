@@ -35,7 +35,7 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredmasso_g3Post(PathTestUtils.PathTestBase):
+class TestRefactoredMassoG3Post(PathTestUtils.PathTestBase):
     @classmethod
     def setUpClass(cls):
         """setUpClass()...
