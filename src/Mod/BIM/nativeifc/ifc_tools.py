@@ -942,7 +942,7 @@ def set_colors(obj, colors):
             if len(colors) > 1:
                 #colors[0] = colors[0][:3] + (0.0,)
                 # TEMP HACK: if multiple colors, set everything to opaque because it looks wrong
-                colors = [color[:3] + (0.0,) for color in colors]
+                colors = [color[:3] + (1.0,) for color in colors]
             sapp = []
             for color in colors:
                 sapp_mat = FreeCAD.Material()
