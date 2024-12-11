@@ -30,6 +30,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "DrawViewPart.h"
 #include "DrawPage.h"
@@ -96,7 +97,6 @@ DrawLeaderLine::DrawLeaderLine()
     ADD_PROPERTY_TYPE(RotatesWithParent ,(true), group, App::Prop_None,
                       "If true, leader rotates around parent.  If false, only first segment of leader changes with parent rotation.");
 
-
     //hide the DrawView properties that don't apply to Leader
     ScaleType.setStatus(App::Property::ReadOnly, true);
     ScaleType.setStatus(App::Property::Hidden, true);
@@ -108,11 +108,6 @@ DrawLeaderLine::DrawLeaderLine()
 
     LockPosition.setValue(true);
     LockPosition.setStatus(App::Property::Hidden, true);
-}
-
-void DrawLeaderLine::onChanged(const App::Property* prop)
-{
-    DrawView::onChanged(prop);
 }
 
 short DrawLeaderLine::mustExecute() const
@@ -140,8 +135,6 @@ App::DocumentObjectExecReturn *DrawLeaderLine::execute()
         return App::DocumentObject::StdReturn;
     }
 
-    // is horizLastSegment something that should be done only at draw time?
-    horizLastSegment();
     overrideKeepUpdated(false);
     return DrawView::execute();
 }
@@ -202,78 +195,108 @@ Base::Vector3d DrawLeaderLine::getAttachPoint()
 
 //! unit agnostic conversion of last segment to horizontal.  need to do this at drawing time otherwise
 //! we just realign the canonical form.
-void DrawLeaderLine::horizLastSegment()
+std::vector<Base::Vector3d> DrawLeaderLine::horizLastSegment(const std::vector<Base::Vector3d>& inDeltas, double rotationDeg)
 {
-    // Base::Console().Message("DLL::horizLastSegment() - auto: %d\n", AutoHorizontal.getValue());
-    bool adjust =  AutoHorizontal.getValue();
-    if (!adjust) {
-        return;
-    }
 
-    auto temp = horizLastSegment(WayPoints.getValues());
-    WayPoints.setValues(temp);
-}
-
-std::vector<Base::Vector3d> DrawLeaderLine::horizLastSegment(const std::vector<Base::Vector3d>& inDeltas)
-{
-    // Base::Console().Message("DLL::horizLastSegment(in: %d)\n", inDeltas.size());
+    Base::Vector3d stdX{1, 0, 0};
 
     std::vector<Base::Vector3d> wp = inDeltas;
-        if (wp.size() > 1) {
+    if (wp.size() > 1) {
         size_t iLast = wp.size() - 1;
         size_t iPen  = wp.size() - 2;
         Base::Vector3d last = wp.at(iLast);
         Base::Vector3d penUlt = wp.at(iPen);
-        last.y = penUlt.y;
-        wp.at(iLast) = last;
+
+        auto lastSeg = DU::invertY(last - penUlt);
+        auto lastSegLong = lastSeg.Length();
+        auto lastSegRotated = lastSeg;
+        lastSegRotated.RotateZ(Base::toRadians(rotationDeg));
+        auto lastSegRotatedUnit = lastSegRotated;
+        lastSegRotatedUnit.Normalize();
+        auto dot = lastSegRotatedUnit.Dot(stdX);
+
+        auto newLast = penUlt + stdX * lastSegLong;
+        if (dot < 0) {
+            newLast = penUlt - stdX * lastSegLong;
+        }
+
+        wp.at(iLast) = newLast;
     }
     return wp;
 }
 
+
+//! returns the waypoints with scale, rotation and horizontal last applied.
+std::vector<Base::Vector3d> DrawLeaderLine::getTransformedWayPoints() const
+{
+    auto doScale = Scalable.getValue();
+    auto doRotate = RotatesWithParent.getValue();
+    auto vPoints =  getScaledAndRotatedPoints(doScale, doRotate);
+    if (AutoHorizontal.getValue()) {
+        vPoints = DrawLeaderLine::horizLastSegment(vPoints, getBaseView()->Rotation.getValue());
+    }
+
+    return vPoints;
+}
+
 //! returns the mid point of last segment.  used by leader decorators like weld symbol.
+//! the returned point is unscaled and unrotated.
 Base::Vector3d DrawLeaderLine::getTileOrigin() const
 {
-    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    std::vector<Base::Vector3d> wp = getTransformedWayPoints();
     if (wp.size() > 1) {
         Base::Vector3d last = wp.rbegin()[0];
         Base::Vector3d second = wp.rbegin()[1];
-        return (last + second) / 2.0;
+        return (last + second) / 2;
     }
 
-    Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
     return Base::Vector3d();
 }
 
 //! returns start of last line segment
 Base::Vector3d DrawLeaderLine::getKinkPoint() const
 {
-    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    std::vector<Base::Vector3d> wp = getTransformedWayPoints();
     if (wp.size() > 1) {
         return wp.rbegin()[1];  // second point from end
     }
 
-    Base::Console().Warning("DLL::getKinkPoint - no waypoints\n");
     return Base::Vector3d();
 }
 
 //end of last line segment
 Base::Vector3d DrawLeaderLine::getTailPoint() const
 {
-    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    std::vector<Base::Vector3d> wp = getTransformedWayPoints();
     if (!wp.empty()) {
         return wp.rbegin()[0];  // Last
     }
 
-    Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
     return Base::Vector3d();
 }
 
+//! returns the (transformed) direction of the last segment of the leader line
+Base::Vector3d DrawLeaderLine::lastSegmentDirection() const
+{
+    std::vector<Base::Vector3d> wp = getTransformedWayPoints();
+    if (wp.empty()) {
+        return Base::Vector3d(1,0,0);
+    }
+    // this direction is in conventional coords? Y+ up?
+    // vertical segment will be small negative Y - large negative Y  -> a positive Y but we want a negative Y
+    auto tailPoint = DU::invertY(wp.rbegin()[0]);
+    auto kinkPoint = DU::invertY(wp.rbegin()[1]);
+    auto direction = kinkPoint - tailPoint;  // from kink to tail
+    direction = DU::invertY(direction);
+    direction.Normalize();
+    return direction;
+}
 
 //! create a new leader feature from parameters.  Used by python method makeLeader.
 //! pagePoints are in mm from bottom left of page.
 DrawLeaderLine* DrawLeaderLine::makeLeader(DrawViewPart* parent, std::vector<Base::Vector3d> pagePoints, int iStartSymbol, int iEndSymbol)
 {
-    //    Base::Console().Message("DLL::makeLeader(%s, %d, %d, %d)\n", parent->getNameInDocument(), pagePoints.size(), iStartSymbol, iEndSymbol);
+    Base::Console().Message("DLL::makeLeader(%s, %d, %d, %d)\n", parent->getNameInDocument(), pagePoints.size(), iStartSymbol, iEndSymbol);
     if (pagePoints.size() < 2) {
         Base::Console().Message("DLL::makeLeader - not enough pagePoints\n");
         return {};
@@ -338,7 +361,6 @@ DrawLeaderLine* DrawLeaderLine::makeLeader(DrawViewPart* parent, std::vector<Bas
 //! used by QGILL.
 std::vector<Base::Vector3d>  DrawLeaderLine::getScaledAndRotatedPoints(bool doScale, bool doRotate) const
 {
-    // Base::Console().Message("DLL::getScaledAndRotatedPoints(%d, %d)\n", doScale, doRotate);
     auto dvp = getBaseView();
     if (!dvp) {
         // document is restoring?
@@ -378,7 +400,6 @@ DrawLeaderLine::makeCanonicalPoints(const std::vector<Base::Vector3d>& inPoints,
                                     bool doScale,
                                     bool doRotate) const
 {
-    // Base::Console().Message("DLL::makeCanonicalPoints(%d, %d, %d)\n", inPoints.size(), doScale, doRotate);
     auto dvp = getBaseView();
 
     double scale{1.0};
@@ -414,12 +435,15 @@ DrawLeaderLine::makeCanonicalPointsInverted(const std::vector<Base::Vector3d>& i
     for (auto& point : inPoints) {
         conventionalPoints.push_back(DU::invertY(point));
     }
-    auto conventionalCanon = makeCanonicalPoints(inPoints, doScale, doRotate);
+
+    auto conventionalCanon = makeCanonicalPoints(conventionalPoints, doScale, doRotate);
+
     std::vector<Base::Vector3d> invertedPoints;
     invertedPoints.reserve(inPoints.size());
     for (auto& point : conventionalCanon) {
         invertedPoints.push_back(DU::invertY(point));
     }
+
     return invertedPoints;
 }
 
@@ -440,6 +464,14 @@ bool DrawLeaderLine::isParentReady() const
 bool DrawLeaderLine::getDefAuto() const
 {
     return Preferences::getPreferenceGroup("LeaderLine")->GetBool("AutoHorizontal", true);
+}
+
+void DrawLeaderLine::dumpWaypoints(const std::vector<Base::Vector3d> &points, const std::string &label)
+{
+    Base::Console().Message("DLL::dumpWaypoints - %s\n", label.c_str());
+    for (auto& p : points) {
+        Base::Console().Message(">>>> a point: %s\n", DU::formatVector(p).c_str());
+    }
 }
 
 
