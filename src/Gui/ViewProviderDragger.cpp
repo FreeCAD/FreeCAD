@@ -208,8 +208,8 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
     if (csysDragger && viewer) {
         csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
-        auto mat = viewer->getDocument()->getEditingTransform();
-        mat *= getObjectPlacement().inverse().toMatrix();
+        auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject()) * getObjectPlacement().inverse();
+        auto mat = originPlacement.toMatrix();
 
         viewer->getDocument()->setEditingTransform(mat);
         viewer->setupEditingRoot(csysDragger, &mat);
