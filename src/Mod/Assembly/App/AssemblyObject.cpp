@@ -159,7 +159,7 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
     objectPartMap.clear();
     motions.clear();
 
-    std::vector<App::DocumentObject*> groundedObjs = fixGroundedParts();
+    auto groundedObjs = fixGroundedParts();
     if (groundedObjs.empty()) {
         // If no part fixed we can't solve.
         return -6;
@@ -202,7 +202,7 @@ int AssemblyObject::generateSimulation(App::DocumentObject* sim)
 
     motions = getMotionsFromSimulation(sim);
 
-    std::vector<App::DocumentObject*> groundedObjs = fixGroundedParts();
+    auto groundedObjs = fixGroundedParts();
     if (groundedObjs.empty()) {
         // If no part fixed we can't solve.
         return -6;
@@ -375,7 +375,7 @@ Base::Placement AssemblyObject::getMbdPlacement(std::shared_ptr<ASMTPart> mbdPar
 bool AssemblyObject::validateNewPlacements()
 {
     // First we check if a grounded object has moved. It can happen that they flip.
-    std::vector<App::DocumentObject*> groundedParts = getGroundedParts();
+    auto groundedParts = getGroundedParts();
     for (auto* obj : groundedParts) {
         auto* propPlacement =
             dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
@@ -775,11 +775,11 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
     return jointsOf;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getGroundedParts()
+std::unordered_set<App::DocumentObject*> AssemblyObject::getGroundedParts()
 {
     std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
 
-    std::vector<App::DocumentObject*> groundedObjs;
+    std::unordered_set<App::DocumentObject*> groundedSet;
     for (auto gJoint : groundedJoints) {
         if (!gJoint) {
             continue;
@@ -791,10 +791,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getGroundedParts()
         if (propObj) {
             App::DocumentObject* objToGround = propObj->getValue();
             if (objToGround) {
-                if (std::find(groundedObjs.begin(), groundedObjs.end(), objToGround)
-                    == groundedObjs.end()) {
-                    groundedObjs.push_back(objToGround);
-                }
+                groundedSet.insert(objToGround);
             }
         }
     }
@@ -812,21 +809,19 @@ std::vector<App::DocumentObject*> AssemblyObject::getGroundedParts()
                     continue;
                 }
             }
-            if (std::find(groundedObjs.begin(), groundedObjs.end(), obj) == groundedObjs.end()) {
-                groundedObjs.push_back(obj);
-            }
+            groundedSet.insert(obj);
         }
     }
 
     // Origin is not in Group so we add it separately
-    groundedObjs.push_back(Origin.getValue());
+    groundedSet.insert(Origin.getValue());
 
-    return groundedObjs;
+    return groundedSet;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::fixGroundedParts()
+std::unordered_set<App::DocumentObject*> AssemblyObject::fixGroundedParts()
 {
-    std::vector<App::DocumentObject*> groundedParts = getGroundedParts();
+    auto groundedParts = getGroundedParts();
 
     for (auto obj : groundedParts) {
         if (!obj) {
@@ -948,7 +943,7 @@ bool AssemblyObject::isObjInSetOfObjRefs(App::DocumentObject* obj, const std::ve
 }
 
 void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
-                                             std::vector<App::DocumentObject*> groundedObjs)
+                                             std::unordered_set<App::DocumentObject*> groundedObjs)
 {
     std::vector<ObjRef> connectedParts;
 
@@ -1040,7 +1035,7 @@ bool AssemblyObject::isPartGrounded(App::DocumentObject* obj)
         return false;
     }
 
-    std::vector<App::DocumentObject*> groundedObjs = getGroundedParts();
+    auto groundedObjs = getGroundedParts();
 
     for (auto* groundedObj : groundedObjs) {
         if (groundedObj->getFullName() == obj->getFullName()) {
@@ -1057,7 +1052,7 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
         return false;
     }
 
-    std::vector<App::DocumentObject*> groundedObjs = getGroundedParts();
+    auto groundedObjs = getGroundedParts();
     std::vector<App::DocumentObject*> joints = getJoints(false);
 
     std::vector<ObjRef> connectedParts;
