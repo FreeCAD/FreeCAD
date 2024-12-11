@@ -311,6 +311,11 @@ QString MaterialValue::getYAMLString() const
     return yaml;
 }
 
+const Base::QuantityFormat MaterialValue::getQuantityFormat()
+{
+    return Base::QuantityFormat(Base::QuantityFormat::NumberFormat::Default, PRECISION);
+}
+
 //===
 
 TYPESYSTEM_SOURCE(Materials::Material2DArray, Materials::MaterialValue)

@@ -81,6 +81,8 @@
 using namespace Part;
 namespace sp = std::placeholders;
 
+constexpr const int MaterialPrecision = 6;
+
 FC_LOG_LEVEL_INIT("Part",true,true)
 
 PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
@@ -106,18 +108,24 @@ Feature::Feature()
                       static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output
                                                      | App::Prop_NoRecompute | App::Prop_NoPersist),
                       "Feature density");
+    Density.setFormat(
+        Base::QuantityFormat(Base::QuantityFormat::NumberFormat::Default, MaterialPrecision));
     ADD_PROPERTY_TYPE(Mass,
                       (0.0),
                       group,
                       static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output
                                                      | App::Prop_NoRecompute | App::Prop_NoPersist),
                       "Feature mass");
+    Mass.setFormat(
+        Base::QuantityFormat(Base::QuantityFormat::NumberFormat::Default, MaterialPrecision));
     ADD_PROPERTY_TYPE(Volume,
                       (1.0),
                       group,
                       static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output
                                                      | App::Prop_NoRecompute | App::Prop_NoPersist),
                       "Feature volume");
+    Volume.setFormat(
+        Base::QuantityFormat(Base::QuantityFormat::NumberFormat::Default, MaterialPrecision));
 }
 
 Feature::~Feature() = default;
@@ -1553,7 +1561,6 @@ void Feature::updatePhysicalProperties()
         Mass.setValue(Volume.getValue() * Density.getValue());
     } else {
         // No shape
-        Base::Console().Log("No shape defined\n");
         Volume.setValue(0.0);
         Mass.setValue(0.0);
     }
