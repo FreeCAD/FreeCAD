@@ -297,6 +297,11 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
 
     if (targetObj == rootObj) return plc;
 
+    if (rootObj->isLink()) {
+        // Update doc in case its an external link.
+        doc = rootObj->getLinkedObject()->getDocument();
+    }
+
     for (auto& name : names) {
         App::DocumentObject* obj = doc->getObject(name.c_str());
         if (!obj) {
