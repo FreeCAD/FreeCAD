@@ -292,13 +292,11 @@ void LocalCoordinateSystem::migrateOriginPoint()
 {
     auto features = OriginFeatures.getValues();
 
-    auto featIt = std::find_if(features.begin(), features.end(),
-        [](App::DocumentObject* obj) {
-        return obj->isDerivedFrom(App::DatumElement::getClassTypeId()) &&
+    auto isOrigin = [](App::DocumentObject* obj) {
+        return obj->isDerivedFrom<App::DatumElement>() &&
             strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), PointRoles[0]) == 0;
-    });
-    if (featIt == features.end()) {
-        // origin point not found let's add it
+    };
+    if (std::none_of(features.begin(), features.end(), isOrigin)) {
         auto data = getData(PointRoles[0]);
         auto* origin = createDatum(data);
         features.push_back(origin);
@@ -310,7 +308,7 @@ void LocalCoordinateSystem::migrateXAxisPlacement()
 {
     auto features = OriginFeatures.getValues();
 
-    bool migrated = false;
+    migrated = false;
 
     const auto& setupData = getSetupData();
     for (auto* obj : features) {
@@ -325,16 +323,6 @@ void LocalCoordinateSystem::migrateXAxisPlacement()
                 }
             }
         }
-    }
-
-    static bool warnedUser = false;
-    if (!warnedUser && migrated) {
-        Base::Console().Warning("This file was created with an older version of FreeCAD."
-            "It had some origin's X axis with incorrect placement, which is being fixed now.\n"
-            "But if you save the file here and open this file back in an "
-            "older version of FreeCAD, you will find the origin objects axis looking incorrect."
-            "And if your file is using the origin axis as references it will likely be broken.\n");
-        warnedUser = true;
     }
 }
 
