@@ -97,19 +97,23 @@ long NavlibInterface::GetPointerPosition(navlib::point_t& position) const
     if (is3DView()) {
         const Gui::View3DInventorViewer* const inventorViewer = currentView.pView3d->getViewer();
         if (inventorViewer == nullptr)
-                return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+            return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
-            QPoint viewPoint = currentView.pView3d->mapFromGlobal(QCursor::pos());
-            viewPoint.setY(currentView.pView3d->height() - viewPoint.y());
-            SbVec3f worldPosition =
-                inventorViewer->getPointOnFocalPlane(SbVec2s(viewPoint.x(), viewPoint.y()));
+        QPoint viewPoint = currentView.pView3d->mapFromGlobal(QCursor::pos());
+        viewPoint.setY(currentView.pView3d->height() - viewPoint.y());
 
-            std::copy(worldPosition.getValue(), worldPosition.getValue() + 3, &position.x);
+        double scaling = inventorViewer->devicePixelRatio();
+        viewPoint *= scaling;
 
-            wasPointerPick = true;
+        SbVec3f worldPosition =
+            inventorViewer->getPointOnFocalPlane(SbVec2s(viewPoint.x(), viewPoint.y()));
+        
+        std::copy(worldPosition.getValue(), worldPosition.getValue() + 3, &position.x);
 
-            return 0;
-        }
+        wasPointerPick = true;
+
+        return 0;
+    }
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
 
@@ -324,9 +328,9 @@ long NavlibInterface::GetViewExtents(navlib::box_t& extents) const
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     const SbViewVolume viewVolume = pCamera->getViewVolume(pCamera->aspectRatio.getValue());
-    const float halfHeight = viewVolume.getHeight() / 2.0f;
-    const float halfWidth = viewVolume.getWidth() / 2.0f;
-    const float halfDepth = 1e8;
+    const double halfHeight = static_cast<double>(viewVolume.getHeight() / 2.0f);
+    const double halfWidth = static_cast<double>(viewVolume.getWidth() / 2.0f);
+    const double halfDepth = 1.0e8;
 
     extents = {-halfWidth,
                -halfHeight,

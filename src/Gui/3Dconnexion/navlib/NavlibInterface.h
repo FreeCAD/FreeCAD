@@ -162,6 +162,6 @@ private:
     mutable bool patternInitialized;
     std::vector<std::string> exportedCommandSets;
     mutable bool wasPointerPick = false;
-    mutable double orthoNearDistance = 0.0;
+    double orthoNearDistance = 0.0;
 };
 #endif
