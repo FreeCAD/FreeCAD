@@ -359,7 +359,7 @@ QLineEdit* TaskAttacher::getLine(unsigned idx)
     }
 }
 
-void TaskAttacher::processSelection(App::DocumentObject*& rootObj, std::string& sub)
+void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootObj, std::string& sub)
 {
     // The reference that we store must take into account the hierarchy of geoFeatures. For example:
     // - Part
@@ -369,7 +369,7 @@ void TaskAttacher::processSelection(App::DocumentObject*& rootObj, std::string& 
     // - Part
     // - - Cube
     // - - Sketch
-    // In this example if must store Cube:Face3 because Sketch is inside Part, sibling of Cube.
+    // In this example it must store Cube:Face3 because Sketch is inside Part, sibling of Cube.
     // So placement of Part is already taken into account.
     // - Part1
     // - - Part2
@@ -415,6 +415,7 @@ void TaskAttacher::processSelection(App::DocumentObject*& rootObj, std::string& 
         return;
     }
 
+    bool groupPassed = false;
     for (size_t i = 0; i < names.size(); ++i) {
         App::DocumentObject* obj = doc->getObject(names[i].c_str());
         if (!obj) {
@@ -422,6 +423,20 @@ void TaskAttacher::processSelection(App::DocumentObject*& rootObj, std::string& 
                 "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group '%s'.\n",
                 attachingObj->getFullLabel(), subObj->getFullLabel(), group->getFullLabel());
             rootObj = nullptr;
+            return;
+        }
+
+        if (groupPassed) {
+            rootObj = obj;
+
+            // Rebuild 'sub' starting from the next element after the current 'name'
+            sub = "";
+            for (size_t j = i + 1; j < names.size(); ++j) {
+                sub += names[j];
+                if (j != names.size() - 1) {
+                    sub += ".";  // Add a period between elements
+                }
+            }
             return;
         }
 
@@ -434,23 +449,7 @@ void TaskAttacher::processSelection(App::DocumentObject*& rootObj, std::string& 
         obj = obj->getLinkedObject();
 
         if (obj == group) {
-            ++i;
-            obj = doc->getObject(names[i].c_str());
-            if (!obj) {
-                return;
-            }
-
-            rootObj = obj;
-
-            // Rebuild 'sub' starting from the next element after the current 'name'
-            sub = "";
-            for (size_t j = i + 1; j < names.size(); ++j) {
-                sub += names[j];
-                if (j != names.size() - 1) {
-                    sub += ".";  // Add a period between elements
-                }
-            }
-            return;
+            groupPassed = true;
         }
     }
 
@@ -475,20 +474,19 @@ void TaskAttacher::handleInitialSelection()
     if (!refs.empty()) {
         return;
     }
-    std::vector<std::string> objNames;
-    std::vector<std::string> subNames;
+    std::vector<SubAndObjName> subAndObjNamePairs;
 
     auto sel = Gui::Selection().getSelectionEx("",
         App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
     for (auto& selObj : sel) {
         std::vector<std::string> subs = selObj.getSubNames();
-        const char* objName = selObj.getFeatName();
+        std::string objName = selObj.getFeatName();
         for (auto& sub : subs) {
-            objNames.push_back(objName);
-            subNames.push_back(sub);
+            SubAndObjName objSubName = { objName, sub };
+            subAndObjNamePairs.push_back(objSubName);
         }
     }
-    addToReference(objNames, subNames);
+    addToReference(subAndObjNamePairs);
 }
 
 void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -498,13 +496,14 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        addToReference(msg.pObjectName, msg.pSubName);
+        SubAndObjName pair = { msg.pObjectName, msg.pSubName };
+        addToReference(pair);
     }
 }
 
-void TaskAttacher::addToReference(std::vector<std::string> objNames, std::vector<std::string> subNames)
+void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
 {
-    if (iActiveRef < 0 || objNames.size() != subNames.size()) {
+    if (iActiveRef < 0) {
         return;
     }
 
@@ -512,13 +511,13 @@ void TaskAttacher::addToReference(std::vector<std::string> objNames, std::vector
     App::DocumentObject* obj = ViewProvider->getObject();
     Part::AttachExtension* pcAttach = obj->getExtensionByType<Part::AttachExtension>();
 
-    for (size_t i = 0; i < objNames.size(); ++i) {
+    for (auto& pair : pairs) {
         std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
         std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
 
-        App::DocumentObject* selObj = obj->getDocument()->getObject(objNames[i].c_str());
-        std::string subname = subNames[i];
-        processSelection(selObj, subname);
+        App::DocumentObject* selObj = obj->getDocument()->getObject(pair.objName.c_str());
+        std::string subname = pair.subName;
+        findCorrectObjAndSubInThisContext(selObj, subname);
         if (!selObj) {
             return;
         }
@@ -556,29 +555,6 @@ void TaskAttacher::addToReference(std::vector<std::string> objNames, std::vector
 
         pcAttach->AttachmentSupport.setValues(refs, refnames);
 
-        if (i == objNames.size() - 1) {
-            // We check for the moed only for the last ref added. This is to avoid unnecessary warnings
-            // when we handle initial selection.
-            try {
-                updateListOfModes();
-                eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
-                if (mmode == mmDeactivated) {
-                    //error = true;
-                    this->completed = false;
-                }
-                else {
-                    this->completed = true;
-                }
-                pcAttach->MapMode.setValue(mmode);
-                selectMapMode(mmode);
-                updatePreview();
-            }
-            catch (Base::Exception& e) {
-                ui->message->setText(QCoreApplication::translate("Exception", e.what()));
-                ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
-            }
-        }
-
         QLineEdit* line = getLine(iActiveRef);
         if (line) {
             line->blockSignals(true);
@@ -600,14 +576,31 @@ void TaskAttacher::addToReference(std::vector<std::string> objNames, std::vector
         }
     }
 
+    try {
+        updateListOfModes();
+        eMapMode mmode = getActiveMapMode();  //will be mmDeactivated, if selected or if no modes are available
+        if (mmode == mmDeactivated) {
+            //error = true;
+            this->completed = false;
+        }
+        else {
+            this->completed = true;
+        }
+        pcAttach->MapMode.setValue(mmode);
+        selectMapMode(mmode);
+        updatePreview();
+    }
+    catch (Base::Exception& e) {
+        ui->message->setText(QCoreApplication::translate("Exception", e.what()));
+        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+    }
+
     updateReferencesUI();
 }
 
-void TaskAttacher::addToReference(const char* objName, const char* subName)
+void TaskAttacher::addToReference(SubAndObjName pair)
 {
-    std::string objname = objName;
-    std::string subname = subName;
-    addToReference({ objname }, { subname });
+    addToReference({ pair });
 }
 
 void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
