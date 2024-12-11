@@ -92,7 +92,7 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
         noRole = true;
     }
 
-    static const float size = ViewProviderCoordinateSystem::defaultSize() * 0.6; //NOLINT
+    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumPlaneSize", 40.0);
     static const float startSize = 0.25 * size; //NOLINT
 
 
@@ -114,7 +114,7 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
     // indexes used to create the edges
     static const int32_t lines[6] = { 0, 1, 2, 3, 0, -1 };
 
-    SoSeparator* sep = getRoot();
+    SoSeparator* sep = getDatumRoot();
 
     auto pCoords = new SoCoordinate3();
     pCoords->point.setNum(4);

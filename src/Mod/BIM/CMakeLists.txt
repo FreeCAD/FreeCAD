@@ -108,6 +108,7 @@ SET(bimcommands_SRCS
     bimcommands/BimDiff.py
     bimcommands/BimDimensions.py
     bimcommands/BimDoor.py
+    bimcommands/BimDrawingView.py
     bimcommands/BimEmptyTrash.py
     bimcommands/BimEquipment.py
     bimcommands/BimExamples.py
@@ -190,6 +191,7 @@ SET(nativeifc_SRCS
     nativeifc/__init__.py
     nativeifc/ifc_openshell.py
     nativeifc/ifc_types.py
+    nativeifc/ifc_export.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})

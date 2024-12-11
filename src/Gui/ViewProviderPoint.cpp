@@ -52,15 +52,16 @@ void ViewProviderPoint::attach(App::DocumentObject * obj) {
     // The coordinates for the point (single vertex at the origin)
     static const SbVec3f point = SbVec3f(0, 0, 0);
 
-    SoSeparator* sep = getRoot();
+    SoSeparator* sep = getDatumRoot();
 
     auto pCoords = new SoCoordinate3();
     pCoords->point.setNum(1);
     pCoords->point.setValue(point);
     sep->addChild(pCoords);
 
+    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumPointSize", 2.5);
     auto sphere = new SoSphere();
-    sphere->radius.setValue(1.0);
+    sphere->radius.setValue(size);
     sep->addChild(sphere);
 
     // Add pick style to define how the point can be selected

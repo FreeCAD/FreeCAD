@@ -78,7 +78,6 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
 
-    float defaultSz = ViewProviderCoordinateSystem::defaultSize();
 
     // Create an external separator
     auto sep = new SoSeparator();
@@ -93,8 +92,8 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 
     // Setup font size
     auto font = new SoFont();
-    float fontRatio = 4.0f;
-    font->size.setValue(defaultSz / fontRatio);
+    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumFontSize", 15.0);
+    font->size.setValue(size);
     sep->addChild(font);
 
     // Create the selection node
@@ -107,13 +106,15 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     highlight->documentName = getObject()->getDocument()->getName();
     highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
 
+    // Visible features
+    auto visible = new SoSeparator();
     // Style for normal (visible) lines
     auto style = new SoDrawStyle();
     style->lineWidth = lineThickness;
-    highlight->addChild(style);
+    visible->addChild(style);
 
     // Visible lines
-    highlight->addChild(pRoot);
+    visible->addChild(pRoot);
 
     // Hidden features
     auto hidden = new SoAnnotation();
@@ -127,20 +128,22 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     // Hidden lines
     hidden->addChild(pRoot);
 
-    highlight->addChild(hidden);
+    visible->addChild(hidden);
 
-    sep->addChild(highlight);
+    sep->addChild(visible);
 
 
     // Scale feature to the given size
     float sz = App::GetApplication()
         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-        ->GetFloat("LocalCoordinateSystemSize", 2.0);  // NOLINT
+        ->GetFloat("LocalCoordinateSystemSize", 1.0);  // NOLINT
 
     soScale->setPart("shape", sep);
     soScale->scaleFactor = sz;
 
-    addDisplayMaskMode(soScale, "Base");
+    highlight->addChild(soScale);
+
+    addDisplayMaskMode(highlight, "Base");
 }
 
 

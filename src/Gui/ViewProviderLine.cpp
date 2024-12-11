@@ -79,7 +79,7 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
         noRole = true;
     }
 
-    static const float size = ViewProviderCoordinateSystem::defaultSize();
+    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumLineSize", 70.0);
 
     SbVec3f verts[2];
     if (noRole) {
@@ -94,7 +94,7 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
     // indexes used to create the edges
     static const int32_t lines[4] = { 0, 1, -1 };
 
-    SoSeparator *sep = getRoot();
+    SoSeparator *sep = getDatumRoot();
 
     auto pCoords = new SoCoordinate3 ();
     pCoords->point.setNum (2);
