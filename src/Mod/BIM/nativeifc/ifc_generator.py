@@ -464,13 +464,23 @@ def set_cache(ifcfile, cache):
 def set_representation(vobj, node):
     """Sets the correct coin nodes for the given Part object"""
 
+    def find_node(parent, nodetype):
+        for i in range(parent.getNumChildren()):
+            if isinstance(parent.getChild(i), nodetype):
+                return parent.getChild(i)
+        return None
+
     # node = [colors, verts, faces, edges, parts]
     if not vobj.RootNode:
         return
     if vobj.RootNode.getNumChildren() < 3:
         return
-    coords = vobj.RootNode.getChild(1)  # SoCoordinate3
-    switch = vobj.RootNode.getChild(2)
+    coords = find_node(vobj.RootNode, coin.SoCoordinate3)
+    if not coords:
+        return
+    switch = find_node(vobj.RootNode, coin.SoSwitch)
+    if not switch:
+        return
     num_modes = switch.getNumChildren()
     if num_modes < 3:
         return
