@@ -2,6 +2,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopllc@gmail.com>           *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,28 +22,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-# ***************************************************************************
-# *  Note: TestRefactoredMassoG3Post.py is a modified clone of this file    *
-# *        any changes to this file should be applied to the other          *
-# *                                                                         *
-# *                                                                         *
-# ***************************************************************************
-
-
 from importlib import reload
 
 import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
-from Path.Post.scripts import refactored_linuxcnc_post as postprocessor
+from Path.Post.scripts import refactored_masso_g3_post as postprocessor
 
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredLinuxCNCPost(PathTestUtils.PathTestBase):
+class TestRefactoredmasso_g3Post(PathTestUtils.PathTestBase):
     @classmethod
     def setUpClass(cls):
         """setUpClass()...
