@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
-# *   Copyright (c) 2022 Carl Slater <CandLWorkshopLLC@gmail.com>
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopLLC@gmail.com>
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,6 +23,11 @@
 # *                                                                         *
 # ***************************************************************************
 
+# ***************************************************************************
+# *  Note: this is copy & mod of refactored_linuxcnc_post.py                *
+# *                                                                         *
+# *                                                                         *
+# ***************************************************************************
 
 import argparse
 

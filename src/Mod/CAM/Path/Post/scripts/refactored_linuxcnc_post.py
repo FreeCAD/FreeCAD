@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopLLC@gmail.com>
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -25,7 +26,6 @@
 # ***************************************************************************
 # *  Note: refactored_masso_g3_Post.py is a modified clone of this file    *
 # *        any changes to this file should be applied to the other          *
-# *                                                                         *
 # *                                                                         *
 # ***************************************************************************
 
