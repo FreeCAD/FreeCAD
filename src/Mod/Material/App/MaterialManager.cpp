@@ -35,7 +35,9 @@
 #include "MaterialConfigLoader.h"
 #include "MaterialLoader.h"
 #include "MaterialManager.h"
+#if defined(BUILD_MATERIAL_EXTERNAL)
 #include "MaterialManagerExternal.h"
+#endif
 #include "MaterialManagerLocal.h"
 #include "ModelManager.h"
 #include "ModelUuids.h"
@@ -45,10 +47,12 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-std::unique_ptr<MaterialManagerExternal> MaterialManager::_externalManager;
 std::unique_ptr<MaterialManagerLocal> MaterialManager::_localManager;
 QMutex MaterialManager::_mutex;
 bool MaterialManager::_useExternal = false;
+#if defined(BUILD_MATERIAL_EXTERNAL)
+std::unique_ptr<MaterialManagerExternal> MaterialManager::_externalManager;
+#endif
 
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 
@@ -75,9 +79,11 @@ void MaterialManager::initManagers()
         _localManager = std::make_unique<MaterialManagerLocal>();
     }
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (!_externalManager) {
         _externalManager = std::make_unique<MaterialManagerExternal>();
     }
+#endif
 }
 
 void MaterialManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
@@ -95,9 +101,11 @@ void MaterialManager::cleanup()
     if (_localManager) {
         _localManager->cleanup();
     }
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (_externalManager) {
         _externalManager->cleanup();
     }
+#endif
 }
 
 void MaterialManager::refresh()
@@ -198,12 +206,14 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::ge
 {
     // External libraries take precedence over local libraries
     auto libMap = std::map<QString, std::shared_ptr<MaterialLibrary>>();
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
         auto remoteLibraries = _externalManager->getLibraries();
         for (auto& remote : *remoteLibraries) {
             libMap.try_emplace(remote->getName(), remote);
         }
     }
+#endif
     auto localLibraries = _localManager->getLibraries();
     for (auto& local : *localLibraries) {
         libMap.try_emplace(local->getName(), local);
@@ -226,6 +236,7 @@ MaterialManager::getLocalLibraries()
 
 std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name) const
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
         try
         {
@@ -237,6 +248,7 @@ std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name
         catch (const LibraryNotFound& e) {
         }
     }
+#endif
     // We really want to return the local library if not found, such as for User folder models
     return _localManager->getLibrary(name);
 }
@@ -272,6 +284,7 @@ void MaterialManager::removeLibrary(const QString& libraryName)
 std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
 MaterialManager::libraryMaterials(const QString& libraryName)
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
         try
         {
@@ -283,11 +296,13 @@ MaterialManager::libraryMaterials(const QString& libraryName)
         catch (const LibraryNotFound& e) {
         }
     }
+#endif
     return _localManager->libraryMaterials(libraryName);
 }
 
 bool MaterialManager::isLocalLibrary(const QString& libraryName)
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
         try
         {
@@ -299,6 +314,7 @@ bool MaterialManager::isLocalLibrary(const QString& libraryName)
         catch (const LibraryNotFound& e) {
         }
     }
+#endif
     return true;
 }
 
@@ -399,12 +415,14 @@ MaterialManager::getLocalMaterials() const
 
 std::shared_ptr<Material> MaterialManager::getMaterial(const QString& uuid) const
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
         auto material = _externalManager->getMaterial(uuid);
         if (material) {
             return material;
         }
     }
+#endif
     // We really want to return the local material if not found, such as for User folder models
     return _localManager->getMaterial(uuid);
 }
@@ -504,6 +522,7 @@ void MaterialManager::dereference(std::shared_ptr<Material> material) const
     _localManager->dereference(material);
 }
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
 void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library)
 {
     _externalManager->createLibrary(library->getName(),
@@ -553,3 +572,4 @@ double MaterialManager::materialHitRate()
     initManagers();
     return _externalManager->materialHitRate();
 }
+#endif

@@ -192,6 +192,7 @@ bool CmdInspectMaterial::isActive()
 // Materials_MigrateToDatabase
 //===========================================================================
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
 DEF_STD_CMD_A(CmdMigrateToExternal)
 
 CmdMigrateToExternal::CmdMigrateToExternal()
@@ -216,6 +217,7 @@ bool CmdMigrateToExternal::isActive()
 {
     return true;
 }
+#endif
 
 //---------------------------------------------------------------
 
@@ -228,5 +230,7 @@ void CreateMaterialCommands()
     rcCmdMgr.addCommand(new StdCmdSetMaterial());
     rcCmdMgr.addCommand(new CmdInspectAppearance());
     rcCmdMgr.addCommand(new CmdInspectMaterial());
+#if defined(BUILD_MATERIAL_EXTERNAL)
     rcCmdMgr.addCommand(new CmdMigrateToExternal());
+#endif
 }

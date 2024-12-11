@@ -34,14 +34,18 @@
 #include "ModelManager.h"
 
 #include "ModelManagerLocal.h"
+#if defined(BUILD_MATERIAL_EXTERNAL)
 #include "ModelManagerExternal.h"
+#endif
 
 using namespace Materials;
 
 std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
-std::unique_ptr<ModelManagerExternal> ModelManager::_externalManager;
 QMutex ModelManager::_mutex;
 bool ModelManager::_useExternal = false;
+#if defined(BUILD_MATERIAL_EXTERNAL)
+std::unique_ptr<ModelManagerExternal> ModelManager::_externalManager;
+#endif
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
@@ -68,9 +72,11 @@ void ModelManager::initManagers()
         _localManager = std::make_unique<ModelManagerLocal>();
     }
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (!_externalManager) {
         _externalManager = std::make_unique<ModelManagerExternal>();
     }
+#endif
 }
 
 void ModelManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
@@ -110,7 +116,9 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocal
 
 void ModelManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
     _externalManager->createLibrary(libraryName, icon, readOnly);
+#endif
 }
 
 void ModelManager::createLocalLibrary(const QString& libraryName,
@@ -159,12 +167,14 @@ std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManager::getLoca
 
 std::shared_ptr<Model> ModelManager::getModel(const QString& uuid) const
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
         auto model = _externalManager->getModel(uuid);
         if (model) {
             return model;
         }
     }
+#endif
     // We really want to return the local model if not found, such as for User folder models
     return _localManager->getModel(uuid);
 }
@@ -200,6 +210,7 @@ bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType)
     return false;
 }
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
 void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library)
 {
     _externalManager->createLibrary(library->getName(),
@@ -245,3 +256,4 @@ double ModelManager::modelHitRate()
     initManagers();
     return _externalManager->modelHitRate();
 }
+#endif

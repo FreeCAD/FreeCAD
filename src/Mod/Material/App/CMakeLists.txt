@@ -6,19 +6,29 @@ endif(MSVC)
 
 add_definitions(-DYAML_CPP_STATIC_DEFINE)
 
+if(BUILD_MATERIAL_EXTERNAL)
+    add_definitions(-DBUILD_MATERIAL_EXTERNAL)
+endif(BUILD_MATERIAL_EXTERNAL)
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/lru-cache/include
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${YAML_CPP_INCLUDE_DIR}
 )
+
+if (BUILD_MATERIAL_EXTERNAL)
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/lru-cache/include
+)
+endif(BUILD_MATERIAL_EXTERNAL)
+
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
 set(Materials_LIBS
@@ -90,8 +100,6 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SET(Materials_SRCS
     ${Python_SRCS}
     AppMaterial.cpp
-    ExternalManager.cpp
-    ExternalManager.h
     FolderTree.h
     Library.cpp
     Library.h
@@ -105,8 +113,6 @@ SET(Materials_SRCS
     MaterialLoader.h
     MaterialManager.cpp
     MaterialManager.h
-    MaterialManagerExternal.cpp
-    MaterialManagerExternal.h
     MaterialManagerLocal.cpp
     MaterialManagerLocal.h
     Materials.cpp
@@ -121,8 +127,6 @@ SET(Materials_SRCS
     ModelLoader.h
     ModelManager.cpp
     ModelManager.h
-    ModelManagerExternal.cpp
-    ModelManagerExternal.h
     ModelManagerLocal.cpp
     ModelManagerLocal.h
     ModelUuids.cpp
@@ -135,6 +139,16 @@ SET(Materials_SRCS
     PyVariants.h
     trim.h
 )
+if(BUILD_MATERIAL_EXTERNAL)
+    list(APPEND Materials_SRCS
+        ExternalManager.cpp
+        ExternalManager.h
+        MaterialManagerExternal.cpp
+        MaterialManagerExternal.h
+        ModelManagerExternal.cpp
+        ModelManagerExternal.h
+    )
+endif(BUILD_MATERIAL_EXTERNAL)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

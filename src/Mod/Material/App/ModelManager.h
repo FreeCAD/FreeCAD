@@ -82,17 +82,21 @@ public:
     /// Observer message from the ParameterGrp
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
     void migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library);
     void validateMigration(const std::shared_ptr<Materials::ModelLibrary>& library);
 
     // Cache functions
     static double modelHitRate();
+#endif
 
 private:
     static void initManagers();
 
     static std::unique_ptr<ModelManagerLocal> _localManager;
+#if defined(BUILD_MATERIAL_EXTERNAL)
     static std::unique_ptr<ModelManagerExternal> _externalManager;
+#endif
     static QMutex _mutex;
     static bool _useExternal;
 

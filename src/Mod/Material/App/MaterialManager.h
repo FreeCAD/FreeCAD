@@ -132,16 +132,20 @@ public:
     /// Observer message from the ParameterGrp
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
     void migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library);
     void validateMigration(const std::shared_ptr<Materials::MaterialLibrary>& library);
 
     // Cache functions
     static double materialHitRate();
+#endif
 
 private:
     static void initManagers();
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
     static std::unique_ptr<MaterialManagerExternal> _externalManager;
+#endif
     static std::unique_ptr<MaterialManagerLocal> _localManager;
     static QMutex _mutex;
     static bool _useExternal;

@@ -31,9 +31,12 @@
 
 #include "MaterialLoader.h"
 #include "MaterialManagerLocal.h"
-#include "ModelManagerExternal.h"
 #include "ModelManagerLocal.h"
 #include "PropertyMaterial.h"
+#if defined(BUILD_MATERIAL_EXTERNAL)
+#include "ModelManagerExternal.h"
+#include "MaterialManagerExternal.h"
+#endif
 
 #include "Array2DPy.h"
 #include "Array3DPy.h"
@@ -101,10 +104,15 @@ PyMOD_INIT_FUNC(Materials)
     Materials::Material                 ::init();
     Materials::MaterialFilter           ::init();
     Materials::MaterialManager          ::init();
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    Materials::MaterialManagerExternal  ::init();
+#endif
     Materials::MaterialManagerLocal     ::init();
     Materials::Model                    ::init();
     Materials::ModelManager             ::init();
+#if defined(BUILD_MATERIAL_EXTERNAL)
     Materials::ModelManagerExternal     ::init();
+#endif
     Materials::ModelManagerLocal        ::init();
     Materials::ModelUUIDs               ::init();
 
