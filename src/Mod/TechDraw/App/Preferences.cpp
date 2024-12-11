@@ -650,6 +650,11 @@ void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
     getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
 }
 
+bool Preferences::enforceISODate()
+{
+    return getPreferenceGroup("Standards")->GetBool("EnforceISODate", false);
+}
+
 //! if true, shapes are validated before use and problematic ones are skipped.
 //! validating shape takes time, but can prevent crashes/bad results in occt.
 //! this would normally be set to false and set to true to aid in debugging/support.
