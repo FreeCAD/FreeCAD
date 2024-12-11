@@ -43,8 +43,6 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
 
-int const MaterialProperty::PRECISION = 6;
-
 MaterialProperty::MaterialProperty()
 {
     _valuePtr = std::make_shared<MaterialValue>(MaterialValue::None);
@@ -134,7 +132,7 @@ QString MaterialProperty::getString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QLatin1String("%L1")).arg(value.toFloat(), 0, 'g', PRECISION);
+        return QString(QLatin1String("%L1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -180,7 +178,7 @@ QString MaterialProperty::getDictionaryString() const
     if (getType() == MaterialValue::Quantity) {
         auto quantity = getValue().value<Base::Quantity>();
         auto string = QString(QLatin1String("%1 %2"))
-                          .arg(quantity.getValue(), 0, 'g', PRECISION)
+                          .arg(quantity.getValue(), 0, 'g', MaterialValue::PRECISION)
                           .arg(quantity.getUnit().getString());
         return string;
     }
@@ -189,7 +187,7 @@ QString MaterialProperty::getDictionaryString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QLatin1String("%1")).arg(value.toFloat(), 0, 'g', PRECISION);
+        return QString(QLatin1String("%1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -387,7 +385,9 @@ void MaterialProperty::setFloat(const QString& value)
 
 void MaterialProperty::setQuantity(const Base::Quantity& value)
 {
-    _valuePtr->setValue(QVariant(QVariant::fromValue(value)));
+    auto quantity = value;
+    quantity.setFormat(MaterialValue::getQuantityFormat());
+    _valuePtr->setValue(QVariant(QVariant::fromValue(quantity)));
 }
 
 void MaterialProperty::setQuantity(double value, const QString& units)
@@ -1046,7 +1046,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
                 return {};
             }
             return QString(QLatin1String("%L1"))
-                .arg(value.toFloat(), 0, 'g', MaterialProperty::PRECISION);
+                .arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
         }
         return property->getValue().toString();
     }
