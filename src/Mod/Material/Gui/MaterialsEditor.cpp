@@ -702,9 +702,9 @@ void MaterialsEditor::addMaterials(
             addExpanded(tree, &parent, node, childParam);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             auto treeMap = nodePtr->getFolder();
-            if (treeMap) {
+            // if (treeMap) {
                 addMaterials(*node, treeMap, folderIcon, icon, childParam);
-            }
+            // }
         }
     }
 }

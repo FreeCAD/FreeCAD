@@ -524,7 +524,13 @@ ExternalManager::libraryMaterials(const QString& libraryName,
             Py::Callable libraries(_managerObject.getAttr("libraryMaterials"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
-            args.setItem(1, Py::Object(new MaterialFilterPy(new MaterialFilter(*filter)), true));
+            if (filter) {
+                args.setItem(1,
+                             Py::Object(new MaterialFilterPy(new MaterialFilter(*filter)), true));
+            }
+            else {
+                args.setItem(1, Py::None());
+            }
             args.setItem(
                 2,
                 Py::Object(new MaterialFilterOptionsPy(new MaterialFilterOptions(options)), true));
