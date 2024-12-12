@@ -260,9 +260,8 @@ long NavlibInterface::SetHitLookFrom(const navlib::point_t& eye)
 
         SbVec3f position = pCamera->position.getValue();
         ray.origin = position + orthoNearDistance * ray.direction;
-
-        return 0;
     }
+    return 0;
 }
 
 long NavlibInterface::SetHitSelectionOnly(bool hitSelection)
