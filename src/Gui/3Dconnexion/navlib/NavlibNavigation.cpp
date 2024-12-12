@@ -107,7 +107,6 @@ long NavlibInterface::GetPointerPosition(navlib::point_t& position) const
 
         SbVec3f worldPosition =
             inventorViewer->getPointOnFocalPlane(SbVec2s(viewPoint.x(), viewPoint.y()));
-        
         std::copy(worldPosition.getValue(), worldPosition.getValue() + 3, &position.x);
 
         wasPointerPick = true;
