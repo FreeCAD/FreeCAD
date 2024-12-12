@@ -4148,7 +4148,7 @@ def readPreferences():
     """
     # reading parameters
     if gui and params.get_param("dxfShowDialog"):
-        FreeCADGui.showPreferences("Import-Export", 3)
+        FreeCADGui.showPreferences("Import-Export", 0)
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
