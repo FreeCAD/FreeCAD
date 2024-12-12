@@ -40,15 +40,17 @@
 
 #include "Array2DPy.h"
 #include "Array3DPy.h"
-#include "MaterialFilterPy.h"
-#include "MaterialManagerPy.h"
-#include "MaterialLibraryPy.h"
-#include "MaterialPy.h"
 #include "ModelManagerPy.h"
 #include "ModelPropertyPy.h"
-#include "MaterialPropertyPy.h"
 #include "ModelPy.h"
 #include "UUIDsPy.h"
+
+#include "MaterialFilterPy.h"
+#include "MaterialFilterOptionsPy.h"
+#include "MaterialLibraryPy.h"
+#include "MaterialManagerPy.h"
+#include "MaterialPropertyPy.h"
+#include "MaterialPy.h"
 
 namespace Materials
 {
@@ -88,6 +90,7 @@ PyMOD_INIT_FUNC(Materials)
     Base::Interpreter().addType(&Materials::Array2DPy::Type, module, "Array2D");
     Base::Interpreter().addType(&Materials::Array3DPy::Type, module, "Array3D");
     Base::Interpreter().addType(&Materials::MaterialFilterPy::Type, module, "MaterialFilter");
+    Base::Interpreter().addType(&Materials::MaterialFilterOptionsPy::Type, module, "MaterialFilterOptions");
     Base::Interpreter().addType(&Materials::MaterialLibraryPy::Type, module, "MaterialLibrary");
     Base::Interpreter().addType(&Materials::MaterialManagerPy::Type, module, "MaterialManager");
     Base::Interpreter().addType(&Materials::MaterialPropertyPy::Type, module, "MaterialProperty");
@@ -103,14 +106,13 @@ PyMOD_INIT_FUNC(Materials)
 
     Materials::Material                 ::init();
     Materials::MaterialFilter           ::init();
+    Materials::MaterialFilterOptions    ::init();
     Materials::MaterialManager          ::init();
-#if defined(BUILD_MATERIAL_EXTERNAL)
-    Materials::MaterialManagerExternal  ::init();
-#endif
     Materials::MaterialManagerLocal     ::init();
     Materials::Model                    ::init();
     Materials::ModelManager             ::init();
 #if defined(BUILD_MATERIAL_EXTERNAL)
+    Materials::MaterialManagerExternal  ::init();
     Materials::ModelManagerExternal     ::init();
 #endif
     Materials::ModelManagerLocal        ::init();

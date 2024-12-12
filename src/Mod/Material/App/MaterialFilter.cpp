@@ -33,6 +33,8 @@
 
 using namespace Materials;
 
+TYPESYSTEM_SOURCE(Materials::MaterialFilterOptions, Base::BaseClass)
+
 MaterialFilterOptions::MaterialFilterOptions()
 {
     auto param = App::GetApplication().GetParameterGroupByPath(

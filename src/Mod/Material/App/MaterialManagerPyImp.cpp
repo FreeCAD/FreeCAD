@@ -294,17 +294,19 @@ PyObject* MaterialManagerPy::save(PyObject* args, PyObject* kwds)
     return Py_None;
 }
 
-void addMaterials(Py::List& list,
+void addMaterials(MaterialManager *manager,
+                  Py::List& list,
                   const std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>& tree)
 {
     for (auto& node : *tree) {
         if (node.second->getType() == MaterialTreeNode::DataNode) {
-            auto material = node.second->getData();
+            auto uuid = node.second->getUUID();
+            auto material = manager->getMaterial(uuid);
             PyObject* materialPy = new MaterialPy(new Material(*material));
             list.append(Py::Object(materialPy, true));
         }
         else {
-            addMaterials(list, node.second->getFolder());
+            addMaterials(manager, list, node.second->getFolder());
         }
     }
 }
@@ -343,7 +345,7 @@ PyObject* MaterialManagerPy::filterMaterials(PyObject* args, PyObject* kwds)
     for (auto lib : *libraries) {
         auto tree = getMaterialManagerPtr()->getMaterialTree(lib, filter, options);
         if (tree->size() > 0) {
-            addMaterials(list, tree);
+            addMaterials(getMaterialManagerPtr(), list, tree);
         }
     }
 

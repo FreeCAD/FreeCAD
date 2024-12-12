@@ -676,8 +676,12 @@ void MaterialsEditor::addMaterials(
     for (auto& mat : *materialTree) {
         std::shared_ptr<Materials::MaterialTreeNode> nodePtr = mat.second;
         if (nodePtr->getType() == Materials::MaterialTreeNode::DataNode) {
+            QString uuid = nodePtr->getUUID();
             auto material = nodePtr->getData();
-            QString uuid = material->getUUID();
+            if (!material) {
+                material = _materialManager.getMaterial(uuid);
+                nodePtr->setData(material);
+            }
 
             QIcon matIcon = icon;
             if (material->isOldFormat()) {
@@ -698,7 +702,9 @@ void MaterialsEditor::addMaterials(
             addExpanded(tree, &parent, node, childParam);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             auto treeMap = nodePtr->getFolder();
-            addMaterials(*node, treeMap, folderIcon, icon, childParam);
+            if (treeMap) {
+                addMaterials(*node, treeMap, folderIcon, icon, childParam);
+            }
         }
     }
 }

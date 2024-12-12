@@ -92,7 +92,7 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
         std::make_shared<std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
 
     MaterialManager manager;
-    auto materials = manager.libraryMaterials(getName());
+    auto materials = manager.libraryMaterials(getName(), filter, options);
     for (auto& it : *materials) {
         auto uuid = std::get<0>(it);
         auto path = std::get<1>(it);
@@ -101,36 +101,33 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
         //                     uuid.toStdString().c_str(),
         //                     path.toStdString().c_str(),
         //                     filename.toStdString().c_str());
-        auto material = manager.getMaterial(uuid);
 
-        if (materialInTree(material, filter, options)) {
-            QStringList list = path.split(QString::fromStdString("/"));
+        QStringList list = path.split(QString::fromStdString("/"));
 
-            // Start at the root
-            std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> node =
-                materialTree;
-            for (auto& itp : list) {
-                // Base::Console().Log("itp '%s'\n", itp.toStdString().c_str());
-                if (!itp.isEmpty()) {
-                    // Add the folder only if it's not already there
-                    if (node->count(itp) == 0) {
-                        auto mapPtr = std::make_shared<
-                            std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
-                        std::shared_ptr<MaterialTreeNode> child =
-                            std::make_shared<MaterialTreeNode>();
-                        child->setFolder(mapPtr);
-                        (*node)[itp] = child;
-                        node = mapPtr;
-                    }
-                    else {
-                        node = (*node)[itp]->getFolder();
-                    }
+        // Start at the root
+        std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> node =
+            materialTree;
+        for (auto& itp : list) {
+            // Base::Console().Log("itp '%s'\n", itp.toStdString().c_str());
+            if (!itp.isEmpty()) {
+                // Add the folder only if it's not already there
+                if (node->count(itp) == 0) {
+                    auto mapPtr = std::make_shared<
+                        std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
+                    std::shared_ptr<MaterialTreeNode> child =
+                        std::make_shared<MaterialTreeNode>();
+                    child->setFolder(mapPtr);
+                    (*node)[itp] = child;
+                    node = mapPtr;
+                }
+                else {
+                    node = (*node)[itp]->getFolder();
                 }
             }
-            std::shared_ptr<MaterialTreeNode> child = std::make_shared<MaterialTreeNode>();
-            child->setData(material);
-            (*node)[material->getName()] = child;
         }
+        std::shared_ptr<MaterialTreeNode> child = std::make_shared<MaterialTreeNode>();
+        child->setUUID(uuid);
+        (*node)[filename] = child;
     }
 
     // // Empty folders aren't included in _materialPathMap, so we add them by looking at the file

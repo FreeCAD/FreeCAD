@@ -96,6 +96,7 @@ ModelLibrary::getModelTree(ModelFilter filter) const
             for (auto& itp : list) {
                 if (ModelManager::isModel(itp)) {
                     std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();
+                    child->setUUID(model->getUUID());
                     child->setData(model);
                     (*node)[itp] = child;
                 }

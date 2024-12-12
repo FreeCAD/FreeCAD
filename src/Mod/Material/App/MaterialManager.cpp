@@ -286,8 +286,7 @@ MaterialManager::libraryMaterials(const QString& libraryName)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
-        try
-        {
+        try {
             auto materials = _externalManager->libraryMaterials(libraryName);
             if (materials) {
                 return materials;
@@ -298,6 +297,26 @@ MaterialManager::libraryMaterials(const QString& libraryName)
     }
 #endif
     return _localManager->libraryMaterials(libraryName);
+}
+
+std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+MaterialManager::libraryMaterials(const QString& libraryName,
+                                  const std::shared_ptr<MaterialFilter>& filter,
+                                  const MaterialFilterOptions& options)
+{
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_useExternal) {
+        try {
+            auto materials = _externalManager->libraryMaterials(libraryName, filter, options);
+            if (materials) {
+                return materials;
+            }
+        }
+        catch (const LibraryNotFound& e) {
+        }
+    }
+#endif
+    return _localManager->libraryMaterials(libraryName, filter, options);
 }
 
 bool MaterialManager::isLocalLibrary(const QString& libraryName)

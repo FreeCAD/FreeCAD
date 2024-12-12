@@ -34,6 +34,8 @@ namespace Materials
 
 class Material;
 class Model;
+class MaterialFilter;
+class MaterialFilterOptions;
 
 class MaterialsExport ExternalManager: public ParameterGrp::ObserverType
 {
@@ -57,6 +59,10 @@ public:
     libraryModels(const QString& libraryName);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryMaterials(const QString& libraryName);
+    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    libraryMaterials(const QString& libraryName,
+                     const std::shared_ptr<MaterialFilter>& filter,
+                     const MaterialFilterOptions& options);
 
     // Model management
     std::shared_ptr<Model> getModel(const QString& uuid);

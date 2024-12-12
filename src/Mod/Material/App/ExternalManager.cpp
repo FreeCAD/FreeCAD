@@ -38,6 +38,8 @@
 #include "MaterialPy.h"
 #include "ModelLibrary.h"
 #include "ModelPy.h"
+#include "MaterialFilterPy.h"
+#include "MaterialFilterOptionsPy.h"
 
 
 using namespace Materials;
@@ -470,6 +472,62 @@ ExternalManager::libraryMaterials(const QString& libraryName)
             Py::Callable libraries(_managerObject.getAttr("libraryMaterials"));
             Py::Tuple args(1);
             args.setItem(0, Py::String(libraryName.toStdString()));
+            Py::List list(libraries.apply(args));
+            for (auto library : list) {
+                auto entry = Py::Tuple(library);
+
+                auto pyUUID = entry.getItem(0);
+                QString uuid;
+                if (!pyUUID.isNone()) {
+                    uuid = QString::fromStdString(pyUUID.as_string());
+                }
+                auto pyPath = entry.getItem(1);
+                QString path;
+                if (!pyPath.isNone()) {
+                    path = QString::fromStdString(pyPath.as_string());
+                }
+                auto pyName = entry.getItem(2);
+                QString name;
+                if (!pyName.isNone()) {
+                    name = QString::fromStdString(pyName.as_string());
+                }
+
+                materialList->push_back(std::tuple<QString, QString, QString>(uuid, path, name));
+            }
+        }
+        else {
+            Base::Console().Log("\tlibraryMaterials() not found\n");
+            throw ConnectionError();
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw LibraryNotFound(e1.what());
+    }
+
+    return materialList;
+}
+
+std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+ExternalManager::libraryMaterials(const QString& libraryName,
+                                  const std::shared_ptr<MaterialFilter>& filter,
+                                  const MaterialFilterOptions& options)
+{
+    auto materialList = std::make_shared<std::vector<std::tuple<QString, QString, QString>>>();
+
+    connect();
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("libraryMaterials")) {
+            Base::Console().Log("\tFound libraryMaterials()\n");
+            Py::Callable libraries(_managerObject.getAttr("libraryMaterials"));
+            Py::Tuple args(3);
+            args.setItem(0, Py::String(libraryName.toStdString()));
+            args.setItem(1, Py::Object(new MaterialFilterPy(new MaterialFilter(*filter)), true));
+            args.setItem(
+                2,
+                Py::Object(new MaterialFilterOptionsPy(new MaterialFilterOptions(options)), true));
             Py::List list(libraries.apply(args));
             for (auto library : list) {
                 auto entry = Py::Tuple(library);

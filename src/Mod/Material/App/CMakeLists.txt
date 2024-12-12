@@ -56,6 +56,7 @@ endif()
 generate_from_xml(Array2DPy)
 generate_from_xml(Array3DPy)
 generate_from_xml(MaterialFilterPy)
+generate_from_xml(MaterialFilterOptionsPy)
 generate_from_xml(MaterialLibraryPy)
 generate_from_xml(MaterialManagerPy)
 generate_from_xml(MaterialPy)
@@ -76,6 +77,10 @@ SET(Python_SRCS
     Array2DPyImp.cpp
     Array3DPy.xml
     Array3DPyImp.cpp
+    MaterialFilterOptionsPy.xml
+    MaterialFilterOptionsPyImp.cpp
+    MaterialFilterPy.xml
+    MaterialFilterPyImp.cpp
     MaterialLibraryPy.xml
     MaterialLibraryPyImp.cpp
     MaterialManagerPy.xml
@@ -84,8 +89,6 @@ SET(Python_SRCS
     MaterialPropertyPyImp.cpp
     MaterialPy.xml
     MaterialPyImp.cpp
-    MaterialFilterPy.xml
-    MaterialFilterPyImp.cpp
     ModelManagerPy.xml
     ModelManagerPyImp.cpp
     ModelPropertyPy.xml

@@ -65,6 +65,10 @@ public:
     {
         return _data;
     }
+    QString getUUID() const
+    {
+        return _uuid;
+    }
 
     void setFolder(std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> folder)
     {
@@ -76,10 +80,15 @@ public:
         setType(DataNode);
         _data = data;
     }
+    void setUUID(const QString uuid)
+    {
+        _uuid = uuid;
+    }
 
 private:
     NodeType _type;
     std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> _folder;
+    QString _uuid;
     std::shared_ptr<T> _data;
 };
 

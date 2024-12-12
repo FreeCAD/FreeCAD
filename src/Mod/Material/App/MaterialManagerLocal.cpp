@@ -229,6 +229,26 @@ MaterialManagerLocal::libraryMaterials(const QString& libraryName)
     return materials;
 }
 
+std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+MaterialManagerLocal::libraryMaterials(const QString& libraryName,
+                                       const std::shared_ptr<MaterialFilter>& filter,
+                                       const MaterialFilterOptions& options)
+{
+    auto materials = std::make_shared<std::vector<std::tuple<QString, QString, QString>>>();
+
+    for (auto& it : *_materialMap) {
+        // This is needed to resolve cyclic dependencies
+        auto library = it.second->getLibrary();
+        if (library->getName() == libraryName) {
+            materials->push_back(std::tuple<QString, QString, QString>(it.first,
+                                                                       it.second->getDirectory(),
+                                                                       it.second->getName()));
+        }
+    }
+
+    return materials;
+}
+
 //=====
 //
 // Folder management

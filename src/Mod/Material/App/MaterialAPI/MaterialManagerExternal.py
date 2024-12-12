@@ -112,7 +112,9 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def libraryMaterials(self, library: str) -> list:
+    def libraryMaterials(self, library: str,
+                         filter: Materials.MaterialFilter = None,
+                         options: Materials.MaterialFilterOptions = None) -> list:
         """Returns a list of materials managed by this library
 
         Each list entry is a tuple containing the UUID, path, and name of the material"""

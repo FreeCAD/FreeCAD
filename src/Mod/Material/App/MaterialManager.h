@@ -48,6 +48,8 @@ namespace Materials
 {
 class MaterialManagerExternal;
 class MaterialManagerLocal;
+class MaterialFilter;
+class MaterialFilterOptions;
 
 class MaterialsExport MaterialManager: public Base::BaseClass, ParameterGrp::ObserverType
 {
@@ -79,6 +81,10 @@ public:
     void removeLibrary(const QString& libraryName);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryMaterials(const QString& libraryName);
+    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    libraryMaterials(const QString& libraryName,
+                     const std::shared_ptr<MaterialFilter>& filter,
+                     const MaterialFilterOptions& options);
     bool isLocalLibrary(const QString& libraryName);
 
     // Folder management

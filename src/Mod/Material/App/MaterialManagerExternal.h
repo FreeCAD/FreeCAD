@@ -36,14 +36,16 @@ class QMutex;
 
 namespace App
 {
-class MaterialLibrary;
-class MaterialLibraryExternal;
-
 class Material;
 }
 
 namespace Materials
 {
+
+class MaterialLibrary;
+class MaterialLibraryExternal;
+class MaterialFilter;
+class MaterialFilterOptions;
 
 class MaterialsExport MaterialManagerExternal: public Base::BaseClass
 {
@@ -65,6 +67,10 @@ public:
     void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryMaterials(const QString& libraryName);
+    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    libraryMaterials(const QString& libraryName,
+                     const std::shared_ptr<MaterialFilter>& filter,
+                     const MaterialFilterOptions& options);
 
     // Folder management
 

@@ -160,6 +160,14 @@ MaterialManagerExternal::libraryMaterials(const QString& libraryName)
     return ExternalManager::getManager()->libraryMaterials(libraryName);
 }
 
+std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+MaterialManagerExternal::libraryMaterials(const QString& libraryName,
+                                          const std::shared_ptr<MaterialFilter>& filter,
+                                          const MaterialFilterOptions& options)
+{
+    return ExternalManager::getManager()->libraryMaterials(libraryName, filter, options);
+}
+
 //=====
 //
 // Material management
