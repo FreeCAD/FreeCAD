@@ -36,14 +36,17 @@ if FreeCAD.GuiUp:
     class MatLineEdit(QtGui.QLineEdit):
         "custom QLineEdit widget that has the power to catch up/down arrow keypress"
 
+        up = QtCore.Signal()
+        down = QtCore.Signal()
+
         def __init__(self, parent=None):
             QtGui.QLineEdit.__init__(self, parent)
 
         def keyPressEvent(self, event):
             if event.key() == QtCore.Qt.Key_Up:
-                self.emit(QtCore.SIGNAL("up()"))
+                self.up.emit()
             elif event.key() == QtCore.Qt.Key_Down:
-                self.emit(QtCore.SIGNAL("down()"))
+                self.down.emit()
             else:
                 QtGui.QLineEdit.keyPressEvent(self, event)
 

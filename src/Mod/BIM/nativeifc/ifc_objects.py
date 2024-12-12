@@ -23,6 +23,7 @@
 """This module contains IFC object definitions"""
 
 import FreeCAD
+import FreeCADGui
 translate = FreeCAD.Qt.translate
 
 # the property groups below should not be treated as psets
@@ -59,7 +60,9 @@ class ifc_object:
         elif prop == "Schema":
             self.edit_schema(obj, obj.Schema)
         elif prop == "Type":
-            self.edit_type(obj)
+            self.Classification(obj)
+        elif prop == "Classification":
+            self.edit_classification(obj)
         elif prop == "Group":
             self.edit_group(obj)
         elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "IFC":
@@ -109,11 +112,7 @@ class ifc_object:
     def fit_all(self):
         """Fits the view"""
 
-        import FreeCAD
-
         if FreeCAD.GuiUp:
-            import FreeCADGui
-
             FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def rebuild_classlist(self, obj, setprops=False):
@@ -320,38 +319,10 @@ class ifc_object:
     def edit_type(self, obj):
         """Edits the type of this object"""
 
-        from nativeifc import ifc_tools  # lazy import
-        from nativeifc import ifc_types
+        from nativeifc import ifc_types  # lazy import
 
-        element = ifc_tools.get_ifc_element(obj)
-        ifcfile = ifc_tools.get_ifcfile(obj)
-        if not element or not ifcfile:
-            return
-        typerel = getattr(element, "IsTypedBy", None)
-        if obj.Type:
-            # verify the type is compatible -ex IFcWall in IfcWallType
-            if obj.Type.Class != element.is_a() + "Type":
-                t = translate("BIM","Error: Incompatible type")
-                FreeCAD.Console.PrintError(obj.Label+": "+t+": "+obj.Type.Class+"\n")
-                obj.Type = None
-                return
-            # change type
-            new_type = ifc_tools.get_ifc_element(obj.Type)
-            if not new_type:
-                return
-            for rel in typerel:
-                if rel.RelatingType == new_type:
-                    return
-            # assign the new type
-            ifc_tools.api_run("type.assign_type",
-                              ifcfile,
-                              related_objects=[element],
-                              relating_type=new_type
-            )
-        elif typerel:
-            # TODO remove type?
-            # Not doing anything right now because an unset Type property could screw the ifc file
-            pass
+        ifc_types.edit_type(obj)
+
 
     def get_section_data(self, obj):
         """Returns two things: a list of objects and a cut plane"""
@@ -394,6 +365,14 @@ class ifc_object:
         else:
             print("DEBUG: Section plane returned no objects")
             return [], None
+
+
+    def edit_classification(self, obj):
+        """Edits the classification of this object"""
+
+        from nativeifc import ifc_classification  # lazy loading
+
+        ifc_classification.edit_classification(obj)
 
 
 class document_object:

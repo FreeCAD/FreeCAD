@@ -335,6 +335,7 @@ def export(exportList, filename, colors=None, preferences=None):
     shapedefs = {} # { ShapeDefString:[shapes],... }
     spatialelements = {} # {Name:IfcEntity, ... }
     uids = [] # store used UIDs to avoid reuse (some FreeCAD objects might have same IFC UID, ex. copy/pasted objects
+    classifications = {} # {Name:IfcEntity, ... }
 
     # build clones table
 
@@ -928,6 +929,33 @@ def export(exportList, filename, colors=None, preferences=None):
                     None,
                     [product],
                     pset
+                )
+
+        # Classifications
+
+        classification = getattr(obj, "StandardCode", "")
+        if classification:
+            name, code = classification.split(" ", 1)
+            if name in classifications:
+                system = classifications[name]
+            else:
+                system = ifcfile.createIfcClassification(None, None, None, name)
+                classifications[name] = system
+            for ref in getattr(system, "HasReferences", []):
+                if code.startswith(ref.Name):
+                    break
+            else:
+                ref = ifcfile.createIfcClassificationReference(None, code, None, system)
+            if getattr(ref, "ClassificationRefForObjects", None):
+                rel = ref.ClassificationRefForObjects[0]
+                rel.RelatedObjects = rel.RelatedObjects + [product]
+            else:
+                rel = ifcfile.createIfcRelAssociatesClassification(
+                    ifcopenshell.guid.new(),
+                    history,'FreeCADClassificationRel',
+                    None,
+                    [product],
+                    ref
                 )
 
         count += 1

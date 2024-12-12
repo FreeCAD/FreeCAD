@@ -1604,10 +1604,14 @@ def remove_tree(objs):
 def recompute(children):
     """Temporary function to recompute objects. Some objects don't get their
     shape correctly at creation"""
-    import time
-    stime = time.time()
+    #import time
+    #stime = time.time()
+    doc = None
     for c in children:
-        c.touch()
-    FreeCAD.ActiveDocument.recompute()
-    endtime = "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
-    print("DEBUG: Extra recomputing of",len(children),"objects took",endtime)
+        if c:
+            c.touch()
+            doc = c.Document
+    if doc:
+        doc.recompute()
+    #endtime = "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
+    #print("DEBUG: Extra recomputing of",len(children),"objects took",endtime)
