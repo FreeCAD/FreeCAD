@@ -119,6 +119,7 @@ SheetTableView::SheetTableView(QWidget* parent)
     setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     connect(verticalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
+        Q_UNUSED(point)
         QMenu menu {nullptr};
         const auto selection = selectionModel()->selectedRows();
         const auto& [min, max] = selectedMinMaxRows(selection);
@@ -145,6 +146,7 @@ SheetTableView::SheetTableView(QWidget* parent)
     });
 
     connect(horizontalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
+        Q_UNUSED(point)
         QMenu menu {nullptr};
         const auto selection = selectionModel()->selectedColumns();
         const auto& [min, max] = selectedMinMaxColumns(selection);

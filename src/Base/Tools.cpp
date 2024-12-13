@@ -156,7 +156,7 @@ void Base::UniqueNameManager::addExactName(const std::string& name)
     baseNameAndDigitCountEntry.Add(digitsValue);
 }
 std::string Base::UniqueNameManager::makeUniqueName(const std::string& modelName,
-                                                    int minDigits) const
+                                                    std::size_t minDigits) const
 {
     std::string namePrefix;
     std::string nameSuffix;
@@ -169,7 +169,7 @@ std::string Base::UniqueNameManager::makeUniqueName(const std::string& modelName
     }
     // We don't care about the digit count of the suggested name, we always use at least the most
     // digits ever used before.
-    int digitCount = baseNameEntry->second.size() - 1;
+    std::size_t digitCount = baseNameEntry->second.size() - 1;
     uint digitsValue;
     if (digitCount < minDigits) {
         // Caller is asking for more digits than we have in any registered name.
