@@ -195,3 +195,23 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             )
             obj.setPropertyStatus("CapacitanceBodyEnabled", "LockDynamic")
             obj.CapacitanceBodyEnabled = False
+
+        if not hasattr(obj, "SurfaceChargeDensity"):
+            obj.addProperty(
+                "App::PropertySurfaceChargeDensity",
+                "SurfaceChargeDensity",
+                "Parameter",
+                "(free) Surface Charge Density",
+            )
+            obj.setPropertyStatus("SurfaceChargeDensity", "LockDynamic")
+            obj.SurfaceChargeDensity = "0.0 s*A/mm^2"
+
+        if not hasattr(obj, "Dirichlet"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Dirichlet",
+                "Parameter",
+                "Dirichlet (true) or Neumann (false) type BC",
+            )
+            obj.setPropertyStatus("Dirichlet", "LockDynamic")
+            obj.Dirichlet = True

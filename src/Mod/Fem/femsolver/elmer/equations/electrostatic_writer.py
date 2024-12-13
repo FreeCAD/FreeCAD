@@ -125,22 +125,26 @@ class ESwriter:
                     # output the FreeCAD label as comment
                     if obj.Label:
                         self.write.boundary(name, "! FreeCAD Name", obj.Label)
-                    if obj.PotentialEnabled:
-                        if hasattr(obj, "Potential"):
-                            # Potential was once a float and scaled not fitting SI units
-                            if isinstance(obj.Potential, float):
-                                savePotential = obj.Potential
-                                obj.removeProperty("Potential")
-                                obj.addProperty(
-                                    "App::PropertyElectricPotential",
-                                    "Potential",
-                                    "Parameter",
-                                    "Electric Potential",
-                                )
-                                # scale to match SI units
-                                obj.Potential = savePotential * 1e6
-                            potential = float(obj.Potential.getValueAs("V"))
-                            self.write.boundary(name, "Potential", potential)
+                    if obj.Dirichlet:
+                        if obj.PotentialEnabled:
+                            if hasattr(obj, "Potential"):
+                                # Potential was once a float and scaled not fitting SI units
+                                if isinstance(obj.Potential, float):
+                                    savePotential = obj.Potential
+                                    obj.removeProperty("Potential")
+                                    obj.addProperty(
+                                        "App::PropertyElectricPotential",
+                                        "Potential",
+                                        "Parameter",
+                                        "Electric Potential",
+                                    )
+                                    # scale to match SI units
+                                    obj.Potential = savePotential * 1e6
+                                potential = float(obj.Potential.getValueAs("V"))
+                                self.write.boundary(name, "Potential", potential)
+                    elif not obj.Dirichlet and hasattr(obj, "SurfaceChargeDensity"):
+                        sc_density = float(obj.SurfaceChargeDensity.getValueAs("A*s/m^2"))
+                        self.write.boundary(name, "Surface Charge Density", sc_density)
                     if obj.PotentialConstant:
                         self.write.boundary(name, "Potential Constant", True)
                     if obj.ElectricInfinity:

@@ -99,11 +99,13 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
           << Base::Unit::Mass << Base::Unit::MagneticFieldStrength << Base::Unit::MagneticFlux
           << Base::Unit::MagneticFluxDensity << Base::Unit::Magnetization << Base::Unit::Power
           << Base::Unit::Pressure << Base::Unit::SpecificEnergy << Base::Unit::SpecificHeat
-          << Base::Unit::Stiffness << Base::Unit::Temperature << Base::Unit::ThermalConductivity
+          << Base::Unit::Stiffness << Base::Unit::SurfaceChargeDensity 
+          << Base::Unit::Temperature << Base::Unit::ThermalConductivity
           << Base::Unit::ThermalExpansionCoefficient << Base::Unit::ThermalTransferCoefficient
           << Base::Unit::TimeSpan << Base::Unit::VacuumPermittivity << Base::Unit::Velocity
           << Base::Unit::Volume << Base::Unit::VolumeFlowRate
           << Base::Unit::VolumetricThermalExpansionCoefficient << Base::Unit::Work;
+
     for (const Base::Unit& it : units) {
         ui->unitsBox->addItem(it.getTypeString());
     }
