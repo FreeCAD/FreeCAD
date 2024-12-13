@@ -59,19 +59,23 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QStr
             unitString = QString::fromLatin1("nm");
             factor = 1e-6;
         }
-        else if (UnitValue < 0.1) {
+        else if (UnitValue < 1) {
             unitString = QString::fromUtf8("\xC2\xB5m");
             factor = 1e-3;
         }
-        else if (UnitValue < 1e4) {
+        else if (UnitValue < 10) {
             unitString = QString::fromLatin1("mm");
             factor = 1.0;
         }
-        else if (UnitValue < 1e7) {
+        else if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("cm");
+            factor = 10;
+        }
+        else if (UnitValue < 1e6) {
             unitString = QString::fromLatin1("m");
             factor = 1e3;
         }
-        else if (UnitValue < 1e10) {
+        else if (UnitValue < 1e9) {
             unitString = QString::fromLatin1("km");
             factor = 1e6;
         }
