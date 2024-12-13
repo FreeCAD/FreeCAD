@@ -653,8 +653,7 @@ void MaterialTreeWidget::addMaterials(
     for (auto& mat : *modelTree) {
         auto nodePtr = mat.second;
         if (nodePtr->getType() == Materials::MaterialTreeNode::DataNode) {
-            auto material = nodePtr->getData();
-            QString uuid = material->getUUID();
+            QString uuid = nodePtr->getUUID();
 
             auto card = new QStandardItem(icon, mat.first);
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
