@@ -229,12 +229,6 @@ bool ViewProviderAssembly::setEdit(int mode)
                                 PARTKEY,
                                 this->getObject()->getNameInDocument());
 
-        // When we set edit, we update the grounded joints placements to support :
-        // - If user transformed the grounded object
-        // - For nested assemblies where the grounded object moves around.
-        auto* assembly = getObject<AssemblyObject>();
-        assembly->updateGroundedJointsPlacements();
-
         setDragger();
 
         attachSelection();

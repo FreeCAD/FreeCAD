@@ -26,6 +26,8 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoLightModel.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <QMessageBox>
+# include <QCheckBox>
 #endif
 
 #include <App/Document.h>
@@ -81,6 +83,50 @@ void ViewProviderCoordinateSystem::attach(App::DocumentObject* pcObject)
 {
     Gui::ViewProviderDocumentObject::attach(pcObject);
     addDisplayMaskMode(pcGroupChildren, "Base");
+}
+
+void ViewProviderCoordinateSystem::finishRestoring()
+{
+    showMigrationDialog();
+}
+
+void ViewProviderCoordinateSystem::showMigrationDialog()
+{
+    auto lcs = dynamic_cast<App::LocalCoordinateSystem*>(getObject());
+    if (!lcs || !lcs->migrated) {
+        return;
+    }
+
+    static bool userWarned = false;
+
+    if (userWarned || !App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View")->GetBool("ShowLCSMigrationWarning", true)) {
+        return;
+    }
+
+    // Display the warning message
+    QMessageBox msgBox(QMessageBox::Warning,
+        QObject::tr("File Migration Warning"),
+        QObject::tr("This file was created with an older version of FreeCAD. "
+            "Origin axes had incorrect placements, which have now been corrected.\n\n"
+            "However, if you save this file in the current version and reopen it in an"
+            " older version of FreeCAD, the origin axes will be misaligned. Additionally, "
+            "if your file references these origin axes, your file will likely be broken."),
+        QMessageBox::Ok);
+
+    QCheckBox* checkBox = new QCheckBox(QObject::tr("Don't show this warning again"));
+    msgBox.setCheckBox(checkBox);
+
+    msgBox.exec();
+
+    // Update static flag if the user has seen the warning
+    userWarned = true;
+
+    // Save preference if the user selects "Don't show again"
+    if (checkBox->isChecked()) {
+        App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View")->SetBool("ShowLCSMigrationWarning", false);
+    }
 }
 
 std::vector<std::string> ViewProviderCoordinateSystem::getDisplayModes() const

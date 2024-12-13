@@ -33,6 +33,7 @@
 #include <chrono>
 
 #include <App/Application.h>
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/FeaturePythonPyImp.h>
@@ -45,6 +46,7 @@
 #include <Base/Interpreter.h>
 
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/AttachExtension.h>
 
 #include <OndselSolver/CREATE.h>
 #include <OndselSolver/ASMTSimulationParameters.h>
@@ -93,6 +95,10 @@ FC_LOG_LEVEL_INIT("Assembly", true, true, true)
 using namespace Assembly;
 using namespace MbD;
 
+
+namespace PartApp = Part;
+
+
 // ================================ Assembly Object ============================
 
 PROPERTY_SOURCE(Assembly::AssemblyObject, App::Part)
@@ -135,7 +141,7 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
     objectPartMap.clear();
     motions.clear();
 
-    std::vector<App::DocumentObject*> groundedObjs = fixGroundedParts();
+    auto groundedObjs = fixGroundedParts();
     if (groundedObjs.empty()) {
         // If no part fixed we can't solve.
         return -6;
@@ -178,7 +184,7 @@ int AssemblyObject::generateSimulation(App::DocumentObject* sim)
 
     motions = getMotionsFromSimulation(sim);
 
-    std::vector<App::DocumentObject*> groundedObjs = fixGroundedParts();
+    auto groundedObjs = fixGroundedParts();
     if (groundedObjs.empty()) {
         // If no part fixed we can't solve.
         return -6;
@@ -351,7 +357,8 @@ Base::Placement AssemblyObject::getMbdPlacement(std::shared_ptr<ASMTPart> mbdPar
 bool AssemblyObject::validateNewPlacements()
 {
     // First we check if a grounded object has moved. It can happen that they flip.
-    for (auto* obj : getGroundedParts()) {
+    auto groundedParts = getGroundedParts();
+    for (auto* obj : groundedParts) {
         auto* propPlacement =
             dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
         if (propPlacement) {
@@ -367,7 +374,8 @@ bool AssemblyObject::validateNewPlacements()
 
                 if (!oldPlc.isSame(newPlacement)) {
                     Base::Console().Warning(
-                        "Assembly : Ignoring bad solve, a grounded object moved.\n");
+                        "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
+                        obj->getFullLabel());
                     return false;
                 }
             }
@@ -749,11 +757,11 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
     return jointsOf;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getGroundedParts()
+std::unordered_set<App::DocumentObject*> AssemblyObject::getGroundedParts()
 {
     std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
 
-    std::vector<App::DocumentObject*> groundedObjs;
+    std::unordered_set<App::DocumentObject*> groundedSet;
     for (auto gJoint : groundedJoints) {
         if (!gJoint) {
             continue;
@@ -764,34 +772,49 @@ std::vector<App::DocumentObject*> AssemblyObject::getGroundedParts()
 
         if (propObj) {
             App::DocumentObject* objToGround = propObj->getValue();
-            groundedObjs.push_back(objToGround);
+            if (objToGround) {
+                groundedSet.insert(objToGround);
+            }
         }
     }
-    return groundedObjs;
+
+    // We also need to add all the root-level datums objects that are not attached.
+    std::vector<App::DocumentObject*> objs = Group.getValues();
+    for (auto* obj : objs) {
+        if (obj->isDerivedFrom<App::LocalCoordinateSystem>()
+            || obj->isDerivedFrom<App::DatumElement>()) {
+            auto* pcAttach = obj->getExtensionByType<PartApp::AttachExtension>();
+            if (pcAttach) {
+                // If it's a Part datums, we check if it's attached. If yes then we ignore it.
+                std::string mode = pcAttach->MapMode.getValueAsString();
+                if (mode != "Deactivated") {
+                    continue;
+                }
+            }
+            groundedSet.insert(obj);
+        }
+    }
+
+    // Origin is not in Group so we add it separately
+    groundedSet.insert(Origin.getValue());
+
+    return groundedSet;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::fixGroundedParts()
+std::unordered_set<App::DocumentObject*> AssemblyObject::fixGroundedParts()
 {
-    std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
+    auto groundedParts = getGroundedParts();
 
-    std::vector<App::DocumentObject*> groundedObjs;
-    for (auto obj : groundedJoints) {
+    for (auto obj : groundedParts) {
         if (!obj) {
             continue;
         }
 
-        auto* propObj = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("ObjectToGround"));
-
-        if (propObj) {
-            App::DocumentObject* objToGround = propObj->getValue();
-
-            Base::Placement plc = getPlacementFromProp(obj, "Placement");
-            std::string str = obj->getFullName();
-            fixGroundedPart(objToGround, plc, str);
-            groundedObjs.push_back(objToGround);
-        }
+        Base::Placement plc = getPlacementFromProp(obj, "Placement");
+        std::string str = obj->getFullName();
+        fixGroundedPart(obj, plc, str);
     }
-    return groundedObjs;
+    return groundedParts;
 }
 
 void AssemblyObject::fixGroundedPart(App::DocumentObject* obj,
@@ -902,7 +925,7 @@ bool AssemblyObject::isObjInSetOfObjRefs(App::DocumentObject* obj, const std::ve
 }
 
 void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
-                                             std::vector<App::DocumentObject*> groundedObjs)
+                                             std::unordered_set<App::DocumentObject*> groundedObjs)
 {
     std::vector<ObjRef> connectedParts;
 
@@ -994,7 +1017,7 @@ bool AssemblyObject::isPartGrounded(App::DocumentObject* obj)
         return false;
     }
 
-    std::vector<App::DocumentObject*> groundedObjs = getGroundedParts();
+    auto groundedObjs = getGroundedParts();
 
     for (auto* groundedObj : groundedObjs) {
         if (groundedObj->getFullName() == obj->getFullName()) {
@@ -1011,7 +1034,7 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
         return false;
     }
 
-    std::vector<App::DocumentObject*> groundedObjs = getGroundedParts();
+    auto groundedObjs = getGroundedParts();
     std::vector<App::DocumentObject*> joints = getJoints(false);
 
     std::vector<ObjRef> connectedParts;
@@ -1958,29 +1981,6 @@ std::vector<AssemblyLink*> AssemblyObject::getSubAssemblies()
     return subAssemblies;
 }
 
-void AssemblyObject::updateGroundedJointsPlacements()
-{
-    std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
-
-    for (auto gJoint : groundedJoints) {
-        if (!gJoint) {
-            continue;
-        }
-
-        auto* propObj =
-            dynamic_cast<App::PropertyLink*>(gJoint->getPropertyByName("ObjectToGround"));
-        auto* propPlc =
-            dynamic_cast<App::PropertyPlacement*>(gJoint->getPropertyByName("Placement"));
-
-        if (propObj && propPlc) {
-            App::DocumentObject* obj = propObj->getValue();
-            auto* propObjPlc =
-                dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-            propPlc->setValue(propObjPlc->getValue());
-        }
-    }
-}
-
 void AssemblyObject::ensureIdentityPlacements()
 {
     std::vector<App::DocumentObject*> group = Group.getValues();
@@ -2011,36 +2011,3 @@ void AssemblyObject::ensureIdentityPlacements()
         }
     }
 }
-
-/*void Part::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property*
-prop)
-{
-    App::Part::handleChangedPropertyType(reader, TypeName, prop);
-}*/
-
-/* Apparently not necessary as App::Part doesn't have this.
-// Python Assembly feature ---------------------------------------------------------
-
-namespace App
-{
-    /// @cond DOXERR
-    PROPERTY_SOURCE_TEMPLATE(Assembly::AssemblyObjectPython, Assembly::AssemblyObject)
-        template<>
-    const char* Assembly::AssemblyObjectPython::getViewProviderName() const
-    {
-        return "AssemblyGui::ViewProviderAssembly";
-    }
-    template<>
-    PyObject* Assembly::AssemblyObjectPython::getPyObject()
-    {
-        if (PythonObject.is(Py::_None())) {
-            // ref counter is set to 1
-            PythonObject = Py::Object(new FeaturePythonPyT<AssemblyObjectPy>(this), true);
-        }
-        return Py::new_reference_to(PythonObject);
-    }
-    /// @endcond
-
-    // explicit template instantiation
-    template class AssemblyExport FeaturePythonT<Assembly::AssemblyObject>;
-}// namespace App*/
