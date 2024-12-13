@@ -174,7 +174,7 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
 {
     // If a solid is removed from the assembly, its joints need to be removed.
     bool prompted = false;
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    auto* assemblyPart = getObject<AssemblyObject>();
 
     // If target is null then it's being dropped on a doc.
     if (target && assemblyPart->hasObject(target)) {
@@ -236,7 +236,7 @@ bool ViewProviderAssembly::setEdit(int mode)
         // When we set edit, we update the grounded joints placements to support :
         // - If user transformed the grounded object
         // - For nested assemblies where the grounded object moves around.
-        auto* assembly = static_cast<AssemblyObject*>(getObject());
+        auto* assembly = getObject<AssemblyObject>();
         assembly->updateGroundedJointsPlacements();
 
         setDragger();
@@ -479,7 +479,7 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
 
         prevPosition = newPos;
 
-        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+        auto* assemblyPart = getObject<AssemblyObject>();
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Assembly");
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
@@ -575,7 +575,7 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
         return false;
     }
 
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    auto* assemblyPart = getObject<AssemblyObject>();
 
     // Check if the selected object is a child of the assembly
     if (!assemblyPart->hasObject(obj, true)) {
@@ -638,7 +638,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
     docsToMove.clear();
 
     // Get the assembly object for this ViewProvider
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    auto* assemblyPart = getObject<AssemblyObject>();
 
     if (!assemblyPart) {
         return false;
@@ -745,7 +745,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
     };
 
     if (docsToMove.size() == 1) {
-        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+        auto* assemblyPart = getObject<AssemblyObject>();
         std::string pName;
         movingJoint = assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].obj, pName);
 
@@ -856,7 +856,7 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
         return;
     }
 
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    auto* assemblyPart = getObject<AssemblyObject>();
     // When the user drag parts, we switch off all joints visibility and only show the movingjoint
     jointVisibilitiesBackup.clear();
     auto joints = assemblyPart->getJoints();
@@ -945,7 +945,7 @@ void ViewProviderAssembly::endMove()
     partMoving = false;
     canStartDragging = false;
 
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    auto* assemblyPart = getObject<AssemblyObject>();
     auto joints = assemblyPart->getJoints();
     for (auto pair : jointVisibilitiesBackup) {
         bool visible = pair.first->Visibility.getValue();
@@ -1077,7 +1077,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
     bool res = ViewProviderPart::canDelete(objBeingDeleted);
     if (res) {
         // If a component is deleted, then we delete the joints as well.
-        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+        auto* assemblyPart = getObject<AssemblyObject>();
 
         std::vector<App::DocumentObject*> objToDel;
         std::vector<App::DocumentObject*> objsBeingDeleted;

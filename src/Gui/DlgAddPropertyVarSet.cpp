@@ -53,7 +53,7 @@ const bool COMMIT = false;
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
     : QDialog(parent),
-      varSet(dynamic_cast<App::VarSet*>(viewProvider->getObject())),
+      varSet(viewProvider->getObject<App::VarSet>()),
       ui(new Ui_DlgAddPropertyVarSet),
       comboBoxGroup(this),
       completerType(this),

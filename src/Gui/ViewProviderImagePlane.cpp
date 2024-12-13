@@ -183,9 +183,7 @@ bool ViewProviderImagePlane::doubleClicked()
 
 void ViewProviderImagePlane::manipulateImage()
 {
-    auto dialog = new TaskImageDialog(
-        dynamic_cast<Image::ImagePlane*>(getObject())
-    );
+    auto dialog = new TaskImageDialog(getObject<Image::ImagePlane>());
 
     Gui::Control().showDialog(dialog);
 }

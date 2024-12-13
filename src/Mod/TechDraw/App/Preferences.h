@@ -152,6 +152,10 @@ public:
     static void setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers);
 
     static bool switchOnClick();
+
+    static bool checkShapesBeforeUse();
+    static bool debugBadShape();
+
 };
 
 

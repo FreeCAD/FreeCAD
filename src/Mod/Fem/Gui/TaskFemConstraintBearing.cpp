@@ -80,8 +80,7 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint* Co
     ui->spinDistance->setMaximum(FLOAT_MAX);
 
     // Get the feature data
-    Fem::ConstraintBearing* pcConstraint =
-        static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
+    Fem::ConstraintBearing* pcConstraint = ConstraintView->getObject<Fem::ConstraintBearing>();
     double distance = pcConstraint->Dist.getValue();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -154,8 +153,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             return;
         }
 
-        Fem::ConstraintBearing* pcConstraint =
-            static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
+        Fem::ConstraintBearing* pcConstraint = ConstraintView->getObject<Fem::ConstraintBearing>();
         App::DocumentObject* obj =
             ConstraintView->getObject()->getDocument()->getObject(msg.pObjectName);
         Part::Feature* feat = static_cast<Part::Feature*>(obj);
@@ -232,8 +230,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
 
 void TaskFemConstraintBearing::onDistanceChanged(double l)
 {
-    Fem::ConstraintBearing* pcConstraint =
-        static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
+    Fem::ConstraintBearing* pcConstraint = ConstraintView->getObject<Fem::ConstraintBearing>();
     pcConstraint->Dist.setValue(l);
 }
 
@@ -259,8 +256,7 @@ void TaskFemConstraintBearing::onButtonLocation(const bool pressed)
 
 void TaskFemConstraintBearing::onCheckAxial(const bool pressed)
 {
-    Fem::ConstraintBearing* pcConstraint =
-        static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
+    Fem::ConstraintBearing* pcConstraint = ConstraintView->getObject<Fem::ConstraintBearing>();
     pcConstraint->AxialFree.setValue(pressed);
 }
 

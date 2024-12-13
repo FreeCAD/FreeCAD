@@ -650,6 +650,21 @@ void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
     getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
 }
 
+//! if true, shapes are validated before use and problematic ones are skipped.
+//! validating shape takes time, but can prevent crashes/bad results in occt.
+//! this would normally be set to false and set to true to aid in debugging/support.
+bool Preferences::checkShapesBeforeUse()
+{
+    return getPreferenceGroup("General")->GetBool("CheckShapesBeforeUse", false);
+}
+
+
+//! if true, shapes which fail validation are saved as brep files
+bool Preferences::debugBadShape()
+{
+    return getPreferenceGroup("debug")->GetBool("debugBadShape", false);
+}
+
 
 //! if true, automatically switch to TD workbench when a Page is set in edit (double click)
 bool Preferences::switchOnClick()

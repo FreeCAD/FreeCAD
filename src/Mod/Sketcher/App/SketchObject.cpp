@@ -91,7 +91,7 @@
 #include <App/IndexedName.h>
 #include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Base/Console.h>
 #include <Base/Reader.h>
@@ -1340,9 +1340,10 @@ int SketchObject::diagnoseAdditionalConstraints(
     return lastDoF;
 }
 
-int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative,
+int SketchObject::moveGeometries(std::vector<GeoElementId> geoEltIds, const Base::Vector3d& toPoint, bool relative,
                             bool updateGeoBeforeMoving)
 {
+
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -1369,7 +1370,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         return -1;
 
     // move the point and solve
-    lastSolverStatus = solvedSketch.movePoint(GeoId, PosId, toPoint, relative);
+    lastSolverStatus = solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
 
     // moving the point can not result in a conflict that we did not have
     // or a redundancy that we did not have before, or a change of DoF
@@ -1378,16 +1379,23 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
         // Constraints.acceptGeometry(getCompleteGeometry());
-        for (std::vector<Part::Geometry*>::iterator it = geomlist.begin(); it != geomlist.end();
-             ++it) {
-            if (*it)
-                delete *it;
+        for (auto* geo :  geomlist) {
+            if (geo){
+                delete geo;
+            }
         }
     }
 
     solvedSketch.resetInitMove();// reset solver point moving mechanism
 
     return lastSolverStatus;
+}
+
+int SketchObject::moveGeometry(int geoId, PointPos pos, const Base::Vector3d& toPoint, bool relative,
+    bool updateGeoBeforeMoving)
+{
+    std::vector<GeoElementId> geoEltIds = { GeoElementId(geoId, pos) };
+    return moveGeometries(geoEltIds, toPoint, relative, updateGeoBeforeMoving);
 }
 
 template <>
@@ -2777,14 +2785,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             if (dist1.Length() < dist2.Length()) {
                 filletPosId1 = PointPos::start;
                 filletPosId2 = PointPos::end;
-                movePoint(GeoId1, PosId1, p1, false, true);
-                movePoint(GeoId2, PosId2, p2, false, true);
+                moveGeometry(GeoId1, PosId1, p1, false, true);
+                moveGeometry(GeoId2, PosId2, p2, false, true);
             }
             else {
                 filletPosId1 = PointPos::end;
                 filletPosId2 = PointPos::start;
-                movePoint(GeoId1, PosId1, p2, false, true);
-                movePoint(GeoId2, PosId2, p1, false, true);
+                moveGeometry(GeoId1, PosId1, p2, false, true);
+                moveGeometry(GeoId2, PosId2, p1, false, true);
             }
 
             auto tangent1 = std::make_unique<Sketcher::Constraint>();
@@ -3272,14 +3280,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             if (dist1 < dist2) {
                 filletPosId1 = PointPos::start;
                 filletPosId2 = PointPos::end;
-                movePoint(GeoId1, PosId1, p1, false, true);
-                movePoint(GeoId2, PosId2, p2, false, true);
+                moveGeometry(GeoId1, PosId1, p1, false, true);
+                moveGeometry(GeoId2, PosId2, p2, false, true);
             }
             else {
                 filletPosId1 = PointPos::end;
                 filletPosId2 = PointPos::start;
-                movePoint(GeoId1, PosId1, p2, false, true);
-                movePoint(GeoId2, PosId2, p1, false, true);
+                moveGeometry(GeoId1, PosId1, p2, false, true);
+                moveGeometry(GeoId2, PosId2, p1, false, true);
             }
 
             auto* tangent1 = new Sketcher::Constraint();
@@ -3377,7 +3385,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
             newPoint.Normalize();
             newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
             newPoint = newPoint + endVec;
-            retcode = movePoint(GeoId, Sketcher::PointPos::start, newPoint, false, true);
+            retcode = moveGeometry(GeoId, Sketcher::PointPos::start, newPoint, false, true);
         }
         else if (endpoint == PointPos::end) {
             Base::Vector3d newPoint = endVec - startVec;
@@ -3385,7 +3393,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
             newPoint.Normalize();
             newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
             newPoint = newPoint + startVec;
-            retcode = movePoint(GeoId, Sketcher::PointPos::end, newPoint, false, true);
+            retcode = moveGeometry(GeoId, Sketcher::PointPos::end, newPoint, false, true);
         }
     }
     else if (geom->is<Part::GeomArcOfCircle>()) {
@@ -3504,7 +3512,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                                                                     Constraint* constr) {
         // TODO: Move code currently later in this method (that does as per the following description) here.
         /* It is possible that the trimming entity has both a PointOnObject constraint to the
-         * trimmed entity, and a simple Tangent contstraint to the trimmed entity. In this case we
+         * trimmed entity, and a simple Tangent constraint to the trimmed entity. In this case we
          * want to change to a single end-to-end tangency, i.e we want to ensure that constrType1 is
          * set to Sketcher::Tangent, that the secondPos1 is captured from the PointOnObject, and
          * also make sure that the PointOnObject constraint is deleted. The below loop ensures this,
@@ -4549,30 +4557,38 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
 bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject* pObj, bool& xinv,
                                        bool& yinv, eReasonList* rsn) const
 {
-    if (rsn)
+    if (rsn) {
         *rsn = rlAllowed;
+    }
+
+    std::string sketchArchType ("Sketcher::SketchObjectPython");
 
     // Only applicable to sketches
-    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()) {
-        if (rsn)
+    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()
+        && sketchArchType != pObj->getTypeId().getName()) {
+        if (rsn) {
             *rsn = rlNotASketch;
+        }
         return false;
     }
+
 
     SketchObject* psObj = static_cast<SketchObject*>(pObj);
 
     // Sketches outside of the Document are NOT allowed
     if (this->getDocument() != pDoc) {
-        if (rsn)
+        if (rsn) {
             *rsn = rlOtherDoc;
+        }
         return false;
     }
 
     // circular reference prevention
     try {
         if (!(this->testIfLinkDAGCompatible(pObj))) {
-            if (rsn)
+            if (rsn) {
                 *rsn = rlCircularReference;
+            }
             return false;
         }
     }
@@ -7709,7 +7725,7 @@ int SketchObject::delExternal(const std::vector<int>& ExtGeoIds)
 {
     std::set<long> geoIds;
     for (int ExtGeoId : ExtGeoIds) {
-        int GeoId = ExtGeoId > 0 ? GeoEnum::RefExt - ExtGeoId : ExtGeoId;
+        int GeoId = ExtGeoId >= 0 ? GeoEnum::RefExt - ExtGeoId : ExtGeoId;
         if (GeoId > GeoEnum::RefExt || -GeoId - 1 >= ExternalGeo.getSize())
             return -1;
 
@@ -8197,7 +8213,7 @@ static Part::Geometry *fitArcs(std::vector<std::unique_ptr<Part::Geometry> > &ar
                                double tol)
 {
     double radius = 0.0;
-    double m;
+    double m = 0.0;
     Base::Vector3d center;
     for (auto &geo : arcs) {
         if (auto arc = Base::freecad_dynamic_cast<Part::GeomArcOfCircle>(geo.get())) {
@@ -8212,27 +8228,27 @@ static Part::Geometry *fitArcs(std::vector<std::unique_ptr<Part::Geometry> > &ar
         } else
             return nullptr;
     }
-    if (radius == 0.0)
+    if (radius == 0.0) {
         return nullptr;
+    }
     if (P1.SquareDistance(P2) < Precision::Confusion()) {
         Part::GeomCircle* circle = new Part::GeomCircle();
         circle->setCenter(center);
         circle->setRadius(radius);
         return circle;
     }
-    else if (arcs.size() == 1) {
+    if (arcs.size() == 1) {
         auto res = arcs.front().release();
         arcs.clear();
         return res;
     }
-    else {
-        GeomLProp_CLProps prop(Handle(Geom_Curve)::DownCast(arcs.front()->handle()),m,0,Precision::Confusion());
-        gp_Pnt midPoint = prop.Value();
-        GC_MakeArcOfCircle arc(P1, midPoint, P2);
-        auto geo = new Part::GeomArcOfCircle();
-        geo->setHandle(arc.Value());
-        return geo;
-    }
+
+    GeomLProp_CLProps prop(Handle(Geom_Curve)::DownCast(arcs.front()->handle()),m,0,Precision::Confusion());
+    gp_Pnt midPoint = prop.Value();
+    GC_MakeArcOfCircle arc(P1, midPoint, P2);
+    auto geo = new Part::GeomArcOfCircle();
+    geo->setHandle(arc.Value());
+    return geo;
 }
 
 void SketchObject::validateExternalLinks()

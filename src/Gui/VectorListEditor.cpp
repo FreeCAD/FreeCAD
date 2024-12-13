@@ -26,6 +26,12 @@
 #include "ui_VectorListEditor.h"
 #include "QuantitySpinBox.h"
 
+#include <Base/Console.h>
+
+#include <QClipboard>
+#include <QMimeData>
+#include <QTextStream>
+
 
 using namespace Gui;
 
@@ -130,6 +136,74 @@ void VectorTableModel::setValues(const QList<Base::Vector3d>& d)
     vectors = d;
     beginResetModel();
     endResetModel();
+}
+
+void Gui::VectorTableModel::copyToClipboard() const
+{
+    QString clipboardText;
+    QTextStream stream(&clipboardText);
+
+    for (const auto& vector : vectors) {
+        stream << QString::number(vector.x, 'f', decimals) << '\t'
+               << QString::number(vector.y, 'f', decimals) << '\t'
+               << QString::number(vector.z, 'f', decimals) << '\n';
+    }
+
+    QApplication::clipboard()->setText(clipboardText);
+}
+
+void Gui::VectorTableModel::pasteFromClipboard()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    QStringList lines = clipboard->text().split(QLatin1Char('\n'));
+    bool okAll = !lines.empty();
+    QList<Base::Vector3d> newVectors;
+    QLatin1Char tab('\t');
+    QLatin1Char semicolon(';');
+    QLatin1Char comma(',');
+
+    for (const QString& line : lines) {
+        if (line.isEmpty()) {
+            continue;
+        }
+        QChar delimiter = line.count(tab) == 2 ? tab
+            : line.count(semicolon) == 2 ? semicolon
+            : line.count(comma) == 2 ? comma
+            : QChar(QChar::Null);
+
+        if (delimiter.isNull()) {
+            okAll = false;
+            break;
+        }
+
+        QStringList components = line.split(delimiter);
+
+        if (components.size() == 3) {
+            bool okX, okY, okZ;
+            double x = components.at(0).toDouble(&okX);
+            double y = components.at(1).toDouble(&okY);
+            double z = components.at(2).toDouble(&okZ);
+
+            if (!okX || !okY || !okZ) {
+                okAll = false;
+                break;
+            }
+            newVectors.append(Base::Vector3d(x, y, z));
+        }
+        else {
+            okAll = false;
+            break;
+        }
+    }
+
+    if (okAll) {
+        setValues(newVectors);
+    }
+    else {
+        QString msg(tr("Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:") + QLatin1String("\n"));
+        msg += clipboard->text();
+        Base::Console().Error(msg.toStdString().c_str());
+    }
 }
 
 const QList<Base::Vector3d>& VectorTableModel::values() const
@@ -238,9 +312,27 @@ VectorListEditor::VectorListEditor(int decimals, QWidget* parent)
     connect(ui->toolButtonRemove, &QToolButton::clicked, this, &VectorListEditor::removeRow);
     connect(ui->toolButtonAccept, &QToolButton::clicked, this, &VectorListEditor::acceptCurrent);
     connect(ui->tableWidget, &QTableView::clicked, this, &VectorListEditor::clickedRow);
+
+    ui->tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->tableWidget, &QWidget::customContextMenuRequested, this, &VectorListEditor::showContextMenu);
+
 }
 
 VectorListEditor::~VectorListEditor() = default;
+
+void VectorListEditor::showContextMenu(const QPoint& pos)
+{
+    QMenu contextMenu(ui->tableWidget);
+    QAction *copyAction = contextMenu.addAction(tr("Copy table"));
+    connect(copyAction, &QAction::triggered, model, &VectorTableModel::copyToClipboard);
+    copyAction->setEnabled(!data.empty());
+
+    QAction *pasteAction = contextMenu.addAction(tr("Paste table"));
+    connect(pasteAction, &QAction::triggered, model, &VectorTableModel::pasteFromClipboard);
+    pasteAction->setEnabled(QApplication::clipboard()->mimeData()->hasText());
+
+    contextMenu.exec(ui->tableWidget->viewport()->mapToGlobal(pos));
+}
 
 void VectorListEditor::setValues(const QList<Base::Vector3d>& v)
 {

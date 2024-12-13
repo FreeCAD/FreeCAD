@@ -123,7 +123,7 @@ void TaskTransformedParameters::setupUI()
             &TaskTransformedParameters::onUpdateView);
 
     // Get the feature data
-    auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    auto pcTransformed = getObject<PartDesign::Transformed>();
 
     using Mode = PartDesign::Transformed::Mode;
 
@@ -307,7 +307,7 @@ void TaskTransformedParameters::onModeChanged(int mode_id)
         return;
     }
 
-    auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    auto pcTransformed = getObject<PartDesign::Transformed>();
     pcTransformed->TransformMode.setValue(mode_id);
 
     using Mode = PartDesign::Transformed::Mode;
@@ -500,7 +500,7 @@ PartDesign::Transformed* TaskTransformedParameters::getObject() const
         return parentTask->getSubFeature();
     }
     if (TransformedView) {
-        return static_cast<PartDesign::Transformed*>(TransformedView->getObject());
+        return TransformedView->getObject<PartDesign::Transformed>();
     }
     return nullptr;
 }

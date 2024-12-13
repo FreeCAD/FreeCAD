@@ -65,9 +65,14 @@ protected:
     {
         return m_view;
     }
-    Fem::FemPostFunction* getObject()
+    Fem::FemPostFunction* getObject() const
     {
         return m_object;
+    }
+    template<class T>
+    T* getObject() const
+    {
+        return dynamic_cast<T*>(getObject());
     }
 
     bool blockObjectUpdates()

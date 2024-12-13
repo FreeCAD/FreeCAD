@@ -181,7 +181,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
                     )
             else:
                 message += (
-                    "No CompressiveStrength defined for the matrinx "
+                    "No CompressiveStrength defined for the matrix "
                     "of at least one reinforced material.\n"
                 )
             mat_map_r = mat_obj.Reinforcement
@@ -303,13 +303,13 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
             # this needs to be checked only once either here or in shell_thicknesses
             message += (
                 "Beam sections and shell thicknesses in one analysis "
-                "is not supported at the moment.\n"
+                "are not supported at the moment.\n"
             )
         if member.geos_fluidsection:
             # this needs to be checked only once either here or in shell_thicknesses
             message += (
                 "Beam sections and fluid sections in one analysis "
-                "is not supported at the moment.\n"
+                "are not supported at the moment.\n"
             )
         has_no_references = False
         for b in member.geos_beamsection:

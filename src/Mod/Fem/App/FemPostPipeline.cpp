@@ -42,6 +42,7 @@
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
+#include "FemPostFilter.h"
 #include "FemPostPipeline.h"
 #include "FemPostPipelinePy.h"
 #include "FemVTKTools.h"
@@ -84,41 +85,11 @@ short FemPostPipeline::mustExecute() const
         return 1;
     }
 
-    return FemPostFilter::mustExecute();
+    return FemPostObject::mustExecute();
 }
 
 DocumentObjectExecReturn* FemPostPipeline::execute()
 {
-
-    // if we are the toplevel pipeline our data object is not created by filters,
-    // we are the main source
-    if (!Input.getValue()) {
-        return StdReturn;
-    }
-
-    // now if we are a filter than our data object is created by the filter we hold
-
-    // if we are in serial mode we just copy over the data of the last filter,
-    // but if we are in parallel we need to combine all filter results
-    if (Mode.getValue() == 0) {
-        // serial
-        Data.setValue(getLastPostObject()->Data.getValue());
-    }
-    else if (Mode.getValue() == 1) {
-        // parallel, go through all filters and append the result
-        const std::vector<App::DocumentObject*>& filters = Filter.getValues();
-        std::vector<App::DocumentObject*>::const_iterator it = filters.begin();
-
-        vtkSmartPointer<vtkAppendFilter> append = vtkSmartPointer<vtkAppendFilter>::New();
-        for (; it != filters.end(); ++it) {
-
-            append->AddInputDataObject(static_cast<FemPostObject*>(*it)->Data.getValue());
-        }
-
-        append->Update();
-        Data.setValue(append->GetOutputDataObject(0));
-    }
-
     return Fem::FemPostObject::execute();
 }
 
@@ -189,61 +160,30 @@ void FemPostPipeline::onChanged(const Property* prop)
         std::vector<App::DocumentObject*>::iterator it = objs.begin();
         FemPostFilter* filter = static_cast<FemPostFilter*>(*it);
 
-        // If we have a Input we need to ensure our filters are connected correctly
-        if (Input.getValue()) {
+        // the first filter must always grab the data
+        if (filter->Input.getValue()) {
+            filter->Input.setValue(nullptr);
+        }
 
-            // the first filter is always connected to the input
-            if (filter->Input.getValue() != Input.getValue()) {
-                filter->Input.setValue(Input.getValue());
+        // all the others need to be connected to the previous filter or grab the data,
+        // dependent on mode
+        ++it;
+        for (; it != objs.end(); ++it) {
+            auto* nextFilter = static_cast<FemPostFilter*>(*it);
+
+            if (Mode.getValue() == 0) {  // serial mode
+                if (nextFilter->Input.getValue() != filter) {
+                    nextFilter->Input.setValue(filter);
+                }
+            }
+            else {  // Parallel mode
+                if (nextFilter->Input.getValue()) {
+                    nextFilter->Input.setValue(nullptr);
+                }
             }
 
-            // all the others need to be connected to the previous filter or the source,
-            // dependent on the mode
-            ++it;
-            for (; it != objs.end(); ++it) {
-                FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
-
-                if (Mode.getValue() == 0) {  // serial mode
-                    if (nextFilter->Input.getValue() != filter) {
-                        nextFilter->Input.setValue(filter);
-                    }
-                }
-                else {  // Parallel mode
-                    if (nextFilter->Input.getValue() != Input.getValue()) {
-                        nextFilter->Input.setValue(Input.getValue());
-                    }
-                }
-
-                filter = nextFilter;
-            };
-        }
-        // if we have no input the filters are responsible of grabbing the pipeline data themself
-        else {
-            // the first filter must always grab the data
-            if (filter->Input.getValue()) {
-                filter->Input.setValue(nullptr);
-            }
-
-            // all the others need to be connected to the previous filter or grab the data,
-            // dependent on mode
-            ++it;
-            for (; it != objs.end(); ++it) {
-                FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
-
-                if (Mode.getValue() == 0) {  // serial mode
-                    if (nextFilter->Input.getValue() != filter) {
-                        nextFilter->Input.setValue(filter);
-                    }
-                }
-                else {  // Parallel mode
-                    if (nextFilter->Input.getValue()) {
-                        nextFilter->Input.setValue(nullptr);
-                    }
-                }
-
-                filter = nextFilter;
-            };
-        }
+            filter = nextFilter;
+        };
     }
 
     App::GeoFeature::onChanged(prop);

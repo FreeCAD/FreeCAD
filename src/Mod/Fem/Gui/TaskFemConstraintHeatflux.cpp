@@ -105,8 +105,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->btnRemove->blockSignals(true);
 
     // Get the feature data
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -190,36 +189,31 @@ void TaskFemConstraintHeatflux::updateUI()
 
 void TaskFemConstraintHeatflux::onAmbientTempChanged(double val)
 {
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     pcConstraint->AmbientTemp.setValue(val);
 }
 
 void TaskFemConstraintHeatflux::onFilmCoefChanged(double val)
 {
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     pcConstraint->FilmCoef.setValue(val);
 }
 
 void TaskFemConstraintHeatflux::onEmissivityChanged(double val)
 {
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     pcConstraint->Emissivity.setValue(val);
 }
 
 void TaskFemConstraintHeatflux::onHeatFluxChanged(double val)
 {
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     pcConstraint->DFlux.setValue(val);
 }
 
 void TaskFemConstraintHeatflux::Conv()
 {
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.ActiveDocument.%s.ConstraintType = %s",
@@ -232,8 +226,7 @@ void TaskFemConstraintHeatflux::Conv()
 
 void TaskFemConstraintHeatflux::Rad()
 {
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.ActiveDocument.%s.ConstraintType = %s",
@@ -246,8 +239,7 @@ void TaskFemConstraintHeatflux::Rad()
 
 void TaskFemConstraintHeatflux::Flux()
 {
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.ActiveDocument.%s.ConstraintType = %s",
@@ -265,8 +257,7 @@ void TaskFemConstraintHeatflux::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -331,8 +322,7 @@ void TaskFemConstraintHeatflux::removeFromSelection()
         return;
     }
 
-    Fem::ConstraintHeatflux* pcConstraint =
-        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -419,7 +409,7 @@ std::string TaskFemConstraintHeatflux::getAmbientTemp() const
         temp = ui->qsb_ambienttemp_rad->value().getSafeUserString().toStdString();
     }
     else {
-        auto obj = static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+        auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
         temp = obj->AmbientTemp.getQuantityValue().getSafeUserString().toStdString();
     }
 
