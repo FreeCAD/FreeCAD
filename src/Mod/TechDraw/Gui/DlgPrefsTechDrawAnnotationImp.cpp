@@ -127,7 +127,6 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
 
     ui->pcbBreakType->onSave();
     ui->pcbBreakStyle->onSave();
-    
     ui->cbISODates->onSave();
 }
 
@@ -188,7 +187,6 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     loadLineStyleBoxes();
 
     ui->pcbBreakType->onRestore();
-    
     ui->cbISODates->onRestore();
 }
 
