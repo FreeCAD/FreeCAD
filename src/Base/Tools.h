@@ -344,7 +344,7 @@ public:
     // name more than once. The effect if undetected is that the second registration will have no
     // effect
     void addExactName(const std::string& name);
-    std::string makeUniqueName(const std::string& modelName, int minDigits = 0) const;
+    std::string makeUniqueName(const std::string& modelName, std::size_t minDigits = 0) const;
 
     // Remove a registered name so it can be generated again.
     // Nothing happens if you try to remove a non-registered name.
