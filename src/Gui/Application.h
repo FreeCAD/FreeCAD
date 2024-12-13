@@ -354,6 +354,7 @@ public:
 
     static PyObject* sShowDownloads            (PyObject *self,PyObject *args);
     static PyObject* sShowPreferences          (PyObject *self,PyObject *args);
+    static PyObject* sShowPreferencesByName    (PyObject *self,PyObject *args);
 
     static PyObject* sCreateViewer             (PyObject *self,PyObject *args);
     static PyObject* sGetMarkerIndex           (PyObject *self,PyObject *args);
