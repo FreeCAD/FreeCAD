@@ -39,10 +39,6 @@
 # include <IntRes2d_IntersectionSegment.hxx>
 #endif
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-
 #include <App/FeaturePythonPyImp.h>
 #include <App/PropertyLinks.h>
 #include <Base/Reader.h>

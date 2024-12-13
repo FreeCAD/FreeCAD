@@ -160,7 +160,9 @@ public:
                 throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
             }
 
-            if (obj->is<Sketcher::SketchObject>()) {
+            std::string sketchArchType("Sketcher::SketchObjectPython");
+
+            if (obj->is<Sketcher::SketchObject>() || sketchArchType == obj->getTypeId().getName()) {
 
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
@@ -171,8 +173,7 @@ public:
 
                     Gui::Command::commitCommand();
 
-                    tryAutoRecomputeIfNotSolve(
-                        static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                    tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                     Gui::Selection().clearSelection();
                     /* this is ok not to call to purgeHandler

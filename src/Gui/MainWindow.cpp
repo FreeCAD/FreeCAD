@@ -70,6 +70,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/SafeMode.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -91,6 +92,7 @@
 #include "DownloadManager.h"
 #include "FileDialog.h"
 #include "MenuManager.h"
+#include "ModuleIO.h"
 #include "NotificationArea.h"
 #include "OverlayManager.h"
 #include "ProgressBar.h"
@@ -98,7 +100,7 @@
 #include "PythonConsole.h"
 #include "ReportView.h"
 #include "SelectionView.h"
-#include "Splashscreen.h"
+#include "SplashScreen.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "Tree.h"
@@ -113,7 +115,6 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "DlgObjectSelection.h"
-#include "Tools.h"
 #include <App/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
@@ -299,86 +300,6 @@ struct MainWindowP
     void restoreWindowState(const QByteArray &);
 };
 
-class MDITabbar : public QTabBar
-{
-public:
-    explicit MDITabbar( QWidget * parent = nullptr ) : QTabBar(parent)
-    {
-        menu = new QMenu(this);
-        setDrawBase(false);
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    }
-
-    ~MDITabbar() override
-    {
-        delete menu;
-    }
-
-protected:
-    void contextMenuEvent ( QContextMenuEvent * e ) override
-    {
-        menu->clear();
-        CommandManager& cMgr = Application::Instance->commandManager();
-        if (tabRect(currentIndex()).contains(e->pos()))
-            cMgr.getCommandByName("Std_CloseActiveWindow")->addTo(menu);
-        cMgr.getCommandByName("Std_CloseAllWindows")->addTo(menu);
-        menu->addSeparator();
-        cMgr.getCommandByName("Std_CascadeWindows")->addTo(menu);
-        cMgr.getCommandByName("Std_TileWindows")->addTo(menu);
-        menu->addSeparator();
-        cMgr.getCommandByName("Std_Windows")->addTo(menu);
-        menu->popup(e->globalPos());
-    }
-
-private:
-    QMenu* menu;
-};
-
-#if defined(Q_OS_WIN32)
-class MainWindowTabBar : public QTabBar
-{
-public:
-    MainWindowTabBar(QWidget *parent) : QTabBar(parent)
-    {
-        setExpanding(false);
-    }
-protected:
-    bool event(QEvent *e)
-    {
-        // show the tooltip if tab is too small to fit label
-        if (e->type() != QEvent::ToolTip)
-            return QTabBar::event(e);
-        QSize size = this->size();
-        QSize hint = sizeHint();
-        if (shape() == QTabBar::RoundedWest || shape() == QTabBar::RoundedEast) {
-            size.transpose();
-            hint.transpose();
-        }
-        if (size.width() < hint.width())
-            return QTabBar::event(e);
-        e->accept();
-        return true;
-    }
-    void tabInserted (int index)
-    {
-        // get all dock windows
-        QList<QDockWidget*> dw = getMainWindow()->findChildren<QDockWidget*>();
-        for (QList<QDockWidget*>::iterator it = dw.begin(); it != dw.end(); ++it) {
-            // compare tab text and window title to get the right dock window
-            if (this->tabText(index) == (*it)->windowTitle()) {
-                QWidget* dock = (*it)->widget();
-                if (dock) {
-                    QIcon icon = dock->windowIcon();
-                    if (!icon.isNull())
-                        setTabIcon(index, icon);
-                }
-                break;
-            }
-        }
-    }
-};
-#endif
-
 } // namespace Gui
 
 /* TRANSLATOR Gui::MainWindow */
@@ -397,7 +318,8 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // after opening project and prevent issues with double initialization of the window
     //
     // https://stackoverflow.com/questions/76026196/how-to-force-qt-to-use-the-opengl-window-type
-    new QOpenGLWidget(this);
+    auto _OpenGLWidget = new QOpenGLWidget(this);
+    _OpenGLWidget->move(QPoint(-100,-100));
 #endif
 
     // global access
@@ -449,7 +371,9 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation, false);
+#ifndef HAS_QTBUG_129596
     d->mdiArea->setActivationOrder(QMdiArea::ActivationHistoryOrder);
+#endif
     d->mdiArea->setBackground(QBrush(QColor(160,160,160)));
     setCentralWidget(d->mdiArea);
 
@@ -460,8 +384,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    // d->actionLabel->setMinimumWidth(120);
-
     d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
@@ -1276,7 +1198,6 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
         subwindow->setParent(nullptr);
 
         assert(!d->mdiArea->subWindowList().contains(subwindow));
-        // d->mdiArea->removeSubWindow(parent);
     }
 
     if(close)
@@ -1629,9 +1550,7 @@ void MainWindow::delayedStartup()
         throw;
     }
 
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    auto it = cfg.find("StartHidden");
-    if (it != cfg.end()) {
+    if (Application::hiddenMainWindow()) {
         QApplication::quit();
         return;
     }
@@ -1649,6 +1568,22 @@ void MainWindow::delayedStartup()
 
     if (hGrp->GetBool("RecoveryEnabled", true)) {
         Application::Instance->checkForPreviousCrashes();
+    }
+
+    if (SafeMode::SafeModeEnabled()) {
+        auto safeModePopup = QMessageBox(
+            QMessageBox::Information,
+            tr("Safe mode enabled"),
+            tr("FreeCAD is now running in safe mode."),
+            QMessageBox::Ok
+        );
+        safeModePopup.setInformativeText(
+            tr(
+                "Safe mode temporarily disables your configurations and addons."
+                " Restart the application to exit safe mode."
+            )
+        );
+        safeModePopup.exec();
     }
 }
 
@@ -1879,19 +1814,6 @@ void MainWindow::saveWindowSettings(bool canDelay)
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-#if 0
-    config.beginGroup(qtver);
-    config.setValue(QStringLiteral("Size"), this->size());
-    config.setValue(QStringLiteral("Position"), this->pos());
-    config.setValue(QStringLiteral("Maximized"), this->isMaximized());
-    config.setValue(QStringLiteral("MainWindowState"), this->saveState());
-    config.setValue(QStringLiteral("StatusBar"), this->statusBar()->isVisible());
-    config.endGroup();
-#else
-    // We are migrating from saving qt main window layout state in QSettings to
-    // FreeCAD parameters, for more control.
-#endif
-
     Base::ConnectionBlocker block(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
     d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
@@ -1917,18 +1839,13 @@ void MainWindow::startSplasher()
             GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
         // first search for an external image file
         if (hGrp->GetBool("ShowSplasher", true)) {
-            const auto isWayland = qGuiApp->platformName() == QLatin1String("wayland");
-            const auto flags = isWayland ? Qt::WindowFlags() : Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint;
-            d->splashscreen = new SplashScreen(this->splashImage(), flags);
+            d->splashscreen = new SplashScreen(SplashScreen::splashImage());
 
             if (!hGrp->GetBool("ShowSplasherMessages", false)) {
                 d->splashscreen->setShowMessages(false);
             }
 
             d->splashscreen->show();
-            if (!isWayland) {
-                QApplication::processEvents();
-            }
         }
         else {
             d->splashscreen = nullptr;
@@ -1938,238 +1855,11 @@ void MainWindow::startSplasher()
 
 void MainWindow::stopSplasher()
 {
-    const auto isWayland = qGuiApp->platformName() == QLatin1String("wayland");
-    if (isWayland) {
-        if (d->splashscreen) {
-            d->splashscreen->finish(this);
-            d->splashscreen->deleteLater();
-            d->splashscreen = nullptr;
-        }
-        return;
+    if (d->splashscreen) {
+        d->splashscreen->finish(this);
+        delete d->splashscreen;
+        d->splashscreen = nullptr;
     }
-
-    QApplication::processEvents();
-    QTimer::singleShot(3000, this, [this]() {
-        if (d->splashscreen) {
-            d->splashscreen->finish(this);
-            d->splashscreen->deleteLater();
-            d->splashscreen = nullptr;
-        }
-    });
-}
-
-QPixmap MainWindow::aboutImage() const
-{
-    // See if we have a custom About screen image set
-    QPixmap about_image;
-    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
-    if (fi.isFile() && fi.exists())
-        about_image.load(fi.filePath(), "PNG");
-
-    std::string about_path = App::Application::Config()["AboutImage"];
-    if (!about_path.empty() && about_image.isNull()) {
-        QString path = QString::fromUtf8(about_path.c_str());
-        if (QDir(path).isRelative()) {
-            QString home = QString::fromStdString(App::Application::getHomePath());
-            path = QFileInfo(QDir(home), path).absoluteFilePath();
-        }
-        about_image.load(path);
-
-        // Now try the icon paths
-        if (about_image.isNull()) {
-            about_image = Gui::BitmapFactory().pixmap(about_path.c_str());
-        }
-    }
-
-    return about_image;
-}
-
-/**
- * Displays a warning about this being a developer build. Designed for display in the Splashscreen.
- * \param painter The painter to draw the warning into
- * \param startPosition The painter-space coordinates to start the warning box at.
- * \param maxSize The maximum extents for the box that is drawn. If the text exceeds this size it
- * will be scaled down to fit.
- * \note The text string is translatable, so its length is somewhat unpredictable. It is always
- * displayed as two lines, regardless of the length of the text (e.g. no wrapping is done). Only the
- * width is considered, the height simply follows from the font size.
- */
-void MainWindow::renderDevBuildWarning(
-    QPainter &painter,
-    const QPoint startPosition,
-    const QSize maxSize,
-    QColor color)
-{
-    // Create a background box that fades out the artwork for better legibility
-    QColor fader (Qt::white);
-    constexpr float halfDensity (0.65F);
-    fader.setAlphaF(halfDensity);
-    QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
-    painter.setBrush(fillBrush);
-
-    // Construct the lines of text and figure out how much space they need
-    const auto devWarningLine1 = tr("WARNING: This is a development version.");
-    const auto devWarningLine2 = tr("Please do not use it in a production environment.");
-    QFontMetrics fontMetrics(painter.font()); // Try to use the existing font
-    int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M")); // Arbitrary
-    int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
-    int line2Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine2);
-    int boxWidth = std::max(line1Width,line2Width) + 2 * padding;
-    int lineHeight = fontMetrics.lineSpacing();
-    if (boxWidth > maxSize.width()) {
-        // Especially if the text was translated, there is a chance that using the existing font
-        // will exceed the width of the Splashscreen graphic. Resize down so that it fits, no matter
-        // how long the text strings are.
-        float reductionFactor = static_cast<float>(maxSize.width()) / static_cast<float>(boxWidth);
-        int newFontSize = static_cast<int>(painter.font().pointSize() * reductionFactor);
-        padding *= reductionFactor;
-        QFont newFont = painter.font();
-        newFont.setPointSize(newFontSize);
-        painter.setFont(newFont);
-        lineHeight = painter.fontMetrics().lineSpacing();
-        boxWidth = maxSize.width();
-    }
-    constexpr float lineExpansionFactor(2.3F);
-    int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
-
-    // Draw the background rectangle and the text
-    painter.setPen(color);
-    painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
-    painter.drawText(startPosition.x()+padding, startPosition.y()+lineHeight, devWarningLine1);
-    painter.drawText(startPosition.x()+padding, startPosition.y()+2*lineHeight, devWarningLine2);
-}
-
-QPixmap MainWindow::splashImage() const
-{
-    // search in the UserAppData dir as very first
-    QPixmap splash_image;
-    QFileInfo fi(QString::fromLatin1("images:splash_image.png"));
-    if (fi.isFile() && fi.exists())
-        splash_image.load(fi.filePath(), "PNG");
-
-    // if no image was found try the config
-    std::string splash_path = App::Application::Config()["SplashScreen"];
-    if (splash_image.isNull()) {
-        QString path = QString::fromUtf8(splash_path.c_str());
-        if (QDir(path).isRelative()) {
-            QString home = QString::fromStdString(App::Application::getHomePath());
-            path = QFileInfo(QDir(home), path).absoluteFilePath();
-        }
-
-        splash_image.load(path);
-    }
-
-    // now try the icon paths
-    float pixelRatio (1.0);
-    if (splash_image.isNull()) {
-        // determine the count of splashes
-        QStringList pixmaps = Gui::BitmapFactory().findIconFiles().filter(QString::fromStdString(splash_path));
-        // divide by 2 since there's two sets (normal and 2x)
-        // minus 1 to ignore the default splash that isn't numbered
-        int splash_count = pixmaps.count()/2 - 1;
-
-        // set a random splash path
-        if (splash_count > 0) {
-            int random = rand() % splash_count;
-            splash_path += std::to_string(random);
-        }
-        if (qApp->devicePixelRatio() > 1.0) {
-            // For HiDPI screens, we have a double-resolution version of the splash image
-            splash_path += "_2x";
-            splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
-            splash_image.setDevicePixelRatio(2.0);
-            pixelRatio = 2.0;
-        }
-        else {
-            splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
-        }
-    }
-
-    // include application name and version number
-    std::map<std::string,std::string>::const_iterator tc = App::Application::Config().find("SplashInfoColor");
-    std::map<std::string,std::string>::const_iterator wc = App::Application::Config().find("SplashWarningColor");
-    if (tc != App::Application::Config().end() && wc != App::Application::Config().end()) {
-        QString title = qApp->applicationName();
-        QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
-        QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
-        QString point   = QString::fromLatin1(App::Application::Config()["BuildVersionPoint"].c_str());
-        QString suffix  = QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
-        QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
-        QString position, fontFamily;
-
-        std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
-        std::map<std::string,std::string>::const_iterator tv = App::Application::Config().find("SplashInfoVersion");
-        std::map<std::string,std::string>::const_iterator tp = App::Application::Config().find("SplashInfoPosition");
-        std::map<std::string,std::string>::const_iterator tf = App::Application::Config().find("SplashInfoFont");
-        if (te != App::Application::Config().end())
-            title = QString::fromUtf8(te->second.c_str());
-        if (tv != App::Application::Config().end())
-            version = QString::fromUtf8(tv->second.c_str());
-        if (tp != App::Application::Config().end())
-            position = QString::fromUtf8(tp->second.c_str());
-        if (tf != App::Application::Config().end())
-            fontFamily = QString::fromUtf8(tf->second.c_str());
-
-        QPainter painter;
-        painter.begin(&splash_image);
-        if (!fontFamily.isEmpty()) {
-            QFont font = painter.font();
-            if (font.fromString(fontFamily))
-                painter.setFont(font);
-        }
-
-        QFont fontExe = painter.font();
-        fontExe.setPointSizeF(20.0);
-        QFontMetrics metricExe(fontExe);
-        int l = QtTools::horizontalAdvance(metricExe, title);
-        if (title == QLatin1String("FreeCAD")) {
-            l = 0.0; // "FreeCAD" text is already part of the splashscreen, version goes below it
-        }
-        int w = splash_image.width();
-        int h = splash_image.height();
-
-        QFont fontVer = painter.font();
-        fontVer.setPointSizeF(11.0);
-        QFontMetrics metricVer(fontVer);
-        int v = QtTools::horizontalAdvance(metricVer, version);
-
-        int x = -1, y = -1;
-        QRegularExpression rx(QLatin1String("(\\d+).(\\d+)"));
-        auto match = rx.match(position);
-        if (match.hasMatch()) {
-            x = match.captured(1).toInt();
-            y = match.captured(2).toInt();
-        }
-        else {
-            x = w - (l + v + 10);
-            y = h - 20;
-        }
-
-        QColor color(QString::fromLatin1(tc->second.c_str()));
-        if (color.isValid()) {
-            painter.setPen(color);
-            painter.setFont(fontExe);
-            if (title != QLatin1String("FreeCAD")) {
-                // FreeCAD's Splashscreen already contains the EXE name, no need to draw it
-                painter.drawText(x, y, title);
-            }
-            painter.setFont(fontVer);
-            painter.drawText(x + (l + 235), y - 7, version);
-            QColor warningColor(QString::fromLatin1(wc->second.c_str()));
-            if (suffix == QLatin1String("dev") && warningColor.isValid()) {
-                fontVer.setPointSizeF(14.0);
-                painter.setFont(fontVer);
-                const int lineHeight = metricVer.lineSpacing();
-                const int padding {45}; // Distance from the edge of the graphic's bounding box
-                QPoint startPosition(padding, y + lineHeight*2);
-                QSize maxSize(w/pixelRatio - 2*padding, lineHeight * 3);
-                MainWindow::renderDevBuildWarning(painter, startPosition, maxSize, warningColor);
-            }
-            painter.end();
-        }
-    }
-
-    return splash_image;
 }
 
 /**
@@ -2426,12 +2116,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
     }
 
     QByteArray docName = doc ? QByteArray(doc->getName()) : qApp->translate("StdCmdNew","Unnamed").toUtf8();
-    SelectModule::Dict dict = SelectModule::importHandler(files);
-    // load the files with the associated modules
-    for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-        // if the passed document name doesn't exist the module should create it, if needed
-        Application::Instance->importFrom(it.key().toUtf8(), docName, it.value().toLatin1());
-    }
+    ModuleIO::importFiles(files, docName);
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -2627,6 +2312,10 @@ void MainWindow::setWindowTitle(const QString& string)
     }
     else {
         title = appname;
+    }
+
+    if (SafeMode::SafeModeEnabled()) {
+        title = QString::fromUtf8("%1 (%2)").arg(title, tr("Safe Mode"));
     }
 
     if (!string.isEmpty()) {

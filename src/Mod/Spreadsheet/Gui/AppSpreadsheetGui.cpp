@@ -65,6 +65,20 @@ public:
     }
 
 private:
+    void load(App::Document* pcDoc, const std::string& Name)
+    {
+        try {
+            Base::FileInfo file(Name);
+            Spreadsheet::Sheet* pcSheet = static_cast<Spreadsheet::Sheet*>(
+                pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
+
+            pcSheet->importFromFile(Name, '\t', '"', '\\');
+            pcSheet->execute();
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+    }
     Py::Object open(const Py::Tuple& args)
     {
         char* Name;
@@ -75,19 +89,9 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        try {
-            Base::FileInfo file(EncodedName);
-            App::Document* pcDoc =
-                App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
-            Spreadsheet::Sheet* pcSheet = static_cast<Spreadsheet::Sheet*>(
-                pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
-
-            pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
-            pcSheet->execute();
-        }
-        catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
-        }
+        App::Document* pcDoc =
+            App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
+        load(pcDoc, EncodedName);
 
         return Py::None();
     }
@@ -102,18 +106,11 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        try {
-            Base::FileInfo file(EncodedName);
-            App::Document* pcDoc = Gui::Application::Instance->activeDocument()->getDocument();
-            Spreadsheet::Sheet* pcSheet = static_cast<Spreadsheet::Sheet*>(
-                pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
-
-            pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
-            pcSheet->execute();
+        App::Document* pcDoc = App::GetApplication().getDocument(DocName);
+        if (!pcDoc) {
+            pcDoc = App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
         }
-        catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
-        }
+        load(pcDoc, EncodedName);
 
         return Py::None();
     }

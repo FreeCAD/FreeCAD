@@ -115,8 +115,8 @@ protected:
     SolidObject mBaseShape;
 
     vec3 bgndColor = {0.1f, 0.2f, 0.3f};
-    vec3 stockColor = {0.7f, 0.75f, 0.9f};
-    vec3 cutColor = {0.85f, 0.95f, 0.85f};
+    vec3 stockColor = {0.5f, 0.55f, 0.9f};
+    vec3 cutColor = {0.5f, 0.84f, 0.73f};
     vec3 toolColor = {0.5f, 0.4f, 0.3f};
     vec3 baseShapeColor = {0.7f, 0.6f, 0.5f};
 

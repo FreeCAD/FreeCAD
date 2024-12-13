@@ -35,6 +35,8 @@
 # endif
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
+# include <chrono>
+# include <random>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -47,6 +49,7 @@
 #include <sys/sysctl.h>
 #endif
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
@@ -104,7 +107,7 @@
 #include "MaterialObject.h"
 #include "MeasureManagerPy.h"
 #include "Origin.h"
-#include "OriginFeature.h"
+#include "Datums.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
 #include "SuppressibleExtension.h"
@@ -136,6 +139,8 @@
 #include <App/InitScript.h>
 #include <App/TestScript.h>
 #include <App/CMakeScript.h>
+
+#include "SafeMode.h"
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # pragma warning( disable : 4535 )
@@ -1112,6 +1117,21 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
+int64_t Application::applicationPid()
+{
+    static int64_t randomNumber = []() {
+        auto tp = std::chrono::high_resolution_clock::now();
+        auto dur = tp.time_since_epoch();
+        auto seed = dur.count();
+        std::mt19937 generator(static_cast<unsigned>(seed));
+        constexpr int64_t minValue {1};
+        constexpr int64_t maxValue {1000000};
+        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
+        return distribution(generator);
+    }();
+    return randomNumber;
+}
+
 std::string Application::getHomePath()
 {
     return mConfig["AppHomePath"];
@@ -1742,6 +1762,7 @@ void Application::destruct()
     Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
     ParameterManager::Terminate();
+    SafeMode::Destruct();
 }
 
 void Application::destructObserver()
@@ -2126,9 +2147,11 @@ void Application::initTypes()
     App::TextDocument              ::init();
     App::Placement                 ::init();
     App::PlacementPython           ::init();
-    App::OriginFeature             ::init();
+    App::DatumElement              ::init();
     App::Plane                     ::init();
     App::Line                      ::init();
+    App::Point                     ::init();
+    App::LocalCoordinateSystem     ::init();
     App::Part                      ::init();
     App::Origin                    ::init();
     App::Link                      ::init();
@@ -2229,7 +2252,9 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("run-open,r", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
+    ("disable-addon", value< vector<string> >()->composing(),"Disable a given addon.")
     ("single-instance", "Allow to run a single instance of the application")
+    ("safe-mode", "Force enable safe mode")
     ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
     ;
 
@@ -2409,6 +2434,16 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
             Base::Interpreter().addPythonPath(It.c_str());
     }
 
+    if (vm.count("disable-addon")) {
+        auto Addons = vm["disable-addon"].as< vector<string> >();
+        string temp;
+        for (const auto & It : Addons) {
+            temp += It + ";";
+        }
+        temp.erase(temp.end()-1);
+        mConfig["DisabledAddons"] = temp;
+    }
+
     if (vm.count("input-file")) {
         vector<string> files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
@@ -2557,6 +2592,10 @@ void Application::initConfig(int argc, char ** argv)
 
     // extract home paths
     ExtractUserPath();
+    
+    if (vm.count("safe-mode")) {
+        SafeMode::StartSafeMode();
+    }
 
 #   ifdef FC_DEBUG
     mConfig["Debug"] = "1";
@@ -2645,6 +2684,12 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildVersionPoint"].c_str(),
                               mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str());
+
+        if (SafeMode::SafeModeEnabled()) {
+            Base::Console().Message("FreeCAD is running in _SAFE_MODE_.\n"
+                                    "Safe mode temporarily disables your configurations and "
+                                    "addons. Restart the application to exit safe mode.\n\n");
+        }
     }
     LoadParameters();
 
@@ -3017,7 +3062,7 @@ void Application::LoadParameters()
     }
 }
 
-#if defined(_MSC_VER) && BOOST_VERSION < 108300
+#if defined(_MSC_VER) && BOOST_VERSION < 108200
     // fix weird error while linking boost (all versions of VC)
     // VS2010: https://forum.freecad.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
     namespace boost { namespace program_options { std::string arg="arg"; } }

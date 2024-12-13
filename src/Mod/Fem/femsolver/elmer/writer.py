@@ -795,7 +795,8 @@ class Writer:
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("FreeCAD")
         s["Vtu Format"] = True
-        s["Ascii Output"] = True
+        s["Binary Output"] = self.solver.BinaryOutput
+        s["Save Geometry Ids"] = self.solver.SaveGeometryIndex
         s["Vtu Time Collection"] = True
         if self.unit_schema == Units.Scheme.SI2:
             s["Coordinate Scaling Revert"] = True

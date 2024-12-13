@@ -321,8 +321,9 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
         // Parameters
         int algorithm = meshingAlgorithm();
         double maxSize = getMaxSize();
-        if (maxSize == 0.0)
+        if (maxSize == 0.0) {
             maxSize = 1.0e22;
+        }
         double minSize = getMinSize();
         double angle = getAngle();
         int maxAngle = 120;

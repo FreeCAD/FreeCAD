@@ -19,6 +19,8 @@
  *                                                                         *
  **************************************************************************/
 
+#ifndef MEASURE_TASKMEASURE_H
+#define MEASURE_TASKMEASURE_H
 
 #include <qcolumnview.h>
 #include <QString>
@@ -59,48 +61,48 @@ public:
     void update();
     void close();
     bool apply();
+    bool apply(bool reset);
     bool reject() override;
     void reset();
 
     bool hasSelection();
     void clearSelection();
     bool eventFilter(QObject* obj, QEvent* event) override;
-    void setMeasureObject(Measure::MeasureBase* obj);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-    App::Document* _mDocument = nullptr;
-    Gui::Document* _mGuiDocument = nullptr;
     Measure::MeasureBase* _mMeasureObject = nullptr;
-    Gui::ViewProviderDocumentObject* _mViewObject = nullptr;
 
     QLineEdit* valueResult {nullptr};
     QComboBox* modeSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
     QLabel* showDeltaLabel {nullptr};
+    QAction* autoSaveAction {nullptr};
+    QAction* newMeasurementBehaviourAction {nullptr};
+    QToolButton* mSettings {nullptr};
 
     void removeObject();
     void onModeChanged(int index);
     void showDeltaChanged(int checkState);
+    void autoSaveChanged(bool checked);
+    void newMeasurementBehaviourChanged(bool checked);
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
-    App::DocumentObject* createObject(const App::MeasureType* measureType);
-    Gui::ViewProviderDocumentObject* createViewObject(App::DocumentObject* measureObj);
-    void saveObject();
+    Measure::MeasureBase* createObject(const App::MeasureType* measureType);
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
-
-
-    // List of measure types
-    std::vector<App::DocumentObject> measureObjects;
+    void initViewObject();
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
 
     // Stores if delta measures shall be shown
     bool delta = true;
+    bool mAutoSave = false;
 };
 
 }  // namespace Gui
+
+#endif  // MEASURE_TASKMEASURE_H

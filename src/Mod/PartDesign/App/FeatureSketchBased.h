@@ -173,7 +173,6 @@ protected:
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoShape& upToFace,
                             const TopoShape& support,
-                            const TopoShape& supportface,
                             const TopoShape& sketchshape,
                             const std::string& method,
                             gp_Dir& dir);

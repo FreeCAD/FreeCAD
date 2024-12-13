@@ -72,7 +72,11 @@ Loft::getSectionShape(const char *name,
                       size_t expected_size)
 {
     std::vector<TopoShape> shapes;
-    if (subs.empty() || std::find(subs.begin(), subs.end(), std::string()) != subs.end()) {
+    // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single vertex - 
+    // backward compatibility (#16630)
+    auto subName = subs.empty() ? "" : subs.front();
+    auto useEntireSketch = obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&  subName.find("Vertex") != 0;
+    if (subs.empty() || std::find(subs.begin(), subs.end(), std::string()) != subs.end() || useEntireSketch ) {
         shapes.push_back(Part::Feature::getTopoShape(obj));
         if (shapes.back().isNull())
             FC_THROWM(Part::NullShapeException, "Failed to get shape of "
@@ -108,6 +112,12 @@ Loft::getSectionShape(const char *name,
 
 App::DocumentObjectExecReturn *Loft::execute()
 {
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     std::vector<TopoShape> wires;
     try {
         wires = getSectionShape("Profile", Profile.getValue(), Profile.getSubValues());
@@ -147,6 +157,12 @@ App::DocumentObjectExecReturn *Loft::execute()
                 wiresections[i++].push_back(s);
         }
 
+        bool closed = Closed.getValue();
+        // invalid for less then 3 sections
+        if (multisections.size() < 2) {
+            closed = false;
+        }
+
         TopoShape result(0,hasher);
         std::vector<TopoShape> shapes;
 
@@ -156,7 +172,7 @@ App::DocumentObjectExecReturn *Loft::execute()
             for(auto& wire : sectionWires)
                 wire.move(invObjLoc);
             shells.push_back(TopoShape(0, hasher).makeElementLoft(
-                sectionWires, Part::IsSolid::notSolid, Ruled.getValue()? Part::IsRuled::ruled : Part::IsRuled::notRuled, Closed.getValue() ? Part::IsClosed::closed : Part::IsClosed::notClosed));
+                sectionWires, Part::IsSolid::notSolid, Ruled.getValue()? Part::IsRuled::ruled : Part::IsRuled::notRuled, closed ? Part::IsClosed::closed : Part::IsClosed::notClosed));
         }
 
         // build the top and bottom face, sew the shell and build the final solid
@@ -247,6 +263,8 @@ App::DocumentObjectExecReturn *Loft::execute()
         if (boolOp.isNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
+        // store shape before refinement
+        this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
         boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {

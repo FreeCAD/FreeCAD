@@ -776,7 +776,7 @@ protected:
                     } break;
                     case Sketcher::Tangent: {
                         Sketcher::SketchObject* Obj =
-                            static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+                            sketchgui->getObject<Sketcher::SketchObject>();
 
                         const Part::Geometry* geom1 = Obj->getGeometry(geoId1);
                         const Part::Geometry* geom2 = Obj->getGeometry(ac.GeoId);
@@ -1179,9 +1179,11 @@ protected:
     void commandAddShapeGeometryAndConstraints()
     {
         auto shapeGeometry = toPointerVector(ShapeGeometry);
+        std::string sketchObj = Gui::Command::getObjectCmd(sketchgui->getObject());
+        Gui::Command::doCommand(Gui::Command::Doc, "ActiveSketch = %s\n", sketchObj.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 Sketcher::PythonConverter::convert(
-                                    Gui::Command::getObjectCmd(sketchgui->getObject()),
+                                    sketchObj,
                                     shapeGeometry,
                                     Sketcher::PythonConverter::Mode::OmitInternalGeometry)
                                     .c_str());
@@ -1189,9 +1191,7 @@ protected:
         auto shapeConstraints = toPointerVector(ShapeConstraints);
         Gui::Command::doCommand(
             Gui::Command::Doc,
-            Sketcher::PythonConverter::convert(Gui::Command::getObjectCmd(sketchgui->getObject()),
-                                               shapeConstraints)
-                .c_str());
+            Sketcher::PythonConverter::convert(sketchObj, shapeConstraints).c_str());
     }
 
     /** @brief Function to draw as an edit curve all the geometry in the ShapeGeometry vector.*/

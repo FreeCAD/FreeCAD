@@ -139,7 +139,7 @@ bool GuiDisplay::InitGui()
     mThumbMaxMotion = (float)guiItems[eGuiItemSlider].texItem.w;
 
     // init shader
-    mShader.CompileShader((char*)VertShader2DTex, (char*)FragShader2dTex);
+    mShader.CompileShader("GuiDisplay", (char*)VertShader2DTex, (char*)FragShader2dTex);
     mShader.UpdateTextureSlot(0);
 
     UpdateSimSpeed(1);

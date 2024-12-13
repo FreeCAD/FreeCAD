@@ -607,6 +607,8 @@ ImpExpDxfRead::Layer::Layer(const std::string& name,
                             std::string&& lineType,
                             PyObject* drawingLayer)
     : CDxfRead::Layer(name, color, std::move(lineType))
+    , DraftLayerView(drawingLayer == nullptr ? nullptr
+                                             : PyObject_GetAttrString(drawingLayer, "ViewObject"))
     , GroupContents(
           drawingLayer == nullptr
               ? nullptr
@@ -614,8 +616,6 @@ ImpExpDxfRead::Layer::Layer(const std::string& name,
                                                     drawingLayer)
                                                    ->getPropertyContainerPtr())
                     ->getDynamicPropertyByName("Group"))
-    , DraftLayerView(drawingLayer == nullptr ? nullptr
-                                             : PyObject_GetAttrString(drawingLayer, "ViewObject"))
 {}
 ImpExpDxfRead::Layer::~Layer()
 {

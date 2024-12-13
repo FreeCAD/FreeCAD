@@ -482,9 +482,10 @@ def upgrade(objects, delete=False, force=None):
             # only one object: if not parametric, we "draftify" it
             elif (len(objects) == 1
                   and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
-                result = draftify.draftify(objects[0])
+                result = draftify.draftify(objects[0], delete=False)
                 if result:
                     add_list.append(result)
+                    delete_list.append(objects[0])
                     _msg(translate("draft","Found 1 non-parametric objects: draftifying it"))
 
         # in the following cases there are no faces
@@ -516,23 +517,16 @@ def upgrade(objects, delete=False, force=None):
                 _msg(translate("draft","trying: closing it"))
                 if result:
                     _msg(translate("draft","Found 1 open wire: closing it"))
-            # we have only one object that contains one edge
-            # TODO: improve draftify function
-            # only one object: if not parametric, we "draftify" it
-            # elif (len(objects) == 1
-            #       and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
-            #     result = draftify.draftify(objects[0])
-            #     if result:
-            #         _msg(translate("draft","Found 1 non-parametric objects: draftifying it"))
             elif (len(objects) == 1 and len(edges) == 1
                   and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 e = objects[0].Shape.Edges[0]
                 edge_type = DraftGeomUtils.geomType(e)
                 # currently only support Line and Circle
                 if edge_type in ("Line", "Circle"):
-                    result = draftify.draftify(objects[0])
+                    result = draftify.draftify(objects[0], delete=False)
                     if result:
                         add_list.append(result)
+                        delete_list.append(objects[0])
                         _msg(translate("draft","Found 1 object: draftifying it"))
             # only points, no edges
             elif not edges and len(objects) > 1:

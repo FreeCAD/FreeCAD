@@ -689,7 +689,7 @@ class BIM_Setup:
                     u.close()
                     d = json.loads(r)
                     l = d[-1]["body"]
-                    links = re.findall("http.*?zip", l)
+                    links = re.findall(r"http.*?zip", l)
                     pyv = (
                         "python-"
                         + str(sys.version_info.major)

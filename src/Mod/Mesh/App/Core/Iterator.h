@@ -478,10 +478,9 @@ inline bool MeshFacetIterator::Set(FacetIndex ulIndex)
         _clIter = _rclFAry.begin() + ulIndex;
         return true;
     }
-    else {
-        _clIter = _rclFAry.end();
-        return false;
-    }
+
+    _clIter = _rclFAry.end();
+    return false;
 }
 
 inline MeshFacetIterator& MeshFacetIterator::operator=(const MeshFacetIterator& rpI)
@@ -597,10 +596,9 @@ inline bool MeshPointIterator::Set(PointIndex ulIndex)
         _clIter = _rclPAry.begin() + ulIndex;
         return true;
     }
-    else {
-        _clIter = _rclPAry.end();
-        return false;
-    }
+
+    _clIter = _rclPAry.end();
+    return false;
 }
 
 inline MeshPointIterator& MeshPointIterator::operator=(const MeshPointIterator& rpI)

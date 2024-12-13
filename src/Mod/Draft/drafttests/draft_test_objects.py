@@ -254,6 +254,7 @@ def _create_objects(doc=None,
     rectangle.MakeFace = True
     if App.GuiUp:
         rectangle.ViewObject.Visibility = False
+    doc.recompute()
     try:
         Draft.make_hatch(rectangle,
                          hatch_file,
@@ -366,8 +367,7 @@ def _create_objects(doc=None,
     label.Text = "Testing"
     if App.GuiUp:
         label.ViewObject.ArrowSize = 15
-        label.ViewObject.TextSize = 50
-    doc.recompute()
+        label.ViewObject.FontSize = 50
     _set_text(["Label"], Vector(4000, 1800, 0))
 
     # Array #################################################################
@@ -379,6 +379,7 @@ def _create_objects(doc=None,
     rectangle.Placement.Base = Vector(0, 4000, 0)
     if App.GuiUp:
         rectangle.ViewObject.Visibility = False
+    doc.recompute()
     Draft.make_ortho_array(rectangle,
                            Vector(200, 0, 0),
                            Vector(0, 150, 0),
@@ -396,6 +397,7 @@ def _create_objects(doc=None,
     rectangle.Placement.Base = Vector(1000, 4000, 0)
     if App.GuiUp:
         rectangle.ViewObject.Visibility = False
+    doc.recompute()
     Draft.make_ortho_array(rectangle,
                            Vector(200, 0, 0),
                            Vector(0, 150, 0),
@@ -414,6 +416,7 @@ def _create_objects(doc=None,
                             Vector(2100, 4000, 0)])
     if App.GuiUp:
         wire.ViewObject.Visibility = False
+    doc.recompute()
     Draft.make_polar_array(wire,
                            4,
                            90,
@@ -429,6 +432,7 @@ def _create_objects(doc=None,
                             Vector(3050, 4000, 0)])
     if App.GuiUp:
         wire.ViewObject.Visibility = False
+    doc.recompute()
     Draft.make_polar_array(wire,
                            4,
                            90,
@@ -443,6 +447,7 @@ def _create_objects(doc=None,
     polygon.Placement.Base = Vector(4250, 4250, 0)
     if App.GuiUp:
         polygon.ViewObject.Visibility = False
+    doc.recompute()
     Draft.make_circular_array(polygon,
                               110,
                               100,
@@ -460,6 +465,7 @@ def _create_objects(doc=None,
     polygon.Placement.Base = Vector(5250, 4250, 0)
     if App.GuiUp:
         polygon.ViewObject.Visibility = False
+    doc.recompute()
     Draft.make_circular_array(polygon,
                               110,
                               100,
@@ -481,6 +487,7 @@ def _create_objects(doc=None,
                                  Vector(6100, 4200, 0),
                                  Vector(6400, 4300, 0),
                                  Vector(6500, 4500, 0)])
+    doc.recompute()
     Draft.make_path_array(polygon, spline, 5, use_link=False)
     _set_text(["Path array"], Vector(6000, 3800, 0))
 
@@ -495,6 +502,7 @@ def _create_objects(doc=None,
                                  Vector(7100, 4200, 0),
                                  Vector(7400, 4300, 0),
                                  Vector(7500, 4500, 0)])
+    doc.recompute()
     Draft.make_path_array(polygon, spline, 5, use_link=True)
     _set_text(["Path link array"], Vector(7000, 3800, 0))
 
@@ -512,6 +520,7 @@ def _create_objects(doc=None,
     compound = add_list[0]
     if App.GuiUp:
         compound.ViewObject.PointSize = 5
+    doc.recompute()
     Draft.make_point_array(polygon, compound, use_link=False)
     _set_text(["Point array"], Vector(8000, 3800, 0))
 
@@ -529,6 +538,7 @@ def _create_objects(doc=None,
     compound = add_list[0]
     if App.GuiUp:
         compound.ViewObject.PointSize = 5
+    doc.recompute()
     Draft.make_point_array(polygon, compound, use_link=True)
     _set_text(["Point link array"], Vector(9000, 3800, 0))
 
@@ -603,8 +613,8 @@ def _create_objects(doc=None,
     doc.recompute()
 
 
-def create_test_file(font_file=App.getHomePath()+"data/Mod/TechDraw/Resources/fonts/osifont-lgpl3fe.ttf",
-                     hatch_file=App.getHomePath()+"data/Mod/TechDraw/PAT/FCPAT.pat",
+def create_test_file(font_file=App.getResourceDir()+"Mod/TechDraw/Resources/fonts/osifont-lgpl3fe.ttf",
+                     hatch_file=App.getResourceDir()+"Mod/TechDraw/PAT/FCPAT.pat",
                      hatch_name="Horizontal5"):
     """Create a complete test file of Draft objects.
 

@@ -85,14 +85,13 @@ private:
                MeshCore::Material& material);
     PointIndex findIndex(const Base::Vector3f& p, float max_dist) const
     {
-        if (max_dist < 0.0f) {
+        if (max_dist < 0.0F) {
             return kdTree->FindExact(p);
         }
-        else {
-            Base::Vector3f n;
-            float dist {};
-            return kdTree->FindNearest(p, max_dist, n, dist);
-        }
+
+        Base::Vector3f n;
+        float dist {};
+        return kdTree->FindNearest(p, max_dist, n, dist);
     }
 
 private:

@@ -50,7 +50,7 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh,
                         const App::Color& defaultColor,
                         MeshCore::Material& material)
 {
-    apply(mesh, true, defaultColor, -1.0f, material);
+    apply(mesh, true, defaultColor, -1.0F, material);
 }
 
 void MeshTexture::apply(const Mesh::MeshObject& mesh,
@@ -64,7 +64,7 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh,
 void MeshTexture::apply(const Mesh::MeshObject& mesh, MeshCore::Material& material)
 {
     App::Color defaultColor;
-    apply(mesh, false, defaultColor, -1.0f, material);
+    apply(mesh, false, defaultColor, -1.0F, material);
 }
 
 void MeshTexture::apply(const Mesh::MeshObject& mesh, float max_dist, MeshCore::Material& material)
@@ -85,7 +85,7 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh,
     material.diffuseColor.clear();
     material.binding = MeshCore::MeshIO::OVERALL;
 
-    if (kdTree.get()) {
+    if (kdTree) {
         // the points of the current mesh
         std::vector<App::Color> diffuseColor;
         const MeshCore::MeshPointArray& points = mesh.getKernel().GetPoints();

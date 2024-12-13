@@ -275,48 +275,23 @@ Da li želite da Upravitelj dodacima ih instalira automatski? Odaberi &quot;Igno
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
-      <source>Welcome to the Addon Manager</source>
-      <translation>Dobro došli u Upravitelja dodataka</translation>
+      <source>Add-on Manager: Warning!</source>
+      <translation type="unfinished">Add-on Manager: Warning!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="23"/>
-      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Dodaci koji se ovdje mogu instalirati nisu službeni dio FreeCAD programa, i nisu ispitani od FreeCAD tima. Budite sigurni da znate što će se instalirati!</translation>
+      <location filename="../../first_run.ui" line="62"/>
+      <source>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</source>
+      <translation type="unfinished">The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="39"/>
-      <source>Download Settings</source>
-      <translation>Postavke preuzimanja</translation>
+      <location filename="../../first_run.ui" line="96"/>
+      <source>Continue</source>
+      <translation>Nastavi</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
-      <source>Automatically check installed Addons for updates</source>
-      <translation>Automatski provjeravaj ažuriranja instaliranih dodataka</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="53"/>
-      <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>Preuzmi meta podatke makro naredbe (otprilike 10MB)</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="63"/>
-      <source>No proxy</source>
-      <translation>No proxy</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="68"/>
-      <source>System proxy</source>
-      <translation>System proxy</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="73"/>
-      <source>User-defined proxy:</source>
-      <translation>Korisnički definiran proxy:</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="86"/>
-      <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation>Ove i druge postavke dostupne su u prozoru Postavki FreeCAD-a.</translation>
+      <location filename="../../first_run.ui" line="103"/>
+      <source>Cancel</source>
+      <translation>Otkazati</translation>
     </message>
   </context>
   <context>
@@ -514,8 +489,7 @@ Da li želite da Upravitelj dodacima ih instalira automatski? Odaberi &quot;Igno
       <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>Aako je ova opcija odabrana, kada pokrenete Upravitelj dodataka instalirani dodatci će biti na provjeri za nova ažuriranja.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
@@ -615,7 +589,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="350"/>
       <source>Path to Git executable (optional):</source>
-      <translation type="unfinished">Path to Git executable (optional):</translation>
+      <translation>Putanja ka izvršnoj git datoteci (neobavezno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
@@ -1184,7 +1158,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="939"/>
       <source>Temporary installation of macro failed.</source>
-      <translation type="unfinished">Temporary installation of macro failed.</translation>
+      <translation>Instalacija makro naredbe privremeno nije uspjela.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1220,7 +1194,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Nema dostupnih ažuriranja</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="829"/>
@@ -1663,12 +1637,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
+      <translation>Ovaj dodatak zahtijeva Python pakete koji nisu instalirani i ne mogu se automatski instalirati. Za korištenje ovog dodatka morate ručno instalirati sljedeće Python pakete:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="246"/>
       <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+      <translation>Ovaj Dodatak (ili jedna od njegovih zavisnosti) zahtjeva Pithon {}.{}, a tvoj operativni sustav radi na {}.{}. Instalacija je prekinuta.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="267"/>

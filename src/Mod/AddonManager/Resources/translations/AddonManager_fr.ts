@@ -275,49 +275,23 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
-      <source>Welcome to the Addon Manager</source>
-      <translation>Bienvenue dans le gestionnaire des extensions</translation>
+      <source>Add-on Manager: Warning!</source>
+      <translation type="unfinished">Add-on Manager: Warning!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="23"/>
-      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Les extensions qui peuvent être installées ici ne font pas officiellement partie de FreeCAD. Elles ne sont pas vérifiées par l'équipe de FreeCAD.
-Assurez-vous de savoir ce que vous installez !</translation>
+      <location filename="../../first_run.ui" line="62"/>
+      <source>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</source>
+      <translation type="unfinished">The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="39"/>
-      <source>Download Settings</source>
-      <translation>Paramètres de téléchargement</translation>
+      <location filename="../../first_run.ui" line="96"/>
+      <source>Continue</source>
+      <translation>Continuer</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
-      <source>Automatically check installed Addons for updates</source>
-      <translation>Vérifier automatiquement les mises à jour des extensions installées</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="53"/>
-      <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>Télécharger les métadonnées des macros (environ 10 Mo)</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="63"/>
-      <source>No proxy</source>
-      <translation>Pas de proxy</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="68"/>
-      <source>System proxy</source>
-      <translation>Proxy du système</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="73"/>
-      <source>User-defined proxy:</source>
-      <translation>Proxy défini par l'utilisateur :</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="86"/>
-      <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation>Ces paramètres et d'autres sont disponibles dans la fenêtre Préférences de FreeCAD.</translation>
+      <location filename="../../first_run.ui" line="103"/>
+      <source>Cancel</source>
+      <translation>Annuler</translation>
     </message>
   </context>
   <context>

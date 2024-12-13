@@ -75,7 +75,7 @@ void TaskScaledParameters::setupParameterUI(QWidget* widget)
             &TaskScaledParameters::onOccurrences);
 
     // Get the feature data
-    auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+    auto pcScaled = getObject<PartDesign::Scaled>();
 
     ui->spinFactor->bind(pcScaled->Factor);
     ui->spinOccurrences->setMaximum(INT_MAX);
@@ -99,7 +99,7 @@ void TaskScaledParameters::updateUI()
     }
     blockUpdate = true;
 
-    auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+    auto pcScaled = getObject<PartDesign::Scaled>();
 
     double factor = pcScaled->Factor.getValue();
     unsigned occurrences = pcScaled->Occurrences.getValue();
@@ -115,7 +115,7 @@ void TaskScaledParameters::onFactor(const double factor)
     if (blockUpdate) {
         return;
     }
-    auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+    auto pcScaled = getObject<PartDesign::Scaled>();
     pcScaled->Factor.setValue(factor);
     recomputeFeature();
 }
@@ -125,7 +125,7 @@ void TaskScaledParameters::onOccurrences(const uint number)
     if (blockUpdate) {
         return;
     }
-    auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+    auto pcScaled = getObject<PartDesign::Scaled>();
     pcScaled->Occurrences.setValue(number);
     recomputeFeature();
 }
@@ -135,7 +135,7 @@ void TaskScaledParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         // Do the same like in TaskDlgScaledParameters::accept() but without doCommand
-        auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+        auto pcScaled = getObject<PartDesign::Scaled>();
         pcScaled->Factor.setValue(getFactor());
         pcScaled->Occurrences.setValue(getOccurrences());
         recomputeFeature();

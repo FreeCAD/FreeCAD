@@ -27,6 +27,13 @@
 # include <QMessageBox>
 #endif
 
+#include <App/Document.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
+
 #include "TaskDialog.h"
 #include "TaskView.h"
 
@@ -42,6 +49,8 @@ TaskDialog::TaskDialog()
     : QObject(nullptr), pos(North)
     , escapeButton(true)
     , autoCloseTransaction(false)
+    , autoCloseDeletedDocument(false)
+    , autoCloseClosedView(false)
 {
 
 }
@@ -96,6 +105,25 @@ bool TaskDialog::canClose() const
     return (ret == QMessageBox::Yes);
 }
 
+void TaskDialog::associateToObject3dView(App::DocumentObject* obj)
+{
+    if (!obj) {
+        return;
+    }
+
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
+    auto* vp = Gui::Application::Instance->getViewProvider(obj);
+    auto* vpdo = static_cast<Gui::ViewProviderDocumentObject*>(vp);
+    auto* view = guiDoc->openEditingView3D(vpdo);
+
+    if (!view) {
+        return;
+    }
+
+    setAssociatedView(view);
+    setAutoCloseOnClosedView(true);
+}
+
 //==== calls from the TaskView ===============================================================
 
 void TaskDialog::open()
@@ -114,6 +142,11 @@ void TaskDialog::autoClosedOnTransactionChange()
 }
 
 void TaskDialog::autoClosedOnDeletedDocument()
+{
+
+}
+
+void TaskDialog::autoClosedOnClosedView()
 {
 
 }

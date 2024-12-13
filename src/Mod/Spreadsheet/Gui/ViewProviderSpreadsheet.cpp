@@ -111,7 +111,7 @@ void ViewProviderSheet::showSheetMdi()
 
 void ViewProviderSheet::exportAsFile()
 {
-    auto* sheet = static_cast<Spreadsheet::Sheet*>(getObject());
+    auto* sheet = getObject<Spreadsheet::Sheet>();
     QString selectedFilter;
     QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),

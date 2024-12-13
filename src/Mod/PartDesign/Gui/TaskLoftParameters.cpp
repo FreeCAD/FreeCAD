@@ -99,7 +99,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     }
 
     // add the profiles
-    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(LoftView->getObject());
+    PartDesign::Loft* loft = LoftView->getObject<PartDesign::Loft>();
     App::DocumentObject* profile = loft->Profile.getValue();
     if (profile) {
         Gui::Application::Instance->showViewProvider(profile);

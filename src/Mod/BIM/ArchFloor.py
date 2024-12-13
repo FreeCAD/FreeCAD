@@ -399,6 +399,8 @@ class _ViewProviderFloor:
 
         from PySide import QtCore,QtGui
         import Arch_rc
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.convertToBuildingPart)
         menu.addAction(action1)
@@ -411,8 +413,8 @@ class _ViewProviderFloor:
 
         if hasattr(self,"Object"):
             import ArchBuildingPart
-            from DraftGui import todo
-            todo.delay(ArchBuildingPart.convertFloors,self.Object)
+            from draftutils import todo
+            todo.ToDo.delay(ArchBuildingPart.convertFloors,self.Object)
 
 
 if FreeCAD.GuiUp:

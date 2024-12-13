@@ -29,6 +29,7 @@
 #include <Base/Reader.h>
 #include <Base/Vector3D.h>
 #include <Base/Writer.h>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <TopoDS_Edge.hxx>
@@ -41,6 +42,8 @@ class TopoShape;
 }
 
 namespace TechDraw {
+
+class DrawViewPart;
 
 enum ExtractionType {               //obs
     Plain,
@@ -339,6 +342,7 @@ class TechDrawExport Wire
         void dump(std::string s);
         BaseGeomPtrVector geoms;
 };
+using WirePtr = std::shared_ptr<Wire>;
 
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
 class TechDrawExport Face
@@ -429,6 +433,7 @@ class TechDrawExport GeometryUtils
                 {}
         };
 
+        // TODO: prune unused methods
         /// Find an unused geom starts or ends at atPoint.
         /*!
          * returns index[1:geoms.size()), reversed [true, false]
@@ -451,6 +456,9 @@ class TechDrawExport GeometryUtils
         static TopoDS_Edge asLine(TopoDS_Edge occEdge);
 
         static double edgeLength(TopoDS_Edge occEdge);
+
+        static TopoDS_Face makePerforatedFace(FacePtr bigCheese, const std::vector<FacePtr>& holesAll);
+        static std::vector<FacePtr> findHolesInFace(const DrawViewPart* dvp, const std::string& bigCheeseSubRef);
 
 
 };

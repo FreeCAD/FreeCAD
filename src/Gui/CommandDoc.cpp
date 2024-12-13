@@ -190,7 +190,7 @@ StdCmdImport::StdCmdImport()
     sWhatsThis    = "Std_Import";
     sStatusTip    = QT_TR_NOOP("Import a file in the active document");
     sPixmap       = "Std_Import";
-    sAccel        = "Ctrl+I";
+    sAccel        = "Ctrl+Shift+I";
 }
 
 void StdCmdImport::activated(int iMsg)
@@ -408,6 +408,7 @@ void StdCmdExport::activated(int iMsg)
     static QString lastExportFullPath = QString();
     static bool lastExportUsedGeneratedFilename = true;
     static QString lastExportFilterUsed = QString();
+    static Document* lastActiveDocument;
 
     auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     if (selection.empty()) {
@@ -434,15 +435,16 @@ void StdCmdExport::activated(int iMsg)
 
     // Create a default filename for the export
     // * If this is the first export this session default, generate a new default.
-    // * If this is a repeated export during the same session:
+    // * If this is a repeated export during the same session and file:
     //     * If the user accepted the default filename last time, regenerate a new
     //       default, potentially updating the object label.
     //     * If not, default to their previously-set export filename.
     QString defaultFilename = lastExportFullPath;
 
     bool filenameWasGenerated = false;
-    // We want to generate a new default name in two cases:
-    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename) {
+    bool didActiveDocumentChange = lastActiveDocument != getActiveGuiDocument();
+    // We want to generate a new default name in three cases:
+    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename || didActiveDocumentChange) {
         // First, get the name and path of the current .FCStd file, if there is one:
         QString docFilename = QString::fromUtf8(
             App::GetApplication().getActiveDocument()->getFileName());
@@ -461,7 +463,7 @@ void StdCmdExport::activated(int iMsg)
             defaultExportPath = Gui::FileDialog::getWorkingDirectory();
         }
 
-        if (lastExportUsedGeneratedFilename /*<- static, true on first call*/ ) {
+        if (lastExportUsedGeneratedFilename   || didActiveDocumentChange) {  /*<- static, true on first call*/
             defaultFilename = defaultExportPath + QLatin1Char('/') + createDefaultExportBasename();
 
             // Append the last extension used, if there is one.
@@ -499,6 +501,7 @@ void StdCmdExport::activated(int iMsg)
         else
             lastExportUsedGeneratedFilename = false;
         lastExportFullPath = fileName;
+        lastActiveDocument = getActiveGuiDocument();
     }
 }
 
@@ -1574,7 +1577,8 @@ void StdCmdPlacement::activated(int iMsg)
 
 bool StdCmdPlacement::isActive()
 {
-    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    return (sel.size() == 1 && ! sel.front()->isFreezed());
 }
 
 //===========================================================================
@@ -1587,8 +1591,8 @@ StdCmdTransformManip::StdCmdTransformManip()
 {
     sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Transform");
-    sToolTipText  = QT_TR_NOOP("Transform the selected object in the 3d view");
-    sStatusTip    = QT_TR_NOOP("Transform the selected object in the 3d view");
+    sToolTipText  = QT_TR_NOOP("Transform the selected object in the 3D view");
+    sStatusTip    = QT_TR_NOOP("Transform the selected object in the 3D view");
     sWhatsThis    = "Std_TransformManip";
     sPixmap       = "Std_TransformManip";
 }
@@ -1608,7 +1612,8 @@ void StdCmdTransformManip::activated(int iMsg)
 
 bool StdCmdTransformManip::isActive()
 {
-    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 1;
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    return (sel.size() == 1 && ! sel.front()->isFreezed());
 }
 
 //===========================================================================

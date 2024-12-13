@@ -666,7 +666,7 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Tekst za mjernu jedinicu</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -682,7 +682,7 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;All (*)</translation>
@@ -693,12 +693,12 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
       <translation>Uvoz datoteke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Izvoz datoteke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Pokaži Proračunsku Tablicu</translation>
     </message>
@@ -746,7 +746,7 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
 </translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
       <translation>Proračunska tablica</translation>
     </message>
@@ -1180,7 +1180,8 @@ Zadano: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="93"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>
