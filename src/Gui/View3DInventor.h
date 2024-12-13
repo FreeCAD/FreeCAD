@@ -24,6 +24,7 @@
 #define GUI_VIEW3DINVENTOR_H
 
 #include <memory>
+#include <optional>
 #include <QImage>
 #include <QtOpenGL.h>
 
