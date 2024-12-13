@@ -22,6 +22,8 @@
  *                                                                          *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+
 #include "ServiceProvider.h"
 
 Base::ServiceProvider& Base::ServiceProvider::get()
