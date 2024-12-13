@@ -32,7 +32,7 @@ import shutil
 import stat
 import threading
 import time
-from typing import List
+from typing import List, Optional
 import xml.etree.ElementTree
 
 from PySide import QtCore
@@ -830,7 +830,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
             time.sleep(0.1)
         return False
 
-    def update_and_advance(self, repo: Addon) -> None:
+    def update_and_advance(self, repo: Optional[Addon]) -> None:
         """Emit the updated signal and launch the next item from the queue."""
         if repo is not None:
             if repo.macro.name not in self.failed:
@@ -842,7 +842,10 @@ class CacheMacroCodeWorker(QtCore.QThread):
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
 
-        message = translate("AddonsInstaller", "Caching {} macro").format(repo.display_name)
+        if repo is not None:
+            message = translate("AddonsInstaller", "Caching {} macro").format(repo.display_name)
+        else:
+            message = translate("AddonsInstaller", "Caching macros")
         self.progress_made.emit(message, len(self.repos) - self.repo_queue.qsize(), len(self.repos))
 
         try:
