@@ -788,7 +788,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
     vdy = dirvec->y;
     vdz = dirvec->z;
     // near plane clipping is required to avoid false intersections
-    float near = 0.1;
+    float nearClippingPlane = 0.1;
 
     RayPickInfo ret = {.isValid = false,
                        .point = Base::Vector3d(),
@@ -798,7 +798,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
                        .component = std::nullopt,
                        .subName = std::nullopt};
     SoRayPickAction action(getViewer()->getSoRenderManager()->getViewportRegion());
-    action.setRay(SbVec3f(vsx, vsy, vsz), SbVec3f(vdx, vdy, vdz), near);
+    action.setRay(SbVec3f(vsx, vsy, vsz), SbVec3f(vdx, vdy, vdz), nearClippingPlane);
     action.apply(getViewer()->getSoRenderManager()->getSceneGraph());
     SoPickedPoint* Point = action.getPickedPoint();
 
