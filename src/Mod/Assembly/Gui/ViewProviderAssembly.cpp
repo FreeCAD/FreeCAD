@@ -136,8 +136,6 @@ void ViewProviderAssembly::setupContextMenu(QMenu* menu, QObject* receiver, cons
 bool ViewProviderAssembly::doubleClicked()
 {
     if (isInEditMode()) {
-        // Part is already 'Active' so we exit edit mode.
-        // Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
         getDocument()->resetEdit();
     }
     else {
@@ -165,7 +163,6 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
     if (!obj || obj->getTypeId() == Assembly::JointGroup::getClassTypeId()) {
         return false;
     }
-
     return true;
 }
 
@@ -214,7 +211,6 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
                                     joint->getNameInDocument());
         }
     }
-
     return true;
 }
 
@@ -239,7 +235,6 @@ bool ViewProviderAssembly::setEdit(int mode)
 
         return true;
     }
-
     return ViewProviderPart::setEdit(mode);
 }
 
@@ -251,7 +246,6 @@ void ViewProviderAssembly::unsetEdit(int mode)
         docsToMove.clear();
 
         unsetDragger();
-
         detachSelection();
 
         // Check if the view is still active before trying to deactivate the assembly.
@@ -268,7 +262,6 @@ void ViewProviderAssembly::unsetEdit(int mode)
                                 PARTKEY);
         return;
     }
-
     ViewProviderPart::unsetEdit(mode);
 }
 
@@ -319,7 +312,6 @@ App::DocumentObject* ViewProviderAssembly::getActivePart() const
     if (!activeView) {
         return nullptr;
     }
-
     return activeView->getActiveObject<App::DocumentObject*>(PARTKEY);
 }
 
@@ -341,7 +333,6 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
     if (key == SoKeyboardEvent::LEFT_CONTROL || key == SoKeyboardEvent::RIGHT_CONTROL) {
         ctrlPressed = pressed;
     }
-
     return false;  // handle all other key events
 }
 
@@ -406,14 +397,12 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
 
-
         for (auto& objToMove : docsToMove) {
             App::DocumentObject* obj = objToMove.obj;
             auto* propPlacement =
                 dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
             if (propPlacement) {
                 Base::Placement plc = objToMove.plc;
-                // Base::Console().Warning("newPos %f %f %f\n", newPos.x, newPos.y, newPos.z);
 
                 if (dragMode == DragMode::RotationOnPlane) {
                     Base::Vector3d center = jcsGlobalPlc.getPosition();
@@ -421,7 +410,6 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                         jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., -1.));
                     double angle =
                         (newPosRot - center).GetAngleOriented(initialPositionRot - center, norm);
-                    // Base::Console().Warning("angle %f\n", angle);
                     Base::Rotation zRotation = Base::Rotation(Base::Vector3d(0., 0., 1.), angle);
                     Base::Placement rotatedGlovalJcsPlc =
                         jcsGlobalPlc * Base::Placement(Base::Vector3d(), zRotation);
@@ -449,7 +437,6 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                     boost::ignore_unused(projInitialPositionRot);
                     double angle =
                         (newPosRot - center).GetAngleOriented(initialPositionRot - center, norm);
-                    // Base::Console().Warning("angle %f\n", angle);
                     Base::Rotation zRotation = Base::Rotation(Base::Vector3d(0., 0., 1.), angle);
                     Base::Placement rotatedGlovalJcsPlc =
                         newJcsGlobalPlc * Base::Placement(Base::Vector3d(), zRotation);
@@ -464,7 +451,6 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                     Base::Vector3d delta = newPos - prevPosition;
 
                     Base::Vector3d pos = propPlacement->getValue().getPosition() + delta;
-                    // Base::Vector3d pos = newPos + (plc.getPosition() - initialPosition);
                     plc.setPosition(pos);
                 }
                 propPlacement->setValue(plc);
@@ -478,7 +464,6 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
             "User parameter:BaseApp/Preferences/Mod/Assembly");
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
         if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
-            // assemblyPart->solve(/*enableRedo = */ false, /*updateJCS = */ false);
             assemblyPart->doDragStep();
         }
         else {
@@ -540,7 +525,6 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
             }
         }
     }
-
     return false;
 }
 
@@ -583,7 +567,6 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
                 return true;
             }
         }
-
         return false;
     }
 
@@ -681,9 +664,6 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
     // This function is called before the selection is updated. So if a user click and drag a part
     // it is not selected at that point. So we need to get the preselection too.
     if (addPreselection && Gui::Selection().hasPreselection()) {
-
-        // Base::Console().Warning("Gui::Selection().getPreselection().pSubName %s\n",
-        //                         Gui::Selection().getPreselection().pSubName);
 
         App::DocumentObject* selRoot = Gui::Selection().getPreselection().Object.getObject();
         std::string sub = Gui::Selection().getPreselection().pSubName;
@@ -1134,7 +1114,6 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
                                     joint->getNameInDocument());
         }
     }
-
     return res;
 }
 

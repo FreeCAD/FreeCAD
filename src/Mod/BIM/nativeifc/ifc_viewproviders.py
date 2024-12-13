@@ -245,7 +245,7 @@ class ifc_vp_object:
             import Part  # lazy loading
 
             self.Object.Shape = Part.Shape()
-        elif self.Object.ShapeMode == "Coin":
+        else:
             self.Object.ShapeMode = "Shape"
         self.Object.Document.recompute()
         self.Object.ViewObject.DiffuseColor = self.Object.ViewObject.DiffuseColor
