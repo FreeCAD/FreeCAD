@@ -5,42 +5,58 @@
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
 TEST(BaseToolsSuite, TestUniqueName1)
 {
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {}), "Body");
+    EXPECT_EQ(Base::UniqueNameManager().makeUniqueName("Body"), "Body");
 }
 
 TEST(BaseToolsSuite, TestUniqueName2)
 {
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body"}, 1), "Body1");
+    Base::UniqueNameManager manager;
+    manager.addExactName("Body");
+    EXPECT_EQ(manager.makeUniqueName("Body", 1), "Body1");
 }
 
 TEST(BaseToolsSuite, TestUniqueName3)
 {
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body"}, 3), "Body001");
+    Base::UniqueNameManager manager;
+    manager.addExactName("Body");
+    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body001");
 }
 
 TEST(BaseToolsSuite, TestUniqueName4)
 {
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body001"}, 3), "Body002");
+    Base::UniqueNameManager manager;
+    manager.addExactName("Body001");
+    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body002");
 }
 
 TEST(BaseToolsSuite, TestUniqueName5)
 {
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body", "Body001"}, 3), "Body002");
+    Base::UniqueNameManager manager;
+    manager.addExactName("Body");
+    manager.addExactName("Body001");
+    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body002");
 }
 
 TEST(BaseToolsSuite, TestUniqueName6)
 {
-    EXPECT_EQ(Base::Tools::getUniqueName("Body001", {"Body", "Body001"}, 3), "Body002");
+    Base::UniqueNameManager manager;
+    manager.addExactName("Body");
+    manager.addExactName("Body001");
+    EXPECT_EQ(manager.makeUniqueName("Body001", 3), "Body002");
 }
 
 TEST(BaseToolsSuite, TestUniqueName7)
 {
-    EXPECT_EQ(Base::Tools::getUniqueName("Body001", {"Body"}, 3), "Body002");
+    Base::UniqueNameManager manager;
+    manager.addExactName("Body");
+    EXPECT_EQ(manager.makeUniqueName("Body001", 3), "Body001");
 }
 
 TEST(BaseToolsSuite, TestUniqueName8)
 {
-    EXPECT_EQ(Base::Tools::getUniqueName("Body12345", {"Body"}, 3), "Body12346");
+    Base::UniqueNameManager manager;
+    manager.addExactName("Body");
+    EXPECT_EQ(manager.makeUniqueName("Body12345", 3), "Body001");
 }
 
 TEST(Tools, TestIota)

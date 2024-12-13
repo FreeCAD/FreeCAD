@@ -70,7 +70,13 @@ void DynamicProperty::getPropertyNamedList(
     }
 }
 
-void DynamicProperty::getPropertyMap(std::map<std::string, Property*>& Map) const
+void DynamicProperty::visitProperties(std::function<void(Property*)> visitor) const {
+    for (auto& v : props.get<0>()) {
+        visitor(v.property);
+    }
+}
+
+void DynamicProperty::getPropertyMap(std::map<std::string,Property*>& Map) const
 {
     for (auto& v : props.get<0>()) {
         Map[v.name] = v.property;
@@ -298,25 +304,21 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
 
 std::string DynamicProperty::getUniquePropertyName(PropertyContainer& pc, const char* Name) const
 {
-    std::string CleanName = Base::Tools::getIdentifier(Name);
+    std::string cleanName = Base::Tools::getIdentifier(Name);
 
-    // name in use?
-    std::map<std::string, Property*> objectProps;
-    pc.getPropertyMap(objectProps);
-    auto pos = objectProps.find(CleanName);
-
-    if (pos == objectProps.end()) {
-        // if not, name is OK
-        return CleanName;
+    // We test if the property already exists by finding it, which is not much more expensive than
+    // having a separate propertyExists(name) method. This avoids building the UniqueNameManager
+    // (which could also tell if the name exists) except in the relatively rare condition of
+    // the name already existing.
+    if (pc.getPropertyByName(cleanName.c_str()) == nullptr) {
+        return cleanName;
     }
-    else {
-        std::vector<std::string> names;
-        names.reserve(objectProps.size());
-        for (pos = objectProps.begin(); pos != objectProps.end(); ++pos) {
-            names.push_back(pos->first);
-        }
-        return Base::Tools::getUniqueName(CleanName, names);
-    }
+    Base::UniqueNameManager names;
+    // Build the index of existing names.
+    pc.visitProperties([&](Property* prop) {
+        names.addExactName(prop->getName());
+    });
+    return names.makeUniqueName(cleanName);
 }
 
 void DynamicProperty::save(const Property* prop, Base::Writer& writer) const
