@@ -42,7 +42,7 @@ __doc__ = "Class and implementation of the Adaptive CAM operation."
 from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
-# TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
+TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
 FeatureExtensions = LazyLoader("Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension")
 DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
@@ -649,19 +649,10 @@ def Execute(op, obj):
 
         path2d = convertTo2d(pathArray)
 
-        stockPaths = []
-        if hasattr(op.stock, "StockType") and op.stock.StockType == "CreateCylinder":
-            stockPaths.append([discretize(op.stock.Shape.Edges[0])])
-
-        else:
-            stockBB = op.stock.Shape.BoundBox
-            v = []
-            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMin, 0))
-            v.append(FreeCAD.Vector(stockBB.XMax, stockBB.YMin, 0))
-            v.append(FreeCAD.Vector(stockBB.XMax, stockBB.YMax, 0))
-            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMax, 0))
-            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMin, 0))
-            stockPaths.append([v])
+        # Use the 2D outline of the stock as the stock
+        # FIXME: This does not account for holes in the middle of stock!
+        outer_wire = TechDraw.findShapeOutline(op.stock.Shape, 1, FreeCAD.Vector(0, 0, 1))
+        stockPaths = [[discretize(outer_wire)]]
 
         stockPath2d = convertTo2d(stockPaths)
 
