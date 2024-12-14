@@ -159,5 +159,9 @@ void ModelManagerExternal::resetCache()
 
 double ModelManagerExternal::modelHitRate()
 {
-    return _cache.stats().hit_rate();
+    auto hitRate = _cache.stats().hit_rate();
+    if (std::isnan(hitRate)) {
+        return 0;
+    }
+    return hitRate;
 }
