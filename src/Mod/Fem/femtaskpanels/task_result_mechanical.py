@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2015 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2024 PMcB                                               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -30,6 +31,9 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief task panel for mechanical ResultObjectPython
 
+import CreateLabels
+import inspect, sys
+
 try:
     import matplotlib
 
@@ -39,6 +43,7 @@ except Exception:
 
 import matplotlib.pyplot as plt
 import numpy as np
+import time, math
 
 from PySide import QtCore
 from PySide import QtGui
@@ -71,6 +76,12 @@ class _TaskPanel:
         self.result_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultShow.ui")
         self.info_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultHints.ui")
         self.form = [self.result_widget, self.info_widget]
+        self.results_name = "No Contour Data"
+        self.animate_inc = 1
+        self.startAnimate = False
+        self.animateText = []
+        self.slider_max = False
+        self.recurlim = min(200, sys.getrecursionlimit() / 2)
 
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
@@ -136,6 +147,23 @@ class _TaskPanel:
 
         # stats
         self.result_widget.show_histogram.clicked.connect(self.show_histogram_clicked)
+        # animate
+        QtCore.QObject.connect(
+            self.result_widget.hsb_displacement_factor,
+            QtCore.SIGNAL("valueChanged(int)"),
+            lambda dummy="", name="scale": self.value_changed(self, dummy, name),
+        )
+        QtCore.QObject.connect(
+            self.result_widget.sb_displacement_factor,
+            QtCore.SIGNAL("valueChanged(double)"),
+            lambda dummy="", name="factor": self.value_changed(self, dummy, name),
+        )
+        QtCore.QObject.connect(
+            self.result_widget.startButton,
+            QtCore.SIGNAL("clicked()"),
+            lambda dummy="", name="startButton": self.value_changed(self, dummy, name),
+        )
+
 
         # displacement
         QtCore.QObject.connect(
@@ -238,8 +266,8 @@ class _TaskPanel:
         # https://github.com/FreeCAD/FreeCAD/commit/3a7772d
         FreeCAD.FEM_dialog = {
             "results_type": "None",
-            "show_disp": False,
-            "disp_factor": 0.0,
+            "show_disp": True,  # False,
+            "disp_factor": 5.0,
             "disp_factor_max": 100.0,
         }
         self.result_widget.sb_displacement_factor_max.setValue(100.0)  # init non standard values
@@ -251,6 +279,7 @@ class _TaskPanel:
         return resulttools.get_stats(self.result_obj, type_name)
 
     def none_selected(self, state):
+        self.set_label(self.result_obj.Label, "No Contours")    
         FreeCAD.FEM_dialog["results_type"] = "None"
         self.set_result_stats("mm", 0.0, 0.0)
         self.reset_mesh_color()
@@ -461,6 +490,7 @@ class _TaskPanel:
         self.update()
         self.restore_result_dialog()
         userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
+        self.results_name = "User Defined: " + userdefined_eq  
 
         # https://forum.freecad.org/viewtopic.php?f=18&t=42425&start=10#p368774 ff
         # https://github.com/FreeCAD/FreeCAD/pull/3020
@@ -533,6 +563,7 @@ class _TaskPanel:
         return scalar_list
 
     def result_selected(self, res_type, res_values, res_unit, res_title):
+        self.results_name = res_title
         FreeCAD.FEM_dialog["results_type"] = res_type
         (minm, maxm) = self.get_result_stats(res_type)
         self.update_colors_stats(res_values, res_unit, minm, maxm)
@@ -555,6 +586,7 @@ class _TaskPanel:
         fig_manager.window.setWindowFlag(QtCore.Qt.Tool)
 
     def update_colors_stats(self, res_values, res_unit, minm, maxm):
+        self.set_label(self.result_obj.Label, self.results_name)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, res_values)
@@ -596,6 +628,7 @@ class _TaskPanel:
         self.update_displacement()
 
     def sb_disp_factor_max_changed(self, value):
+        self.slider_max = True
         FreeCAD.FEM_dialog["disp_factor_max"] = value
         if value < self.result_widget.sb_displacement_factor.value():
             self.result_widget.sb_displacement_factor.setValue(value)
@@ -605,17 +638,22 @@ class _TaskPanel:
             self.result_widget.hsb_displacement_factor.setValue(
                 round(self.result_widget.sb_displacement_factor.value() / value * 100.0)
             )
+        self.slider_max = False
 
     def sb_disp_factor_changed(self, value):
-        FreeCAD.FEM_dialog["disp_factor"] = value
-        if value > self.result_widget.sb_displacement_factor_max.value():
-            self.result_widget.sb_displacement_factor.setValue(
-                self.result_widget.sb_displacement_factor_max.value()
-            )
-        if self.result_widget.sb_displacement_factor_max.value() == 0.0:
-            self.result_widget.hsb_displacement_factor.setValue(0.0)
-        else:
-            self.result_widget.hsb_displacement_factor.setValue(
+        # this bit of code causes:
+        # RecursionError: maximum recursion depth exceeded
+        # so check on the depth and don't exceed recurlim
+        if len(inspect.stack(0)) < self.recurlim:
+            FreeCAD.FEM_dialog["disp_factor"] = value
+            if value > self.result_widget.sb_displacement_factor_max.value():
+                self.result_widget.sb_displacement_factor.setValue(
+                    self.result_widget.sb_displacement_factor_max.value()
+                )
+            if self.result_widget.sb_displacement_factor_max.value() == 0.0:
+                self.result_widget.hsb_displacement_factor.setValue(0.0)
+            else:
+                self.result_widget.hsb_displacement_factor.setValue(
                 round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
             )
 
@@ -706,6 +744,91 @@ class _TaskPanel:
         # thus reset edit does not close the dialog, maybe don't call but set in edit instead
         FreeCADGui.Control.closeDialog()
         FreeCADGui.ActiveDocument.resetEdit()
+        if len(self.animateText) > 0:
+            for a in self.animateText:
+                a.remove()
+            self.animateText = []
+
+    # animation start
+    def animate_displacement(self):
+        if "result_obj" in FreeCAD.FEM_dialog:
+            if FreeCAD.FEM_dialog["result_obj"] != self.result_obj:
+                self.update_displacement()
+        self.result_widget.cb_show_displacement.setChecked(True)
+        FreeCAD.FEM_dialog["result_obj"] = self.result_obj
+        if self.suitable_results:
+            self.mesh_obj.ViewObject.setNodeDisplacementByVectors(
+                self.result_obj.NodeNumbers, self.result_obj.DisplacementVectors
+            )
+        self.result_widget.startButton.setText("Stop Animation")
+        frame_rate = 10
+        frame_rate = self.result_widget.framerate.value()
+        self.hsb_displacement_factor = self.result_widget.sb_displacement_factor.value()
+        cycles_per_step = int(self.result_widget.steps.value())
+        number_cycles = int(self.result_widget.loops.value())
+        inc = math.pi / cycles_per_step * 2.0
+        self.set_label(self.result_obj.Label, self.results_name)
+
+        done = False
+        for lo in range(0, number_cycles):
+            for st in range(0, cycles_per_step):
+                self.mesh_obj.ViewObject.applyDisplacement(
+                    math.sin(st * inc) * self.hsb_displacement_factor
+                )
+                FreeCADGui.updateGui()
+                if not self.startAnimate:
+                    done = True
+                    break
+                time.sleep(1.0 / frame_rate)  # modify the time here
+            if done:
+                break
+        self.result_widget.startButton.setText("Start Animation")
+        QtGui.QApplication.restoreOverrideCursor()
+        self.startAnimate = False
+
+    def value_changed(self, dummy, value, myType):
+        # the only actions are:
+        if myType == "startButton":
+            if not self.startAnimate:
+                self.startAnimate = True
+                self.animate_displacement()
+            else:
+                self.startAnimate = False
+        # # this is taken care of in the "ui"
+        # # set the scale - scroll bar - Show
+        # elif myType == "scale" and not self.slider_max:
+        #     if self.animate_inc == 0:
+        #         if self.result_widget.hsb_displacement_factor.value() > 1:
+        #             self.result_widget.sb_displacement_factor.setValue(
+        #                 self.result_widget.hsb_displacement_factor.value()
+        #             )
+        #     self.animate_inc = 1 - self.animate_inc
+        # # set the factor - spin - Factor
+        # elif myType == "factor" and not self.slider_max:
+        #     if self.animate_inc == 0:
+        #         self.result_widget.hsb_displacement_factor.setValue(
+        #             int(self.result_widget.sb_displacement_factor.value())
+        #         )
+        #     self.animate_inc = 1 - self.animate_inc
+        else:
+            pass
+        self.hsb_displacement_factor = self.result_widget.sb_displacement_factor.value()
+        return
+
+    def set_label(self, result_name, mesh_data):
+        if len(self.animateText) == 0:
+            self.animateText.append(
+                CreateLabels.createLabel((-0.98, 0.90, 0), result_name)
+            )
+            self.animateText.append(
+                CreateLabels.createLabel((-0.98, 0.70, 0), mesh_data)
+            )
+        else:
+            self.animateText[1].set_text(mesh_data)
+        pass
+
+
+# animation end
 
 
 # helper
