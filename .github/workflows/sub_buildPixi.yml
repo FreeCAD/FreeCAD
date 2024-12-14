@@ -83,6 +83,21 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Add GCC Problem Matcher
+      if: runner.os == 'Linux'
+      run: |
+        echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/gcc.json"
+
+    - name: Add Clang Problem Matcher
+      if: runner.os == 'macOS'
+      run: |
+        echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/clang.json"
+
+    - name: Add MSVC++ Problem Matcher
+      if: runner.os == 'Windows'
+      run: |
+        echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/msvc.json"
+
     - name: Make needed directories, files and initializations
       id: Init
       run: |
