@@ -178,7 +178,10 @@ macro(InitializeFreeCADBuildOptions)
 
     # if this is set override some options
     if (FREECAD_BUILD_DEBIAN)
-        set(FREECAD_USE_EXTERNAL_ZIPIOS ON )
+        # Disable it until the upstream package has been fixed. See
+        # https://github.com/FreeCAD/FreeCAD/issues/13676#issuecomment-2539978468
+        # https://github.com/FreeCAD/FreeCAD/issues/13676#issuecomment-2541513308
+        set(FREECAD_USE_EXTERNAL_ZIPIOS OFF )
         # A Debian package for SMESH doesn't exist
         #set(FREECAD_USE_EXTERNAL_SMESH ON )
     endif (FREECAD_BUILD_DEBIAN)
