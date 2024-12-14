@@ -161,7 +161,6 @@ Model::Model(std::shared_ptr<ModelLibrary> library,
     , _type(type)
     , _name(name)
     , _directory(directory)
-    , _filename(_filename)
     , _uuid(uuid)
     , _description(description)
     , _url(url)
