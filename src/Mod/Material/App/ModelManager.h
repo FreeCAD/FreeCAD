@@ -44,8 +44,9 @@ class MaterialsExport ModelManager: public Base::BaseClass, ParameterGrp::Observ
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    ModelManager();
     ~ModelManager() override;
+
+    static ModelManager& getManager();
 
     static void cleanup();
     void refresh();
@@ -91,8 +92,10 @@ public:
 #endif
 
 private:
+    ModelManager();
     static void initManagers();
 
+    static ModelManager _manager;
     static std::unique_ptr<ModelManagerLocal> _localManager;
 #if defined(BUILD_MATERIAL_EXTERNAL)
     static std::unique_ptr<ModelManagerExternal> _externalManager;

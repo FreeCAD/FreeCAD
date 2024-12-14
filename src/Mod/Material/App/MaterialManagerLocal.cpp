@@ -65,8 +65,7 @@ void MaterialManagerLocal::initLibraries()
 
     if (_materialMap == nullptr) {
         // Load the models first
-        auto manager = std::make_unique<ModelManager>();
-        Q_UNUSED(manager)
+        ModelManager::getManager();
 
         _materialMap = std::make_shared<std::map<QString, std::shared_ptr<Material>>>();
 

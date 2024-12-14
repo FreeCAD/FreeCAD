@@ -61,7 +61,6 @@ public:
 private:
     std::unique_ptr<Ui_DlgInspectMaterial> ui;
     Materials::MaterialManager materialManager;
-    Materials::ModelManager modelManager;
     QString clipboardText;
     int clipboardIndent;
 

@@ -40,6 +40,7 @@
 
 using namespace Materials;
 
+ModelManager ModelManager::_manager;
 std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
 QMutex ModelManager::_mutex;
 bool ModelManager::_useExternal = false;
@@ -62,6 +63,11 @@ ModelManager::ModelManager()
 ModelManager::~ModelManager()
 {
     _hGrp->Detach(this);
+}
+
+ModelManager& ModelManager::getManager()
+{
+    return _manager;
 }
 
 void ModelManager::initManagers()

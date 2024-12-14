@@ -43,7 +43,7 @@ std::string ModelManagerPy::representation() const
 PyObject* ModelManagerPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    return new ModelManagerPy(new ModelManager());
+    return new ModelManagerPy(&(ModelManager::getManager()));
 }
 
 // constructor method

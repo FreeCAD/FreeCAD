@@ -61,7 +61,7 @@ protected:
                         libPath,
                         QString::fromStdString(":/icons/preferences-general.svg"),
                         false);
-        _modelManager = new Materials::ModelManager();
+        _modelManager = &(Materials::ModelManager::getManager());
         _materialManager = new Materials::MaterialManager();
 
         _testMaterialUUID = QString::fromStdString("c6c64159-19c1-40b5-859c-10561f20f979");

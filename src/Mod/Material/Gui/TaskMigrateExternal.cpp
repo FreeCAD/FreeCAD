@@ -59,7 +59,7 @@ void DlgMigrateExternal::showLibraries()
         }
     }
 
-    auto modelLibraries = _modelManager.getLocalLibraries();
+    auto modelLibraries = Materials::ModelManager::getManager().getLocalLibraries();
     for (auto library : *modelLibraries) {
         if (library->getName() != QLatin1String("User")) {
             auto item = new QListWidgetItem(library->getName());
@@ -81,7 +81,7 @@ void DlgMigrateExternal::migrate()
                 auto library =
                     item->data(Qt::UserRole).value<std::shared_ptr<Materials::ModelLibrary>>();
                 statusUpdate(tr("  Library: ") + library->getName());
-                _modelManager.migrateToExternal(library);
+                Materials::ModelManager::getManager().migrateToExternal(library);
             }
         }
         statusUpdate(tr("done"));
@@ -93,7 +93,7 @@ void DlgMigrateExternal::migrate()
                 auto library =
                     item->data(Qt::UserRole).value<std::shared_ptr<Materials::ModelLibrary>>();
                 statusUpdate(tr("  Library: ") + library->getName());
-                _modelManager.validateMigration(library);
+                Materials::ModelManager::getManager().validateMigration(library);
             }
         }
         statusUpdate(tr("done"));

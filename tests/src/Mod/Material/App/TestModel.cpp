@@ -46,7 +46,7 @@ class TestModel : public ::testing::Test {
   }
 
   void SetUp() override {
-    _modelManager = new Materials::ModelManager();
+    _modelManager = &(Materials::ModelManager::getManager());
   }
 
   // void TearDown() override {}

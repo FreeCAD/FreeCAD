@@ -248,7 +248,7 @@ void DlgInspectMaterial::addModels(QTreeView* tree,
     }
     else {
         for (const QString& uuid : *models) {
-            auto model = modelManager.getModel(uuid);
+            auto model = Materials::ModelManager::getManager().getModel(uuid);
             auto name = clipItem(tr("Name: ") + model->getName());
             addExpanded(tree, parent, name);
 
@@ -287,7 +287,7 @@ void DlgInspectMaterial::addModelDetails(QTreeView* tree,
     }
     else {
         for (const QString& inherited : inheritedUuids) {
-            auto inheritedModel = modelManager.getModel(inherited);
+            auto inheritedModel = Materials::ModelManager::getManager().getModel(inherited);
 
             auto name = clipItem(tr("Name: ") + inheritedModel->getName());
             addExpanded(tree, inherits, name);

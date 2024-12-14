@@ -52,7 +52,7 @@ protected:
     }
 
     void SetUp() override {
-        _modelManager = new Materials::ModelManager();
+        _modelManager = &(Materials::ModelManager::getManager());
         _materialManager = new Materials::MaterialManager();
 
         // Use our test files as a custom directory

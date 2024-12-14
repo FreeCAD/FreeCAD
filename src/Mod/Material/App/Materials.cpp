@@ -578,7 +578,7 @@ void Material::addModel(const QString& uuid)
 
     _allUuids << uuid;
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -678,7 +678,7 @@ void Material::addPhysical(const QString& uuid)
         return;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -725,7 +725,7 @@ void Material::removePhysical(const QString& uuid)
         return;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -755,7 +755,7 @@ void Material::addAppearance(const QString& uuid)
         return;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -796,7 +796,7 @@ void Material::removeAppearance(const QString& uuid)
         return;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1184,7 +1184,7 @@ bool Material::hasPhysicalModel(const QString& uuid) const
         return false;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1204,7 +1204,7 @@ bool Material::hasAppearanceModel(const QString& uuid) const
         return false;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1224,7 +1224,7 @@ bool Material::isPhysicalModelComplete(const QString& uuid) const
         return false;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1250,7 +1250,7 @@ bool Material::isAppearanceModelComplete(const QString& uuid) const
         return false;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1357,7 +1357,7 @@ void Material::saveModels(QTextStream& stream, bool saveInherited) const
         return;
     }
 
-    ModelManager modelManager;
+    auto modelManager = ModelManager::getManager();
     MaterialManager materialManager;
 
     bool inherited = saveInherited && (_parentUuid.size() > 0);
@@ -1411,7 +1411,7 @@ void Material::saveAppearanceModels(QTextStream& stream, bool saveInherited) con
         return;
     }
 
-    ModelManager modelManager;
+    auto modelManager = ModelManager::getManager();
     MaterialManager materialManager;
 
     bool inherited = saveInherited && (_parentUuid.size() > 0);
@@ -1464,7 +1464,7 @@ void Material::newUuid()
 
 QString Material::getModelByName(const QString& name) const
 {
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     for (auto& it : _allUuids) {
         try {
@@ -1618,7 +1618,7 @@ QStringList Material::normalizeModels(const QStringList& models)
 {
     QStringList normalized;
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     for (auto& uuid : models) {
         auto model = manager.getModel(uuid);
