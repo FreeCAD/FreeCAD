@@ -464,7 +464,7 @@ Each unit is approx. 0.1 mm wide</string>
          <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
           <property name="toolTip">
            <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scaling, you might get an error about too many SVG tiles.
+For large scalings, you might get an error about too many SVG tiles.
 Then you need to increase the tile limit.</string>
           </property>
           <property name="alignment">
@@ -498,7 +498,7 @@ Then you need to increase the tile limit.</string>
    <item>
     <widget class="QGroupBox" name="gbBehaviour">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
       <string>Behaviour Overrides</string>
