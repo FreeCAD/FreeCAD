@@ -600,7 +600,7 @@ void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
 
 void TaskAttacher::addToReference(SubAndObjName pair)
 {
-    addToReference({ pair });
+    addToReference({{{ pair }}});
 }
 
 void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
