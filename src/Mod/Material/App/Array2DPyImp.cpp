@@ -164,7 +164,6 @@ PyObject* Array2DPy::setValue(PyObject* args)
             getArray2DPtr()->setValue(row, column, variant);
         }
         catch (const InvalidIndex&) {
-            Base::Console().Log("row %d, column %d\n", row, column);
             PyErr_SetString(PyExc_IndexError, "Invalid array index");
             return nullptr;
         }

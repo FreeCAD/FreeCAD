@@ -187,11 +187,9 @@ PyObject* Array3DPy::setValue(PyObject* args)
         Py::String item(valueObj);
         QString value(QString::fromStdString(item.as_string()));
         try {
-            // QVariant variant = QVariant::fromValue(Base::Quantity::parse(value));
             getArray3DPtr()->setValue(depth, row, column, Base::Quantity::parse(value));
         }
         catch (const InvalidIndex&) {
-            Base::Console().Log("depth %d, row %d, column %d\n", depth, row, column);
             PyErr_SetString(PyExc_IndexError, "Invalid array index");
             return nullptr;
         }

@@ -97,10 +97,6 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
         auto uuid = std::get<0>(it);
         auto path = std::get<1>(it);
         auto filename = std::get<2>(it);
-        Base::Console().Log("uuid '%s', path '%s', filename '%s'\n",
-                            uuid.toStdString().c_str(),
-                            path.toStdString().c_str(),
-                            filename.toStdString().c_str());
 
         QStringList list = path.split(QString::fromStdString("/"));
 
@@ -108,7 +104,6 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
         std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> node =
             materialTree;
         for (auto& itp : list) {
-            Base::Console().Log("itp '%s'\n", itp.toStdString().c_str());
             if (!itp.isEmpty()) {
                 // Add the folder only if it's not already there
                 if (node->count(itp) == 0) {

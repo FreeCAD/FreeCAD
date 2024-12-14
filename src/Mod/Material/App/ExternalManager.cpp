@@ -68,8 +68,6 @@ void ExternalManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp:
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
     if (strcmp(Reason, "Current") == 0) {
-        Base::Console().Log("Current external manager changed\n");
-
         if (_instantiated) {
             // The old manager object will be deleted when reconnecting
             _instantiated = false;
@@ -112,7 +110,6 @@ void ExternalManager::instantiate()
         Py::Module mod(PyImport_ImportModule(_moduleName.c_str()), true);
 
         if (mod.isNull()) {
-            // PyErr_SetString(PyExc_ImportError, "Cannot load module");
             Base::Console().Log(" failed\n");
             return;
         }
@@ -120,7 +117,6 @@ void ExternalManager::instantiate()
         Py::Callable managerClass(mod.getAttr(_className));
         _managerObject = managerClass.apply();
         if (_managerObject.hasAttr("APIVersion")) {
-            Base::Console().Log("\tFound APIVersion()\n");
             _instantiated = true;
         }
 
@@ -179,7 +175,6 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("libraries")) {
-            Base::Console().Log("\tFound libraries()\n");
             Py::Callable libraries(_managerObject.getAttr("libraries"));
             Py::List list(libraries.apply());
             for (auto library : list) {
@@ -223,7 +218,6 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("modelLibraries")) {
-            Base::Console().Log("\tFound modelLibraries()\n");
             Py::Callable libraries(_managerObject.getAttr("modelLibraries"));
             Py::List list(libraries.apply());
             for (auto library : list) {
@@ -268,7 +262,6 @@ ExternalManager::materialLibraries()
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("materialLibraries")) {
-            Base::Console().Log("\tFound materialLibraries()\n");
             Py::Callable libraries(_managerObject.getAttr("materialLibraries"));
             Py::List list(libraries.apply());
             for (auto library : list) {
@@ -315,7 +308,6 @@ void ExternalManager::createLibrary(const QString& libraryName, const QString& i
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("createLibrary")) {
-            Base::Console().Log("\tcreateLibrary()\n");
             Py::Callable libraries(_managerObject.getAttr("createLibrary"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -341,7 +333,6 @@ void ExternalManager::renameLibrary(const QString& libraryName, const QString& n
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("renameLibrary")) {
-            Base::Console().Log("\trenameLibrary()\n");
             Py::Callable libraries(_managerObject.getAttr("renameLibrary"));
             Py::Tuple args(2);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -366,7 +357,6 @@ void ExternalManager::changeIcon(const QString& libraryName, const QString& icon
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("changeIcon")) {
-            Base::Console().Log("\tchangeIcon()\n");
             Py::Callable libraries(_managerObject.getAttr("changeIcon"));
             Py::Tuple args(2);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -391,7 +381,6 @@ void ExternalManager::removeLibrary(const QString& libraryName)
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("removeLibrary")) {
-            Base::Console().Log("\tremoveLibrary()\n");
             Py::Callable libraries(_managerObject.getAttr("removeLibrary"));
             Py::Tuple args(1);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -418,7 +407,6 @@ ExternalManager::libraryModels(const QString& libraryName)
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("libraryModels")) {
-            Base::Console().Log("\tFound libraryModels()\n");
             Py::Callable libraries(_managerObject.getAttr("libraryModels"));
             Py::Tuple args(1);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -468,7 +456,6 @@ ExternalManager::libraryMaterials(const QString& libraryName)
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("libraryMaterials")) {
-            Base::Console().Log("\tFound libraryMaterials()\n");
             Py::Callable libraries(_managerObject.getAttr("libraryMaterials"));
             Py::Tuple args(1);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -520,7 +507,6 @@ ExternalManager::libraryMaterials(const QString& libraryName,
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("libraryMaterials")) {
-            Base::Console().Log("\tFound libraryMaterials()\n");
             Py::Callable libraries(_managerObject.getAttr("libraryMaterials"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -583,7 +569,6 @@ std::shared_ptr<Model> ExternalManager::getModel(const QString& uuid)
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("getModel")) {
-            Base::Console().Log("\tgetModel()\n");
             Py::Callable libraries(_managerObject.getAttr("getModel"));
             Py::Tuple args(1);
             args.setItem(0, Py::String(uuid.toStdString()));
@@ -635,7 +620,6 @@ void ExternalManager::addModel(const QString& libraryName,
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("addModel")) {
-            Base::Console().Log("\taddModel()\n");
             Py::Callable libraries(_managerObject.getAttr("addModel"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -663,7 +647,6 @@ void ExternalManager::migrateModel(const QString& libraryName,
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("migrateModel")) {
-            Base::Console().Log("\tmigrateModel()\n");
             Py::Callable libraries(_managerObject.getAttr("migrateModel"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -695,7 +678,6 @@ std::shared_ptr<Material> ExternalManager::getMaterial(const QString& uuid)
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("getMaterial")) {
-            Base::Console().Log("\tgetMaterial()\n");
             Py::Callable libraries(_managerObject.getAttr("getMaterial"));
             Py::Tuple args(1);
             args.setItem(0, Py::String(uuid.toStdString()));
@@ -747,7 +729,6 @@ void ExternalManager::addMaterial(const QString& libraryName,
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("addMaterial")) {
-            Base::Console().Log("\taddMaterial()\n");
             Py::Callable libraries(_managerObject.getAttr("addMaterial"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
@@ -775,7 +756,6 @@ void ExternalManager::migrateMaterial(const QString& libraryName,
     Base::PyGILStateLocker lock;
     try {
         if (_managerObject.hasAttr("migrateMaterial")) {
-            Base::Console().Log("\tmigrateMaterial()\n");
             Py::Callable libraries(_managerObject.getAttr("migrateMaterial"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
