@@ -114,6 +114,9 @@ public:
 
 protected:
     static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getConfiguredLibraries();
+    bool passFilter(const std::shared_ptr<Material>& material,
+                    const std::shared_ptr<Materials::MaterialFilter>& filter,
+                    const Materials::MaterialFilterOptions& options) const;
 
 private:
     static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;

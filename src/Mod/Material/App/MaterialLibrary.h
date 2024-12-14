@@ -74,10 +74,6 @@ public:
     }
 
 protected:
-    bool materialInTree(const std::shared_ptr<Material>& material,
-                        const std::shared_ptr<Materials::MaterialFilter>& filter,
-                        const Materials::MaterialFilterOptions& options) const;
-
     bool _local;
 };
 

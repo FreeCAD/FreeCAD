@@ -33,6 +33,7 @@
 
 #include "Exceptions.h"
 #include "MaterialConfigLoader.h"
+#include "MaterialFilter.h"
 #include "MaterialLibrary.h"
 #include "MaterialLoader.h"
 #include "MaterialManagerLocal.h"
@@ -229,6 +230,24 @@ MaterialManagerLocal::libraryMaterials(const QString& libraryName)
     return materials;
 }
 
+bool MaterialManagerLocal::passFilter(const std::shared_ptr<Material>& material,
+                                          const std::shared_ptr<Materials::MaterialFilter>& filter,
+                                          const Materials::MaterialFilterOptions& options) const
+{
+    if (!filter) {
+        // If there's no filter we always include
+        return true;
+    }
+
+    // filter out old format files
+    if (material->isOldFormat() && !options.includeLegacy()) {
+        return false;
+    }
+
+    // filter based on models
+    return filter->modelIncluded(material);
+}
+
 std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
 MaterialManagerLocal::libraryMaterials(const QString& libraryName,
                                        const std::shared_ptr<MaterialFilter>& filter,
@@ -240,9 +259,11 @@ MaterialManagerLocal::libraryMaterials(const QString& libraryName,
         // This is needed to resolve cyclic dependencies
         auto library = it.second->getLibrary();
         if (library->getName() == libraryName) {
-            materials->push_back(std::tuple<QString, QString, QString>(it.first,
-                                                                       it.second->getDirectory(),
-                                                                       it.second->getName()));
+            if (passFilter(it.second, filter, options)) {
+                materials->push_back(std::tuple<QString, QString, QString>(it.first,
+                                                                        it.second->getDirectory(),
+                                                                        it.second->getName()));
+            }
         }
     }
 

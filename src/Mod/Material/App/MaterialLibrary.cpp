@@ -56,24 +56,6 @@ MaterialLibrary::MaterialLibrary(const QString& libraryName,
     , _local(false)
 {}
 
-bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
-                                     const std::shared_ptr<Materials::MaterialFilter>& filter,
-                                     const Materials::MaterialFilterOptions& options) const
-{
-    if (!filter) {
-        // If there's no filter we always include
-        return true;
-    }
-
-    // filter out old format files
-    if (material->isOldFormat() && !options.includeLegacy()) {
-        return false;
-    }
-
-    // filter based on models
-    return filter->modelIncluded(material);
-}
-
 bool MaterialLibrary::isLocal() const
 {
     return _local;
