@@ -41,6 +41,8 @@ positions on screen:
          (-.9, -.9, 0)   lower left
          (.9, -.9, 0)    lower right
 """
+
+
 class createLabel:
     def __init__(self, trans, text, image="") -> None:
         self.textSep = coin.SoSeparator()
@@ -80,33 +82,33 @@ class createLabel:
         self.render = self.viewer.getSoRenderManager()
         self.sup = self.render.addSuperimposition(self.textSep)
 
-# get position of label
+    # get position of label
     def get_position(self):
         return self.translation
 
-# set position of label
+    # set position of label
     def set_position(self, trans):
         self.trans.translation = trans
         self.translation = trans
 
-# set font
+    # set font
     def set_font(self, font):
         self.myFont.name = font
 
-# set font size
+    # set font size
     def set_font_size(self, font_size):
         self.myFont.size.setValue(font_size)
 
-# set text of label
+    # set text of label
     def set_text(self, text):
         self.SoText2.string = text
 
-# set colour of label
+    # set colour of label
     def set_colour(self, colour):
         self.color.rgb = colour
         self.textSep.addChild(self.color)
 
-# add or change the image with the label
+    # add or change the image with the label
     def add_image(self, image):
         self.remove_image()
         self.isimage = True
@@ -114,7 +116,7 @@ class createLabel:
         self.textSep.addChild(self.myImage)
         self.myImage.filename.setValue(image)
 
-# remove the image
+    # remove the image
     def remove_image(self):
         if self.isimage:
             # self.myImage = coin.SoImage()
@@ -122,10 +124,11 @@ class createLabel:
             self.isimage = False
             self.sup = self.render.addSuperimposition(self.textSep)
 
-# remove the label
+    # remove the label
     def remove(self):
         # remove the Superimposition layer with :
         self.render.removeSuperimposition(self.sup)
+
 
 if __name__ == "__main__":
     t1 = createLabel((-0.98, 0.90, 0), "this a new text")
