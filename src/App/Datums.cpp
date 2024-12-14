@@ -306,6 +306,7 @@ void LocalCoordinateSystem::migrateOriginPoint()
 
 void LocalCoordinateSystem::migrateXAxisPlacement()
 {
+    constexpr const double tolerance = 1e-5;
     auto features = OriginFeatures.getValues();
 
     migrated = false;
@@ -317,10 +318,11 @@ void LocalCoordinateSystem::migrateXAxisPlacement()
         for (auto data : setupData) {
             // ensure the rotation is correct for the role
             if (std::strcmp(feature->Role.getValue(), data.role) == 0) {
-                if (!feature->Placement.getValue().getRotation().isSame(data.rot)) {
+                if (!feature->Placement.getValue().getRotation().isSame(data.rot, tolerance)) {
                     feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
                     migrated = true;
                 }
+                break;
             }
         }
     }
