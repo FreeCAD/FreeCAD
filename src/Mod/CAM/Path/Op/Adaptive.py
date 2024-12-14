@@ -660,7 +660,7 @@ def Execute(op, obj):
         wires = [TechDraw.findShapeOutline(shp, 1, FreeCAD.Vector(0, 0, 1))]
         faces = [Part.makeFace(w, "Part::FaceMakerCheese") for w in wires]
         # Fuse faces and eliminate extra edges
-        if(len(faces) > 1):
+        if len(faces) > 1:
             fusion = faces[0].fuse(faces[1:])
             refined = fusion.removeSplitter()
         else:
