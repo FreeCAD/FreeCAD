@@ -92,8 +92,8 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
     },
 
     /* ISO metric regular */
-    /* ISO metric threaded core hole diameters according to ISO 2306 */
-    // {name, thread diameter, thread pitch, core hole diameter}
+    /* ISO metric threaded Tap-Drill diameters according to ISO 2306 */
+    // {name, thread diameter, thread pitch, Tap-Drill diameter}
     {
         { "M1",     1.0,    0.25,   0.75 },
         { "M1.1",   1.1,    0.25,   0.85 },
@@ -136,7 +136,7 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
         { "M64",    64.0,   6.00,   58.00 },
         { "M68",    68.0,   6.00,   62.00 },
      },
-    /* ISO metric fine (core hole entry is calculated exactly by diameter - pitch) */
+    /* ISO metric fine (drill = diameter - pitch) */
     {
         { "M1x0.2",     1.0, 0.20,  0.80 },
         { "M1.1x0.2",   1.1, 0.20,  0.90 },
@@ -1275,8 +1275,8 @@ std::optional<double> Hole::determineDiameter() const
 
         // use normed diameters if possible
         std::string threadTypeStr = ThreadType.getValueAsString();
-        if (threadDescription[threadType][threadSize].CoreHole > 0) {
-            diameter = threadDescription[threadType][threadSize].CoreHole + clearance;
+        if (threadDescription[threadType][threadSize].TapDrill > 0) {
+            diameter = threadDescription[threadType][threadSize].TapDrill + clearance;
         } // if nothing is available, we must calculate
         else if (
             threadTypeStr == "BSP"

@@ -90,7 +90,7 @@ public:
         const char * designation;
         double diameter;
         double pitch;
-        double CoreHole;
+        double TapDrill;
     };
     static const ThreadDescription threadDescription[][171];
 
