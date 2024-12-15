@@ -49,10 +49,12 @@ class TaskTransform : public Gui::TaskView::TaskBox, public Gui::SelectionObserv
 {
     Q_OBJECT
 
+    static constexpr double tolerance = 1e-7;
+
 public:
     enum class SelectionMode { None, SelectTransformOrigin, SelectAlignTarget };
     enum class PlacementMode { ObjectOrigin, Centroid, Custom };
-    enum class PositionMode { Local, Absolute };
+    enum class PositionMode { Local, Global };
 
     struct CoordinateSystem
     {
@@ -76,7 +78,7 @@ public:
     void setSelectionMode(SelectionMode mode);
     SelectionMode getSelectionMode() const;
 
-    CoordinateSystem absoluteCoordinateSystem() const;
+    CoordinateSystem globalCoordinateSystem() const;
     CoordinateSystem localCoordinateSystem() const;
     CoordinateSystem currentCoordinateSystem() const;
 
@@ -96,7 +98,7 @@ private Q_SLOTS:
     void onCoordinateSystemChange(int mode);
 
     void onPositionChange();
-    void onRotationChange();
+    void onRotationChange(QuantitySpinBox* changed);
 
 private:
     static inline bool firstDrag = true;
@@ -117,6 +119,11 @@ private:
     void updateIncrements() const;
     void updateTransformOrigin();
 
+    void resetReferencePlacement();
+    void resetReferenceRotation();
+
+    void moveObjectToDragger();
+
     bool isDraggerAlignedToCoordinateSystem() const;
 
     ViewProviderDragger* vp;
@@ -133,7 +140,9 @@ private:
     PositionMode positionMode { PositionMode::Local };
 
     std::optional<Base::Placement> customTransformOrigin {};
-    Base::Placement originalPlacement {};
+    Base::Placement referencePlacement {};
+    Base::Placement globalOrigin {};
+    Base::Rotation referenceRotation {};
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
 };
