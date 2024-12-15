@@ -309,8 +309,6 @@ void LocalCoordinateSystem::migrateXAxisPlacement()
     constexpr const double tolerance = 1e-5;
     auto features = OriginFeatures.getValues();
 
-    migrated = false;
-
     const auto& setupData = getSetupData();
     for (auto* obj : features) {
         auto* feature = dynamic_cast <App::DatumElement*> (obj);
@@ -320,7 +318,7 @@ void LocalCoordinateSystem::migrateXAxisPlacement()
             if (std::strcmp(feature->Role.getValue(), data.role) == 0) {
                 if (!feature->Placement.getValue().getRotation().isSame(data.rot, tolerance)) {
                     feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
-                    migrated = true;
+                    getDocument()->setStatus(App::Document::MigrateLCS, true);
                 }
                 break;
             }
