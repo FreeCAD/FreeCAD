@@ -438,6 +438,29 @@ protected:
 
     static void throwWrongMode(eMapMode mmode);
 
+    /**
+     * Extracts GeoFeature instance from given DocumentObject.
+     *
+     * In case of object itself being GeoFeature it returns itself, in other cases (like links)
+     * the method should return pointer to associated GeoFeature or nullptr if none is available.
+     *
+     * @param obj The document object to extract the GeoFeature.
+     *
+     * @return App::GeoFeature pointer associated with this document object
+     */
+    static App::GeoFeature* extractGeoFeature(App::DocumentObject* obj);
+
+    /**
+     * Tries to extract sub shape from document object with given subname.
+     *
+     * @param obj       DocumentObject containing the sub shape
+     * @param subname   Name of the sub shape to extract
+     *
+     * @return Extracted sub shape. Can be null.
+     *
+     * @throws AttachEngineException If given sub shape does not exist or is impossible to obtain.
+     */
+    static Part::TopoShape extractSubShape(App::DocumentObject* obj, const std::string& subname);
 };
 
 

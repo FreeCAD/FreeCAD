@@ -831,52 +831,20 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*>& objs,
     storage.reserve(objs.size());
     shapes.resize(objs.size());
     types.resize(objs.size());
+
     for (std::size_t i = 0; i < objs.size(); i++) {
-        auto* geof = dynamic_cast<App::GeoFeature*>(objs[i]);
+        auto geof = extractGeoFeature(objs[i]);
         if (!geof) {
-            // Accept App::Links to GeoFeatures
-            geof = dynamic_cast<App::GeoFeature*>(objs[i]->getLinkedObject());
-            if (!geof) {
-                FC_THROWM(AttachEngineException,
-                    "AttachEngine3D: attached to a non App::GeoFeature '" << objs[i]->getNameInDocument() << "'");
-            }
-        }
-        Part::TopoShape shape;
-        try {
-            // getTopoShape support fully qualified subnames and should return shape with correct
-            // global placement.
-            shape = Part::Feature::getTopoShape(objs[i], subs[i].c_str(), true);
-            for (;;) {
-                if (shape.isNull()) {
-                    FC_THROWM(AttachEngineException,
-                                "AttachEngine3D: subshape not found "
-                                    << objs[i]->getNameInDocument() << '.' << subs[i]);
-                }
-                if (shape.shapeType() != TopAbs_COMPOUND
-                    || shape.countSubShapes(TopAbs_SHAPE) != 1) {
-                    break;
-                }
-                // auto extract the single sub-shape from a compound
-                shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
-            }
-        }
-        catch (Standard_Failure& e) {
             FC_THROWM(AttachEngineException,
-                        "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
-                                                            << '.' << subs[i] << std::endl
-                                                            << e.GetMessageString());
-        }
-        catch (Base::CADKernelError& e) {
-            FC_THROWM(AttachEngineException,
-                        "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
-                                                            << '.' << subs[i] << std::endl
-                                                            << e.what());
+                      "AttachEngine3D: attached to a non App::GeoFeature '"
+                          << objs[i]->getNameInDocument() << "'");
         }
 
+        auto shape = extractSubShape(objs[i], subs[i]);
         if (shape.isNull()) {
             FC_THROWM(AttachEngineException,
-                        "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
-                                                        << subs[i]);
+                      "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
+                                                       << subs[i]);
         }
 
         storage.emplace_back(shape);
@@ -885,10 +853,65 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*>& objs,
         // FIXME: unpack single-child compounds here? Compounds are not used so far, so it should be
         // considered later, when the need arises.
         types[i] = getShapeType(shapes[i]->getShape());
+
         if (subs[i].length() == 0) {
             types[i] = eRefType(types[i] | rtFlagHasPlacement);
         }
     }
+}
+
+App::GeoFeature* AttachEngine::extractGeoFeature(App::DocumentObject *obj)
+{
+    if (auto geof = dynamic_cast<App::GeoFeature*>(obj)) {
+        return geof;
+    }
+
+    auto linkedObject = obj->getLinkedObject();
+    if (auto linkedGeof = dynamic_cast<App::GeoFeature*>(linkedObject)) {
+        return linkedGeof;
+    }
+
+    return nullptr;
+}
+
+TopoShape AttachEngine::extractSubShape(App::DocumentObject* obj, const std::string& subname)
+{
+    TopoShape shape;
+
+    try {
+        // getTopoShape support fully qualified subnames and should return shape with correct
+        // global placement.
+        shape = Feature::getTopoShape(obj, subname.c_str(), true);
+
+        for (;;) {
+            if (shape.isNull()) {
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: subshape not found " << obj->getNameInDocument() << '.'
+                                                                << subname);
+            }
+
+            if (shape.shapeType() != TopAbs_COMPOUND || shape.countSubShapes(TopAbs_SHAPE) != 1) {
+                break;
+            }
+
+            // auto extract the single sub-shape from a compound
+            shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
+        }
+    }
+    catch (Standard_Failure& e) {
+        FC_THROWM(AttachEngineException,
+                  "AttachEngine3D: subshape not found " << obj->getNameInDocument() << '.'
+                                                        << subname << std::endl
+                                                        << e.GetMessageString());
+    }
+    catch (Base::CADKernelError& e) {
+        FC_THROWM(AttachEngineException,
+                  "AttachEngine3D: subshape not found " << obj->getNameInDocument() << '.'
+                                                        << subname << std::endl
+                                                        << e.what());
+    }
+
+    return shape;
 }
 
 void AttachEngine::throwWrongMode(eMapMode mmode)
