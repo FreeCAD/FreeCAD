@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
+# include <QCheckBox>
 # include <QClipboard>
 # include <QDateTime>
 # include <QMessageBox>
@@ -95,6 +96,56 @@ StdCmdOpen::StdCmdOpen()
 
 void StdCmdOpen::activated(int iMsg)
 {
+    // clang-format off
+    auto checkPartialRestore = [](App::Document* doc) {
+        if (doc && doc->testStatus(App::Document::PartialRestore)) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
+            QObject::tr("There were errors while loading the file. Some data might have been "
+                        "modified or not recovered at all. Look in the report view for more "
+                        "specific information about the objects involved."));
+        }
+    };
+
+    auto checkRestoreError = [](App::Document* doc) {
+        if (doc && doc->testStatus(App::Document::RestoreError)) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
+            QObject::tr("There were serious errors while loading the file. Some data might have "
+                        "been modified or not recovered at all. Saving the project will most "
+                        "likely result in loss of data."));
+        }
+    };
+
+    auto checkMigrationLCS = [](App::Document* doc) {
+        if (doc && doc->testStatus(App::Document::MigrateLCS)) {
+            auto grp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            if (!grp->GetBool("ShowLCSMigrationWarning", true)) {
+                return;
+            }
+
+            // Display the warning message
+            QMessageBox msgBox(QMessageBox::Warning,
+                QObject::tr("File Migration Warning"),
+                QObject::tr("This file was created with an older version of %1. "
+                    "Origin axes had incorrect placements, which have now been corrected.\n\n"
+                    "However, if you save this file in the current version and reopen it in an"
+                    " older version of %1, the origin axes will be misaligned. Additionally, "
+                    "if your file references these origin axes, your file will likely be broken.")
+                .arg(QApplication::applicationName()),
+                QMessageBox::Ok);
+
+            QCheckBox* checkBox = new QCheckBox(QObject::tr("Don't show this warning again"));
+            msgBox.setCheckBox(checkBox);
+
+            msgBox.exec();
+
+            // Save preference if the user selects "Don't show again"
+            if (checkBox->isChecked()) {
+                grp->SetBool("ShowLCSMigrationWarning", false);
+            }
+        }
+    };
+    // clang-format on
+
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
@@ -139,8 +190,9 @@ void StdCmdOpen::activated(int iMsg)
     QString selectedFilter;
     QStringList fileList = FileDialog::getOpenFileNames(getMainWindow(),
         QObject::tr("Open document"), QString(), formatList, &selectedFilter);
-    if (fileList.isEmpty())
+    if (fileList.isEmpty()) {
         return;
+    }
 
     // load the files with the associated modules
     SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
@@ -161,15 +213,9 @@ void StdCmdOpen::activated(int iMsg)
 
             App::Document *doc = App::GetApplication().getActiveDocument();
 
-            if(doc && doc->testStatus(App::Document::PartialRestore)) {
-                QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-                                      QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
-            }
-
-            if(doc && doc->testStatus(App::Document::RestoreError)) {
-                QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-                                      QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
-            }
+            checkPartialRestore(doc);
+            checkRestoreError(doc);
+            checkMigrationLCS(doc);
         }
     }
 }

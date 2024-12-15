@@ -83,11 +83,7 @@ protected:
     void updateData(const App::Property*) override;
     bool onDelete(const std::vector<std::string> &) override;
 
-    void finishRestoring() override;
-
 private:
-    void showMigrationDialog();
-
     SoGroup *pcGroupChildren;
 
     std::map<Gui::ViewProvider*, bool> tempVisMap;
