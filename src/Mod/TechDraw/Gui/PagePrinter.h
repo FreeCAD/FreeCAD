@@ -51,34 +51,49 @@ class TechDrawGuiExport PaperAttributes
 {
 public:
     PaperAttributes();
-//    ~PaperAttributes() = default;
+    PaperAttributes(QPageLayout::Orientation orientation,
+                    QPageSize::PageSizeId paperSize,
+                    double pageWidth,
+                    double pageHeight)
+        : m_orientation(orientation)
+        , m_paperSize(paperSize)
+        , m_pagewidth(pageWidth)
+        , m_pageheight(pageHeight)
+    {}
 
-    QPageLayout::Orientation orientation;
-    QPageSize::PageSizeId paperSize;
-    double pagewidth;
-    double pageheight;
+    QPageLayout::Orientation orientation() const
+    {
+        return m_orientation;
+    }
+    QPageSize::PageSizeId pageSize() const
+    {
+        return m_paperSize;
+    }
+    double pageWidth() const
+    {
+        return m_pagewidth;
+    }
+    double pageHeight() const
+    {
+        return m_pageheight;
+    }
+
+private:
+    QPageLayout::Orientation m_orientation;
+    QPageSize::PageSizeId m_paperSize;
+    double m_pagewidth;
+    double m_pageheight;
 };
 
 class TechDrawGuiExport PagePrinter
 {
 public:
-    explicit PagePrinter(ViewProviderPage *page);
-
-    void print(QPrinter* printer);
-    void printPdf();
-    void printPdf(std::string file);
-    void printPreview();
-    static void printAllPages();
-    static void printAll(QPrinter* printer,
-                         App::Document* doc);
-    static void printAllPdf(QPrinter* printer,
-                            App::Document* doc);
-
     // print banner page is no longer used
     static void printBannerPage(QPrinter* printer, QPainter& painter,
                                 QPageLayout& pageLayout,
                                 App::Document* doc,
                                 std::vector<App::DocumentObject*>& docObjs);
+
     static void renderPage(ViewProviderPage* vpp,
                            QPainter& painter,
                            QRectF& sourceRect,
@@ -87,45 +102,20 @@ public:
                                QPageLayout& pageLayout,
                               double& width, double& height);
 
-    void saveSVG(std::string file);
-    void saveDXF(std::string file);
-    void savePDF(std::string file);
-
-    void setDocumentName(const std::string&);
-    void setScene(QGSPage* scene, QGVPage* view);
-    void setOwner(MDIViewPage* owner) { m_owner = owner; }
-    void setScene(QGSPage* scene);
-
-
-    TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
-
-    ViewProviderPage* getViewProviderPage() {return m_vpPage;}
-
     static PaperAttributes getPaperAttributes(TechDraw::DrawPage* pageObject);
-    void getPaperAttributes();
-    QPageLayout::Orientation getOrientation() const { return m_orientation; }
-    QPageSize::PageSizeId getPaperSize() const { return m_paperSize; }
-    double getPageWidth() const { return m_pagewidth; }
-    double getPageHeight() const { return m_pageheight; }
+    static PaperAttributes getPaperAttributes(ViewProviderPage* vpPage);
 
-private:
-    std::string m_objectName;
-    std::string m_documentName;
-    QPointer<QGSPage> m_scene;
+    static void print(ViewProviderPage* vpPage, QPrinter* printer);
+    static void printPdf(ViewProviderPage* vpPage, const std::string& file);
+    static void printAll(QPrinter* printer, App::Document* doc);
+    static void printAllPdf(QPrinter* printer, App::Document* doc);
 
-    QString m_currentPath;
-    ViewProviderPage* m_vpPage;
-
-    QPageLayout::Orientation m_orientation;
-    QPageSize::PageSizeId m_paperSize;
-    double m_pagewidth, m_pageheight;
-
-    MDIViewPage* m_owner;
-
+    static void saveSVG(ViewProviderPage* vpPage, const std::string& file);
+    static void saveDXF(ViewProviderPage* vpPage, const std::string& file);
+    static void savePDF(ViewProviderPage* vpPage, const std::string& file);
 };
 
-
-} // namespace PagePrinterGui
+}  // namespace TechDrawGui
 
 #endif // TECHDRAWGUI_PAGEPRINTER_H
 
