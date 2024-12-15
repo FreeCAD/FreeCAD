@@ -50,8 +50,6 @@ public:
 private:
     void showLibraries();
 
-    Materials::MaterialManager _materialManager;
-
     std::shared_ptr<Ui_TaskMigrateExternal> ui;
 };
 

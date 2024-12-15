@@ -484,7 +484,7 @@ void MaterialTreeWidget::addRecent(const QString& uuid)
 {
     // Ensure it is a material. New, unsaved materials will not be
     try {
-        auto material = _materialManager.getMaterial(uuid);
+        auto material = Materials::MaterialManager::getManager().getMaterial(uuid);
         Q_UNUSED(material)
     }
     catch (const Materials::MaterialNotFound&) {
@@ -552,9 +552,12 @@ void MaterialTreeWidget::fillMaterialTree()
         addRecents(lib);
     }
 
-    auto libraries = _materialManager.getLibraries();
+    auto libraries = Materials::MaterialManager::getManager().getLibraries();
     for (const auto& library : *libraries) {
-        auto materialTree = _materialManager.getMaterialTree(library, _filter, _filterOptions);
+        auto materialTree =
+            Materials::MaterialManager::getManager().getMaterialTree(library,
+                                                                     _filter,
+                                                                     _filterOptions);
 
         bool showLibraries = _filterOptions.includeEmptyLibraries();
         if (!_filterOptions.includeEmptyLibraries() && materialTree->size() > 0) {

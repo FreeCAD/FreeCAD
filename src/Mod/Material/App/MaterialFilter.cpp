@@ -84,9 +84,8 @@ bool MaterialFilter::modelIncluded(const std::shared_ptr<Material>& material) co
 
 bool MaterialFilter::modelIncluded(const QString& uuid) const
 {
-    MaterialManager manager;
     try {
-        auto material = manager.getMaterial(uuid);
+        auto material = MaterialManager::getManager().getMaterial(uuid);
         return modelIncluded(material);
     }
     catch (const MaterialNotFound&) {

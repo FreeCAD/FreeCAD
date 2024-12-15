@@ -73,8 +73,7 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
         std::make_shared<std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
 
-    MaterialManager manager;
-    auto materials = manager.libraryMaterials(getName(), filter, options);
+    auto materials = MaterialManager::getManager().libraryMaterials(getName(), filter, options);
     for (auto& it : *materials) {
         auto uuid = std::get<0>(it);
         auto path = std::get<1>(it);
@@ -192,7 +191,7 @@ void MaterialLibraryLocal::deleteRecursive(const QString& path)
     }
 
     QString filePath = getLocalPath(path);
-    MaterialManager manager;
+    auto manager = MaterialManager::getManager();
 
     QFileInfo info(filePath);
     if (info.isDir()) {

@@ -215,7 +215,7 @@ void MaterialsEditor::addFavorite(const QString& uuid)
 {
     // Ensure it is a material. New, unsaved materials will not be
     try {
-        auto material = _materialManager.getMaterial(uuid);
+        auto material = Materials::MaterialManager::getManager().getMaterial(uuid);
         Q_UNUSED(material)
     }
     catch (const Materials::MaterialNotFound&) {
@@ -300,7 +300,7 @@ void MaterialsEditor::addRecent(const QString& uuid)
 {
     // Ensure it is a material. New, unsaved materials will not be
     try {
-        auto material = _materialManager.getMaterial(uuid);
+        auto material = Materials::MaterialManager::getManager().getMaterial(uuid);
         Q_UNUSED(material)
     }
     catch (const Materials::MaterialNotFound&) {
@@ -498,7 +498,7 @@ void MaterialsEditor::setMaterialDefaults()
     _material->setLicense(QLatin1String(name));
 
     // Empty materials will have no parent
-    _materialManager.dereference(_material);
+    Materials::MaterialManager::getManager().dereference(_material);
 
     updateMaterial();
     _material->resetEditState();
@@ -679,7 +679,7 @@ void MaterialsEditor::addMaterials(
             QString uuid = nodePtr->getUUID();
             auto material = nodePtr->getData();
             if (!material) {
-                material = _materialManager.getMaterial(uuid);
+                material = Materials::MaterialManager::getManager().getMaterial(uuid);
                 nodePtr->setData(material);
             }
 
@@ -1199,7 +1199,7 @@ void MaterialsEditor::updateMaterialGeneral()
 {
     QString parentString;
     try {
-        auto parent = _materialManager.getParent(_material);
+        auto parent = Materials::MaterialManager::getManager().getParent(_material);
         parentString = libraryPath(parent);
     }
     catch (const Materials::MaterialNotFound&) {

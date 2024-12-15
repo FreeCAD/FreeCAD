@@ -56,8 +56,9 @@ class MaterialsExport MaterialManager: public Base::BaseClass, ParameterGrp::Obs
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    MaterialManager();
     ~MaterialManager() override;
+
+    static MaterialManager& getManager();
 
     static void cleanup();
     static void refresh();
@@ -147,7 +148,10 @@ public:
 #endif
 
 private:
+    MaterialManager();
     static void initManagers();
+
+    static MaterialManager* _manager;
 
 #if defined(BUILD_MATERIAL_EXTERNAL)
     static std::unique_ptr<MaterialManagerExternal> _externalManager;

@@ -353,7 +353,7 @@ void DlgInspectMaterial::addMaterialDetails(QTreeView* tree,
     indent();
     auto parentUUID = material.getParentUUID();
     if (!parentUUID.isEmpty()) {
-        auto parentMaterial = materialManager.getMaterial(material.getParentUUID());
+        auto parentMaterial = Materials::MaterialManager::getManager().getMaterial(material.getParentUUID());
         addMaterial(tree, inherits, *parentMaterial);
     }
     else {

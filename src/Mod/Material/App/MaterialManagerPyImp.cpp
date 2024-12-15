@@ -47,7 +47,7 @@ std::string MaterialManagerPy::representation() const
 PyObject* MaterialManagerPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    return new MaterialManagerPy(new MaterialManager());
+    return new MaterialManagerPy(&(MaterialManager::getManager()));
 }
 
 // constructor method

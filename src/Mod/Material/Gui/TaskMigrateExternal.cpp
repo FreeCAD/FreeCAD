@@ -48,7 +48,7 @@ DlgMigrateExternal::DlgMigrateExternal(QWidget* parent)
 
 void DlgMigrateExternal::showLibraries()
 {
-    auto materialLibraries = _materialManager.getLocalLibraries();
+    auto materialLibraries = Materials::MaterialManager::getManager().getLocalLibraries();
     for (auto library : *materialLibraries) {
         if (library->getName() != QLatin1String("User")) {
             auto item = new QListWidgetItem(library->getName());
@@ -105,7 +105,7 @@ void DlgMigrateExternal::migrate()
                 auto library =
                     item->data(Qt::UserRole).value<std::shared_ptr<Materials::MaterialLibrary>>();
                 statusUpdate(tr("  Library: ") + library->getName());
-                _materialManager.migrateToExternal(library);
+                Materials::MaterialManager::getManager().migrateToExternal(library);
             }
         }
         statusUpdate(tr("done"));
@@ -117,7 +117,7 @@ void DlgMigrateExternal::migrate()
                 auto library =
                     item->data(Qt::UserRole).value<std::shared_ptr<Materials::MaterialLibrary>>();
                 statusUpdate(tr("  Library: ") + library->getName());
-                _materialManager.validateMigration(library);
+                Materials::MaterialManager::getManager().validateMigration(library);
             }
         }
         statusUpdate(tr("done"));

@@ -58,7 +58,7 @@ class TestMaterial : public ::testing::Test {
   void SetUp() override {
     Base::Interpreter().runString("import Part");
     _modelManager = &(Materials::ModelManager::getManager());
-    _materialManager = new Materials::MaterialManager();
+    _materialManager = &(Materials::MaterialManager::getManager());
   }
 
   // void TearDown() override {}

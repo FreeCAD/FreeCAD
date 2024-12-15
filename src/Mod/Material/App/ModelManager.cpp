@@ -40,20 +40,18 @@
 
 using namespace Materials;
 
-ModelManager ModelManager::_manager;
-std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
+TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
+
 QMutex ModelManager::_mutex;
 bool ModelManager::_useExternal = false;
+ModelManager* ModelManager::_manager = nullptr;
+std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
 #if defined(BUILD_MATERIAL_EXTERNAL)
 std::unique_ptr<ModelManagerExternal> ModelManager::_externalManager;
 #endif
 
-TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
-
 ModelManager::ModelManager()
 {
-    initManagers();
-
     _hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
     _useExternal = _hGrp->GetBool("UseExternal", false);
@@ -67,13 +65,21 @@ ModelManager::~ModelManager()
 
 ModelManager& ModelManager::getManager()
 {
-    return _manager;
+    if (!_manager) {
+        initManagers();
+    }
+
+    return *_manager;
 }
 
 void ModelManager::initManagers()
 {
     QMutexLocker locker(&_mutex);
 
+    if (!_manager) {
+        // Can't use smart pointers for this since the constructor is private
+        _manager = new ModelManager();
+    }
     if (!_localManager) {
         _localManager = std::make_unique<ModelManagerLocal>();
     }

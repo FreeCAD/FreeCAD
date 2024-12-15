@@ -144,15 +144,16 @@ void MaterialSave::onOk(bool checked)
             return;
         }
 
-        _manager.saveMaterial(library, _material, filepath.filePath(), true, false, _saveInherited);
+        Materials::MaterialManager::getManager()
+            .saveMaterial(library, _material, filepath.filePath(), true, false, _saveInherited);
         accept();
         return;
     }
 
     bool saveAsCopy = false;
-    if (_manager.exists(_material->getUUID())) {
+    if (Materials::MaterialManager::getManager().exists(_material->getUUID())) {
         // Does it already exist in this library?
-        if (_manager.exists(library, _material->getUUID())) {
+        if (Materials::MaterialManager::getManager().exists(library, _material->getUUID())) {
             // Confirm saving a new material
             auto res = confirmNewMaterial();
             if (res == QMessageBox::Cancel) {
@@ -174,7 +175,7 @@ void MaterialSave::onOk(bool checked)
         }
     }
 
-    _manager
+    Materials::MaterialManager::getManager()
         .saveMaterial(library, _material, filepath.filePath(), false, saveAsCopy, _saveInherited);
 
     accept();
@@ -287,7 +288,7 @@ void MaterialSave::reject()
 
 void MaterialSave::setLibraries()
 {
-    auto libraries = _manager.getLibraries();
+    auto libraries = Materials::MaterialManager::getManager().getLibraries();
     for (auto& library : *libraries) {
         if (library->isLocal()) {
             auto materialLibrary =
@@ -372,7 +373,7 @@ void MaterialSave::showSelectedTree()
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        auto modelTree = _manager.getMaterialTree(library);
+        auto modelTree = Materials::MaterialManager::getManager().getMaterialTree(library);
         addMaterials(*lib, modelTree, folderIcon, icon);
     }
     else {
@@ -448,14 +449,14 @@ void MaterialSave::createFolder(const QString& path)
 {
     auto library = currentLibrary();
 
-    _manager.createFolder(library, path);
+    Materials::MaterialManager::getManager().createFolder(library, path);
 }
 
 void MaterialSave::renameFolder(const QString& oldPath, const QString& newPath)
 {
     auto library = currentLibrary();
 
-    _manager.renameFolder(library, oldPath, newPath);
+    Materials::MaterialManager::getManager().renameFolder(library, oldPath, newPath);
 }
 
 void MaterialSave::deleteRecursive(const QString& path)
@@ -463,7 +464,7 @@ void MaterialSave::deleteRecursive(const QString& path)
     // This will delete files, folders, and any children
     auto library = currentLibrary();
 
-    _manager.deleteRecursive(library, path);
+    Materials::MaterialManager::getManager().deleteRecursive(library, path);
 }
 
 void MaterialSave::onNewFolder(bool checked)
@@ -605,7 +606,7 @@ void MaterialSave::deleteSelected()
     auto library = currentLibrary();
 
     // if (!library->isRoot(_selectedFull)) {
-    //     _manager.deleteRecursive(library, _selectedFull);
+    //     Materials::MaterialManager::getManager().deleteRecursive(library, _selectedFull);
     //     removeSelectedFromTree();
     // }
 }

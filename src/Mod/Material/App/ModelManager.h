@@ -95,7 +95,7 @@ private:
     ModelManager();
     static void initManagers();
 
-    static ModelManager _manager;
+    static ModelManager* _manager;
     static std::unique_ptr<ModelManagerLocal> _localManager;
 #if defined(BUILD_MATERIAL_EXTERNAL)
     static std::unique_ptr<ModelManagerExternal> _externalManager;

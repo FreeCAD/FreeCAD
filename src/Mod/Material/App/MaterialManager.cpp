@@ -47,19 +47,18 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-std::unique_ptr<MaterialManagerLocal> MaterialManager::_localManager;
+TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
+
 QMutex MaterialManager::_mutex;
 bool MaterialManager::_useExternal = false;
+MaterialManager* MaterialManager::_manager = nullptr;
+std::unique_ptr<MaterialManagerLocal> MaterialManager::_localManager;
 #if defined(BUILD_MATERIAL_EXTERNAL)
 std::unique_ptr<MaterialManagerExternal> MaterialManager::_externalManager;
 #endif
 
-TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
-
 MaterialManager::MaterialManager()
 {
-    initManagers();
-
     _hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
     _useExternal = _hGrp->GetBool("UseExternal", false);
@@ -71,10 +70,22 @@ MaterialManager::~MaterialManager()
     _hGrp->Detach(this);
 }
 
+MaterialManager& MaterialManager::getManager()
+{
+    if (!_manager) {
+        initManagers();
+    }
+    return *_manager;
+}
+
 void MaterialManager::initManagers()
 {
     QMutexLocker locker(&_mutex);
 
+    if (!_manager) {
+        // Can't use smart pointers for this since the constructor is private
+        _manager = new MaterialManager();
+    }
     if (!_localManager) {
         _localManager = std::make_unique<MaterialManagerLocal>();
     }
