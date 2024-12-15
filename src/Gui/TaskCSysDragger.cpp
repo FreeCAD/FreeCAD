@@ -101,7 +101,8 @@ TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
 
     vp->resetTransformOrigin();
 
-    originalPlacement = vp->getObjectPlacement();
+    referencePlacement = vp->getObjectPlacement();
+    globalOrigin = vp->getObjectPlacement() * App::GeoFeature::getGlobalPlacement(vp->getObject()).inverse();
 
     setupGui();
 }
@@ -119,7 +120,7 @@ TaskTransform::~TaskTransform()
     savePreferences();
 }
 
-void TaskTransform::dragStartCallback(void*, SoDragger*)
+void TaskTransform::dragStartCallback(void* data, SoDragger*)
 {
     // This is called when a manipulator is about to manipulating
     if (firstDrag) {
@@ -127,13 +128,24 @@ void TaskTransform::dragStartCallback(void*, SoDragger*)
             QT_TRANSLATE_NOOP("Command", "Transform"));
         firstDrag = false;
     }
+
+    auto task = static_cast<TaskTransform*>(data);
+
+    task->referenceRotation = task->vp->getDraggerPlacement().getRotation();
 }
 
 void TaskTransform::dragMotionCallback(void* data, SoDragger* dragger)
 {
     auto task = static_cast<TaskTransform*>(data);
 
-    task->updatePositionAndRotationUi();
+    const auto currentRotation = task->referencePlacement.getRotation();
+    const auto updatedRotation = task->vp->getDraggerPlacement().getRotation();
+
+    if (!updatedRotation.isSame(currentRotation, tolerance)) {
+        task->resetReferencePlacement();
+    } else {
+        task->updatePositionAndRotationUi();
+    }
 }
 
 void TaskTransform::loadPlacementModeItems() const
@@ -157,7 +169,7 @@ void TaskTransform::loadPositionModeItems() const
 {
     ui->positionModeComboBox->clear();
     ui->positionModeComboBox->addItem(tr("Local"), QVariant::fromValue(PositionMode::Local));
-    ui->positionModeComboBox->addItem(tr("Absolute"), QVariant::fromValue(PositionMode::Absolute));
+    ui->positionModeComboBox->addItem(tr("Global"), QVariant::fromValue(PositionMode::Global));
 }
 
 void TaskTransform::setupGui()
@@ -236,8 +248,8 @@ void TaskTransform::setupGui()
         connect(rotationSpinBox,
                 qOverload<double>(&QuantitySpinBox::valueChanged),
                 this,
-                [this](double) {
-                    onRotationChange();
+                [=](double) {
+                    onRotationChange(rotationSpinBox);
                 });
     }
 
@@ -271,9 +283,14 @@ void TaskTransform::savePreferences()
 
 void TaskTransform::updatePositionAndRotationUi() const
 {
+    auto referencePlacement = currentCoordinateSystem().origin;
+
+    if (positionMode == PositionMode::Local) {
+        referencePlacement.setRotation(referenceRotation);
+    }
 
     const auto xyzPlacement = vp->getDraggerPlacement();
-    const auto uvwPlacement = currentCoordinateSystem().origin.inverse() * xyzPlacement;
+    const auto uvwPlacement = referencePlacement.inverse() * xyzPlacement;
 
     auto fixNegativeZero = [](const double value) {
         return std::fabs(value) < Base::Precision::Confusion() ? 0.0 : value;
@@ -336,7 +353,7 @@ void TaskTransform::updateInputLabels() const
 void TaskTransform::updateDraggerLabels() const
 {
     auto coordinateSystem =
-        isDraggerAlignedToCoordinateSystem() ? absoluteCoordinateSystem() : localCoordinateSystem();
+        isDraggerAlignedToCoordinateSystem() ? globalCoordinateSystem() : localCoordinateSystem();
 
     auto [xLabel, yLabel, zLabel] = coordinateSystem.labels;
 
@@ -398,24 +415,21 @@ TaskTransform::SelectionMode TaskTransform::getSelectionMode() const
 
 TaskTransform::CoordinateSystem TaskTransform::localCoordinateSystem() const
 {
-    auto origin = originalPlacement * vp->getTransformOrigin();
+    auto origin = referencePlacement;
     origin.setRotation(vp->getDraggerPlacement().getRotation());
 
     return {{"U", "V", "W"}, origin};
 }
 
-TaskTransform::CoordinateSystem TaskTransform::absoluteCoordinateSystem() const
+TaskTransform::CoordinateSystem TaskTransform::globalCoordinateSystem() const
 {
-    return {
-        {"X", "Y", "Z"},
-        Base::Placement {},
-    };
+    return {{"X", "Y", "Z"}, globalOrigin};
 }
 
 TaskTransform::CoordinateSystem TaskTransform::currentCoordinateSystem() const
 {
     return ui->positionModeComboBox->currentIndex() == 0 ? localCoordinateSystem()
-                                                         : absoluteCoordinateSystem();
+                                                         : globalCoordinateSystem();
 }
 
 void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
@@ -472,8 +486,7 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
             vp->setDraggerPlacement(vp->getObjectPlacement() * selectedObjectPlacement);
 
             if (msg.Type == SelectionChanges::AddSelection) {
-                vp->updateTransformFromDragger();
-                vp->updatePlacementFromDragger();
+                moveObjectToDragger();
 
                 setSelectionMode(SelectionMode::None);
             }
@@ -503,6 +516,17 @@ void TaskTransform::onAlignToOtherObject()
     setSelectionMode(SelectionMode::SelectAlignTarget);
 }
 
+void TaskTransform::moveObjectToDragger()
+{
+    vp->updateTransformFromDragger();
+    vp->updatePlacementFromDragger();
+
+    resetReferenceRotation();
+    resetReferencePlacement();
+
+    updatePositionAndRotationUi();
+}
+
 void TaskTransform::onFlip()
 {
     auto placement = vp->getDraggerPlacement();
@@ -512,8 +536,7 @@ void TaskTransform::onFlip()
 
     vp->setDraggerPlacement(placement);
 
-    vp->updateTransformFromDragger();
-    vp->updatePlacementFromDragger();
+    moveObjectToDragger();
 }
 
 void TaskTransform::onPickTransformOrigin()
@@ -557,18 +580,31 @@ void TaskTransform::updateTransformOrigin()
     auto transformOrigin = getTransformOrigin(placementMode);
     if (isDraggerAlignedToCoordinateSystem()) {
         transformOrigin.setRotation(
-            (vp->getObjectPlacement().inverse() * absoluteCoordinateSystem().origin).getRotation());
+            (vp->getObjectPlacement().inverse() * globalCoordinateSystem().origin).getRotation());
     }
 
     vp->setTransformOrigin(transformOrigin);
+
+    resetReferencePlacement();
+    resetReferenceRotation();
 
     updatePositionAndRotationUi();
     updateDraggerLabels();
 }
 
+void TaskTransform::resetReferencePlacement()
+{
+    referencePlacement = vp->getDraggerPlacement();
+}
+
+void TaskTransform::resetReferenceRotation()
+{
+    referenceRotation = vp->getDraggerPlacement().getRotation();
+}
+
 bool TaskTransform::isDraggerAlignedToCoordinateSystem() const
 {
-    return positionMode == PositionMode::Absolute && ui->alignRotationCheckBox->isChecked();
+    return positionMode == PositionMode::Global && ui->alignRotationCheckBox->isChecked();
 }
 
 void TaskTransform::onTransformOriginReset()
@@ -604,14 +640,32 @@ void TaskTransform::onPositionChange()
     vp->updatePlacementFromDragger();
 }
 
-void TaskTransform::onRotationChange()
+void TaskTransform::onRotationChange(QuantitySpinBox* changed)
 {
+    if (positionMode == PositionMode::Local) {
+        for (auto rotationSpinBox : {ui->xRotationSpinBox,
+                                     ui->yRotationSpinBox,
+                                     ui->zRotationSpinBox}) {
+            QSignalBlocker blocker(rotationSpinBox);
+
+            // if any other spinbox contains non-zero value we need to reset rotation reference first
+            if (std::fabs(rotationSpinBox->rawValue()) > tolerance && rotationSpinBox != changed) {
+                resetReferenceRotation();
+                rotationSpinBox->setValue(0.0);
+            }
+        }
+    }
+
     const auto uvwRotation = Base::Rotation::fromEulerAngles(Base::Rotation::Intrinsic_XYZ,
                                                              ui->xRotationSpinBox->rawValue(),
                                                              ui->yRotationSpinBox->rawValue(),
                                                              ui->zRotationSpinBox->rawValue());
 
-    const auto xyzRotation = currentCoordinateSystem().origin.getRotation() * uvwRotation;
+    auto referenceRotation = positionMode == PositionMode::Local
+        ? this->referenceRotation
+        : currentCoordinateSystem().origin.getRotation();
+
+    const auto xyzRotation = referenceRotation * uvwRotation;
 
     const auto placement = vp->getDraggerPlacement();
 
@@ -619,6 +673,8 @@ void TaskTransform::onRotationChange()
 
     vp->updateTransformFromDragger();
     vp->updatePlacementFromDragger();
+
+    resetReferencePlacement();
 }
 
 TaskCSysDragger::TaskCSysDragger(ViewProviderDragger* vp, SoFCCSysDragger* dragger)
