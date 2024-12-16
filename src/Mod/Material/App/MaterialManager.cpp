@@ -177,9 +177,9 @@ std::shared_ptr<Material> MaterialManager::defaultMaterial()
     MaterialManager manager;
 
     auto mat = defaultAppearance();
-    auto material = manager.getMaterial(defaultMaterialUUID());
+    auto material = getManager().getMaterial(defaultMaterialUUID());
     if (!material) {
-        material = manager.getMaterial(QLatin1String("7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"));
+        material = getManager().getMaterial(QLatin1String("7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"));
     }
     if (material->hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Basic)) {
         material->getAppearanceProperty(QString::fromLatin1("DiffuseColor"))
