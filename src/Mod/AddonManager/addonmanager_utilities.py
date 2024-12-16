@@ -24,8 +24,12 @@
 
 """ Utilities to work across different platforms, providers and python versions """
 
+from datetime import datetime
+from typing import Optional, Any
+import ctypes
 import os
 import platform
+import re
 import shutil
 import stat
 import subprocess
@@ -441,6 +445,35 @@ def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.Com
             return_code if return_code is not None else -1, args, stdout, stderr
         )
     return subprocess.CompletedProcess(args, return_code, stdout, stderr)
+
+
+def process_date_string_to_python_datetime(date_string: str) -> datetime:
+    split_result = re.split(r"[ ./-]+", date_string.strip())
+    if len(split_result) != 3:
+        raise ValueError(f"Unrecognized date string '{date_string}' (expected YYYY-MM-DD)")
+
+    if int(split_result[0]) > 2000:  # Assume YYYY-MM-DD
+        try:
+            year = int(split_result[0])
+            month = int(split_result[1])
+            day = int(split_result[2])
+            return datetime(year, month, day)
+        except (OverflowError, OSError, ValueError):
+            raise ValueError(f"Unrecognized date string {date_string} (expected YYYY-MM-DD)")
+    elif int(split_result[2]) > 2000:
+        # Two possibilities, impossible to distinguish in the general case: DD-MM-YYYY and
+        # MM-DD-YYYY. See if the first one makes sense, and if not, try the second
+        if int(split_result[1]) <= 12:
+            year = int(split_result[2])
+            month = int(split_result[1])
+            day = int(split_result[0])
+        else:
+            year = int(split_result[2])
+            month = int(split_result[0])
+            day = int(split_result[1])
+        return datetime(year, month, day)
+    else:
+        raise ValueError(f"Unrecognized date string '{date_string}' (expected YYYY-MM-DD)")
 
 
 def get_main_am_window():

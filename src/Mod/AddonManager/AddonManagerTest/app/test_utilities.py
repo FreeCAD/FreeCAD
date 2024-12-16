@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from datetime import datetime
 import unittest
 from unittest.mock import MagicMock, patch, mock_open
 import os
@@ -37,10 +38,11 @@ sys.path.append("../..")
 from AddonManagerTest.app.mocks import MockAddon as Addon
 
 from addonmanager_utilities import (
-    recognized_git_location,
-    get_readme_url,
     get_assigned_string_literal,
     get_macro_version_from_file,
+    get_readme_url,
+    process_date_string_to_python_datetime,
+    recognized_git_location,
     run_interruptable_subprocess,
 )
 
@@ -219,6 +221,45 @@ class TestUtilities(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             with patch("time.time", fake_time):
                 run_interruptable_subprocess(["arg0", "arg1"], 0.1)
+
+    def test_process_date_string_to_python_datetime_year_first(self):
+        result = process_date_string_to_python_datetime("2024-01-31")
+        expected_result = datetime(2024, 1, 31, 0, 0)
+        self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_day_first(self):
+        result = process_date_string_to_python_datetime("31-01-2024")
+        expected_result = datetime(2024, 1, 31, 0, 0)
+        self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_month_first(self):
+        result = process_date_string_to_python_datetime("01-31-2024")
+        expected_result = datetime(2024, 1, 31, 0, 0)
+        self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_ambiguous(self):
+        """In the ambiguous case, the code should assume that the date is in the DD-MM-YYYY format."""
+        result = process_date_string_to_python_datetime("01-12-2024")
+        expected_result = datetime(2024, 12, 1, 0, 0)
+        self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_invalid_date(self):
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("13-31-2024")
+
+    def test_process_date_string_to_python_datetime_too_many_components(self):
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("01-01-31-2024")
+
+    def test_process_date_string_to_python_datetime_too_few_components(self):
+        """Month-Year-only dates are not supported"""
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("01-2024")
+
+    def test_process_date_string_to_python_datetime_unrecognizable(self):
+        """Two-digit years are not supported"""
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("01-02-24")
 
 
 if __name__ == "__main__":
