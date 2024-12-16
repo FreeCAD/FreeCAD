@@ -26,7 +26,7 @@ import unittest
 from unittest.mock import patch, mock_open
 import os
 
-from Addon import Addon
+from AddonManagerTest.app.mocks import MockAddon as Addon
 
 from addonmanager_utilities import (
     get_assigned_string_literal,
@@ -56,7 +56,7 @@ class TestUtilities(unittest.TestCase):
             "https://salsa.debian.org/science-team/freecad",
         ]
         for url in recognized_urls:
-            repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, "branch")
+            repo = Addon("Test Repo", url, "Addon.Status.NOT_INSTALLED", "branch")
             self.assertTrue(recognized_git_location(repo), f"{url} was unexpectedly not recognized")
 
         unrecognized_urls = [
@@ -66,7 +66,7 @@ class TestUtilities(unittest.TestCase):
             "https://github.com.malware.com/",
         ]
         for url in unrecognized_urls:
-            repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, "branch")
+            repo = Addon("Test Repo", url, "Addon.Status.NOT_INSTALLED", "branch")
             self.assertFalse(recognized_git_location(repo), f"{url} was unexpectedly recognized")
 
     def test_get_readme_url(self):
@@ -87,14 +87,14 @@ class TestUtilities(unittest.TestCase):
         for url in github_urls:
             branch = "branchname"
             expected_result = f"{url}/raw/{branch}/README.md"
-            repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, branch)
+            repo = Addon("Test Repo", url, "Addon.Status.NOT_INSTALLED", branch)
             actual_result = get_readme_url(repo)
             self.assertEqual(actual_result, expected_result)
 
         for url in gitlab_urls:
             branch = "branchname"
             expected_result = f"{url}/-/raw/{branch}/README.md"
-            repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, branch)
+            repo = Addon("Test Repo", url, "Addon.Status.NOT_INSTALLED", branch)
             actual_result = get_readme_url(repo)
             self.assertEqual(actual_result, expected_result)
 
