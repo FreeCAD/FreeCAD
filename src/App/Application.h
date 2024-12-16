@@ -160,7 +160,7 @@ public:
     std::vector<App::Document*> getDocuments() const;
     /// Set the active document
     void setActiveDocument(App::Document* pDoc);
-    void setActiveDocument(const char* Name);
+    void setActiveDocument(const char *Name);
     /// close all documents (without saving)
     void closeAllDocuments();
     /// Add pending document to open together with the current opening document
@@ -504,8 +504,6 @@ private:
     virtual ~Application();
 
     static void cleanupUnits();
-
-    void setActiveDocumentNoSignal(App::Document* pDoc);
 
     /** @name member for parameter */
     //@{
