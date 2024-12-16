@@ -48,6 +48,18 @@ void setupEllipse(Part::GeomEllipse& ellipse)
     ellipse.setMinorRadius(minorRadius);
 }
 
+void setupArcOfHyperbola(Part::GeomArcOfHyperbola& arcOfHyperbola)
+{
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double majorRadius = 4.0;
+    double minorRadius = 3.0;
+    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    arcOfHyperbola.setCenter(coordsCenter);
+    arcOfHyperbola.setMajorRadius(majorRadius);
+    arcOfHyperbola.setMinorRadius(minorRadius);
+    arcOfHyperbola.setRange(startParam, endParam, true);
+}
+
 void setupArcOfParabola(Part::GeomArcOfParabola& aop)
 {
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
@@ -560,6 +572,264 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurvePeriodic)
     // non-trivial as well. This is the best we can do.
     EXPECT_DOUBLE_EQ(ptStart[0], ptEnd[0]);
     EXPECT_DOUBLE_EQ(ptStart[1], ptEnd[1]);
+}
+
+TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
+{
+    // Arrange
+    int geoId1 = 42, geoId2 = 10, geoId3 = 0, geoId4 = -8;
+
+    Sketcher::Constraint* nullConstr = nullptr;
+
+    Sketcher::Constraint constr1;
+    constr1.Type = Sketcher::ConstraintType::Coincident;
+    constr1.First = geoId1;
+    constr1.FirstPos = Sketcher::PointPos::start;
+    constr1.Second = geoId2;
+    constr1.SecondPos = Sketcher::PointPos::end;
+
+    Sketcher::Constraint constr2;
+    constr2.Type = Sketcher::ConstraintType::Tangent;
+    constr2.First = geoId4;
+    constr2.FirstPos = Sketcher::PointPos::none;
+    constr2.Second = geoId3;
+    constr2.SecondPos = Sketcher::PointPos::none;
+    constr2.Third = geoId1;
+    constr2.ThirdPos = Sketcher::PointPos::start;
+
+    // Act
+    auto nullConstrAfter = getObject()->getConstraintAfterDeletingGeo(nullConstr, 5);
+
+    // Assert
+    EXPECT_EQ(nullConstrAfter, nullptr);
+
+    // Act
+    getObject()->changeConstraintAfterDeletingGeo(nullConstr, 5);
+
+    // Assert
+    EXPECT_EQ(nullConstr, nullptr);
+
+    // Act
+    // delete typical in-sketch geo
+    auto constr1PtrAfter1 = getObject()->getConstraintAfterDeletingGeo(&constr1, 5);
+    // delete external geo (negative id)
+    auto constr1PtrAfter2 = getObject()->getConstraintAfterDeletingGeo(&constr1, -5);
+    // Delete a geo involved in the constraint
+    auto constr1PtrAfter3 = getObject()->getConstraintAfterDeletingGeo(&constr1, 10);
+
+    // Assert
+    EXPECT_EQ(constr1.Type, Sketcher::ConstraintType::Coincident);
+    EXPECT_EQ(constr1.First, geoId1);
+    EXPECT_EQ(constr1.Second, geoId2);
+    EXPECT_EQ(constr1PtrAfter1->First, geoId1 - 1);
+    EXPECT_EQ(constr1PtrAfter1->Second, geoId2 - 1);
+    EXPECT_EQ(constr1PtrAfter2->Third, Sketcher::GeoEnum::GeoUndef);
+    EXPECT_EQ(constr1PtrAfter3.get(), nullptr);
+
+    // Act
+    getObject()->changeConstraintAfterDeletingGeo(&constr2, -3);
+
+    // Assert
+    EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::Tangent);
+    EXPECT_EQ(constr2.First, geoId4 + 1);
+    EXPECT_EQ(constr2.Second, geoId3);
+    EXPECT_EQ(constr2.Third, geoId1);
+
+    // Act
+    // Delete a geo involved in the constraint
+    getObject()->changeConstraintAfterDeletingGeo(&constr2, 0);
+
+    // Assert
+    EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::None);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfEllipse)
+{
+    // Arrange
+    Part::GeomEllipse ellipse;
+    setupEllipse(ellipse);
+    int geoId = getObject()->addGeometry(&ellipse);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::EllipseMajorDiameter,
+                               Sketcher::InternalAlignmentType::EllipseMinorDiameter,
+                               Sketcher::InternalAlignmentType::EllipseFocus1,
+                               Sketcher::InternalAlignmentType::EllipseFocus2}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfHyperbola)
+{
+    // Arrange
+    Part::GeomArcOfHyperbola aoh;
+    setupArcOfHyperbola(aoh);
+    int geoId = getObject()->addGeometry(&aoh);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::HyperbolaMajor,
+                               Sketcher::InternalAlignmentType::HyperbolaMinor,
+                               Sketcher::InternalAlignmentType::HyperbolaFocus}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfParabola)
+{
+    // Arrange
+    Part::GeomArcOfParabola aoh;
+    setupArcOfParabola(aoh);
+    int geoId = getObject()->addGeometry(&aoh);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::ParabolaFocalAxis,
+                               Sketcher::InternalAlignmentType::ParabolaFocus}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfBSpline)
+{
+    // NOTE: We test only non-periodic B-spline here. Periodic B-spline should behave exactly the
+    // same.
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    std::map<Sketcher::InternalAlignmentType, int> numConstraintsOfThisType;
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::BSplineControlPoint,
+                               Sketcher::InternalAlignmentType::BSplineKnotPoint}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        numConstraintsOfThisType[alignmentType] =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+    }
+    EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineControlPoint],
+              nonPeriodicBSpline->countPoles());
+    EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineKnotPoint],
+              nonPeriodicBSpline->countKnots());
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
 }
 
 TEST_F(SketchObjectTest, testSplitLineSegment)
@@ -1141,6 +1411,155 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try decreasing mult to zero
+    // TODO: Knot should disappear
+
+    // Act and Assert
+    // TODO: Try modifying such that resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    // Assert
+    // TODO: This should not alter the sizes of knot and multiplicity vectors.
+    // TODO: This should increment the multiplicity.
+    // TODO: This should still be a non-periodic spline
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try decreasing mult to zero
+    // TODO: Knot should disappear
+
+    // Act and Assert
+    // TODO: Try modifying such that resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    // Assert
+    // TODO: This should not alter the sizes of knot and multiplicity vectors.
+    // TODO: This should increment the multiplicity.
+    // TODO: This should still be a periodic spline
+}
+
+TEST_F(SketchObjectTest, testInsertKnotInNonPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try inserting knot with zero multiplicity
+    // TODO: zero multiplicity knot should immediately throw exception
+
+    // Act and Assert
+    // TODO: Try inserting knot with multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act and Assert
+    // TODO: Try inserting at an existing knot with resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act
+    // TODO: Add at a general position (where no knot exists)
+    // Assert
+    // TODO: This should add to both the knot and multiplicity "vectors"
+    // TODO: This should still be a non-periodic spline
+
+    // Act
+    // TODO: Add a knot at an existing knot
+    // Assert
+    // TODO: This should not alter the sizes of knot and multiplicity vectors.
+    // TODO: This should increment the multiplicity.
+    // TODO: This should still be a non-periodic spline
+}
+
+TEST_F(SketchObjectTest, testInsertKnotInPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try inserting knot with zero multiplicity
+    // TODO: zero multiplicity knot should immediately throw exception
+
+    // Act and Assert
+    // TODO: Try inserting knot with multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act and Assert
+    // TODO: Try inserting at an existing knot with resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act
+    // TODO: Add at a general position (where no knot exists)
+    // Assert
+    // TODO: This should add to both the knot and multiplicity "vectors"
+    // TODO: This should still be a periodic spline
+
+    // Act
+    // TODO: Add a knot at an existing knot
+    // Assert
+    // TODO: This should not alter the sizes of knot and multiplicity vectors.
+    // TODO: This should increment the multiplicity.
+    // TODO: This should still be a periodic spline
+}
+
+TEST_F(SketchObjectTest, testJoinCurves)
+{
+    // Arrange
+    // TODO: Make two curves
+
+    // Act
+    // TODO: Join these curves
+
+    // Assert
+    // TODO: Check they are replaced
+    // TODO: Check the shape is conserved (how?)
+    // TODO: Check there is one C-0 knot
+}
+
+TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
+{
+    // Arrange
+    // TODO: Make two curves
+    // TODO: Add end-to-end tangent between these
+
+    // Act
+    // TODO: Join these curves
+
+    // Assert
+    // TODO: Check they are replaced
+    // TODO: Check the shape is conserved (how?)
+    // TODO: Check there is one C-1 knot
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits1)
