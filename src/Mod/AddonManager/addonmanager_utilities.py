@@ -448,32 +448,29 @@ def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.Com
 
 
 def process_date_string_to_python_datetime(date_string: str) -> datetime:
+
+    def raise_error(bad_string: str):
+        raise ValueError(f"Unrecognized date string '{bad_string}' (expected YYYY-MM-DD)")
+
     split_result = re.split(r"[ ./-]+", date_string.strip())
     if len(split_result) != 3:
-        raise ValueError(f"Unrecognized date string '{date_string}' (expected YYYY-MM-DD)")
+        raise_error(date_string)
 
-    if int(split_result[0]) > 2000:  # Assume YYYY-MM-DD
-        try:
-            year = int(split_result[0])
-            month = int(split_result[1])
-            day = int(split_result[2])
-            return datetime(year, month, day)
-        except (OverflowError, OSError, ValueError):
-            raise ValueError(f"Unrecognized date string {date_string} (expected YYYY-MM-DD)")
-    elif int(split_result[2]) > 2000:
-        # Two possibilities, impossible to distinguish in the general case: DD-MM-YYYY and
-        # MM-DD-YYYY. See if the first one makes sense, and if not, try the second
-        if int(split_result[1]) <= 12:
-            year = int(split_result[2])
-            month = int(split_result[1])
-            day = int(split_result[0])
+    try:
+        split_result = [int(x) for x in split_result]
+        # The earliest possible year an addon can be created or edited is 2001:
+        if split_result[0] > 2000:
+            return datetime(split_result[0], split_result[1], split_result[2])
+        elif split_result[2] > 2000:
+            # Generally speaking it's not possible to distinguish between DD-MM and MM-DD, so try the first, and
+            # only if that fails try the second
+            if split_result[1] <= 12:
+                return datetime(split_result[2], split_result[1], split_result[0])
+            return datetime(split_result[2], split_result[0], split_result[1])
         else:
-            year = int(split_result[2])
-            month = int(split_result[0])
-            day = int(split_result[1])
-        return datetime(year, month, day)
-    else:
-        raise ValueError(f"Unrecognized date string '{date_string}' (expected YYYY-MM-DD)")
+            raise ValueError(f"Invalid year in date string '{date_string}'")
+    except ValueError:
+        raise_error(date_string)
 
 
 def get_main_am_window():

@@ -222,6 +222,10 @@ class TestUtilities(unittest.TestCase):
             with patch("time.time", fake_time):
                 run_interruptable_subprocess(["arg0", "arg1"], 0.1)
 
+    def test_process_date_string_to_python_datetime_non_numeric(self):
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("TwentyTwentyFour-January-ThirtyFirst")
+
     def test_process_date_string_to_python_datetime_year_first(self):
         result = process_date_string_to_python_datetime("2024-01-31")
         expected_result = datetime(2024, 1, 31, 0, 0)
