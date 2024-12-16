@@ -97,7 +97,7 @@ private:
  * @author Werner Mayer
  */
 class PythonConsoleHighlighter;
-class GuiExport PythonConsole : public TextEdit, public WindowParameter
+class GuiExport PythonConsole : public PythonTextEditor
 {
     Q_OBJECT
 
