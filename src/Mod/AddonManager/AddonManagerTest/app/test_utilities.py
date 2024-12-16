@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, mock_open
 import os
 import sys
 import subprocess
@@ -48,9 +48,6 @@ from addonmanager_utilities import (
 class TestUtilities(unittest.TestCase):
 
     MODULE = "test_utilities"  # file name without extension
-
-    def setUp(self):
-        pass
 
     @classmethod
     def tearDownClass(cls):
@@ -132,21 +129,22 @@ class TestUtilities(unittest.TestCase):
             result = get_assigned_string_literal(line)
             self.assertIsNone(result)
 
-    def test_get_macro_version_from_file(self):
-        if FreeCAD:
-            test_dir = os.path.join(
-                FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
-            )
-            good_file = os.path.join(test_dir, "good_macro_metadata.FCStd")
-            version = get_macro_version_from_file(good_file)
+    def test_get_macro_version_from_file_good_metadata(self):
+        good_metadata = """__Version__       = "1.2.3" """
+        with patch("builtins.open", new_callable=mock_open, read_data=good_metadata):
+            version = get_macro_version_from_file("mocked_file.FCStd")
             self.assertEqual(version, "1.2.3")
 
-            bad_file = os.path.join(test_dir, "bad_macro_metadata.FCStd")
-            version = get_macro_version_from_file(bad_file)
+    def test_get_macro_version_from_file_missing_quotes(self):
+        bad_metadata = """__Version__       = 1.2.3 """  # No quotes
+        with patch("builtins.open", new_callable=mock_open, read_data=bad_metadata):
+            version = get_macro_version_from_file("mocked_file.FCStd")
             self.assertEqual(version, "", "Bad version did not yield empty string")
 
-            empty_file = os.path.join(test_dir, "missing_macro_metadata.FCStd")
-            version = get_macro_version_from_file(empty_file)
+    def test_get_macro_version_from_file_no_version(self):
+        good_metadata = ""
+        with patch("builtins.open", new_callable=mock_open, read_data=good_metadata):
+            version = get_macro_version_from_file("mocked_file.FCStd")
             self.assertEqual(version, "", "Missing version did not yield empty string")
 
     @patch("subprocess.Popen")
