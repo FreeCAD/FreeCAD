@@ -261,6 +261,23 @@ class TestUtilities(unittest.TestCase):
         with self.assertRaises(ValueError):
             process_date_string_to_python_datetime("01-02-24")
 
+    def test_process_date_string_to_python_datetime_valid_separators(self):
+        """Four individual separators are supported, plus any combination of multiple of those separators"""
+        valid_separators = [" ", ".", "/", "-", " - ", " / ", "--"]
+        for separator in valid_separators:
+            with self.subTest(separator=separator):
+                result = process_date_string_to_python_datetime(f"2024{separator}01{separator}31")
+                expected_result = datetime(2024, 1, 31, 0, 0)
+                self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_invalid_separators(self):
+        """Only the four separators [ ./-] are supported: ensure others fail"""
+        invalid_separators = ["a", "\\", "|", "'", ";", "*", " \\ "]
+        for separator in invalid_separators:
+            with self.subTest(separator=separator):
+                with self.assertRaises(ValueError):
+                    process_date_string_to_python_datetime(f"2024{separator}01{separator}31")
+
 
 if __name__ == "__main__":
     unittest.main()
