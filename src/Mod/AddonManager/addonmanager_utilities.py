@@ -448,6 +448,9 @@ def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.Com
 
 
 def process_date_string_to_python_datetime(date_string: str) -> datetime:
+    """For modern macros the expected date format is ISO 8601, YYYY-MM-DD. For older macros this standard was not always
+    used, and various orderings and separators were used. This function tries to match the majority of those older
+    macros. Commonly-used separators are periods, slashes, and dashes."""
 
     def raise_error(bad_string: str):
         raise ValueError(f"Unrecognized date string '{bad_string}' (expected YYYY-MM-DD)")
