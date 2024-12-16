@@ -257,6 +257,11 @@ TextEditor::TextEditor(QWidget* parent)
     highlightCurrentLine();
 }
 
+void TextEditor::keyPressEvent(QKeyEvent *e)
+{
+    TextEdit::keyPressEvent( e );
+}
+
 /** Destroys the object and frees any allocated resources */
 TextEditor::~TextEditor()
 {
@@ -359,92 +364,6 @@ void TextEditor::setSyntaxHighlighter(SyntaxHighlighter* sh)
     this->highlighter = sh;
 }
 
-void TextEditor::keyPressEvent (QKeyEvent * e)
-{
-    if ( e->key() == Qt::Key_Tab ) {
-        ParameterGrp::handle hPrefGrp = getWindowParameter();
-        int indent = hPrefGrp->GetInt( "IndentSize", 4 );
-        bool space = hPrefGrp->GetBool( "Spaces", false );
-        QString ch = space ? QString(indent, QLatin1Char(' '))
-                           : QString::fromLatin1("\t");
-
-        QTextCursor cursor = textCursor();
-        if (!cursor.hasSelection()) {
-            // insert a single tab or several spaces
-            cursor.beginEditBlock();
-            cursor.insertText(ch);
-            cursor.endEditBlock();
-        } else {
-            // for each selected block insert a tab or spaces
-            int selStart = cursor.selectionStart();
-            int selEnd = cursor.selectionEnd();
-            QTextBlock block;
-            cursor.beginEditBlock();
-            for (block = document()->begin(); block.isValid(); block = block.next()) {
-                int pos = block.position();
-                int off = block.length()-1;
-                // at least one char of the block is part of the selection
-                if ( pos >= selStart || pos+off >= selStart) {
-                    if ( pos+1 > selEnd )
-                        break; // end of selection reached
-                    cursor.setPosition(block.position());
-                    cursor.insertText(ch);
-                        selEnd += ch.length();
-                }
-            }
-
-            cursor.endEditBlock();
-        }
-
-        return;
-    }
-    else if (e->key() == Qt::Key_Backtab) {
-        QTextCursor cursor = textCursor();
-        if (!cursor.hasSelection())
-            return; // Shift+Tab should not do anything
-        // If some text is selected we remove a leading tab or
-        // spaces from each selected block
-        ParameterGrp::handle hPrefGrp = getWindowParameter();
-        int indent = hPrefGrp->GetInt( "IndentSize", 4 );
-
-        int selStart = cursor.selectionStart();
-        int selEnd = cursor.selectionEnd();
-        QTextBlock block;
-        cursor.beginEditBlock();
-        for (block = document()->begin(); block.isValid(); block = block.next()) {
-            int pos = block.position();
-            int off = block.length()-1;
-            // at least one char of the block is part of the selection
-            if ( pos >= selStart || pos+off >= selStart) {
-                if ( pos+1 > selEnd )
-                    break; // end of selection reached
-                // if possible remove one tab or several spaces
-                QString text = block.text();
-                if (text.startsWith(QLatin1String("\t"))) {
-                    cursor.setPosition(block.position());
-                    cursor.deleteChar();
-                    selEnd--;
-                }
-                else {
-                    cursor.setPosition(block.position());
-                    for (int i=0; i<indent; i++) {
-                        if (!text.startsWith(QLatin1String(" ")))
-                            break;
-                        text = text.mid(1);
-                        cursor.deleteChar();
-                        selEnd--;
-                    }
-                }
-            }
-        }
-
-        cursor.endEditBlock();
-        return;
-    }
-
-    TextEdit::keyPressEvent( e );
-}
-
 /** Sets the font, font size and tab size of the editor. */
 void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReason)
 {
@@ -514,6 +433,101 @@ void TextEditor::paintEvent (QPaintEvent * e)
 }
 
 // ------------------------------------------------------------------------------
+PythonTextEditor::PythonTextEditor(QWidget *parent)
+    : TextEditor(parent)
+{
+
+}
+
+PythonTextEditor::~PythonTextEditor() = default;
+
+void PythonTextEditor::keyPressEvent (QKeyEvent * e)
+{
+    if ( e->key() == Qt::Key_Tab ) {
+        ParameterGrp::handle hPrefGrp = getWindowParameter();
+        bool space = hPrefGrp->GetBool("Spaces", true);
+        int indent = hPrefGrp->GetInt( "IndentSize", 4 );
+        QString ch = space ? QString(indent, QLatin1Char(' '))
+                           : QString::fromLatin1("\t");
+
+        QTextCursor cursor = textCursor();
+        if (!cursor.hasSelection()) {
+            // insert a single tab or several spaces
+            cursor.beginEditBlock();
+            cursor.insertText(ch);
+            cursor.endEditBlock();
+        } else {
+            // for each selected block insert a tab or spaces
+            int selStart = cursor.selectionStart();
+            int selEnd = cursor.selectionEnd();
+            QTextBlock block;
+            cursor.beginEditBlock();
+            for (block = document()->begin(); block.isValid(); block = block.next()) {
+                int pos = block.position();
+                int off = block.length()-1;
+                // at least one char of the block is part of the selection
+                if ( pos >= selStart || pos+off >= selStart) {
+                    if ( pos+1 > selEnd )
+                        break; // end of selection reached
+                    cursor.setPosition(block.position());
+                    cursor.insertText(ch);
+                    selEnd += ch.length();
+                }
+            }
+
+            cursor.endEditBlock();
+        }
+
+        return;
+    }
+    else if (e->key() == Qt::Key_Backtab) {
+        QTextCursor cursor = textCursor();
+        if (!cursor.hasSelection())
+            return; // Shift+Tab should not do anything
+        // If some text is selected we remove a leading tab or
+        // spaces from each selected block
+        ParameterGrp::handle hPrefGrp = getWindowParameter();
+        int indent = hPrefGrp->GetInt( "IndentSize", 4 );
+
+        int selStart = cursor.selectionStart();
+        int selEnd = cursor.selectionEnd();
+        QTextBlock block;
+        cursor.beginEditBlock();
+        for (block = document()->begin(); block.isValid(); block = block.next()) {
+            int pos = block.position();
+            int off = block.length()-1;
+            // at least one char of the block is part of the selection
+            if ( pos >= selStart || pos+off >= selStart) {
+                if ( pos+1 > selEnd )
+                    break; // end of selection reached
+                // if possible remove one tab or several spaces
+                QString text = block.text();
+                if (text.startsWith(QLatin1String("\t"))) {
+                    cursor.setPosition(block.position());
+                    cursor.deleteChar();
+                    selEnd--;
+                }
+                else {
+                    cursor.setPosition(block.position());
+                    for (int i=0; i<indent; i++) {
+                        if (!text.startsWith(QLatin1String(" ")))
+                            break;
+                        text = text.mid(1);
+                        cursor.deleteChar();
+                        selEnd--;
+                    }
+                }
+            }
+        }
+
+        cursor.endEditBlock();
+        return;
+    }
+
+    TextEditor::keyPressEvent( e );
+}
+
+
 
 LineMarker::LineMarker(TextEditor* editor)
     : QWidget(editor), textEditor(editor)
