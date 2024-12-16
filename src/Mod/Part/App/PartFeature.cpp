@@ -365,7 +365,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                     // find it by matching either planes for faces or lines for edges.
                     auto searchShape = this->Shape.getShape();
                     // If we're still out at a Shell, Solid, CompSolid, or Compound drill in
-                    while (searchShape.getShape().ShapeType() < TopAbs_FACE ) {
+                    while (!searchShape.getShape().IsNull() && searchShape.getShape().ShapeType() < TopAbs_FACE ) {
                         auto shapes = searchShape.getSubTopoShapes();
                         if ( shapes.empty() ) // No more subshapes, so don't continue
                             break;
