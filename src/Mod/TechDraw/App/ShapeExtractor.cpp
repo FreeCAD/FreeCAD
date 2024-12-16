@@ -135,7 +135,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         else {
             auto shape = Part::Feature::getShape(obj);
             // if source obj has a shape, we use that shape.
-            if(!SU::isShapeReallyNull(shape) && !isExplodedView) {
+            if(!SU::isShapeReallyNull(shape)) {
                 if (checkShape(obj, shape)) {
                     sourceShapes.push_back(getLocatedShape(obj));
                 }
