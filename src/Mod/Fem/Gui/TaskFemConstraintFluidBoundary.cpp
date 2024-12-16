@@ -208,7 +208,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
 
     // Get the feature data
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
 
     Fem::FemAnalysis* pcAnalysis = nullptr;
     if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
@@ -381,7 +381,7 @@ const Fem::FemSolverObject* TaskFemConstraintFluidBoundary::getFemSolver() const
 void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
     // std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();
 
@@ -524,7 +524,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
 void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
 {
     // Fem::ConstraintFluidBoundary* pcConstraint =
-    // static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject()); std::string
+    // ConstraintView->getObject<Fem::ConstraintFluidBoundary>(); std::string
     // thermalBoundaryType = pcConstraint->ThermalBoundaryType.getValueAsString();
 
     ui->labelHelpText->setText(
@@ -566,7 +566,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
 void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     // temporarily change BoundaryType property, but command transaction should reset it back if you
     // 'reject' late
     pcConstraint->BoundaryType.setValue(ui->comboBoundaryType->currentIndex());
@@ -597,7 +597,7 @@ void TaskFemConstraintFluidBoundary::onBoundaryValueChanged(double)
 void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     pcConstraint->TurbulenceSpecification.setValue(
         ui->comboTurbulenceSpecification->currentIndex());
     updateTurbulenceUI();
@@ -606,7 +606,7 @@ void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged()
 void TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     pcConstraint->ThermalBoundaryType.setValue(ui->comboThermalBoundaryType->currentIndex());
     updateThermalBoundaryUI();
 }
@@ -632,7 +632,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
         return;
     }
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
 
     // we only handle the first selected object
     Gui::SelectionObject& selectionElement = selection.at(0);
@@ -696,7 +696,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
 void TaskFemConstraintFluidBoundary::onCheckReverse(const bool pressed)
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     pcConstraint->Reversed.setValue(pressed);
 }
 
@@ -820,7 +820,7 @@ void TaskFemConstraintFluidBoundary::addToSelection()
         return;
     }
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -892,7 +892,7 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
         return;
     }
     Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;

@@ -315,7 +315,7 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             if (auto view = dynamic_cast<ViewProviderMesh*>(pDoc->getViewProvider(object))) {
                 this->pcLinkRoot->addChild(view->getHighlightNode());
 
-                auto mesh = dynamic_cast<Mesh::Feature*>(view->getObject());
+                auto mesh = view->getObject<Mesh::Feature>();
                 Base::Placement plm = mesh->Placement.getValue();
                 ViewProviderMesh::updateTransform(plm, pcTransform);
             }

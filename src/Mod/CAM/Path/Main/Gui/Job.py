@@ -150,7 +150,7 @@ class ViewProvider:
 
         self.sca = coin.SoType.fromName("SoShapeScale").createInstance()
         self.sca.setPart("shape", self.axs)
-        self.sca.scaleFactor.setValue(1)  # Keep or adjust if needed
+        self.sca.scaleFactor.setValue(2)  # Keep or adjust if needed
 
         self.mat = coin.SoMaterial()
         # Set sphere color to bright yellow
@@ -161,7 +161,7 @@ class ViewProvider:
         self.scs = coin.SoType.fromName("SoShapeScale").createInstance()
         self.scs.setPart("shape", self.sph)
         # Increase the scaleFactor to make the sphere larger
-        self.scs.scaleFactor.setValue(10)  # Adjust this value as needed
+        self.scs.scaleFactor.setValue(20)  # Adjust this value as needed
 
         self.sep.addChild(self.sca)
         self.sep.addChild(self.mat)

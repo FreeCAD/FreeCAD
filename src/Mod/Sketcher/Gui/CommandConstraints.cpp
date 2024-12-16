@@ -2502,7 +2502,7 @@ protected:
             Base::Vector3d p2 = line->getEndPoint();
             if (fabs(p1.y - p2.y) < Precision::Confusion()) { // effectively vertical
                 p2 = p1 + (p2 - p1).Length() * Base::Vector3d(0.0, 1.0, 0.0);
-                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+                Gui::cmdAppObjectArgs(Obj, "moveGeometry(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
             }
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", GeoId1);
         }
@@ -2530,7 +2530,7 @@ protected:
             Base::Vector3d p2 = line->getEndPoint();
             if (fabs(p1.x - p2.x) < Precision::Confusion()) { // effectively vertical
                 p2 = p1 + (p2 - p1).Length() * Base::Vector3d(1.0, 0.0, 0.0);
-                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+                Gui::cmdAppObjectArgs(Obj, "moveGeometry(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
             }
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", GeoId1);
         }
@@ -3691,7 +3691,7 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair>& selSeq, 
             SketcherGui::ViewProviderSketch* sketchgui =
                 static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
 
-            auto Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+            auto Obj = sketchgui->getObject<Sketcher::SketchObject>();
 
             // check if the edge already has a Block constraint
             const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();

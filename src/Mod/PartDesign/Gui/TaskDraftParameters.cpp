@@ -58,7 +58,7 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp* DressUpView, QWidg
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+    PartDesign::Draft* pcDraft = DressUpView->getObject<PartDesign::Draft>();
     double a = pcDraft->Angle.getValue();
 
     ui->draftAngle->setMinimum(pcDraft->Angle.getMinimum());

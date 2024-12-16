@@ -57,8 +57,7 @@ TaskWidgetPathCompound::TaskWidgetPathCompound(ViewProviderPathCompound* Compoun
 
     this->groupLayout()->addWidget(proxy);
 
-    Path::FeatureCompound* pcCompound =
-        static_cast<Path::FeatureCompound*>(CompoundView->getObject());
+    Path::FeatureCompound* pcCompound = CompoundView->getObject<Path::FeatureCompound>();
     const std::vector<App::DocumentObject*>& Paths = pcCompound->Group.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator it = Paths.begin(); it != Paths.end();
          ++it) {
@@ -128,8 +127,7 @@ void TaskDlgPathCompound::clicked(int button)
 bool TaskDlgPathCompound::accept()
 {
     std::vector<App::DocumentObject*> paths;
-    Path::FeatureCompound* pcCompound =
-        static_cast<Path::FeatureCompound*>(CompoundView->getObject());
+    Path::FeatureCompound* pcCompound = CompoundView->getObject<Path::FeatureCompound>();
     App::Document* pcDoc = static_cast<App::Document*>(pcCompound->getDocument());
     std::vector<std::string> names = parameter->getList();
     for (std::size_t i = 0; i < names.size(); i++) {

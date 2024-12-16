@@ -28,6 +28,7 @@
 #include <Inventor/lists/SoPickedPointList.h>
 
 class SoPickedPointList;
+class SoPickStyle;
 class SoSwitch;
 class SoSensor;
 class SbVec2s;
@@ -116,6 +117,7 @@ protected:
     SoFCBoundingBox* pcBoundingBox {nullptr};
     SoSwitch* pcBoundSwitch {nullptr};
     SoBaseColor* pcBoundColor {nullptr};
+    SoPickStyle* pickStyle {nullptr};
 
     App::Material materialAppearance;
 };

@@ -30,7 +30,7 @@
 # include <TopoDS_Face.hxx>
 #endif
 
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 

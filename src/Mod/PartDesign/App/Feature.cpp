@@ -32,7 +32,7 @@
 # include <TopoDS.hxx>
 #endif
 
-#include "App/OriginFeature.h"
+#include "App/Datums.h"
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ElementNamingUtils.h>
@@ -350,7 +350,7 @@ PyObject* Feature::getPyObject()
 
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
-    return feature->isDerivedFrom<App::OriginFeature>() ||
+    return feature->isDerivedFrom<App::DatumElement>() ||
            feature->isDerivedFrom<Part::Datum>();
 }
 

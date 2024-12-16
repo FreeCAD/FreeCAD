@@ -33,6 +33,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <set>
 #include <boost_signals2.hpp>
 #include <QString>
 
@@ -264,11 +265,100 @@ public:
 
 // ----------------------------------------------------------------------------
 
+
+class BaseExport UniqueNameManager
+{
+protected:
+    // This method returns the position of the start of the suffix (or name.cend() if no
+    // suffix). It must return the same suffix lentgh (name.size() - returnValue) for both
+    // unique names (one containing digits) and the corresponding base name (with no digits).
+    virtual std::string::const_iterator GetNameSuffixStartPosition(const std::string& name) const
+    {
+        return name.cend();
+    }
+
+private:
+    class PiecewiseSparseIntegerSet
+    {
+    public:
+        PiecewiseSparseIntegerSet()
+        {}
+
+    private:
+        // Each pair being <lowest, count> represents the span of integers from lowest to
+        // (lowest+count-1) inclusive
+        using etype = std::pair<uint, uint>;
+        // This span comparer class is analogous to std::less and treats overlapping spans as being
+        // neither greater nor less than each other
+        class comparer
+        {
+        public:
+            bool operator()(const etype& lhs, const etype& rhs) const
+            {
+                // The equality case here is when lhs is below and directly adjacent to rhs.
+                return rhs.first - lhs.first >= lhs.second;
+            }
+        };
+        // Spans is the set of spans. Adjacent spans are coalesced so there are always gaps between
+        // the entries.
+        std::set<etype, comparer> Spans;
+        using iterator = typename std::set<etype, comparer>::iterator;
+        using const_iterator = typename std::set<etype, comparer>::const_iterator;
+
+    public:
+        void Add(uint value);
+        void Remove(uint value);
+        bool Contains(uint value) const;
+        bool Any() const
+        {
+            return Spans.size() != 0;
+        }
+        void Clear()
+        {
+            Spans.clear();
+        }
+        uint Next() const
+        {
+            if (Spans.size() == 0) {
+                return 0;
+            }
+            iterator last = Spans.end();
+            --last;
+            return last->first + last->second;
+        }
+    };
+    // Keyed as UniqueSeeds[baseName][digitCount][digitValue] iff that seed is taken.
+    // We need the double-indexing so that Name01 and Name001 can both be indexed, although we only
+    // ever allocate off the longest for each name i.e. UniqueSeeds[baseName].size()-1 digits.
+    std::map<std::string, std::vector<PiecewiseSparseIntegerSet>> UniqueSeeds;
+
+public:
+    std::tuple<uint, uint> decomposeName(const std::string& name,
+                                         std::string& baseNameOut,
+                                         std::string& nameSuffixOut) const;
+
+    UniqueNameManager()
+    {}
+
+    // Register a name in the collection. It is an error (detected only by assertions) to register a
+    // name more than once. The effect if undetected is that the second registration will have no
+    // effect
+    void addExactName(const std::string& name);
+    std::string makeUniqueName(const std::string& modelName, std::size_t minDigits = 0) const;
+
+    // Remove a registered name so it can be generated again.
+    // Nothing happens if you try to remove a non-registered name.
+    void removeExactName(const std::string& name);
+
+    bool containsName(const std::string& name) const;
+
+    void clear()
+    {
+        UniqueSeeds.clear();
+    }
+};
 struct BaseExport Tools
 {
-    static std::string
-    getUniqueName(const std::string&, const std::vector<std::string>&, int d = 0);
-    static std::string addNumber(const std::string&, unsigned int, int d = 0);
     static std::string getIdentifier(const std::string&);
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);

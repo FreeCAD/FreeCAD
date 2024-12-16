@@ -156,9 +156,9 @@ void StdCmdVarSet::activated(int iMsg)
 
     // add the varset to a group if it is selected
     auto sels = Selection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
-                                           ResolveMode::OldStyleElement, true);
+        ResolveMode::OldStyleElement, true);
     if (sels.size() == 1) {
-        App::DocumentObject *obj = sels[0].getObject();
+        App::DocumentObject* obj = sels[0].getObject();
         auto group = obj->getExtension<App::GroupExtension>();
         if (group) {
             Gui::Document* docGui = Application::Instance->activeDocument();

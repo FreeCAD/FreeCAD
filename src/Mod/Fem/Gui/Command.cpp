@@ -59,6 +59,7 @@
 #include "FemSettings.h"
 
 #ifdef FC_USE_VTK
+#include <Mod/Fem/App/FemPostFilter.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 #include <Mod/Fem/Gui/ViewProviderFemPostObject.h>
 #endif

@@ -149,6 +149,20 @@ def solveIfAllowed(assembly, storePrev=False):
         assembly.solve(storePrev)
 
 
+def getContext(obj):
+    """Fetch the context of an object."""
+    context = []
+    current = obj
+
+    while current:
+        # Add the object's Label at the beginning or the Name if label is empty
+        context.insert(0, current.Label if current.Label else current.Name)
+        # Get the immediate parent object
+        parents = getattr(current, "InList", [])
+        current = parents[0] if parents else None
+    return ".".join(context)
+
+
 # The joint object consists of 2 JCS (joint coordinate systems) and a Joint Type.
 # A JCS is a placement that is computed (unless it is detached) from references (PropertyXLinkSubHidden) that links to :
 # - An object: this can be any Part::Feature solid. Or a PartDesign Body. Or a App::Link to those.
@@ -433,54 +447,43 @@ class Joint:
             joint.Object2 = [obj2, [el2, vtx2]]
 
     def migrationScript2(self, joint):
-        if hasattr(joint, "Object1"):
-            joint.addProperty(
-                "App::PropertyXLinkSubHidden",
-                "Reference1",
-                "Joint Connector 1",
-                QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
-            )
+        def processObject(object_attr, reference_attr, part_attr, connector_label, order):
+            try:
+                if hasattr(joint, object_attr):
+                    joint.addProperty(
+                        "App::PropertyXLinkSubHidden",
+                        reference_attr,
+                        connector_label,
+                        QT_TRANSLATE_NOOP("App::Property", f"The {order} reference of the joint"),
+                    )
 
-            if joint.Object1 is not None:
-                obj = joint.Object1[0]
-                part = joint.Part1
-                elt = joint.Object1[1][0]
-                vtx = joint.Object1[1][1]
+                    obj = getattr(joint, object_attr)
 
-                # now we need to get the 'selection-root-obj' and the global path
-                rootObj, path = UtilsAssembly.getRootPath(obj, part)
-                obj = rootObj
-                elt = path + elt
-                vtx = path + vtx
+                    base_obj = obj[0]
+                    part = getattr(joint, part_attr)
+                    elt = obj[1][0]
+                    vtx = obj[1][1]
 
-                joint.Reference1 = [obj, [elt, vtx]]
+                    # Get the 'selection-root-obj' and the global path
+                    root_obj, path = UtilsAssembly.getRootPath(base_obj, part)
+                    base_obj = root_obj
+                    elt = path + elt
+                    vtx = path + vtx
 
-            joint.removeProperty("Object1")
-            joint.removeProperty("Part1")
+                    setattr(joint, reference_attr, [base_obj, [elt, vtx]])
 
-        if hasattr(joint, "Object2"):
-            joint.addProperty(
-                "App::PropertyXLinkSubHidden",
-                "Reference2",
-                "Joint Connector 2",
-                QT_TRANSLATE_NOOP("App::Property", "The second reference of the joint"),
-            )
+                    joint.removeProperty(object_attr)
+                    joint.removeProperty(part_attr)
 
-            if joint.Object2 is not None:
-                obj = joint.Object2[0]
-                part = joint.Part2
-                elt = joint.Object2[1][0]
-                vtx = joint.Object2[1][1]
+            except (AttributeError, IndexError, TypeError) as e:
+                App.Console.PrintWarning(
+                    f"{translate('Assembly', 'Assembly joint')} '{getContext(joint)}' "
+                    f"{translate('Assembly', 'has an invalid')} '{object_attr}' "
+                    f"{translate('Assembly', 'or related attributes')}. {str(e)}\n"
+                )
 
-                rootObj, path = UtilsAssembly.getRootPath(obj, part)
-                obj = rootObj
-                elt = path + elt
-                vtx = path + vtx
-
-                joint.Reference2 = [obj, [elt, vtx]]
-
-            joint.removeProperty("Object2")
-            joint.removeProperty("Part2")
+        processObject("Object1", "Reference1", "Part1", "Joint Connector 1", "first")
+        processObject("Object2", "Reference2", "Part2", "Joint Connector 2", "second")
 
     def migrationScript3(self, joint):
         if hasattr(joint, "Offset"):
@@ -513,33 +516,27 @@ class Joint:
             joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
 
     def migrationScript4(self, joint):
-        if (
-            hasattr(joint, "Reference1")
-            and isinstance(joint.Reference1, Sequence)
-            and joint.Reference1[0] is not None
-        ):
-            doc_name = joint.Reference1[0].Document.Name
-            sub1 = joint.Reference1[1][0]
-            sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub1)
-            sub2 = joint.Reference1[1][1]
-            sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub2)
+        def processReference(reference_attr):
+            try:
+                if hasattr(joint, reference_attr):
+                    ref = getattr(joint, reference_attr)
 
-            if sub1 != joint.Reference1[1][0] or sub2 != joint.Reference1[1][1]:
-                joint.Reference1 = (joint.Reference1[0], [sub1, sub2])
+                    doc_name = ref[0].Document.Name
+                    sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, ref[1][0])
+                    sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, ref[1][1])
 
-        if (
-            hasattr(joint, "Reference2")
-            and isinstance(joint.Reference2, Sequence)
-            and joint.Reference2[0] is not None
-        ):
-            doc_name = joint.Reference2[0].Document.Name
-            sub1 = joint.Reference2[1][0]
-            sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub1)
-            sub2 = joint.Reference2[1][1]
-            sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub2)
+                    if sub1 != ref[1][0] or sub2 != ref[1][1]:
+                        setattr(joint, reference_attr, (ref[0], [sub1, sub2]))
 
-            if sub1 != joint.Reference2[1][0] or sub2 != joint.Reference2[1][1]:
-                joint.Reference2 = (joint.Reference2[0], [sub1, sub2])
+            except (AttributeError, IndexError, TypeError) as e:
+                App.Console.PrintWarning(
+                    f"{translate('Assembly', 'Assembly joint')} '{getContext(joint)}' "
+                    f"{translate('Assembly', 'has an invalid')} '{reference_attr}' "
+                    f"{translate('Assembly', 'or related attributes')}. {str(e)}\n"
+                )
+
+        processReference("Reference1")
+        processReference("Reference2")
 
     def dumps(self):
         return None
@@ -959,18 +956,6 @@ class GroundedJoint:
 
         joint.ObjectToGround = obj_to_ground
 
-        joint.addProperty(
-            "App::PropertyPlacement",
-            "Placement",
-            "Ground",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is where the part is grounded.",
-            ),
-        )
-
-        joint.Placement = obj_to_ground.Placement
-
     def dumps(self):
         return None
 
@@ -1002,7 +987,7 @@ class ViewProviderGroundedJoint:
         if groundedObj is None:
             return
 
-        self.scaleFactor = 1.5
+        self.scaleFactor = 3.0
 
         lockpadColorInt = Preferences.preferences().GetUnsigned("AssemblyConstraints", 0xCC333300)
         self.lockpadColor = coin.SoBaseColor()
@@ -1163,24 +1148,33 @@ class MakeJointSelGate:
             return False
 
         ref = [obj, [sub]]
-        selected_object = UtilsAssembly.getObject(ref)
+        sel_obj = UtilsAssembly.getObject(ref)
 
-        if not (
-            selected_object.isDerivedFrom("Part::Feature")
-            or selected_object.isDerivedFrom("App::Part")
+        if UtilsAssembly.isLink(sel_obj):
+            linked = sel_obj.getLinkedObject()
+            if linked == sel_obj:
+                return True  # We accept empty links
+            sel_obj = linked
+
+        if sel_obj.isDerivedFrom("Part::Feature") or sel_obj.isDerivedFrom("App::Part"):
+            return True
+
+        if sel_obj.isDerivedFrom("App::LocalCoordinateSystem") or sel_obj.isDerivedFrom(
+            "App::DatumElement"
         ):
-            if UtilsAssembly.isLink(selected_object):
-                linked = selected_object.getLinkedObject()
-                if linked == selected_object:
-                    # We accept empty links
-                    return True
+            datum = sel_obj
+            if datum.isDerivedFrom("App::DatumElement"):
+                parent = datum.getParent()
+                if parent.isDerivedFrom("App::LocalCoordinateSystem"):
+                    datum = parent
 
-                if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
-                    return False
-            else:
-                return False
+            if self.assembly.hasObject(datum) and hasattr(datum, "MapMode"):
+                # accept only datum that are not attached
+                return datum.MapMode == "Deactivated"
 
-        return True
+            return True
+
+        return False
 
 
 activeTask = None
@@ -1237,11 +1231,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jType = JointTypes[self.jForm.jointType.currentIndex()]
         self.jForm.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
-        self.jForm.reverseRotCheckbox.setChecked(self.jType == "Gears")
-        self.jForm.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
-
-        self.jForm.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
-
         if jointObj:
             Gui.Selection.clearSelection()
             self.creating = False
@@ -1267,8 +1256,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.createJointObject()
             self.visibilityBackup = False
 
-        self.adaptUi()
-
         self.jForm.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
         self.jForm.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.jForm.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
@@ -1279,6 +1266,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         bind = Gui.ExpressionBinding(self.jForm.rotationSpinbox).bind(
             self.joint, "Offset2.Rotation.Yaw"
         )
+
+        self.jForm.reverseRotCheckbox.setChecked(self.jType == "Gears")
+        self.jForm.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
+
+        self.jForm.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
+
         self.jForm.offset1Button.clicked.connect(self.onOffset1Clicked)
         self.jForm.offset2Button.clicked.connect(self.onOffset2Clicked)
         self.jForm.PushButtonReverse.clicked.connect(self.onReverseClicked)
@@ -1296,6 +1289,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         bind = Gui.ExpressionBinding(self.jForm.limitLenMaxSpinbox).bind(self.joint, "LengthMax")
         bind = Gui.ExpressionBinding(self.jForm.limitRotMinSpinbox).bind(self.joint, "AngleMin")
         bind = Gui.ExpressionBinding(self.jForm.limitRotMaxSpinbox).bind(self.joint, "AngleMax")
+
+        self.adaptUi()
 
         if self.creating:
             # This has to be after adaptUi so that properties default values are adapted

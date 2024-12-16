@@ -107,12 +107,11 @@ import FreeCAD as App
 import DraftVecUtils
 import DraftGeomUtils
 import WorkingPlane
-
+from draftobjects.draft_annotation import DraftAnnotation
+from draftutils import gui_utils
 from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-
-from draftobjects.draft_annotation import DraftAnnotation
 
 
 class DimensionBase(DraftAnnotation):
@@ -191,19 +190,6 @@ class DimensionBase(DraftAnnotation):
                             "Dimension",
                             _tip)
             obj.Dimline = App.Vector(0, 1, 0)
-
-    def onDocumentRestored(self, obj):
-        """Execute code when the document is restored."""
-        super().onDocumentRestored(obj)
-
-        if not hasattr(obj, "ViewObject"):
-            return
-        vobj = obj.ViewObject
-        if not vobj:
-            return
-        if hasattr(vobj, "TextColor"):
-            return
-        self.update_properties_0v21(obj, vobj)
 
     def update_properties_0v21(self, obj, vobj):
         """Update view properties."""
@@ -308,7 +294,17 @@ class LinearDimension(DimensionBase):
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_dimension", vp_class="ViewProviderLinearDimension"
+        )
         self.Type = "LinearDimension"
+
+        if not getattr(obj, "ViewObject", None):
+            return
+        vobj = obj.ViewObject
+        if hasattr(vobj, "TextColor"):
+            return
+        super().update_properties_0v21(obj, vobj)
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed.
@@ -563,7 +559,17 @@ class AngularDimension(DimensionBase):
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_dimension", vp_class="ViewProviderAngularDimension"
+        )
         self.Type = "AngularDimension"
+
+        if not getattr(obj, "ViewObject", None):
+            return
+        vobj = obj.ViewObject
+        if hasattr(vobj, "TextColor"):
+            return
+        super().update_properties_0v21(obj, vobj)
 
     def execute(self, obj):
         """Execute when the object is created or recomputed.

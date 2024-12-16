@@ -327,6 +327,8 @@ def unlock_document():
     from nativeifc import ifc_tools  # lazy loading
 
     doc = FreeCAD.ActiveDocument
+    if not doc:
+        return
     if "IfcFilePath" in doc.PropertiesList:
         # this is a locked document
         doc.openTransaction("Unlock document")
@@ -353,9 +355,12 @@ def lock_document():
     from nativeifc import ifc_tools  # lazy loading
     from importers import exportIFC
     from nativeifc import ifc_geometry
+    from nativeifc import ifc_export
     from PySide import QtCore
 
     doc = FreeCAD.ActiveDocument
+    if not doc:
+        return
     products = []
     spatial = []
     ifcfile = None
@@ -375,7 +380,7 @@ def lock_document():
             if rest:
                 # 1b some objects are outside
                 objs = find_toplevel(rest)
-                prefs, context = ifc_tools.get_export_preferences(ifcfile)
+                prefs, context = ifc_export.get_export_preferences(ifcfile)
                 products = exportIFC.export(objs, ifcfile, preferences=prefs)
                 for product in products.values():
                     if not getattr(product, "ContainedInStructure", None):
@@ -412,7 +417,7 @@ def lock_document():
             ifc_tools.convert_document(doc, silent=True)
             ifcfile = doc.Proxy.ifcfile
             objs = find_toplevel(doc.Objects)
-            prefs, context = ifc_tools.get_export_preferences(ifcfile)
+            prefs, context = ifc_export.get_export_preferences(ifcfile)
             exportIFC.export(objs, ifcfile, preferences=prefs)
             for n in [o.Name for o in doc.Objects]:
                 if doc.getObject(n):

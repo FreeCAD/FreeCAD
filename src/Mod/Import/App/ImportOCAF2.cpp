@@ -72,10 +72,10 @@ using namespace Import;
 ImportOCAFOptions::ImportOCAFOptions()
 {
     defaultFaceColor.setPackedValue(0xCCCCCC00);
-    defaultFaceColor.a = 0;
+    defaultFaceColor.a = 1.0F;
 
     defaultEdgeColor.setPackedValue(421075455UL);
-    defaultEdgeColor.a = 0;
+    defaultEdgeColor.a = 1.0F;
 }
 
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) hDoc, App::Document* doc, const std::string& name)
@@ -114,12 +114,12 @@ ImportOCAFOptions ImportOCAF2::customImportOptions()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     defaultOptions.defaultFaceColor.setPackedValue(
         hGrp->GetUnsigned("DefaultShapeColor", defaultOptions.defaultFaceColor.getPackedValue()));
-    defaultOptions.defaultFaceColor.a = 0;
+    defaultOptions.defaultFaceColor.a = 1.0F;
 
     defaultOptions.defaultEdgeColor.setPackedValue(
         hGrp->GetUnsigned("DefaultShapeLineColor",
                           defaultOptions.defaultEdgeColor.getPackedValue()));
-    defaultOptions.defaultEdgeColor.a = 0;
+    defaultOptions.defaultEdgeColor.a = 1.0F;
 
     return defaultOptions;
 }
@@ -133,8 +133,6 @@ void ImportOCAF2::setImportOptions(ImportOCAFOptions opts)
 void ImportOCAF2::setUseLinkGroup(bool enable)
 {
     options.useLinkGroup = enable;
-
-    // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
     aShapeTool->SetAutoNaming(!enable);
 }
 
@@ -251,22 +249,6 @@ ImportOCAF2::expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape
         return nullptr;
     }
 
-    // When saved as compound, STEP file does not support instance sharing,
-    // meaning that even if the source compound may contain child shapes of
-    // shared instances, or multiple hierarchies, those information are lost
-    // when saved to STEP, everything become flat and duplicated. So the code
-    // below is not necessary.
-#if 0
-    auto baseShape = shape.Located(TopLoc_Location());
-    auto it = myShapes.find(baseShape);
-    if(it!=myShapes.end()) {
-        auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-        link->Visibility.setValue(false);
-        link->setLink(-1,it->second.obj);
-        setPlacement(&link->Placement,shape);
-        return link;
-    }
-#endif
     std::vector<App::DocumentObject*> objs;
 
     if (shape.ShapeType() == TopAbs_COMPOUND) {
@@ -290,7 +272,6 @@ ImportOCAF2::expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape
         auto compound =
             static_cast<Part::Compound2*>(doc->addObject("Part::Compound2", "Compound"));
         compound->Links.setValues(objs);
-        // compound->Visibility.setValue(false);
         setPlacement(&compound->Placement, shape);
         return compound;
     }
@@ -372,9 +353,6 @@ bool ImportOCAF2::createObject(App::Document* doc,
                             hasFaceColors = true;
                             info.hasFaceColor = true;
                         }
-                        else {
-                            assert(0);
-                        }
                     }
                 }
                 if (foundEdgeColor) {
@@ -407,7 +385,6 @@ bool ImportOCAF2::createObject(App::Document* doc,
         feature = static_cast<Part::Feature*>(
             doc->addObject("Part::Feature", tshape.shapeName().c_str()));
         feature->Shape.setValue(shape);
-        // feature->Visibility.setValue(false);
     }
     applyFaceColors(feature, {info.faceColor});
     applyEdgeColors(feature, {info.edgeColor});
@@ -724,7 +701,6 @@ App::DocumentObject* ImportOCAF2::loadShape(App::Document* doc,
             auto compound =
                 static_cast<Part::Compound2*>(doc->addObject("Part::Compound2", "Compound"));
             compound->Links.setValue(info.obj);
-            // compound->Visibility.setValue(false);
             info.propPlacement = &compound->Placement;
             if (info.faceColor != it->second.faceColor) {
                 applyFaceColors(compound, {info.faceColor});

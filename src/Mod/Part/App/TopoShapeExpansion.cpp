@@ -3119,6 +3119,9 @@ TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
     return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::returnShape);
 }
 
+namespace
+{
+
 
 struct EdgePoints
 {
@@ -3144,6 +3147,8 @@ struct EdgePoints
         }
     }
 };
+
+}
 
 TopoShape TopoShape::reverseEdge(const TopoShape& edge)
 {
@@ -4625,7 +4630,7 @@ public:
             if (it.Key().IsNull()) {
                 continue;
             }
-            mapper.populate(MappingStatus::Generated, it.Key(), it.Value());
+            mapper.populate(MappingStatus::Modified, it.Key(), it.Value());
         }
     }
 };
@@ -5818,6 +5823,38 @@ bool TopoShape::getRelatedElementsCached(const Data::MappedName& name,
     }
     names = it->second;
     return true;
+}
+
+Data::MappedElement TopoShape::chooseMatchingSubShapeByPlaneOrLine(const TopoShape& shapeToFind, const TopoShape& shapeToLookIn)
+{
+    Data::MappedElement result;
+    // See if we have a Face.  If so, try to match using a plane.
+    auto targetShape = shapeToFind.getSubTopoShape("Face", true);
+    if ( ! targetShape.isNull() ) {
+        int index = 0;
+        for ( const auto& searchFace : shapeToLookIn.getSubTopoShapes(TopAbs_FACE)) {
+            index++;    // We have to generate the element index.
+            if ( targetShape.isCoplanar(searchFace) ) {
+                if ( ! result.name.empty() )
+                    return {};  // Found more than one, invalidate our guess.  Future: return all matches to the UI?
+                result = shapeToLookIn.getElementName(("Face"+std::to_string(index)).c_str());
+            }
+        }
+    }
+    // Alternatively, try to locate an Edge, and try to match.  Currently by exact equivalence; later can improve.
+    targetShape = shapeToFind.getSubTopoShape("Edge", true);
+    if ( ! targetShape.isNull() ) { // Try to match edges
+        int index = 0;
+        for ( const auto& searchEdge : shapeToLookIn.getSubTopoShapes(TopAbs_EDGE)) {
+            index++;
+            if ( targetShape.isSame(searchEdge) ) { // TODO: Test for edges that are collinear as really what we want
+                if ( ! result.name.empty() )
+                    return {}; // Found more than one
+                result = shapeToLookIn.getElementName(("Edge"+std::to_string(index)).c_str());
+            }
+        }
+    }
+    return result;
 }
 
 }  // namespace Part

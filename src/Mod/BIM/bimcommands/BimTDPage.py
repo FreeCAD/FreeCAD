@@ -36,11 +36,12 @@ translate = FreeCAD.Qt.translate
 class BIM_TDPage:
     def GetResources(self):
         return {
-            "Pixmap": "techdraw-PageDefault",
+            "Pixmap": "BIM_PageDefault",
             "MenuText": QT_TRANSLATE_NOOP("BIM_TDPage", "Page"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDPage", "Creates a new TechDraw page from a template"
             ),
+            'Accel': "T, P",
         }
 
     def IsActive(self):

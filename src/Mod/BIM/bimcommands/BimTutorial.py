@@ -175,7 +175,6 @@ class BIM_Tutorial:
                     except:
                         print("unparsable image path:", path)
                     else:
-                        name = name[-1]
                         storename = os.path.join(store, name)
                         if not os.path.exists(storename):
                             if path.startswith("/images"):

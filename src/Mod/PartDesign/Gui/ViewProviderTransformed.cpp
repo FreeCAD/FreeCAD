@@ -78,7 +78,7 @@ void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, c
 }
 
 Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
     if(!pcTransformed->Originals.getSize()) {
         for(auto obj : pcTransformed->getInList()) {
             if(obj->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
@@ -160,7 +160,7 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
 
 void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
     if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
         pcTransformed->recomputeFeature(true);
 
