@@ -45,7 +45,7 @@ CmdStart::CmdStart()
 {
     sAppModule = "Start";
     sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start Page");
+    sMenuText = QT_TR_NOOP("&Start Page");
     sToolTipText = QT_TR_NOOP("Displays the Start Page");
     sWhatsThis = "Start_Start";
     sStatusTip = sToolTipText;

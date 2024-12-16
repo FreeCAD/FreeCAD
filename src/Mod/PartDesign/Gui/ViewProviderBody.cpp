@@ -342,11 +342,11 @@ bool ViewProviderBody::canDropObjects() const
 {
     // if the BaseFeature property is marked as hidden or read-only then
     // it's not allowed to modify it.
-    PartDesign::Body* body = getObject<PartDesign::Body>();
-    if (body->BaseFeature.testStatus(App::Property::Status::Hidden))
+    auto* body = getObject<PartDesign::Body>();
+    if (body->BaseFeature.testStatus(App::Property::Status::Hidden)
+        || body->BaseFeature.testStatus(App::Property::Status::ReadOnly)) {
         return false;
-    if (body->BaseFeature.testStatus(App::Property::Status::ReadOnly))
-        return false;
+    }
     return true;
 }
 
@@ -355,7 +355,15 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     if (obj->isDerivedFrom<App::VarSet>()) {
         return true;
     }
-    if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    else if (obj->isDerivedFrom(App::DatumElement::getClassTypeId())) {
+        // accept only datums that are not part of a LCS.
+        auto* lcs = static_cast<App::DatumElement*>(obj)->getLCS();
+        return !lcs;
+    }
+    else if (obj->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
+        return !obj->isDerivedFrom(App::Origin::getClassTypeId());
+    }
+    else if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
         return false;
     }
     else if (PartDesign::Body::findBodyOf(obj)) {
@@ -375,8 +383,10 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderBody::dropObject(App::DocumentObject* obj)
 {
-    PartDesign::Body* body = getObject<PartDesign::Body>();
-    if (obj->isDerivedFrom<Part::Part2DObject>()) {
+    auto* body = getObject<PartDesign::Body>();
+    if (obj->isDerivedFrom<Part::Part2DObject>()
+        || obj->isDerivedFrom<App::DatumElement>()
+        || obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
         body->addObject(obj);
     }
     else if (PartDesign::Body::isAllowed(obj) && PartDesignGui::isFeatureMovable(obj)) {

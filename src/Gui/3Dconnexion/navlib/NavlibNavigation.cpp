@@ -101,10 +101,15 @@ long NavlibInterface::GetPointerPosition(navlib::point_t& position) const
 
         QPoint viewPoint = currentView.pView3d->mapFromGlobal(QCursor::pos());
         viewPoint.setY(currentView.pView3d->height() - viewPoint.y());
+
+        double scaling = inventorViewer->devicePixelRatio();
+        viewPoint *= scaling;
+
         SbVec3f worldPosition =
             inventorViewer->getPointOnFocalPlane(SbVec2s(viewPoint.x(), viewPoint.y()));
-
         std::copy(worldPosition.getValue(), worldPosition.getValue() + 3, &position.x);
+
+        wasPointerPick = true;
 
         return 0;
     }
@@ -269,34 +274,8 @@ long NavlibInterface::SetCameraMatrix(const navlib::matrix_t& matrix)
 
         pCamera->orientation = SbRotation(cameraMatrix);
         pCamera->position.setValue(matrix(3, 0), matrix(3, 1), matrix(3, 2));
-
-        const Gui::View3DInventorViewer* inventorViewer = currentView.pView3d->getViewer();
-        SoGetBoundingBoxAction action(inventorViewer->getSoRenderManager()->getViewportRegion());
-
-        action.apply(inventorViewer->getSceneGraph());
-
-        const SbBox3f boundingBox = action.getBoundingBox();
-        SbVec3f modelCenter = boundingBox.getCenter();
-        const float modelRadius = (boundingBox.getMin() - modelCenter).length();
-
-        navlib::bool_t isPerspective;
-        GetIsViewPerspective(isPerspective);
-        if (!isPerspective) {
-            cameraMatrix.inverse().multVecMatrix(modelCenter, modelCenter);
-
-            const float nearDist = -(modelRadius + modelCenter.getValue()[2]);
-            const float farDist = nearDist + 2.0f * modelRadius;
-
-            if (nearDist < 0.0f) {
-                pCamera->nearDistance.setValue(nearDist);
-                pCamera->farDistance.setValue(-nearDist);
-            }
-            else {
-                pCamera->nearDistance.setValue(-farDist);
-                pCamera->farDistance.setValue(farDist);
-            }
-        }
         pCamera->touch();
+
         return 0;
     }
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
@@ -348,11 +327,16 @@ long NavlibInterface::GetViewExtents(navlib::box_t& extents) const
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     const SbViewVolume viewVolume = pCamera->getViewVolume(pCamera->aspectRatio.getValue());
-    const float halfHeight = viewVolume.getHeight() / 2.0f;
-    const float halfWidth = viewVolume.getWidth() / 2.0f;
-    const float farDistance = viewVolume.nearToFar + viewVolume.nearDist;
+    const double halfHeight = static_cast<double>(viewVolume.getHeight() / 2.0f);
+    const double halfWidth = static_cast<double>(viewVolume.getWidth() / 2.0f);
+    const double halfDepth = 1.0e8;
 
-    extents = {-halfWidth, -halfHeight, -farDistance, halfWidth, halfHeight, farDistance};
+    extents = {-halfWidth,
+               -halfHeight,
+               -halfDepth,
+               halfWidth,
+               halfHeight,
+               halfDepth};
 
     return 0;
 }
@@ -390,6 +374,7 @@ long NavlibInterface::SetViewExtents(const navlib::box_t& extents)
         GetViewExtents(oldExtents);
 
         pCamera->scaleHeight(extents.max.x / oldExtents.max.x);
+        orthoNearDistance = pCamera->nearDistance.getValue();
 
         return 0;
     }

@@ -104,7 +104,7 @@ public:
      *
      * @return Return the owner object of the element
      */
-    static DocumentObject* resolveElement(App::DocumentObject* obj,
+    static DocumentObject* resolveElement(const App::DocumentObject* obj,
                                           const char* subname,
                                           ElementNamePair& elementName,
                                           bool append = false,

@@ -1018,7 +1018,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
             if (linked->isDerivedFrom(App::Line::getClassTypeId())) {
                 static TopoDS_Shape _shape;
                 if (_shape.IsNull()) {
-                    BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), gp_Dir(1, 0, 0)));
+                    BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
                 }
@@ -1076,6 +1076,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                     shape = TopoShape(tag, hasher, _shape);
                 }
             }
+
             if (!shape.isNull()) {
                 shape.transformShape(mat * linkMat, false, true);
                 return shape;

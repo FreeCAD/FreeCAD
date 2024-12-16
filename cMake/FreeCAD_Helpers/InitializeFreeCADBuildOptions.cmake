@@ -169,7 +169,7 @@ macro(InitializeFreeCADBuildOptions)
 
     if(MSVC)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
-        option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF) # 3/5/2021 current LibPack uses non-C++17 FLANN
+        option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
     endif(MSVC)
     if(NOT MSVC)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
@@ -178,7 +178,10 @@ macro(InitializeFreeCADBuildOptions)
 
     # if this is set override some options
     if (FREECAD_BUILD_DEBIAN)
-        set(FREECAD_USE_EXTERNAL_ZIPIOS ON )
+        # Disable it until the upstream package has been fixed. See
+        # https://github.com/FreeCAD/FreeCAD/issues/13676#issuecomment-2539978468
+        # https://github.com/FreeCAD/FreeCAD/issues/13676#issuecomment-2541513308
+        set(FREECAD_USE_EXTERNAL_ZIPIOS OFF )
         # A Debian package for SMESH doesn't exist
         #set(FREECAD_USE_EXTERNAL_SMESH ON )
     endif (FREECAD_BUILD_DEBIAN)

@@ -119,7 +119,8 @@ SheetTableView::SheetTableView(QWidget* parent)
     setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     connect(verticalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
-        QMenu menu(this);
+        Q_UNUSED(point)
+        QMenu menu {nullptr};
         const auto selection = selectionModel()->selectedRows();
         const auto& [min, max] = selectedMinMaxRows(selection);
         if (bool isContiguous = max - min == selection.size() - 1) {
@@ -141,11 +142,12 @@ SheetTableView::SheetTableView(QWidget* parent)
         }
         auto remove = menu.addAction(tr("Remove row(s)", "", selection.size()));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeRows);
-        menu.exec(verticalHeader()->mapToGlobal(point));
+        menu.exec(QCursor::pos());
     });
 
     connect(horizontalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
-        QMenu menu(this);
+        Q_UNUSED(point)
+        QMenu menu {nullptr};
         const auto selection = selectionModel()->selectedColumns();
         const auto& [min, max] = selectedMinMaxColumns(selection);
         if (bool isContiguous = max - min == selection.size() - 1) {
@@ -171,7 +173,7 @@ SheetTableView::SheetTableView(QWidget* parent)
         }
         auto remove = menu.addAction(tr("Remove column(s)", "", selection.size()));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeColumns);
-        menu.exec(horizontalHeader()->mapToGlobal(point));
+        menu.exec(QCursor::pos());
     });
 
     actionProperties = new QAction(tr("Properties..."), this);
@@ -180,41 +182,40 @@ SheetTableView::SheetTableView(QWidget* parent)
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    contextMenu = new QMenu(this);
 
-    contextMenu->addAction(actionProperties);
+    contextMenu.addAction(actionProperties);
     connect(actionProperties, &QAction::triggered, this, &SheetTableView::cellProperties);
 
-    contextMenu->addSeparator();
+    contextMenu.addSeparator();
     actionRecompute = new QAction(tr("Recompute"), this);
     connect(actionRecompute, &QAction::triggered, this, &SheetTableView::onRecompute);
-    contextMenu->addAction(actionRecompute);
+    contextMenu.addAction(actionRecompute);
 
     actionBind = new QAction(tr("Bind..."), this);
     connect(actionBind, &QAction::triggered, this, &SheetTableView::onBind);
-    contextMenu->addAction(actionBind);
+    contextMenu.addAction(actionBind);
 
     actionConf = new QAction(tr("Configuration table..."), this);
     connect(actionConf, &QAction::triggered, this, &SheetTableView::onConfSetup);
-    contextMenu->addAction(actionConf);
+    contextMenu.addAction(actionConf);
 
     horizontalHeader()->addAction(actionBind);
     verticalHeader()->addAction(actionBind);
 
-    contextMenu->addSeparator();
-    actionMerge = contextMenu->addAction(tr("Merge cells"));
+    contextMenu.addSeparator();
+    actionMerge = contextMenu.addAction(tr("Merge cells"));
     connect(actionMerge, &QAction::triggered, this, &SheetTableView::mergeCells);
-    actionSplit = contextMenu->addAction(tr("Split cells"));
+    actionSplit = contextMenu.addAction(tr("Split cells"));
     connect(actionSplit, &QAction::triggered, this, &SheetTableView::splitCell);
 
-    contextMenu->addSeparator();
-    actionCut = contextMenu->addAction(tr("Cut"));
+    contextMenu.addSeparator();
+    actionCut = contextMenu.addAction(tr("Cut"));
     connect(actionCut, &QAction::triggered, this, &SheetTableView::cutSelection);
-    actionCopy = contextMenu->addAction(tr("Copy"));
+    actionCopy = contextMenu.addAction(tr("Copy"));
     connect(actionCopy, &QAction::triggered, this, &SheetTableView::copySelection);
-    actionPaste = contextMenu->addAction(tr("Paste"));
+    actionPaste = contextMenu.addAction(tr("Paste"));
     connect(actionPaste, &QAction::triggered, this, &SheetTableView::pasteClipboard);
-    actionDel = contextMenu->addAction(tr("Delete"));
+    actionDel = contextMenu.addAction(tr("Delete"));
     connect(actionDel, &QAction::triggered, this, &SheetTableView::deleteSelection);
 
     setTabKeyNavigation(false);
@@ -241,7 +242,7 @@ void SheetTableView::onBind()
 {
     auto ranges = selectedRanges();
     if (!ranges.empty() && ranges.size() <= 2) {
-        DlgBindSheet dlg(sheet, ranges, this);
+        DlgBindSheet dlg {sheet, ranges};
         dlg.exec();
     }
 }
@@ -252,16 +253,16 @@ void SheetTableView::onConfSetup()
     if (ranges.empty()) {
         return;
     }
-    DlgSheetConf dlg(sheet, ranges.back(), this);
+    DlgSheetConf dlg {sheet, ranges.back()};
     dlg.exec();
 }
 
 void SheetTableView::cellProperties()
 {
-    std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
+    PropertiesDialog dialog {sheet, selectedRanges()};
 
-    if (dialog->exec() == QDialog::Accepted) {
-        dialog->apply();
+    if (dialog.exec() == QDialog::Accepted) {
+        dialog.apply();
     }
 }
 
@@ -1125,7 +1126,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent*)
     auto ranges = selectedRanges();
     actionBind->setEnabled(!ranges.empty() && ranges.size() <= 2);
 
-    contextMenu->exec(QCursor::pos());
+    contextMenu.exec(QCursor::pos());
 }
 
 QString SheetTableView::toHtml() const
