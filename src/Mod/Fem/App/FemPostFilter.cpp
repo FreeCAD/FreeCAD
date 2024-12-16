@@ -558,7 +558,7 @@ FemPostSmoothFilterExtension::FemPostSmoothFilterExtension()
                                 (false),
                                 "Smoothing",
                                 App::Prop_None,
-                                "Smooth aling sharp interior edges");
+                                "Smooth align sharp interior edges");
     EXTENSION_ADD_PROPERTY_TYPE(RelaxationFactor,
                                 (0.05),
                                 "Smoothing",
