@@ -463,13 +463,14 @@ const char* Base::XMLReader::addFile(const char* Name, Base::Persistence* Object
     temp.Object = Object;
 
     FileList.push_back(temp);
+    FileNames.push_back(temp.FileName);
 
     return Name;
 }
 
-bool Base::XMLReader::hasFilenames() const
+const std::vector<std::string>& Base::XMLReader::getFilenames() const
 {
-    return FileList.size() > 0;
+    return FileNames;
 }
 
 bool Base::XMLReader::hasReadFailed(const std::string& filename) const

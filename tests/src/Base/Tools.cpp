@@ -5,58 +5,42 @@
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
 TEST(BaseToolsSuite, TestUniqueName1)
 {
-    EXPECT_EQ(Base::UniqueNameManager().makeUniqueName("Body"), "Body");
+    EXPECT_EQ(Base::Tools::getUniqueName("Body", {}), "Body");
 }
 
 TEST(BaseToolsSuite, TestUniqueName2)
 {
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    EXPECT_EQ(manager.makeUniqueName("Body", 1), "Body1");
+    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body"}, 1), "Body1");
 }
 
 TEST(BaseToolsSuite, TestUniqueName3)
 {
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body001");
+    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body"}, 3), "Body001");
 }
 
 TEST(BaseToolsSuite, TestUniqueName4)
 {
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body001");
-    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body002");
+    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body001"}, 3), "Body002");
 }
 
 TEST(BaseToolsSuite, TestUniqueName5)
 {
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    manager.addExactName("Body001");
-    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body002");
+    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body", "Body001"}, 3), "Body002");
 }
 
 TEST(BaseToolsSuite, TestUniqueName6)
 {
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    manager.addExactName("Body001");
-    EXPECT_EQ(manager.makeUniqueName("Body001", 3), "Body002");
+    EXPECT_EQ(Base::Tools::getUniqueName("Body001", {"Body", "Body001"}, 3), "Body002");
 }
 
 TEST(BaseToolsSuite, TestUniqueName7)
 {
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    EXPECT_EQ(manager.makeUniqueName("Body001", 3), "Body001");
+    EXPECT_EQ(Base::Tools::getUniqueName("Body001", {"Body"}, 3), "Body002");
 }
 
 TEST(BaseToolsSuite, TestUniqueName8)
 {
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    EXPECT_EQ(manager.makeUniqueName("Body12345", 3), "Body001");
+    EXPECT_EQ(Base::Tools::getUniqueName("Body12345", {"Body"}, 3), "Body12346");
 }
 
 TEST(Tools, TestIota)

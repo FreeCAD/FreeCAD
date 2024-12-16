@@ -814,74 +814,6 @@ void DocumentObject::onBeforeChange(const Property* prop)
     signalBeforeChange(*this, *prop);
 }
 
-std::vector<std::pair<Property*, std::unique_ptr<Property>>>
-DocumentObject::onProposedLabelChange(std::string& newLabel)
-{
-    // Note that this work can't be done in onBeforeChangeLabel because FeaturePython overrides this
-    // method and does not initially base-call it.
-
-    // We re only called if the new label differs from the old one, and our code to check duplicates
-    // may not work if this is not the case.
-    std::string oldLabel = Label.getStrValue();
-    assert(newLabel != oldLabel);
-    std::string label;
-    if (!isAttachedToDocument()
-        || (getDocument()->testStatus(App::Document::Restoring)
-            && !getDocument()->testStatus(App::Document::Importing))
-        || getDocument()->isPerformingTransaction()) {
-        return {};
-    }
-    static ParameterGrp::handle _hPGrp;
-    if (!_hPGrp) {
-        _hPGrp = GetApplication().GetUserParameter().GetGroup("BaseApp");
-        _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
-    }
-    App::Document* doc = getDocument();
-    if (doc && newLabel.size() > 0 && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
-        && doc->containsLabel(newLabel)) {
-        // We must ensure the Label is unique in the document (well, sort of...).
-        // If the base name of the proposed label equals the base name of the object Name, we use
-        // the (uniquefied) object Name, which could actually be identical to another object's Label,
-        // but probably isn't.
-        // Otherwise we generate a unique Label using newLabel as a prototype name. In doing so,
-        // we must also act as if the current value of the property is not an existing Label entry.
-        std::string objName = getNameInDocument();
-        std::string objBaseName;
-        std::string objSuffix;
-        doc->decomposeName(objName, objBaseName, objSuffix);
-        std::string newBaseName;
-        std::string newSuffix;
-        doc->decomposeName(newLabel, newBaseName, newSuffix);
-        if (newBaseName == objBaseName && newSuffix == objSuffix) {
-            newLabel = objName;
-        }
-        else {
-            // We deregister the old label so it does not interfere with making the new label,
-            // and re-register it after. This is probably a bit less efficient that having a special
-            // make-unique-label-as-if-this-one-did-not-exist method, but such a method would be a real
-            // ugly wart.
-            doc->unregisterLabel(oldLabel);
-            newLabel = doc->makeUniqueLabel(newLabel);
-            doc->registerLabel(oldLabel);
-        }
-    }
-
-    // Despite our efforts to make a unique label, onBeforeLabelChange can change it.
-    onBeforeChangeLabel(newLabel);
-
-    if (oldLabel == newLabel || getDocument()->testStatus(App::Document::Restoring)) {
-        // Don't update label reference if we are restoring or if the label is unchanged.
-        // When importing (which also counts as restoring), it is possible the
-        // new object changes its label. However, we cannot update label
-        // references here, because object being restored is not based on
-        // dependency order. It can only be done in afterRestore().
-        //
-        // See PropertyLinkBase::restoreLabelReference() for more details.
-        return {};
-    }
-    return PropertyLinkBase::updateLabelReferences(this, newLabel.c_str());
-}
-
 void DocumentObject::onEarlyChange(const Property* prop)
 {
     if (GetApplication().isClosingAll()) {
@@ -904,11 +836,6 @@ void DocumentObject::onEarlyChange(const Property* prop)
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
-    if (prop == &Label && _pDoc && _pDoc->containsObject(this) && oldLabel != Label.getStrValue()) {
-        _pDoc->unregisterLabel(oldLabel);
-        _pDoc->registerLabel(Label.getStrValue());
-    }
-
     if (isFreezed() && prop != &Visibility) {
         return;
     }
