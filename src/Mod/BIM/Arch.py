@@ -798,6 +798,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
     label = name if name else translate("Arch","Stairs")
 
     def setProperty(obj,length,width,height,steps):
+        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair"""
         if length:
             obj.Length = length
         else:
@@ -890,6 +891,7 @@ def makeRailing(stairs):
     import ArchPipe
 
     def makeRailingLorR(stairs,side="L"):
+        """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or R"""
         for stair in reversed(stairs):
             if side == "L":
                 outlineLR = stair.OutlineLeft
