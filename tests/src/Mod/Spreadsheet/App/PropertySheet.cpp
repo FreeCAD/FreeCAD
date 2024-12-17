@@ -81,6 +81,7 @@ TEST_F(PropertySheetTest, invalidAliases)  // NOLINT
                                              "mm",
                                              "no spaces allowed",
                                              "\'NoLeadingQuotes"};
+
     for (const auto& name : invalidAliases) {
         EXPECT_FALSE(propertySheet()->isValidAlias(name))
             << "\"" << name << "\" was accepted as an alias name, and should not be";
