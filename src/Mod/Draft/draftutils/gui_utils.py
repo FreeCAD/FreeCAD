@@ -896,6 +896,14 @@ def get_bbox(obj, debug=False):
     return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
 
 
+# Code by Yorik van Havre.
+def find_coin_node(parent, nodetype):
+    for i in range(parent.getNumChildren()):
+        if isinstance(parent.getChild(i), nodetype):
+            return parent.getChild(i)
+    return None
+
+
 # Code by Chris Hennes (chennes).
 # See https://forum.freecadweb.org/viewtopic.php?p=656362#p656362.
 # Used to fix https://github.com/FreeCAD/FreeCAD/issues/10469.
