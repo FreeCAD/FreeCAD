@@ -60,6 +60,7 @@
 #include <Quarter/Quarter.h>
 
 #include "Application.h"
+#include "ApplicationPy.h"
 #include "AxisOriginPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -436,7 +437,7 @@ Application::Application(bool GUIenabled)
                                                              "FreeCADGui",
                                                              FreeCADGui_doc,
                                                              -1,
-                                                             Application::Methods,
+                                                             ApplicationPy::Methods,
                                                              nullptr,
                                                              nullptr,
                                                              nullptr,
@@ -447,7 +448,7 @@ Application::Application(bool GUIenabled)
         }
         else {
             // extend the method list
-            PyModule_AddFunctions(module, Application::Methods);
+            PyModule_AddFunctions(module, ApplicationPy::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
         Py::Module(module).setAttr(std::string("HasQtBug_129596"),
