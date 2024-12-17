@@ -150,13 +150,19 @@ bool PropertySheet::isValidCellAddressName(const std::string& candidate)
 
 bool PropertySheet::isValidAlias(const std::string& candidate)
 {
+    /* Ensure it only contains allowed characters */
+    static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
+    boost::cmatch cm;
+    if (!boost::regex_match(candidate.c_str(), cm, gen)) {
+        return false;
+    }
 
     /* Check if it is used before */
     if (getValueFromAlias(candidate)) {
         return false;
     }
 
-    /* check if it would be a valid cell address name, e.g. "A2" or "C3" */
+    /* Check if it would be a valid cell address name, e.g. "A2" or "C3" */
     if (isValidCellAddressName(candidate)) {
         return false;
     }
