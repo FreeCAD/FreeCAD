@@ -31,7 +31,8 @@ void Base::UniqueNameManager::PiecewiseSparseIntegerSet::Add(unsigned int value)
     // Bear in mind that overlapping spans are neither less than nor greater than ech other.
     iterator above = Spans.lower_bound(newSpan);
     if (above != Spans.end() && above->first <= value) {
-        // A span was found that includes value so there is nothing to do as it is already in the set.
+        // A span was found that includes value so there is nothing to do as it is already in the
+        // set.
         return;
     }
 
@@ -115,9 +116,10 @@ bool Base::UniqueNameManager::PiecewiseSparseIntegerSet::Contains(unsigned int v
     return at != Spans.end() && at->first <= value;
 }
 
-std::tuple<unsigned int, unsigned int> Base::UniqueNameManager::decomposeName(const std::string& name,
-                                                              std::string& baseNameOut,
-                                                              std::string& nameSuffixOut) const
+std::tuple<unsigned int, unsigned int>
+Base::UniqueNameManager::decomposeName(const std::string& name,
+                                       std::string& baseNameOut,
+                                       std::string& nameSuffixOut) const
 {
     auto suffixStart = std::make_reverse_iterator(GetNameSuffixStartPosition(name));
     nameSuffixOut = name.substr(name.crend() - suffixStart);

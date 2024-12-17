@@ -106,8 +106,8 @@ private:
 
 public:
     std::tuple<unsigned int, unsigned int> decomposeName(const std::string& name,
-                                         std::string& baseNameOut,
-                                         std::string& nameSuffixOut) const;
+                                                         std::string& baseNameOut,
+                                                         std::string& nameSuffixOut) const;
 
     UniqueNameManager()
     {}
