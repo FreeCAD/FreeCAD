@@ -142,6 +142,7 @@ configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-r
 configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
 configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
 configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+freecad = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install"]}
 
 ## Tasks
 [tasks]
