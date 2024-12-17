@@ -1629,6 +1629,29 @@ int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline& b,
                               Constraint::Alignment::InternalAlignment);
 }
 
+int System::addConstraintInternalAlignmentBezierControlPoint(BezierCurve& b,
+                                                             Circle& c,
+                                                             unsigned int poleindex,
+                                                             int tagId,
+                                                             bool driving)
+{
+    addConstraintEqual(b.poles[poleindex].x,
+                       c.center.x,
+                       tagId,
+                       driving,
+                       Constraint::Alignment::InternalAlignment);
+    addConstraintEqual(b.poles[poleindex].y,
+                       c.center.y,
+                       tagId,
+                       driving,
+                       Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(b.weights[poleindex],
+                              c.rad,
+                              tagId,
+                              driving,
+                              Constraint::Alignment::InternalAlignment);
+}
+
 int System::addConstraintInternalAlignmentKnotPoint(BSpline& b,
                                                     Point& p,
                                                     unsigned int knotindex,
