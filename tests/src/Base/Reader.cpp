@@ -358,10 +358,13 @@ TEST_F(ReaderTest, invalidDefaults)
     xml.givenDataAsXMLStream(xmlBody);
 
     // Act / Assert
-    EXPECT_THROW({ xml.Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
-                 std::invalid_argument);
-    EXPECT_THROW({ xml.Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
-                 std::invalid_argument);
-    EXPECT_THROW({ xml.Reader()->getAttributeAsInteger("missing", "Not a Float"); },
-                 std::invalid_argument);
+    EXPECT_THROW(
+        { xml.Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
+        std::invalid_argument);
+    EXPECT_THROW(
+        { xml.Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
+        std::invalid_argument);
+    EXPECT_THROW(
+        { xml.Reader()->getAttributeAsInteger("missing", "Not a Float"); },
+        std::invalid_argument);
 }
