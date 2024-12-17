@@ -148,7 +148,7 @@ void check2DArray(Materials::MaterialProperty& prop)
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array2D);
     EXPECT_EQ(prop.getModelUUID(), QLatin1String("sampleUUID"));
     EXPECT_TRUE(prop.isNull());
-    auto array = std::static_pointer_cast<Materials::Material2DArray>(prop.getMaterialValue());
+    auto array = std::static_pointer_cast<Materials::Array2D>(prop.getMaterialValue());
     EXPECT_EQ(array->rows(), 0);
     auto variant = prop.getValue();  // Throw an error?
     EXPECT_FALSE(variant.canConvert<QString>());
@@ -187,7 +187,7 @@ void check3DArray(Materials::MaterialProperty& prop)
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array3D);
     EXPECT_EQ(prop.getModelUUID(), QLatin1String("sampleUUID"));
     EXPECT_TRUE(prop.isNull());
-    auto array = std::static_pointer_cast<Materials::Material3DArray>(prop.getMaterialValue());
+    auto array = std::static_pointer_cast<Materials::Array3D>(prop.getMaterialValue());
     EXPECT_EQ(array->depth(), 0);
     auto variant = prop.getValue();  // Throw an error?
     EXPECT_FALSE(variant.canConvert<QString>());

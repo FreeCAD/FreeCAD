@@ -34,42 +34,8 @@ using namespace Materials;
 // returns a string which represents the object e.g. when printed in python
 std::string ModelPy::representation() const
 {
-    ModelPy::PointerType ptr = getModelPtr();
     std::stringstream str;
-    str << "Property [Name=(";
-    str << ptr->getName().toStdString();
-    str << "), UUID=(";
-    str << ptr->getUUID().toStdString();
-    auto library = ptr->getLibrary();
-    if (library) {
-        str << "), Library Name=(";
-        str << ptr->getLibrary()->getName().toStdString();
-        str << "), Library Root=(";
-        str << ptr->getLibrary()->getDirectoryPath().toStdString();
-        str << "), Library Icon=(";
-        str << ptr->getLibrary()->getIconPath().toStdString();
-    }
-    str << "), Directory=(";
-    str << ptr->getDirectory().toStdString();
-    str << "), URL=(";
-    str << ptr->getURL().toStdString();
-    str << "), DOI=(";
-    str << ptr->getDOI().toStdString();
-    str << "), Description=(";
-    str << ptr->getDescription().toStdString();
-    str << "), Inherits=[";
-    auto& inherited = getModelPtr()->getInheritance();
-    for (auto it = inherited.begin(); it != inherited.end(); it++) {
-        QString uuid = *it;
-        if (it != inherited.begin()) {
-            str << "), UUID=(";
-        }
-        else {
-            str << "UUID=(";
-        }
-        str << uuid.toStdString() << ")";
-    }
-    str << "]]";
+    str << "<Model object at " << getModelPtr() << ">";
 
     return str.str();
 }
@@ -109,9 +75,38 @@ Py::String ModelPy::getName() const
     return Py::String(getModelPtr()->getName().toStdString());
 }
 
+void ModelPy::setName(Py::String arg)
+{
+    getModelPtr()->setName(QString::fromStdString(arg));
+}
+
+Py::String ModelPy::getType() const
+{
+    auto type = (getModelPtr()->getType() == Model::ModelType_Physical)
+        ? "Physical"
+        : "Appearance";
+
+    return Py::String(type);
+}
+
+void ModelPy::setType(Py::String arg)
+{
+    if (arg.as_std_string() == "Appearance") {
+        getModelPtr()->setType(Model::ModelType_Appearance);
+    }
+    else {
+        getModelPtr()->setType(Model::ModelType_Physical);
+    }
+}
+
 Py::String ModelPy::getDirectory() const
 {
-    return Py::String(getModelPtr()->getDirectoryPath().toStdString());
+    return Py::String(getModelPtr()->getDirectory().toStdString());
+}
+
+void ModelPy::setDirectory(Py::String arg)
+{
+    getModelPtr()->setDirectory(QString::fromStdString(arg));
 }
 
 Py::String ModelPy::getUUID() const
@@ -124,14 +119,29 @@ Py::String ModelPy::getDescription() const
     return Py::String(getModelPtr()->getDescription().toStdString());
 }
 
+void ModelPy::setDescription(Py::String arg)
+{
+    getModelPtr()->setDescription(QString::fromStdString(arg));
+}
+
 Py::String ModelPy::getURL() const
 {
     return Py::String(getModelPtr()->getURL().toStdString());
 }
 
+void ModelPy::setURL(Py::String arg)
+{
+    getModelPtr()->setURL(QString::fromStdString(arg));
+}
+
 Py::String ModelPy::getDOI() const
 {
     return Py::String(getModelPtr()->getDOI().toStdString());
+}
+
+void ModelPy::setDOI(Py::String arg)
+{
+    getModelPtr()->setDOI(QString::fromStdString(arg));
 }
 
 Py::List ModelPy::getInherited() const
@@ -148,7 +158,6 @@ Py::List ModelPy::getInherited() const
 
 Py::Dict ModelPy::getProperties() const
 {
-    // std::map<std::string, Model*> *models = getModelPtr()->getModels();
     Py::Dict dict;
 
     for (auto it = getModelPtr()->begin(); it != getModelPtr()->end(); it++) {
@@ -160,6 +169,31 @@ Py::Dict ModelPy::getProperties() const
     }
 
     return dict;
+}
+
+PyObject* ModelPy::addInheritance(PyObject* args)
+{
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
+        return nullptr;
+    }
+
+    getModelPtr()->addInheritance(QString::fromStdString(uuid));
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* ModelPy::addProperty(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &ModelPropertyPy::Type, &object)) {
+        return nullptr;
+    }
+    ModelProperty* property = static_cast<ModelPropertyPy*>(object)->getModelPropertyPtr();
+
+    getModelPtr()->addProperty(*property);
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 PyObject* ModelPy::getCustomAttributes(const char* /*attr*/) const

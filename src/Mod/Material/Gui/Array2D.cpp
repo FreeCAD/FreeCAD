@@ -63,7 +63,7 @@ Array2D::Array2D(const QString& propertyName,
     }
     if (_property) {
         _value =
-            std::static_pointer_cast<Materials::Material2DArray>(_property->getMaterialValue());
+            std::static_pointer_cast<Materials::Array2D>(_property->getMaterialValue());
         setWindowTitle(_property->getDisplayName());
     }
     else {

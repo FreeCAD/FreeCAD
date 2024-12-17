@@ -5,6 +5,9 @@ endif()
 
 add_subdirectory(lazy_loader)
 add_subdirectory(libE57Format)
+if (BUILD_MATERIAL_EXTERNAL)
+    add_subdirectory(lru-cache)
+endif()
 
 if (BUILD_ASSEMBLY AND NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
     if( NOT EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver/CMakeLists.txt" )
