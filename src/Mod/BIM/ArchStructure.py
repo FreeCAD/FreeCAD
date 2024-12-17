@@ -790,7 +790,7 @@ class _Structure(ArchComponent.Component):
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
+        if obj.Base and not self.ensureBase(obj):
             return
 
         base = None
@@ -1006,7 +1006,7 @@ class _Structure(ArchComponent.Component):
                                     # TODO use Part.Shape() rather than shape.copy() ... ?
                                     baseface = f.copy()
         elif length and width and height:
-            if (length > height) and (IfcType != "Slab"):
+            if (length > height) and (IfcType in ["Beam", "Column"]):
                 h2 = height/2 or 0.5
                 w2 = width/2 or 0.5
                 v1 = Vector(0,-w2,-h2)
@@ -1079,7 +1079,7 @@ class _Structure(ArchComponent.Component):
                 if not normal.Length:
                     normal = Vector(0,0,1)
                 extrusion = normal
-                if (length > height) and (IfcType != "Slab"):
+                if (length > height) and (IfcType in ["Beam", "Column"]):
                     if length:
                         extrusion = normal.multiply(length)
                 else:
@@ -1108,7 +1108,7 @@ class _Structure(ArchComponent.Component):
             extdata = self.getExtrusionData(obj)
             if extdata and not isinstance(extdata[0],list):
                 nodes = extdata[0]
-                if IfcType not in ["Slab"]:
+                if IfcType in ["Beam", "Column"]:
                     if not isinstance(extdata[1], FreeCAD.Vector):
                         nodes = extdata[1]
                     elif extdata[1].Length > 0:
