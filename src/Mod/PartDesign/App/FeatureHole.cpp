@@ -1672,7 +1672,8 @@ void Hole::onChanged(const App::Property* prop)
             CustomThreadClearance.setReadOnly(!UseCustomThreadClearance.getValue());
             ThreadDepthType.setReadOnly(false);
             ThreadDepth.setReadOnly(std::string(ThreadDepthType.getValueAsString()) != "Dimension");
-            TaperedAngle.setValue(getThreadProfileAngle());
+            if (Tapered.getValue() && TaperedAngle.getValue() == 90)
+                TaperedAngle.setValue(getThreadProfileAngle());
         }
         else {
             ThreadClass.setReadOnly(true);
@@ -1707,10 +1708,11 @@ void Hole::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &Tapered) {
-        if (Tapered.getValue())
+        if (Tapered.getValue()) {
             TaperedAngle.setReadOnly(false);
-            if (Threaded.getValue())
+            if (Threaded.getValue() && TaperedAngle.getValue() == 90)
                 TaperedAngle.setValue(getThreadProfileAngle());
+        }
         else {
             TaperedAngle.setValue(90);
             TaperedAngle.setReadOnly(true);
