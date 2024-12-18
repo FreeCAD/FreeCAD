@@ -449,7 +449,7 @@ void QuantitySpinBox::updateEdit(const QString& text)
 
     edit->setText(text);
 
-    cursor = qBound(0, cursor, edit->displayText().size() - d->unitStr.size());
+    cursor = qBound(0, cursor, qMax(0, edit->displayText().size() - d->unitStr.size()));
     if (selsize > 0) {
         edit->setSelection(0, cursor);
     }

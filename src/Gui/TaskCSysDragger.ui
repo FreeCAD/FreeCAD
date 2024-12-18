@@ -126,16 +126,10 @@
          </property>
          <item row="4" column="1">
           <widget class="Gui::QuantitySpinBox" name="zPositionSpinBox">
-           <property name="unit" stdset="0">
-            <string>mm</string>
-           </property>
           </widget>
          </item>
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="xPositionSpinBox">
-           <property name="unit" stdset="0">
-            <string>mm</string>
-           </property>
           </widget>
          </item>
          <item row="2" column="0">
@@ -188,9 +182,6 @@
          </item>
          <item row="3" column="1">
           <widget class="Gui::QuantitySpinBox" name="yPositionSpinBox">
-           <property name="unit" stdset="0">
-            <string>mm</string>
-           </property>
           </widget>
          </item>
         </layout>
@@ -370,9 +361,6 @@
       </item>
       <item row="6" column="1">
        <widget class="Gui::QuantitySpinBox" name="translationIncrementSpinBox">
-        <property name="unit" stdset="0">
-         <string>mm</string>
-        </property>
         <property name="minimum">
          <double>0.000000000000000</double>
         </property>
