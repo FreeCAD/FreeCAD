@@ -29,10 +29,12 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFString.h>
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoIdleSensor.h>
+#include <Inventor/nodes/SoBaseColor.h>
 #include <FCGlobal.h>
 
 class SoCamera;
@@ -50,12 +52,23 @@ namespace Gui
 class TDragger : public SoDragger
 {
     SO_KIT_HEADER(TDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(translatorSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(activeColor);
     SO_KIT_CATALOG_ENTRY_HEADER(translator);
-    SO_KIT_CATALOG_ENTRY_HEADER(translatorActive);
+    SO_KIT_CATALOG_ENTRY_HEADER(cylinderSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(coneSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(labelSeparator);
+
+    static constexpr float coneBottomRadius { 0.8f };
+    static constexpr float coneHeight { 2.5f };
+
+    static constexpr float cylinderHeight { 10.0f };
+    static constexpr float cylinderRadius { 0.1f };
 public:
     static void initClass();
     TDragger();
+
+    SoSFString label; //!< set from outside and used to label
     SoSFVec3f translation; //!< set from outside and used from outside for single precision.
     SoSFDouble translationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 translationIncrementCount; //!< number of steps. used from outside.
@@ -82,6 +95,12 @@ private:
     void buildFirstInstance();
     SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
     SoGroup* buildGeometry();
+
+    SoSeparator* buildCylinderGeometry() const;
+    SoSeparator* buildConeGeometry() const;
+    SoSeparator* buildLabelGeometry();
+    SoBaseColor* buildActiveColor();
+
     using inherited = SoDragger;
 };
 
@@ -198,6 +217,7 @@ class GuiExport SoFCCSysDragger : public SoDragger
     SO_KIT_HEADER(SoFCCSysDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(annotation);
     SO_KIT_CATALOG_ENTRY_HEADER(scaleNode);
+    SO_KIT_CATALOG_ENTRY_HEADER(pickStyle);
     // Translator
     SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorSwitch);
@@ -262,6 +282,10 @@ public:
     SoSFInt32 rotationIncrementCountX; //!< used from outside for rotation x steps.
     SoSFInt32 rotationIncrementCountY; //!< used from outside for rotation y steps.
     SoSFInt32 rotationIncrementCountZ; //!< used from outside for rotation z steps.
+
+    SoSFString xAxisLabel; //!< label for X axis
+    SoSFString yAxisLabel; //!< label for Y axis
+    SoSFString zAxisLabel; //!< label for Z axis
 
     void clearIncrementCounts(); //!< used to reset after drag update.
 
