@@ -21,11 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" A Qt Widget for displaying Addon README information """
+"""A Qt Widget for displaying Addon README information"""
 
 import FreeCAD
 from Addon import Addon
+from addonmanager_metadata import MetadataReader, UrlType
 import addonmanager_utilities as utils
+import xml.etree.ElementTree
 
 from enum import IntEnum, Enum, auto
 from html.parser import HTMLParser
@@ -37,6 +39,8 @@ translate = FreeCAD.Qt.translate
 
 from PySide import QtCore, QtGui
 
+import addonmanager_freecad_interface as fci
+
 
 class ReadmeDataType(IntEnum):
     PlainText = 0
@@ -44,7 +48,7 @@ class ReadmeDataType(IntEnum):
     Html = 2
 
 
-class ReadmeController(QtCore.QObject):
+class DocumentController(QtCore.QObject):
     """A class that can provide README data from an Addon, possibly loading external resources such
     as images"""
 
@@ -64,7 +68,7 @@ class ReadmeController(QtCore.QObject):
         self.widget.load_resource.connect(self.loadResource)
         self.widget.follow_link.connect(self.follow_link)
 
-    def set_addon(self, repo: Addon):
+    def set_addon(self, repo: Addon, document: int):
         """Set which Addon's information is displayed"""
 
         self.addon = repo
@@ -83,7 +87,54 @@ class ReadmeController(QtCore.QObject):
                 )
                 return
         else:
-            self.url = utils.get_readme_url(repo)
+            # TODO: multiple urls
+            package_url = utils.get_metadata_url(repo)
+            # urls = repo.metadata.url
+            # print("urls ==================================00")
+            # print(urls)
+            # print("\n")
+            readme_url = None
+            changelog_url = None
+            contributing_url = None
+
+            # NOTE: blob URLs bad for Addon Manager, good for users (web-browser)
+            # for url in repo.metadata.url:
+            #     if url.type == UrlType.readme:
+            #         readme_url = url.location
+            #         print(f"The readme url is: {readme_url}\n")
+            #     elif url.type == UrlType.changelog:
+            #         changelog_url = url.location
+            #         print(f"The changelog url is: {changelog_url}\n")
+            #     elif url.type == UrlType.contributing:
+            #         contributing_url = url.location
+            #         print(f"The contributing url is: {contributing_url}\n")
+
+            # NOTE: not needed because already have links
+            # TODO: delete
+            # try:
+            #     metadata = MetadataReader.from_url(package_url)
+            #     print("metadta ===============================00")
+            #     print(metadata)
+            #     print("\n")
+            # except xml.etree.ElementTree.ParseError:
+            #     fci.Console.PrintWarning(
+            #         "An invalid or corrupted package.xml file was downloaded for"
+            #     )
+            #     fci.Console.PrintWarning(f" {package_url}... ignoring the bad data.\n")
+
+            # Attempt to read URLs from online `package.xml` file, else use hardcoded guesses (raw links)
+            if document == 0:  # README
+                print(f"The alternative link is: {utils.get_readme_url(repo)}\n")
+                self.url = readme_url or utils.get_readme_url(repo)
+            elif document == 1:  # CHANGELOG
+                print(f"The alternative link is: {utils.get_changelog_url(repo)}\n")
+                self.url = changelog_url or utils.get_changelog_url(repo)
+            elif document == 2:  # CONTRIBUTING
+                print(f"The alternative link is: {utils.get_contrib_url(repo)}\n")
+                self.url = contributing_url or utils.get_contrib_url(repo)
+            elif document == 3:  # LICENSE
+                self.url = utils.get_license_url(repo)
+
         self.widget.setUrl(self.url)
 
         self.widget.setText(
