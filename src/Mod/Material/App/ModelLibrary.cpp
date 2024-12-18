@@ -24,6 +24,8 @@
 #include <string>
 #endif
 
+#include <QFileInfo>
+
 #include <App/Application.h>
 
 #include "Exceptions.h"
@@ -34,79 +36,13 @@
 
 using namespace Materials;
 
-TYPESYSTEM_SOURCE(Materials::LibraryBase, Base::BaseClass)
+TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::Library)
 
-LibraryBase::LibraryBase(const QString& libraryName, const QString& dir, const QString& icon)
-    : _name(libraryName)
-    , _directory(QDir::cleanPath(dir))
-    , _iconPath(icon)
-{}
-
-bool LibraryBase::operator==(const LibraryBase& library) const
-{
-    return (_name == library._name) && (_directory == library._directory);
-}
-
-QString LibraryBase::getLocalPath(const QString& path) const
-{
-    QString filePath = getDirectoryPath();
-    if (!(filePath.endsWith(QLatin1String("/")) || filePath.endsWith(QLatin1String("\\")))) {
-        filePath += QLatin1String("/");
-    }
-
-    QString cleanPath = QDir::cleanPath(path);
-    QString prefix = QStringLiteral("/") + getName();
-    if (cleanPath.startsWith(prefix)) {
-        // Remove the library name from the path
-        filePath += cleanPath.right(cleanPath.length() - prefix.length());
-    }
-    else {
-        filePath += cleanPath;
-    }
-
-    return filePath;
-}
-
-bool LibraryBase::isRoot(const QString& path) const
-{
-    QString localPath = getLocalPath(path);
-    QString cleanPath = getLocalPath(QStringLiteral(""));
-    std::string pLocal = localPath.toStdString();
-    std::string pclean = cleanPath.toStdString();
-    return (cleanPath == localPath);
-}
-
-QString LibraryBase::getRelativePath(const QString& path) const
-{
-    QString filePath;
-    QString cleanPath = QDir::cleanPath(path);
-    QString prefix = QStringLiteral("/") + getName();
-    if (cleanPath.startsWith(prefix)) {
-        // Remove the library name from the path
-        filePath = cleanPath.right(cleanPath.length() - prefix.length());
-    }
-    else {
-        filePath = cleanPath;
-    }
-
-    prefix = getDirectoryPath();
-    if (filePath.startsWith(prefix)) {
-        // Remove the library root from the path
-        filePath = filePath.right(filePath.length() - prefix.length());
-    }
-
-    // Remove any leading '/'
-    if (filePath.startsWith(QStringLiteral("/"))) {
-        filePath.remove(0, 1);
-    }
-
-    return filePath;
-}
-
-TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::LibraryBase)
-
-ModelLibrary::ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon)
-    : LibraryBase(libraryName, dir, icon)
+ModelLibrary::ModelLibrary(const QString& libraryName,
+                           const QString& dir,
+                           const QString& icon,
+                           bool readOnly)
+    : Library(libraryName, dir, icon, readOnly)
 {
     _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
 }
@@ -131,9 +67,11 @@ std::shared_ptr<Model> ModelLibrary::getModelByPath(const QString& path) const
 std::shared_ptr<Model> ModelLibrary::addModel(const Model& model, const QString& path)
 {
     QString filePath = getRelativePath(path);
+    QFileInfo info(filePath);
     std::shared_ptr<Model> newModel = std::make_shared<Model>(model);
     newModel->setLibrary(getptr());
-    newModel->setDirectory(filePath);
+    newModel->setDirectory(getLibraryPath(filePath, info.fileName()));
+    newModel->setFilename(info.fileName());
 
     (*_modelPathMap)[filePath] = newModel;
 
@@ -158,6 +96,7 @@ ModelLibrary::getModelTree(ModelFilter filter) const
             for (auto& itp : list) {
                 if (ModelManager::isModel(itp)) {
                     std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();
+                    child->setUUID(model->getUUID());
                     child->setData(model);
                     (*node)[itp] = child;
                 }

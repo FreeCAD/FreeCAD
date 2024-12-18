@@ -52,10 +52,13 @@ endif()
 generate_from_xml(Array2DPy)
 generate_from_xml(Array3DPy)
 generate_from_xml(MaterialFilterPy)
+generate_from_xml(MaterialFilterOptionsPy)
+generate_from_xml(MaterialLibraryPy)
 generate_from_xml(MaterialManagerPy)
 generate_from_xml(MaterialPy)
 generate_from_xml(ModelManagerPy)
 generate_from_xml(ModelPropertyPy)
+generate_from_xml(MaterialPropertyPy)
 generate_from_xml(ModelPy)
 generate_from_xml(UUIDsPy)
 
@@ -65,12 +68,18 @@ SET(Python_SRCS
     Array2DPyImp.cpp
     Array3DPy.xml
     Array3DPyImp.cpp
-    MaterialManagerPy.xml
-    MaterialManagerPyImp.cpp
-    MaterialPy.xml
-    MaterialPyImp.cpp
+    MaterialFilterOptionsPy.xml
+    MaterialFilterOptionsPyImp.cpp
     MaterialFilterPy.xml
     MaterialFilterPyImp.cpp
+    MaterialLibraryPy.xml
+    MaterialLibraryPyImp.cpp
+    MaterialManagerPy.xml
+    MaterialManagerPyImp.cpp
+    MaterialPropertyPy.xml
+    MaterialPropertyPyImp.cpp
+    MaterialPy.xml
+    MaterialPyImp.cpp
     ModelManagerPy.xml
     ModelManagerPyImp.cpp
     ModelPropertyPy.xml
@@ -86,6 +95,8 @@ SET(Materials_SRCS
     ${Python_SRCS}
     AppMaterial.cpp
     FolderTree.h
+    Library.cpp
+    Library.h
     MaterialConfigLoader.cpp
     MaterialConfigLoader.h
     MaterialFilter.cpp
@@ -96,6 +107,8 @@ SET(Materials_SRCS
     MaterialLoader.h
     MaterialManager.cpp
     MaterialManager.h
+    MaterialManagerLocal.cpp
+    MaterialManagerLocal.h
     Materials.cpp
     Materials.h
     MaterialValue.cpp
@@ -108,12 +121,16 @@ SET(Materials_SRCS
     ModelLoader.h
     ModelManager.cpp
     ModelManager.h
+    ModelManagerLocal.cpp
+    ModelManagerLocal.h
     ModelUuids.cpp
     ModelUuids.h
     PreCompiled.cpp
     PreCompiled.h
     PropertyMaterial.cpp
     PropertyMaterial.h
+    PyVariants.cpp
+    PyVariants.h
     trim.h
 )
 

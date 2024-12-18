@@ -61,8 +61,6 @@ void CmdMaterialEdit::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Base::Console().Log("Material_Edit\n");
-
     static QPointer<QDialog> dlg = nullptr;
     if (!dlg) {
         dlg = new MatGui::MaterialsEditor(Gui::getMainWindow());

@@ -52,8 +52,8 @@ protected:
     }
 
     void SetUp() override {
-        _modelManager = new Materials::ModelManager();
-        _materialManager = new Materials::MaterialManager();
+        _modelManager = &(Materials::ModelManager::getManager());
+        _materialManager = &(Materials::MaterialManager::getManager());
 
         // Use our test files as a custom directory
         ParameterGrp::handle hGrp =

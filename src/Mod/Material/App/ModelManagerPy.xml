@@ -10,7 +10,7 @@
       FatherInclude="Base/BaseClassPy.h"
       FatherNamespace="Base"
       Constructor="true"
-      Delete="true">
+      Delete="false">
     <Documentation>
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material model descriptions.</UserDocu>
@@ -30,6 +30,12 @@
         <UserDocu>List of model libraries.</UserDocu>
       </Documentation>
       <Parameter Name="ModelLibraries" Type="List"/>
+    </Attribute>
+    <Attribute Name="LocalModelLibraries" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of local model libraries.</UserDocu>
+      </Documentation>
+      <Parameter Name="LocalModelLibraries" Type="List"/>
     </Attribute>
     <Attribute Name="Models" ReadOnly="true">
       <Documentation>
