@@ -796,7 +796,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionArrowDirs()
     }
 
     gp_Vec gProfileVector = makeProfileVector(profileWire);
-    gp_Vec gSectionNormal = gp_Vec(DU::togp_Dir(SectionNormal.getValue()));
+    gp_Vec gSectionNormal = gp_Vec(DU::to<gp_Dir>(SectionNormal.getValue()));
     gp_Vec gExtrudeVector = (gSectionNormal.Crossed(gProfileVector)).Normalized();
     Base::Vector3d vClosestBasis = DrawUtil::closestBasis(gp_Dir(gExtrudeVector), getSectionCS());
     gp_Dir gExtrudeDir = gp_Dir(vClosestBasis.x, vClosestBasis.y, vClosestBasis.z);
