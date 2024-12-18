@@ -221,12 +221,13 @@ std::string Placement::toString()
     double angle;
     rot.getRawValue(axis, angle);
 
-    return fmt::format("position ({:.1f}, {:.1f}, {:.1f}), axis ({:.1f}, {:.1f}, {:.1f}), angle {:.1f}\n",
-                       pos.x,
-                       pos.y,
-                       pos.z,
-                       axis.x,
-                       axis.y,
-                       axis.z,
-                       angle);
+    return fmt::format(
+        "position ({:.1f}, {:.1f}, {:.1f}), axis ({:.1f}, {:.1f}, {:.1f}), angle {:.1f}\n",
+        pos.x,
+        pos.y,
+        pos.z,
+        axis.x,
+        axis.y,
+        axis.z,
+        angle);
 }
