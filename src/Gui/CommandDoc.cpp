@@ -122,26 +122,14 @@ void StdCmdOpen::activated(int iMsg)
                 return;
             }
 
-            // Display the warning message
-            QMessageBox msgBox(QMessageBox::Warning,
-                QObject::tr("File Migration Warning"),
-                QObject::tr("This file was created with an older version of %1. "
-                    "Origin axes had incorrect placements, which have now been corrected.\n\n"
-                    "However, if you save this file in the current version and reopen it in an"
-                    " older version of %1, the origin axes will be misaligned. Additionally, "
-                    "if your file references these origin axes, your file will likely be broken.")
-                .arg(QApplication::applicationName()),
-                QMessageBox::Ok);
-
-            QCheckBox* checkBox = new QCheckBox(QObject::tr("Don't show this warning again"));
-            msgBox.setCheckBox(checkBox);
-
-            msgBox.exec();
-
-            // Save preference if the user selects "Don't show again"
-            if (checkBox->isChecked()) {
-                grp->SetBool("ShowLCSMigrationWarning", false);
-            }
+            QString msg = QObject::tr("This file was created with an older version of %1.\n"
+                    "Origin axes had inconsistent placements between different coordinate systems,"
+                    " which have now been harmonized.\n\n"
+                    "However, if you save this file in the current version and reopen it in"
+                    " version 1.0 or older, the origin axes will be misaligned.")
+                .arg(QApplication::applicationName());
+            std::string str = msg.toStdString();
+            Base::Console().Warning("%s\n", str.c_str());
         }
     };
     // clang-format on
