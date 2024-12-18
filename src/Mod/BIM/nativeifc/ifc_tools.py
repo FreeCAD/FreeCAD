@@ -395,7 +395,7 @@ def get_children(
 
 
 def get_freecad_children(obj):
-    """Returns the childen of this object that exist in the documemt"""
+    """Returns the children of this object that exist in the document"""
 
     objs = []
     children = get_children(obj)

@@ -169,7 +169,7 @@ def removeComponents(objectsList,host=None):
                     # Check if o and o.Base has Attachment Support, and
                     # if the support is the host object itself - thus a cyclic
                     # dependency and probably creating TNP.
-                    # If above is postive, remove its AttachmentSupport:
+                    # If above is positive, remove its AttachmentSupport:
                     if hasattr(o,"Base") and o.Base:
                         objList = [o, o.Base]
                     else:
@@ -771,7 +771,7 @@ def pruneIncluded(objectslist,strict=False):
                         # don't consider a PartDesign_Body with a PartDesign_Clone that references obj
                         pass
                     elif parent.isDerivedFrom("PartDesign::SubShapeBinder") or (hasattr(parent, "TypeId") and parent.TypeId == "PartDesign::ShapeBinder"):
-                        # don't consider a PartDesign_SubShapeBinder or PartDesign_ShapeBinder referncing this object from another object
+                        # don't consider a PartDesign_SubShapeBinder or PartDesign_ShapeBinder referencing this object from another object
                         pass
                     elif hasattr(parent,"Host") and parent.Host == obj:
                         pass
