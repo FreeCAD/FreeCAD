@@ -220,9 +220,6 @@ class TestCcxTools(unittest.TestCase):
 
     # ********************************************************************************************
     def test_constraint_centrif(self):
-        # TODO does pass on my local machine, but not on ci
-        return
-
         from femexamples.constraint_centrif import setup
 
         setup(self.document, "ccxtools")
@@ -237,9 +234,6 @@ class TestCcxTools(unittest.TestCase):
 
     # ********************************************************************************************
     def test_constraint_contact_solid_solid(self):
-        # TODO does pass on my local machine, but not on ci
-        return
-
         from femexamples.constraint_contact_solid_solid import setup
 
         setup(self.document, "ccxtools")
