@@ -496,7 +496,7 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 
     // arc of circle
     else {
-        
+
         double ax = s.X() - p.X();
         double ay = s.Y() - p.Y();
         double bx = e.X() - p.X();
@@ -542,7 +542,7 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
     double r1 = ellp.MajorRadius();
     double r2 = ellp.MinorRadius();
     double dp = ellp.Axis().Direction().Dot(gp_Vec(0, 0, 1));
-    
+
     gp_Dir xaxis = ellp.XAxis().Direction();
     double angle = xaxis.AngleWithRef(gp_Dir(1, 0, 0), gp_Dir(0, 0, -1));
 
