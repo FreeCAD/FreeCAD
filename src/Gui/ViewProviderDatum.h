@@ -25,7 +25,6 @@
 
 #include "ViewProviderGeometryObject.h"
 
-class SoText2;
 class SoScale;
 
 namespace Gui
@@ -46,9 +45,6 @@ namespace Gui
         /// Get point derived classes will add their specific stuff
         SoSeparator* getDatumRoot() const { return pRoot; }
 
-        /// Get pointer to the text label associated with the feature
-        SoText2* getLabel() const { return pLabel; }
-
         void attach(App::DocumentObject*) override;
         std::vector<std::string> getDisplayModes() const override;
         void setDisplayMode(const char* ModeName) override;
@@ -63,13 +59,15 @@ namespace Gui
         { }
         ///@}
 
+        void setTemporaryScale(double factor);
+        void resetTemporarySize();
+
     protected:
         void onChanged(const App::Property* prop) override;
         bool onDelete(const std::vector<std::string>&) override;
     protected:
         SoSeparator* pRoot;
         SoShapeScale* soScale;
-        SoText2* pLabel;
         double lineThickness;
     };
 
