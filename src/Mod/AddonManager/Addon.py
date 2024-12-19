@@ -49,7 +49,7 @@ translate = fci.translate
 
 #  A list of internal workbenches that can be used as a dependency of an Addon
 INTERNAL_WORKBENCHES = {
-    "arch": "Arch",
+    "bim": "BIM",
     "assembly": "Assembly",
     "draft": "Draft",
     "fem": "FEM",

@@ -42,8 +42,7 @@ ViewProviderArea::~ViewProviderArea()
 
 std::vector<App::DocumentObject*> ViewProviderArea::claimChildren() const
 {
-    return std::vector<App::DocumentObject*>(
-        static_cast<Path::FeatureArea*>(getObject())->Sources.getValues());
+    return std::vector<App::DocumentObject*>(getObject<Path::FeatureArea>()->Sources.getValues());
 }
 
 bool ViewProviderArea::canDragObjects() const
@@ -58,7 +57,7 @@ bool ViewProviderArea::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderArea::dragObject(App::DocumentObject* obj)
 {
-    Path::FeatureArea* area = static_cast<Path::FeatureArea*>(getObject());
+    Path::FeatureArea* area = getObject<Path::FeatureArea>();
     std::vector<App::DocumentObject*> sources = area->Sources.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end();
          ++it) {
@@ -82,7 +81,7 @@ bool ViewProviderArea::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderArea::dropObject(App::DocumentObject* obj)
 {
-    Path::FeatureArea* area = static_cast<Path::FeatureArea*>(getObject());
+    Path::FeatureArea* area = getObject<Path::FeatureArea>();
     std::vector<App::DocumentObject*> sources = area->Sources.getValues();
     sources.push_back(obj);
     area->Sources.setValues(sources);
@@ -106,7 +105,7 @@ void ViewProviderArea::updateData(const App::Property* prop)
 bool ViewProviderArea::onDelete(const std::vector<std::string>&)
 {
     // get the input shapes
-    Path::FeatureArea* area = static_cast<Path::FeatureArea*>(getObject());
+    Path::FeatureArea* area = getObject<Path::FeatureArea>();
     std::vector<App::DocumentObject*> pShapes = area->Sources.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end();
          ++it) {
@@ -132,7 +131,7 @@ ViewProviderAreaView::~ViewProviderAreaView()
 std::vector<App::DocumentObject*> ViewProviderAreaView::claimChildren() const
 {
     std::vector<App::DocumentObject*> ret;
-    Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
+    Path::FeatureAreaView* feature = getObject<Path::FeatureAreaView>();
     if (feature->Source.getValue()) {
         ret.push_back(feature->Source.getValue());
     }
@@ -151,7 +150,7 @@ bool ViewProviderAreaView::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderAreaView::dragObject(App::DocumentObject*)
 {
-    Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
+    Path::FeatureAreaView* feature = getObject<Path::FeatureAreaView>();
     feature->Source.setValue(nullptr);
 }
 
@@ -167,7 +166,7 @@ bool ViewProviderAreaView::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderAreaView::dropObject(App::DocumentObject* obj)
 {
-    Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
+    Path::FeatureAreaView* feature = getObject<Path::FeatureAreaView>();
     feature->Source.setValue(obj);
 }
 
@@ -182,7 +181,7 @@ void ViewProviderAreaView::updateData(const App::Property* prop)
 
 bool ViewProviderAreaView::onDelete(const std::vector<std::string>&)
 {
-    Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
+    Path::FeatureAreaView* feature = getObject<Path::FeatureAreaView>();
     Gui::Application::Instance->showViewProvider(feature->Source.getValue());
     return true;
 }

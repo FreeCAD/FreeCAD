@@ -95,14 +95,16 @@ class BIMWorkbench(Workbench):
             "BIM_DimensionVertical",
             "BIM_Leader",
             "Draft_Label",
+            "Draft_Hatch",
             "Arch_Axis",
             "Arch_AxisSystem",
             "Arch_Grid",
             "Arch_SectionPlane",
-            "Draft_Hatch",
+            "BIM_DrawingView",
+            "BIM_Shape2DView",
+            "BIM_Shape2DCut",
             "BIM_TDPage",
             "BIM_TDView",
-            "BIM_Shape2DView",
         ]
 
         self.bimtools = [
@@ -474,7 +476,7 @@ class BIMWorkbench(Workbench):
     def Activated(self):
 
         import WorkingPlane
-        from DraftGui import todo
+        from draftutils import todo
         import BimStatus
         from nativeifc import ifc_observer
         from draftutils import grid_observer
@@ -489,8 +491,8 @@ class BIMWorkbench(Workbench):
         grid_observer._view_observer_setup()
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
-            todo.delay(FreeCADGui.runCommand, "BIM_Welcome")
-        todo.delay(BimStatus.setStatusIcons, True)
+            todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
+        todo.ToDo.delay(BimStatus.setStatusIcons, True)
         FreeCADGui.Control.clearTaskWatcher()
 
         class BimWatcher:
@@ -552,7 +554,7 @@ class BIMWorkbench(Workbench):
 
     def Deactivated(self):
 
-        from DraftGui import todo
+        from draftutils import todo
         import BimStatus
         from bimcommands import BimViews
         import WorkingPlane
@@ -573,7 +575,7 @@ class BIMWorkbench(Workbench):
         grid_observer._view_observer_setup()
 
         # print("Deactivating status icon")
-        todo.delay(BimStatus.setStatusIcons, False)
+        todo.ToDo.delay(BimStatus.setStatusIcons, False)
         FreeCADGui.Control.clearTaskWatcher()
 
         # store views widget state and vertical size

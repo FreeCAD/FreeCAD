@@ -47,7 +47,7 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
 
     App::DocumentObject* sketch = pcLoft->getVerifiedSketch(true);
     if (sketch)
@@ -88,7 +88,7 @@ void ViewProviderLoft::unsetEdit(int ModNum) {
 
 bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
 {/*
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
 
     // get the Sketch
     Sketcher::SketchObject *pcSketch = 0;
@@ -105,14 +105,14 @@ bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
 
 void ViewProviderLoft::highlightProfile(bool on)
 {
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
     highlightReferences(dynamic_cast<Part::Feature*>(pcLoft->Profile.getValue()),
                         pcLoft->Profile.getSubValues(), on);
 }
 
 void ViewProviderLoft::highlightSection(bool on)
 {
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
     auto sections = pcLoft->Sections.getSubListValues();
     for (auto& it : sections) {
         // only take the entire shape when we have a sketch selected, but
@@ -171,7 +171,7 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
 
 QIcon ViewProviderLoft::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
-    auto* prim = static_cast<PartDesign::Loft*>(getObject());
+    auto* prim = getObject<PartDesign::Loft>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
         str += QString::fromLatin1("Additive");
     else

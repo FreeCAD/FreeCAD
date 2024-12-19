@@ -115,11 +115,12 @@
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderMaterialObject.h"
-#include "ViewProviderOrigin.h"
-#include "ViewProviderOriginFeature.h"
+#include "ViewProviderCoordinateSystem.h"
+#include "ViewProviderDatum.h"
 #include "ViewProviderOriginGroup.h"
 #include "ViewProviderPlacement.h"
 #include "ViewProviderPlane.h"
+#include "ViewProviderPoint.h"
 #include "ViewProviderPart.h"
 #include "ViewProviderFeaturePython.h"
 #include "ViewProviderTextDocument.h"
@@ -559,8 +560,15 @@ Application::Application(bool GUIenabled)
     _pcWorkbenchDictionary = PyDict_New();
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    // Instantiate the 3Dconnexion controller
-    pNavlibInterface = new NavlibInterface();
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        // Instantiate the 3Dconnexion controller
+        pNavlibInterface = new NavlibInterface();
+    }
+    else {
+        pNavlibInterface = nullptr;
+    }
 #endif
 
     if (GUIenabled) {
@@ -2068,14 +2076,15 @@ void Application::initTypes()
     Gui::ViewProviderGeometryPython             ::init();
     Gui::ViewProviderPlacement                  ::init();
     Gui::ViewProviderPlacementPython            ::init();
-    Gui::ViewProviderOriginFeature              ::init();
+    Gui::ViewProviderDatum                      ::init();
     Gui::ViewProviderPlane                      ::init();
+    Gui::ViewProviderPoint                      ::init();
     Gui::ViewProviderLine                       ::init();
     Gui::ViewProviderGeoFeatureGroup            ::init();
     Gui::ViewProviderGeoFeatureGroupPython      ::init();
     Gui::ViewProviderOriginGroup                ::init();
     Gui::ViewProviderPart                       ::init();
-    Gui::ViewProviderOrigin                     ::init();
+    Gui::ViewProviderCoordinateSystem           ::init();
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
@@ -2293,7 +2302,9 @@ void Application::runApplication()
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    Instance->pNavlibInterface->enableNavigation();
+    if (Instance->pNavlibInterface) {
+        Instance->pNavlibInterface->enableNavigation();
+    }
 #endif
 
     runEventLoop(mainApp);

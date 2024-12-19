@@ -195,6 +195,8 @@ class CurtainWall(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         import Part,DraftGeomUtils
 
@@ -547,8 +549,8 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
                     if ('DiffuseColor' in mat.Material) and ("(" in mat.Material['DiffuseColor']):
                         panelcolor = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                     paneltransparency = 0
-        basecolor = basecolor[:3]+(basetransparency,)
-        panelcolor = panelcolor[:3]+(paneltransparency,)
+        basecolor = basecolor[:3]+(1.0 - basetransparency,)
+        panelcolor = panelcolor[:3]+(1.0 - paneltransparency,)
         colors = []
         nmullions = obj.VerticalMullionNumber + obj.HorizontalMullionNumber + obj.DiagonalMullionNumber
         for i,solid in enumerate(obj.Shape.Solids):

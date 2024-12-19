@@ -588,7 +588,7 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
                 }   break;
                 case 2:
                 {
-                    QRgb rgb = col.rgb();
+                    QRgb rgb = col.rgba();
                     line[0] = qGray(rgb);
                     line[1] = qAlpha(rgb);
                 }   break;
@@ -601,7 +601,7 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
                 }   break;
                 case 4:
                 {
-                    QRgb rgb = col.rgb();
+                    QRgb rgb = col.rgba();
                     line[0] = qRed(rgb);
                     line[1] = qGreen(rgb);
                     line[2] = qBlue(rgb);

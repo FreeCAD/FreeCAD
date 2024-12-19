@@ -1950,6 +1950,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             }
             result = base;
         }
+        result = refineShapeIfActive(result);
 
         if (!isSingleSolidRuleSatisfied(result.getShape())) {
             return new App::DocumentObjectExecReturn(

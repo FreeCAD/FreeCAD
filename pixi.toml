@@ -1,0 +1,153 @@
+[project]
+name = "FreeCAD"
+version = "0.22.0"
+description = "pixi instructions for FreeCAD"
+authors = ["looooo <sppedflyer@gmail.com>"]
+channels = ["conda-forge/label/pivy_rc", "conda-forge"]
+platforms = [ "linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64" ]
+
+[dependencies]
+ccache = "*"
+cmake = "3.28.3"
+coin3d = "*"
+compilers = "*"
+conda-devenv = "*"
+debugpy = "*"
+doxygen = "*"
+eigen = "*"
+fmt = "*"
+freetype = "*"
+git = "*"
+graphviz = "*"
+hdf5 = "*"
+libboost-devel = "*"
+matplotlib = "*"
+ninja = "*"
+noqt5 = "*"
+numpy = "*"
+occt = "*"
+openssl = "*"
+pcl = "*"
+pip = "*"
+pivy = "*"
+ply = "*"
+pre-commit = "*"
+pybind11 = "*"
+pyside6 = "*"
+python = "3.12"
+pyyaml = "*"
+qt6-main = "*"
+scipy = ">=1.14.1,<2"
+six = "*"
+smesh = "*"
+swig = "*"
+vtk = "*"
+xerces-c = "*"
+yaml-cpp = "*"
+zlib = "*"
+zstd = "*"
+
+## Linux Dependencies (x86-64)
+[target.linux-64.dependencies]
+kernel-headers_linux-64 = "*"
+libdrm-cos6-x86_64 = "*"
+libselinux-cos6-x86_64 = "*"
+libsepol-cos6-x86_64 = "*"
+libspnav = "*"
+libx11-common-cos6-x86_64 = "*"
+libx11-cos6-x86_64 = "*"
+libxau-cos6-x86_64 = "*"
+libxcb-cos6-x86_64 = "*"
+libxdamage-cos6-x86_64 = "*"
+libxext-cos6-x86_64 = "*"
+libxfixes-cos6-x86_64 = "*"
+libxi-cos6-x86_64 = "*"
+libxi-devel-cos6-x86_64 = "*"
+libxxf86vm-cos6-x86_64 = "*"
+mesa-dri-drivers-cos6-x86_64 = "*"
+mesa-dri1-drivers-cos6-x86_64 = "*"
+mesa-libegl-cos6-x86_64 = "*"
+mesa-libegl-devel-cos6-x86_64 = "*"
+mesa-libgl-cos6-x86_64 = "*"
+mesa-libgl-devel-cos6-x86_64 = "*"
+pixman-cos6-x86_64 = "*"
+sed = "*"
+sysroot_linux-64 = "*"
+xorg-x11-server-common-cos6-x86_64 = "*"
+xorg-x11-server-xvfb-cos6-x86_64 = "*"
+
+## Linux Dependencies (aarch64)
+[target.linux-aarch64.dependencies]
+kernel-headers_linux-aarch64 = "*"
+libdrm-cos7-aarch64 = "*"
+libglvnd-cos7-aarch64 = "*"
+libglvnd-glx-cos7-aarch64 = "*"
+libselinux-cos7-aarch64 = "*"
+libsepol-cos7-aarch64 = "*"
+libspnav = "*"
+libx11-common-cos7-aarch64 = "*"
+libx11-cos7-aarch64 = "*"
+libxau-cos7-aarch64 = "*"
+libxcb-cos7-aarch64 = "*"
+libxdamage-cos7-aarch64 = "*"
+libxext-cos7-aarch64 = "*"
+libxfixes-cos7-aarch64 = "*"
+libxi-cos7-aarch64 = "*"
+libxi-devel-cos7-aarch64 = "*"
+libxxf86vm-cos7-aarch64 = "*"
+mesa-dri-drivers-cos7-aarch64 = "*"
+mesa-khr-devel-cos7-aarch64 = "*"
+mesa-libegl-cos7-aarch64 = "*"
+mesa-libegl-devel-cos7-aarch64 = "*"
+mesa-libgbm-cos7-aarch64 = "*"
+mesa-libgl-cos7-aarch64 = "*"
+mesa-libgl-devel-cos7-aarch64 = "*"
+mesa-libglapi-cos7-aarch64 = "*"
+pixman-cos7-aarch64 = "*"
+sed = "*"
+sysroot_linux-aarch64 = "*"
+xorg-x11-server-common-cos7-aarch64 = "*"
+xorg-x11-server-xvfb-cos7-aarch64 = "*"
+
+## macOS Dependencies (Intel)
+[target.osx-64.dependencies]
+sed = "*"
+
+## macOS Dependencies (Apple Silicon)
+[target.osx-arm64.dependencies]
+sed = "*"
+
+## Qt 6 Configuration Presets
+[target.linux-64.tasks]
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+
+[target.linux-aarch64.tasks]
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"]}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"]}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"]}
+
+[target.osx-64.tasks]
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+
+[target.osx-arm64.tasks]
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+
+[target.win-64.tasks]
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]}
+freecad = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install"]}
+
+## Tasks
+[tasks]
+initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
+build = { cmd = [ "cmake", "--build", "build" ] }
+install = { cmd = [ "cmake", "--install", "build" ] }
+test = { cmd = [ "ctest", "--test-dir", "build" ] }
+freecad = "build/bin/FreeCAD"

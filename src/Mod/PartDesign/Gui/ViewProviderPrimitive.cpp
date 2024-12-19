@@ -115,7 +115,7 @@ void ViewProviderPrimitive::updateData(const App::Property* p) {
 QIcon ViewProviderPrimitive::getIcon() const {
 
     QString str = QString::fromLatin1("PartDesign_");
-    auto* prim = static_cast<PartDesign::FeaturePrimitive*>(getObject());
+    auto* prim = getObject<PartDesign::FeaturePrimitive>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
         str += QString::fromLatin1("Additive");
     else

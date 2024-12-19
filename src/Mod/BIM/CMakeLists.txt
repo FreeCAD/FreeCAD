@@ -82,6 +82,7 @@ SET(Arch_presets
     Presets/ifc_types_IFC4.json
     Presets/ifc_contexts_IFC2X3.json
     Presets/ifc_contexts_IFC4.json
+    Presets/properties_conversion.csv
 )
 
 SET(bimcommands_SRCS
@@ -105,6 +106,7 @@ SET(bimcommands_SRCS
     bimcommands/BimDiff.py
     bimcommands/BimDimensions.py
     bimcommands/BimDoor.py
+    bimcommands/BimDrawingView.py
     bimcommands/BimEmptyTrash.py
     bimcommands/BimEquipment.py
     bimcommands/BimExamples.py
@@ -186,6 +188,8 @@ SET(nativeifc_SRCS
     nativeifc/ifc_viewproviders.py
     nativeifc/__init__.py
     nativeifc/ifc_openshell.py
+    nativeifc/ifc_types.py
+    nativeifc/ifc_export.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})

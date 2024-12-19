@@ -345,6 +345,13 @@ PyMethodDef Application::Methods[] = {
    "\n"
    "grp: str\n    Group to show.\n"
    "index : int\n    Page index."},
+  {"showPreferencesByName",       (PyCFunction) Application::sShowPreferencesByName, METH_VARARGS,
+   "showPreferencesByName(grp, pagename) -> None\n"
+   "\n"
+   "Show the preferences window.\n"
+   "\n"
+   "grp: str\n    Group to show.\n"
+   "pagename : str\n    Page to show."},
   {"createViewer",               (PyCFunction) Application::sCreateViewer, METH_VARARGS,
    "createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy\n"
    "\n"
@@ -1428,16 +1435,39 @@ PyObject* Application::sShowDownloads(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
-PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sShowPreferences(PyObject* /*self*/, PyObject* args)
 {
-    char *pstr = nullptr;
-    int idx=0;
-    if (!PyArg_ParseTuple(args, "|si", &pstr, &idx))
+    char* pstr = nullptr;
+    int idx = 0;
+    if (!PyArg_ParseTuple(args, "|si", &pstr, &idx)) {
         return nullptr;
+    }
 
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
-    if (pstr)
-        cDlg.activateGroupPage(QString::fromUtf8(pstr),idx);
+    if (pstr) {
+        cDlg.activateGroupPage(QString::fromUtf8(pstr), idx);
+    }
+
+    WaitCursor wc;
+    wc.restoreCursor();
+    cDlg.exec();
+    wc.setWaitCursor();
+
+    Py_Return;
+}
+
+PyObject* Application::sShowPreferencesByName(PyObject* /*self*/, PyObject* args)
+{
+    char* pstr = nullptr;
+    const char* prefType = "";
+    if (!PyArg_ParseTuple(args, "s|s", &pstr, &prefType)) {
+        return nullptr;
+    }
+
+    Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
+    if (pstr && prefType) {
+        cDlg.activateGroupPageByPageName(QString::fromUtf8(pstr), QString::fromUtf8(prefType));
+    }
 
     WaitCursor wc;
     wc.restoreCursor();

@@ -32,6 +32,7 @@ from collections.abc import Sequence
 
 if App.GuiUp:
     import FreeCADGui as Gui
+    from PySide import QtWidgets
 
 __title__ = "Assembly Joint object"
 __author__ = "Ondsel"
@@ -146,6 +147,20 @@ def solveIfAllowed(assembly, storePrev=False):
         "SolveInJointCreation", True
     ):
         assembly.solve(storePrev)
+
+
+def getContext(obj):
+    """Fetch the context of an object."""
+    context = []
+    current = obj
+
+    while current:
+        # Add the object's Label at the beginning or the Name if label is empty
+        context.insert(0, current.Label if current.Label else current.Name)
+        # Get the immediate parent object
+        parents = getattr(current, "InList", [])
+        current = parents[0] if parents else None
+    return ".".join(context)
 
 
 # The joint object consists of 2 JCS (joint coordinate systems) and a Joint Type.
@@ -432,54 +447,43 @@ class Joint:
             joint.Object2 = [obj2, [el2, vtx2]]
 
     def migrationScript2(self, joint):
-        if hasattr(joint, "Object1"):
-            joint.addProperty(
-                "App::PropertyXLinkSubHidden",
-                "Reference1",
-                "Joint Connector 1",
-                QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
-            )
+        def processObject(object_attr, reference_attr, part_attr, connector_label, order):
+            try:
+                if hasattr(joint, object_attr):
+                    joint.addProperty(
+                        "App::PropertyXLinkSubHidden",
+                        reference_attr,
+                        connector_label,
+                        QT_TRANSLATE_NOOP("App::Property", f"The {order} reference of the joint"),
+                    )
 
-            if joint.Object1 is not None:
-                obj = joint.Object1[0]
-                part = joint.Part1
-                elt = joint.Object1[1][0]
-                vtx = joint.Object1[1][1]
+                    obj = getattr(joint, object_attr)
 
-                # now we need to get the 'selection-root-obj' and the global path
-                rootObj, path = UtilsAssembly.getRootPath(obj, part)
-                obj = rootObj
-                elt = path + elt
-                vtx = path + vtx
+                    base_obj = obj[0]
+                    part = getattr(joint, part_attr)
+                    elt = obj[1][0]
+                    vtx = obj[1][1]
 
-                joint.Reference1 = [obj, [elt, vtx]]
+                    # Get the 'selection-root-obj' and the global path
+                    root_obj, path = UtilsAssembly.getRootPath(base_obj, part)
+                    base_obj = root_obj
+                    elt = path + elt
+                    vtx = path + vtx
 
-            joint.removeProperty("Object1")
-            joint.removeProperty("Part1")
+                    setattr(joint, reference_attr, [base_obj, [elt, vtx]])
 
-        if hasattr(joint, "Object2"):
-            joint.addProperty(
-                "App::PropertyXLinkSubHidden",
-                "Reference2",
-                "Joint Connector 2",
-                QT_TRANSLATE_NOOP("App::Property", "The second reference of the joint"),
-            )
+                    joint.removeProperty(object_attr)
+                    joint.removeProperty(part_attr)
 
-            if joint.Object2 is not None:
-                obj = joint.Object2[0]
-                part = joint.Part2
-                elt = joint.Object2[1][0]
-                vtx = joint.Object2[1][1]
+            except (AttributeError, IndexError, TypeError) as e:
+                App.Console.PrintWarning(
+                    f"{translate('Assembly', 'Assembly joint')} '{getContext(joint)}' "
+                    f"{translate('Assembly', 'has an invalid')} '{object_attr}' "
+                    f"{translate('Assembly', 'or related attributes')}. {str(e)}\n"
+                )
 
-                rootObj, path = UtilsAssembly.getRootPath(obj, part)
-                obj = rootObj
-                elt = path + elt
-                vtx = path + vtx
-
-                joint.Reference2 = [obj, [elt, vtx]]
-
-            joint.removeProperty("Object2")
-            joint.removeProperty("Part2")
+        processObject("Object1", "Reference1", "Part1", "Joint Connector 1", "first")
+        processObject("Object2", "Reference2", "Part2", "Joint Connector 2", "second")
 
     def migrationScript3(self, joint):
         if hasattr(joint, "Offset"):
@@ -512,33 +516,27 @@ class Joint:
             joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
 
     def migrationScript4(self, joint):
-        if (
-            hasattr(joint, "Reference1")
-            and isinstance(joint.Reference1, Sequence)
-            and joint.Reference1[0] is not None
-        ):
-            doc_name = joint.Reference1[0].Document.Name
-            sub1 = joint.Reference1[1][0]
-            sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub1)
-            sub2 = joint.Reference1[1][1]
-            sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub2)
+        def processReference(reference_attr):
+            try:
+                if hasattr(joint, reference_attr):
+                    ref = getattr(joint, reference_attr)
 
-            if sub1 != joint.Reference1[1][0] or sub2 != joint.Reference1[1][1]:
-                joint.Reference1 = (joint.Reference1[0], [sub1, sub2])
+                    doc_name = ref[0].Document.Name
+                    sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, ref[1][0])
+                    sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, ref[1][1])
 
-        if (
-            hasattr(joint, "Reference2")
-            and isinstance(joint.Reference2, Sequence)
-            and joint.Reference2[0] is not None
-        ):
-            doc_name = joint.Reference2[0].Document.Name
-            sub1 = joint.Reference2[1][0]
-            sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub1)
-            sub2 = joint.Reference2[1][1]
-            sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub2)
+                    if sub1 != ref[1][0] or sub2 != ref[1][1]:
+                        setattr(joint, reference_attr, (ref[0], [sub1, sub2]))
 
-            if sub1 != joint.Reference2[1][0] or sub2 != joint.Reference2[1][1]:
-                joint.Reference2 = (joint.Reference2[0], [sub1, sub2])
+            except (AttributeError, IndexError, TypeError) as e:
+                App.Console.PrintWarning(
+                    f"{translate('Assembly', 'Assembly joint')} '{getContext(joint)}' "
+                    f"{translate('Assembly', 'has an invalid')} '{reference_attr}' "
+                    f"{translate('Assembly', 'or related attributes')}. {str(e)}\n"
+                )
+
+        processReference("Reference1")
+        processReference("Reference2")
 
     def dumps(self):
         return None
@@ -958,18 +956,6 @@ class GroundedJoint:
 
         joint.ObjectToGround = obj_to_ground
 
-        joint.addProperty(
-            "App::PropertyPlacement",
-            "Placement",
-            "Ground",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is where the part is grounded.",
-            ),
-        )
-
-        joint.Placement = obj_to_ground.Placement
-
     def dumps(self):
         return None
 
@@ -1001,7 +987,7 @@ class ViewProviderGroundedJoint:
         if groundedObj is None:
             return
 
-        self.scaleFactor = 1.5
+        self.scaleFactor = 3.0
 
         lockpadColorInt = Preferences.preferences().GetUnsigned("AssemblyConstraints", 0xCC333300)
         self.lockpadColor = coin.SoBaseColor()
@@ -1162,28 +1148,40 @@ class MakeJointSelGate:
             return False
 
         ref = [obj, [sub]]
-        selected_object = UtilsAssembly.getObject(ref)
+        sel_obj = UtilsAssembly.getObject(ref)
 
-        if not (
-            selected_object.isDerivedFrom("Part::Feature")
-            or selected_object.isDerivedFrom("App::Part")
+        if UtilsAssembly.isLink(sel_obj):
+            linked = sel_obj.getLinkedObject()
+            if linked == sel_obj:
+                return True  # We accept empty links
+            sel_obj = linked
+
+        if sel_obj.isDerivedFrom("Part::Feature") or sel_obj.isDerivedFrom("App::Part"):
+            return True
+
+        if sel_obj.isDerivedFrom("App::LocalCoordinateSystem") or sel_obj.isDerivedFrom(
+            "App::DatumElement"
         ):
-            if UtilsAssembly.isLink(selected_object):
-                linked = selected_object.getLinkedObject()
+            datum = sel_obj
+            if datum.isDerivedFrom("App::DatumElement"):
+                parent = datum.getParent()
+                if parent.isDerivedFrom("App::LocalCoordinateSystem"):
+                    datum = parent
 
-                if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
-                    return False
-            else:
-                return False
+            if self.assembly.hasObject(datum) and hasattr(datum, "MapMode"):
+                # accept only datum that are not attached
+                return datum.MapMode == "Deactivated"
 
-        return True
+            return True
+
+        return False
 
 
 activeTask = None
 
 
 class TaskAssemblyCreateJoint(QtCore.QObject):
-    def __init__(self, jointTypeIndex, jointObj=None):
+    def __init__(self, jointTypeIndex, jointObj=None, subclass=False):
         super().__init__()
 
         global activeTask
@@ -1210,22 +1208,28 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.assembly.ViewObject.MoveOnlyPreselected = True
             self.assembly.ViewObject.MoveInCommand = False
 
-        self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyCreateJoint.ui")
+        # Create a top-level container widget for subclasses of TaskAssemblyCreateJoint
+        self.form = QtWidgets.QWidget()
+
+        # Load the joint creation UI and parent it to `self.form`
+        self.jForm = Gui.PySideUic.loadUi(":/panels/TaskAssemblyCreateJoint.ui", self.form)
+
+        # Create a layout for `self.form` and add `self.jForm` to it
+        layout = QtWidgets.QVBoxLayout(self.form)
+        if not subclass:
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.setSpacing(0)
+        layout.addWidget(self.jForm)
 
         if self.activeType == "Part":
-            self.form.setWindowTitle("Match parts")
-            self.form.jointType.hide()
+            self.jForm.setWindowTitle("Match parts")
+            self.jForm.jointType.hide()
 
-        self.form.jointType.addItems(TranslatedJointTypes)
+        self.jForm.jointType.addItems(TranslatedJointTypes)
 
-        self.form.jointType.setCurrentIndex(jointTypeIndex)
-        self.jType = JointTypes[self.form.jointType.currentIndex()]
-        self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
-
-        self.form.reverseRotCheckbox.setChecked(self.jType == "Gears")
-        self.form.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
-
-        self.form.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
+        self.jForm.jointType.setCurrentIndex(jointTypeIndex)
+        self.jType = JointTypes[self.jForm.jointType.currentIndex()]
+        self.jForm.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
         if jointObj:
             Gui.Selection.clearSelection()
@@ -1240,7 +1244,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         else:
             self.creating = True
-            self.jointName = self.form.jointType.currentText().replace(" ", "")
+            self.jointName = self.jForm.jointType.currentText().replace(" ", "")
             if self.activeType == "Part":
                 App.setActiveTransaction("Transform")
             else:
@@ -1252,35 +1256,41 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.createJointObject()
             self.visibilityBackup = False
 
-        self.adaptUi()
-
-        self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
-        self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
-        self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
-        self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
-        bind = Gui.ExpressionBinding(self.form.distanceSpinbox).bind(self.joint, "Distance")
-        bind = Gui.ExpressionBinding(self.form.distanceSpinbox2).bind(self.joint, "Distance2")
-        bind = Gui.ExpressionBinding(self.form.offsetSpinbox).bind(self.joint, "Offset2.Base.z")
-        bind = Gui.ExpressionBinding(self.form.rotationSpinbox).bind(
+        self.jForm.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
+        self.jForm.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
+        self.jForm.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
+        self.jForm.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
+        bind = Gui.ExpressionBinding(self.jForm.distanceSpinbox).bind(self.joint, "Distance")
+        bind = Gui.ExpressionBinding(self.jForm.distanceSpinbox2).bind(self.joint, "Distance2")
+        bind = Gui.ExpressionBinding(self.jForm.offsetSpinbox).bind(self.joint, "Offset2.Base.z")
+        bind = Gui.ExpressionBinding(self.jForm.rotationSpinbox).bind(
             self.joint, "Offset2.Rotation.Yaw"
         )
-        self.form.offset1Button.clicked.connect(self.onOffset1Clicked)
-        self.form.offset2Button.clicked.connect(self.onOffset2Clicked)
-        self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
 
-        self.form.limitCheckbox1.stateChanged.connect(self.adaptUi)
-        self.form.limitCheckbox2.stateChanged.connect(self.adaptUi)
-        self.form.limitCheckbox3.stateChanged.connect(self.adaptUi)
-        self.form.limitCheckbox4.stateChanged.connect(self.adaptUi)
+        self.jForm.reverseRotCheckbox.setChecked(self.jType == "Gears")
+        self.jForm.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
 
-        self.form.limitLenMinSpinbox.valueChanged.connect(self.onLimitLenMinChanged)
-        self.form.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
-        self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
-        self.form.limitRotMaxSpinbox.valueChanged.connect(self.onLimitRotMaxChanged)
-        bind = Gui.ExpressionBinding(self.form.limitLenMinSpinbox).bind(self.joint, "LengthMin")
-        bind = Gui.ExpressionBinding(self.form.limitLenMaxSpinbox).bind(self.joint, "LengthMax")
-        bind = Gui.ExpressionBinding(self.form.limitRotMinSpinbox).bind(self.joint, "AngleMin")
-        bind = Gui.ExpressionBinding(self.form.limitRotMaxSpinbox).bind(self.joint, "AngleMax")
+        self.jForm.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
+
+        self.jForm.offset1Button.clicked.connect(self.onOffset1Clicked)
+        self.jForm.offset2Button.clicked.connect(self.onOffset2Clicked)
+        self.jForm.PushButtonReverse.clicked.connect(self.onReverseClicked)
+
+        self.jForm.limitCheckbox1.stateChanged.connect(self.adaptUi)
+        self.jForm.limitCheckbox2.stateChanged.connect(self.adaptUi)
+        self.jForm.limitCheckbox3.stateChanged.connect(self.adaptUi)
+        self.jForm.limitCheckbox4.stateChanged.connect(self.adaptUi)
+
+        self.jForm.limitLenMinSpinbox.valueChanged.connect(self.onLimitLenMinChanged)
+        self.jForm.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
+        self.jForm.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
+        self.jForm.limitRotMaxSpinbox.valueChanged.connect(self.onLimitRotMaxChanged)
+        bind = Gui.ExpressionBinding(self.jForm.limitLenMinSpinbox).bind(self.joint, "LengthMin")
+        bind = Gui.ExpressionBinding(self.jForm.limitLenMaxSpinbox).bind(self.joint, "LengthMax")
+        bind = Gui.ExpressionBinding(self.jForm.limitRotMinSpinbox).bind(self.joint, "AngleMin")
+        bind = Gui.ExpressionBinding(self.jForm.limitRotMaxSpinbox).bind(self.joint, "AngleMax")
+
+        self.adaptUi()
 
         if self.creating:
             # This has to be after adaptUi so that properties default values are adapted
@@ -1299,7 +1309,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.callbackMove = self.view.addEventCallback("SoLocation2Event", self.moveMouse)
         self.callbackKey = self.view.addEventCallback("SoKeyboardEvent", self.KeyboardEvent)
 
-        self.form.featureList.installEventFilter(self)
+        self.jForm.featureList.installEventFilter(self)
 
         self.addition_rejected = False
 
@@ -1393,7 +1403,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.updateJoint()
 
     def createJointObject(self):
-        type_index = self.form.jointType.currentIndex()
+        type_index = self.jForm.jointType.currentIndex()
 
         if self.activeType == "Part":
             self.joint = self.assembly.newObject("App::FeaturePython", "Temporary joint")
@@ -1406,139 +1416,139 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         ViewProviderJoint(self.joint.ViewObject)
 
     def onJointTypeChanged(self, index):
-        self.jType = JointTypes[self.form.jointType.currentIndex()]
+        self.jType = JointTypes[self.jForm.jointType.currentIndex()]
         self.joint.Proxy.setJointType(self.joint, self.jType)
         self.adaptUi()
 
     def onDistanceChanged(self, quantity):
-        self.joint.Distance = self.form.distanceSpinbox.property("rawValue")
+        self.joint.Distance = self.jForm.distanceSpinbox.property("rawValue")
 
     def onDistance2Changed(self, quantity):
-        self.joint.Distance2 = self.form.distanceSpinbox2.property("rawValue")
+        self.joint.Distance2 = self.jForm.distanceSpinbox2.property("rawValue")
 
     def onOffsetChanged(self, quantity):
         if self.blockOffsetRotation:
             return
 
-        self.joint.Offset2.Base = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
+        self.joint.Offset2.Base = App.Vector(0, 0, self.jForm.offsetSpinbox.property("rawValue"))
 
     def onRotationChanged(self, quantity):
         if self.blockOffsetRotation:
             return
 
-        yaw = self.form.rotationSpinbox.property("rawValue")
+        yaw = self.jForm.rotationSpinbox.property("rawValue")
         ypr = self.joint.Offset2.Rotation.getYawPitchRoll()
         self.joint.Offset2.Rotation.setYawPitchRoll(yaw, ypr[1], ypr[2])
 
     def onLimitLenMinChanged(self, quantity):
-        if self.form.limitCheckbox1.isChecked():
-            self.joint.LengthMin = self.form.limitLenMinSpinbox.property("rawValue")
+        if self.jForm.limitCheckbox1.isChecked():
+            self.joint.LengthMin = self.jForm.limitLenMinSpinbox.property("rawValue")
 
     def onLimitLenMaxChanged(self, quantity):
-        if self.form.limitCheckbox2.isChecked():
-            self.joint.LengthMax = self.form.limitLenMaxSpinbox.property("rawValue")
+        if self.jForm.limitCheckbox2.isChecked():
+            self.joint.LengthMax = self.jForm.limitLenMaxSpinbox.property("rawValue")
 
     def onLimitRotMinChanged(self, quantity):
-        if self.form.limitCheckbox3.isChecked():
-            self.joint.AngleMin = self.form.limitRotMinSpinbox.property("rawValue")
+        if self.jForm.limitCheckbox3.isChecked():
+            self.joint.AngleMin = self.jForm.limitRotMinSpinbox.property("rawValue")
 
     def onLimitRotMaxChanged(self, quantity):
-        if self.form.limitCheckbox4.isChecked():
-            self.joint.AngleMax = self.form.limitRotMaxSpinbox.property("rawValue")
+        if self.jForm.limitCheckbox4.isChecked():
+            self.joint.AngleMax = self.jForm.limitRotMaxSpinbox.property("rawValue")
 
     def onReverseClicked(self):
         self.joint.Proxy.flipOnePart(self.joint)
 
     def reverseRotToggled(self, val):
         if val:
-            self.form.jointType.setCurrentIndex(JointTypes.index("Gears"))
+            self.jForm.jointType.setCurrentIndex(JointTypes.index("Gears"))
         else:
-            self.form.jointType.setCurrentIndex(JointTypes.index("Belt"))
+            self.jForm.jointType.setCurrentIndex(JointTypes.index("Belt"))
 
     def adaptUi(self):
         jType = self.jType
 
         needDistance = jType in JointUsingDistance
-        self.form.distanceLabel.setVisible(needDistance)
-        self.form.distanceSpinbox.setVisible(needDistance)
+        self.jForm.distanceLabel.setVisible(needDistance)
+        self.jForm.distanceSpinbox.setVisible(needDistance)
         if needDistance:
             if jType == "Distance":
-                self.form.distanceLabel.setText(translate("Assembly", "Distance"))
+                self.jForm.distanceLabel.setText(translate("Assembly", "Distance"))
             elif jType == "Angle":
-                self.form.distanceLabel.setText(translate("Assembly", "Angle"))
+                self.jForm.distanceLabel.setText(translate("Assembly", "Angle"))
             elif jType == "Gears" or jType == "Belt":
-                self.form.distanceLabel.setText(translate("Assembly", "Radius 1"))
+                self.jForm.distanceLabel.setText(translate("Assembly", "Radius 1"))
             else:
-                self.form.distanceLabel.setText(translate("Assembly", "Pitch radius"))
+                self.jForm.distanceLabel.setText(translate("Assembly", "Pitch radius"))
 
             if jType == "Angle":
-                self.form.distanceSpinbox.setProperty("unit", "deg")
+                self.jForm.distanceSpinbox.setProperty("unit", "deg")
             else:
-                self.form.distanceSpinbox.setProperty("unit", "mm")
+                self.jForm.distanceSpinbox.setProperty("unit", "mm")
 
         needDistance2 = jType in JointUsingDistance2
-        self.form.distanceLabel2.setVisible(needDistance2)
-        self.form.distanceSpinbox2.setVisible(needDistance2)
-        self.form.reverseRotCheckbox.setVisible(needDistance2)
+        self.jForm.distanceLabel2.setVisible(needDistance2)
+        self.jForm.distanceSpinbox2.setVisible(needDistance2)
+        self.jForm.reverseRotCheckbox.setVisible(needDistance2)
 
         if jType in JointNoNegativeDistance:
             # Setting minimum to 0.01 to prevent 0 and negative values
-            self.form.distanceSpinbox.setProperty("minimum", 1e-7)
-            if self.form.distanceSpinbox.property("rawValue") == 0.0:
-                self.form.distanceSpinbox.setProperty("rawValue", 1.0)
+            self.jForm.distanceSpinbox.setProperty("minimum", 1e-7)
+            if self.jForm.distanceSpinbox.property("rawValue") == 0.0:
+                self.jForm.distanceSpinbox.setProperty("rawValue", 1.0)
 
             if jType == "Gears" or jType == "Belt":
-                self.form.distanceSpinbox2.setProperty("minimum", 1e-7)
-                if self.form.distanceSpinbox2.property("rawValue") == 0.0:
-                    self.form.distanceSpinbox2.setProperty("rawValue", 1.0)
+                self.jForm.distanceSpinbox2.setProperty("minimum", 1e-7)
+                if self.jForm.distanceSpinbox2.property("rawValue") == 0.0:
+                    self.jForm.distanceSpinbox2.setProperty("rawValue", 1.0)
         else:
-            self.form.distanceSpinbox.setProperty("minimum", float("-inf"))
-            self.form.distanceSpinbox2.setProperty("minimum", float("-inf"))
+            self.jForm.distanceSpinbox.setProperty("minimum", float("-inf"))
+            self.jForm.distanceSpinbox2.setProperty("minimum", float("-inf"))
 
-        advancedOffset = self.form.advancedOffsetCheckbox.isChecked()
+        advancedOffset = self.jForm.advancedOffsetCheckbox.isChecked()
         needOffset = jType in JointUsingOffset
         needRotation = jType in JointUsingRotation
-        self.form.offset1Label.setVisible(advancedOffset)
-        self.form.offset2Label.setVisible(advancedOffset)
-        self.form.offset1Button.setVisible(advancedOffset)
-        self.form.offset2Button.setVisible(advancedOffset)
-        self.form.offsetLabel.setVisible(not advancedOffset and needOffset)
-        self.form.offsetSpinbox.setVisible(not advancedOffset and needOffset)
-        self.form.rotationLabel.setVisible(not advancedOffset and needRotation)
-        self.form.rotationSpinbox.setVisible(not advancedOffset and needRotation)
+        self.jForm.offset1Label.setVisible(advancedOffset)
+        self.jForm.offset2Label.setVisible(advancedOffset)
+        self.jForm.offset1Button.setVisible(advancedOffset)
+        self.jForm.offset2Button.setVisible(advancedOffset)
+        self.jForm.offsetLabel.setVisible(not advancedOffset and needOffset)
+        self.jForm.offsetSpinbox.setVisible(not advancedOffset and needOffset)
+        self.jForm.rotationLabel.setVisible(not advancedOffset and needRotation)
+        self.jForm.rotationSpinbox.setVisible(not advancedOffset and needRotation)
 
-        self.form.PushButtonReverse.setVisible(jType in JointUsingReverse)
+        self.jForm.PushButtonReverse.setVisible(jType in JointUsingReverse)
 
         needLengthLimits = jType in JointUsingLimitLength
         needAngleLimits = jType in JointUsingLimitAngle
         needLimits = needLengthLimits or needAngleLimits
-        self.form.groupBox_limits.setVisible(needLimits)
+        self.jForm.groupBox_limits.setVisible(needLimits)
 
         if needLimits:
-            self.joint.EnableLengthMin = self.form.limitCheckbox1.isChecked()
-            self.joint.EnableLengthMax = self.form.limitCheckbox2.isChecked()
-            self.joint.EnableAngleMin = self.form.limitCheckbox3.isChecked()
-            self.joint.EnableAngleMax = self.form.limitCheckbox4.isChecked()
+            self.joint.EnableLengthMin = self.jForm.limitCheckbox1.isChecked()
+            self.joint.EnableLengthMax = self.jForm.limitCheckbox2.isChecked()
+            self.joint.EnableAngleMin = self.jForm.limitCheckbox3.isChecked()
+            self.joint.EnableAngleMax = self.jForm.limitCheckbox4.isChecked()
 
-            self.form.limitCheckbox1.setVisible(needLengthLimits)
-            self.form.limitCheckbox2.setVisible(needLengthLimits)
-            self.form.limitLenMinSpinbox.setVisible(needLengthLimits)
-            self.form.limitLenMaxSpinbox.setVisible(needLengthLimits)
+            self.jForm.limitCheckbox1.setVisible(needLengthLimits)
+            self.jForm.limitCheckbox2.setVisible(needLengthLimits)
+            self.jForm.limitLenMinSpinbox.setVisible(needLengthLimits)
+            self.jForm.limitLenMaxSpinbox.setVisible(needLengthLimits)
 
-            self.form.limitCheckbox3.setVisible(needAngleLimits)
-            self.form.limitCheckbox4.setVisible(needAngleLimits)
-            self.form.limitRotMinSpinbox.setVisible(needAngleLimits)
-            self.form.limitRotMaxSpinbox.setVisible(needAngleLimits)
+            self.jForm.limitCheckbox3.setVisible(needAngleLimits)
+            self.jForm.limitCheckbox4.setVisible(needAngleLimits)
+            self.jForm.limitRotMinSpinbox.setVisible(needAngleLimits)
+            self.jForm.limitRotMaxSpinbox.setVisible(needAngleLimits)
 
             if needLengthLimits:
-                self.form.limitLenMinSpinbox.setEnabled(self.joint.EnableLengthMin)
-                self.form.limitLenMaxSpinbox.setEnabled(self.joint.EnableLengthMax)
+                self.jForm.limitLenMinSpinbox.setEnabled(self.joint.EnableLengthMin)
+                self.jForm.limitLenMaxSpinbox.setEnabled(self.joint.EnableLengthMax)
                 self.onLimitLenMinChanged(0)  # dummy value
                 self.onLimitLenMaxChanged(0)
 
             if needAngleLimits:
-                self.form.limitRotMinSpinbox.setEnabled(self.joint.EnableAngleMin)
-                self.form.limitRotMaxSpinbox.setEnabled(self.joint.EnableAngleMax)
+                self.jForm.limitRotMinSpinbox.setEnabled(self.joint.EnableAngleMin)
+                self.jForm.limitRotMaxSpinbox.setEnabled(self.joint.EnableAngleMax)
                 self.onLimitRotMinChanged(0)
                 self.onLimitRotMaxChanged(0)
 
@@ -1547,14 +1557,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def updateOffsetWidgets(self):
         # Makes sure the values in both the simplified and advanced tabs are sync.
         pos = self.joint.Offset1.Base
-        self.form.offset1Button.setText(f"({pos.x}, {pos.y}, {pos.z})")
+        self.jForm.offset1Button.setText(f"({pos.x}, {pos.y}, {pos.z})")
 
         pos = self.joint.Offset2.Base
-        self.form.offset2Button.setText(f"({pos.x}, {pos.y}, {pos.z})")
+        self.jForm.offset2Button.setText(f"({pos.x}, {pos.y}, {pos.z})")
 
         self.blockOffsetRotation = True
-        self.form.offsetSpinbox.setProperty("rawValue", pos.z)
-        self.form.rotationSpinbox.setProperty(
+        self.jForm.offsetSpinbox.setProperty("rawValue", pos.z)
+        self.jForm.rotationSpinbox.setProperty(
             "rawValue", self.joint.Offset2.Rotation.getYawPitchRoll()[0]
         )
         self.blockOffsetRotation = False
@@ -1584,23 +1594,23 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.addSelection(ref1[0].Document.Name, ref1[0].Name, ref1[1][0])
         Gui.Selection.addSelection(ref2[0].Document.Name, ref2[0].Name, ref2[1][0])
 
-        self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
-        self.form.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
-        self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset2.Base.z)
-        self.form.rotationSpinbox.setProperty(
+        self.jForm.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
+        self.jForm.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
+        self.jForm.offsetSpinbox.setProperty("rawValue", self.joint.Offset2.Base.z)
+        self.jForm.rotationSpinbox.setProperty(
             "rawValue", self.joint.Offset2.Rotation.getYawPitchRoll()[0]
         )
 
-        self.form.limitCheckbox1.setChecked(self.joint.EnableLengthMin)
-        self.form.limitCheckbox2.setChecked(self.joint.EnableLengthMax)
-        self.form.limitCheckbox3.setChecked(self.joint.EnableAngleMin)
-        self.form.limitCheckbox4.setChecked(self.joint.EnableAngleMax)
-        self.form.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin)
-        self.form.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax)
-        self.form.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin)
-        self.form.limitRotMaxSpinbox.setProperty("rawValue", self.joint.AngleMax)
+        self.jForm.limitCheckbox1.setChecked(self.joint.EnableLengthMin)
+        self.jForm.limitCheckbox2.setChecked(self.joint.EnableLengthMax)
+        self.jForm.limitCheckbox3.setChecked(self.joint.EnableAngleMin)
+        self.jForm.limitCheckbox4.setChecked(self.joint.EnableAngleMax)
+        self.jForm.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin)
+        self.jForm.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax)
+        self.jForm.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin)
+        self.jForm.limitRotMaxSpinbox.setProperty("rawValue", self.joint.AngleMax)
 
-        self.form.jointType.setCurrentIndex(JointTypes.index(self.joint.JointType))
+        self.jForm.jointType.setCurrentIndex(JointTypes.index(self.joint.JointType))
         self.updateJointList()
 
     def updateJoint(self):
@@ -1611,7 +1621,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Proxy.setJointConnectors(self.joint, self.refs)
 
     def updateJointList(self):
-        self.form.featureList.clear()
+        self.jForm.featureList.clear()
         simplified_names = []
         for ref in self.refs:
 
@@ -1621,7 +1631,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             if element_name != "":
                 sname = sname + "." + element_name
             simplified_names.append(sname)
-        self.form.featureList.addItems(simplified_names)
+        self.jForm.featureList.addItems(simplified_names)
 
     def updateLimits(self):
         needLengthLimits = self.jType in JointUsingLimitLength
@@ -1629,28 +1639,28 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if needLengthLimits:
             distance = UtilsAssembly.getJointDistance(self.joint)
             if (
-                not self.form.limitCheckbox1.isChecked()
-                and self.form.limitLenMinSpinbox.property("expression") == ""
+                not self.jForm.limitCheckbox1.isChecked()
+                and self.jForm.limitLenMinSpinbox.property("expression") == ""
             ):
-                self.form.limitLenMinSpinbox.setProperty("rawValue", distance)
+                self.jForm.limitLenMinSpinbox.setProperty("rawValue", distance)
             if (
-                not self.form.limitCheckbox2.isChecked()
-                and self.form.limitLenMaxSpinbox.property("expression") == ""
+                not self.jForm.limitCheckbox2.isChecked()
+                and self.jForm.limitLenMaxSpinbox.property("expression") == ""
             ):
-                self.form.limitLenMaxSpinbox.setProperty("rawValue", distance)
+                self.jForm.limitLenMaxSpinbox.setProperty("rawValue", distance)
 
         if needAngleLimits:
             angle = UtilsAssembly.getJointXYAngle(self.joint) / math.pi * 180
             if (
-                not self.form.limitCheckbox3.isChecked()
-                and self.form.limitRotMinSpinbox.property("expression") == ""
+                not self.jForm.limitCheckbox3.isChecked()
+                and self.jForm.limitRotMinSpinbox.property("expression") == ""
             ):
-                self.form.limitRotMinSpinbox.setProperty("rawValue", angle)
+                self.jForm.limitRotMinSpinbox.setProperty("rawValue", angle)
             if (
-                not self.form.limitCheckbox4.isChecked()
-                and self.form.limitRotMaxSpinbox.property("expression") == ""
+                not self.jForm.limitCheckbox4.isChecked()
+                and self.jForm.limitRotMaxSpinbox.property("expression") == ""
             ):
-                self.form.limitRotMaxSpinbox.setProperty("rawValue", angle)
+                self.jForm.limitRotMaxSpinbox.setProperty("rawValue", angle)
 
     def moveMouse(self, info):
         if len(self.refs) >= 2 or (
@@ -1700,7 +1710,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.accept()
 
     def eventFilter(self, watched, event):
-        if self.form is not None and watched == self.form.featureList:
+        if self.jForm is not None and watched == self.jForm.featureList:
             if event.type() == QtCore.QEvent.ShortcutOverride:
                 if event.key() == QtCore.Qt.Key_Delete:
                     event.accept()  # Accept the event only if the key is Delete
@@ -1709,7 +1719,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
             elif event.type() == QtCore.QEvent.KeyPress:
                 if event.key() == QtCore.Qt.Key_Delete:
-                    selected_indexes = self.form.featureList.selectedIndexes()
+                    selected_indexes = self.jForm.featureList.selectedIndexes()
 
                     for index in selected_indexes:
                         row = index.row()

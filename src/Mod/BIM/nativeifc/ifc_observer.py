@@ -31,7 +31,7 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
 def add_observer():
-    """Adds an observer to the running FreeCAD instance"""
+    """Adds this observer to the running FreeCAD instance"""
 
     FreeCAD.BIMobserver = ifc_observer()
     FreeCAD.addDocumentObserver(FreeCAD.BIMobserver)
@@ -122,6 +122,11 @@ class ifc_observer:
         from nativeifc import ifc_status
 
         ifc_status.on_activate()
+
+    def slotRemoveDynamicProperty(self, obj, prop):
+
+        from nativeifc import ifc_psets
+        ifc_psets.remove_property(obj, prop)
 
     # implementation methods
 

@@ -52,7 +52,7 @@ TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeN
     , param(nullptr)
     , ViewProviderFemMeshShapeNetgen(obj)
 {
-    FemMeshShapeNetgenObject = dynamic_cast<Fem::FemMeshShapeNetgenObject*>(obj->getObject());
+    FemMeshShapeNetgenObject = obj->getObject<Fem::FemMeshShapeNetgenObject>();
     if (FemMeshShapeNetgenObject) {
         param = new TaskTetParameter(FemMeshShapeNetgenObject);
         Content.push_back(param);

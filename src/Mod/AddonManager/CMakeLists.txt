@@ -4,11 +4,20 @@ IF (BUILD_GUI)
 ENDIF (BUILD_GUI)
 
 SET(AddonManager_SRCS
-    add_toolbar_button_dialog.ui
+    ALLOWED_PYTHON_PACKAGES.txt
     Addon.py
-    AddonStats.py
     AddonManager.py
     AddonManager.ui
+    AddonManagerOptions.py
+    AddonManagerOptions.ui
+    AddonManagerOptions_AddCustomRepository.ui
+    AddonStats.py
+    Init.py
+    InitGui.py
+    NetworkManager.py
+    PythonDependencyUpdateDialog.ui
+    TestAddonManagerApp.py
+    add_toolbar_button_dialog.ui
     addonmanager_cache.py
     addonmanager_connection_checker.py
     addonmanager_dependency_installer.py
@@ -17,8 +26,8 @@ SET(AddonManager_SRCS
     addonmanager_devmode_license_selector.py
     addonmanager_devmode_licenses_table.py
     addonmanager_devmode_metadata_checker.py
-    addonmanager_devmode_person_editor.py
     addonmanager_devmode_people_table.py
+    addonmanager_devmode_person_editor.py
     addonmanager_devmode_predictor.py
     addonmanager_devmode_validators.py
     addonmanager_firstrun.py
@@ -33,18 +42,15 @@ SET(AddonManager_SRCS
     addonmanager_package_details_controller.py
     addonmanager_preferences_defaults.json
     addonmanager_pyside_interface.py
+    addonmanager_python_deps_gui.py
     addonmanager_readme_controller.py
-    addonmanager_update_all_gui.py
     addonmanager_uninstaller.py
     addonmanager_uninstaller_gui.py
+    addonmanager_update_all_gui.py
     addonmanager_utilities.py
     addonmanager_workers_installation.py
     addonmanager_workers_startup.py
     addonmanager_workers_utility.py
-    AddonManagerOptions.ui
-    AddonManagerOptions_AddCustomRepository.ui
-    AddonManagerOptions.py
-    ALLOWED_PYTHON_PACKAGES.txt
     change_branch.py
     change_branch.ui
     compact_view.py
@@ -65,16 +71,10 @@ SET(AddonManager_SRCS
     developer_mode_tags.ui
     expanded_view.py
     first_run.ui
-    Init.py
-    InitGui.py
     install_to_toolbar.py
     loading.html
-    manage_python_dependencies.py
-    NetworkManager.py
     package_list.py
-    PythonDependencyUpdateDialog.ui
     select_toolbar_dialog.ui
-    TestAddonManagerApp.py
     update_all.ui
 )
 IF (BUILD_GUI)

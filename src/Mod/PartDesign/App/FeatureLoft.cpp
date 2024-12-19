@@ -112,6 +112,12 @@ Loft::getSectionShape(const char *name,
 
 App::DocumentObjectExecReturn *Loft::execute()
 {
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     std::vector<TopoShape> wires;
     try {
         wires = getSectionShape("Profile", Profile.getValue(), Profile.getSubValues());
@@ -257,6 +263,8 @@ App::DocumentObjectExecReturn *Loft::execute()
         if (boolOp.isNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
+        // store shape before refinement
+        this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
         boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {

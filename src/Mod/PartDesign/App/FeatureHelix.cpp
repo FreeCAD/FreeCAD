@@ -126,6 +126,13 @@ short Helix::mustExecute() const
 
 App::DocumentObjectExecReturn* Helix::execute()
 {
+
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape, RefineErrorPolicy::Warn);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     // Validate and normalize parameters
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
     if (mode == HelixMode::pitch_height_angle) {
@@ -268,6 +275,8 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
+                // store shape before refinement
+            this->rawShape = result;
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
@@ -290,6 +299,8 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
+            // store shape before refinement
+            this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
@@ -319,6 +330,8 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
+            // store shape before refinement
+            this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
@@ -395,8 +408,7 @@ TopoDS_Shape Helix::generateHelixPath(double breakAtTurn)
     bool turned = axisOffset < 0;
     // since the factor does not only change the radius but also the path position, we must shift its offset back
     // using the square of the factor
-    double noAngle = angle == 0. ? 1. : 0.; // alternative to the legacy use of an auxiliary path
-    double startOffset = 10000.0 * std::fabs(noAngle * (profileCenter * axisVector) - baseVector * axisVector);
+    double startOffset = 10000.0 * std::fabs((angle <= 0. ? 1. : 0.) * (profileCenter * axisVector) - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane

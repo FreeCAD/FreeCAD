@@ -86,6 +86,8 @@ SET(SpreadsheetGui_SRCS
     DlgBindSheet.cpp
     DlgSheetConf.h
     DlgSheetConf.cpp
+    ZoomableView.h
+    ZoomableView.cpp
     ${SpreadsheetGui_UIC_HDRS}
 )
 

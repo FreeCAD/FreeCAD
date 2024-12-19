@@ -131,7 +131,7 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelix(self):
         """ Test giant helix """
-        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') if v.isnumeric() ]
         if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
             mine=-1
             maxe=10
@@ -173,7 +173,7 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelixAdditive(self):
         """ Test giant helix added to Cylinder """
-        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') if v.isnumeric() ]
         if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
             mine=-1
             maxe=8
@@ -223,7 +223,7 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelixSubtractive(self):
         """ Test giant helix subtracted from Cylinder """
-        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') if v.isnumeric() ]
         if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
             mine=-1
             maxe=8
@@ -316,6 +316,50 @@ class TestHelix(unittest.TestCase):
         helix.Reversed = True
         self.Doc.recompute()
         self.assertAlmostEqual(helix.Shape.Volume/1e5, 3.8828,places=4)
+
+    def testNegativeCone(self):
+        """ Test helix following a cone with a negative angle """
+        body = self.Doc.addObject('PartDesign::Body','ConeBody')
+        coneSketch = self.Doc.addObject('Sketcher::SketchObject', 'ConeSketch')
+        body.addObject(coneSketch)
+
+        geoList = []
+        geoList.append(Part.LineSegment(FreeCAD.Vector(5, 5, 0), FreeCAD.Vector(3, 0, 0)))
+        geoList.append(Part.LineSegment(FreeCAD.Vector(3, 0, 0), FreeCAD.Vector(2, 0, 0)))
+        geoList.append(Part.LineSegment(FreeCAD.Vector(2, 0, 0), FreeCAD.Vector(4, 5, 0)))
+        geoList.append(Part.LineSegment(FreeCAD.Vector(4, 5, 0), FreeCAD.Vector(5, 5, 0)))
+        (l1, l2, l3, l4) = coneSketch.addGeometry(geoList)
+
+        conList = []
+        conList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+        conList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+        conList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+        conList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
+        conList.append(Sketcher.Constraint("Horizontal", 1))
+        conList.append(Sketcher.Constraint("Angle", l3, 1, -2, 2, FreeCAD.Units.Quantity("30 deg")))
+        conList.append(Sketcher.Constraint("DistanceX", 1, 2, -100))
+        conList.append(Sketcher.Constraint("DistanceY", 1, 2, 0))
+        conList.append(Sketcher.Constraint("Equal", 0, 2))
+        conList.append(Sketcher.Constraint("Equal", 1, 3))
+        conList.append(Sketcher.Constraint("DistanceY", 0, 50))
+        conList.append(Sketcher.Constraint("DistanceX", 1, 10))
+        coneSketch.addConstraint(conList)
+
+        xz_plane = body.Origin.OriginFeatures[4]
+        coneSketch.AttachmentSupport = xz_plane
+        coneSketch.MapMode = 'FlatFace'
+        helix = self.Doc.addObject("PartDesign::AdditiveHelix", "AdditiveHelix")
+        body.addObject(helix)
+        helix.Profile = coneSketch
+        helix.ReferenceAxis = (coneSketch, "V_Axis")
+
+        helix.Pitch = 50
+        helix.Height = 110
+        helix.Angle = -30
+        helix.Mode = 0
+        helix.Reversed = False
+        self.Doc.recompute()
+        self.assertAlmostEqual(helix.Shape.Volume/1e5, 6.0643, places=4)
 
     def tearDown(self):
         FreeCAD.closeDocument("PartDesignTestHelix")

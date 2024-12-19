@@ -47,9 +47,11 @@
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/SoPickedPoint.h>
 #endif
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -70,8 +72,10 @@
 #include "View3DInventorViewer.h"
 #include "View3DPy.h"
 #include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 #include "WaitCursor.h"
 
+#include "Utilities.h"
 
 using namespace Gui;
 
@@ -771,6 +775,97 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         if (mdi && mdi->layout())
             mdi->layout()->invalidate();
     }
+}
+
+RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector3d* dirvec)
+{
+    double vsx, vsy, vsz;
+    double vdx, vdy, vdz;
+    vsx = startvec->x;
+    vsy = startvec->y;
+    vsz = startvec->z;
+    vdx = dirvec->x;
+    vdy = dirvec->y;
+    vdz = dirvec->z;
+    // near plane clipping is required to avoid false intersections
+    float nearClippingPlane = 0.1;
+
+    RayPickInfo ret = {false,
+                       Base::Vector3d(),
+                       "",
+                       "",
+                       std::nullopt,
+                       std::nullopt,
+                       std::nullopt};
+    SoRayPickAction action(getViewer()->getSoRenderManager()->getViewportRegion());
+    action.setRay(SbVec3f(vsx, vsy, vsz), SbVec3f(vdx, vdy, vdz), nearClippingPlane);
+    action.apply(getViewer()->getSoRenderManager()->getSceneGraph());
+    SoPickedPoint* Point = action.getPickedPoint();
+
+    if (!Point) {
+        return ret;
+    }
+
+    ret.point = Base::convertTo<Base::Vector3d>(Point->getPoint());
+    ViewProvider* vp = getViewer()->getViewProviderByPath(Point->getPath());
+    if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if (!vp->isSelectable()) {
+            return ret;
+        }
+        auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
+        if (vp->useNewSelectionModel()) {
+            std::string subname;
+            if (!vp->getElementPicked(Point, subname)) {
+                return ret;
+            }
+            auto obj = vpd->getObject();
+            if (!obj) {
+                return ret;
+            }
+            if (!subname.empty()) {
+                App::ElementNamePair elementName;
+                auto sobj = App::GeoFeature::resolveElement(obj, subname.c_str(), elementName);
+                if (!sobj) {
+                    return ret;
+                }
+                if (sobj != obj) {
+                    ret.parentObject = obj->getExportName();
+                    ret.subName = subname;
+                    obj = sobj;
+                }
+                subname = !elementName.oldName.empty() ? elementName.oldName : elementName.newName;
+            }
+            ret.document = obj->getDocument()->getName();
+            ret.object = obj->getNameInDocument();
+            ret.component = subname;
+            ret.isValid = true;
+        }
+        else {
+            ret.document = vpd->getObject()->getDocument()->getName();
+            ret.object = vpd->getObject()->getNameInDocument();
+            // search for a SoFCSelection node
+            SoFCDocumentObjectAction objaction;
+            objaction.apply(Point->getPath());
+            if (objaction.isHandled()) {
+                ret.component = objaction.componentName.getString();
+            }
+        }
+        // ok, found the node of interest
+        ret.isValid = true;
+    }
+    else {
+        // custom nodes not in a VP: search for a SoFCSelection node
+        SoFCDocumentObjectAction objaction;
+        objaction.apply(Point->getPath());
+        if (objaction.isHandled()) {
+            ret.document = objaction.documentName.getString();
+            ret.object = objaction.objectName.getString();
+            ret.component = objaction.componentName.getString();
+            // ok, found the node of interest
+            ret.isValid = true;
+        }
+    }
+    return ret;
 }
 
 bool View3DInventor::eventFilter(QObject* watched, QEvent* e)

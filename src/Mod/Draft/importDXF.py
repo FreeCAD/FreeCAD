@@ -104,22 +104,6 @@ def errorDXFLib(gui):
     -----
     Use local variables, not global variables.
     """
-    
-    def show_addon_message(gui):
-        if gui:
-            message = translate("Draft", """Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -> Addon Manager""")
-            QtWidgets.QMessageBox.information(None, "", message)
-        else:
-            FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-            FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
-    try:
-        import ArchCommands
-    except:
-        # BIM not present
-        show_addon_message(gui)
-        return
     dxfAllowDownload = params.get_param("dxfAllowDownload")
     if dxfAllowDownload:
         files = ['dxfColorMap.py', 'dxfImportObjects.py',
@@ -127,6 +111,7 @@ from menu Tools -> Addon Manager""")
 
         baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/'
         baseurl += 'Draft-dxf-importer/master/'
+        import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
         progressbar.start("Downloading files...", 4)
@@ -135,7 +120,14 @@ from menu Tools -> Addon Manager""")
             p = None
             p = ArchCommands.download(baseurl + f, force=True)
             if not p:
-                show_addon_message(gui)
+                if gui:
+                    message = translate("Draft", """Download of dxf libraries failed.
+Please install the dxf Library addon manually
+from menu Tools -> Addon Manager""")
+                    QtWidgets.QMessageBox.information(None, "", message)
+                else:
+                    FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
+                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
                 break
         progressbar.stop()
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
@@ -1815,7 +1807,7 @@ def drawInsert(insert, num=None, clone=False):
     return None
 
 
-def drawLayerBlock(objlist):
+def drawLayerBlock(objlist, name="LayerBlock"):
     """Return a Draft Block (compound) from the given object list.
 
     Parameters
@@ -1844,7 +1836,9 @@ def drawLayerBlock(objlist):
     obj = None
     if (dxfCreateDraft or dxfCreateSketch) and isObj:
         try:
-            obj = Draft.make_block(objlist)
+            # obj = Draft.make_block(objlist)
+            obj = doc.addObject("Part::Compound", name)
+            obj.Links = objlist
         except Part.OCCError:
             pass
     else:
@@ -1950,7 +1944,7 @@ def addObject(shape, name="Shape", layer=None):
             else:
                 l = layerObjects[lay]
             l.append(newob)
-            
+
 
 
     formatObject(newob)
@@ -2747,17 +2741,13 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         formatObject(newob, insert)
             num += 1
 
-    # Move layer contents to layers
-    for (l, contents) in layerObjects.items():
-        l.Group += contents
-
     # Make blocks, if any
     if dxfMakeBlocks:
         print("creating layerblocks...")
         for k, l in layerBlocks.items():
-            shape = drawLayerBlock(l)
+            shape = drawLayerBlock(l, "LayerBlock_" + k)
             if shape:
-                newob = addObject(shape, k)
+                newob = addObject(shape, "LayerBlock_" + k, k)
     del layerBlocks
 
     # Hide block objects, if any
@@ -2765,6 +2755,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         if o.ViewObject:
             o.ViewObject.hide()
     del blockobjects
+
+    # Move layer contents to layers
+    for (l, contents) in layerObjects.items():
+        l.Group += contents
 
     # Finishing
     print("done processing")
@@ -4154,7 +4148,7 @@ def readPreferences():
     """
     # reading parameters
     if gui and params.get_param("dxfShowDialog"):
-        FreeCADGui.showPreferences("Import-Export", 3)
+        FreeCADGui.showPreferencesByName("Import-Export", ":/ui/preferences-dxf.ui")
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth

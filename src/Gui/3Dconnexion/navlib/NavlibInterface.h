@@ -161,5 +161,7 @@ private:
     mutable std::array<SbVec2f, hitTestingResolution> hitTestPattern;
     mutable bool patternInitialized;
     std::vector<std::string> exportedCommandSets;
+    mutable bool wasPointerPick = false;
+    double orthoNearDistance = 0.0;
 };
 #endif

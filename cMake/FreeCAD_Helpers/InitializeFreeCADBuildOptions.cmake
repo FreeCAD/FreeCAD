@@ -144,16 +144,10 @@ macro(InitializeFreeCADBuildOptions)
 
     if(MSVC)
         set(FREECAD_3DCONNEXION_SUPPORT "NavLib" CACHE STRING "Select version of the 3Dconnexion device integration")
-        set_property(CACHE FREECAD_3DCONNEXION_SUPPORT PROPERTY STRINGS "NavLib" "Raw input")
-    else(MSVC)
-        set(FREECAD_3DCONNEXION_SUPPORT "Raw input")
-    endif(MSVC)
-
-    if(MSVC)
-        option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
-        option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF) # 3/5/2021 current LibPack uses non-C++17 FLANN
+        set_property(CACHE FREECAD_3DCONNEXION_SUPPORT PROPERTY STRINGS "NavLib" "Raw input" "Both")
         option(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
     elseif(APPLE)
+        set(FREECAD_USE_3DCONNEXION_RAWINPUT ON)
         find_library(3DCONNEXIONCLIENT_FRAMEWORK 3DconnexionClient)
         if(IS_DIRECTORY ${3DCONNEXIONCLIENT_FRAMEWORK})
             option(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
@@ -161,27 +155,47 @@ macro(InitializeFreeCADBuildOptions)
             option(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." OFF)
         endif(IS_DIRECTORY ${3DCONNEXIONCLIENT_FRAMEWORK})
     else(MSVC)
+        set(FREECAD_USE_3DCONNEXION_RAWINPUT ON)
         set(FREECAD_USE_3DCONNEXION OFF )
+    endif(MSVC)
+
+    if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "NavLib" AND FREECAD_USE_3DCONNEXION)
+        set(FREECAD_USE_3DCONNEXION_NAVLIB ON)
+        set(FREECAD_USE_3DCONNEXION OFF)
+    elseif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Both" AND FREECAD_USE_3DCONNEXION)
+        set(FREECAD_USE_3DCONNEXION_NAVLIB ON)
+        set(FREECAD_USE_3DCONNEXION_RAWINPUT ON)
+    endif()
+
+    if(MSVC)
+        option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
+        option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
     endif(MSVC)
     if(NOT MSVC)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
         option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
     endif(NOT MSVC)
 
-    if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "NavLib" AND FREECAD_USE_3DCONNEXION)
-        set(FREECAD_USE_3DCONNEXION_NAVLIB ON)
-        set(FREECAD_USE_3DCONNEXION OFF)
-    endif()
-
     # if this is set override some options
     if (FREECAD_BUILD_DEBIAN)
-        set(FREECAD_USE_EXTERNAL_ZIPIOS ON )
+        # Disable it until the upstream package has been fixed. See
+        # https://github.com/FreeCAD/FreeCAD/issues/13676#issuecomment-2539978468
+        # https://github.com/FreeCAD/FreeCAD/issues/13676#issuecomment-2541513308
+        set(FREECAD_USE_EXTERNAL_ZIPIOS OFF )
         # A Debian package for SMESH doesn't exist
         #set(FREECAD_USE_EXTERNAL_SMESH ON )
     endif (FREECAD_BUILD_DEBIAN)
 
-    if(BUILD_FEM)
-        set(BUILD_SMESH ON )
+    if(BUILD_FEM OR BUILD_MESH_PART)
+        set(FREECAD_USE_SMESH ON)
+        if(FREECAD_USE_EXTERNAL_SMESH)
+            set(BUILD_SMESH OFF)
+        else()
+            set(BUILD_SMESH ON)
+        endif()
+    else()
+        set(FREECAD_USE_SMESH OFF)
+        set(BUILD_SMESH OFF)
     endif()
 
     # force build directory to be different to source directory

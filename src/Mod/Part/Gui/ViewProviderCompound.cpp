@@ -46,13 +46,13 @@ ViewProviderCompound::~ViewProviderCompound() = default;
 
 std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
 {
-    return static_cast<Part::Compound*>(getObject())->Links.getValues();
+    return getObject<Part::Compound>()->Links.getValues();
 }
 
 bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
 {
     // get the input shapes
-    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    Part::Compound* pComp = getObject<Part::Compound>();
     std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
     for (auto pLink : pLinks) {
         if (pLink)
@@ -68,7 +68,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
     if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
-        Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
+        Part::Compound* objComp = getObject<Part::Compound>();
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
 
         if (hist.size() != sources.size()) {
@@ -151,7 +151,7 @@ bool ViewProviderCompound::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderCompound::dragObject(App::DocumentObject* obj)
 {
-    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    Part::Compound* pComp = getObject<Part::Compound>();
     std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
         if (*it == obj) {
@@ -174,7 +174,7 @@ bool ViewProviderCompound::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderCompound::dropObject(App::DocumentObject* obj)
 {
-    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    Part::Compound* pComp = getObject<Part::Compound>();
     std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
     pShapes.push_back(obj);
     pComp->Links.setValues(pShapes);

@@ -46,7 +46,6 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -136,7 +135,7 @@ void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
-    setObjectName(Base::Tools::fromStdString(name));
+    setObjectName(QString::fromStdString(name));
 }
 
 void MDIViewPage::setDocumentName(const std::string& name) { m_documentName = name; }
@@ -392,7 +391,7 @@ void MDIViewPage::print(QPrinter* printer)
         if (doPrint && printer->pageLayout().orientation() != pageAttr.orientation()) {
             int ret = QMessageBox::warning(
                 this, tr("Different orientation"),
-                tr("The printer uses a different orientation  than the drawing.\n"
+                tr("The printer uses a different orientation than the drawing.\n"
                    "Do you want to continue?"),
                 QMessageBox::Yes | QMessageBox::No);
             if (ret != QMessageBox::Yes) {
@@ -471,7 +470,7 @@ void MDIViewPage::saveSVG(std::string filename)
 void MDIViewPage::saveSVG()
 {
     QStringList filter;
-    filter << QObject::tr("SVG (*.svg)");
+    filter << QStringLiteral("SVG (*.svg)");
     filter << QObject::tr("All Files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
@@ -480,7 +479,7 @@ void MDIViewPage::saveSVG()
         return;
     }
     static_cast<void>(blockSelection(true));// avoid to be notified by itself
-    saveSVG(Base::Tools::toStdString(fn));
+    saveSVG(fn.toStdString());
     static_cast<void>(blockSelection(false));
 }
 
@@ -494,7 +493,7 @@ void MDIViewPage::saveDXF()
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
+        QString::fromUtf8("DXF (*.dxf)"));
     if (fileName.isEmpty()) {
         return;
     }
@@ -517,7 +516,7 @@ void MDIViewPage::savePDF()
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save PDF file")), defaultDir,
-        QString::fromUtf8(QT_TR_NOOP("PDF (*.pdf)")));
+        QString::fromUtf8("PDF (*.pdf)"));
     if (fileName.isEmpty()) {
         return;
     }

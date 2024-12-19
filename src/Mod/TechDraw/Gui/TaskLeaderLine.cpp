@@ -215,13 +215,12 @@ void TaskLeaderLine::changeEvent(QEvent *event)
 
 void TaskLeaderLine::setUiPrimary()
 {
-//    Base::Console().Message("TTL::setUiPrimary()\n");
     enableVPUi(true);
     setWindowTitle(QObject::tr("New Leader Line"));
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->tbBaseView->setText(QString::fromStdString(baseName));
     }
 
     ui->pbTracker->setText(tr("Pick points"));
@@ -258,13 +257,12 @@ void TaskLeaderLine::enableVPUi(bool enable)
 
 void TaskLeaderLine::setUiEdit()
 {
-//    Base::Console().Message("TTL::setUiEdit()\n");
     enableVPUi(true);
     setWindowTitle(QObject::tr("Edit Leader Line"));
 
     if (m_lineFeat) {
         std::string baseName = m_lineFeat->LeaderParent.getValue()->getNameInDocument();
-        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->tbBaseView->setText(QString::fromStdString(baseName));
 
         DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
         ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue());
@@ -380,16 +378,14 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
             std::vector<Base::Vector3d> pageDeltas;
             // convert deltas to mm. leader points are stored inverted, so we do not convert to conventional Y axis
             for (auto& delta : sceneDeltas) {
-                Base::Vector3d deltaInPageCoords = DGU::fromSceneCoords(delta, false);
+                Base::Vector3d deltaInPageCoords = Rez::appX(delta);
                 pageDeltas.push_back(deltaInPageCoords);
             }
 
-// should just do this in place.
-            if (m_lineFeat->AutoHorizontal.getValue()) {
-                pageDeltas = DrawLeaderLine::horizLastSegment(pageDeltas);
-            }
-            // convert to unscaled, unrotated but inverted
-            auto temp = m_lineFeat->makeCanonicalPointsInverted(pageDeltas);
+            // already unrotated, now convert to unscaled, but inverted
+            bool doScale{true};
+            bool doRotate{false};
+            auto temp = m_lineFeat->makeCanonicalPointsInverted(pageDeltas, doScale, doRotate);
             m_lineFeat->WayPoints.setValues(temp);
         }
         commonFeatureUpdate();
@@ -491,8 +487,6 @@ void TaskLeaderLine::removeFeature()
 void TaskLeaderLine::onTrackerClicked(bool clicked)
 {
     Q_UNUSED(clicked);
-//    Base::Console().Message("TTL::onTrackerClicked() m_pbTrackerState: %d\n",
-//                            m_pbTrackerState);
     if (!m_vpp->getMDIViewPage()) {
         Base::Console().Message("TLL::onTrackerClicked - no Mdi, no Tracker!\n");
         return;
@@ -714,7 +708,7 @@ QGIView* TaskLeaderLine::findParentQGIV()
     return vpdv->getQView();;
 }
 
-void TaskLeaderLine::setEditCursor(QCursor cursor)
+void TaskLeaderLine::setEditCursor(const QCursor &cursor)
 {
     if (!m_vpp->getQGSPage()) {
         return;
@@ -725,15 +719,29 @@ void TaskLeaderLine::setEditCursor(QCursor cursor)
     }
 }
 
-//from scene QPointF to zero origin (delta from p0) Vector3d points
+// from scene QPointF to zero origin (delta from p0) Vector3d points
 std::vector<Base::Vector3d> TaskLeaderLine::scenePointsToDeltas(std::vector<QPointF> scenePoints)
 {
-//    Base::Console().Message("TTL::scenePointsToDeltas(%d)\n", pts.size());
+    if (scenePoints.empty()) {
+        return {};
+    }
+
     std::vector<Base::Vector3d> result;
+    auto frontPoint = DU::toVector3d(m_qgParent->mapFromScene(scenePoints.front()));
     result.reserve(scenePoints.size());
     for (auto& point: scenePoints) {
-        QPointF delta = point - scenePoints.front();
-        result.push_back(DU::toVector3d(delta));
+        auto viewPoint = m_qgParent->mapFromScene(point);
+        auto vPoint = DU::toVector3d(viewPoint);
+        auto delta = vPoint - frontPoint;
+        auto rotationDeg = m_baseFeat->Rotation.getValue();
+        auto deltaUnrotated{delta};
+        if (rotationDeg != 0) {
+            deltaUnrotated = DU::invertY(deltaUnrotated);
+            deltaUnrotated.RotateZ(-Base::toRadians(rotationDeg));
+            deltaUnrotated = DU::invertY(deltaUnrotated);
+        }
+
+        result.push_back(deltaUnrotated);
     }
     return result;
 }

@@ -1,0 +1,218 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2024 0penBrain, Lorenz Lechner and Jacob Oursland.      *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This is a build and test workflow for CI of FreeCAD.
+# This workflow aims at building and testing FreeCAD on a Conda environment on macOS.
+
+name: Pixi Builds
+
+on:
+  workflow_call:
+    inputs:
+      artifactBasename:
+        type: string
+        required: true
+      testOnBuildDir:
+        default: false
+        type: boolean
+        required: false
+      allowedToFail:
+        default: false
+        type: boolean
+        required: false
+    outputs:
+      reportFile:
+        value: ${{ jobs.Build.outputs.reportFile }}
+
+jobs:
+  build_with_pixi:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ inputs.allowedToFail }}
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/ccache
+      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
+      CCACHE_MAXSIZE: 1G
+      CCACHE_COMPRESS: true
+      CCACHE_COMPRESSLEVEL: 5
+      builddir: ${{ github.workspace }}/build/
+      cacheKey: pixi-${{ matrix.os }}
+      logdir: ${{ github.workspace }}/logs/
+      reportdir: ${{ github.workspace }}/report/
+      reportfilename: ${{ inputs.artifactBasename }}-${{ matrix.os }}-report.md
+    outputs:
+      reportFile: ${{ steps.Init.outputs.reportFile }}
+
+    strategy:
+      max-parallel: 6
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+    - name: Set Platform Environment Variables
+      shell: bash -l {0}
+      env:
+        OPERATING_SYSTEM: ${{ runner.os }}
+      run: |
+        if [[ $OPERATING_SYSTEM == 'Windows' ]]; then
+          echo 'CCACHE_COMPILERCHECK=%compiler%' >> "$GITHUB_ENV"
+        else
+          echo 'CCACHE_COMPILERCHECK=%compiler% -dumpfullversion -dumpversion' >> "$GITHUB_ENV"
+        fi
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Add GCC Problem Matcher
+      if: runner.os == 'Linux'
+      run: |
+        echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/gcc.json"
+
+    - name: Add Clang Problem Matcher
+      if: runner.os == 'macOS'
+      run: |
+        echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/clang.json"
+
+    - name: Add MSVC++ Problem Matcher
+      if: runner.os == 'Windows'
+      run: |
+        echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/msvc.json"
+
+    - name: Make needed directories, files and initializations
+      id: Init
+      run: |
+        mkdir -p ${{ env.builddir }}
+        mkdir -p ${{ env.logdir }}
+        mkdir -p ${{ env.reportdir }}
+        echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+
+    - uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: v0.34.0
+        cache: false
+
+    - name: Restore Compiler Cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ env.CCACHE_DIR }}
+        key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
+        restore-keys: |
+          FC-${{ env.cacheKey }}-${{ github.ref }}-
+          FC-${{ env.cacheKey }}-
+
+    - name: Print CCache statistics before build, reset stats and print config
+      run: |
+        pixi run ccache -s
+        pixi run ccache -z
+        pixi run ccache -p
+
+    - name: CMake Configure
+      run: |
+        pixi run configure-release
+
+    - name: CMake Build
+      run: |
+        pixi run build
+
+    - name: Print ccache statistics after Build
+      run: |
+        pixi run ccache -s
+
+    - name: FreeCAD CLI tests on build dir
+      if: inputs.testOnBuildDir
+      timeout-minutes: 10
+      uses: ./.github/workflows/actions/runPythonTests
+      with:
+        testDescription: "CLI tests on build dir"
+        testCommand: pixi run ${{ env.builddir }}/bin/FreeCADCmd -t 0
+        logFile: ${{ env.logdir }}TestCLIBuild.log
+        reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+    - name: FreeCAD GUI tests on build dir
+      if: runner.os == 'Linux' && inputs.testOnBuildDir
+      timeout-minutes: 15
+      uses: ./.github/workflows/actions/runPythonTests
+      with:
+        testDescription: "GUI tests on build dir"
+        testCommand: pixi run xvfb-run ${{ env.builddir }}/bin/FreeCAD -t 0
+        logFile: ${{ env.logdir }}TestGUIBuild.log
+        reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+    - name: C++ tests
+      timeout-minutes: 10
+      if: runner.os != 'Windows'
+      uses: ./.github/workflows/actions/runCPPTests/runAllTests
+      with:
+        reportdir: ${{ env.reportdir }}
+        builddir: ${{ env.builddir }}
+        reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
+
+    - name: CMake Install
+      run: |
+        pixi run install
+
+    - name: FreeCAD CLI tests on install
+      if: runner.os != 'Windows'
+      timeout-minutes: 10
+      uses: ./.github/workflows/actions/runPythonTests
+      with:
+        testDescription: "CLI tests on install"
+        testCommand: pixi run FreeCADCmd -t 0
+        logFile: ${{ env.logdir }}TestCLIInstall.log
+        reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+    - name: FreeCAD GUI tests on install
+      # if: runner.os == 'Linux'
+      # currently broken on Qt6 builds
+      if: false
+      timeout-minutes: 15
+      uses: ./.github/workflows/actions/runPythonTests
+      with:
+        testDescription: "GUI tests on install"
+        testCommand: pixi run xvfb-run FreeCAD -t 0
+        logFile: ${{ env.logdir }}TestGUIInstall.log
+        reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+    - name: Save Compiler Cache
+      if: always()
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ env.CCACHE_DIR }}
+        key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
+
+    - name: Upload logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-Logs
+        path: |
+          ${{ env.logdir }}
+          /var/crash/*FreeCAD*
+
+    - name: Upload report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.reportfilename }}
+        path: |
+          ${{env.reportdir}}${{ env.reportfilename }}

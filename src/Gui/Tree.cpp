@@ -540,6 +540,32 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     }
 }
 
+class DynamicQLineEdit : public ExpLineEdit
+{
+public:
+    DynamicQLineEdit(QWidget *parent = nullptr) : ExpLineEdit(parent) {}
+
+    QSize sizeHint() const override
+    {
+        QSize size = QLineEdit::sizeHint(); 
+        QFontMetrics fm(font());
+        int availableWidth = parentWidget()->width() - geometry().x(); // Calculate available width
+        int margin = 2 * (style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1)
+                    + 2 * style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing)
+                    + TreeParams::getItemBackgroundPadding();
+        size.setWidth(std::min(fm.horizontalAdvance(text()) + margin , availableWidth));
+        return size;
+    }
+
+    // resize on key presses
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        ExpLineEdit::keyPressEvent(event);
+        setMinimumWidth(sizeHint().width());
+    }
+
+};
+
 QWidget* TreeWidgetItemDelegate::createEditor(
         QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
@@ -555,15 +581,15 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     App::GetApplication().setActiveTransaction(str.str().c_str());
     FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
 
-    QLineEdit *editor;
+    DynamicQLineEdit *editor;
     if(TreeParams::getLabelExpression()) {
-        ExpLineEdit *le = new ExpLineEdit(parent);
+        DynamicQLineEdit *le = new DynamicQLineEdit(parent);
         le->setAutoApply(true);
         le->setFrame(false);
         le->bind(App::ObjectIdentifier(prop));
         editor = le;
     } else {
-        editor = new QLineEdit(parent);
+        editor = new DynamicQLineEdit(parent);
     }
     editor->setReadOnly(prop.isReadOnly());
     return editor;
@@ -722,6 +748,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     setColumnHidden(1, TreeParams::getHideColumn());
     setColumnHidden(2, TreeParams::getHideInternalNames());
     header()->setVisible(!TreeParams::getHideColumn() || !TreeParams::getHideInternalNames());
+    TreeParams::onFontSizeChanged();
 }
 
 TreeWidget::~TreeWidget()

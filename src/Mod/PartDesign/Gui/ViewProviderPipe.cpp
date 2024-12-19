@@ -47,7 +47,7 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
-    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
+    PartDesign::Pipe* pcPipe = getObject<PartDesign::Pipe>();
 
     App::DocumentObject* sketch = pcPipe->getVerifiedSketch(true);
     if (sketch)
@@ -94,7 +94,7 @@ TaskDlgFeatureParameters* ViewProviderPipe::getEditDialog() {
 
 bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
 {/*
-    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
+    PartDesign::Pipe* pcPipe = getObject<PartDesign::Pipe>();
 
     // get the Sketch
     Sketcher::SketchObject *pcSketch = 0;
@@ -112,7 +112,7 @@ bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
 
 void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, bool on)
 {
-    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
+    PartDesign::Pipe* pcPipe = getObject<PartDesign::Pipe>();
 
     switch (mode) {
     case Spine:
@@ -172,7 +172,7 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
 
 QIcon ViewProviderPipe::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
-    auto* prim = static_cast<PartDesign::Pipe*>(getObject());
+    auto* prim = getObject<PartDesign::Pipe>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
         str += QString::fromLatin1("Additive");
     else

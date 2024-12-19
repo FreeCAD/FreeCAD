@@ -34,11 +34,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from FreeCAD import Units as U
-
+from draftobjects.draft_annotation import DraftAnnotation
+from draftutils import gui_utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-
-from draftobjects.draft_annotation import DraftAnnotation
 
 
 class Label(DraftAnnotation):
@@ -225,13 +224,12 @@ class Label(DraftAnnotation):
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(obj, vp_module="view_label", vp_class="ViewProviderLabel")
         self.Type = "Label"
 
-        if not hasattr(obj, "ViewObject"):
+        if not getattr(obj, "ViewObject", None):
             return
         vobj = obj.ViewObject
-        if not vobj:
-            return
         if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
             return
         self.update_properties_0v21(obj, vobj)

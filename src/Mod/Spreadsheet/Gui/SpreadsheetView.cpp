@@ -28,7 +28,6 @@
 #include <QPrintPreviewDialog>
 #include <QPrinter>
 #include <QTextDocument>
-#include <cmath>
 #endif
 
 #include <App/DocumentObject.h>
@@ -47,6 +46,7 @@
 #include "LineEdit.h"
 #include "SpreadsheetDelegate.h"
 #include "SpreadsheetView.h"
+#include "ZoomableView.h"
 #include "qtcolorpicker.h"
 #include "ui_Sheet.h"
 
@@ -73,6 +73,8 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     QWidget* w = new QWidget(this);
     ui->setupUi(w);
     setCentralWidget(w);
+
+    new ZoomableView(ui);
 
     delegate = new SpreadsheetDelegate(sheet);
     ui->cells->setModel(model);
@@ -432,7 +434,7 @@ void SheetView::confirmAliasChanged(const QString& text)
     bool aliasOkay = true;
 
     ui->cellAlias->setDocumentObject(sheet);
-    if (text.length() != 0 && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+    if (text.length() != 0 && !sheet->isValidAlias(text.toStdString())) {
         aliasOkay = false;
     }
 
@@ -444,8 +446,7 @@ void SheetView::confirmAliasChanged(const QString& text)
             std::string current_alias;
             (void)cell->getAlias(current_alias);
             if (text != QString::fromUtf8(current_alias.c_str())) {
-                Base::Console().Error("Unable to set alias: %s\n",
-                                      Base::Tools::toStdString(text).c_str());
+                Base::Console().Error("Unable to set alias: %s\n", text.toStdString().c_str());
             }
         }
         else {
@@ -479,7 +480,7 @@ void SheetView::aliasChanged(const QString& text)
         warningColor = QLatin1String("rgb(200,0,0)");  // Dark red for light mode
     }
 
-    if (!text.isEmpty() && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+    if (!text.isEmpty() && !sheet->isValidAlias(text.toStdString())) {
         aliasOk = false;
     }
 

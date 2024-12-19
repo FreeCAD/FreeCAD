@@ -263,22 +263,22 @@ protected:
     const std::map<int, std::pair<std::string, std::string>> userEditModes {
         {0,
          std::make_pair(
-             QT_TRANSLATE_NOOP("EditMode", "Default"),
+             QT_TRANSLATE_NOOP("EditMode", "&Default"),
              QT_TRANSLATE_NOOP("EditMode",
                                "The object will be edited using the mode defined internally to be "
                                "the most appropriate for the object type"))},
         {1,
-         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Transform"),
+         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Trans&form"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "The object will have its placement editable with the "
                                           "Std TransformManip command"))},
         {2,
-         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Cutting"),
+         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Cu&tting"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "This edit mode is implemented as available but "
                                           "currently does not seem to be used by any object"))},
         {3,
-         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Color"),
+         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "&Color"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "The object will have the color of its individual faces "
                                           "editable with the Part FaceAppearances command"))},
@@ -354,6 +354,7 @@ public:
 
     static PyObject* sShowDownloads            (PyObject *self,PyObject *args);
     static PyObject* sShowPreferences          (PyObject *self,PyObject *args);
+    static PyObject* sShowPreferencesByName    (PyObject *self,PyObject *args);
 
     static PyObject* sCreateViewer             (PyObject *self,PyObject *args);
     static PyObject* sGetMarkerIndex           (PyObject *self,PyObject *args);

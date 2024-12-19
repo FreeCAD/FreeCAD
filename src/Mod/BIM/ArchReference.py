@@ -402,7 +402,7 @@ class ArchReference:
                         writemode = False
                 elif "<Property name=\"Shape\" type=\"Part::PropertyPartShape\"" in line:
                     writemode = True
-                elif writemode and "<Part file=" in line:
+                elif writemode and "<Part" in line and "file=" in line:
                     n = re.findall(r'file=\"(.*?)\"',line)
                     if n:
                         part = n[0]
@@ -564,8 +564,8 @@ class ViewProviderArchReference:
                     colors = obj.Proxy.getColors(obj)
                     if colors:
                         obj.ViewObject.DiffuseColor = colors
-                    from DraftGui import todo
-                    todo.delay(self.recolorize,obj.ViewObject)
+                    from draftutils import todo
+                    todo.ToDo.delay(self.recolorize,obj.ViewObject)
 
 
     def recolorize(self,vobj):
@@ -642,8 +642,8 @@ class ViewProviderArchReference:
             return None
 
         FreeCADGui.Control.closeDialog()
-        from DraftGui import todo
-        todo.delay(vobj.Proxy.recolorize,vobj)
+        from draftutils import todo
+        todo.ToDo.delay(vobj.Proxy.recolorize,vobj)
         return True
 
 

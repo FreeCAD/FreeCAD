@@ -137,6 +137,7 @@ public:
     static const Unit ElectricalConductance;
     static const Unit ElectricalResistance;
     static const Unit ElectricalConductivity;
+    static const Unit ElectromagneticPotential;
     static const Unit AmountOfSubstance;
     static const Unit LuminousIntensity;
 

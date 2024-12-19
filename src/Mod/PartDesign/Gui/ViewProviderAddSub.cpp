@@ -102,7 +102,7 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
 
 void ViewProviderAddSub::updateAddSubShapeIndicator() {
 
-    TopoDS_Shape cShape(static_cast<PartDesign::FeatureAddSub*>(getObject())->AddSubShape.getValue());
+    TopoDS_Shape cShape(getObject<PartDesign::FeatureAddSub>()->AddSubShape.getValue());
     if (cShape.IsNull()) {
         previewCoords  ->point      .setNum(0);
         previewNorm    ->vector     .setNum(0);
@@ -254,7 +254,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         pcModeSwitch->whichChild.setValue(whichChild);
     }
 
-    App::DocumentObject* obj = static_cast<PartDesign::Feature*>(getObject())->BaseFeature.getValue();
+    App::DocumentObject* obj = getObject<PartDesign::Feature>()->BaseFeature.getValue();
     if (obj)
         static_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(obj))->makeTemporaryVisible(onoff);
 }

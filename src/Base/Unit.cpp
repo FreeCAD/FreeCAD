@@ -515,6 +515,9 @@ QString Unit::getTypeString() const
     if (*this == Unit::ElectricPotential) {
         return QString::fromLatin1("ElectricPotential");
     }
+    if (*this == Unit::ElectromagneticPotential) {
+        return QString::fromLatin1("ElectromagneticPotential");
+    }
     if (*this == Unit::Frequency) {
         return QString::fromLatin1("Frequency");
     }
@@ -656,6 +659,7 @@ const Unit Unit::ElectricalInductance       (2, 1, -2, -2);
 const Unit Unit::ElectricalResistance       (2, 1, -3, -2);
 const Unit Unit::ElectricCharge             (0, 0, 1, 1);
 const Unit Unit::ElectricPotential          (2, 1, -3, -1);
+const Unit Unit::ElectromagneticPotential   (1, 1, -2, -1);
 const Unit Unit::Force                      (1, 1, -2);
 const Unit Unit::Frequency                  (0, 0, -1);
 const Unit Unit::HeatFlux                   (0, 1, -3, 0, 0);
