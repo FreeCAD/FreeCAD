@@ -78,9 +78,9 @@ std::string DimensionFormatter::formatValue(const qreal value,
         asQuantity.setUnit(Base::Unit::Length);
     }
 
-    QString qUserString = asQuantity.getUserString();  // this handles mm to inch/km/parsec etc
-                                                       // and decimal positions but won't give more than
-                                                       // Global_Decimals precision
+    // this handles mm to inch/km/parsec etc and decimal positions but
+    // won't give more than Global_Decimals precision
+    QString qUserString = QString::fromStdString(asQuantity.getUserString());
 
     //get formatSpec prefix/suffix/specifier
     QStringList qsl = getPrefixSuffixSpec(qFormatSpec);
@@ -132,7 +132,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
             qBasicUnit = QString::fromUtf8("°");
         }
         else {
-            double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + qBasicUnit).getValue();
+            double convertValue = Base::Quantity::parse("1" + qBasicUnit.toStdString()).getValue();
             userVal = asQuantity.getValue() / convertValue;
             if (areaMeasure) {
                 userVal = userVal / convertValue; // divide again as area is length²
