@@ -301,10 +301,10 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="toolTip">
-           <string>Set to zero to automatically use maximum number of available cores</string>
+           <string>Number of threads used for analysis</string>
           </property>
           <property name="minimum">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AnalysisNumCPUs</cstring>
