@@ -81,7 +81,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         ui->ThreadSize->addItem(tr(it.c_str()));
     }
     ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
-    ui->ThreadSize->setEnabled(!pcHole->Threaded.getValue() && pcHole->ThreadType.getValue() != 0L);
+    ui->ThreadSize->setEnabled(pcHole->ThreadType.getValue() != 0L);
 
     ui->ThreadClass->clear();
     cursor = pcHole->ThreadClass.getEnumVector();
