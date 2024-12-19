@@ -42,8 +42,9 @@ using namespace Gui::Dialog;
 class Clipping::Private
 {
 public:
-    Ui_Clipping ui;
-    QPointer<Gui::View3DInventor> view;
+    static Ui_Clipping ui;
+    static Private* activeClip;
+    QPointer<Gui::View3DInventor const> view;
     SoGroup* node;
     SoClipPlane* clipX;
     SoClipPlane* clipY;
@@ -53,6 +54,8 @@ public:
     bool flipY {false};
     bool flipZ {false};
     SoTimerSensor* sensor;
+    bool isSensing {false};
+
     Private()
     {
         clipX = new SoClipPlane();
@@ -78,6 +81,7 @@ public:
         node = nullptr;
         sensor = new SoTimerSensor(moveCallback, this);
     }
+
     ~Private()
     {
         clipX->unref();
@@ -86,65 +90,89 @@ public:
         clipView->unref();
         delete sensor;
     }
+
     static void moveCallback(void* data, SoSensor* sensor)
     {
         Q_UNUSED(sensor);
         auto self = static_cast<Private*>(data);
-        if (self->view) {
-            Gui::View3DInventorViewer* view = self->view->getViewer();
+        Gui::View3DInventorViewer const* viewer = self->view.data() ? self->view->getViewer() : nullptr;
+        if (viewer) {
             SoClipPlane* clip = self->clipView;
             SbPlane pln = clip->plane.getValue();
-            clip->plane.setValue(SbPlane(view->getViewDirection(), pln.getDistanceFromOrigin()));
+            clip->plane.setValue(SbPlane(viewer->getViewDirection(), pln.getDistanceFromOrigin()));
+        }
+        else {
+            self->sensor->unschedule();
+            self->isSensing = false;
         }
     }
 };
 
+Ui_Clipping Clipping::Private::ui;
+
+Clipping::Private* Clipping::Private::activeClip = nullptr;
+
 /* TRANSLATOR Gui::Dialog::Clipping */
 
-Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
+Clipping::Clipping(Gui::View3DInventor const* view, QWidget* parent)
     : QDialog(parent)
-    , d(new Private)
 {
     // create widgets
-    d->ui.setupUi(this);
+    Private::ui.setupUi(this);
+
+    Private::ui.clipView->setRange(-INT_MAX, INT_MAX);
+    Private::ui.clipView->setSingleStep(0.1f);
+    Private::ui.clipX->setRange(-INT_MAX, INT_MAX);
+    Private::ui.clipX->setSingleStep(0.1f);
+    Private::ui.clipY->setRange(-INT_MAX, INT_MAX);
+    Private::ui.clipY->setSingleStep(0.1f);
+    Private::ui.clipZ->setRange(-INT_MAX, INT_MAX);
+    Private::ui.clipZ->setSingleStep(0.1f);
+
+    Private::ui.dirX->setRange(-INT_MAX, INT_MAX);
+    Private::ui.dirX->setSingleStep(0.1f);
+    Private::ui.dirY->setRange(-INT_MAX, INT_MAX);
+    Private::ui.dirY->setSingleStep(0.1f);
+    Private::ui.dirZ->setRange(-INT_MAX, INT_MAX);
+    Private::ui.dirZ->setSingleStep(0.1f);
+    Private::ui.dirZ->setValue(1.0f);
+
+    auto p = new Private();
+    p->view = view;
+    Private::activeClip = p;
     setupConnections();
+    setupPrivate(p);
+}
 
-    d->ui.clipView->setRange(-INT_MAX, INT_MAX);
-    d->ui.clipView->setSingleStep(0.1f);
-    d->ui.clipX->setRange(-INT_MAX, INT_MAX);
-    d->ui.clipX->setSingleStep(0.1f);
-    d->ui.clipY->setRange(-INT_MAX, INT_MAX);
-    d->ui.clipY->setSingleStep(0.1f);
-    d->ui.clipZ->setRange(-INT_MAX, INT_MAX);
-    d->ui.clipZ->setSingleStep(0.1f);
+void Clipping::setupPrivate(Private* p)
+{
+    d.insert(p->view, p);
 
-    d->ui.dirX->setRange(-INT_MAX, INT_MAX);
-    d->ui.dirX->setSingleStep(0.1f);
-    d->ui.dirY->setRange(-INT_MAX, INT_MAX);
-    d->ui.dirY->setSingleStep(0.1f);
-    d->ui.dirZ->setRange(-INT_MAX, INT_MAX);
-    d->ui.dirZ->setSingleStep(0.1f);
-    d->ui.dirZ->setValue(1.0f);
+    View3DInventorViewer* viewer = p->view->getViewer();
+    auto sceneGraph = viewer->getSceneGraph();
 
-    d->view = view;
-    View3DInventorViewer* viewer = view->getViewer();
-    d->node = static_cast<SoGroup*>(viewer->getSceneGraph());
-    d->node->ref();
-    d->node->insertChild(d->clipX, 0);
-    d->node->insertChild(d->clipY, 0);
-    d->node->insertChild(d->clipZ, 0);
-    d->node->insertChild(d->clipView, 0);
+    p->node = static_cast<SoGroup*>(sceneGraph);
+    p->node->ref();
+    p->node->insertChild(p->clipX, 0);
+    p->node->insertChild(p->clipY, 0);
+    p->node->insertChild(p->clipZ, 0);
+    p->node->insertChild(p->clipView, 0);
 
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-    action.apply(viewer->getSceneGraph());
+    action.apply(sceneGraph);
     SbBox3f box = action.getBoundingBox();
 
     if (!box.isEmpty()) {
         SbVec3f cnt = box.getCenter();
-        d->ui.clipView->setValue(cnt[2]);
-        d->ui.clipX->setValue(cnt[0]);
-        d->ui.clipY->setValue(cnt[1]);
-        d->ui.clipZ->setValue(cnt[2]);
+        Private::ui.clipView->setValue(cnt[2]);
+        Private::ui.clipX->setValue(cnt[0]);
+        Private::ui.clipY->setValue(cnt[1]);
+        Private::ui.clipZ->setValue(cnt[2]);
+
+        p->clipView->plane.setValue(SbPlane(SbVec3f(0, 0, 1), cnt[2]));
+        p->clipX->plane.setValue(SbPlane(SbVec3f(1, 0, 0), cnt[0]));
+        p->clipY->plane.setValue(SbPlane(SbVec3f(0, 1, 0), cnt[1]));
+        p->clipZ->plane.setValue(SbPlane(SbVec3f(0, 0, 1), cnt[2]));
 
         int minDecimals = 2;
         float lenx, leny, lenz;
@@ -157,37 +185,92 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
             minlen = minlen / steps;
             int dim = static_cast<int>(log10(minlen));
             double singleStep = pow(10.0, dim);
-            d->ui.clipView->setSingleStep(singleStep);
+            Private::ui.clipView->setSingleStep(singleStep);
             minDecimals = std::max(minDecimals, -dim);
         }
         {
             lenx = lenx / steps;
             int dim = static_cast<int>(log10(lenx));
             double singleStep = pow(10.0, dim);
-            d->ui.clipX->setSingleStep(singleStep);
+            Private::ui.clipX->setSingleStep(singleStep);
         }
         {
             leny = leny / steps;
             int dim = static_cast<int>(log10(leny));
             double singleStep = pow(10.0, dim);
-            d->ui.clipY->setSingleStep(singleStep);
+            Private::ui.clipY->setSingleStep(singleStep);
         }
         {
             lenz = lenz / steps;
             int dim = static_cast<int>(log10(lenz));
             double singleStep = pow(10.0, dim);
-            d->ui.clipZ->setSingleStep(singleStep);
+            Private::ui.clipZ->setSingleStep(singleStep);
         }
 
         // set decimals
-        d->ui.clipView->setDecimals(minDecimals);
-        d->ui.clipX->setDecimals(minDecimals);
-        d->ui.clipY->setDecimals(minDecimals);
-        d->ui.clipZ->setDecimals(minDecimals);
+        Private::ui.clipView->setDecimals(minDecimals);
+        Private::ui.clipX->setDecimals(minDecimals);
+        Private::ui.clipY->setDecimals(minDecimals);
+        Private::ui.clipZ->setDecimals(minDecimals);
     }
 }
 
-Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view)
+void Clipping::switchUi(Private* p)
+{
+    Private::ui.groupBoxX->setChecked(
+        p->clipX->on.getValue()
+    );
+    Private::ui.clipX->setValue(
+        p->clipX->plane.getValue().getDistanceFromOrigin()
+    );
+    Private::ui.flipClipX->setChecked(
+        p->flipX
+    );
+
+    Private::ui.groupBoxY->setChecked(
+        p->clipY->on.getValue()
+    );
+    Private::ui.clipY->setValue(
+        p->clipY->plane.getValue().getDistanceFromOrigin()
+    );
+    Private::ui.flipClipY->setChecked(
+        p->flipY
+    );
+
+    Private::ui.groupBoxZ->setChecked(
+        p->clipZ->on.getValue()
+    );
+    Private::ui.clipZ->setValue(
+        p->clipZ->plane.getValue().getDistanceFromOrigin()
+    );
+    Private::ui.flipClipZ->setChecked(
+        p->flipZ
+    );
+
+    auto pln = p->clipView->plane.getValue();
+    auto d = pln.getDistanceFromOrigin();
+    auto n = pln.getNormal();
+    Private::ui.groupBoxView->setChecked(
+        p->clipView->on.getValue()
+    );
+    Private::ui.clipView->setValue(
+        d
+    );
+    Private::ui.adjustViewdirection->setChecked(
+        p->isSensing
+    );
+    Private::ui.dirX->setValue(
+        n[0]
+    );
+    Private::ui.dirY->setValue(
+        n[1]
+    );
+    Private::ui.dirZ->setValue(
+        n[2]
+    );
+}
+
+Clipping* Clipping::makeDockWidget(Gui::View3DInventor const* view)
 {
     // embed this dialog into a QDockWidget
     auto clipping = new Clipping(view);
@@ -199,51 +282,103 @@ Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view)
     return clipping;
 }
 
+void Clipping::switchView(Gui::View3DInventor const* view)
+{
+    auto p = d.value(view);
+    if (!p) {
+        p = new Private();
+        p->view = view;
+        setupPrivate(p);
+    }
+    Private::activeClip = p;
+    switchUi(p);
+}
+
 /** Destroys the object and frees any allocated resources */
 Clipping::~Clipping()
 {
-    d->node->removeChild(d->clipX);
-    d->node->removeChild(d->clipY);
-    d->node->removeChild(d->clipZ);
-    d->node->removeChild(d->clipView);
-    d->node->unref();
-    delete d;
+    // clang-format off
+    disconnect(Private::ui.groupBoxX, &QGroupBox::toggled,
+            this, &Clipping::onGroupBoxXToggled);
+    disconnect(Private::ui.groupBoxY, &QGroupBox::toggled,
+            this, &Clipping::onGroupBoxYToggled);
+    disconnect(Private::ui.groupBoxZ, &QGroupBox::toggled,
+            this, &Clipping::onGroupBoxZToggled);
+    disconnect(Private::ui.clipX, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &Clipping::onClipXValueChanged);
+    disconnect(Private::ui.clipY, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &Clipping::onClipYValueChanged);
+    disconnect(Private::ui.clipZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &Clipping::onClipZValueChanged);
+    disconnect(Private::ui.flipClipX, &QPushButton::clicked,
+            this, &Clipping::onFlipClipXClicked);
+    disconnect(Private::ui.flipClipY, &QPushButton::clicked,
+            this, &Clipping::onFlipClipYClicked);
+    disconnect(Private::ui.flipClipZ, &QPushButton::clicked,
+            this, &Clipping::onFlipClipZClicked);
+    disconnect(Private::ui.groupBoxView, &QGroupBox::toggled,
+            this, &Clipping::onGroupBoxViewToggled);
+    disconnect(Private::ui.clipView, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &Clipping::onClipViewValueChanged);
+    disconnect(Private::ui.fromView, &QPushButton::clicked,
+            this, &Clipping::onFromViewClicked);
+    disconnect(Private::ui.adjustViewdirection, &QCheckBox::toggled,
+            this, &Clipping::onAdjustViewdirectionToggled);
+    disconnect(Private::ui.dirX, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &Clipping::onDirXValueChanged);
+    disconnect(Private::ui.dirY, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &Clipping::onDirYValueChanged);
+    disconnect(Private::ui.dirZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &Clipping::onDirZValueChanged);
+    // clang-format on
+
+    Private::activeClip = nullptr;
+
+    for (QMap<Gui::View3DInventor const*, Private *>::Iterator it = d.begin(); it != d.end(); ++it) {
+        auto p = it.value();
+        p->node->removeChild(p->clipX);
+        p->node->removeChild(p->clipY);
+        p->node->removeChild(p->clipZ);
+        p->node->removeChild(p->clipView);
+        p->node->unref();
+        delete p;
+    }
 }
 
 void Clipping::setupConnections()
 {
     // clang-format off
-    connect(d->ui.groupBoxX, &QGroupBox::toggled,
+    connect(Private::ui.groupBoxX, &QGroupBox::toggled,
             this, &Clipping::onGroupBoxXToggled);
-    connect(d->ui.groupBoxY, &QGroupBox::toggled,
+    connect(Private::ui.groupBoxY, &QGroupBox::toggled,
             this, &Clipping::onGroupBoxYToggled);
-    connect(d->ui.groupBoxZ, &QGroupBox::toggled,
+    connect(Private::ui.groupBoxZ, &QGroupBox::toggled,
             this, &Clipping::onGroupBoxZToggled);
-    connect(d->ui.clipX, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(Private::ui.clipX, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onClipXValueChanged);
-    connect(d->ui.clipY, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(Private::ui.clipY, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onClipYValueChanged);
-    connect(d->ui.clipZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(Private::ui.clipZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onClipZValueChanged);
-    connect(d->ui.flipClipX, &QPushButton::clicked,
+    connect(Private::ui.flipClipX, &QPushButton::clicked,
             this, &Clipping::onFlipClipXClicked);
-    connect(d->ui.flipClipY, &QPushButton::clicked,
+    connect(Private::ui.flipClipY, &QPushButton::clicked,
             this, &Clipping::onFlipClipYClicked);
-    connect(d->ui.flipClipZ, &QPushButton::clicked,
+    connect(Private::ui.flipClipZ, &QPushButton::clicked,
             this, &Clipping::onFlipClipZClicked);
-    connect(d->ui.groupBoxView, &QGroupBox::toggled,
+    connect(Private::ui.groupBoxView, &QGroupBox::toggled,
             this, &Clipping::onGroupBoxViewToggled);
-    connect(d->ui.clipView, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(Private::ui.clipView, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onClipViewValueChanged);
-    connect(d->ui.fromView, &QPushButton::clicked,
+    connect(Private::ui.fromView, &QPushButton::clicked,
             this, &Clipping::onFromViewClicked);
-    connect(d->ui.adjustViewdirection, &QCheckBox::toggled,
+    connect(Private::ui.adjustViewdirection, &QCheckBox::toggled,
             this, &Clipping::onAdjustViewdirectionToggled);
-    connect(d->ui.dirX, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(Private::ui.dirX, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onDirXValueChanged);
-    connect(d->ui.dirY, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(Private::ui.dirY, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onDirYValueChanged);
-    connect(d->ui.dirZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(Private::ui.dirZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onDirZValueChanged);
     // clang-format on
 }
@@ -260,147 +395,148 @@ void Clipping::reject()
 void Clipping::onGroupBoxXToggled(bool on)
 {
     if (on) {
-        d->ui.groupBoxView->setChecked(false);
+        Private::ui.groupBoxView->setChecked(false);
     }
 
-    d->clipX->on.setValue(on);
+    Private::activeClip->clipX->on.setValue(on);
 }
 
 void Clipping::onGroupBoxYToggled(bool on)
 {
     if (on) {
-        d->ui.groupBoxView->setChecked(false);
+        Private::ui.groupBoxView->setChecked(false);
     }
 
-    d->clipY->on.setValue(on);
+    Private::activeClip->clipY->on.setValue(on);
 }
 
 void Clipping::onGroupBoxZToggled(bool on)
 {
     if (on) {
-        d->ui.groupBoxView->setChecked(false);
+        Private::ui.groupBoxView->setChecked(false);
     }
 
-    d->clipZ->on.setValue(on);
+    Private::activeClip->clipZ->on.setValue(on);
 }
 
 void Clipping::onClipXValueChanged(double val)
 {
-    SbPlane pln = d->clipX->plane.getValue();
-    d->clipX->plane.setValue(SbPlane(pln.getNormal(), d->flipX ? -val : val));
+    SbPlane pln = Private::activeClip->clipX->plane.getValue();
+    Private::activeClip->clipX->plane.setValue(SbPlane(pln.getNormal(), Private::activeClip->flipX ? -val : val));
 }
 
 void Clipping::onClipYValueChanged(double val)
 {
-    SbPlane pln = d->clipY->plane.getValue();
-    d->clipY->plane.setValue(SbPlane(pln.getNormal(), d->flipY ? -val : val));
+    SbPlane pln = Private::activeClip->clipY->plane.getValue();
+    Private::activeClip->clipY->plane.setValue(SbPlane(pln.getNormal(), Private::activeClip->flipY ? -val : val));
 }
 
 void Clipping::onClipZValueChanged(double val)
 {
-    SbPlane pln = d->clipZ->plane.getValue();
-    d->clipZ->plane.setValue(SbPlane(pln.getNormal(), d->flipZ ? -val : val));
+    SbPlane pln = Private::activeClip->clipZ->plane.getValue();
+    Private::activeClip->clipZ->plane.setValue(SbPlane(pln.getNormal(), Private::activeClip->flipZ ? -val : val));
 }
 
 void Clipping::onFlipClipXClicked()
 {
-    d->flipX = !d->flipX;
-    SbPlane pln = d->clipX->plane.getValue();
-    d->clipX->plane.setValue(SbPlane(-pln.getNormal(), -pln.getDistanceFromOrigin()));
+    Private::activeClip->flipX = !Private::activeClip->flipX;
+    SbPlane pln = Private::activeClip->clipX->plane.getValue();
+    Private::activeClip->clipX->plane.setValue(SbPlane(-pln.getNormal(), -pln.getDistanceFromOrigin()));
 }
 
 void Clipping::onFlipClipYClicked()
 {
-    d->flipY = !d->flipY;
-    SbPlane pln = d->clipY->plane.getValue();
-    d->clipY->plane.setValue(SbPlane(-pln.getNormal(), -pln.getDistanceFromOrigin()));
+    Private::activeClip->flipY = !Private::activeClip->flipY;
+    SbPlane pln = Private::activeClip->clipY->plane.getValue();
+    Private::activeClip->clipY->plane.setValue(SbPlane(-pln.getNormal(), -pln.getDistanceFromOrigin()));
 }
 
 void Clipping::onFlipClipZClicked()
 {
-    d->flipZ = !d->flipZ;
-    SbPlane pln = d->clipZ->plane.getValue();
-    d->clipZ->plane.setValue(SbPlane(-pln.getNormal(), -pln.getDistanceFromOrigin()));
+    Private::activeClip->flipZ = !Private::activeClip->flipZ;
+    SbPlane pln = Private::activeClip->clipZ->plane.getValue();
+    Private::activeClip->clipZ->plane.setValue(SbPlane(-pln.getNormal(), -pln.getDistanceFromOrigin()));
 }
 
 void Clipping::onGroupBoxViewToggled(bool on)
 {
     if (on) {
-        d->ui.groupBoxX->setChecked(false);
-        d->ui.groupBoxY->setChecked(false);
-        d->ui.groupBoxZ->setChecked(false);
+        Private::ui.groupBoxX->setChecked(false);
+        Private::ui.groupBoxY->setChecked(false);
+        Private::ui.groupBoxZ->setChecked(false);
     }
 
-    d->clipView->on.setValue(on);
+    Private::activeClip->clipView->on.setValue(on);
 }
 
 void Clipping::onClipViewValueChanged(double val)
 {
-    SbPlane pln = d->clipView->plane.getValue();
-    d->clipView->plane.setValue(SbPlane(pln.getNormal(), val));
+    SbPlane pln = Private::activeClip->clipView->plane.getValue();
+    Private::activeClip->clipView->plane.setValue(SbPlane(pln.getNormal(), val));
 }
 
 void Clipping::onFromViewClicked()
 {
-    if (d->view) {
-        Gui::View3DInventorViewer* view = d->view->getViewer();
-        SbVec3f dir = view->getViewDirection();
-        SbPlane pln = d->clipView->plane.getValue();
-        d->clipView->plane.setValue(SbPlane(dir, pln.getDistanceFromOrigin()));
+    if (Private::activeClip) {
+        Gui::View3DInventorViewer* viewer = Private::activeClip->view->getViewer();
+        SbVec3f dir = viewer->getViewDirection();
+        SbPlane pln = Private::activeClip->clipView->plane.getValue();
+        Private::activeClip->clipView->plane.setValue(SbPlane(dir, pln.getDistanceFromOrigin()));
     }
 }
 
 void Clipping::onAdjustViewdirectionToggled(bool on)
 {
-    d->ui.dirX->setDisabled(on);
-    d->ui.dirY->setDisabled(on);
-    d->ui.dirZ->setDisabled(on);
-    d->ui.fromView->setDisabled(on);
+    Private::ui.dirX->setDisabled(on);
+    Private::ui.dirY->setDisabled(on);
+    Private::ui.dirZ->setDisabled(on);
+    Private::ui.fromView->setDisabled(on);
 
+    Private::activeClip->isSensing = on;
     if (on) {
-        d->sensor->schedule();
+        Private::activeClip->sensor->schedule();
     }
     else {
-        d->sensor->unschedule();
+        Private::activeClip->sensor->unschedule();
     }
 }
 
 void Clipping::onDirXValueChanged(double)
 {
-    double x = d->ui.dirX->value();
-    double y = d->ui.dirY->value();
-    double z = d->ui.dirZ->value();
+    double x = Private::ui.dirX->value();
+    double y = Private::ui.dirY->value();
+    double z = Private::ui.dirZ->value();
 
-    SbPlane pln = d->clipView->plane.getValue();
+    SbPlane pln = Private::activeClip->clipView->plane.getValue();
     SbVec3f normal(x, y, z);
     if (normal.sqrLength() > 0.0f) {
-        d->clipView->plane.setValue(SbPlane(normal, pln.getDistanceFromOrigin()));
+        Private::activeClip->clipView->plane.setValue(SbPlane(normal, pln.getDistanceFromOrigin()));
     }
 }
 
 void Clipping::onDirYValueChanged(double)
 {
-    double x = d->ui.dirX->value();
-    double y = d->ui.dirY->value();
-    double z = d->ui.dirZ->value();
+    double x = Private::ui.dirX->value();
+    double y = Private::ui.dirY->value();
+    double z = Private::ui.dirZ->value();
 
-    SbPlane pln = d->clipView->plane.getValue();
+    SbPlane pln = Private::activeClip->clipView->plane.getValue();
     SbVec3f normal(x, y, z);
     if (normal.sqrLength() > 0.0f) {
-        d->clipView->plane.setValue(SbPlane(normal, pln.getDistanceFromOrigin()));
+        Private::activeClip->clipView->plane.setValue(SbPlane(normal, pln.getDistanceFromOrigin()));
     }
 }
 
 void Clipping::onDirZValueChanged(double)
 {
-    double x = d->ui.dirX->value();
-    double y = d->ui.dirY->value();
-    double z = d->ui.dirZ->value();
+    double x = Private::ui.dirX->value();
+    double y = Private::ui.dirY->value();
+    double z = Private::ui.dirZ->value();
 
-    SbPlane pln = d->clipView->plane.getValue();
+    SbPlane pln = Private::activeClip->clipView->plane.getValue();
     SbVec3f normal(x, y, z);
     if (normal.sqrLength() > 0.0f) {
-        d->clipView->plane.setValue(SbPlane(normal, pln.getDistanceFromOrigin()));
+        Private::activeClip->clipView->plane.setValue(SbPlane(normal, pln.getDistanceFromOrigin()));
     }
 }
 
