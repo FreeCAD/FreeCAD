@@ -196,8 +196,11 @@ private:
             throw Py::Exception();
         }
 
-        std::string EncodedName = std::string(Name);
+        Base::FileInfo file(Name);
         PyMem_Free(Name);
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Fem");
 
         Py::Sequence list(object);
         Base::Type meshId = Base::Type::fromName("Fem::FemMeshObject");
@@ -207,7 +210,25 @@ private:
                 App::DocumentObject* obj =
                     static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(meshId)) {
-                    static_cast<FemMeshObject*>(obj)->FemMesh.getValue().write(EncodedName.c_str());
+                    auto femMesh = static_cast<FemMeshObject*>(obj)->FemMesh.getValue();
+                    if (file.hasExtension({"vtk", "vtu"})) {
+                        // get VTK prefs
+                        ParameterGrp::handle g = hGrp->GetGroup("InOutVtk");
+                        std::string level = g->GetASCII("MeshExportLevel", "Highest");
+                        femMesh.writeVTK(file.filePath().c_str(),
+                                         level == "Highest" ? true : false);
+                    }
+                    else if (file.hasExtension("inp")) {
+                        // get Abaqus inp prefs
+                        ParameterGrp::handle g = hGrp->GetGroup("Abaqus");
+                        int elemParam = g->GetInt("AbaqusElementChoice", 1);
+                        bool groupParam = g->GetBool("AbaqusWriteGroups", false);
+                        // write ABAQUS Output
+                        femMesh.writeABAQUS(file.filePath(), elemParam, groupParam);
+                    }
+                    else {
+                        femMesh.write(file.filePath().c_str());
+                    }
                     return Py::None();
                 }
             }

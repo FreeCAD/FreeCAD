@@ -210,6 +210,7 @@ public:
                      ABAQUS_VolumeVariant volVariant = ABAQUS_VolumeVariant::Standard,
                      ABAQUS_FaceVariant faceVariant = ABAQUS_FaceVariant::Shell,
                      ABAQUS_EdgeVariant edgeVariant = ABAQUS_EdgeVariant::Beam) const;
+    void writeVTK(const std::string& FileName, bool highest = true) const;
     void writeZ88(const std::string& FileName) const;
 
 private:
