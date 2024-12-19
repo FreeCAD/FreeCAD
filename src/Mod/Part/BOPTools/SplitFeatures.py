@@ -94,7 +94,7 @@ class ViewProviderBooleanFragments:
         vobj.Proxy = self
 
     def getIcon(self):
-        return getIconPath("Part_BooleanFragments.svg")
+        return ":/icons/booleans/Part_BooleanFragments.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -252,7 +252,7 @@ class ViewProviderSlice:
         vobj.Proxy = self
 
     def getIcon(self):
-        return getIconPath("Part_Slice.svg")
+        return ":/icons/booleans/Part_Slice.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -432,7 +432,7 @@ class ViewProviderXOR:
         vobj.Proxy = self
 
     def getIcon(self):
-        return getIconPath("Part_XOR.svg")
+        return ":/icons/booleans/Part_XOR.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
