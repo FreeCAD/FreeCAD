@@ -27,10 +27,8 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/engines/SoComposeVec3f.h>
-#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -46,6 +44,9 @@
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoFontStyle.h>
 #endif
 
 #include <Base/Quantity.h>
@@ -55,6 +56,8 @@
 
 #include "MainWindow.h"
 #include "SoFCDB.h"
+
+#include <SoTextLabel.h>
 
 
 /*
@@ -100,14 +103,20 @@ TDragger::TDragger()
     this->ref();
 #endif
 
-    SO_KIT_ADD_CATALOG_ENTRY(translatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, translatorSwitch, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(translatorActive, SoSeparator, TRUE, translatorSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, geomSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(activeSwitch, SoSwitch, TRUE, translator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(activeColor, SoBaseColor, TRUE, activeSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(coneSeparator, SoSeparator, TRUE, translator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(cylinderSeparator, SoSeparator, TRUE, translator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(labelSeparator, SoSeparator, TRUE, translator, "", TRUE);
 
     if (SO_KIT_IS_FIRST_INSTANCE()) {
         buildFirstInstance();
     }
 
+    SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, geomSeparator, "", TRUE);
+
+    SO_KIT_ADD_FIELD(label, (""));
     SO_KIT_ADD_FIELD(translation, (0.0, 0.0, 0.0));
     SO_KIT_ADD_FIELD(translationIncrement, (1.0));
     SO_KIT_ADD_FIELD(translationIncrementCount, (0));
@@ -118,11 +127,15 @@ TDragger::TDragger()
     // initialize default parts.
     // first is from 'SO_KIT_CATALOG_ENTRY_HEADER' macro
     // second is unique name from buildFirstInstance().
-    this->setPartAsDefault("translator", "CSysDynamics_TDragger_Translator");
-    this->setPartAsDefault("translatorActive", "CSysDynamics_TDragger_TranslatorActive");
+    SoInteractionKit::setPartAsDefault("coneSeparator", "CSysDynamics_TDragger_Cone");
+    SoInteractionKit::setPartAsDefault("cylinderSeparator", "CSysDynamics_TDragger_Cylinder");
+    SoInteractionKit::setPartAsDefault("activeColor", "CSysDynamics_TDragger_ActiveColor");
 
-    SoSwitch* sw = SO_GET_ANY_PART(this, "translatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, 0);
+    SoInteractionKit::setPart("labelSeparator", buildLabelGeometry());
+
+    auto sw = SO_GET_ANY_PART(this, "activeSwitch", SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+
 
     this->addStartCallback(&TDragger::startCB);
     this->addMotionCallback(&TDragger::motionCB);
@@ -150,34 +163,22 @@ TDragger::~TDragger()
 
 void TDragger::buildFirstInstance()
 {
-    SoGroup* geometryGroup = buildGeometry();
+    auto cylinderSeparator = buildCylinderGeometry();
+    auto coneSeparator = buildConeGeometry();
+    auto activeColor = buildActiveColor();
 
-    auto localTranslator = new SoSeparator();
-    localTranslator->setName("CSysDynamics_TDragger_Translator");
-    localTranslator->addChild(geometryGroup);
-    SoFCDB::getStorage()->addChild(localTranslator);
+    cylinderSeparator->setName("CSysDynamics_TDragger_Cylinder");
+    coneSeparator->setName("CSysDynamics_TDragger_Cone");
+    activeColor->setName("CSysDynamics_TDragger_ActiveColor");
 
-    auto localTranslatorActive = new SoSeparator();
-    localTranslatorActive->setName("CSysDynamics_TDragger_TranslatorActive");
-    auto colorActive = new SoBaseColor();
-    colorActive->rgb.setValue(1.0, 1.0, 0.0);
-    localTranslatorActive->addChild(colorActive);
-    localTranslatorActive->addChild(geometryGroup);
-    SoFCDB::getStorage()->addChild(localTranslatorActive);
+    SoFCDB::getStorage()->addChild(cylinderSeparator);
+    SoFCDB::getStorage()->addChild(coneSeparator);
+    SoFCDB::getStorage()->addChild(activeColor);
 }
 
-SoGroup* TDragger::buildGeometry()
+SoSeparator* TDragger::buildCylinderGeometry() const
 {
-    // this builds one leg in the Y+ direction because of default done direction.
-    // the location anchor for shapes is the center of shape.
-
-    auto root = new SoGroup();
-
-    // cylinder
-    float cylinderHeight = 10.0;
-    float cylinderRadius = 0.1f;
     auto cylinderSeparator = new SoSeparator();
-    root->addChild(cylinderSeparator);
 
     auto cylinderLightModel = new SoLightModel();
     cylinderLightModel->model = SoLightModel::BASE_COLOR;
@@ -192,14 +193,15 @@ SoGroup* TDragger::buildGeometry()
     cylinder->height.setValue(cylinderHeight);
     cylinderSeparator->addChild(cylinder);
 
-    // cone
-    float coneBottomRadius = 0.8F;
-    float coneHeight = 2.5;
-    auto coneSeparator = new SoSeparator();
-    root->addChild(coneSeparator);
+    return cylinderSeparator;
+}
 
+SoSeparator* TDragger::buildConeGeometry() const
+{
     auto coneLightModel = new SoLightModel();
     coneLightModel->model = SoLightModel::BASE_COLOR;
+
+    auto coneSeparator = new SoSeparator();
     coneSeparator->addChild(coneLightModel);
 
     auto pickStyle = new SoPickStyle();
@@ -216,7 +218,35 @@ SoGroup* TDragger::buildGeometry()
     cone->height.setValue(coneHeight);
     coneSeparator->addChild(cone);
 
-    return root;
+    return coneSeparator;
+}
+
+SoSeparator* TDragger::buildLabelGeometry()
+{
+    auto labelSeparator = new SoSeparator();
+
+    auto labelTranslation = new SoTranslation();
+    labelTranslation->translation.setValue(0.0, cylinderHeight + coneHeight * 1.5, 0.0);
+    labelSeparator->addChild(labelTranslation);
+
+    auto label = new SoFrameLabel();
+    label->string.connectFrom(&this->label);
+    label->textColor.setValue(1.0, 1.0, 1.0);
+    label->horAlignment = SoImage::CENTER;
+    label->vertAlignment = SoImage::HALF;
+    label->border = false;
+    label->backgroundUseBaseColor = true;
+    labelSeparator->addChild(label);
+
+    return labelSeparator;
+}
+
+SoBaseColor* TDragger::buildActiveColor()
+{
+    auto colorActive = new SoBaseColor();
+    colorActive->rgb.setValue(1.0, 1.0, 0.0);
+
+    return colorActive;
 }
 
 void TDragger::startCB(void*, SoDragger* d)
@@ -274,8 +304,8 @@ void TDragger::valueChangedCB(void*, SoDragger* d)
 void TDragger::dragStart()
 {
     SoSwitch* sw;
-    sw = SO_GET_ANY_PART(this, "translatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, 1);
+    sw = SO_GET_ANY_PART(this, "activeSwitch", SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
 
     // do an initial projection to eliminate discrepancies
     // in arrow head pick. we define the arrow in the y+ direction
@@ -334,8 +364,8 @@ void TDragger::drag()
 void TDragger::dragFinish()
 {
     SoSwitch* sw;
-    sw = SO_GET_ANY_PART(this, "translatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, 0);
+    sw = SO_GET_ANY_PART(this, "activeSwitch", SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
 }
 
 SbBool TDragger::setUpConnections(SbBool onoff, SbBool doitalways)
@@ -1014,7 +1044,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     SO_KIT_ADD_CATALOG_ENTRY(annotation, So3DAnnotation, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, "", TRUE);
-
+    SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, TRUE, annotation, "", TRUE);
     // Translator
 
     SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
@@ -1142,7 +1172,6 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_ADD_CATALOG_ENTRY(zRotatorDragger, RDragger, TRUE, zRotatorSeparator, "", TRUE);
 
     // Other
-
     SO_KIT_ADD_FIELD(translation, (0.0, 0.0, 0.0));
     SO_KIT_ADD_FIELD(translationIncrement, (1.0));
     SO_KIT_ADD_FIELD(translationIncrementCountX, (0));
@@ -1158,6 +1187,10 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_ADD_FIELD(draggerSize, (1.0));
     SO_KIT_ADD_FIELD(autoScaleResult, (1.0));
 
+    SO_KIT_ADD_FIELD(xAxisLabel, ("X"));
+    SO_KIT_ADD_FIELD(yAxisLabel, ("Y"));
+    SO_KIT_ADD_FIELD(zAxisLabel, ("Z"));
+
     SO_KIT_INIT_INSTANCE();
 
     // Colors
@@ -1165,21 +1198,22 @@ SoFCCSysDragger::SoFCCSysDragger()
                   SbColor(0, 1.0, 0).getPackedValue(0.0f),
                   SbColor(0, 0, 1.0).getPackedValue(0.0f));
 
-    // Increments
-
     // Translator
     TDragger* tDragger;
     tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
+    tDragger->label.connectFrom(&xAxisLabel);
     translationIncrementCountX.connectFrom(&tDragger->translationIncrementCount);
     tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
+    tDragger->label.connectFrom(&yAxisLabel);
     translationIncrementCountY.connectFrom(&tDragger->translationIncrementCount);
     tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
+    tDragger->label.connectFrom(&zAxisLabel);
     translationIncrementCountZ.connectFrom(&tDragger->translationIncrementCount);
     // Planar Translator
     TPlanarDragger* tPlanarDragger;
@@ -1274,6 +1308,9 @@ SoFCCSysDragger::SoFCCSysDragger()
     SoScale* localScaleNode = SO_GET_ANY_PART(this, "scaleNode", SoScale);
     localScaleNode->scaleFactor.connectFrom(&scaleEngine->vector);
     autoScaleResult.connectFrom(&draggerSize);
+
+    SoPickStyle* localPickStyle = SO_GET_ANY_PART(this, "pickStyle", SoPickStyle);
+    localPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
 
     addValueChangedCallback(&SoFCCSysDragger::valueChangedCB);
 
