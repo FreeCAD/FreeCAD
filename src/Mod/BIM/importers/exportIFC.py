@@ -48,8 +48,7 @@ from importers.importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
+import FreeCADGui
 
 __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
@@ -336,6 +335,7 @@ def export(exportList, filename, colors=None, preferences=None):
     spatialelements = {} # {Name:IfcEntity, ... }
     uids = [] # store used UIDs to avoid reuse (some FreeCAD objects might have same IFC UID, ex. copy/pasted objects
     classifications = {} # {Name:IfcEntity, ... }
+    curvestyles = {}
 
     # build clones table
 
@@ -2487,7 +2487,7 @@ def writeJson(filename,ifcfile):
 def create_annotation(anno, ifcfile, context, history, preferences):
     """Creates an annotation object"""
 
-    # uses global ifcbin, curvestyles
+    global curvestyles, ifcbin
     objectType = None
     ovc = None
     zvc = None
@@ -2495,6 +2495,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
+    description = getattr(anno, "Description", None)
     if anno.isDerivedFrom("Part::Feature"):
         if Draft.getType(anno) == "Hatch":
             objectType = "HATCH"

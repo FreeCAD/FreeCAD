@@ -184,9 +184,11 @@ def create_ifcfile():
     param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
     user = param.GetString("prefAuthor", "")
     user = user.split("<")[0].strip()
+    org = param.GetString("prefCompany", "")
+    person = None
+    organisation = None
     if user:
         person = api_run("owner.add_person", ifcfile, family_name=user)
-    org = param.GetString("prefCompany", "")
     if org:
         organisation = api_run("owner.add_organisation", ifcfile, name=org)
     if user and org:

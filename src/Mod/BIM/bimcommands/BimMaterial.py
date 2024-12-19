@@ -438,8 +438,8 @@ class BIM_Material:
                         FreeCAD.ActiveDocument.openTransaction("Change material")
                         for obj in self.dlg.objects:
                             if hasattr(obj, "StepId"):
-                                from nativeifc import ifc_tools
-                                ifc_tools.set_material(mat, obj)
+                                from nativeifc import ifc_materials
+                                ifc_materials.set_material(mat, obj)
                             else:
                                 obj.Material = mat
                         FreeCAD.ActiveDocument.commitTransaction()
