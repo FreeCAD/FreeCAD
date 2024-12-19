@@ -1855,10 +1855,52 @@ void MainWindow::startSplasher()
 
 void MainWindow::stopSplasher()
 {
-    if (d->splashscreen) {
-        d->splashscreen->finish(this);
-        delete d->splashscreen;
-        d->splashscreen = nullptr;
+    const auto isWayland = qGuiApp->platformName() == QLatin1String("wayland");
+    if (isWayland) {
+        if (d->splashscreen) {
+            d->splashscreen->finish(this);
+            d->splashscreen->deleteLater();
+            d->splashscreen = nullptr;
+        }
+        return;
+    }
+
+    QApplication::processEvents();
+    QTimer::singleShot(3000, this, [this]() {
+        if (d->splashscreen) {
+            d->splashscreen->finish(this);
+            d->splashscreen->deleteLater();
+            d->splashscreen = nullptr;
+        }
+    });
+}
+
+QPixmap MainWindow::aboutImage() const
+{
+    // See if we have a custom About screen image set
+    QPixmap about_image;
+    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
+    if (fi.isFile() && fi.exists())
+        about_image.load(fi.filePath(), "PNG");
+
+    std::string about_path = App::Application::Config()["AboutImage"];
+    // See if current version is dev
+    QString suffix  = QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
+    if (suffix == QString::fromLatin1("dev")) {
+        about_path = App::Application::Config()["AboutImageDev"];
+    }
+    if (!about_path.empty() && about_image.isNull()) {
+        QString path = QString::fromUtf8(about_path.c_str());
+        if (QDir(path).isRelative()) {
+            QString home = QString::fromStdString(App::Application::getHomePath());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        about_image.load(path);
+
+        // Now try the icon paths
+        if (about_image.isNull()) {
+            about_image = Gui::BitmapFactory().pixmap(about_path.c_str());
+        }
     }
 }
 
