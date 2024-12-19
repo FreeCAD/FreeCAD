@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QMessageBox>
+#include <QThread>
 #endif
 
 #include <App/Application.h>
@@ -53,12 +54,18 @@ void DlgSettingsFemGmshImp::saveSettings()
     ui->cb_gmsh_binary_std->onSave();
     ui->fc_gmsh_binary_path->onSave();
     ui->cb_log_verbosity->onSave();
+    ui->sb_threads->onSave();
 }
 
 void DlgSettingsFemGmshImp::loadSettings()
 {
     ui->cb_gmsh_binary_std->onRestore();
     ui->fc_gmsh_binary_path->onRestore();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+    // determine number of CPU threads
+    ui->sb_threads->setValue(hGrp->GetInt("NumOfThreads", QThread::idealThreadCount()));
 
     populateLogVerbosity();
     ui->cb_log_verbosity->onRestore();
