@@ -139,7 +139,7 @@ class ViewProviderConnect:
         vobj.Proxy = self
 
     def getIcon(self):
-        return getIconPath("Part_JoinConnect.svg")
+        return ":/icons/booleans/Part_JoinConnect.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -250,7 +250,7 @@ class ViewProviderEmbed:
         vobj.Proxy = self
 
     def getIcon(self):
-        return getIconPath("Part_JoinEmbed.svg")
+        return ":/icons/booleans/Part_JoinEmbed.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -344,7 +344,7 @@ class ViewProviderCutout:
         vobj.Proxy = self
 
     def getIcon(self):
-        return getIconPath("Part_JoinCutout.svg")
+        return ":/icons/booleans/Part_JoinCutout.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
