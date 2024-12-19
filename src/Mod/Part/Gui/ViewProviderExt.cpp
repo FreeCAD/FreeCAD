@@ -345,7 +345,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         std::vector<float> transparencies;
         transparencies.resize(static_cast<int>(colors.size()));
         for (int i = 0; i < static_cast<int>(colors.size()); i++) {
-            transparencies[i] = colors[i].transparency();
+            transparencies[i] = 1.0F - colors[i].transparency();
             colors[i].a = 1.0F;
         }
         ShapeAppearance.setDiffuseColors(colors);
