@@ -311,6 +311,7 @@ public:
      * @param recursive [in]: whether to obtain recursive in list
      */
     std::set<App::DocumentObject*> getInListEx(bool recursive) const;
+    std::set<App::DocumentObject*> getInListWithoutExposed() const;
 
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
@@ -343,6 +344,12 @@ public:
     bool testIfLinkDAGCompatible(const std::vector<DocumentObject*>& linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList& linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
+
+    /// check if the property is exposed
+    bool isExposed(const Property* prop) const;
+    /// check whether any of the properties in the container are exposed
+    bool isExposed() const;
+
 
     /** Return the element map version of the geometry data stored in the given property
      *
@@ -755,6 +762,7 @@ protected:
 
 private:
     void printInvalidLinks() const;
+    bool onlyReferencedByExposedIn(const App::DocumentObject* obj) const;
 
     /// python object of this class and all descendent
 protected:  // attributes
