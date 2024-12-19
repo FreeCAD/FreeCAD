@@ -335,7 +335,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         else:
             commands = 'bomObj = App.activeDocument().addObject("Assembly::BomObject", "Bill of Materials")'
         Gui.doCommand(commands)
-        
+
         bom_objects = [
             obj for obj in App.ActiveDocument.Objects if obj.TypeId == "Assembly::BomObject"
         ]
