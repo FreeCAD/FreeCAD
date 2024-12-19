@@ -34,7 +34,9 @@ class Uninitialized: public Base::Exception
 {
 public:
     Uninitialized()
-    {}
+    {
+        this->setMessage("Uninitalized");
+    }
     explicit Uninitialized(const char* msg)
     {
         this->setMessage(msg);
@@ -68,7 +70,9 @@ class InvalidMaterialType: public Base::Exception
 {
 public:
     InvalidMaterialType()
-    {}
+    {
+        this->setMessage("Invalid material type");
+    }
     explicit InvalidMaterialType(const char* msg)
     {
         this->setMessage(msg);
@@ -102,7 +106,9 @@ class MaterialExists: public Base::Exception
 {
 public:
     MaterialExists()
-    {}
+    {
+        this->setMessage("Material already exxists");
+    }
     explicit MaterialExists(const char* msg)
     {
         this->setMessage(msg);
@@ -118,7 +124,9 @@ class MaterialReadError: public Base::Exception
 {
 public:
     MaterialReadError()
-    {}
+    {
+        this->setMessage("Unable to read material");
+    }
     explicit MaterialReadError(const char* msg)
     {
         this->setMessage(msg);
@@ -166,6 +174,24 @@ public:
     ~LibraryNotFound() noexcept override = default;
 };
 
+class CreationError: public Base::Exception
+{
+public:
+    CreationError()
+    {
+        this->setMessage("Unable to create object");
+    }
+    explicit CreationError(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit CreationError(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~CreationError() noexcept override = default;
+};
+
 class InvalidModel: public Base::Exception
 {
 public:
@@ -184,6 +210,60 @@ public:
     ~InvalidModel() noexcept override = default;
 };
 
+class InvalidMaterial: public Base::Exception
+{
+public:
+    InvalidMaterial()
+    {
+        this->setMessage("Invalid material");
+    }
+    explicit InvalidMaterial(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit InvalidMaterial(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~InvalidMaterial() noexcept override = default;
+};
+
+class InvalidProperty: public Base::Exception
+{
+public:
+    InvalidProperty()
+    {
+        this->setMessage("Invalid property");
+    }
+    explicit InvalidProperty(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit InvalidProperty(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~InvalidProperty() noexcept override = default;
+};
+
+class InvalidLibrary: public Base::Exception
+{
+public:
+    InvalidLibrary()
+    {
+        this->setMessage("Invalid library");
+    }
+    explicit InvalidLibrary(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit InvalidLibrary(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~InvalidLibrary() noexcept override = default;
+};
+
 class InvalidIndex: public Base::Exception
 {
 public:
@@ -191,7 +271,7 @@ public:
     {
         this->setMessage("Invalid index");
     }
-    explicit InvalidIndex(char* msg)
+    explicit InvalidIndex(const char* msg)
     {
         this->setMessage(msg);
     }
@@ -206,8 +286,10 @@ class UnknownValueType: public Base::Exception
 {
 public:
     UnknownValueType()
-    {}
-    explicit UnknownValueType(char* msg)
+    {
+        this->setMessage("Unkown value type");
+    }
+    explicit UnknownValueType(const char* msg)
     {
         this->setMessage(msg);
     }
@@ -222,8 +304,10 @@ class DeleteError: public Base::Exception
 {
 public:
     DeleteError()
-    {}
-    explicit DeleteError(char* msg)
+    {
+        this->setMessage("Unable to delete object");
+    }
+    explicit DeleteError(const char* msg)
     {
         this->setMessage(msg);
     }
@@ -232,6 +316,60 @@ public:
         this->setMessage(msg.toStdString().c_str());
     }
     ~DeleteError() noexcept override = default;
+};
+
+class RenameError: public Base::Exception
+{
+public:
+    RenameError()
+    {
+        this->setMessage("Unable to rename object");
+    }
+    explicit RenameError(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit RenameError(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~RenameError() noexcept override = default;
+};
+
+class ReplacementError: public Base::Exception
+{
+public:
+    ReplacementError()
+    {
+        this->setMessage("Unable to replace object");
+    }
+    explicit ReplacementError(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit ReplacementError(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~ReplacementError() noexcept override = default;
+};
+
+class ConnectionError: public Base::Exception
+{
+public:
+    ConnectionError()
+    {
+        this->setMessage("Unable to connect");
+    }
+    explicit ConnectionError(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit ConnectionError(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~ConnectionError() noexcept override = default;
 };
 
 }  // namespace Materials

@@ -38,6 +38,10 @@
 #include "MaterialTreeWidget.h"
 #include "MaterialTreeWidgetPy.h"
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
+#include "DlgSettingsExternal.h"
+#endif
+
 // use a different name to CreateCommand()
 void CreateMaterialCommands();
 
@@ -108,6 +112,10 @@ PyMOD_INIT_FUNC(MatGui)
         QT_TRANSLATE_NOOP("QObject", "Material"));
     new Gui::PrefPageProducer<MatGui::DlgSettingsDefaultMaterial>(
         QT_TRANSLATE_NOOP("QObject", "Material"));
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    new Gui::PrefPageProducer<MatGui::DlgSettingsExternal>(
+        QT_TRANSLATE_NOOP("QObject", "Material"));
+#endif
 
     // add resources and reloads the translators
     loadMaterialResource();

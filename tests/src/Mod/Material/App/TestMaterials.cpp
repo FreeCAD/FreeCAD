@@ -57,8 +57,8 @@ class TestMaterial : public ::testing::Test {
 
   void SetUp() override {
     Base::Interpreter().runString("import Part");
-    _modelManager = new Materials::ModelManager();
-    _materialManager = new Materials::MaterialManager();
+    _modelManager = &(Materials::ModelManager::getManager());
+    _materialManager = &(Materials::MaterialManager::getManager());
   }
 
   // void TearDown() override {}
@@ -71,11 +71,11 @@ TEST_F(TestMaterial, TestInstallation)
     ASSERT_NE(_modelManager, nullptr);
 
     // We should have loaded at least the system library
-    auto libraries = _materialManager->getMaterialLibraries();
+    auto libraries = _materialManager->getLibraries();
     ASSERT_GT(libraries->size(), 0);
 
     // We should have at least one material
-    auto materials = _materialManager->getMaterials();
+    auto materials = _materialManager->getLocalMaterials();
     ASSERT_GT(materials->size(), 0);
 }
 
@@ -364,17 +364,17 @@ TEST_F(TestMaterial, TestColumns)
     EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray2D")));
     auto array2d = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray2D"))->getMaterialValue();
     EXPECT_TRUE(array2d);
-    EXPECT_EQ(dynamic_cast<Materials::Material2DArray &>(*array2d).columns(), 2);
+    EXPECT_EQ(dynamic_cast<Materials::Array2D &>(*array2d).columns(), 2);
 
     EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray2D3Column")));
     auto array2d3Column = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray2D3Column"))->getMaterialValue();
     EXPECT_TRUE(array2d3Column);
-    EXPECT_EQ(dynamic_cast<Materials::Material2DArray &>(*array2d3Column).columns(), 3);
+    EXPECT_EQ(dynamic_cast<Materials::Array2D &>(*array2d3Column).columns(), 3);
 
     EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray3D")));
     auto array3d = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray3D"))->getMaterialValue();
     EXPECT_TRUE(array3d);
-    EXPECT_EQ(dynamic_cast<Materials::Material3DArray &>(*array3d).columns(), 2);
+    EXPECT_EQ(dynamic_cast<Materials::Array3D &>(*array3d).columns(), 2);
 }
 
 // clang-format on

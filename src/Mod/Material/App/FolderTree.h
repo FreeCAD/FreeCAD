@@ -36,16 +36,19 @@ class FolderTreeNode
 public:
     enum NodeType
     {
+        UnknownNode,
         DataNode,
         FolderNode
     };
 
     FolderTreeNode()
+        :_type(UnknownNode)
     {}
     virtual ~FolderTreeNode() = default;
 
     NodeType getType() const
     {
+        assert(_type == DataNode || _type == FolderNode);
         return _type;
     }
     void setType(NodeType type)
@@ -55,15 +58,23 @@ public:
 
     const std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder() const
     {
+        assert(_type == FolderNode);
         return _folder;
     }
     std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder()
     {
+        assert(_type == FolderNode);
         return _folder;
     }
     std::shared_ptr<T> getData() const
     {
+        assert(_type == DataNode);
         return _data;
+    }
+    QString getUUID() const
+    {
+        assert(_type == DataNode);
+        return _uuid;
     }
 
     void setFolder(std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> folder)
@@ -76,10 +87,16 @@ public:
         setType(DataNode);
         _data = data;
     }
+    void setUUID(const QString uuid)
+    {
+        setType(DataNode);
+        _uuid = uuid;
+    }
 
 private:
     NodeType _type;
     std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> _folder;
+    QString _uuid;
     std::shared_ptr<T> _data;
 };
 

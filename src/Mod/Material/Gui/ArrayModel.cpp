@@ -47,7 +47,7 @@ AbstractArrayModel::AbstractArrayModel(QObject* parent)
 
 
 Array2DModel::Array2DModel(const std::shared_ptr<Materials::MaterialProperty>& property,
-                           const std::shared_ptr<Materials::Material2DArray>& value,
+                           const std::shared_ptr<Materials::Array2D>& value,
                            QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)
@@ -198,7 +198,7 @@ bool Array2DModel::removeColumns(int column, int count, const QModelIndex& paren
 //===
 
 Array3DDepthModel::Array3DDepthModel(const std::shared_ptr<Materials::MaterialProperty>& property,
-                                     const std::shared_ptr<Materials::Material3DArray>& value,
+                                     const std::shared_ptr<Materials::Array3D>& value,
                                      QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)
@@ -333,7 +333,7 @@ bool Array3DDepthModel::removeColumns(int column, int count, const QModelIndex& 
 //===
 
 Array3DModel::Array3DModel(const std::shared_ptr<Materials::MaterialProperty>& property,
-                           const std::shared_ptr<Materials::Material3DArray>& value,
+                           const std::shared_ptr<Materials::Array3D>& value,
                            QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)

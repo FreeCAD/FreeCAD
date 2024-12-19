@@ -172,7 +172,7 @@ TEST_F(TestMaterialValue, TestArray2DType)
 {
     EXPECT_THROW(auto mat1 = Materials::MaterialValue(Materials::MaterialValue::Array2D), Materials::InvalidMaterialType);
 
-    auto mat2 = Materials::Material2DArray();
+    auto mat2 = Materials::Array2D();
     EXPECT_EQ(mat2.getType(), Materials::MaterialValue::Array2D);
     EXPECT_TRUE(mat2.isNull());
     EXPECT_EQ(mat2.rows(), 0);
@@ -182,7 +182,7 @@ TEST_F(TestMaterialValue, TestArray3DType)
 {
     EXPECT_THROW(auto mat1 = Materials::MaterialValue(Materials::MaterialValue::Array3D), Materials::InvalidMaterialType);
 
-    auto mat2 = Materials::Material3DArray();
+    auto mat2 = Materials::Array3D();
     mat2.setColumns(2);
     EXPECT_EQ(mat2.getType(), Materials::MaterialValue::Array3D);
     EXPECT_TRUE(mat2.isNull());

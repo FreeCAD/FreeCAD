@@ -91,14 +91,9 @@ private:
     void setColumnWidths(QTableView* table);
     void updateModelProperties(std::shared_ptr<Materials::Model> model);
     void createModelProperties();
-    Materials::ModelManager& getModelManager()
-    {
-        return _modelManager;
-    }
 
     Materials::ModelFilter _filter;
     std::unique_ptr<Ui_ModelSelect> ui;
-    Materials::ModelManager _modelManager;
     QString _selected;
     std::list<QString> _favorites;
     std::list<QString> _recents;

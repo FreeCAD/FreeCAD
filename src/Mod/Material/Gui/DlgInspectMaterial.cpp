@@ -248,7 +248,7 @@ void DlgInspectMaterial::addModels(QTreeView* tree,
     }
     else {
         for (const QString& uuid : *models) {
-            auto model = modelManager.getModel(uuid);
+            auto model = Materials::ModelManager::getManager().getModel(uuid);
             auto name = clipItem(tr("Name: ") + model->getName());
             addExpanded(tree, parent, name);
 
@@ -287,7 +287,7 @@ void DlgInspectMaterial::addModelDetails(QTreeView* tree,
     }
     else {
         for (const QString& inherited : inheritedUuids) {
-            auto inheritedModel = modelManager.getModel(inherited);
+            auto inheritedModel = Materials::ModelManager::getManager().getModel(inherited);
 
             auto name = clipItem(tr("Name: ") + inheritedModel->getName());
             addExpanded(tree, inherits, name);
@@ -340,10 +340,10 @@ void DlgInspectMaterial::addMaterialDetails(QTreeView* tree,
 {
     auto uuid = clipItem(tr("UUID: ") + material.getUUID());
     addExpanded(tree, parent, uuid);
-    auto library = clipItem(tr("Library: ") + material.getLibrary()->getName());
+    auto library =
+        clipItem(tr("Library: ") + material.getLibrary()->getName());
     addExpanded(tree, parent, library);
-    auto libraryPath =
-        clipItem(tr("Library Directory: ") + material.getLibrary()->getDirectoryPath());
+    auto libraryPath = clipItem(tr("Library Directory: ") + material.getLibrary()->getDirectoryPath());
     addExpanded(tree, parent, libraryPath);
     auto directory = clipItem(tr("Sub Directory: ") + material.getDirectory());
     addExpanded(tree, parent, directory);
@@ -353,7 +353,7 @@ void DlgInspectMaterial::addMaterialDetails(QTreeView* tree,
     indent();
     auto parentUUID = material.getParentUUID();
     if (!parentUUID.isEmpty()) {
-        auto parentMaterial = materialManager.getMaterial(material.getParentUUID());
+        auto parentMaterial = Materials::MaterialManager::getManager().getMaterial(material.getParentUUID());
         addMaterial(tree, inherits, *parentMaterial);
     }
     else {

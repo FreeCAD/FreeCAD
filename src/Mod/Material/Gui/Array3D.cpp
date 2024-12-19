@@ -59,7 +59,7 @@ Array3D::Array3D(const QString& propertyName,
     }
     if (_property) {
         _value =
-            std::static_pointer_cast<Materials::Material3DArray>(_property->getMaterialValue());
+            std::static_pointer_cast<Materials::Array3D>(_property->getMaterialValue());
     }
     else {
         _value = nullptr;
