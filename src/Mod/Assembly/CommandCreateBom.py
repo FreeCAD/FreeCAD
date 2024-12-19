@@ -160,6 +160,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         self.updateColumnList()
 
     def accept(self):
+        self.updateColumnList()
         self.deactivate()
         App.closeActiveTransaction()
 
