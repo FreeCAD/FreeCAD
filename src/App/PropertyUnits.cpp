@@ -48,7 +48,9 @@ TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat)
 
 Base::Quantity PropertyQuantity::getQuantityValue() const
 {
-    return Quantity(_dValue, _Unit);
+    Quantity quantity(_dValue, _Unit);
+    quantity.setFormat(_Format);
+    return quantity;
 }
 
 const char* PropertyQuantity::getEditorName() const
@@ -129,7 +131,9 @@ void PropertyQuantity::setPathValue(const ObjectIdentifier& /*path*/, const boos
 
 const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier& /*path*/) const
 {
-    return Quantity(_dValue, _Unit);
+    Quantity quantity(_dValue, _Unit);
+    quantity.setFormat(_Format);
+    return quantity;
 }
 
 //**************************************************************************
