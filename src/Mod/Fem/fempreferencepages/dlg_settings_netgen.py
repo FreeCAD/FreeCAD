@@ -25,6 +25,8 @@ __title__ = "Netgen preference page class"
 __author__ = "Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
+from PySide.QtCore import QThread
+
 import FreeCAD
 import FreeCADGui
 
@@ -37,11 +39,13 @@ class DlgSettingsNetgen:
 
     def loadSettings(self):
         self.form.ckb_legacy.setChecked(self.grp.GetBool("UseLegacyNetgen", True))
+        self.form.sb_threads.setValue(self.grp.GetInt("NumOfThreads", QThread.idealThreadCount()))
         self.populate_log_verbosity()
 
     def saveSettings(self):
         self.grp.SetBool("UseLegacyNetgen", self.form.ckb_legacy.isChecked())
         self.grp.SetInt("LogVerbosity", self.form.cb_log_verbosity.currentData())
+        self.grp.SetInt("NumOfThreads", self.form.sb_threads.value())
 
     def populate_log_verbosity(self):
         values = {

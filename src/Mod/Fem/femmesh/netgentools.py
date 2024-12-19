@@ -29,7 +29,7 @@ import numpy as np
 import shutil
 import sys
 import tempfile
-from PySide.QtCore import QProcess
+from PySide.QtCore import QProcess, QThread
 
 import FreeCAD
 import Fem
@@ -84,6 +84,7 @@ class NetgenTools:
         self.tmpdir = ""
         self.process = QProcess()
         self.mesh_params = {}
+        self.param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
 
     def write_geom(self):
         if not self.tmpdir:
@@ -101,17 +102,16 @@ class NetgenTools:
 
     def prepare(self):
         self.write_geom()
-        grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
         self.mesh_params = {
             "brep_file": self.brep_file,
-            "threads": self.obj.Threads,
+            "threads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "heal": self.obj.HealShape,
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
             "second_order_linear": self.obj.SecondOrderLinear,
             "result_file": self.result_file,
             "mesh_region": self.get_mesh_region(),
-            "verbosity": grp.GetInt("LogVerbosity", 2),
+            "verbosity": self.param_grp.GetInt("LogVerbosity", 2),
         }
 
         with open(self.script_file, "w") as file:
@@ -319,7 +319,7 @@ run_netgen(**{kwds})
             "inverttrigs": self.obj.InvertTrigs,
             "autozrefine": self.obj.AutoZRefine,
             "parallel_meshing": self.obj.ParallelMeshing,
-            "nthreads": self.obj.Threads,
+            "nthreads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "closeedgefac": self.obj.CloseEdgeFactor,
         }
 
