@@ -30,6 +30,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QProcess>
 #include <QStandardPaths>
 #include <QUrl>
 #endif
@@ -283,17 +284,12 @@ void DisplayedFilesModel::addFile(const QString& filePath)
         return;
     }
 
-    // Check if FreeCAD can open the file by its extension
     if (!freecadCanOpen(qfi.suffix())) {
         return;
     }
 
-    // Add file information to cache
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
-
-    // If the file is a FreeCAD file (.FCStd)
-    if (qfi.completeSuffix() == QLatin1String("FCStd")) {
-        // Load thumbnail from FreeCAD file
+    if (qfi.suffix().toLower() == QLatin1String("fcstd")) {
         auto thumbnail = loadFCStdThumbnail(filePath.toStdString());
         if (!thumbnail.isEmpty()) {
             _imageCache.insert(filePath, thumbnail);
@@ -301,20 +297,21 @@ void DisplayedFilesModel::addFile(const QString& filePath)
     }
     else {
         // If it is not a FreeCAD file, generate thumbnail using F3D
-        QString thumbnailPath = QString(QLatin1String("%1/%2_thumbnail.png"))
-                                    .arg(QDir::tempPath())
-                                    .arg(qfi.baseName());  // Temporary path for the thumbnail
+        QString thumbnailPath = getUniquePNG(filePath.toStdString());
 
-        QString command =
-            QString(QLatin1String("f3d --config=thumbnail --load-plugins=occt --verbose=quiet "
-                                  "--output=%1 --resolution=%2,%3 %4"))
-                .arg(thumbnailPath)
-                .arg(128)        // Thumbnail size in X
-                .arg(128)        // Thumbnail size in Y
-                .arg(filePath);  // Input file
+        auto f3d = QString::fromLatin1("f3d");
+        QStringList args;
+        args << QLatin1String("--config=thumbnail") << QLatin1String("--load-plugins=occt")
+             << QLatin1String("--verbose=quiet") << QLatin1String("--output=") + thumbnailPath
+             << QLatin1String("--resolution=") + QString::number(128) + QLatin1String(",")
+                + QString::number(128)
+             << filePath;
 
         // Run the f3d command to generate the thumbnail
-        int result = std::system(command.toStdString().c_str());
+        QProcess process;
+        process.start(f3d, args);
+        process.waitForFinished();
+        int result = process.exitCode();
 
         // Check if the thumbnail was generated successfully and exists
         if (result == 0 && QFile::exists(thumbnailPath)) {
