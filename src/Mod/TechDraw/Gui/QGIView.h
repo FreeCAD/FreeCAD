@@ -168,6 +168,9 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
+    template <typename T>
+    std::vector<T> getObjects(std::vector<int> indexes);
+
 protected:
     QGIView* getQGIVByName(std::string name);
 
