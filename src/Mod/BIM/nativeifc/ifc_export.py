@@ -228,7 +228,7 @@ def get_text(annotation):
 def get_dimension(annotation):
     """Determines if an IfcAnnotation is representing a dimension.
     Returns a list containing the representation, two points indicating
-    the mesured points, and optionally a third point indicating where
+    the measured points, and optionally a third point indicating where
     the dimension line is located, if available"""
 
     if annotation.is_a("IfcAnnotation"):
