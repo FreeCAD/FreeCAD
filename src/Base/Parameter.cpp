@@ -1396,15 +1396,19 @@ ParameterGrp::FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
                                 Type);
         return nullptr;
     }
+    const XStr xType(Type);
+    const XStr xName(Name);
     for (DOMNode* clChild = Start->getFirstChild(); clChild != nullptr;
          clChild = clChild->getNextSibling()) {
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             // the right node Type
-            if (!strcmp(Type, StrX(clChild->getNodeName()).c_str())) {
+            if (!XMLString::compareString(xType.unicodeForm(), clChild->getNodeName())) {
                 if (clChild->getAttributes()->getLength() > 0) {
                     if (Name) {
                         DOMNode* attr = FindAttribute(clChild, "Name");
-                        if (attr && !strcmp(Name, StrX(attr->getNodeValue()).c_str())) {
+                        if (attr
+                            && !XMLString::compareString(xName.unicodeForm(),
+                                                         attr->getNodeValue())) {
                             return dynamic_cast<DOMElement*>(clChild);
                         }
                     }
@@ -1426,10 +1430,11 @@ ParameterGrp::FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* Prev, cons
         return nullptr;
     }
 
+    const XStr xType(Type);
     while ((clChild = clChild->getNextSibling()) != nullptr) {
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             // the right node Type
-            if (!strcmp(Type, StrX(clChild->getNodeName()).c_str())) {
+            if (!XMLString::compareString(xType.unicodeForm(), clChild->getNodeName())) {
                 return dynamic_cast<DOMElement*>(clChild);
             }
         }
