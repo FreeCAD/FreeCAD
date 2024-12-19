@@ -107,8 +107,6 @@ void StartupProcess::setupApplication()
     // compression for tablet events here to solve that.
     QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
 #endif
-    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
-    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 }
 
 void StartupProcess::execute()
