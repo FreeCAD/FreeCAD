@@ -218,7 +218,7 @@ class _ViewProviderCompoundFilter:
         vobj.setEditorMode("DontUnhideOnDelete", 2)  # set hidden
 
     def getIcon(self):
-        return "Part_CompoundFilter"
+        return ":/icons/booleans/Part_CompoundFilter.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
