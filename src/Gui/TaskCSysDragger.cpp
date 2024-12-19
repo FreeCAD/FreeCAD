@@ -480,7 +480,7 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
         }
 
         case SelectionMode::SelectAlignTarget: {
-            vp->setDraggerPlacement(rootPlacement * selectedObjectPlacement);
+            vp->setDraggerPlacement(vp->getObjectPlacement() * selectedObjectPlacement);
 
             if (msg.Type == SelectionChanges::AddSelection) {
                 moveObjectToDragger();
