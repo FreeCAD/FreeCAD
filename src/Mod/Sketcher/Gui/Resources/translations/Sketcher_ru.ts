@@ -4361,7 +4361,7 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>В режиме правки эскиза, вид будет переключен на ортогональный. 
+      <translation>В режиме правки эскиза, вид будет переключен на ортогональный.
 Работает только, если включена функция «Восстановить позицию камеры после редактирования».</translation>
     </message>
     <message>

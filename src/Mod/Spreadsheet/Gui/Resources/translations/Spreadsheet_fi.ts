@@ -901,7 +901,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation>Virhe: 
+      <translation>Virhe:
 </translation>
     </message>
     <message>
