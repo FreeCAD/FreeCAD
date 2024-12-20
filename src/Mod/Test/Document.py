@@ -44,6 +44,16 @@ class Proxy:
         self.Dictionary = data
 
 
+class MyFeature:
+    def __init__(self, obj):
+        obj.Proxy = self
+        obj.addProperty("App::PropertyLinkList", "propLink")
+
+    def onDocumentRestored(self, obj):
+        if hasattr(obj, "propLink"):
+            obj.removeProperty("propLink")
+
+
 class DocumentBasicCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("CreateTest")
@@ -55,6 +65,15 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
         self.Doc = FreeCAD.open(SaveName)
         return self.Doc
+
+    def testIssue18601(self):
+        lnk = self.Doc.addObject("App::FeaturePython", "MyLink")
+        obj = self.Doc.addObject("App::FeaturePython", "MyFeature")
+        fea = MyFeature(obj)
+        obj.propLink = [lnk]
+        doc = self.saveAndRestore()
+        FreeCAD.closeDocument(doc.Name)
+        self.Doc = FreeCAD.newDocument("CreateTest")
 
     def testAccessByNameOrID(self):
         obj = self.Doc.addObject("App::DocumentObject", "MyName")
