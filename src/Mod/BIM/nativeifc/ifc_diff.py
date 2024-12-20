@@ -37,6 +37,7 @@ def get_diff(proj):
 
     if not getattr(proj, "IfcFilePath", None):
         old = []
+        return 1
     else:
         # cannot use open() here as it gives different encoding
         # than ifcopenshell and diff does not work
@@ -59,7 +60,11 @@ def htmlize(diff):
     """Returns an HTML version of a diff list"""
 
     html = "<html><body>\n"
-    if diff:
+    if diff == 1:
+        html += translate("BIM", "The IFC file is not saved. Please save once"
+        " to have an existing IFC file to compare with."
+        " Then, run this command again.") + "<br/>\n"
+    elif diff:
         diff = diff.split("\n")
         for l in diff:
             if l.startswith("+"):

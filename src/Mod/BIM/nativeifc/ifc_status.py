@@ -414,15 +414,14 @@ def lock_document():
         elif doc.Objects:
             # 3 there is no project but objects
             doc.openTransaction("Lock document")
-            ifc_tools.convert_document(doc, silent=True)
-            ifcfile = doc.Proxy.ifcfile
             objs = find_toplevel(doc.Objects)
-            prefs, context = ifc_export.get_export_preferences(ifcfile)
-            exportIFC.export(objs, ifcfile, preferences=prefs)
-            for n in [o.Name for o in doc.Objects]:
+            deletelist = [o.Name for o in doc.Objects]
+            #ifc_export.export_and_convert(objs, doc)
+            ifc_export.direct_conversion(objs, doc)
+            for n in deletelist:
                 if doc.getObject(n):
                     doc.removeObject(n)
-            ifc_tools.create_children(doc, ifcfile, recursive=True)
+            doc.IfcFilePath = ""
             doc.Modified = True
             doc.commitTransaction()
             doc.recompute()
@@ -443,7 +442,7 @@ def lock_document():
             if create:
                 if not ifcfile:
                     ifcfile = doc.Proxy.ifcfile
-                ifc_tools.create_children(doc, recursive=False)
+                ifc_tools.create_children(doc, ifcfile, recursive=False)
 
 
 def find_toplevel(objs):
