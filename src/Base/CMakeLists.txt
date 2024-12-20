@@ -267,6 +267,7 @@ SET(FreeCADBase_CPP_SRCS
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
+    UniqueNameManager.cpp
     Uuid.cpp
     Vector3D.cpp
     VectorPyImp.cpp
@@ -332,6 +333,7 @@ SET(FreeCADBase_HPP_SRCS
     Tools3D.h
     Translate.h
     Type.h
+    UniqueNameManager.h
     Uuid.h
     Vector3D.h
     ViewProj.h
