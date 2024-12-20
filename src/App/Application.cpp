@@ -2252,6 +2252,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("run-test,t", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
     ("run-open,r", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
+    ("macro-path,E", value< vector<string> >()->composing(),"Additional macro paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("disable-addon", value< vector<string> >()->composing(),"Disable a given addon.")
     ("single-instance", "Allow to run a single instance of the application")
@@ -2294,7 +2295,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 #endif
     ;
 
-   
+
     //0000723: improper handling of qt specific command line arguments
     std::vector<std::string> args;
     bool merge=false;
@@ -2427,6 +2428,15 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
             temp += It + ";";
         temp.erase(temp.end()-1);
         mConfig["AdditionalModulePaths"] = temp;
+    }
+
+    if (vm.count("macro-path")) {
+        vector<string> Macros = vm["macro-path"].as< vector<string> >();
+        string temp;
+        for (const auto & It : Macros)
+            temp += It + ";";
+        temp.erase(temp.end()-1);
+        mConfig["AdditionalMacroPaths"] = temp;
     }
 
     if (vm.count("python-path")) {
@@ -2593,7 +2603,7 @@ void Application::initConfig(int argc, char ** argv)
 
     // extract home paths
     ExtractUserPath();
-    
+
     if (vm.count("safe-mode")) {
         SafeMode::StartSafeMode();
     }
