@@ -110,7 +110,7 @@ Sheet::~Sheet()
 /**
  * Clear all cells in the sheet.  These are implemented as dynamic
  * properties, for example "A1" is added as a dynamic property. Since
- * now users may add dyanamic properties, we need to try to avoid
+ * now users may add dynamic properties, we need to try to avoid
  * removing those, too, so we check whether the dynamic property name
  * is a valid cell address name before removing it.
  */
