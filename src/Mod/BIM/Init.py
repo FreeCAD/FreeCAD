@@ -33,5 +33,5 @@ FreeCAD.addExportType("JavaScript Object Notation (*.json)","importers.importJSO
 FreeCAD.addImportType("Collada (*.dae *.DAE)","importers.importDAE")
 FreeCAD.addExportType("Collada (*.dae)","importers.importDAE")
 FreeCAD.addImportType("3D Studio mesh (*.3ds *.3DS)","importers.import3DS")
-FreeCAD.addImportType("SweetHome3D XML export (*.zip *.ZIP)","importers.importSH3D")
+FreeCAD.addImportType("SweetHome3D (*.sh3d)","importers.importSH3D")
 FreeCAD.addImportType("Shapefile (*.shp *.SHP)","importers.importSHP")
