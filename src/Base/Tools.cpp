@@ -27,6 +27,7 @@
 #include <locale>
 #include <iostream>
 #include <QDateTime>
+#include <string_view>
 #endif
 
 #include "PyExport.h"
@@ -38,7 +39,7 @@ namespace Base
 struct string_comp
 {
     // s1 and s2 must be numbers represented as string
-    bool operator()(const std::string& s1, const std::string& s2)
+    bool operator()(std::string_view s1, std::string_view s2)
     {
         if (s1.size() < s2.size()) {
             return true;
@@ -76,7 +77,8 @@ struct string_comp
 class unique_name
 {
 public:
-    unique_name(std::string name, const std::vector<std::string>& names, int padding)
+    template<typename String>
+    unique_name(std::string name, const std::vector<String>& names, int padding)
         : base_name {std::move(name)}
         , padding {padding}
     {
@@ -99,15 +101,18 @@ private:
         }
     }
 
-    void findHighestSuffix(const std::vector<std::string>& names)
+    template<typename String>
+    void findHighestSuffix(const std::vector<String>& names)
     {
         for (const auto& name : names) {
-            if (name.substr(0, base_name.length()) == base_name) {  // same prefix
-                std::string suffix(name.substr(base_name.length()));
+            std::string_view name_view(name);
+            if (name_view.substr(0, base_name.length()) == base_name) {  // same prefix
+                std::string_view suffix(name_view.substr(base_name.length()));
                 if (!suffix.empty()) {
                     std::string::size_type pos = suffix.find_first_not_of("0123456789");
                     if (pos == std::string::npos) {
-                        num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());
+                        num_suffix =
+                            std::max<std::string_view>(num_suffix, suffix, Base::string_comp());
                     }
                 }
             }
@@ -142,6 +147,19 @@ Base::Tools::getUniqueName(const std::string& name, const std::vector<std::strin
     }
 
     Base::unique_name unique(name, names, pad);
+    return unique.get();
+}
+
+std::string
+Base::Tools::getUniqueName(const std::string& name,
+                           std::reference_wrapper<const std::vector<std::string_view>> names,
+                           int pad)
+{
+    if (names.get().empty()) {
+        return name;
+    }
+
+    Base::unique_name unique(name, names.get(), pad);
     return unique.get();
 }
 

@@ -1403,13 +1403,13 @@ void PropertyString::setValue(const char* newLabel)
         }
         App::Document* doc = obj->getDocument();
         if (doc && !_hPGrp->GetBool("DuplicateLabels") && !obj->allowDuplicateLabel()) {
-            std::vector<std::string> objectLabels;
+            std::vector<std::string_view> objectLabels;
             bool match = false;
             for (const auto& doc_obj : doc->getObjects()) {
                 if (doc_obj == obj) {
                     continue;  // don't compare object with itself
                 }
-                std::string objLabel = doc_obj->Label.getValue();
+                std::string_view objLabel = doc_obj->Label.getValue();
                 if (!match && objLabel == newLabel) {
                     match = true;
                 }

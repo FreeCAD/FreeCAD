@@ -3654,7 +3654,7 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
     }
 
     // get all existing object names
-    std::vector<std::string> reservedNames;
+    std::vector<std::string_view> reservedNames;
     reservedNames.reserve(d->objectMap.size());
     for (const auto& pos : d->objectMap) {
         reservedNames.push_back(pos.first);
@@ -3693,10 +3693,9 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
             ObjectName = Base::Tools::getUniqueName(ObjectName, reservedNames, 3);
         }
 
-        reservedNames.push_back(ObjectName);
-
         // insert in the name map
-        d->objectMap[ObjectName] = pcObject;
+        auto [itr, _] = d->objectMap.emplace(ObjectName, pcObject);
+        reservedNames.push_back(itr->first);
         // generate object id and add to id map;
         pcObject->_Id = ++d->lastObjectId;
         d->objectIdMap[pcObject->_Id] = pcObject;
@@ -4301,7 +4300,7 @@ std::string Document::getUniqueObjectName(const char* Name) const
             }
         }
 
-        std::vector<std::string> names;
+        std::vector<std::string_view> names;
         names.reserve(d->objectMap.size());
         for (pos = d->objectMap.begin(); pos != d->objectMap.end(); ++pos) {
             names.push_back(pos->first);
@@ -4313,12 +4312,11 @@ std::string Document::getUniqueObjectName(const char* Name) const
 std::string Document::getStandardObjectName(const char* Name, int d) const
 {
     std::vector<App::DocumentObject*> mm = getObjects();
-    std::vector<std::string> labels;
+    std::vector<std::string_view> labels;
     labels.reserve(mm.size());
 
     for (auto it : mm) {
-        std::string label = it->Label.getValue();
-        labels.push_back(label);
+        labels.emplace_back(it->Label.getValue());
     }
     return Base::Tools::getUniqueName(Name, labels, d);
 }
