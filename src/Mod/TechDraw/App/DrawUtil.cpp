@@ -101,6 +101,16 @@ using namespace TechDraw;
     }
 }
 
+/*static*/ std::vector<int> DrawUtil::getIndexFromName(const std::vector<std::string>& geomNames)
+{
+    std::vector<int> result;
+    result.reserve(200);
+    for (const std::string geomName : geomNames) {
+        result.push_back(getIndexFromName(geomName));
+    }
+    return result;
+}
+
 std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
 {
     if (geomName.empty()) {
