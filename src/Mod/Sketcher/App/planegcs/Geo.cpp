@@ -726,7 +726,7 @@ ArcOfParabola* ArcOfParabola::Copy()
     return crv;
 }
 
-// bspline
+//--------------- bspline
 DeriVector2 BSpline::CalculateNormal(const Point& p, const double* derivparam) const
 {
     // place holder
@@ -1178,6 +1178,298 @@ void BSpline::setupFlattenedKnots()
             *(flattenedknots.end() - 1 - i) += period;
         }
     }
+}
+
+//--------------- Bezier curve
+DeriVector2 BezierCurve::Value(double u, double /*du*/, const double* /*derivparam*/) const
+{
+    VEC_D flattenedknots(degree + 1, 0.0);
+    flattenedknots.insert(flattenedknots.end(), degree + 1, 1.0);
+
+    size_t numpoints = degree + 1;
+    // Tangent vector
+    // This should in principle be identical to error gradient wrt curve parameter in
+    // point-on-object
+    VEC_D d(numpoints);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *poles[i].x * *weights[i];
+    }
+    double xsum = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *poles[i].y * *weights[i];
+    }
+    double ysum = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *weights[i];
+    }
+    double wsum = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+
+    d.resize(numpoints - 1);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] = (*poles[i].x * *weights[i] - *poles[i - 1].x * *weights[i - 1])
+            / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    double xslopesum = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] = (*poles[i].y * *weights[i] - *poles[i - 1].y * *weights[i - 1])
+            / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    double yslopesum = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] =
+            (*weights[i] - *weights[i - 1]) / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    double wslopesum = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+
+    // place holder
+    DeriVector2 ret = DeriVector2(xsum / wsum,
+                                  ysum / wsum,
+                                  (wsum * xslopesum - wslopesum * xsum) / wsum / wsum,
+                                  (wsum * yslopesum - wslopesum * ysum) / wsum / wsum);
+
+    return ret;
+}
+
+void BezierCurve::valueHomogenous(const double u,
+                                  double* xw,
+                                  double* yw,
+                                  double* w,
+                                  double* dxwdu,
+                                  double* dywdu,
+                                  double* dwdu) const
+{
+    VEC_D flattenedknots(degree + 1, 0.0);
+    flattenedknots.insert(flattenedknots.end(), degree + 1, 1.0);
+    size_t numpoints = degree + 1;
+    VEC_D d(numpoints);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *poles[i].x * *weights[i];
+    }
+    *xw = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *poles[i].y * *weights[i];
+    }
+    *yw = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *weights[i];
+    }
+    *w = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+
+    d.resize(numpoints - 1);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] = (*poles[i].x * *weights[i] - *poles[i - 1].x * *weights[i - 1])
+            / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    *dxwdu = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] = (*poles[i].y * *weights[i] - *poles[i - 1].y * *weights[i - 1])
+            / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    *dywdu = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] =
+            (*weights[i] - *weights[i - 1]) / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    *dwdu = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+}
+
+DeriVector2 BezierCurve::CalculateNormal(const Point& p, const double* derivparam) const
+{
+    // place holder
+    DeriVector2 ret;
+
+    // even if this method is call CalculateNormal, the returned vector is not the normal strictu
+    // sensus but a normal vector, where the vector should point to the left when one walks along
+    // the curve from start to end.
+    //
+    // https://forum.freecad.org/viewtopic.php?f=10&t=26312#p209486
+
+    // if endpoints through end poles
+    if (*p.x == *start.x && *p.y == *start.y) {
+        // and you are asking about the normal at start point
+        // then tangency is defined by first to second poles
+        DeriVector2 endpt(this->poles[1], derivparam);
+        DeriVector2 spt(this->poles[0], derivparam);
+
+        DeriVector2 tg = endpt.subtr(spt);
+        ret = tg.rotate90ccw();
+    }
+    else if (*p.x == *end.x && *p.y == *end.y) {
+        // and you are asking about the normal at end point
+        // then tangency is defined by last to last but one poles
+        DeriVector2 endpt(this->poles[poles.size() - 1], derivparam);
+        DeriVector2 spt(this->poles[poles.size() - 2], derivparam);
+
+        DeriVector2 tg = endpt.subtr(spt);
+        ret = tg.rotate90ccw();
+    }
+    else {
+        // another point and we have no clue until we find the closest point on curve
+        ret = DeriVector2();
+    }
+
+    return ret;
+}
+
+DeriVector2 BezierCurve::CalculateNormal(const double* param, const double* derivparam) const
+{
+    double xsum, xslopesum;
+    double ysum, yslopesum;
+    double wsum, wslopesum;
+
+    VEC_D flattenedknots(degree + 1, 0.0);
+    flattenedknots.insert(flattenedknots.end(), degree + 1, 1.0);
+
+    valueHomogenous(*param, &xsum, &ysum, &wsum, &xslopesum, &yslopesum, &wslopesum);
+
+    // Tangent vector
+    // This should in principle be identical to error gradient wrt curve parameter in
+    // point-on-object
+    DeriVector2 result(wsum * xslopesum - wslopesum * xsum, wsum * yslopesum - wslopesum * ysum);
+
+    size_t numpoints = degree + 1;
+
+    // FIXME: Find an appropriate name for this method
+    auto doSomething = [&](size_t i, double& factor, double& slopefactor) {
+        VEC_D d(numpoints);
+        d[i] = 1;
+        factor = BSpline::splineValue(*param, degree, degree, d, flattenedknots);
+        VEC_D sd(numpoints - 1);
+        if (i > 0) {
+            sd[i - 1] = 1.0 / (flattenedknots[i + degree] - flattenedknots[i]);
+        }
+        if (i < numpoints - 1) {
+            sd[i] = -1.0 / (flattenedknots[i + 1 + degree] - flattenedknots[i + 1]);
+        }
+        slopefactor = BSpline::splineValue(*param, degree, degree - 1, sd, flattenedknots);
+    };
+
+    // get dx, dy of the normal as well
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (derivparam == poles[i].x) {
+            double factor, slopefactor;
+            doSomething(i, factor, slopefactor);
+            result.dx = *weights[i] * (wsum * slopefactor - wslopesum * factor);
+            break;
+        }
+        if (derivparam == poles[i].y) {
+            double factor, slopefactor;
+            doSomething(i, factor, slopefactor);
+            result.dy = *weights[i] * (wsum * slopefactor - wslopesum * factor);
+            break;
+        }
+        if (derivparam == weights[i]) {
+            double factor, slopefactor;
+            doSomething(i, factor, slopefactor);
+            result.dx = degree
+                * (factor * (xslopesum - wslopesum * (*poles[i].x))
+                   - slopefactor * (xsum - wsum * (*poles[i].x)));
+            result.dy = degree
+                * (factor * (yslopesum - wslopesum * (*poles[i].y))
+                   - slopefactor * (ysum - wsum * (*poles[i].y)));
+            break;
+        }
+    }
+
+    // the curve parameter being used by the constraint is not known to the geometry (there can be
+    // many tangent constraints on the same curve after all). Assume that this is the param
+    // provided.
+    if (derivparam != param) {
+        return result.rotate90ccw();
+    }
+
+    // derivparam == param now. Done this way just to reduce "cognitive complexity".
+    VEC_D sd(numpoints - 1), ssd(numpoints - 2);
+    for (size_t i = 1; i < numpoints; ++i) {
+        sd[i - 1] =
+            (*weights[i] - *weights[i - 1]) / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    for (size_t i = 1; i < numpoints - 1; ++i) {
+        ssd[i - 1] = (sd[i] - sd[i - 1]) / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    double wslopeslopesum = degree * (degree - 1)
+        * BSpline::splineValue(*param, degree, degree - 2, ssd, flattenedknots);
+
+    for (size_t i = 1; i < numpoints; ++i) {
+        sd[i - 1] = (*poles[i].x * *weights[i] - *poles[i - 1].x * *weights[i - 1])
+            / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    for (size_t i = 1; i < numpoints - 1; ++i) {
+        ssd[i - 1] = (sd[i] - sd[i - 1]) / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    double xslopeslopesum = degree * (degree - 1)
+        * BSpline::splineValue(*param, degree, degree - 2, ssd, flattenedknots);
+
+    for (size_t i = 1; i < numpoints; ++i) {
+        sd[i - 1] = (*poles[i].y * *weights[i] - *poles[i - 1].y * *weights[i - 1])
+            / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    for (size_t i = 1; i < numpoints - 1; ++i) {
+        ssd[i - 1] = (sd[i] - sd[i - 1]) / (flattenedknots[i + degree] - flattenedknots[i]);
+    }
+    double yslopeslopesum = degree * (degree - 1)
+        * BSpline::splineValue(*param, degree, degree - 2, ssd, flattenedknots);
+
+    result.dx = wsum * xslopeslopesum - wslopeslopesum * xsum;
+    result.dy = wsum * yslopeslopesum - wslopeslopesum * ysum;
+
+    return result.rotate90ccw();
+}
+
+int BezierCurve::PushOwnParams(VEC_pD& pvec)
+{
+    std::size_t cnt = 0;
+
+    for (VEC_P::const_iterator it = poles.begin(); it != poles.end(); ++it) {
+        pvec.push_back((*it).x);
+        pvec.push_back((*it).y);
+    }
+
+    cnt = cnt + poles.size() * 2;
+
+    pvec.insert(pvec.end(), weights.begin(), weights.end());
+    cnt = cnt + weights.size();
+
+    pvec.push_back(start.x);
+    cnt++;
+    pvec.push_back(start.y);
+    cnt++;
+    pvec.push_back(end.x);
+    cnt++;
+    pvec.push_back(end.y);
+    cnt++;
+
+    return static_cast<int>(cnt);
+}
+
+void BezierCurve::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    for (VEC_P::iterator it = poles.begin(); it != poles.end(); ++it) {
+        (*it).x = pvec[cnt];
+        cnt++;
+        (*it).y = pvec[cnt];
+        cnt++;
+    }
+
+    for (VEC_pD::iterator it = weights.begin(); it != weights.end(); ++it) {
+        (*it) = pvec[cnt];
+        cnt++;
+    }
+
+    start.x = pvec[cnt];
+    cnt++;
+    start.y = pvec[cnt];
+    cnt++;
+    end.x = pvec[cnt];
+    cnt++;
+    end.y = pvec[cnt];
+    cnt++;
+}
+
+BezierCurve* BezierCurve::Copy()
+{
+    BezierCurve* crv = new BezierCurve(*this);
+    return crv;
 }
 
 }  // namespace GCS

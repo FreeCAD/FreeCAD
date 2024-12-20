@@ -465,6 +465,41 @@ public:
     static double splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots);
 };
 
+class SketcherExport BezierCurve: public Curve
+{
+public:
+    BezierCurve()
+    {
+        degree = 2;
+    }
+    ~BezierCurve() override
+    {}
+    // parameters
+    VEC_P poles;  // TODO: use better data structures so poles.x and poles.y
+    VEC_pD weights;
+    // dependent parameters (depends on previous parameters,
+    // but an "arcrules" constraint alike would be required to gain the commodity of simple
+    // coincident with endpoint constraints)
+    Point start;
+    Point end;
+    // not solver parameters
+    int degree;  // TODO: This needs to be dependent on the number of poles
+    void valueHomogenous(const double u,
+                         double* xw,
+                         double* yw,
+                         double* w,
+                         double* dxwdu,
+                         double* dywdu,
+                         double* dwdu) const;
+    DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+    DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
+    DeriVector2 CalculateNormal(const double* param,
+                                const double* derivparam = nullptr) const override;
+    int PushOwnParams(VEC_pD& pvec) override;
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    BezierCurve* Copy() override;
+};
+
 }  // namespace GCS
 
 #endif  // PLANEGCS_GEO_H
