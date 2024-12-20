@@ -279,7 +279,7 @@ MeasureType Measurement::getType()
     return measureType;
 }
 
-TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subName) const
+TopoDS_Shape Measurement::getShape(App::DocumentObject* obj, const char* subName) const
 {
     return ShapeFinder::getLocatedShape(*obj, subName);
 }

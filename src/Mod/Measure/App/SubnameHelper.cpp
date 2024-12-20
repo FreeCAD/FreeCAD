@@ -43,7 +43,7 @@ std::string SubnameHelper::pathToLongSub(std::list<App::DocumentObject*> path)
     std::vector<std::string> elementNames;
     for (auto& item : path) {
         auto name = item->getNameInDocument();
-        if (!name)  {
+        if (!name) {
             continue;
         }
         elementNames.emplace_back(name);
@@ -67,7 +67,7 @@ std::string SubnameHelper::namesToLongSub(const std::vector<std::string>& pathEl
 //! return the last term of a dot separated string - A.B.C returns C
 std::string SubnameHelper::getLastTerm(const std::string& inString)
 {
-    auto result{inString};
+    auto result {inString};
     size_t lastDot = inString.rfind('.');
     if (lastDot != std::string::npos) {
         result = result.substr(lastDot + 1);
@@ -78,7 +78,7 @@ std::string SubnameHelper::getLastTerm(const std::string& inString)
 //! return the first term of a dot separated string - A.B.C returns A
 std::string SubnameHelper::getFirstTerm(const std::string& inString)
 {
-    auto result{inString};
+    auto result {inString};
     size_t lastDot = inString.find('.');
     if (lastDot != std::string::npos) {
         result = result.substr(0, lastDot);
@@ -89,7 +89,7 @@ std::string SubnameHelper::getFirstTerm(const std::string& inString)
 //! remove the first term of a dot separated string - A.B.C returns B.C
 std::string SubnameHelper::pruneFirstTerm(const std::string& inString)
 {
-    auto result{inString};
+    auto result {inString};
     size_t lastDot = inString.find('.');
     if (lastDot != std::string::npos) {
         result = result.substr(lastDot + 1);
@@ -101,7 +101,7 @@ std::string SubnameHelper::pruneFirstTerm(const std::string& inString)
 // A.B.C. returns A.B.C
 std::string SubnameHelper::pruneLastTerm(const std::string& inString)
 {
-    auto result{inString};
+    auto result {inString};
     if (result.back() == '.') {
         // remove the trailing dot
         result = result.substr(0, result.length() - 1);
@@ -110,7 +110,8 @@ std::string SubnameHelper::pruneLastTerm(const std::string& inString)
     size_t lastDotPos = result.rfind('.');
     if (lastDotPos != std::string::npos) {
         result = result.substr(0, lastDotPos + 1);
-    } else {
+    }
+    else {
         // no dot in string, remove everything!
         result = "";
     }
@@ -119,13 +120,12 @@ std::string SubnameHelper::pruneLastTerm(const std::string& inString)
 }
 
 //! remove that part of a long subelement name that refers to a geometric subshape.  "myObj.Vertex1"
-//! would return "myObj.", "myObj.mySubObj." would return itself unchanged.  If there is no geometric
-//! reference the original input is returned.
+//! would return "myObj.", "myObj.mySubObj." would return itself unchanged.  If there is no
+//! geometric reference the original input is returned.
 std::string SubnameHelper::removeGeometryTerm(const std::string& longSubname)
 {
     auto lastTerm = getLastTerm(longSubname);
-    if (longSubname.empty() ||
-            longSubname.back() == '.') {
+    if (longSubname.empty() || longSubname.back() == '.') {
         // not a geometric reference
         return longSubname;  // need a copy?
     }
@@ -165,7 +165,7 @@ std::string SubnameHelper::removeGeometryTerm(const std::string& longSubname)
 //! Array001.Array001_i0.Array_i1.Vertex33
 std::string SubnameHelper::removeTnpInfo(const std::string& inString)
 {
-    constexpr char TNPDelimiter{';'};
+    constexpr char TNPDelimiter {';'};
     size_t firstDelimiter = inString.find(TNPDelimiter);
     if (firstDelimiter == std::string::npos) {
         // no delimiter in string
