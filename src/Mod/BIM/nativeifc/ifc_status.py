@@ -248,6 +248,10 @@ def on_activate():
 
     from PySide import QtGui  # lazy import
 
+    # always reset the menu to normal first
+    set_menu(False)
+    if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
+        return
     doc = FreeCAD.ActiveDocument
     if doc and "IfcFilePath" in doc.PropertiesList:
         checked = True

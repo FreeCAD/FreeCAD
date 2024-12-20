@@ -528,6 +528,8 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
 
         if not obj.Shape or not obj.Shape.Solids:
             return
+        if not obj.ViewObject:
+            return
         basecolor = obj.ViewObject.ShapeColor
         basetransparency = obj.ViewObject.Transparency/100.0
         panelcolor = ArchCommands.getDefaultColor("WindowGlass")

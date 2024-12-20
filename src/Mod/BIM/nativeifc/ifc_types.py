@@ -91,3 +91,38 @@ def convert_to_type(obj, keep_object=False):
     else:
         ifc_tools.remove_ifc_element(obj, delete_obj=True)
     ifc_tools.get_group(project, "IfcTypesGroup").addObject(type_obj)
+
+
+def edit_type(obj):
+    """Edits the type of this object"""
+
+    element = ifc_tools.get_ifc_element(obj)
+    ifcfile = ifc_tools.get_ifcfile(obj)
+    if not element or not ifcfile:
+        return
+
+    typerel = getattr(element, "IsTypedBy", None)
+    if obj.Type:
+        # verify the type is compatible -ex IFcWall in IfcWallType
+        if obj.Type.Class != element.is_a() + "Type":
+            t = translate("BIM","Error: Incompatible type")
+            FreeCAD.Console.PrintError(obj.Label+": "+t+": "+obj.Type.Class+"\n")
+            obj.Type = None
+            return
+        # change type
+        new_type = ifc_tools.get_ifc_element(obj.Type)
+        if not new_type:
+            return
+        for rel in typerel:
+            if rel.RelatingType == new_type:
+                return
+        # assign the new type
+        ifc_tools.api_run("type.assign_type",
+                          ifcfile,
+                          related_objects=[element],
+                          relating_type=new_type
+        )
+    elif typerel:
+        # TODO remove type?
+        # Not doing anything right now because an unset Type property could screw the ifc file
+        pass
