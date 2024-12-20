@@ -199,7 +199,8 @@ struct PropertyCleaner {
         while (!_RemovedProps.empty()) {
             auto p = _RemovedProps.back();
             _RemovedProps.pop_back();
-            if(p != prop)
+            if (p != prop) {
+                p->setContainer(nullptr);
                 delete p;
             else
                 found = true;
