@@ -1224,8 +1224,9 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox)
-    : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr)
+TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox, 
+    std::function<void()> onAccept, std::function<void()> onReject)
+    : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr), onAccept(onAccept), onReject(onReject), accepted(false)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
@@ -1236,7 +1237,15 @@ TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, 
     }
 }
 
-TaskDlgAttacher::~TaskDlgAttacher() = default;
+TaskDlgAttacher::~TaskDlgAttacher()
+{
+    if (accepted && onAccept) {
+        onAccept();
+    }
+    else if (onReject) {
+        onReject();
+    }
+};
 
 //==== calls from the TaskView ===============================================================
 
@@ -1283,12 +1292,15 @@ bool TaskDlgAttacher::accept()
         Gui::cmdAppObject(obj, "recompute()");
 
         Gui::cmdGuiDocument(obj, "resetEdit()");
+
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
+
+    accepted = true;
 
     return true;
 }
@@ -1303,6 +1315,8 @@ bool TaskDlgAttacher::reject()
         Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
     }
+
+    accepted = false;
 
     return true;
 }

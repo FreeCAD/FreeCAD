@@ -60,12 +60,17 @@ public:
      */
     ///@{
     /// Set temporary visibility of some of origin's objects e.g. while rotating or mirroring
-    void setTemporaryVisibility (bool axis, bool planes);
+    void setTemporaryVisibility (bool axis, bool planes, bool points = false);
     /// Returns true if the origin in temporary visibility mode
     bool isTemporaryVisibility ();
     /// Reset the visibility
     void resetTemporaryVisibility ();
     ///@}
+
+    void setTemporaryScale(double factor);
+    void resetTemporarySize();
+
+    void setPlaneLabelVisibility(bool val);
 
     bool canDragObjects() const override {
         return false;

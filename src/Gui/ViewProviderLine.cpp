@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoAsciiText.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
 # include <Inventor/nodes/SoPickStyle.h>
@@ -48,9 +47,14 @@ PROPERTY_SOURCE(Gui::ViewProviderLine, Gui::ViewProviderDatum)
 ViewProviderLine::ViewProviderLine()
 {
     sPixmap = "Std_Axis";
+
+    pLabel = new SoText2();
+    pLabel->ref();
 }
 
-ViewProviderLine::~ViewProviderLine() = default;
+ViewProviderLine::~ViewProviderLine() {
+    pLabel->unref();
+}
 
 void ViewProviderLine::attach(App::DocumentObject *obj) {
     ViewProviderDatum::attach(obj);
@@ -114,5 +118,5 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
     ps->style.setValue(SoPickStyle::SHAPE_ON_TOP);
     sep->addChild(ps);
 
-    sep->addChild ( getLabel () );
+    sep->addChild (pLabel);
 }

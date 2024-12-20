@@ -43,6 +43,7 @@
 #include <Mod/PartDesign/App/ShapeBinder.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 #include <App/Document.h>
 #include <App/Link.h>
@@ -502,7 +503,16 @@ private:
     void tryFindSupport()
     {
         createBodyOrThrow();
-        findAndSelectPlane();
+
+        bool useAttachment = App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/PartDesign")
+            ->GetBool("NewSketchUseAttachmentDialog", false);
+        if (useAttachment) {
+            createSketchAndShowAttachment();
+        }
+        else {
+            findAndSelectPlane();
+        }
     }
 
     void createBodyOrThrow()
@@ -524,6 +534,59 @@ private:
         App::Part *activePart = PartDesignGui::getActivePart();
         if (activePart) {
             activePart->addObject(activeBody);
+        }
+    }
+
+    void setOriginTemporaryVisibility()
+    {
+        auto* origin = activeBody->getOrigin();
+        auto* vpo = dynamic_cast<Gui::ViewProviderCoordinateSystem*>(
+            Gui::Application::Instance->getViewProvider(origin));
+        if (vpo) {
+            vpo->setTemporaryVisibility(true, true);
+            vpo->setTemporaryScale(3.0);  // NOLINT
+            vpo->setPlaneLabelVisibility(true);
+        }
+    }
+
+    void createSketchAndShowAttachment()
+    {
+        setOriginTemporaryVisibility();
+
+        // Create sketch
+        App::Document* doc = activeBody->getDocument();
+        std::string FeatName = doc->getUniqueObjectName("Sketch");
+        FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
+        auto sketch = doc->getObject(FeatName.c_str());
+
+        PartDesign::Body* partDesignBody = activeBody;
+        auto onAccept = [partDesignBody, sketch]() {
+            SketchRequestSelection::resetOriginVisibility(partDesignBody);
+
+            Gui::Selection().clearSelection();
+
+            PartDesignGui::setEdit(sketch, partDesignBody);
+        };
+        auto onReject = [partDesignBody, sketch]() {
+            SketchRequestSelection::resetOriginVisibility(partDesignBody);
+        };
+
+        Gui::Selection().clearSelection();
+
+        // Open attachment dialog
+        auto* vps = dynamic_cast<SketcherGui::ViewProviderSketch*>(Gui::Application::Instance->getViewProvider(sketch));
+        vps->showAttachmentEditor(onAccept, onReject);
+    }
+
+    static void resetOriginVisibility(PartDesign::Body* partDesignBody)
+    {
+        auto* origin = partDesignBody->getOrigin();
+        auto* vpo = dynamic_cast<Gui::ViewProviderCoordinateSystem*>(
+            Gui::Application::Instance->getViewProvider(origin));
+        if (vpo) {
+            vpo->resetTemporaryVisibility();
+            vpo->resetTemporarySize();
+            vpo->setPlaneLabelVisibility(false);
         }
     }
 
