@@ -36,16 +36,15 @@ from typing import Dict, Iterable, List, Tuple, TypedDict
 
 import addonmanager_freecad_interface as fci
 
+import FreeCADGui
+
 try:
     from PySide import QtCore, QtGui, QtWidgets
-    from PySide.QtUiTools import QUiLoader
 except ImportError:
     try:
         from PySide6 import QtCore, QtGui, QtWidgets
-        from PySide6.QtUiTools import QUiLoader
     except ImportError:
         from PySide2 import QtCore, QtGui, QtWidgets
-        from PySide2.QtUiTools import QUiLoader
 
 try:
     from freecad.utils import get_python_exe
@@ -214,8 +213,7 @@ class PythonPackageManager:
             os.path.join(os.path.dirname(__file__), "PythonDependencyUpdateDialog.ui")
         )
         ui_file.open(QtCore.QFile.OpenModeFlag.ReadOnly)
-        loader = QUiLoader()
-        self.dlg = loader.load(ui_file)
+        self.dlg = FreeCADGui.PySideUic.loadUi(ui_file)
 
         self.addons = addons
         self.vendor_path = utils.get_pip_target_directory()
