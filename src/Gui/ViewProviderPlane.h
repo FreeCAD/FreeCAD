@@ -27,6 +27,9 @@
 
 #include "ViewProviderDatum.h"
 
+class SoSwitch;
+class SoAsciiText;
+
 namespace Gui
 {
 
@@ -38,7 +41,16 @@ public:
     ViewProviderPlane();
     ~ViewProviderPlane() override;
 
-    void attach ( App::DocumentObject * ) override;
+    void attach (App::DocumentObject*) override;
+
+    unsigned long getColor(std::string& role);
+    std::string getRole();
+    std::string getLabelText(std::string& role);
+    void setLabelVisibility(bool val);
+
+private:
+    CoinPtr<SoSwitch> labelSwitch;
+    CoinPtr<SoAsciiText> pLabel;
 };
 
 } //namespace Gui

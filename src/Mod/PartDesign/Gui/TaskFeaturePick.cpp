@@ -162,6 +162,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         if (vpo) {
             vpo->setTemporaryVisibility(originVisStatus[origin][axisBit],
                                         originVisStatus[origin][planeBit]);
+            vpo->setTemporaryScale(4.0);  // NOLINT
+            vpo->setPlaneLabelVisibility(true);
             origins.push_back(vpo);
         }
     }
@@ -177,6 +179,8 @@ TaskFeaturePick::~TaskFeaturePick()
 {
     for (Gui::ViewProviderCoordinateSystem* vpo : origins) {
         vpo->resetTemporaryVisibility();
+        vpo->resetTemporarySize();
+        vpo->setPlaneLabelVisibility(false);
     }
 }
 
