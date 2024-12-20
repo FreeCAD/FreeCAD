@@ -25,6 +25,7 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
+#include <App/SuppressibleExtension.h>
 
 #include "FemMesh.h"
 #include "FemMeshProperty.h"
@@ -63,6 +64,9 @@ public:
 protected:
     /// get called by the container when a property has changed
     void onChanged(const App::Property* prop) override;
+
+private:
+    App::SuppressibleExtension suppressibleExt;
 };
 
 using FemMeshObjectPython = App::FeaturePythonT<FemMeshObject>;
