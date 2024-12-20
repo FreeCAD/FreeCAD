@@ -1385,8 +1385,6 @@ void PropertyString::setValue(const char* newLabel)
         return;
     }
 
-    std::string _newLabel;
-
     std::vector<std::pair<Property*, std::unique_ptr<Property>>> propChanges;
     std::string label;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
