@@ -452,8 +452,10 @@ def process_date_string_to_python_datetime(date_string: str) -> datetime:
     used, and various orderings and separators were used. This function tries to match the majority of those older
     macros. Commonly-used separators are periods, slashes, and dashes."""
 
-    def raise_error(bad_string: str):
-        raise ValueError(f"Unrecognized date string '{bad_string}' (expected YYYY-MM-DD)")
+    def raise_error(bad_string: str, root_cause: Exception = None):
+        raise ValueError(
+            f"Unrecognized date string '{bad_string}' (expected YYYY-MM-DD)"
+        ) from root_cause
 
     split_result = re.split(r"[ ./-]+", date_string.strip())
     if len(split_result) != 3:
@@ -472,8 +474,8 @@ def process_date_string_to_python_datetime(date_string: str) -> datetime:
             return datetime(split_result[2], split_result[0], split_result[1])
         else:
             raise ValueError(f"Invalid year in date string '{date_string}'")
-    except ValueError:
-        raise_error(date_string)
+    except ValueError as exception:
+        raise_error(date_string, exception)
 
 
 def get_main_am_window():
