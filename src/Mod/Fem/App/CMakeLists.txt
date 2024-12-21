@@ -83,6 +83,8 @@ if(BUILD_FEM_VTK)
         PropertyPostDataObject.cpp
         FemPostObject.h
         FemPostObject.cpp
+        FemPostGroupExtension.h
+        FemPostGroupExtension.cpp
         FemPostPipeline.h
         FemPostPipeline.cpp
         FemPostBranch.h

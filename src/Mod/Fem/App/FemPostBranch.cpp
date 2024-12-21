@@ -41,7 +41,6 @@
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
-#include "FemPostPipeline.h"
 #include "FemPostBranch.h"
 #include "FemPostBranchPy.h"
 #include "FemVTKTools.h"
@@ -50,30 +49,22 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemPostBranch, Fem::FemPostFilter)
-const char* FemPostBranch::ModeEnums[] = {"Serial", "Parallel", nullptr};
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostBranch, Fem::FemPostFilter);
+
 const char* FemPostBranch::OutputEnums[] = {"Passthrough", "Append", nullptr};
 
-FemPostBranch::FemPostBranch() : Fem::FemPostFilter(), App::GroupExtension()
+FemPostBranch::FemPostBranch() : Fem::FemPostFilter(), Fem::FemPostGroupExtension()
 {
-    GroupExtension::initExtension(this);
+    FemPostGroupExtension::initExtension(this);
 
-    ADD_PROPERTY_TYPE(Mode,
-                      (long(0)),
-                      "Branch",
-                      App::Prop_None,
-                      "Selects which input the child filters of the branch receive\n"
-                      "In serial the first filter receives the branch input, and the concecitive ones get the prior filter output.\n"
-                      "In parallel, every filter receives the branch input.");
     ADD_PROPERTY_TYPE(Output,
                       (long(0)),
-                      "Branch",
+                      "Pipeline",
                       App::Prop_None,
                       "Selects what the output of the branch itself is\n"
                       "In passthrough the branchs output is equal its imput.\n"
-                      "In append, all filters outputs gets appended as the branches output");
+                      "In append, all child filter outputs gets appended as the branches output");
 
-    Mode.setEnums(ModeEnums);
     Output.setEnums(OutputEnums);
 
     /* We always have a passthrough filter. This allows to connect our children
@@ -211,58 +202,24 @@ void FemPostBranch::filterChanged(FemPostFilter* filter)
     // if we append as output, we need to inform the parent object that we are isTouched
     if (Output.getValue() == 1) {
         //make sure we inform our parent object that we changed, it then can inform others if needed
-        App::DocumentObject* group = App::GroupExtension::getGroupOfObject(this);
+        App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
         if (!group) {
             return;
         }
-
-        if (group->isDerivedFrom(Fem::FemPostPipeline::getClassTypeId())) {
-            auto pipe = dynamic_cast<Fem::FemPostPipeline*>(group);
-            pipe->filterChanged(this);
-        }
-        else if (group->isDerivedFrom(Fem::FemPostBranch::getClassTypeId())) {
-            auto branch = dynamic_cast<Fem::FemPostBranch*>(group);
-            branch->filterChanged(this);
+        if (group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
+            auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
+            postgroup->filterChanged(this);
         }
     }
 }
 
-void FemPostBranch::pipelineChanged(FemPostFilter* filter) {
+void FemPostBranch::filterPipelineChanged(FemPostFilter*) {
     // one of our filters has changed its active pipeline. We need to reconnect it properly.
     // As we are cheap we just reconnect everything
     // TODO: Do more efficiently
     onChanged(&Group);
 }
 
-void FemPostBranch::recomputeChildren()
-{
-    for (const auto& obj : Group.getValues()) {
-        obj->touch();
-    }
-}
-
-FemPostObject* FemPostBranch::getLastPostObject()
-{
-
-    if (Group.getValues().empty()) {
-        return this;
-    }
-
-    return static_cast<FemPostObject*>(Group.getValues().back());
-}
-
-bool FemPostBranch::holdsPostObject(FemPostObject* obj)
-{
-
-    std::vector<App::DocumentObject*>::const_iterator it = Group.getValues().begin();
-    for (; it != Group.getValues().end(); ++it) {
-
-        if (*it == obj) {
-            return true;
-        }
-    }
-    return false;
-}
 
 PyObject* FemPostBranch::getPyObject()
 {
