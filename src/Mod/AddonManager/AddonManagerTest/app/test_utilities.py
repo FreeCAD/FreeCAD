@@ -21,8 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+from datetime import datetime
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, mock_open
 import os
 import sys
 import subprocess
@@ -37,10 +38,11 @@ sys.path.append("../..")
 from AddonManagerTest.app.mocks import MockAddon as Addon
 
 from addonmanager_utilities import (
-    recognized_git_location,
-    get_readme_url,
     get_assigned_string_literal,
     get_macro_version_from_file,
+    get_readme_url,
+    process_date_string_to_python_datetime,
+    recognized_git_location,
     run_interruptable_subprocess,
 )
 
@@ -48,9 +50,6 @@ from addonmanager_utilities import (
 class TestUtilities(unittest.TestCase):
 
     MODULE = "test_utilities"  # file name without extension
-
-    def setUp(self):
-        pass
 
     @classmethod
     def tearDownClass(cls):
@@ -132,21 +131,22 @@ class TestUtilities(unittest.TestCase):
             result = get_assigned_string_literal(line)
             self.assertIsNone(result)
 
-    def test_get_macro_version_from_file(self):
-        if FreeCAD:
-            test_dir = os.path.join(
-                FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
-            )
-            good_file = os.path.join(test_dir, "good_macro_metadata.FCStd")
-            version = get_macro_version_from_file(good_file)
+    def test_get_macro_version_from_file_good_metadata(self):
+        good_metadata = """__Version__       = "1.2.3" """
+        with patch("builtins.open", new_callable=mock_open, read_data=good_metadata):
+            version = get_macro_version_from_file("mocked_file.FCStd")
             self.assertEqual(version, "1.2.3")
 
-            bad_file = os.path.join(test_dir, "bad_macro_metadata.FCStd")
-            version = get_macro_version_from_file(bad_file)
+    def test_get_macro_version_from_file_missing_quotes(self):
+        bad_metadata = """__Version__       = 1.2.3 """  # No quotes
+        with patch("builtins.open", new_callable=mock_open, read_data=bad_metadata):
+            version = get_macro_version_from_file("mocked_file.FCStd")
             self.assertEqual(version, "", "Bad version did not yield empty string")
 
-            empty_file = os.path.join(test_dir, "missing_macro_metadata.FCStd")
-            version = get_macro_version_from_file(empty_file)
+    def test_get_macro_version_from_file_no_version(self):
+        good_metadata = ""
+        with patch("builtins.open", new_callable=mock_open, read_data=good_metadata):
+            version = get_macro_version_from_file("mocked_file.FCStd")
             self.assertEqual(version, "", "Missing version did not yield empty string")
 
     @patch("subprocess.Popen")
@@ -221,6 +221,66 @@ class TestUtilities(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             with patch("time.time", fake_time):
                 run_interruptable_subprocess(["arg0", "arg1"], 0.1)
+
+    def test_process_date_string_to_python_datetime_non_numeric(self):
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("TwentyTwentyFour-January-ThirtyFirst")
+
+    def test_process_date_string_to_python_datetime_year_first(self):
+        result = process_date_string_to_python_datetime("2024-01-31")
+        expected_result = datetime(2024, 1, 31, 0, 0)
+        self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_day_first(self):
+        result = process_date_string_to_python_datetime("31-01-2024")
+        expected_result = datetime(2024, 1, 31, 0, 0)
+        self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_month_first(self):
+        result = process_date_string_to_python_datetime("01-31-2024")
+        expected_result = datetime(2024, 1, 31, 0, 0)
+        self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_ambiguous(self):
+        """In the ambiguous case, the code should assume that the date is in the DD-MM-YYYY format."""
+        result = process_date_string_to_python_datetime("01-12-2024")
+        expected_result = datetime(2024, 12, 1, 0, 0)
+        self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_invalid_date(self):
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("13-31-2024")
+
+    def test_process_date_string_to_python_datetime_too_many_components(self):
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("01-01-31-2024")
+
+    def test_process_date_string_to_python_datetime_too_few_components(self):
+        """Month-Year-only dates are not supported"""
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("01-2024")
+
+    def test_process_date_string_to_python_datetime_unrecognizable(self):
+        """Two-digit years are not supported"""
+        with self.assertRaises(ValueError):
+            process_date_string_to_python_datetime("01-02-24")
+
+    def test_process_date_string_to_python_datetime_valid_separators(self):
+        """Four individual separators are supported, plus any combination of multiple of those separators"""
+        valid_separators = [" ", ".", "/", "-", " - ", " / ", "--"]
+        for separator in valid_separators:
+            with self.subTest(separator=separator):
+                result = process_date_string_to_python_datetime(f"2024{separator}01{separator}31")
+                expected_result = datetime(2024, 1, 31, 0, 0)
+                self.assertEqual(result, expected_result)
+
+    def test_process_date_string_to_python_datetime_invalid_separators(self):
+        """Only the four separators [ ./-] are supported: ensure others fail"""
+        invalid_separators = ["a", "\\", "|", "'", ";", "*", " \\ "]
+        for separator in invalid_separators:
+            with self.subTest(separator=separator):
+                with self.assertRaises(ValueError):
+                    process_date_string_to_python_datetime(f"2024{separator}01{separator}31")
 
 
 if __name__ == "__main__":
