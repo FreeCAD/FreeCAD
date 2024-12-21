@@ -22,17 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#ifdef FC_OS_WIN32
 #define _USE_MATH_DEFINES
-#endif  // FC_OS_WIN32
+#include <cmath>
 #include <array>
 #endif
 
+#include <fmt/format.h>
 #include <Base/Tools.h>
-#include "Quantity.h"
+
 #include "Exception.h"
+#include "Quantity.h"
 #include "UnitsApi.h"
-#include <boost/math/special_functions/fpclassify.hpp>
 
 /** \defgroup Units Units system
     \ingroup BASE
@@ -81,10 +81,10 @@ Quantity::Quantity(double value, const Unit& unit)
     , myUnit {unit}
 {}
 
-Quantity::Quantity(double value, const QString& unit)
+Quantity::Quantity(double value, const std::string& unit)
     : myValue {0.0}
 {
-    if (unit.isEmpty()) {
+    if (unit.empty()) {
         this->myValue = value;
         this->myUnit = Unit();
         return;
@@ -236,29 +236,28 @@ Quantity Quantity::operator-() const
     return Quantity(-(this->myValue), this->myUnit);
 }
 
-QString Quantity::getUserString(double& factor, QString& unitString) const
+std::string Quantity::getUserString(double& factor, std::string& unitString) const
 {
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
 }
 
-QString Quantity::getUserString(UnitsSchema* schema, double& factor, QString& unitString) const
+std::string
+Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
 {
     return schema->schemaTranslate(*this, factor, unitString);
 }
 
-QString Quantity::getSafeUserString() const
+std::string Quantity::getSafeUserString() const
 {
-    auto retString = getUserString();
-    if (Q_LIKELY(this->myValue != 0)) {
-        auto feedbackQty = parse(retString);
+    auto ret = getUserString();
+    if (this->myValue) {
+        auto feedbackQty = parse(ret);
         auto feedbackVal = feedbackQty.getValue();
         if (feedbackVal == 0) {
-            retString = QStringLiteral("%1 %2").arg(this->myValue).arg(this->getUnit().getString());
+            ret = fmt::format("{} {}", this->myValue, this->getUnit().getString());
         }
     }
-    retString =
-        QString::fromStdString(Base::Tools::escapeQuotesFromString(retString.toStdString()));
-    return retString;
+    return Base::Tools::escapeQuotesFromString(ret);
 }
 
 /// true if it has a number without a unit
@@ -282,7 +281,7 @@ bool Quantity::isQuantity() const
 // true if it has a number with or without a unit
 bool Quantity::isValid() const
 {
-    return !boost::math::isnan(myValue);
+    return !std::isnan(myValue);
 }
 
 void Quantity::setInvalid()
@@ -562,11 +561,11 @@ private:
 #pragma GCC diagnostic pop
 #endif
 
-Quantity Quantity::parse(const QString& string)
+Quantity Quantity::parse(const std::string& string)
 {
     // parse from buffer
     QuantityParser::YY_BUFFER_STATE my_string_buffer =
-        QuantityParser::yy_scan_string(string.toUtf8().data());
+        QuantityParser::yy_scan_string(string.c_str());
     QuantityParser::StringBufferCleaner cleaner(my_string_buffer);
     // set the global return variables
     QuantResult = Quantity(DOUBLE_MIN);

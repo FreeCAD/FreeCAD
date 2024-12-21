@@ -111,6 +111,11 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
     }
 }
 
+static QString safeQuantityQString(Gui::QuantitySpinBox *qs)
+{
+    return QString::fromStdString(qs->value().getSafeUserString());
+}
+
 void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Document* doc)
 {
     try {
@@ -268,8 +273,8 @@ QString PlanePrimitive::create(const QString& objectName, const QString& placeme
         "App.ActiveDocument.%1.Placement=%4\n"
         "App.ActiveDocument.%1.Label='%5'\n")
         .arg(objectName,
-             ui->planeLength->value().getSafeUserString(),
-             ui->planeWidth->value().getSafeUserString(),
+             safeQuantityQString(ui->planeLength),
+             safeQuantityQString(ui->planeWidth),
              placement,
              DlgPrimitives::tr("Plane"));
 }
@@ -281,8 +286,8 @@ QString PlanePrimitive::change(const QString& objectName, const QString& placeme
         "%1.Width='%3'\n"
         "%1.Placement=%4\n")
         .arg(objectName,
-             ui->planeLength->value().getSafeUserString(),
-             ui->planeWidth->value().getSafeUserString(),
+             safeQuantityQString(ui->planeLength),
+             safeQuantityQString(ui->planeWidth),
              placement);
 }
 
@@ -342,9 +347,9 @@ QString BoxPrimitive::create(const QString& objectName, const QString& placement
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName,
-             ui->boxLength->value().getSafeUserString(),
-             ui->boxWidth->value().getSafeUserString(),
-             ui->boxHeight->value().getSafeUserString(),
+             safeQuantityQString(ui->boxLength),
+             safeQuantityQString(ui->boxWidth),
+             safeQuantityQString(ui->boxHeight),
              placement,
              DlgPrimitives::tr("Box"));
 }
@@ -357,9 +362,9 @@ QString BoxPrimitive::change(const QString& objectName, const QString& placement
         "%1.Height='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             ui->boxLength->value().getSafeUserString(),
-             ui->boxWidth->value().getSafeUserString(),
-             ui->boxHeight->value().getSafeUserString(),
+             safeQuantityQString(ui->boxLength),
+             safeQuantityQString(ui->boxWidth),
+             safeQuantityQString(ui->boxHeight),
              placement);
 }
 
@@ -430,11 +435,11 @@ QString CylinderPrimitive::create(const QString& objectName, const QString& plac
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName,
-             ui->cylinderRadius->value().getSafeUserString(),
-             ui->cylinderHeight->value().getSafeUserString(),
-             ui->cylinderAngle->value().getSafeUserString(),
-             ui->cylinderXSkew->value().getSafeUserString(),
-             ui->cylinderYSkew->value().getSafeUserString(),
+             safeQuantityQString(ui->cylinderRadius),
+             safeQuantityQString(ui->cylinderHeight),
+             safeQuantityQString(ui->cylinderAngle),
+             safeQuantityQString(ui->cylinderXSkew),
+             safeQuantityQString(ui->cylinderYSkew),
              placement,
              DlgPrimitives::tr("Cylinder"));
 }
@@ -449,11 +454,11 @@ QString CylinderPrimitive::change(const QString& objectName, const QString& plac
         "%1.SecondAngle='%6'\n"
         "%1.Placement=%7\n")
         .arg(objectName,
-             ui->cylinderRadius->value().getSafeUserString(),
-             ui->cylinderHeight->value().getSafeUserString(),
-             ui->cylinderAngle->value().getSafeUserString(),
-             ui->cylinderXSkew->value().getSafeUserString(),
-             ui->cylinderYSkew->value().getSafeUserString(),
+             safeQuantityQString(ui->cylinderRadius),
+             safeQuantityQString(ui->cylinderHeight),
+             safeQuantityQString(ui->cylinderAngle),
+             safeQuantityQString(ui->cylinderXSkew),
+             safeQuantityQString(ui->cylinderYSkew),
              placement);
 }
 
@@ -527,10 +532,10 @@ QString ConePrimitive::create(const QString& objectName, const QString& placemen
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName,
-             ui->coneRadius1->value().getSafeUserString(),
-             ui->coneRadius2->value().getSafeUserString(),
-             ui->coneHeight->value().getSafeUserString(),
-             ui->coneAngle->value().getSafeUserString(),
+             safeQuantityQString(ui->coneRadius1),
+             safeQuantityQString(ui->coneRadius2),
+             safeQuantityQString(ui->coneHeight),
+             safeQuantityQString(ui->coneAngle),
              placement,
              DlgPrimitives::tr("Cone"));
 }
@@ -544,10 +549,10 @@ QString ConePrimitive::change(const QString& objectName, const QString& placemen
         "%1.Angle='%5'\n"
         "%1.Placement=%6\n")
         .arg(objectName,
-             ui->coneRadius1->value().getSafeUserString(),
-             ui->coneRadius2->value().getSafeUserString(),
-             ui->coneHeight->value().getSafeUserString(),
-             ui->coneAngle->value().getSafeUserString(),
+             safeQuantityQString(ui->coneRadius1),
+             safeQuantityQString(ui->coneRadius2),
+             safeQuantityQString(ui->coneHeight),
+             safeQuantityQString(ui->coneAngle),
              placement);
 }
 
@@ -618,10 +623,10 @@ QString SpherePrimitive::create(const QString& objectName, const QString& placem
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName,
-             ui->sphereRadius->value().getSafeUserString(),
-             ui->sphereAngle1->value().getSafeUserString(),
-             ui->sphereAngle2->value().getSafeUserString(),
-             ui->sphereAngle3->value().getSafeUserString(),
+             safeQuantityQString(ui->sphereRadius),
+             safeQuantityQString(ui->sphereAngle1),
+             safeQuantityQString(ui->sphereAngle2),
+             safeQuantityQString(ui->sphereAngle3),
              placement,
              DlgPrimitives::tr("Sphere"));
 }
@@ -635,10 +640,10 @@ QString SpherePrimitive::change(const QString& objectName, const QString& placem
         "%1.Angle3='%5'\n"
         "%1.Placement=%6\n")
         .arg(objectName,
-             ui->sphereRadius->value().getSafeUserString(),
-             ui->sphereAngle1->value().getSafeUserString(),
-             ui->sphereAngle2->value().getSafeUserString(),
-             ui->sphereAngle3->value().getSafeUserString(),
+             safeQuantityQString(ui->sphereRadius),
+             safeQuantityQString(ui->sphereAngle1),
+             safeQuantityQString(ui->sphereAngle2),
+             safeQuantityQString(ui->sphereAngle3),
              placement);
 }
 
@@ -720,12 +725,12 @@ QString EllipsoidPrimitive::create(const QString& objectName, const QString& pla
         "App.ActiveDocument.%1.Placement=%8\n"
         "App.ActiveDocument.%1.Label='%9'\n")
         .arg(objectName,
-             ui->ellipsoidRadius1->value().getSafeUserString(),
-             ui->ellipsoidRadius2->value().getSafeUserString(),
-             ui->ellipsoidRadius3->value().getSafeUserString(),
-             ui->ellipsoidAngle1->value().getSafeUserString(),
-             ui->ellipsoidAngle2->value().getSafeUserString(),
-             ui->ellipsoidAngle3->value().getSafeUserString(),
+             safeQuantityQString(ui->ellipsoidRadius1),
+             safeQuantityQString(ui->ellipsoidRadius2),
+             safeQuantityQString(ui->ellipsoidRadius3),
+             safeQuantityQString(ui->ellipsoidAngle1),
+             safeQuantityQString(ui->ellipsoidAngle2),
+             safeQuantityQString(ui->ellipsoidAngle3),
              placement,
              DlgPrimitives::tr("Ellipsoid"));
 }
@@ -741,12 +746,12 @@ QString EllipsoidPrimitive::change(const QString& objectName, const QString& pla
         "%1.Angle3='%7'\n"
         "%1.Placement=%8\n")
         .arg(objectName,
-             ui->ellipsoidRadius1->value().getSafeUserString(),
-             ui->ellipsoidRadius2->value().getSafeUserString(),
-             ui->ellipsoidRadius3->value().getSafeUserString(),
-             ui->ellipsoidAngle1->value().getSafeUserString(),
-             ui->ellipsoidAngle2->value().getSafeUserString(),
-             ui->ellipsoidAngle3->value().getSafeUserString(),
+             safeQuantityQString(ui->ellipsoidRadius1),
+             safeQuantityQString(ui->ellipsoidRadius2),
+             safeQuantityQString(ui->ellipsoidRadius3),
+             safeQuantityQString(ui->ellipsoidAngle1),
+             safeQuantityQString(ui->ellipsoidAngle2),
+             safeQuantityQString(ui->ellipsoidAngle3),
              placement);
 }
 
@@ -828,11 +833,11 @@ QString TorusPrimitive::create(const QString& objectName, const QString& placeme
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName,
-             ui->torusRadius1->value().getSafeUserString(),
-             ui->torusRadius2->value().getSafeUserString(),
-             ui->torusAngle1->value().getSafeUserString(),
-             ui->torusAngle2->value().getSafeUserString(),
-             ui->torusAngle3->value().getSafeUserString(),
+             safeQuantityQString(ui->torusRadius1),
+             safeQuantityQString(ui->torusRadius2),
+             safeQuantityQString(ui->torusAngle1),
+             safeQuantityQString(ui->torusAngle2),
+             safeQuantityQString(ui->torusAngle3),
              placement,
              DlgPrimitives::tr("Torus"));
 }
@@ -847,11 +852,11 @@ QString TorusPrimitive::change(const QString& objectName, const QString& placeme
         "%1.Angle3='%6'\n"
         "%1.Placement=%7\n")
         .arg(objectName,
-             ui->torusRadius1->value().getSafeUserString(),
-             ui->torusRadius2->value().getSafeUserString(),
-             ui->torusAngle1->value().getSafeUserString(),
-             ui->torusAngle2->value().getSafeUserString(),
-             ui->torusAngle3->value().getSafeUserString(),
+             safeQuantityQString(ui->torusRadius1),
+             safeQuantityQString(ui->torusRadius2),
+             safeQuantityQString(ui->torusAngle1),
+             safeQuantityQString(ui->torusAngle2),
+             safeQuantityQString(ui->torusAngle3),
              placement);
 }
 
@@ -927,10 +932,10 @@ QString PrismPrimitive::create(const QString& objectName, const QString& placeme
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName,
              QString::number(ui->prismPolygon->value()),
-             ui->prismCircumradius->value().getSafeUserString(),
-             ui->prismHeight->value().getSafeUserString(),
-             ui->prismXSkew->value().getSafeUserString(),
-             ui->prismYSkew->value().getSafeUserString(),
+             safeQuantityQString(ui->prismCircumradius),
+             safeQuantityQString(ui->prismHeight),
+             safeQuantityQString(ui->prismXSkew),
+             safeQuantityQString(ui->prismYSkew),
              placement,
              DlgPrimitives::tr("Prism"));
 }
@@ -946,10 +951,10 @@ QString PrismPrimitive::change(const QString& objectName, const QString& placeme
         "%1.Placement=%7\n")
         .arg(objectName,
              QString::number(ui->prismPolygon->value()),
-             ui->prismCircumradius->value().getSafeUserString(),
-             ui->prismHeight->value().getSafeUserString(),
-             ui->prismXSkew->value().getSafeUserString(),
-             ui->prismYSkew->value().getSafeUserString(),
+             safeQuantityQString(ui->prismCircumradius),
+             safeQuantityQString(ui->prismHeight),
+             safeQuantityQString(ui->prismXSkew),
+             safeQuantityQString(ui->prismYSkew),
              placement);
 }
 
@@ -1063,16 +1068,16 @@ QString WedgePrimitive::create(const QString& objectName, const QString& placeme
         "App.ActiveDocument.%1.Placement=%12\n"
         "App.ActiveDocument.%1.Label='%13'\n")
         .arg(objectName,
-             ui->wedgeXmin->value().getSafeUserString(),
-             ui->wedgeYmin->value().getSafeUserString(),
-             ui->wedgeZmin->value().getSafeUserString(),
-             ui->wedgeX2min->value().getSafeUserString(),
-             ui->wedgeZ2min->value().getSafeUserString(),
-             ui->wedgeXmax->value().getSafeUserString(),
-             ui->wedgeYmax->value().getSafeUserString())
-        .arg(ui->wedgeZmax->value().getSafeUserString(),
-             ui->wedgeX2max->value().getSafeUserString(),
-             ui->wedgeZ2max->value().getSafeUserString(),
+             safeQuantityQString(ui->wedgeXmin),
+             safeQuantityQString(ui->wedgeYmin),
+             safeQuantityQString(ui->wedgeZmin),
+             safeQuantityQString(ui->wedgeX2min),
+             safeQuantityQString(ui->wedgeZ2min),
+             safeQuantityQString(ui->wedgeXmax),
+             safeQuantityQString(ui->wedgeYmax))
+        .arg(safeQuantityQString(ui->wedgeZmax),
+             safeQuantityQString(ui->wedgeX2max),
+             safeQuantityQString(ui->wedgeZ2max),
              placement,
              DlgPrimitives::tr("Wedge"));
 }
@@ -1092,16 +1097,16 @@ QString WedgePrimitive::change(const QString& objectName, const QString& placeme
         "%1.Z2max='%11'\n"
         "%1.Placement=%12\n")
         .arg(objectName,
-             ui->wedgeXmin->value().getSafeUserString(),
-             ui->wedgeYmin->value().getSafeUserString(),
-             ui->wedgeZmin->value().getSafeUserString(),
-             ui->wedgeX2min->value().getSafeUserString(),
-             ui->wedgeZ2min->value().getSafeUserString(),
-             ui->wedgeXmax->value().getSafeUserString(),
-             ui->wedgeYmax->value().getSafeUserString(),
-             ui->wedgeZmax->value().getSafeUserString())
-        .arg(ui->wedgeX2max->value().getSafeUserString(),
-             ui->wedgeZ2max->value().getSafeUserString(),
+             safeQuantityQString(ui->wedgeXmin),
+             safeQuantityQString(ui->wedgeYmin),
+             safeQuantityQString(ui->wedgeZmin),
+             safeQuantityQString(ui->wedgeX2min),
+             safeQuantityQString(ui->wedgeZ2min),
+             safeQuantityQString(ui->wedgeXmax),
+             safeQuantityQString(ui->wedgeYmax),
+             safeQuantityQString(ui->wedgeZmax))
+        .arg(safeQuantityQString(ui->wedgeX2max),
+             safeQuantityQString(ui->wedgeZ2max),
              placement);
 }
 
@@ -1194,10 +1199,10 @@ QString HelixPrimitive::create(const QString& objectName, const QString& placeme
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName,
-             ui->helixPitch->value().getSafeUserString(),
-             ui->helixHeight->value().getSafeUserString(),
-             ui->helixRadius->value().getSafeUserString(),
-             ui->helixAngle->value().getSafeUserString(),
+             safeQuantityQString(ui->helixPitch),
+             safeQuantityQString(ui->helixHeight),
+             safeQuantityQString(ui->helixRadius),
+             safeQuantityQString(ui->helixAngle),
              QString::number(ui->helixLocalCS->currentIndex()),
              placement,
              DlgPrimitives::tr("Helix"));
@@ -1213,10 +1218,10 @@ QString HelixPrimitive::change(const QString& objectName, const QString& placeme
         "%1.LocalCoord=%6\n"
         "%1.Placement=%7\n")
         .arg(objectName,
-             ui->helixPitch->value().getSafeUserString(),
-             ui->helixHeight->value().getSafeUserString(),
-             ui->helixRadius->value().getSafeUserString(),
-             ui->helixAngle->value().getSafeUserString(),
+             safeQuantityQString(ui->helixPitch),
+             safeQuantityQString(ui->helixHeight),
+             safeQuantityQString(ui->helixRadius),
+             safeQuantityQString(ui->helixAngle),
              QString::number(ui->helixLocalCS->currentIndex()),
              placement);
 }
@@ -1285,9 +1290,9 @@ QString SpiralPrimitive::create(const QString& objectName, const QString& placem
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName,
-             ui->spiralGrowth->value().getSafeUserString(),
+             safeQuantityQString(ui->spiralGrowth),
              QString::number(ui->spiralRotation->value()),
-             ui->spiralRadius->value().getSafeUserString(),
+             safeQuantityQString(ui->spiralRadius),
              placement,
              DlgPrimitives::tr("Spiral"));
 }
@@ -1300,9 +1305,9 @@ QString SpiralPrimitive::change(const QString& objectName, const QString& placem
         "%1.Radius='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             ui->spiralGrowth->value().getSafeUserString(),
+             safeQuantityQString(ui->spiralGrowth),
              QString::number(ui->spiralRotation->value()),
-             ui->spiralRadius->value().getSafeUserString(),
+             safeQuantityQString(ui->spiralRadius),
              placement);
 }
 
@@ -1365,9 +1370,9 @@ QString CirclePrimitive::create(const QString& objectName, const QString& placem
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName,
-             ui->circleRadius->value().getSafeUserString(),
-             ui->circleAngle1->value().getSafeUserString(),
-             ui->circleAngle2->value().getSafeUserString(),
+             safeQuantityQString(ui->circleRadius),
+             safeQuantityQString(ui->circleAngle1),
+             safeQuantityQString(ui->circleAngle2),
              placement,
              DlgPrimitives::tr("Circle"));
 }
@@ -1380,9 +1385,9 @@ QString CirclePrimitive::change(const QString& objectName, const QString& placem
         "%1.Angle2='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             ui->circleRadius->value().getSafeUserString(),
-             ui->circleAngle1->value().getSafeUserString(),
-             ui->circleAngle2->value().getSafeUserString(),
+             safeQuantityQString(ui->circleRadius),
+             safeQuantityQString(ui->circleAngle1),
+             safeQuantityQString(ui->circleAngle2),
              placement);
 }
 
@@ -1450,10 +1455,10 @@ QString EllipsePrimitive::create(const QString& objectName, const QString& place
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName,
-             ui->ellipseMajorRadius->value().getSafeUserString(),
-             ui->ellipseMinorRadius->value().getSafeUserString(),
-             ui->ellipseAngle1->value().getSafeUserString(),
-             ui->ellipseAngle2->value().getSafeUserString(),
+             safeQuantityQString(ui->ellipseMajorRadius),
+             safeQuantityQString(ui->ellipseMinorRadius),
+             safeQuantityQString(ui->ellipseAngle1),
+             safeQuantityQString(ui->ellipseAngle2),
              placement,
              DlgPrimitives::tr("Ellipse"));
 }
@@ -1467,10 +1472,10 @@ QString EllipsePrimitive::change(const QString& objectName, const QString& place
         "%1.Angle2='%5'\n"
         "%1.Placement=%6\n")
         .arg(objectName,
-             ui->ellipseMajorRadius->value().getSafeUserString(),
-             ui->ellipseMinorRadius->value().getSafeUserString(),
-             ui->ellipseAngle1->value().getSafeUserString(),
-             ui->ellipseAngle2->value().getSafeUserString(),
+             safeQuantityQString(ui->ellipseMajorRadius),
+             safeQuantityQString(ui->ellipseMinorRadius),
+             safeQuantityQString(ui->ellipseAngle1),
+             safeQuantityQString(ui->ellipseAngle2),
              placement);
 }
 
@@ -1530,7 +1535,7 @@ QString PolygonPrimitive::create(const QString& objectName, const QString& place
         "App.ActiveDocument.%1.Label='%5'\n")
         .arg(objectName,
              QString::number(ui->regularPolygonPolygon->value()),
-             ui->regularPolygonCircumradius->value().getSafeUserString(),
+             safeQuantityQString(ui->regularPolygonCircumradius),
              placement,
              DlgPrimitives::tr("Regular polygon"));
 }
@@ -1543,7 +1548,7 @@ QString PolygonPrimitive::change(const QString& objectName, const QString& place
         "%1.Placement=%4\n")
         .arg(objectName,
              QString::number(ui->regularPolygonPolygon->value()),
-             ui->regularPolygonCircumradius->value().getSafeUserString(),
+             safeQuantityQString(ui->regularPolygonCircumradius),
              placement);
 }
 
@@ -1624,12 +1629,12 @@ QString LinePrimitive::create(const QString& objectName, const QString& placemen
         "App.ActiveDocument.%1.Placement=%8\n"
         "App.ActiveDocument.%1.Label='%9'\n")
         .arg(objectName,
-             ui->edgeX1->value().getSafeUserString(),
-             ui->edgeY1->value().getSafeUserString(),
-             ui->edgeZ1->value().getSafeUserString(),
-             ui->edgeX2->value().getSafeUserString(),
-             ui->edgeY2->value().getSafeUserString(),
-             ui->edgeZ2->value().getSafeUserString(),
+             safeQuantityQString(ui->edgeX1),
+             safeQuantityQString(ui->edgeY1),
+             safeQuantityQString(ui->edgeZ1),
+             safeQuantityQString(ui->edgeX2),
+             safeQuantityQString(ui->edgeY2),
+             safeQuantityQString(ui->edgeZ2),
              placement,
              DlgPrimitives::tr("Line"));
 }
@@ -1645,12 +1650,12 @@ QString LinePrimitive::change(const QString& objectName, const QString& placemen
         "%1.Z2='%7'\n"
         "%1.Placement=%8\n")
         .arg(objectName,
-             ui->edgeX1->value().getSafeUserString(),
-             ui->edgeY1->value().getSafeUserString(),
-             ui->edgeZ1->value().getSafeUserString(),
-             ui->edgeX2->value().getSafeUserString(),
-             ui->edgeY2->value().getSafeUserString(),
-             ui->edgeZ2->value().getSafeUserString(),
+             safeQuantityQString(ui->edgeX1),
+             safeQuantityQString(ui->edgeY1),
+             safeQuantityQString(ui->edgeZ1),
+             safeQuantityQString(ui->edgeX2),
+             safeQuantityQString(ui->edgeY2),
+             safeQuantityQString(ui->edgeZ2),
              placement);
 }
 
@@ -1725,9 +1730,9 @@ QString VertexPrimitive::create(const QString& objectName, const QString& placem
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName,
-             ui->vertexX->value().getSafeUserString(),
-             ui->vertexY->value().getSafeUserString(),
-             ui->vertexZ->value().getSafeUserString(),
+             safeQuantityQString(ui->vertexX),
+             safeQuantityQString(ui->vertexY),
+             safeQuantityQString(ui->vertexZ),
              placement,
              DlgPrimitives::tr("Vertex"));
 }
@@ -1740,9 +1745,9 @@ QString VertexPrimitive::change(const QString& objectName, const QString& placem
         "%1.Z='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             ui->vertexX->value().getSafeUserString(),
-             ui->vertexY->value().getSafeUserString(),
-             ui->vertexZ->value().getSafeUserString(),
+             safeQuantityQString(ui->vertexX),
+             safeQuantityQString(ui->vertexY),
+             safeQuantityQString(ui->vertexZ),
              placement);
 }
 
