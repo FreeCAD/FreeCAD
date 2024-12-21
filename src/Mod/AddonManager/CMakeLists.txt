@@ -118,13 +118,11 @@ SET(AddonManagerTestsGui_SRCS
 SET(AddonManagerTestsFiles_SRCS
         AddonManagerTest/data/__init__.py
         AddonManagerTest/data/addon_update_stats.json
-        AddonManagerTest/data/bad_macro_metadata.FCStd
         AddonManagerTest/data/combination.xml
         AddonManagerTest/data/corrupted_metadata.zip
         AddonManagerTest/data/depends_on_all_workbenches.xml
         AddonManagerTest/data/DoNothing.FCMacro
         AddonManagerTest/data/git_submodules.txt
-        AddonManagerTest/data/good_macro_metadata.FCStd
         AddonManagerTest/data/good_package.xml
         AddonManagerTest/data/icon_cache.zip
         AddonManagerTest/data/icon_cache.zip.sha1
