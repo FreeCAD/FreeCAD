@@ -277,10 +277,10 @@ class SH3DImporter:
             self._import_elements(home, 'camera')
             self._refresh()
 
-        if self.preferences["CREATE_RENDER_PROJECT"] and self.project:
+        if self.preferences["CREATE_RENDER_PROJECT"]:
             Project.create(doc, renderer="Povray", template="povray_standard.pov")
             Gui.Selection.clearSelection()
-            Gui.Selection.addSelection(self.project)
+            Gui.Selection.addSelection(self.site)
             Gui.runCommand('Render_View', 0)
             self._refresh()
 
@@ -308,6 +308,7 @@ class SH3DImporter:
             'JOIN_ARCH_WALL': get_param_arch("sh3dJoinArchWall"),
             'CREATE_RENDER_PROJECT': get_param_arch("sh3dCreateRenderProject") and RENDER_IS_AVAILABLE,
             'FIT_VIEW': get_param_arch("sh3dFitView"),
+            'CREATE_IFC_PROJECT': get_param_arch("sh3dCreateIFCProject"),
             'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
         }
@@ -449,7 +450,7 @@ class SH3DImporter:
         """
         if 'Project' in self.fc_objects:
             self.project = self.fc_objects.get('Project')
-        else:
+        elif self.preferences["CREATE_IFC_PROJECT"]:
             self.project = self._create_project()
         if 'Site' in self.fc_objects:
             self.site = self.fc_objects.get('Site')
@@ -459,7 +460,10 @@ class SH3DImporter:
             self.building = self.fc_objects.get(elm.get('name'))
         else:
             self.building = self._create_building(elm)
-        self.project.addObject(self.site)
+
+        if self.preferences["CREATE_IFC_PROJECT"]:
+            self.project.addObject(self.site)
+
         self.site.addObject(self.building)
 
     def _create_project(self):
