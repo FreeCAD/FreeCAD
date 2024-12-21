@@ -3694,7 +3694,7 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
         }
 
         // insert in the name map
-        auto [itr, _] = d->objectMap.emplace(ObjectName, pcObject);
+        auto [itr, _] = d->objectMap.insert_or_assign(ObjectName, pcObject);
         reservedNames.push_back(itr->first);
         // generate object id and add to id map;
         pcObject->_Id = ++d->lastObjectId;
