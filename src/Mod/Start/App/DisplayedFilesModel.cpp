@@ -30,6 +30,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QProcess>
 #include <QStandardPaths>
 #include <QUrl>
 #endif
@@ -282,14 +283,44 @@ void DisplayedFilesModel::addFile(const QString& filePath)
     if (!qfi.isReadable()) {
         return;
     }
+
     if (!freecadCanOpen(qfi.suffix())) {
         return;
     }
+
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
     if (qfi.suffix().toLower() == QLatin1String("fcstd")) {
         auto thumbnail = loadFCStdThumbnail(filePath.toStdString());
         if (!thumbnail.isEmpty()) {
             _imageCache.insert(filePath, thumbnail);
+        }
+    }
+    else {
+        // If it is not a FreeCAD file, generate thumbnail using F3D
+        QString thumbnailPath = getUniquePNG(filePath.toStdString());
+
+        auto f3d = QString::fromLatin1("f3d");
+        QStringList args;
+        args << QLatin1String("--config=thumbnail") << QLatin1String("--load-plugins=occt")
+             << QLatin1String("--verbose=quiet") << QLatin1String("--output=") + thumbnailPath
+             << QLatin1String("--resolution=") + QString::number(128) + QLatin1String(",")
+                + QString::number(128)
+             << filePath;
+
+        // Run the f3d command to generate the thumbnail
+        QProcess process;
+        process.start(f3d, args);
+        process.waitForFinished();
+        int result = process.exitCode();
+
+        // Check if the thumbnail was generated successfully and exists
+        if (result == 0 && QFile::exists(thumbnailPath)) {
+            QFile thumbnailFile(thumbnailPath);
+            if (thumbnailFile.open(QIODevice::ReadOnly)) {
+                QByteArray thumbnailData = thumbnailFile.readAll();
+                thumbnailFile.close();
+                _imageCache.insert(filePath, thumbnailData);
+            }
         }
     }
 }
