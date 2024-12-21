@@ -402,6 +402,7 @@ SET(Gui_UIC_SRCS
     SceneInspector.ui
     InputVector.ui
     Placement.ui
+    TaskCSysDragger.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
