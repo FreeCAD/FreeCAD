@@ -53,6 +53,9 @@ public:
     virtual FemPostObject* getLastPostObject();
     virtual bool holdsPostObject(FemPostObject* obj);
 
+    // general
+    static App::DocumentObject* getGroupOfObject(const App::DocumentObject* obj);
+
 protected:
     void extensionOnChanged(const App::Property* p) override;
     void onExtendedUnsetupObject() override;
