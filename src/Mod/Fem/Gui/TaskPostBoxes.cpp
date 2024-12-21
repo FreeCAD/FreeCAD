@@ -49,6 +49,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Fem/App/FemPostFilter.h>
+#include <Mod/Fem/App/FemPostBranchFilter.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
 #include "ui_TaskPostClip.h"
@@ -60,6 +61,7 @@
 #include "ui_TaskPostScalarClip.h"
 #include "ui_TaskPostWarpVector.h"
 #include "ui_TaskPostFrames.h"
+#include "ui_TaskPostBranch.h"
 
 
 #include "FemSettings.h"
@@ -67,6 +69,7 @@
 #include "ViewProviderFemPostFilter.h"
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostObject.h"
+#include "ViewProviderFemPostBranchFilter.h"
 
 
 using namespace FemGui;
@@ -538,6 +541,61 @@ void TaskPostFrames::applyPythonCode()
 // ***************************************************************************
 // in the following, the different filters sorted alphabetically
 // ***************************************************************************
+
+
+// ***************************************************************************
+// Branch
+TaskPostBranch::TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* parent)
+    : TaskPostBox(view,
+                  Gui::BitmapFactory().pixmap("FEM_PostBranchFilter"),
+                  tr("Branch behaviour"),
+                  parent), ui(new Ui_TaskPostBranch)
+{
+    // we load the views widget
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    this->groupLayout()->addWidget(proxy);
+    setupConnections();
+
+    // populate the data
+    auto branch = static_cast<Fem::FemPostBranchFilter*>(getObject());
+
+    ui->ModeBox->setCurrentIndex(branch->Mode.getValue());
+    ui->OutputBox->setCurrentIndex(branch->Output.getValue());
+}
+
+TaskPostBranch::~TaskPostBranch() = default;
+
+void TaskPostBranch::setupConnections()
+{
+    connect(ui->ModeBox,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostBranch::onModeIndexChanged);
+
+    connect(ui->OutputBox,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostBranch::onOutputIndexChanged);
+}
+
+void TaskPostBranch::onModeIndexChanged(int idx)
+{
+    static_cast<Fem::FemPostBranchFilter*>(getObject())->Mode.setValue(idx);
+}
+
+void TaskPostBranch::onOutputIndexChanged(int idx)
+{
+    static_cast<Fem::FemPostBranchFilter*>(getObject())->Output.setValue(idx);
+}
+
+
+
+void TaskPostBranch::applyPythonCode()
+{
+    // we apply the views widgets python code
+}
+
 
 
 // ***************************************************************************

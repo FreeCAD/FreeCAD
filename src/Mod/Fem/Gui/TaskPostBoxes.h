@@ -30,7 +30,6 @@
 
 #include "ViewProviderFemPostFunction.h"
 
-
 class QComboBox;
 class Ui_TaskPostDisplay;
 class Ui_TaskPostClip;
@@ -41,6 +40,7 @@ class Ui_TaskPostScalarClip;
 class Ui_TaskPostWarpVector;
 class Ui_TaskPostCut;
 class Ui_TaskPostFrames;
+class Ui_TaskPostBranch;
 
 class SoFontStyle;
 class SoText2;
@@ -278,7 +278,7 @@ public:
 };
 
 // ***************************************************************************
-// steps
+// frames
 class TaskPostFrames: public TaskPostBox
 {
     Q_OBJECT
@@ -302,6 +302,29 @@ private:
 // in the following, the different filters sorted alphabetically
 // ***************************************************************************
 
+
+// ***************************************************************************
+// branch
+class ViewProviderFemPostBranchFilter;
+
+class TaskPostBranch: public TaskPostBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* parent = nullptr);
+    ~TaskPostBranch() override;
+
+    void applyPythonCode() override;
+
+private:
+    void setupConnections();
+    void onModeIndexChanged(int);
+    void onOutputIndexChanged(int);
+
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostBranch> ui;
+};
 
 // ***************************************************************************
 // data along line filter

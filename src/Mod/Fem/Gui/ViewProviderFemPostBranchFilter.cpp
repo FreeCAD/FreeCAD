@@ -20,47 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
-#define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+#include "PreCompiled.h"
 
-#include <Gui/ViewProviderFeaturePython.h>
-#include <Mod/Fem/FemGlobal.h>
-
-#include "Gui/ViewProviderGroupExtension.h"
-#include "ViewProviderFemPostObject.h"
+#include "TaskPostBoxes.h"
+#include "ViewProviderFemPostBranchFilter.h"
 
 
-namespace FemGui
+using namespace FemGui;
+
+
+PROPERTY_SOURCE_WITH_EXTENSIONS(FemGui::ViewProviderFemPostBranchFilter, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostBranchFilter::ViewProviderFemPostBranchFilter() : Gui::ViewProviderGroupExtension()
+{
+    Gui::ViewProviderGroupExtension::initExtension(this);
+    sPixmap = "FEM_PostBranchFilter";
+}
+
+ViewProviderFemPostBranchFilter::~ViewProviderFemPostBranchFilter()
 {
 
-class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject, public Gui::ViewProviderGroupExtension
+}
+
+void ViewProviderFemPostBranchFilter::setupTaskDialog(TaskDlgPost* dlg)
 {
+    // add the branch ui
+    dlg->appendBox(new TaskPostBranch(this));
 
-    PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostPipeline);
+    // add the display options
+    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
+}
 
-public:
-    /// constructor.
-    ViewProviderFemPostPipeline();
-    ~ViewProviderFemPostPipeline() override;
-
-    void updateData(const App::Property* prop) override;
-    bool onDelete(const std::vector<std::string>& objs) override;
-    void onSelectionChanged(const Gui::SelectionChanges& sel) override;
-    void updateColorBars();
-    void transformField(char* FieldName, double FieldFactor);
-    void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
-    PyObject* getPyObject() override;
-
-protected:
-    void updateFunctionSize();
-    virtual void setupTaskDialog(TaskDlgPost* dlg) override;
-
-    // override, to not show/hide children as the parent is shown/hidden like normal groups
-    void extensionHide() override {};
-    void extensionShow() override {};
-};
-
-}  // namespace FemGui
-
-
-#endif  // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
