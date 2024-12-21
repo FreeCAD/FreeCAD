@@ -467,7 +467,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         else {
             userName = defaultName ? QObject::tr("Unnamed").toStdString() : Name;
 
-            std::vector<std::string> names;
+            std::vector<std::string_view> names;
             names.reserve(DocMap.size());
             for (const auto& pos : DocMap) {
                 names.emplace_back(pos.second->Label.getValue());
@@ -629,7 +629,7 @@ std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) c
         return CleanName;
     }
     else {
-        std::vector<std::string> names;
+        std::vector<std::string_view> names;
         names.reserve(DocMap.size());
         for (pos = DocMap.begin(); pos != DocMap.end(); ++pos) {
             if (!tempDoc || !pos->second->testStatus(Document::TempDoc))

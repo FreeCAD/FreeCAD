@@ -33,6 +33,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <string_view>
 #include <boost_signals2.hpp>
 #include <QString>
 
@@ -268,6 +269,11 @@ struct BaseExport Tools
 {
     static std::string
     getUniqueName(const std::string&, const std::vector<std::string>&, int d = 0);
+    // std::reference_wrapper tricks avoiding ambiguous overload resolution with initializer list,
+    // like getUniqueName("name", {"name1"}) in test.
+    static std::string getUniqueName(const std::string&,
+                                     std::reference_wrapper<const std::vector<std::string_view>>,
+                                     int d = 0);
     static std::string addNumber(const std::string&, unsigned int, int d = 0);
     static std::string getIdentifier(const std::string&);
     static std::wstring widen(const std::string& str);

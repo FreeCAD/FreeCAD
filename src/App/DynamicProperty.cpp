@@ -310,7 +310,7 @@ std::string DynamicProperty::getUniquePropertyName(PropertyContainer& pc, const 
         return CleanName;
     }
     else {
-        std::vector<std::string> names;
+        std::vector<std::string_view> names;
         names.reserve(objectProps.size());
         for (pos = objectProps.begin(); pos != objectProps.end(); ++pos) {
             names.push_back(pos->first);
