@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include "FemPostFunction.h"
+#include <App/Document.h>
 
 
 using namespace Fem;
@@ -31,19 +32,26 @@ using namespace App;
 PROPERTY_SOURCE(Fem::FemPostFunctionProvider, App::DocumentObject)
 
 FemPostFunctionProvider::FemPostFunctionProvider()
-    : DocumentObject()
+    : DocumentObjectGroup()
 {
 
-    ADD_PROPERTY(Functions, (nullptr));
 }
 
 FemPostFunctionProvider::~FemPostFunctionProvider() = default;
 
-void FemPostFunctionProvider::onChanged(const Property* prop)
+bool FemPostFunctionProvider::allowObject(App::DocumentObject* obj)
 {
-    App::DocumentObject::onChanged(prop);
+    return obj->isDerivedFrom(FemPostFunction::getClassTypeId());
 }
 
+void  FemPostFunctionProvider::unsetupObject()
+{
+    // remove all children!
+    auto document = getExtendedObject()->getDocument();
+    for (const auto& obj : Group.getValues()) {
+        document->removeObject(obj->getNameInDocument());
+    }
+}
 
 PROPERTY_SOURCE(Fem::FemPostFunction, App::DocumentObject)
 

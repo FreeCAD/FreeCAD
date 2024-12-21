@@ -1067,7 +1067,15 @@ bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
 {
     // warn the user if the object has unselected children
     auto objs = claimChildren();
-    return ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline");
+    if (!ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline")) {
+        return false;
+    };
+
+    // delete all subelements
+    for(auto obj : objs) {
+        getObject()->getDocument()->removeObject(obj->getNameInDocument());
+    }
+    return true;
 }
 
 bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const

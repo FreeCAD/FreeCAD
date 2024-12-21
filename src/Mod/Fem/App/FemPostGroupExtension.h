@@ -20,57 +20,49 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemPostBranch_H
-#define Fem_FemPostBranch_H
+#ifndef Fem_FemPostGroup_H
+#define Fem_FemPostGroup_H
 
-
+#include "Base/Unit.h"
+#include "App/GroupExtension.h"
 #include "FemPostFilter.h"
-#include "FemPostGroupExtension.h"
-
-#include <vtkSmartPointer.h>
-#include <vtkAppendFilter.h>
-#include <vtkPassThrough.h>
-
 
 namespace Fem
 {
 
-class FemExport FemPostBranch: public Fem::FemPostFilter, public FemPostGroupExtension
-{
-    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostBranch);
+// object grouping FEM filters and building the structure of the pipeline
+class FemExport FemPostGroupExtension : public App::GroupExtension {
+
+    using inherited = App::GroupExtension;
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostGroupExtension);
 
 public:
     /// Constructor
-    FemPostBranch();
-    ~FemPostBranch() override;
+    FemPostGroupExtension();
+    ~FemPostGroupExtension() override;
+
+    void initExtension(App::ExtensionContainer* obj) override;
 
     App::PropertyEnumeration Mode;
-    App::PropertyEnumeration Output;
+    App::PropertyLinkList Filter;
 
-
-    short mustExecute() const override;
-    PyObject* getPyObject() override;
-
-    const char* getViewProviderName() const override
-    {
-        return "FemGui::ViewProviderFemPostBranch";
-    }
-
-    // Branch handling
-    void filterChanged(FemPostFilter* filter) override;
-    void filterPipelineChanged(FemPostFilter* filter) override;
+    // Pipeline handling
+    virtual void filterChanged(FemPostFilter*) {};          // settings change in filter
+    virtual void filterPipelineChanged(FemPostFilter*) {};  // pipeline change in filter
+    virtual void recomputeChildren();
+    virtual FemPostObject* getLastPostObject();
+    virtual bool holdsPostObject(FemPostObject* obj);
 
 protected:
-    void onChanged(const App::Property* prop) override;
+    void extensionOnChanged(const App::Property* p) override;
+    void onExtendedUnsetupObject() override;
 
 private:
-    static const char* OutputEnums[];
-
-    vtkSmartPointer<vtkAppendFilter> m_append;
-    vtkSmartPointer<vtkPassThrough>  m_passthrough;
+    bool m_blockChange = false;
+    static const char* ModeEnums[];
 };
 
 }  // namespace Fem
 
 
-#endif  // Fem_FemPostBranch_H
+#endif  // Fem_FemPostGroup_H
