@@ -1404,6 +1404,7 @@ void PropertyString::setValue(const char* newLabel)
         App::Document* doc = obj->getDocument();
         if (doc && !_hPGrp->GetBool("DuplicateLabels") && !obj->allowDuplicateLabel()) {
             std::vector<std::string_view> objectLabels;
+            objectLabels.reserve(doc->getObjects().size());
             bool match = false;
             for (const auto& doc_obj : doc->getObjects()) {
                 if (doc_obj == obj) {
