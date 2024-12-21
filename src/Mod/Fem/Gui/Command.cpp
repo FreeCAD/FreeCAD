@@ -2478,23 +2478,17 @@ void CmdFemPostFunctions::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Create function"));
 
         // check if the pipeline has a filter provider and add one if needed
-        Fem::FemPostFunctionProvider* provider;
-        if (!pipeline->Functions.getValue()
-            || pipeline->Functions.getValue()->getTypeId()
-                != Fem::FemPostFunctionProvider::getClassTypeId()) {
+        Fem::FemPostFunctionProvider* provider = pipeline->getFunctionProvider();
+        if (!provider) {
             std::string FuncName = getUniqueObjectName("Functions");
             doCommand(Doc,
                       "App.ActiveDocument.addObject('Fem::FemPostFunctionProvider','%s')",
                       FuncName.c_str());
             doCommand(Doc,
-                      "App.ActiveDocument.%s.Functions = App.ActiveDocument.%s",
+                      "App.ActiveDocument.%s.addObject(App.ActiveDocument.%s)",
                       pipeline->getNameInDocument(),
                       FuncName.c_str());
-            provider = static_cast<Fem::FemPostFunctionProvider*>(
-                getDocument()->getObject(FuncName.c_str()));
-        }
-        else {
-            provider = static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue());
+            provider = pipeline->getFunctionProvider();
         }
 
         // build the object
@@ -2503,10 +2497,9 @@ void CmdFemPostFunctions::activated(int iMsg)
                   "App.activeDocument().addObject('Fem::FemPost%sFunction','%s')",
                   name.c_str(),
                   FeatName.c_str());
-        doCommand(Doc, "__list__ = App.ActiveDocument.%s.Functions", provider->getNameInDocument());
-        doCommand(Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-        doCommand(Doc, "App.ActiveDocument.%s.Functions = __list__", provider->getNameInDocument());
-        doCommand(Doc, "del __list__");
+        doCommand(Doc, "App.ActiveDocument.%s.addObject(App.ActiveDocument.%s)",
+                  provider->getNameInDocument(),
+                  FeatName.c_str());
 
         // set the default values, for this get the bounding box
         vtkBoundingBox box = pipeline->getBoundingBox();

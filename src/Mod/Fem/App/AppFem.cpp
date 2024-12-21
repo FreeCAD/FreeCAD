@@ -184,6 +184,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemPostSmoothFilterExtension         ::init();
 
     Fem::FemPostObject                        ::init();
+    Fem::FemPostGroupExtension                ::init();
     Fem::FemPostPipeline                      ::init();
     Fem::FemPostFilter                        ::init();
     Fem::FemPostClipFilter                    ::init();

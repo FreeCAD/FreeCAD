@@ -78,19 +78,14 @@ void FemPostFilter::setActiveFilterPipeline(std::string name)
         //set the new pipeline active
         m_activePipeline = name;
 
-        //inform our parent, that we need to be connected a new
-        App::DocumentObject* group = App::GroupExtension::getGroupOfObject(this);
+        //inform our parent, that we need to be reconnected
+        App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
         if (!group) {
             return;
         }
-
-        if (group->isDerivedFrom(Fem::FemPostPipeline::getClassTypeId())) {
-            auto pipe = dynamic_cast<Fem::FemPostPipeline*>(group);
-            pipe->pipelineChanged(this);
-        }
-        else if (group->isDerivedFrom(Fem::FemPostBranch::getClassTypeId())) {
-            auto branch = dynamic_cast<Fem::FemPostBranch*>(group);
-            branch->pipelineChanged(this);
+        if (group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
+            auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
+            postgroup->filterPipelineChanged(this);
         }
     }
 }
@@ -103,18 +98,15 @@ FemPostFilter::FilterPipeline& FemPostFilter::getActiveFilterPipeline()
 void FemPostFilter::onChanged(const App::Property* prop)
 {
     //make sure we inform our parent object that we changed, it then can inform others if needed
-    App::DocumentObject* group = App::GroupExtension::getGroupOfObject(this);
-    if (!group) {
-        return FemPostObject::onChanged(prop);
-    }
-
-    if (group->isDerivedFrom(Fem::FemPostPipeline::getClassTypeId())) {
-        auto pipe = dynamic_cast<Fem::FemPostPipeline*>(group);
-        pipe->filterChanged(this);
-    }
-    else if (group->isDerivedFrom(Fem::FemPostBranch::getClassTypeId())) {
-        auto branch = dynamic_cast<Fem::FemPostBranch*>(group);
-        branch->filterChanged(this);
+    if(prop != &Data) {
+        App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
+        if (!group) {
+            return;
+        }
+        if (group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
+            auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
+            postgroup->filterChanged(this);
+        }
     }
 
     return FemPostObject::onChanged(prop);
@@ -1164,7 +1156,6 @@ FemPostWarpVectorFilter::~FemPostWarpVectorFilter() = default;
 
 DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
 {
-    Base::Console().Message("Warp Execute\n");
 
     std::string val;
     if (Vector.getValue() >= 0) {

@@ -151,7 +151,7 @@ int FemFrameSourceAlgorithm::RequestInformation(vtkInformation*reqInfo, vtkInfor
     return 1;
 }
 
-int FemFrameSourceAlgorithm::RequestData(vtkInformation* reqInfo, vtkInformationVector** inVector, vtkInformationVector* outVector)
+int FemFrameSourceAlgorithm::RequestData(vtkInformation*, vtkInformationVector**, vtkInformationVector* outVector)
 {
 
     std::stringstream strstm;
@@ -192,33 +192,18 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation* reqInfo, vtkInformation
 }
 
 
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostPipeline, Fem::FemPostObject)
 
-PROPERTY_SOURCE(Fem::FemPostPipeline, Fem::FemPostObject)
-const char* FemPostPipeline::ModeEnums[] = {"Serial", "Parallel", nullptr};
-
-FemPostPipeline::FemPostPipeline() : Fem::FemPostObject(), App::GroupExtension()
+FemPostPipeline::FemPostPipeline() : FemPostObject(), FemPostGroupExtension()
 {
-    GroupExtension::initExtension(this);
 
-    ADD_PROPERTY_TYPE(Functions,
-                      (nullptr),
-                      "Pipeline",
-                      App::Prop_Hidden,
-                      "The function provider which groups all pipeline functions");
-    ADD_PROPERTY_TYPE(Mode,
-                      (long(0)),
-                      "Pipeline",
-                      App::Prop_None,
-                      "Selects the pipeline data transition mode.\n"
-                      "In serial, every filter gets the output of the previous one as input.\n"
-                      "In parallel, every filter gets the pipeline source as input.\n");
+    FemPostGroupExtension::initExtension(this);
+
     ADD_PROPERTY_TYPE(Frame,
                       (long(0)),
                       "Pipeline",
                       App::Prop_None,
                       "The frame used to calculate the data in the pipeline processing (read only, set via pipeline object).");
-
-    Mode.setEnums(ModeEnums);
 
     // create our source algorithm
     m_source_algorithm = vtkSmartPointer<FemFrameSourceAlgorithm>::New();
@@ -246,6 +231,17 @@ vtkDataSet* FemPostPipeline::getDataSet() {
         return vtkDataSet::SafeDownCast(data);
     }
 
+    return nullptr;
+}
+
+Fem::FemPostFunctionProvider* FemPostPipeline::getFunctionProvider() {
+
+    // see if we have one
+    for (auto obj : Group.getValues()){
+        if(obj->isDerivedFrom(FemPostFunctionProvider::getClassTypeId())) {
+            return static_cast<FemPostFunctionProvider*>(obj);
+        }
+    }
     return nullptr;
 }
 
@@ -305,6 +301,7 @@ void FemPostPipeline::onChanged(const Property* prop)
      * of our child filters correctly according to the new settings
      */
 
+    FemPostObject::onChanged(prop);
 
     // use the correct data as source
     if (prop == &Data) {
@@ -360,10 +357,10 @@ void FemPostPipeline::onChanged(const Property* prop)
 
 
     // connect all filters correctly to the source
-    if (prop == &Group || prop == &Mode) {
+    if (prop == &Filter || prop == &Mode) {
 
         // we check if all connections are right and add new ones if needed
-        std::vector<App::DocumentObject*> objs = Group.getValues();
+        std::vector<App::DocumentObject*> objs = Filter.getValues();
 
         if (objs.empty()) {
             return;
@@ -398,9 +395,6 @@ void FemPostPipeline::onChanged(const Property* prop)
             filter = nextFilter;
         };
     }
-
-    FemPostObject::onChanged(prop);
-
 }
 
 void FemPostPipeline::filterChanged(FemPostFilter* filter)
@@ -428,7 +422,7 @@ void FemPostPipeline::filterChanged(FemPostFilter* filter)
     }
 }
 
-void FemPostPipeline::pipelineChanged(FemPostFilter* filter) {
+void FemPostPipeline::filterPipelineChanged(FemPostFilter*) {
     // one of our filters has changed its active pipeline. We need to reconnect it properly.
     // As we are cheap we just reconnect everything
     // TODO: Do more efficiently
@@ -441,7 +435,7 @@ void FemPostPipeline::recomputeChildren()
     double frame = 0;
     auto frames = getFrameValues();
     if (!frames.empty() &&
-         Frame.getValue() < frames.size()) {
+         Frame.getValue() < long(frames.size())) {
 
         frame = frames[Frame.getValue()];
     }
@@ -454,30 +448,6 @@ void FemPostPipeline::recomputeChildren()
         }
     }
 }
-
-FemPostObject* FemPostPipeline::getLastPostObject()
-{
-
-    if (Group.getValues().empty()) {
-        return this;
-    }
-
-    return static_cast<FemPostObject*>(Group.getValues().back());
-}
-
-bool FemPostPipeline::holdsPostObject(FemPostObject* obj)
-{
-
-    std::vector<App::DocumentObject*>::const_iterator it = Group.getValues().begin();
-    for (; it != Group.getValues().end(); ++it) {
-
-        if (*it == obj) {
-            return true;
-        }
-    }
-    return false;
-}
-
 
 
 bool FemPostPipeline::hasFrames()
