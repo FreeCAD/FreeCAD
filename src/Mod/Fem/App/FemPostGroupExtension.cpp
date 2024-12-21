@@ -123,6 +123,17 @@ void FemPostGroupExtension::extensionOnChanged(const App::Property* p)
     GroupExtension::extensionOnChanged(p);
 }
 
+App::DocumentObject* FemPostGroupExtension::getGroupOfObject(const App::DocumentObject* obj)
+{
+    for (auto o : obj->getInList()) {
+        if (o->hasExtension(FemPostGroupExtension::getExtensionClassTypeId(), false)) {
+            return o;
+        }
+    }
+
+    return nullptr;
+}
+
 void FemPostGroupExtension::onExtendedUnsetupObject()
 {
     // remove all children!

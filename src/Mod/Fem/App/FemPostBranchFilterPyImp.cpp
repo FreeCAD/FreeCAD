@@ -28,45 +28,45 @@
 #include <Base/FileInfo.h>
 
 // clang-format off
-#include "FemPostBranch.h"
-#include "FemPostBranchPy.h"
-#include "FemPostBranchPy.cpp"
+#include "FemPostBranchFilter.h"
+#include "FemPostBranchFilterPy.h"
+#include "FemPostBranchFilterPy.cpp"
 // clang-format on
 
 
 using namespace Fem;
 
 // returns a string which represents the object e.g. when printed in python
-std::string FemPostBranchPy::representation() const
+std::string FemPostBranchFilterPy::representation() const
 {
-    return {"<FemPostBranch object>"};
+    return {"<FemPostBranchFilter object>"};
 }
 
 
-PyObject* FemPostBranchPy::recomputeChildren(PyObject* args)
+PyObject* FemPostBranchFilterPy::recomputeChildren(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
 
-    getFemPostBranchPtr()->recomputeChildren();
+    getFemPostBranchFilterPtr()->recomputeChildren();
     Py_Return;
 }
 
-PyObject* FemPostBranchPy::getLastPostObject(PyObject* args)
+PyObject* FemPostBranchFilterPy::getLastPostObject(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
 
-    App::DocumentObject* obj = getFemPostBranchPtr()->getLastPostObject();
+    App::DocumentObject* obj = getFemPostBranchFilterPtr()->getLastPostObject();
     if (obj) {
         return obj->getPyObject();
     }
     Py_Return;
 }
 
-PyObject* FemPostBranchPy::holdsPostObject(PyObject* args)
+PyObject* FemPostBranchFilterPy::holdsPostObject(PyObject* args)
 {
     PyObject* py;
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &py)) {
@@ -79,16 +79,16 @@ PyObject* FemPostBranchPy::holdsPostObject(PyObject* args)
         return nullptr;
     }
 
-    bool ok = getFemPostBranchPtr()->holdsPostObject(static_cast<FemPostObject*>(obj));
+    bool ok = getFemPostBranchFilterPtr()->holdsPostObject(static_cast<FemPostObject*>(obj));
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject* FemPostBranchPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* FemPostBranchFilterPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int FemPostBranchPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int FemPostBranchFilterPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

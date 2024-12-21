@@ -2,10 +2,10 @@
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
     <PythonExport
         Father="FemPostObjectPy"
-        Name="FemPostBranchPy"
-        Twin="FemPostBranch"
-        TwinPointer="FemPostBranch"
-        Include="Mod/Fem/App/FemPostBranch.h"
+        Name="FemPostBranchFilterPy"
+        Twin="FemPostBranchFilter"
+        TwinPointer="FemPostBranchFilter"
+        Include="Mod/Fem/App/FemPostBranchFilter.h"
         Namespace="Fem"
         FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
         FatherNamespace="Fem">
