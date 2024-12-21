@@ -482,6 +482,11 @@ public:
      * \return -1 on error
      */
     int exposeInternalGeometry(int GeoId);
+    template<class geomType>
+    int exposeInternalGeometryForType(const int GeoId)
+    {
+        return -1;  // By default internal geometry is not supported
+    }
     /*!
      \brief Deletes all unused (not further constrained) internal geometry
      \param GeoId - the geometry having the internal geometry to delete
@@ -899,6 +904,15 @@ protected:
     void buildShape();
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
+
+    /// Helper functions for `deleteUnusedInternalGeometry` by cases
+    /// two foci for ellipses and arcs of ellipses and hyperbolas
+    int deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid = false);
+    /// one focus for parabolas
+    int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
+    /// b-splines need their own treatment
+    int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+
     void onDocumentRestored() override;
     void restoreFinished() override;
 
