@@ -60,7 +60,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
 
     # mesh
     if not mesh:
-        message += "No mesh object defined in the analysis.\n"
+        message += "A single mesh object must be defined in the analysis.\n"
     if mesh:
         if (
             mesh.FemMesh.VolumeCount == 0
