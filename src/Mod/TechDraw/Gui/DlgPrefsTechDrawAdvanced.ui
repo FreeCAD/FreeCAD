@@ -31,7 +31,7 @@
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="cbSwitchWB">
           <property name="toolTip">
-           <string>If this box is checked, double clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</string>
+           <string>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</string>
           </property>
           <property name="text">
            <string>Switch Workbench on Click</string>
@@ -79,7 +79,7 @@
         <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="cbNewFaceFinder">
           <property name="toolTip">
-           <string>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</string>
+           <string>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</string>
           </property>
           <property name="text">
            <string>Use New Face Finder Algorithm</string>
@@ -148,7 +148,7 @@ can be a performance penalty in complex models.</string>
         <item row="1" column="2">
          <widget class="Gui::PrefCheckBox" name="cbAutoCorrectRefs">
           <property name="toolTip">
-           <string>If checked, system will attempt to automatically correct dimension references when the model changes.</string>
+           <string>If checked, the system will attempt to automatically correct dimension references when the model changes.</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -170,7 +170,7 @@ can be a performance penalty in complex models.</string>
         <item row="4" column="0">
          <widget class="Gui::PrefCheckBox" name="cbValidateShapes">
           <property name="toolTip">
-           <string>If checked, input shapes will be checked for errors before use.and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
+           <string>If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
 </string>
           </property>
           <property name="text">
@@ -305,7 +305,7 @@ when hatching a face with a PAT pattern</string>
         <item row="5" column="0">
          <widget class="Gui::PrefCheckBox" name="cbDebugBadShape">
           <property name="toolTip">
-           <string>If checked, shapes which fail validation will be saved as brep files for later analysis.</string>
+           <string>If checked, shapes that fail validation will be saved as BREP files for later analysis.</string>
           </property>
           <property name="text">
            <string>Debug Bad Shape</string>
@@ -464,7 +464,7 @@ Each unit is approx. 0.1 mm wide</string>
          <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
           <property name="toolTip">
            <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about too many SVG tiles.
+For large scalings, you might get an error about too many SVG tiles.
 Then you need to increase the tile limit.</string>
           </property>
           <property name="alignment">
@@ -498,7 +498,7 @@ Then you need to increase the tile limit.</string>
    <item>
     <widget class="QGroupBox" name="gbBehaviour">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.</string>
      </property>
      <property name="title">
       <string>Behaviour Overrides</string>
@@ -509,7 +509,7 @@ Then you need to increase the tile limit.</string>
         <item row="1" column="0">
          <widget class="QCheckBox" name="cbBalloonDefault">
           <property name="toolTip">
-           <string>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</string>
+           <string>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</string>
           </property>
           <property name="text">
            <string>Use Default</string>
