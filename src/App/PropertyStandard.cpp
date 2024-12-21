@@ -1385,6 +1385,8 @@ void PropertyString::setValue(const char* newLabel)
         return;
     }
 
+    std::string_view newLabelView{newLabel};
+
     std::vector<std::pair<Property*, std::unique_ptr<Property>>> propChanges;
     std::string label;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
@@ -1411,34 +1413,32 @@ void PropertyString::setValue(const char* newLabel)
                     continue;  // don't compare object with itself
                 }
                 std::string_view objLabel = doc_obj->Label.getValue();
-                if (!match && objLabel == newLabel) {
+                if (!match && objLabel == newLabelView) {
                     match = true;
                 }
                 objectLabels.push_back(objLabel);
             }
 
             // make sure that there is a name conflict otherwise we don't have to do anything
-            if (match && *newLabel) {
-                label = newLabel;
+            if (match && !newLabelView.empty()) {
                 // remove number from end to avoid lengthy names
-                size_t lastpos = label.length() - 1;
-                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
+                size_t lastpos = newLabelView.length() - 1;
+                while (newLabelView[lastpos] >= 48 && newLabelView[lastpos] <= 57) {
                     // if 'lastpos' becomes 0 then all characters are digits. In this case we use
-                    // the complete label again
+                    // the complete newLabel again
                     if (lastpos == 0) {
-                        lastpos = label.length() - 1;
+                        lastpos = newLabelView.length() - 1;
                         break;
                     }
                     lastpos--;
                 }
 
                 bool changed = false;
-                label = label.substr(0, lastpos + 1);
-                if (label != obj->getNameInDocument()
-                    && boost::starts_with(obj->getNameInDocument(), label)) {
-                    // In case the label has the same base name as object's
-                    // internal name, use it as the label instead.
-                    const char* objName = obj->getNameInDocument();
+                auto labelTmp = newLabelView.substr(0, lastpos + 1);
+                std::string_view objName{obj->getNameInDocument()};
+                if (labelTmp != objName && boost::starts_with(objName, labelTmp)) { // && objName.starts_with(labelTmp)) { // C++20
+                    // In case the labelTmp has the same base name as object's
+                    // internal name, use it as the labelTmp instead.
                     const char* c = &objName[lastpos + 1];
                     for (; *c; ++c) {
                         if (*c < 48 || *c > 57) {
@@ -1448,20 +1448,20 @@ void PropertyString::setValue(const char* newLabel)
                     if (*c == 0
                         && std::find(objectLabels.begin(),
                                      objectLabels.end(),
-                                     obj->getNameInDocument())
+                                     objName)
                             == objectLabels.end()) {
-                        label = obj->getNameInDocument();
+                        label = objName;
                         changed = true;
                     }
                 }
                 if (!changed) {
-                    label = Base::Tools::getUniqueName(label, objectLabels, 3);
+                    label = Base::Tools::getUniqueName(std::string{labelTmp}, objectLabels, 3);
                 }
             }
         }
 
         if (label.empty()) {
-            label = newLabel;
+            label = newLabelView;
         }
         obj->onBeforeChangeLabel(label);
         newLabel = label.c_str();
