@@ -92,16 +92,6 @@ ViewProviderFemPostFunctionProvider::ViewProviderFemPostFunctionProvider() = def
 
 ViewProviderFemPostFunctionProvider::~ViewProviderFemPostFunctionProvider() = default;
 
-std::vector<App::DocumentObject*> ViewProviderFemPostFunctionProvider::claimChildren() const
-{
-    return getObject<Fem::FemPostFunctionProvider>()->Functions.getValues();
-}
-
-std::vector<App::DocumentObject*> ViewProviderFemPostFunctionProvider::claimChildren3D() const
-{
-    return claimChildren();
-}
-
 void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::onChanged(prop);
@@ -113,7 +103,7 @@ void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
     Fem::FemPostFunctionProvider* obj = getObject<Fem::FemPostFunctionProvider>();
-    if (prop == &obj->Functions) {
+    if (prop == &obj->Group) {
         updateSize();
     }
 }
@@ -139,8 +129,9 @@ bool ViewProviderFemPostFunctionProvider::onDelete(const std::vector<std::string
     // warn the user if the object has unselected children
     auto objs = claimChildren();
     return ViewProviderFemAnalysis::checkSelectedChildren(objs,
-                                                          this->getDocument(),
-                                                          "functions list");
+                                                       this->getDocument(),
+                                                       "functions list");
+
 }
 
 bool ViewProviderFemPostFunctionProvider::canDelete(App::DocumentObject* obj) const

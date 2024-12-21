@@ -52,59 +52,34 @@ ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
 
 ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline() = default;
 
-std::vector<App::DocumentObject*> ViewProviderFemPostPipeline::claimChildren() const
-{
-
-    Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
-    std::vector<App::DocumentObject*> children = FemGui::ViewProviderFemPostObject::claimChildren();
-
-    if (pipeline->Functions.getValue()) {
-        children.insert(children.begin(), pipeline->Functions.getValue());
-    }
-
-    return children;
-}
-
-std::vector<App::DocumentObject*> ViewProviderFemPostPipeline::claimChildren3D() const
-{
-    return claimChildren();
-}
 
 void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
 {
     FemGui::ViewProviderFemPostObject::updateData(prop);
-<<<<<<< HEAD
+
     Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
-=======
-    Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
-
->>>>>>> 782848c556 (FEM: Make multistep work for eigenmodes)
-    if (prop == &pipeline->Functions) {
-        updateFunctionSize();
-    }
-
     if (prop == &pipeline->Frame) {
         // Frame is pipeline property, not post object, parent updateData does not catch it for update
         updateVtk();
+    }
+    else if ((prop == &pipeline->Data) ||
+             (prop == &pipeline->Group)) {
+                     updateFunctionSize();
     }
 }
 
 void ViewProviderFemPostPipeline::updateFunctionSize()
 {
-
     // we need to get the bounding box and set the function provider size
     Fem::FemPostPipeline* obj = getObject<Fem::FemPostPipeline>();
-
-    if (!obj->Functions.getValue()
-        || !obj->Functions.getValue()->isDerivedFrom(
-            Fem::FemPostFunctionProvider::getClassTypeId())) {
+    Fem::FemPostFunctionProvider* fp = obj->getFunctionProvider();
+    if (!fp) {
         return;
     }
 
-    // get the function provider
     FemGui::ViewProviderFemPostFunctionProvider* vp =
         static_cast<FemGui::ViewProviderFemPostFunctionProvider*>(
-            Gui::Application::Instance->getViewProvider(obj->Functions.getValue()));
+            Gui::Application::Instance->getViewProvider(fp));
 
     if (obj->Data.getValue() && obj->Data.getValue()->IsA("vtkDataSet")) {
         vtkBoundingBox box = obj->getBoundingBox();
