@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Gui/Selection.h>
+#include <Mod/Measure/App/ShapeFinder.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/ShapeExtractor.h>
 
@@ -37,6 +38,7 @@
 
 
 using namespace TechDraw;
+using namespace Measure;
 using DU = DrawUtil;
 
 TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& references2d,
@@ -44,15 +46,21 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
 {
     TechDraw::DrawViewPart* dvp(nullptr);
     TechDraw::DrawViewDimension* dim(nullptr);
-    std::vector<Gui::SelectionObject> selectionAll = Gui::Selection().getSelectionEx();
+    constexpr bool allowOnlySingle{false};
+    std::vector<Gui::SelectionObject> selectionAll =
+            Gui::Selection().getSelectionEx("*",
+                                            App::DocumentObject::getClassTypeId(),
+                                            Gui::ResolveMode::NoResolve,
+                                            allowOnlySingle);
+
     for (auto& selItem : selectionAll) {
         if (selItem.getObject()->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
             //we are probably repairing a dimension, but we will check later
-            dim = static_cast<TechDraw::DrawViewDimension*>(selItem.getObject());
+            dim = static_cast<TechDraw::DrawViewDimension*>(selItem.getObject());  //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
         } else if (selItem.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             //this could be a 2d geometry selection or just a DrawViewPart for context in
             //a 3d selection
-            dvp = static_cast<TechDraw::DrawViewPart*>(selItem.getObject());
+            dvp = static_cast<TechDraw::DrawViewPart*>(selItem.getObject());  //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
             if (selItem.getSubNames().empty()) {
                 //there are no subNames, so we think this is a 3d case,
                 //and we only need to select the view. We set the reference
@@ -62,38 +70,17 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
                 continue;
             }
             for (auto& sub : selItem.getSubNames()) {
-                ReferenceEntry ref(dvp, sub);
+                // plain ordinary 2d view + geometry reference
+
+                ReferenceEntry ref(dvp, ShapeFinder::getLastTerm(sub));
                 references2d.push_back(ref);
             }
         } else if (!selItem.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-            //this is not a TechDraw object, so we check to see if it has 3d geometry
-            std::vector<App::DocumentObject*> links;
-            links.push_back(selItem.getObject());
-            if (!ShapeExtractor::getShapes(links).IsNull()) {
-                //this item has 3d geometry so we are interested
-                App::DocumentObject* obj3d = selItem.getObject();
-                if (selItem.getSubNames().empty()) {
-                    if (ShapeExtractor::isPointType(obj3d)) {
-                        //a point object may not have a subName when selected,
-                        //so we need to perform some special handling.
-                        ReferenceEntry ref(obj3d, "Vertex1");
-                        references3d.push_back(ref);
-                        continue;
-                    } else {
-                        //this is a whole object reference, probably for an extent dimension
-                        ReferenceEntry ref(obj3d, std::string());
-                        references3d.push_back(ref);
-                        continue;
-                    }
-                }
-                //this is a regular reference in form obj+subelement
-                for (auto& sub3d : selItem.getSubNames()) {
-                    ReferenceEntry ref(obj3d, sub3d);
-                    references3d.push_back(ref);
-                }
-            } else {
-                Base::Console().Message("DV::getRefsFromSel - %s has no shape!\n",
-                                        selItem.getObject()->getNameInDocument());
+            App::DocumentObject* obj3d = selItem.getObject();
+            // this is a regular 3d reference in form obj + long subelement
+            for (auto& sub3d : selItem.getSubNames()) {
+                ReferenceEntry ref(obj3d, sub3d);
+                references3d.push_back(ref);
             }
         }
     }
@@ -109,15 +96,15 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
 
 //! verify that the proposed references contains valid geometries from a 2d DrawViewPart.
 DimensionGeometryType TechDraw::validateDimSelection(
-    ReferenceVector references,     //[(dvp*, std::string),...,(dvp*, std::string)]
-    StringVector acceptableGeometry,//"Edge", "Vertex", etc
-    std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys)//isVertical, isHorizontal, ...
+    const ReferenceVector& references,     //[(dvp*, std::string),...,(dvp*, std::string)]
+    const StringVector& acceptableGeometry,//"Edge", "Vertex", etc
+    const std::vector<int>& minimumCounts, //how many of each geometry are needed for a good dimension
+    const std::vector<DimensionGeometryType>& acceptableDimensionGeometrys)//isVertical, isHorizontal, ...
 {
     StringVector subNames;
     TechDraw::DrawViewPart* dvpSave(nullptr);
     for (auto& ref : references) {
-        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
+        auto dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
         if (dvp) {
             dvpSave = dvp;
             if (!ref.getSubName().empty()) {
@@ -181,15 +168,15 @@ DimensionGeometryType TechDraw::validateDimSelection(
 //! verify that the proposed references contains valid geometries from non-TechDraw objects.
 DimensionGeometryType TechDraw::validateDimSelection3d(
     TechDraw::DrawViewPart* dvp,
-    ReferenceVector references,     //[(dvp*, std::string),...,(dvp*, std::string)]
-    StringVector acceptableGeometry,//"Edge", "Vertex", etc
-    std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys)//isVertical, isHorizontal, ...
+    const ReferenceVector& references,     //[(dvp*, std::string),...,(dvp*, std::string)]
+    const StringVector& acceptableGeometry,//"Edge", "Vertex", etc
+    const std::vector<int>& minimumCounts, //how many of each geometry are needed for a good dimension
+    const std::vector<DimensionGeometryType>& acceptableDimensionGeometrys)//isVertical, isHorizontal, ...
 {
     StringVector subNames;
     for (auto& ref : references) {
         if (!ref.getSubName().empty()) {
-            subNames.push_back(ref.getSubName());
+            subNames.push_back(ref.getSubName(true));
         }
     }
 
@@ -225,7 +212,7 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
 bool TechDraw::validateSubnameList(StringVector subNames, GeometrySet acceptableGeometrySet)
 {
     for (auto& sub : subNames) {
-        std::string geometryType = DrawUtil::getGeomTypeFromName(sub);
+        std::string geometryType = DrawUtil::getGeomTypeFromName(ShapeFinder::getLastTerm(sub));
         if (acceptableGeometrySet.count(geometryType) == 0) {
             //this geometry type is not allowed
             return false;
@@ -240,7 +227,7 @@ bool TechDraw::checkGeometryOccurrences(StringVector subNames, GeomCountMap keye
     //how many of each geometry descriptor are input
     GeomCountMap foundCounts;
     for (auto& sub : subNames) {
-        std::string geometryType = DrawUtil::getGeomTypeFromName(sub);
+        std::string geometryType = DrawUtil::getGeomTypeFromName(ShapeFinder::getLastTerm(sub));
         std::map<std::string, int>::iterator it0(foundCounts.find(geometryType));
         if (it0 == foundCounts.end()) {
             //first occurrence of this geometryType
@@ -355,8 +342,8 @@ DimensionGeometryType TechDraw::getGeometryConfiguration3d(DrawViewPart* dvp,
 
 //fill the GeomCountMap with pairs made from corresponding items in acceptableGeometry
 //and minimumCounts
-GeomCountMap TechDraw::loadRequiredCounts(StringVector& acceptableGeometry,
-                                          std::vector<int>& minimumCounts)
+GeomCountMap TechDraw::loadRequiredCounts(const StringVector& acceptableGeometry,
+                                          const std::vector<int>& minimumCounts)
 {
     if (acceptableGeometry.size() != minimumCounts.size()) {
         throw Base::IndexError("acceptableGeometry and minimum counts have different sizes.");

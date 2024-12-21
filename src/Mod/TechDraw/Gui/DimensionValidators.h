@@ -66,16 +66,15 @@ enum DimensionGeometryEnum {
 
 DrawViewPart* getReferencesFromSelection(ReferenceVector& references2d,
                                          ReferenceVector& references3d);
-DimensionGeometryType validateDimSelection(
-    ReferenceVector references,
-    StringVector acceptableGeometry,//"Edge", "Vertex", etc
-    std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
-DimensionGeometryType validateDimSelection3d(
-    DrawViewPart* dvp, ReferenceVector references,
-    StringVector acceptableGeometry,//"Edge", "Vertex", etc
-    std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
+DimensionGeometryType validateDimSelection(const ReferenceVector& references,
+                                            const StringVector& acceptableGeometry,//"Edge", "Vertex", etc
+                                            const std::vector<int>& minimumCounts, //how many of each geometry are needed for a good dimension
+                                            const std::vector<DimensionGeometryType>& acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
+DimensionGeometryType validateDimSelection3d(DrawViewPart* dvp,
+                                            const ReferenceVector& references,
+                                            const StringVector& acceptableGeometry,    //"Edge", "Vertex", etc
+                                            const std::vector<int>& minimumCounts, //how many of each geometry are needed for a good dimension
+                                            const std::vector<DimensionGeometryType>& acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
 
 bool validateSubnameList(StringVector subNames, GeometrySet acceptableGeometrySet);
 
@@ -83,8 +82,8 @@ DimensionGeometryType getGeometryConfiguration(ReferenceVector valid2dReferences
 DimensionGeometryType getGeometryConfiguration3d(DrawViewPart* dvp,
                                                                 ReferenceVector valid3dReferences);
 
-GeomCountMap loadRequiredCounts(StringVector& acceptableGeometry,
-                                               std::vector<int>& minimumCouts);
+GeomCountMap loadRequiredCounts(const StringVector& acceptableGeometry,
+                                const std::vector<int>& minimumCouts);
 bool checkGeometryOccurrences(StringVector subNames, GeomCountMap keyedMinimumCounts);
 
 DimensionGeometryType isValidVertexes(ReferenceVector refs);

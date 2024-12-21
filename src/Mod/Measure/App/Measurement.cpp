@@ -48,6 +48,7 @@
 
 #include "Measurement.h"
 #include "MeasurementPy.h"
+#include "ShapeFinder.h"
 
 
 using namespace Measure;
@@ -278,42 +279,11 @@ MeasureType Measurement::getType()
     return measureType;
 }
 
-TopoDS_Shape Measurement::getShape(App::DocumentObject* rootObj, const char* subName) const
+TopoDS_Shape Measurement::getShape(App::DocumentObject* obj, const char* subName) const
 {
-    std::vector<std::string> names = Base::Tools::splitSubName(subName);
-
-    if (names.empty()) {
-        TopoDS_Shape shape = Part::Feature::getShape(rootObj);
-        if (shape.IsNull()) {
-            throw Part::NullShapeException("null shape in measurement");
-        }
-        return shape;
-    }
-
-    try {
-        App::DocumentObject* obj = rootObj->getSubObject(subName);
-
-        Part::TopoShape partShape = Part::Feature::getTopoShape(obj);
-
-        partShape.setPlacement(App::GeoFeature::getGlobalPlacement(obj, rootObj, subName));
-
-        TopoDS_Shape shape = partShape.getSubShape(names.back().c_str());
-        if (shape.IsNull()) {
-            throw Part::NullShapeException("null shape in measurement");
-        }
-        return shape;
-    }
-    catch (const Base::Exception&) {
-        // re-throw original exception
-        throw;
-    }
-    catch (Standard_Failure& e) {
-        throw Base::CADKernelError(e.GetMessageString());
-    }
-    catch (...) {
-        throw Base::RuntimeError("Measurement: Unknown error retrieving shape");
-    }
+    return ShapeFinder::getLocatedShape(*obj, subName);
 }
+
 
 // TODO:: add lengthX, lengthY (and lengthZ??) support
 //  Methods for distances (edge length, two points, edge and a point

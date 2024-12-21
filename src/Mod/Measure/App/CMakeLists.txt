@@ -31,6 +31,7 @@ SET(MeasureModule_SRCS
     PreCompiled.cpp
     PreCompiled.h
     AppMeasure.cpp
+    AppMeasurePy.cpp
 
 # original service routines
     Measurement.cpp
@@ -54,6 +55,11 @@ SET(MeasureModule_SRCS
 
     Preferences.cpp
     Preferences.h
+
+    ShapeFinder.cpp
+    ShapeFinder.h
+    SubnameHelper.cpp
+    SubnameHelper.h
 )
 
 SOURCE_GROUP("Module" FILES ${MeasureModule_SRCS})
