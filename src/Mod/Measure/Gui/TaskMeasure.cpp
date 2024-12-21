@@ -147,7 +147,7 @@ TaskMeasure::TaskMeasure()
     auto* settingsLayout = new QHBoxLayout();
     settingsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
     settingsLayout->addWidget(mSettings);
-    formLayout->addRow(QStringLiteral(), settingsLayout);
+    formLayout->addRow(QStringLiteral(""), settingsLayout);
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
