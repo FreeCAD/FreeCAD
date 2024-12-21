@@ -41,19 +41,19 @@
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
-#include "FemPostBranch.h"
-#include "FemPostBranchPy.h"
+#include "FemPostBranchFilter.h"
+#include "FemPostBranchFilterPy.h"
 #include "FemVTKTools.h"
 
 
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostBranch, Fem::FemPostFilter);
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostBranchFilter, Fem::FemPostFilter);
 
-const char* FemPostBranch::OutputEnums[] = {"Passthrough", "Append", nullptr};
+const char* FemPostBranchFilter::OutputEnums[] = {"Passthrough", "Append", nullptr};
 
-FemPostBranch::FemPostBranch() : Fem::FemPostFilter(), Fem::FemPostGroupExtension()
+FemPostBranchFilter::FemPostBranchFilter() : Fem::FemPostFilter(), Fem::FemPostGroupExtension()
 {
     FemPostGroupExtension::initExtension(this);
 
@@ -93,9 +93,9 @@ FemPostBranch::FemPostBranch() : Fem::FemPostFilter(), Fem::FemPostGroupExtensio
     setActiveFilterPipeline("passthrough");
 }
 
-FemPostBranch::~FemPostBranch() = default;
+FemPostBranchFilter::~FemPostBranchFilter() = default;
 
-short FemPostBranch::mustExecute() const
+short FemPostBranchFilter::mustExecute() const
 {
     if (Mode.isTouched()) {
         return 1;
@@ -105,7 +105,7 @@ short FemPostBranch::mustExecute() const
 }
 
 
-void FemPostBranch::onChanged(const Property* prop)
+void FemPostBranchFilter::onChanged(const Property* prop)
 {
     /* onChanged handles the Pipeline setup: we connect the inputs and outputs
      * of our child filters correctly according to the new settings
@@ -170,13 +170,23 @@ void FemPostBranch::onChanged(const Property* prop)
         else {
             setActiveFilterPipeline("append");
         }
+        // inform toplevel pipeline we changed
+        App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
+        if (!group) {
+            return;
+        }
+        if (group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
+            auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
+            postgroup->filterChanged(this);
+        }
     }
 
     FemPostFilter::onChanged(prop);
 }
 
-void FemPostBranch::filterChanged(FemPostFilter* filter)
+void FemPostBranchFilter::filterChanged(FemPostFilter* filter)
 {
+
     //we only need to update the following children if we are in serial mode
     if (Mode.getValue() == 0) {
 
@@ -213,7 +223,7 @@ void FemPostBranch::filterChanged(FemPostFilter* filter)
     }
 }
 
-void FemPostBranch::filterPipelineChanged(FemPostFilter*) {
+void FemPostBranchFilter::filterPipelineChanged(FemPostFilter*) {
     // one of our filters has changed its active pipeline. We need to reconnect it properly.
     // As we are cheap we just reconnect everything
     // TODO: Do more efficiently
@@ -221,11 +231,11 @@ void FemPostBranch::filterPipelineChanged(FemPostFilter*) {
 }
 
 
-PyObject* FemPostBranch::getPyObject()
+PyObject* FemPostBranchFilter::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FemPostBranchPy(this), true);
+        PythonObject = Py::Object(new FemPostBranchFilterPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

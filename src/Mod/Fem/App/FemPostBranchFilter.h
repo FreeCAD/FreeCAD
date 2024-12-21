@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2024 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,56 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
-#define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
-
-#include <Gui/ViewProviderFeaturePython.h>
-#include <Mod/Fem/FemGlobal.h>
-
-#include "Gui/ViewProviderGroupExtension.h"
-#include "ViewProviderFemPostObject.h"
+#ifndef Fem_FemPostBranchFilter_H
+#define Fem_FemPostBranchFilter_H
 
 
-namespace FemGui
+#include "FemPostFilter.h"
+#include "FemPostGroupExtension.h"
+
+#include <vtkSmartPointer.h>
+#include <vtkAppendFilter.h>
+#include <vtkPassThrough.h>
+
+
+namespace Fem
 {
 
-class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject, public Gui::ViewProviderGroupExtension
+class FemExport FemPostBranchFilter: public Fem::FemPostFilter, public FemPostGroupExtension
 {
-
-    PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostPipeline);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostBranchFilter);
 
 public:
-    /// constructor.
-    ViewProviderFemPostPipeline();
-    ~ViewProviderFemPostPipeline() override;
+    /// Constructor
+    FemPostBranchFilter();
+    ~FemPostBranchFilter() override;
 
-    void updateData(const App::Property* prop) override;
-    bool onDelete(const std::vector<std::string>& objs) override;
-    void onSelectionChanged(const Gui::SelectionChanges& sel) override;
-    void updateColorBars();
-    void transformField(char* FieldName, double FieldFactor);
-    void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
+    App::PropertyEnumeration Output;
+
+
+    short mustExecute() const override;
     PyObject* getPyObject() override;
 
-protected:
-    void updateFunctionSize();
-    virtual void setupTaskDialog(TaskDlgPost* dlg) override;
+    const char* getViewProviderName() const override
+    {
+        return "FemGui::ViewProviderFemPostBranchFilter";
+    }
 
-    // override, to not show/hide children as the parent is shown/hidden like normal groups
-    void extensionHide() override {};
-    void extensionShow() override {};
+    // Branch handling
+    void filterChanged(FemPostFilter* filter) override;
+    void filterPipelineChanged(FemPostFilter* filter) override;
+
+protected:
+    void onChanged(const App::Property* prop) override;
+
+private:
+    static const char* OutputEnums[];
+
+    vtkSmartPointer<vtkAppendFilter> m_append;
+    vtkSmartPointer<vtkPassThrough>  m_passthrough;
 };
 
-}  // namespace FemGui
+}  // namespace Fem
 
 
-#endif  // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+#endif  // Fem_FemPostBranchFilter_H

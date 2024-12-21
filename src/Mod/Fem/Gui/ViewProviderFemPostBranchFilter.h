@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2024 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemPostBranch_H
-#define Fem_FemPostBranch_H
+#ifndef FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H
+#define FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H
+
+#include "ViewProviderFemPostObject.h"
+#include <Gui/ViewProviderGroupExtension.h>
 
 
-#include "FemPostFilter.h"
-#include "FemPostGroupExtension.h"
+namespace Gui
+{
+class SelectionChanges;
+class SoFCColorBar;
+}  // namespace Gui
 
-#include <vtkSmartPointer.h>
-#include <vtkAppendFilter.h>
-#include <vtkPassThrough.h>
-
-
-namespace Fem
+namespace FemGui
 {
 
-class FemExport FemPostBranch: public Fem::FemPostFilter, public FemPostGroupExtension
+class TaskDlgPost;
+
+class FemGuiExport ViewProviderFemPostBranchFilter: public ViewProviderFemPostObject, public Gui::ViewProviderGroupExtension
 {
-    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostBranch);
+    PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostBranchFilter);
 
 public:
-    /// Constructor
-    FemPostBranch();
-    ~FemPostBranch() override;
-
-    App::PropertyEnumeration Mode;
-    App::PropertyEnumeration Output;
-
-
-    short mustExecute() const override;
-    PyObject* getPyObject() override;
-
-    const char* getViewProviderName() const override
-    {
-        return "FemGui::ViewProviderFemPostBranch";
-    }
-
-    // Branch handling
-    void filterChanged(FemPostFilter* filter) override;
-    void filterPipelineChanged(FemPostFilter* filter) override;
+    ViewProviderFemPostBranchFilter();
+    ~ViewProviderFemPostBranchFilter() override;
 
 protected:
-    void onChanged(const App::Property* prop) override;
+    virtual void setupTaskDialog(TaskDlgPost* dlg) override;
 
-private:
-    static const char* OutputEnums[];
+    // override, to not show/hide children as the parent is shown/hidden like normal groups
+    void extensionHide() override {};
+    void extensionShow() override {};
 
-    vtkSmartPointer<vtkAppendFilter> m_append;
-    vtkSmartPointer<vtkPassThrough>  m_passthrough;
 };
 
-}  // namespace Fem
+}
 
 
-#endif  // Fem_FemPostBranch_H
+#endif  // FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H

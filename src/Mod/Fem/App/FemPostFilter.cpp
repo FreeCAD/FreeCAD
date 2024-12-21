@@ -35,7 +35,7 @@
 
 #include "FemPostFilter.h"
 #include "FemPostPipeline.h"
-#include "FemPostBranch.h"
+#include "FemPostBranchFilter.h"
 
 
 using namespace Fem;
