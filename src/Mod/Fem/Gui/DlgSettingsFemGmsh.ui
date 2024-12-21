@@ -151,6 +151,32 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_threads">
+          <property name="text">
+           <string>Number of threads</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefSpinBox" name="sb_threads">
+          <property name="alignment">
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="toolTip">
+           <string>Number of threads used for meshing</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>NumOfThreads</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Gmsh</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -191,6 +217,11 @@
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
