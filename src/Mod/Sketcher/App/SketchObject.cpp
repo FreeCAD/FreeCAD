@@ -2327,125 +2327,133 @@ int SketchObject::delConstraintOnPoint(int VertexId, bool onlyCoincident)
     return delConstraintOnPoint(GeoId, PosId, onlyCoincident);
 }
 
-int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident)
+// clang-format on
+int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoincident)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
+    std::vector<Constraint*> newVals;
+    newVals.reserve(vals.size());
 
     // check if constraints can be redirected to some other point
     int replaceGeoId = GeoEnum::GeoUndef;
     PointPos replacePosId = Sketcher::PointPos::none;
-    if (!onlyCoincident) {
-        for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::Coincident) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    replaceGeoId = (*it)->Second;
-                    replacePosId = (*it)->SecondPos;
-                    break;
-                }
-                else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                    replaceGeoId = (*it)->First;
-                    replacePosId = (*it)->FirstPos;
-                    break;
-                }
-            }
+    auto findReplacement = [geoId, posId, &replaceGeoId, &replacePosId, &vals]() {
+        auto it = std::find_if(vals.begin(), vals.end(), [geoId, posId](auto& constr) {
+            return constr->Type == Sketcher::Coincident
+                && constr->involvesGeoIdAndPosId(geoId, posId);
+        });
+
+        if (it == vals.end()) {
+            return;
         }
-    }
+
+        if ((*it)->First == geoId && (*it)->FirstPos == posId) {
+            replaceGeoId = (*it)->Second;
+            replacePosId = (*it)->SecondPos;
+        }
+        else {
+            replaceGeoId = (*it)->First;
+            replacePosId = (*it)->FirstPos;
+        }
+    };
+
+    auto transferToReplacement =
+        [&geoId, &posId, &replaceGeoId, &replacePosId](int& constrGeoId, PointPos& constrPosId) {
+            if (replaceGeoId == GeoEnum::GeoUndef) {
+                return false;
+            }
+            if (geoId != constrGeoId || posId != constrPosId) {
+                return false;
+            }
+            constrGeoId = replaceGeoId;
+            constrPosId = replacePosId;
+            return true;
+        };
+
+    findReplacement();
+
+    auto performCoincidenceChecksOrChanges = [&](auto& constr) -> std::optional<bool> {
+        if (constr->Type != Sketcher::Coincident) {
+            if (onlyCoincident) {
+                return true;
+            }
+            return std::nullopt;
+        }
+        bool firstSucceeded = transferToReplacement(constr->First, constr->FirstPos);
+        bool secondSucceeded = transferToReplacement(constr->Second, constr->SecondPos);
+        return (firstSucceeded || secondSucceeded)
+            && (constr->First != constr->Second || constr->FirstPos != constr->SecondPos);
+    };
+
+    auto performOtherConstraintChecksOrChanges = [&](auto& constr) -> std::optional<bool> {
+        switch (constr->Type) {
+            case Sketcher::Distance:
+            case Sketcher::DistanceX:
+            case Sketcher::DistanceY: {
+                return (transferToReplacement(constr->First, constr->FirstPos)
+                        || transferToReplacement(constr->Second, constr->SecondPos));
+            }
+            case Sketcher::PointOnObject: {
+                return transferToReplacement(constr->First, constr->FirstPos);
+            }
+            case Sketcher::Tangent:
+            case Sketcher::Perpendicular: {
+                // we could keep this constraint by converting it to a simple one, but that doesn't
+                // always work (for example if tangent-via-point is necessary), and it is not really
+                // worth it
+                return false;
+            }
+            case Sketcher::Vertical:
+            case Sketcher::Horizontal:
+            case Sketcher::Symmetric: {
+                return false;
+            }
+            default:
+                return true;
+        }
+    };
 
     // remove or redirect any constraints associated with the given point
-    std::vector<Constraint*> newVals(0);
-    for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                // redirect this constraint
-                if (replaceGeoId != GeoEnum::GeoUndef
-                    && (replaceGeoId != (*it)->Second || replacePosId != (*it)->SecondPos)) {
-                    (*it)->First = replaceGeoId;
-                    (*it)->FirstPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
+    for (auto& constr : vals) {
+        // keep the constraint if it doesn't involve the point
+        if (constr->involvesGeoIdAndPosId(geoId, posId)) {
+            auto didCoincidenceCheckWork = performCoincidenceChecksOrChanges(constr);
+            if (didCoincidenceCheckWork == true) {
+                newVals.push_back(constr);
+                continue;
             }
-            else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                // redirect this constraint
-                if (replaceGeoId != GeoEnum::GeoUndef
-                    && (replaceGeoId != (*it)->First || replacePosId != (*it)->FirstPos)) {
-                    (*it)->Second = replaceGeoId;
-                    (*it)->SecondPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
+            else if (didCoincidenceCheckWork == false) {
+                continue;
+            }
+            // The check failed, which means it's not a coincidence constraint and
+            // `onlyCoincident` is `false`
+            if (performOtherConstraintChecksOrChanges(constr) == false) {
+                continue;
             }
         }
-        else if (!onlyCoincident) {
-            if ((*it)->Type == Sketcher::Distance || (*it)->Type == Sketcher::DistanceX
-                || (*it)->Type == Sketcher::DistanceY) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PointPos::none
-                    && (PosId == PointPos::start || PosId == PointPos::end)) {
-                    // remove the constraint even if it is not directly associated
-                    // with the given point
-                    continue;// skip this constraint
-                }
-                else if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->First = replaceGeoId;
-                        (*it)->FirstPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
-                }
-                else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->Second = replaceGeoId;
-                        (*it)->SecondPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
-                }
-            }
-            else if ((*it)->Type == Sketcher::PointOnObject) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->First = replaceGeoId;
-                        (*it)->FirstPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
-                }
-            }
-            else if ((*it)->Type == Sketcher::Tangent || (*it)->Type == Sketcher::Perpendicular) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
-                    // we could keep the tangency constraint by converting it
-                    // to a simple one but it is not really worth
-                    continue;// skip this constraint
-                }
-            }
-            else if ((*it)->Type == Sketcher::Symmetric) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
-                    continue;// skip this constraint
-                }
-            }
-            else if ((*it)->Type == Sketcher::Vertical || (*it)->Type == Sketcher::Horizontal) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
-                    continue;// skip this constraint
-                }
-            }
+        // for these constraints remove the constraint even if it is not directly associated with
+        // the given point
+        if ((constr->Type == Sketcher::Distance || constr->Type == Sketcher::DistanceX
+             || constr->Type == Sketcher::DistanceY)
+            && (constr->First == geoId && constr->FirstPos == PointPos::none
+                && (posId == PointPos::start || posId == PointPos::end))) {
+            continue;
         }
-        newVals.push_back(*it);
+        newVals.push_back(constr);
     }
+
     if (newVals.size() < vals.size()) {
         this->Constraints.setValues(std::move(newVals));
 
         return 0;
     }
 
-    return -1;// no such constraint
+    return -1;  // no such constraint
 }
+// clang-format off
 
 void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int geoId2,
                                              PointPos posId2)
