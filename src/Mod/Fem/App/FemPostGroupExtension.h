@@ -44,7 +44,6 @@ public:
     void initExtension(App::ExtensionContainer* obj) override;
 
     App::PropertyEnumeration Mode;
-    App::PropertyLinkList Filter;
 
     // Pipeline handling
     virtual void filterChanged(FemPostFilter*) {};          // settings change in filter
@@ -54,6 +53,7 @@ public:
     virtual bool holdsPostObject(FemPostObject* obj);
 
     // general
+    std::vector<Fem::FemPostFilter*> getFilter();
     static App::DocumentObject* getGroupOfObject(const App::DocumentObject* obj);
 
 protected:

@@ -98,15 +98,13 @@ FemPostFilter::FilterPipeline& FemPostFilter::getActiveFilterPipeline()
 void FemPostFilter::onChanged(const App::Property* prop)
 {
     //make sure we inform our parent object that we changed, it then can inform others if needed
-    if(prop != &Data) {
-        App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
-        if (!group) {
-            return;
-        }
-        if (group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
-            auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
-            postgroup->filterChanged(this);
-        }
+    App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
+    if (!group) {
+        return;
+    }
+    if (group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
+        auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
+        postgroup->filterChanged(this);
     }
 
     return FemPostObject::onChanged(prop);
