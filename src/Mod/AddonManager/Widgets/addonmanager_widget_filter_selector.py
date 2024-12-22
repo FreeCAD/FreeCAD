@@ -38,18 +38,12 @@ except ImportError:
 
 # Get whatever version of PySide we can
 try:
-    import PySide  # Use the FreeCAD wrapper
+    from PySide import QtCore, QtWidgets  # Use the FreeCAD wrapper
 except ImportError:
     try:
-        import PySide6  # Outside FreeCAD, try Qt6 first
-
-        PySide = PySide6
+        from PySide6 import QtCore, QtWidgets  # Outside FreeCAD, try Qt6 first
     except ImportError:
-        import PySide2  # Fall back to Qt5 (if this fails, Python will kill this module's import)
-
-        PySide = PySide2
-
-from PySide import QtCore, QtWidgets
+        from PySide2 import QtCore, QtWidgets  # Fall back to Qt5
 
 
 class FilterType(IntEnum):
