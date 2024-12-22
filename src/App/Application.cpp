@@ -1481,6 +1481,78 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     }
 }
 
+namespace {
+    // To enable changing languages while the program is running, cache the translatable export type entries so that
+    // their addition can be "replayed" when the language changes (after removing the originals).
+
+    struct TranslatableTypeCacheEntry {
+        const char *description;
+        const std::vector<std::string> &extensions;
+        const char *moduleName;
+    };
+
+    class TranslatableTypeCache {
+    public:
+        TranslatableTypeCache() = default;
+        void addCacheEntry(TranslatableTypeCacheEntry entry) {
+            _cache.push_back(entry);
+        }
+        std::vector<TranslatableTypeCacheEntry> getCache() const {
+            return _cache;
+        }
+    private:
+        std::vector<TranslatableTypeCacheEntry> _cache;
+    };
+
+    TranslatableTypeCache translatableExportTypeCache;
+    TranslatableTypeCache translatableImportTypeCache;
+
+    /// Remove any final parenthesized portion of a string (and potentially a space before it, if present). For example,
+    /// given "FreeCAD file (*.FCStd)", this method modifies the string in place to be "FreeCAD file"
+    void stripFinalParenthesis(std::string &description) {
+        auto finalOpenParen = description.find_last_of("(");
+        if  (finalOpenParen != std::string::npos) {
+            description.erase(finalOpenParen);
+        }
+        if (description.back() == ' ') {
+            description.erase(description.end()-1);
+        }
+    }
+
+    /// Given a description string and a list of extensions, construct a type string that Qt's file dialogs and
+    /// FreeCAD's import/export system will recognize
+    void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
+        std::ostringstream streamFormatter;
+        streamFormatter << description << " (";
+        bool first {true};
+        for (const auto &extension : extensions) {
+            if (!first) {
+                streamFormatter << " ";
+            }
+            first = false;
+            streamFormatter << "*." << extension;
+        }
+        streamFormatter << ")";
+        description = streamFormatter.str();
+    }
+};
+
+void Application::addTranslatableExportType(const char*description,
+                                            const std::vector<std::string> &extensions,
+                                            const char* moduleName)
+{
+    assert(!extensions.empty());  // Programming error, there must be extensions
+    translatableExportTypeCache.addCacheEntry({description, extensions, moduleName});
+    auto translatedDescription = QCoreApplication::translate("FileFormat", description).toStdString();
+
+    // Guard against translators accidentally modifying the extension part of the description string by stripping it
+    // off and recreating it:
+    stripFinalParenthesis(translatedDescription);
+    appendTypeString(translatedDescription, extensions);
+
+    addExportType(translatedDescription.c_str(), moduleName);
+}
+
 void Application::changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
 {
     for (auto& it : _mExportTypes) {
