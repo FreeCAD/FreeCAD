@@ -110,6 +110,10 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool allowObject(App::DocumentObject* obj) override;
 
+    // update documents
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    void onDocumentRestored() override;
+
 private:
     App::Enumeration  m_frameEnum;
     vtkSmartPointer<FemFrameSourceAlgorithm> m_source_algorithm;

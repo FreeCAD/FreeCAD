@@ -56,7 +56,7 @@ bool ViewProviderFemPostBranchFilter::acceptReorderingObjects() const {
     return true;
 }
 
-bool ViewProviderFemPostBranchFilter::canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const {
+bool ViewProviderFemPostBranchFilter::canDragObjectToTarget(App::DocumentObject*, App::DocumentObject* target) const {
 
     // allow drag only to other post groups
     if (target) {
