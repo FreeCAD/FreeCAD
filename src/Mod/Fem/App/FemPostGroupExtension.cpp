@@ -42,12 +42,6 @@ FemPostGroupExtension::FemPostGroupExtension() : App::GroupExtension() {
                                 "In serial, every filter gets the output of the previous one as input.\n"
                                 "In parallel, every filter gets the pipeline source as input.\n");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Filter,
-                                (nullptr),
-                                "Pipeline",
-                                App::Prop_Transient,
-                                "List of all filters");
-
     Mode.setEnums(ModeEnums);
 }
 
@@ -70,15 +64,7 @@ void FemPostGroupExtension::extensionOnChanged(const App::Property* p)
 {
     if(p == &Group) {
         if (!m_blockChange) {
-            // make sure filter property holds all our filters (and non filters are in front)
-            std::vector<App::DocumentObject*> filters;
-            for(auto obj : Group.getValues()) {
-                if(obj->isDerivedFrom(FemPostFilter::getClassTypeId())) {
-                    filters.push_back(obj);
-                }
-            }
-
-            // sort the group, so that non filter objects are always on top
+            // sort the group, so that non filter objects are always on top (in case any object using this extension allows those)
             auto objs = Group.getValues();
             std::sort( objs.begin( ), objs.end( ), [ ]( const App::DocumentObject* lhs, const App::DocumentObject* rhs ){
 
@@ -88,39 +74,22 @@ void FemPostGroupExtension::extensionOnChanged(const App::Property* p)
             });
             m_blockChange = true;
             Group.setValue(objs);
-            Filter.setValue(filters);
-            m_blockChange = false;
-        }
-    }
-    else if (p == &Filter) {
-        if (!m_blockChange) {
-            // someone external changed filter, make sure group represents this
-
-            // collect all filters
-            std::vector<App::DocumentObject*> filters;
-            for (auto obj : Filter.getValues()) {
-                if (obj->isDerivedFrom(Fem::FemPostFilter::getClassTypeId())) {
-                    filters.push_back(obj);
-                }
-            }
-
-            //collect all other items that are not filters
-            std::vector<App::DocumentObject*> objs;
-            for (auto obj : Group.getValues()) {
-                if (!obj->isDerivedFrom(Fem::FemPostFilter::getClassTypeId())) {
-                    objs.push_back(obj);
-                }
-            }
-
-            // set the properties correctly
-            m_blockChange = true;
-            objs.insert( objs.end(), filters.begin(), filters.end() );
-            Filter.setValue(filters);
-            Group.setValue(objs);
             m_blockChange = false;
         }
     }
     GroupExtension::extensionOnChanged(p);
+}
+
+std::vector<Fem::FemPostFilter*> FemPostGroupExtension::getFilter()
+{
+    //collect all other items that are not filters
+    std::vector<Fem::FemPostFilter*> filters;
+    for (auto obj : Group.getValues()) {
+        if (obj->isDerivedFrom(Fem::FemPostFilter::getClassTypeId())) {
+            filters.push_back(static_cast<FemPostFilter*>(obj));
+        }
+    }
+    return filters;
 }
 
 App::DocumentObject* FemPostGroupExtension::getGroupOfObject(const App::DocumentObject* obj)

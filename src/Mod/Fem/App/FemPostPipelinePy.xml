@@ -28,6 +28,11 @@
                 <UserDocu>Load a single result object or create a multiframe result by loading multiple result frames. If multistep is wanted, 4 argumenhts are needed: 1. List of result object each being one frame, 2. List of values valid for each frame (e.g. [s] if time data), 3. the unit of the value, 4. the Description of the frames</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getFilter">
+            <Documentation>
+                <UserDocu>Returns all filters, that this pipeline uses (non recursive, result does not contain branch child filters)</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="recomputeChildren">
             <Documentation>
                 <UserDocu>Recomputes all children of the pipeline</UserDocu>

@@ -42,6 +42,20 @@ std::string FemPostBranchFilterPy::representation() const
     return {"<FemPostBranchFilter object>"};
 }
 
+PyObject* FemPostBranchFilterPy::getFilter(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto filters = getFemPostBranchFilterPtr()->getFilter();
+    Py::List sequence;
+    for (auto filter : filters) {
+        sequence.append(Py::asObject(filter->getPyObject()));
+    }
+
+    return Py::new_reference_to(sequence);
+}
 
 PyObject* FemPostBranchFilterPy::recomputeChildren(PyObject* args)
 {

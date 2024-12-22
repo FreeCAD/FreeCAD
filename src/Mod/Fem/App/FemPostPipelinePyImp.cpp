@@ -150,6 +150,22 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
     Py_Return;
 }
 
+
+PyObject* FemPostPipelinePy::getFilter(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto filters = getFemPostPipelinePtr()->getFilter();
+    Py::List sequence;
+    for (auto filter : filters) {
+        sequence.append(Py::asObject(filter->getPyObject()));
+    }
+
+    return Py::new_reference_to(sequence);
+}
+
 PyObject* FemPostPipelinePy::recomputeChildren(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
