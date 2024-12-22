@@ -138,7 +138,7 @@ public:
 //! callback registrations
 // TODO: is there more that one place that GeometryHandler is defined?
     using GeometryHandler = std::function<Part::MeasureInfoPtr (App::SubObjectT)>;
-    
+
 class PartExport CallbackRegistrationRecord
 {
 public:
@@ -146,7 +146,7 @@ public:
     CallbackRegistrationRecord(const std::string& module, const std::string& measureType, GeometryHandler callback) :
         m_module(module), m_measureType(measureType), m_callback(callback)
         { }
-    
+
     std::string m_module;
     std::string m_measureType;
     GeometryHandler m_callback;

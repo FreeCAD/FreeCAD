@@ -78,7 +78,7 @@
     </Methode>
     <Methode Name="fixShape">
       <Documentation>
-          <UserDocu>Fixes issues in the overall geometric shape. 
+          <UserDocu>Fixes issues in the overall geometric shape.
             This function likely encapsulates higher-level fixes that involve multiple faces or elements.</UserDocu>
       </Documentation>
     </Methode>

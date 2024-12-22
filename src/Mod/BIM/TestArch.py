@@ -793,7 +793,7 @@ class ArchTest(unittest.TestCase):
         level = Arch.makeFloor()
         level.addObjects([wall, column])
         App.ActiveDocument.recompute()
-        
+
         # Create a drawing view
         section = Arch.makeSectionPlane(level)
         drawing = Arch.make2DDrawing()
@@ -803,7 +803,7 @@ class ArchTest(unittest.TestCase):
         cut.ProjectionMode = "Cutfaces"
         drawing.addObjects([view, cut])
         App.ActiveDocument.recompute()
-        
+
         # Create a TD page
         tpath = os.path.join(App.getResourceDir(),"Mod","TechDraw","Templates","A3_Landscape_blank.svg")
         page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
