@@ -148,5 +148,10 @@ include(GoogleTest)
 set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
 
 foreach (exe ${TestExecutables})
+    if(WIN32)
+        # On Windows, everything has to be in the same directory so the tests can find the DLLs
+        set_target_properties(${exe} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+        set_target_properties(${exe} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    endif()
     gtest_discover_tests(${exe})
 endforeach()
