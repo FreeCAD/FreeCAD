@@ -48,6 +48,7 @@ public:
     static PyObject* sChangeImportModule     (PyObject *self, PyObject *args);
     static PyObject* sGetImportType          (PyObject *self, PyObject *args);
     static PyObject* sAddExportType          (PyObject *self, PyObject *args);
+    static PyObject* sAddTranslatableExportType (PyObject *self, PyObject *args);
     static PyObject* sChangeExportModule     (PyObject *self, PyObject *args);
     static PyObject* sGetExportType          (PyObject *self, PyObject *args);
     static PyObject* sGetResourcePath        (PyObject *self, PyObject *args);

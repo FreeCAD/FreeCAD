@@ -2512,6 +2512,9 @@ void MainWindow::changeEvent(QEvent* e)
         if (wb) {
             wb->retranslate();
         }
+
+        // reload all translatable export type strings:
+        App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
         if (isActiveWindow()) {
