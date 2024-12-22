@@ -2339,106 +2339,96 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     int replaceGeoId = GeoEnum::GeoUndef;
     PointPos replacePosId = Sketcher::PointPos::none;
     if (!onlyCoincident) {
-        for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::Coincident) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    replaceGeoId = (*it)->Second;
-                    replacePosId = (*it)->SecondPos;
-                    break;
-                }
-                else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                    replaceGeoId = (*it)->First;
-                    replacePosId = (*it)->FirstPos;
-                    break;
-                }
+        for (const auto& constr : vals) {
+            if (constr->Type != Sketcher::Coincident) {
+                continue;
+            }
+
+            if (constr->First == GeoId && constr->FirstPos == PosId) {
+                replaceGeoId = constr->Second;
+                replacePosId = constr->SecondPos;
+                break;
+            }
+            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
+                replaceGeoId = constr->First;
+                replacePosId = constr->FirstPos;
+                break;
             }
         }
     }
 
+    auto transferToReplacement = [&GeoId, &PosId, &replaceGeoId, &replacePosId](int& constrGeoId, PointPos& constrPosId) {
+        if (replaceGeoId == GeoEnum::GeoUndef) {
+            return false;
+        }
+        if (GeoId != constrGeoId || PosId != constrPosId) {
+            return false;
+        }
+        constrGeoId = replaceGeoId;
+        constrPosId = replacePosId;
+        return true;
+    };
+
     // remove or redirect any constraints associated with the given point
-    std::vector<Constraint*> newVals(0);
-    for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                // redirect this constraint
-                if (replaceGeoId != GeoEnum::GeoUndef
-                    && (replaceGeoId != (*it)->Second || replacePosId != (*it)->SecondPos)) {
-                    (*it)->First = replaceGeoId;
-                    (*it)->FirstPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
+    std::vector<Constraint*> newVals;
+    for (auto& constr : vals) {
+        // keep the constraint if it doesn't involve the point
+        if (!((constr->First == GeoId && constr->FirstPos == PosId)
+              || (constr->Second == GeoId && constr->SecondPos == PosId)
+              || (constr->Third == GeoId && constr->ThirdPos == PosId))) {
+            newVals.push_back(constr);
+            continue;
+        }
+        if (constr->Type == Sketcher::Coincident) {
+            if (!(transferToReplacement(constr->First, constr->FirstPos)
+                  || transferToReplacement(constr->Second, constr->SecondPos))) {
+                continue;// skip this constraint
             }
-            else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                // redirect this constraint
-                if (replaceGeoId != GeoEnum::GeoUndef
-                    && (replaceGeoId != (*it)->First || replacePosId != (*it)->FirstPos)) {
-                    (*it)->Second = replaceGeoId;
-                    (*it)->SecondPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
+            // this is to remove the redundant coincidence of replacement point with itself
+            if (constr->First == constr->Second && constr->FirstPos == constr->SecondPos) {
+                continue;// skip this constraint
             }
         }
-        else if (!onlyCoincident) {
-            if ((*it)->Type == Sketcher::Distance || (*it)->Type == Sketcher::DistanceX
-                || (*it)->Type == Sketcher::DistanceY) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PointPos::none
-                    && (PosId == PointPos::start || PosId == PointPos::end)) {
-                    // remove the constraint even if it is not directly associated
-                    // with the given point
-                    continue;// skip this constraint
-                }
-                else if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->First = replaceGeoId;
-                        (*it)->FirstPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
-                }
-                else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->Second = replaceGeoId;
-                        (*it)->SecondPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
-                }
+        else if (onlyCoincident) {
+            newVals.push_back(constr);
+            continue;
+        }
+        else if (constr->Type == Sketcher::Distance
+                 || constr->Type == Sketcher::DistanceX
+                 || constr->Type == Sketcher::DistanceY) {
+            if (constr->First == GeoId && constr->FirstPos == PointPos::none
+                && (PosId == PointPos::start || PosId == PointPos::end)) {
+                // remove the constraint even if it is not directly associated
+                // with the given point
+                continue;// skip this constraint
             }
-            else if ((*it)->Type == Sketcher::PointOnObject) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->First = replaceGeoId;
-                        (*it)->FirstPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
-                }
-            }
-            else if ((*it)->Type == Sketcher::Tangent || (*it)->Type == Sketcher::Perpendicular) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
-                    // we could keep the tangency constraint by converting it
-                    // to a simple one but it is not really worth
-                    continue;// skip this constraint
-                }
-            }
-            else if ((*it)->Type == Sketcher::Symmetric) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
-                    continue;// skip this constraint
-                }
-            }
-            else if ((*it)->Type == Sketcher::Vertical || (*it)->Type == Sketcher::Horizontal) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
-                    continue;// skip this constraint
-                }
+            if (!(transferToReplacement(constr->First, constr->FirstPos)
+                  || transferToReplacement(constr->Second, constr->SecondPos))) {
+                continue;// skip this constraint
             }
         }
-        newVals.push_back(*it);
+        else if (constr->Type == Sketcher::PointOnObject) {
+            if (!transferToReplacement(constr->First, constr->FirstPos)) {
+                continue;// skip this constraint
+            }
+        }
+        else if (constr->Type == Sketcher::Tangent
+                 || constr->Type == Sketcher::Perpendicular) {
+            // we could keep the tangency constraint by converting it to a simple one,
+            // but that doesn't always work (for example if tangent-via-point is necessary),
+            // and it is not really worth it
+            continue;// skip this constraint
+        }
+        else if (constr->Type == Sketcher::Symmetric) {
+            continue;// skip this constraint
+        }
+        else if (constr->Type == Sketcher::Vertical
+                 || constr->Type == Sketcher::Horizontal) {
+            continue;// skip this constraint
+        }
+        newVals.push_back(constr);
     }
+
     if (newVals.size() < vals.size()) {
         this->Constraints.setValues(std::move(newVals));
 
