@@ -108,6 +108,7 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
+    bool allowObject(App::DocumentObject* obj) override;
 
 private:
     App::Enumeration  m_frameEnum;
