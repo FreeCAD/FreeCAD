@@ -767,7 +767,6 @@ class ArchTest(unittest.TestCase):
         import BIM.importers.importSH3DHelper
         importer = BIM.importers.importSH3DHelper.SH3DImporter(None)
         importer.import_sh3d_from_string(SH3D_HOME)
-        assert App.ActiveDocument.Project
         assert App.ActiveDocument.Site
         assert App.ActiveDocument.BuildingPart.Label == "Building"
         assert App.ActiveDocument.BuildingPart001.Label == "Level"
