@@ -51,6 +51,10 @@ public:
     void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
     PyObject* getPyObject() override;
 
+    // override, to not show/hide children as the parent is shown/hidden like normal groups
+    void extensionHide() override {};
+    void extensionShow() override {};
+
 protected:
     void updateFunctionSize();
     virtual void setupTaskDialog(TaskDlgPost* dlg) override;

@@ -44,12 +44,30 @@ bool FemPostFunctionProvider::allowObject(App::DocumentObject* obj)
     return obj->isDerivedFrom(FemPostFunction::getClassTypeId());
 }
 
-void  FemPostFunctionProvider::unsetupObject()
+void FemPostFunctionProvider::unsetupObject()
 {
     // remove all children!
     auto document = getExtendedObject()->getDocument();
     for (const auto& obj : Group.getValues()) {
         document->removeObject(obj->getNameInDocument());
+    }
+}
+
+void FemPostFunctionProvider::handleChangedPropertyName(Base::XMLReader& reader,
+                                                const char* typeName,
+                                                const char* propName)
+{
+    if (strcmp(propName, "Functions") == 0
+        && Base::Type::fromName(typeName) == App::PropertyLinkList::getClassTypeId()) {
+
+        // add the formerly Functions values to the group
+        App::PropertyLinkList functions;
+        functions.setContainer(this);
+        functions.Restore(reader);
+        Group.setValues(functions.getValues());
+    }
+    else {
+        App::DocumentObject::handleChangedPropertyName(reader, typeName, propName);
     }
 }
 
