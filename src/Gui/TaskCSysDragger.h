@@ -118,6 +118,7 @@ private:
     void updateInputLabels() const;
     void updateIncrements() const;
     void updateTransformOrigin();
+    void updateSpinBoxesReadOnlyStatus() const;
 
     void resetReferencePlacement();
     void resetReferenceRotation();

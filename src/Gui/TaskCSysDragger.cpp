@@ -406,6 +406,8 @@ void TaskTransform::setSelectionMode(SelectionMode mode)
     }
 
     selectionMode = mode;
+
+    updateSpinBoxesReadOnlyStatus();
 }
 
 TaskTransform::SelectionMode TaskTransform::getSelectionMode() const
@@ -590,6 +592,24 @@ void TaskTransform::updateTransformOrigin()
 
     updatePositionAndRotationUi();
     updateDraggerLabels();
+}
+
+void TaskTransform::updateSpinBoxesReadOnlyStatus() const
+{
+    const bool isReadOnly = selectionMode != SelectionMode::None;
+
+    const auto controls = {
+        ui->xPositionSpinBox,
+        ui->yPositionSpinBox,
+        ui->zPositionSpinBox,
+        ui->xRotationSpinBox,
+        ui->yRotationSpinBox,
+        ui->zRotationSpinBox,
+    };
+
+    for (const auto& control : controls) {
+        control->setReadOnly(isReadOnly);
+    }
 }
 
 void TaskTransform::resetReferencePlacement()
