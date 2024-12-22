@@ -229,6 +229,22 @@ void ViewProviderFemPostPipeline::setupTaskDialog(TaskDlgPost* dlg)
 }
 
 
+bool ViewProviderFemPostPipeline::acceptReorderingObjects() const {
+    return true;
+}
+
+bool ViewProviderFemPostPipeline::canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const {
+
+    // allow drag only to other post groups
+    if (target) {
+        return target->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId());
+    }
+    else {
+        return false;
+    }
+}
+
+
 PyObject* ViewProviderFemPostPipeline::getPyObject()
 {
     if (!pyViewObject) {

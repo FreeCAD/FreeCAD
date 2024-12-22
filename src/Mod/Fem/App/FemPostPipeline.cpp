@@ -245,6 +245,18 @@ Fem::FemPostFunctionProvider* FemPostPipeline::getFunctionProvider() {
     return nullptr;
 }
 
+bool FemPostPipeline::allowObject(App::DocumentObject* obj)
+{
+    // we additionally allow FunctionPRoviders to be added
+    if (obj->isDerivedFrom(FemPostFunctionProvider::getClassTypeId())) {
+        return true;
+    }
+
+    // and all standart Post objects the group can handle
+    return FemPostGroupExtension::allowObject(obj);
+}
+
+
 bool FemPostPipeline::canRead(Base::FileInfo File)
 {
 

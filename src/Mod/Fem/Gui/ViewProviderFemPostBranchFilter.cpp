@@ -24,6 +24,7 @@
 
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostBranchFilter.h"
+#include <Mod/Fem/App/FemPostGroupExtension.h>
 
 
 using namespace FemGui;
@@ -51,3 +52,17 @@ void ViewProviderFemPostBranchFilter::setupTaskDialog(TaskDlgPost* dlg)
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
 
+bool ViewProviderFemPostBranchFilter::acceptReorderingObjects() const {
+    return true;
+}
+
+bool ViewProviderFemPostBranchFilter::canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const {
+
+    // allow drag only to other post groups
+    if (target) {
+        return target->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId());
+    }
+    else {
+        return false;
+    }
+}
