@@ -49,6 +49,7 @@
 #include "ViewProviderDragger.h"
 #include "Utilities.h"
 
+#include <ViewProviderLink.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
 
@@ -123,15 +124,17 @@ void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const
 
 ViewProvider* ViewProviderDragger::startEditing(int mode)
 {
-    _linkDragger = nullptr;
+    forwardedViewProvider = nullptr;
+
     auto ret = ViewProviderDocumentObject::startEditing(mode);
     if (!ret) {
         return ret;
     }
-    return _linkDragger ? _linkDragger : ret;
+
+    return forwardedViewProvider ? forwardedViewProvider : ret;
 }
 
-bool ViewProviderDragger::checkLink()
+bool ViewProviderDragger::forwardToLink()
 {
     // Trying to detect if the editing request is forwarded by a link object,
     // usually by doubleClicked(). If so, we route the request back. There shall
@@ -150,26 +153,24 @@ bool ViewProviderDragger::checkLink()
         return false;
     }
 
-    auto sobj = vpParent->getObject()->getSubObject(subname.c_str());
-    if (!sobj || sobj == getObject() || sobj->getLinkedObject(true) != getObject()) {
+    if (vpParent == this) {
         return false;
     }
 
-    auto vp = Application::Instance->getViewProvider(sobj);
-    if (!vp) {
+    if (!vpParent->isDerivedFrom<ViewProviderLink>()) {
         return false;
     }
 
-    _linkDragger = vp->startEditing(ViewProvider::Transform);
+    forwardedViewProvider = vpParent->startEditing(ViewProvider::Transform);
 
-    return _linkDragger != nullptr;
+    return forwardedViewProvider != nullptr;
 }
 
 bool ViewProviderDragger::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
 
-    if (checkLink()) {
+    if (forwardToLink()) {
         return true;
     }
 

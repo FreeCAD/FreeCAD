@@ -82,8 +82,13 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
 bool ViewProvider::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform) {
+        if (forwardToLink()) {
+            return true;
+        }
+
         // this is feature so we need to forward the transform to the body
-        return getBodyViewProvider()->startEditing(ModNum);
+        forwardedViewProvider = getBodyViewProvider();
+        return forwardedViewProvider->startEditing(ModNum);
     }
     else if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this feature the
@@ -202,9 +207,13 @@ Gui::ViewProvider* ViewProvider::startEditing(int ModNum)
 {
     // in case of transform we forward the request to body
     if (ModNum == Transform) {
-        ViewProviderPart::startEditing(ModNum);
+        forwardedViewProvider = nullptr;
 
-        return getBodyViewProvider();
+        if (!ViewProviderPart::startEditing(ModNum)) {
+            return nullptr;
+        }
+
+        return forwardedViewProvider;
     }
 
     return ViewProviderPart::startEditing(ModNum);
