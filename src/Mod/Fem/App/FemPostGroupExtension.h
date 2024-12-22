@@ -59,6 +59,7 @@ public:
 protected:
     void extensionOnChanged(const App::Property* p) override;
     void onExtendedUnsetupObject() override;
+    bool allowObject(App::DocumentObject* obj) override;
 
 private:
     bool m_blockChange = false;

@@ -143,6 +143,13 @@ void FemPostGroupExtension::onExtendedUnsetupObject()
     }
 }
 
+bool FemPostGroupExtension::allowObject(App::DocumentObject* obj)
+{
+    // only filters may be added
+    return obj->isDerivedFrom(Fem::FemPostFilter::getClassTypeId());
+}
+
+
 void FemPostGroupExtension::recomputeChildren()
 {
     for (const auto& obj : Group.getValues()) {
