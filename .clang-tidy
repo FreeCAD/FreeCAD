@@ -8,7 +8,6 @@ concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard,-rea
 -cppcoreguidelines-pro-type-static-cast-downcast'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
-AnalyzeTemporaryDtors: false
 FormatStyle:     file
 User:            florians
 CheckOptions:
