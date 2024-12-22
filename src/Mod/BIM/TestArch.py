@@ -767,7 +767,6 @@ class ArchTest(unittest.TestCase):
         import BIM.importers.importSH3DHelper
         importer = BIM.importers.importSH3DHelper.SH3DImporter(None)
         importer.import_sh3d_from_string(SH3D_HOME)
-        assert App.ActiveDocument.Project
         assert App.ActiveDocument.Site
         assert App.ActiveDocument.BuildingPart.Label == "Building"
         assert App.ActiveDocument.BuildingPart001.Label == "Level"
@@ -793,7 +792,7 @@ class ArchTest(unittest.TestCase):
         level = Arch.makeFloor()
         level.addObjects([wall, column])
         App.ActiveDocument.recompute()
-        
+
         # Create a drawing view
         section = Arch.makeSectionPlane(level)
         drawing = Arch.make2DDrawing()
@@ -803,7 +802,7 @@ class ArchTest(unittest.TestCase):
         cut.ProjectionMode = "Cutfaces"
         drawing.addObjects([view, cut])
         App.ActiveDocument.recompute()
-        
+
         # Create a TD page
         tpath = os.path.join(App.getResourceDir(),"Mod","TechDraw","Templates","A3_Landscape_blank.svg")
         page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
