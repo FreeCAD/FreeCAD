@@ -337,7 +337,7 @@ class _Wall(ArchComponent.Component):
             if hasattr(baseProxy,"getPropertySet"):
                 # get full list of PropertySet
                 propSetListCur = baseProxy.getPropertySet(obj.Base)
-                # get updated name (if any) of the selected PropertySet 
+                # get updated name (if any) of the selected PropertySet
                 propSetSelectedNameCur = baseProxy.getPropertySet(obj.Base,
                                          propSetUuid=propSetPickedUuidPrev)
         if propSetSelectedNameCur:  # True if selection is not deleted
@@ -613,11 +613,11 @@ class _Wall(ArchComponent.Component):
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
 
-        if (prop == "ArchSketchPropertySet" 
+        if (prop == "ArchSketchPropertySet"
             and Draft.getType(obj.Base) == "ArchSketch"):
             baseProxy = obj.Base.Proxy
             if hasattr(baseProxy,"getPropertySet"):
-                uuid = baseProxy.getPropertySet(obj, 
+                uuid = baseProxy.getPropertySet(obj,
                                  propSetName=obj.ArchSketchPropertySet)
                 self.ArchSkPropSetPickedUuid = uuid
         if (hasattr(obj,"ArchSketchData") and obj.ArchSketchData

@@ -26,7 +26,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 1. FreeCAD uses the git distributed revision control system.
 2. Source code for the main application and related subprojects is hosted on github.com in the FreeCAD organization.
 3. Problems are discrete, well-defined limitations or bugs.
-4. FreeCAD uses GitHub's issue-tracking system to track problems and contributions. For help requests and general discussions, use the project forum. 
+4. FreeCAD uses GitHub's issue-tracking system to track problems and contributions. For help requests and general discussions, use the project forum.
 5. Contributions are sets of code changes that resolve a single problem.
 6. FreeCAD uses the Pull Request workflow for evaluating and accepting contributions.
 
@@ -47,7 +47,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 ## 5. Contribution Requirements
 
 1. Contributions are submitted in the form of Pull Requests (PR).
-2. Maintainers and Contributors MUST have a GitHub account and SHOULD use their real names or a well-known alias. 
+2. Maintainers and Contributors MUST have a GitHub account and SHOULD use their real names or a well-known alias.
 3. If the GitHub username differs from the username on the FreeCAD Forum, effort SHOULD be taken to avoid confusion.
 4. A PR SHOULD be a minimal and accurate answer to exactly one identified and agreed-on problem.
 5. A PR SHOULD refrain from adding additional dependencies to the FreeCAD project unless no other option is available.

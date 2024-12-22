@@ -315,7 +315,7 @@ class Component(ArchIFC.IfcProduct):
         prop: string
             The name of the property that has changed.
         """
-        
+
         import math
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
