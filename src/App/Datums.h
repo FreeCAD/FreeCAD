@@ -51,6 +51,8 @@ public:
 
     /// Finds the origin object this plane belongs to
     App::LocalCoordinateSystem* getLCS();
+    Base::Vector3d getBasePoint() const;
+    Base::Vector3d getDirection() const;
 
     bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 

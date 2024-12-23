@@ -87,6 +87,21 @@ bool DatumElement::isOriginFeature()
     return lcs ? lcs->isOrigin() : false;
 }
 
+Base::Vector3d DatumElement::getBasePoint() const
+{
+    Base::Placement plc = Placement.getValue();
+    return plc.getPosition();
+}
+
+Base::Vector3d DatumElement::getDirection() const
+{
+    Base::Vector3d dir(0.0, 0.0, 1.0);
+    Base::Placement plc = Placement.getValue();
+    Base::Rotation rot = plc.getRotation();
+    rot.multVec(dir, dir);
+    return dir;
+}
+
 // ----------------------------------------------------------------------------
 
 LocalCoordinateSystem::LocalCoordinateSystem()
