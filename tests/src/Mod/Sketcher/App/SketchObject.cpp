@@ -1413,6 +1413,325 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     // TODO: Ensure shape is preserved
 }
 
+TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToZero)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act
+    // Try decreasing mult to zero.
+    // NOTE: we still use OCCT notation of knot index starting with 1 (not 0).
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
+    // Assert
+    // Knot should disappear. We start with 3 (unique) knots, so expect 2.
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), 2);
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToDisallowed)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try modifying such that resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+    EXPECT_THROW(getObject()->modifyBSplineKnotMultiplicity(geoId, 2, 3), Base::ValueError);
+    // TODO: Try modifying such that resultant multiplicity < 0
+    // TODO: This should immediately throw exception
+    EXPECT_THROW(getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -2), Base::ValueError);
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSpline)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotsNum = bsp->countKnots();
+    int oldMultiplicityOfTargetKnot = bsp->getMultiplicities()[1];
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, 1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[1], oldMultiplicityOfTargetKnot + 1);
+    // This should still be a non-periodic spline
+    EXPECT_FALSE(bsp->isPeriodic());
+    // TODO: Expect shape is preserved
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[1], oldMultiplicityOfTargetKnot);
+    // This should still be a non-periodic spline
+    EXPECT_FALSE(bsp->isPeriodic());
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSplineToZero)
+{
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act
+    // Try decreasing mult to zero.
+    // NOTE: we still use OCCT notation of knot index starting with 1 (not 0).
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
+    // Assert
+    // Knot should disappear. We start with 3 (unique) knots, so expect 2.
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), 5);
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSplineToDisallowed)
+{
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try modifying such that resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+    EXPECT_THROW(getObject()->modifyBSplineKnotMultiplicity(geoId, 2, 3), Base::ValueError);
+    // TODO: Try modifying such that resultant multiplicity < 0
+    // TODO: This should immediately throw exception
+    EXPECT_THROW(getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -2), Base::ValueError);
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSpline)
+{
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotsNum = bsp->countKnots();
+    int oldMultiplicityOfTargetKnot = bsp->getMultiplicities()[1];
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, 1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[1], oldMultiplicityOfTargetKnot + 1);
+    // This should still be a periodic spline
+    EXPECT_TRUE(bsp->isPeriodic());
+    // TODO: Expect shape is preserved
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum);
+    // This should decrement the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[1], oldMultiplicityOfTargetKnot);
+    // This should still be a non-periodic spline
+    EXPECT_TRUE(bsp->isPeriodic());
+}
+
+TEST_F(SketchObjectTest, testInsertKnotInNonPeriodicBSpline)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act and Assert
+    // Try inserting knot with zero multiplicity
+    // zero multiplicity knot should immediately throw exception
+    EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 0.5, 0), Base::ValueError);
+
+    // Act and Assert
+    // Try inserting knot with multiplicity > degree
+    // This should immediately throw exception
+    EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 0.5, 4), Base::ValueError);
+
+    // Act and Assert
+    // TODO: Try inserting at an existing knot with resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+    // FIXME: Not happening. May be ignoring existing values.
+    // EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 1.0, 3), Base::ValueError);
+
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotsNum = bsp->countKnots();
+    int oldMultiplicityOfTargetKnot = bsp->getMultiplicities()[1];
+
+    // Act
+    // Add at a general position (where no knot exists)
+    getObject()->insertBSplineKnot(geoId, 0.5, 1);
+    // Assert
+    // This should add to both the knot and multiplicity "vectors"
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum + 1);
+    // This should still be a non-periodic spline
+    EXPECT_FALSE(bsp->isPeriodic());
+
+    // Act
+    // Add a knot at an existing knot
+    getObject()->insertBSplineKnot(geoId, 1.0, 1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    // (Since we previously added a knot, this means the total is still one more than original)
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum + 1);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[2], oldMultiplicityOfTargetKnot + 1);
+    // This should still be a non-periodic spline
+    EXPECT_FALSE(bsp->isPeriodic());
+}
+
+TEST_F(SketchObjectTest, testInsertKnotInPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act and Assert
+    // Try inserting knot with zero multiplicity
+    // zero multiplicity knot should immediately throw exception
+    EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 0.5, 0), Base::ValueError);
+
+    // Act and Assert
+    // Try inserting knot with multiplicity > degree
+    // This should immediately throw exception
+    EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 0.5, 4), Base::ValueError);
+
+    // Act and Assert
+    // TODO: Try inserting at an existing knot with resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotsNum = bsp->countKnots();
+    int oldMultiplicityOfTargetKnot = bsp->getMultiplicities()[2];
+
+    // Act
+    // Add at a general position (where no knot exists)
+    getObject()->insertBSplineKnot(geoId, 0.5, 1);
+    // Assert
+    // This should add to both the knot and multiplicity "vectors"
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum + 1);
+    // This should still be a periodic spline
+    EXPECT_TRUE(bsp->isPeriodic());
+
+    // Act
+    // Add a knot at an existing knot
+    getObject()->insertBSplineKnot(geoId, 1.0, 1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum + 1);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[3], oldMultiplicityOfTargetKnot + 1);
+    // This should still be a periodic spline
+    EXPECT_TRUE(bsp->isPeriodic());
+}
+
+TEST_F(SketchObjectTest, testJoinCurves)
+{
+    // Arrange
+    // Make two curves
+    Base::Vector3d coordsCenter(0.0, 0.0, 0.0);
+    double radius = 3.0, startParam = M_PI / 2, endParam = M_PI;
+    Part::GeomArcOfCircle arcOfCircle;
+    arcOfCircle.setCenter(coordsCenter);
+    arcOfCircle.setRadius(radius);
+    arcOfCircle.setRange(startParam, endParam, true);
+    int geoId1 = getObject()->addGeometry(&arcOfCircle);
+
+    Base::Vector3d coords1(0.1, 0.0, 0.0);
+    Base::Vector3d coords2(3.0, 4.0, 0.0);
+    Part::GeomLineSegment lineSeg;
+    lineSeg.setPoints(coords1, coords2);
+    int geoId2 = getObject()->addGeometry(&lineSeg);
+
+    // Act
+    // Join these curves
+    getObject()->join(geoId1, Sketcher::PointPos::start, geoId2, Sketcher::PointPos::start);
+
+    // Assert
+    // Check they are replaced (here it means there is only one curve left after internal
+    // geometries are removed)
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
+{
+    // Arrange
+    // Make two curves
+    Base::Vector3d coordsCenter(0.0, 0.0, 0.0);
+    double radius = 3.0, startParam = M_PI / 2, endParam = M_PI;
+    Part::GeomArcOfCircle arcOfCircle;
+    arcOfCircle.setCenter(coordsCenter);
+    arcOfCircle.setRadius(radius);
+    arcOfCircle.setRange(startParam, endParam, true);
+    int geoId1 = getObject()->addGeometry(&arcOfCircle);
+
+    Base::Vector3d coords1(0.0, 0.0, 0.0);
+    Base::Vector3d coords2(3.0, 0.0, 0.0);
+    Part::GeomLineSegment lineSeg;
+    lineSeg.setPoints(coords1, coords2);
+    int geoId2 = getObject()->addGeometry(&lineSeg);
+
+    // Add end-to-end tangent between these
+    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
+    constraint->Type = Sketcher::ConstraintType::Tangent;
+    constraint->First = geoId1;
+    constraint->FirstPos = Sketcher::PointPos::start;
+    constraint->Second = geoId2;
+    constraint->SecondPos = Sketcher::PointPos::start;
+    getObject()->addConstraint(constraint);
+
+    // Act
+    // Join these curves
+    getObject()->join(geoId1, Sketcher::PointPos::start, geoId2, Sketcher::PointPos::start, 1);
+
+    // Assert
+    // Check they are replaced (here it means there is only one curve left after internal
+    // geometries are removed)
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+    // TODO: Check the shape is conserved (how?)
+    // Check there is no C-0 knot (should be possible for the chosen example)
+    auto mults = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(0))
+                     ->getMultiplicities();
+    EXPECT_TRUE(std::all_of(mults.begin(), mults.end(), [](auto mult) {
+        return mult >= 1;
+    }));
+}
+
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits1)
 {
     std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("180 - 60");
