@@ -28,6 +28,9 @@
 #endif
 #include <Mod/Measure/MeasureGlobal.h>
 
+#include <algorithm>  // clears "include what you use" lint message, but creates "included header not used"
+#include <string>
+
 #include <Python.h>
 
 #include <App/DocumentObject.h>
