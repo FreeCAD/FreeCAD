@@ -50,7 +50,6 @@ public:
     static std::string removeGeometryTerm(const std::string& longSubname);
     static std::string pathToLongSub(std::list<App::DocumentObject*> path);
     static std::string removeTnpInfo(const std::string& inString);
-
 };
 
 }  // namespace Measure

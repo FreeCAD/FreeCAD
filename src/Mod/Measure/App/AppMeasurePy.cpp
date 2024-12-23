@@ -20,7 +20,7 @@
  *   <https://www.gnu.org/licenses/>.                                       *
  *                                                                          *
  ***************************************************************************/
- 
+
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -48,11 +48,13 @@
 #include "ShapeFinder.h"
 
 
-namespace Measure {
-//module level static C++ functions go here
+namespace Measure
+{
+// module level static C++ functions go here
 }
 
-namespace Measure {
+namespace Measure
+{
 /** Copies a Python dictionary of Python strings to a C++ container.
  *
  * After the function call, the key-value pairs of the Python
@@ -68,47 +70,56 @@ namespace Measure {
 template<typename OutputIt>
 void copy(Py::Dict sourceRange, OutputIt targetIt)
 {
-  std::string key;
-  std::string value;
+    std::string key;
+    std::string value;
 
-  for (const auto& keyPy : sourceRange.keys()) {
-    key = Py::String(keyPy);
-    value = Py::String(sourceRange[keyPy]);
-    *targetIt = {key, value};
-    ++targetIt;
-  }
+    for (const auto& keyPy : sourceRange.keys()) {
+        key = Py::String(keyPy);
+        value = Py::String(sourceRange[keyPy]);
+        *targetIt = {key, value};
+        ++targetIt;
+    }
 }
 
 
-class Module : public Py::ExtensionModule<Module>
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("Measure")
+    Module()
+        : Py::ExtensionModule<Module>("Measure")
     {
-        add_varargs_method("getLocatedTopoShape", &Module::getLocatedTopoShape,
-            "Part.TopoShape = Measure.getLocatedTopoShape(DocumentObject, longSubElement) Resolves the net placement of DocumentObject and returns the object's shape/subshape with the net placement applied.  Link scaling operations along the path are also applied."
-        );
-        initialize("This is a module for measuring"); // register with Python
+        add_varargs_method(
+            "getLocatedTopoShape",
+            &Module::getLocatedTopoShape,
+            "Part.TopoShape = Measure.getLocatedTopoShape(DocumentObject, longSubElement) Resolves "
+            "the net placement of DocumentObject and returns the object's shape/subshape with the "
+            "net placement applied.  Link scaling operations along the path are also applied.");
+        initialize("This is a module for measuring");  // register with Python
     }
-    ~Module() override {}
+    ~Module() override
+    {}
 
 private:
-    Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
+    Py::Object invoke_method_varargs(void* method_def, const Py::Tuple& args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
         }
-        catch (const Standard_Failure &e) {
+        catch (const Standard_Failure& e) {
             std::string str;
             Standard_CString msg = e.GetMessageString();
             str += typeid(e).name();
             str += " ";
-            if (msg) {str += msg;}
-            else     {str += "No OCCT Exception Message";}
+            if (msg) {
+                str += msg;
+            }
+            else {
+                str += "No OCCT Exception Message";
+            }
             Base::Console().Error("%s\n", str.c_str());
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
-        catch (const Base::Exception &e) {
+        catch (const Base::Exception& e) {
             std::string str;
             str += "FreeCAD exception thrown (";
             str += e.what();
@@ -116,7 +127,7 @@ private:
             e.ReportException();
             throw Py::RuntimeError(str);
         }
-        catch (const std::exception &e) {
+        catch (const std::exception& e) {
             std::string str;
             str += "C++ exception thrown (";
             str += e.what();
@@ -128,25 +139,25 @@ private:
 
     Py::Object getLocatedTopoShape(const Py::Tuple& args)
     {
-        PyObject *pyRootObject{nullptr};
-        PyObject *pyLeafSubName{nullptr};
-        App::DocumentObject* rootObject{nullptr};
+        PyObject* pyRootObject {nullptr};
+        PyObject* pyLeafSubName {nullptr};
+        App::DocumentObject* rootObject {nullptr};
         std::string leafSub;
         if (!PyArg_ParseTuple(args.ptr(), "OO", &pyRootObject, &pyLeafSubName)) {
             throw Py::TypeError("expected (rootObject, subname");
         }
-        
+
         if (PyObject_TypeCheck(pyRootObject, &(App::DocumentObjectPy::Type))) {
             rootObject = static_cast<App::DocumentObjectPy*>(pyRootObject)->getDocumentObjectPtr();
         }
-        
-        if (PyUnicode_Check(pyLeafSubName) ) {
+
+        if (PyUnicode_Check(pyLeafSubName)) {
             leafSub = PyUnicode_AsUTF8(pyLeafSubName);
         }
-        
+
         if (!rootObject) {
             return Py::None();
-        } 
+        }
 
         // this is on the stack
         auto temp = ShapeFinder::getLocatedShape(*rootObject, leafSub);
@@ -154,7 +165,6 @@ private:
         auto topoShapePy = new Part::TopoShapePy(new Part::TopoShape(temp));
         return Py::asObject(topoShapePy);
     }
+};
 
- };
-
-} // namespace Measure
+}  // namespace Measure
