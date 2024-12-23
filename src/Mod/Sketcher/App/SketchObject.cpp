@@ -2334,30 +2334,36 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     Base::StateLocker lock(managedoperation, true);
 
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
+    std::vector<Constraint*> newVals;
+    newVals.reserve(vals.size());
 
     // check if constraints can be redirected to some other point
     int replaceGeoId = GeoEnum::GeoUndef;
     PointPos replacePosId = Sketcher::PointPos::none;
-    if (!onlyCoincident) {
-        for (const auto& constr : vals) {
-            if (constr->Type != Sketcher::Coincident) {
-                continue;
-            }
+    auto findReplacement = [GeoId, PosId, &replaceGeoId, &replacePosId, &vals]() {
+        auto it = std::find_if(vals.begin(),
+                               vals.end(),
+                               [GeoId, PosId](auto& constr) {
+                                   return constr->Type == Sketcher::Coincident
+                                       && constr->involvesGeoIdAndPosId(GeoId, PosId);
+                               });
 
-            if (constr->First == GeoId && constr->FirstPos == PosId) {
-                replaceGeoId = constr->Second;
-                replacePosId = constr->SecondPos;
-                break;
-            }
-            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
-                replaceGeoId = constr->First;
-                replacePosId = constr->FirstPos;
-                break;
-            }
+        if (it == vals.end()) {
+            return;
         }
-    }
 
-    auto transferToReplacement = [&GeoId, &PosId, &replaceGeoId, &replacePosId](int& constrGeoId, PointPos& constrPosId) {
+        if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
+            replaceGeoId = (*it)->Second;
+            replacePosId = (*it)->SecondPos;
+        }
+        else {
+            replaceGeoId = (*it)->First;
+            replacePosId = (*it)->FirstPos;
+        }
+    };
+
+    auto transferToReplacement =
+        [&GeoId, &PosId, &replaceGeoId, &replacePosId](int& constrGeoId, PointPos& constrPosId) {
         if (replaceGeoId == GeoEnum::GeoUndef) {
             return false;
         }
@@ -2369,13 +2375,12 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
         return true;
     };
 
+    findReplacement();
+
     // remove or redirect any constraints associated with the given point
-    std::vector<Constraint*> newVals;
     for (auto& constr : vals) {
         // keep the constraint if it doesn't involve the point
-        if (!((constr->First == GeoId && constr->FirstPos == PosId)
-              || (constr->Second == GeoId && constr->SecondPos == PosId)
-              || (constr->Third == GeoId && constr->ThirdPos == PosId))) {
+        if (!constr->involvesGeoIdAndPosId(GeoId, PosId)) {
             newVals.push_back(constr);
             continue;
         }
