@@ -508,7 +508,7 @@ int Preferences::CenterLineStyle()
 int Preferences::HighlightLineStyle()
 {
     // default is line #2 dashed, which is index 1
-    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighLight", 1) + 1;
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighlight", 1) + 1;
 }
 
 int Preferences::HiddenLineStyle()
