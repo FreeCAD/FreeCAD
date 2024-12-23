@@ -15,9 +15,11 @@ TEST(ProgramOptionsUtilitiesTest, fCustomSyntaxLookup)
 };
 TEST(ProgramOptionsUtilitiesTest, fCustomSyntaxMac)
 {
+#if defined(FC_OS_MACOSX)
     stringPair res {customSyntax("-psn_stuff")};
     stringPair exp {"psn", "stuff"};
     EXPECT_EQ(res, exp);
+#endif
 };
 TEST(ProgramOptionsUtilitiesTest, fCustomSyntaxWidgetCount)
 {
