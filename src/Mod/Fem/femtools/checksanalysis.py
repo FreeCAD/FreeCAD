@@ -69,7 +69,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         ):
             message += (
                 "FEM mesh has no volume elements, "
-                "either define a shell thicknesses or "
+                "either define shell thicknesses or "
                 "provide a FEM mesh with volume elements.\n"
             )
         if (
@@ -158,7 +158,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
                 )
         if femutils.is_of_type(mat_obj, "Fem::MaterialReinforced"):
             # additional tests for reinforced materials,
-            # they are needed for result calculation not for ccx analysis
+            # they are needed for result calculation, not for ccx analysis
             mat_map_m = mat_obj.Material
             if "AngleOfFriction" in mat_map_m:
                 # print(Units.Quantity(mat_map_m["AngleOfFriction"]).Value)
