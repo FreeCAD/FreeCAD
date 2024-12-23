@@ -84,6 +84,8 @@ class ifc_object:
                 obj.ViewObject.signalChangeIcon()
         elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Geometry":
             self.edit_geometry(obj, prop)
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Quantities":
+            self.edit_quantity(obj, prop)
         elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) not in NON_PSETS:
             # Treat all property groups outside the default ones as Psets
             # print("DEBUG: editinog pset prop",prop)
@@ -352,6 +354,11 @@ class ifc_object:
             # TODO remove type?
             # Not doing anything right now because an unset Type property could screw the ifc file
             pass
+
+
+    def edit_quantity(self, obj, prop):
+        """Edits the given quantity"""
+        pass  # TODO implement
 
     def get_section_data(self, obj):
         """Returns two things: a list of objects and a cut plane"""

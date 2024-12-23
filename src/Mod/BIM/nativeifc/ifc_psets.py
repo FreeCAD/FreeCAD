@@ -356,3 +356,7 @@ def remove_property(obj, prop):
                     # delete the pset too
                     FreeCAD.Console.PrintMessage(translate("BIM","Removing property set")+": "+psetname)
                     ifc_tools.api_run("pset.remove_pset", ifcfile, product=element, pset=pset)
+
+
+# Quantity types
+# https://ifc43-docs.standards.buildingsmart.org/IFC/RELEASE/IFC4x3/HTML/ifcsharedbldgelements/content.html#6.1.5-Quantity-Sets
