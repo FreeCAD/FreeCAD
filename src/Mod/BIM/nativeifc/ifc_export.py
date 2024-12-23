@@ -20,6 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+import tempfile
+
 import FreeCAD
 import Draft
 import ifcopenshell
@@ -29,6 +31,10 @@ from importers import exportIFCHelper
 from importers import importIFCHelper
 
 from nativeifc import ifc_tools
+from nativeifc import ifc_import
+
+
+PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
 def get_export_preferences(ifcfile, preferred_context=None, create=None):
@@ -228,7 +234,7 @@ def get_text(annotation):
 def get_dimension(annotation):
     """Determines if an IfcAnnotation is representing a dimension.
     Returns a list containing the representation, two points indicating
-    the mesured points, and optionally a third point indicating where
+    the measured points, and optionally a third point indicating where
     the dimension line is located, if available"""
 
     if annotation.is_a("IfcAnnotation"):
@@ -354,8 +360,34 @@ def get_scaled_point(point, ifcfile=None, is2d=False):
         v = v[:2]
     return v
 
+
 def get_scaled_value(value, ifcfile):
     """Returns a scaled dimension value"""
 
     s = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
     return value * s
+
+
+def export_and_convert(objs, doc):
+    """Exports the given objects and their descendents to the given IFC file
+    and re-imports it into the given document. This is slower than direct_conversion()
+    but gives an intermediate file which can be useful for debugging"""
+
+    tf = tempfile.mkstemp(suffix=".ifc")[1]
+    exportIFC.export(objs, tf)
+    ifc_import.insert(tf, doc.Name, singledoc=True)
+
+
+def direct_conversion(objs, doc):
+    """Exports the given objects to the given ifcfile and recreates the contents"""
+
+    prj_obj = ifc_tools.convert_document(doc, silent=True)
+    exportIFC.export(objs, doc.Proxy.ifcfile)
+    if PARAMS.GetBool("LoadOrphans", True):
+        ifc_tools.load_orphans(prj_obj)
+    if PARAMS.GetBool("LoadMaterials", False):
+        ifc_materials.load_materials(prj_obj)
+    if PARAMS.GetBool("LoadLayers", False):
+        ifc_layers.load_layers(prj_obj)
+    if PARAMS.GetBool("LoadPsets", False):
+        ifc_psets.load_psets(prj_obj)

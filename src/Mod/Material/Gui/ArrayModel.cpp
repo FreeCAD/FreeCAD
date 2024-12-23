@@ -93,7 +93,8 @@ QVariant Array2DModel::data(const QModelIndex& index, int role) const
         try {
             auto column = _property->getColumnType(index.column());
             if (column == Materials::MaterialValue::Quantity) {
-                Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(index.column()));
+                Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(index.column()).toStdString());
+                qq.setFormat(Materials::MaterialValue::getQuantityFormat());
                 return QVariant::fromValue(qq);
             }
         }
@@ -236,7 +237,8 @@ QVariant Array3DDepthModel::data(const QModelIndex& index, int role) const
         }
 
         try {
-            Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(0));
+            Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(0).toStdString());
+            qq.setFormat(Materials::MaterialValue::getQuantityFormat());
             return QVariant::fromValue(qq);
         }
         catch (const Materials::InvalidIndex&) {
@@ -291,7 +293,9 @@ bool Array3DDepthModel::insertRows(int row, int count, const QModelIndex& parent
     beginInsertRows(parent, row, row + count - 1);
 
     for (int i = 0; i < count; i++) {
-        _value->addDepth(row, Base::Quantity(0, _property->getColumnUnits(0)));
+        auto qq = Base::Quantity(0, _property->getColumnUnits(0).toStdString());
+        qq.setFormat(Materials::MaterialValue::getQuantityFormat());
+        _value->addDepth(row, qq);
     }
 
     endInsertRows();
@@ -391,7 +395,8 @@ QVariant Array3DModel::data(const QModelIndex& index, int role) const
         }
 
         try {
-            Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(index.column() + 1));
+            Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(index.column() + 1).toStdString());
+            qq.setFormat(Materials::MaterialValue::getQuantityFormat());
             return QVariant::fromValue(qq);
         }
         catch (const Materials::InvalidIndex&) {

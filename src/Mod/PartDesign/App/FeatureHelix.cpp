@@ -260,7 +260,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         if (SC.State() == TopAbs_IN) {
             result.Reverse();
         }
- 
+
         fix.LimitTolerance(result, Precision::Confusion() * size * Tolerance.getValue() ); // significant precision reduction due to helical approximation - needed to allow fusion to succeed
 
         AddSubShape.setValue(result);

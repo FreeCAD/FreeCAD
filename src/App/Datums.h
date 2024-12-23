@@ -200,12 +200,10 @@ public:
     virtual bool isOrigin()
     {
         return false;
-    };
+    }
 
     // Axis links
     PropertyLinkList OriginFeatures;
-
-    bool migrated;
 
 protected:
     /// Checks integrity of the LCS

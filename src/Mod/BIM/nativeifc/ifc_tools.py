@@ -66,7 +66,7 @@ def create_document(document, filename=None, shapemode=0, strategy=0, silent=Fal
                1 = coin only
                2 = no representation
     strategy:  0 = only root object
-               1 = only bbuilding structure,
+               1 = only building structure
                2 = all children
     """
 
@@ -86,7 +86,7 @@ def create_document_object(
                1 = coin only
                2 = no representation
     strategy:  0 = only root object
-               1 = only bbuilding structure,
+               1 = only building structure
                2 = all children
     """
 
@@ -199,10 +199,18 @@ def create_ifcfile():
     application = "FreeCAD"
     version = FreeCAD.Version()
     version = ".".join([str(v) for v in version[0:3]])
+    freecadorg = api_run(
+        "owner.add_organisation",
+        ifcfile,
+        identification="FreeCAD.org",
+        name="The FreeCAD project"
+    )
     application = api_run(
         "owner.add_application",
         ifcfile,
+        application_developer=freecadorg,
         application_full_name=application,
+        application_identifier=application,
         version=version,
     )
     # context
@@ -225,9 +233,14 @@ def create_ifcfile():
         parent=model3d,
     )
     # unit
-    # for now, assign a default metre unit, as per https://blenderbim.org/docs-python/autoapi/ifcopenshell/api/unit/assign_unit/index.html
+    # for now, assign a default metre + sqm +degrees unit, as per
+    # https://docs.ifcopenshell.org/autoapi/ifcopenshell/api/unit/index.html
     # TODO allow to set this at creation, from the current FreeCAD units schema
-    api_run("unit.assign_unit", ifcfile)
+    length = api_run("unit.add_si_unit", ifcfile, unit_type="LENGTHUNIT")
+    area = api_run("unit.add_si_unit", ifcfile, unit_type="AREAUNIT")
+    angle = api_run("unit.add_conversion_based_unit", ifcfile, name="degree")
+    api_run("unit.assign_unit", ifcfile, units=[length, area, angle])
+    # TODO add user history
     return ifcfile
 
 
@@ -395,7 +408,7 @@ def get_children(
 
 
 def get_freecad_children(obj):
-    """Returns the childen of this object that exist in the documemt"""
+    """Returns the children of this object that exist in the document"""
 
     objs = []
     children = get_children(obj)
@@ -1608,6 +1621,7 @@ def recompute(children):
     stime = time.time()
     for c in children:
         c.touch()
-    FreeCAD.ActiveDocument.recompute()
+    if not FreeCAD.ActiveDocument.Recomputing:
+        FreeCAD.ActiveDocument.recompute()
     endtime = "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
     print("DEBUG: Extra recomputing of",len(children),"objects took",endtime)

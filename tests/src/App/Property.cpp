@@ -4,6 +4,7 @@
 #include <App/PropertyStandard.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <xercesc/util/PlatformUtils.hpp>
 
 TEST(PropertyLink, TestSetValues)
 {
@@ -17,7 +18,16 @@ TEST(PropertyLink, TestSetValues)
     EXPECT_EQ(sub[1], "Sub2");
 }
 
-TEST(PropertyFloatTest, testWriteRead)
+class PropertyFloatTest: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
+    }
+};
+
+TEST_F(PropertyFloatTest, testWriteRead)
 {
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
     setlocale(LC_ALL, "");

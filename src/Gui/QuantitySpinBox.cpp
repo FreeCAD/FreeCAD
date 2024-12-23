@@ -120,7 +120,7 @@ public:
                 result = quantity;
 
                 // Now translate the quantity into its string representation using the user-defined unit system
-                input = Base::UnitsApi::schemaTranslate(result);
+                input = QString::fromStdString(Base::UnitsApi::schemaTranslate(result));
             }
         }
 
@@ -608,7 +608,7 @@ void QuantitySpinBox::setUnit(const Base::Unit &unit)
 void QuantitySpinBox::setUnitText(const QString& str)
 {
     try {
-        Base::Quantity quant = Base::Quantity::parse(str);
+        Base::Quantity quant = Base::Quantity::parse(str.toStdString());
         setUnit(quant.getUnit());
     }
     catch (const Base::ParserError&) {
@@ -712,25 +712,26 @@ void QuantitySpinBox::clearSchema()
 QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     Q_D(const QuantitySpinBox);
-    if (d->scheme) {
-        return val.getUserString(d->scheme.get(), factor, unitString);
-    }
-    else {
-        return val.getUserString(factor, unitString);
-    }
+    std::string unitStr;
+    std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
+                                : val.getUserString(factor, unitStr);
+    unitString = QString::fromStdString(unitStr);
+    return QString::fromStdString(str);
 }
 
 QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 {
     Q_D(const QuantitySpinBox);
+    std::string str;
     if (d->scheme) {
         double factor;
-        QString unitString;
-        return val.getUserString(d->scheme.get(), factor, unitString);
+        std::string unitString;
+        str = val.getUserString(d->scheme.get(), factor, unitString);
     }
     else {
-        return val.getUserString();
+        str = val.getUserString();
     }
+    return QString::fromStdString(str);
 }
 
 void QuantitySpinBox::setExpression(std::shared_ptr<Expression> expr)
@@ -767,7 +768,7 @@ void QuantitySpinBox::stepBy(int steps)
     else if (val < d->minimum)
         val = d->minimum;
 
-    Quantity quant(val, d->unitStr);
+    Quantity quant(val, d->unitStr.toStdString());
     updateText(quant);
     updateFromCache(true);
     update();
@@ -909,9 +910,7 @@ void QuantitySpinBox::selectNumber()
 
 QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const
 {
-    double factor;
-    QString unitStr;
-    QString str = getUserString(value, factor, unitStr);
+    QString str = getUserString(value);
     if (qAbs(value.getValue()) >= 1000.0) {
         str.remove(locale().groupSeparator());
     }

@@ -108,16 +108,14 @@ class _ViewProviderPartJoinFeature:
 
     def getIcon(self):
         if self.Object is None:
-            return getIconPath("Part_JoinConnect.svg")
+            return ":/icons/booleans/Part_JoinConnect.svg"
         else:
-            return getIconPath(
-                {
-                    "bypass": "Part_JoinBypass.svg",
-                    "Connect": "Part_JoinConnect.svg",
-                    "Embed": "Part_JoinEmbed.svg",
-                    "Cutout": "Part_JoinCutout.svg",
+            return {
+                    "bypass": ":/icons/booleans/Part_JoinBypass.svg",
+                    "Connect": ":/icons/booleans/Part_JoinConnect.svg",
+                    "Embed": ":/icons/booleans/Part_JoinEmbed.svg",
+                    "Cutout": ":/icons/booleans/Part_JoinCutout.svg",
                 }[self.Object.Mode]
-            )
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -145,8 +143,3 @@ class _ViewProviderPartJoinFeature:
         except Exception as err:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
-
-
-def getIconPath(icon_dot_svg):
-    return ":/icons/" + icon_dot_svg
-

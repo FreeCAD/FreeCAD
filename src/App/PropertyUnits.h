@@ -73,6 +73,15 @@ public:
         return PropertyFloat::getValue();
     }
 
+    const Base::QuantityFormat& getFormat() const
+    {
+        return _Format;
+    }
+    void setFormat(const Base::QuantityFormat& fmt)
+    {
+        _Format = fmt;
+    }
+
     void setPathValue(const App::ObjectIdentifier& path, const boost::any& value) override;
     const boost::any getPathValue(const App::ObjectIdentifier& path) const override;
 
@@ -89,6 +98,7 @@ public:
 protected:
     Base::Quantity createQuantityFromPy(PyObject* value);
     Base::Unit _Unit;
+    Base::QuantityFormat _Format;
 };
 
 /** Float with Unit property

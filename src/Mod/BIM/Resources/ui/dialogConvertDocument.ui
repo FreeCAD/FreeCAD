@@ -37,7 +37,7 @@
    <item>
     <widget class="QCheckBox" name="checkAskAgain">
      <property name="toolTip">
-      <string>If this is checked, you won't be asked again when creating a new FreeCAD document, 
+      <string>If this is checked, you won't be asked again when creating a new FreeCAD document,
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</string>

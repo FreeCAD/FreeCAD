@@ -113,7 +113,7 @@ class BIM_Tutorial:
             if sys.version_info.major >= 3:
                 html = html.decode("utf8")
             html = html.replace("\n", " ")
-            html = html.replace('"/wiki/', '"https://www.freecadweb.org/wiki/')
+            html = html.replace('href="/', 'href="https://wiki.freecad.org/')
             html = re.sub(
                 '<div id="toc".*?</ul> </div>', "", html
             )  # remove table of contents

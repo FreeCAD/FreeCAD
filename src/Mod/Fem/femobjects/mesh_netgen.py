@@ -487,15 +487,6 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
-                name="Threads",
-                group="Mesh Parameters",
-                doc="Number of threads for parallel meshing",
-                value=4,
-            )
-        )
-        prop.append(
-            _PropHelper(
                 type="App::PropertyBool",
                 name="HealShape",
                 group="Mesh Parameters",

@@ -36,7 +36,7 @@ class PythonSyntaxHighlighterP;
  * Python text editor with syntax highlighting.
  * \author Werner Mayer
  */
-class GuiExport PythonEditor : public TextEditor
+class GuiExport PythonEditor : public PythonTextEditor
 {
     Q_OBJECT
 

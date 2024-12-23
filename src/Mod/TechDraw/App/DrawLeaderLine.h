@@ -69,8 +69,7 @@ public:
     bool keepUpdated() override;
     double getScale() const override;
     double getBaseScale() const;
-    void horizLastSegment();
-    static std::vector<Base::Vector3d> horizLastSegment(const std::vector<Base::Vector3d>& inDeltas);
+    static std::vector<Base::Vector3d> horizLastSegment(const std::vector<Base::Vector3d>& inDeltas, double rotationDeg);
     bool getDefAuto() const;
 
     Base::Vector3d getTileOrigin() const;
@@ -88,8 +87,11 @@ public:
 
     bool isParentReady() const;
 
-protected:
-    void onChanged(const App::Property* prop) override;
+    void dumpWaypoints(const std::vector<Base::Vector3d>& points, const std::string& label);
+
+    std::vector<Base::Vector3d> getTransformedWayPoints() const;
+
+    Base::Vector3d lastSegmentDirection() const;
 
 private:
 

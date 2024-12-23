@@ -85,19 +85,22 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
         body = PartDesignGui::getBodyFor (feature, false, false, true);
         // lote of assertion so feature should be marked as a tip
-        if ( selection.size () == 1 && feature && (
-            ( feature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) && body ) ||
-            ( feature->isDerivedFrom ( Part::Feature::getClassTypeId () ) && body &&
+        if ( selection.size() == 1 && feature && body && (
+            feature->isDerivedFrom<PartDesign::Feature>() ||
+            ( feature->isDerivedFrom<Part::Feature>() &&
               body->BaseFeature.getValue() == feature )
         ) ) {
             *item << "PartDesign_MoveTip";
         }
 
         if (strcmp(recipient, "Tree") == 0) {
-
             Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
-            if ( !selection.empty() && activeView ) {
+            if (activeView ) {
+                if (feature && feature->isDerivedFrom<PartDesign::Body>()){
+                    *item   << "Std_ToggleFreeze";
+                }
+
                 bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
                                         PartDesign::Body::getClassTypeId () ) > 0;
 
@@ -120,11 +123,9 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                             break;
                         }
                     }
-
                     if (addMoveFeature) {
                         *item   << "PartDesign_MoveFeature";
                     }
-
                     if (addMoveFeatureInTree) {
                         *item   << "PartDesign_MoveFeatureInTree";
                     }

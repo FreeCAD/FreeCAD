@@ -65,7 +65,7 @@ struct PythonEditorP
  *  syntax highlighting for the Python language.
  */
 PythonEditor::PythonEditor(QWidget* parent)
-  : TextEditor(parent)
+    : PythonTextEditor(parent)
 {
     d = new PythonEditorP();
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
@@ -205,7 +205,7 @@ void PythonEditor::keyPressEvent(QKeyEvent* e)
         setTextCursor(cursor);
         return; //skip default handler
     }
-    TextEditor::keyPressEvent(e); //wasn't enter key, so let base class handle it
+    PythonTextEditor::keyPressEvent(e); //wasn't enter key, so let base class handle it
 }
 
 void PythonEditor::onComment()

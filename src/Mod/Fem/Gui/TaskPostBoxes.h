@@ -412,6 +412,8 @@ private:
     void onVectorModeChanged(int idx);
     void onNumberOfContoursChanged(int number);
     void onNoColorChanged(bool state);
+    void onSmoothingChanged(bool state);
+    void onRelaxationChanged(double v);
 
 private:
     QWidget* proxy;

@@ -435,7 +435,7 @@ void InteractiveInterpreter::clearBuffer()
  *  Constructs a PythonConsole which is a child of 'parent'.
  */
 PythonConsole::PythonConsole(QWidget *parent)
-  : TextEdit(parent), WindowParameter( "Editor" ), _sourceDrain(nullptr)
+  : PythonTextEditor(parent), _sourceDrain(nullptr)
 {
     d = new PythonConsoleP();
     d->interactive = false;
@@ -467,7 +467,6 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     // set colors and font from settings
     ParameterGrp::handle hPrefGrp = getWindowParameter();
-    hPrefGrp->Attach(this);
     hPrefGrp->NotifyAll();
 
     d->hGrpSettings = WindowParameter::getDefaultParameter()->GetGroup("PythonConsole");
@@ -512,7 +511,6 @@ PythonConsole::~PythonConsole()
     saveHistory();
     Base::PyGILStateLocker lock;
     d->hGrpSettings->Detach(this);
-    getWindowParameter()->Detach(this);
     delete pythonSyntax;
     Py_XDECREF(d->_stdoutPy);
     Py_XDECREF(d->_stderrPy);
@@ -613,13 +611,13 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               if (e->text().isEmpty() ||
                   e->matches(QKeySequence::Copy) ||
                   e->matches(QKeySequence::SelectAll)) {
-                  TextEdit::keyPressEvent(e);
+                  PythonTextEditor::keyPressEvent(e);
               }
               else if (!e->text().isEmpty() &&
                   (e->modifiers() == Qt::NoModifier ||
                    e->modifiers() == Qt::ShiftModifier)) {
                   this->moveCursor(QTextCursor::End);
-                  TextEdit::keyPressEvent(e);
+                  PythonTextEditor::keyPressEvent(e);
               }
               break;
         }
@@ -671,11 +669,11 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               if (e->text() == QLatin1String(".")) {
                   // analyse context and show available call tips
                   int contextLength = cursor.position() - inputLineBegin.position();
-                  TextEdit::keyPressEvent(e);
+                  PythonTextEditor::keyPressEvent(e);
                   d->callTipsList->showTips( inputStrg.left( contextLength ) );
               }
               else {
-                  TextEdit::keyPressEvent(e);
+                  PythonTextEditor::keyPressEvent(e);
               }
           }   break;
 
@@ -707,25 +705,25 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
           case Qt::Key_Left:
           {
               if (cursor > inputLineBegin)
-                  { TextEdit::keyPressEvent(e); }
+                  { PythonTextEditor::keyPressEvent(e); }
               restartHistory = false;
           }   break;
 
           case Qt::Key_Right:
           {
-              TextEdit::keyPressEvent(e);
+              PythonTextEditor::keyPressEvent(e);
               restartHistory = false;
           }   break;
 
           case Qt::Key_Backspace:
           {
               if (cursorBeyond( cursor, inputLineBegin, +1 ))
-                  { TextEdit::keyPressEvent(e); }
+                  { PythonTextEditor::keyPressEvent(e); }
           }   break;
 
           default:
           {
-              TextEdit::keyPressEvent(e);
+              PythonTextEditor::keyPressEvent(e);
           }   break;
         }
         // This can't be done in CallTipsList::eventFilter() because we must first perform

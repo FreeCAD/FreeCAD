@@ -1062,7 +1062,8 @@ private:
     // mapping from Geometry[*].Id to index of Geometry
     std::map<long, int> geoMap;
 
-    int geoHistoryLevel;
+    // keep geoHistoryLevel and the code who ise it for easier porting of stuff from LS3 branch
+    const int geoHistoryLevel = 1;
     std::vector<long> geoIdHistory;
     long geoLastId;
 
