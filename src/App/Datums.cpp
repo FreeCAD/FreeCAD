@@ -68,7 +68,7 @@ bool DatumElement::getCameraAlignmentDirection(Base::Vector3d& direction, const 
     return true;
 }
 
-App::LocalCoordinateSystem* DatumElement::getLCS()
+App::LocalCoordinateSystem* DatumElement::getLCS() const
 {
     auto inList = getInList();
     for (auto* obj : inList) {
@@ -81,9 +81,9 @@ App::LocalCoordinateSystem* DatumElement::getLCS()
     return nullptr;
 }
 
-bool DatumElement::isOriginFeature()
+bool DatumElement::isOriginFeature() const
 {
-    auto lcs = getLCS();
+    const auto* lcs = getLCS();
     return lcs ? lcs->isOrigin() : false;
 }
 

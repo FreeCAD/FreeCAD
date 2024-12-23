@@ -50,14 +50,14 @@ public:
     ~DatumElement() override;
 
     /// Finds the origin object this plane belongs to
-    App::LocalCoordinateSystem* getLCS();
+    App::LocalCoordinateSystem* getLCS() const;
     Base::Vector3d getBasePoint() const;
     Base::Vector3d getDirection() const;
 
     bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 
     /// Returns true if this DatumElement is part of a App::Origin.
-    bool isOriginFeature();
+    bool isOriginFeature() const;
 };
 
 class AppExport Plane: public App::DatumElement
@@ -199,7 +199,7 @@ public:
     /// Points types
     static constexpr const char* PointRoles[1] = {"Origin"};
 
-    virtual bool isOrigin()
+    virtual bool isOrigin() const
     {
         return false;
     }
