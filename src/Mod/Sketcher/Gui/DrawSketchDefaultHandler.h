@@ -1001,8 +1001,8 @@ protected:
     /** @brief Function that performs a sketcher solver diagnose (determination of DoF and dependent
      * parameters), taking into account the suggested AutoConstraints.
      *
-     * @details This function allows one to refresh solver information by taking into account any added
-     * constraint, such as the ones introduced by a widget or on-screen parameters during the
+     * @details This function allows one to refresh solver information by taking into account any
+     * added constraint, such as the ones introduced by a widget or on-screen parameters during the
      * execution of the DSH.
      *
      * Ultimately, it is intended to operate in combination with functions obtaining point/element

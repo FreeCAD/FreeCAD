@@ -175,8 +175,8 @@ public:
      * that it will solve the sketch.
      *
      * If updating the Geometry property as a consequence of a (successful) solve() is not wanted,
-     * updategeometry=false, prevents the update. This allows one to update the solve status (e.g. dof),
-     * without updating the geometry (i.e. make it move to fulfil the constraints).
+     * updategeometry=false, prevents the update. This allows one to update the solve status (e.g.
+     * dof), without updating the geometry (i.e. make it move to fulfil the constraints).
      */
     int delConstraints(std::vector<int> ConstrIds, bool updategeometry = true);
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident = true);
