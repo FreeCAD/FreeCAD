@@ -30,7 +30,7 @@ __url__ = "https://www.freecad.org"
 import os
 import re
 import subprocess
-from PySide.QtCore import QProcess
+from PySide.QtCore import QProcess, QThread
 
 import FreeCAD
 from FreeCAD import Console
@@ -737,11 +737,12 @@ class GmshTools:
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
 
-        cpu_count = os.cpu_count()
-        if cpu_count is not None and cpu_count > 1:
-            geo.write("// enable multi-core processing\n")
-            geo.write(f"General.NumThreads = {cpu_count};\n")
-            geo.write("\n")
+        cpu_count = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
+            "NumOfThreads", QThread.idealThreadCount()
+        )
+        geo.write("// enable multi-core processing\n")
+        geo.write(f"General.NumThreads = {cpu_count};\n")
+        geo.write("\n")
 
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file

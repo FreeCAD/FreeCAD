@@ -29,10 +29,11 @@ import numpy as np
 import shutil
 import sys
 import tempfile
-from PySide.QtCore import QProcess
+from PySide.QtCore import QProcess, QThread
 
 import FreeCAD
 import Fem
+from freecad import utils
 
 try:
     from netgen import occ, meshing, config as ng_config
@@ -83,6 +84,7 @@ class NetgenTools:
         self.tmpdir = ""
         self.process = QProcess()
         self.mesh_params = {}
+        self.param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
 
     def write_geom(self):
         if not self.tmpdir:
@@ -95,136 +97,152 @@ class NetgenTools:
         geom_trans.Placement = global_pla
         self.brep_file = self.tmpdir + "/shape.brep"
         self.result_file = self.tmpdir + "/result.npy"
+        self.script_file = self.tmpdir + "/code.py"
         geom_trans.exportBrep(self.brep_file)
-
-    code = """
-from femmesh.netgentools import NetgenTools
-
-NetgenTools.run_netgen(**{params})
-"""
 
     def prepare(self):
         self.write_geom()
         self.mesh_params = {
             "brep_file": self.brep_file,
-            "threads": self.obj.Threads,
+            "threads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "heal": self.obj.HealShape,
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
             "second_order_linear": self.obj.SecondOrderLinear,
             "result_file": self.result_file,
             "mesh_region": self.get_mesh_region(),
+            "verbosity": self.param_grp.GetInt("LogVerbosity", 2),
         }
 
+        with open(self.script_file, "w") as file:
+            file.write(
+                self.code.format(
+                    kwds=self.mesh_params,
+                    order_face=NetgenTools.order_face,
+                    order_volume=NetgenTools.order_volume,
+                )
+            )
+
     def compute(self):
-        code_str = self.code.format(params=self.mesh_params)
-        self.process.start(sys.executable, ["-c", code_str])
+        self.process.start(utils.get_python_exe(), [self.script_file])
 
         return self.process
 
-    @staticmethod
-    def run_netgen(
-        brep_file,
-        threads,
-        heal,
-        params,
-        second_order,
-        second_order_linear,
-        result_file,
-        mesh_region,
-    ):
-        geom = occ.OCCGeometry(brep_file)
-        ngcore.SetNumThreads(threads)
+    code = """
+from netgen import occ, meshing
+import pyngcore as ngcore
+import numpy as np
 
-        shape = geom.shape
-        for items, l in mesh_region:
-            for t, n in items:
-                if t == "Vertex":
-                    shape.vertices.vertices[n - 1].maxh = l
-                elif t == "Edge":
-                    shape.edges.edges[n - 1].maxh = l
-                elif t == "Face":
-                    shape.faces.faces[n - 1].maxh = l
-                elif t == "Solid":
-                    shape.solids.solids[n - 1].maxh = l
+order_face = {order_face}
+order_volume = {order_volume}
 
-        with ngcore.TaskManager():
-            geom = occ.OCCGeometry(shape)
-            if heal:
-                geom.Heal()
-            mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
+def run_netgen(
+    brep_file,
+    threads,
+    heal,
+    params,
+    second_order,
+    second_order_linear,
+    result_file,
+    mesh_region,
+    verbosity,
+):
+    geom = occ.OCCGeometry(brep_file)
+    ngcore.SetNumThreads(threads)
 
-        result = {
-            "coords": [],
-            "Edges": [[], []],
-            "Faces": [[], []],
-            "Volumes": [[], []],
-        }
-        groups = {"Edges": [], "Faces": [], "Solids": []}
+    shape = geom.shape
+    for items, l in mesh_region:
+        for t, n in items:
+            if t == "Vertex":
+                shape.vertices.vertices[n - 1].maxh = l
+            elif t == "Edge":
+                shape.edges.edges[n - 1].maxh = l
+            elif t == "Face":
+                shape.faces.faces[n - 1].maxh = l
+            elif t == "Solid":
+                shape.solids.solids[n - 1].maxh = l
 
-        # save empty data if last step is geometry analysis
-        if params["perfstepsend"] == NetgenTools.meshing_step["AnalyzeGeometry"]:
-            np.save(result_file, [result, groups])
-            return None
+    with ngcore.TaskManager():
+        meshing.SetMessageImportance(verbosity)
+        geom = occ.OCCGeometry(shape)
+        if heal:
+            geom.Heal()
+        mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
 
-        if second_order:
-            if second_order_linear:
-                mesh.SetGeometry(None)
-            mesh.SecondOrder()
+    result = {{
+        "coords": [],
+        "Edges": [[], []],
+        "Faces": [[], []],
+        "Volumes": [[], []],
+    }}
+    groups = {{"Edges": [], "Faces": [], "Solids": []}}
 
-        coords = mesh.Coordinates()
-
-        edges = mesh.Elements1D().NumPy()
-        faces = mesh.Elements2D().NumPy()
-        volumes = mesh.Elements3D().NumPy()
-
-        nod_edges = edges["nodes"]
-        nod_faces = faces["nodes"]
-        nod_volumes = volumes["nodes"]
-
-        np_edges = (nod_edges != 0).sum(axis=1).tolist()
-        np_faces = faces["np"].tolist()
-        np_volumes = volumes["np"].tolist()
-
-        # set smesh node order
-        for i in range(faces.size):
-            nod_faces[i] = nod_faces[i][NetgenTools.order_face[np_faces[i]]]
-
-        for i in range(volumes.size):
-            nod_volumes[i] = nod_volumes[i][NetgenTools.order_volume[np_volumes[i]]]
-
-        flat_edges = nod_edges[nod_edges != 0].tolist()
-        flat_faces = nod_faces[nod_faces != 0].tolist()
-        flat_volumes = nod_volumes[nod_volumes != 0].tolist()
-
-        result = {
-            "coords": coords,
-            "Edges": [flat_edges, np_edges],
-            "Faces": [flat_faces, np_faces],
-            "Volumes": [flat_volumes, np_volumes],
-        }
-
-        # create groups
-        nb_edges = edges.size
-        nb_faces = faces.size
-        nb_volumes = volumes.size
-
-        idx_edges = edges["index"]
-        idx_faces = faces["index"]
-        idx_volumes = volumes["index"]
-
-        for i in np.unique(idx_edges):
-            edge_i = (np.nonzero(idx_edges == i)[0] + 1).tolist()
-            groups["Edges"].append([i, edge_i])
-        for i in np.unique(idx_faces):
-            face_i = (np.nonzero(idx_faces == i)[0] + nb_edges + 1).tolist()
-            groups["Faces"].append([i, face_i])
-
-        for i in np.unique(idx_volumes):
-            volume_i = (np.nonzero(idx_volumes == i)[0] + nb_edges + nb_faces + 1).tolist()
-            groups["Solids"].append([i, volume_i])
-
+    # save empty data if last step is geometry analysis
+    if params["perfstepsend"] == 1:
         np.save(result_file, [result, groups])
+        return None
+
+    if second_order:
+        if second_order_linear:
+            mesh.SetGeometry(None)
+        mesh.SecondOrder()
+
+    coords = mesh.Coordinates()
+
+    edges = mesh.Elements1D().NumPy()
+    faces = mesh.Elements2D().NumPy()
+    volumes = mesh.Elements3D().NumPy()
+
+    nod_edges = edges["nodes"]
+    nod_faces = faces["nodes"]
+    nod_volumes = volumes["nodes"]
+
+    np_edges = (nod_edges != 0).sum(axis=1).tolist()
+    np_faces = faces["np"].tolist()
+    np_volumes = volumes["np"].tolist()
+
+    # set smesh node order
+    for i in range(faces.size):
+        nod_faces[i] = nod_faces[i][order_face[np_faces[i]]]
+
+    for i in range(volumes.size):
+        nod_volumes[i] = nod_volumes[i][order_volume[np_volumes[i]]]
+
+    flat_edges = nod_edges[nod_edges != 0].tolist()
+    flat_faces = nod_faces[nod_faces != 0].tolist()
+    flat_volumes = nod_volumes[nod_volumes != 0].tolist()
+
+    result = {{
+        "coords": coords,
+        "Edges": [flat_edges, np_edges],
+        "Faces": [flat_faces, np_faces],
+        "Volumes": [flat_volumes, np_volumes],
+    }}
+
+    # create groups
+    nb_edges = edges.size
+    nb_faces = faces.size
+    nb_volumes = volumes.size
+
+    idx_edges = edges["index"]
+    idx_faces = faces["index"]
+    idx_volumes = volumes["index"]
+
+    for i in np.unique(idx_edges):
+        edge_i = (np.nonzero(idx_edges == i)[0] + 1).tolist()
+        groups["Edges"].append([i, edge_i])
+    for i in np.unique(idx_faces):
+        face_i = (np.nonzero(idx_faces == i)[0] + nb_edges + 1).tolist()
+        groups["Faces"].append([i, face_i])
+
+    for i in np.unique(idx_volumes):
+        volume_i = (np.nonzero(idx_volumes == i)[0] + nb_edges + nb_faces + 1).tolist()
+        groups["Solids"].append([i, volume_i])
+
+    np.save(result_file, [result, groups])
+
+run_netgen(**{kwds})
+    """
 
     def fem_mesh_from_result(self):
         fem_mesh = Fem.FemMesh()
@@ -301,7 +319,7 @@ NetgenTools.run_netgen(**{params})
             "inverttrigs": self.obj.InvertTrigs,
             "autozrefine": self.obj.AutoZRefine,
             "parallel_meshing": self.obj.ParallelMeshing,
-            "nthreads": self.obj.Threads,
+            "nthreads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "closeedgefac": self.obj.CloseEdgeFactor,
         }
 
