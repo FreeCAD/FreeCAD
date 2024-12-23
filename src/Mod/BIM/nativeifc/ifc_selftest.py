@@ -44,7 +44,7 @@ import difflib
 IFC_FILE_PATH = None  # downloaded IFC file path
 FCSTD_FILE_PATH = None  # saved FreeCAD file
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
-SINGLEDOC = False  # This allows to force singledoc mode for all tests
+SINGLEDOC = False  # This allows one to force singledoc mode for all tests
 SDU = int(SINGLEDOC)  # number of objects is different in singledoc
 # See also IFCFILECONTENT at the end of this file, retrieved from
 # https://github.com/aothms/IfcOpenHouse/IfcOpenHouse_IFC4.ifc

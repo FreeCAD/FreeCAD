@@ -56,7 +56,7 @@ protected:
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     /*!
      * \brief onSelectReference
-     * Start reference selection mode to allow to select objects of the type defined
+     * Start reference selection mode to allow one to select objects of the type defined
      * with \a AllowSelectionFlags.
      * If AllowSelection::NONE is passed the selection mode is finished.
      */

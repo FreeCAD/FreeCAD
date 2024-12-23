@@ -41,7 +41,7 @@ namespace Points
 class PointsGrid;
 
 /**
- * The PointsGrid allows to divide a global point cloud into smaller regions of elements depending
+ * The PointsGrid allows one to divide a global point cloud into smaller regions of elements depending
  * on the resolution of the grid. All grid elements in the grid structure have the same size.
  *
  * Grids can be used within algorithms to avoid to iterate through all elements, so grids can speed

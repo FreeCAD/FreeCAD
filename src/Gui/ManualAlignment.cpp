@@ -958,7 +958,7 @@ void ManualAlignment::align()
                             .arg(myFixedGroup.countPoints()));
     }
     else {
-        // do not allow to pick further points
+        // do not allow one to pick further points
         myAlignModel.activeGroup().removeFromViewer(myViewer->getViewer(0));
         myAlignModel.activeGroup().setAlignable(false);
         std::vector<App::DocumentObject*> pViews = myAlignModel.activeGroup().getViews();
