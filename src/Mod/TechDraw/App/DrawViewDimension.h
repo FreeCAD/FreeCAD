@@ -204,9 +204,9 @@ public:
         return m_corrector;
     }
 
-    // these should probably be static as they don't use the dimension at all
-    std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
-    std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
+    static std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
+    static std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
+    static double getArcAngle(Base::Vector3d center, Base::Vector3d startPoint, Base::Vector3d endPoint);
 
     // autocorrect support methods
     void saveFeatureBox();
