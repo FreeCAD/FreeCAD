@@ -292,12 +292,12 @@ void Application::setupPythonTypes()
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
-    Interpreter().addType(&VectorPy::Type, pAppModule, "Vector");
-    Interpreter().addType(&MatrixPy::Type, pAppModule, "Matrix");
-    Interpreter().addType(&BoundBoxPy::Type, pAppModule, "BoundBox");
-    Interpreter().addType(&PlacementPy::Type, pAppModule, "Placement");
-    Interpreter().addType(&RotationPy::Type, pAppModule, "Rotation");
-    Interpreter().addType(&AxisPy::Type, pAppModule, "Axis");
+    InterpreterSingleton::addType(&VectorPy::Type, pAppModule, "Vector");
+    InterpreterSingleton::addType(&MatrixPy::Type, pAppModule, "Matrix");
+    InterpreterSingleton::addType(&BoundBoxPy::Type, pAppModule, "BoundBox");
+    InterpreterSingleton::addType(&PlacementPy::Type, pAppModule, "Placement");
+    InterpreterSingleton::addType(&RotationPy::Type, pAppModule, "Rotation");
+    InterpreterSingleton::addType(&AxisPy::Type, pAppModule, "Axis");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
@@ -314,39 +314,39 @@ void Application::setupPythonTypes()
 
 
     // Python types
-    Interpreter().addType(&VectorPy          ::Type,pBaseModule,"Vector");
-    Interpreter().addType(&MatrixPy          ::Type,pBaseModule,"Matrix");
-    Interpreter().addType(&BoundBoxPy        ::Type,pBaseModule,"BoundBox");
-    Interpreter().addType(&PlacementPy       ::Type,pBaseModule,"Placement");
-    Interpreter().addType(&RotationPy        ::Type,pBaseModule,"Rotation");
-    Interpreter().addType(&AxisPy            ::Type,pBaseModule,"Axis");
-    Interpreter().addType(&CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
-    Interpreter().addType(&TypePy            ::Type,pBaseModule,"TypeId");
-    Interpreter().addType(&PrecisionPy       ::Type,pBaseModule,"Precision");
+    InterpreterSingleton::addType(&VectorPy          ::Type,pBaseModule,"Vector");
+    InterpreterSingleton::addType(&MatrixPy          ::Type,pBaseModule,"Matrix");
+    InterpreterSingleton::addType(&BoundBoxPy        ::Type,pBaseModule,"BoundBox");
+    InterpreterSingleton::addType(&PlacementPy       ::Type,pBaseModule,"Placement");
+    InterpreterSingleton::addType(&RotationPy        ::Type,pBaseModule,"Rotation");
+    InterpreterSingleton::addType(&AxisPy            ::Type,pBaseModule,"Axis");
+    InterpreterSingleton::addType(&CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
+    InterpreterSingleton::addType(&TypePy            ::Type,pBaseModule,"TypeId");
+    InterpreterSingleton::addType(&PrecisionPy       ::Type,pBaseModule,"Precision");
 
-    Interpreter().addType(&MaterialPy::Type, pAppModule, "Material");
-    Interpreter().addType(&MetadataPy::Type, pAppModule, "Metadata");
+    InterpreterSingleton::addType(&MaterialPy::Type, pAppModule, "Material");
+    InterpreterSingleton::addType(&MetadataPy::Type, pAppModule, "Metadata");
 
-    Interpreter().addType(&MeasureManagerPy::Type, pAppModule, "MeasureManager");
+    InterpreterSingleton::addType(&MeasureManagerPy::Type, pAppModule, "MeasureManager");
 
-    Interpreter().addType(&StringHasherPy::Type, pAppModule, "StringHasher");
-    Interpreter().addType(&StringIDPy::Type, pAppModule, "StringID");
+    InterpreterSingleton::addType(&StringHasherPy::Type, pAppModule, "StringHasher");
+    InterpreterSingleton::addType(&StringIDPy::Type, pAppModule, "StringID");
 
     // Add document types
-    Interpreter().addType(&PropertyContainerPy::Type, pAppModule, "PropertyContainer");
-    Interpreter().addType(&ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
-    Interpreter().addType(&DocumentPy::Type, pAppModule, "Document");
-    Interpreter().addType(&DocumentObjectPy::Type, pAppModule, "DocumentObject");
-    Interpreter().addType(&DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
-    Interpreter().addType(&GeoFeaturePy::Type, pAppModule, "GeoFeature");
+    InterpreterSingleton::addType(&PropertyContainerPy::Type, pAppModule, "PropertyContainer");
+    InterpreterSingleton::addType(&ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
+    InterpreterSingleton::addType(&DocumentPy::Type, pAppModule, "Document");
+    InterpreterSingleton::addType(&DocumentObjectPy::Type, pAppModule, "DocumentObject");
+    InterpreterSingleton::addType(&DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
+    InterpreterSingleton::addType(&GeoFeaturePy::Type, pAppModule, "GeoFeature");
 
     // Add extension types
-    Interpreter().addType(&ExtensionPy::Type, pAppModule, "Extension");
-    Interpreter().addType(&DocumentObjectExtensionPy::Type, pAppModule, "DocumentObjectExtension");
-    Interpreter().addType(&GroupExtensionPy::Type, pAppModule, "GroupExtension");
-    Interpreter().addType(&GeoFeatureGroupExtensionPy::Type, pAppModule, "GeoFeatureGroupExtension");
-    Interpreter().addType(&OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
-    Interpreter().addType(&LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
+    InterpreterSingleton::addType(&ExtensionPy::Type, pAppModule, "Extension");
+    InterpreterSingleton::addType(&DocumentObjectExtensionPy::Type, pAppModule, "DocumentObjectExtension");
+    InterpreterSingleton::addType(&GroupExtensionPy::Type, pAppModule, "GroupExtension");
+    InterpreterSingleton::addType(&GeoFeatureGroupExtensionPy::Type, pAppModule, "GeoFeatureGroupExtension");
+    InterpreterSingleton::addType(&OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
+    InterpreterSingleton::addType(&LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
@@ -367,19 +367,19 @@ void Application::setupPythonTypes()
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pUnitsModule = PyModule_Create(&UnitsModuleDef);
-    Interpreter().addType(&QuantityPy  ::Type,pUnitsModule,"Quantity");
+    InterpreterSingleton::addType(&QuantityPy  ::Type,pUnitsModule,"Quantity");
     // make sure to set the 'nb_true_divide' slot
-    Interpreter().addType(&UnitPy      ::Type,pUnitsModule,"Unit");
+    InterpreterSingleton::addType(&UnitPy      ::Type,pUnitsModule,"Unit");
 
     Py_INCREF(pUnitsModule);
     PyModule_AddObject(pAppModule, "Units", pUnitsModule);
 
     ProgressIndicatorPy::init_type();
-    Interpreter().addType(ProgressIndicatorPy::type_object(),
+    InterpreterSingleton::addType(ProgressIndicatorPy::type_object(),
         pBaseModule,"ProgressIndicator");
 
     Vector2dPy::init_type();
-    Interpreter().addType(Vector2dPy::type_object(),
+    InterpreterSingleton::addType(Vector2dPy::type_object(),
         pBaseModule,"Vector2d");
     // clang-format on
 }
