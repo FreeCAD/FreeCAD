@@ -74,7 +74,7 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
         (2),
         "MeshParams",
         Prop_None,
-        "allows one to define the minimum number of mesh segments in which radiuses will be split");
+        "allows defining the minimum number of mesh segments in which radii will be split");
     ADD_PROPERTY_TYPE(Optimize, (true), "MeshParams", Prop_None, "Optimize the resulting mesh");
 }
 
