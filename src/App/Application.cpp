@@ -955,8 +955,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // objects. To partially solve this problem, we do not
                         // close and reopen the document immediately here, but
                         // add it to _pendingDocsReopen to delay reloading.
-                        for(auto obj : doc->getObjects())
-                            objNames.emplace_back(obj->getNameInDocument());
+                        for(auto obj2 : doc->getObjects())
+                            objNames.emplace_back(obj2->getNameInDocument());
                         _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
                         break;
                     }
@@ -2368,10 +2368,10 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
         // Split the file content
         char_separator<char> sep(" \n\r");
         tokenizer<char_separator<char> > tok(ss.str(), sep);
-        vector<string> args;
-        copy(tok.begin(), tok.end(), back_inserter(args));
+        vector<string> args2;
+        copy(tok.begin(), tok.end(), back_inserter(args2));
         // Parse the file and store the options
-        store( boost::program_options::command_line_parser(args).
+        store( boost::program_options::command_line_parser(args2).
                options(cmdline_options).positional(p).extra_parser(Util::customSyntax).run(), vm);
     }
 }
