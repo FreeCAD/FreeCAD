@@ -177,8 +177,8 @@ namespace sp = std::placeholders;
 // Application
 //==========================================================================
 
-Base::Reference<ParameterManager> App::Application::_pcSysParamMngr;
-Base::Reference<ParameterManager> App::Application::_pcUserParamMngr;
+Base::Reference<ParameterManager> Application::_pcSysParamMngr;
+Base::Reference<ParameterManager> Application::_pcUserParamMngr;
 Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
@@ -475,25 +475,25 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     //NOLINTBEGIN
     // clang-format off
     // connect the signals to the application for the new document
-    doc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
-    doc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
-    doc->signalNewObject.connect(std::bind(&App::Application::slotNewObject, this, sp::_1));
-    doc->signalDeletedObject.connect(std::bind(&App::Application::slotDeletedObject, this, sp::_1));
-    doc->signalBeforeChangeObject.connect(std::bind(&App::Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
-    doc->signalChangedObject.connect(std::bind(&App::Application::slotChangedObject, this, sp::_1, sp::_2));
-    doc->signalRelabelObject.connect(std::bind(&App::Application::slotRelabelObject, this, sp::_1));
-    doc->signalActivatedObject.connect(std::bind(&App::Application::slotActivatedObject, this, sp::_1));
-    doc->signalUndo.connect(std::bind(&App::Application::slotUndoDocument, this, sp::_1));
-    doc->signalRedo.connect(std::bind(&App::Application::slotRedoDocument, this, sp::_1));
-    doc->signalRecomputedObject.connect(std::bind(&App::Application::slotRecomputedObject, this, sp::_1));
-    doc->signalRecomputed.connect(std::bind(&App::Application::slotRecomputed, this, sp::_1));
-    doc->signalBeforeRecompute.connect(std::bind(&App::Application::slotBeforeRecompute, this, sp::_1));
-    doc->signalOpenTransaction.connect(std::bind(&App::Application::slotOpenTransaction, this, sp::_1, sp::_2));
-    doc->signalCommitTransaction.connect(std::bind(&App::Application::slotCommitTransaction, this, sp::_1));
-    doc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
-    doc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
-    doc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
-    doc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    doc->signalBeforeChange.connect(std::bind(&Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
+    doc->signalChanged.connect(std::bind(&Application::slotChangedDocument, this, sp::_1, sp::_2));
+    doc->signalNewObject.connect(std::bind(&Application::slotNewObject, this, sp::_1));
+    doc->signalDeletedObject.connect(std::bind(&Application::slotDeletedObject, this, sp::_1));
+    doc->signalBeforeChangeObject.connect(std::bind(&Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
+    doc->signalChangedObject.connect(std::bind(&Application::slotChangedObject, this, sp::_1, sp::_2));
+    doc->signalRelabelObject.connect(std::bind(&Application::slotRelabelObject, this, sp::_1));
+    doc->signalActivatedObject.connect(std::bind(&Application::slotActivatedObject, this, sp::_1));
+    doc->signalUndo.connect(std::bind(&Application::slotUndoDocument, this, sp::_1));
+    doc->signalRedo.connect(std::bind(&Application::slotRedoDocument, this, sp::_1));
+    doc->signalRecomputedObject.connect(std::bind(&Application::slotRecomputedObject, this, sp::_1));
+    doc->signalRecomputed.connect(std::bind(&Application::slotRecomputed, this, sp::_1));
+    doc->signalBeforeRecompute.connect(std::bind(&Application::slotBeforeRecompute, this, sp::_1));
+    doc->signalOpenTransaction.connect(std::bind(&Application::slotOpenTransaction, this, sp::_1, sp::_2));
+    doc->signalCommitTransaction.connect(std::bind(&Application::slotCommitTransaction, this, sp::_1));
+    doc->signalAbortTransaction.connect(std::bind(&Application::slotAbortTransaction, this, sp::_1));
+    doc->signalStartSave.connect(std::bind(&Application::slotStartSaveDocument, this, sp::_1, sp::_2));
+    doc->signalFinishSave.connect(std::bind(&Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
+    doc->signalChangePropertyEditor.connect(std::bind(&Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
     // clang-format on
     //NOLINTEND
 
@@ -548,7 +548,7 @@ void Application::closeAllDocuments()
         closeDocument(pos->first.c_str());
 }
 
-App::Document* Application::getDocument(const char *Name) const
+Document* Application::getDocument(const char *Name) const
 {
 
     const auto pos = DocMap.find(Name);
@@ -559,7 +559,7 @@ App::Document* Application::getDocument(const char *Name) const
     return pos->second;
 }
 
-const char * Application::getDocumentName(const App::Document* doc) const
+const char * Application::getDocumentName(const Document* doc) const
 {
     for (const auto & it : DocMap) {
         if (it.second == doc) {
@@ -570,9 +570,9 @@ const char * Application::getDocumentName(const App::Document* doc) const
     return nullptr;
 }
 
-std::vector<App::Document*> Application::getDocuments() const
+std::vector<Document*> Application::getDocuments() const
 {
-    std::vector<App::Document*> docs;
+    std::vector<Document*> docs;
     docs.reserve(DocMap.size());
     for (const auto & it : DocMap)
         docs.push_back(it.second);
@@ -745,7 +745,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     int pass = 0;
     do {
-        std::set<App::DocumentT> newDocs;
+        std::set<DocumentT> newDocs;
         for (std::size_t count=0;; ++count) {
             std::string name = std::move(_pendingDocs.front());
             _pendingDocs.pop_front();
@@ -931,8 +931,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
     // Before creating a new document we check whether the document is already open
     auto doc = getDocumentByPath(File.filePath().c_str(), PathMatchMode::MatchCanonicalWarning);
     if(doc) {
-        if(doc->testStatus(App::Document::PartialDoc)
-                || doc->testStatus(App::Document::PartialRestore)) {
+        if(doc->testStatus(Document::PartialDoc)
+                || doc->testStatus(Document::PartialRestore)) {
             // Here means a document is already partially loaded, but the document
             // is requested again, either partial or not. We must check if the
             // document contains the required object
@@ -945,7 +945,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                 bool reopen = false;
                 for(const auto &name : objNames) {
                     auto obj = doc->getObject(name.c_str());
-                    if(!obj || obj->testStatus(App::PartialObject)) {
+                    if(!obj || obj->testStatus(PartialObject)) {
                         reopen = true;
                         // NOTE: We are about to reload this document with
                         // extra objects. However, it is possible to repeat
@@ -1121,7 +1121,7 @@ std::string Application::getExecutableName()
 std::string Application::getNameWithVersion()
 {
     auto appname = QCoreApplication::applicationName().toStdString();
-    auto config = App::Application::Config();
+    auto config = Application::Config();
     auto major = config["BuildVersionMajor"];
     auto minor = config["BuildVersionMinor"];
     auto point = config["BuildVersionPoint"];
@@ -1570,54 +1570,54 @@ std::map<std::string, std::string> Application::getExportFilters() const
 
 //**************************************************************************
 // signaling
-void Application::slotBeforeChangeDocument(const App::Document& doc, const Property& prop)
+void Application::slotBeforeChangeDocument(const Document& doc, const Property& prop)
 {
     this->signalBeforeChangeDocument(doc, prop);
 }
 
-void Application::slotChangedDocument(const App::Document& doc, const Property& prop)
+void Application::slotChangedDocument(const Document& doc, const Property& prop)
 {
     this->signalChangedDocument(doc, prop);
 }
 
-void Application::slotNewObject(const App::DocumentObject& obj)
+void Application::slotNewObject(const DocumentObject& obj)
 {
     this->signalNewObject(obj);
     _objCount = -1;
 }
 
-void Application::slotDeletedObject(const App::DocumentObject& obj)
+void Application::slotDeletedObject(const DocumentObject& obj)
 {
     this->signalDeletedObject(obj);
     _objCount = -1;
 }
 
-void Application::slotBeforeChangeObject(const App::DocumentObject& obj, const App::Property& prop)
+void Application::slotBeforeChangeObject(const DocumentObject& obj, const Property& prop)
 {
     this->signalBeforeChangeObject(obj, prop);
 }
 
-void Application::slotChangedObject(const App::DocumentObject& obj, const App::Property& prop)
+void Application::slotChangedObject(const DocumentObject& obj, const Property& prop)
 {
     this->signalChangedObject(obj, prop);
 }
 
-void Application::slotRelabelObject(const App::DocumentObject& obj)
+void Application::slotRelabelObject(const DocumentObject& obj)
 {
     this->signalRelabelObject(obj);
 }
 
-void Application::slotActivatedObject(const App::DocumentObject& obj)
+void Application::slotActivatedObject(const DocumentObject& obj)
 {
     this->signalActivatedObject(obj);
 }
 
-void Application::slotUndoDocument(const App::Document& doc)
+void Application::slotUndoDocument(const Document& doc)
 {
     this->signalUndoDocument(doc);
 }
 
-void Application::slotRedoDocument(const App::Document& doc)
+void Application::slotRedoDocument(const Document& doc)
 {
     this->signalRedoDocument(doc);
 }
@@ -1652,18 +1652,18 @@ void Application::slotAbortTransaction(const Document& doc)
     this->signalAbortTransaction(doc);
 }
 
-void Application::slotStartSaveDocument(const App::Document& doc, const std::string& filename)
+void Application::slotStartSaveDocument(const Document& doc, const std::string& filename)
 {
     this->signalStartSaveDocument(doc, filename);
 }
 
-void Application::slotFinishSaveDocument(const App::Document& doc, const std::string& filename)
+void Application::slotFinishSaveDocument(const Document& doc, const std::string& filename)
 {
     DocFileMap.clear();
     this->signalFinishSaveDocument(doc, filename);
 }
 
-void Application::slotChangePropertyEditor(const App::Document& doc, const App::Property& prop)
+void Application::slotChangePropertyEditor(const Document& doc, const Property& prop)
 {
     this->signalChangePropertyEditor(doc, prop);
 }
@@ -2546,24 +2546,24 @@ void Application::initConfig(int argc, char ** argv)
     // Version of the application extracted from SubWCRef into src/Build/Version.h
     // We only set these keys if not yet defined. Therefore it suffices to search
     // only for 'BuildVersionMajor'.
-    if (App::Application::Config().find("BuildVersionMajor") == App::Application::Config().end()) {
+    if (Application::Config().find("BuildVersionMajor") == Application::Config().end()) {
         std::stringstream str;
         str << FCVersionMajor
             << "." << FCVersionMinor
             << "." << FCVersionPoint;
-        App::Application::Config()["ExeVersion"         ] = str.str();
-        App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
-        App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
-        App::Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
-        App::Application::Config()["BuildVersionSuffix" ] = FCVersionSuffix;
-        App::Application::Config()["BuildRevision"      ] = FCRevision;
-        App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
-        App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
+        Application::Config()["ExeVersion"         ] = str.str();
+        Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
+        Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
+        Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
+        Application::Config()["BuildVersionSuffix" ] = FCVersionSuffix;
+        Application::Config()["BuildRevision"      ] = FCRevision;
+        Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
+        Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
 #if defined(FCRepositoryHash)
-        App::Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
+        Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
 #endif
 #if defined(FCRepositoryBranch)
-        App::Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
+        Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
 #endif
     }
 
@@ -2577,7 +2577,7 @@ void Application::initConfig(int argc, char ** argv)
     if (fi.exists() && brand.readFile(fi.absoluteFilePath())) {
         Branding::XmlConfig cfg = brand.getUserDefines();
         for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
-            App::Application::Config()[it.key()] = it.value();
+            Application::Config()[it.key()] = it.value();
         }
     }
 
@@ -2804,7 +2804,7 @@ void Application::initApplication()
     Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
-    const ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+    const ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
     Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(hGrp->GetInt("UserSchema", 0)));
     Base::UnitsApi::setDecimals(static_cast<int>(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals())));
@@ -2883,7 +2883,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             }
             else {
                 std::string ext = file.extension();
-                std::vector<std::string> mods = App::GetApplication().getImportModules(ext.c_str());
+                std::vector<std::string> mods = GetApplication().getImportModules(ext.c_str());
                 if (!mods.empty()) {
                     std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.filePath().c_str());
                     escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
@@ -2943,7 +2943,7 @@ void Application::processCmdLineFiles()
         const Base::FileInfo fi(output);
         const std::string ext = fi.extension();
         try {
-            const std::vector<std::string> mods = App::GetApplication().getExportModules(ext.c_str());
+            const std::vector<std::string> mods = GetApplication().getExportModules(ext.c_str());
             if (!mods.empty()) {
                 Base::Interpreter().loadModule(mods.front().c_str());
                 Base::Interpreter().runStringArg("import %s",mods.front().c_str());
