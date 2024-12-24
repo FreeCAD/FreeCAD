@@ -1233,7 +1233,7 @@ std::set<DocumentObject *> Application::getLinksTo(
     if(!obj) {
         for(auto &v : DocMap) {
             v.second->getLinksTo(links,obj,options,maxCount);
-            if(maxCount && (int)links.size()>=maxCount)
+            if(maxCount && static_cast<int>(links.size())>=maxCount)
                 break;
         }
     } else {
@@ -1241,7 +1241,7 @@ std::set<DocumentObject *> Application::getLinksTo(
         for(auto o : obj->getInList()) {
             if(o && o->isAttachedToDocument() && docs.insert(o->getDocument()).second) {
                 o->getDocument()->getLinksTo(links,obj,options,maxCount);
-                if(maxCount && (int)links.size()>=maxCount)
+                if(maxCount && static_cast<int>(links.size())>=maxCount)
                     break;
             }
         }
@@ -2800,8 +2800,8 @@ void Application::initApplication()
     // set up Unit system default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
-    Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
-    Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    UnitsApi::setSchema(static_cast<UnitSystem>(hGrp->GetInt("UserSchema", 0)));
+    UnitsApi::setDecimals(hGrp->GetInt("Decimals", UnitsApi::getDecimals()));
 
     // In case we are using fractional inches, get user setting for min unit
     int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
