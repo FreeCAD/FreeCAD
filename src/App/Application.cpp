@@ -681,7 +681,7 @@ Document* Application::openDocument(const char * FileName, DocumentCreateFlags c
 }
 
 Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCanonical) const {
-    if(!path || !path[0])
+    if(!path || path[0] == 0)
         return nullptr;
     if (DocFileMap.empty()) {
         for (const auto& v : DocMap) {
@@ -870,7 +870,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             // It is possible that the newly opened document depends on an existing
             // document, which will be included with the above call to
             // Document::getDependentDocuments(). Make sure to exclude that.
-            if(!newDocs.count(doc)) {
+            if(newDocs.count(doc) == 0U) {
                 it = docs.erase(it);
                 continue;
             }
@@ -1237,15 +1237,15 @@ std::set<DocumentObject *> Application::getLinksTo(
     if(!obj) {
         for(auto &v : DocMap) {
             v.second->getLinksTo(links,obj,options,maxCount);
-            if(maxCount && static_cast<int>(links.size())>=maxCount)
+            if (maxCount != 0 && static_cast<int>(links.size())>=maxCount)
                 break;
         }
     } else {
         std::set<Document*> docs;
         for (const auto o : obj->getInList()) {
-            if(o && o->isAttachedToDocument() && docs.insert(o->getDocument()).second) {
+            if (o != nullptr && o->isAttachedToDocument() && docs.insert(o->getDocument()).second) {
                 o->getDocument()->getLinksTo(links,obj,options,maxCount);
-                if(maxCount && static_cast<int>(links.size())>=maxCount)
+                if (maxCount != 0 && static_cast<int>(links.size())>=maxCount)
                     break;
             }
         }
@@ -2345,7 +2345,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
         throw UnknownProgramOption(str.str());
     }
 
-    if (vm.count("help")) {
+    if (vm.count("help") != 0U) {
         std::stringstream str;
         str << exe << endl << endl;
         str << "For a detailed description see https://www.freecad.org/wiki/Start_up_and_Configuration" << endl<<endl;
@@ -2354,7 +2354,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
         throw ProgramInformation(str.str());
     }
 
-    if (vm.count("response-file")) {
+    if (vm.count("response-file") != 0U) {
         // Load the file and tokenize it
         std::ifstream ifs(vm["response-file"].as<string>().c_str());
         if (!ifs) {
@@ -2380,11 +2380,11 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 
 void processProgramOptions(const variables_map& vm, std::map<std::string,std::string>& mConfig)
 {
-    if (vm.count("version")) {
+    if (vm.count("version") != 0U) {
         std::stringstream str;
         str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
             << " Revision: " << mConfig["BuildRevision"] << std::endl;
-        if (vm.count("verbose")) {
+        if (vm.count("verbose") != 0U) {
             str << "\nLibrary versions:\n";
             str << "boost    " << BOOST_LIB_VERSION << '\n';
             str << "Coin3D   " << fcCoin3dVersion << '\n';
@@ -2423,13 +2423,13 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["AdditionalMacroPaths"] = temp;
     }
 
-    if (vm.count("python-path")) {
+    if (vm.count("python-path") != 0U) {
         auto  Paths = vm["python-path"].as< vector<string> >();
         for (const auto & It : Paths)
             Interpreter().addPythonPath(It.c_str());
     }
 
-    if (vm.count("disable-addon")) {
+    if (vm.count("disable-addon") != 0U) {
         auto Addons = vm["disable-addon"].as< vector<string> >();
         string temp;
         for (const auto & It : Addons) {
@@ -2439,7 +2439,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["DisabledAddons"] = temp;
     }
 
-    if (vm.count("input-file")) {
+    if (vm.count("input-file") != 0U) {
         auto  files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
         for (const auto & It : files) {
@@ -2454,35 +2454,35 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["OpenFileCount"] = buffer.str();
     }
 
-    if (vm.count("output")) {
+    if (vm.count("output") != 0U) {
         auto  file = vm["output"].as<string>();
         mConfig["SaveFile"] = file;
     }
 
-    if (vm.count("hidden")) {
+    if (vm.count("hidden") != 0U) {
         mConfig["StartHidden"] = "1";
     }
 
-    if (vm.count("write-log")) {
+    if (vm.count("write-log") != 0U) {
         mConfig["LoggingFile"] = "1";
         mConfig["LoggingFileName"] = mConfig["UserAppData"] + mConfig["ExeName"] + ".log";
     }
 
-    if (vm.count("log-file")) {
+    if (vm.count("log-file") != 0U) {
         mConfig["LoggingFile"] = "1";
         mConfig["LoggingFileName"] = vm["log-file"].as<string>();
     }
 
-    if (vm.count("user-cfg")) {
+    if (vm.count("user-cfg") != 0U) {
         mConfig["UserParameter"] = vm["user-cfg"].as<string>();
     }
 
-    if (vm.count("system-cfg")) {
+    if (vm.count("system-cfg") != 0U) {
         mConfig["SystemParameter"] = vm["system-cfg"].as<string>();
     }
 
-    if (vm.count("run-test") || vm.count("run-open")) {
-        string testCase = vm.count("run-open") ? vm["run-open"].as<string>() : vm["run-test"].as<string>();
+    if (vm.count("run-test") != 0U || vm.count("run-open") != 0U) {
+        string testCase = vm.count("run-open") != 0U ? vm["run-open"].as<string>() : vm["run-test"].as<string>();
 
         if ( "0" == testCase) {
             testCase = "TestApp.All";
@@ -2496,11 +2496,11 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
     }
 
-    if (vm.count("single-instance")) {
+    if (vm.count("single-instance") != 0U) {
         mConfig["SingleInstance"] = "1";
     }
 
-    if (vm.count("dump-config")) {
+    if (vm.count("dump-config") != 0U) {
         std::stringstream str;
         for (const auto & it : mConfig) {
             str << it.first << "=" << it.second << std::endl;
@@ -2508,7 +2508,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         throw ProgramInformation(str.str());
     }
 
-    if (vm.count("get-config")) {
+    if (vm.count("get-config") != 0U) {
         auto  configKey = vm["get-config"].as<string>();
         std::stringstream str;
         std::map<std::string,std::string>::iterator pos;
@@ -2520,7 +2520,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         throw ProgramInformation(str.str());
     }
 
-    if (vm.count("set-config")) {
+    if (vm.count("set-config") != 0U) {
         auto  configKeyValue = vm["set-config"].as< std::vector<std::string> >();
         for (const auto& it : configKeyValue) {
             auto pos = it.find('=');
@@ -2591,14 +2591,14 @@ void Application::initConfig(int argc, char ** argv)
         parseProgramOptions(argc, argv, mConfig["ExeName"], vm);
     }
 
-    if (vm.count("keep-deprecated-paths")) {
+    if (vm.count("keep-deprecated-paths") != 0U) {
         mConfig["KeepDeprecatedPaths"] = "1";
     }
 
     // extract home paths
     ExtractUserPath();
 
-    if (vm.count("safe-mode")) {
+    if (vm.count("safe-mode") != 0U) {
         SafeMode::StartSafeMode();
     }
 
@@ -2608,7 +2608,7 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["Debug"] = "0";
 #   endif
 
-    if (!Py_IsInitialized()) {
+    if (Py_IsInitialized() == 0) {
         // init python
         PyImport_AppendInittab ("FreeCAD", init_freecad_module);
         PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
@@ -3016,7 +3016,7 @@ void Application::LoadParameters()
     try {
         if (_pcSysParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // Configuration file optional when using as Python module
-            if (!Py_IsInitialized()) {
+            if (Py_IsInitialized() == 0) {
                 Console().Warning("   Parameter does not exist, writing initial one\n");
                 Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
                                         "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
@@ -3050,7 +3050,7 @@ void Application::LoadParameters()
             }
 
             // Configuration file optional when using as Python module
-            if (!Py_IsInitialized()) {
+            if (Py_IsInitialized() == 0) {
                 Console().Warning("   User settings do not exist, writing initial one\n");
                 Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
                                         "   or your configuration was deleted or moved. The system defaults\n"
@@ -3204,7 +3204,7 @@ std::filesystem::path findPath(const QString& stdHome, const QString& customHome
     }
 
     // In order to write to our data path, we must create some directories, first.
-    if (create && !std::filesystem::exists(appData) && !Py_IsInitialized()) {
+    if (create && !exists(appData) && Py_IsInitialized() == 0) {
         try {
             std::filesystem::create_directories(appData);
         } catch (const std::filesystem::filesystem_error& e) {
@@ -3478,7 +3478,7 @@ std::string Application::FindHomePath(const char* sCall)
     // If Python is initialized at this point, then we're being run from
     // MainPy.cpp, which hopefully rewrote argv[0] to point at the
     // FreeCAD shared library.
-    if (!Py_IsInitialized()) {
+    if (Py_IsInitialized() == 0) {
         uint32_t sz = 0;
 
         _NSGetExecutablePath(
