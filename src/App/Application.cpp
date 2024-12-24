@@ -600,15 +600,16 @@ std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) c
         // if not, name is OK
         return CleanName;
     }
-    else {
-        std::vector<std::string> names;
-        names.reserve(DocMap.size());
-        for (pos = DocMap.begin(); pos != DocMap.end(); ++pos) {
-            if (!tempDoc || !pos->second->testStatus(Document::TempDoc))
-                names.push_back(pos->first);
+
+    std::vector<std::string> names;
+    names.reserve(DocMap.size());
+    for (pos = DocMap.begin(); pos != DocMap.end(); ++pos) {
+        if (!tempDoc || !pos->second->testStatus(Document::TempDoc)) {
+            names.push_back(pos->first);
         }
-        return Tools::getUniqueName(CleanName, names);
     }
+
+    return Tools::getUniqueName(CleanName, names);
 }
 
 int Application::addPendingDocument(const char *FileName, const char *objName, bool allowPartial)
@@ -977,10 +978,13 @@ Document* Application::openDocumentPrivate(const char * FileName,
             }
         }
 
-        if(!isMainDoc)
+        if (!isMainDoc) {
             return nullptr;
-        else if(doc)
+        }
+
+        if (doc) {
             return doc;
+        }
     }
 
     std::string name;
@@ -1266,10 +1270,8 @@ ParameterManager & Application::GetUserParameter()
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
     const auto it = mpcPramManager.find(sName);
-    if ( it != mpcPramManager.end() )
-        return it->second;
-    else
-        return nullptr;
+
+    return it != mpcPramManager.end() ? it->second : nullptr;
 }
 
 const std::map<std::string,Reference<ParameterManager>> &
@@ -3177,13 +3179,8 @@ void getOldDataLocation(std::map<std::string,std::string>& mConfig, std::vector<
  */
 QString findUserHomePath(const QString& userHome)
 {
-    if (userHome.isEmpty()) {
-        return getUserHome();
-    }
-    else {
-        return userHome;
-    }
-}
+    return userHome.isEmpty() ? getUserHome() : userHome;
+ }
 
 /*!
  * \brief findPath
