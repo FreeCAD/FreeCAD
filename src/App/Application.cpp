@@ -971,10 +971,13 @@ Document* Application::openDocumentPrivate(const char * FileName,
             }
         }
 
-        if(!isMainDoc)
+        if (!isMainDoc) {
             return nullptr;
-        else if(doc)
+        }
+
+        if (doc) {
             return doc;
+        }
     }
 
     std::string name;
@@ -1266,10 +1269,8 @@ ParameterManager & Application::GetUserParameter()
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
     auto it = mpcPramManager.find(sName);
-    if ( it != mpcPramManager.end() )
-        return it->second;
-    else
-        return nullptr;
+
+    return it != mpcPramManager.end() ? it->second : nullptr;
 }
 
 const std::map<std::string,Base::Reference<ParameterManager>> &
@@ -3174,13 +3175,8 @@ void getOldDataLocation(std::map<std::string,std::string>& mConfig, std::vector<
  */
 QString findUserHomePath(const QString& userHome)
 {
-    if (userHome.isEmpty()) {
-        return getUserHome();
-    }
-    else {
-        return userHome;
-    }
-}
+    return userHome.isEmpty() ? getUserHome() : userHome;
+ }
 
 /*!
  * \brief findPath
