@@ -577,6 +577,7 @@ const char * Application::getDocumentName(const App::Document* doc) const
 std::vector<App::Document*> Application::getDocuments() const
 {
     std::vector<App::Document*> docs;
+    docs.reserve(DocMap.size());
     for (const auto & it : DocMap)
         docs.push_back(it.second);
     return docs;
@@ -1378,8 +1379,10 @@ std::vector<std::string> Application::getImportModules(const char* Type) const
 std::vector<std::string> Application::getImportModules() const
 {
     std::vector<std::string> modules;
-    for (const auto & it : _mImportTypes)
+    modules.reserve(_mImportTypes.size());
+    for (const auto& it : _mImportTypes) {
         modules.push_back(it.module);
+    }
     std::sort(modules.begin(), modules.end());
     modules.erase(std::unique(modules.begin(), modules.end()), modules.end());
     return modules;
@@ -1501,8 +1504,10 @@ std::vector<std::string> Application::getExportModules(const char* Type) const
 std::vector<std::string> Application::getExportModules() const
 {
     std::vector<std::string> modules;
-    for (const auto & it : _mExportTypes)
+    modules.reserve(_mExportTypes.size());
+    for (const auto& it : _mExportTypes) {
         modules.push_back(it.module);
+    }
     std::sort(modules.begin(), modules.end());
     modules.erase(std::unique(modules.begin(), modules.end()), modules.end());
     return modules;
