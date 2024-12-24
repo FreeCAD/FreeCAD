@@ -424,8 +424,9 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 
 Document* Application::newDocument(const char * Name, const char * UserName, DocumentCreateFlags CreateFlags)
 {
-    auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
-        bool defaultName = (!Name || Name[0] == '\0');
+    auto getNameAndLabel = [this](const char* Name,
+                                  const char* UserName) -> std::tuple<std::string, std::string> {
+        const bool defaultName = (!Name || Name[0] == '\0');
 
         // get a valid name anyway!
         if (defaultName) {
@@ -453,7 +454,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, Doc
         return std::make_tuple(std::string(Name), userName);
     };
 
-    auto tuple = getNameAndLabel(Name, UserName);
+    const auto tuple = getNameAndLabel(Name, UserName);
     std::string name = std::get<0>(tuple);
     std::string userName = std::get<1>(tuple);
     name = getUniqueDocumentName(name.c_str(), CreateFlags.temporary);
@@ -469,8 +470,8 @@ Document* Application::newDocument(const char * Name, const char * UserName, Doc
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
     newDoc->setStatus(Document::TempDoc, CreateFlags.temporary);
 
-    auto oldActiveDoc = _pActiveDoc;
-    auto doc = newDoc.release(); // now owned by the Application
+    const auto oldActiveDoc = _pActiveDoc;
+    const auto doc = newDoc.release(); // now owned by the Application
 
     // add the document to the internal list
     DocMap[name] = doc;
@@ -504,7 +505,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, Doc
     // make sure that the active document is set in case no GUI is up
     {
         PyGILStateLocker lock;
-        Py::Object active(_pActiveDoc->getPyObject(), true);
+        const Py::Object active(_pActiveDoc->getPyObject(), true);
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
     }
 
@@ -522,7 +523,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, Doc
 
 bool Application::closeDocument(const char* name)
 {
-    auto pos = DocMap.find( name );
+    const auto pos = DocMap.find( name );
     if (pos == DocMap.end()) // no such document
         return false;
 
@@ -533,9 +534,10 @@ bool Application::closeDocument(const char* name)
     signalDeleteDocument(*pos->second);
 
     // For exception-safety use a smart pointer
-    if (_pActiveDoc == pos->second)
+    if (_pActiveDoc == pos->second) {
         setActiveDocument(static_cast<Document*>(nullptr));
-    std::unique_ptr<Document> delDoc (pos->second);
+    }
+    const std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
     DocFileMap.erase(FileInfo(delDoc->FileName.getValue()).filePath());
 
@@ -619,9 +621,10 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
         return -1;
     assert(FileName && FileName[0]);
     assert(objName && objName[0]);
-    if(!_docReloadAttempts[FileName].emplace(objName).second)
+    if (!_docReloadAttempts[FileName].emplace(objName).second) {
         return -1;
-    auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
+    }
+    const auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
     ret.first->second.emplace_back(objName);
     if(ret.second) {
         _pendingDocs.emplace_back(ret.first->first.c_str());
@@ -681,28 +684,31 @@ Document* Application::openDocument(const char * FileName, DocumentCreateFlags c
 Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCanonical) const {
     if(!path || !path[0])
         return nullptr;
-    if(DocFileMap.empty()) {
-        for(const auto &v : DocMap) {
-            const auto &file = v.second->FileName.getStrValue();
-            if(!file.empty())
+    if (DocFileMap.empty()) {
+        for (const auto& v : DocMap) {
+            const auto& file = v.second->FileName.getStrValue();
+            if (!file.empty()) {
                 DocFileMap[FileInfo(file.c_str()).filePath()] = v.second;
+            }
         }
     }
-    auto it = DocFileMap.find(FileInfo(path).filePath());
+    const auto it = DocFileMap.find(FileInfo(path).filePath());
     if(it != DocFileMap.end())
         return it->second;
 
-    if (checkCanonical == PathMatchMode::MatchAbsolute)
+    if (checkCanonical == PathMatchMode::MatchAbsolute) {
         return nullptr;
+    }
 
-    std::string filepath = FileInfo(path).filePath();
-    QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
+    const std::string filepath = FileInfo(path).filePath();
+    const QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
     for (const auto &v : DocMap) {
         QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
         if (canonicalPath == fi.canonicalFilePath()) {
-            if (checkCanonical == PathMatchMode::MatchCanonical)
+            if (checkCanonical == PathMatchMode::MatchCanonical) {
                 return v.second;
-            bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
+            }
+            const bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
             FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
                     << (samePath?"":"  for file '") << (samePath?"":filepath.c_str()) << (samePath?"":"'\n")
                     << "  with existing document '" << v.second->Label.getValue()
@@ -1031,7 +1037,7 @@ void Application::setActiveDocument(Document* pDoc)
     // make sure that the active document is set in case no GUI is up
     if (pDoc) {
         PyGILStateLocker lock;
-        Py::Object active(pDoc->getPyObject(), true);
+        const Py::Object active(pDoc->getPyObject(), true);
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
     }
     else {
@@ -1092,9 +1098,9 @@ Application::TransactionSignaller::~TransactionSignaller() {
 int64_t Application::applicationPid()
 {
     static int64_t randomNumber = []() {
-        auto tp = std::chrono::high_resolution_clock::now();
-        auto dur = tp.time_since_epoch();
-        auto seed = dur.count();
+        const auto tp = std::chrono::high_resolution_clock::now();
+        const auto dur = tp.time_since_epoch();
+        const auto seed = dur.count();
         std::mt19937 generator(static_cast<unsigned>(seed));
         constexpr int64_t minValue {1};
         constexpr int64_t maxValue {1000000};
@@ -1161,7 +1167,7 @@ std::string Application::getResourceDir()
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(RESOURCEDIR).c_str();
     path += PATHSEP;
-    QDir dir(QString::fromStdString(path));
+    const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
     return mConfig["AppHomePath"] + path;
@@ -1175,7 +1181,7 @@ std::string Application::getLibraryDir()
 #ifdef LIBRARYDIR
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(LIBRARYDIR).c_str();
-    QDir dir(QString::fromStdString(path));
+    const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
     return mConfig["AppHomePath"] + path;
@@ -1190,7 +1196,7 @@ std::string Application::getHelpDir()
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(DOCDIR).c_str();
     path += PATHSEP;
-    QDir dir(QString::fromStdString(path));
+    const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
     return mConfig["AppHomePath"] + path;
@@ -1203,13 +1209,13 @@ int Application::checkLinkDepth(int depth, MessageOption option)
 {
     if (_objCount < 0) {
         _objCount = 0;
-        for (auto &v : DocMap) {
+        for (const auto &v : DocMap) {
             _objCount += v.second->countObjects();
         }
     }
 
     if (depth > _objCount + 2) {
-        auto msg = "Link recursion limit reached. "
+        const auto msg = "Link recursion limit reached. "
                 "Please check for cyclic reference.";
         switch (option) {
         case MessageOption::Quiet:
@@ -1237,7 +1243,7 @@ std::set<DocumentObject *> Application::getLinksTo(
         }
     } else {
         std::set<Document*> docs;
-        for(auto o : obj->getInList()) {
+        for (const auto o : obj->getInList()) {
             if(o && o->isAttachedToDocument() && docs.insert(o->getDocument()).second) {
                 o->getDocument()->getLinksTo(links,obj,options,maxCount);
                 if(maxCount && (int)links.size()>=maxCount)
@@ -1264,7 +1270,7 @@ ParameterManager & Application::GetUserParameter()
 
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
-    auto it = mpcPramManager.find(sName);
+    const auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return it->second;
     else
@@ -1279,7 +1285,7 @@ Application::GetParameterSetList() const
 
 void Application::AddParameterSet(const char* sName)
 {
-    auto it = mpcPramManager.find(sName);
+    const auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return;
     mpcPramManager[sName] = ParameterManager::Create();
@@ -1287,7 +1293,7 @@ void Application::AddParameterSet(const char* sName)
 
 void Application::RemoveParameterSet(const char* sName)
 {
-    auto it = mpcPramManager.find(sName);
+    const auto it = mpcPramManager.find(sName);
     // Must not delete user or system parameter
     if ( it == mpcPramManager.end() || it->second == _pcUserParamMngr || it->second == _pcSysParamMngr )
         return;
@@ -1296,9 +1302,9 @@ void Application::RemoveParameterSet(const char* sName)
 
 Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* sName)
 {
-    std::string cName = sName,cTemp;
+    std::string cName = sName, cTemp;
 
-    std::string::size_type pos = cName.find(':');
+    const std::string::size_type pos = cName.find(':');
 
     // is there a path separator ?
     if (pos == std::string::npos) {
@@ -1309,7 +1315,7 @@ Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* sName)
     cName.erase(0,pos+1);
 
     // test if name is valid
-    auto It = mpcPramManager.find(cTemp.c_str());
+    const auto It = mpcPramManager.find(cTemp.c_str());
     if (It == mpcPramManager.end())
         throw ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
@@ -1325,8 +1331,8 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     // Extract each filetype from 'Type' literal
     std::string::size_type pos = item.filter.find("*.");
     while ( pos != std::string::npos ) {
-        std::string::size_type next = item.filter.find_first_of(" )", pos+1);
-        std::string::size_type len = next-pos-2;
+        const std::string::size_type next = item.filter.find_first_of(" )", pos + 1);
+        const std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
         item.types.push_back(type);
         pos = item.filter.find("*.", next);
@@ -1448,8 +1454,8 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     // Extract each filetype from 'Type' literal
     std::string::size_type pos = item.filter.find("*.");
     while ( pos != std::string::npos ) {
-        std::string::size_type next = item.filter.find_first_of(" )", pos+1);
-        std::string::size_type len = next-pos-2;
+        const std::string::size_type next = item.filter.find_first_of(" )", pos + 1);
+        const std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
         item.types.push_back(type);
         pos = item.filter.find("*.", next);
@@ -2779,7 +2785,7 @@ void Application::initConfig(int argc, char ** argv)
 
 void Application::SaveEnv(const char* s)
 {
-    char *c = getenv(s);
+    const char *c = getenv(s);
     if (c)
         mConfig[s] = c;
 }
@@ -2798,13 +2804,13 @@ void Application::initApplication()
     _pcSingleton = new Application(mConfig);
 
     // set up Unit system default
-    ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath
+    const ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
     UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
     UnitsApi::setDecimals(hGrp->GetInt("Decimals", UnitsApi::getDecimals()));
 
     // In case we are using fractional inches, get user setting for min unit
-    int denom = hGrp->GetInt("FracInch", QuantityFormat::getDefaultDenominator());
+    const int denom = hGrp->GetInt("FracInch", QuantityFormat::getDefaultDenominator());
     QuantityFormat::setDefaultDenominator(denom);
 
 
@@ -2914,8 +2920,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
 void Application::processCmdLineFiles()
 {
     // process files passed to command line
-    std::list<std::string> files = getCmdLineFiles();
-    std::list<std::string> processed = processFiles(files);
+    const std::list<std::string> files = getCmdLineFiles();
+    const std::list<std::string> processed = processFiles(files);
 
     if (files.empty()) {
         if (mConfig["RunMode"] == "Exit")
@@ -2924,7 +2930,7 @@ void Application::processCmdLineFiles()
     else if (processed.empty() && files.size() == 1 && mConfig["RunMode"] == "Cmd") {
         // In case we are in console mode and the argument is not a file but Python code
         // then execute it. This is to behave like the standard Python executable.
-        FileInfo file(files.front());
+        const FileInfo file(files.front());
         if (!file.exists()) {
             Interpreter().runString(files.front().c_str());
             mConfig["RunMode"] = "Exit";
@@ -2932,15 +2938,15 @@ void Application::processCmdLineFiles()
     }
 
     const std::map<std::string, std::string>& cfg = Config();
-    auto it = cfg.find("SaveFile");
+    const auto it = cfg.find("SaveFile");
     if (it != cfg.end()) {
         std::string output = it->second;
         output = Tools::escapeEncodeFilename(output);
 
-        FileInfo fi(output);
-        std::string ext = fi.extension();
+        const FileInfo fi(output);
+        const std::string ext = fi.extension();
         try {
-            std::vector<std::string> mods = GetApplication().getExportModules(ext.c_str());
+            const std::vector<std::string> mods = GetApplication().getExportModules(ext.c_str());
             if (!mods.empty()) {
                 Interpreter().loadModule(mods.front().c_str());
                 Interpreter().runStringArg("import %s",mods.front().c_str());
@@ -2985,7 +2991,7 @@ void Application::runApplication()
 
 void Application::logStatus()
 {
-    std::string time_str = to_simple_string(
+    const std::string time_str = to_simple_string(
         posix_time::second_clock::local_time());
     Console().Log("Time = %s\n", time_str.c_str());
 
@@ -3033,14 +3039,14 @@ void Application::LoadParameters()
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            auto it = mConfig.find("UserParameterTemplate");
+            const auto it = mConfig.find("UserParameterTemplate");
             if (it != mConfig.end()) {
                 QString path = QString::fromUtf8(it->second.c_str());
                 if (QDir(path).isRelative()) {
-                    QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
+                    const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
                     path = QFileInfo(QDir(home), path).absoluteFilePath();
                 }
-                QFileInfo fi(path);
+                const QFileInfo fi(path);
                 if (fi.exists()) {
                     _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
                 }
@@ -3096,7 +3102,7 @@ QString getUserHome()
     struct passwd *result;
     const std::size_t buflen = 16384;
     std::vector<char> buffer(buflen);
-    int error = getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result);
+    const int error = getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result);
     Q_UNUSED(error)
     if (!result)
         throw RuntimeError("Getting HOME path from system failed!");
@@ -3229,14 +3235,14 @@ std::filesystem::path findPath(const QString& stdHome, const QString& customHome
  */
 std::tuple<QString, QString, QString> getCustomPaths()
 {
-    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
+    const QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
     QString userHome = env.value(QStringLiteral("FREECAD_USER_HOME"));
     QString userData = env.value(QStringLiteral("FREECAD_USER_DATA"));
     QString userTemp = env.value(QStringLiteral("FREECAD_USER_TEMP"));
 
     auto toNativePath = [](QString& path) {
         if (!path.isEmpty()) {
-            QDir dir(path);
+            const QDir dir(path);
             if (dir.exists())
                 path = QDir::toNativeSeparators(dir.canonicalPath());
             else
@@ -3256,9 +3262,9 @@ std::tuple<QString, QString, QString> getCustomPaths()
 
     // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
     if (!userHome.isEmpty() && userTemp.isEmpty()) {
-        QDir dir(userHome);
+        const QDir dir(userHome);
         dir.mkdir(QStringLiteral("temp"));
-        QFileInfo fi(dir, QStringLiteral("temp"));
+        const QFileInfo fi(dir, QStringLiteral("temp"));
         userTemp = fi.absoluteFilePath();
     }
 
@@ -3489,11 +3495,12 @@ std::string Application::FindHomePath(const char* call)
 
         if (_NSGetExecutablePath(buf, &sz) == 0) {
             char resolved[PATH_MAX];
-            char* path = realpath(buf, resolved);
+            const char* path = realpath(buf, resolved);
             delete [] buf;
 
             if (path) {
-                std::string Call(resolved), TempHomePath;
+                const std::string Call(resolved);
+                std::string TempHomePath;
                 std::string::size_type pos = Call.find_last_of(PATHSEP);
                 TempHomePath.assign(Call,0,pos);
                 pos = TempHomePath.find_last_of(PATHSEP);
