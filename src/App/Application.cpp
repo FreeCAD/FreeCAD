@@ -394,64 +394,32 @@ void Application::setupPythonTypes()
     // clang-format on
 }
 
-// clang-format off
+/*
+ * Define custom Python exception types
+ */
 void Application::setupPythonException(PyObject* module)
 {
-    // Define custom Python exception types
-    //
-    Base::PyExc_FC_GeneralError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, nullptr);
-    Py_INCREF(Base::PyExc_FC_GeneralError);
-    PyModule_AddObject(module, "FreeCADError", Base::PyExc_FC_GeneralError);
+    auto setup = [&module, str {"Base."}](const std::string& ename, auto pyExcType) {
+        auto exception = PyErr_NewException((str + ename).c_str(), pyExcType, nullptr);
+        Py_INCREF(exception);
+        PyModule_AddObject(module, ename.c_str(), exception);
+        return exception;
+    };
 
-    Base::PyExc_FC_FreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, nullptr);
-    Py_INCREF(Base::PyExc_FC_FreeCADAbort);
-    PyModule_AddObject(module, "FreeCADAbort", Base::PyExc_FC_FreeCADAbort);
-
-    Base::PyExc_FC_XMLBaseException = PyErr_NewException("Base.XMLBaseException", PyExc_Exception, nullptr);
-    Py_INCREF(Base::PyExc_FC_XMLBaseException);
-    PyModule_AddObject(module, "XMLBaseException", Base::PyExc_FC_XMLBaseException);
-
-    Base::PyExc_FC_XMLParseException = PyErr_NewException("Base.XMLParseException", Base::PyExc_FC_XMLBaseException, nullptr);
-    Py_INCREF(Base::PyExc_FC_XMLParseException);
-    PyModule_AddObject(module, "XMLParseException", Base::PyExc_FC_XMLParseException);
-
-    Base::PyExc_FC_XMLAttributeError = PyErr_NewException("Base.XMLAttributeError", Base::PyExc_FC_XMLBaseException, nullptr);
-    Py_INCREF(Base::PyExc_FC_XMLAttributeError);
-    PyModule_AddObject(module, "XMLAttributeError", Base::PyExc_FC_XMLAttributeError);
-
-    Base::PyExc_FC_UnknownProgramOption = PyErr_NewException("Base.UnknownProgramOption", PyExc_BaseException, nullptr);
-    Py_INCREF(Base::PyExc_FC_UnknownProgramOption);
-    PyModule_AddObject(module, "UnknownProgramOption", Base::PyExc_FC_UnknownProgramOption);
-
-    Base::PyExc_FC_BadFormatError = PyErr_NewException("Base.BadFormatError", Base::PyExc_FC_GeneralError, nullptr);
-    Py_INCREF(Base::PyExc_FC_BadFormatError);
-    PyModule_AddObject(module, "BadFormatError", Base::PyExc_FC_BadFormatError);
-
-    Base::PyExc_FC_BadGraphError = PyErr_NewException("Base.BadGraphError", Base::PyExc_FC_GeneralError, nullptr);
-    Py_INCREF(Base::PyExc_FC_BadGraphError);
-    PyModule_AddObject(module, "BadGraphError", Base::PyExc_FC_BadGraphError);
-
-    Base::PyExc_FC_ExpressionError = PyErr_NewException("Base.ExpressionError", Base::PyExc_FC_GeneralError, nullptr);
-    Py_INCREF(Base::PyExc_FC_ExpressionError);
-    PyModule_AddObject(module, "ExpressionError", Base::PyExc_FC_ExpressionError);
-
-    Base::PyExc_FC_ParserError = PyErr_NewException("Base.ParserError", Base::PyExc_FC_GeneralError, nullptr);
-    Py_INCREF(Base::PyExc_FC_ParserError);
-    PyModule_AddObject(module, "ParserError", Base::PyExc_FC_ParserError);
-
-    Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", Base::PyExc_FC_GeneralError, nullptr);
-    Py_INCREF(Base::PyExc_FC_CADKernelError);
-    PyModule_AddObject(module, "CADKernelError", Base::PyExc_FC_CADKernelError);
-
-    Base::PyExc_FC_PropertyError = PyErr_NewException("Base.PropertyError", PyExc_AttributeError, nullptr);
-    Py_INCREF(Base::PyExc_FC_PropertyError);
-    PyModule_AddObject(module, "PropertyError", Base::PyExc_FC_PropertyError);
-
-    Base::PyExc_FC_AbortIOException = PyErr_NewException("Base.PyExc_FC_AbortIOException", PyExc_BaseException, nullptr);
-    Py_INCREF(Base::PyExc_FC_AbortIOException);
-    PyModule_AddObject(module, "AbortIOException", Base::PyExc_FC_AbortIOException);
+    PyExc_FC_GeneralError = setup("FreeCADError", PyExc_RuntimeError);
+    PyExc_FC_FreeCADAbort = setup("FreeCADAbort", PyExc_BaseException);
+    PyExc_FC_XMLBaseException = setup("XMLBaseException", PyExc_Exception);
+    PyExc_FC_XMLParseException = setup("XMLParseException", PyExc_FC_XMLBaseException);
+    PyExc_FC_XMLAttributeError = setup("XMLAttributeError", PyExc_FC_XMLBaseException);
+    PyExc_FC_UnknownProgramOption = setup("UnknownProgramOption", PyExc_BaseException);
+    PyExc_FC_BadFormatError = setup("BadFormatError", PyExc_FC_GeneralError);
+    PyExc_FC_BadGraphError = setup("BadGraphError", PyExc_FC_GeneralError);
+    PyExc_FC_ExpressionError = setup("ExpressionError", PyExc_FC_GeneralError);
+    PyExc_FC_ParserError = setup("ParserError", PyExc_FC_GeneralError);
+    PyExc_FC_CADKernelError = setup("CADKernelError", PyExc_FC_GeneralError);
+    PyExc_FC_PropertyError = setup("PropertyError", PyExc_AttributeError);
+    PyExc_FC_AbortIOException = setup("AbortIOException", PyExc_BaseException);
 }
-// clang-format on
 
 //**************************************************************************
 // Interface
