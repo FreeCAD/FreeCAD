@@ -2717,12 +2717,12 @@ void Application::initConfig(int argc, char ** argv)
 #ifdef FC_DEBUG
             if (v.second>=0) {
                 hasDefault = true;
-                Base::Console().SetDefaultLogLevel(v.second);
+                Base::Console().SetDefaultLogLevel(static_cast<int>(v.second));
             }
 #endif
         }
         else {
-            *Base::Console().GetLogLevel(v.first.c_str()) = v.second;
+            *Base::Console().GetLogLevel(v.first.c_str()) = static_cast<int>(v.second);
         }
     }
 
@@ -2807,10 +2807,10 @@ void Application::initApplication()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
     UnitsApi::setSchema(static_cast<UnitSystem>(hGrp->GetInt("UserSchema", 0)));
-    UnitsApi::setDecimals(hGrp->GetInt("Decimals", UnitsApi::getDecimals()));
+    UnitsApi::setDecimals(static_cast<int>(hGrp->GetInt("Decimals", UnitsApi::getDecimals())));
 
     // In case we are using fractional inches, get user setting for min unit
-    int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
+    int denom = static_cast<int>(hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
     Base::QuantityFormat::setDefaultDenominator(denom);
 
 
