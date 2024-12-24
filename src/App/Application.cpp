@@ -1592,9 +1592,9 @@ void Application::slotBeforeChangeObject(const DocumentObject& O, const Property
     this->signalBeforeChangeObject(O, Prop);
 }
 
-void Application::slotChangedObject(const DocumentObject&O, const Property& P)
+void Application::slotChangedObject(const DocumentObject&O, const Property& Prop)
 {
-    this->signalChangedObject(O,P);
+    this->signalChangedObject(O,Prop);
 }
 
 void Application::slotRelabelObject(const DocumentObject&O)
@@ -3476,7 +3476,7 @@ std::string Application::FindHomePath(const char* sCall)
 #include <cstdlib>
 #include <sys/param.h>
 
-std::string Application::FindHomePath(const char* call)
+std::string Application::FindHomePath(const char* sCall)
 {
     // If Python is initialized at this point, then we're being run from
     // MainPy.cpp, which hopefully rewrote argv[0] to point at the
@@ -3506,7 +3506,7 @@ std::string Application::FindHomePath(const char* call)
         }
     }
 
-    return call;
+    return sCall;
 }
 
 #elif defined (FC_OS_WIN32)
