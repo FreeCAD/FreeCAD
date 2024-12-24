@@ -62,7 +62,7 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
         (0.3),
         "MeshParams",
         Prop_None,
-        " allows one to define how much the linear dimensions of two adjacent cells can differ");
+        " allows defining how much the linear dimensions of two adjacent cells can differ");
     ADD_PROPERTY_TYPE(
         NbSegsPerEdge,
         (1),
