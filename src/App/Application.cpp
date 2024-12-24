@@ -554,9 +554,8 @@ void Application::closeAllDocuments()
 
 App::Document* Application::getDocument(const char *Name) const
 {
-    std::map<std::string,Document*>::const_iterator pos;
 
-    pos = DocMap.find(Name);
+    const auto pos = DocMap.find(Name);
 
     if (pos == DocMap.end())
         return nullptr;
@@ -1056,10 +1055,7 @@ void Application::setActiveDocument(const char* Name)
         return;
     }
 
-    std::map<std::string,Document*>::iterator pos;
-    pos = DocMap.find(Name);
-
-    if (pos != DocMap.end()) {
+    if (const auto pos = DocMap.find(Name); pos != DocMap.end()) {
         setActiveDocument(pos->second);
     }
     else {
@@ -3484,12 +3480,11 @@ std::string Application::FindHomePath(const char* call)
     // FreeCAD shared library.
     if (!Py_IsInitialized()) {
         uint32_t sz = 0;
-        char *buf;
 
-        _NSGetExecutablePath(NULL, &sz); //function only returns "sz" if first arg is to small to hold value
-        buf = new char[++sz];
+        _NSGetExecutablePath(
+            nullptr, &sz);  // function only returns "sz" if first arg is to small to hold value
 
-        if (_NSGetExecutablePath(buf, &sz) == 0) {
+        if (const auto buf = new char[++sz]; _NSGetExecutablePath(buf, &sz) == 0) {
             char resolved[PATH_MAX];
             char* path = realpath(buf, resolved);
             delete [] buf;
