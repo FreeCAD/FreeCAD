@@ -366,6 +366,8 @@ run_netgen(**{kwds})
 
         result = []
         for reg in self.obj.MeshRegionList:
+            if reg.Suppressed:
+                continue
             for s, sub_list in reg.References:
                 if s.isDerivedFrom("App::GeoFeature") and isinstance(
                     s.getPropertyOfGeometry(), PartShape
