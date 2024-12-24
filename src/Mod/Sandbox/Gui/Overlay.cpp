@@ -69,9 +69,6 @@ public:
 
         view->getSoRenderManager()->scheduleRedraw();
     }
- #ifndef GL_MULTISAMPLE
- #define GL_MULTISAMPLE  0x809D
- #endif
     void paintGL()
     {
     const SbViewportRegion vp = view->getSoRenderManager()->getViewportRegion();
