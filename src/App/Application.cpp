@@ -1824,11 +1824,11 @@ void printBacktrace(size_t skip=0)
         std::stringstream str;
         if (status == 0) {
             void* offset = (void*)((char*)callstack[i] - (char*)info.dli_saddr);
-            str << "#" << (i-skip) << "  " << callstack[i] << " in " << demangled << " from " << info.dli_fname << "+" << offset << std::endl;
+            str << "#" << (i-skip) << "  " << callstack[i] << " in " << demangled << " from " << info.dli_fname << "+" << offset << '\n';
             free(demangled);
         }
         else {
-            str << "#" << (i-skip) << "  " << symbols[i] << std::endl;
+            str << "#" << (i-skip) << "  " << symbols[i] << '\n';
         }
 
         // cannot directly print to cerr when using --write-log
@@ -1857,19 +1857,19 @@ void segmentation_fault_handler(int sig)
 #else
     switch (sig) {
         case SIGSEGV:
-            std::cerr << "Illegal storage access..." << std::endl;
+            std::cerr << "Illegal storage access..." << '\n';
 #if !defined(_DEBUG)
             throw AccessViolation("Illegal storage access! Please save your work under a new file name and restart the application!");
 #endif
             break;
         case SIGABRT:
-            std::cerr << "Abnormal program termination..." << std::endl;
+            std::cerr << "Abnormal program termination..." << '\n';
 #if !defined(_DEBUG)
             throw AbnormalProgramTermination("Break signal occurred");
 #endif
             break;
         default:
-            std::cerr << "Unknown error occurred..." << std::endl;
+            std::cerr << "Unknown error occurred..." << '\n';
             break;
     }
 #endif // FC_OS_LINUX
@@ -1877,12 +1877,12 @@ void segmentation_fault_handler(int sig)
 
 void unhandled_exception_handler()
 {
-    std::cerr << "Terminating..." << std::endl;
+    std::cerr << "Terminating..." << '\n';
 }
 
 void unexpection_error_handler()
 {
-    std::cerr << "Unexpected error occurred..." << std::endl;
+    std::cerr << "Unexpected error occurred..." << '\n';
     // try to throw an exception and give the user chance to save their work
 #if !defined(_DEBUG)
     throw AbnormalProgramTermination("Unexpected error occurred! Please save your work under a new file name and restart the application!");
@@ -2341,21 +2341,21 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     }
     catch (const std::exception& e) {
         std::stringstream str;
-        str << e.what() << endl << endl << visible << endl;
+        str << e.what() << '\n' << '\n' << visible << '\n';
         throw UnknownProgramOption(str.str());
     }
     catch (...) {
         std::stringstream str;
-        str << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
+        str << "Wrong or unknown option, bailing out!" << '\n' << '\n' << visible << '\n';
         throw UnknownProgramOption(str.str());
     }
 
     if (vm.count("help") != 0U) {
         std::stringstream str;
-        str << exe << endl << endl;
-        str << "For a detailed description see https://www.freecad.org/wiki/Start_up_and_Configuration" << endl<<endl;
-        str << "Usage: " << exe << " [options] File1 File2 ..." << endl << endl;
-        str << visible << endl;
+        str << exe << '\n' << '\n';
+        str << "For a detailed description see https://www.freecad.org/wiki/Start_up_and_Configuration" << '\n'<<'\n';
+        str << "Usage: " << exe << " [options] File1 File2 ..." << '\n' << '\n';
+        str << visible << '\n';
         throw ProgramInformation(str.str());
     }
 
@@ -2366,7 +2366,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
             Console().Error("Could no open the response file\n");
             std::stringstream str;
             str << "Could no open the response file: '"
-                << vm["response-file"].as<string>() << "'" << endl;
+                << vm["response-file"].as<string>() << "'" << '\n';
             throw UnknownProgramOption(str.str());
         }
         // Read the whole file into a string
@@ -2388,7 +2388,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     if (vm.count("version") != 0U) {
         std::stringstream str;
         str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
-            << " Revision: " << mConfig["BuildRevision"] << std::endl;
+            << " Revision: " << mConfig["BuildRevision"] << '\n';
         if (vm.count("verbose") != 0U) {
             str << "\nLibrary versions:\n";
             str << "boost    " << BOOST_LIB_VERSION << '\n';
@@ -2508,7 +2508,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     if (vm.count("dump-config") != 0U) {
         std::stringstream str;
         for (const auto & it : mConfig) {
-            str << it.first << "=" << it.second << std::endl;
+            str << it.first << "=" << it.second << '\n';
         }
         throw ProgramInformation(str.str());
     }
@@ -2521,7 +2521,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         if (pos != mConfig.end()) {
             str << pos->second;
         }
-        str << std::endl;
+        str << '\n';
         throw ProgramInformation(str.str());
     }
 
