@@ -2668,10 +2668,10 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverFile = nullptr;
 
     // Banner ===========================================================
-    if (!(mConfig["RunMode"] == "Cmd")) {
+    if (mConfig["RunMode"] != "Cmd") {
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
-        if (!(mConfig["Verbose"] == "Strict"))
+        if (mConfig["Verbose"] != "Strict")
             Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
@@ -2797,7 +2797,7 @@ void Application::initApplication()
     new Base::ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
     // creating the application
-    if (!(mConfig["Verbose"] == "Strict"))
+    if (mConfig["Verbose"] != "Strict")
         Base::Console().Log("Create Application\n");
     Application::_pcSingleton = new Application(mConfig);
 
@@ -3013,7 +3013,7 @@ void Application::LoadParameters()
     _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
 
     try {
-        if (_pcSysParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
+        if (_pcSysParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
                 Base::Console().Warning("   Parameter does not exist, writing initial one\n");
@@ -3032,7 +3032,7 @@ void Application::LoadParameters()
     }
 
     try {
-        if (_pcUserParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
+        if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
             std::map<std::string, std::string>::iterator it = mConfig.find("UserParameterTemplate");
