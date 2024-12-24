@@ -68,7 +68,7 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
         (1),
         "MeshParams",
         Prop_None,
-        "allows one to define the minimum number of mesh segments in which edges will be split");
+        "allows defining the minimum number of mesh segments in which edges will be split");
     ADD_PROPERTY_TYPE(
         NbSegsPerRadius,
         (2),
