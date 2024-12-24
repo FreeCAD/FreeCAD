@@ -1164,7 +1164,7 @@ std::string Application::getResourceDir()
 {
 #ifdef RESOURCEDIR
     // #6892: Conda may inject null characters => remove them
-    std::string path = std::string(RESOURCEDIR).c_str();
+    auto path = std::string(RESOURCEDIR);
     path += PATHSEP;
     const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
@@ -1179,7 +1179,7 @@ std::string Application::getLibraryDir()
 {
 #ifdef LIBRARYDIR
     // #6892: Conda may inject null characters => remove them
-    std::string path = std::string(LIBRARYDIR).c_str();
+    auto path = std::string(LIBRARYDIR);
     const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
@@ -1193,7 +1193,7 @@ std::string Application::getHelpDir()
 {
 #ifdef DOCDIR
     // #6892: Conda may inject null characters => remove them
-    std::string path = std::string(DOCDIR).c_str();
+    auto path = std::string(DOCDIR);
     path += PATHSEP;
     const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
@@ -1312,7 +1312,7 @@ Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* sName)
     cName.erase(0,pos+1);
 
     // test if name is valid
-    const auto It = mpcPramManager.find(cTemp.c_str());
+    const auto It = mpcPramManager.find(cTemp);
     if (It == mpcPramManager.end())
         throw ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
