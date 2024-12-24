@@ -519,7 +519,7 @@ Document* Application::newDocument(const char * proposedName, const char * propo
 
 bool Application::closeDocument(const char* name)
 {
-    map<string,Document*>::iterator pos = DocMap.find( name );
+    auto pos = DocMap.find( name );
     if (pos == DocMap.end()) // no such document
         return false;
 
@@ -1214,7 +1214,7 @@ int Application::checkLinkDepth(int depth, MessageOption option)
     }
 
     if (depth > _objCount + 2) {
-        const char *msg = "Link recursion limit reached. "
+        auto msg = "Link recursion limit reached. "
                 "Please check for cyclic reference.";
         switch (option) {
         case MessageOption::Quiet:
@@ -2408,7 +2408,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 
     if (vm.count("module-path")) {
-        vector<string> Mods = vm["module-path"].as< vector<string> >();
+        auto  Mods = vm["module-path"].as< vector<string> >();
         string temp;
         for (const auto & It : Mods)
             temp += It + ";";
@@ -2426,7 +2426,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 
     if (vm.count("python-path")) {
-        vector<string> Paths = vm["python-path"].as< vector<string> >();
+        auto  Paths = vm["python-path"].as< vector<string> >();
         for (const auto & It : Paths)
             Base::Interpreter().addPythonPath(It.c_str());
     }
@@ -2442,7 +2442,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 
     if (vm.count("input-file")) {
-        vector<string> files(vm["input-file"].as< vector<string> >());
+        auto  files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
         for (const auto & It : files) {
 
@@ -2510,7 +2510,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 
     if (vm.count("get-config")) {
-        std::string configKey = vm["get-config"].as<string>();
+        auto  configKey = vm["get-config"].as<string>();
         std::stringstream str;
         std::map<std::string,std::string>::iterator pos;
         pos = mConfig.find(configKey);
@@ -2522,7 +2522,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 
     if (vm.count("set-config")) {
-        std::vector<std::string> configKeyValue = vm["set-config"].as< std::vector<std::string> >();
+        auto  configKeyValue = vm["set-config"].as< std::vector<std::string> >();
         for (const auto& it : configKeyValue) {
             auto pos = it.find('=');
             if (pos != std::string::npos) {
@@ -2621,9 +2621,9 @@ void Application::initConfig(int argc, char ** argv)
         //  because the (external) interpreter is already initialized.
         //  Therefore we use a workaround as described in https://stackoverflow.com/a/57019607
 
-        PyObject *sysModules = PyImport_GetModuleDict();
+        PyObject* sysModules = PyImport_GetModuleDict();
 
-        const char *moduleName = "FreeCAD";
+        auto moduleName = "FreeCAD";
         PyImport_AddModule(moduleName);
         ApplicationMethods = Application::Methods;
         PyObject *pyModule = init_freecad_module();
@@ -2933,8 +2933,8 @@ void Application::processCmdLineFiles()
         }
     }
 
-    const std::map<std::string,std::string>& cfg = Application::Config();
-    std::map<std::string,std::string>::const_iterator it = cfg.find("SaveFile");
+    const std::map<std::string, std::string>& cfg = Application::Config();
+    auto it = cfg.find("SaveFile");
     if (it != cfg.end()) {
         std::string output = it->second;
         output = Base::Tools::escapeEncodeFilename(output);
@@ -3035,7 +3035,7 @@ void Application::LoadParameters()
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            std::map<std::string, std::string>::iterator it = mConfig.find("UserParameterTemplate");
+            auto it = mConfig.find("UserParameterTemplate");
             if (it != mConfig.end()) {
                 QString path = QString::fromUtf8(it->second.c_str());
                 if (QDir(path).isRelative()) {
