@@ -82,8 +82,7 @@ const char* Hole::ThreadClass_None_Enums[]           = { "None", nullptr };
   http://www.metalmart.com/tools/miscellaneous-guides/standard-drill-size/
 
 */
-
-const Hole::ThreadDescription Hole::threadDescription[][171] =
+std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
 {
     /* None */
     {
@@ -760,6 +759,7 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
     Diameter.setConstraints(&diameterRange);
+    ThreadDiameter.setValue(0);
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
@@ -1348,6 +1348,12 @@ std::optional<double> Hole::determineDiameter() const
 
 void Hole::updateDiameterParam()
 {
+    int threadType = ThreadType.getValue();
+    int threadSize = ThreadSize.getValue();
+    if (threadType > 0 && threadSize > 0)
+        ThreadDiameter.setValue(
+            threadDescription[threadType][threadSize].diameter
+        );
     if (auto opt = determineDiameter())
         Diameter.setValue(opt.value());
 }
@@ -1358,6 +1364,30 @@ double Hole::getThreadProfileAngle()
     return 90 - 1.79;
 }
 
+void Hole::findClosestDesignation()
+{
+    // Intended for thread type changes
+    // finds the closest diameter of the new thread type
+    int threadType = ThreadType.getValue();
+    int closestSize = 0;
+    double diameter = ThreadDiameter.getValue();
+    double closestDifference = std::numeric_limits<double>::infinity();
+    double difference;
+
+    for (size_t i = 0; i < threadDescription[threadType].size(); i++) {
+        difference = threadDescription[threadType][i].diameter - diameter;
+        if (difference == 0) {
+            closestSize = i;
+            break;
+        }
+        if (std::abs(difference) < closestDifference) {
+            closestSize = i;
+            closestDifference = std::abs(difference);
+        }
+    }
+    ThreadSize.setValue(closestSize);
+}
+
 void Hole::onChanged(const App::Property* prop)
 {
     if (prop == &ThreadType) {
@@ -1365,7 +1395,9 @@ void Hole::onChanged(const App::Property* prop)
         if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
             ThreadSize.setEnums(getThreadDesignations(ThreadType.getValue()));
+            findClosestDesignation();
         }
+
         if (HoleCutType.isValid())
             holeCutTypeStr = HoleCutType.getValueAsString();
 
