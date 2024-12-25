@@ -197,20 +197,18 @@ class TestHole(unittest.TestCase):
     def testThreadTypeChange(self):
         self.Hole.ThreadType = 1
         self.assertEqual(self.Hole.ThreadType, 'ISOMetricProfile')
-        self.Hole.ThreadSize = 11
-        self.assertEqual(self.Hole.ThreadSize, 'M4')
+        self.Hole.ThreadSize = 14
+        self.assertEqual(self.Hole.ThreadSize, 'M6')
         self.Hole.ThreadType = 2
         self.assertEqual(self.Hole.ThreadType, 'ISOMetricFineProfile')
-        # Size should be auto-selected to M4x0.5
-        # This currently only works when using the GUI task-panel
-        # self.assertEqual(self.Hole.ThreadSize, 'M4x0.5')
+        # ThreadSize should be auto-selected to M6x0.75
+        self.assertEqual(self.Hole.ThreadSize, 'M6x0.75')
 
-        # ThreadSize should maintain 1/4"
+        # ThreadSize should be auto-selected to 1/4
         designation = '1/4'
 
         self.Hole.ThreadType = 3
         self.assertEqual(self.Hole.ThreadType, 'UNC')
-        self.Hole.ThreadSize = 9
         self.assertEqual(self.Hole.ThreadSize, designation)
         self.Hole.ThreadType = 4
         self.assertEqual(self.Hole.ThreadType, 'UNF')
