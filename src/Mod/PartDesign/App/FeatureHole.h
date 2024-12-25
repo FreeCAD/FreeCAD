@@ -56,6 +56,7 @@ public:
     App::PropertyEnumeration    ThreadClass;
     App::PropertyEnumeration    ThreadFit;
     App::PropertyLength         Diameter;
+    App::PropertyLength         ThreadDiameter;
     App::PropertyEnumeration    ThreadDirection;
     App::PropertyEnumeration    HoleCutType;
     App::PropertyBool           HoleCutCustomValues;
@@ -231,6 +232,7 @@ private:
     double getThreadRunout(int mode = 1) const;
     double getThreadPitch() const;
     double getThreadProfileAngle();
+    void findClosestDesignation();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
