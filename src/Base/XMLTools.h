@@ -174,6 +174,12 @@ inline XStr::~XStr()
     XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm);
 }
 
+#define XStrLiteral(literal)                                                                       \
+    ([]() -> const XStr& {                                                                         \
+        static const XStr str {literal};                                                           \
+        return str;                                                                                \
+    }())
+
 
 // -----------------------------------------------------------------------
 //  Getter methods
@@ -210,6 +216,11 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
 
 inline XUTF8Str::~XUTF8Str() = default;
 
+#define XUTF8StrLiteral(literal)                                                                   \
+    ([]() -> const XUTF8Str& {                                                                     \
+        static const XUTF8Str str {literal};                                                       \
+        return str;                                                                                \
+    }())
 
 // -----------------------------------------------------------------------
 //  Getter methods
