@@ -450,7 +450,10 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     // use the console highlighter
     pythonSyntax = new PythonConsoleHighlighter(this);
-    pythonSyntax->setDocument(this->document());
+    setSyntaxHighlighter(pythonSyntax);
+
+    setVisibleLineNumbers(false);
+    setEnabledHighlightCurrentLine(false);
 
     // create the window for call tips
     d->callTipsList = new CallTipsList(this);
@@ -511,7 +514,6 @@ PythonConsole::~PythonConsole()
     saveHistory();
     Base::PyGILStateLocker lock;
     d->hGrpSettings->Detach(this);
-    delete pythonSyntax;
     Py_XDECREF(d->_stdoutPy);
     Py_XDECREF(d->_stderrPy);
     Py_XDECREF(d->_stdinPy);
