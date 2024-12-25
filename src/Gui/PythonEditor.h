@@ -59,6 +59,7 @@ public Q_SLOTS:
      * this line is skipped.
      */
     void onUncomment();
+    void onExecuteInConsole();
     void setFileName(const QString&);
     void startDebug();
 
