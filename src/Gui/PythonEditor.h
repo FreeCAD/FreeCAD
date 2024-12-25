@@ -44,6 +44,7 @@ public:
     explicit PythonEditor(QWidget *parent = nullptr);
     ~PythonEditor() override;
 
+    void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason ) override;
     void toggleBreakpoint();
     void showDebugMarker(int line);
     void hideDebugMarker();

@@ -441,18 +441,6 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         }
         lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), width, cr.height()));
     }
-
-    if (strcmp(sReason, "EnableBlockCursor") == 0 ||
-        strcmp(sReason, "FontSize") == 0 ||
-        strcmp(sReason, "Font") == 0) {
-        bool block = hPrefGrp->GetBool("EnableBlockCursor", false);
-        if (block) {
-            setCursorWidth(QFontMetrics(font()).averageCharWidth());
-        }
-        else {
-            setCursorWidth(1);
-        }
-    }
 }
 
 // ------------------------------------------------------------------------------
