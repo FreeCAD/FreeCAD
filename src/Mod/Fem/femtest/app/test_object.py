@@ -1120,7 +1120,7 @@ def create_all_fem_objects_doc(doc):
     res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
     res.Mesh = rm
     if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
-        vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, [res])[0]
+        vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, [res]))[0]
         ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
         ObjectsFem.makePostVtkFilterClipScalar(doc, vres)
         ObjectsFem.makePostVtkFilterContours(doc, vres)

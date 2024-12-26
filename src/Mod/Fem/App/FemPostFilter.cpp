@@ -75,34 +75,85 @@ void FemPostFilter::setActiveFilterPipeline(std::string name)
             m_pipelines[m_activePipeline].source->RemoveAllInputConnections(0);
         }
 
+        // handle the transform
+        if (m_use_transform) {
+            m_transform_filter->RemoveAllInputConnections(0);
+            if(m_transform_location == TransformLocation::output) {
+                m_transform_filter->SetInputConnection(m_pipelines[name].target->GetOutputPort(0));
+            } else {
+                m_pipelines[name].source->SetInputConnection(m_transform_filter->GetOutputPort(0));
+            }
+        }
+
         //set the new pipeline active
         m_activePipeline = name;
-
-        //inform our parent, that we need to be reconnected
-        App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
-        if (!group) {
-            return;
-        }
-        if (group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
-            auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
-            postgroup->filterPipelineChanged(this);
-        }
+        pipelineChanged();
     }
 }
 
-FemPostFilter::FilterPipeline& FemPostFilter::getActiveFilterPipeline()
+vtkSmartPointer<vtkAlgorithm> FemPostFilter::getFilterInput()
 {
-    return m_pipelines[m_activePipeline];
+    if (m_use_transform &&
+        m_transform_location == TransformLocation::input) {
+
+        return m_transform_filter;
+    }
+
+    return m_pipelines[m_activePipeline].source;
 }
 
-void FemPostFilter::onChanged(const App::Property* prop)
+vtkSmartPointer<vtkAlgorithm> FemPostFilter::getFilterOutput()
 {
-    //make sure we inform our parent object that we changed, it then can inform others if needed
+    if (m_use_transform &&
+        m_transform_location == TransformLocation::output) {
+
+        return m_transform_filter;
+    }
+
+    return m_pipelines[m_activePipeline].target;
+}
+
+void FemPostFilter::pipelineChanged() {
+    //inform our parent, that we need to be reconnected
     App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
     if (!group) {
         return;
     }
     if (group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
+        auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
+        postgroup->filterPipelineChanged(this);
+    }
+}
+
+void FemPostFilter::onChanged(const App::Property* prop)
+{
+
+    if (prop == &Placement) {
+        if (Placement.getValue().isIdentity() && m_use_transform) {
+            // remove transform from pipeline
+            if (m_transform_location == TransformLocation::output) {
+                m_transform_filter->RemoveAllInputConnections(0);
+            } else {
+                m_pipelines[m_activePipeline].source->RemoveAllInputConnections(0);
+            }
+            m_use_transform = false;
+            pipelineChanged();
+        }
+        if(!Placement.getValue().isIdentity() && !m_use_transform) {
+            // add transform to pipeline
+            if (m_transform_location == TransformLocation::output) {
+                m_transform_filter->SetInputConnection(m_pipelines[m_activePipeline].target->GetOutputPort(0));
+            } else {
+                m_pipelines[m_activePipeline].source->SetInputConnection(m_transform_filter->GetOutputPort(0));
+            }
+            m_use_transform = true;
+            pipelineChanged();
+        }
+    }
+
+    //make sure we inform our parent object that we changed, it then can inform others if needed
+    App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
+    if (group && group->hasExtension(FemPostGroupExtension::getExtensionClassTypeId())) {
         auto postgroup = group->getExtensionByType<FemPostGroupExtension>();
         postgroup->filterChanged(this);
     }
@@ -116,19 +167,19 @@ DocumentObjectExecReturn* FemPostFilter::execute()
 
     // the pipelines are setup correctly, all we need to do is to update and take out the data.
     if (!m_pipelines.empty() && !m_activePipeline.empty()) {
-        FemPostFilter::FilterPipeline& pipe = m_pipelines[m_activePipeline];
+        auto output = getFilterOutput();
 
-        if (pipe.source->GetNumberOfInputConnections(0) == 0) {
+        if (output->GetNumberOfInputConnections(0) == 0) {
             return StdReturn;
         }
 
         if (Frame.getValue()>0) {
-            pipe.target->UpdateTimeStep(Frame.getValue());
+            output->UpdateTimeStep(Frame.getValue());
         }
         else {
-            pipe.target->Update();
+            output->Update();
         }
-        Data.setValue(pipe.target->GetOutputDataObject(0));
+        Data.setValue(output->GetOutputDataObject(0));
     }
 
     return StdReturn;
@@ -136,11 +187,12 @@ DocumentObjectExecReturn* FemPostFilter::execute()
 
 vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData() {
 
-    if (getActiveFilterPipeline().source->GetNumberOfInputConnections(0) == 0) {
+    auto active = m_pipelines[m_activePipeline];
+    if (active.source->GetNumberOfInputConnections(0) == 0) {
         return nullptr;
     }
 
-    vtkAlgorithmOutput* output = getActiveFilterPipeline().source->GetInputConnection(0,0);
+    vtkAlgorithmOutput* output = active.source->GetInputConnection(0,0);
     vtkAlgorithm* algo = output->GetProducer();
     algo->Update();
 
@@ -183,6 +235,11 @@ std::vector<std::string> FemPostFilter::getInputScalarFields()
     }
 
     return ScalarArray;
+}
+
+void FemPostFilter::setTransformLocation(TransformLocation loc)
+{
+    m_transform_location = loc;
 }
 
 // ***************************************************************************
