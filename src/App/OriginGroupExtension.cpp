@@ -40,7 +40,7 @@ EXTENSION_PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtensi
 
 OriginGroupExtension::OriginGroupExtension()
 {
-     Base::Console().Message("Extension type: %s\n", OriginGroupExtension::getExtensionClassTypeId().getName());
+
     initExtensionType(OriginGroupExtension::getExtensionClassTypeId());
 
     EXTENSION_ADD_PROPERTY_TYPE(Origin,

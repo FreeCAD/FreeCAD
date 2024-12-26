@@ -335,49 +335,38 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
     static Base::FileInfo fi = Base::FileInfo(App::Application::getTempFileName());
     bool success = false;
 
-
+    Base::FileInfo datafolder;
+    vtkSmartPointer<vtkXMLWriter> xmlWriter;
     if (m_dataObject->IsA("vtkMultiBlockDataSet")) {
 
         // create a tmp directory to write in
-        auto datafolder = Base::FileInfo(App::Application::getTempPath() + "vtk_datadir");
+        datafolder = Base::FileInfo(App::Application::getTempPath() + "vtk_datadir");
         datafolder.createDirectories();
         auto datafile = Base::FileInfo(datafolder.filePath() + "/datafile.vtm");
 
         //create the data: vtm file and subfolder with the subsequent data files
-        auto xmlWriter = vtkSmartPointer<vtkXMLMultiBlockDataWriter>::New();
+        xmlWriter = vtkSmartPointer<vtkXMLMultiBlockDataWriter>::New();
         xmlWriter->SetInputDataObject(m_dataObject);
         xmlWriter->SetFileName(datafile.filePath().c_str());
         xmlWriter->SetDataModeToBinary();
-        success = xmlWriter->Write() == 1;
-
-        if (success) {
-            // ZIP file we store all data in
-            zipios::ZipOutputStream ZipWriter(fi.filePath());
-            ZipWriter.putNextEntry("dummy"); //need to add a dummy first, as the read stream always omits the first entry for unknown reasons
-            add_to_zip(datafolder, datafolder.filePath().length(), ZipWriter);
-            ZipWriter.close();
-            datafolder.deleteDirectoryRecursive();
-        }
-
     }
     else {
-        auto xmlWriter = vtkSmartPointer<vtkXMLDataSetWriter>::New();
+        xmlWriter = vtkSmartPointer<vtkXMLDataSetWriter>::New();
         xmlWriter->SetInputDataObject(m_dataObject);
         xmlWriter->SetFileName(fi.filePath().c_str());
         xmlWriter->SetDataModeToBinary();
-        success = xmlWriter->Write() == 1;
+
+        #ifdef VTK_CELL_ARRAY_V2
+        // Looks like an invalid data object that causes a crash with vtk9
+        vtkUnstructuredGrid* dataGrid = vtkUnstructuredGrid::SafeDownCast(m_dataObject);
+        if (dataGrid && (dataGrid->GetPiece() < 0 || dataGrid->GetNumberOfPoints() <= 0)) {
+            std::cerr << "PropertyPostDataObject::SaveDocFile: ignore empty vtkUnstructuredGrid\n";
+            return;
+        }
+        #endif
     }
 
-#ifdef VTK_CELL_ARRAY_V2
-    // Looks like an invalid data object that causes a crash with vtk9
-    vtkUnstructuredGrid* dataGrid = vtkUnstructuredGrid::SafeDownCast(m_dataObject);
-    if (dataGrid && (dataGrid->GetPiece() < 0 || dataGrid->GetNumberOfPoints() <= 0)) {
-        std::cerr << "PropertyPostDataObject::SaveDocFile: ignore empty vtkUnstructuredGrid\n";
-        return;
-    }
-#endif
-
-    if (!success) {
+    if (xmlWriter->Write() != 1) {
         // Note: Do NOT throw an exception here because if the tmp. file could
         // not be created we should not abort.
         // We only print an error message but continue writing the next files to the
@@ -397,7 +386,14 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         ss << "Cannot save vtk file '" << fi.filePath() << "'";
         writer.addError(ss.str());
     }
-
+    else if (m_dataObject->IsA("vtkMultiBlockDataSet")) {
+        // ZIP file we store all data in
+        zipios::ZipOutputStream ZipWriter(fi.filePath());
+        ZipWriter.putNextEntry("dummy"); //need to add a dummy first, as the read stream preloads the first entry, and we cannot get the file name...
+        add_to_zip(datafolder, datafolder.filePath().length(), ZipWriter);
+        ZipWriter.close();
+        datafolder.deleteDirectoryRecursive();
+    }
 
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
     if (file) {
