@@ -3580,6 +3580,12 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         return ((point1 - point2).Length() < 500 * Precision::Confusion());
     };
 
+    auto areParamsWithinApproximation = [](double param1, double param2) {
+        // From testing: 500x (or 0.000050) is needed in order to not falsely distinguish points
+        // calculated with seekTrimPoints
+        return (std::abs(param1 - param2) < Precision::PApproximation());
+    };
+
     // returns true if the point defined by (GeoId1, pos1) can be considered to be coincident with
     // point.
     auto isPointAtPosition =
@@ -3606,11 +3612,15 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
          * and also make sure that the PointOnObject constraint is deleted.
          */
         std::unique_ptr<Constraint> newConstr;
+        if (!constr->involvesGeoId(cuttingGeoId)
+            || !constr->involvesGeoIdAndPosId(GeoId, PointPos::none)) {
+            return newConstr;
+        }
         switch (constr->Type) {
         case PointOnObject: {
             // we might want to transform this (and the new point-on-object constraints) into a coincidence
-            if (constr->First == cuttingGeoId
-                && isPointAtPosition(constr->First, constr->FirstPos, cutPointVec)) {
+            // At this stage of the check the point has to be an end of `cuttingGeoId` on the edge of `GeoId`.
+            if (isPointAtPosition(constr->First, constr->FirstPos, cutPointVec)) {
                 // This concerns the start portion of the trim
                 newConstr.reset(constr->copy());
                 newConstr->Type = Sketcher::Coincident;
@@ -3623,10 +3633,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         case Perpendicular: {
             // These may have to be turned into endpoint-to-endpoint or endpoint-to-edge
             // TODO: could there be tangent/perpendicular constraints not involving the trim that are modified below?
-            if (!constr->involvesGeoId(cuttingGeoId)
-                || !constr->involvesGeoIdAndPosId(GeoId, PointPos::none)) {
-                break;
-            }
             newConstr.reset(constr->copy());
             newConstr->substituteIndexAndPos(GeoId, PointPos::none, newGeoId, newPosId);
             // make sure the first position is a point
@@ -3665,10 +3671,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     // Points at the intersection
     std::vector<Base::Vector3d> cutPoints(2);
 
-    // Remove internal geometry beforehand so cuttingGeoIds[0] and cuttingGeoIds[1] do not change
-    deleteUnusedInternalGeometryAndUpdateGeoId(GeoId);
-    geo = getGeometry(GeoId);
-
     // Using SketchObject wrapper, as Part2DObject version returns GeoId = -1 when intersection not
     // found, which is wrong for a GeoId (axis). seekTrimPoints returns:
     // - For a parameter associated with "point" between an intersection and the end point
@@ -3690,23 +3692,31 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         return 0;
     }
 
+    const auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
+    double firstParam = geoAsCurve->getFirstParameter();
+    double lastParam = geoAsCurve->getLastParameter();
+    double pointParam, cut0Param{firstParam}, cut1Param{lastParam};
+    bool allParamsFound = getIntersectionParameter(geo, point, pointParam)
+        && getIntersectionParameter(geo, cutPoints[0], cut0Param)
+        && getIntersectionParameter(geo, cutPoints[1], cut1Param);
+    if (!allParamsFound) {
+        return -1;
+    }
+
+    if (!isClosedCurve(geo) && areParamsWithinApproximation(firstParam, cut0Param)) {
+        cuttingGeoIds[0] = GeoEnum::GeoUndef;
+    }
+
+    if (!isClosedCurve(geo) && areParamsWithinApproximation(lastParam, cut1Param)) {
+        cuttingGeoIds[1] = GeoEnum::GeoUndef;
+    }
+
     size_t numUndefs = std::count(cuttingGeoIds.begin(), cuttingGeoIds.end(), GeoEnum::GeoUndef);
 
     if (numUndefs == 0 && arePointsWithinPrecision(cutPoints[0], cutPoints[1])) {
         // If both points are detected and are coincident, deletion is the only option.
         delGeometry(GeoId);
         return 0;
-    }
-
-    const auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
-    double firstParam = geoAsCurve->getFirstParameter();
-    double lastParam = geoAsCurve->getLastParameter();
-    double pointParam, cut0Param, cut1Param;
-    bool allParamsFound = getIntersectionParameter(geo, point, pointParam)
-        && getIntersectionParameter(geo, cutPoints[0], cut0Param)
-        && getIntersectionParameter(geo, cutPoints[1], cut1Param);
-    if (!allParamsFound) {
-        return -1;
     }
 
     bool startPointRemains = (cuttingGeoIds[0] != GeoEnum::GeoUndef);
@@ -3716,8 +3726,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     std::vector<Part::Geometry*> newGeos;
     std::vector<const Part::Geometry*> newGeosAsConsts;
     // TODO: This should be needed, but for some reason we already get both curves as construction
-    // when needed bool oldGeoIsConstruction = GeometryFacade::getConstruction(static_cast<const
-    // Part::GeomCurve*>(geo));
+    // when needed.
+
+    // bool oldGeoIsConstruction =
+    //     GeometryFacade::getConstruction(static_cast<const Part::GeomCurve*>(geo));
 
     if (isClosedCurve(geo) && !paramsOfNewGeos.empty()) {
         startPointRemains = false;
@@ -3784,7 +3796,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         // Make centers coincident
         if (newIds.size() > 1) {
             Constraint* joint = new Constraint();
-            joint = new Constraint();
             joint->Type = Coincident;
             joint->First = newIds.front();
             joint->FirstPos = PointPos::mid;
@@ -3833,6 +3844,11 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         if (newConstr != nullptr) {
             newConstraints.push_back(newConstr.release());
             isPoint2ConstrainedOnGeoId2 = true;
+            continue;
+        }
+        // We have already transferred all constraints on endpoints to the new pieces.
+        // If there is still any left, this means one of the remaining pieces was degenerate.
+        if (!con->involvesGeoIdAndPosId(GeoId, PointPos::none)) {
             continue;
         }
         // constraint has not yet been changed
@@ -3888,6 +3904,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
     auto vals = getInternalGeometry();
     auto newVals(vals);
+    GeometryFacade::copyId(geo, newGeos.front());
     newVals[GeoId] = newGeos.front();
     if (newGeos.size() > 1) {
         newVals.push_back(newGeos.back());
@@ -3909,6 +3926,13 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             changeConstraintAfterDeletingGeo(cons, deletedGeoId);
         }
     }
+    newConstraints.erase(std::remove_if(newConstraints.begin(),
+                                        newConstraints.end(),
+                                        [](const auto& constr) {
+                                            return constr->Type == ConstraintType::None;
+                                        }),
+                         newConstraints.end());
+    delGeometries(geoIdsToBeDeleted.begin(), geoIdsToBeDeleted.end());
     addConstraints(newConstraints);
 
     if (noRecomputes) {
@@ -4034,8 +4058,7 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
     case Diameter:
     case Equal: {
         // FIXME: This sounds good by itself, but results in redundant constraints when equality is applied between newIds
-        transferToAll = geo->is<Part::GeomCircle>()
-            || geo->is<Part::GeomArcOfCircle>();
+        transferToAll = geo->is<Part::GeomCircle>() || geo->is<Part::GeomArcOfCircle>();
         break;
     }
     default:
