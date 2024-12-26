@@ -1559,8 +1559,17 @@ void CmdTechDrawSymbol::activated(int iMsg)
         doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSymbol', 'Symbol', '%s')",
               FeatName.c_str(), FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Symbol = svg", FeatName.c_str());
+
+        auto baseView = CommandHelpers::firstViewInSelection(this);
+        if (baseView) {
+            auto baseName = baseView->getNameInDocument();
+            doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
+                      FeatName.c_str(), baseName);
+        }
+
         doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                   FeatName.c_str());
+
         updateActive();
         commitCommand();
     }
@@ -1745,6 +1754,15 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
               FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
               SpreadName.c_str());
+
+    // look for an owner view in the selection
+    auto baseView = CommandHelpers::firstViewInSelection(this);
+    if (baseView) {
+        auto baseName = baseView->getNameInDocument();
+        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
+                  FeatName.c_str(), baseName);
+    }
+
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
     updateActive();

@@ -45,7 +45,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/PreferencesGui.h>
-#include <Mod/TechDraw/Gui/DrawGuiUtil.h>.h>
+#include <Mod/TechDraw/Gui/DrawGuiUtil.h>
 
 
 #include "CommandHelpers.h"
