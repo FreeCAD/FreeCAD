@@ -24,7 +24,6 @@
 
 
 import os
-
 import FreeCAD
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -197,8 +196,10 @@ class ifc_observer:
             return
         del self.docname
         del self.objname
-        if obj.isDerivedFrom("Part::Feature") or "IfcType" in obj.PropertiesList:
-            FreeCAD.Console.PrintLog("Converting" + obj.Label + "to IFC\n")
+        if obj.isDerivedFrom("Part::Feature") \
+        or "IfcType" in obj.PropertiesList \
+        or "CreateSpreadsheet" in obj.PropertiesList:
+            FreeCAD.Console.PrintLog("Converting " + obj.Label + " to IFC\n")
             from nativeifc import ifc_geometry  # lazy loading
             from nativeifc import ifc_tools  # lazy loading
 

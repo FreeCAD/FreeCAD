@@ -105,34 +105,35 @@ def show_psets(obj):
             ttip = (
                 ptype + ":" + oname
             )  # setting IfcType:PropName as a tooltip to desambiguate
-            while pname in obj.PropertiesList:
+            #while pname in obj.PropertiesList:
                 # print("DEBUG: property", pname, "(", value, ") already exists in", obj.Label)
-                pname += "_"
+            #    pname += "_"
+            ftype = None
             if ptype in [
                 "IfcPositiveLengthMeasure",
                 "IfcLengthMeasure",
                 "IfcNonNegativeLengthMeasure",
             ]:
-                obj.addProperty("App::PropertyDistance", pname, gname, ttip)
+                ftype = "App::PropertyDistance"
             elif ptype in ["IfcVolumeMeasure"]:
-                obj.addProperty("App::PropertyVolume", pname, gname, ttip)
+                ftype = "App::PropertyVolume"
             elif ptype in ["IfcPositivePlaneAngleMeasure", "IfcPlaneAngleMeasure"]:
-                obj.addProperty("App::PropertyAngle", pname, gname, ttip)
+                ftype = "App::PropertyAngle"
                 value = float(value)
                 while value > 360:
                     value = value - 360
             elif ptype in ["IfcMassMeasure"]:
-                obj.addProperty("App::PropertyMass", pname, gname, ttip)
+                ftype = "App::PropertyMass"
             elif ptype in ["IfcAreaMeasure"]:
-                obj.addProperty("App::PropertyArea", pname, gname, ttip)
+                ftype = "App::PropertyArea"
             elif ptype in ["IfcCountMeasure", "IfcInteger"]:
-                obj.addProperty("App::PropertyInteger", pname, gname, ttip)
+                ftype = "App::PropertyInteger"
                 value = int(value.strip("."))
             elif ptype in ["IfcReal"]:
-                obj.addProperty("App::PropertyFloat", pname, gname, ttip)
+                ftype = "App::PropertyFloat"
                 value = float(value)
             elif ptype in ["IfcBoolean", "IfcLogical"]:
-                obj.addProperty("App::PropertyBool", pname, gname, ttip)
+                ftype = "App::PropertyBool"
                 if value in [".T."]:
                     value = True
                 else:
@@ -144,14 +145,30 @@ def show_psets(obj):
                 "IfcDuration",
                 "IfcTimeStamp",
             ]:
-                obj.addProperty("App::PropertyTime", pname, gname, ttip)
+                ftype = "App::PropertyTime"
+            elif isinstance(value, str) and "::" in value:
+                # FreeCAD-specific: split strings by :: delimiter
+                ftype = "App::PropertyStringList"
+                value = value.split("::")
             else:
-                obj.addProperty("App::PropertyString", pname, gname, ttip)
+                ftype = "App::PropertyString"
             # print("DEBUG: setting",pname, ptype, value)
-            setattr(obj, pname, value)
+            if ftype:
+                if pname in obj.PropertiesList \
+                and obj.getGroupOfProperty(pname) == gname:
+                    if obj.getTypeOfProperty(pname) == ftype:
+                        pass
+                    if ftype == "App::PropertyString" \
+                    and obj.getTypeOfProperty(pname) == "App::PropertyStringList":
+                        value = [value]
+                else:
+                    print(pname, gname, obj.PropertiesList)
+                    obj.addProperty(ftype, pname, gname, ttip)
+            if pname in obj.PropertiesList:
+                setattr(obj, pname, value)
 
 
-def edit_pset(obj, prop, value=None, force=False):
+def edit_pset(obj, prop, value=None, force=False, ifcfile=None, element=None):
     """Edits the corresponding property. If force is True,
     the property is created even if it has no value"""
 
@@ -159,8 +176,14 @@ def edit_pset(obj, prop, value=None, force=False):
     ptype = obj.getDocumentationOfProperty(prop)
     if value is None:
         value = getattr(obj, prop)
-    ifcfile = ifc_tools.get_ifcfile(obj)
-    element = ifc_tools.get_ifc_element(obj)
+    if not ifcfile:
+        ifcfile = ifc_tools.get_ifcfile(obj)
+        if not ifcfile:
+            return
+    if not element:
+        element = ifc_tools.get_ifc_element(obj)
+        if not element:
+            return
     pset_exist = get_psets(element)
     target_prop = None
     value_exist = None
@@ -242,7 +265,7 @@ def edit_pset(obj, prop, value=None, force=False):
         "IFC: property changed for "
         + obj.Label
         + " ("
-        + str(obj.StepId)
+        + str(element.id())
         + "): "
         + str(target_prop)
         + ": "
