@@ -79,6 +79,7 @@ FemPostBranchFilter::FemPostBranchFilter() : Fem::FemPostFilter(), Fem::FemPostG
 
     m_append = vtkSmartPointer<vtkAppendFilter>::New();
     m_passthrough = vtkSmartPointer<vtkPassThrough>::New();
+    m_transform_filter->SetInputConnection(m_passthrough->GetOutputPort(0));
 
     FilterPipeline passthrough;
     passthrough.source = m_passthrough;
@@ -90,6 +91,7 @@ FemPostBranchFilter::FemPostBranchFilter() : Fem::FemPostFilter(), Fem::FemPostG
     append.target = m_append;
     addFilterPipeline(append, "append");
 
+    setTransformLocation(TransformLocation::input);
     setActiveFilterPipeline("passthrough");
 }
 
@@ -104,6 +106,48 @@ short FemPostBranchFilter::mustExecute() const
     return FemPostFilter::mustExecute();
 }
 
+void FemPostBranchFilter::setupPipeline()
+{
+    // we check if all connections are right and add new ones if needed
+    std::vector<App::DocumentObject*> objs = Group.getValues();
+
+    if (objs.empty()) {
+        return;
+    }
+
+
+    // prepare output filter: we make all connections new!
+    m_append->RemoveAllInputConnections(0);
+
+    FemPostFilter* filter = NULL;
+    std::vector<App::DocumentObject*>::iterator it = objs.begin();
+    for (; it != objs.end(); ++it) {
+
+        // prepare the filter: make all connections new
+        FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
+        nextFilter->getFilterInput()->RemoveAllInputConnections(0);
+
+        // handle input modes
+        if (Mode.getValue() == 0) {
+            // serial: the next filter gets the previous output, the first one gets our input
+            if (filter == NULL) {
+                nextFilter->getFilterInput()->SetInputConnection(m_passthrough->GetOutputPort());
+            } else {
+                nextFilter->getFilterInput()->SetInputConnection(filter->getFilterOutput()->GetOutputPort());
+            }
+
+        }
+        else if (Mode.getValue() == 1) {
+            // parallel: all filters get out input
+            nextFilter->getFilterInput()->SetInputConnection(m_passthrough->GetOutputPort());
+        }
+
+        // handle append filter
+        m_append->AddInputConnection(0, nextFilter->getFilterOutput()->GetOutputPort());
+
+        filter = nextFilter;
+    };
+}
 
 void FemPostBranchFilter::onChanged(const Property* prop)
 {
@@ -112,46 +156,7 @@ void FemPostBranchFilter::onChanged(const Property* prop)
      */
 
     if (prop == &Group || prop == &Mode) {
-
-
-        // we check if all connections are right and add new ones if needed
-        std::vector<App::DocumentObject*> objs = Group.getValues();
-
-        if (objs.empty()) {
-            return;
-        }
-
-        // prepare output filter: we make all connections new!
-        m_append->RemoveAllInputConnections(0);
-
-        FemPostFilter* filter = NULL;
-        std::vector<App::DocumentObject*>::iterator it = objs.begin();
-        for (; it != objs.end(); ++it) {
-
-            // prepare the filter: make all connections new
-            FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
-            nextFilter->getActiveFilterPipeline().source->RemoveAllInputConnections(0);
-
-            // handle input modes
-            if (Mode.getValue() == 0) {
-                // serial: the next filter gets the previous output, the first one gets our input
-                if (filter == NULL) {
-                    nextFilter->getActiveFilterPipeline().source->SetInputConnection(m_passthrough->GetOutputPort());
-                } else {
-                    nextFilter->getActiveFilterPipeline().source->SetInputConnection(filter->getActiveFilterPipeline().target->GetOutputPort());
-                }
-
-            }
-            else if (Mode.getValue() == 1) {
-                // parallel: all filters get out input
-                nextFilter->getActiveFilterPipeline().source->SetInputConnection(m_passthrough->GetOutputPort());
-            }
-
-            // handle append filter
-            m_append->AddInputConnection(0, nextFilter->getActiveFilterPipeline().target->GetOutputPort());
-
-            filter = nextFilter;
-        };
+        setupPipeline();
     }
 
     if (prop == &Frame) {

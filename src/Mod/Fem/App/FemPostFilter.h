@@ -45,6 +45,8 @@
 namespace Fem
 {
 
+enum TransformLocation { input, output };
+
 class FemExport FemPostFilter: public Fem::FemPostObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFilter);
@@ -65,6 +67,8 @@ protected:
     void setActiveFilterPipeline(std::string name);
     FilterPipeline& getFilterPipeline(std::string name);
 
+    void setTransformLocation(TransformLocation loc);
+
 public:
     /// Constructor
     FemPostFilter();
@@ -75,12 +79,17 @@ public:
     void onChanged(const App::Property* prop) override;
     App::DocumentObjectExecReturn* execute() override;
 
-    FilterPipeline& getActiveFilterPipeline();
+    vtkSmartPointer<vtkAlgorithm> getFilterInput();
+    vtkSmartPointer<vtkAlgorithm> getFilterOutput();
 
 private:
     // handling of multiple pipelines which can be the filter
     std::map<std::string, FilterPipeline> m_pipelines;
     std::string m_activePipeline;
+    bool m_use_transform = false;
+    TransformLocation m_transform_location = TransformLocation::output;
+
+    void pipelineChanged(); // inform parents that the pipeline changed
 };
 
 class FemExport FemPostSmoothFilterExtension: public App::DocumentObjectExtension

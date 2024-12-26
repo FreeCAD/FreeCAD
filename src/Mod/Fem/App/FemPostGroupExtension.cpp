@@ -123,6 +123,10 @@ void FemPostGroupExtension::recomputeChildren()
 {
     for (const auto& obj : Group.getValues()) {
         obj->touch();
+
+        if (obj->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId())) {
+            obj->getExtension<Fem::FemPostGroupExtension>()->recomputeChildren();
+        }
     }
 }
 

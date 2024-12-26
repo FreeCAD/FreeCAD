@@ -48,6 +48,7 @@ public:
     static FemFrameSourceAlgorithm* New();
     vtkTypeMacro(FemFrameSourceAlgorithm, vtkUnstructuredGridAlgorithm);
 
+    bool isValid();
     void setDataObject(vtkSmartPointer<vtkDataObject> data);
     std::vector<double> getFrameValues();
 
@@ -77,7 +78,7 @@ public:
     virtual vtkDataSet* getDataSet() override;
     Fem::FemPostFunctionProvider* getFunctionProvider();
 
-    short mustExecute() const override;
+    App::DocumentObjectExecReturn* execute() override;
     PyObject* getPyObject() override;
 
     const char* getViewProviderName() const override
@@ -97,7 +98,6 @@ public:
     // Group pipeline handling
     void filterChanged(FemPostFilter* filter) override;
     void filterPipelineChanged(FemPostFilter* filter) override;
-    void recomputeChildren() override;
 
     // frame handling
     bool hasFrames();
@@ -117,6 +117,12 @@ protected:
 private:
     App::Enumeration  m_frameEnum;
     vtkSmartPointer<FemFrameSourceAlgorithm> m_source_algorithm;
+
+    bool m_block_property = false;
+    bool m_data_updated   = false;
+    bool m_use_transform  = false;
+    void updateData();
+
 
     template<class TReader>
     void readXMLFile(std::string file)
