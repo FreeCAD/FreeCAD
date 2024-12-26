@@ -58,13 +58,10 @@ void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
     FemGui::ViewProviderFemPostObject::updateData(prop);
 
     Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
-    if (prop == &pipeline->Frame) {
-        // Frame is pipeline property, not post object, parent updateData does not catch it for update
-        updateVtk();
-    }
-    else if ((prop == &pipeline->Data) ||
-             (prop == &pipeline->Group)) {
-                     updateFunctionSize();
+    if ((prop == &pipeline->Data) ||
+        (prop == &pipeline->Group)) {
+
+        updateFunctionSize();
     }
 }
 

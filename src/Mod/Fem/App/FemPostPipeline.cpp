@@ -79,6 +79,9 @@ void FemFrameSourceAlgorithm::setDataObject(vtkSmartPointer<vtkDataObject> data)
     Update();
 }
 
+bool FemFrameSourceAlgorithm::isValid() {
+    return m_data.GetPointer() != nullptr;
+}
 
 std::vector<double> FemFrameSourceAlgorithm::getFrameValues()
 {
@@ -128,10 +131,6 @@ int FemFrameSourceAlgorithm::RequestInformation(vtkInformation* reqInfo,
         return 0;
     }
 
-
-    std::stringstream strm;
-    outVector->Print(strm);
-
     std::vector<double> frames = getFrameValues();
 
     if (frames.empty()) {
@@ -139,13 +138,11 @@ int FemFrameSourceAlgorithm::RequestInformation(vtkInformation* reqInfo,
     }
 
     double tRange[2] = {frames.front(), frames.back()};
-    double tFrames[frames.size()];
-    std::copy(frames.begin(), frames.end(), tFrames);
 
     // finally set the time info!
     vtkInformation* info = outVector->GetInformationObject(0);
     info->Set(vtkStreamingDemandDrivenPipeline::TIME_RANGE(), tRange, 2);
-    info->Set(vtkStreamingDemandDrivenPipeline::TIME_STEPS(), tFrames, frames.size());
+    info->Set(vtkStreamingDemandDrivenPipeline::TIME_STEPS(), &frames[0], frames.size());
     info->Set(CAN_HANDLE_PIECE_REQUEST(), 1);
 
     return 1;
@@ -155,9 +152,6 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
                                          vtkInformationVector**,
                                          vtkInformationVector* outVector)
 {
-
-    std::stringstream strstm;
-    outVector->Print(strstm);
 
     vtkInformation* outInfo = outVector->GetInformationObject(0);
     vtkUnstructuredGrid* output =
@@ -214,23 +208,19 @@ FemPostPipeline::FemPostPipeline()
 
     // create our source algorithm
     m_source_algorithm = vtkSmartPointer<FemFrameSourceAlgorithm>::New();
+    m_transform_filter->SetInputConnection(m_source_algorithm->GetOutputPort(0));
 }
 
 FemPostPipeline::~FemPostPipeline() = default;
 
-short FemPostPipeline::mustExecute() const
-{
-    if (Mode.isTouched()) {
-        return 1;
-    }
-
-    return FemPostObject::mustExecute();
-}
-
 vtkDataSet* FemPostPipeline::getDataSet()
 {
 
-    vtkDataObject* data = m_source_algorithm->GetOutputDataObject(0);
+    if (!m_source_algorithm->isValid()) {
+        return nullptr;
+    }
+
+    vtkDataObject* data = m_transform_filter->GetOutputDataObject(0);
     if (!data) {
         return nullptr;
     }
@@ -316,6 +306,35 @@ void FemPostPipeline::scale(double s)
     onChanged(&Data);
 }
 
+App::DocumentObjectExecReturn* FemPostPipeline::execute()
+{
+    // we fake a recalculated data oject, so that the viewprovider updates
+    // the visualization. We do not want to do this in onChange, as it
+    // could theoretically be long running
+    if (m_data_updated) {
+
+        auto frames = getFrameValues();
+        if (!frames.empty() && Frame.getValue() < long(frames.size())) {
+
+            double time = frames[Frame.getValue()];
+            m_transform_filter->UpdateTimeStep(time);
+        } else {
+            m_transform_filter->Update();
+        }
+
+        m_block_property = true;
+        FemPostObject::onChanged(&Data);
+        m_block_property = false;
+        m_data_updated = false;
+    }
+    return FemPostObject::execute();
+}
+
+void FemPostPipeline::updateData()
+{
+    m_data_updated = true;
+}
+
 void FemPostPipeline::onChanged(const Property* prop)
 {
     /* onChanged handles the Pipeline setup: we connect the inputs and outputs
@@ -324,9 +343,17 @@ void FemPostPipeline::onChanged(const Property* prop)
 
     FemPostObject::onChanged(prop);
 
+    // update placement
+    if (prop == &Placement) {
+        // pipeline data updated!
+        updateData();
+        recomputeChildren();
+    }
+
     // use the correct data as source
-    if (prop == &Data) {
+    if (prop == &Data && !m_block_property) {
         m_source_algorithm->setDataObject(Data.getValue());
+        m_transform_filter->Update();
 
         // change the frame enum to correct values
         std::string val;
@@ -348,31 +375,43 @@ void FemPostPipeline::onChanged(const Property* prop)
         }
 
         App::Enumeration empty;
+        m_block_property = true;
         Frame.setValue(empty);
         m_frameEnum.setEnums(frame_values);
         Frame.setValue(m_frameEnum);
+        Frame.purgeTouched();
+        m_block_property = false;
 
         std::vector<std::string>::iterator it =
             std::find(frame_values.begin(), frame_values.end(), val);
         if (!val.empty() && it != frame_values.end()) {
+            // frame stays the same
+            m_block_property = true;
             Frame.setValue(val.c_str());
+            m_block_property = false;
+        } else {
+            // frame gets updated
+            Frame.setValue(long(0));
         }
 
-        Frame.purgeTouched();
         recomputeChildren();
     }
 
-    if (prop == &Frame) {
+    if (prop == &Frame && !m_block_property) {
 
-        // update the algorithm for the visulization
-        auto frames = getFrameValues();
-        if (!frames.empty() && Frame.getValue() < long(frames.size())) {
-
-            double time = frames[Frame.getValue()];
-            m_source_algorithm->UpdateTimeStep(time);
+        //Update all children with the new frame
+        double value = 0;
+        auto frames = m_source_algorithm->getFrameValues();
+        if (!frames.empty() && frames.size() > ulong(Frame.getValue())) {
+            value = frames[Frame.getValue()];
         }
-
-        // inform the downstream pipeline
+        for (const auto& obj : Group.getValues()) {
+            if (obj->isDerivedFrom(FemPostFilter::getClassTypeId())) {
+                static_cast<Fem::FemPostFilter*>(obj)->Frame.setValue(value);
+            }
+        }
+        // pipeline data updated!
+        updateData();
         recomputeChildren();
     }
 
@@ -393,29 +432,32 @@ void FemPostPipeline::onChanged(const Property* prop)
 
             // prepare the filter: make all connections new
             FemPostFilter* nextFilter = *it;
-            nextFilter->getActiveFilterPipeline().source->RemoveAllInputConnections(0);
+            nextFilter->getFilterInput()->RemoveAllInputConnections(0);
 
             // handle input modes (Parallel is seperated, alll other settings are serial, just in
             // case an old document is loaded with "custom" mode, idx 2)
             if (Mode.getValue() == 1) {
                 // parallel: all filters get out input
-                nextFilter->getActiveFilterPipeline().source->SetInputConnection(
-                    m_source_algorithm->GetOutputPort(0));
+                nextFilter->getFilterInput()->SetInputConnection(
+                    m_transform_filter->GetOutputPort(0));
             }
             else {
                 // serial: the next filter gets the previous output, the first one gets our input
                 if (filter == NULL) {
-                    nextFilter->getActiveFilterPipeline().source->SetInputConnection(
-                        m_source_algorithm->GetOutputPort(0));
+                    nextFilter->getFilterInput()->SetInputConnection(
+                        m_transform_filter->GetOutputPort(0));
                 }
                 else {
-                    nextFilter->getActiveFilterPipeline().source->SetInputConnection(
-                        filter->getActiveFilterPipeline().target->GetOutputPort());
+                    nextFilter->getFilterInput()->SetInputConnection(
+                        filter->getFilterOutput()->GetOutputPort());
                 }
             }
 
             filter = nextFilter;
         };
+
+        // inform the downstream pipeline
+        recomputeChildren();
     }
 }
 
@@ -435,6 +477,9 @@ void FemPostPipeline::filterChanged(FemPostFilter* filter)
 
             if (started) {
                 (*it)->touch();
+                if((*it)->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId())) {
+                    (*it)->getExtension<FemPostGroupExtension>()->recomputeChildren();
+                }
             }
 
             if (*it == filter) {
@@ -451,26 +496,6 @@ void FemPostPipeline::filterPipelineChanged(FemPostFilter*)
     // TODO: Do more efficiently
     onChanged(&Group);
 }
-
-void FemPostPipeline::recomputeChildren()
-{
-    // get the frame we use
-    double frame = 0;
-    auto frames = getFrameValues();
-    if (!frames.empty() && Frame.getValue() < long(frames.size())) {
-
-        frame = frames[Frame.getValue()];
-    }
-
-    for (const auto& obj : Group.getValues()) {
-        obj->touch();
-
-        if (obj->isDerivedFrom(FemPostFilter::getClassTypeId())) {
-            static_cast<Fem::FemPostFilter*>(obj)->Frame.setValue(frame);
-        }
-    }
-}
-
 
 bool FemPostPipeline::hasFrames()
 {
