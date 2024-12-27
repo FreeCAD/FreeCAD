@@ -587,11 +587,25 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 
 void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 {
+
+    // save the element map
+    auto elementMap = _Shape.resetElementMap();
+    auto hasher = _Shape.Hasher;
+
     Base::FileInfo brep(reader.getFileName());
+    TopoShape shape;
+
+    // In LS3 the following statement is executed right before shape.Hasher = hasher;
+    // https://github.com/realthunder/FreeCAD/blob/a9810d509a6f112b5ac03d4d4831b67e6bffd5b7/src/Mod/Part/App/PropertyTopoShape.cpp#L639
+    // Now it's not possible anymore because both PropertyPartShape::loadFromFile() and
+    // PropertyPartShape::loadFromStream() calls PropertyPartShape::setValue() which clears the
+    // value of _Ver.
+    // Therefor we're storing the value of _Ver here so that we don't lose it.
+
+    std::string ver = _Ver;
+
     if (brep.hasExtension("bin")) {
-        TopoShape shape;
         shape.importBinary(reader);
-        setValue(shape);
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
@@ -604,7 +618,14 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
             loadFromStream(reader);
             reader.exceptions(iostate);
         }
+        shape = getValue();
     }
+
+    // restore the element map
+    shape.Hasher = hasher;
+    shape.resetElementMap(elementMap);
+    setValue(shape);
+    _Ver = ver;
 }
 
 // -------------------------------------------------------------------------

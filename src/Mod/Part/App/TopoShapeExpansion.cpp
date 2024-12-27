@@ -2057,6 +2057,29 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     return shapeMap.getTopoShape(*this, idx);
 }
 
+static const std::string& _getElementMapVersion()
+{
+    static std::string _ver;
+    if (_ver.empty()) {
+        std::ostringstream ss;
+        unsigned occ_ver;
+        if ((OCC_VERSION_HEX & 0xFF0000) == 0x070000) {
+            occ_ver = 0x070200;
+        }
+        else {
+            occ_ver = OCC_VERSION_HEX;
+        }
+        ss << OpCodes::Version << '.' << std::hex << occ_ver << '.';
+        _ver = ss.str();
+    }
+    return _ver;
+}
+
+std::string TopoShape::getElementMapVersion() const
+{
+    return _getElementMapVersion() + Data::ComplexGeoData::getElementMapVersion();
+}
+
 TopoShape& TopoShape::makeElementEvolve(const TopoShape& spine,
                                         const TopoShape& profile,
                                         JoinType join,
