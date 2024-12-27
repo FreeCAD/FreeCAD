@@ -35,6 +35,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Quantity.h>
@@ -2367,6 +2368,11 @@ void PropertyColor::Restore(Base::XMLReader& reader)
     reader.readElement("PropertyColor");
     // get the value of my Attribute
     unsigned long rgba = reader.getAttribute<unsigned long>("value");
+    if (Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1) {
+        // Convert transparency / alpha value
+        unsigned long alpha = 0xff - (rgba & 0xff);
+        rgba = rgba - (rgba & 0xff) + alpha;
+    }
     setValue(rgba);
 }
 
@@ -2448,6 +2454,8 @@ void PropertyColorList::Restore(Base::XMLReader& reader)
             // initiate a file read
             reader.addFile(file.c_str(), this);
         }
+
+        oldProgramVersion = Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1;
     }
 }
 
@@ -2471,6 +2479,11 @@ void PropertyColorList::RestoreDocFile(Base::Reader& reader)
     for (auto& it : values) {
         str >> value;
         it.setPackedValue(value);
+    }
+    if (oldProgramVersion) {
+        for (auto& it : values) {
+            it.a = 1.0F - it.a;
+        }
     }
     setValues(values);
 }
@@ -2702,6 +2715,12 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     _cMat.emissiveColor.setPackedValue(reader.getAttribute<unsigned long>("emissiveColor"));
     _cMat.shininess = (float)reader.getAttribute<double>("shininess");
     _cMat.transparency = (float)reader.getAttribute<double>("transparency");
+    if (Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1) {
+        _cMat.ambientColor.a = 1.0F - _cMat.ambientColor.a;
+        _cMat.diffuseColor.a = 1.0F - _cMat.diffuseColor.a;
+        _cMat.specularColor.a = 1.0F - _cMat.specularColor.a;
+        _cMat.emissiveColor.a = 1.0F - _cMat.emissiveColor.a;
+    }
     if (reader.hasAttribute("image")) {
         _cMat.image = reader.getAttribute<const char*>("image");
     }
@@ -3247,6 +3266,8 @@ void PropertyMaterialList::Restore(Base::XMLReader& reader)
             // initiate a file read
             reader.addFile(file.c_str(), this);
         }
+
+        oldProgramVersion = Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1;
     }
 }
 
@@ -3330,6 +3351,7 @@ void PropertyMaterialList::RestoreDocFileV0(uint32_t count, Base::Reader& reader
         str >> valueF;
         it.transparency = valueF;
     }
+    convertAlpha(values);
     setValues(values);
 }
 
@@ -3360,7 +3382,20 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
         readString(str, it.imagePath);
         readString(str, it.uuid);
     }
+    convertAlpha(values);
     setValues(values);
+}
+
+void PropertyMaterialList::convertAlpha(std::vector<App::Material>& materials)
+{
+    if (oldProgramVersion) {
+        for (auto& it : materials) {
+            it.ambientColor.a = 1.0F - it.ambientColor.a;
+            it.diffuseColor.a = 1.0F - it.diffuseColor.a;
+            it.specularColor.a = 1.0F - it.specularColor.a;
+            it.emissiveColor.a = 1.0F - it.emissiveColor.a;
+        }
+    }
 }
 
 void PropertyMaterialList::readString(Base::InputStream& str, std::string& value)
