@@ -25,6 +25,7 @@
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QPainter>
+# include <QRegularExpression>
 # include <QShortcut>
 # include <QTextCursor>
 #endif
@@ -38,6 +39,8 @@
 #include "BitmapFactory.h"
 #include "Macro.h"
 #include "PythonDebugger.h"
+#include "PythonConsole.h"
+#include "MainWindow.h"
 
 
 using namespace Gui;
@@ -269,29 +272,60 @@ void PythonEditor::onExecuteSelection()
     QTextCursor cursor = textCursor();
     int selStart = cursor.selectionStart();
     int selEnd = cursor.selectionEnd();
-    QTextBlock block;
+    QTextBlock block, firstBlock, lastBlock;
     QStringList lines;
     QString selectedText;
-    bool multiLine = false;
-
-    if (!cursor.hasSelection()) {
-        // If no selection, use the line the cursor is on.
-        selectedText = cursor.block().text();
-    } else {
-        // Replace paragraph separators with newline \n character.
-        for (block = document()->begin(); block.isValid(); block = block.next()) {
-            int pos = block.position();
-            if (pos >= selStart && pos <= selEnd) {
-                lines << block.text();
+    for (block = document()->begin(); block.isValid(); block = block.next()) {
+        int pos = block.position();
+        int off = block.length() - 1;
+        if (pos >= selStart || pos + off >= selStart) {
+            if (pos + 1 > selEnd) {
+                break;
             }
+            if (!firstBlock.isValid()) {
+                firstBlock = block;
+            }
+            lastBlock = block;
+            lines << block.text();
         }
-
-        multiLine = lines.size() > 1;
-        selectedText = lines.join(QLatin1String("\n"));
     }
 
+    bool multiLine = firstBlock != lastBlock;
+
+    /** Dedent the block of code so that the first selected
+     *  line has no indentation, but the remaining lines
+     *  keep their indentation relative to that first line.
+     */
+    // get the leading whitespace of the first line
+    QString firstLineIndent;
+    for (const QString& line : lines) {
+        if (!line.isEmpty()) {
+            int leadingWhitespace = line.indexOf(QRegularExpression(QLatin1String("\\S")));
+            if (leadingWhitespace > 0) {
+                firstLineIndent = line.left(leadingWhitespace);
+            }
+            break;
+        }
+    }
+
+    // remove that first line whitespace from all the lines
+    for (QString& line : lines) {
+        if (!line.isEmpty() && line.startsWith(firstLineIndent)) {
+            line.remove(0, firstLineIndent.length());
+        }
+    }
+
+    // join the lines into a single QString so we can execute as a single block
+    selectedText = lines.join(QLatin1Char('\n'));
+    
     if (selectedText.isEmpty()) {
         return;
+    }
+
+    // Print the selected code in the Python console
+    auto console = getPythonConsole();
+    if (console) {
+        console->printStatement(selectedText);
     }
 
     try {
@@ -310,6 +344,14 @@ void PythonEditor::onExecuteSelection()
     catch (const Base::Exception& e) {
         qWarning("%s", e.what());
     }
+}
+
+PythonConsole* PythonEditor::getPythonConsole() const
+{
+    if (!this->pyConsole) {
+        this->pyConsole = Gui::getMainWindow()->findChild<Gui::PythonConsole*>();
+    }
+    return this->pyConsole;
 }
 
 // ------------------------------------------------------------------------
