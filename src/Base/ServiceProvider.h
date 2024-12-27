@@ -157,7 +157,7 @@ public:
     }
 
 private:
-    std::map<const char*, std::deque<ServiceDescriptor>> _implementations;
+    std::map<std::string, std::deque<ServiceDescriptor>> _implementations;
 };
 
 BaseExport extern ServiceProvider globalServiceProvider;
