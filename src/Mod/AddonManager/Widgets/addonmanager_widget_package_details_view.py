@@ -53,7 +53,7 @@ except ImportError:
 from PySide import QtCore, QtWidgets
 
 from .addonmanager_widget_addon_buttons import WidgetAddonButtons
-from .addonmanager_widget_readme_browser import WidgetReadmeBrowser
+from .addonmanager_widget_readme_browser import WidgetDocumentBrowser
 from .addonmanager_colors import warning_color_string, attention_color_string, bright_color_string
 
 
@@ -90,6 +90,9 @@ class PackageDetailsView(QtWidgets.QWidget):
         super().__init__(parent)
         self.button_bar = None
         self.readme_browser = None
+        self.changelog_browser = None
+        self.contributing_browser = None
+        self.license_browser = None
         self.message_label = None
         self.location_label = None
         self.url_label = None
@@ -106,17 +109,28 @@ class PackageDetailsView(QtWidgets.QWidget):
     def _setup_ui(self):
         self.vertical_layout = QtWidgets.QVBoxLayout(self)
         self.button_bar = WidgetAddonButtons(self)
-        self.readme_browser = WidgetReadmeBrowser(self)
         self.message_label = QtWidgets.QLabel(self)
         self.location_label = QtWidgets.QLabel(self)
         self.url_label = QtWidgets.QLabel(self)
         self.url_label.setOpenExternalLinks(True)
         self.location_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+
+        self.tab_widget = QtWidgets.QTabWidget(self)
+        self.readme_browser = WidgetDocumentBrowser(self)
+        self.changelog_browser = WidgetDocumentBrowser(self)
+        self.contrib_browser = WidgetDocumentBrowser(self)
+        self.license_browser = WidgetDocumentBrowser(self)
+
+        self.tab_widget.addTab(self.readme_browser, translate("AddonsInstaller", "README"))
+        self.tab_widget.addTab(self.changelog_browser, translate("AddonsInstaller", "CHANGELOG"))
+        self.tab_widget.addTab(self.contrib_browser, translate("AddonsInstaller", "CONTRIBUTING"))
+        self.tab_widget.addTab(self.license_browser, translate("AddonsInstaller", "LICENSE"))
+
         self.vertical_layout.addWidget(self.button_bar)
         self.vertical_layout.addWidget(self.message_label)
         self.vertical_layout.addWidget(self.location_label)
         self.vertical_layout.addWidget(self.url_label)
-        self.vertical_layout.addWidget(self.readme_browser)
+        self.vertical_layout.addWidget(self.tab_widget)
         self.button_bar.hide()  # Start with no bar
 
     def set_location(self, location: Optional[str]):

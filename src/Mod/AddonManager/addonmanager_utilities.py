@@ -51,7 +51,6 @@ except ImportError:
 import addonmanager_freecad_interface as fci
 
 if fci.FreeCADGui:
-
     # If the GUI is up, we can use the NetworkManager to handle our downloads. If there is no event
     # loop running this is not possible, so fall back to requests (if available), or the native
     # Python urllib.request (if requests is not available).
@@ -217,6 +216,24 @@ def get_readme_url(repo):
     """Returns the location of a readme file"""
 
     return construct_git_url(repo, "README.md")
+
+
+def get_changelog_url(repo):
+    """Returns the location of a changelog file"""
+
+    return construct_git_url(repo, "CHANGELOG.md")
+
+
+def get_contrib_url(repo):
+    """Returns the location of a contributing file"""
+
+    return construct_git_url(repo, "CONTRIBUTING.md")
+
+
+def get_license_url(repo):
+    """Returns the location of a license file"""
+
+    return construct_git_url(repo, "LICENSE")
 
 
 def get_metadata_url(url):
