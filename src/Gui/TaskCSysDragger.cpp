@@ -310,7 +310,7 @@ void TaskTransform::updatePositionAndRotationUi() const
         auto blockers = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
 
         double alpha, beta, gamma;
-        rot.getEulerAngles(Base::Rotation::Intrinsic_XYZ, alpha, beta, gamma);
+        rot.getEulerAngles(eulerSequence(), alpha, beta, gamma);
 
         x->setValue(fixNegativeZero(alpha));
         y->setValue(fixNegativeZero(beta));
@@ -432,6 +432,12 @@ TaskTransform::CoordinateSystem TaskTransform::currentCoordinateSystem() const
 {
     return ui->positionModeComboBox->currentIndex() == 0 ? localCoordinateSystem()
                                                          : globalCoordinateSystem();
+}
+
+Base::Rotation::EulerSequence TaskTransform::eulerSequence() const
+{
+    return positionMode == PositionMode::Local ? Base::Rotation::Intrinsic_XYZ
+                                               : Base::Rotation::Extrinsic_XYZ;
 }
 
 void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
@@ -676,7 +682,7 @@ void TaskTransform::onRotationChange(QuantitySpinBox* changed)
         }
     }
 
-    const auto uvwRotation = Base::Rotation::fromEulerAngles(Base::Rotation::Intrinsic_XYZ,
+    const auto uvwRotation = Base::Rotation::fromEulerAngles(eulerSequence(),
                                                              ui->xRotationSpinBox->rawValue(),
                                                              ui->yRotationSpinBox->rawValue(),
                                                              ui->zRotationSpinBox->rawValue());

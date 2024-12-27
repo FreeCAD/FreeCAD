@@ -82,6 +82,8 @@ public:
     CoordinateSystem localCoordinateSystem() const;
     CoordinateSystem currentCoordinateSystem() const;
 
+    Base::Rotation::EulerSequence eulerSequence() const;
+
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
 
