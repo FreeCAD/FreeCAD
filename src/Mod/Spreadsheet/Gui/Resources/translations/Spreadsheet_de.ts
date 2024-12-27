@@ -10,7 +10,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="945"/>
-      <source>Create spreadsheet</source>
+      <source>&amp;Create spreadsheet</source>
       <translation>Kalkulationstabelle erstellen</translation>
     </message>
     <message>
@@ -28,7 +28,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
-      <source>Align bottom</source>
+      <source>Align &amp;bottom</source>
       <translation>Nach unten ausrichten</translation>
     </message>
     <message>
@@ -46,7 +46,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
-      <source>Align center</source>
+      <source>Align &amp;center</source>
       <translation>Zentrieren</translation>
     </message>
     <message>
@@ -64,7 +64,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
-      <source>Align left</source>
+      <source>Align &amp;left</source>
       <translation>Linksbündig</translation>
     </message>
     <message>
@@ -82,7 +82,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
-      <source>Align right</source>
+      <source>Align &amp;right</source>
       <translation>Rechtsbündig</translation>
     </message>
     <message>
@@ -100,7 +100,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
-      <source>Align top</source>
+      <source>Align &amp;top</source>
       <translation>Nach oben ausrichten</translation>
     </message>
     <message>
@@ -118,7 +118,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="568"/>
-      <source>Vertically center-align</source>
+      <source>&amp;Vertically center-align</source>
       <translation>Vertikal zentrieren</translation>
     </message>
     <message>
@@ -136,7 +136,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
-      <source>Export spreadsheet</source>
+      <source>&amp;Export spreadsheet</source>
       <translation>Kalkulationstabelle exportieren</translation>
     </message>
     <message>
@@ -154,7 +154,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
-      <source>Import spreadsheet</source>
+      <source>&amp;Import spreadsheet</source>
       <translation>Kalkulationstabelle importieren</translation>
     </message>
     <message>
@@ -172,7 +172,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
-      <source>Merge cells</source>
+      <source>&amp;Merge cells</source>
       <translation>Zellen verbinden</translation>
     </message>
     <message>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
-      <source>Split cell</source>
+      <source>Sp&amp;lit cell</source>
       <translation>Zelle teilen</translation>
     </message>
     <message>
@@ -226,7 +226,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
-      <source>Bold text</source>
+      <source>&amp;Bold text</source>
       <translation>Text in Fettschrift</translation>
     </message>
     <message>
@@ -244,7 +244,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="708"/>
-      <source>Italic text</source>
+      <source>&amp;Italic text</source>
       <translation>Text in Kursivschrift</translation>
     </message>
     <message>
@@ -262,7 +262,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="791"/>
-      <source>Underline text</source>
+      <source>&amp;Underline text</source>
       <translation>Text unterstreichen</translation>
     </message>
     <message>
@@ -288,7 +288,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="143"/>
-      <source>Split cell</source>
+      <source>Sp&amp;lit cell</source>
       <translation>Zelle teilen</translation>
     </message>
     <message>
