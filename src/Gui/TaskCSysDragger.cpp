@@ -128,24 +128,39 @@ void TaskTransform::dragStartCallback(void* data, SoDragger*)
             QT_TRANSLATE_NOOP("Command", "Transform"));
         firstDrag = false;
     }
-
-    auto task = static_cast<TaskTransform*>(data);
-
-    task->referenceRotation = task->vp->getDraggerPlacement().getRotation();
 }
 
 void TaskTransform::dragMotionCallback(void* data, SoDragger* dragger)
 {
     auto task = static_cast<TaskTransform*>(data);
 
-    const auto currentRotation = task->referencePlacement.getRotation();
+    const auto currentRotation = task->vp->getOriginalDraggerPlacement().getRotation();
     const auto updatedRotation = task->vp->getDraggerPlacement().getRotation();
+
+    const auto rotationAxisHasChanged = [task](auto first, auto second) {
+        double alpha, beta, gamma;
+
+        (first.inverse() * second).getEulerAngles(task->eulerSequence(), alpha, beta, gamma);
+
+        auto angles = {alpha, beta, gamma};
+        const int changed = std::count_if(angles.begin(), angles.end(), [](double angle) {
+            return std::fabs(angle) > tolerance;
+        });
+
+        // if representation of both differs by more than one axis the axis of rotation must be
+        // different
+        return changed > 1;
+    };
 
     if (!updatedRotation.isSame(currentRotation, tolerance)) {
         task->resetReferencePlacement();
-    } else {
-        task->updatePositionAndRotationUi();
+
+        if (rotationAxisHasChanged(task->referenceRotation, updatedRotation)) {
+            task->referenceRotation = currentRotation;
+        }
     }
+
+    task->updatePositionAndRotationUi();
 }
 
 void TaskTransform::loadPlacementModeItems() const
@@ -283,11 +298,7 @@ void TaskTransform::savePreferences()
 
 void TaskTransform::updatePositionAndRotationUi() const
 {
-    auto referencePlacement = currentCoordinateSystem().origin;
-
-    if (positionMode == PositionMode::Local) {
-        referencePlacement.setRotation(referenceRotation);
-    }
+    const auto referencePlacement = currentCoordinateSystem().origin;
 
     const auto xyzPlacement = vp->getDraggerPlacement();
     const auto uvwPlacement = referencePlacement.inverse() * xyzPlacement;
@@ -317,24 +328,17 @@ void TaskTransform::updatePositionAndRotationUi() const
         z->setValue(fixNegativeZero(gamma));
     };
 
-    auto setValues = [&](const Base::Placement& placement,
-                         auto* px,
-                         auto* py,
-                         auto* pz,
-                         auto* rx,
-                         auto* ry,
-                         auto* rz) {
-        setPositionValues(placement.getPosition(), px, py, pz);
-        setRotationValues(placement.getRotation(), rx, ry, rz);
-    };
+    setPositionValues(uvwPlacement.getPosition(),
+                      ui->xPositionSpinBox,
+                      ui->yPositionSpinBox,
+                      ui->zPositionSpinBox);
 
-    setValues(uvwPlacement,
-              ui->xPositionSpinBox,
-              ui->yPositionSpinBox,
-              ui->zPositionSpinBox,
-              ui->xRotationSpinBox,
-              ui->yRotationSpinBox,
-              ui->zRotationSpinBox);
+    setRotationValues(positionMode == PositionMode::Local
+                          ? referenceRotation.inverse() * xyzPlacement.getRotation()
+                          : uvwPlacement.getRotation(),
+                      ui->xRotationSpinBox,
+                      ui->yRotationSpinBox,
+                      ui->zRotationSpinBox);
 }
 
 void TaskTransform::updateInputLabels() const

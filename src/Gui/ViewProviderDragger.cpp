@@ -308,6 +308,11 @@ Base::Placement ViewProviderDragger::getDraggerPlacement() const
     );
 }
 
+Base::Placement ViewProviderDragger::getOriginalDraggerPlacement() const
+{
+    return draggerPlacement;
+}
+
 void ViewProviderDragger::setDraggerPlacement(const Base::Placement& placement)
 {
     csysDragger->translation.setValue(Base::convertTo<SbVec3f>(placement.getPosition()));

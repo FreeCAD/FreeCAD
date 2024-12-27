@@ -75,15 +75,6 @@ public:
                       Base::provideService<App::CenterOfMassProvider>());
     ~TaskTransform() override;
 
-    void setSelectionMode(SelectionMode mode);
-    SelectionMode getSelectionMode() const;
-
-    CoordinateSystem globalCoordinateSystem() const;
-    CoordinateSystem localCoordinateSystem() const;
-    CoordinateSystem currentCoordinateSystem() const;
-
-    Base::Rotation::EulerSequence eulerSequence() const;
-
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
 
@@ -106,6 +97,15 @@ private:
     static inline bool firstDrag = true;
     static void dragStartCallback(void* data, SoDragger* d);
     static void dragMotionCallback(void* data, SoDragger* d);
+
+    void setSelectionMode(SelectionMode mode);
+    SelectionMode getSelectionMode() const;
+
+    CoordinateSystem globalCoordinateSystem() const;
+    CoordinateSystem localCoordinateSystem() const;
+    CoordinateSystem currentCoordinateSystem() const;
+
+    Base::Rotation::EulerSequence eulerSequence() const;
 
     void setupGui();
 

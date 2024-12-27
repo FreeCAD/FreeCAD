@@ -56,10 +56,16 @@ public:
     /// destructor.
     ~ViewProviderDragger() override;
 
+    /// Origin used when object is transformed. It temporarily changes the origin of object.
+    /// Dragger is normally placed at the transform origin, unless explicitly overridden via
+    /// ViewProviderDragger#setDraggerPlacement() method.
     App::PropertyPlacement TransformOrigin;
 
+    /// Convenience method to obtain the transform origin
     Base::Placement getTransformOrigin() const { return TransformOrigin.getValue(); }
+    /// Convenience method to set the transform origin
     void setTransformOrigin(const Base::Placement& placement);
+    /// Resets transform origin to the object origin
     void resetTransformOrigin();
 
 public:
@@ -74,11 +80,18 @@ public:
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
 
+    /// updates placement of object based on dragger position
     void updatePlacementFromDragger();
+    /// updates transform of object based on dragger position, can be used to preview movement
     void updateTransformFromDragger();
 
+    /// Gets object placement relative to its coordinate system
     Base::Placement getObjectPlacement() const;
+    /// Gets current dragger placement, including current dragger movement
     Base::Placement getDraggerPlacement() const;
+    /// Gets original dragger placement, without current dragger movement
+    Base::Placement getOriginalDraggerPlacement() const;
+    /// Sets placement of dragger relative to objects origin
     void setDraggerPlacement(const Base::Placement& placement);
 
 protected:
