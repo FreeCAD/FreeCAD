@@ -1644,6 +1644,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
     localreader->readElement("Document");
     long scheme = localreader->getAttributeAsInteger("SchemaVersion");
     localreader->DocumentSchema = scheme;
+    localreader->ProgramVersion = d->_pcDocument->getProgramVersion();
 
     bool hasExpansion = localreader->hasAttribute("HasExpansion");
     if(hasExpansion) {
