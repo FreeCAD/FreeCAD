@@ -116,7 +116,7 @@ public:
     static ServiceProvider& get();
 
 private:
-    std::map<const char*, std::deque<ServiceDescriptor>> _implementations;
+    std::map<std::string, std::deque<ServiceDescriptor>> _implementations;
 };
 
 template<typename T>
