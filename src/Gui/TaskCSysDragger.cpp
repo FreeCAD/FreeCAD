@@ -25,8 +25,6 @@
 #include <cassert>
 #include <limits>
 #include <QApplication>
-#include <QGridLayout>
-#include <QPushButton>
 #endif
 
 #include <View3DInventorViewer.h>
@@ -102,6 +100,8 @@ TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
     vp->resetTransformOrigin();
 
     referencePlacement = vp->getObjectPlacement();
+    referenceRotation = referencePlacement.getRotation();
+
     globalOrigin = vp->getObjectPlacement() * App::GeoFeature::getGlobalPlacement(vp->getObject()).inverse();
 
     setupGui();
