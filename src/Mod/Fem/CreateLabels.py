@@ -140,7 +140,7 @@ Place Label on the screen with an optional image.
 Create an instance:
 import CreateLabels as CL
 label =  CL.creatLabel(<position of label>, <title of label>, <optional image>)
-e.g.: 
+e.g.:
 label1 = CL.createLabel( (-0.7, -0.90, 0), "this is text")
 label2 = CL.createLabel( (+0.5, -0.90, 0), "this is a image", image = "mesh.jpg")
 Positions on screen:
@@ -151,7 +151,7 @@ Positions on screen:
 
 The following function are available:
         label1.set_position((0.7, 0.50, 0))
-        pos= label1.get_position() 
+        pos= label1.get_position()
         label1.set_font("FreeMono,FreeSans,sans")
         label1.set_font_size(20)
         label1.set_text("hello world")
