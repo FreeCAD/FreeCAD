@@ -7221,19 +7221,24 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     std::vector<Base::Vector3d> newpoles = bspline->getPoles();
     std::vector<int> poleIndexInNew(bsp->countPoles(), -1);
 
-    for (int j = 0; j < int(poles.size()); j++) {
-        const auto it = std::find(newpoles.begin(), newpoles.end(), poles[j]);
-        poleIndexInNew[j] = it - newpoles.begin();
-    }
 
     // on fully removing a knot the knot geometry changes
     std::vector<double> knots = bsp->getKnots();
     std::vector<double> newknots = bspline->getKnots();
     std::vector<int> knotIndexInNew(bsp->countKnots(), -1);
 
+    std::map<Sketcher::InternalAlignmentType, std::vector<int>>
+        indexInNew {{Sketcher::BSplineControlPoint, {bsp->countPoles(), -1}},
+                    {Sketcher::BSplineKnotPoint, {bsp->countKnots(), -1}}};
+
+    for (int j = 0; j < int(poles.size()); j++) {
+        const auto it = std::find(newpoles.begin(), newpoles.end(), poles[j]);
+        indexInNew[Sketcher::BSplineControlPoint][j] = it - newpoles.begin();
+    }
+
     for (int j = 0; j < int(knots.size()); j++) {
         const auto it = std::find(newknots.begin(), newknots.end(), knots[j]);
-        knotIndexInNew[j] = it - newknots.begin();
+        indexInNew[Sketcher::BSplineKnotPoint][j] = it - newknots.begin();
     }
 
     const std::vector<Sketcher::Constraint*>& cvals = Constraints.getValues();
@@ -7247,29 +7252,17 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
             continue;
         }
 
-        std::vector<int>* indexInNew = nullptr;
+        int index = indexInNew.at(constr->AlignmentType).at(constr->InternalAlignmentIndex);
 
-        if (constr->AlignmentType == Sketcher::BSplineControlPoint) {
-            indexInNew = &poleIndexInNew;
-        }
-        else if (constr->AlignmentType == Sketcher::BSplineKnotPoint) {
-            indexInNew = &knotIndexInNew;
-        }
-        else {
-            // it is a bspline geometry, but not a controlpoint or knot
-            newcVals.push_back(constr);
-            continue;
-        }
-
-        if (indexInNew && indexInNew->at(constr->InternalAlignmentIndex) == -1) {
+        if (index == -1) {
             // it is an internal alignment geometry that is no longer valid
-            // => delete it and the pole circle
+            // => delete it and the geometry
             delGeoId.push_back(constr->First);
             continue;
         }
 
         Constraint* newConstr = constr->clone();
-        newConstr->InternalAlignmentIndex = indexInNew->at(constr->InternalAlignmentIndex);
+        newConstr->InternalAlignmentIndex = index;
         newcVals.push_back(newConstr);
     }
 
