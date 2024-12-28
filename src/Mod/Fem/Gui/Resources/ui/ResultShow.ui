@@ -234,7 +234,7 @@
         <item>
          <widget class="QCheckBox" name="cb_show_displacement">
           <property name="text">
-           <string>Show</string>
+           <string>  Show</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -273,7 +273,7 @@
            <bool>false</bool>
           </property>
           <property name="text">
-           <string>Factor:</string>
+           <string>  Factor</string>
           </property>
          </widget>
         </item>
@@ -309,7 +309,7 @@
            <bool>false</bool>
           </property>
           <property name="text">
-           <string>Slider max:</string>
+           <string>  Slider Max</string>
           </property>
          </widget>
         </item>
@@ -379,7 +379,7 @@
           </size>
          </property>
          <property name="text">
-          <string>number of steps per cycle</string>
+          <string>  Number of Steps per Cycle</string>
          </property>
         </widget>
        </item>
@@ -426,7 +426,7 @@
           </size>
          </property>
          <property name="text">
-          <string>number of cycles</string>
+          <string>  Number of Cycles</string>
          </property>
         </widget>
        </item>
@@ -464,7 +464,7 @@
           </size>
          </property>
          <property name="text">
-          <string>frame rate</string>
+          <string>  Frame Rate</string>
          </property>
         </widget>
        </item>

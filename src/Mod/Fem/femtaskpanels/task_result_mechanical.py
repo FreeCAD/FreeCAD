@@ -746,7 +746,7 @@ class _TaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         if len(self.animateText) > 0:
             for a in self.animateText:
-                a.remove()
+                a.hide()
             self.animateText = []
 
     # animation start
@@ -782,7 +782,10 @@ class _TaskPanel:
                 time.sleep(1.0 / frame_rate)  # modify the time here
             if done:
                 break
-        self.result_widget.startButton.setText("Start Animation")
+        try:
+            self.result_widget.startButton.setText("Start Animation")
+        except: 
+                pass
         QtGui.QApplication.restoreOverrideCursor()
         self.startAnimate = False
 
@@ -812,7 +815,10 @@ class _TaskPanel:
         #     self.animate_inc = 1 - self.animate_inc
         else:
             pass
-        self.hsb_displacement_factor = self.result_widget.sb_displacement_factor.value()
+        try:
+            self.hsb_displacement_factor = self.result_widget.sb_displacement_factor.value()
+        except: 
+            pass 
         return
 
     def set_label(self, result_name, mesh_data):

@@ -27,14 +27,13 @@ __url__ = "https://www.freecad.org"
 
 ## @package view_result_mechanical
 #  \ingroup FEM
-#  \brief create labels
-
+#  \brief Create and Place Labels on the screen with an optional image.
 
 import FreeCADGui
 from pivy import coin
 
 """
-Place Label on the screen with an optionl image.
+Place Label on the screen with an optional image.
 positions on screen:
          (-.9, .9, 0)    top left
          (.9, .9, 0)     upper right
@@ -68,17 +67,16 @@ class createLabel:
         self.textSep.addChild(self.color)
         self.textSep.addChild(self.myFont)
         self.textSep.addChild(self.SoText2)
-        self.ispicture = False
-        if image != "":
-            self.isimage = True
-            self.myImage = coin.SoImage()
-            self.textSep.addChild(self.myImage)
-            self.myImage.filename.setValue(image)
         self.activeDoc = FreeCADGui.ActiveDocument
         self.view = self.activeDoc.ActiveView
         self.viewer = self.view.getViewer()
         self.render = self.viewer.getSoRenderManager()
+        self.isimage = False
+        if image != "":
+            self.add_image(image)
+            self.isimage = True
         self.sup = self.render.addSuperimposition(self.textSep)
+        self.displayed = True
 
 # get position of label
     def get_position(self):
@@ -111,8 +109,8 @@ class createLabel:
         self.remove_image()
         self.isimage = True
         self.myImage = coin.SoImage()
-        self.textSep.addChild(self.myImage)
         self.myImage.filename.setValue(image)
+        self.textSep.addChild(self.myImage)
 
 # remove the image
     def remove_image(self):
@@ -120,25 +118,63 @@ class createLabel:
             # self.myImage = coin.SoImage()
             self.textSep.removeChild(self.myImage)
             self.isimage = False
-            self.sup = self.render.addSuperimposition(self.textSep)
 
-# remove the label
-    def remove(self):
-        # remove the Superimposition layer with :
-        self.render.removeSuperimposition(self.sup)
+# display the label
+    def display(self):
+        if not self.displayed:
+        # display the Superimposition layer with :
+            self.sup = self.render.addSuperimposition(self.textSep)
+            self.displayed = True
+
+# hide the label
+    def hide(self):
+        # hide the Superimposition layer with :
+        if self.displayed:
+            self.render.removeSuperimposition(self.sup)
+            self.displayed = False
+
+# help
+    def help(self):
+        print("""
+Place Label on the screen with an optional image.
+Create an instance:
+import CreateLabels as CL
+label =  CL.creatLabel(<position of label>, <title of label>, <optional image>)
+e.g.: 
+label1 = CL.createLabel( (-0.7, -0.90, 0), "this is text")
+label2 = CL.createLabel( (+0.5, -0.90, 0), "this is a image", image = "mesh.jpg")
+Positions on screen:
+        (-.9, .9, 0)    top left
+        (.9, .9, 0)     upper right
+        (-.9, -.9, 0)   lower left
+        (.9, -.9, 0)    lower right
+
+The following function are available:
+        label1.set_position((0.7, 0.50, 0))
+        pos= label1.get_position() 
+        label1.set_font("FreeMono,FreeSans,sans")
+        label1.set_font_size(20)
+        label1.set_text("hello world")
+		label1.set_colour((0,1,0)) # colour of text
+        label1.add_image("opera.jpg")
+        label1.remove_image()
+        label1.hide()  - hide the label
+        label1.display()  - display the label, after hide
+""")
 
 if __name__ == "__main__":
-    t1 = createLabel((-0.98, 0.90, 0), "this a new text")
+    label1 = createLabel((-0.98, 0.90, 0), "this a new text")
 """
 Examples:
 import CreateLabels as CL
-t1 = CL.createLabel( (+0.5, -0.90, 0), "this is a image", image = "mesh.jpg")
-t2 = CL.createLabel( (-0.7, -0.90, 0), "this is text")
+label1 = CL.createLabel( (+0.5, -0.90, 0), "this is a image", image = "mesh.jpg")
+label2 = CL.createLabel( (-0.7, -0.90, 0), "this is text")
 
-t1.set_colour((0,1,0))
-t1.remove_image()
-t1.add_image("opera.jpg")
-t1.set_text("hello world")
-t1.set_position((+0.7, 0.50, 0))
-t1.remove()
+label1.set_colour((0,1,0))
+label1.remove_image()
+label1.add_image("opera.jpg")
+label1.set_text("hello world")
+label1.set_position((+0.7, 0.50, 0))
+label1.set_font("FreeMono,FreeSans,sans")
+label1.hide()
 """
