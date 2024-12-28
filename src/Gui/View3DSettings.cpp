@@ -129,9 +129,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         try {
             std::string pos = rGrp.GetASCII("HeadlightDirection");
-            Base::Vector3f dir = Base::to_vector(pos);
-            for (auto _viewer : _viewers) {
-                _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::to_vector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
             }
         }
         catch (const std::exception&) {
@@ -161,9 +163,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         try {
             std::string pos = rGrp.GetASCII("BacklightDirection");
-            Base::Vector3f dir = Base::to_vector(pos);
-            for (auto _viewer : _viewers) {
-                _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::to_vector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
             }
         }
         catch (const std::exception&) {
