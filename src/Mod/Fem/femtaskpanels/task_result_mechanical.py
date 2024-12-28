@@ -164,7 +164,6 @@ class _TaskPanel:
             lambda dummy="", name="startButton": self.value_changed(self, dummy, name),
         )
 
-
         # displacement
         QtCore.QObject.connect(
             self.result_widget.cb_show_displacement,
@@ -279,7 +278,7 @@ class _TaskPanel:
         return resulttools.get_stats(self.result_obj, type_name)
 
     def none_selected(self, state):
-        self.set_label(self.result_obj.Label, "No Contours")    
+        self.set_label(self.result_obj.Label, "No Contours")
         FreeCAD.FEM_dialog["results_type"] = "None"
         self.set_result_stats("mm", 0.0, 0.0)
         self.reset_mesh_color()
@@ -490,7 +489,7 @@ class _TaskPanel:
         self.update()
         self.restore_result_dialog()
         userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
-        self.results_name = "User Defined: " + userdefined_eq  
+        self.results_name = "User Defined: " + userdefined_eq
 
         # https://forum.freecad.org/viewtopic.php?f=18&t=42425&start=10#p368774 ff
         # https://github.com/FreeCAD/FreeCAD/pull/3020
@@ -654,8 +653,8 @@ class _TaskPanel:
                 self.result_widget.hsb_displacement_factor.setValue(0.0)
             else:
                 self.result_widget.hsb_displacement_factor.setValue(
-                round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
-            )
+                    round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
+                )
 
     def disable_empty_result_buttons(self):
         """disable radio buttons if result does not exists in result object"""
@@ -823,12 +822,8 @@ class _TaskPanel:
 
     def set_label(self, result_name, mesh_data):
         if len(self.animateText) == 0:
-            self.animateText.append(
-                CreateLabels.createLabel((-0.98, 0.90, 0), result_name)
-            )
-            self.animateText.append(
-                CreateLabels.createLabel((-0.98, 0.70, 0), mesh_data)
-            )
+            self.animateText.append(CreateLabels.createLabel((-0.98, 0.90, 0), result_name))
+            self.animateText.append(CreateLabels.createLabel((-0.98, 0.70, 0), mesh_data))
         else:
             self.animateText[1].set_text(mesh_data)
         pass
