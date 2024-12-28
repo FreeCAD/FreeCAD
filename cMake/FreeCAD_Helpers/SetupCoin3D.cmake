@@ -14,6 +14,7 @@ macro(SetupCoin3D)
         if (Coin_FOUND)
             set(COIN3D_INCLUDE_DIRS ${Coin_INCLUDE_DIR})
             set(COIN3D_LIBRARIES ${Coin_LIBRARIES})
+            set(COIN3D_LIB_DIRS ${Coin_LIB_DIR})
         endif ()
     ENDIF ()
 
