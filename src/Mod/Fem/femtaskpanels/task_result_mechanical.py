@@ -783,8 +783,8 @@ class _TaskPanel:
                 break
         try:
             self.result_widget.startButton.setText("Start Animation")
-        except: 
-                pass
+        except:
+            pass
         QtGui.QApplication.restoreOverrideCursor()
         self.startAnimate = False
 
@@ -816,8 +816,8 @@ class _TaskPanel:
             pass
         try:
             self.hsb_displacement_factor = self.result_widget.sb_displacement_factor.value()
-        except: 
-            pass 
+        except:
+            pass
         return
 
     def set_label(self, result_name, mesh_data):
