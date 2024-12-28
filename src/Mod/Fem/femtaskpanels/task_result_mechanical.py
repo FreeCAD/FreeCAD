@@ -164,7 +164,6 @@ class _TaskPanel:
             lambda dummy="", name="startButton": self.value_changed(self, dummy, name),
         )
 
-
         # displacement
         QtCore.QObject.connect(
             self.result_widget.cb_show_displacement,
@@ -654,8 +653,8 @@ class _TaskPanel:
                 self.result_widget.hsb_displacement_factor.setValue(0.0)
             else:
                 self.result_widget.hsb_displacement_factor.setValue(
-                round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
-            )
+                    round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
+                )
 
     def disable_empty_result_buttons(self):
         """disable radio buttons if result does not exists in result object"""
@@ -823,12 +822,8 @@ class _TaskPanel:
 
     def set_label(self, result_name, mesh_data):
         if len(self.animateText) == 0:
-            self.animateText.append(
-                CreateLabels.createLabel((-0.98, 0.90, 0), result_name)
-            )
-            self.animateText.append(
-                CreateLabels.createLabel((-0.98, 0.70, 0), mesh_data)
-            )
+            self.animateText.append(CreateLabels.createLabel((-0.98, 0.90, 0), result_name))
+            self.animateText.append(CreateLabels.createLabel((-0.98, 0.70, 0), mesh_data))
         else:
             self.animateText[1].set_text(mesh_data)
         pass
