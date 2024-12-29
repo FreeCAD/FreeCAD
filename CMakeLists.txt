@@ -84,6 +84,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
 
     if(BUILD_GUI)
         SetupCoin3D()
+        SetupPivy()
         SetupSpaceball()
         SetupShibokenAndPyside()
         SetupMatplotlib()
