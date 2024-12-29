@@ -53,11 +53,18 @@ public:
     App::LocalCoordinateSystem* getLCS() const;
     Base::Vector3d getBasePoint() const;
     Base::Vector3d getDirection() const;
+    Base::Vector3d getBaseDirection() const;
 
     bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 
     /// Returns true if this DatumElement is part of a App::Origin.
     bool isOriginFeature() const;
+
+protected:
+    void setBaseDirection(const Base::Vector3d& dir);
+
+private:
+    Base::Vector3d baseDir;
 };
 
 class AppExport Plane: public App::DatumElement
@@ -76,6 +83,7 @@ class AppExport Line: public App::DatumElement
     PROPERTY_HEADER_WITH_OVERRIDE(App::DatumElement);
 
 public:
+    Line();
     const char* getViewProviderName() const override
     {
         return "Gui::ViewProviderLine";
@@ -87,6 +95,7 @@ class AppExport Point: public App::DatumElement
     PROPERTY_HEADER_WITH_OVERRIDE(App::DatumElement);
 
 public:
+    Point();
     const char* getViewProviderName() const override
     {
         return "Gui::ViewProviderPoint";
@@ -245,11 +254,10 @@ private:
     };
     static const std::vector<SetupData>& getSetupData();
 
-    DatumElement* createDatum(SetupData& data);
+    DatumElement* createDatum(const SetupData& data);
     SetupData getData(const char* role);
 
     void migrateOriginPoint();
-    void migrateXAxisPlacement();
 };
 
 }  // namespace App
