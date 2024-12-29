@@ -44,6 +44,14 @@ if (BUILD_ADDONMGR)
     add_definitions(-DBUILD_ADDONMGR )
 endif(BUILD_ADDONMGR)
 
+if (BUILD_PART)
+    add_definitions(-DBUILD_PART )
+endif(BUILD_PART)
+
+if (BUILD_MEASURE)
+    add_definitions(-DBUILD_MEASURE )
+endif(BUILD_MEASURE)
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}

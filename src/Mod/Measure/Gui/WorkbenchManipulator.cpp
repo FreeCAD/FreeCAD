@@ -38,14 +38,6 @@ void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] Gui::MenuItem* menuBar
     menuTools->appendItem(itemMeasure);
 }
 
-void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
+void WorkbenchManipulator::modifyToolBars([[maybe_unused]] Gui::ToolBarItem* toolBar)
 {
-    auto tbView = toolBar->findItem("View");
-    if (!tbView) {
-        return;
-    }
-
-    auto itemMeasure = new Gui::ToolBarItem();
-    itemMeasure->setCommand("Std_Measure");
-    tbView->appendItem(itemMeasure);
 }
