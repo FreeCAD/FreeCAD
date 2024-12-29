@@ -4091,17 +4091,15 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         return -1;
     }
 
-    bool originalIsPeriodic = false;
     const Part::Geometry* geo = getGeometry(GeoId);
+    bool originalIsPeriodic = isClosedCurve(geo);
     std::vector<int> newIds;
     std::vector<Constraint*> newConstraints;
 
     Base::Vector3d startPoint, endPoint, splitPoint;
     double startParam, endParam, splitParam = 0.0;
 
-    auto createGeosFromPeriodic = [&](const Part::GeomCurve* curve,
-                                      auto getCurveWithLimitParams,
-                                      auto createAndTransferConstraints) {
+    auto createGeosFromPeriodic = [&](const Part::GeomCurve* curve) {
         // find split point
         curve->closestParameter(point, splitParam);
         double period = curve->getLastParameter() - curve->getFirstParameter();
@@ -4109,7 +4107,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         endParam = splitParam + period;
 
         // create new arc and restrict it
-        auto newCurve = getCurveWithLimitParams(curve, startParam, endParam);
+        auto newCurve = curve->createArc(startParam, endParam);
         int newId(GeoEnum::GeoUndef);
         newId = addGeometry(std::move(newCurve));// after here newCurve is a shell
         if (newId < 0) {
@@ -4120,14 +4118,10 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         setConstruction(newId, GeometryFacade::getConstruction(curve));
         exposeInternalGeometry(newId);
 
-        // transfer any constraints
-        createAndTransferConstraints(GeoId, newId);
         return true;
     };
 
-    auto createGeosFromNonPeriodic = [&](const Part::GeomBoundedCurve* curve,
-                                         auto getCurveWithLimitParams,
-                                         auto createAndTransferConstraints) {
+    auto createGeosFromNonPeriodic = [&](const Part::GeomBoundedCurve* curve) {
         startPoint = curve->getStartPoint();
         endPoint = curve->getEndPoint();
 
@@ -4143,7 +4137,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         }
 
         // create new curves
-        auto newCurve = getCurveWithLimitParams(curve, startParam, splitParam);
+        auto newCurve = curve->createArc(startParam, splitParam);
         int newId(GeoEnum::GeoUndef);
         newId = addGeometry(std::move(newCurve));
         if (newId < 0) {
@@ -4154,7 +4148,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         exposeInternalGeometry(newId);
 
         // the "second" half
-        newCurve = getCurveWithLimitParams(curve, splitParam, endParam);
+        newCurve = curve->createArc(splitParam, endParam);
         newId = addGeometry(std::move(newCurve));
         if (newId < 0) {
             return false;
@@ -4163,169 +4157,15 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         setConstruction(newId, GeometryFacade::getConstruction(curve));
         exposeInternalGeometry(newId);
 
-        // TODO: Certain transfers and new constraint can be directly made here.
-        // But this may reduce readability.
-        // apply appropriate constraints on the new points at split point and
-        // transfer constraints from start and end of original spline
-        createAndTransferConstraints(GeoId, newIds[0], newIds[1]);
         return true;
     };
 
     bool ok = false;
-    if (geo->is<Part::GeomLineSegment>()) {
-        originalIsPeriodic = false;
-        ok = createGeosFromNonPeriodic(
-            static_cast<const Part::GeomBoundedCurve*>(geo),
-            [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = std::unique_ptr<Part::GeomLineSegment>(
-                    static_cast<Part::GeomLineSegment*>(curve->copy()));
-                newArc->setRange(startParam, endParam);
-                return newArc;
-            },
-            [this, &newConstraints](int GeoId, int newId0, int newId1) {
-                Constraint* joint = new Constraint();
-                joint->Type = Coincident;
-                joint->First = newId0;
-                joint->FirstPos = PointPos::end;
-                joint->Second = newId1;
-                joint->SecondPos = PointPos::start;
-                newConstraints.push_back(joint);
-
-                transferConstraints(GeoId, PointPos::start, newId0, PointPos::start);
-                transferConstraints(GeoId, PointPos::end, newId1, PointPos::end);
-            });
+    if (originalIsPeriodic) {
+        ok = createGeosFromPeriodic(static_cast<const Part::GeomBoundedCurve*>(geo));
     }
-    else if (geo->is<Part::GeomCircle>()) {
-        originalIsPeriodic = true;
-        ok = createGeosFromPeriodic(
-            static_cast<const Part::GeomCurve*>(geo),
-            [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = std::make_unique<Part::GeomArcOfCircle>(
-                    Handle(Geom_Circle)::DownCast(curve->handle()->Copy()));
-                newArc->setRange(startParam, endParam, false);
-                return newArc;
-            },
-            [this](int GeoId, int newId) {
-                transferConstraints(GeoId, PointPos::mid, newId, PointPos::mid);
-            });
-    }
-    else if (geo->is<Part::GeomEllipse>()) {
-        originalIsPeriodic = true;
-        ok = createGeosFromPeriodic(
-            static_cast<const Part::GeomCurve*>(geo),
-            [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = std::make_unique<Part::GeomArcOfEllipse>(
-                    Handle(Geom_Ellipse)::DownCast(curve->handle()->Copy()));
-                newArc->setRange(startParam, endParam, false);
-                return newArc;
-            },
-            [this](int GeoId, int newId) {
-                transferConstraints(GeoId, PointPos::mid, newId, PointPos::mid);
-            });
-    }
-    else if (geo->is<Part::GeomArcOfCircle>()) {
-        originalIsPeriodic = false;
-        ok = createGeosFromNonPeriodic(
-            static_cast<const Part::GeomBoundedCurve*>(geo),
-            [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = std::unique_ptr<Part::GeomArcOfCircle>(
-                    static_cast<Part::GeomArcOfCircle*>(curve->copy()));
-                newArc->setRange(startParam, endParam, false);
-                return newArc;
-            },
-            [this, &newConstraints](int GeoId, int newId0, int newId1) {
-                Constraint* joint = new Constraint();
-                joint->Type = Coincident;
-                joint->First = newId0;
-                joint->FirstPos = PointPos::end;
-                joint->Second = newId1;
-                joint->SecondPos = PointPos::start;
-                newConstraints.push_back(joint);
-
-                joint = new Constraint();
-                joint->Type = Coincident;
-                joint->First = newId0;
-                joint->FirstPos = PointPos::mid;
-                joint->Second = newId1;
-                joint->SecondPos = PointPos::mid;
-                newConstraints.push_back(joint);
-
-                transferConstraints(GeoId, PointPos::start, newId0, PointPos::start, true);
-                transferConstraints(GeoId, PointPos::mid, newId0, PointPos::mid);
-                transferConstraints(GeoId, PointPos::end, newId1, PointPos::end, true);
-            });
-    }
-    else if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
-        originalIsPeriodic = false;
-        ok = createGeosFromNonPeriodic(
-            static_cast<const Part::GeomBoundedCurve*>(geo),
-            [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = std::unique_ptr<Part::GeomArcOfConic>(
-                    static_cast<Part::GeomArcOfConic*>(curve->copy()));
-                newArc->setRange(startParam, endParam);
-                return newArc;
-            },
-            [this, &newConstraints](int GeoId, int newId0, int newId1) {
-                // apply appropriate constraints on the new points at split point
-                Constraint* joint = new Constraint();
-                joint->Type = Coincident;
-                joint->First = newId0;
-                joint->FirstPos = PointPos::end;
-                joint->Second = newId1;
-                joint->SecondPos = PointPos::start;
-                newConstraints.push_back(joint);
-
-                // TODO: Do we apply constraints on center etc of the conics?
-
-                // transfer constraints from start, mid and end of original
-                transferConstraints(GeoId, PointPos::start, newId0, PointPos::start, true);
-                transferConstraints(GeoId, PointPos::mid, newId0, PointPos::mid);
-                transferConstraints(GeoId, PointPos::end, newId1, PointPos::end, true);
-            });
-    }
-    else if (geo->is<Part::GeomBSplineCurve>()) {
-        const auto* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
-
-        // what to do for periodic b-splines?
-        originalIsPeriodic = bsp->isPeriodic();
-        if (originalIsPeriodic) {
-            ok = createGeosFromPeriodic(
-                static_cast<const Part::GeomCurve*>(geo),
-                [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                    auto newBsp = std::unique_ptr<Part::GeomBSplineCurve>(
-                        static_cast<Part::GeomBSplineCurve*>(curve->copy()));
-                    newBsp->Trim(startParam, endParam);
-                    return newBsp;
-                },
-                [](int, int) {
-                    // no constraints to transfer here, and we assume the split is to "break" the
-                    // b-spline
-                });
-        }
-        else {
-            ok = createGeosFromNonPeriodic(
-                static_cast<const Part::GeomBoundedCurve*>(geo),
-                [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                    auto newBsp = std::unique_ptr<Part::GeomBSplineCurve>(
-                        static_cast<Part::GeomBSplineCurve*>(curve->copy()));
-                    newBsp->Trim(startParam, endParam);
-                    return newBsp;
-                },
-                [this, &newConstraints](int GeoId, int newId0, int newId1) {
-                    // apply appropriate constraints on the new points at split point
-                    Constraint* joint = new Constraint();
-                    joint->Type = Coincident;
-                    joint->First = newId0;
-                    joint->FirstPos = PointPos::end;
-                    joint->Second = newId1;
-                    joint->SecondPos = PointPos::start;
-                    newConstraints.push_back(joint);
-
-                    // transfer constraints from start and end of original spline
-                    transferConstraints(GeoId, PointPos::start, newId0, PointPos::start, true);
-                    transferConstraints(GeoId, PointPos::end, newId1, PointPos::end, true);
-                });
-        }
+    else {
+        ok = createGeosFromNonPeriodic(static_cast<const Part::GeomBoundedCurve*>(geo));
     }
 
     if (!ok) {
@@ -4336,6 +4176,35 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         return -1;
     }
 
+    if (!originalIsPeriodic) {
+        Constraint* joint = new Constraint();
+        joint->Type = Coincident;
+        joint->First = newIds.front();
+        joint->FirstPos = PointPos::end;
+        joint->Second = newIds.back();
+        joint->SecondPos = PointPos::start;
+        newConstraints.push_back(joint);
+
+        transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start);
+        transferConstraints(GeoId, PointPos::end, newIds.back(), PointPos::end);
+    }
+
+    // This additional constraint is there to maintain existing behavior.
+    // TODO: Decide whether to remove it altogether or also apply to other curves with centers.
+    if (geo->is<Part::GeomArcOfCircle>()) {
+        Constraint* joint = new Constraint();
+        joint->Type = Coincident;
+        joint->First = newIds.front();
+        joint->FirstPos = PointPos::mid;
+        joint->Second = newIds.back();
+        joint->SecondPos = PointPos::mid;
+        newConstraints.push_back(joint);
+    }
+
+    if (geo->isDerivedFrom<Part::GeomConic>() || geo->isDerivedFrom<Part::GeomArcOfConic>()) {
+        transferConstraints(GeoId, PointPos::mid, newIds.front(), PointPos::mid);
+    }
+
     std::vector<int> idsOfOldConstraints;
     getConstraintIndices(GeoId, idsOfOldConstraints);
 
@@ -4343,20 +4212,22 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
     // keep constraints on internal geometries so they are deleted
     // when the old curve is deleted
-    idsOfOldConstraints.erase(std::remove_if(idsOfOldConstraints.begin(),
-                                        idsOfOldConstraints.end(),
-                                        [=](const auto& i) {
-                                            return allConstraints[i]->Type == InternalAlignment;
-                                        }),
-                         idsOfOldConstraints.end());
+    idsOfOldConstraints.erase(
+        std::remove_if(idsOfOldConstraints.begin(),
+                       idsOfOldConstraints.end(),
+                       [&allConstraints](const auto& i) {
+                           return allConstraints[i]->Type == InternalAlignment;
+                       }),
+        idsOfOldConstraints.end());
 
     for (const auto& oldConstrId: idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
         deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
     }
 
-    if (noRecomputes)
+    if (noRecomputes) {
         solve();
+    }
 
     delConstraints(idsOfOldConstraints);
     addConstraints(newConstraints);
