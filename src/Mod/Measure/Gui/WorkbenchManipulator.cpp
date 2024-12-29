@@ -39,5 +39,4 @@ void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] Gui::MenuItem* menuBar
 }
 
 void WorkbenchManipulator::modifyToolBars([[maybe_unused]] Gui::ToolBarItem* toolBar)
-{
-}
+{}
