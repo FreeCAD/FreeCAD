@@ -982,6 +982,9 @@ class DraftToolBar:
             params.set_param("OffsetCopyMode", bool(val))
         else:
             params.set_param("CopyMode", bool(val))
+            # if CopyMode is changed ghosts must be updated.
+            # Moveable children should not be included if CopyMode is True.
+            self.sourceCmd.set_ghosts()
 
     def setSubelementMode(self, val):
         params.set_param("SubelementMode", bool(val))
