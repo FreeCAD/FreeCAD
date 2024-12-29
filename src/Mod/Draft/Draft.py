@@ -79,9 +79,7 @@ from draftutils.utils import (get_real_name,
                               compareObjects,
                               shapify,
                               filter_objects_for_modifiers,
-                              filterObjectsForModifiers,
-                              is_closed_edge,
-                              isClosedEdge)
+                              is_closed_edge)
 
 from draftutils.utils import (string_encode_coin,
                               stringencodecoin,
@@ -155,27 +153,21 @@ from draftfunctions.heal import heal
 
 from draftfunctions.move import (move,
                                  move_vertex,
-                                 moveVertex,
                                  move_edge,
-                                 moveEdge,
-                                 copy_moved_edges,
-                                 copyMovedEdges)
+                                 copy_moved_edge,
+                                 copy_moved_edges)
 
 from draftfunctions.rotate import (rotate,
                                    rotate_vertex,
-                                   rotateVertex,
                                    rotate_edge,
-                                   rotateEdge,
-                                   copy_rotated_edges,
-                                   copyRotatedEdges)
+                                   copy_rotated_edge,
+                                   copy_rotated_edges)
 
 from draftfunctions.scale import (scale,
                                   scale_vertex,
-                                  scaleVertex,
                                   scale_edge,
-                                  scaleEdge,
-                                  copy_scaled_edges,
-                                  copyScaledEdges)
+                                  copy_scaled_edge,
+                                  copy_scaled_edges)
 
 from draftfunctions.join import (join_wires,
                                  joinWires,
