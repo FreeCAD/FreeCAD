@@ -32,6 +32,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftutils import gui_utils
+from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
 
@@ -159,5 +160,22 @@ class LayerContainer:
         """Set the internal properties from the restored state."""
         if state:
             self.Type = state
+
+
+# Similar function as in view_layer.py
+def get_layer(obj):
+    """Get the layer the object belongs to."""
+    finds = obj.Document.findObjects(Name="LayerContainer")
+    if not finds:
+        return None
+    # First look in the LayerContainer:
+    for layer in finds[0].Group:
+        if utils.get_type(layer) == "Layer" and obj in layer.Group:
+            return layer
+    # If not found, look through all App::FeaturePython objects (not just layers):
+    for find in obj.Document.findObjects(Type="App::FeaturePython"):
+        if utils.get_type(find) == "Layer" and obj in find.Group:
+            return find
+    return None
 
 ## @}

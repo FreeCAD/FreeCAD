@@ -35,6 +35,7 @@ import DraftVecUtils
 import WorkingPlane
 from draftfunctions import svgtext
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
+from draftobjects import layer
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn, _err
@@ -955,31 +956,14 @@ def _get_view_object(obj):
     return None
 
 
-# Similar function as in view_layer.py
-def _get_layer(obj):
-    """Get the layer the object belongs to."""
-    finds = obj.Document.findObjects(Name="LayerContainer")
-    if not finds:
-        return None
-    # First look in the LayerContainer:
-    for layer in finds[0].Group:
-        if utils.get_type(layer) == "Layer" and obj in layer.Group:
-            return layer
-    # If not found, look through all App::FeaturePython objects (not just layers):
-    for find in obj.Document.findObjects(Type="App::FeaturePython"):
-        if utils.get_type(find) == "Layer" and obj in find.Group:
-            return find
-    return None
-
-
 def get_print_color(obj):
     """Return the print color of the parent layer, if available."""
     # Layers are not in the Inlist of obj because a layer's Group is App::PropertyLinkListHidden:
-    layer = _get_layer(obj)
-    if layer is None:
+    lyr = layer.get_layer(obj)
+    if lyr is None:
         return None
-    if layer.ViewObject.UsePrintColor:
-        return layer.ViewObject.LinePrintColor
+    if lyr.ViewObject.UsePrintColor:
+        return lyr.ViewObject.LinePrintColor
     return None
 
 

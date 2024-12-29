@@ -320,6 +320,14 @@ class LinearDimension(DimensionBase):
         if hasattr(obj, "Support"):
             obj.setPropertyStatus('Support', 'Hidden')
 
+    def transform(self, obj, pla):
+        """Transform the object by applying a placement."""
+        obj.Start = pla.multVec(obj.Start)
+        obj.End = pla.multVec(obj.End)
+        obj.Dimline = pla.multVec(obj.Dimline)
+        obj.Normal = pla.Rotation.multVec(obj.Normal)
+        obj.Direction = pla.Rotation.multVec(obj.Direction)
+
     def execute(self, obj):
         """Execute when the object is created or recomputed.
 
@@ -570,6 +578,24 @@ class AngularDimension(DimensionBase):
         if hasattr(vobj, "TextColor"):
             return
         super().update_properties_0v21(obj, vobj)
+
+    def transform(self, obj, pla):
+        """Transform the object by applying a placement."""
+        import Part
+
+        new_normal = pla.Rotation.multVec(obj.Normal)
+        c_old = Part.makeCircle(1, App.Vector(), obj.Normal)
+        c_tra = c_old.transformShape((pla * c_old.Placement).Rotation.Matrix)
+        c_new = Part.makeCircle(1, App.Vector(), new_normal)
+        delta_angle = math.degrees(c_new.Curve.parameter(c_tra.firstVertex().Point))
+        first_angle = (obj.FirstAngle.Value + delta_angle) % 360
+        last_angle = (obj.LastAngle.Value + delta_angle) % 360
+
+        obj.Center = pla.multVec(obj.Center)
+        obj.Dimline = pla.multVec(obj.Dimline)
+        obj.Normal = new_normal
+        obj.FirstAngle = first_angle
+        obj.LastAngle = last_angle
 
     def execute(self, obj):
         """Execute when the object is created or recomputed.
