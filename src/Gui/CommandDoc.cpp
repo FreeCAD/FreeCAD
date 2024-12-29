@@ -114,36 +114,6 @@ void StdCmdOpen::activated(int iMsg)
                         "likely result in loss of data."));
         }
     };
-
-    auto checkMigrationLCS = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::MigrateLCS)) {
-            auto grp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-            if (!grp->GetBool("ShowLCSMigrationWarning", true)) {
-                return;
-            }
-
-            // Display the warning message
-            QMessageBox msgBox(QMessageBox::Warning,
-                QObject::tr("File Migration Warning"),
-                QObject::tr("This file was created with an older version of %1. "
-                    "Origin axes had incorrect placements, which have now been corrected.\n\n"
-                    "However, if you save this file in the current version and reopen it in an"
-                    " older version of %1, the origin axes will be misaligned. Additionally, "
-                    "if your file references these origin axes, your file will likely be broken.")
-                .arg(QApplication::applicationName()),
-                QMessageBox::Ok);
-
-            QCheckBox* checkBox = new QCheckBox(QObject::tr("Don't show this warning again"));
-            msgBox.setCheckBox(checkBox);
-
-            msgBox.exec();
-
-            // Save preference if the user selects "Don't show again"
-            if (checkBox->isChecked()) {
-                grp->SetBool("ShowLCSMigrationWarning", false);
-            }
-        }
-    };
     // clang-format on
 
     Q_UNUSED(iMsg);
@@ -215,7 +185,6 @@ void StdCmdOpen::activated(int iMsg)
 
             checkPartialRestore(doc);
             checkRestoreError(doc);
-            checkMigrationLCS(doc);
         }
     }
 }
