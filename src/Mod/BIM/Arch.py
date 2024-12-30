@@ -696,6 +696,20 @@ def makeRoof(baseobj=None,
     return obj
 
 
+def makeSchedule():
+    """makeSchedule(): Creates a schedule object in the active document"""
+
+    import ArchSchedule
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Schedule")
+    obj.Label = translate("Arch","Schedule")
+    ArchSchedule._ArchSchedule(obj)
+    if FreeCAD.GuiUp:
+        ArchSchedule._ViewProviderArchSchedule(obj.ViewObject)
+    if hasattr(obj,"CreateSpreadsheet") and obj.CreateSpreadsheet:
+        obj.Proxy.getSpreadSheet(obj, force=True)
+    return obj
+
+
 def makeSectionPlane(objectslist=None,name=None):
 
     """makeSectionPlane([objectslist],[name]) : Creates a Section plane objects including the

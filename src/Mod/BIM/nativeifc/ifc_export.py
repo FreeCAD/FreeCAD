@@ -187,6 +187,8 @@ def get_object_type(ifcentity, objecttype=None):
                 objecttype = "text"
         elif ifcentity.is_a("IfcGridAxis"):
             objecttype = "axis"
+        elif ifcentity.is_a("IfcControl"):
+            objecttype = "schedule"
     return objecttype
 
 

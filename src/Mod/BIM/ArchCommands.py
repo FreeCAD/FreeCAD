@@ -746,7 +746,7 @@ def getHost(obj,strict=True):
                 return par
     return None
 
-def pruneIncluded(objectslist,strict=False):
+def pruneIncluded(objectslist,strict=False,silent=False):
     """pruneIncluded(objectslist,[strict]): removes from a list of Arch objects, those that are subcomponents of
     another shape-based object, leaving only the top-level shapes. If strict is True, the object
     is removed only if the parent is also part of the selection."""
@@ -793,7 +793,7 @@ def pruneIncluded(objectslist,strict=False):
                             toplevel = True
         if toplevel:
             newlist.append(obj)
-        else:
+        elif not silent:
             FreeCAD.Console.PrintWarning("pruning "+obj.Label+"\n")
     return newlist
 

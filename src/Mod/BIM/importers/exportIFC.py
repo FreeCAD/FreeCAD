@@ -272,14 +272,17 @@ def export(exportList, filename, colors=None, preferences=None):
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
 
-    # separate 2D objects
+    # separate 2D and special objects. Special objects provide their own IFC export method
 
     annotations = []
+    specials = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
             annotations.append(obj)
         elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) in ["DraftText","Text","Dimension","LinearDimension","AngularDimension"]):
             annotations.append(obj)
+        elif hasattr(obj, "Proxy") and hasattr(obj.Proxy, "export_ifc"):
+            specials.append(obj)
         elif obj.isDerivedFrom("Part::Feature"):
             if obj.Shape and (not obj.Shape.Solids) and obj.Shape.Edges:
                 if not obj.Shape.Faces:
@@ -290,6 +293,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # clean objects list of unwanted types
 
     objectslist = [obj for obj in objectslist if obj not in annotations]
+    objectslist = [obj for obj in objectslist if obj not in specials]
     objectslist = Arch.pruneIncluded(objectslist,strict=True)
     objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Dimension","Material","MaterialContainer","WorkingPlaneProxy"]]
     if preferences['FULL_PARAMETRIC']:
@@ -1295,6 +1299,14 @@ def export(exportList, filename, colors=None, preferences=None):
         for anno in annotations:
             ann = create_annotation(anno, ifcfile, context, history, preferences)
             annos[anno.Name] = ann
+
+    # specials. Specials should take care of register themselves where needed under the project
+
+    specs = {}
+    for spec in specials:
+        if preferences['DEBUG']: print("exporting special object:",spec.Label)
+        elt = spec.Proxy.export_ifc(spec, ifcfile)
+        specs[spec.Name] = elt
 
     # groups
 
