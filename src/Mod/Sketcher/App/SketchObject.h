@@ -364,8 +364,8 @@ public:
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
-    template<class geomType>
-    static Base::Vector3d getPointForGeometry(const geomType* geo, PointPos PosId)
+    template<class GeomType>
+    static Base::Vector3d getPointForGeometry(const GeomType* geo, PointPos PosId)
     {
         (void)geo;
         (void)PosId;
@@ -476,6 +476,11 @@ public:
      * \return -1 on error
      */
     int exposeInternalGeometry(int GeoId);
+    template<class GeomType>
+    int exposeInternalGeometryForType(const int GeoId)
+    {
+        return -1;  // By default internal geometry is not supported
+    }
     /*!
      \brief Deletes all unused (not further constrained) internal geometry
      \param GeoId - the geometry having the internal geometry to delete
@@ -893,6 +898,23 @@ protected:
     void buildShape();
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
+
+    /// Helper functions for `deleteUnusedInternalGeometry` by cases
+    /// two foci for ellipses and arcs of ellipses and hyperbolas
+    int deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid = false);
+    /// one focus for parabolas
+    int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
+    /// b-splines need their own treatment
+    int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+
+    void onGeometryChanged();
+    void onConstraintsChanged();
+    void onExternalGeoChanged();
+    void onExternalGeometryChanged();
+    void onPlacementChanged();
+    void onExpressionEngineChanged();
+    void onAttachmentSupportChanged();
+
     void onDocumentRestored() override;
     void restoreFinished() override;
 
@@ -982,6 +1004,8 @@ protected:
                      int thirdGeoId = GeoEnum::GeoUndef,
                      Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
 
+public:
+    // FIXME: These may not need to be public. Decide before merging.
     std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(const Constraint* constr,
                                                               const int deletedGeoId) const;
 
