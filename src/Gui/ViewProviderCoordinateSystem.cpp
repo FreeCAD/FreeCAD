@@ -97,51 +97,41 @@ void ViewProviderCoordinateSystem::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-void ViewProviderCoordinateSystem::setTemporaryVisibility(bool axis, bool plane, bool points) {
-    auto origin = static_cast<App::Origin*>( getObject() );
+void ViewProviderCoordinateSystem::setTemporaryVisibility(bool axis, bool plane, bool points)
+{
+    auto origin = getObject<App::Origin>();
 
     bool saveState = tempVisMap.empty();
 
     try {
         // Remember & Set axis visibility
         for(App::DocumentObject* obj : origin->axes()) {
-            if (obj) {
-                Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
-                if(vp) {
-                    if (saveState) {
-                        tempVisMap[vp] = vp->isVisible();
-                    }
-                    vp->setVisible(axis);
+            if (auto vp = Gui::Application::Instance->getViewProvider(obj)) {
+                if (saveState) {
+                    tempVisMap[vp] = vp->isVisible();
                 }
+                vp->setVisible(axis);
             }
         }
 
         // Remember & Set plane visibility
         for(App::DocumentObject* obj : origin->planes()) {
-            if (obj) {
-                Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
-                if(vp) {
-                    if (saveState) {
-                        tempVisMap[vp] = vp->isVisible();
-                    }
-                    vp->setVisible(plane);
+            if (auto vp = Gui::Application::Instance->getViewProvider(obj)) {
+                if (saveState) {
+                    tempVisMap[vp] = vp->isVisible();
                 }
+                vp->setVisible(plane);
             }
         }
 
         // Remember & Set origin point visibility
         App::DocumentObject* obj = origin->getOrigin();
-        if (obj) {
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
-            if (vp) {
-                if (saveState) {
-                    tempVisMap[vp] = vp->isVisible();
-                }
-                vp->setVisible(points);
+        if (auto vp = Gui::Application::Instance->getViewProvider(obj)) {
+            if (saveState) {
+                tempVisMap[vp] = vp->isVisible();
             }
+            vp->setVisible(points);
         }
-
-
     }
     catch (const Base::Exception &ex) {
         Base::Console().Error ("%s\n", ex.what() );
