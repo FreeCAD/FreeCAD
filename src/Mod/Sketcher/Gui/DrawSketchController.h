@@ -23,6 +23,7 @@
 #ifndef SKETCHERGUI_DrawSketchController_H
 #define SKETCHERGUI_DrawSketchController_H
 
+#include <Base/Console.h>
 #include <Base/Tools2D.h>
 #include <Gui/EditableDatumLabel.h>
 
@@ -350,6 +351,21 @@ public:
      * It is intended to remote control the DrawSketchDefaultWidgetHandler
      */
     void onViewValueChanged(int onviewparameterindex, double value)
+    {
+        // Since this method is used as a Qt slot we must handle
+        // all exceptions here
+        try {
+            tryViewValueChanged(onviewparameterindex, value);
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
+        catch (const std::exception& e) {
+            Base::Console().Error("C++ exception in onViewValueChanged: %s\n", e.what());
+        }
+    }
+
+    void tryViewValueChanged(int onviewparameterindex, double value)
     {
         int nextindex = onviewparameterindex + 1;
         if (isOnViewParameterOfCurrentMode(nextindex)) {
