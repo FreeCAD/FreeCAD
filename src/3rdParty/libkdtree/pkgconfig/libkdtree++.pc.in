@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libkdtree++
+Description: C++ template container implementation of kd-tree sorting.
+Version: @VERSION@
+Libs: -L${libdir}
+Cflags: -I${includedir}
