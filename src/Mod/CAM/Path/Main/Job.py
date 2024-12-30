@@ -567,8 +567,9 @@ class ObjectJob:
                         obj.PostProcessorArgs = ""
                 if attrs.get(JobTemplate.PostProcessorOutputFile):
                     obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
-                if attrs.get(JobTemplate.Description):
-                    obj.Description = attrs.get(JobTemplate.Description)
+                if "Description" not in obj.PropertiesList:
+                    if attrs.get(JobTemplate.Description):
+                        obj.Description = attrs.get(JobTemplate.Description)
 
                 if attrs.get(JobTemplate.ToolController):
                     for tc in attrs.get(JobTemplate.ToolController):
