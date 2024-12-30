@@ -1,0 +1,1339 @@
+========== Nothing to be done
+./App/SketchObject.h:358:      \details The combined curve will be a b-spline
+./App/SketchObject.h:399:     \brief Approximates the given geometry with a B-spline
+./App/SketchObject.h:408:     \brief Increases the degree of a BSpline by degreeincrement, which defaults to 1
+./App/SketchObject.h:409:     \param GeoId - the geometry of type bspline to increase the degree
+./App/SketchObject.h:414:    bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
+./App/SketchObject.h:417:     \brief Decreases the degree of a BSpline by degreedecrement, which defaults to 1
+./App/SketchObject.h:418:     \param GeoId - the geometry of type bspline to increase the degree
+./App/SketchObject.h:423:    bool decreaseBSplineDegree(int GeoId, int degreedecrement = 1);
+./App/SketchObject.h:426:     \brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param,
+./App/SketchObject.h:428:     geometry of type bspline to increase the degree \param knotIndex - the index of the knot to
+./App/SketchObject.h:433:    bool modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr = 1);
+./App/SketchObject.h:436:      \brief Inserts a knot in the BSpline at `param` with given `multiplicity`. If the knot already
+./App/SketchObject.h:438:      bspline to increase the degree \param param - the parameter value where the knot is to be
+./App/SketchObject.h:442:    bool insertBSplineKnot(int GeoId, double param, int multiplicity = 1);
+./App/SketchObject.h:598:    /// Forwards a request for a temporary initBSplinePieceMove to the solver using the current
+./App/SketchObject.h:600:    inline int initTemporaryBSplinePieceMove(int geoId,
+./App/SketchObject.h:912:inline int SketchObject::initTemporaryBSplinePieceMove(int geoId,
+./App/SketchObject.h:924:    return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
+./App/SketchObject.cpp:36:#include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+./App/SketchObject.cpp:3690:        // what to do for periodic b-splines?
+./App/SketchObject.cpp:5971:                    case Sketcher::BSplineKnotPoint:
+./App/SketchObject.cpp:6076:                newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
+./App/SketchObject.cpp:6320:                    case Sketcher::BSplineKnotPoint:
+./App/SketchObject.cpp:6363:                    // because the radius magnitude no longer makes sense without the B-Spline.
+./App/SketchObject.cpp:6422:    Part::GeomBSplineCurve* bspline;
+./App/SketchObject.cpp:6425:        bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
+./App/SketchObject.cpp:3106:    if (isDerivedFromTrimmedCurve || isNonPeriodicBSpline) {
+./App/SketchObject.cpp:3123:        else if (isNonPeriodicBSpline) {
+./App/SketchObject.cpp:3262:            else if (isNonPeriodicBSpline) {
+./App/SketchObject.cpp:3280:            if (!isLineSegment && !isNonPeriodicBSpline) {
+./App/SketchObject.cpp:3310:            if (isNonPeriodicBSpline)
+./App/SketchObject.cpp:3334:            else if (isNonPeriodicBSpline) {
+./App/SketchObject.cpp:3370:            if (isNonPeriodicBSpline)
+./App/SketchObject.cpp:6533:bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
+./App/SketchObject.cpp:6559:        bool ok = bspline->approximate(Precision::Confusion(), 20, maxdegree, 0);
+./App/SketchObject.cpp:6588:bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
+./App/SketchObject.cpp:6628:                    "The multiplicity cannot be increased beyond the degree of the B-spline."))
+./App/SketchObject.cpp:6640:            bspline->increaseMultiplicity(knotIndex, curmult + multiplicityincr);
+./App/SketchObject.cpp:6683:    std::vector<double> newknots = bspline->getKnots();
+./App/SketchObject.cpp:6721:            else if ((*it)->AlignmentType == Sketcher::BSplineKnotPoint) {
+./App/SketchObject.cpp:6723:                    assert(prevknot[(*it)->InternalAlignmentIndex] < bspline->countKnots());
+./App/SketchObject.cpp:6793:bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
+./App/SketchObject.cpp:6826:                    "Knot multiplicity cannot be higher than the degree of the BSpline."));
+./App/SketchObject.cpp:6831:                                  "Knot cannot be inserted outside the BSpline parameter range."));
+./App/SketchObject.cpp:6839:        bspline->insertKnot(param, multiplicity);
+./App/SketchObject.cpp:6869:    std::vector<double> newknots = bspline->getKnots();
+./App/SketchObject.cpp:6907:            else if ((*it)->AlignmentType == Sketcher::BSplineKnotPoint) {
+./App/SketchObject.cpp:6909:                    assert(prevknot[(*it)->InternalAlignmentIndex] < bspline->countKnots());
+./App/SketchObject.cpp:9041:                internaltypestate = InternalType::BSplineControlPoint;
+./App/SketchObject.cpp:9043:            case BSplineKnotPoint:
+./App/Sketch.cpp:2365:                case BSplineKnotPoint:
+./App/Sketch.cpp:3008:int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
+./App/Sketch.cpp:3028:            Base::Console().Error("addTangentLineAtBSplineKnotConstraint: cannot set constraint "
+./App/Sketch.cpp:3042:                "addTangentLineAtBSplineKnotConstraint: This method cannot set tangent constraint "
+./App/Sketch.cpp:3043:                "at end knots of a B-spline. Please constrain the start/end points instead.\n");
+./App/Sketch.cpp:3051:        GCSsys.addConstraintTangentAtBSplineKnot(b, l, knotindex, tag);
+./App/Sketch.cpp:3081:            Base::Console().Error("addTangentLineEndpointAtBSplineKnotConstraint: cannot set "
+./App/Sketch.cpp:3082:                                  "constraint when B-spline slope is discontinuous at knot!\n");
+./App/Sketch.cpp:3094:            Base::Console().Error("addTangentLineEndpointAtBSplineKnotConstraint: This method "
+./App/Sketch.cpp:3095:                                  "cannot set tangent constraint at end knots of a B-spline. "
+./App/Sketch.cpp:3103:        GCSsys.addConstraintTangentAtBSplineKnot(b, l, knotindex, tag);
+./App/Sketch.cpp:4366:    if (crv1AsBSpline && crv1AsBSpline->flattenedknots.empty()) {
+./App/Sketch.cpp:4367:        crv1AsBSpline->setupFlattenedKnots();
+./App/Sketch.cpp:4370:    if (crv2AsBSpline && crv2AsBSpline->flattenedknots.empty()) {
+./App/Sketch.cpp:4371:        crv2AsBSpline->setupFlattenedKnots();
+./App/Sketch.cpp:5105:int Sketch::initBSplinePieceMove(int geoId,
+./App/ConstraintPyImp.cpp:349:                else if (strstr(ConstraintType, "BSplineKnotPoint")) {
+./App/ConstraintPyImp.cpp:350:                    this->getConstraintPtr()->AlignmentType = BSplineKnotPoint;
+./App/ConstraintPyImp.cpp:625:                case BSplineKnotPoint:
+./App/ConstraintPyImp.cpp:626:                    result << "'InternalAlignment:BSplineKnotPoint'>";
+./App/GeoEnum.h:79: * 'start'. More complex geometries like parabola focus or b-spline knots use InternalAlignment
+./App/PythonConverter.cpp:496:                 else if (constr->AlignmentType == BSplineKnotPoint) {
+./App/Constraint.h:81:    BSplineKnotPoint = 10,
+./App/Constraint.h:188:                                    "BSplineKnotPoint",
+./App/planegcs/Constraints.h:276:class ConstraintSlopeAtBSplineKnot: public Constraint
+./App/planegcs/Constraints.h:310:    // Constrains the slope at a (C1 continuous) knot of the b-spline
+./App/planegcs/Constraints.h:311:    ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex);
+./App/SketchObjectPy.xml:585:            <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
+./App/SketchObjectPy.xml:588:    <Methode Name="increaseBSplineDegree">
+./App/SketchObjectPy.xml:590:            <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
+./App/SketchObjectPy.xml:593:    <Methode Name="decreaseBSplineDegree">
+./App/SketchObjectPy.xml:595:            <UserDocu>Decreases the given BSpline Degree by a number of degrees by approximating this curve</UserDocu>
+./App/SketchObjectPy.xml:598:    <Methode Name="modifyBSplineKnotMultiplicity">
+./App/SketchObjectPy.xml:600:            <UserDocu>Increases or reduces the given BSpline knot multiplicity</UserDocu>
+./App/SketchObjectPy.xml:603:    <Methode Name="insertBSplineKnot">
+./App/SketchObjectPy.xml:605:            <UserDocu>Inserts a knot into the BSpline at the given param with given multiplicity. If the knot already exists, this increases the knot multiplicity by the given multiplicity.</UserDocu>
+./App/SketchGeometryExtension.h:51:    BSplineKnotPoint = 10,
+./App/SketchGeometryExtension.h:148:                           "BSplineKnotPoint",
+./App/Sketch.h:166:    /** Initializes a B-spline piece drag by setting the current
+./App/Sketch.h:169:    int initBSplinePieceMove(int geoId,
+./App/Sketch.h:178:    /** Limits a b-spline drag to the segment around `firstPoint`.
+./App/Sketch.h:180:    int limitBSplineMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint);
+./App/Sketch.h:355:    int addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
+./App/Sketch.h:356:                                              int checkedbsplinegeoId,
+./App/Sketch.h:358:    int addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
+./App/SketchObjectPyImp.cpp:1750:PyObject* SketchObjectPy::increaseBSplineDegree(PyObject* args)
+./App/SketchObjectPyImp.cpp:1759:    if (!this->getSketchObjectPtr()->increaseBSplineDegree(GeoId, incr)) {
+./App/SketchObjectPyImp.cpp:1769:PyObject* SketchObjectPy::decreaseBSplineDegree(PyObject* args)
+./App/SketchObjectPyImp.cpp:1778:    bool ok = this->getSketchObjectPtr()->decreaseBSplineDegree(GeoId, decr);
+./App/SketchObjectPyImp.cpp:1782:PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject* args)
+./App/SketchObjectPyImp.cpp:1792:    if (!this->getSketchObjectPtr()->modifyBSplineKnotMultiplicity(GeoId,
+./App/SketchObjectPyImp.cpp:1804:PyObject* SketchObjectPy::insertBSplineKnot(PyObject* args)
+./App/SketchObjectPyImp.cpp:1814:    if (!this->getSketchObjectPtr()->insertBSplineKnot(GeoId, knotParam, multiplicity)) {
+./App/PreCompiled.h:61:#include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:23:#ifndef SKETCHERGUI_DrawSketchHandlerBSplineByInterpolation_H
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:24:#define SKETCHERGUI_DrawSketchHandlerBSplineByInterpolation_H
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:46:class DrawSketchHandlerBSplineByInterpolation: public DrawSketchHandler
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:49:    explicit DrawSketchHandlerBSplineByInterpolation(int constructionMethod)
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:60:    ~DrawSketchHandlerBSplineByInterpolation() override = default;
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:93:            drawBSplineToPosition(onSketchPos);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:111:            BSplineKnots.push_back(onSketchPos);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:112:            BSplineMults.push_back(1);  // NOTE: not strictly true for end-points
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:123:                                      BSplineKnots.back().x,
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:124:                                      BSplineKnots.back().y);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:176:            BSplineKnots.push_back(onSketchPos);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:177:            BSplineMults.push_back(1);  // NOTE: not strictly true for end-points
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:183:                    BSplineKnots.pop_back();
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:197:                                      BSplineKnots.back().x,
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:198:                                      BSplineKnots.back().y);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:242:        //         QObject::tr("B-Spline Degree"),
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:243:        //         QObject::tr("Define B-Spline Degree, between 1 and %1:")
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:244:        //         .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:245:        //         SplineDegree, 1, Geom_BSplineCurve::MaxDegree(), 1);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:246:        //     // FIXME: Pressing Esc here also finishes the B-Spline creation.
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:250:            if (BSplineMults.size() > 1) {
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:251:                BSplineMults.back() = QInputDialog::getInt(
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:259:                    BSplineMults.back(),
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:264:            // FIXME: Pressing Esc here also finishes the B-Spline creation.
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:281:                // this also exits b-spline creation if continuous mode is off
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:306:                BSplineKnots.pop_back();
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:314:                drawBSplineToPosition(prevCursorPosition);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:336:        // We must see if we need to create a B-spline before cancelling everything
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:345:            // create B-spline from existing knots
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:383:        BSplineKnots.clear();
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:384:        BSplineMults.clear();
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:395:        if (SketcherGui::DrawSketchHandlerBSplineByInterpolation::ConstrMethod == 1) {
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:396:            return QString::fromLatin1("Sketcher_Pointer_Create_Periodic_BSplineByInterpolation");
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:399:            return QString::fromLatin1("Sketcher_Pointer_Create_BSplineByInterpolation");
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:412:        std::vector<Base::Vector2d> editcurve(BSplineKnots);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:418:    void drawBSplineToPosition(Base::Vector2d position)
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:427:            Base::Console().Log(std::string("drawBSplineToPosition"), "interpolation failed\n");
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:433:        std::vector<Base::Vector2d> editcurve(BSplineKnots);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:443:        Part::GeomBSplineCurve editBSpline;
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:444:        editBSpline.interpolate(editCurveForOCCT, ConstrMethod != 0);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:446:        std::vector<Part::Geometry*> editBSplines;
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:447:        editBSplines.push_back(&editBSpline);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:449:        drawEdit(editBSplines);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:454:        if (!BSplineKnots.empty()) {
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:455:            float length = (position - BSplineKnots.back()).Length();
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:456:            float angle = (position - BSplineKnots.back()).GetAngle(Base::Vector2d(1.f, 0.f));
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:483:                BSplineMults.front() =
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:485:                BSplineMults.back() =
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:494:            streams.back() << "App.Vector(" << BSplineKnots.front().x << ","
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:495:                           << BSplineKnots.front().y << "),";
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:497:            for (size_t i = 1; i < BSplineKnots.size() - 1; ++i) {
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:498:                streams.back() << "App.Vector(" << BSplineKnots[i].x << "," << BSplineKnots[i].y
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:500:                if (BSplineMults[i] >= myDegree) {
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:503:                        << "App.Vector(" << BSplineKnots[i].x << "," << BSplineKnots[i].y << "),";
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:507:            streams.back() << "App.Vector(" << BSplineKnots.back().x << "," << BSplineKnots.back().y
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:530:            std::vector<bool> isBetweenC0Points(BSplineKnots.size(), false);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:531:            for (size_t i = 1; i < BSplineKnots.size() - 1; ++i) {
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:532:                if (BSplineMults[i - 1] >= myDegree && BSplineMults[i + 1] >= myDegree) {
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:541:                // Create B-spline in pieces between C0 knots
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:549:                        QString::fromLatin1("_bsps.append(Part.BSplineCurve())\n"
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:557:                    // How this contributes to the final B-spline
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:586:                    "addGeometry(Part.BSplineCurve"
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:602:                // non-periodic b-splines (with appropriate endpoint knot multiplicity) as the ones
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:603:                // created by this tool are intended for the b-spline endpoints, and not for the
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:622:                // Constraint knots to B-spline.
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:638:                                   ":BSplineKnotPoint',"
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:646:                        if (BSplineMults[i] > 1 && BSplineMults[i] < myDegree) {
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:648:                                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:651:                                                  BSplineMults[i] - 1);
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:671:                                 QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline"));
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:736:    // Stores position of the knots of the BSpline.
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:737:    std::vector<Base::Vector2d> BSplineKnots;
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:738:    std::vector<unsigned int> BSplineMults;
+./Gui/DrawSketchHandlerBSplineByInterpolation.h:755:#endif  // SKETCHERGUI_DrawSketchHandlerBSplineByInterpolation_H
+./Gui/EditModeConstraintCoinManager.cpp:1819:                    case BSplineKnotPoint: {
+./Gui/CommandCreateGeo.cpp:60:#include "DrawSketchHandlerBSplineByInterpolation.h"
+./Gui/CommandCreateGeo.cpp:976:DEF_STD_CMD_AU(CmdSketcherCreatePeriodicBSpline)
+./Gui/CommandCreateGeo.cpp:981:CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
+./Gui/CommandCreateGeo.cpp:982:    : Command("Sketcher_CreatePeriodicBSpline")
+./Gui/CommandCreateGeo.cpp:986:    sMenuText = QT_TR_NOOP("Create periodic B-spline");
+./Gui/CommandCreateGeo.cpp:987:    sToolTipText = QT_TR_NOOP("Create a periodic B-spline by control points in the sketch.");
+./Gui/CommandCreateGeo.cpp:988:    sWhatsThis = "Sketcher_CreatePeriodicBSpline";
+./Gui/CommandCreateGeo.cpp:990:    sPixmap = "Sketcher_Create_Periodic_BSpline";
+./Gui/CommandCreateGeo.cpp:995:CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePeriodicBSpline, "Sketcher_Create_Periodic_BSpline")
+./Gui/CommandCreateGeo.cpp:997:void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
+./Gui/CommandCreateGeo.cpp:1003:bool CmdSketcherCreatePeriodicBSpline::isActive()
+./Gui/CommandCreateGeo.cpp:1009:/// 'CmdSketcherCreateBSplineByInterpolation'
+./Gui/CommandCreateGeo.cpp:1010:DEF_STD_CMD_AU(CmdSketcherCreateBSplineByInterpolation)
+./Gui/CommandCreateGeo.cpp:1012:CmdSketcherCreateBSplineByInterpolation::CmdSketcherCreateBSplineByInterpolation()
+./Gui/CommandCreateGeo.cpp:1013:    : Command("Sketcher_CreateBSplineByInterpolation")
+./Gui/CommandCreateGeo.cpp:1017:    sMenuText = QT_TR_NOOP("Create B-spline by knots");
+./Gui/CommandCreateGeo.cpp:1018:    sToolTipText = QT_TR_NOOP("Create a B-spline by knots, i.e. by interpolation, in the sketch.");
+./Gui/CommandCreateGeo.cpp:1019:    sWhatsThis = "Sketcher_CreateBSplineByInterpolation";
+./Gui/CommandCreateGeo.cpp:1021:    sPixmap = "Sketcher_CreateBSplineByInterpolation";
+./Gui/CommandCreateGeo.cpp:1026:CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSplineByInterpolation,
+./Gui/CommandCreateGeo.cpp:1027:                           "Sketcher_CreateBSplineByInterpolation")
+./Gui/CommandCreateGeo.cpp:1029:void CmdSketcherCreateBSplineByInterpolation::activated(int iMsg)
+./Gui/CommandCreateGeo.cpp:1032:    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(0));
+./Gui/CommandCreateGeo.cpp:1035:bool CmdSketcherCreateBSplineByInterpolation::isActive()
+./Gui/CommandCreateGeo.cpp:1041:/// 'CmdSketcherCreatePeriodicBSplineByInterpolation'
+./Gui/CommandCreateGeo.cpp:1042:DEF_STD_CMD_AU(CmdSketcherCreatePeriodicBSplineByInterpolation)
+./Gui/CommandCreateGeo.cpp:1044:CmdSketcherCreatePeriodicBSplineByInterpolation::CmdSketcherCreatePeriodicBSplineByInterpolation()
+./Gui/CommandCreateGeo.cpp:1045:    : Command("Sketcher_CreatePeriodicBSplineByInterpolation")
+./Gui/CommandCreateGeo.cpp:1049:    sMenuText = QT_TR_NOOP("Create periodic B-spline by knots");
+./Gui/CommandCreateGeo.cpp:1051:        QT_TR_NOOP("Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.");
+./Gui/CommandCreateGeo.cpp:1052:    sWhatsThis = "Sketcher_Create_Periodic_BSplineByInterpolation";
+./Gui/CommandCreateGeo.cpp:1054:    sPixmap = "Sketcher_Create_Periodic_BSplineByInterpolation";
+./Gui/CommandCreateGeo.cpp:1059:CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePeriodicBSplineByInterpolation,
+./Gui/CommandCreateGeo.cpp:1060:                           "Sketcher_CreatePeriodicBSplineByInterpolation")
+./Gui/CommandCreateGeo.cpp:1062:void CmdSketcherCreatePeriodicBSplineByInterpolation::activated(int iMsg)
+./Gui/CommandCreateGeo.cpp:1065:    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(1));
+./Gui/CommandCreateGeo.cpp:1068:bool CmdSketcherCreatePeriodicBSplineByInterpolation::isActive()
+./Gui/CommandCreateGeo.cpp:1105:        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(0));
+./Gui/CommandCreateGeo.cpp:1108:        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(1));
+./Gui/CommandCreateGeo.cpp:1132:    QAction* periodicbspline = pcAction->addAction(QString());
+./Gui/CommandCreateGeo.cpp:1133:    periodicbspline->setIcon(
+./Gui/CommandCreateGeo.cpp:1134:        Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
+./Gui/CommandCreateGeo.cpp:1136:    QAction* bsplinebyknot = pcAction->addAction(QString());
+./Gui/CommandCreateGeo.cpp:1137:    bsplinebyknot->setIcon(
+./Gui/CommandCreateGeo.cpp:1138:        Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation"));
+./Gui/CommandCreateGeo.cpp:1140:    QAction* periodicbsplinebyknot = pcAction->addAction(QString());
+./Gui/CommandCreateGeo.cpp:1141:    periodicbsplinebyknot->setIcon(
+./Gui/CommandCreateGeo.cpp:1142:        Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSplineByInterpolation"));
+./Gui/CommandCreateGeo.cpp:1167:            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
+./Gui/CommandCreateGeo.cpp:1169:                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation"));
+./Gui/CommandCreateGeo.cpp:1171:                "Sketcher_Create_Periodic_BSplineByInterpolation"));
+./Gui/CommandCreateGeo.cpp:1177:                Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_Constr"));
+./Gui/CommandCreateGeo.cpp:1179:                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation_Constr"));
+./Gui/CommandCreateGeo.cpp:1181:                "Sketcher_Create_Periodic_BSplineByInterpolation_Constr"));
+./Gui/CommandCreateGeo.cpp:1204:    QAction* periodicbspline = a[1];
+./Gui/CommandCreateGeo.cpp:1205:    periodicbspline->setText(QApplication::translate("Sketcher_Create_Periodic_BSpline",
+./Gui/CommandCreateGeo.cpp:1206:                                                     "Periodic B-spline by control points"));
+./Gui/CommandCreateGeo.cpp:1207:    periodicbspline->setToolTip(
+./Gui/CommandCreateGeo.cpp:1208:        QApplication::translate("Sketcher_Create_Periodic_BSpline",
+./Gui/CommandCreateGeo.cpp:1209:                                "Create a periodic B-spline by control points"));
+./Gui/CommandCreateGeo.cpp:1210:    periodicbspline->setStatusTip(
+./Gui/CommandCreateGeo.cpp:1211:        QApplication::translate("Sketcher_Create_Periodic_BSpline",
+./Gui/CommandCreateGeo.cpp:1213:    QAction* bsplinebyknot = a[2];
+./Gui/CommandCreateGeo.cpp:1214:    bsplinebyknot->setText(
+./Gui/CommandCreateGeo.cpp:1215:        QApplication::translate("Sketcher_CreateBSplineByInterpolation", "B-spline by knots"));
+./Gui/CommandCreateGeo.cpp:1216:    bsplinebyknot->setToolTip(QApplication::translate("Sketcher_CreateBSplineByInterpolation",
+./Gui/CommandCreateGeo.cpp:1217:                                                      "Create a B-spline by knots"));
+./Gui/CommandCreateGeo.cpp:1218:    bsplinebyknot->setStatusTip(QApplication::translate("Sketcher_CreateBSplineByInterpolation",
+./Gui/CommandCreateGeo.cpp:1219:                                                        "Create a B-spline by knots"));
+./Gui/CommandCreateGeo.cpp:1220:    QAction* periodicbsplinebyknot = a[3];
+./Gui/CommandCreateGeo.cpp:1221:    periodicbsplinebyknot->setText(
+./Gui/CommandCreateGeo.cpp:1222:        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+./Gui/CommandCreateGeo.cpp:1223:                                "Periodic B-spline by knots"));
+./Gui/CommandCreateGeo.cpp:1224:    periodicbsplinebyknot->setToolTip(
+./Gui/CommandCreateGeo.cpp:1225:        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+./Gui/CommandCreateGeo.cpp:1226:                                "Create a periodic B-spline by knots"));
+./Gui/CommandCreateGeo.cpp:1227:    periodicbsplinebyknot->setStatusTip(
+./Gui/CommandCreateGeo.cpp:1228:        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+./Gui/CommandCreateGeo.cpp:1229:                                "Create a periodic B-spline by knots"));
+./Gui/CommandCreateGeo.cpp:1232:bool CmdSketcherCompCreateBSpline::isActive()
+./Gui/CommandCreateGeo.cpp:2218:    rcCmdMgr.addCommand(new CmdSketcherCreateBSpline());
+./Gui/CommandCreateGeo.cpp:2219:    rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSpline());
+./Gui/CommandCreateGeo.cpp:2220:    rcCmdMgr.addCommand(new CmdSketcherCreateBSplineByInterpolation());
+./Gui/CommandCreateGeo.cpp:2221:    rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSplineByInterpolation());
+./Gui/CommandSketcherOverlay.cpp:150:DEF_STD_CMD_A(CmdSketcherBSplineKnotMultiplicity)
+./Gui/CommandSketcherOverlay.cpp:152:CmdSketcherBSplineKnotMultiplicity::CmdSketcherBSplineKnotMultiplicity()
+./Gui/CommandSketcherOverlay.cpp:153:    : Command("Sketcher_BSplineKnotMultiplicity")
+./Gui/CommandSketcherOverlay.cpp:157:    sMenuText = QT_TR_NOOP("Show/hide B-spline knot multiplicity");
+./Gui/CommandSketcherOverlay.cpp:159:        QT_TR_NOOP("Switches between showing and hiding the knot multiplicity for all B-splines");
+./Gui/CommandSketcherOverlay.cpp:160:    sWhatsThis = "Sketcher_BSplineKnotMultiplicity";
+./Gui/CommandSketcherOverlay.cpp:162:    sPixmap = "Sketcher_BSplineKnotMultiplicity";
+./Gui/CommandSketcherOverlay.cpp:167:void CmdSketcherBSplineKnotMultiplicity::activated(int iMsg)
+./Gui/CommandSketcherOverlay.cpp:171:    ShowRestoreInformationLayer("BSplineKnotMultiplicityVisible");
+./Gui/CommandSketcherOverlay.cpp:174:bool CmdSketcherBSplineKnotMultiplicity::isActive()
+./Gui/CommandSketcherOverlay.cpp:209:// Composite drop down menu for show/hide BSpline information layer
+./Gui/CommandSketcherOverlay.cpp:240:        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineKnotMultiplicity");
+./Gui/CommandSketcherOverlay.cpp:275:    c4->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineKnotMultiplicity"));
+./Gui/CommandSketcherOverlay.cpp:328:                                        "Show/hide B-spline knot multiplicity"));
+./Gui/CommandSketcherOverlay.cpp:330:        "Sketcher_BSplineKnotMultiplicity",
+./Gui/CommandSketcherOverlay.cpp:331:        "Switches between showing and hiding the knot multiplicity for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:333:        "Sketcher_BSplineKnotMultiplicity",
+./Gui/CommandSketcherOverlay.cpp:334:        "Switches between showing and hiding the knot multiplicity for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:347:void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*/)
+./Gui/CommandSketcherOverlay.cpp:350:bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive()
+./Gui/CommandSketcherOverlay.cpp:392:    rcCmdMgr.addCommand(new CmdSketcherBSplineKnotMultiplicity());
+./Gui/EditModeCoinManager.cpp:101:        {"BSplineKnotMultiplicityVisible",
+./Gui/EditModeCoinManager.cpp:104:                 OverlayVisibilityParameter::BSplineKnotMultiplicityVisible>(param);
+./Gui/EditModeCoinManager.cpp:341:                       == OverlayVisibilityParameter::BSplineKnotMultiplicityVisible) {
+./Gui/EditModeCoinManager.cpp:342:        Client.overlayParameters.bSplineKnotMultiplicityVisible =
+./Gui/Utils.cpp:337:bool SketcherGui::isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId)
+./Gui/Utils.cpp:340:    return (gf && gf->getInternalType() == Sketcher::InternalType::BSplineKnotPoint);
+./Gui/Utils.cpp:343:bool SketcherGui::isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj,
+./Gui/Utils.cpp:348:    if (isBsplineKnot(Obj, GeoId)) {
+./Gui/Utils.cpp:378:    if (isBsplineKnot(Obj, GeoIdPoint)) {
+./Gui/Utils.h:121:/// Checks if `GeoId` corresponds to a B-Spline knot
+./Gui/Utils.h:122:bool isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId);
+./Gui/Utils.h:123:/// Checks if the (`GeoId`, `PosId`) pair corresponds to a B-Spline knot, including first and last
+./Gui/Utils.h:125:bool isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj,
+./Gui/ViewProviderSketch.cpp:1591:                    getSketchObject()->initTemporaryBSplinePieceMove(
+./Gui/ViewProviderSketch.cpp:3970:    int selectedBsplineKnots = 0;
+./Gui/ViewProviderSketch.cpp:4009:                    if (isBsplineKnotOrEndPoint(obj, geoId, posId)) {
+./Gui/ViewProviderSketch.cpp:4010:                        ++selectedBsplineKnots;
+./Gui/ViewProviderSketch.cpp:4035:            menu << "Sketcher_BSplineInsertKnot"
+./Gui/ViewProviderSketch.cpp:4036:                 << "Sketcher_BSplineIncreaseDegree"
+./Gui/ViewProviderSketch.cpp:4037:                 << "Sketcher_BSplineDecreaseDegree";
+./Gui/ViewProviderSketch.cpp:4039:        else if (selectedBsplineKnots > 0 && selectedBsplineKnots == selectedPoints
+./Gui/ViewProviderSketch.cpp:4041:            if (selectedBsplineKnots == 1) {
+./Gui/ViewProviderSketch.cpp:4042:                menu << "Sketcher_BSplineIncreaseKnotMultiplicity"
+./Gui/ViewProviderSketch.cpp:4043:                     << "Sketcher_BSplineDecreaseKnotMultiplicity";
+./Gui/Workbench.cpp:44:    qApp->translate("Workbench", "Sketcher B-spline tools");
+./Gui/Workbench.cpp:87:    Gui::MenuItem* bsplines = new Gui::MenuItem();
+./Gui/Workbench.cpp:88:    bsplines->setCommand("Sketcher B-spline tools");
+./Gui/Workbench.cpp:89:    addSketcherWorkbenchBSplines(*bsplines);
+./Gui/Workbench.cpp:100:    *sketch << geom << cons << consaccel << bsplines << visual;
+./Gui/Workbench.cpp:133:    Gui::ToolBarItem* bspline =
+./Gui/Workbench.cpp:135:    bspline->setCommand("Sketcher B-spline tools");
+./Gui/Workbench.cpp:136:    addSketcherWorkbenchBSplines(*bspline);
+./Gui/Workbench.cpp:167:                        QString::fromLatin1("Sketcher B-spline tools"),
+./Gui/Workbench.cpp:305:         << "Sketcher_CreateBSplineByInterpolation"
+./Gui/Workbench.cpp:573:inline void SketcherAddWorkbenchBSplines(T& bspline);
+./Gui/Workbench.cpp:576:inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
+./Gui/Workbench.cpp:578:    bspline << "Sketcher_BSplineConvertToNURBS"
+./Gui/Workbench.cpp:579:            << "Sketcher_BSplineIncreaseDegree"
+./Gui/Workbench.cpp:580:            << "Sketcher_BSplineDecreaseDegree"
+./Gui/Workbench.cpp:581:            << "Sketcher_BSplineIncreaseKnotMultiplicity"
+./Gui/Workbench.cpp:582:            << "Sketcher_BSplineDecreaseKnotMultiplicity"
+./Gui/Workbench.cpp:583:            << "Sketcher_BSplineInsertKnot"
+./Gui/Workbench.cpp:588:inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline)
+./Gui/Workbench.cpp:590:    bspline << "Sketcher_BSplineConvertToNURBS"
+./Gui/Workbench.cpp:594:            << "Sketcher_BSplineInsertKnot"
+./Gui/EditModeInformationOverlayCoinConverter.h:89:        BSplineKnotMultiplicity,
+./Gui/EditModeInformationOverlayCoinConverter.h:207:    NodeText<CalculationType::BSplineKnotMultiplicity> knotMultiplicity;
+./Gui/CommandConstraints.cpp:182:                                           "such as B-spline knot points."));
+./Gui/CommandConstraints.cpp:3752:            else if (isBsplineKnot(Obj, GeoId1) != isBsplineKnot(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:3755:                if (isBsplineKnot(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:6676:            if (isBsplineKnot(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:6683:                if (isBsplineKnot(Obj, GeoId1)) {
+./Gui/CommandConstraints.cpp:6690:                            QObject::tr("Tangent constraint at B-spline knot is only supported "
+./Gui/CommandConstraints.cpp:6721:                if (isBsplineKnot(Obj, GeoId1)) {
+./Gui/CommandConstraints.cpp:6728:                            QObject::tr("Tangent constraint at B-spline knot is only supported "
+./Gui/CommandSketcherBSpline.cpp:66:/// For a knot given by (GeoId, PosId) finds the B-Spline and the knot's
+./Gui/CommandSketcherBSpline.cpp:70:bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
+./Gui/CommandSketcherBSpline.cpp:78:            && constraint->AlignmentType == Sketcher::BSplineKnotPoint) {
+./Gui/CommandSketcherBSpline.cpp:94:                knotIndexOCC = static_cast<const Part::GeomBSplineCurve*>(geo)->countKnots();
+./Gui/CommandSketcherBSpline.cpp:98:                // isBsplineKnotOrEndPoint (that we expect is run before) will
+./Gui/CommandSketcherBSpline.cpp:111:    : Command("Sketcher_BSplineConvertToNURBS")
+./Gui/CommandSketcherBSpline.cpp:115:    sMenuText = QT_TR_NOOP("Convert geometry to B-spline");
+./Gui/CommandSketcherBSpline.cpp:116:    sToolTipText = QT_TR_NOOP("Converts the selected geometry to a B-spline");
+./Gui/CommandSketcherBSpline.cpp:117:    sWhatsThis = "Sketcher_BSplineConvertToNURBS";
+./Gui/CommandSketcherBSpline.cpp:119:    sPixmap = "Sketcher_BSplineApproximate";
+./Gui/CommandSketcherBSpline.cpp:187:    : Command("Sketcher_BSplineIncreaseDegree")
+./Gui/CommandSketcherBSpline.cpp:191:    sMenuText = QT_TR_NOOP("Increase B-spline degree");
+./Gui/CommandSketcherBSpline.cpp:192:    sToolTipText = QT_TR_NOOP("Increases the degree of the B-spline");
+./Gui/CommandSketcherBSpline.cpp:193:    sWhatsThis = "Sketcher_BSplineIncreaseDegree";
+./Gui/CommandSketcherBSpline.cpp:195:    sPixmap = "Sketcher_BSplineIncreaseDegree";
+./Gui/CommandSketcherBSpline.cpp:229:                                      "increaseBSplineDegree(%d) ",
+./Gui/CommandSketcherBSpline.cpp:264:    : Command("Sketcher_BSplineDecreaseDegree")
+./Gui/CommandSketcherBSpline.cpp:268:    sMenuText = QT_TR_NOOP("Decrease B-spline degree");
+./Gui/CommandSketcherBSpline.cpp:269:    sToolTipText = QT_TR_NOOP("Decreases the degree of the B-spline");
+./Gui/CommandSketcherBSpline.cpp:270:    sWhatsThis = "Sketcher_BSplineDecreaseDegree";
+./Gui/CommandSketcherBSpline.cpp:272:    sPixmap = "Sketcher_BSplineDecreaseDegree";
+./Gui/CommandSketcherBSpline.cpp:308:                                      "decreaseBSplineDegree(%d) ",
+./Gui/CommandSketcherBSpline.cpp:311:                // Currently exposeInternalGeometry is called from within decreaseBSplineDegree
+./Gui/CommandSketcherBSpline.cpp:346:    : Command("Sketcher_BSplineIncreaseKnotMultiplicity")
+./Gui/CommandSketcherBSpline.cpp:351:    sToolTipText = QT_TR_NOOP("Increases the multiplicity of the selected knot of a B-spline");
+./Gui/CommandSketcherBSpline.cpp:352:    sWhatsThis = "Sketcher_BSplineIncreaseKnotMultiplicity";
+./Gui/CommandSketcherBSpline.cpp:354:    sPixmap = "Sketcher_BSplineIncreaseKnotMultiplicity";
+./Gui/CommandSketcherBSpline.cpp:398:    bool notaknot = !(isBsplineKnotOrEndPoint(Obj, GeoId, PosId)
+./Gui/CommandSketcherBSpline.cpp:399:                      && findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC));
+./Gui/CommandSketcherBSpline.cpp:407:                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+./Gui/CommandSketcherBSpline.cpp:441:            QObject::tr("None of the selected elements is a knot of a B-spline"));
+./Gui/CommandSketcherBSpline.cpp:494:    : Command("Sketcher_BSplineDecreaseKnotMultiplicity")
+./Gui/CommandSketcherBSpline.cpp:499:    sToolTipText = QT_TR_NOOP("Decreases the multiplicity of the selected knot of a B-spline");
+./Gui/CommandSketcherBSpline.cpp:500:    sWhatsThis = "Sketcher_BSplineDecreaseKnotMultiplicity";
+./Gui/CommandSketcherBSpline.cpp:502:    sPixmap = "Sketcher_BSplineDecreaseKnotMultiplicity";
+./Gui/CommandSketcherBSpline.cpp:546:    bool notaknot = !(isBsplineKnotOrEndPoint(Obj, GeoId, PosId)
+./Gui/CommandSketcherBSpline.cpp:547:                      && findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC));
+./Gui/CommandSketcherBSpline.cpp:555:                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+./Gui/CommandSketcherBSpline.cpp:577:            QObject::tr("None of the selected elements is a knot of a B-spline"));
+./Gui/CommandSketcherBSpline.cpp:637:    sToolTipText = QT_TR_NOOP("Modifies the multiplicity of the selected knot of a B-spline");
+./Gui/CommandSketcherBSpline.cpp:650:        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineIncreaseKnotMultiplicity");
+./Gui/CommandSketcherBSpline.cpp:653:        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDecreaseKnotMultiplicity");
+./Gui/CommandSketcherBSpline.cpp:677:    c1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineIncreaseKnotMultiplicity"));
+./Gui/CommandSketcherBSpline.cpp:679:    c2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineDecreaseKnotMultiplicity"));
+./Gui/CommandSketcherBSpline.cpp:705:        QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity",
+./Gui/CommandSketcherBSpline.cpp:706:                                "Increases the multiplicity of the selected knot of a B-spline"));
+./Gui/CommandSketcherBSpline.cpp:708:        QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity",
+./Gui/CommandSketcherBSpline.cpp:709:                                "Increases the multiplicity of the selected knot of a B-spline"));
+./Gui/CommandSketcherBSpline.cpp:714:        QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity",
+./Gui/CommandSketcherBSpline.cpp:715:                                "Decreases the multiplicity of the selected knot of a B-spline"));
+./Gui/CommandSketcherBSpline.cpp:717:        QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity",
+./Gui/CommandSketcherBSpline.cpp:718:                                "Decreases the multiplicity of the selected knot of a B-spline"));
+./Gui/CommandSketcherBSpline.cpp:729:class DrawSketchHandlerBSplineInsertKnot: public DrawSketchHandler
+./Gui/CommandSketcherBSpline.cpp:732:    DrawSketchHandlerBSplineInsertKnot(Sketcher::SketchObject* _Obj, int _GeoId)
+./Gui/CommandSketcherBSpline.cpp:737:        auto bsp = static_cast<const Part::GeomBSplineCurve*>(Obj->getGeometry(GeoId));
+./Gui/CommandSketcherBSpline.cpp:741:    ~DrawSketchHandlerBSplineInsertKnot() override
+./Gui/CommandSketcherBSpline.cpp:753:        // FIXME: Sometimes the "closest" point is on the other end of the B-Spline.
+./Gui/CommandSketcherBSpline.cpp:782:        boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
+./Gui/CommandSketcherBSpline.cpp:785:            Gui::cmdAppObjectArgs(Obj, "insertBSplineKnot(%d, %lf, %d) ", GeoId, guessParam, 1);
+./Gui/CommandSketcherBSpline.cpp:790:            // particularly B-spline GeoID might have changed.
+./Gui/CommandSketcherBSpline.cpp:813:            // find new geoid for B-spline as GeoId might have changed
+./Gui/CommandSketcherBSpline.cpp:853:            // The new entities created changed the B-Spline's GeoId
+./Gui/CommandSketcherBSpline.cpp:886:    : Command("Sketcher_BSplineInsertKnot")
+./Gui/CommandSketcherBSpline.cpp:893:    sWhatsThis = "Sketcher_BSplineInsertKnot";
+./Gui/CommandSketcherBSpline.cpp:895:    sPixmap = "Sketcher_BSplineInsertKnot";
+./Gui/CommandSketcherBSpline.cpp:921:                                   QObject::tr("Nothing is selected. Please select a b-spline."));
+./Gui/CommandSketcherBSpline.cpp:927:    // TODO: Ensure GeoId is for the BSpline and not for it's internal geometry
+./Gui/CommandSketcherBSpline.cpp:931:    if (geo->is<Part::GeomBSplineCurve>()) {
+./Gui/CommandSketcherBSpline.cpp:933:                               new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
+./Gui/CommandSketcherBSpline.cpp:939:            QObject::tr("Please select a b-spline curve to insert a knot (not a knot on it). "
+./Gui/CommandSketcherBSpline.cpp:940:                        "If the curve is not a b-spline, please convert it into one first."));
+./Gui/CommandSketcherBSpline.cpp:1107:void CreateSketcherCommandsBSpline()
+./Gui/EditModeInformationOverlayCoinConverter.cpp:68:        calculate<CalculationType::BSplineKnotMultiplicity>(geometry, geoid);
+./Gui/EditModeInformationOverlayCoinConverter.cpp:272:        else if constexpr (calculation == CalculationType::BSplineKnotMultiplicity) {
+./Gui/DrawSketchHandlerSplitting.h:81:            if (isBsplineKnot(Sketch, GeoId)) {
+./Gui/DrawSketchHandlerSplitting.h:135:                                && constr->AlignmentType == Sketcher::BSplineKnotPoint
+./Gui/DrawSketchHandlerBSpline.h:534:                // pole, in normal non-periodic b-splines (with appropriate endpoint knot
+./Gui/DrawSketchHandlerBSpline.h:535:                // multiplicity) as the ones created by this tool are intended for the b-spline
+./Gui/EditModeCoinManager.h:120:            BSplineControlPolygonVisible,
+./Gui/EditModeCoinManager.h:121:            BSplineCombVisible,
+./Gui/EditModeCoinManager.h:122:            BSplineKnotMultiplicityVisible,
+./Gui/EditModeCoinManager.h:123:            BSplinePoleWeightVisible,
+./Gui/Workbench.h:62:SketcherGuiExport void addSketcherWorkbenchBSplines(Gui::MenuItem& bspline);
+./Gui/Workbench.h:70:SketcherGuiExport void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline);
+./Gui/CMakeLists.txt:70:    DrawSketchHandlerBSplineByInterpolation.h
+========== Add check for Bezier
+./App/SketchObject.h:878:    // (Blocked) and Geometry InternalType (BSplineKnot, BSplinePole).
+./App/SketchObject.cpp:37:#include <Geom_BSplineCurve.hxx>
+./App/SketchObject.cpp:1053:    } else if (geo->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:1054:        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:1122:        || geo->is<Part::GeomBSplineCurve>()
+./App/SketchObject.cpp:1238:             || geo->is<Part::GeomBSplineCurve>())) {
+./App/SketchObject.cpp:2987:    // Removes all internal geometry of a BSplineCurve and updates the GeoId index after removal
+./App/SketchObject.cpp:2988:    auto ifBSplineRemoveInternalAlignmentGeometry = [this](int& GeoId) {
+./App/SketchObject.cpp:2990:        if (geo->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:2991:            // We need to remove the internal geometry of the BSpline, as BSplines change in number
+./App/SketchObject.cpp:3055:    //******************* Preparation of BSplines ****************************************//
+./App/SketchObject.cpp:3056:    // Trimmed B-Spline internal geometry cannot be reused
+./App/SketchObject.cpp:3059:    auto isBSpline = geo->is<Part::GeomBSplineCurve>();
+./App/SketchObject.cpp:3061:        isBSpline && static_cast<const Part::GeomBSplineCurve*>(geo)->isPeriodic();
+./App/SketchObject.cpp:3062:    auto isNonPeriodicBSpline =
+./App/SketchObject.cpp:3063:        isBSpline && !static_cast<const Part::GeomBSplineCurve*>(geo)->isPeriodic();
+./App/SketchObject.cpp:3069:    if (isBSpline) {
+./App/SketchObject.cpp:3071:        // Two options, it is a periodic bspline and we need two intersections or
+./App/SketchObject.cpp:3072:        // it is a non-periodic bspline and one intersection is enough.
+./App/SketchObject.cpp:3073:        auto bspline = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:3078:        ifBSplineRemoveInternalAlignmentGeometry(GeoId);// GeoId gets updated here
+./App/SketchObject.cpp:3080:        // When internal alignment geometry is removed from a bspline, it moves slightly
+./App/SketchObject.cpp:3124:            auto bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:3263:                static_cast<Part::GeomBSplineCurve*>(newVals[GeoId])->Trim(firstParam, point1Param);
+./App/SketchObject.cpp:3264:                static_cast<Part::GeomBSplineCurve*>(newVals.back())->Trim(point2Param, lastParam);
+./App/SketchObject.cpp:3302:            if (!isLineSegment && !isBSpline) {
+./App/SketchObject.cpp:3335:                auto newGeo = std::unique_ptr<Part::GeomBSplineCurve>(
+./App/SketchObject.cpp:3336:                    static_cast<Part::GeomBSplineCurve*>(geo->clone()));
+./App/SketchObject.cpp:3428:        else if (isPeriodicBSpline) {
+./App/SketchObject.cpp:3429:            auto bspline = std::unique_ptr<Part::GeomBSplineCurve>(
+./App/SketchObject.cpp:3430:                static_cast<Part::GeomBSplineCurve*>(geo->clone()));
+./App/SketchObject.cpp:3431:            bspline->Trim(point2Param, point1Param);
+./App/SketchObject.cpp:3432:            geoNew = std::move(bspline);
+./App/SketchObject.cpp:3475:        if (isBSpline)
+./App/SketchObject.cpp:3687:    else if (geo->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:3688:        const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:3695:                    auto newBsp = std::unique_ptr<Part::GeomBSplineCurve>(
+./App/SketchObject.cpp:3696:                        static_cast<Part::GeomBSplineCurve*>(curve->copy()));
+./App/SketchObject.cpp:3702:                    // b-spline
+./App/SketchObject.cpp:3709:                    auto newBsp = std::unique_ptr<Part::GeomBSplineCurve>(
+./App/SketchObject.cpp:3710:                        static_cast<Part::GeomBSplineCurve*>(curve->copy()));
+./App/SketchObject.cpp:3912:    // TODO: make both curves b-splines here itself
+./App/SketchObject.cpp:3920:    std::unique_ptr<Part::GeomBSplineCurve> bsp1(
+./App/SketchObject.cpp:3922:    std::unique_ptr<Part::GeomBSplineCurve> bsp2(
+./App/SketchObject.cpp:4015:    Part::GeomBSplineCurve* newSpline = new Part::GeomBSplineCurve(
+./App/SketchObject.cpp:4452:            else if (geosym->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:4453:                Part::GeomBSplineCurve* geosymbsp = static_cast<Part::GeomBSplineCurve*>(geosym);
+./App/SketchObject.cpp:4526:                    else if (georef->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:4527:                        const Part::GeomBSplineCurve* geosymbsp =
+./App/SketchObject.cpp:4528:                            static_cast<const Part::GeomBSplineCurve*>(georef);
+./App/SketchObject.cpp:4558:                    else if (georef->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:4559:                        const Part::GeomBSplineCurve* geosymbsp =
+./App/SketchObject.cpp:4560:                            static_cast<const Part::GeomBSplineCurve*>(georef);
+./App/SketchObject.cpp:4738:            else if (geosym->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:4739:                Part::GeomBSplineCurve* geosymbsp = static_cast<Part::GeomBSplineCurve*>(geosym);
+./App/SketchObject.cpp:5120:                else if (geocopy->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:5121:                    Part::GeomBSplineCurve* geobsp = static_cast<Part::GeomBSplineCurve*>(geocopy);
+./App/SketchObject.cpp:5931:    else if (geo->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:5933:        const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:5967:                    case Sketcher::BSplineControlPoint:
+./App/SketchObject.cpp:6020:                newConstr->AlignmentType = Sketcher::BSplineControlPoint;
+./App/SketchObject.cpp:6282:    else if (geo->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:6284:        const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:6317:                    case Sketcher::BSplineControlPoint:
+./App/SketchObject.cpp:6431:                bspline->reverse();
+./App/SketchObject.cpp:6449:            newVals.push_back(bspline);
+./App/SketchObject.cpp:6453:            newVals[GeoId] = bspline;
+./App/SketchObject.cpp:6460:            // delete constraints on this elements other than coincident constraints (bspline does
+./App/SketchObject.cpp:6492:bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
+./App/SketchObject.cpp:6502:    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+./App/SketchObject.cpp:6505:    const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:6507:    const Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(bsp->handle());
+./App/SketchObject.cpp:6509:    std::unique_ptr<Part::GeomBSplineCurve> bspline(new Part::GeomBSplineCurve(curve));
+./App/SketchObject.cpp:6512:        int cdegree = bspline->getDegree();
+./App/SketchObject.cpp:6514:        bspline->increaseDegree(cdegree + degreeincrement);
+./App/SketchObject.cpp:6525:    newVals[GeoId] = bspline.release();
+./App/SketchObject.cpp:6543:    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+./App/SketchObject.cpp:6546:    const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:6548:    const Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(bsp->handle());
+./App/SketchObject.cpp:6550:    std::unique_ptr<Part::GeomBSplineCurve> bspline(new Part::GeomBSplineCurve(curve));
+./App/SketchObject.cpp:6553:        int cdegree = bspline->getDegree();
+./App/SketchObject.cpp:6575:    newVals[GeoId] = bspline.release();
+./App/SketchObject.cpp:6581:    int newId = addGeometry(bspline.release());
+./App/SketchObject.cpp:6595:                QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."))
+./App/SketchObject.cpp:6604:    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+./App/SketchObject.cpp:6607:                                  "The Geometry Index (GeoId) provided is not a B-spline curve."))
+./App/SketchObject.cpp:6609:    const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:6619:    std::unique_ptr<Part::GeomBSplineCurve> bspline;
+./App/SketchObject.cpp:6637:        bspline.reset(static_cast<Part::GeomBSplineCurve*>(bsp->clone()));
+./App/SketchObject.cpp:6643:            bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr, 1E6);
+./App/SketchObject.cpp:6659:    // invalid/inconsistent for the new bspline
+./App/SketchObject.cpp:6664:    std::vector<Base::Vector3d> newpoles = bspline->getPoles();
+./App/SketchObject.cpp:6708:            if ((*it)->AlignmentType == Sketcher::BSplineControlPoint) {
+./App/SketchObject.cpp:6710:                    assert(prevpole[(*it)->InternalAlignmentIndex] < bspline->countPoles());
+./App/SketchObject.cpp:6734:            else {// it is a bspline geometry, but not a controlpoint or knot
+./App/SketchObject.cpp:6747:    newVals[GeoId] = bspline.release();
+./App/SketchObject.cpp:6776:    // in Geom_BSplineCurve::ValidateCache(double) from
+./App/SketchObject.cpp:6778:    // Geom_BSplineCurve::D0(double, gp_Pnt&) const from
+./App/SketchObject.cpp:6803:            QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."));
+./App/SketchObject.cpp:6811:    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+./App/SketchObject.cpp:6814:                                  "The Geometry Index (GeoId) provided is not a B-spline curve."));
+./App/SketchObject.cpp:6816:    const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/SketchObject.cpp:6833:    std::unique_ptr<Part::GeomBSplineCurve> bspline;
+./App/SketchObject.cpp:6837:        bspline.reset(static_cast<Part::GeomBSplineCurve*>(bsp->clone()));
+./App/SketchObject.cpp:6850:    std::vector<Base::Vector3d> newpoles = bspline->getPoles();
+./App/SketchObject.cpp:6894:            if ((*it)->AlignmentType == Sketcher::BSplineControlPoint) {
+./App/SketchObject.cpp:6896:                    assert(prevpole[(*it)->InternalAlignmentIndex] < bspline->countPoles());
+./App/SketchObject.cpp:6921:                // it is a bspline geometry, but not a controlpoint or knot
+./App/SketchObject.cpp:6934:    newVals[GeoId] = bspline.release();
+./App/SketchObject.cpp:7998:                                else if (projCurve.GetType() == GeomAbs_BSplineCurve) {
+./App/SketchObject.cpp:8000:                                    // a Bspline Split the spline into arcs
+./App/SketchObject.cpp:8001:                                    GeomConvert_BSplineCurveKnotSplitting bSplineSplitter(
+./App/SketchObject.cpp:8002:                                        projCurve.BSpline(), 2);
+./App/SketchObject.cpp:8003:                                    // int s = bSplineSplitter.NbSplits();
+./App/SketchObject.cpp:8005:                                        && (bSplineSplitter.NbSplits() == 2)) {
+./App/SketchObject.cpp:8008:                                        bSplineSplitter.Splitting(splits);
+./App/SketchObject.cpp:8024:                                        Part::GeomBSplineCurve* bspline =
+./App/SketchObject.cpp:8025:                                            new Part::GeomBSplineCurve(projCurve.BSpline());
+./App/SketchObject.cpp:8026:                                        GeometryFacade::setConstruction(bspline, true);
+./App/SketchObject.cpp:8027:                                        ExternalGeo.push_back(bspline);
+./App/SketchObject.cpp:8241:        else if ((*it)->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:8735:        // TODO: Check if any of these are B-splines
+./App/SketchObject.cpp:8739:        if (p1->is<Part::GeomBSplineCurve>() ||
+./App/SketchObject.cpp:8740:            p2->is<Part::GeomBSplineCurve>()) {
+./App/SketchObject.cpp:9040:            case BSplineControlPoint:
+./App/SketchObject.cpp:9044:                internaltypestate = InternalType::BSplineKnotPoint;
+./App/SketchObject.cpp:9111:            // Convert B-Spline controlpoints radius/diameter constraints to Weight constraints
+./App/SketchObject.cpp:9112:            if (c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint) {
+./App/SketchObject.cpp:9114:                int bsplinegeoid = c->Second;
+./App/SketchObject.cpp:9116:                auto bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(bsplinegeoid));
+./App/SketchObject.cpp:9492:                if (geof->isInternalType(InternalType::BSplineKnotPoint)) {
+./App/SketchObject.cpp:9493:                    // there is point that is a B-Spline knot in a two element constraint
+./App/SolverGeometryExtension.h:329:    class BSpline: public EdgeParameterStatus
+./App/SolverGeometryExtension.h:332:        BSpline() = default;
+./App/SolverGeometryExtension.h:398:    BSpline& getBSpline();
+./App/Sketch.cpp:49:#include <Mod/Part/App/BSplineCurvePy.h>
+./App/Sketch.cpp:101:    BSplines.clear();
+./App/Sketch.cpp:675:        case Sketch::BSpline:
+./App/Sketch.cpp:676:            return "bspline";
+./App/Sketch.cpp:730:    else if (geo->is<GeomBSplineCurve>()) {  // add a bspline
+./App/Sketch.cpp:731:        const GeomBSplineCurve* bsp = static_cast<const GeomBSplineCurve*>(geo);
+./App/Sketch.cpp:733:        // Current B-Spline implementation relies on OCCT calculations, so a second solve
+./App/Sketch.cpp:734:        // is necessary to update actual solver implementation to account for changes in B-Spline
+./App/Sketch.cpp:737:        return addBSpline(*bsp, fixed);
+./App/Sketch.cpp:744:        // is necessary to update actual solver implementation to account for changes in B-Spline
+./App/Sketch.cpp:1398:int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
+./App/Sketch.cpp:1403:    GeomBSplineCurve* bsp = static_cast<GeomBSplineCurve*>(bspline.clone());
+./App/Sketch.cpp:1407:    def.type = BSpline;
+./App/Sketch.cpp:1529:    GCS::BSpline bs;
+./App/Sketch.cpp:1538:    def.index = BSplines.size();
+./App/Sketch.cpp:1549:    BSplines.push_back(bs);
+./App/Sketch.cpp:1554:    // WARNING: This is only valid where the multiplicity of the endpoints conforms with a BSpline
+./App/Sketch.cpp:1556:    // point accordingly, it is never the case for a periodic BSpline. NOTE: For an external
+./App/Sketch.cpp:1557:    // B-spline (i.e. fixed=true) we must not set the coincident constraints as the points are not
+./App/Sketch.cpp:1559:    // external B-Spline
+./App/Sketch.cpp:1817:        else if (it->type == BSpline) {
+./App/Sketch.cpp:1818:            GeomBSplineCurve* bsp = static_cast<GeomBSplineCurve*>(it->geo->clone());
+./App/Sketch.cpp:1819:            tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
+./App/Sketch.cpp:1868:        case BSpline:
+./App/Sketch.cpp:1869:            return &BSplines[Geoms[geoId].index];
+./App/Sketch.cpp:2023:            if (Geoms[checkGeoId(constraint->Second)].type == BSpline) {
+./App/Sketch.cpp:2082:                // check for B-Spline Knot to curve tangency
+./App/Sketch.cpp:2087:                    if (GeometryFacade::isInternalType(point, InternalType::BSplineKnotPoint)) {
+./App/Sketch.cpp:2088:                        auto bsplinegeoid = internalAlignmentGeometryMap.at(constraint->First);
+./App/Sketch.cpp:2090:                        bsplinegeoid = checkGeoId(bsplinegeoid);
+./App/Sketch.cpp:2096:                                rtn = addTangentLineAtBSplineKnotConstraint(linegeoid,
+./App/Sketch.cpp:2097:                                                                            bsplinegeoid,
+./App/Sketch.cpp:2104:                                rtn = addTangentLineEndpointAtBSplineKnotConstraint(
+./App/Sketch.cpp:2107:                                    bsplinegeoid,
+./App/Sketch.cpp:2359:                case BSplineControlPoint:
+./App/Sketch.cpp:2361:                        addInternalAlignmentBSplineControlPoint(constraint->First,
+./App/Sketch.cpp:2899:        else if (Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:2900:            Base::Console().Error("Direct tangency constraint between line and B-spline is not "
+./App/Sketch.cpp:2929:        else if (Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:2930:            Base::Console().Error("Direct tangency constraint between circle and B-spline is not "
+./App/Sketch.cpp:2952:        else if (Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:2953:            Base::Console().Error("Direct tangency constraint between ellipse and B-spline is not "
+./App/Sketch.cpp:2983:        else if (Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:2984:            Base::Console().Error("Direct tangency constraint between arc and B-spline is not "
+./App/Sketch.cpp:2994:    else if (Geoms[geoId1].type == BSpline) {
+./App/Sketch.cpp:2995:        Base::Console().Error("Direct tangency constraint including B-splines is not "
+./App/Sketch.cpp:3009:                                                  int checkedbsplinegeoId,
+./App/Sketch.cpp:3012:    GCS::BSpline& b = BSplines[Geoms[checkedbsplinegeoId].index];
+./App/Sketch.cpp:3029:                                  "when B-spline slope is discontinuous at knot!\n");
+./App/Sketch.cpp:3036:            //     bsplinegeoid, PointPos::none,
+./App/Sketch.cpp:3056:int Sketch::addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
+./App/Sketch.cpp:3058:                                                          int checkedbsplinegeoId,
+./App/Sketch.cpp:3061:    GCS::BSpline& b = BSplines[Geoms[checkedbsplinegeoId].index];
+./App/Sketch.cpp:3089:            //     bsplinegeoid, PointPos::none,
+./App/Sketch.cpp:3230:        if (Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:3232:            auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
+./App/Sketch.cpp:3264:        if (Geoms[geoId1].type == BSpline && Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:3273:        if (Geoms[geoId1].type == BSpline || Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:3274:            if (Geoms[geoId1].type == BSpline && Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:3276:                auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId1].geo);
+./App/Sketch.cpp:3288:                partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
+./App/Sketch.cpp:3309:                if (Geoms[geoId1].type != BSpline) {
+./App/Sketch.cpp:3317:                auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId1].geo);
+./App/Sketch.cpp:3774:        if (Geoms[geoId2].type == BSpline) {
+./App/Sketch.cpp:3775:            GCS::BSpline& b = BSplines[Geoms[geoId2].index];
+./App/Sketch.cpp:3777:            auto partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
+./App/Sketch.cpp:3781:            GCSsys.addConstraintPointOnBSpline(p1, b, pointparam, tag, driving);
+./App/Sketch.cpp:4243:int Sketch::addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int poleindex)
+./App/Sketch.cpp:4250:    if (Geoms[geoId1].type != BSpline) {
+./App/Sketch.cpp:4262:        GCS::BSpline& b = BSplines[Geoms[geoId1].index];
+./App/Sketch.cpp:4267:        GCSsys.addConstraintInternalAlignmentBSplineControlPoint(b, c, poleindex, tag);
+./App/Sketch.cpp:4310:    if (Geoms[geoId1].type != BSpline) {
+./App/Sketch.cpp:4321:        GCS::BSpline& b = BSplines[Geoms[geoId1].index];
+./App/Sketch.cpp:4365:    auto* crv1AsBSpline = dynamic_cast<GCS::BSpline*>(crv1);
+./App/Sketch.cpp:4369:    auto* crv2AsBSpline = dynamic_cast<GCS::BSpline*>(crv2);
+./App/Sketch.cpp:4526:            else if (it->type == BSpline) {
+./App/Sketch.cpp:4527:                GCS::BSpline& mybsp = BSplines[it->index];
+./App/Sketch.cpp:4529:                GeomBSplineCurve* bsp = static_cast<GeomBSplineCurve*>(it->geo);
+./App/Sketch.cpp:4549:                // This is the code that should be here when/if b-spline gets its full
+./App/Sketch.cpp:4873:            // InternalType::BSplineControlPoint);
+./App/Sketch.cpp:5015:    else if (Geoms[geoId].type == BSpline) {
+./App/Sketch.cpp:5035:            GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
+./App/Sketch.cpp:5123:    if (Geoms[geoId].type != BSpline || pos == PointPos::start || pos == PointPos::end) {
+./App/Sketch.cpp:5127:    GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
+./App/Sketch.cpp:5135:    auto partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId].geo);
+./App/Sketch.cpp:5269:    else if (Geoms[geoId].type == BSpline) {
+./App/Sketch.cpp:5275:            GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
+./App/SketchAnalysis.cpp:233:        else if (gf->getGeometry()->is<Part::GeomBSplineCurve>()) {
+./App/SketchAnalysis.cpp:234:            const Part::GeomBSplineCurve* segm =
+./App/SketchAnalysis.cpp:235:                static_cast<const Part::GeomBSplineCurve*>(gf->getGeometry());
+./App/ConstraintPyImp.cpp:346:                if (strstr(ConstraintType, "BSplineControlPoint")) {
+./App/ConstraintPyImp.cpp:347:                    this->getConstraintPtr()->AlignmentType = BSplineControlPoint;
+./App/ConstraintPyImp.cpp:622:                case BSplineControlPoint:
+./App/ConstraintPyImp.cpp:623:                    result << "'InternalAlignment:BSplineControlPoint'>";
+./App/SolverGeometryExtension.cpp:97:        {Part::GeomBSplineCurve::getClassTypeId(), 0}  // is dynamic
+./App/SolverGeometryExtension.cpp:172:SolverGeometryExtension::BSpline& SolverGeometryExtension::getBSpline()
+./App/SolverGeometryExtension.cpp:174:    ensureType(Part::GeomBSplineCurve::getClassTypeId());
+./App/SolverGeometryExtension.cpp:175:    return static_cast<BSpline&>(Edge);
+./App/GeoEnum.h:60: * the major axis of an ellipse, circle representing the weight of a BSpline), and they are call
+./App/PythonConverter.cpp:53:         || geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+./App/PythonConverter.cpp:156:                || geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+./App/PythonConverter.cpp:297:            {Part::GeomBSplineCurve::getClassTypeId(),
+./App/PythonConverter.cpp:299:                 auto bSpline = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/PythonConverter.cpp:302:                 std::vector<Base::Vector3d> poles = bSpline->getPoles();
+./App/PythonConverter.cpp:315:                     boost::format("Part.BSplineCurve (%s, None, None, %s, %d, None, False)")
+./App/PythonConverter.cpp:316:                     % controlpoints.c_str() % (bSpline->isPeriodic() ? "True" : "False")
+./App/PythonConverter.cpp:317:                     % bSpline->getDegree());
+./App/PythonConverter.cpp:488:                 else if (constr->AlignmentType == BSplineControlPoint) {
+./App/Constraint.h:80:    BSplineControlPoint = 9,
+./App/Constraint.h:187:                                    "BSplineControlPoint",
+./App/Constraint.h:205:    // index of pole in a bspline). It is not a GeoId!!
+./App/planegcs/Geo.h:404:class SketcherExport BSpline: public Curve
+./App/planegcs/Geo.h:407:    BSpline()
+./App/planegcs/Geo.h:412:    ~BSpline() override
+./App/planegcs/Geo.h:446:    BSpline* Copy() override;
+./App/planegcs/GCS.h:356:    int addConstraintTangentAtBSplineKnot(BSpline& b,
+./App/planegcs/GCS.h:381:    int addConstraintPointOnBSpline(Point& p,
+./App/planegcs/GCS.h:382:                                    BSpline& b,
+./App/planegcs/GCS.h:513:    int addConstraintInternalAlignmentBSplineControlPoint(BSpline& b,
+./App/planegcs/GCS.h:523:    int addConstraintInternalAlignmentKnotPoint(BSpline& b,
+./App/planegcs/GCS.cpp:856:int System::addConstraintTangentAtBSplineKnot(BSpline& b,
+./App/planegcs/GCS.cpp:862:    Constraint* constr = new ConstraintSlopeAtBSplineKnot(b, l, knotindex);
+./App/planegcs/GCS.cpp:965:int System::addConstraintPointOnBSpline(Point& p,
+./App/planegcs/GCS.cpp:966:                                        BSpline& b,
+./App/planegcs/GCS.cpp:971:    Constraint* constr = new ConstraintPointOnBSpline(p.x, pointparam, 0, b);
+./App/planegcs/GCS.cpp:976:    constr = new ConstraintPointOnBSpline(p.y, pointparam, 1, b);
+./App/planegcs/GCS.cpp:1600:int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline& b,
+./App/planegcs/GCS.cpp:1646:int System::addConstraintInternalAlignmentKnotPoint(BSpline& b,
+./App/planegcs/GCS.cpp:1677:    // Note that this works also for periodic B-splines, just that the poles wrap around if needed.
+./App/planegcs/GCS.cpp:1683:    // For periodic B-splines the `flattenedknots` are defined differently,
+./App/planegcs/GCS.cpp:1691:    // One case when numpoles <= 1 is for the last knot of a non-periodic B-spline.
+./App/planegcs/GCS.cpp:1701:    // The mod operation is to adjust for periodic B-splines.
+./App/planegcs/Geo.cpp:729://--------------- bspline
+./App/planegcs/Geo.cpp:730:DeriVector2 BSpline::CalculateNormal(const Point& p, const double* derivparam) const
+./App/planegcs/Geo.cpp:776:DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivparam) const
+./App/planegcs/Geo.cpp:814:        factor = BSpline::splineValue(*param, startpole + degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:825:            BSpline::splineValue(*param, startpole + degree, degree - 1, sd, flattenedknots);
+./App/planegcs/Geo.cpp:873:        * BSpline::splineValue(*param, startpole + degree, degree - 2, ssd, flattenedknots);
+./App/planegcs/Geo.cpp:884:        * BSpline::splineValue(*param, startpole + degree, degree - 2, ssd, flattenedknots);
+./App/planegcs/Geo.cpp:895:        * BSpline::splineValue(*param, startpole + degree, degree - 2, ssd, flattenedknots);
+./App/planegcs/Geo.cpp:903:DeriVector2 BSpline::Value(double u, double /*du*/, const double* /*derivparam*/) const
+./App/planegcs/Geo.cpp:936:    double xsum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:940:    double ysum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:944:    double wsum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:952:        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:958:        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:964:        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:975:void BSpline::valueHomogenous(const double u,
+./App/planegcs/Geo.cpp:1007:    *xw = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1011:    *yw = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1015:    *w = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1022:    *dxwdu = degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1027:    *dywdu = degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1032:    *dwdu = degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1035:int BSpline::PushOwnParams(VEC_pD& pvec)
+./App/planegcs/Geo.cpp:1064:void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+./App/planegcs/Geo.cpp:1093:BSpline* BSpline::Copy()
+./App/planegcs/Geo.cpp:1095:    BSpline* crv = new BSpline(*this);
+./App/planegcs/Geo.cpp:1099:double BSpline::getLinCombFactor(double x, size_t k, size_t i, unsigned int p)
+./App/planegcs/Geo.cpp:1106:    // and `mult` have been defined after creating the B-spline.
+./App/planegcs/Geo.cpp:1134:double BSpline::splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots)
+./App/planegcs/Geo.cpp:1147:void BSpline::setupFlattenedKnots()
+./App/planegcs/Geo.cpp:1197:    double xsum = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1201:    double ysum = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1205:    double wsum = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1212:    double xslopesum = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1217:    double yslopesum = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1222:    double wslopesum = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1248:    *xw = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1252:    *yw = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1256:    *w = BSpline::splineValue(u, degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1263:    *dxwdu = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1268:    *dywdu = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1273:    *dwdu = degree * BSpline::splineValue(u, degree, degree - 1, d, flattenedknots);
+./App/planegcs/Geo.cpp:1336:        factor = BSpline::splineValue(*param, degree, degree, d, flattenedknots);
+./App/planegcs/Geo.cpp:1344:        slopefactor = BSpline::splineValue(*param, degree, degree - 1, sd, flattenedknots);
+./App/planegcs/Geo.cpp:1391:        * BSpline::splineValue(*param, degree, degree - 2, ssd, flattenedknots);
+./App/planegcs/Geo.cpp:1401:        * BSpline::splineValue(*param, degree, degree - 2, ssd, flattenedknots);
+./App/planegcs/Geo.cpp:1411:        * BSpline::splineValue(*param, degree, degree - 2, ssd, flattenedknots);
+./App/planegcs/Constraints.cpp:280:// Slope at B-spline knot
+./App/planegcs/Constraints.cpp:281:ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex)
+./App/planegcs/Constraints.cpp:336:ConstraintType ConstraintSlopeAtBSplineKnot::getTypeId()
+./App/planegcs/Constraints.cpp:338:    return SlopeAtBSplineKnot;
+./App/planegcs/Constraints.cpp:341:void ConstraintSlopeAtBSplineKnot::rescale(double coef)
+./App/planegcs/Constraints.cpp:353:double ConstraintSlopeAtBSplineKnot::error()
+./App/planegcs/Constraints.cpp:387:double ConstraintSlopeAtBSplineKnot::grad(double* param)
+./App/planegcs/Constraints.cpp:501:// Point On BSpline
+./App/planegcs/Constraints.cpp:502:ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point,
+./App/planegcs/Constraints.cpp:505:                                                   BSpline& b)
+./App/planegcs/Constraints.cpp:537:ConstraintType ConstraintPointOnBSpline::getTypeId()
+./App/planegcs/Constraints.cpp:539:    return PointOnBSpline;
+./App/planegcs/Constraints.cpp:542:void ConstraintPointOnBSpline::setStartPole(double u)
+./App/planegcs/Constraints.cpp:556:void ConstraintPointOnBSpline::rescale(double coef)
+./App/planegcs/Constraints.cpp:561:double ConstraintPointOnBSpline::error()
+./App/planegcs/Constraints.cpp:576:    sum = BSpline::splineValue(*theparam(),
+./App/planegcs/Constraints.cpp:584:    wsum = BSpline::splineValue(*theparam(),
+./App/planegcs/Constraints.cpp:595:double ConstraintPointOnBSpline::grad(double* gcsparam)
+./App/planegcs/Constraints.cpp:603:        double wsum = BSpline::splineValue(*theparam(),
+./App/planegcs/Constraints.cpp:618:        double slopevalue = BSpline::splineValue(*theparam(),
+./App/planegcs/Constraints.cpp:628:        double wslopevalue = BSpline::splineValue(*theparam(),
+./App/planegcs/Constraints.h:77:    SlopeAtBSplineKnot = 28,
+./App/planegcs/Constraints.h:78:    PointOnBSpline = 29,
+./App/planegcs/Constraints.h:257:    /// This constraint is currently used to ensure that a B-spline knot
+./App/planegcs/Constraints.h:261:    /// Finally, `f_i` are obtained using `BSpline::getLinCombFactor()`.
+./App/planegcs/Constraints.h:323:// Point On BSpline
+./App/planegcs/Constraints.h:324:class ConstraintPointOnBSpline: public Constraint
+./App/planegcs/Constraints.h:349:    ConstraintPointOnBSpline(double* point, double* initparam, int coordidx, BSpline& b);
+./App/planegcs/Constraints.h:355:    BSpline& bsp;
+./App/planegcs/Constraints.h:1149:    // two points in this method as a workaround for B-splines (and friends). There, normals at
+./App/SketchGeometryExtension.h:50:    BSplineControlPoint = 9,
+./App/SketchGeometryExtension.h:147:                           "BSplineControlPoint",
+./App/Sketch.h:224:    /// add a BSpline
+./App/Sketch.h:225:    int addBSpline(const Part::GeomBSplineCurve& spline, bool fixed = false);
+./App/Sketch.h:360:                                                      int checkedbsplinegeoId,
+./App/Sketch.h:433:    /// add a point on B-spline constraint: needs a parameter
+./App/Sketch.h:483:    int addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int poleindex);
+./App/Sketch.h:524:        BSpline = 9,
+./App/Sketch.h:589:    // defines (ellipse, hyperbola, B-Spline)
+./App/Sketch.h:611:    std::vector<GCS::BSpline> BSplines;
+./App/GeometryFacade.h:76: * std::unique_ptr<Part::GeomBSplineCurve> bspline(new Part::GeomBSplineCurve(curve));
+./App/GeometryFacade.h:79: * Part::GeomBSplineCurve * gbsc = bspline.release();
+./App/GeoList.cpp:249:    else if (geo->is<Part::GeomBSplineCurve>()) {
+./App/GeoList.cpp:250:        const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+./App/GeoList.cpp:301:                 || type == Part::GeomBSplineCurve::getClassTypeId()) {
+./App/SketchObjectPyImp.cpp:116:                 || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
+./App/SketchObjectPyImp.cpp:168:                         || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
+./App/PreCompiled.h:62:#include <Geom_BSplineCurve.hxx>
+./Gui/EditModeConstraintCoinManager.cpp:232:                        else if (geo->is<Part::GeomBSplineCurve>()) {
+./Gui/EditModeConstraintCoinManager.cpp:233:                            const Part::GeomBSplineCurve* bsp =
+./Gui/EditModeConstraintCoinManager.cpp:234:                                static_cast<const Part::GeomBSplineCurve*>(geo);
+./Gui/EditModeConstraintCoinManager.cpp:239:                            // Move center of gravity towards start not to collide with bspline
+./Gui/EditModeConstraintCoinManager.cpp:1818:                    case BSplineControlPoint:
+./Gui/DrawSketchHandlerTrimming.h:71:                || geom->is<Part::GeomEllipse>() || geom->is<Part::GeomBSplineCurve>()) {
+./Gui/DrawSketchHandlerTrimming.h:148:                || geom->is<Part::GeomEllipse>() || geom->is<Part::GeomBSplineCurve>()) {
+./Gui/EditModeGeometryCoinManager.cpp:119:    analysisResults.bsplineGeoIds = gcconv.getBSplineGeoIds();
+./App/Sketch.cpp:5122:    // this is only meant for B-Splines
+./Gui/DrawSketchHandlerLineSet.h:724:        // We must see if we need to create a B-spline before cancelling everything
+./Gui/CommandCreateGeo.cpp:59:#include "DrawSketchHandlerBSpline.h"
+./Gui/CommandCreateGeo.cpp:946:DEF_STD_CMD_AU(CmdSketcherCreateBSpline)
+./Gui/CommandCreateGeo.cpp:948:CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
+./Gui/CommandCreateGeo.cpp:949:    : Command("Sketcher_CreateBSpline")
+./Gui/CommandCreateGeo.cpp:953:    sMenuText = QT_TR_NOOP("Create B-spline");
+./Gui/CommandCreateGeo.cpp:954:    sToolTipText = QT_TR_NOOP("Create a B-spline by control points in the sketch.");
+./Gui/CommandCreateGeo.cpp:955:    sWhatsThis = "Sketcher_CreateBSpline";
+./Gui/CommandCreateGeo.cpp:957:    sPixmap = "Sketcher_CreateBSpline";
+./Gui/CommandCreateGeo.cpp:962:CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSpline, "Sketcher_CreateBSpline")
+./Gui/CommandCreateGeo.cpp:964:void CmdSketcherCreateBSpline::activated(int iMsg)
+./Gui/CommandCreateGeo.cpp:967:    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(0));
+./Gui/CommandCreateGeo.cpp:970:bool CmdSketcherCreateBSpline::isActive()
+./Gui/CommandCreateGeo.cpp:975:/// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateBSpline'
+./Gui/CommandCreateGeo.cpp:1000:    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(1));
+./Gui/CommandCreateGeo.cpp:1074:/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateBSpline'
+./Gui/CommandCreateGeo.cpp:1075:DEF_STD_CMD_ACLU(CmdSketcherCompCreateBSpline)
+./Gui/CommandCreateGeo.cpp:1080:CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
+./Gui/CommandCreateGeo.cpp:1081:    : Command("Sketcher_CompCreateBSpline")
+./Gui/CommandCreateGeo.cpp:1085:    sMenuText = QT_TR_NOOP("Create B-spline");
+./Gui/CommandCreateGeo.cpp:1086:    sToolTipText = QT_TR_NOOP("Create a B-spline in the sketch");
+./Gui/CommandCreateGeo.cpp:1087:    sWhatsThis = "Sketcher_CompCreateBSpline";
+./Gui/CommandCreateGeo.cpp:1093: * @brief Instantiates the B-spline handler when the B-spline command activated
+./Gui/CommandCreateGeo.cpp:1096:void CmdSketcherCompCreateBSpline::activated(int iMsg)
+./Gui/CommandCreateGeo.cpp:1099:        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
+./Gui/CommandCreateGeo.cpp:1102:        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
+./Gui/CommandCreateGeo.cpp:1123:Gui::Action* CmdSketcherCompCreateBSpline::createAction()
+./Gui/CommandCreateGeo.cpp:1129:    QAction* bspline = pcAction->addAction(QString());
+./Gui/CommandCreateGeo.cpp:1130:    bspline->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
+./Gui/CommandCreateGeo.cpp:1148:    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
+./Gui/CommandCreateGeo.cpp:1155:void CmdSketcherCompCreateBSpline::updateAction(int mode)
+./Gui/CommandCreateGeo.cpp:1166:            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
+./Gui/CommandCreateGeo.cpp:1175:            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline_Constr"));
+./Gui/CommandCreateGeo.cpp:1187:void CmdSketcherCompCreateBSpline::languageChange()
+./Gui/CommandCreateGeo.cpp:1197:    QAction* bspline = a[0];
+./Gui/CommandCreateGeo.cpp:1198:    bspline->setText(
+./Gui/CommandCreateGeo.cpp:1199:        QApplication::translate("Sketcher_CreateBSpline", "B-spline by control points"));
+./Gui/CommandCreateGeo.cpp:1200:    bspline->setToolTip(
+./Gui/CommandCreateGeo.cpp:1201:        QApplication::translate("Sketcher_CreateBSpline", "Create a B-spline by control points"));
+./Gui/CommandCreateGeo.cpp:1202:    bspline->setStatusTip(
+./Gui/CommandCreateGeo.cpp:1203:        QApplication::translate("Sketcher_CreateBSpline", "Create a B-spline by control points"));
+./Gui/CommandCreateGeo.cpp:1212:                                "Create a periodic B-spline by control points"));
+./Gui/CommandCreateGeo.cpp:2222:    rcCmdMgr.addCommand(new CmdSketcherCompCreateBSpline());
+./Gui/CommandSketcherOverlay.cpp:60:// Show/Hide B-spline degree
+./Gui/CommandSketcherOverlay.cpp:61:DEF_STD_CMD_A(CmdSketcherBSplineDegree)
+./Gui/CommandSketcherOverlay.cpp:63:CmdSketcherBSplineDegree::CmdSketcherBSplineDegree()
+./Gui/CommandSketcherOverlay.cpp:64:    : Command("Sketcher_BSplineDegree")
+./Gui/CommandSketcherOverlay.cpp:68:    sMenuText = QT_TR_NOOP("Show/hide B-spline degree");
+./Gui/CommandSketcherOverlay.cpp:69:    sToolTipText = QT_TR_NOOP("Switches between showing and hiding the degree for all B-splines");
+./Gui/CommandSketcherOverlay.cpp:70:    sWhatsThis = "Sketcher_BSplineDegree";
+./Gui/CommandSketcherOverlay.cpp:72:    sPixmap = "Sketcher_BSplineDegree";
+./Gui/CommandSketcherOverlay.cpp:77:void CmdSketcherBSplineDegree::activated(int iMsg)
+./Gui/CommandSketcherOverlay.cpp:81:    ShowRestoreInformationLayer("BSplineDegreeVisible");
+./Gui/CommandSketcherOverlay.cpp:84:bool CmdSketcherBSplineDegree::isActive()
+./Gui/CommandSketcherOverlay.cpp:86:    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+./Gui/CommandSketcherOverlay.cpp:89:// Show/Hide B-spline polygon
+./Gui/CommandSketcherOverlay.cpp:90:DEF_STD_CMD_A(CmdSketcherBSplinePolygon)
+./Gui/CommandSketcherOverlay.cpp:92:CmdSketcherBSplinePolygon::CmdSketcherBSplinePolygon()
+./Gui/CommandSketcherOverlay.cpp:93:    : Command("Sketcher_BSplinePolygon")
+./Gui/CommandSketcherOverlay.cpp:97:    sMenuText = QT_TR_NOOP("Show/hide B-spline control polygon");
+./Gui/CommandSketcherOverlay.cpp:99:        QT_TR_NOOP("Switches between showing and hiding the control polygons for all B-splines");
+./Gui/CommandSketcherOverlay.cpp:100:    sWhatsThis = "Sketcher_BSplinePolygon";
+./Gui/CommandSketcherOverlay.cpp:102:    sPixmap = "Sketcher_BSplinePolygon";
+./Gui/CommandSketcherOverlay.cpp:107:void CmdSketcherBSplinePolygon::activated(int iMsg)
+./Gui/CommandSketcherOverlay.cpp:111:    ShowRestoreInformationLayer("BSplineControlPolygonVisible");
+./Gui/CommandSketcherOverlay.cpp:114:bool CmdSketcherBSplinePolygon::isActive()
+./Gui/CommandSketcherOverlay.cpp:116:    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+./Gui/CommandSketcherOverlay.cpp:119:// Show/Hide B-spline comb
+./Gui/CommandSketcherOverlay.cpp:120:DEF_STD_CMD_A(CmdSketcherBSplineComb)
+./Gui/CommandSketcherOverlay.cpp:122:CmdSketcherBSplineComb::CmdSketcherBSplineComb()
+./Gui/CommandSketcherOverlay.cpp:123:    : Command("Sketcher_BSplineComb")
+./Gui/CommandSketcherOverlay.cpp:127:    sMenuText = QT_TR_NOOP("Show/hide B-spline curvature comb");
+./Gui/CommandSketcherOverlay.cpp:129:        QT_TR_NOOP("Switches between showing and hiding the curvature comb for all B-splines");
+./Gui/CommandSketcherOverlay.cpp:130:    sWhatsThis = "Sketcher_BSplineComb";
+./Gui/CommandSketcherOverlay.cpp:132:    sPixmap = "Sketcher_BSplineComb";
+./Gui/CommandSketcherOverlay.cpp:137:void CmdSketcherBSplineComb::activated(int iMsg)
+./Gui/CommandSketcherOverlay.cpp:141:    ShowRestoreInformationLayer("BSplineCombVisible");
+./Gui/CommandSketcherOverlay.cpp:144:bool CmdSketcherBSplineComb::isActive()
+./Gui/CommandSketcherOverlay.cpp:146:    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+./Gui/CommandSketcherOverlay.cpp:176:    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+./Gui/CommandSketcherOverlay.cpp:180:DEF_STD_CMD_A(CmdSketcherBSplinePoleWeight)
+./Gui/CommandSketcherOverlay.cpp:182:CmdSketcherBSplinePoleWeight::CmdSketcherBSplinePoleWeight()
+./Gui/CommandSketcherOverlay.cpp:183:    : Command("Sketcher_BSplinePoleWeight")
+./Gui/CommandSketcherOverlay.cpp:187:    sMenuText = QT_TR_NOOP("Show/hide B-spline control point weight");
+./Gui/CommandSketcherOverlay.cpp:189:        "Switches between showing and hiding the control point weight for all B-splines");
+./Gui/CommandSketcherOverlay.cpp:190:    sWhatsThis = "Sketcher_BSplinePoleWeight";
+./Gui/CommandSketcherOverlay.cpp:192:    sPixmap = "Sketcher_BSplinePoleWeight";
+./Gui/CommandSketcherOverlay.cpp:197:void CmdSketcherBSplinePoleWeight::activated(int iMsg)
+./Gui/CommandSketcherOverlay.cpp:201:    ShowRestoreInformationLayer("BSplinePoleWeightVisible");
+./Gui/CommandSketcherOverlay.cpp:204:bool CmdSketcherBSplinePoleWeight::isActive()
+./Gui/CommandSketcherOverlay.cpp:206:    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+./Gui/CommandSketcherOverlay.cpp:210:DEF_STD_CMD_ACLU(CmdSketcherCompBSplineShowHideGeometryInformation)
+./Gui/CommandSketcherOverlay.cpp:212:CmdSketcherCompBSplineShowHideGeometryInformation::
+./Gui/CommandSketcherOverlay.cpp:213:    CmdSketcherCompBSplineShowHideGeometryInformation()
+./Gui/CommandSketcherOverlay.cpp:214:    : Command("Sketcher_CompBSplineShowHideGeometryInformation")
+./Gui/CommandSketcherOverlay.cpp:218:    sMenuText = QT_TR_NOOP("Show/hide B-spline information layer");
+./Gui/CommandSketcherOverlay.cpp:220:    sWhatsThis = "Sketcher_CompBSplineShowHideGeometryInformation";
+./Gui/CommandSketcherOverlay.cpp:225:void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
+./Gui/CommandSketcherOverlay.cpp:231:        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDegree");
+./Gui/CommandSketcherOverlay.cpp:234:        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePolygon");
+./Gui/CommandSketcherOverlay.cpp:237:        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineComb");
+./Gui/CommandSketcherOverlay.cpp:243:        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePoleWeight");
+./Gui/CommandSketcherOverlay.cpp:262:Gui::Action* CmdSketcherCompBSplineShowHideGeometryInformation::createAction()
+./Gui/CommandSketcherOverlay.cpp:269:    c1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineDegree"));
+./Gui/CommandSketcherOverlay.cpp:271:    c2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplinePolygon"));
+./Gui/CommandSketcherOverlay.cpp:273:    c3->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineComb"));
+./Gui/CommandSketcherOverlay.cpp:277:    c5->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplinePoleWeight"));
+./Gui/CommandSketcherOverlay.cpp:289:void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
+./Gui/CommandSketcherOverlay.cpp:300:    c1->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+./Gui/CommandSketcherOverlay.cpp:301:                                        "Show/hide B-spline degree"));
+./Gui/CommandSketcherOverlay.cpp:303:        "Sketcher_BSplineDegree",
+./Gui/CommandSketcherOverlay.cpp:304:        "Switches between showing and hiding the degree for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:306:        "Sketcher_BSplineDegree",
+./Gui/CommandSketcherOverlay.cpp:307:        "Switches between showing and hiding the degree for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:309:    c2->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+./Gui/CommandSketcherOverlay.cpp:310:                                        "Show/hide B-spline control polygon"));
+./Gui/CommandSketcherOverlay.cpp:312:        "Sketcher_BSplinePolygon",
+./Gui/CommandSketcherOverlay.cpp:313:        "Switches between showing and hiding the control polygons for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:315:        "Sketcher_BSplinePolygon",
+./Gui/CommandSketcherOverlay.cpp:316:        "Switches between showing and hiding the control polygons for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:318:    c3->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+./Gui/CommandSketcherOverlay.cpp:319:                                        "Show/hide B-spline curvature comb"));
+./Gui/CommandSketcherOverlay.cpp:321:        "Sketcher_BSplineComb",
+./Gui/CommandSketcherOverlay.cpp:322:        "Switches between showing and hiding the curvature comb for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:324:        "Sketcher_BSplineComb",
+./Gui/CommandSketcherOverlay.cpp:325:        "Switches between showing and hiding the curvature comb for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:327:    c4->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+./Gui/CommandSketcherOverlay.cpp:337:    c5->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+./Gui/CommandSketcherOverlay.cpp:338:                                        "Show/hide B-spline control point weight"));
+./Gui/CommandSketcherOverlay.cpp:340:        "Sketcher_BSplinePoleWeight",
+./Gui/CommandSketcherOverlay.cpp:341:        "Switches between showing and hiding the control point weight for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:343:        "Sketcher_BSplinePoleWeight",
+./Gui/CommandSketcherOverlay.cpp:344:        "Switches between showing and hiding the control point weight for all B-splines"));
+./Gui/CommandSketcherOverlay.cpp:352:    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+./Gui/CommandSketcherOverlay.cpp:389:    rcCmdMgr.addCommand(new CmdSketcherBSplineDegree());
+./Gui/CommandSketcherOverlay.cpp:390:    rcCmdMgr.addCommand(new CmdSketcherBSplinePolygon());
+./Gui/CommandSketcherOverlay.cpp:391:    rcCmdMgr.addCommand(new CmdSketcherBSplineComb());
+./Gui/CommandSketcherOverlay.cpp:393:    rcCmdMgr.addCommand(new CmdSketcherBSplinePoleWeight());
+./Gui/CommandSketcherOverlay.cpp:394:    rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
+./Gui/EditModeCoinManager.cpp:87:        {"BSplineDegreeVisible",
+./Gui/EditModeCoinManager.cpp:89:             updateOverlayVisibilityParameter<OverlayVisibilityParameter::BSplineDegree>(param);
+./Gui/EditModeCoinManager.cpp:91:        {"BSplineControlPolygonVisible",
+./Gui/EditModeCoinManager.cpp:94:                 OverlayVisibilityParameter::BSplineControlPolygonVisible>(param);
+./Gui/EditModeCoinManager.cpp:96:        {"BSplineCombVisible",
+./Gui/EditModeCoinManager.cpp:98:             updateOverlayVisibilityParameter<OverlayVisibilityParameter::BSplineCombVisible>(
+./Gui/EditModeCoinManager.cpp:106:        {"BSplinePoleWeightVisible",
+./Gui/EditModeCoinManager.cpp:108:             updateOverlayVisibilityParameter<OverlayVisibilityParameter::BSplinePoleWeightVisible>(
+./Gui/EditModeCoinManager.cpp:328:    if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineDegree) {
+./Gui/EditModeCoinManager.cpp:329:        Client.overlayParameters.bSplineDegreeVisible =
+./Gui/EditModeCoinManager.cpp:333:                       == OverlayVisibilityParameter::BSplineControlPolygonVisible) {
+./Gui/EditModeCoinManager.cpp:334:        Client.overlayParameters.bSplineControlPolygonVisible =
+./Gui/EditModeCoinManager.cpp:337:    else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineCombVisible) {
+./Gui/EditModeCoinManager.cpp:338:        Client.overlayParameters.bSplineCombVisible = hGrpsk->GetBool(parametername.c_str(), true);
+./Gui/EditModeCoinManager.cpp:346:                       == OverlayVisibilityParameter::BSplinePoleWeightVisible) {
+./Gui/EditModeCoinManager.cpp:347:        Client.overlayParameters.bSplinePoleWeightVisible =
+./Gui/EditModeCoinManager.cpp:827:         > (2 * overlayParameters.currentBSplineCombRepresentationScale))
+./Gui/EditModeCoinManager.cpp:829:            < (overlayParameters.currentBSplineCombRepresentationScale / 2))) {
+./Gui/EditModeCoinManager.cpp:830:        overlayParameters.currentBSplineCombRepresentationScale =
+./Gui/EditModeCoinManager.cpp:847:    // geometry information layer for bsplines, as they need a second round now that max curvature
+./Gui/EditModeCoinManager.cpp:849:    for (auto geoid : analysisResults.bsplineGeoIds) {
+./Gui/Utils.cpp:86:bool Sketcher::isBSplineCurve(const Part::Geometry& geom)
+./Gui/Utils.cpp:88:    return geom.is<Part::GeomBSplineCurve>();
+./Gui/Utils.cpp:93:    if (geom.is<Part::GeomBSplineCurve>()) {
+./Gui/Utils.cpp:94:        auto* spline = static_cast<const Part::GeomBSplineCurve*>(&geom);
+./Gui/Utils.cpp:353:    // end points of B-Splines are also knots
+./Gui/Utils.cpp:354:    if (geo->is<Part::GeomBSplineCurve>()
+./Gui/Utils.cpp:376:    //  One exception: check for knots on their B-splines, at least until point on B-spline is
+./Gui/Utils.cpp:380:        if (geoCurve->is<Part::GeomBSplineCurve>()) {
+./Gui/Utils.cpp:395:bool SketcherGui::isBsplinePole(const Part::Geometry* geo)
+./Gui/Utils.cpp:400:        return gf->getInternalType() == InternalType::BSplineControlPoint;
+./Gui/Utils.cpp:403:    THROWM(Base::ValueError, "Null geometry in isBsplinePole - please report")
+./Gui/Utils.cpp:406:bool SketcherGui::isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId)
+./Gui/Utils.cpp:411:    return isBsplinePole(geom);
+./Gui/Utils.cpp:525:bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection)
+./Gui/Utils.h:63:bool isBSplineCurve(const Part::Geometry&);
+./Gui/Utils.h:134:bool isBsplinePole(const Part::Geometry* geo);
+./Gui/Utils.h:136:bool isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId);
+./Gui/Utils.h:187:bool isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection);
+./Gui/ViewProviderSketch.cpp:1073:                            || geo->is<Part::GeomBSplineCurve>()) {
+./Gui/ViewProviderSketch.cpp:1081:                            // BSpline weights have a radius corresponding to the weight value
+./Gui/ViewProviderSketch.cpp:1082:                            // However, in order for them proportional to the B-Spline size,
+./Gui/ViewProviderSketch.cpp:1085:                            if (gf->getInternalType() == InternalType::BSplineControlPoint) {
+./Gui/ViewProviderSketch.cpp:1506:                // BSpline Control points are edge draggable only if their radius is movable
+./Gui/ViewProviderSketch.cpp:1509:                if (GeometryFacade::isInternalType(geo, InternalType::BSplineControlPoint)) {
+./Gui/ViewProviderSketch.cpp:1523:                        // The B-Spline is constrained to be non-rational (equal weights), moving
+./Gui/ViewProviderSketch.cpp:1529:                        int bsplinegeoid = -1;
+./Gui/ViewProviderSketch.cpp:1535:                                && c->AlignmentType == BSplineControlPoint
+./Gui/ViewProviderSketch.cpp:1538:                                bsplinegeoid = c->Second;
+./Gui/ViewProviderSketch.cpp:1543:                        if (bsplinegeoid == -1) {
+./Gui/ViewProviderSketch.cpp:1550:                                && c->AlignmentType == BSplineControlPoint
+./Gui/ViewProviderSketch.cpp:1551:                                && c->Second == bsplinegeoid) {
+./Gui/ViewProviderSketch.cpp:1575:                    || geo->is<Part::GeomBSplineCurve>()) {
+./Gui/ViewProviderSketch.cpp:1590:                if (geo->is<Part::GeomBSplineCurve>()) {
+./Gui/ViewProviderSketch.cpp:1637:                // BSpline weights have a radius corresponding to the weight value
+./Gui/ViewProviderSketch.cpp:1638:                // However, in order for them proportional to the B-Spline size,
+./Gui/ViewProviderSketch.cpp:1641:                if (gf->getInternalType() == InternalType::BSplineControlPoint) {
+./Gui/ViewProviderSketch.cpp:2431:        if constexpr (std::is_same<decltype(geo), Part::GeomBSplineCurve>::value) {
+./Gui/ViewProviderSketch.cpp:2538:        else if ((*it)->is<Part::GeomBSplineCurve>()) {
+./Gui/ViewProviderSketch.cpp:2539:            const Part::GeomBSplineCurve* spline = static_cast<const Part::GeomBSplineCurve*>(*it);
+./Gui/ViewProviderSketch.cpp:2599:// 1. the OCC mandated weight, which is normalised for non-rational BSplines, but not normalised for
+./Gui/ViewProviderSketch.cpp:2600:// rational BSplines. That includes properly sizing for drawing any weight constraint. This function
+./Gui/ViewProviderSketch.cpp:2605:// circles of the poles of the B-Splines are properly rendered.
+./Gui/ViewProviderSketch.cpp:2609:void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
+./Gui/ViewProviderSketch.cpp:2633:            // BSpline weights have a radius corresponding to the weight value
+./Gui/ViewProviderSketch.cpp:2634:            // However, in order for them proportional to the B-Spline size,
+./Gui/ViewProviderSketch.cpp:2638:            if (gf->getInternalType() == InternalType::BSplineControlPoint) {
+./Gui/ViewProviderSketch.cpp:2640:                    if (c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint
+./Gui/ViewProviderSketch.cpp:2642:                        auto bspline = dynamic_cast<const Part::GeomBSplineCurve*>(
+./Gui/ViewProviderSketch.cpp:2645:                        if (bspline) {
+./Gui/ViewProviderSketch.cpp:2646:                            auto weights = bspline->getWeights();
+./Gui/ViewProviderSketch.cpp:2653:                            // proportional to the length of the bspline
+./Gui/ViewProviderSketch.cpp:2655:                            double scalefactor = bspline->length(bspline->getFirstParameter(),
+./Gui/ViewProviderSketch.cpp:2656:                                                                 bspline->getLastParameter())
+./Gui/ViewProviderSketch.cpp:2660:                            if (!bspline->isRational()) {
+./Gui/ViewProviderSketch.cpp:2661:                                // OCCT sets the weights to 1.0 if a bspline is non-rational, but if
+./Gui/ViewProviderSketch.cpp:2670:                                        && ic->AlignmentType == BSplineControlPoint
+./Gui/ViewProviderSketch.cpp:2763:    // ************ Manage BSpline pole circle scaling  ****************************
+./Gui/ViewProviderSketch.cpp:2766:    // 1. the OCC mandated weight, which is normalised for non-rational BSplines, but not normalised
+./Gui/ViewProviderSketch.cpp:2767:    // for rational BSplines. That includes properly sizing for drawing any weight constraint. This
+./Gui/ViewProviderSketch.cpp:2772:    // the circles of the poles of the B-Splines are properly rendered.
+./Gui/ViewProviderSketch.cpp:2777:    scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(geolistfacade, temp);
+./Gui/ViewProviderSketch.cpp:3969:    int selectedBsplines = 0;
+./Gui/ViewProviderSketch.cpp:3997:                        else if (geo->is<Part::GeomBSplineCurve>()) {
+./Gui/ViewProviderSketch.cpp:3998:                            ++selectedBsplines;
+./Gui/ViewProviderSketch.cpp:4161:             << "Sketcher_CreateBSpline"
+./Gui/TaskSketcherElements.cpp:308:        {QT_TR_NOOP("B-Spline"), 1}};
+./Gui/TaskSketcherElements.cpp:439:            std::forward_as_tuple(Part::GeomBSplineCurve::getClassTypeId()),
+./Gui/TaskSketcherElements.cpp:443:                    {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_BSpline_Edge")},
+./Gui/TaskSketcherElements.cpp:444:                    {Sketcher::PointPos::start, getMultIcon("Sketcher_Element_BSpline_StartPoint")},
+./Gui/TaskSketcherElements.cpp:445:                    {Sketcher::PointPos::end, getMultIcon("Sketcher_Element_BSpline_EndPoint")},
+./Gui/TaskSketcherElements.cpp:1096:    BSplineGeos
+./Gui/TaskSketcherElements.cpp:1360:        || (filterList->item(static_cast<int>(GeoFilterType::BSplineGeos))->checkState()
+./Gui/TaskSketcherElements.cpp:1362:            && item->GeometryType == Part::GeomBSplineCurve::getClassTypeId())) {
+./Gui/TaskSketcherElements.cpp:1541:                             || item->GeometryType == Part::GeomBSplineCurve::getClassTypeId())) {
+./Gui/TaskSketcherElements.cpp:1550:                             || item->GeometryType == Part::GeomBSplineCurve::getClassTypeId())) {
+./Gui/TaskSketcherElements.cpp:1662:            || item->GeometryType == Part::GeomBSplineCurve::getClassTypeId());
+./Gui/TaskSketcherElements.cpp:1670:            || item->GeometryType == Part::GeomBSplineCurve::getClassTypeId());
+./Gui/TaskSketcherElements.cpp:1810:                : type == Part::GeomBSplineCurve::getClassTypeId()
+./Gui/TaskSketcherElements.cpp:1811:                ? (isNamingBoxChecked ? (tr("BSpline") + IdInformation())
+./Gui/TaskSketcherElements.cpp:1816:                                      : (QString::fromLatin1("%1-").arg(i) + tr("BSpline")))
+./Gui/TaskSketcherElements.cpp:1922:                    : type == Part::GeomBSplineCurve::getClassTypeId()
+./Gui/TaskSketcherElements.cpp:1923:                    ? (isNamingBoxChecked ? (tr("BSpline") + linkname)
+./Gui/TaskSketcherElements.cpp:1924:                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("BSpline")))
+./Gui/ViewProviderSketch.h:754:    /// function to handle OCCT BSpline weight calculation singularities and representation
+./Gui/ViewProviderSketch.h:755:    void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
+./Gui/CommandSketcherTools.cpp:116:            if (isEllipse(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo) || isArcOfParabola(*geo) || isBSplineCurve(*geo)) {
+./Gui/CommandSketcherTools.cpp:1033:                || geo->is<Part::GeomBSplineCurve>());
+./Gui/CommandSketcherTools.cpp:2527:                        && !isBSplineCurve(*geo)
+./Gui/CommandSketcherTools.cpp:2533:                        // Currently ellipse/parabola/hyperbola/bspline are not handled correctly.
+./Gui/CommandSketcherTools.cpp:2549:            QT_TRANSLATE_NOOP("Notifications", "Selection has no valid geometries. BSplines, Points are not supported yet."));
+./Gui/Workbench.cpp:303:         << "Sketcher_CreateBSpline"
+./Gui/Workbench.cpp:304:         << "Sketcher_CreatePeriodicBSpline"
+./Gui/Workbench.cpp:315:         << "Sketcher_CompCreateBSpline";
+./Gui/Workbench.cpp:591:            << "Sketcher_BSplineIncreaseDegree"
+./Gui/Workbench.cpp:592:            << "Sketcher_BSplineDecreaseDegree"
+./Gui/Workbench.cpp:605:           << "Sketcher_CompBSplineShowHideGeometryInformation"
+./Gui/Workbench.cpp:613:           << "Sketcher_CompBSplineShowHideGeometryInformation"
+./Gui/Workbench.cpp:653:void addSketcherWorkbenchBSplines(Gui::MenuItem& bspline)
+./Gui/Workbench.cpp:655:    SketcherAddWorkbenchBSplines(bspline);
+./Gui/Workbench.cpp:688:void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline)
+./Gui/Workbench.cpp:690:    SketcherAddWorkbenchBSplines(bspline);
+./Gui/EditModeCoinManagerParameters.h:351:    double combRepresentationScale = 0;   // used for information overlay (BSpline comb)
+./Gui/EditModeCoinManagerParameters.h:353:    std::vector<int> bsplineGeoIds;       // used for information overlay
+./Gui/EditModeCoinManagerParameters.h:364:    double currentBSplineCombRepresentationScale = 0;
+./Gui/EditModeCoinManagerParameters.h:367:    bool bSplineDegreeVisible;
+./Gui/EditModeCoinManagerParameters.h:368:    bool bSplineControlPolygonVisible;
+./Gui/EditModeCoinManagerParameters.h:369:    bool bSplineCombVisible;
+./Gui/EditModeCoinManagerParameters.h:370:    bool bSplineKnotMultiplicityVisible;
+./Gui/EditModeCoinManagerParameters.h:371:    bool bSplinePoleWeightVisible;
+./Gui/EditModeInformationOverlayCoinConverter.h:72: * for GeomBSplineCurve and GeomArc.
+./Gui/EditModeInformationOverlayCoinConverter.h:86:        BSplineDegree,
+./Gui/EditModeInformationOverlayCoinConverter.h:87:        BSplineControlPolygon,
+./Gui/EditModeInformationOverlayCoinConverter.h:88:        BSplineCurvatureComb,
+./Gui/EditModeInformationOverlayCoinConverter.h:90:        BSplinePoleWeight,
+./Gui/EditModeInformationOverlayCoinConverter.h:206:    NodeText<CalculationType::BSplineDegree> degree;
+./Gui/EditModeInformationOverlayCoinConverter.h:208:    NodeText<CalculationType::BSplinePoleWeight> poleWeights;
+./Gui/EditModeInformationOverlayCoinConverter.h:209:    NodePolygon<CalculationType::BSplineControlPolygon> controlPolygon;
+./Gui/EditModeInformationOverlayCoinConverter.h:210:    NodePolygon<CalculationType::BSplineCurvatureComb> curvatureComb;
+./Gui/CommandAlterGeometry.cpp:112:    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateBSpline");
+./Gui/CommandAlterGeometry.cpp:113:    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSpline");
+./Gui/CommandAlterGeometry.cpp:114:    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateBSpline");
+./Gui/CommandConstraints.cpp:192:// a B-spline, for 3-selection tangent, perpendicular, and angle constraints.
+./Gui/CommandConstraints.cpp:210:            if (isBSplineCurve(*geom))
+./Gui/CommandConstraints.cpp:718:    // This code supports simple B-spline endpoint tangency to any other geometric curve
+./Gui/CommandConstraints.cpp:722:    if (geom1 && geom2 && (isBSplineCurve(*geom1) || isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:723:        if (! isBSplineCurve(*geom1)) {
+./Gui/CommandConstraints.cpp:727:        // GeoId1 is the B-spline now
+./Gui/CommandConstraints.cpp:728:    }// end of code supports simple B-spline endpoint tangency
+./Gui/CommandConstraints.cpp:1691:        else if (selGeoType == Part::GeomBSplineCurve::getClassTypeId()) {
+./Gui/CommandConstraints.cpp:2324:        if (isBsplinePole(geom)) {
+./Gui/CommandConstraints.cpp:2387:            || (isBsplinePole(geo1) && !isBsplinePole(geo2))
+./Gui/CommandConstraints.cpp:3767:                        QObject::tr("B-spline knot to endpoint tangency was applied instead."));
+./Gui/CommandConstraints.cpp:3864:            if (geom && isBsplinePole(geom)) {
+./Gui/CommandConstraints.cpp:3868:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:4053:    if (geom && isBsplinePole(geom)) {
+./Gui/CommandConstraints.cpp:4056:            QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:5763:            if (isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:5767:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:5777:                    if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:5789:                    if (!(geom2 && isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:5806:                    if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:5858:            // This code supports simple B-spline endpoint perp to any other geometric curve
+./Gui/CommandConstraints.cpp:5862:            if (geom1 && geom2 && (isBSplineCurve(*geom1) || isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:5863:                if (! isBSplineCurve(*geom1)) {
+./Gui/CommandConstraints.cpp:5867:                // GeoId1 is the B-spline now
+./Gui/CommandConstraints.cpp:5868:            }// end of code supports simple B-spline endpoint tangency
+./Gui/CommandConstraints.cpp:5901:            if (isBsplinePole(geom2)) {
+./Gui/CommandConstraints.cpp:5905:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:5938:            // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
+./Gui/CommandConstraints.cpp:5939:            //     // unsupported until tangent to B-spline at any point implemented.
+./Gui/CommandConstraints.cpp:5943:            //         QObject::tr("Perpendicular to B-spline edge currently unsupported."));
+./Gui/CommandConstraints.cpp:5951:            if (isBsplinePole(Obj, GeoId1)) {
+./Gui/CommandConstraints.cpp:5955:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:6139:            // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
+./Gui/CommandConstraints.cpp:6140:            //     // unsupported until tangent to B-spline at any point implemented.
+./Gui/CommandConstraints.cpp:6144:            //         QObject::tr("Perpendicular to B-spline edge currently unsupported."));
+./Gui/CommandConstraints.cpp:6152:            if (isBsplinePole(Obj, GeoId1)) {
+./Gui/CommandConstraints.cpp:6156:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:6331:        if (isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:6335:                QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:6345:                if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:6357:                if (!(geom2 && isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:6370:                if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:6594:            if (isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:6598:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:6608:                    if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:6620:                    if (!(geom2 && isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:6633:                    if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:6744:            if (isBsplinePole(geom2)) {
+./Gui/CommandConstraints.cpp:6748:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:6772:            if (isBsplinePole(geom1) || isBsplinePole(geom2)) {
+./Gui/CommandConstraints.cpp:6776:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:6931:            else if (geom1 && geom2 && (isBSplineCurve(*geom1) || isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:6935:                    QObject::tr("Only tangent-via-point is supported with a B-spline."));
+./Gui/CommandConstraints.cpp:6984:            if (isBsplinePole(geom1) || isBsplinePole(geom2)) {
+./Gui/CommandConstraints.cpp:6988:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:7166:            // This code supports simple B-spline endpoint tangency to any other geometric curve
+./Gui/CommandConstraints.cpp:7170:            if (geom1 && geom2 && (isBSplineCurve(*geom1) || isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:7171:                if (! isBSplineCurve(*geom1)) {
+./Gui/CommandConstraints.cpp:7175:                // GeoId1 is the B-spline now
+./Gui/CommandConstraints.cpp:7176:            }// end of code supports simple B-spline endpoint tangency
+./Gui/CommandConstraints.cpp:7203:        if (isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:7207:                QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:7217:                if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:7229:                if (!(geom2 && isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:7242:                if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:7399:            if (isBsplinePole(geom)) {
+./Gui/CommandConstraints.cpp:7420:            QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or "
+./Gui/CommandConstraints.cpp:7583:            bool ispole = isBsplinePole(geom);
+./Gui/CommandConstraints.cpp:7750:            if (isBsplinePole(geom)) {
+./Gui/CommandConstraints.cpp:7754:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:7902:            if (isBsplinePole(geom)) {
+./Gui/CommandConstraints.cpp:7906:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:8066:            if (isBsplinePole(geom)) {
+./Gui/CommandConstraints.cpp:8097:            QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or "
+./Gui/CommandConstraints.cpp:8267:                if (isBsplinePole(geom)) {
+./Gui/CommandConstraints.cpp:8603:            if (isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:8607:                    QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:8618:                if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:8629:                if (!(geom2 && isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:8641:                if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:8700:        if (isBsplinePole(Obj, GeoId1)
+./Gui/CommandConstraints.cpp:8701:            || (GeoId2 != GeoEnum::GeoUndef && isBsplinePole(Obj, GeoId2))) {
+./Gui/ViewProviderSketch.cpp:4033:        if (selectedBsplines > 0 && selectedBsplines == selectedEdges && selectedPoints == 0
+./Gui/ViewProviderSketch.cpp:4046:        if (selectedEdges >= 1 && selectedPoints == 0 && selectedBsplines == 0 && !onlyOrigin) {
+./Gui/ViewProviderSketch.cpp:4077:            if (selectedConics == 0 && selectedBsplines == 0) {
+./Gui/CommandConstraints.cpp:207:            // ONLY do this if it is a B-spline (or any other where point
+./Gui/CommandConstraints.cpp:8705:                QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:8840:        if (isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+./Gui/CommandConstraints.cpp:8844:                QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandConstraints.cpp:8855:            if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:8865:            if (!(geom2 && isBSplineCurve(*geom2))) {
+./Gui/CommandConstraints.cpp:8876:            if (!(geom1 && isBSplineCurve(*geom1))) {
+./Gui/CommandConstraints.cpp:9053:        if (isBSplineCurve(*geo)) {
+./Gui/CommandConstraints.cpp:9069:            if (isBsplinePole(geo)) {
+./Gui/CommandConstraints.cpp:9155:                || (isBsplinePole(geo1) && !isBsplinePole(geo2))
+./Gui/CommandConstraints.cpp:9651:    // if (geo && isBSplineCurve(*geo)) {
+./Gui/CommandConstraints.cpp:9652:    //     // unsupported until normal to B-spline at any point implemented.
+./Gui/CommandConstraints.cpp:9660:    if (isBsplinePole(geo)) {
+./Gui/CommandConstraints.cpp:9663:                                   QObject::tr("Select an edge that is not a B-spline weight."));
+./Gui/CommandSketcherBSpline.cpp:52:void ActivateBSplineHandler(Gui::Document* doc, DrawSketchHandler* handler)
+./Gui/CommandSketcherBSpline.cpp:87:    if (geo->is<Part::GeomBSplineCurve>()) {
+./Gui/CommandSketcherBSpline.cpp:180:    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+./Gui/CommandSketcherBSpline.cpp:227:            if (geo->is<Part::GeomBSplineCurve>()) {
+./Gui/CommandSketcherBSpline.cpp:256:    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+./Gui/CommandSketcherBSpline.cpp:306:            if (geo->is<Part::GeomBSplineCurve>()) {
+./Gui/CommandSketcherBSpline.cpp:339:    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+./Gui/CommandSketcherBSpline.cpp:400:    boost::uuids::uuid bsplinetag;
+./Gui/CommandSketcherBSpline.cpp:403:        bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
+./Gui/CommandSketcherBSpline.cpp:415:            // particularly B-spline GeoID might have changed.
+./Gui/CommandSketcherBSpline.cpp:445:        // find new geoid for B-spline as GeoId might have changed
+./Gui/CommandSketcherBSpline.cpp:453:            if ((*geo) && (*geo)->getTag() == bsplinetag) {
+./Gui/CommandSketcherBSpline.cpp:488:    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+./Gui/CommandSketcherBSpline.cpp:548:    boost::uuids::uuid bsplinetag;
+./Gui/CommandSketcherBSpline.cpp:551:        bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
+./Gui/CommandSketcherBSpline.cpp:562:            // and particularly B-spline GeoID might have changed.
+./Gui/CommandSketcherBSpline.cpp:581:        // find new geoid for B-spline as GeoId might have changed
+./Gui/CommandSketcherBSpline.cpp:589:            if ((*geo) && (*geo)->getTag() == bsplinetag) {
+./Gui/CommandSketcherBSpline.cpp:624:    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+./Gui/CommandSketcherBSpline.cpp:726:    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+./Gui/CommandSketcherBSpline.cpp:746:        auto bsp = static_cast<const Part::GeomBSplineCurve*>(Obj->getGeometry(GeoId));
+./Gui/CommandSketcherBSpline.cpp:819:                if ((*geo) && (*geo)->getTag() == bsplinetag) {
+./Gui/CommandSketcherBSpline.cpp:932:        ActivateBSplineHandler(getActiveGuiDocument(),
+./Gui/CommandSketcherBSpline.cpp:948:    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+./Gui/CommandSketcherBSpline.cpp:1104:    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+./Gui/EditModeInformationOverlayCoinConverter.cpp:63:    if (geometry->is<Part::GeomBSplineCurve>()) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:64:        // at this point all calculations relate to BSplineCurves
+./Gui/EditModeInformationOverlayCoinConverter.cpp:65:        calculate<CalculationType::BSplineDegree>(geometry, geoid);
+./Gui/EditModeInformationOverlayCoinConverter.cpp:66:        calculate<CalculationType::BSplineControlPolygon>(geometry, geoid);
+./Gui/EditModeInformationOverlayCoinConverter.cpp:67:        calculate<CalculationType::BSplineCurvatureComb>(geometry, geoid);
+./Gui/EditModeInformationOverlayCoinConverter.cpp:69:        calculate<CalculationType::BSplinePoleWeight>(geometry, geoid);
+./Gui/EditModeInformationOverlayCoinConverter.cpp:116:        const Part::GeomBSplineCurve* spline = static_cast<const Part::GeomBSplineCurve*>(geometry);
+./Gui/EditModeInformationOverlayCoinConverter.cpp:118:        if constexpr (calculation == CalculationType::BSplineDegree) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:137:        else if constexpr (calculation == CalculationType::BSplineControlPolygon) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:168:        else if constexpr (calculation == CalculationType::BSplineCurvatureComb) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:218:                            "Curvature graph for B-Spline with GeoId=%d could not be calculated.\n",
+./Gui/EditModeInformationOverlayCoinConverter.cpp:240:                    - overlayParameters.currentBSplineCombRepresentationScale * curvaturelist[i]
+./Gui/EditModeInformationOverlayCoinConverter.cpp:287:        else if constexpr (calculation == CalculationType::BSplinePoleWeight) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:323:    if constexpr (calculation == CalculationType::BSplineDegree) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:324:        return overlayParameters.bSplineDegreeVisible;
+./Gui/EditModeInformationOverlayCoinConverter.cpp:326:    else if constexpr (calculation == CalculationType::BSplineControlPolygon) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:327:        return overlayParameters.bSplineControlPolygonVisible;
+./Gui/EditModeInformationOverlayCoinConverter.cpp:329:    else if constexpr (calculation == CalculationType::BSplineCurvatureComb) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:330:        return overlayParameters.bSplineCombVisible;
+./Gui/EditModeInformationOverlayCoinConverter.cpp:332:    else if constexpr (calculation == CalculationType::BSplineKnotMultiplicity) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:333:        return overlayParameters.bSplineKnotMultiplicityVisible;
+./Gui/EditModeInformationOverlayCoinConverter.cpp:335:    else if constexpr (calculation == CalculationType::BSplinePoleWeight) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:336:        return overlayParameters.bSplinePoleWeightVisible;
+./Gui/EditModeInformationOverlayCoinConverter.cpp:446:            if constexpr (Result::calculationType == CalculationType::BSplinePoleWeight) {
+./Gui/EditModeInformationOverlayCoinConverter.cpp:469:        // hGrpsk->GetBool("BSplineControlPolygonVisible", true)
+./Gui/EditModeInformationOverlayCoinConverter.cpp:530:            if constexpr (Result::calculationType == CalculationType::BSplinePoleWeight) {
+./Gui/DrawSketchHandlerTranslate.h:305:                    else if (isBSplineCurve(*geo)) {
+./Gui/DrawSketchHandlerTranslate.h:306:                        auto* bSpline = static_cast<Part::GeomBSplineCurve*>(geo);  // NOLINT
+./Gui/DrawSketchHandlerTranslate.h:307:                        std::vector<Base::Vector3d> poles = bSpline->getPoles();
+./Gui/DrawSketchHandlerTranslate.h:311:                        bSpline->setPoles(poles);
+./Gui/DrawSketchHandlerRotate.h:314:                else if (isBSplineCurve(*geo)) {
+./Gui/DrawSketchHandlerRotate.h:315:                    auto* bSpline = static_cast<Part::GeomBSplineCurve*>(geo);  // NOLINT
+./Gui/DrawSketchHandlerRotate.h:316:                    std::vector<Base::Vector3d> poles = bSpline->getPoles();
+./Gui/DrawSketchHandlerRotate.h:320:                    bSpline->setPoles(poles);
+./Gui/DrawSketchHandlerSplitting.h:71:                || geom->is<Part::GeomBSplineCurve>()) {
+./Gui/DrawSketchHandlerSplitting.h:120:                || geom->is<Part::GeomBSplineCurve>()) {
+./Gui/DrawSketchHandlerOffset.h:354:            // TODO Bspline support
+./Gui/DrawSketchHandlerOffset.h:450:        // Todo: add cases for arcOfellipse parabolas hyperbolas bspline
+./Gui/DrawSketchHandlerOffset.h:739:                                 || isBSplineCurve(*geo2)) {
+./Gui/DrawSketchHandlerOffset.h:773:                    else if (isBSplineCurve(*geo) && isBSplineCurve(*geo2)) {}
+./Gui/DrawSketchHandlerOffset.h:985:        else if (isBSplineCurve(*geo)) {
+./Gui/DrawSketchHandlerOffset.h:986:            const auto* bSpline = static_cast<const Part::GeomBSplineCurve*>(geo);
+./Gui/DrawSketchHandlerOffset.h:987:            startPoint = bSpline->getStartPoint();
+./Gui/DrawSketchHandlerOffset.h:988:            endPoint = bSpline->getEndPoint();
+./Gui/EditModeGeometryCoinConverter.cpp:54:    bsplineGeoIds.clear();
+./Gui/EditModeGeometryCoinConverter.cpp:237:        else if (type == Part::GeomBSplineCurve::getClassTypeId()) {  // add a bspline (a bounded
+./Gui/EditModeGeometryCoinConverter.cpp:239:            convert<Part::GeomBSplineCurve,
+./Gui/EditModeGeometryCoinConverter.cpp:249:            bsplineGeoIds.push_back(GeoId);
+./Gui/EditModeGeometryCoinConverter.cpp:308:                      || analysemode == AnalyseMode::BoundingBoxMagnitudeAndBSplineCurvature) {
+./Gui/EditModeGeometryCoinConverter.cpp:341:        if constexpr (std::is_same<GeoType, Part::GeomBSplineCurve>::value) {
+./Gui/EditModeGeometryCoinConverter.cpp:359:        if constexpr (std::is_same<GeoType, Part::GeomBSplineCurve>::value) {
+./Gui/EditModeGeometryCoinConverter.cpp:375:        if constexpr (analysemode == AnalyseMode::BoundingBoxMagnitudeAndBSplineCurvature) {
+./Gui/EditModeGeometryCoinConverter.cpp:418:                        "Curvature graph for B-Spline with GeoId=%d could not be calculated.\n",
+./Gui/CommandSketcherVirtualSpace.cpp:88:// Show/Hide B-spline degree
+./Gui/DrawSketchHandlerScale.h:294:            else if (isBSplineCurve(*geo)) {
+./Gui/DrawSketchHandlerScale.h:295:                auto* bSpline = static_cast<Part::GeomBSplineCurve*>(geo);  // NOLINT
+./Gui/DrawSketchHandlerScale.h:296:                std::vector<Base::Vector3d> poles = bSpline->getPoles();
+./Gui/DrawSketchHandlerScale.h:300:                bSpline->setPoles(poles);
+./Gui/DrawSketchHandlerBSpline.h:23:#ifndef SKETCHERGUI_DrawSketchHandlerBSpline_H
+./Gui/DrawSketchHandlerBSpline.h:24:#define SKETCHERGUI_DrawSketchHandlerBSpline_H
+./Gui/DrawSketchHandlerBSpline.h:46:class DrawSketchHandlerBSpline: public DrawSketchHandler
+./Gui/DrawSketchHandlerBSpline.h:49:    explicit DrawSketchHandlerBSpline(int constructionMethod)
+./Gui/DrawSketchHandlerBSpline.h:60:    ~DrawSketchHandlerBSpline() override = default;
+./Gui/DrawSketchHandlerBSpline.h:93:            drawBSplineToPosition(onSketchPos);
+./Gui/DrawSketchHandlerBSpline.h:111:            BSplinePoles.push_back(onSketchPos);
+./Gui/DrawSketchHandlerBSpline.h:123:                    BSplinePoles.back().x,
+./Gui/DrawSketchHandlerBSpline.h:124:                    BSplinePoles.back().y);
+./Gui/DrawSketchHandlerBSpline.h:136:                                 QT_TRANSLATE_NOOP("Notifications", "Error adding B-Spline pole"));
+./Gui/DrawSketchHandlerBSpline.h:162:            BSplinePoles.push_back(onSketchPos);
+./Gui/DrawSketchHandlerBSpline.h:187:                    BSplinePoles.pop_back();
+./Gui/DrawSketchHandlerBSpline.h:203:                    BSplinePoles.back().x,
+./Gui/DrawSketchHandlerBSpline.h:204:                    BSplinePoles.back().y);
+./Gui/DrawSketchHandlerBSpline.h:217:                    QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline pole"));
+./Gui/DrawSketchHandlerBSpline.h:259:                                     QObject::tr("B-Spline Degree"),
+./Gui/DrawSketchHandlerBSpline.h:260:                                     QObject::tr("Define B-Spline Degree, between 1 and %1:")
+./Gui/DrawSketchHandlerBSpline.h:261:                                         .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
+./Gui/DrawSketchHandlerBSpline.h:264:                                     Geom_BSplineCurve::MaxDegree(),
+./Gui/DrawSketchHandlerBSpline.h:266:            // FIXME: Pressing Esc here also finishes the B-Spline creation.
+./Gui/DrawSketchHandlerBSpline.h:283:                // this also exits b-spline creation if continuous mode is off
+./Gui/DrawSketchHandlerBSpline.h:308:                BSplinePoles.pop_back();
+./Gui/DrawSketchHandlerBSpline.h:316:                drawBSplineToPosition(prevCursorPosition);
+./Gui/DrawSketchHandlerBSpline.h:343:        // We must see if we need to create a B-spline before cancelling everything
+./Gui/DrawSketchHandlerBSpline.h:352:            // create B-spline from existing poles
+./Gui/DrawSketchHandlerBSpline.h:390:        BSplinePoles.clear();
+./Gui/DrawSketchHandlerBSpline.h:402:            return QString::fromLatin1("Sketcher_Pointer_Create_Periodic_BSpline");
+./Gui/DrawSketchHandlerBSpline.h:405:            return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
+./Gui/DrawSketchHandlerBSpline.h:417:        std::vector<Base::Vector2d> editcurve(BSplinePoles);
+./Gui/DrawSketchHandlerBSpline.h:423:    void drawBSplineToPosition(Base::Vector2d position)
+./Gui/DrawSketchHandlerBSpline.h:426:        for (auto& pole : BSplinePoles) {
+./Gui/DrawSketchHandlerBSpline.h:452:        Part::GeomBSplineCurve editBSpline(editcurve, weights, knots, mults, degree, periodic);
+./Gui/DrawSketchHandlerBSpline.h:453:        editBSpline.setPoles(editcurve);
+./Gui/DrawSketchHandlerBSpline.h:455:        std::vector<Part::Geometry*> editBSplines;
+./Gui/DrawSketchHandlerBSpline.h:456:        editBSplines.push_back(&editBSpline);
+./Gui/DrawSketchHandlerBSpline.h:458:        drawEdit(editBSplines);
+./Gui/DrawSketchHandlerBSpline.h:463:        if (!BSplinePoles.empty()) {
+./Gui/DrawSketchHandlerBSpline.h:464:            float length = (position - BSplinePoles.back()).Length();
+./Gui/DrawSketchHandlerBSpline.h:465:            float angle = (position - BSplinePoles.back()).GetAngle(Base::Vector2d(1.f, 0.f));
+./Gui/DrawSketchHandlerBSpline.h:491:            for (auto& pole : BSplinePoles) {
+./Gui/DrawSketchHandlerBSpline.h:510:                // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
+./Gui/DrawSketchHandlerBSpline.h:512:                /*Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
+./Gui/DrawSketchHandlerBSpline.h:522:                                      "addGeometry(Part.BSplineCurve"
+./Gui/DrawSketchHandlerBSpline.h:554:                // Constraint pole circles to B-spline.
+./Gui/DrawSketchHandlerBSpline.h:561:                               "BSplineControlPoint',"
+./Gui/DrawSketchHandlerBSpline.h:580:                                 QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline"));
+./Gui/DrawSketchHandlerBSpline.h:625:    // Stores position of the poles of the BSpline.
+./Gui/DrawSketchHandlerBSpline.h:626:    std::vector<Base::Vector2d> BSplinePoles;
+./Gui/DrawSketchHandlerBSpline.h:643:#endif  // SKETCHERGUI_DrawSketchHandlerBSpline_H
+./Gui/EditModeCoinManager.h:119:            BSplineDegree,
+./Gui/EditModeGeometryCoinConverter.h:72: * curvature of BSplines
+./Gui/EditModeGeometryCoinConverter.h:98:        BoundingBoxMagnitudeAndBSplineCurvature
+./Gui/EditModeGeometryCoinConverter.h:133:     * the B-Splines of this layer (local responsibility).
+./Gui/EditModeGeometryCoinConverter.h:138:     * returns the GeoIds of BSpline geometries
+./Gui/EditModeGeometryCoinConverter.h:140:    auto getBSplineGeoIds()
+./Gui/EditModeGeometryCoinConverter.h:142:        return std::move(bsplineGeoIds);
+./Gui/EditModeGeometryCoinConverter.h:185:    std::vector<int> bsplineGeoIds;
+./Gui/CMakeLists.txt:69:    DrawSketchHandlerBSpline.h
+./Gui/CMakeLists.txt:87:    CommandSketcherBSpline.cpp
+./Gui/AppSketcherGui.cpp:49:void CreateSketcherCommandsBSpline();
+./Gui/AppSketcherGui.cpp:120:    CreateSketcherCommandsBSpline();
+========== Generalize to special curves
+./Gui/CommandConstraints.cpp:9058:                QObject::tr("Equality for B-spline edge currently unsupported."));
+./Gui/CommandConstraints.cpp:9656:    //         QObject::tr("SnellsLaw on B-spline edge is currently unsupported."));
+./Gui/CommandSketcherBSpline.cpp:246:                                               "objects was not a B-Spline and was ignored."));
+./Gui/CommandSketcherBSpline.cpp:329:                                               "objects was not a B-Spline and was ignored."));
+./Gui/ViewProviderSketchGeometryExtension.h:51:    // value Applicability: General abstract concepts embodied in a geometry, in practice B-Spline
+./Gui/EditModeGeometryCoinConverter.cpp:243:                        BoundingBoxMagnitudeAndBSplineCurvature>(geom, GeoId, subLayerId);
+========== Periodic curve check
+./App/SketchObject.cpp:3075:        if (bspline->isPeriodic() && (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef))
+./App/SketchObject.cpp:3386:    else if (isCircle || isEllipse || isPeriodicBSpline) {
+./Gui/Utils.cpp:91:bool Sketcher::isPeriodicBSplineCurve(const Part::Geometry& geom)
+./Gui/Utils.h:64:bool isPeriodicBSplineCurve(const Part::Geometry&);
+./Gui/ViewProviderSketch.cpp:1356:    if (isPoint(*geo1) || isCircle(*geo1) || isEllipse(*geo1) || isPeriodicBSplineCurve(*geo1)) {
+./Gui/ViewProviderSketch.cpp:1375:            if (isPoint(*geo) || isCircle(*geo) || isEllipse(*geo) || isPeriodicBSplineCurve(*geo1)) {
+./Gui/Workbench.cpp:306:         << "Sketcher_CreatePeriodicBSplineByInterpolation";
+./Gui/DrawSketchHandlerBSpline.h:401:        if (SketcherGui::DrawSketchHandlerBSpline::ConstrMethod == 1) {
+./Gui/DrawSketchHandlerBSpline.h:507:                ConstrMethod == 0 ? (BSplinePoles.size() - 1) : (BSplinePoles.size());
+========== Unsorted
