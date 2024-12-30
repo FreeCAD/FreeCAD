@@ -49,6 +49,8 @@ public:
     // set fuzzyness based on size
     void setAutoFuzzy();
 
+    Standard_EXPORT virtual void Build(); // not an override - real Build() has optionals, sadly type of those optionals that are differs between OCCT versions
+
 protected: //! @name Constructors
 
   //! Constructor to perform Boolean operation on only two arguments.
@@ -57,5 +59,9 @@ protected: //! @name Constructors
                                                const TopoDS_Shape& theS2,
                                                const BOPAlgo_Operation theOperation);
 
+
+private:
+  Standard_EXPORT const TopoDS_Shape RecursiveCutCompound(const TopoDS_Shape& theArgument);
+  Standard_EXPORT void RecursiveAddArguments(const TopoDS_Shape& theArgument);
 };
 #endif
