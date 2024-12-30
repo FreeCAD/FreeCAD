@@ -34,6 +34,7 @@
 #include <Base/Quantity.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "PropertyStandard.h"
 #include "Application.h"
@@ -663,7 +664,7 @@ long PropertyIntegerConstraint::getMinimum() const
         return _ConstStruct->LowerBound;
     }
     // return the min of int, not long
-    return std::numeric_limits<int>::min();
+    return std::numeric_limits<int>::lowest();
 }
 
 long PropertyIntegerConstraint::getMaximum() const
@@ -700,40 +701,63 @@ void PropertyIntegerConstraint::setPyObject(PyObject* value)
         _lValue = temp;
         hasSetValue();
     }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 4) {
-        long values[4];
-        for (int i = 0; i < 4; i++) {
-            PyObject* item;
-            item = PyTuple_GetItem(value, i);
-            if (PyLong_Check(item)) {
-                values[i] = PyLong_AsLong(item);
+    else {
+        long valConstr[] = {0,
+                            std::numeric_limits<int>::lowest(),
+                            std::numeric_limits<int>::max(),
+                            1};
+
+        if (PyDict_Check(value)) {
+            Py::Tuple dummy;
+            static const std::array<const char*, 5> kw = {"value",
+                                                          "min",
+                                                          "max",
+                                                          "step",
+                                                          nullptr};
+
+            if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(),
+                                                     value,
+                                                     "l|lll",
+                                                      kw,
+                                                     &(valConstr[0]),
+                                                     &(valConstr[1]),
+                                                     &(valConstr[2]),
+                                                     &(valConstr[3]))) {
+                throw Py::Exception();
             }
-            else {
-                throw Base::TypeError("Type in tuple must be int");
+        }
+        else if (PyTuple_Check(value)) {
+            if (!PyArg_ParseTuple(value,
+                                  "llll",
+                                  &(valConstr[0]),
+                                  &(valConstr[1]),
+                                  &(valConstr[2]),
+                                  &(valConstr[3]))) {
+                throw Py::Exception();
             }
+        }
+        else {
+            std::string error = std::string("type must be int, dict or tuple, not ");
+            error += value->ob_type->tp_name;
+            throw Base::TypeError(error);
         }
 
         Constraints* c = new Constraints();
         c->setDeletable(true);
-        c->LowerBound = values[1];
-        c->UpperBound = values[2];
-        c->StepSize = std::max<long>(1, values[3]);
-        if (values[0] > c->UpperBound) {
-            values[0] = c->UpperBound;
+        c->LowerBound = valConstr[1];
+        c->UpperBound = valConstr[2];
+        c->StepSize = std::max<long>(1, valConstr[3]);
+        if (valConstr[0] > c->UpperBound) {
+            valConstr[0] = c->UpperBound;
         }
-        else if (values[0] < c->LowerBound) {
-            values[0] = c->LowerBound;
+        else if (valConstr[0] < c->LowerBound) {
+            valConstr[0] = c->LowerBound;
         }
         setConstraints(c);
 
         aboutToSetValue();
-        _lValue = values[0];
+        _lValue = valConstr[0];
         hasSetValue();
-    }
-    else {
-        std::string error = std::string("type must be int, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
     }
 }
 
@@ -1122,7 +1146,7 @@ double PropertyFloatConstraint::getMinimum() const
     if (_ConstStruct) {
         return _ConstStruct->LowerBound;
     }
-    return std::numeric_limits<double>::min();
+    return std::numeric_limits<double>::lowest();
 }
 
 double PropertyFloatConstraint::getMaximum() const
@@ -1159,7 +1183,7 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
         hasSetValue();
     }
     else if (PyLong_Check(value)) {
-        double temp = (double)PyLong_AsLong(value);
+        double temp = static_cast<double>(PyLong_AsLong(value));
         if (_ConstStruct) {
             if (temp > _ConstStruct->UpperBound) {
                 temp = _ConstStruct->UpperBound;
@@ -1173,23 +1197,48 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
         _dValue = temp;
         hasSetValue();
     }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 4) {
-        double values[4];
-        for (int i = 0; i < 4; i++) {
-            PyObject* item;
-            item = PyTuple_GetItem(value, i);
-            if (PyFloat_Check(item)) {
-                values[i] = PyFloat_AsDouble(item);
-            }
-            else if (PyLong_Check(item)) {
-                values[i] = PyLong_AsLong(item);
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be float or int");
+    else {
+        double valConstr[] = {0.0,
+                              std::numeric_limits<double>::lowest(),
+                              std::numeric_limits<double>::max(),
+                              1.0};
+
+        if (PyDict_Check(value)) {
+            Py::Tuple dummy;
+            static const std::array<const char*, 5> kw = {"value",
+                                                          "min",
+                                                          "max",
+                                                          "step",
+                                                           nullptr};
+
+            if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(),
+                                                     value,
+                                                     "d|ddd",
+                                                     kw,
+                                                     &(valConstr[0]),
+                                                     &(valConstr[1]),
+                                                     &(valConstr[2]),
+                                                     &(valConstr[3]))) {
+                throw Py::Exception();
             }
         }
+        else if (PyTuple_Check(value)) {
+            if (!PyArg_ParseTuple(value,
+                                  "dddd",
+                                  &(valConstr[0]),
+                                  &(valConstr[1]),
+                                  &(valConstr[2]),
+                                  &(valConstr[3]))) {
+                throw Py::Exception();
+            }
+        }
+        else {
+            std::string error = std::string("type must be float, dict or tuple, not ");
+            error += value->ob_type->tp_name;
+            throw Base::TypeError(error);
+        }
 
-        double stepSize = values[3];
+        double stepSize = valConstr[3];
         // need a value > 0
         if (stepSize < DBL_EPSILON) {
             throw Base::ValueError("Step size must be greater than zero");
@@ -1197,25 +1246,20 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
 
         Constraints* c = new Constraints();
         c->setDeletable(true);
-        c->LowerBound = values[1];
-        c->UpperBound = values[2];
+        c->LowerBound = valConstr[1];
+        c->UpperBound = valConstr[2];
         c->StepSize = stepSize;
-        if (values[0] > c->UpperBound) {
-            values[0] = c->UpperBound;
+        if (valConstr[0] > c->UpperBound) {
+            valConstr[0] = c->UpperBound;
         }
-        else if (values[0] < c->LowerBound) {
-            values[0] = c->LowerBound;
+        else if (valConstr[0] < c->LowerBound) {
+            valConstr[0] = c->LowerBound;
         }
         setConstraints(c);
 
         aboutToSetValue();
-        _dValue = values[0];
+        _dValue = valConstr[0];
         hasSetValue();
-    }
-    else {
-        std::string error = std::string("type must be float, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
     }
 }
 
