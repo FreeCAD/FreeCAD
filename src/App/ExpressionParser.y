@@ -68,8 +68,8 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %precedence EQ NEQ LT GT GTE LTE
      %precedence ':'
      %left MINUSSIGN '+'
-     %left '*' '/' '%'
      %precedence NUM_AND_UNIT
+     %left '*' '/' '%'
      %left '^'
      %precedence NEG
      %precedence POS
