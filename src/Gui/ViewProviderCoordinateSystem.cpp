@@ -183,30 +183,31 @@ void ViewProviderCoordinateSystem::setPlaneLabelVisibility(bool val)
 
 }
 
-void ViewProviderCoordinateSystem::setTemporaryScale(double factor)
+void ViewProviderCoordinateSystem::applyDatumObjects(const DatumObjectFunc& func)
 {
     auto lcs = getObject<App::LocalCoordinateSystem>();
-    auto& objs = lcs->OriginFeatures.getValues();
+    const auto& objs = lcs->OriginFeatures.getValues();
     for (auto* obj : objs) {
         auto* vp = dynamic_cast<Gui::ViewProviderDatum*>(
             Gui::Application::Instance->getViewProvider(obj));
         if (vp) {
-            vp->setTemporaryScale(factor);
+            func(vp);
         }
     }
 }
 
+void ViewProviderCoordinateSystem::setTemporaryScale(double factor)
+{
+    applyDatumObjects([factor](ViewProviderDatum* vp) {
+        vp->setTemporaryScale(factor);
+    });
+}
+
 void ViewProviderCoordinateSystem::resetTemporarySize()
 {
-    auto lcs = getObject<App::LocalCoordinateSystem>();
-    auto& objs = lcs->OriginFeatures.getValues();
-    for (auto* obj : objs) {
-        auto* vp = dynamic_cast<Gui::ViewProviderDatum*>(
-            Gui::Application::Instance->getViewProvider(obj));
-        if (vp) {
-            vp->resetTemporarySize();
-        }
-    }
+    applyDatumObjects([](ViewProviderDatum* vp) {
+        vp->resetTemporarySize();
+    });
 }
 
 void ViewProviderCoordinateSystem::updateData(const App::Property* prop) {
