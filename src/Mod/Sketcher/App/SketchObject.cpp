@@ -6381,11 +6381,10 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
     }
 
     if (controlpointgeoids[0] != GeoEnum::GeoUndef) {
-        // search for first pole weight constraint
-        auto it = std::find_if(vals.begin(),
-                               vals.end(),
-                               [&controlpointgeoids](const auto& constr) {return (constr->Type == Sketcher::Weight && constr->First == controlpointgeoids[0]);});
-        isfirstweightconstrained = (it != vals.end());
+        isfirstweightconstrained =
+            std::any_of(vals.begin(), vals.end(), [&controlpointgeoids](const auto& constr) {
+                return (constr->Type == Sketcher::Weight && constr->First == controlpointgeoids[0]);
+            });
     }
 
     int currentgeoid = getHighestCurveIndex();
@@ -6739,21 +6738,19 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
             if (constr->Type != Sketcher::Equal) {
                 continue;
             }
-
-            bool firstIsInCPGeoIds = std::find_if(poleGeoIdsAndConstraints.begin(),
+            bool firstIsInCPGeoIds = std::any_of(poleGeoIdsAndConstraints.begin(),
+                                                 poleGeoIdsAndConstraints.end(),
+                                                 [&constr](const auto& _pair) {
+                                                     return _pair.first == constr->First;
+                                                 });
+            bool secondIsInCPGeoIds = std::any_of(poleGeoIdsAndConstraints.begin(),
                                                   poleGeoIdsAndConstraints.end(),
                                                   [&constr](const auto& _pair) {
-                                                      return _pair.first == constr->First;
-                                                  }) != poleGeoIdsAndConstraints.end();
-            bool secondIsInCPGeoIds = std::find_if(poleGeoIdsAndConstraints.begin(),
-                                                   poleGeoIdsAndConstraints.end(),
-                                                   [&constr](const auto& _pair){
-                                                       return _pair.first == constr->Second;
-                                                   }) != poleGeoIdsAndConstraints.end();
-
+                                                      return _pair.first == constr->Second;
+                                                  });
             // the equality constraint constrains a pole but it is not interpole
             if (firstIsInCPGeoIds != secondIsInCPGeoIds) {
-                numConstr++;
+                ++numConstr;
             }
             // We do not ignore weight constraints as we did with radius constraints,
             // because the radius magnitude no longer makes sense without the B-Spline.
@@ -10707,20 +10704,19 @@ void SketchObject::migrateSketch()
     auto constraints = Constraints.getValues();
     auto geometries = getInternalGeometry();
 
-    auto parabolafound = std::find_if(geometries.begin(), geometries.end(), [](Part::Geometry* g) {
+    bool parabolaFound = std::any_of(geometries.begin(), geometries.end(), [](Part::Geometry* g) {
         return g->is<Part::GeomArcOfParabola>();
     });
 
-    if (parabolafound != geometries.end()) {
+    if (parabolaFound) {
 
-        auto focalaxisfound = std::find_if(constraints.begin(), constraints.end(), [](auto c) {
+        bool focalaxisfound = std::any_of(constraints.begin(), constraints.end(), [](auto c) {
             return c->Type == InternalAlignment && c->AlignmentType == ParabolaFocalAxis;
         });
 
         // There are parabolas and there isn't an IA axis. (1) there are no axis or (2) there is a
         // legacy construction line
-        if (focalaxisfound == constraints.end()) {
-
+        if (!focalaxisfound) {
             // maps parabola geoid to focusgeoid
             std::map<int, int> parabolageoid2focusgeoid;
 
@@ -10771,18 +10767,18 @@ void SketchObject::migrateSketch()
                 }
                 else {
                     auto axismajorcoincidentfound =
-                        std::find_if(axisgeoid2parabolageoid.begin(),
-                                     axisgeoid2parabolageoid.end(),
-                                     [&](const auto& pair) {
-                                         auto parabolageoid = pair.second;
-                                         auto axisgeoid = pair.first;
-                                         return (c->First == axisgeoid && c->Second == parabolageoid
-                                                 && c->SecondPos == PointPos::mid)
-                                             || (c->Second == axisgeoid && c->First == parabolageoid
-                                                 && c->FirstPos == PointPos::mid);
-                                     });
+                        std::any_of(axisgeoid2parabolageoid.begin(),
+                                    axisgeoid2parabolageoid.end(),
+                                    [&](const auto& pair) {
+                                        auto parabolageoid = pair.second;
+                                        auto axisgeoid = pair.first;
+                                        return (c->First == axisgeoid && c->Second == parabolageoid
+                                                && c->SecondPos == PointPos::mid)
+                                            || (c->Second == axisgeoid && c->First == parabolageoid
+                                                && c->FirstPos == PointPos::mid);
+                                    });
 
-                    if (axismajorcoincidentfound != axisgeoid2parabolageoid.end()) {
+                    if (axismajorcoincidentfound) {
                         // we skip this coincident, the other coincident on axis will be substituted
                         // by internal geometry constraint
                         continue;

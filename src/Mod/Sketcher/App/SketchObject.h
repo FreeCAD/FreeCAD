@@ -370,8 +370,8 @@ public:
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
-    template<class geomType>
-    static Base::Vector3d getPointForGeometry(const geomType* geo, PointPos PosId)
+    template<class GeomType>
+    static Base::Vector3d getPointForGeometry(const GeomType* geo, PointPos PosId)
     {
         (void)geo;
         (void)PosId;
