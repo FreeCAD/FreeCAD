@@ -60,14 +60,30 @@ namespace Dialog
 class MacroItem: public QTreeWidgetItem
 {
 public:
-    MacroItem(QTreeWidget* widget, bool systemwide)
+    MacroItem(QTreeWidget* widget, bool systemwide, const QString& dirPath)
         : QTreeWidgetItem(widget)
         , systemWide(systemwide)
+        , dirPath(dirPath)
     {}
+
+    /**
+     * Acts same as setText method but additionally set toolTip with text of
+     * absolute file path. There may be different macros with same names from
+     * different system paths. So it could be helpful for user to show where
+     * exactly macro is placed.
+     */
+    void setFileName(int column, const QString& text)
+    {
+        QFileInfo file(dirPath, text);
+
+        setToolTip(column, file.absoluteFilePath());
+        return QTreeWidgetItem::setText(column, text);
+    }
 
     ~MacroItem() override = default;
 
     bool systemWide;
+    QString dirPath;
 };
 }  // namespace Dialog
 }  // namespace Gui
@@ -229,23 +245,37 @@ QStringList DlgMacroExecuteImp::filterFiles(const QString& folder)
  * Fills up the list with macro files found in the specified location
  * that have been filtered by both filename and by content
  */
+void DlgMacroExecuteImp::fillUpListForDir(const QString& dirPath, bool systemWide)
+{
+    QStringList filteredByContent = this->filterFiles(dirPath);
+    ui->userMacroListBox->clear();
+    for (auto& fn : filteredByContent) {
+        auto* parent = systemWide ? ui->systemMacroListBox : ui->userMacroListBox;
+        auto item = new MacroItem(parent, systemWide, dirPath);
+        item->setFileName(0, fn);
+    }
+}
+
+/**
+ * Fills up the list with macro files found in all system paths and specified by
+ * user location that have been filtered by both filename and by content
+ */
 void DlgMacroExecuteImp::fillUpList()
 {
-    QStringList filteredByContent = this->filterFiles(this->macroPath);
-    ui->userMacroListBox->clear();
-    for (auto fn : filteredByContent) {
-        auto item = new MacroItem(ui->userMacroListBox, false);
-        item->setText(0, fn);
-    }
+    fillUpListForDir(this->macroPath, false);
 
     QString dirstr =
         QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
-    filteredByContent = this->filterFiles(dirstr);
+    fillUpListForDir(dirstr, true);
 
-    ui->systemMacroListBox->clear();
-    for (auto fn : filteredByContent) {
-        auto item = new MacroItem(ui->systemMacroListBox, true);
-        item->setText(0, fn);
+    auto& config = App::Application::Config();
+    auto additionalMacros = config.find("AdditionalMacroPaths");
+    if (additionalMacros != config.end()) {
+        QString dirsstrs = QString::fromStdString(additionalMacros->second);
+        QStringList dirs = dirsstrs.split(QChar::fromLatin1(';'));
+        for (const auto& dirstr : dirs) {
+            fillUpListForDir(dirstr, true);
+        }
     }
 }
 
@@ -392,17 +422,7 @@ void DlgMacroExecuteImp::accept()
 
     auto mitem = static_cast<MacroItem*>(item);
 
-    QDir dir;
-
-    if (!mitem->systemWide) {
-        dir = QDir(this->macroPath);
-    }
-    else {
-        QString dirstr =
-            QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
-        dir = QDir(dirstr);
-    }
-
+    QDir dir(mitem->dirPath);
     QFileInfo fi(dir, item->text(0));
     try {
         getMainWindow()->setCursor(Qt::WaitCursor);
@@ -444,19 +464,15 @@ void DlgMacroExecuteImp::onFileChooserFileNameChanged(const QString& fn)
  */
 void DlgMacroExecuteImp::onEditButtonClicked()
 {
-    QDir dir;
     QTreeWidgetItem* item = nullptr;
 
     int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) {  // user-specific
         item = ui->userMacroListBox->currentItem();
-        dir.setPath(this->macroPath);
     }
     else {
         // index == 1 system-wide
         item = ui->systemMacroListBox->currentItem();
-        dir.setPath(QString::fromStdString(App::Application::getHomePath())
-                    + QString::fromLatin1("Macro"));
     }
 
     if (!item) {
@@ -464,6 +480,7 @@ void DlgMacroExecuteImp::onEditButtonClicked()
     }
 
     auto mitem = static_cast<MacroItem*>(item);
+    QDir dir(mitem->dirPath);
 
     QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath(), item->text(0));
     auto editor = new PythonEditor();
