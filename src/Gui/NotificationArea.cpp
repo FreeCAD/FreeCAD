@@ -552,7 +552,7 @@ public:
     }
 
     /** pushes all Notification Items to the fast cache (this also prevents all unnecessary
-     * signaling from parents) and allows to accelerate insertions and deletions
+     * signaling from parents) and allows one to accelerate insertions and deletions
      */
     void shiftToCache()
     {

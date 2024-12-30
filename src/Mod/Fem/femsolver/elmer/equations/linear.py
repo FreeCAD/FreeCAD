@@ -94,7 +94,7 @@ class Proxy(equation.Proxy):
         obj.LinearPreconditioning = "ILU0"
         # we must set an expression because we don't have a UI, the user has to
         # view and edit the tolerance via the property editor and this does not
-        # yet allow to view and edit small numbers in scientific notation
+        # yet allow one to view and edit small numbers in scientific notation
         # forum thread: https://forum.freecad.org/viewtopic.php?p=613897#p613897
         obj.setExpression("LinearTolerance", "1e-10")
         obj.LinearSolverType = LINEAR_SOLVER

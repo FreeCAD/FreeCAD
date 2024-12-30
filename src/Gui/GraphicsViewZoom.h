@@ -43,7 +43,7 @@
  *
  * Note that it becomes not possible when the scene's
  * size is not large enough comparing to the viewport size. QGraphicsView centers the picture
- * when it's smaller than the view. And QGraphicsView's scrolls boundaries don't allow to
+ * when it's smaller than the view. And QGraphicsView's scrolls boundaries don't allow one to
  * put any picture point at any viewport position.
  *
  * When the user starts scrolling, this class remembers original scene position and

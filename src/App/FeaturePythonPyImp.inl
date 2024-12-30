@@ -111,7 +111,7 @@ int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyO
 {
     const char *attr;
     attr = PyUnicode_AsUTF8(attro);
-    // This overwrites PyObjectBase::__setattr because this actively disallows to delete an attribute
+    // This overwrites PyObjectBase::__setattr because this actively disallows one to delete an attribute
     //
 
     if (!static_cast<Base::PyObjectBase*>(obj)->isValid()){

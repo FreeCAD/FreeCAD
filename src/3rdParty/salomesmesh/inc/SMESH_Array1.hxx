@@ -29,7 +29,7 @@
 *              The range of the index is user defined.
 *              An array1 can be constructed with a "C array".
 *              This functionality is useful to call methods expecting
-*              an Array1. It allows to carry the bounds inside the arrays.
+*              an Array1. It allows one to carry the bounds inside the arrays.
 *              
 * Examples:    Item tab[100]; //  An example with a C array
 *              Array1OfItem ttab (tab[0],1,100);

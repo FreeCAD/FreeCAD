@@ -609,7 +609,7 @@ bool MeshTopoAlgorithm::IsSwapEdgeLegal(FacetIndex ulFacetPos, FacetIndex ulNeig
     Base::Vector3f cP3 = _rclMesh._aclPointArray[rclF._aulPoints[(uFSide + 2) % 3]];
     Base::Vector3f cP4 = _rclMesh._aclPointArray[rclN._aulPoints[(uNSide + 2) % 3]];
 
-    // do not allow to create degenerated triangles
+    // do not allow one to create degenerated triangles
     MeshGeomFacet cT3(cP4, cP3, cP1);
     if (cT3.IsDegenerated(MeshDefinitions::_fMinPointDistanceP2)) {
         return false;

@@ -92,7 +92,7 @@ void TaskShapeBinder::updateUI()
         ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));
     }
 
-    // Allow to clear the Support
+    // Allow one to clear the Support
     ui->baseEdit->setClearButtonEnabled(true);
     connect(ui->baseEdit, &QLineEdit::textChanged,
             this, &TaskShapeBinder::supportChanged);

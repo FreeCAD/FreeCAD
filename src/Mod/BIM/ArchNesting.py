@@ -161,9 +161,9 @@ class Nester:
                     return
 
         # TODO
-        # allow to use a non-rectangular container
+        # allow one to use a non-rectangular container
         # manage margins/paddings
-        # allow to prevent or force specific rotations for a piece
+        # allow one to prevent or force specific rotations for a piece
 
         # LONG-TERM TODO
         # add genetic algo to swap pieces, and check if the result is better

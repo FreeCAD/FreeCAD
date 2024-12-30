@@ -3512,7 +3512,7 @@ bool StdMeshers_Cartesian_3D::Compute(SMESH_Mesh &         theMesh,
   // The algorithm generates the mesh in following steps:
 
   // 1) Intersection of grid lines with the geometry boundary.
-  // This step allows to find out if a given node of the initial grid is
+  // This step allows one to find out if a given node of the initial grid is
   // inside or outside the geometry.
 
   // 2) For each cell of the grid, check how many of it's nodes are outside

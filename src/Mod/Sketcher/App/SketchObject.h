@@ -155,7 +155,7 @@ public:
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
     /// Deletes just the GeoIds indicated, it does not look for internal geometry
     int delGeometriesExclusiveList(const std::vector<int>& GeoIds);
-    /// Does the same as \a delGeometry but allows to delete several geometries in one step
+    /// Does the same as \a delGeometry but allows one to delete several geometries in one step
     int delGeometries(const std::vector<int>& GeoIds);
     /// deletes all the elements/constraints of the sketch except for external geometry
     int deleteAllGeometry();
@@ -175,8 +175,8 @@ public:
      * that it will solve the sketch.
      *
      * If updating the Geometry property as a consequence of a (successful) solve() is not wanted,
-     * updategeometry=false, prevents the update. This allows to update the solve status (e.g. dof),
-     * without updating the geometry (i.e. make it move to fulfil the constraints).
+     * updategeometry=false, prevents the update. This allows one to update the solve status (e.g.
+     * dof), without updating the geometry (i.e. make it move to fulfil the constraints).
      */
     int delConstraints(std::vector<int> ConstrIds, bool updategeometry = true);
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident = true);

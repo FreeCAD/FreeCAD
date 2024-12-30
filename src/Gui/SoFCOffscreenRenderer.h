@@ -45,7 +45,7 @@ class GuiExport SoFCOffscreenRenderer : public SoOffscreenRenderer
 public:
     /** The SoOffscreenRenderer base class seems to have a huge memory leak. Whenever
      * an instance is created internal memory doesn't get freed when destroying it.
-     * Thus, SoFCOffscreenRenderer is implemented as singleton to allow to create only
+     * Thus, SoFCOffscreenRenderer is implemented as singleton to allow one to create only
      * one global instance. So, the memory is leaking for this instance only.
      */
     static SoFCOffscreenRenderer& instance();

@@ -242,7 +242,7 @@ def callopenscadstring(scadstr,outputext='csg'):
 
 
 def reverseimporttypes():
-    '''allows to search for supported filetypes by module'''
+    '''allows one to search for supported filetypes by module'''
 
     def getsetfromdict(dict1, index):
         if index in dict1:

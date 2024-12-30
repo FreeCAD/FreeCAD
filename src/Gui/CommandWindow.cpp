@@ -475,7 +475,7 @@ bool StdCmdWindowsMenu::isActive()
 
 Action * StdCmdWindowsMenu::createAction()
 {
-    // Allow to show 10 menu items in the 'Window' menu and one separator.
+    // Allow one to show 10 menu items in the 'Window' menu and one separator.
     // If we have more windows then the user can use the 'Windows...' item.
     WindowAction *pcAction;
     pcAction = new WindowAction(this, getMainWindow());

@@ -439,7 +439,7 @@ class bsplineTracker(Tracker):
                 self.sep.removeChild(self.bspline)
             self.bspline = None
             c =  Part.BSplineCurve()
-            # DNC: allows to close the curve by placing ends close to each other
+            # DNC: allows one to close the curve by placing ends close to each other
             if len(self.points) >= 3 and ( (self.points[0] - self.points[-1]).Length < Draft.tolerance() ):
                 # YVH: Added a try to bypass some hazardous situations
                 try:
@@ -695,7 +695,7 @@ class arcTracker(Tracker):
 
 
 class ghostTracker(Tracker):
-    """A Ghost tracker, that allows to copy whole object representations.
+    """A Ghost tracker, that allows one to copy whole object representations.
 
     You can pass it an object or a list of objects, or a shape.
     """

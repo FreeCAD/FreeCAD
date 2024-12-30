@@ -142,7 +142,7 @@ class LayerManager:
         self.dialog.tree.setItemDelegate(Layers_Delegate())
         self.dialog.tree.setItemsExpandable(False)
         self.dialog.tree.setRootIsDecorated(False) # removes spacing in first column
-        self.dialog.tree.setSelectionMode(QtWidgets.QTreeView.ExtendedSelection) # allow to select many
+        self.dialog.tree.setSelectionMode(QtWidgets.QTreeView.ExtendedSelection) # allow one to select many
 
         # fill the tree view
         self.update()
