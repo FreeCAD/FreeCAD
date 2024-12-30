@@ -190,7 +190,8 @@ int main(int argc, char** argv)
 #endif
         // to set window icon on wayland, the desktop file has to be available to the compositor
         // auto desktopfile = App::Application::Config()["DesktopFileName"].c_str();
-        QGuiApplication::setDesktopFileName(QString::fromLatin1(App::Application::Config()["DesktopFileName"].c_str()));
+        QGuiApplication::setDesktopFileName(
+            QString::fromLatin1(App::Application::Config()["DesktopFileName"].c_str()));
 
 #if defined(_MSC_VER)
         // create a dump file when the application crashes
