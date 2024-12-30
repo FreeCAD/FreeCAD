@@ -534,6 +534,40 @@ void AboutDialog::linkActivated(const QUrl& link)
     licenseView->setSource(link);
 }
 
+void AboutDialog::addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod)
+{
+    QFileInfo mod(modPath);
+    if (mod.isHidden()) {  // Ignore hidden directories
+        return;
+    }
+    if (firstMod) {
+        firstMod = false;
+        str << "Installed mods: \n";
+    }
+    str << "  * " << (mod.isDir() ? QDir(modPath).dirName() : mod.fileName());
+    try {
+        auto metadataFile =
+            boost::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
+        if (boost::filesystem::exists(metadataFile)) {
+            App::Metadata metadata(metadataFile);
+            if (metadata.version() != App::Meta::Version()) {
+                str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        auto what = QString::fromUtf8(e.what()).trimmed().replace(QChar::fromLatin1('\n'),
+                                                                  QChar::fromLatin1(' '));
+        str << " (Malformed metadata: " << what << ")";
+    }
+    QFileInfo disablingFile(mod.absoluteFilePath(), QString::fromLatin1("ADDON_DISABLED"));
+    if (disablingFile.exists()) {
+        str << " (Disabled)";
+    }
+
+    str << "\n";
+}
+
 void AboutDialog::copyToClipboard()
 {
     QString data;
@@ -680,28 +714,16 @@ void AboutDialog::copyToClipboard()
     bool firstMod = true;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
-            auto dirName = mod.path().filename().string();
-            if (dirName[0] == '.') {  // Ignore dot directories
-                continue;
-            }
-            if (firstMod) {
-                firstMod = false;
-                str << "Installed mods: \n";
-            }
-            str << "  * " << QString::fromStdString(mod.path().filename().string());
-            auto metadataFile = mod.path() / "package.xml";
-            if (fs::exists(metadataFile)) {
-                App::Metadata metadata(metadataFile);
-                if (metadata.version() != App::Meta::Version()) {
-                    str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
-                }
-            }
-            auto disablingFile = mod.path() / "ADDON_DISABLED";
-            if (fs::exists(disablingFile)) {
-                str << " (Disabled)";
-            }
+            auto dirName = mod.path().string();
+            addModuleInfo(str, QString::fromStdString(dirName), firstMod);
+        }
+    }
+    auto additionalModules = config.find("AdditionalModulePaths");
 
-            str << "\n";
+    if (additionalModules != config.end()) {
+        auto mods = QString::fromStdString(additionalModules->second).split(QChar::fromLatin1(';'));
+        for (const auto& mod : mods) {
+            addModuleInfo(str, mod, firstMod);
         }
     }
 
