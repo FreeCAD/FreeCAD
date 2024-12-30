@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <qbitmap.h>
+#include <qpainter.h>
 
 #ifndef _PreComp_
 #include <cstdlib>
@@ -209,13 +211,15 @@ AboutDialog::~AboutDialog()
 QPixmap AboutDialog::aboutImage() const
 {
     // See if we have a custom About screen image set
-    QPixmap about_image;
+    QImage about_image;
     QFileInfo fi(QString::fromLatin1("images:about_image.png"));
     if (fi.isFile() && fi.exists()) {
         about_image.load(fi.filePath(), "PNG");
     }
 
-    std::string about_path = App::Application::Config()["AboutImage"];
+    const auto about_path_key = "AboutImage";
+    const auto& about_path = App::Application::Config()[about_path_key];
+
     if (!about_path.empty() && about_image.isNull()) {
         QString path = QString::fromStdString(about_path);
         if (QDir(path).isRelative()) {
@@ -226,11 +230,78 @@ QPixmap AboutDialog::aboutImage() const
 
         // Now try the icon paths
         if (about_image.isNull()) {
-            about_image = Gui::BitmapFactory().pixmap(about_path.c_str());
+            about_image = Gui::BitmapFactory().pixmap(about_path.c_str()).toImage();
+        }
+        if (!about_image.isNull()) {
+            // Drawing version number
+            auto major = QString::fromStdString(App::Application::Config()["BuildVersionMajor"]);
+            auto minor = QString::fromStdString(App::Application::Config()["BuildVersionMinor"]);
+            auto point = QString::fromStdString(App::Application::Config()["BuildVersionPoint"]);
+            auto suffix = QString::fromStdString(App::Application::Config()["BuildVersionSuffix"]);
+            auto version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
+
+            // Create painter, set its font
+            QPainter painter(&about_image);
+            painter.setPen(QPen(Qt::black));
+            QFont font {};
+            font.setBold(true);
+            font.setPixelSize(18);
+            painter.setFont(font);
+
+            // Calculate position of target text (this is sniper work (=, not
+            // sure is this stable enough)
+            auto rect = about_image.rect();
+            rect.adjust(rect.width() * 0.755, rect.height() * 0.656, 0, 0);
+
+            // Draw version
+            painter.drawText(rect, version);
+
+            // If we are are in development version - draw the warning tape
+            // styled borders on top and bottom
+            if (suffix == QLatin1String("dev"))
+            {
+                // Take region of visible image
+                auto lines_region = QRegion(QBitmap::fromImage(about_image.createAlphaMask()));
+
+                int width = about_image.rect().width();
+                int height = about_image.rect().height();
+
+                // Remove the center part of this region and set it as clipping
+                // region.
+                lines_region -= lines_region.boundingRect().adjusted(0, height / 10, 0, - height / 10);
+                painter.setClipRegion(lines_region);
+
+                // Hard code the width of line
+                constexpr const int line_width = 30;
+
+                // Create drawing pen
+                QPen pen {};
+                pen.setWidth(line_width);
+
+                // The color switcher
+                bool odd = false;
+
+                // Iterating through the top border of image
+                for (int pos = 0; pos < width + height; pos += line_width)
+                {
+                    // Create vertical line
+                    QLineF line (pos, 0, pos, height*2);
+
+                    // Rotate it 45 degrees clockwise
+                    line.setAngle(line.angle() - 45);
+                    // Pick color
+                    pen.setColor(odd ? Qt::black : Qt::yellow);
+                    odd = !odd;
+                    painter.setPen(pen);
+                    // Draw line
+                    painter.drawLine(line);
+                }
+            }
         }
     }
 
-    return about_image;
+
+    return QPixmap::fromImage(about_image);
 }
 
 void AboutDialog::showOrHideImage(const QRect& rect)
