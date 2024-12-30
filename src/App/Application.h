@@ -85,15 +85,15 @@ public:
     /** @name methods for document handling */
     //@{
     /** Creates a new document
-     * The first name is a the identifier and some kind of an internal (english)
-     * name. It has to be like an identifier in a programming language, with no
-     * spaces and not starting with a number. This name gets also forced to be unique
-     * in this Application. You can avoid the renaming by using getUniqueDocumentName()
-     * to get a unique name before calling newDoucument().
-     * The second name is a UTF8 name of any kind. It's that name normally shown to
-     * the user and stored in the App::Document::Name property.
+     * @param proposedName: a prototype name used to create the permanent Name for the document.
+     * It is converted to be like an identifier in a programming language,
+     * with no spaces and not starting with a number. This name gets also forced to be unique
+     * in this Application. You can obtain the unique name using doc.getDocumentName
+     * on the returned document.
+     * @param proposedLabel: a UTF8 name of any kind. It's that name normally shown to
+     * the user and stored in the App::Document::Label property.
      */
-    App::Document* newDocument(const char * Name=nullptr, const char * UserName=nullptr,
+    App::Document* newDocument(const char * proposedName=nullptr, const char * proposedLabel=nullptr,
             bool createView=true, bool tempDoc=false);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);

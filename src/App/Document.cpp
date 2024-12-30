@@ -2274,7 +2274,7 @@ bool Document::containsLabel(const std::string& label)
 std::string Document::makeUniqueLabel(const std::string& modelLabel)
 {
     if (modelLabel.empty()) {
-        return std::string();
+        return {};
     }
 
     return d->objectLabelManager.makeUniqueName(modelLabel, 3);

@@ -454,7 +454,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 Document* Application::newDocument(const char * proposedName, const char * proposedLabel, bool createView, bool tempDoc)
 {
     std::string name;
-    bool useDefaultName = (!proposedName || proposedName[0] == '\0');
+    bool useDefaultName = (proposedName == nullptr || proposedName[0] == '\0');
     // get a valid name anyway!
     if (useDefaultName) {
         proposedName = "Unnamed";
@@ -465,13 +465,15 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     // return the temporary document if it exists
     if (tempDoc) {
         auto it = DocMap.find(name);
-        if (it != DocMap.end() && it->second->testStatus(Document::TempDoc))
+        if (it != DocMap.end() && it->second->testStatus(Document::TempDoc)) {
             return it->second;
+        }
     }
 
     // Determine the document's Label
     std::string label;
     if (proposedLabel && proposedLabel[0] != '\0') {
+        // If a label is supplied it is used even if not unique
         label = proposedLabel;
     }
     else {
@@ -490,7 +492,7 @@ Document* Application::newDocument(const char * proposedName, const char * propo
         }
     }
     // create the FreeCAD document
-    Document* doc = new Document(name.c_str());
+    auto doc = new Document(name.c_str());
     doc->setStatus(Document::TempDoc, tempDoc);
 
     // add the document to the internal list
@@ -522,7 +524,7 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     //NOLINTEND
 
     // (temporarily) make this the active document for the upcoming notifications.
-    // Signal NewDocument rather than ActiveDocument
+    // Signal NewDocument rather than ActiveDocument (which is what setActiveDocument would do)
     auto oldActiveDoc = _pActiveDoc;
     setActiveDocumentNoSignal(doc);
     signalNewDocument(*doc, createView);
@@ -530,9 +532,9 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     doc->Label.setValue(label);
 
     // set the old document active again if the new is temporary
-    if (tempDoc && oldActiveDoc)
+    if (tempDoc && oldActiveDoc) {
         setActiveDocument(oldActiveDoc);
-
+    }
     return doc;
 }
 
@@ -602,33 +604,32 @@ std::vector<App::Document*> Application::getDocuments() const
     return docs;
 }
 
-std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) const
+std::string Application::getUniqueDocumentName(const char* Name, bool tempDoc) const
 {
-    if (!Name || *Name == '\0')
+    if (!Name || *Name == '\0') {
         return {};
+    }
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
-    std::map<string,Document*>::const_iterator pos;
+    std::map<string, Document*>::const_iterator pos;
     pos = DocMap.find(CleanName);
 
     if (pos == DocMap.end() || (tempDoc && pos->second->testStatus(Document::TempDoc))) {
         // if not, name is OK
         return CleanName;
     }
-    else {
-        // The assumption here is that there are not many documents and
-        // documents are rarely created so the cost
-        // of building this manager each time is inconsequential
-        Base::UniqueNameManager names;
-        for (const auto& pos : DocMap) {
-            if (!tempDoc || !pos.second->testStatus(Document::TempDoc)) {
-                names.addExactName(pos.first);
-            }
+    // The assumption here is that there are not many documents and
+    // documents are rarely created so the cost
+    // of building this manager each time is inconsequential
+    Base::UniqueNameManager names;
+    for (const auto& pos : DocMap) {
+        if (!tempDoc || !pos.second->testStatus(Document::TempDoc)) {
+            names.addExactName(pos.first);
         }
-
-        return names.makeUniqueName(CleanName);
     }
+
+    return names.makeUniqueName(CleanName);
 }
 
 int Application::addPendingDocument(const char *FileName, const char *objName, bool allowPartial)
@@ -1048,8 +1049,9 @@ void Application::setActiveDocument(Document* pDoc)
 {
     setActiveDocumentNoSignal(pDoc);
 
-    if (pDoc)
+    if (pDoc) {
         signalActiveDocument(*pDoc);
+    }
 }
 
 void Application::setActiveDocumentNoSignal(Document* pDoc)

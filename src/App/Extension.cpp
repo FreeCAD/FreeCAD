@@ -181,7 +181,7 @@ void Extension::extensionGetPropertyMap(std::map<std::string, Property*>& Map) c
     extensionGetPropertyData().getPropertyMap(this, Map);
 }
 
-void Extension::extensionVisitProperties(std::function<void(Property*)> visitor) const
+void Extension::extensionVisitProperties(const std::function<void(Property*)>& visitor) const
 {
     extensionGetPropertyData().visitProperties(this, visitor);
 }

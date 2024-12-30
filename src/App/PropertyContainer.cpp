@@ -92,7 +92,7 @@ void PropertyContainer::getPropertyList(std::vector<Property*> &List) const
     getPropertyData().getPropertyList(this,List);
 }
 
-void PropertyContainer::visitProperties(std::function<void(Property *)> visitor) const
+void PropertyContainer::visitProperties(const std::function<void(Property *)>& visitor) const
 {
     dynamicProps.visitProperties(visitor);
     getPropertyData().visitProperties(this, visitor);
@@ -626,7 +626,7 @@ void PropertyData::getPropertyNamedList(OffsetBase offsetBase,
 }
 
 void PropertyData::visitProperties(OffsetBase offsetBase,
-                                   std::function<void(Property*)> visitor) const
+                                   const std::function<void(Property*)>& visitor) const
 {
     merge();
     char* offset = offsetBase.getOffset();

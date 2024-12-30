@@ -469,7 +469,7 @@ const char* Base::XMLReader::addFile(const char* Name, Base::Persistence* Object
 
 bool Base::XMLReader::hasFilenames() const
 {
-    return FileList.size() > 0;
+    return !FileList.empty();
 }
 
 bool Base::XMLReader::hasReadFailed(const std::string& filename) const

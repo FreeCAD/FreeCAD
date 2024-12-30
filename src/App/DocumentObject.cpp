@@ -824,7 +824,6 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     // may not work if this is not the case.
     std::string oldLabel = Label.getStrValue();
     assert(newLabel != oldLabel);
-    std::string label;
     if (!isAttachedToDocument()
         || (getDocument()->testStatus(App::Document::Restoring)
             && !getDocument()->testStatus(App::Document::Importing))
@@ -837,7 +836,7 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
         _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
     }
     App::Document* doc = getDocument();
-    if (doc && newLabel.size() > 0 && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
+    if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
         // We must ensure the Label is unique in the document (well, sort of...).
         std::string objName = getNameInDocument();

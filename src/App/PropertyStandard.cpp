@@ -1405,7 +1405,7 @@ void PropertyString::setValue(const char* newLabel)
     hasSetValue();
 
     for (auto& change : propChanges) {
-        change.first->Paste(*change.second.get());
+        change.first->Paste(*change.second);
     }
 
     if (commit) {

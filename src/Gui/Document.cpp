@@ -1938,8 +1938,9 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     localreader->readEndElement("Document");
 
     // In the file GuiDocument.xml new data files might be added
-    if (localreader->hasFilenames())
+    if (localreader->hasFilenames()) {
         reader.initLocalReader(localreader);
+    }
 }
 
 void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {

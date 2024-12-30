@@ -872,7 +872,7 @@ void Sheet::getPropertyNamedList(std::vector<std::pair<const char*, Property*>>&
     }
 }
 
-void Sheet::visitProperties(std::function<void(App::Property*)> visitor) const
+void Sheet::visitProperties(const std::function<void(App::Property*)>& visitor) const
 {
     DocumentObject::visitProperties(visitor);
     for (const auto& v : cells.aliasProp) {

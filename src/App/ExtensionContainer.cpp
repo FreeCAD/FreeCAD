@@ -176,7 +176,7 @@ void ExtensionContainer::getPropertyMap(std::map<std::string, Property*>& Map) c
         entry.second->extensionGetPropertyMap(Map);
     }
 }
-void ExtensionContainer::visitProperties(std::function<void(Property*)> visitor) const
+void ExtensionContainer::visitProperties(const std::function<void(Property*)>& visitor) const
 {
     App::PropertyContainer::visitProperties(visitor);
     for(const auto &entry : _extensions) {

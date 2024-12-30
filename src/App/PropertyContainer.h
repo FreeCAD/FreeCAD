@@ -135,7 +135,7 @@ struct AppExport PropertyData
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
   void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
   /// See PropertyContainer::visitProperties for semantics
-  void visitProperties(OffsetBase offsetBase, std::function<void(Property*)> visitor) const;
+  void visitProperties(OffsetBase offsetBase, const std::function<void(Property*)>& visitor) const;
 
   void merge(PropertyData *other=nullptr) const;
   void split(PropertyData *other);
@@ -178,7 +178,7 @@ public:
   /// This method is necessary because PropertyContainer has no begin and end methods
   /// and it is not practical to implement these.
   /// What gets visited is undefined if the collection of Properties is changed during this call.
-  virtual void visitProperties(std::function<void(Property*)> visitor) const;
+  virtual void visitProperties(const std::function<void(Property*)>& visitor) const;
   /// get all properties with their names, may contain duplicates and aliases
   virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
   /// set the Status bit of all properties at once

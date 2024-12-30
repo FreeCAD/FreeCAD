@@ -71,7 +71,7 @@ void DynamicProperty::getPropertyNamedList(
     }
 }
 
-void DynamicProperty::visitProperties(std::function<void(Property*)> visitor) const {
+void DynamicProperty::visitProperties(const std::function<void(Property*)>& visitor) const {
     for (auto& v : props.get<0>()) {
         visitor(v.property);
     }
