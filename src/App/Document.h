@@ -328,7 +328,7 @@ public:
     std::string getUniqueObjectName(const char* proposedName) const;
     /// Returns a name different from any of the Labels of any objects in this document, based on the given modelName.
     std::string getStandardObjectLabel(const char* modelName, int d) const;
-    /// Deterimine if a given DocumentObject Name and a proposed Label are based on the same base name
+    /// Determine if a given DocumentObject Name and a proposed Label are based on the same base name
     bool sameBaseName(const std::string& name, const std::string& label);
     /// Returns a list of document's objects including the dependencies
     std::vector<DocumentObject*> getDependingObjects() const;

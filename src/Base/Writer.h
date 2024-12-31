@@ -59,7 +59,7 @@ class Persistence;
 class BaseExport Writer
 {
 private:
-    // This overrides UniqueNameManager's suffix-locating function so thet the last '.' and
+    // This overrides UniqueNameManager's suffix-locating function so that the last '.' and
     // everything after it is considered suffix.
     class UniqueFileNameManager: public UniqueNameManager
     {
