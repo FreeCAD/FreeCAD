@@ -54,7 +54,7 @@ def rotate(selection, angle, center=App.Vector(0, 0, 0),
         When dealing with nested objects, use `Gui.Selection.getSelectionEx("", 0)`
         to create the selection set.
 
-    angle: float
+    angle: float / integer
         Rotation angle (in degrees).
 
     center: App.Vector, optional
@@ -80,7 +80,7 @@ def rotate(selection, angle, center=App.Vector(0, 0, 0),
     single object / list with 2 or more objects / empty list
         The objects (or their copies).
     """
-    utils.type_check([(angle, float), (center, App.Vector),
+    utils.type_check([(angle, (float, int)), (center, App.Vector),
                       (axis, App.Vector), (copy, bool), (subelements, bool)], "rotate")
     if not isinstance(selection, list):
         selection = [selection]

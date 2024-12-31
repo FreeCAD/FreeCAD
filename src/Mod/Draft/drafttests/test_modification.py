@@ -684,7 +684,7 @@ class DraftModification(unittest.TestCase):
         obj.Shape = shp
         obj.Placement.Base = base
         App.ActiveDocument.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         App.ActiveDocument.recompute()
 
         # check endpoints of arcs:
@@ -728,7 +728,7 @@ class DraftModification(unittest.TestCase):
         obj.Shape = shp
         obj.Placement.Base = base
         App.ActiveDocument.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         App.ActiveDocument.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),
@@ -754,7 +754,7 @@ class DraftModification(unittest.TestCase):
         obj = Draft.make_rectangle(len, hgt)
         obj.Placement.Base = base
         App.ActiveDocument.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         App.ActiveDocument.recompute()
 
         newBase = Vector(5.0, 5.5, 0.0)
@@ -786,14 +786,15 @@ class DraftModification(unittest.TestCase):
         obj = Draft.make_bspline(pts, False)
         obj.Placement.Base = base
         App.ActiveDocument.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, True)
         App.ActiveDocument.recompute()
+        pla = obj.Placement
 
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector( 9.0, 14.5, 0.0),
                   Vector(13.0,  5.5, 0.0)]
         for i in range(3):
-            self.assertTrue(obj.Points[i].add(base).isEqual(newPts[i], 1e-6),
+            self.assertTrue(pla.multVec(obj.Points[i]).isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def test_scale_wire(self):
@@ -812,7 +813,7 @@ class DraftModification(unittest.TestCase):
         obj = Draft.make_wire(pts, True)
         obj.Placement.Base = base
         App.ActiveDocument.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         App.ActiveDocument.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),

@@ -227,8 +227,9 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
                 newobj.Height = y_vec.Length
             else:
                 newobj = make_wire.make_wire(pts, closed=True, placement=pla, face=obj.MakeFace)
+                gui_utils.format_object(newobj, obj)
                 if not copy:
-                    obj.Visibility = False
+                    obj.Document.removeObject(obj.Name)
 
         elif utils.get_type(obj) in ("Wire", "BSpline"):
             if parent_place.isIdentity():
@@ -271,11 +272,11 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
                     ViewProviderDraft(newobj.ViewObject)
                 else:
                     newobj.ViewObject.Proxy = 0
+            gui_utils.format_object(newobj, obj)
             if not copy:
-                obj.Visibility = False
+                obj.Document.removeObject(obj.Name)
 
         if newobj is not None:
-            gui_utils.format_object(newobj, obj)
             newobjs.append(newobj)
             if copy:
                 lyr = layer.get_layer(obj)
