@@ -700,7 +700,10 @@ def select(objs=None, gui=App.GuiUp):
                 if isinstance(obj, tuple):
                     Gui.Selection.addSelection(*obj)
                     continue
-                if not obj.isAttachedToDocument():
+                try:
+                    if not obj.isAttachedToDocument():
+                        continue
+                except:
                     continue
                 Gui.Selection.addSelection(obj)
 
