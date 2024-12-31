@@ -786,7 +786,7 @@ class DraftModification(unittest.TestCase):
         obj = Draft.make_bspline(pts, False)
         obj.Placement.Base = base
         App.ActiveDocument.recompute()
-        obj = Draft.scale(obj, sca, cen, True)
+        obj = Draft.scale(obj, sca, cen, False)
         App.ActiveDocument.recompute()
         pla = obj.Placement
 
