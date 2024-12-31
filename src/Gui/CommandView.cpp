@@ -61,6 +61,7 @@
 #include "Control.h"
 #include "Clipping.h"
 #include "DemoMode.h"
+#include "FlightMode.h"
 #include "Dialogs/DlgSettingsImageImp.h"
 #include "Document.h"
 #include "FileDialog.h"
@@ -3231,6 +3232,57 @@ void StdCmdDemoMode::activated(int iMsg)
     dlg->show();
 }
 
+DEF_STD_CMD(StdCmdFlightMode)
+
+StdCmdFlightMode::StdCmdFlightMode()
+    : Command("Std_FlightMode")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Free &flight...");
+    sToolTipText  = QT_TR_NOOP("Free flight");
+    sWhatsThis    = "Std_FlightMode";
+    sStatusTip    = QT_TR_NOOP("Free flight");
+    eType         = Alter3DView;
+    sPixmap       = "Std_FlightMode";
+}
+
+void StdCmdFlightMode::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    static QPointer<QDialog> dlg = nullptr;
+    static QPointer<QGridLayout> viewLayout = nullptr;
+    if (!dlg) {
+        Document* doc = Gui::Application::Instance->activeDocument();
+        if (!doc) {
+            Base::Console().Error(QT_TR_NOOP("Cannot find active document!\n"));
+            return;
+        }
+
+        MDIView* view = doc->getActiveView();
+        if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
+            View3DInventorViewer* viewer = qobject_cast<Gui::View3DInventor*>(view)->getViewer();
+            if (!viewer) {
+                Base::Console().Error(QT_TR_NOOP("Cannot get viewer!\n"));
+                return;
+            }
+            if (viewer->getCamera()->getTypeId() != SoPerspectiveCamera::getClassTypeId()) {
+                Base::Console().Message(
+                    QT_TR_NOOP("Setting up the camera as a perspective camera...\n"));
+                viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
+            }
+            if (!viewLayout) {
+                viewLayout = new QGridLayout();
+            }
+
+            dlg = new Gui::Dialog::FlightMode(getMainWindow());
+            dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+            viewLayout->addWidget(dlg, 0, 0, Qt::AlignLeft | Qt::AlignTop);
+            viewer->setLayout(viewLayout);
+            dlg->show();
+        }
+    }
+}
 
 //===========================================================================
 // Std_SelBack
@@ -4042,6 +4094,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdSceneInspector());
     rcCmdMgr.addCommand(new StdCmdTextureMapping());
     rcCmdMgr.addCommand(new StdCmdDemoMode());
+    rcCmdMgr.addCommand(new StdCmdFlightMode());
     rcCmdMgr.addCommand(new StdCmdToggleNavigation());
     rcCmdMgr.addCommand(new StdCmdAxisCross());
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());

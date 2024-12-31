@@ -305,6 +305,7 @@
         <file>overlay_error.svg</file>
         <file>feature_suppressed.svg</file>
         <file>forbidden.svg</file>
+        <file>Std_FlightMode.svg</file>
     </qresource>
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>
