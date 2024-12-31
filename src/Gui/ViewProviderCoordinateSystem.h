@@ -25,6 +25,7 @@
 #define GUI_VIEWPROVIDER_ViewProviderOrigin_H
 
 #include <functional>
+#include <Base/Bitmask.h>
 #include <App/PropertyGeo.h>
 
 #include "ViewProviderGeoFeatureGroup.h"
@@ -34,6 +35,17 @@ namespace Gui {
 
 class Document;
 class ViewProviderDatum;
+
+enum class DatumElement
+{
+    // clang-format off
+    Origin = 1 << 0,
+    Axes   = 1 << 1,
+    Planes = 1 << 2
+    // clang-format on
+};
+
+using DatumElements = Base::Flags<DatumElement>;
 
 class GuiExport ViewProviderCoordinateSystem : public ViewProviderGeoFeatureGroup
 {
@@ -62,7 +74,7 @@ public:
      */
     ///@{
     /// Set temporary visibility of some of origin's objects e.g. while rotating or mirroring
-    void setTemporaryVisibility (bool axis, bool planes, bool points = false);
+    void setTemporaryVisibility (DatumElements elements);
     /// Returns true if the origin in temporary visibility mode
     bool isTemporaryVisibility ();
     /// Reset the visibility
@@ -102,6 +114,8 @@ private:
 };
 
 } // namespace Gui
+
+ENABLE_BITMASK_OPERATORS(Gui::DatumElement)
 
 #endif // GUI_VIEWPROVIDER_ViewProviderOrigin_H
 

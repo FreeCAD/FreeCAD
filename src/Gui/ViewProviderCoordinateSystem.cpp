@@ -97,7 +97,7 @@ void ViewProviderCoordinateSystem::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-void ViewProviderCoordinateSystem::setTemporaryVisibility(bool axis, bool plane, bool points)
+void ViewProviderCoordinateSystem::setTemporaryVisibility(DatumElements elements)
 {
     auto origin = getObject<App::Origin>();
 
@@ -110,7 +110,7 @@ void ViewProviderCoordinateSystem::setTemporaryVisibility(bool axis, bool plane,
                 if (saveState) {
                     tempVisMap[vp] = vp->isVisible();
                 }
-                vp->setVisible(axis);
+                vp->setVisible(elements.testFlag(DatumElement::Axes));
             }
         }
 
@@ -120,7 +120,7 @@ void ViewProviderCoordinateSystem::setTemporaryVisibility(bool axis, bool plane,
                 if (saveState) {
                     tempVisMap[vp] = vp->isVisible();
                 }
-                vp->setVisible(plane);
+                vp->setVisible(elements.testFlag(DatumElement::Planes));
             }
         }
 
@@ -130,7 +130,7 @@ void ViewProviderCoordinateSystem::setTemporaryVisibility(bool axis, bool plane,
             if (saveState) {
                 tempVisMap[vp] = vp->isVisible();
             }
-            vp->setVisible(points);
+            vp->setVisible(elements.testFlag(DatumElement::Origin));
         }
     }
     catch (const Base::Exception &ex) {
