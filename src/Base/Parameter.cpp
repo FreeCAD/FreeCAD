@@ -1411,9 +1411,10 @@ ParameterGrp::FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             // the right node Type
             if (!XMLString::compareString(xType.unicodeForm(), clChild->getNodeName())) {
-                if (clChild->getAttributes()->getLength() > 0) {
+                auto attrs = clChild->getAttributes();
+                if (attrs->getLength() > 0) {
                     if (Name) {
-                        DOMNode* attr = FindAttribute(clChild, "Name");
+                        DOMNode* attr = attrs->getNamedItem(XStrLiteral("Name").unicodeForm());
                         if (attr
                             && !XMLString::compareString(xName.unicodeForm(),
                                                          attr->getNodeValue())) {
