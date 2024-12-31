@@ -805,7 +805,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         self.doc.recompute()
 =======
         App.ActiveDocument.recompute()
-        obj = Draft.scale(obj, sca, cen, True)
+        obj = Draft.scale(obj, sca, cen, False)
         App.ActiveDocument.recompute()
         pla = obj.Placement
 >>>>>>> Fix several unit test issues.
