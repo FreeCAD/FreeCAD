@@ -866,10 +866,11 @@ public:
 
 /* TRANSLATOR Gui::RecentFilesAction */
 
-RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
+RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent, bool addOpen)
     : ActionGroup(pcCmd, parent)
     , visibleItems(4)
     , maximumItems(20)
+    , addOpen(addOpen)
 {
     _pimpl = std::make_unique<Private>(this, "User parameter:BaseApp/Preferences/RecentFiles");
     restore();
@@ -968,22 +969,36 @@ static QString numberToLabel(int number)
 void RecentFilesAction::setFiles(const QStringList& files)
 {
     QList<QAction*> recentFiles = groupAction()->actions();
+    int adjust = addOpen ? 2 : 0;
 
-    int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
-    for (int index = 0; index < numRecentFiles; index++) {
-        QString numberLabel = numberToLabel(index + 1);
-        QFileInfo fi(files[index]);
+    if (addOpen && recentFiles.size() > 1) {
+        recentFiles[0]->setText(tr("Open..."));
+        recentFiles[0]->setStatusTip(tr("Open a document or import files."));
+        recentFiles[0]->setToolTip(tr("Open a document or import files."));
+        recentFiles[0]->setVisible(true);
+        recentFiles[0]->setIcon(Gui::BitmapFactory().iconFromTheme("document-open"));
+
+        // Also add a separator
+        recentFiles[1]->setVisible(true);
+        recentFiles[1]->setSeparator(true);
+    }
+
+    int numRecentFiles = std::min<int>(recentFiles.count(), files.count() + adjust);
+    for (int index = adjust; index < numRecentFiles; index++) {
+        QString numberLabel = numberToLabel(index + 1 - adjust);
+        QFileInfo fi(files[index - adjust]);
         QString fileName {fi.fileName()};
         fileName.replace(QLatin1Char('&'), QStringLiteral("&&"));
         recentFiles[index]->setText(QStringLiteral("%1 %2").arg(numberLabel, fileName));
-        recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index]));
-        recentFiles[index]->setToolTip(files[index]);  // set the full name that we need later for saving
-        recentFiles[index]->setData(QVariant(index));
+        recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index - adjust]));
+        recentFiles[index]->setToolTip(files[index - adjust]);  // set the full name that we need
+                                                                // later for saving
+        recentFiles[index]->setData(QVariant(index - adjust));
         recentFiles[index]->setVisible(true);
     }
 
     // if less file names than actions
-    numRecentFiles = std::min<int>(numRecentFiles, this->visibleItems);
+    numRecentFiles = std::min<int>(numRecentFiles, this->visibleItems + adjust);
     for (int index = numRecentFiles; index < recentFiles.count(); index++) {
         if (recentFiles[index] == &sep || recentFiles[index] == &clearRecentFilesListAction) {
             continue;
@@ -999,9 +1014,11 @@ void RecentFilesAction::setFiles(const QStringList& files)
  */
 QStringList RecentFilesAction::files() const
 {
+    int adjust = addOpen ? 2 : 0;
+
     QStringList files;
     QList<QAction*> recentFiles = groupAction()->actions();
-    for (int index = 0; index < recentFiles.count(); index++) {
+    for (int index = adjust; index < recentFiles.count(); index++) {
         QString file = recentFiles[index]->toolTip();
         if (file.isEmpty()) {
             break;
@@ -1045,12 +1062,14 @@ void RecentFilesAction::resizeList(int size)
 /** Loads all recent files from the preferences. */
 void RecentFilesAction::restore()
 {
+    int adjust = addOpen ? 2 : 0;
+
     ParameterGrp::handle hGrp = _pimpl->handle;
     // we want at least 20 items but we do only show the number of files
     // that is defined in user parameters
     this->visibleItems = hGrp->GetInt("RecentFiles", this->visibleItems);
 
-    int count = std::max<int>(this->maximumItems, this->visibleItems);
+    int count = std::max<int>(this->maximumItems, this->visibleItems) + adjust;
     for (int i = 0; i < count; i++) {
         groupAction()->addAction(QLatin1String(""))->setVisible(false);
     }
@@ -1068,14 +1087,16 @@ void RecentFilesAction::restore()
 /** Saves all recent files to the preferences. */
 void RecentFilesAction::save()
 {
+    int adjust = addOpen ? 2 : 0;
+
     ParameterGrp::handle hGrp = _pimpl->handle;
-    int count = hGrp->GetInt("RecentFiles", this->visibleItems);  // save number of files
+    int count = hGrp->GetInt("RecentFiles", this->visibleItems + adjust);  // save number of files
     hGrp->Clear();
 
     // count all set items
     QList<QAction*> recentFiles = groupAction()->actions();
     int num = std::min<int>(count, recentFiles.count());
-    for (int index = 0; index < num; index++) {
+    for (int index = adjust; index < num; index++) {
         QString key = QStringLiteral("MRU%1").arg(index);
         QString value = recentFiles[index]->toolTip();
         if (value.isEmpty()) {

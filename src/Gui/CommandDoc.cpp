@@ -73,6 +73,58 @@ FC_LOG_LEVEL_INIT("Command", false)
 
 using namespace Gui;
 
+DEF_STD_CMD_C(StdCmdOpenGroup)
+
+StdCmdOpenGroup::StdCmdOpenGroup()
+    : Command("Std_OpenGroup")
+{
+    sGroup = "File";
+    sMenuText = QT_TR_NOOP("&Open...");
+    sToolTipText = QT_TR_NOOP("Open a document or import files.");
+    sWhatsThis = "Std_OpenGroup";
+    sStatusTip = sToolTipText;
+    sPixmap = "document-open";
+    eType = NoTransaction;
+}
+
+/**
+ * Opens the recent file at position \a iMsg in the menu.
+ * If the file does not exist or cannot be loaded this item is removed
+ * from the list.
+ */
+void StdCmdOpenGroup::activated(int iMsg)
+{
+    auto act = qobject_cast<RecentFilesAction*>(_pcAction);
+    if (act) {
+        if (iMsg == 0) {
+            CommandManager& rcCmdMgr = Application::Instance->commandManager();
+            rcCmdMgr.runCommandByName("Std_Open");
+        }
+        else if (iMsg == 1) {
+            return;  // should not happen it's the separator.
+        }
+        else {
+            act->activateFile(iMsg - 2);
+        }
+        _pcAction->setProperty("defaultAction", QVariant(0));
+        _pcAction->setToolTip(QString::fromLatin1(sToolTipText));
+        _pcAction->setStatusTip(QString::fromLatin1(sToolTipText));
+        _pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    }
+}
+
+/**
+ * Creates the QAction object containing the recent files.
+ */
+Action* StdCmdOpenGroup::createAction()
+{
+    auto pcAction = new RecentFilesAction(this, getMainWindow(), true);
+    pcAction->setObjectName(QLatin1String("openGroup"));
+    pcAction->setDropDownMenu(true);
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
 
 //===========================================================================
 // Std_Open
@@ -2369,6 +2421,7 @@ void CreateDocCommands()
 
     rcCmdMgr.addCommand(new StdCmdNew());
     rcCmdMgr.addCommand(new StdCmdOpen());
+    rcCmdMgr.addCommand(new StdCmdOpenGroup());
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
