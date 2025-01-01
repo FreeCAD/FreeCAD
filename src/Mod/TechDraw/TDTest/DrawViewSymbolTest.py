@@ -1,5 +1,6 @@
 
 import FreeCAD
+import codecs
 import os
 import unittest
 from .TechDrawTestUtilities import createPageWithSVGTemplate
@@ -21,7 +22,6 @@ class DrawViewSymbolTest(unittest.TestCase):
         sym = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewSymbol", "TestSymbol")
         path = os.path.dirname(os.path.abspath(__file__))
         symbolFileSpec = path + "/TestSymbol.svg"
-        import codecs
         f = codecs.open(symbolFileSpec, "r", encoding="utf-8")
         svg = f.read()
         f.close()
@@ -36,11 +36,11 @@ class DrawViewSymbolTest(unittest.TestCase):
 
     def testNonAsciiSymbol(self):
         """Tests if a Non-Ascii symbol can be added to page"""
-        print("Running Non Ascii Symbol Test")
-        sym = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewSymbol", "NonAsciiSymbol")
+        sym = FreeCAD.ActiveDocument.addObject(
+            "TechDraw::DrawViewSymbol", "NonAsciiSymbol"
+        )
         path = os.path.dirname(os.path.abspath(__file__))
         symbolFileSpec = path + "/TestNonAsciiSymbol.svg"
-        import codecs
         f = codecs.open(symbolFileSpec, "r", encoding="utf-8")
         svg = f.read()
         f.close()
