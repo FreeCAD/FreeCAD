@@ -30,6 +30,7 @@
 
 #include "Dialogs/DlgUnitsCalculatorImp.h"
 #include "ui_DlgUnitsCalculator.h"
+#include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
@@ -133,19 +134,24 @@ void DlgUnitsCalculator::textChanged(QString unit)
 
 void DlgUnitsCalculator::valueChanged(const Quantity& quant)
 {
+    std::string unitTypeStr;
+    try {
+        unitTypeStr =
+            Quantity::parse(ui->UnitInput->text().toStdString()).getUnit().getTypeString();
+    }
+    catch (const Base::ParserError&) {
+    }
     // first check the unit, if it is invalid, getTypeString() outputs an empty string
     // explicitly check for "ee" like in "eeV" because this would trigger an exception in Unit
     // since it expects then a scientific notation number like "1e3"
-    if ((ui->UnitInput->text().mid(0, 2) == QStringLiteral("ee"))
-        || Unit(ui->UnitInput->text().toStdString()).getTypeString().empty()) {
+    if ((ui->UnitInput->text().mid(0, 2) == QStringLiteral("ee")) || unitTypeStr.empty()) {
         ui->ValueOutput->setText(
             QStringLiteral("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));
         ui->pushButton_Copy->setEnabled(false);
     }
     else {  // the unit is valid
         // we can only convert units of the same type, thus check
-        if (Unit(ui->UnitInput->text().toStdString()).getTypeString()
-            != quant.getUnit().getTypeString()) {
+        if (unitTypeStr != quant.getUnit().getTypeString()) {
             ui->ValueOutput->setText(tr("unit mismatch"));
             ui->pushButton_Copy->setEnabled(false);
         }
