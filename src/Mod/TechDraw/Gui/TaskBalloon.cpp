@@ -78,15 +78,15 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     ui->comboBubbleShape->setCurrentIndex(i);
     connect(ui->comboBubbleShape, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onBubbleShapeChanged);
 
-    ui->qsbFontSize->setUnit(Base::Unit::Length);
+    ui->qsbFontSize->setUnit(Base::Units::Length);
     ui->qsbFontSize->setMinimum(0);
 
-    ui->qsbLineWidth->setUnit(Base::Unit::Length);
+    ui->qsbLineWidth->setUnit(Base::Units::Length);
     ui->qsbLineWidth->setSingleStep(0.100);
     ui->qsbLineWidth->setMinimum(0);
 
     // negative kink length is allowed, thus no minimum
-    ui->qsbKinkLength->setUnit(Base::Unit::Length);
+    ui->qsbKinkLength->setUnit(Base::Units::Length);
 
     if (balloonVP) {
         ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());

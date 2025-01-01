@@ -20,159 +20,76 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_Unit_H
 #define BASE_Unit_H
 
 #include <cstdint>
-#include <string>
 #include <FCGlobal.h>
+#include <array>
+#include <vector>
+#include <string>
+#include <string_view>
 
 namespace Base
 {
 
-/**
- * The Unit class.
- */
-class BaseExport Unit
+
+constexpr auto unitNumVals {8};
+using UnitVals = std::array<int8_t, unitNumVals>;
+using NameVal = std::pair<int8_t, std::string_view>;
+
+constexpr std::array<std::string_view, unitNumVals>
+    valNames {"mm", "kg", "s", "A", "K", "mol", "cd", "deg"};
+constexpr auto unitValueLimit {8};
+
+class BaseExport Unit final
 {
 public:
-    /// default constructor
-    explicit Unit(int8_t Length,
-                  int8_t Mass = 0,
-                  int8_t Time = 0,
-                  int8_t ElectricCurrent = 0,
-                  int8_t ThermodynamicTemperature = 0,
-                  int8_t AmountOfSubstance = 0,
-                  int8_t LuminousIntensity = 0,
-                  int8_t Angle = 0);
-    Unit();
-    Unit(const Unit&) = default;
-    Unit(Unit&&) = default;
-    explicit Unit(const std::string& expr);
-    /// Destruction
-    ~Unit() = default;
+    Unit() = default;
 
-    /** Operators. */
-    //@{
-    inline Unit& operator*=(const Unit& that);
-    inline Unit& operator/=(const Unit& that);
-    int operator[](int index) const;
+    explicit constexpr Unit(const std::array<int8_t, unitNumVals> vals,
+                            const std::string_view name = "")
+        : vals {vals}
+        , name {name}
+    {
+        checkRange();
+    }
+
     Unit operator*(const Unit&) const;
     Unit operator/(const Unit&) const;
     bool operator==(const Unit&) const;
-    bool operator!=(const Unit& that) const
-    {
-        return !(*this == that);
-    }
-    Unit& operator=(const Unit&) = default;
-    Unit& operator=(Unit&&) = default;
-    Unit pow(double exp) const;
-    Unit sqrt() const;
-    Unit cbrt() const;
-    //@}
-    int length() const;
-    int mass() const;
-    int time() const;
-    int electricCurrent() const;
-    int thermodynamicTemperature() const;
-    int amountOfSubstance() const;
-    int luminousIntensity() const;
-    int angle() const;
-    bool isEmpty() const;
+    bool operator!=(const Unit& that) const;
+    Unit& operator*=(const Unit& that);
+    Unit& operator/=(const Unit& that);
 
-    std::string getString() const;
-    /// get the type as an string such as "Area", "Length" or "Pressure".
-    std::string getTypeString() const;
+    [[nodiscard]] Unit pow(double exp) const;
+    [[nodiscard]] Unit root(uint8_t num) const;
 
-    /** Predefined Unit types. */
-    //@{
-    /// Length unit
-    static const Unit Length;
-    /// Mass unit
-    static const Unit Mass;
+    [[nodiscard]] std::array<int8_t, unitNumVals> getVals() const;
+    [[nodiscard]] int getLength() const;
 
-    /// Angle
-    static const Unit Angle;
-    static const Unit AngleOfFriction;
+    [[nodiscard]] std::string getString() const;       // E.g. kg, mm^2, mm*kg/s^2
+    [[nodiscard]] std::string getTypeString() const;   // E.g. "Area", "Length", "Pressure"
+    [[nodiscard]] std::string representation() const;  // E.g. "Unit: mm (1,0,0,0,0,0,0,0) [Length]"
 
-    static const Unit Density;
-
-    static const Unit Area;
-    static const Unit Volume;
-    static const Unit TimeSpan;
-    static const Unit Frequency;
-    static const Unit Velocity;
-    static const Unit Acceleration;
-    static const Unit Temperature;
-
-    static const Unit CurrentDensity;
-    static const Unit ElectricCurrent;
-    static const Unit ElectricPotential;
-    static const Unit ElectricCharge;
-    static const Unit MagneticFieldStrength;
-    static const Unit MagneticFlux;
-    static const Unit MagneticFluxDensity;
-    static const Unit Magnetization;
-    static const Unit ElectricalCapacitance;
-    static const Unit ElectricalInductance;
-    static const Unit ElectricalConductance;
-    static const Unit ElectricalResistance;
-    static const Unit ElectricalConductivity;
-    static const Unit ElectromagneticPotential;
-    static const Unit AmountOfSubstance;
-    static const Unit LuminousIntensity;
-
-    // Pressure
-    static const Unit CompressiveStrength;
-    static const Unit Pressure;
-    static const Unit ShearModulus;
-    static const Unit Stress;
-    static const Unit UltimateTensileStrength;
-    static const Unit YieldStrength;
-    static const Unit YoungsModulus;
-
-    static const Unit Stiffness;
-    static const Unit StiffnessDensity;
-
-    static const Unit Force;
-    static const Unit Work;
-    static const Unit Power;
-    static const Unit Moment;
-
-    static const Unit SpecificEnergy;
-    static const Unit ThermalConductivity;
-    static const Unit ThermalExpansionCoefficient;
-    static const Unit VolumetricThermalExpansionCoefficient;
-    static const Unit SpecificHeat;
-    static const Unit ThermalTransferCoefficient;
-    static const Unit HeatFlux;
-    static const Unit DynamicViscosity;
-    static const Unit KinematicViscosity;
-    static const Unit VacuumPermittivity;
-    static const Unit VolumeFlowRate;
-    static const Unit DissipationRate;
-
-    static const Unit InverseLength;
-    static const Unit InverseArea;
-    static const Unit InverseVolume;
-
-    //@}
 private:
-    uint32_t Val;
+    std::array<int8_t, unitNumVals> vals {};
+    std::string_view name;
+
+    /** Error resets vals (FreeCAD exceptions not constexpr) */
+    constexpr void checkRange()
+    {
+        for (const auto val : vals) {
+            if (val >= unitValueLimit || val < -unitValueLimit) {
+                vals = {0, 0, 0, 0, 0, 0, 0, 0};
+                return;
+            }
+        }
+    }
+
+    /** Returns posIndexes, NegIndexes*/
+    std::pair<std::vector<size_t>, std::vector<size_t>> nonZeroValsIndexes() const;
 };
-
-inline Unit& Unit::operator*=(const Unit& that)
-{
-    *this = *this * that;
-    return *this;
-}
-
-inline Unit& Unit::operator/=(const Unit& that)
-{
-    *this = *this / that;
-    return *this;
-}
 
 }  // namespace Base
 

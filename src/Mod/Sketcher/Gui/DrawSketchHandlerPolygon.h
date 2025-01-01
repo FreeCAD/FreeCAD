@@ -304,7 +304,7 @@ void DSHPolygonController::configureToolWidget()
         QApplication::translate("ToolWidgetManager_p4", "Sides (+'U'/ -'J')"));
     toolWidget->setParameter(WParameter::First,
                              handler->numberOfCorners);  // unconditionally set
-    toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
+    toolWidget->configureParameterUnit(WParameter::First, Base::Units::NullUnit);
     toolWidget->configureParameterMin(WParameter::First, 3.0);  // NOLINT
     // We set a reasonable max to avoid the spinbox from being very large
     toolWidget->configureParameterMax(WParameter::First, 9999.0);  // NOLINT
@@ -406,7 +406,7 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth,
                                         Base::toDegrees(range),
-                                        Base::Unit::Angle);
+                                        Base::Units::Angle);
             }
 
             onViewParameters[OnViewParameter::Third]->setPoints(start, end);

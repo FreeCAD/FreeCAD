@@ -514,7 +514,7 @@ public:
 
     void drawDoubleAtCursor(const Base::Vector2d& position,
                             const double radius,
-                            Base::Unit unit = Base::Unit::Length)
+                            Base::Unit unit = Base::Units::Length)
     {
         if (shouldDrawDimensionsAtCursor()) {
             handler->drawDoubleAtCursor(position, radius, unit);
@@ -635,9 +635,9 @@ protected:
 
     void setOnViewParameterValue(OnViewParameter index,
                                  double val,
-                                 const Base::Unit& unit = Base::Unit::Length)
+                                 const Base::Unit& unit = Base::Units::Length)
     {
-        bool visible = isOnViewParameterVisible(index);
+        const bool visible = isOnViewParameterVisible(index);
 
         if (visible) {
             onViewParameters[index]->setSpinboxValue(val, unit);

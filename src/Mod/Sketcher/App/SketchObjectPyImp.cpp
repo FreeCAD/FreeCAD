@@ -671,7 +671,7 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
         // handle (int,Quantity)
         if (PyArg_ParseTuple(args, "iO!", &Index, &(Base::QuantityPy::Type), &object)) {
             Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
-            if (Quantity.getUnit() == Base::Unit::Angle) {
+            if (Quantity.getUnit() == Base::Units::Angle) {
                 Datum = Base::toRadians<double>(Quantity.getValue());
                 break;
             }
@@ -693,7 +693,7 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
         PyErr_Clear();
         if (PyArg_ParseTuple(args, "sO!", &constrName, &(Base::QuantityPy::Type), &object)) {
             Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
-            if (Quantity.getUnit() == Base::Unit::Angle) {
+            if (Quantity.getUnit() == Base::Units::Angle) {
                 Datum = Base::toRadians<double>(Quantity.getValue());
             }
             else {
@@ -844,10 +844,10 @@ PyObject* SketchObjectPy::getDatum(PyObject* args)
     datum.setValue(constr->getValue());
     if (type == Angle) {
         datum.setValue(Base::toDegrees<double>(datum.getValue()));
-        datum.setUnit(Base::Unit::Angle);
+        datum.setUnit(Base::Units::Angle);
     }
     else {
-        datum.setUnit(Base::Unit::Length);
+        datum.setUnit(Base::Units::Length);
     }
 
     return new Base::QuantityPy(new Base::Quantity(datum));

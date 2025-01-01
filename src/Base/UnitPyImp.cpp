@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 
 #include <Base/Unit.h>
+#include <algorithm>
+#include "Base/Units.h"
 
 // inclusion of the generated files (generated out of UnitPy.xml)
 #include <Base/UnitPy.h>
@@ -34,31 +36,13 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string UnitPy::representation() const
 {
-    std::stringstream ret;
-    Unit* self = getUnitPtr();
-
-    ret << "Unit: ";
-    ret << self->getString() << " (";
-    ret << (*self).length() << ",";
-    ret << (*self).mass() << ",";
-    ret << (*self).time() << ",";
-    ret << (*self).electricCurrent() << ",";
-    ret << (*self).thermodynamicTemperature() << ",";
-    ret << (*self).amountOfSubstance() << ",";
-    ret << (*self).luminousIntensity() << ",";
-    ret << (*self).angle() << ")";
-
-    std::string type = self->getTypeString();
-    if (!type.empty()) {
-        ret << " [" << type << "]";
-    }
-    return ret.str();
+    return getUnitPtr()->representation();
 }
 
 PyObject* UnitPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of UnitPy and the Twin object
-    return new UnitPy(new Unit);
+    return new UnitPy(new Unit {Units::NullUnit.getVals()});
 }
 
 // constructor method
@@ -106,8 +90,12 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     int i7 = 0;
     int i8 = 0;
     if (PyArg_ParseTuple(args, "|iiiiiiii", &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
+        auto fix = [](const int val) {
+            return static_cast<int8_t>(val);
+        };
+
         try {
-            *self = Unit(i1, i2, i3, i4, i5, i6, i7, i8);
+            *self = Unit({fix(i1), fix(i2), fix(i3), fix(i4), fix(i5), fix(i6), fix(i7), fix(i8)});
             return 0;
         }
         catch (const Base::OverflowError& e) {
@@ -212,13 +200,11 @@ Py::String UnitPy::getType() const
 
 Py::Tuple UnitPy::getSignature() const
 {
-    Py::Tuple tuple(8);
-    Unit* self = getUnitPtr();
-
-    for (auto i = 0; i < tuple.size(); i++) {
-        tuple.setItem(i, Py::Long((*self)[i]));
-    }
-
+    Py::Tuple tuple {unitNumVals};
+    auto vals = getUnitPtr()->getVals();
+    std::for_each(vals.begin(), vals.end(), [&, pos {0}](auto val) mutable {
+        tuple.setItem(pos++, Py::Long {val});
+    });
     return tuple;
 }
 

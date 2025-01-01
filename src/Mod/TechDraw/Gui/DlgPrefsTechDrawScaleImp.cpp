@@ -26,6 +26,7 @@
 
 #include "DlgPrefsTechDrawScaleImp.h"
 #include "ui_DlgPrefsTechDrawScale.h"
+#include "Base/Units.h"
 
 
 using namespace TechDrawGui;
@@ -36,7 +37,7 @@ DlgPrefsTechDrawScaleImp::DlgPrefsTechDrawScaleImp( QWidget* parent )
 {
     ui->setupUi(this);
 
-    ui->pdsbTemplateMark->setUnit(Base::Unit::Length);
+    ui->pdsbTemplateMark->setUnit(Base::Units::Length);
     ui->pdsbTemplateMark->setMinimum(0);
 
     connect(ui->cbViewScaleType, qOverload<int>(&QComboBox::currentIndexChanged),

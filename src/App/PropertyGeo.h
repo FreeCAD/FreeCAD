@@ -28,6 +28,7 @@
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Unit.h>
+#include <Base/Units.h>
 #include <Base/Vector3D.h>
 
 #include "PropertyLinks.h"
@@ -103,9 +104,8 @@ public:
 
     bool getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const override;
 
-    virtual Base::Unit getUnit() const
-    {
-        return {};
+    virtual Base::Unit getUnit() const {
+        return Base::Units::NullUnit;
     }
 
     bool isSame(const Property& other) const override
@@ -139,9 +139,8 @@ public:
      */
     ~PropertyVectorDistance() override;
 
-    Base::Unit getUnit() const override
-    {
-        return Base::Unit::Length;
+    Base::Unit getUnit() const override {
+        return Base::Units::Length;
     }
 
     const char* getEditorName() const override
@@ -167,9 +166,8 @@ public:
      */
     ~PropertyPosition() override;
 
-    Base::Unit getUnit() const override
-    {
-        return Base::Unit::Length;
+    Base::Unit getUnit() const override {
+        return Base::Units::Length;
     }
 
     const char* getEditorName() const override
@@ -195,9 +193,8 @@ public:
      */
     ~PropertyDirection() override;
 
-    Base::Unit getUnit() const override
-    {
-        return Base::Unit::Length;
+    Base::Unit getUnit() const override {
+        return Base::Units::Length;
     }
 
     const char* getEditorName() const override

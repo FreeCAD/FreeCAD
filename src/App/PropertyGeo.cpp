@@ -35,6 +35,7 @@
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/Writer.h>
+#include "Base/Units.h"
 
 #include "ComplexGeoData.h"
 #include "Document.h"
@@ -193,8 +194,8 @@ void PropertyVector::getPaths(std::vector<ObjectIdentifier>& paths) const
 
 const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) const
 {
-    Base::Unit unit = getUnit();
-    if (!unit.isEmpty()) {
+    const Unit unit = getUnit();
+    if (unit != Units::NullUnit) {
         std::string p = path.getSubPathStr();
         if (p == ".x" || p == ".y" || p == ".z") {
             // Convert double to quantity
@@ -206,8 +207,8 @@ const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) cons
 
 bool PropertyVector::getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const
 {
-    Base::Unit unit = getUnit();
-    if (unit.isEmpty()) {
+    const Unit unit = getUnit();
+    if (unit == Units::NullUnit) {
         return false;
     }
 
@@ -716,11 +717,11 @@ const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier& path) c
         // Convert angle to degrees
         return Base::Quantity(
             Base::toDegrees(boost::any_cast<double>(Property::getPathValue(path))),
-            Unit::Angle);
+            Units::Angle);
     }
     else if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
         // Convert double to quantity
-        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Units::Length);
     }
     else if (p == ".Rotation.Axis.x") {
         return getAxis(_cPos).x;
@@ -767,19 +768,19 @@ bool PropertyPlacement::getPyPathValue(const ObjectIdentifier& path, Py::Object&
         Base::Vector3d axis;
         double angle;
         _cPos.getRotation().getValue(axis, angle);
-        res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle), Unit::Angle)));
+        res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle), Units::Angle)));
         return true;
     }
     else if (p == ".Base.x") {
-        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().x, Unit::Length)));
+        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().x, Units::Length)));
         return true;
     }
     else if (p == ".Base.y") {
-        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().y, Unit::Length)));
+        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().y, Units::Length)));
         return true;
     }
     else if (p == ".Base.z") {
-        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().z, Unit::Length)));
+        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().z, Units::Length)));
         return true;
     }
     else if (p == ".Rotation.Axis.x") {
@@ -1166,7 +1167,7 @@ const boost::any PropertyRotation::getPathValue(const ObjectIdentifier& path) co
         // Convert angle to degrees
         return Base::Quantity(
             Base::toDegrees(boost::any_cast<double>(Property::getPathValue(path))),
-            Unit::Angle);
+            Units::Angle);
     }
     else if (p == ".Axis.x") {
         return getAxis(_rot).x;
@@ -1196,7 +1197,7 @@ bool PropertyRotation::getPyPathValue(const ObjectIdentifier& path, Py::Object& 
         Base::Vector3d axis;
         double angle;
         _rot.getValue(axis, angle);
-        res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle), Unit::Angle)));
+        res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle), Units::Angle)));
         return true;
     }
     else if (p == ".Axis.x") {

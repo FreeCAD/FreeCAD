@@ -180,9 +180,9 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
     setupConnections();
 
     ui->position->setRange(-DBL_MAX, DBL_MAX);
-    ui->position->setUnit(Base::Unit::Length);
+    ui->position->setUnit(Base::Units::Length);
     ui->distance->setRange(0, DBL_MAX);
-    ui->distance->setUnit(Base::Unit::Length);
+    ui->distance->setUnit(Base::Units::Length);
     ui->spinEpsilon->setMinimum(0.0001);
     vp = new ViewProviderCrossSections();
 

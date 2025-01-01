@@ -185,9 +185,9 @@ Mirroring::Mirroring(QWidget* parent)
     ui->baseX->setRange(-DBL_MAX, DBL_MAX);
     ui->baseY->setRange(-DBL_MAX, DBL_MAX);
     ui->baseZ->setRange(-DBL_MAX, DBL_MAX);
-    ui->baseX->setUnit(Base::Unit::Length);
-    ui->baseY->setUnit(Base::Unit::Length);
-    ui->baseZ->setUnit(Base::Unit::Length);
+    ui->baseX->setUnit(Base::Units::Length);
+    ui->baseY->setUnit(Base::Units::Length);
+    ui->baseZ->setUnit(Base::Units::Length);
     findShapes();
 
     Gui::ItemViewSelection sel(ui->shapes);

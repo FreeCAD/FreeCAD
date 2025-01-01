@@ -37,6 +37,7 @@
 #include <gsl/pointers>
 #include <App/Application.h>
 #include <Base/Parameter.h>
+#include <Base/Units.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Language/Translator.h>
 #include <Gui/NavigationStyle.h>

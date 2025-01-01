@@ -37,16 +37,12 @@ protected:
     App::DocumentObject* this_obj() { return _this_obj; }
 
     Base::Quantity parse_expression_text_as_quantity(const char* expression_text) {
-        auto expression = App::ExpressionParser::parse(this_obj(), expression_text);
-        auto expression_value = expression->getValueAsAny();
-        auto quantity_result = App::any_cast<Base::Quantity>(expression_value);
-        return quantity_result;
+        const auto expression = App::ExpressionParser::parse(this_obj(), expression_text);
+        return App::any_cast<Base::Quantity>(expression->getValueAsAny());
     }
 
     Base::Quantity parse_quantity_text_as_quantity(const char* quantity_text) {
-        auto quantity_str = std::string(quantity_text);
-        auto quantity_result = Base::Quantity::parse(quantity_str);
-        return quantity_result;
+        return Base::Quantity::parse(quantity_text);
     }
 
 private:

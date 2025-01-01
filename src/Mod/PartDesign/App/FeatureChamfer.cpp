@@ -60,15 +60,15 @@ Chamfer::Chamfer()
     ChamferType.setEnums(ChamferTypeEnums);
 
     ADD_PROPERTY_TYPE(Size, (1.0), "Chamfer", App::Prop_None, "Size of chamfer");
-    Size.setUnit(Base::Unit::Length);
+    Size.setUnit(Base::Units::Length);
     Size.setConstraints(&floatSize);
 
     ADD_PROPERTY_TYPE(Size2, (1.0), "Chamfer", App::Prop_None, "Second size of chamfer");
-    Size2.setUnit(Base::Unit::Length);
+    Size2.setUnit(Base::Units::Length);
     Size2.setConstraints(&floatSize);
 
     ADD_PROPERTY_TYPE(Angle, (45.0), "Chamfer", App::Prop_None, "Angle of chamfer");
-    Angle.setUnit(Base::Unit::Angle);
+    Angle.setUnit(Base::Units::Angle);
     Angle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");

@@ -135,18 +135,18 @@ void TaskCosmeticLine::setUiPrimary()
     ui->rb2d1->setChecked(true);
     ui->rb3d1->setChecked(false);
 
-    ui->qsbx1->setUnit(Base::Unit::Length);
+    ui->qsbx1->setUnit(Base::Units::Length);
     ui->qsbx1->setValue(p1.x);
-    ui->qsby1->setUnit(Base::Unit::Length);
+    ui->qsby1->setUnit(Base::Units::Length);
     ui->qsby1->setValue(-p1.y);
-    ui->qsby1->setUnit(Base::Unit::Length);
+    ui->qsby1->setUnit(Base::Units::Length);
     ui->qsbz1->setValue(p1.z);
 
-    ui->qsbx2->setUnit(Base::Unit::Length);
+    ui->qsbx2->setUnit(Base::Units::Length);
     ui->qsbx2->setValue(p2.x);
-    ui->qsby2->setUnit(Base::Unit::Length);
+    ui->qsby2->setUnit(Base::Units::Length);
     ui->qsby2->setValue(-p2.y);
-    ui->qsbz2->setUnit(Base::Unit::Length);
+    ui->qsbz2->setUnit(Base::Units::Length);
     ui->qsbz2->setValue(p2.z);
 }
 

@@ -598,7 +598,7 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle = vec.Length() > 0 ? Base::toDegrees(vec.Angle()) : 0;
-                    setOnViewParameterValue(OnViewParameter::Fourth, angle, Base::Unit::Angle);
+                    setOnViewParameterValue(OnViewParameter::Fourth, angle, Base::Units::Angle);
                 }
 
                 Base::Vector3d start = toVector3d(handler->centerPoint);

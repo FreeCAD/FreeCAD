@@ -109,7 +109,7 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
-    
+
     using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
@@ -2773,7 +2773,7 @@ void Document::toggleInSceneGraph(ViewProvider *vp)
 }
 
 void Document::slotChangePropertyEditor(const App::Document &doc, const App::Property &Prop) {
-    if(getDocument() == &doc) {
+    if (getDocument() == &doc) {
         FC_LOG(Prop.getFullName() << " editor changed");
         setModified(true);
         getMainWindow()->setUserSchema(doc.UnitSystem.getValue());

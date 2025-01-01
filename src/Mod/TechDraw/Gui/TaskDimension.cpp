@@ -71,12 +71,12 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
         ui->qsbOvertolerance->setMinimum(0.0);
     if ((parent->getDimFeat()->Type.isValue("Angle")) ||
         (parent->getDimFeat()->Type.isValue("Angle3Pt"))) {
-        ui->qsbOvertolerance->setUnit(Base::Unit::Angle);
-        ui->qsbUndertolerance->setUnit(Base::Unit::Angle);
+        ui->qsbOvertolerance->setUnit(Base::Units::Angle);
+        ui->qsbUndertolerance->setUnit(Base::Units::Angle);
     }
     else {
-        ui->qsbOvertolerance->setUnit(Base::Unit::Length);
-        ui->qsbUndertolerance->setUnit(Base::Unit::Length);
+        ui->qsbOvertolerance->setUnit(Base::Units::Length);
+        ui->qsbUndertolerance->setUnit(Base::Units::Length);
     }
     ui->qsbOvertolerance->setValue(parent->getDimFeat()->OverTolerance.getValue());
     ui->qsbUndertolerance->setValue(parent->getDimFeat()->UnderTolerance.getValue());
@@ -113,7 +113,7 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
         ui->dimensionColor->setColor(dimensionVP->Color.getValue().asValue<QColor>());
         connect(ui->dimensionColor, &ColorButton::changed, this, &TaskDimension::onColorChanged);
         ui->qsbFontSize->setValue(dimensionVP->Fontsize.getValue());
-        ui->qsbFontSize->setUnit(Base::Unit::Length);
+        ui->qsbFontSize->setUnit(Base::Units::Length);
         ui->qsbFontSize->setMinimum(0);
         connect(ui->qsbFontSize, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskDimension::onFontsizeChanged);
         ui->comboDrawingStyle->setCurrentIndex(dimensionVP->StandardAndStyle.getValue());

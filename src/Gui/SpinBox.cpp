@@ -175,7 +175,7 @@ void ExpressionSpinBox::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
-    auto * qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    auto *qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
     Unit unit;
 
     if (qprop)

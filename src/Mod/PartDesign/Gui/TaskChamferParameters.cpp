@@ -122,18 +122,18 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->flipDirection->setEnabled(index != 0);  // Enable if type is not "Equal distance"
     ui->flipDirection->setChecked(pcChamfer->FlipDirection.getValue());
 
-    ui->chamferSize->setUnit(Base::Unit::Length);
+    ui->chamferSize->setUnit(Base::Units::Length);
     ui->chamferSize->setMinimum(0);
     ui->chamferSize->setValue(pcChamfer->Size.getValue());
     ui->chamferSize->bind(pcChamfer->Size);
     ui->chamferSize->selectNumber();
 
-    ui->chamferSize2->setUnit(Base::Unit::Length);
+    ui->chamferSize2->setUnit(Base::Units::Length);
     ui->chamferSize2->setMinimum(0);
     ui->chamferSize2->setValue(pcChamfer->Size2.getValue());
     ui->chamferSize2->bind(pcChamfer->Size2);
 
-    ui->chamferAngle->setUnit(Base::Unit::Angle);
+    ui->chamferAngle->setUnit(Base::Units::Angle);
     ui->chamferAngle->setMinimum(pcChamfer->Angle.getMinimum());
     ui->chamferAngle->setMaximum(pcChamfer->Angle.getMaximum());
     ui->chamferAngle->setValue(pcChamfer->Angle.getValue());

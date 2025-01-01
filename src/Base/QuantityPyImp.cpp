@@ -27,6 +27,7 @@
 #include "UnitPy.h"
 #include "QuantityPy.cpp"
 
+#include "Units.h"
 
 using namespace Base;
 
@@ -35,13 +36,13 @@ std::string QuantityPy::representation() const
 {
     std::stringstream ret;
 
-    double val = getQuantityPtr()->getValue();
-    Unit unit = getQuantityPtr()->getUnit();
+    const double val = getQuantityPtr()->getValue();
+    const Unit unit = getQuantityPtr()->getUnit();
 
     // Use Python's implementation to repr() a float
-    Py::Float flt(val);
+    const Py::Float flt(val);
     ret << static_cast<std::string>(flt.repr());
-    if (!unit.isEmpty()) {
+    if (unit != Units::NullUnit) {
         ret << " " << unit.getString();
     }
 
@@ -55,14 +56,14 @@ PyObject* QuantityPy::toStr(PyObject* args)
         return nullptr;
     }
 
-    double val = getQuantityPtr()->getValue();
-    Unit unit = getQuantityPtr()->getUnit();
+    const double val = getQuantityPtr()->getValue();
+    const Unit unit = getQuantityPtr()->getUnit();
 
     std::stringstream ret;
     ret.precision(prec);
     ret.setf(std::ios::fixed, std::ios::floatfield);
     ret << val;
-    if (!unit.isEmpty()) {
+    if (unit != Units::NullUnit) {
         ret << " " << unit.getString();
     }
 
@@ -111,15 +112,18 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();  // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args, "|diiiiiiii", &f, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
         if (f < DOUBLE_MAX) {
-            *self = Quantity(f,
-                             Unit {static_cast<int8_t>(i1),
-                                   static_cast<int8_t>(i2),
-                                   static_cast<int8_t>(i3),
-                                   static_cast<int8_t>(i4),
-                                   static_cast<int8_t>(i5),
-                                   static_cast<int8_t>(i6),
-                                   static_cast<int8_t>(i7),
-                                   static_cast<int8_t>(i8)});
+            auto cast = [](const int val) {
+                return static_cast<int8_t>(val);
+            };
+            const std::array<int8_t, 8> arr {cast(i1),
+                                             cast(i2),
+                                             cast(i3),
+                                             cast(i4),
+                                             cast(i5),
+                                             cast(i6),
+                                             cast(i7),
+                                             cast(i8)};
+            *self = Quantity(f, Unit {arr});
         }
         return 0;
     }
@@ -219,15 +223,12 @@ PyObject* QuantityPy::getValueAs(PyObject* args)
         PyErr_Clear();
         if (PyArg_ParseTuple(args, "d|iiiiiiii", &f, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
             if (f < DOUBLE_MAX) {
-                quant = Quantity(f,
-                                 Unit {static_cast<int8_t>(i1),
-                                       static_cast<int8_t>(i2),
-                                       static_cast<int8_t>(i3),
-                                       static_cast<int8_t>(i4),
-                                       static_cast<int8_t>(i5),
-                                       static_cast<int8_t>(i6),
-                                       static_cast<int8_t>(i7),
-                                       static_cast<int8_t>(i8)});
+                auto fix = [](const int val) {
+                    return static_cast<int8_t>(val);
+                };
+                const std::array<int8_t, 8>
+                    arr {fix(i1), fix(i2), fix(i3), fix(i4), fix(i5), fix(i6), fix(i7), fix(i8)};
+                quant = Quantity(f, Unit {arr});
             }
         }
     }

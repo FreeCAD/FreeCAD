@@ -24,6 +24,7 @@
 #define DISPLAYUNIT_H
 
 #include <Base/Unit.h>
+#include <Base/Units.h>
 #include <string>
 
 namespace Spreadsheet
@@ -37,7 +38,7 @@ public:
     double scaler;
 
     explicit DisplayUnit(const std::string _stringRep = "",
-                         const Base::Unit _unit = Base::Unit(),
+                         const Base::Unit _unit = Base::Units::NullUnit,
                          double _scaler = 0.0)
         : stringRep(_stringRep)
         , unit(_unit)

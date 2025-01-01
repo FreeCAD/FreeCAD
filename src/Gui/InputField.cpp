@@ -40,6 +40,7 @@
 #include "InputField.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "Base/Units.h"
 #include "QuantitySpinBox_p.h"
 
 
@@ -267,11 +268,11 @@ void InputField::newInput(const QString & text)
         return;
     }
 
-    if (res.getUnit().isEmpty())
+    if (res.getUnit() == Units::NullUnit)
         res.setUnit(this->actUnit);
 
     // check if unit fits!
-    if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
+    if(actUnit != Units::NullUnit && res.getUnit() != Units::NullUnit && actUnit != res.getUnit()) {
         QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         Q_EMIT parseError(QString::fromLatin1("Wrong unit"));
@@ -632,7 +633,7 @@ void InputField::focusInEvent(QFocusEvent *event)
 void InputField::focusOutEvent(QFocusEvent *event)
 {
     try {
-        if (Quantity::parse(this->text().toStdString()).getUnit().isEmpty()) {
+        if (Quantity::parse(this->text().toStdString()).getUnit() == Units::NullUnit) {
             // if user didn't enter a unit, we virtually compensate
             // the multiplication factor induced by user unit system
             double factor;

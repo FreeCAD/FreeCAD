@@ -232,7 +232,7 @@ void DlgSettingsGeneral::saveUnitSystemSettings()
         // currently selected View System (unit system)
         int viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
         UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
-    }
+        }
     else if (App::Document* doc = App::GetApplication().getActiveDocument()) {
         UnitsApi::setSchema(static_cast<UnitSystem>(doc->UnitSystem.getValue()));
     }
@@ -771,7 +771,7 @@ void DlgSettingsGeneral::onLoadPreferencePackClicked(const std::string& packName
 void DlgSettingsGeneral::onUnitSystemIndexChanged(int index)
 {
     if (index < 0)
-        return; // happens when clearing the combo box in retranslateUi()
+        return;  // happens when clearing the combo box in retranslateUi()
 
     // Enable/disable the fractional inch option depending on system
     if (static_cast<UnitSystem>(index) == UnitSystem::ImperialBuilding)
@@ -803,7 +803,7 @@ void DlgSettingsGeneral::onLinkActivated(const QString& link)
     // This is a quick and dirty way to open Addon Manager with only themes.
     auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
     pref->SetInt("PackageTypeSelection", 3); // 3 stands for Preference Packs
-    pref->SetInt("StatusSelection", 0);      // 0 stands for any installation status 
+    pref->SetInt("StatusSelection", 0);      // 0 stands for any installation status
 
     Gui::Application::Instance->commandManager().runCommandByName("Std_AddonMgr");
 }

@@ -9825,7 +9825,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     dlg.setWindowTitle(EditDatumDialog::tr("Refractive index ratio"));
     ui_Datum.label->setText(EditDatumDialog::tr("Ratio n2/n1:"));
     Base::Quantity init_val;
-    init_val.setUnit(Base::Unit());
+    init_val.setUnit(Base::Units::NullUnit);
     init_val.setValue(0.0);
 
     ui_Datum.labelEdit->setValue(init_val);

@@ -45,6 +45,7 @@
 #include "SoFCCSysDragger.h"
 #include "ViewProviderDragger.h"
 #include "TaskView/TaskView.h"
+#include "Base/Units.h"
 
 #include "TaskCSysDragger.h"
 #include "ui_TaskCSysDragger.h"
@@ -204,14 +205,14 @@ void TaskTransform::setupGui()
                                  ui->xPositionSpinBox,
                                  ui->yPositionSpinBox,
                                  ui->zPositionSpinBox}) {
-        positionSpinBox->setUnit(Base::Unit::Length);
+        positionSpinBox->setUnit(Base::Units::Length);
     }
 
     for (auto rotationSpinBox : {ui->rotationIncrementSpinBox,
                                  ui->xRotationSpinBox,
                                  ui->yRotationSpinBox,
                                  ui->zRotationSpinBox}) {
-        rotationSpinBox->setUnit(Base::Unit::Angle);
+        rotationSpinBox->setUnit(Base::Units::Angle);
     }
 
     connect(ui->translationIncrementSpinBox,

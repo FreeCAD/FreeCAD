@@ -45,6 +45,7 @@
 #include "ExpressionBinding.h"
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
+#include "Base/Units.h"
 
 using namespace App;
 using namespace Gui::Dialog;
@@ -294,14 +295,15 @@ void DlgExpressionInput::checkExpression(const QString& text)
                 }
 
                 auto msg = value.getUserString();
-                if (!impliedUnit.isEmpty()) {
-                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
+                if (impliedUnit != Base::Units::NullUnit) {
+                    const Base::Unit unit = value.getUnit();
+                    if (unit != Base::Units::NullUnit && unit != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                     value.setUnit(impliedUnit);
 
                 }
-                else if (!value.getUnit().isEmpty()) {
+                else if (value.getUnit() != Base::Units::NullUnit) {
                     msg += " (Warning: unit discarded)";
 
                     QPalette p(ui->msg->palette());

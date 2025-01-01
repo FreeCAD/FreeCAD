@@ -30,7 +30,7 @@
 #include "QuantityPy.h"
 #include "MatrixPy.h"
 #include "MatrixPy.cpp"
-
+#include "Base/Units.h"
 
 using namespace Base;
 
@@ -550,7 +550,7 @@ PyObject* MatrixPy::rotateX(PyObject* args)
         PyObject* object {};
         if (PyArg_ParseTuple(args, "O!", &(Base::QuantityPy::Type), &object)) {
             Quantity* q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
-            if (q->getUnit() == Base::Unit::Angle) {
+            if (q->getUnit() == Base::Units::Angle) {
                 angle = q->getValueAs(Base::Quantity::Radian);
                 break;
             }
@@ -580,7 +580,7 @@ PyObject* MatrixPy::rotateY(PyObject* args)
         PyObject* object {};
         if (PyArg_ParseTuple(args, "O!", &(Base::QuantityPy::Type), &object)) {
             Quantity* q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
-            if (q->getUnit() == Base::Unit::Angle) {
+            if (q->getUnit() == Base::Units::Angle) {
                 angle = q->getValueAs(Base::Quantity::Radian);
                 break;
             }
@@ -610,7 +610,7 @@ PyObject* MatrixPy::rotateZ(PyObject* args)
         PyObject* object {};
         if (PyArg_ParseTuple(args, "O!", &(Base::QuantityPy::Type), &object)) {
             Quantity* q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
-            if (q->getUnit() == Base::Unit::Angle) {
+            if (q->getUnit() == Base::Units::Angle) {
                 angle = q->getValueAs(Base::Quantity::Radian);
                 break;
             }

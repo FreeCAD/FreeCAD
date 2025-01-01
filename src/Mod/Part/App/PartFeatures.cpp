@@ -370,7 +370,7 @@ Thickness::Thickness()
     ADD_PROPERTY_TYPE(SelfIntersection, (false), "Thickness", App::Prop_None, "Self Intersection");
 
     // Value should have length as unit
-    Value.setUnit(Base::Unit::Length);
+    Value.setUnit(Base::Units::Length);
 }
 
 short Thickness::mustExecute() const

@@ -175,7 +175,7 @@ public:
         setText(qApp->translate("Gui::MainWindow", "Dimension"));
         setMinimumWidth(120);
 
-        //create the action buttons
+        // create the action buttons
         auto* menu = new QMenu(this);
         auto* actionGrp = new QActionGroup(menu);
         int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);

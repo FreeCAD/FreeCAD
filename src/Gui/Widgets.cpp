@@ -42,6 +42,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include "Base/Units.h"
 #include <App/ExpressionParser.h>
 #include <App/Material.h>
 
@@ -860,7 +861,7 @@ UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
     , _url (QStringLiteral("http://localhost"))
     , _launchExternal(true)
 {
-    setToolTip(this->_url);    
+    setToolTip(this->_url);
     setCursor(Qt::PointingHandCursor);
     if (qApp->styleSheet().isEmpty())
         setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
@@ -925,9 +926,9 @@ void StatefulLabel::setParameterGroup(const std::string& groupName)
 {
     if (_parameterGroup.isValid())
         _parameterGroup->Detach(this);
-        
+
     // Attach to the Parametergroup so we know when it changes
-    _parameterGroup = App::GetApplication().GetParameterGroupByPath(groupName.c_str());    
+    _parameterGroup = App::GetApplication().GetParameterGroupByPath(groupName.c_str());
     if (_parameterGroup.isValid())
         _parameterGroup->Attach(this);
 }
@@ -1671,7 +1672,7 @@ void ExpLineEdit::openFormulaDialog()
     Q_ASSERT(isBound());
 
     auto box = new Gui::Dialog::DlgExpressionInput(
-            getPath(), getExpression(),Unit(), this);
+            getPath(), getExpression(), Units::NullUnit, this);
     connect(box, &Dialog::DlgExpressionInput::finished, this, &ExpLineEdit::finishFormulaDialog);
     box->show();
 
