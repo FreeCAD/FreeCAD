@@ -27,6 +27,7 @@
 #include <optional>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 #endif
 
@@ -91,45 +92,38 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         *self = *(static_cast<QuantityPy*>(object)->getQuantityPtr());
         return 0;
     }
-
     PyErr_Clear();  // set by PyArg_ParseTuple()
+
     double f = std::numeric_limits<double>::max();
     if (PyArg_ParseTuple(args, "dO!", &f, &(UnitPy::Type), &object)) {
         *self = Quantity(f, *(static_cast<UnitPy*>(object)->getUnitPtr()));
         return 0;
     }
-
     PyErr_Clear();  // set by PyArg_ParseTuple()
+
     if (PyArg_ParseTuple(args, "dO!", &f, &(QuantityPy::Type), &object)) {
         PyErr_SetString(PyExc_TypeError, "Second argument must be a Unit not a Quantity");
         return -1;
     }
-
-    int i1 = 0;
-    int i2 = 0;
-    int i3 = 0;
-    int i4 = 0;
-    int i5 = 0;
-    int i6 = 0;
-    int i7 = 0;
-    int i8 = 0;
     PyErr_Clear();  // set by PyArg_ParseTuple()
-    if (PyArg_ParseTuple(args, "|diiiiiiii", &f, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
+
+    UnitExponentsExt i {};
+    // clang-format off
+    if (PyArg_ParseTuple(args, "|diiiiiiii", &f, &i[0], &i[1], &i[2], &i[3], &i[4], &i[5], &i[6], &i[7])) {
+        // clang-format on
         if (f < std::numeric_limits<double>::max()) {
-            *self = Quantity(f,
-                             Unit {static_cast<int8_t>(i1),
-                                   static_cast<int8_t>(i2),
-                                   static_cast<int8_t>(i3),
-                                   static_cast<int8_t>(i4),
-                                   static_cast<int8_t>(i5),
-                                   static_cast<int8_t>(i6),
-                                   static_cast<int8_t>(i7),
-                                   static_cast<int8_t>(i8)});
+            try {
+                *self = Quantity {f, Unit(i)};
+            }
+            catch (const Exception& e) {
+                PyErr_SetString(PyExc_ValueError, e.what());
+                return -1;
+            }
         }
         return 0;
     }
-
     PyErr_Clear();  // set by PyArg_ParseTuple()
+
     char* string {};
     if (PyArg_ParseTuple(args, "et", "utf-8", &string)) {
         std::string str(string);
@@ -144,15 +138,15 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
         return 0;
     }
-
     PyErr_Clear();  // set by PyArg_ParseTuple()
+
     if (PyArg_ParseTuple(args, "det", &f, "utf-8", &string)) {
         std::string unit(string);
         PyMem_Free(string);
         try {
             *self = Quantity(f, unit);
         }
-        catch (const ParserError& e) {
+        catch (const Exception& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
             return -1;
         }
@@ -210,29 +204,20 @@ PyObject* QuantityPy::getValueAs(PyObject* args) const
     };
 
     auto tryUnitPartsAndValue = [&]() -> std::optional<Quantity> {
-        double f = std::numeric_limits<double>::max();
-        int i1 {0};
-        int i2 {0};
-        int i3 {0};
-        int i4 {0};
-        int i5 {0};
-        int i6 {0};
-        int i7 {0};
-        int i8 {0};
-        PyErr_Clear();
-        if (!PyArg_ParseTuple(args, "d|iiiiiiii", &f, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
-            return std::nullopt;
+        double f;
+        UnitExponentsExt i {};
+        // clang-format off
+        if (PyArg_ParseTuple(args, "d|iiiiiiii", &f, &i[0], &i[1], &i[2], &i[3], &i[4], &i[5], &i[6], &i[7])) {
+            // clang-format on
+            try {
+                return Quantity {f, Unit(i)};
+            }
+            catch (const Exception& e) {
+                PyErr_SetString(PyExc_ValueError, e.what());
+                return std::nullopt;
+            }
         }
-
-        if (f >= std::numeric_limits<double>::max()) {
-            return std::nullopt;
-        }
-
-        auto re = [](auto val) {
-            return static_cast<int8_t>(val);
-        };
-
-        return Quantity {f, Unit {re(i1), re(i2), re(i3), re(i4), re(i5), re(i6), re(i7), re(i8)}};
+        return std::nullopt;
     };
 
     auto tryString = [&]() -> std::optional<Quantity> {
@@ -243,7 +228,13 @@ PyObject* QuantityPy::getValueAs(PyObject* args) const
 
         const std::string str {string};
         PyMem_Free(string);
-        return Quantity::parse(str);
+        try {
+            return Quantity::parse(str);
+        }
+        catch (const ParserError& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return std::nullopt;
+        }
     };
 
     const std::vector<std::function<std::optional<Quantity>()>> funcs = {tryQuantity,
