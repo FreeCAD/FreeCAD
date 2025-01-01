@@ -392,4 +392,4 @@ private:
 }  // namespace Base
 
 
-#endif // SRC_BASE_READER_H_
+#endif  // SRC_BASE_READER_H_
