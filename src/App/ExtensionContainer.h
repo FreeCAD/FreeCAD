@@ -21,8 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_EXTENSIONCONTAINER_H
-#define APP_EXTENSIONCONTAINER_H
+#ifndef SRC_APP_EXTENSIONCONTAINER_H_
+#define SRC_APP_EXTENSIONCONTAINER_H_
+
+#include <vector>
+#include <string>
+#include <map>
 
 #include "PropertyContainer.h"
 
@@ -252,4 +256,4 @@ private:
 
 }  // namespace App
 
-#endif  // APP_EXTENSIONCONTAINER_H
+#endif  // SRC_APP_EXTENSIONCONTAINER_H_

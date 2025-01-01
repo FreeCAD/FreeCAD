@@ -20,10 +20,15 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_LINK_H
-#define GUI_VIEWPROVIDER_LINK_H
+#ifndef SRC_GUI_VIEWPROVIDER_LINK_H_
+#define SRC_GUI_VIEWPROVIDER_LINK_H_
 
 #include <App/Link.h>
+#include <unordered_map>
+#include <map>
+#include <string>
+#include <vector>
+#include <memory>
 
 #include "SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"
@@ -346,4 +351,4 @@ using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;
 } //namespace Gui
 
 
-#endif // GUI_VIEWPROVIDER_LINK_H
+#endif // SRC_GUI_VIEWPROVIDER_LINK_H_

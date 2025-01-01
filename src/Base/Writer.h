@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_WRITER_H
-#define BASE_WRITER_H
+#ifndef SRC_BASE_WRITER_H_
+#define SRC_BASE_WRITER_H_
 
 
 #include <set>
@@ -64,7 +64,7 @@ private:
     class UniqueFileNameManager: public UniqueNameManager
     {
     protected:
-        virtual std::string::const_reverse_iterator
+        std::string::const_reverse_iterator
         getNameSuffixStartPosition(const std::string& name) const override
         {
             // This is an awkward way to do this, because the FileInfo class only yields pieces of
@@ -307,4 +307,4 @@ protected:
 }  // namespace Base
 
 
-#endif  // BASE_WRITER_H
+#endif  // SRC_BASE_WRITER_H_

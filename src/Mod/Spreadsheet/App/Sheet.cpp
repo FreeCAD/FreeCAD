@@ -27,6 +27,12 @@
 #include <deque>
 #include <memory>
 #include <sstream>
+#include <tuple>
+#include <list>
+#include <map>
+#include <string>
+#include <set>
+#include <vector>
 #endif
 
 #include <App/Application.h>

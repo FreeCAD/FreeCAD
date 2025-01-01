@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_READER_H
-#define BASE_READER_H
+#ifndef SRC_BASE_READER_H_
+#define SRC_BASE_READER_H_
 
 #include <bitset>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>
@@ -391,4 +392,4 @@ private:
 }  // namespace Base
 
 
-#endif
+#endif // SRC_BASE_READER_H_

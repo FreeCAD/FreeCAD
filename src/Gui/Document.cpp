@@ -23,6 +23,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <tuple>
+# include <memory>
+# include <list>
+# include <string>
+# include <map>
+# include <set>
+# include <unordered_map>
+# include <vector>
 # include <cctype>
 # include <mutex>
 # include <QApplication>

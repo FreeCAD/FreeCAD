@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECT_H
-#define APP_DOCUMENTOBJECT_H
+#ifndef SRC_APP_DOCUMENTOBJECT_H_
+#define SRC_APP_DOCUMENTOBJECT_H_
 
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
@@ -33,6 +33,11 @@
 
 #include <bitset>
 #include <unordered_map>
+#include <memory>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
 namespace Base
 {
@@ -794,4 +799,4 @@ private:
 
 }  // namespace App
 
-#endif  // APP_DOCUMENTOBJECT_H
+#endif  // SRC_APP_DOCUMENTOBJECT_H_

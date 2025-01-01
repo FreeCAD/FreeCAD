@@ -37,6 +37,15 @@
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <chrono>
 # include <random>
+# include <memory>
+# include <utility>
+# include <set>
+# include <list>
+# include <algorithm>
+# include <iostream>
+# include <map>
+# include <tuple>
+# include <vector>
 #endif
 
 #ifdef FC_OS_WIN32

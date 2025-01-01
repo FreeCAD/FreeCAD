@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_DOCUMENT_H
-#define APP_DOCUMENT_H
+#ifndef SRC_APP_DOCUMENT_H_
+#define SRC_APP_DOCUMENT_H_
 
 #include <CXX/Objects.hxx>
 #include <Base/Observer.h>
@@ -35,6 +35,9 @@
 
 #include <map>
 #include <vector>
+#include <utility>
+#include <list>
+#include <string>
 #include <QString>
 
 namespace Base
@@ -665,4 +668,4 @@ inline std::vector<T*> Document::getObjectsOfType() const
 
 }  // namespace App
 
-#endif  // APP_DOCUMENT_H
+#endif  // SRC_APP_DOCUMENT_H_

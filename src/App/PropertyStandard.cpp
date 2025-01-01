@@ -22,6 +22,16 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <algorithm>
+#include <set>
+#include <limits>
+#include <memory>
+#include <list>
+#include <map>
+#include <string>
+#include <vector>
+#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>

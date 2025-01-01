@@ -61,6 +61,16 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <bitset>
 #include <stack>
 #include <boost/filesystem.hpp>
+#include <deque>
+#include <iostream>
+#include <utility>
+#include <set>
+#include <memory>
+#include <string>
+#include <map>
+#include <vector>
+#include <list>
+#include <algorithm>
 #endif
 
 #include <boost/algorithm/string.hpp>

@@ -21,13 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_APPLICATION_H
-#define APP_APPLICATION_H
+#ifndef SRC_APP_APPLICATION_H_
+#define SRC_APP_APPLICATION_H_
 
 #include <boost_signals2.hpp>
 
 #include <deque>
 #include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <string>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
@@ -498,7 +502,8 @@ protected:
     };
 
 private:
-    /// Constructor
+    /// Constructor. The passed configuration must last for the lifetime of the constructed Application
+    // NOLINTNEXTLINE(runtime/references)
     explicit Application(std::map<std::string, std::string> &mConfig);
     /// Destructor
     virtual ~Application();
@@ -651,4 +656,4 @@ inline App::Application &GetApplication(){
 } // namespace App
 
 
-#endif // APP_APPLICATION_H
+#endif // SRC_APP_APPLICATION_H_

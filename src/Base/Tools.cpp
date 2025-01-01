@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <vector>
+#include <string>
 #include <sstream>
 #include <locale>
 #include <iostream>

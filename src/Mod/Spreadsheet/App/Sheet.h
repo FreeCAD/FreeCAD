@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Spreadsheet_Spreadsheet_H
-#define Spreadsheet_Spreadsheet_H
+#ifndef SRC_MOD_SPREADSHEET_APP_SHEET_H_
+#define SRC_MOD_SPREADSHEET_APP_SHEET_H_
 
 #ifdef signals
 #undef signals
@@ -29,6 +29,10 @@
 #endif
 
 #include <map>
+#include <tuple>
+#include <set>
+#include <string>
+#include <vector>
 
 #include <App/DocumentObject.h>
 #include <App/DynamicProperty.h>
@@ -310,4 +314,4 @@ using SheetPython = App::FeaturePythonT<Sheet>;
 }  // namespace Spreadsheet
 
 
-#endif  // Spreadsheet_Spreadsheet_H
+#endif  // SRC_MOD_SPREADSHEET_APP_SHEET_H_

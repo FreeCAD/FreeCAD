@@ -24,7 +24,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <memory>
+#include <map>
+#include <vector>
+#include <iostream>
+#include <string>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #endif
 

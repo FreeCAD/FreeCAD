@@ -20,12 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_DOCUMENTP_H
-#define APP_DOCUMENTP_H
+#ifndef SRC_APP_PRIVATE_DOCUMENTP_H_
+#define SRC_APP_PRIVATE_DOCUMENTP_H_
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4834)
 #endif
+
+#include <map>
+#include <string>
+#include <memory>
+#include <vector>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
@@ -166,4 +171,4 @@ struct DocumentP
 
 }  // namespace App
 
-#endif  // APP_DOCUMENTP_H
+#endif  // SRC_APP_PRIVATE_DOCUMENTP_H_

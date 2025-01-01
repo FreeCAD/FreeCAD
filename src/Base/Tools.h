@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TOOLS_H
-#define BASE_TOOLS_H
+#ifndef SRC_BASE_TOOLS_H_
+#define SRC_BASE_TOOLS_H_
 
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
@@ -316,4 +316,4 @@ struct BaseExport ZipTools
 
 }  // namespace Base
 
-#endif  // BASE_TOOLS_H
+#endif  // SRC_BASE_TOOLS_H_

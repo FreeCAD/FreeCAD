@@ -25,6 +25,16 @@
 #ifndef _PreComp_
 # include <atomic>
 # include <cctype>
+# include <unordered_set>
+# include <unordered_map>
+# include <utility>
+# include <deque>
+# include <memory>
+# include <algorithm>
+# include <vector>
+# include <set>
+# include <map>
+# include <string>
 # include <boost/algorithm/string/predicate.hpp>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -41,7 +51,6 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
 # include <QApplication>
 # include <QMenu>
 # include <QCheckBox>
@@ -191,7 +200,7 @@ public:
         }
     }
 
-    LinkInfo(ViewProviderDocumentObject *vp)
+    explicit LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp)
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
@@ -701,7 +710,7 @@ namespace Gui
     {
         px->release();
     }
-}
+} // namespace Gui
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////

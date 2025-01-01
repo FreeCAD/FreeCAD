@@ -22,6 +22,11 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <map>
+#include <vector>
+#include <string>
+#endif
 
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -303,7 +308,7 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
     return false;
 }
 
-std::string DynamicProperty::getUniquePropertyName(PropertyContainer& pc, const char* Name) const
+std::string DynamicProperty::getUniquePropertyName(const PropertyContainer& pc, const char* Name) const
 {
     std::string cleanName = Base::Tools::getIdentifier(Name);
 
@@ -338,7 +343,7 @@ void DynamicProperty::save(const Property* prop, Base::Writer& writer) const
 Property* DynamicProperty::restore(PropertyContainer& pc,
                                    const char* PropName,
                                    const char* TypeName,
-                                   Base::XMLReader& reader)
+                                   const Base::XMLReader& reader)
 {
     if (!reader.hasAttribute("group")) {
         return nullptr;

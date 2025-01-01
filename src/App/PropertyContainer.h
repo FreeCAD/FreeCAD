@@ -21,11 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYCONTAINER_H
-#define APP_PROPERTYCONTAINER_H
+#ifndef SRC_APP_PROPERTYCONTAINER_H_
+#define SRC_APP_PROPERTYCONTAINER_H_
 
 #include <map>
 #include <cstring>
+#include <vector>
+#include <string>
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
@@ -75,8 +77,12 @@ struct AppExport PropertyData
   //accepting void*
   struct OffsetBase
   {
-      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}//explicit bombs
-      OffsetBase(const App::Extension* container) : m_container(container) {}//explicit bombs
+      // Lint wants these marked explicit, but they are currently used implicitly in enough
+      // places that I don't wnt to fix it. Instead we disable the Lint message.
+      // NOLINTNEXTLINE(runtime/explicit)
+      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}
+      // NOLINTNEXTLINE(runtime/explicit)
+      OffsetBase(const App::Extension* container) : m_container(container) {}
 
       short int getOffsetTo(const App::Property* prop) const {
             auto *pt = (const char*)prop;
@@ -359,4 +365,4 @@ template<> void _class_::init(void){\
 
 } // namespace App
 
-#endif // APP_PROPERTYCONTAINER_H
+#endif // SRC_APP_PROPERTYCONTAINER_H_

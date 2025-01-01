@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <Base/Tools.h>
 #include <bitset>
+#include <vector>
 
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
 

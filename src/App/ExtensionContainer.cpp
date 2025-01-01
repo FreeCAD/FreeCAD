@@ -22,6 +22,11 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <map>
+#include <vector>
+#include <string>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
