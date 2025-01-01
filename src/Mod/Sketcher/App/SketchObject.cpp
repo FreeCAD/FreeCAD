@@ -3670,9 +3670,12 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         return -1;
     }
 
+    // TODO: Find a better way
+    deleteUnusedInternalGeometryAndUpdateGeoId(GeoId);
     const Part::Geometry* geo = getGeometry(GeoId);
     bool originalIsPeriodic = isClosedCurve(geo);
     std::vector<int> newIds;
+    std::vector<Part::Geometry*> newGeos;
     std::vector<Constraint*> newConstraints;
 
     Base::Vector3d startPoint, endPoint, splitPoint;
@@ -3687,15 +3690,10 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
         // create new arc and restrict it
         auto newCurve = curve->createArc(startParam, endParam);
-        int newId(GeoEnum::GeoUndef);
-        newId = addGeometry(std::move(newCurve));// after here newCurve is a shell
-        if (newId < 0) {
-            return false;
-        }
-
-        newIds.push_back(newId);
-        setConstruction(newId, GeometryFacade::getConstruction(curve));
-        exposeInternalGeometry(newId);
+        newGeos.push_back(newCurve);
+        newIds.push_back(GeoId);
+        // setConstruction(newId, GeometryFacade::getConstruction(curve));
+        // exposeInternalGeometry(newId);
 
         return true;
     };
@@ -3717,31 +3715,24 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
         // create new curves
         auto newCurve = curve->createArc(startParam, splitParam);
-        int newId(GeoEnum::GeoUndef);
-        newId = addGeometry(std::move(newCurve));
-        if (newId < 0) {
-            return false;
-        }
-        newIds.push_back(newId);
-        setConstruction(newId, GeometryFacade::getConstruction(curve));
-        exposeInternalGeometry(newId);
+        newGeos.push_back(newCurve);
+        newIds.push_back(GeoId);
+        // setConstruction(newId, GeometryFacade::getConstruction(curve));
+        // exposeInternalGeometry(newId);
 
         // the "second" half
         newCurve = curve->createArc(splitParam, endParam);
-        newId = addGeometry(std::move(newCurve));
-        if (newId < 0) {
-            return false;
-        }
-        newIds.push_back(newId);
-        setConstruction(newId, GeometryFacade::getConstruction(curve));
-        exposeInternalGeometry(newId);
+        newGeos.push_back(newCurve);
+        newIds.push_back(getHighestCurveIndex() + 1);
+        // setConstruction(newId, GeometryFacade::getConstruction(curve));
+        // exposeInternalGeometry(newId);
 
         return true;
     };
 
     bool ok = false;
     if (originalIsPeriodic) {
-        ok = createGeosFromPeriodic(static_cast<const Part::GeomBoundedCurve*>(geo));
+        ok = createGeosFromPeriodic(static_cast<const Part::GeomCurve*>(geo));
     }
     else {
         ok = createGeosFromNonPeriodic(static_cast<const Part::GeomBoundedCurve*>(geo));
@@ -3754,6 +3745,33 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
         return -1;
     }
+
+    std::vector<int> idsOfOldConstraints;
+    getConstraintIndices(GeoId, idsOfOldConstraints);
+
+    const auto& allConstraints = this->Constraints.getValues();
+
+    // keep constraints on internal geometries so they are deleted
+    // when the old curve is deleted
+    idsOfOldConstraints.erase(
+        std::remove_if(idsOfOldConstraints.begin(),
+                       idsOfOldConstraints.end(),
+                       [&GeoId, &allConstraints](const auto& i) {
+                           return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
+                       }),
+        idsOfOldConstraints.end());
+
+    for (const auto& oldConstrId: idsOfOldConstraints) {
+        Constraint* con = allConstraints[oldConstrId];
+        deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+    }
+
+    // `if (noRecomputes)` results in a failed test (`testPD_TNPSketchPadSketchSplit(self)`)
+    // TODO: figure out why, and if that check must be used
+    solve();
+    // This also seems to reset SketchObject::Geometry.
+    // TODO: figure out why, and if that check must be used
+    geo = getGeometry(GeoId);
 
     if (!originalIsPeriodic) {
         Constraint* joint = new Constraint();
@@ -3784,38 +3802,18 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         transferConstraints(GeoId, PointPos::mid, newIds.front(), PointPos::mid);
     }
 
-    std::vector<int> idsOfOldConstraints;
-    getConstraintIndices(GeoId, idsOfOldConstraints);
-
-    const auto& allConstraints = this->Constraints.getValues();
-
-    // keep constraints on internal geometries so they are deleted
-    // when the old curve is deleted
-    idsOfOldConstraints.erase(
-        std::remove_if(idsOfOldConstraints.begin(),
-                       idsOfOldConstraints.end(),
-                       [&allConstraints](const auto& i) {
-                           return allConstraints[i]->Type == InternalAlignment;
-                       }),
-        idsOfOldConstraints.end());
-
-    for (const auto& oldConstrId: idsOfOldConstraints) {
-        Constraint* con = allConstraints[oldConstrId];
-        deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
-    }
-
-    if (noRecomputes) {
-        solve();
-    }
-
     delConstraints(std::move(idsOfOldConstraints));
+    replaceGeometries({GeoId}, newGeos);
     addConstraints(newConstraints);
+
+    // `if (noRecomputes)` results in a failed test (`testPD_TNPSketchPadSketchSplit(self)`)
+    // TODO: figure out why, and if that check must be used
+    solve();
 
     for (auto& cons : newConstraints) {
         delete cons;
     }
 
-    delGeometry(GeoId);
     return 0;
 }
 
@@ -3912,7 +3910,6 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
     std::vector<double> newWeights(std::move(weights1));
     std::vector<double> newKnots(std::move(knots1));
     std::vector<int> newMults(std::move(mults1));
-
 
     poles2.erase(poles2.begin());
     if (makeC1Continuous)
