@@ -80,7 +80,7 @@ void ArrayDelegate::paint(QPainter* painter,
         }
         painter->drawText(option.rect, 0, text);
         painter->restore();
-    }
+}
     else {
         QStyledItemDelegate::paint(painter, option, index);
     }

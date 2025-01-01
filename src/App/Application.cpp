@@ -2294,7 +2294,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 #endif
     ;
 
-   
+
     //0000723: improper handling of qt specific command line arguments
     std::vector<std::string> args;
     bool merge=false;
@@ -2593,7 +2593,7 @@ void Application::initConfig(int argc, char ** argv)
 
     // extract home paths
     ExtractUserPath();
-    
+
     if (vm.count("safe-mode")) {
         SafeMode::StartSafeMode();
     }

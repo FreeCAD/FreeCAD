@@ -530,7 +530,7 @@ void InteractiveScale::setDistance(const SbVec3f& pos3d)
 {
     Base::Quantity quantity;
     quantity.setValue(getDistance(pos3d));
-    quantity.setUnit(Base::Unit::Length);
+    quantity.setUnit(Base::Units::Length);
 
     // Update the displayed distance
     double factor {};

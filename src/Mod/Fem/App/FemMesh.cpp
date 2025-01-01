@@ -68,6 +68,7 @@
 #include <Base/Stream.h>
 #include <Base/TimeInfo.h>
 #include <Base/Writer.h>
+#include "Base/Units.h"
 #include <Mod/Mesh/App/Core/Iterator.h>
 
 #include "FemMesh.h"
@@ -2616,7 +2617,7 @@ Base::Quantity FemMesh::getVolume() const
             1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
     }
 
-    return Base::Quantity(volume, Unit::Volume);
+    return Base::Quantity(volume, Units::Volume);
 }
 
 int FemMesh::addGroup(const std::string TypeString, const std::string Name, const int theId)

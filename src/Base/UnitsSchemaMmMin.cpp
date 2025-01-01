@@ -29,6 +29,7 @@
 #endif
 
 #include "UnitsSchemaMmMin.h"
+#include "Units.h"
 
 using namespace Base;
 
@@ -36,9 +37,9 @@ std::string
 UnitsSchemaMmMin::schemaTranslate(const Quantity& quant, double& factor, std::string& unitString)
 {
     static std::array<std::pair<Unit, std::pair<std::string, double>>, 3> unitSpecs {{
-        {Unit::Length, {"mm", 1.0}},
-        {Unit::Angle, {"\xC2\xB0", 1.0}},
-        {Unit::Velocity, {"mm/min", 1.0 / 60.0}},
+        {Units::Length, {"mm", 1.0}},
+        {Units::Angle, {"\xC2\xB0", 1.0}},
+        {Units::Velocity, {"mm/min", 1.0 / 60.0}},
     }};
 
     const auto unit = quant.getUnit();

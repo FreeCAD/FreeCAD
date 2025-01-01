@@ -30,6 +30,7 @@
 #endif
 
 #include "UnitsSchemaFemMilliMeterNewton.h"
+#include "Units.h"
 
 using namespace Base;
 
@@ -38,8 +39,8 @@ std::string UnitsSchemaFemMilliMeterNewton::schemaTranslate(const Quantity& quan
                                                             std::string& unitString)
 {
     static std::array<std::pair<Unit, std::pair<std::string, double>>, 2> unitSpecs {{
-        {Unit::Length, {"mm", 1.0}},
-        {Unit::Mass, {"t", 1e3}},
+        {Units::Length, {"mm", 1.0}},
+        {Units::Mass, {"t", 1e3}},
     }};
 
     const auto unit = quant.getUnit();

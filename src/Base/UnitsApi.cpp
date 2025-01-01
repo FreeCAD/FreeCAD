@@ -113,7 +113,7 @@ void UnitsApi::setSchema(UnitSystem system)
 {
     if (UserPrefSystem) {
         UserPrefSystem->resetSchemaUnits();  // for schemas changed the Quantity constants
-    }
+}
 
     UserPrefSystem = createSchema(system);
     currentSystem = system;

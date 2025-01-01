@@ -140,7 +140,7 @@ private:
 
                 CreateAndDrawShapeGeometry();
 
-                toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
+                toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Units::Angle);
 
                 seekAndRenderAutoConstraint(sugConstraints[2],
                                             onSketchPos,
@@ -695,7 +695,7 @@ void DSHArcSlotController::adaptParameters(Base::Vector2d onSketchPos)
             }
             double range = Base::toDegrees(handler->startAngle);
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Units::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->centerPoint);
@@ -709,7 +709,7 @@ void DSHArcSlotController::adaptParameters(Base::Vector2d onSketchPos)
             double range = Base::toDegrees(handler->arcAngle);
 
             if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Fifth, range, Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fifth, range, Base::Units::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->centerPoint);

@@ -520,8 +520,8 @@ void DSHTranslateController::configureToolWidget()
 
     toolWidget->setParameter(OnViewParameter::First, 0.0);
     toolWidget->setParameter(OnViewParameter::Second, 1.0);
-    toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
-    toolWidget->configureParameterUnit(OnViewParameter::Second, Base::Unit());
+    toolWidget->configureParameterUnit(OnViewParameter::First, Base::Units::NullUnit);
+    toolWidget->configureParameterUnit(OnViewParameter::Second, Base::Units::NullUnit);
     toolWidget->configureParameterMin(OnViewParameter::First, 0.0);      // NOLINT
     toolWidget->configureParameterMin(OnViewParameter::Second, 0.0);     // NOLINT
     toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);   // NOLINT
@@ -650,7 +650,7 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
             double range = angle * 180 / M_PI;
 
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Units::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->referencePoint);
@@ -672,7 +672,7 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
             double range = angle * 180 / M_PI;
 
             if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Sixth, range, Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Sixth, range, Base::Units::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->referencePoint);

@@ -145,7 +145,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     label->string = " ";
 
     spinBox = new QuantitySpinBox(mdi);
-    spinBox->setUnit(Base::Unit::Length);
+    spinBox->setUnit(Base::Units::Length);
     spinBox->setMinimum(-INT_MAX);
     spinBox->setMaximum(INT_MAX);
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);

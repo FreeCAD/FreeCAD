@@ -888,7 +888,7 @@ void DSHBSplineController::configureToolWidget()
         toolWidget->setParameterLabel(
             WParameter::First,
             QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')"));
-        toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
+        toolWidget->configureParameterUnit(WParameter::First, Base::Units::NullUnit);
         toolWidget->configureParameterMin(WParameter::First, 1.0);  // NOLINT
         toolWidget->configureParameterMax(WParameter::First, Geom_BSplineCurve::MaxDegree());
         toolWidget->configureParameterDecimals(WParameter::First, 0);
@@ -1041,7 +1041,7 @@ void DSHBSplineController::adaptParameters(Base::Vector2d onSketchPos)
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth,
                                         Base::toDegrees(range),
-                                        Base::Unit::Angle);
+                                        Base::Units::Angle);
             }
 
             onViewParameters[OnViewParameter::Third]->setPoints(start, end);

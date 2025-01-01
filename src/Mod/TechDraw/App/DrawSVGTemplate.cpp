@@ -183,13 +183,13 @@ void DrawSVGTemplate::extractTemplateAttributes(QDomDocument& templateDocument)
     // Obtain the width
     QString str = docElement.attribute(QString::fromLatin1("width"));
     quantity = Base::Quantity::parse(str.toStdString());
-    quantity.setUnit(Base::Unit::Length);
+    quantity.setUnit(Base::Units::Length);
 
     Width.setValue(quantity.getValue());
 
     str = docElement.attribute(QString::fromLatin1("height"));
     quantity = Base::Quantity::parse(str.toStdString());
-    quantity.setUnit(Base::Unit::Length);
+    quantity.setUnit(Base::Units::Length);
 
     Height.setValue(quantity.getValue());
 

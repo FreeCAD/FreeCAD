@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/Tools.h>
+#include "Base/Units.h"
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Preferences.h>
@@ -46,7 +47,7 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp(QWidget* parent)
     , ui(new Ui_DlgPrefsTechDrawAnnotationImp)
 {
     ui->setupUi(this);
-    ui->pdsbBalloonKink->setUnit(Base::Unit::Length);
+    ui->pdsbBalloonKink->setUnit(Base::Units::Length);
     ui->pdsbBalloonKink->setMinimum(0);
 
     // stylesheet override to defeat behaviour of non-editable combobox to ignore

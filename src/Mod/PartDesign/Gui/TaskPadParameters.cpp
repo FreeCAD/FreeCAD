@@ -92,7 +92,7 @@ void TaskPadParameters::onModeChanged(int index)
     case Mode::Dimension:
         pcPad->Type.setValue("Length");
         // Avoid error message
-        if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Unit::Length))
+        if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Units::Length))
             ui->lengthEdit->setValue(5.0);
         break;
     case Mode::ToLast:
