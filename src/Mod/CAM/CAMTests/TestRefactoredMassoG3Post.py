@@ -261,7 +261,7 @@ M2
         args = "--no-header --no-show-editor"
         gcode = postprocessor.export(postables, "-", args)
         self.assertEqual(gcode.splitlines()[6], "M5")
-        self.assertEqual(gcode.splitlines()[7], "M6 T2")
+        self.assertEqual(gcode.splitlines()[7], "T2 M6")
         self.assertEqual(gcode.splitlines()[8], "G43 H2")
         self.assertEqual(gcode.splitlines()[9], "M3 S3000")
 
