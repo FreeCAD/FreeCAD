@@ -22,6 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+# ***************************************************************************
+# *  Note: This file is a modified clone of TestRefactoredLinuxCNCPost.py    *
+# *        any changes to this file should be applied to the other          *
+# *                                                                         *
+# *                                                                         *
+# ***************************************************************************
+
 from importlib import reload
 
 import FreeCAD
