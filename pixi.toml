@@ -75,6 +75,7 @@ sed = "*"
 sysroot_linux-64 = "*"
 xorg-x11-server-common-cos6-x86_64 = "*"
 xorg-x11-server-xvfb-cos6-x86_64 = "*"
+xorg-xproto = "*"
 
 ## Linux Dependencies (aarch64)
 [target.linux-aarch64.dependencies]
@@ -108,6 +109,7 @@ sed = "*"
 sysroot_linux-aarch64 = "*"
 xorg-x11-server-common-cos7-aarch64 = "*"
 xorg-x11-server-xvfb-cos7-aarch64 = "*"
+xorg-xproto = "*"
 
 ## macOS Dependencies (Intel)
 [target.osx-64.dependencies]
