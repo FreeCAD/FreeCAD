@@ -1874,7 +1874,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtabwidget-and-qtabb
 --------------------------------------------------------------------------- */
 QTabBar, QDockWidget QTabBar {
   qproperty-drawBase: 0;
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   /* left: 5px; move to the right by 5px - removed for fix */
 }
 
