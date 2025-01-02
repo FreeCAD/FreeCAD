@@ -118,7 +118,7 @@ if(PYCXX_FOUND)
         ${PYCXX_SOURCE_DIR}/IndirectPythonInterface.cxx
     )
 
-    #set old 6.2 pycxx compatibility  
+    #set old 6.2 pycxx compatibility
     list(APPEND PYCXX_SOURCES ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx)
     add_definitions(-DPYCXX_6_2_COMPATIBILITY)
     #end old compatibility

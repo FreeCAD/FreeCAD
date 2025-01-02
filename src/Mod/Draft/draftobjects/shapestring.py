@@ -33,12 +33,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import Part
-
 from draftgeoutils import faces
+from draftobjects.base import DraftObject
+from draftutils import gui_utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-
-from draftobjects.base import DraftObject
 
 
 class ShapeString(DraftObject):
@@ -104,9 +103,11 @@ class ShapeString(DraftObject):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        if hasattr(obj, "ObliqueAngle"): # several more properties were added
-            return
-        self.update_properties_1v0(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_shapestring", vp_class="ViewProviderShapeString"
+        )
+        if not hasattr(obj, "ObliqueAngle"): # several more properties were added
+            self.update_properties_1v0(obj)
 
     def update_properties_1v0(self, obj):
         """Update view properties."""

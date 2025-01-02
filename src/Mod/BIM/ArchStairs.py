@@ -268,6 +268,11 @@ class _Stairs(ArchComponent.Component):
         if self.clone(obj):
             return
 
+        # Stairs can do without Base.  Base validity is tested in code below.
+        # Remarked out ensureBase() below
+        #if not self.ensureBase(obj):
+        #    return
+
         self.steps = []
         self.risers = []
 

@@ -32,7 +32,7 @@
 # include <TopoDS.hxx>
 #endif
 
-#include "App/OriginFeature.h"
+#include "App/Datums.h"
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ElementNamingUtils.h>
@@ -150,7 +150,7 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-TopoShape Feature::getSolid(const TopoShape& shape)
+TopoShape Feature::getSolid(const TopoShape& shape) const
 {
     if (shape.isNull()) {
         throw Part::NullShapeException("Null shape");
@@ -226,7 +226,7 @@ bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_Shape
 }
 
 
-Feature::SingleSolidRuleMode Feature::singleSolidRuleMode()
+Feature::SingleSolidRuleMode Feature::singleSolidRuleMode() const
 {
     auto body = getFeatureBody();
 
@@ -350,7 +350,7 @@ PyObject* Feature::getPyObject()
 
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
-    return feature->isDerivedFrom<App::OriginFeature>() ||
+    return feature->isDerivedFrom<App::DatumElement>() ||
            feature->isDerivedFrom<Part::Datum>();
 }
 

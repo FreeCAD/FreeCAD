@@ -67,7 +67,7 @@ bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
 
 void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
 {
-    auto pcConstraint = static_cast<Fem::ConstraintPressure*>(this->getObject());
+    auto pcConstraint = this->getObject<Fem::ConstraintPressure>();
 
     if (prop == &pcConstraint->Reversed) {
         updateSymbol();
@@ -81,7 +81,7 @@ void ViewProviderFemConstraintPressure::transformSymbol(const Base::Vector3d& po
                                                         const Base::Vector3d& normal,
                                                         SbMatrix& mat) const
 {
-    auto obj = static_cast<const Fem::ConstraintPressure*>(this->getObject());
+    auto obj = this->getObject<const Fem::ConstraintPressure>();
     float rotAngle = obj->Reversed.getValue() ? F_PI : 0.0f;
     float s = obj->getScaleFactor();
     // Symbol length from .iv file

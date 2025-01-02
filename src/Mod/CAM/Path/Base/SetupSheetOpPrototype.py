@@ -224,6 +224,9 @@ class OpPrototype(object):
     def setEditorMode(self, name, mode):
         self.properties[name].setEditorMode(mode)
 
+    def setPropertyStatus(self, name, status):
+        pass
+
     def getProperty(self, name):
         return self.properties[name]
 

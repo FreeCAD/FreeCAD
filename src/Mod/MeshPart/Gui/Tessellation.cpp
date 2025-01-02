@@ -384,7 +384,7 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
                 }
 
                 vpmesh->highlightSegments(diff_col);
-                addFaceColors(dynamic_cast<Mesh::Feature*>(vpmesh->getObject()), diff_col);
+                addFaceColors(vpmesh->getObject<Mesh::Feature>(), diff_col);
             }
         }
     }

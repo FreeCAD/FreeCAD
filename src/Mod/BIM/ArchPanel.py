@@ -115,6 +115,8 @@ class _Panel(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         layers = []
         length = 0
@@ -471,12 +473,12 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
                             cols = []
                             for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
-                                c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
+                                c = (c[0],c[1],c[2],1.0-obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:
                                     if "(" in mat.Material['DiffuseColor']:
                                         c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                 if 'Transparency' in mat.Material:
-                                    c = (c[0],c[1],c[2],float(mat.Material['Transparency']))
+                                    c = (c[0],c[1],c[2],1.0-float(mat.Material['Transparency']))
                                 cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
                             if obj.ViewObject.DiffuseColor != cols:
                                 obj.ViewObject.DiffuseColor = cols

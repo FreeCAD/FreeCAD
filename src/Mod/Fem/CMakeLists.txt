@@ -646,6 +646,11 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_solver_ccxtools.py
 )
 
+SET(FemGuiPreferencePages_SRCS
+    fempreferencepages/__init__.py
+    fempreferencepages/dlg_settings_netgen.py
+)
+
 SET(FemAllGuiScripts
     ${FemGuiBaseModules_SRCS}
     ${FemGuiObjects_SRCS}
@@ -653,6 +658,7 @@ SET(FemAllGuiScripts
     ${FemGuiTests_SRCS}
     ${FemGuiUtils_SRCS}
     ${FemGuiViewProvider_SRCS}
+    ${FemGuiPreferencePages_SRCS}
 )
 
 if(BUILD_GUI)
@@ -669,4 +675,5 @@ if(BUILD_GUI)
     INSTALL(FILES ${FemGuiTests_SRCS} DESTINATION Mod/Fem/femtest/gui/)
     INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
     INSTALL(FILES ${FemGuiViewProvider_SRCS} DESTINATION Mod/Fem/femviewprovider/)
+    INSTALL(FILES ${FemGuiPreferencePages_SRCS} DESTINATION Mod/Fem/fempreferencepages/)
 endif(BUILD_GUI)

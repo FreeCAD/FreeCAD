@@ -61,7 +61,6 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
@@ -1861,8 +1860,7 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
         suffix = uniqueName.substr(baseName.length(), uniqueName.length() - baseName.length());
     }
     QString qTranslated = qApp->translate(context.c_str(), baseName.c_str());
-    std::string ssTranslated = Base::Tools::toStdString(qTranslated);
-    return ssTranslated + suffix;
+    return qTranslated.toStdString() + suffix;
 }
 
 // true if owner->element is a cosmetic vertex

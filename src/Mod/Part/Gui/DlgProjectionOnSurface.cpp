@@ -413,7 +413,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(
     std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx();
     if (!selObj.empty()) {
         for (auto it = selObj.begin(); it != selObj.end(); ++it) {
-            auto aPart = dynamic_cast<Part::Feature*>(it->getObject());
+            auto aPart = it->getObject<Part::Feature>();
             if (!aPart) {
                 continue;
             }

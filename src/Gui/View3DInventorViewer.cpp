@@ -35,6 +35,8 @@
 # include <GL/glu.h>
 # endif
 
+# include <fmt/format.h>
+
 # include <Inventor/SbBox.h>
 # include <Inventor/SoEventManager.h>
 # include <Inventor/SoPickedPoint.h>
@@ -107,6 +109,7 @@
 #include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "Selection.h"
+#include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCOffscreenRenderer.h"
@@ -2360,6 +2363,7 @@ void View3DInventorViewer::renderScene()
     // Render our scenegraph with the image.
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
     SoState* state = glra->getState();
+    SoDevicePixelRatioElement::set(state, devicePixelRatio());
     SoGLWidgetElement::set(state, qobject_cast<QtGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(state, glra);
     SoGLVBOActivatedElement::set(state, this->vboEnabled);
@@ -2508,7 +2512,7 @@ void View3DInventorViewer::printDimension() const
     float fWidth = -1.0;
     getDimensions(fHeight, fWidth);
 
-    QString dim;
+    std::string dim;
 
     if (fWidth >= 0.0 && fHeight >= 0.0) {
         // Translate screen units into user's unit schema
@@ -2516,14 +2520,14 @@ void View3DInventorViewer::printDimension() const
         Base::Quantity qHeight(Base::Quantity::MilliMetre);
         qWidth.setValue(fWidth);
         qHeight.setValue(fHeight);
-        QString wStr = Base::UnitsApi::schemaTranslate(qWidth);
-        QString hStr = Base::UnitsApi::schemaTranslate(qHeight);
+        auto wStr = Base::UnitsApi::schemaTranslate(qWidth);
+        auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
         // Create final string and update window
-        dim = QString::fromLatin1("%1 x %2").arg(wStr, hStr);
+        dim = fmt::format("{} x {}", wStr, hStr);
     }
 
-    getMainWindow()->setPaneText(2, dim);
+    getMainWindow()->setPaneText(2, QString::fromStdString(dim));
 }
 
 void View3DInventorViewer::selectAll()

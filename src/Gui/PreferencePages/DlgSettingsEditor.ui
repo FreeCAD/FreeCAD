@@ -205,7 +205,7 @@
          <string>Keep tabs</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>Tabs</cstring>
@@ -225,6 +225,9 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>Spaces</cstring>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>

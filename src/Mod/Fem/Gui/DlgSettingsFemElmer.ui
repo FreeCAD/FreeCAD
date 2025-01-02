@@ -286,6 +286,53 @@ will be merged to make the volume boundaries invisible.</string>
     </widget>
    </item>
    <item row="2" column="0">
+    <widget class="QGroupBox" name="gb_elmer_results">
+     <property name="title">
+      <string>Results</string>
+     </property>
+     <layout class="QGridLayout" name="gdl_results">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="ckb_elmer_format">
+        <property name="toolTip">
+         <string>Save result in binary format</string>
+        </property>
+        <property name="text">
+         <string>Use binary format</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BinaryOutput</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Fem/Elmer</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="ckb_elmer_geom_id">
+        <property name="toolTip">
+         <string>Save the index of geometric entities</string>
+        </property>
+        <property name="text">
+         <string>Save geometry IDs</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SaveGeometryIndex</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Fem/Elmer</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

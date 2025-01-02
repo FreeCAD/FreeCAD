@@ -1,6 +1,6 @@
 # ASME Y14.2-2008 line element definitions
 # NOTE: ASME Y14.2-2008 explicitly does not define the lengths of line elements,
-# but recommends lengths that "depict the appropriate line convention commensurate 
+# but recommends lengths that "depict the appropriate line convention commensurate
 # with the drawing size and scale".   The values used here are generally those
 # from ISO128.
 # NOTE: saving this file from a spreadsheet program (like LibreOffice Calc) may

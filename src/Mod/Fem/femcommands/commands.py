@@ -893,7 +893,7 @@ class _ResultsPurge(CommandManager):
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ResultsPurge", "Purges all results from active analysis"
         )
-        self.is_active = "with_results"
+        self.is_active = "with_analysis"
 
     def Activated(self):
         import femresult.resulttools as resulttools
@@ -1076,7 +1076,33 @@ class _SolverElmer(CommandManager):
         self.accel = "S, E"
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_SolverElmer", "Creates a FEM solver Elmer")
         self.is_active = "with_analysis"
-        self.do_activated = "add_obj_on_gui_expand_noset_edit"
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem SolverElmer")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.addModule("FemGui")
+        # expand parent obj in tree view if selected
+        expandParentObject()
+        # add the object
+        FreeCADGui.doCommand("ObjectsFem.makeSolverElmer(FreeCAD.ActiveDocument)")
+        # select only added object
+        FreeCADGui.doCommand(
+            "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+        )
+        elmer_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
+        bin_out = elmer_prefs.GetBool("BinaryOutput", False)
+        save_id = elmer_prefs.GetBool("SaveGeometryIndex", False)
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument.ActiveObject.BinaryOutput = {}".format(bin_out)
+        )
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument.ActiveObject.SaveGeometryIndex = {}".format(save_id)
+        )
+
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.doCommand(
+            "FreeCADGui.Selection.addSelection(FreeCAD.ActiveDocument.ActiveObject)"
+        )
 
 
 class _SolverMystran(CommandManager):

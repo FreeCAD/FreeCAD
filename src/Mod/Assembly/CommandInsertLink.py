@@ -43,6 +43,43 @@ __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
 
+tooltip = (
+    "<p>"
+    + QT_TRANSLATE_NOOP(
+        "Assembly_InsertLink",
+        "Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is <b>open in the current session</b>",
+    )
+    + "</p><p><ul><li>"
+    + QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert by left clicking items in the list.")
+    + "</li><li>"
+    + QT_TRANSLATE_NOOP("Assembly_InsertLink", "Remove by right clicking items in the list.")
+    + "</li><li>"
+    + QT_TRANSLATE_NOOP(
+        "Assembly_InsertLink",
+        "Press shift to add several instances of the component while clicking on the view.",
+    )
+    + "</li></ul></p>"
+)
+
+
+class CommandGroupInsert:
+    def GetCommands(self):
+        return ("Assembly_InsertLink", "Assembly_InsertNewPart")
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+
+        return {
+            "Pixmap": "Assembly_InsertLink",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_Insert", "Insert"),
+            "ToolTip": tooltip,
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return UtilsAssembly.isAssemblyCommandActive()
+
+
 class CommandInsertLink:
     def __init__(self):
         pass
@@ -52,23 +89,7 @@ class CommandInsertLink:
             "Pixmap": "Assembly_InsertLink",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Component"),
             "Accel": "I",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_InsertLink",
-                "Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is <b>open in the current session</b>",
-            )
-            + "</p><p><ul><li>"
-            + QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert by left clicking items in the list.")
-            + "</li><li>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_InsertLink", "Remove by right clicking items in the list."
-            )
-            + "</li><li>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_InsertLink",
-                "Press shift to add several instances of the component while clicking on the view.",
-            )
-            + "</li></ul></p>",
+            "ToolTip": tooltip,
             "CmdType": "ForEdit",
         }
 
@@ -611,3 +632,4 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
 if App.GuiUp:
     Gui.addCommand("Assembly_InsertLink", CommandInsertLink())
+    Gui.addCommand("Assembly_Insert", CommandGroupInsert())

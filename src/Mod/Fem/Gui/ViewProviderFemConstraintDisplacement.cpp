@@ -70,8 +70,7 @@ bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
 
 void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop)
 {
-    Fem::ConstraintDisplacement* pcConstraint =
-        static_cast<Fem::ConstraintDisplacement*>(this->getObject());
+    Fem::ConstraintDisplacement* pcConstraint = this->getObject<Fem::ConstraintDisplacement>();
 
     if (prop == &pcConstraint->xFree) {
         auto sw = static_cast<SoSwitch*>(getSymbolSeparator()->getChild(0));

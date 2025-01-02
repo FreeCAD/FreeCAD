@@ -57,6 +57,7 @@ void DlgSettingsImp::saveSettings()
     ui->quoteCharLineEdit->onSave();
     ui->escapeCharLineEdit->onSave();
     ui->formatString->onSave();
+    ui->dZLSpinBox->onSave();
     ui->checkBoxShowAlias->onSave();
 }
 
@@ -94,6 +95,7 @@ void DlgSettingsImp::loadSettings()
     ui->quoteCharLineEdit->onRestore();
     ui->escapeCharLineEdit->onRestore();
     ui->formatString->onRestore();
+    ui->dZLSpinBox->onRestore();
     ui->checkBoxShowAlias->onRestore();
 }
 

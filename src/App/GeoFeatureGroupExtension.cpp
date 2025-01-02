@@ -30,7 +30,7 @@
 #include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "Origin.h"
-#include "OriginFeature.h"
+#include "Datums.h"
 #include "OriginGroupExtension.h"
 
 
@@ -88,7 +88,7 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     }
 
     // we will find origins, but not origin features
-    if (obj->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
+    if (obj->isDerivedFrom(App::DatumElement::getClassTypeId())) {
         return OriginGroupExtension::getGroupOfObject(obj);
     }
 
@@ -305,15 +305,11 @@ void GeoFeatureGroupExtension::getCSOutList(const App::DocumentObject* obj,
     // expressions, also we only want links with scope Local
     auto result = getScopedObjectsFromLinks(obj, LinkScope::Local);
 
-    // we remove all links to origin features and origins, they belong to a CS too and can't be
-    // moved
-    result.erase(std::remove_if(result.begin(),
-                                result.end(),
-                                [](App::DocumentObject* obj) -> bool {
-                                    return (obj->isDerivedFrom(App::OriginFeature::getClassTypeId())
-                                            || obj->isDerivedFrom(App::Origin::getClassTypeId()));
-                                }),
-                 result.end());
+    //we remove all links to origin features and origins, they belong to a CS too and can't be moved
+    result.erase(std::remove_if(result.begin(), result.end(), [](App::DocumentObject* obj)->bool {
+        return (obj->isDerivedFrom(App::DatumElement::getClassTypeId()) ||
+                obj->isDerivedFrom(App::Origin::getClassTypeId()));
+    }), result.end());
 
     vec.insert(vec.end(), result.begin(), result.end());
 

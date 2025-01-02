@@ -24,11 +24,16 @@
 
 """ Utilities to work across different platforms, providers and python versions """
 
+from datetime import datetime
+from typing import Optional, Any
+import ctypes
 import os
 import platform
+import re
 import shutil
 import stat
 import subprocess
+import time
 import re
 import ctypes
 from typing import Optional, Any
@@ -38,9 +43,10 @@ from urllib.parse import urlparse
 try:
     from PySide import QtCore, QtGui, QtWidgets
 except ImportError:
-    QtCore = None
-    QtWidgets = None
-    QtGui = None
+    try:
+        from PySide6 import QtCore, QtGui, QtWidgets
+    except ImportError:
+        from PySide2 import QtCore, QtGui, QtWidgets
 
 import addonmanager_freecad_interface as fci
 
@@ -397,7 +403,7 @@ def blocking_get(url: str, method=None) -> bytes:
     return p
 
 
-def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
+def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.CompletedProcess:
     """Wrap subprocess call so it can be interrupted gracefully."""
     creation_flags = 0
     if hasattr(subprocess, "CREATE_NO_WINDOW"):
@@ -417,19 +423,59 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
     stdout = ""
     stderr = ""
     return_code = None
+    start_time = time.time()
     while return_code is None:
         try:
-            stdout, stderr = p.communicate(timeout=10)
+            # one second timeout allows interrupting the run once per second
+            stdout, stderr = p.communicate(timeout=1)
             return_code = p.returncode
         except subprocess.TimeoutExpired:
-            if QtCore.QThread.currentThread().isInterruptionRequested():
+            if (
+                hasattr(QtCore, "QThread")
+                and QtCore.QThread.currentThread().isInterruptionRequested()
+            ):
                 p.kill()
                 raise ProcessInterrupted()
+            if time.time() - start_time >= timeout_secs:  # The real timeout
+                p.kill()
+                stdout, stderr = p.communicate()
+                return_code = -1
     if return_code is None or return_code != 0:
         raise subprocess.CalledProcessError(
             return_code if return_code is not None else -1, args, stdout, stderr
         )
     return subprocess.CompletedProcess(args, return_code, stdout, stderr)
+
+
+def process_date_string_to_python_datetime(date_string: str) -> datetime:
+    """For modern macros the expected date format is ISO 8601, YYYY-MM-DD. For older macros this standard was not always
+    used, and various orderings and separators were used. This function tries to match the majority of those older
+    macros. Commonly-used separators are periods, slashes, and dashes."""
+
+    def raise_error(bad_string: str, root_cause: Exception = None):
+        raise ValueError(
+            f"Unrecognized date string '{bad_string}' (expected YYYY-MM-DD)"
+        ) from root_cause
+
+    split_result = re.split(r"[ ./-]+", date_string.strip())
+    if len(split_result) != 3:
+        raise_error(date_string)
+
+    try:
+        split_result = [int(x) for x in split_result]
+        # The earliest possible year an addon can be created or edited is 2001:
+        if split_result[0] > 2000:
+            return datetime(split_result[0], split_result[1], split_result[2])
+        elif split_result[2] > 2000:
+            # Generally speaking it's not possible to distinguish between DD-MM and MM-DD, so try the first, and
+            # only if that fails try the second
+            if split_result[1] <= 12:
+                return datetime(split_result[2], split_result[1], split_result[0])
+            return datetime(split_result[2], split_result[0], split_result[1])
+        else:
+            raise ValueError(f"Invalid year in date string '{date_string}'")
+    except ValueError as exception:
+        raise_error(date_string, exception)
 
 
 def get_main_am_window():

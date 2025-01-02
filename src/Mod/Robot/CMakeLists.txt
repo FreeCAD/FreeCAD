@@ -44,10 +44,12 @@ fc_target_copy_resource(RobotScripts
     ${CMAKE_BINARY_DIR}/Mod/Robot
     ${Robot_Scripts})
 
+if (DEFINED Robot_Resources)
 fc_target_copy_resource(RobotScripts
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot
     ${Robot_Resources})
+endif()
 
 INSTALL(
     FILES
@@ -56,6 +58,7 @@ INSTALL(
         Mod/Robot
 )
 
+if (DEFINED Robot_Resources)
 INSTALL(
     DIRECTORY
         Lib
@@ -65,3 +68,4 @@ INSTALL(
     PATTERN "*.pdf" EXCLUDE
     PATTERN "testprog.*" EXCLUDE
 )
+endif()

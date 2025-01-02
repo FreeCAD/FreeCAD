@@ -41,7 +41,7 @@ ViewProviderScale::~ViewProviderScale() = default;
 std::vector<App::DocumentObject*> ViewProviderScale::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Scale*>(getObject())->Base.getValue());
+    temp.push_back(getObject<Part::Scale>()->Base.getValue());
 
     return temp;
 }

@@ -1647,6 +1647,11 @@ void FemMesh::read(const char* FileName)
     }
 }
 
+void FemMesh::writeVTK(const std::string& fileName, bool highest) const
+{
+    FemVTKTools::writeVTKMesh(fileName.c_str(), this, highest);
+}
+
 void FemMesh::writeABAQUS(const std::string& Filename,
                           int elemParam,
                           bool groupParam,
@@ -2272,19 +2277,14 @@ void FemMesh::write(const char* FileName) const
     }
     else if (File.hasExtension("inp")) {
         Base::Console().Log("FEM mesh object will be exported to inp format.\n");
-        // get Abaqus inp prefs
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
-        int elemParam = hGrp->GetInt("AbaqusElementChoice", 1);
-        bool groupParam = hGrp->GetBool("AbaqusWriteGroups", false);
         // write ABAQUS Output
-        writeABAQUS(File.filePath(), elemParam, groupParam);
+        writeABAQUS(File.filePath(), 1, false);
     }
 #ifdef FC_USE_VTK
     else if (File.hasExtension({"vtk", "vtu"})) {
         Base::Console().Log("FEM mesh object will be exported to either vtk or vtu format.\n");
         // write unstructure mesh to VTK format *.vtk and *.vtu
-        FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
+        writeVTK(File.filePath().c_str());
     }
 #endif
     else if (File.hasExtension("z88")) {

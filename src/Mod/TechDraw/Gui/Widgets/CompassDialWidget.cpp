@@ -31,7 +31,6 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Base/Console.h>
-#include <Base/Tools.h>
 
 #include "CompassDialWidget.h"
 
@@ -151,7 +150,7 @@ void CompassDialWidget::drawMarkings(QPainter& painter)
         if (iDegree % 45 == 0) {
             //Named direction (every 45°)
             painter.drawLine(0, -40, 0, -50);    //this has to depend on m_rect or size?
-            QString qPointText = Base::Tools::fromStdString(CompassPointText.at(iDegree));
+            QString qPointText = QString::fromStdString(CompassPointText.at(iDegree));
             painter.drawText(-metrics.boundingRect(qPointText).width() / 2.0, -52, qPointText);
             // what is -52? line end point y = -50 + 2 for margin?
         } else {

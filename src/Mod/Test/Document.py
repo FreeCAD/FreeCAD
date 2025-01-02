@@ -44,6 +44,16 @@ class Proxy:
         self.Dictionary = data
 
 
+class MyFeature:
+    def __init__(self, obj):
+        obj.Proxy = self
+        obj.addProperty("App::PropertyLinkList", "propLink")
+
+    def onDocumentRestored(self, obj):
+        if hasattr(obj, "propLink"):
+            obj.removeProperty("propLink")
+
+
 class DocumentBasicCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("CreateTest")
@@ -55,6 +65,15 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
         self.Doc = FreeCAD.open(SaveName)
         return self.Doc
+
+    def testIssue18601(self):
+        lnk = self.Doc.addObject("App::FeaturePython", "MyLink")
+        obj = self.Doc.addObject("App::FeaturePython", "MyFeature")
+        fea = MyFeature(obj)
+        obj.propLink = [lnk]
+        doc = self.saveAndRestore()
+        FreeCAD.closeDocument(doc.Name)
+        self.Doc = FreeCAD.newDocument("CreateTest")
 
     def testAccessByNameOrID(self):
         obj = self.Doc.addObject("App::DocumentObject", "MyName")
@@ -338,17 +357,17 @@ class DocumentBasicCases(unittest.TestCase):
 
         res = obj.getSubObject("X_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(1, 0, 0)), 0.0
+            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(1, 0, 0)), 0.0
         )
 
         res = obj.getSubObject("Y_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(0, 1, 0)), 0.0
+            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(0, 1, 0)), 0.0
         )
 
         res = obj.getSubObject("Z_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(0, 0, 1)), 0.0
+            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(0, 0, 1)), 0.0
         )
 
         res = obj.getSubObject("XY_Plane", retType=2)

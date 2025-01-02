@@ -52,7 +52,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getForm() ... return UI"""
 
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
-        comboToPropertyMap = [("startSide", "StartSide"), ("direction", "Direction")]
+        comboToPropertyMap = [("startSide", "StartSide"), ("cutMode", "CutMode")]
 
         enumTups = PathHelix.ObjectHelix.helixOpPropertyEnumerations(dataType="raw")
 
@@ -62,8 +62,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         Path.Log.track()
-        if obj.Direction != str(self.form.direction.currentData()):
-            obj.Direction = str(self.form.direction.currentData())
+        if obj.CutMode != str(self.form.cutMode.currentData()):
+            obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StartSide != str(self.form.startSide.currentData()):
             obj.StartSide = str(self.form.startSide.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
@@ -78,7 +78,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         Path.Log.track()
 
         self.form.stepOverPercent.setValue(obj.StepOver)
-        self.selectInComboBox(obj.Direction, self.form.direction)
+        self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartSide, self.form.startSide)
 
         self.setupToolController(obj, self.form.toolController)
@@ -94,7 +94,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         signals.append(self.form.stepOverPercent.editingFinished)
         signals.append(self.form.extraOffset.editingFinished)
-        signals.append(self.form.direction.currentIndexChanged)
+        signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startSide.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)

@@ -31,6 +31,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 from draftutils import params
 
 
@@ -38,7 +39,7 @@ class Circle(DraftObject):
     """The Circle object"""
 
     def __init__(self, obj):
-        super(Circle, self).__init__(obj, "Circle")
+        super().__init__(obj, "Circle")
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Start angle of the arc")
         obj.addProperty("App::PropertyAngle", "FirstAngle",
@@ -62,6 +63,10 @@ class Circle(DraftObject):
                         "Draft", _tip)
 
         obj.MakeFace = params.get_param("fillmode")
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(obj, vp_module="view_base", vp_class="ViewProviderDraft")
 
     def execute(self, obj):
         """This method is run when the object is created or recomputed."""

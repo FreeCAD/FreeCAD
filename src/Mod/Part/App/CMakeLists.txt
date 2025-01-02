@@ -213,6 +213,8 @@ SET(Features_SRCS
     CustomFeature.h
     BodyBase.h
     BodyBase.cpp
+    Datums.cpp
+    Datums.h
     DatumFeature.cpp
     DatumFeature.h
     AttachExtension.h

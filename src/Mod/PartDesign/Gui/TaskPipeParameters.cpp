@@ -102,7 +102,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
+    PartDesign::Pipe* pipe = PipeView->getObject<PartDesign::Pipe>();
     Gui::Document* doc = PipeView->getDocument();
 
     // make sure the user sees all important things and load the values
@@ -625,7 +625,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
+    PartDesign::Pipe* pipe = PipeView->getObject<PartDesign::Pipe>();
 
     // add initial values
     if (pipe->AuxillerySpine.getValue()) {
@@ -923,7 +923,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
+    PartDesign::Pipe* pipe = PipeView->getObject<PartDesign::Pipe>();
     for (auto& subSet : pipe->Sections.getSubListValues()) {
         Gui::Application::Instance->showViewProvider(subSet.first);
         QString label = make2DLabel(subSet.first, subSet.second);

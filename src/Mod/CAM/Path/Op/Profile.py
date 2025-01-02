@@ -102,7 +102,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "Profile",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The direction that the toolpath should go around the part ClockWise (Climb) or CounterClockWise (Conventional)",
+                    "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)",
                 ),
             ),
             (
@@ -172,6 +172,24 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "App::Property", "Make True, if using Cutter Radius Compensation"
                 ),
             ),
+            (
+                "App::PropertyInteger",
+                "NumPasses",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The number of passes to do. If more than one, requires a non-zero value for Stepover",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "Stepover",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If doing multiple passes, the extra offset of each additional pass",
+                ),
+            ),
         ]
 
     @classmethod
@@ -188,8 +206,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Direction": [
-                (translate("PathProfile", "Climb"), "Climb"),
-                (translate("PathProfile", "Conventional"), "Conventional"),
+                (translate("PathProfile", "CW"), "CW"),
+                (translate("PathProfile", "CCW"), "CCW"),
             ],  # this is the direction that the profile runs
             "HandleMultipleFeatures": [
                 (translate("PathProfile", "Collectively"), "Collectively"),
@@ -225,7 +243,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """areaOpPropertyDefaults(obj, job) ... returns a dictionary of default values
         for the operation's properties."""
         return {
-            "Direction": "Climb",
+            "Direction": "CW",
             "HandleMultipleFeatures": "Collectively",
             "JoinType": "Round",
             "MiterLimit": 0.1,
@@ -235,6 +253,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "processCircles": False,
             "processHoles": False,
             "processPerimeter": True,
+            "Stepover": 0,
+            "NumPasses": 1,
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -295,6 +315,26 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self.initAreaOpProperties(obj, warn=True)
         self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
         self.setOpEditorProperties(obj)
+        if not hasattr(obj, "NumPasses"):
+            obj.addProperty(
+                "App::PropertyInteger",
+                "NumPasses",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The number of passes to do. Requires a non-zero value for Stepover",
+                ),
+            )
+        if not hasattr(obj, "Stepover"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "Stepover",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If doing multiple passes, the extra offset of each additional pass",
+                ),
+            )
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
@@ -311,13 +351,31 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params["SectionCount"] = -1
 
         offset = obj.OffsetExtra.Value  # 0.0
+        num_passes = max(1, obj.NumPasses)
+        stepover = obj.Stepover.Value
+        if num_passes > 1 and stepover == 0:
+            # This check is important because C++ code has a default value for stepover if it's 0 and extra passes are requested
+            num_passes = 1
+            Path.Log.warning(
+                "Multipass profile requires a non-zero stepover. Reducing to a single pass."
+            )
+
         if obj.UseComp:
             offset = self.radius + obj.OffsetExtra.Value
         if obj.Side == "Inside":
             offset = 0 - offset
+            stepover = -stepover
         if isHole:
             offset = 0 - offset
+            stepover = -stepover
+
+        # Modify offset and stepover to do passes from most-offset to least
+        offset += stepover * (num_passes - 1)
+        stepover = -stepover
+
         params["Offset"] = offset
+        params["ExtraPass"] = num_passes - 1
+        params["Stepover"] = stepover
 
         jointype = ["Round", "Square", "Miter"]
         params["JoinType"] = jointype.index(obj.JoinType)
@@ -338,11 +396,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Reverse the direction for holes
         if isHole:
-            direction = "Climb" if obj.Direction == "Conventional" else "Conventional"
+            direction = "CW" if obj.Direction == "CCW" else "CCW"
         else:
             direction = obj.Direction
 
-        if direction == "Conventional":
+        if direction == "CCW":
             params["orientation"] = 0
         else:
             params["orientation"] = 1
@@ -351,10 +409,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if obj.UseComp:
             offset = self.radius + obj.OffsetExtra.Value
         if offset == 0.0:
-            if direction == "Conventional":
+            if direction == "CCW":
                 params["orientation"] = 1
             else:
                 params["orientation"] = 0
+
+        if obj.NumPasses > 1:
+            # Disable path sorting to ensure that offsets appear in order, from farthest offset to closest, on all layers
+            params["sort_mode"] = 0
 
         return params
 
@@ -590,7 +652,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         if flattened and zDiff >= self.JOB.GeometryTolerance.Value:
                             cutWireObjs = False
                             openEdges = []
-                            passOffsets = [self.ofstRadius]
+                            params = self.areaOpAreaParams(obj, False)
+                            passOffsets = [
+                                self.ofstRadius + i * abs(params["Stepover"])
+                                for i in range(params["ExtraPass"] + 1)
+                            ][::-1]
                             (origWire, flatWire) = flattened
 
                             self._addDebugObject("FlatWire", flatWire)

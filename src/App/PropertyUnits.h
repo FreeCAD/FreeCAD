@@ -73,6 +73,15 @@ public:
         return PropertyFloat::getValue();
     }
 
+    const Base::QuantityFormat& getFormat() const
+    {
+        return _Format;
+    }
+    void setFormat(const Base::QuantityFormat& fmt)
+    {
+        _Format = fmt;
+    }
+
     void setPathValue(const App::ObjectIdentifier& path, const boost::any& value) override;
     const boost::any getPathValue(const App::ObjectIdentifier& path) const override;
 
@@ -89,6 +98,7 @@ public:
 protected:
     Base::Quantity createQuantityFromPy(PyObject* value);
     Base::Unit _Unit;
+    Base::QuantityFormat _Format;
 };
 
 /** Float with Unit property
@@ -544,6 +554,19 @@ class AppExport PropertyMagnetization: public PropertyQuantity
 public:
     PropertyMagnetization();
     ~PropertyMagnetization() override = default;
+};
+
+/** ElectromagneticPotential property
+ * This is a property for representing electromagnetic potentials. It is basically a float
+ * property. On the Gui it has a quantity like Wb/m.
+ */
+class AppExport PropertyElectromagneticPotential: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectromagneticPotential();
+    ~PropertyElectromagneticPotential() override = default;
 };
 
 /** Mass property

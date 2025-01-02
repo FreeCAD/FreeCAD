@@ -223,8 +223,11 @@ class _Wall(ArchComponent.Component):
         self.Type = "Wall"
 
     def dumps(self):
-        super().dumps()
-        return self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev
+        dump = super().dumps()
+        if not isinstance(dump, tuple):
+            dump = (dump,)  #Python Tuple With One Item
+        dump = dump + (self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev)
+        return dump
 
     def loads(self,state):
         super().loads(state)  # do nothing as of 2024.11.28
@@ -315,6 +318,8 @@ class _Wall(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         import Part
         import DraftGeomUtils
@@ -332,7 +337,7 @@ class _Wall(ArchComponent.Component):
             if hasattr(baseProxy,"getPropertySet"):
                 # get full list of PropertySet
                 propSetListCur = baseProxy.getPropertySet(obj.Base)
-                # get updated name (if any) of the selected PropertySet 
+                # get updated name (if any) of the selected PropertySet
                 propSetSelectedNameCur = baseProxy.getPropertySet(obj.Base,
                                          propSetUuid=propSetPickedUuidPrev)
         if propSetSelectedNameCur:  # True if selection is not deleted
@@ -608,11 +613,11 @@ class _Wall(ArchComponent.Component):
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
 
-        if (prop == "ArchSketchPropertySet" 
+        if (prop == "ArchSketchPropertySet"
             and Draft.getType(obj.Base) == "ArchSketch"):
             baseProxy = obj.Base.Proxy
             if hasattr(baseProxy,"getPropertySet"):
-                uuid = baseProxy.getPropertySet(obj, 
+                uuid = baseProxy.getPropertySet(obj,
                                  propSetName=obj.ArchSketchPropertySet)
                 self.ArchSkPropSetPickedUuid = uuid
         if (hasattr(obj,"ArchSketchData") and obj.ArchSketchData
@@ -1331,12 +1336,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                             cols = []
                             for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
-                                c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
+                                c = (c[0],c[1],c[2],1.0-obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:
                                     if "(" in mat.Material['DiffuseColor']:
                                         c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                 if 'Transparency' in mat.Material:
-                                    c = (c[0],c[1],c[2],float(mat.Material['Transparency']))
+                                    c = (c[0],c[1],c[2],1.0-float(mat.Material['Transparency']))
                                 cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
                             obj.ViewObject.DiffuseColor = cols
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)

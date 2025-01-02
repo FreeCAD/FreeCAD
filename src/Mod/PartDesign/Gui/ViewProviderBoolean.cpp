@@ -107,7 +107,7 @@ bool ViewProviderBoolean::setEdit(int ModNum)
 
 bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
 {
-    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(getObject());
+    PartDesign::Boolean* pcBoolean = getObject<PartDesign::Boolean>();
 
     // if abort command deleted the object the bodies are visible again
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();

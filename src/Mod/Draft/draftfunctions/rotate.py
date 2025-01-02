@@ -182,9 +182,6 @@ def rotate_vertex(object, vertex_index, angle, center, axis):
     object.Points = points
 
 
-rotateVertex = rotate_vertex
-
-
 def rotate_vector_from_center(vector, angle, axis, center):
     """
     Needed for SubObjects modifiers.
@@ -195,22 +192,16 @@ def rotate_vector_from_center(vector, angle, axis, center):
     return center.add(rv)
 
 
-rotateVectorFromCenter = rotate_vector_from_center
-
-
 def rotate_edge(object, edge_index, angle, center, axis):
     """
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
     rotate_vertex(object, edge_index, angle, center, axis)
-    if utils.isClosedEdge(edge_index, object):
+    if utils.is_closed_edge(edge_index, object):
         rotate_vertex(object, 0, angle, center, axis)
     else:
         rotate_vertex(object, edge_index+1, angle, center, axis)
-
-
-rotateEdge = rotate_edge
 
 
 def copy_rotated_edges(arguments):
@@ -225,9 +216,6 @@ def copy_rotated_edges(arguments):
     join.join_wires(copied_edges)
 
 
-copyRotatedEdges = copy_rotated_edges
-
-
 def copy_rotated_edge(object, edge_index, angle, center, axis):
     """
     Needed for SubObjects modifiers.
@@ -236,7 +224,7 @@ def copy_rotated_edge(object, edge_index, angle, center, axis):
     vertex1 = rotate_vector_from_center(
         object.getGlobalPlacement().multVec(object.Points[edge_index]),
         angle, axis, center)
-    if utils.isClosedEdge(edge_index, object):
+    if utils.is_closed_edge(edge_index, object):
         vertex2 = rotate_vector_from_center(
             object.getGlobalPlacement().multVec(object.Points[0]),
             angle, axis, center)

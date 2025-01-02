@@ -337,7 +337,7 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyInteger",
                 name="GiveUpToleranceOpenQuads",
                 group="Mesh Parameters",
-                doc="Give up quality class, for closing open quads, greather than 100 for free pyramids",
+                doc="Give up quality class, for closing open quads, greater than 100 for free pyramids",
                 value=15,
             )
         )
@@ -483,15 +483,6 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 group="Mesh Parameters",
                 doc="Use parallel meshing",
                 value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyInteger",
-                name="Threads",
-                group="Mesh Parameters",
-                doc="Number of threads for parallel meshing",
-                value=4,
             )
         )
         prop.append(

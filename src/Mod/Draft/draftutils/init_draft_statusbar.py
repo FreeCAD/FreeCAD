@@ -184,7 +184,7 @@ def init_draft_statusbar_scale():
     # prevent the widget from showing up in the toolbar area context menu:
     scale_widget.toggleViewAction().setVisible(False)
     scale_widget.setObjectName("draft_scale_widget")
-    # WindowTitle is just in case, should not be visble in the GUI.
+    # WindowTitle is just in case, should not be visible in the GUI.
     scale_widget.setWindowTitle(translate("draft", "Draft scale widget"))
 
     # get scales list according to system units
@@ -245,7 +245,7 @@ def init_draft_statusbar_snap():
     # prevent the widget from showing up in the toolbar area context menu:
     snap_widget.toggleViewAction().setVisible(False)
     snap_widget.setObjectName("draft_snap_widget")
-    # WindowTitle is just in case, should not be visble in the GUI.
+    # WindowTitle is just in case, should not be visible in the GUI.
     snap_widget.setWindowTitle(translate("draft", "Draft snap widget"))
     snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
     snap_widget.setIconSize(QtCore.QSize(16, 16))

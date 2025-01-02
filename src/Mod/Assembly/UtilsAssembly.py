@@ -80,18 +80,44 @@ def isDocTemporary(doc):
 
 def assembly_has_at_least_n_parts(n):
     assembly = activeAssembly()
-    i = 0
     if not assembly:
         assembly = activePart()
         if not assembly:
             return False
-    for obj in assembly.OutList:
-        # note : groundedJoints comes in the outlist so we filter those out.
-        if hasattr(obj, "Placement") and not hasattr(obj, "ObjectToGround"):
-            i = i + 1
-            if i == n:
-                return True
-    return False
+    i = number_of_components_in(assembly)
+    return i >= n
+
+
+def number_of_components_in(assembly):
+    if not assembly:
+        return 0
+    i = 0
+    for obj in assembly.Group:
+        if isLinkGroup(obj):
+            i = i + obj.ElementCount
+            continue
+
+        if obj.isDerivedFrom("Assembly::AssemblyObject") or obj.isDerivedFrom(
+            "Assembly::AssemblyLink"
+        ):
+            i = i + number_of_components_in(obj)
+            continue
+
+        if obj.isDerivedFrom("App::Link"):
+            obj = obj.getLinkedObject()
+
+        if not obj.isDerivedFrom("App::GeoFeature"):
+            continue
+
+        # if obj.isDerivedFrom("App::DatumElement") or obj.isDerivedFrom("App::LocalCoordinateSystem"):
+        if obj.isDerivedFrom("App::Origin"):
+            # after https://github.com/FreeCAD/FreeCAD/pull/16675 merges,
+            # replace the App::Origin test by the one above
+            continue
+
+        i = i + 1
+
+    return i
 
 
 def isLink(obj):
@@ -135,6 +161,21 @@ def getObject(ref):
         if obj.TypeId in {"App::Part", "Assembly::AssemblyObject"} or isLinkGroup(obj):
             continue
 
+        elif obj.isDerivedFrom("App::LocalCoordinateSystem"):
+            # 2 cases possible, either we have the LCS itself: "part.LCS."
+            # or we have a datum: "part.LCS.X_Axis"
+            if i + 1 < len(names):
+                obj2 = None
+                for obji in obj.OutList:
+                    if obji.Name == names[i + 1]:
+                        obj2 = obji
+                        break
+                if obj2 and obj2.isDerivedFrom("App::DatumElement"):
+                    return obj2
+
+        elif obj.isDerivedFrom("App::DatumElement"):
+            return obj
+
         elif obj.TypeId == "PartDesign::Body":
             if i + 1 < len(names):
                 obj2 = None
@@ -142,7 +183,7 @@ def getObject(ref):
                     if obji.Name == names[i + 1]:
                         obj2 = obji
                         break
-                if obj2 and isBodySubObject(obj2.TypeId):
+                if obj2 and isBodySubObject(obj2):
                     return obj2
             return obj
 
@@ -159,7 +200,7 @@ def getObject(ref):
                         if obji.Name == names[i + 1]:
                             obj2 = obji
                             break
-                    if obj2 and isBodySubObject(obj2.TypeId):
+                    if obj2 and isBodySubObject(obj2):
                         return obj2
                 return obj
             elif linked_obj.isDerivedFrom("Part::Feature"):
@@ -171,13 +212,12 @@ def getObject(ref):
     return None
 
 
-def isBodySubObject(typeId):
+def isBodySubObject(obj):
     return (
-        typeId == "Sketcher::SketchObject"
-        or typeId == "PartDesign::Point"
-        or typeId == "PartDesign::Line"
-        or typeId == "PartDesign::Plane"
-        or typeId == "PartDesign::CoordinateSystem"
+        obj.isDerivedFrom("Sketcher::SketchObject")
+        or obj.isDerivedFrom("PartDesign::Datum")
+        or obj.isDerivedFrom("App::DatumElement")
+        or obj.isDerivedFrom("App::LocalCoordinateSystem")
     )
 
 
@@ -321,21 +361,6 @@ def getElementName(full_name):
     # case of PartDesign datums : CoordinateSystem, point, line, plane
     if parts[-1] in {"X", "Y", "Z", "Point", "Line", "Plane"}:
         return ""
-
-    # Case of origin objects
-    if parts[-1] == "":
-        if "X_Axis" in parts[-2]:
-            return "X_Axis"
-        if "Y_Axis" in parts[-2]:
-            return "Y_Axis"
-        if "Z_Axis" in parts[-2]:
-            return "Z_Axis"
-        if "XY_Plane" in parts[-2]:
-            return "XY_Plane"
-        if "XZ_Plane" in parts[-2]:
-            return "XZ_Plane"
-        if "YZ_Plane" in parts[-2]:
-            return "YZ_Plane"
 
     return parts[-1]
 
@@ -546,6 +571,20 @@ def color_from_unsigned(c):
     ]
 
 
+def getJointsOfType(asm, jointTypes):
+    if not (
+        asm.isDerivedFrom("Assembly::AssemblyObject") or asm.isDerivedFrom("Assembly::AssemblyLink")
+    ):
+        return []
+
+    joints = []
+    allJoints = asm.Joints
+    for joint in allJoints:
+        if joint.JointType in jointTypes:
+            joints.append(joint)
+    return joints
+
+
 def getBomGroup(assembly):
     bom_group = None
 
@@ -586,6 +625,20 @@ def getViewGroup(assembly):
         view_group = assembly.newObject("Assembly::ViewGroup", "Exploded Views")
 
     return view_group
+
+
+def getSimulationGroup(assembly):
+    sim_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::SimulationGroup":
+            sim_group = obj
+            break
+
+    if not sim_group:
+        sim_group = assembly.newObject("Assembly::SimulationGroup", "Simulations")
+
+    return sim_group
 
 
 def isAssemblyGrounded():
@@ -892,16 +945,8 @@ def findPlacement(ref, ignoreVertex=False):
     elt = getElementName(ref[1][0])
     vtx = getElementName(ref[1][1])
 
-    # case of origin objects.
-    if elt == "X_Axis" or elt == "YZ_Plane":
-        return App.Placement(App.Vector(), App.Rotation(App.Vector(0, 1, 0), -90))
-    if elt == "Y_Axis" or elt == "XZ_Plane":
-        return App.Placement(App.Vector(), App.Rotation(App.Vector(1, 0, 0), 90))
-    if elt == "Z_Axis" or elt == "XY_Plane":
-        return App.Placement()
-
     if not elt or not vtx:
-        # case of whole parts such as PartDesign::Body or PartDesign::CordinateSystem/Point/Line/Plane.
+        # case of whole parts such as PartDesign::Body or App/PartDesign::CordinateSystem/Point/Line/Plane.
         return App.Placement()
 
     plc = App.Placement()
@@ -1221,6 +1266,24 @@ def addVertexToReference(ref, vertex_name):
             ref = [ref[0], subs]
 
     return ref
+
+
+def createPart(partName, doc):
+    if not doc:
+        raise ValueError("No active document to add a part to.")
+
+    part = doc.addObject("App::Part", partName)
+    body = part.newObject("PartDesign::Body", "Body")
+    # Gui.ActiveDocument.ActiveView.setActiveObject('pdbody', body)
+    sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+    sketch.MapMode = "FlatFace"
+    sketch.AttachmentSupport = [(body.Origin.OriginFeatures[3], "")]  # XY_Plane
+
+    # add a circle as a base shape for visualisation
+    sketch.addGeometry(Part.Circle(App.Vector(0, 0), App.Vector(0, 0, 1), 5), False)
+    doc.recompute()
+
+    return part, body
 
 
 def getLinkGroup(linkElement):

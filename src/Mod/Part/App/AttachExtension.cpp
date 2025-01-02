@@ -411,33 +411,18 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             bool bAttached = false;
             try{
                 bAttached = positionBySupport();
-            } catch (Base::Exception &e) {
+            }
+            catch (Base::Exception &e) {
                 getExtendedObject()->setStatus(App::Error, true);
                 Base::Console().Error("PositionBySupport: %s\n",e.what());
                 //set error message - how?
-            } catch (Standard_Failure &e){
+            }
+            catch (Standard_Failure &e){
                 getExtendedObject()->setStatus(App::Error, true);
                 Base::Console().Error("PositionBySupport: %s\n",e.GetMessageString());
             }
-            // Hide properties when not applicable to reduce user confusion
 
-            eMapMode mmode = eMapMode(this->MapMode.getValue());
-
-            bool modeIsPointOnCurve = mmode == mmNormalToPath ||
-                mmode == mmFrenetNB || mmode == mmFrenetTN || mmode == mmFrenetTB ||
-                mmode == mmRevolutionSection || mmode == mmConcentric;
-
-            // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
-            bool hasOneRef = false;
-            if (_props.attacher && _props.attacher->subnames.size() == 1) {
-                hasOneRef = true;
-            }
-
-            this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
-            this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
-            this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
-            getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
-
+            updateSinglePropertyStatus(bAttached);
         }
         if (prop == &AttacherEngine) {
             AttacherType.setValue(enumToClass(AttacherEngine.getValueAsString()));
@@ -508,27 +493,9 @@ void AttachExtension::onExtendedDocumentRestored()
 
         restoreAttacherEngine(this);
 
-        // Hide properties when not applicable to reduce user confusion
         bool bAttached = positionBySupport();
-        eMapMode mmode = eMapMode(this->MapMode.getValue());
-        bool modeIsPointOnCurve =
-                (mmode == mmNormalToPath ||
-                 mmode == mmFrenetNB ||
-                 mmode == mmFrenetTN ||
-                 mmode == mmFrenetTB ||
-                 mmode == mmRevolutionSection ||
-                 mmode == mmConcentric);
 
-        // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
-        bool hasOneRef = false;
-        if (_props.attacher && _props.attacher->subnames.size() == 1) {
-            hasOneRef = true;
-        }
-
-        this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
-        this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
-        this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
-        getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+        updateSinglePropertyStatus(bAttached);
     }
     catch (Base::Exception&) {
     }
@@ -536,7 +503,7 @@ void AttachExtension::onExtendedDocumentRestored()
     }
 }
 
-void AttachExtension::updatePropertyStatus(bool bAttached, bool base)
+void AttachExtension::updateSinglePropertyStatus(bool bAttached, bool base)
 {
     auto& props = base ? this->_baseProps : this->_props;
     if (!props.mapMode) {
@@ -550,12 +517,9 @@ void AttachExtension::updatePropertyStatus(bool bAttached, bool base)
          || mmode == mmFrenetTB || mmode == mmRevolutionSection || mmode == mmConcentric);
 
     // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
-    bool hasOneRef = false;
-    if (props.attacher && props.attacher->subnames.size() == 1) {
-        hasOneRef = true;
-    }
-    props.mapPathParameter->setStatus(App::Property::Status::Hidden,
-                                      !bAttached || !(modeIsPointOnCurve && hasOneRef));
+    bool hasOneRef = props.attacher && props.attacher->subnames.size() == 1;
+
+    props.mapPathParameter->setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
     props.mapReversed->setStatus(App::Property::Status::Hidden, !bAttached);
 
     if (base) {
@@ -564,11 +528,18 @@ void AttachExtension::updatePropertyStatus(bool bAttached, bool base)
     else {
         this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
         if (getExtendedContainer()) {
-            getPlacement().setReadOnly(
-                bAttached && mmode != mmTranslate);  // for mmTranslate, orientation should remain
-                                                     // editable even when attached.
+            // for mmTranslate, orientation should remain editable even when attached.
+            getPlacement().setReadOnly(bAttached && mmode != mmTranslate);
         }
-        updatePropertyStatus(bAttached, true);
+    }
+}
+
+void AttachExtension::updatePropertyStatus(bool bAttached, bool base)
+{
+    updateSinglePropertyStatus(bAttached, base);
+
+    if (!base) {
+        updateSinglePropertyStatus(bAttached, true);
     }
 }
 

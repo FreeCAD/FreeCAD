@@ -31,12 +31,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftutils.groups as groups
-
-from draftutils.translate import translate
 from draftobjects.base import DraftObject
+from draftutils import groups
+from draftutils import gui_utils
+from draftutils import utils
+from draftutils.translate import translate
 
 
 class Shape2DView(DraftObject):
@@ -45,7 +44,14 @@ class Shape2DView(DraftObject):
     def __init__(self,obj):
 
         self.setProperties(obj)
-        super(Shape2DView, self).__init__(obj, "Shape2DView")
+        super().__init__(obj, "Shape2DView")
+
+    def onDocumentRestored(self, obj):
+        self.setProperties(obj)
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_base", vp_class="ViewProviderDraftAlt", format=False
+        )
 
     def setProperties(self,obj):
 
@@ -136,10 +142,6 @@ class Shape2DView(DraftObject):
                             "Draft", _tip)
             obj.AutoUpdate = True
 
-    def onDocumentRestored(self, obj):
-
-        self.setProperties(obj)
-
     def getProjected(self,obj,shape,direction):
 
         "returns projected edges from a shape and a direction"
@@ -211,11 +213,15 @@ class Shape2DView(DraftObject):
         import DraftGeomUtils
         pl = obj.Placement
         if obj.Base:
-            if utils.get_type(obj.Base) in ["BuildingPart","SectionPlane"]:
+            if utils.get_type(obj.Base) in ["BuildingPart","SectionPlane","IfcAnnotation"]:
                 objs = []
                 if utils.get_type(obj.Base) == "SectionPlane":
                     objs = self.excludeNames(obj,obj.Base.Objects)
                     cutplane = obj.Base.Shape
+                elif utils.get_type(obj.Base) == "IfcAnnotation":
+                    # this is a NativeIFC section plane
+                    objs, cutplane = obj.Base.Proxy.get_section_data(obj.Base)
+                    objs = self.excludeNames(obj, objs)
                 else:
                     objs = self.excludeNames(obj,obj.Base.Group)
                     cutplane = Part.makePlane(1000, 1000, App.Vector(-500, -500, 0))

@@ -925,6 +925,7 @@ void QGIViewBalloon::setPens(void)
 {
     balloonLines->setWidth(m_lineWidth);
     balloonShape->setWidth(m_lineWidth);
+    balloonShape->setFillColor(PreferencesGui::pageQColor());
     arrow->setWidth(m_lineWidth);
 }
 

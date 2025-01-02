@@ -116,6 +116,84 @@ class TestHole(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 10 - 24.7400421)
 
+    def testNoRefineHole(self):
+        # Add a second box to get a shape with more faces
+        self.Box2 = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.Box2.Length=10
+        self.Box2.Width=10
+        self.Box2.Height=10
+        self.Box2.AttacherEngine = u"Engine 3D"
+        self.Box2.AttachmentOffset = App.Placement(
+            App.Vector(1.0000000000, 0.0000000000, 0.0000000000),
+            App.Rotation(0.0000000000, 0.0000000000, 0.0000000000),
+        )
+        self.Box2.MapReversed = False
+        self.Box2.AttachmentSupport = self.Doc.getObject('XY_Plane')
+        self.Box2.MapPathParameter = 0.000000
+        self.Box2.MapMode = 'FlatFace'
+
+        # Set the Refine option to False, otherwise adding the second box would be useless
+        self.Box2.Refine = False
+        self.Body.addObject(self.Box2)
+        self.Doc.recompute()
+
+        # Move the Hole on top of the Body
+        self.Body.removeObject(self.Hole)
+        self.Body.insertObject(self.Hole,self.Box2, True)
+        self.Body.Tip = self.Hole
+        self.Hole.Diameter = 6
+        self.Hole.Depth = 10
+        self.Hole.ThreadType = 0
+        self.Hole.HoleCutType = 0
+        self.Hole.DepthType = 0
+        self.Hole.DrillPoint = 0
+        self.Hole.Tapered = 0
+        self.Hole.Visibility = True
+
+        # Test the number of faces with the Refine option set to False
+        self.Hole.Refine = False
+        self.Doc.recompute()
+        self.assertEqual(len(self.Hole.Shape.Faces), 15)
+
+    def testRefineHole(self):
+        # Add a second box to get a shape with more faces
+        self.Box2 = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.Box2.Length=10
+        self.Box2.Width=10
+        self.Box2.Height=10
+        self.Box2.AttacherEngine = u"Engine 3D"
+        self.Box2.AttachmentOffset = App.Placement(
+            App.Vector(1.0000000000, 0.0000000000, 0.0000000000),
+            App.Rotation(0.0000000000, 0.0000000000, 0.0000000000),
+        )
+        self.Box2.MapReversed = False
+        self.Box2.AttachmentSupport = self.Doc.getObject('XY_Plane')
+        self.Box2.MapPathParameter = 0.000000
+        self.Box2.MapMode = 'FlatFace'
+
+        # Set the Refine option to False, otherwise adding the second box would be useless
+        self.Box2.Refine = False
+        self.Body.addObject(self.Box2)
+        self.Doc.recompute()
+
+        # Move the Hole on top of the Body
+        self.Body.removeObject(self.Hole)
+        self.Body.insertObject(self.Hole,self.Box2, True)
+        self.Body.Tip = self.Hole
+        self.Hole.Diameter = 6
+        self.Hole.Depth = 10
+        self.Hole.ThreadType = 0
+        self.Hole.HoleCutType = 0
+        self.Hole.DepthType = 0
+        self.Hole.DrillPoint = 0
+        self.Hole.Tapered = 0
+        self.Hole.Visibility = True
+
+        # Test the number of faces with the Refine option set to True
+        self.Hole.Refine = True
+        self.Doc.recompute()
+        self.assertEqual(len(self.Hole.Shape.Faces), 7)
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestHole")
