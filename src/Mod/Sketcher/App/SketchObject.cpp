@@ -1805,11 +1805,18 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 
 int SketchObject::delGeometries(const std::vector<int>& GeoIds)
 {
+    return delGeometries(GeoIds.begin(), GeoIds.end());
+}
+
+template <class InputIt>
+int SketchObject::delGeometries(InputIt first, InputIt last)
+{
     std::vector<int> sGeoIds;
     std::vector<int> negativeGeoIds;
 
     // Separate GeoIds into negative (external) and non-negative GeoIds
-    for (int geoId : GeoIds) {
+    for (auto it = first; it != last; ++it) {
+        int geoId = *it;
         if (geoId < 0 && geoId <= GeoEnum::RefExt) {
             negativeGeoIds.push_back(geoId);
         }
@@ -1926,6 +1933,40 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
         solve();
 
     return 0;
+}
+
+void SketchObject::replaceGeometries(std::vector<int> oldGeoIds,
+                                     std::vector<Part::Geometry*>& newGeos)
+{
+    auto vals = getInternalGeometry();
+    auto newVals(vals);
+
+    if (std::any_of(oldGeoIds.begin(), oldGeoIds.end(), [](auto geoId) {
+            return geoId < 0;
+        })) {
+        THROWM(ValueError, "Cannot replace external geometries and axes.");
+    }
+
+    auto oldGeoIdIter = oldGeoIds.begin();
+    auto newGeoIter = newGeos.begin();
+
+    for (; oldGeoIdIter != oldGeoIds.end() && newGeoIter != newGeos.end();
+         ++oldGeoIdIter, ++newGeoIter) {
+        GeometryFacade::copyId(getGeometry(*oldGeoIdIter), *newGeoIter);
+        newVals[*oldGeoIdIter] = *newGeoIter;
+    }
+
+    if (newGeoIter != newGeos.end()) {
+        for (; newGeoIter != newGeos.end(); ++newGeoIter) {
+            generateId(*newGeoIter);
+            newVals.push_back(*newGeoIter);
+        }
+    }
+    else {
+        delGeometries(oldGeoIdIter, oldGeoIds.end());
+    }
+
+    Geometry.setValues(std::move(newVals));
 }
 
 int SketchObject::deleteAllGeometry()
