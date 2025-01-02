@@ -188,6 +188,15 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
     pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
 
     pdfWriter.setTitle(documentName);
+
+    QString appname = QCoreApplication::applicationName();
+    auto config = App::Application::Config();
+    QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
+    QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
+    QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
+    QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
+    pdfWriter.setCreator(QString::fromUtf8("%1 TechDraw %2.%3.%4%5").arg(appname, major, minor, point, suffix));
+
     pdfWriter.setResolution(printer->resolution());
     QPageLayout pageLayout = printer->pageLayout();
     // we want to set the layout for the first page before we make the painter(&pdfWriter) or the layout for the first page will
@@ -355,6 +364,14 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     QString documentName = QString::fromUtf8(vpPage->getDrawPage()->getNameInDocument());
     pdfWriter.setTitle(documentName);
     // default pdfWriter dpi is 1200.
+
+    QString appname = QCoreApplication::applicationName();
+    auto config = App::Application::Config();
+    QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
+    QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
+    QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
+    QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
+    pdfWriter.setCreator(QString::fromUtf8("%1 TechDraw %2.%3.%4%5").arg(appname, major, minor, point, suffix));
 
     // set up the page layout
     auto dPage = vpPage->getDrawPage();
