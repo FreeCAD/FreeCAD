@@ -68,23 +68,21 @@ private:
     private:
         // Each pair being <lowest, count> represents the span of integers from lowest to
         // (lowest+count-1) inclusive
-        using spanType = std::pair<unsigned int, unsigned int>;
-        // This span comparer class is analogous to std::less and treats overlapping spans as being
+        using SpanType = std::pair<unsigned int, unsigned int>;
+        // This span Comparer class is analogous to std::less and treats overlapping spans as being
         // neither greater nor less than each other
-        class comparer
+        class Comparer
         {
         public:
-            bool operator()(spanType lhs, spanType rhs) const
+            bool operator()(SpanType lhs, SpanType rhs) const
             {
                 // The equality case here is when lhs is below and directly adjacent to rhs.
                 return lhs.second + lhs.first <= rhs.first;
             }
         };
-        // Spans is the set of spans. Adjacent spans are coalesced so there are always gaps between
+        // spans is the set of spans. Adjacent spans are coalesced so there are always gaps between
         // the entries.
-        std::set<spanType, comparer> Spans;
-        using iterator = typename std::set<spanType, comparer>::iterator;
-        using const_iterator = typename std::set<spanType, comparer>::const_iterator;
+        std::set<SpanType, Comparer> spans;
 
     public:
         void add(unsigned int value);
@@ -92,29 +90,29 @@ private:
         bool contains(unsigned int value) const;
         bool empty() const
         {
-            return Spans.empty();
+            return spans.empty();
         }
         void clear()
         {
-            Spans.clear();
+            spans.clear();
         }
         unsigned int next() const
         {
-            if (Spans.empty()) {
+            if (spans.empty()) {
                 return 0;
             }
-            auto last = Spans.end();
+            auto last = spans.end();
             --last;
             return last->first + last->second;
         }
     };
-    // Keyed as UniqueSeeds[baseName][digitCount][digitValue] iff that seed is taken.
+    // Keyed as uniqueSeeds[baseName][digitCount][digitValue] iff that seed is taken.
     // We need the double-indexing so that Name01 and Name001 can both be indexed, although we only
-    // ever allocate off the longest for each name i.e. UniqueSeeds[baseName].size()-1 digits.
-    std::map<std::string, std::vector<PiecewiseSparseIntegerSet>> UniqueSeeds;
+    // ever allocate off the longest for each name i.e. uniqueSeeds[baseName].size()-1 digits.
+    std::map<std::string, std::vector<PiecewiseSparseIntegerSet>> uniqueSeeds;
     // Counts of inserted strings that have duplicates, i.e. more than one instance in the
     // collection. This does not contain entries for singleton names.
-    std::map<std::string, unsigned int> DuplicateCounts;
+    std::map<std::string, unsigned int> duplicateCounts;
 
     /// @brief Break a uniquified name into its parts
     /// @param name The name to break up
@@ -145,11 +143,11 @@ public:
     void removeExactName(const std::string& name);
     /// Test if the given name is already in the collection
     bool containsName(const std::string& name) const;
-    /// @brief EMpty (clear) out the contents from this collection
+    /// @brief Empty (clear) out the contents from this collection
     void clear()
     {
-        UniqueSeeds.clear();
-        DuplicateCounts.clear();
+        uniqueSeeds.clear();
+        duplicateCounts.clear();
     }
 };
 }  // namespace Base

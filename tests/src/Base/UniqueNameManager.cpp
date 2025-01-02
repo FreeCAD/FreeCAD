@@ -23,64 +23,70 @@
 #include <Base/UniqueNameManager.h>
 
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
-TEST(UniqueNameManager, TestUniqueName1)
+TEST(UniqueNameManager, NonconflictingBaseNameReturnsSameName)
 {
+    // Check that a model name that is a base name that does not conflict with
+    // any existing name returns the base name
     EXPECT_EQ(Base::UniqueNameManager().makeUniqueName("Body"), "Body");
 }
 
-TEST(UniqueNameManager, TestUniqueName2)
+TEST(UniqueNameManager, NonconflictingUniqueNameReturnsBaseName)
 {
+    // Check that a model name that is a unique name whose base name does not conflict with
+    // any existing name returns the base name
+    EXPECT_EQ(Base::UniqueNameManager().makeUniqueName("Body123"), "Body");
+}
+
+TEST(UniqueNameManager, ManyDigitsInModelNameIgnored)
+{
+    // Check that the number of digits in the model name does not affect the number
+    // of digits in the returned name.
+    Base::UniqueNameManager manager;
+    manager.addExactName("Body");
+    EXPECT_EQ(manager.makeUniqueName("Body12345", 3), "Body001");
+}
+
+TEST(UniqueNameManager, ConflictingBaseNameReturnsUniqueName)
+{
+    // Check that a model name that conflicts with an existing name returns a unique form of
+    // the base name
     Base::UniqueNameManager manager;
     manager.addExactName("Body");
     EXPECT_EQ(manager.makeUniqueName("Body", 1), "Body1");
 }
 
-TEST(UniqueNameManager, TestUniqueName3)
+TEST(UniqueNameManager, ConflictingUniqueNameReturnsNewUniqueName)
 {
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body001");
-}
-
-TEST(UniqueNameManager, TestUniqueName4)
-{
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body001");
-    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body002");
-}
-
-TEST(UniqueNameManager, TestUniqueName5)
-{
-    Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    manager.addExactName("Body001");
-    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body002");
-}
-
-TEST(UniqueNameManager, TestUniqueName6)
-{
+    // Check that a given unique name already in the collection causes the return of
+    // a new unique name.
     Base::UniqueNameManager manager;
     manager.addExactName("Body");
     manager.addExactName("Body001");
     EXPECT_EQ(manager.makeUniqueName("Body001", 3), "Body002");
 }
 
-TEST(UniqueNameManager, TestUniqueName7)
+TEST(UniqueNameManager, VerifyUniqueDigitCount)
 {
+    // Check that when a unique name is generated it contains at least the specified number
+    // of inserted digits
     Base::UniqueNameManager manager;
     manager.addExactName("Body");
-    EXPECT_EQ(manager.makeUniqueName("Body001", 3), "Body001");
+    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body001");
 }
 
-TEST(UniqueNameManager, TestUniqueName8)
+TEST(UniqueNameManager, UniqueNameLargerThanAnyName)
 {
+    // Check that the name returned is larger (using digits) that any wxisting name
+    // even if the given model name is not itself in the collection
     Base::UniqueNameManager manager;
-    manager.addExactName("Body");
-    EXPECT_EQ(manager.makeUniqueName("Body12345", 3), "Body001");
+    manager.addExactName("Body001");
+    EXPECT_EQ(manager.makeUniqueName("Body", 3), "Body002");
 }
 
 TEST(UniqueNameManager, Issue18504)
 {
+    // Check that the management of spans of assigned unique digit values is
+    // correct
     std::string name;
     Base::UniqueNameManager manager;
     manager.addExactName("Origin007");
