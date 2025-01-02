@@ -3830,7 +3830,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     }
     // Remove internal geometry beforehand for now
     // FIXME: we should be able to transfer these to new curves smoothly
-    deleteUnusedInternalGeometryAndUpdateGeoId(GeoId);
     // auto geo = getGeometry(GeoId);
     const auto* geoAsCurve = static_cast<const Part::GeomCurve*>(getGeometry(GeoId));
 
@@ -3964,7 +3963,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
     delConstraints(idsOfOldConstraints);
 
-    if (isClosedCurve(geoAsCurve)) {
+    if (!isClosedCurve(geoAsCurve)) {
         transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start, true);
         transferConstraints(GeoId, PointPos::end, newIds.back(), PointPos::end, true);
     }
