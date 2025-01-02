@@ -141,7 +141,7 @@
     <text id="title_data_field" x="231" y="260.2" freecad:editable="title" freecad:autofill="title"><tspan>ISO 5457 template</tspan></text>
     <text id="approval_person_data_field" x="311" y="272.2" freecad:editable="approval_person"><tspan>B. Hecate</tspan></text>
     <text id="creator_data_field" x="311" y="260.2" freecad:editable="creator" freecad:autofill="author"><tspan>A. Nemesis</tspan></text>
-    <text id="document_type_data_field" x="231" y="272.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
+    <text id="document_type_data_field" x="231" y="272.2" freecad:editable="document_type"><tspan>Component Drawing</tspan></text>
     <text id="sheet_scale_data_field" x="360" y="248.2" freecad:editable="sheet_scale" freecad:autofill="scale" style="text-align:center;text-anchor:middle"><tspan>1 : 1</tspan></text>
     <text id="general_tolerances_data_field" x="311" y="248.2" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
     <text id="part_material_data_field" x="231" y="248.2" freecad:editable="part_material"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
