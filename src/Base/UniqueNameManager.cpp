@@ -25,6 +25,7 @@
 #include <tuple>
 #include <vector>
 #include <string>
+#include <set>
 #endif
 #include "UniqueNameManager.h"
 
