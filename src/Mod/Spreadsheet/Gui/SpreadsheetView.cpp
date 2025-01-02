@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <QApplication>
 #include <QPalette>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
@@ -30,6 +31,7 @@
 #include <QTextDocument>
 #endif
 
+#include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
@@ -307,6 +309,15 @@ void SheetView::printPdf()
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+
+        QString appname = QCoreApplication::applicationName();
+        auto config = App::Application::Config();
+        QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
+        QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
+        QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
+        QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
+        printer.setCreator(QString::fromUtf8("%1 Spreadsheet %2.%3.%4%5").arg(appname, major, minor, point, suffix));
+
         print(&printer);
     }
 }
