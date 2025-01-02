@@ -316,6 +316,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/xorg-libxxf86vm-1.1.6-hb9d3cd8_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/xorg-x11-server-common-cos6-x86_64-1.17.4-h9b0a68f_1105.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/xorg-x11-server-xvfb-cos6-x86_64-1.17.4-h9b0a68f_1105.tar.bz2
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/xorg-xproto-7.0.31-hb9d3cd8_1008.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/xz-5.6.3-hbcc6ac9_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/xz-gpl-tools-5.6.3-hbcc6ac9_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/xz-tools-5.6.3-hb9d3cd8_1.conda
@@ -633,6 +634,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/xorg-libxxf86vm-1.1.6-h86ecc28_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/xorg-x11-server-common-cos7-aarch64-1.20.4-ha675448_1106.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/xorg-x11-server-xvfb-cos7-aarch64-1.20.4-ha675448_1106.tar.bz2
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/xorg-xproto-7.0.31-h57736b2_1008.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/xz-5.6.3-h2dbfc1b_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/xz-gpl-tools-5.6.3-h2dbfc1b_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/xz-tools-5.6.3-h86ecc28_1.conda
@@ -18246,6 +18248,29 @@ packages:
   license_family: MIT
   size: 31034
   timestamp: 1677037259999
+- conda: https://conda.anaconda.org/conda-forge/linux-64/xorg-xproto-7.0.31-hb9d3cd8_1008.conda
+  sha256: ea02425c898d6694167952794e9a865e02e14e9c844efb067374f90b9ce8ce33
+  md5: a63f5b66876bb1ec734ab4bdc4d11e86
+  depends:
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  arch: x86_64
+  platform: linux
+  license: MIT
+  license_family: MIT
+  size: 73315
+  timestamp: 1726845753874
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/xorg-xproto-7.0.31-h57736b2_1008.conda
+  sha256: 3415c89f81a03c26c0f2327c6d9b34a77de2e584d88a9157a5fd940f8cae0292
+  md5: 3dd2b75fd06be7955bd3b0c0afa4fb8f
+  depends:
+  - libgcc >=13
+  arch: aarch64
+  platform: linux
+  license: MIT
+  license_family: MIT
+  size: 73800
+  timestamp: 1726845752367
 - conda: https://conda.anaconda.org/conda-forge/win-64/xorg-xproto-7.0.31-hcd874cb_1007.tar.bz2
   sha256: b84cacba8479fa14199c9255fb62e005cacc619e90198c53b1653973709ec331
   md5: 88f3c65d2ad13826a9e0b162063be023
