@@ -157,6 +157,8 @@ public:
     int delGeometriesExclusiveList(const std::vector<int>& GeoIds);
     /// Does the same as \a delGeometry but allows to delete several geometries in one step
     int delGeometries(const std::vector<int>& GeoIds);
+    template<class InputIt>
+    int delGeometries(InputIt first, InputIt last);
     /// deletes all the elements/constraints of the sketch except for external geometry
     int deleteAllGeometry();
     /// deletes all the constraints of the sketch
@@ -171,6 +173,10 @@ public:
     int addConstraint(std::unique_ptr<Constraint> constraint);
     /// delete constraint
     int delConstraint(int ConstrId);
+    /// Replaces geometries at `oldGeoIds` with `newGeos`, lower Ids first.
+    /// If `oldGeoIds` is bigger, deletes the remaining.
+    /// If `newGeos` is bigger, adds the remaining geometries at the end.
+    void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
     /** deletes a group of constraints at once, if norecomputes is active, the default behaviour is
      * that it will solve the sketch.
      *
