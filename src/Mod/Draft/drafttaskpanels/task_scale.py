@@ -55,21 +55,21 @@ class ScaleTaskPanel:
         self.xLabel = QtWidgets.QLabel()
         layout.addWidget(self.xLabel, 0, 0, 1, 1)
         self.xValue = QtWidgets.QDoubleSpinBox()
-        self.xValue.setRange(0.0000001, 1000000.0)
+        self.xValue.setRange(-1000000.0, 1000000.0)
         self.xValue.setDecimals(decimals)
         self.xValue.setValue(1)
         layout.addWidget(self.xValue,0,1,1,1)
         self.yLabel = QtWidgets.QLabel()
         layout.addWidget(self.yLabel,1,0,1,1)
         self.yValue = QtWidgets.QDoubleSpinBox()
-        self.yValue.setRange(0.0000001, 1000000.0)
+        self.yValue.setRange(-1000000.0, 1000000.0)
         self.yValue.setDecimals(decimals)
         self.yValue.setValue(1)
         layout.addWidget(self.yValue,1,1,1,1)
         self.zLabel = QtWidgets.QLabel()
         layout.addWidget(self.zLabel,2,0,1,1)
         self.zValue = QtWidgets.QDoubleSpinBox()
-        self.zValue.setRange(0.0000001, 1000000.0)
+        self.zValue.setRange(-1000000.0, 1000000.0)
         self.zValue.setDecimals(decimals)
         self.zValue.setValue(1)
         layout.addWidget(self.zValue,2,1,1,1)
@@ -83,6 +83,7 @@ class ScaleTaskPanel:
         self.isCopy.setChecked(params.get_param("ScaleCopy"))
         layout.addWidget(self.isCopy,5,0,1,2)
         self.isSubelementMode = QtWidgets.QCheckBox()
+        self.isSubelementMode.setChecked(params.get_param("SubelementMode"))
         layout.addWidget(self.isSubelementMode,6,0,1,2)
         self.isClone = QtWidgets.QCheckBox()
         layout.addWidget(self.isClone,7,0,1,2)
@@ -112,7 +113,7 @@ class ScaleTaskPanel:
         """Set the relative scaling."""
         params.set_param("ScaleRelative", state)
         if self.sourceCmd:
-            self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
 
     def setCopy(self, state):
         """Set the scale and copy option."""
@@ -121,11 +122,12 @@ class ScaleTaskPanel:
             self.isClone.setChecked(False)
 
     def setSubelementMode(self, state):
+        params.set_param("SubelementMode", state)
         if state and self.isClone.isChecked():
             self.isClone.setChecked(False)
         if self.sourceCmd:
             self.sourceCmd.set_ghosts()
-            self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
 
     def setClone(self, state):
         """Set the clone and scale option."""
@@ -145,7 +147,7 @@ class ScaleTaskPanel:
             if not self.zValue.hasFocus():
                 self.zValue.setValue(val)
         if self.sourceCmd:
-            self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
 
     def retranslateUi(self, widget=None):
         """Translate the various widgets"""
@@ -163,7 +165,7 @@ class ScaleTaskPanel:
     def pickRef(self):
         """Pick a reference point from the calling class."""
         if self.sourceCmd:
-            self.sourceCmd.pickRef()
+            self.sourceCmd.pick_ref()
 
     def accept(self):
         """Execute when clicking the OK button."""
