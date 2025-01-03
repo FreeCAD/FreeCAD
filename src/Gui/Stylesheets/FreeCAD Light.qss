@@ -880,9 +880,13 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbar
 
 --------------------------------------------------------------------------- */
 QToolBar {
-  /* background-color: #f0f0f0; */
+  background-color: #f0f0f0;
   /* border: 1px solid #ababab; */
   /* font-weight: bold; */
+}
+
+QToolBar:only-one {
+  background-color: transparent;
 }
 
 QToolBar:horizontal {
