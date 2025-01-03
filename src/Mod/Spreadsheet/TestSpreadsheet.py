@@ -38,6 +38,7 @@ v = Base.Vector
 # Test Spreadsheet module and expression engine
 # ----------------------------------------------------------------------------------
 
+
 #############################################################################################
 class SpreadsheetAggregates(unittest.TestCase):
     @classmethod
@@ -167,7 +168,9 @@ class SpreadsheetAggregates(unittest.TestCase):
 
     def test_range_invalid(self):
         self.assertTrue(
-            self.sheet.H1.startswith("ERR: Quantity::operator +=(): Unit mismatch in plus operation")
+            self.sheet.H1.startswith(
+                "ERR: Quantity::operator +=(): Unit mismatch in plus operation"
+            )
         )
         self.assertTrue(
             self.sheet.H2.startswith(
@@ -181,10 +184,14 @@ class SpreadsheetAggregates(unittest.TestCase):
         )
         self.assertEqual(self.sheet.H4, 4)
         self.assertTrue(
-            self.sheet.H5.startswith("ERR: Quantity::operator -(): Unit mismatch in minus operation")
+            self.sheet.H5.startswith(
+                "ERR: Quantity::operator -(): Unit mismatch in minus operation"
+            )
         )
         self.assertTrue(
-            self.sheet.H6.startswith("ERR: Quantity::operator +=(): Unit mismatch in plus operation")
+            self.sheet.H6.startswith(
+                "ERR: Quantity::operator +=(): Unit mismatch in plus operation"
+            )
         )
 
 
@@ -452,7 +459,7 @@ class SpreadsheetFunction(unittest.TestCase):
         self.assertTrue(self.sheet.B13.startswith("ERR: Unit must be empty."))
 
     def test_atan(self):
-        self.assertMostlyEqual(self.sheet.A14, Units.Quantity("60 deg")) # "=atan(sqrt(3))"
+        self.assertMostlyEqual(self.sheet.A14, Units.Quantity("60 deg"))  # "=atan(sqrt(3))"
 
     def test_atan_error(self):
         self.assertTrue(self.sheet.B14.startswith("ERR: Unit must be empty."))
@@ -476,7 +483,7 @@ class SpreadsheetFunction(unittest.TestCase):
         self.assertTrue(self.sheet.B17.startswith("ERR: Unit must be empty."))
 
     def test_sqrt_number(self):
-        self.assertMostlyEqual(self.sheet.A18, 2) # "=sqrt(4)"
+        self.assertMostlyEqual(self.sheet.A18, 2)  # "=sqrt(4)"
 
     def test_sqrt_quantity(self):
         self.assertMostlyEqual(self.sheet.B18, Units.Quantity("2 mm"))
@@ -1199,15 +1206,15 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A2, mat)
 
         self.assertEqual(sheet.B2, imat * imat)
-        self.assertEqual(sheet.B2, mat ** -2)
+        self.assertEqual(sheet.B2, mat**-2)
         self.assertEqual(sheet.C2, imat)
-        self.assertEqual(sheet.C2, mat ** -1)
+        self.assertEqual(sheet.C2, mat**-1)
         self.assertEqual(sheet.D2, FreeCAD.Matrix())
-        self.assertEqual(sheet.D2, mat ** 0)
+        self.assertEqual(sheet.D2, mat**0)
         self.assertEqual(sheet.E2, mat)
-        self.assertEqual(sheet.E2, mat ** 1)
+        self.assertEqual(sheet.E2, mat**1)
         self.assertEqual(sheet.F2, mat * mat)
-        self.assertEqual(sheet.F2, mat ** 2)
+        self.assertEqual(sheet.F2, mat**2)
 
         self.assertTrue(sheet.H2.startswith("ERR: Cannot invert singular matrix"))
 
@@ -1215,28 +1222,28 @@ class SpreadsheetCases(unittest.TestCase):
 
         rtol = 1e-12
         self.assertTrue(sheet.B3.isSame(irot * irot, rtol))
-        self.assertTrue(sheet.B3.isSame(rot ** -2, rtol))
+        self.assertTrue(sheet.B3.isSame(rot**-2, rtol))
         self.assertTrue(sheet.C3.isSame(irot, rtol))
-        self.assertTrue(sheet.C3.isSame(rot ** -1, rtol))
+        self.assertTrue(sheet.C3.isSame(rot**-1, rtol))
         self.assertTrue(sheet.D3.isSame(FreeCAD.Rotation(), rtol))
-        self.assertTrue(sheet.D3.isSame(rot ** 0, rtol))
+        self.assertTrue(sheet.D3.isSame(rot**0, rtol))
         self.assertTrue(sheet.E3.isSame(rot, rtol))
-        self.assertTrue(sheet.E3.isSame(rot ** 1, rtol))
+        self.assertTrue(sheet.E3.isSame(rot**1, rtol))
         self.assertTrue(sheet.F3.isSame(rot * rot, rtol))
-        self.assertTrue(sheet.F3.isSame(rot ** 2, rtol))
+        self.assertTrue(sheet.F3.isSame(rot**2, rtol))
 
         self.assertEqual(sheet.A4, pla)
 
         self.assertTrue(plm_equal(sheet.B4, ipla * ipla))
-        self.assertTrue(plm_equal(sheet.B4, pla ** -2))
+        self.assertTrue(plm_equal(sheet.B4, pla**-2))
         self.assertTrue(plm_equal(sheet.C4, ipla))
-        self.assertTrue(plm_equal(sheet.C4, pla ** -1))
+        self.assertTrue(plm_equal(sheet.C4, pla**-1))
         self.assertTrue(plm_equal(sheet.D4, FreeCAD.Placement()))
-        self.assertTrue(plm_equal(sheet.D4, pla ** 0))
+        self.assertTrue(plm_equal(sheet.D4, pla**0))
         self.assertTrue(plm_equal(sheet.E4, pla))
-        self.assertTrue(plm_equal(sheet.E4, pla ** 1))
+        self.assertTrue(plm_equal(sheet.E4, pla**1))
         self.assertTrue(plm_equal(sheet.F4, pla * pla))
-        self.assertTrue(plm_equal(sheet.F4, pla ** 2))
+        self.assertTrue(plm_equal(sheet.F4, pla**2))
 
         tol = 1e-10
 

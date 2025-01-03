@@ -90,7 +90,9 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     int i7 = 0;
     int i8 = 0;
     if (PyArg_ParseTuple(args, "|iiiiiiii", &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
-        auto fix = [](const int val){return static_cast<int8_t>(val);};
+        auto fix = [](const int val) {
+            return static_cast<int8_t>(val);
+        };
 
         try {
             *self = Unit({fix(i1), fix(i2), fix(i3), fix(i4), fix(i5), fix(i6), fix(i7), fix(i8)});
