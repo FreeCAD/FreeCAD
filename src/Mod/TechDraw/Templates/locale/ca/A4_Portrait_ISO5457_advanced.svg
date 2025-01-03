@@ -323,7 +323,7 @@
          id="Identification number data field"
          x="101"
          y="272.2"
-         freecad:editable="drawing_number"><tspan
+         freecad:editable="drawing_number" freecad:autofill="drawing_number"><tspan
            id="tspan1">ND</tspan></text>
       <text
          id="Revision index data field"
