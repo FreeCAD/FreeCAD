@@ -109,9 +109,16 @@ def write_step_output(f, ccxwriter):
             f.write("** contact forces for Constraint contact\n")
             for femobj in ccxwriter.member.cons_contact:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
-                f.write("*CONTACT PRINT, MASTER={}, SLAVE={}\n".format("IND"+femobj["Object"].Name,"DEP"+femobj["Object"].Name))
+                f.write(
+                    "*CONTACT PRINT, MASTER={}, SLAVE={}\n".format(
+                        "IND" + femobj["Object"].Name, "DEP" + femobj["Object"].Name
+                    )
+                )
                 f.write("CF, CFN, CFS\n")
-        if any(vars(ccxwriter.member).get(f"cons_{key}") for key in ["fixed", "displacement", "rigidbody", "contact"]):
+        if any(
+            vars(ccxwriter.member).get(f"cons_{key}")
+            for key in ["fixed", "displacement", "rigidbody", "contact"]
+        ):
             f.write("\n")
         f.write(f"*OUTPUT, FREQUENCY={ccxwriter.solver_obj.OutputFrequency}")
 
