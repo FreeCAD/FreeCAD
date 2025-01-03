@@ -283,31 +283,37 @@ class DraftModification(unittest.TestCase):
         line_2.Shape = shape_line_2
         App.ActiveDocument.recompute()
 
+        # upgrade to wire
         obj = Draft.upgrade([line_1, line_2], delete=True)
         App.ActiveDocument.recompute()
         s = obj[0][0]
         _msg("  1: Result '{0}' ({1})".format(s.Shape.ShapeType, s.TypeId))
         self.assertTrue(bool(obj[0]), "'{}' failed".format(operation))
 
+        # upgrade to closed wire
         obj2 = Draft.upgrade(obj[0], delete=True)
         App.ActiveDocument.recompute()
         s2 = obj2[0][0]
         _msg("  2: Result '{0}' ({1})".format(s2.Shape.ShapeType, s2.TypeId))
         self.assertTrue(bool(obj2[0]), "'{}' failed".format(operation))
 
+        # upgrade to face
         obj3 = Draft.upgrade(obj2[0], delete=True)
         App.ActiveDocument.recompute()
         s3 = obj3[0][0]
         _msg("  3: Result '{0}' ({1})".format(s3.Shape.ShapeType, s3.TypeId))
         self.assertTrue(bool(obj3[0]), "'{}' failed".format(operation))
 
-        # when draftify, upgrade dont return a new object
+        # upgrade to Draft_Wire
         Draft.upgrade(obj3[0], delete=True)
+        # when draftifying, upgrade doesn't return a new object
+        wire = App.ActiveDocument.ActiveObject
+        wire.MakeFace = True  # make test independent of fillmode parameter
         App.ActiveDocument.recompute()
-        wire = App.ActiveDocument.Wire
         _msg("  4: Result '{0}' ({1})".format(wire.Proxy.Type, wire.TypeId))
         self.assertTrue(bool(wire), "'{}' failed".format(operation))
 
+        # Draft_Wire with face cannot be upgraded
         obj4 = Draft.upgrade(wire, delete=True)
         App.ActiveDocument.recompute()
         _msg("  The last object cannot be upgraded further")
@@ -324,20 +330,24 @@ class DraftModification(unittest.TestCase):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, a={1}".format(c, a))
         wire = Draft.make_wire([a, b, c, a])
+        wire.MakeFace = True  # make test independent of fillmode parameter
         App.ActiveDocument.recompute()
 
+        # downgrade to face
         obj = Draft.downgrade(wire, delete=True)
         App.ActiveDocument.recompute()
         s = obj[0][0]
         _msg("  1: Result '{0}' ({1})".format(s.Shape.ShapeType, s.TypeId))
         self.assertTrue(bool(obj[0]), "'{}' failed".format(operation))
 
+        # downgrade to wire
         obj2 = Draft.downgrade(obj[0], delete=True)
         App.ActiveDocument.recompute()
         s2 = obj2[0][0]
         _msg("  2: Result '{0}' ({1})".format(s2.Shape.ShapeType, s2.TypeId))
         self.assertTrue(bool(obj2[0]), "'{}' failed".format(operation))
 
+        # downgrade to edges
         obj3 = Draft.downgrade(obj2[0], delete=True)
         App.ActiveDocument.recompute()
         s3 = obj3[0][0]
@@ -345,6 +355,7 @@ class DraftModification(unittest.TestCase):
                                                   s3.TypeId))
         self.assertTrue(len(obj3[0]) == 3, "'{}' failed".format(operation))
 
+        # edges cannot be downgraded
         obj4 = Draft.downgrade(obj3[0], delete=True)
         App.ActiveDocument.recompute()
         s4 = obj4[0]
