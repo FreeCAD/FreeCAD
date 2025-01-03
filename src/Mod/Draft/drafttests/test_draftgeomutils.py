@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Antoine Lafr                                       *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,19 +23,15 @@
 # ***************************************************************************
 """Unit test for the DraftGeomUtils module."""
 
-import unittest
 import FreeCAD
 import Part
 import DraftGeomUtils
 import drafttests.auxiliary as aux
 from draftutils.messages import _msg
+from drafttests import test_base
 
-class TestDraftGeomUtils(unittest.TestCase):
+class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
     """Testing the functions in the file DraftGeomUtils.py"""
-
-    def setUp(self):
-        """Prepare the test. Nothing to do here, DraftGeomUtils doesn't need a document."""
-        aux.draw_header()
 
     def check_wire(self, wire):
         offset_values = (2000.0, 0.0, -1000, -2000, -3000, -5500)
@@ -214,10 +211,6 @@ class TestDraftGeomUtils(unittest.TestCase):
         wire = Part.Wire(edges)
         wire.Orientation = "Reversed"
         self.check_wire(wire)
-
-    def tearDown(self):
-        """Finish the test. Nothing to do here, DraftGeomUtils doesn't need a document."""
-        pass
 
 # suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestDraftGeomUtils)
 # unittest.TextTestRunner().run(suite)
