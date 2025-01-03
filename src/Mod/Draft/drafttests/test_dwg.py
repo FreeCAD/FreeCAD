@@ -36,6 +36,7 @@ import Draft
 import drafttests.auxiliary as aux
 
 from draftutils.messages import _msg
+from drafttests import test_base
 
 
 class DraftDWG(test_base.DraftTestCaseDoc):
