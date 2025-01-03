@@ -190,6 +190,17 @@ QString DrawTemplate::getAutofillValue(const QString &id) const
         std::pair<int, int> pageNumbers = getPageNumbers();
         return QString::number(pageNumbers.second);
     }
+    // drawing number
+    else if (id.compare(QString::fromUtf8(Autofill::DrawingNumber)) == 0) {
+        // derives auto generated document number from document uuid
+        App::Document *doc = App::GetApplication().getActiveDocument();
+        bool ok;
+        auto value = QString::fromStdString(doc->Uid.getValueStr()).split(QString::fromUtf8("-")).takeLast().toULongLong(&ok, 16);
+        if (ok) {
+            // only generate high numbers so we reduce chance of conflicting with manually assigned numbers
+            return QString::asprintf("%014llu", value % 89999999999999 + 10000000000000);
+        }
+    }
 
     return QString();
 }
