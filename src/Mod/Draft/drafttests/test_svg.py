@@ -30,6 +30,7 @@
 ## \addtogroup drafttests
 # @{
 import os
+import unittest
 
 import FreeCAD as App
 import Draft
