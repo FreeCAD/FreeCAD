@@ -885,8 +885,10 @@ QToolBar {
   /* font-weight: bold; */
 }
 
+/* fix background color for toolbars that are the on menubar. */
 QToolBar:only-one {
   background-color: transparent;
+  /* margin-top: -3px; */
 }
 
 QToolBar:horizontal {
