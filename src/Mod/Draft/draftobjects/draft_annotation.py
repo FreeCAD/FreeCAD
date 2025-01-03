@@ -66,9 +66,38 @@ class DraftAnnotation(object):
             # Object was saved without GUI.
             # onDocumentRestored in the object class should restore the ViewObject.
             return
+
+        if hasattr(vobj, "ArrowType") or hasattr(vobj, "ArrowSize"):
+            self.update_properties_1v1(obj, vobj)
+
         if hasattr(vobj, "ScaleMultiplier") and hasattr(vobj, "AnnotationStyle"):
             return
         self.add_missing_properties_0v19(obj, vobj)
+
+    def update_properties_1v1(self, obj, vobj):
+        """Update view properties."""
+        if hasattr(vobj, "ArrowType"):
+            _wrn(
+                "v1.1, "
+                + obj.Label
+                + ", "
+                + translate(
+                    "draft", "migrated 'ArrowType' property to 'ArrowTypeStart'"
+                )
+            )
+            vobj.ArrowTypeStart = vobj.ArrowType
+            vobj.removeProperty("ArrowType")
+        if hasattr(vobj, "ArrowSize"):
+            _wrn(
+                "v1.1, "
+                + obj.Label
+                + ", "
+                + translate(
+                    "draft", "migrated 'ArrowSize' property to 'ArrowSizeStart'"
+                )
+            )
+            vobj.ArrowSizeStart = vobj.ArrowSize
+            vobj.removeProperty("ArrowSize")
 
     def add_missing_properties_0v19(self, obj, vobj):
         """Provide missing annotation properties."""
