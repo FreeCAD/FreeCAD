@@ -120,8 +120,8 @@ M2"""
     values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90"""
 
     #
-    #setting TOOL_BEFORE_CHANGE to True will output T# M6 before each tool change
-    #rather than M6  T#.
+    # setting TOOL_BEFORE_CHANGE to True will output T# M6 before each tool change
+    # rather than M6  T#.
     #
     values["TOOL_BEFORE_CHANGE"] = type(True)
     values["UNITS"] = UNITS
