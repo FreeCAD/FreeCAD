@@ -261,7 +261,7 @@
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_10">
                 <property name="toolTip">
-                  <string>Create a default Render project with the newly Site</string>
+                  <string>Create a default Render project with the newly created Site</string>
                 </property>
                 <property name="text">
                   <string>Create Render Project (requires Render)</string>
