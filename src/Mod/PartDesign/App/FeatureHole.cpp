@@ -83,7 +83,7 @@ const char* Hole::ThreadClass_None_Enums[]           = { "None", nullptr };
 
 */
 
-const Hole::ThreadDescription Hole::threadDescription[][171] =
+const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
 {
     /* None */
     {
@@ -617,9 +617,7 @@ const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
 std::vector<std::string> getThreadDesignations(const int threadType) {
     std::vector<std::string> designations;
     for (const auto& thread : Hole::threadDescription[threadType]) {
-        if (thread.designation != nullptr) {
-            designations.emplace_back(thread.designation);
-        }
+        designations.push_back(thread.designation);
     }
     return designations;
 }
