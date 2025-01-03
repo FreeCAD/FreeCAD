@@ -58,6 +58,8 @@ else:
         return txt
 
 
+import numpy as np
+
 ## @package importWebGL
 #  \ingroup ARCH
 #  \brief FreeCAD WebGL Exporter
@@ -906,40 +908,51 @@ def compress_floats(floats: list[str]) -> str:
     return floatStr
 
 
-def compress_verts(verts, floats):
-    """
-    Create floats list to compress verts and wires being written into the JS
-    """
-    for v in range(len(verts)):
-        found = False
-        for f in range(len(floats)):
-            if floats[f] == verts[v]:
-                verts[v] = f
-                found = True
-                break
-        if not found:
-            floats.append(verts[v])
-            verts[v] = len(floats) - 1
-    return verts, floats
-
-
-def compress_wires(wires, floats):
+def compress_wires(wires: list[list[str]], floats: list[str]) -> tuple[list[list[str]], list[str]]:
     """
     Create floats list to compress wires being written into the JS
     """
-    for w in range(len(wires)):
-        for wv in range(len(wires[w])):
-            found = False
-            for f in range(len(floats)):
-                if floats[f] == wires[w][wv]:
-                    wires[w][wv] = f
-                    found = True
-                    break
-            if not found:
-                floats.append(wires[w][wv])
-                wires[w][wv] = len(floats) - 1
-        wires[w] = baseEncode(wires[w])
-    return wires, floats
+    lengths = []
+    for w in wires:
+        lengths.append(len(w))
+        floats.extend(w)
+
+    float_arr, all_wires = np.unique(floats, return_inverse=True)
+    wire_arrays = np.array_split(all_wires, np.cumsum(lengths[:-1]))
+    return [baseEncode(w.tolist()) for w in wire_arrays], float_arr.tolist()
+
+
+def compress_verts(verts: list[str], floats: list[str]) -> tuple[list[int], list[str]]:
+    """
+    Create floats list to compress verts and wires being written into the JS
+    """
+    floats_v, ind, verts_v = np.unique(verts, return_index=True, return_inverse=True)
+
+    # Reorder as np.unique orders the resulting array (needed for facet matching)
+    floats_v = floats_v[ind.argsort()]
+    reindex = dict(zip(ind.argsort(), np.arange(ind.size)))
+    verts_v = np.vectorize(lambda entry: reindex[entry])(verts_v)
+
+    # Get repeated indexes already existing from previous steps
+    v_in_w = np.nonzero(np.isin(floats_v, floats))[0]
+    w_in_v = np.nonzero(np.isin(floats, floats_v))[0]
+    v_in_w2 = np.where(~np.isin(floats_v, floats))
+
+    # Order values the same
+    v_in_w = v_in_w[floats_v[v_in_w].argsort()]
+    w_in_v = w_in_v[np.array(floats)[w_in_v].argsort()]
+
+    # Replace repeated indexes that exist in floats
+    new_index = len(floats)
+    verts_v += new_index
+    for vw, wv in zip(v_in_w + new_index, w_in_v):
+        verts_v[verts_v == vw] = wv
+
+    # Remove indexes of repeated entries in floats_v
+    for vw in (v_in_w + new_index)[v_in_w.argsort()][::-1]:
+        verts_v[verts_v > vw] -= 1
+
+    return verts_v.tolist(), np.concatenate([floats, floats_v[v_in_w2]]).tolist()
 
 
 def baseEncode(arr: list[int]) -> str:
