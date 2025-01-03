@@ -220,6 +220,8 @@ ViewProviderFemMesh::ViewProviderFemMesh()
                       App::Prop_Hidden,
                       "Node diffuse color array");
 
+    suppressibleExt.initExtension(this);
+
     ColorMode.setEnums(colorModeEnum);
     onlyEdges = false;
 
