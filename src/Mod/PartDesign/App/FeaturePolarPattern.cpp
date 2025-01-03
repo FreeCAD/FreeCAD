@@ -129,9 +129,7 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         axdir = gp_Dir(dir.x, dir.y, dir.z);
     } else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line* line = static_cast<App::Line*>(refObject);
-        Base::Rotation rot = line->Placement.getValue().getRotation();
-        Base::Vector3d d(1,0,0);
-        rot.multVec(d, d);
+        Base::Vector3d d = line->getDirection();
         axdir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->isDerivedFrom<Part::Feature>()) {
         if (subStrings[0].empty())

@@ -116,11 +116,9 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
     getMirrorAxis axisOfPlane = [this](gp_Pnt& axbase, gp_Dir& axdir) {
         App::DocumentObject* refObject = MirrorPlane.getValue();
         if (auto plane = dynamic_cast<App::Plane*>(refObject)) {
-            Base::Vector3d base = plane->Placement.getValue().getPosition();
+            Base::Vector3d base = plane->getBasePoint();
             axbase = gp_Pnt(base.x, base.y, base.z);
-            Base::Rotation rot = plane->Placement.getValue().getRotation();
-            Base::Vector3d dir(0,0,1);
-            rot.multVec(dir, dir);
+            Base::Vector3d dir = plane->getDirection();
             axdir = gp_Dir(dir.x, dir.y, dir.z);
             return true;
         }
