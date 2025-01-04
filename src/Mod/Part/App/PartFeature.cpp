@@ -93,39 +93,6 @@ Feature::Feature()
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
     auto mat = Materials::MaterialManager::defaultMaterial();
     ADD_PROPERTY(ShapeMaterial, (*mat));
-
-    // Read only properties based on the material
-    static const char* group = "PhysicalProperties";
-    ADD_PROPERTY_TYPE(MaterialName,
-                      (""),
-                      group,
-                      static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output
-                                                     | App::Prop_NoRecompute | App::Prop_NoPersist),
-                      "Feature material");
-    ADD_PROPERTY_TYPE(Density,
-                      (0.0),
-                      group,
-                      static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output
-                                                     | App::Prop_NoRecompute | App::Prop_NoPersist),
-                      "Feature density");
-    Density.setFormat(
-        Base::QuantityFormat(Base::QuantityFormat::NumberFormat::Default, MaterialPrecision));
-    ADD_PROPERTY_TYPE(Mass,
-                      (0.0),
-                      group,
-                      static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output
-                                                     | App::Prop_NoRecompute | App::Prop_NoPersist),
-                      "Feature mass");
-    Mass.setFormat(
-        Base::QuantityFormat(Base::QuantityFormat::NumberFormat::Default, MaterialPrecision));
-    ADD_PROPERTY_TYPE(Volume,
-                      (1.0),
-                      group,
-                      static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output
-                                                     | App::Prop_NoRecompute | App::Prop_NoPersist),
-                      "Feature volume");
-    Volume.setFormat(
-        Base::QuantityFormat(Base::QuantityFormat::NumberFormat::Default, MaterialPrecision));
 }
 
 Feature::~Feature() = default;
@@ -1533,39 +1500,10 @@ void Feature::onChanged(const App::Property* prop)
                 }
             }
         }
-        updatePhysicalProperties();
-    } else if (prop == &this->ShapeMaterial) {
-        updatePhysicalProperties();
     }
 
     GeoFeature::onChanged(prop);
 }
-
-void Feature::updatePhysicalProperties()
-{
-    MaterialName.setValue(ShapeMaterial.getValue().getName().toStdString());
-    if (ShapeMaterial.getValue().hasPhysicalProperty(QString::fromLatin1("Density"))) {
-        Density.setValue(ShapeMaterial.getValue()
-                             .getPhysicalQuantity(QString::fromLatin1("Density"))
-                             .getValue());
-    } else {
-        Base::Console().Log("Density is undefined\n");
-        Density.setValue(0.0);
-    }
-
-    auto topoShape = Shape.getValue();
-    if (!topoShape.IsNull()) {
-        GProp_GProps props;
-        BRepGProp::VolumeProperties(topoShape, props);
-        Volume.setValue(props.Mass());
-        Mass.setValue(Volume.getValue() * Density.getValue());
-    } else {
-        // No shape
-        Volume.setValue(0.0);
-        Mass.setValue(0.0);
-    }
-}
-
 
 const std::vector<std::string>& Feature::searchElementCache(const std::string& element,
                                                             Data::SearchOptions options,
