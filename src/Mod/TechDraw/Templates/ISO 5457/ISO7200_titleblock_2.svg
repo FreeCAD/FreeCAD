@@ -69,6 +69,6 @@
     <text id="responsible_department_data_field" x="141" y="33.2" freecad:editable="responsible_department"><tspan>RD</tspan></text>
     <text id="approval_person_data_field" x="81" y="21.2" freecad:editable="approval_person"><tspan>B. Hecate</tspan></text>
     <text id="creator_data_field" x="81" y="9.2" freecad:editable="creator" freecad:autofill="author"><tspan>A. Nemesis</tspan></text>
-    <text id="document_type_data_field" x="1" y="21.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
+    <text id="document_type_data_field" x="1" y="21.2" freecad:editable="document_type"><tspan>Component Drawing</tspan></text>
   </g>
 </svg>
