@@ -63,7 +63,7 @@ TEST(Unit, multipy_nullUnits_is_nullUnit)
 
 TEST(Unit, TestMult)
 {
-    constexpr std::array<int8_t,8> arr {1,1,0,0,0,0,0,0};
+    constexpr std::array<int8_t, 8> arr {1, 1, 0, 0, 0, 0, 0, 0};
     EXPECT_EQ(Mass * Length, Unit {arr});
 }
 
@@ -139,13 +139,13 @@ TEST(Unit, TestPow3DIV2)
 
 TEST(Unit, overflow)
 {
-    constexpr UnitVals arr {99,0,0,0,0,0,0,0};
+    constexpr UnitVals arr {99, 0, 0, 0, 0, 0, 0, 0};
     EXPECT_EQ(Unit {arr}, NullUnit);
 }
 
 TEST(Unit, underflow)
 {
-    constexpr UnitVals arr {-99,0,0,0,0,0,0,0};
+    constexpr UnitVals arr {-99, 0, 0, 0, 0, 0, 0, 0};
     EXPECT_EQ(Unit {arr}, NullUnit);
 }
 
@@ -165,7 +165,7 @@ TEST(Unit, representation_complex)
 
 TEST(Unit, representation_no_name)
 {
-    constexpr Unit unit {{1,1}};
+    constexpr Unit unit {{1, 1}};
     const std::string expect {"Unit: mm*kg (1,1,0,0,0,0,0,0)"};
     const auto actual = unit.representation();
     EXPECT_EQ(actual, expect);

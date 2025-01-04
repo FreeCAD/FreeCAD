@@ -100,7 +100,7 @@ private:
     }
 
     /** Returns posIndexes, NegIndexes*/
-    std::pair<std::vector<size_t>,std::vector<size_t>> nonZeroValsIndexes() const;
+    std::pair<std::vector<size_t>, std::vector<size_t>> nonZeroValsIndexes() const;
 };
 
 }  // namespace Base

@@ -122,7 +122,6 @@ inline bool isUnitName(const std::string_view str)
 
     const auto found = std::find_if(unitSpecs.begin(), unitSpecs.end(), match);
     return found != unitSpecs.end();
-
 }
 
 inline std::string getString(const UnitVals vals)
