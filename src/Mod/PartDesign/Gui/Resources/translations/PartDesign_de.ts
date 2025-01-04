@@ -296,7 +296,7 @@ so that self intersection is avoided.</source>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="609"/>
-      <source>Duplicate selected object</source>
+      <source>Duplicate selected &amp;object</source>
       <translation>Ausgewähltes Objekt duplizieren</translation>
     </message>
     <message>

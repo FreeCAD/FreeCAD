@@ -47,8 +47,8 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <location filename="../../Manipulator.cpp" line="48"/>
-      <source>Start</source>
-      <translation>Start</translation>
+      <source>&amp;Start Page</source>
+      <translation>Startseite</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>

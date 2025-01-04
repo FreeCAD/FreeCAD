@@ -1940,7 +1940,7 @@ der Projektion.</translation>
     <name>CmdPartSectionCut</name>
     <message>
       <location filename="../../Command.cpp" line="2199"/>
-      <source>Persistent section cut</source>
+      <source>Persiste&amp;nt section cut</source>
       <translation>Dauerhafte Schnittdarstellung</translation>
     </message>
     <message>
@@ -5958,7 +5958,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="886"/>
-      <source>Set appearance per face...</source>
+      <source>Set appearance per &amp;face...</source>
       <translation>Aussehen flächenweise festlegen...</translation>
     </message>
   </context>
