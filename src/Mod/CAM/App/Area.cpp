@@ -22,9 +22,6 @@
 
 #include "PreCompiled.h"
 
-// From Boost 1.75 on the geometry component requires C++14
-#define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
-
 #ifndef _PreComp_
 #include <cfloat>
 
@@ -79,13 +76,6 @@
 #include <Mod/CAM/libarea/Area.h>
 
 #include "Area.h"
-
-
-// FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-#endif
 
 
 namespace bg = boost::geometry;
