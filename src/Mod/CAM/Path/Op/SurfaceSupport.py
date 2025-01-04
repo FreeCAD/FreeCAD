@@ -2627,7 +2627,7 @@ class OCL_Tool:
             return
         self.oclTool = self.ocl.BullCutter(
             self.diameter,
-            self.diameter - self.flatRadius,
+            self.diameter / 2 - self.flatRadius,
             self.cutEdgeHeight + self.lengthOffset,
         )
 
