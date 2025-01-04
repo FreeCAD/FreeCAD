@@ -69,7 +69,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
         # OPENGL_gl_LIBRARY empty that results into linker errors
         SetupOpenGL()
     endif(BUILD_GUI)
-    SetupBoost()
     SetupSalomeSMESH()
     if (BUILD_FEM_NETGEN)
         find_package(NETGEN)
@@ -89,6 +88,9 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
         SetupShibokenAndPyside()
         SetupMatplotlib()
     endif(BUILD_GUI)
+
+    # SetupCoin3D can overwrite find_package(Boost) output so keep this after.
+    SetupBoost()
 endif()
 
 if(BUILD_VR)
