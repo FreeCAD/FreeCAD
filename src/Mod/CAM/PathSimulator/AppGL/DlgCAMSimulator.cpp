@@ -231,7 +231,6 @@ void DlgCAMSimulator::initialize()
 
     const qreal retinaScale = devicePixelRatio();
     glViewport(0, 0, width() * retinaScale, height() * retinaScale);
-    glEnable(GL_MULTISAMPLE);
 }
 
 void DlgCAMSimulator::checkInitialization()
