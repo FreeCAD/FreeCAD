@@ -50,6 +50,8 @@
 # include <Inventor/SoPickedPoint.h>
 #endif
 
+
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <Base/Builder3D.h>
@@ -257,6 +259,15 @@ void View3DInventor::printPdf()
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
+
+        QString appname = QCoreApplication::applicationName();
+        auto config = App::Application::Config();
+        QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
+        QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
+        QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
+        QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
+        printer.setCreator(QString::fromUtf8("%1 %2.%3.%4%5").arg(appname, major, minor, point, suffix));
+
         print(&printer);
     }
 }
