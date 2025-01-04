@@ -289,7 +289,9 @@ PreferencePage* DlgPreferencesImp::createPreferencePage(const std::string& pageN
 
     auto resetMargins = [](QWidget* widget) {
         widget->setContentsMargins(0, 0, 0, 0);
-        widget->layout()->setContentsMargins(0, 0, 0, 0);
+        if (auto layout = widget->layout()) {
+            layout->setContentsMargins(0, 0, 0, 0);
+        }
     };
 
     // settings layout already takes care for margins, we need to reset everything to 0
