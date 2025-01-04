@@ -679,15 +679,9 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = self.doc.addObject("Part::Feature")
         obj.Shape = shp
         obj.Placement.Base = base
-<<<<<<< refs/remotes/FreeCAD/main
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
-        self.doc.recompute()
-=======
-        App.ActiveDocument.recompute()
         obj = Draft.scale(obj, sca, cen, False)
-        App.ActiveDocument.recompute()
->>>>>>> Fix several unit test issues.
+        self.doc.recompute()
 
         # check endpoints of arcs:
         newEnds = [Vector( 5.0,  5.5, 0.0),
@@ -729,15 +723,9 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = self.doc.addObject("Part::Feature")
         obj.Shape = shp
         obj.Placement.Base = base
-<<<<<<< refs/remotes/FreeCAD/main
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
-        self.doc.recompute()
-=======
-        App.ActiveDocument.recompute()
         obj = Draft.scale(obj, sca, cen, False)
-        App.ActiveDocument.recompute()
->>>>>>> Fix several unit test issues.
+        self.doc.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector(13.0,  5.5, 0.0),
@@ -761,15 +749,9 @@ class DraftModification(test_base.DraftTestCaseDoc):
 
         obj = Draft.make_rectangle(len, hgt)
         obj.Placement.Base = base
-<<<<<<< refs/remotes/FreeCAD/main
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
-        self.doc.recompute()
-=======
-        App.ActiveDocument.recompute()
         obj = Draft.scale(obj, sca, cen, False)
-        App.ActiveDocument.recompute()
->>>>>>> Fix several unit test issues.
+        self.doc.recompute()
 
         newBase = Vector(5.0, 5.5, 0.0)
         newLen = 8.0
@@ -799,16 +781,10 @@ class DraftModification(test_base.DraftTestCaseDoc):
 
         obj = Draft.make_bspline(pts, False)
         obj.Placement.Base = base
-<<<<<<< refs/remotes/FreeCAD/main
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
-        self.doc.recompute()
-=======
-        App.ActiveDocument.recompute()
         obj = Draft.scale(obj, sca, cen, False)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         pla = obj.Placement
->>>>>>> Fix several unit test issues.
 
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector( 9.0, 14.5, 0.0),
@@ -832,15 +808,9 @@ class DraftModification(test_base.DraftTestCaseDoc):
 
         obj = Draft.make_wire(pts, True)
         obj.Placement.Base = base
-<<<<<<< refs/remotes/FreeCAD/main
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
-        self.doc.recompute()
-=======
-        App.ActiveDocument.recompute()
         obj = Draft.scale(obj, sca, cen, False)
-        App.ActiveDocument.recompute()
->>>>>>> Fix several unit test issues.
+        self.doc.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector(13.0,  5.5, 0.0),
