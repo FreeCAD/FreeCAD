@@ -39,23 +39,32 @@ Branding::Branding()
     filter.push_back("WindowIcon");
     filter.push_back("ProgramLogo");
     filter.push_back("ProgramIcons");
+    filter.push_back("DesktopFileName");
     filter.push_back("StyleSheet");
 
     filter.push_back("BuildVersionMajor");
     filter.push_back("BuildVersionMinor");
+    filter.push_back("BuildVersionPoint");
     filter.push_back("BuildRevision");
     filter.push_back("BuildRevisionDate");
+    filter.push_back("BuildVersionSuffix");
+    filter.push_back("BuildRepositoryURL");
 
+    filter.push_back("AboutImage");
     filter.push_back("SplashScreen");
     filter.push_back("SplashAlignment");
     filter.push_back("SplashTextColor");
     filter.push_back("SplashInfoColor");
+    filter.push_back("SplashInfoFont");
+    filter.push_back("SplashInfoPosition");
     filter.push_back("SplashWarningColor");
 
     filter.push_back("StartWorkbench");
 
     filter.push_back("ExeName");
     filter.push_back("ExeVendor");
+    filter.push_back("ExeVersion");
+    filter.push_back("AppDataSkipVendor");
     filter.push_back("NavigationStyle");
     filter.push_back("UserParameterTemplate");
 }
