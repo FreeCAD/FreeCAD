@@ -1836,7 +1836,7 @@ QVariant PropertyVectorDistanceItem::editorData(QWidget* editor) const
 
 Base::Quantity PropertyVectorDistanceItem::x() const
 {
-    return Base::Quantity(data(1,Qt::EditRole).value<Base::Vector3d>().x, Base::Units::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().x, Base::Units::Length);
 }
 
 void PropertyVectorDistanceItem::setX(Base::Quantity x)
@@ -1846,7 +1846,7 @@ void PropertyVectorDistanceItem::setX(Base::Quantity x)
 
 Base::Quantity PropertyVectorDistanceItem::y() const
 {
-    return Base::Quantity(data(1,Qt::EditRole).value<Base::Vector3d>().y, Base::Units::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().y, Base::Units::Length);
 }
 
 void PropertyVectorDistanceItem::setY(Base::Quantity y)
@@ -1856,7 +1856,7 @@ void PropertyVectorDistanceItem::setY(Base::Quantity y)
 
 Base::Quantity PropertyVectorDistanceItem::z() const
 {
-    return Base::Quantity(data(1,Qt::EditRole).value<Base::Vector3d>().z, Base::Units::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().z, Base::Units::Length);
 }
 
 void PropertyVectorDistanceItem::setZ(Base::Quantity z)
@@ -2822,13 +2822,14 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
         QString::fromUtf8("Axis: (%1 %2 %3)\n"
                           "Angle: %4\n"
                           "Position: (%5  %6  %7)")
-            .arg(loc.toString(dir.x, 'f', decimals()),
-                 loc.toString(dir.y, 'f', decimals()),
-                 loc.toString(dir.z, 'f', decimals()),
-                 QString::fromStdString(Base::Quantity(angle, Base::Units::Angle).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.x, Base::Units::Length).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.y, Base::Units::Length).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.z, Base::Units::Length).getUserString()));
+            .arg(
+                loc.toString(dir.x, 'f', decimals()),
+                loc.toString(dir.y, 'f', decimals()),
+                loc.toString(dir.z, 'f', decimals()),
+                QString::fromStdString(Base::Quantity(angle, Base::Units::Angle).getUserString()),
+                QString::fromStdString(Base::Quantity(pos.x, Base::Units::Length).getUserString()),
+                QString::fromStdString(Base::Quantity(pos.y, Base::Units::Length).getUserString()),
+                QString::fromStdString(Base::Quantity(pos.z, Base::Units::Length).getUserString()));
     return {data};
 }
 
@@ -2845,13 +2846,14 @@ QVariant PropertyPlacementItem::toString(const QVariant& prop) const
     QLocale loc;
     QString data =
         QString::fromUtf8("[(%1 %2 %3); %4; (%5  %6  %7)]")
-            .arg(loc.toString(dir.x, 'f', lowPrec),
-                 loc.toString(dir.y, 'f', lowPrec),
-                 loc.toString(dir.z, 'f', lowPrec),
-                 QString::fromStdString(Base::Quantity(angle, Base::Units::Angle).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.x, Base::Units::Length).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.y, Base::Units::Length).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.z, Base::Units::Length).getUserString()));
+            .arg(
+                loc.toString(dir.x, 'f', lowPrec),
+                loc.toString(dir.y, 'f', lowPrec),
+                loc.toString(dir.z, 'f', lowPrec),
+                QString::fromStdString(Base::Quantity(angle, Base::Units::Angle).getUserString()),
+                QString::fromStdString(Base::Quantity(pos.x, Base::Units::Length).getUserString()),
+                QString::fromStdString(Base::Quantity(pos.y, Base::Units::Length).getUserString()),
+                QString::fromStdString(Base::Quantity(pos.z, Base::Units::Length).getUserString()));
     return {data};
 }
 

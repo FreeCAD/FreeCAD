@@ -73,14 +73,14 @@ QT_TRANSLATE_NOOP("SketcherGui::ConstraintView", "Select Elements");
 /// FUNC is the name of the member function to be executed on selection of the menu item
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
 #define CONTEXT_ITEM(ICONSTR, NAMESTR, CMDSTR, FUNC, ACTSONSELECTION)                              \
-    QIcon icon_## FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                       \
-    QAction* constr_## FUNC = menu.addAction(icon_## FUNC, tr(NAMESTR), this, SLOT(FUNC()));         \
-    constr_## FUNC->setShortcut(QKeySequence(QString::fromUtf8(                                     \
+    QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                       \
+    QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));         \
+    constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(                                     \
         Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));      \
     if (ACTSONSELECTION)                                                                           \
-        constr_## FUNC->setEnabled(!items.isEmpty());                                               \
+        constr_##FUNC->setEnabled(!items.isEmpty());                                               \
     else                                                                                           \
-        constr_## FUNC->setEnabled(true);
+        constr_##FUNC->setEnabled(true);
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
 #define CONTEXT_MEMBER_DEF(CMDSTR, FUNC)                                                           \
     void ConstraintView::FUNC()                                                                    \
@@ -280,7 +280,7 @@ public:
                     return normal;
                 }
                 else {
-                return driven;
+                    return driven;
                 }
             };
 
@@ -348,7 +348,7 @@ public:
                 return QVariant();
         }
         else
-        return QListWidgetItem::data(role);
+            return QListWidgetItem::data(role);
     }
 
     Sketcher::ConstraintType constraintType() const
