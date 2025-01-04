@@ -80,7 +80,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     if App.GuiUp:
         v_dir = gui_utils.get_3d_view().getViewDirection()
     else:
-        v_dir = App.Base.Vector(0,0,-1)
+        v_dir = App.Vector(0, 0, -1)
 
     # lists to accumulate shapes with defined normal and undefined normal
     shape_norm_yes = list()
@@ -190,9 +190,12 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         tp = utils.get_type(obj)
 
         if tp == "Point":
-            shape = obj.Shape.copy()
+            # obj.Shape.copy() does not work properly for a Draft_Point.
+            # The coords of the point are multiplied by 2.
+            # We therefore create a Part Vertex instead.
+            shape = Part.Vertex(obj.Shape.Point)
             if angle:
-                shape.rotate(App.Base.Vector(0,0,0), axis, -1*angle)
+                shape.rotate(App.Vector(0, 0, 0), axis, -angle)
             point = Part.Point(shape.Point)
             nobj.addGeometry(point)
             ok = True
@@ -228,9 +231,9 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
     nobj.addConstraint(constraints)
     if autoconstraints:
-        nobj.detectMissingPointOnPointConstraints()
+        nobj.detectMissingPointOnPointConstraints(utils.tolerance())
         nobj.makeMissingPointOnPointCoincident(True)
-        nobj.detectMissingVerticalHorizontalConstraints()
+        nobj.detectMissingVerticalHorizontalConstraints(utils.tolerance())
         nobj.makeMissingVerticalHorizontal(True)
 
     return nobj
