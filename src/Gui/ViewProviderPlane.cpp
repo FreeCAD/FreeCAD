@@ -152,7 +152,7 @@ void ViewProviderPlane::setLabelVisibility(bool val)
     labelSwitch->whichChild = val ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 }
 
-unsigned long ViewProviderPlane::getColor(std::string& role)
+unsigned long ViewProviderPlane::getColor(const std::string& role) const
 {
     auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
     if (role == planesRoles[0]) {
@@ -167,7 +167,7 @@ unsigned long ViewProviderPlane::getColor(std::string& role)
     return 0;
 }
 
-std::string ViewProviderPlane::getLabelText(std::string& role)
+std::string ViewProviderPlane::getLabelText(const std::string& role) const
 {
     std::string text;
     auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
@@ -183,7 +183,7 @@ std::string ViewProviderPlane::getLabelText(std::string& role)
     return text;
 }
 
-std::string ViewProviderPlane::getRole()
+std::string ViewProviderPlane::getRole() const
 {
     // Note: Role property of App::Plane is not set yet when attaching.
     const char* name = pcObject->getNameInDocument();
