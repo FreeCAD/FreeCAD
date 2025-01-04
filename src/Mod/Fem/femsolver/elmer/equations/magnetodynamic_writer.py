@@ -347,11 +347,6 @@ class MgDynwriter:
         # the potential can either be a body force or a boundary constraint
         # therefore only output here if a face is referenced
         potentials = self.write.getMember("Fem::ConstraintElectrostaticPotential")
-        if len(potentials) == 0:
-            raise general_writer.WriteError(
-                "The Magnetodynamic equation needs at least one ElectrostaticPotential"
-                "constraint."
-            )
         for obj in potentials:
             if obj.References:
                 firstName = obj.References[0][1][0]
@@ -361,7 +356,7 @@ class MgDynwriter:
                         # output the FreeCAD label as comment
                         if obj.Label:
                             self.write.boundary(name, "! FreeCAD Name", obj.Label)
-                        # output only if potentiual is enabled and needed
+                        # output only if potential is enabled and needed
                         self._outputMagnetodynamicBndConditions(obj, name, equation)
                     self.write.handled(obj)
 
