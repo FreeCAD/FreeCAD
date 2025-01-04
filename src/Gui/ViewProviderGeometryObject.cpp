@@ -101,12 +101,15 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     pcShapeMaterial = new SoMaterial;
     setCoinAppearance(mat);
     pcShapeMaterial->ref();
+    pcShapeMaterial->setName("ShapeMaterial");
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();
+    pcBoundingBox->setName("BoundingBox");
 
     pcBoundColor = new SoBaseColor();
     pcBoundColor->ref();
+    pcBoundColor->setName("BoundColor");
 
     sPixmap = "Feature";
 }
@@ -302,6 +305,7 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         blue = ((bbcol >> 8) & 0xff) / 255.0F;
 
         pcBoundSwitch = new SoSwitch();
+        pcBoundSwitch->setName("BoundSwitch");
         auto pBoundingSep = new SoSeparator();
         auto lineStyle = new SoDrawStyle;
         lineStyle->lineWidth = 2.0F;

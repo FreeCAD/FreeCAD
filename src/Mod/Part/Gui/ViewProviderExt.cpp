@@ -214,28 +214,35 @@ ViewProviderPartExt::ViewProviderPartExt()
 
     pcFaceBind = new SoMaterialBinding();
     pcFaceBind->ref();
+    pcFaceBind->setName("FaceBind");
 
     pcLineBind = new SoMaterialBinding();
     pcLineBind->ref();
+    pcLineBind->setName("LineBind");
     pcLineMaterial = new SoMaterial;
     pcLineMaterial->ref();
+    pcLineMaterial->setName("LineMaterial");
     LineMaterial.touch();
 
     pcPointBind = new SoMaterialBinding();
     pcPointBind->ref();
+    pcPointBind->setName("PointBind");
     pcPointMaterial = new SoMaterial;
     pcPointMaterial->ref();
+    pcPointMaterial->setName("PointMaterial");
     PointMaterial.touch();
 
     pcLineStyle = new SoDrawStyle();
     pcLineStyle->ref();
     pcLineStyle->style = SoDrawStyle::LINES;
     pcLineStyle->lineWidth = LineWidth.getValue();
+    pcLineStyle->setName("LineStyle");
 
     pcPointStyle = new SoDrawStyle();
     pcPointStyle->ref();
     pcPointStyle->style = SoDrawStyle::POINTS;
     pcPointStyle->pointSize = PointSize.getValue();
+    pcPointStyle->setName("PointStyle");
 
     pShapeHints = new SoShapeHints;
     pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -410,9 +417,13 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // Workaround for #0000433, i.e. use SoSeparator instead of SoGroup
     auto* pcNormalRoot = new SoSeparator();
+    pcNormalRoot->setName("NormalRoot");
     auto* pcFlatRoot = new SoSeparator();
+    pcFlatRoot->setName("FlatRoot");
     auto* pcWireframeRoot = new SoSeparator();
+    pcWireframeRoot->setName("WireframeRoot");
     auto* pcPointsRoot = new SoSeparator();
+    pcPointsRoot->setName("PointsRoot");
     auto* wireframe = new SoSeparator();
 
     // Must turn off all intermediate render caching, and let pcRoot to handle
@@ -452,6 +463,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     pcFlatRoot->addChild(texture.getAppearance());
     texture.setup(pcShapeMaterial);
     SoDrawStyle* pcFaceStyle = new SoDrawStyle();
+    pcFaceStyle->setName("FaceStyle");
     pcFaceStyle->style = SoDrawStyle::FILLED;
     pcFlatRoot->addChild(pcFaceStyle);
     pcFlatRoot->addChild(norm);
