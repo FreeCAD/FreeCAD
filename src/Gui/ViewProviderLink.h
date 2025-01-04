@@ -20,10 +20,15 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_LINK_H
-#define GUI_VIEWPROVIDER_LINK_H
+#ifndef SRC_GUI_VIEWPROVIDER_LINK_H_
+#define SRC_GUI_VIEWPROVIDER_LINK_H_
 
 #include <App/Link.h>
+#include <unordered_map>
+#include <map>
+#include <string>
+#include <vector>
+#include <memory>
 
 #include "SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"
@@ -265,7 +270,9 @@ public:
 
     App::Property *getPropertyByName(const char* name) const override;
     void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
-    void getPropertyList(std::vector<App::Property*> &List) const override;
+    /// See PropertyContainer::visitProperties for semantics
+    void visitProperties(const std::function<void(App::Property*)>& visitor) const override;
+    void getPropertyList(std::vector<App::Property*>& List) const override;
 
     ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=nullptr, bool recursive=false) const override;
@@ -344,4 +351,4 @@ using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;
 } //namespace Gui
 
 
-#endif // GUI_VIEWPROVIDER_LINK_H
+#endif // SRC_GUI_VIEWPROVIDER_LINK_H_
