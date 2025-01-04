@@ -1374,6 +1374,8 @@ void Hole::findClosestDesignation()
     int threadType = ThreadType.getValue();
     int closestSize = 0;
     double diameter = ThreadDiameter.getValue();
+    if (diameter == 0)
+        diameter = Diameter.getValue();
     double closestDifference = std::numeric_limits<double>::infinity();
     double difference;
 
@@ -1677,6 +1679,11 @@ void Hole::onChanged(const App::Property* prop)
         // a changed diameter means we also need to check the hole cut
         // because the hole cut diameter must not be <= than the diameter
         updateHoleCutParams();
+        if (ThreadType.getValue() == 0) {
+            // Profile is None but this is needed to find the closest
+            // designation if the user switch to threaded
+            ThreadDiameter.setValue(Diameter.getValue());
+        }
     }
     else if (prop == &HoleCutType) {
         ProfileBased::onChanged(&HoleCutDiameter);
