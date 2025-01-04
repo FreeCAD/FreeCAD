@@ -676,3 +676,9 @@ bool Preferences::switchOnClick()
 {
     return getPreferenceGroup("General")->GetBool("SwitchToWB", true);
 }
+
+//! if true, svg symbols will use the old scaling logic.
+bool Preferences::useLegacySvgScaling()
+{
+    return getPreferenceGroup("General")->GetBool("LegacySvgScaling", false);
+}

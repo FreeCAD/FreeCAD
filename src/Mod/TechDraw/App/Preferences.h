@@ -157,6 +157,8 @@ public:
     static bool checkShapesBeforeUse();
     static bool debugBadShape();
 
+    static bool useLegacySvgScaling();
+
 };
 
 
