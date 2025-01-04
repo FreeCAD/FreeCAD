@@ -46,15 +46,15 @@ public:
     /// constructor
     ViewProviderRichAnno();
     /// destructor
-    ~ViewProviderRichAnno() override;
+    ~ViewProviderRichAnno() override = default;
 
     App::PropertyLength      LineWidth;
     App::PropertyEnumeration LineStyle;
     App::PropertyColor       LineColor;
 
     bool useNewSelectionModel() const override {return false;}
-    void updateData(const App::Property*) override;
-    void onChanged(const App::Property* p) override;
+    void updateData(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     bool doubleClicked() override;
     bool canDelete(App::DocumentObject* obj) const override;
 
@@ -62,6 +62,10 @@ public:
 
     TechDraw::DrawRichAnno* getViewObject() const override;
     TechDraw::DrawRichAnno* getFeature()  const;
+
+    /// Claim any views that have this as a parent
+    std::vector<App::DocumentObject*> claimChildren() const override;
+
 
 protected:
     App::Color getDefLineColor();

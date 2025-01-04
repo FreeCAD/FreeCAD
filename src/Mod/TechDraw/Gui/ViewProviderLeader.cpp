@@ -100,18 +100,18 @@ bool ViewProviderLeader::doubleClicked()
     return true;
 }
 
-void ViewProviderLeader::onChanged(const App::Property* p)
+void ViewProviderLeader::onChanged(const App::Property* prop)
 {
-    if ((p == &Color) ||
-        (p == &LineWidth) ||
-        (p == &LineStyle) ||
-        (p == &UseOldCoords)) {
-        QGIView* qgiv = getQView();
+    if ((prop == &Color) ||
+        (prop == &LineWidth) ||
+        (prop == &LineStyle) ||
+        (prop == &UseOldCoords)) {
+        auto* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
     }
-    ViewProviderDrawingView::onChanged(p);
+    ViewProviderDrawingView::onChanged(prop);
 }
 
 std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const

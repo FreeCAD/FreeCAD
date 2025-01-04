@@ -41,6 +41,10 @@
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/LandmarkDimension.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawRichAnno.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+
 
 #include "PreferencesGui.h"
 #include "ZVALUE.h"
@@ -98,9 +102,6 @@ ViewProviderDimension::ViewProviderDimension()
    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
-ViewProviderDimension::~ViewProviderDimension()
-{
-}
 
 void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
 {
@@ -122,7 +123,7 @@ bool ViewProviderDimension::doubleClicked()
 
 void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    auto* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
     func->trigger(act, [this](){
@@ -201,34 +202,34 @@ void ViewProviderDimension::setPixmapForType()
     }
 }
 
-void ViewProviderDimension::onChanged(const App::Property* p)
+void ViewProviderDimension::onChanged(const App::Property* prop)
 {
-    if ((p == &Font)  ||
-        (p == &Fontsize) ||
-        (p == &Arrowsize) ||
-        (p == &LineWidth) ||
-        (p == &StandardAndStyle) ||
-        (p == &RenderingExtent) ||
-        (p == &FlipArrowheads) ||
-        (p == &GapFactorASME) ||
-        (p == &GapFactorISO) ||
-        p == &LineSpacingFactorISO)  {
-        QGIView* qgiv = getQView();
+    if ((prop == &Font)  ||
+        (prop == &Fontsize) ||
+        (prop == &Arrowsize) ||
+        (prop == &LineWidth) ||
+        (prop == &StandardAndStyle) ||
+        (prop == &RenderingExtent) ||
+        (prop == &FlipArrowheads) ||
+        (prop == &GapFactorASME) ||
+        (prop == &GapFactorISO) ||
+        prop == &LineSpacingFactorISO)  {
+        auto* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
     }
-    if (p == &Color) {
-        QGIView* qgiv = getQView();
+    if (prop == &Color) {
+        auto* qgiv = getQView();
         if (qgiv) {
-            QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(qgiv);
+            auto* qgivd = dynamic_cast<QGIViewDimension*>(qgiv);
             if (qgivd) {
                 qgivd->setNormalColorAll();
             }
         }
     }
 
-    ViewProviderDrawingView::onChanged(p);
+    ViewProviderDrawingView::onChanged(prop);
 }
 
 TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const
@@ -292,7 +293,6 @@ bool ViewProviderDimension::canDelete(App::DocumentObject *obj) const
 bool ViewProviderDimension::onDelete(const std::vector<std::string> & parms)
 {
     Q_UNUSED(parms)
-//    Base::Console().Message("VPB::onDelete() - parms: %d\n", parms.size());
     auto dlg = Gui::Control().activeDialog();
     auto ourDlg = dynamic_cast<TaskDlgDimension*>(dlg);
     if (ourDlg)  {
@@ -306,5 +306,25 @@ bool ViewProviderDimension::onDelete(const std::vector<std::string> & parms)
         return false;
     }
     return true;
+}
+
+
+std::vector<App::DocumentObject*> ViewProviderDimension::claimChildren() const
+{
+    // What can reasonably have a Dimension as a parent? A leader? a bit unconventional, but not forbidden.
+    // A RichAnno? Maybe? Balloons? This is a bit of a corner case. Typically, a
+    // Dimension would belong to something rather than owning something.
+    // Pages will appear in the inList, but should not be treated as a child of the dimension!
+
+    std::vector<App::DocumentObject*> temp;
+    const std::vector<App::DocumentObject*>& candidates = getViewObject()->getInList();
+    for (auto& obj : candidates) {
+        if (obj->isDerivedFrom<TechDraw::DrawViewBalloon>() ||
+            obj->isDerivedFrom<TechDraw::DrawLeaderLine>()  ||
+            obj->isDerivedFrom<TechDraw::DrawRichAnno>() ) {
+            temp.push_back(obj);
+       }
+   }
+   return temp;
 }
 

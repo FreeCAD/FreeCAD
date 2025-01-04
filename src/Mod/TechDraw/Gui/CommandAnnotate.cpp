@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
-# include <sstream>
 #endif
 
 #include <App/DocumentObject.h>
@@ -60,13 +59,15 @@
 #include "TaskWeldingSymbol.h"
 #include "TaskCosmeticCircle.h"
 #include "ViewProviderViewPart.h"
+#include "CommandHelpers.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using namespace CommandHelpers;
+//using CH = CommandHelpers;
 
 //internal functions
-bool _checkSelectionHatch(Gui::Command* cmd);
 
 void execCosmeticVertex(Gui::Command* cmd);
 void execMidpoints(Gui::Command* cmd);
@@ -76,9 +77,6 @@ void exec2LineCenterLine(Gui::Command* cmd);
 void exec2PointCenterLine(Gui::Command* cmd);
 void execLine2Points(Gui::Command* cmd);
 void execCosmeticCircle(Gui::Command* cmd);
-std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
-                                                TechDraw::DrawViewPart* &dvp,
-                                                std::string subType = "Edge");
 
 //===========================================================================
 // TechDraw_Leader
@@ -333,7 +331,7 @@ void execMidpoints(Gui::Command* cmd)
 {
 //    Base::Console().Message("execMidpoints()\n");
     TechDraw::DrawViewPart * dvp = nullptr;
-    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
+    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
 
     if (!dvp || selectedEdges.empty())
         return;
@@ -360,7 +358,7 @@ void execQuadrants(Gui::Command* cmd)
 {
 //    Base::Console().Message("execQuadrants()\n");
     TechDraw::DrawViewPart* dvp = nullptr;
-    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
+    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
 
     if (!dvp || selectedEdges.empty())
         return;
@@ -552,6 +550,13 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewAnnotation', '%s')", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewAnnotation', 'Annotation', '%s')",
               FeatName.c_str(), FeatName.c_str());
+
+    auto baseView = CommandHelpers::firstViewInSelection(this);
+    if (baseView) {
+        auto baseName = baseView->getNameInDocument();
+        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
+                  FeatName.c_str(), baseName);
+    }
 
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
@@ -823,7 +828,7 @@ void exec2LineCenterLine(Gui::Command* cmd)
         return;
     }
     TechDraw::DrawViewPart* dvp = nullptr;
-    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
+    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
 
     if (!dvp || selectedEdges.empty()) {
         return;
@@ -1687,46 +1692,3 @@ void CreateTechDrawCommandsAnnotate()
     rcCmdMgr.addCommand(new CmdTechDrawSurfaceFinishSymbols());
 }
 
-//===========================================================================
-// Selection Validation Helpers
-//===========================================================================
-
-std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
-                                                TechDraw::DrawViewPart* &dvp,
-                                                std::string subType)
-{
-//    Base::Console().Message("getSelectedSubElements() - dvp: %X\n", dvp);
-    std::vector<std::string> selectedSubs;
-    std::vector<std::string> subNames;
-    dvp = nullptr;
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            dvp = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
-            break;
-        }
-    }
-    if (!dvp) {
-      QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                           QObject::tr("No Part View in Selection"));
-      return selectedSubs;
-    }
-
-    for (auto& s: subNames) {
-        if (TechDraw::DrawUtil::getGeomTypeFromName(s) == subType) {
-            selectedSubs.push_back(s);
-        }
-    }
-
-    if (selectedSubs.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong Selection"),
-                             QObject::tr("No %1 in Selection")
-                                 .arg(QString::fromStdString(subType)));
-        return selectedSubs;
-    }
-
-    return selectedSubs;
-}

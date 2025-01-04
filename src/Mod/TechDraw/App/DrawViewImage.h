@@ -47,6 +47,7 @@ public:
     App::PropertyFileIncluded ImageIncluded;
     App::PropertyFloat        Width;
     App::PropertyFloat        Height;
+    App::PropertyLink         Owner;
 
     /** @name methods override Feature */
     //@{
@@ -58,6 +59,9 @@ public:
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderImage";
     }
+
+    App::PropertyLink *getOwnerProperty() override { return &Owner; }
+
     QRectF getRect() const override;
     void setupObject() override;
 

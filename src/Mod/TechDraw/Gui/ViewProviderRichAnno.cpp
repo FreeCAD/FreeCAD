@@ -28,14 +28,16 @@
 #include <Gui/Selection.h>
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+    #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "PreferencesGui.h"
 #include "ZVALUE.h"
 #include "QGIView.h"
 #include "TaskRichAnno.h"
 #include "QGSPage.h"
-#include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
@@ -68,9 +70,6 @@ ViewProviderRichAnno::ViewProviderRichAnno()
     StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
-ViewProviderRichAnno::~ViewProviderRichAnno()
-{
-}
 
 bool ViewProviderRichAnno::doubleClicked()
 {
@@ -79,7 +78,7 @@ bool ViewProviderRichAnno::doubleClicked()
     return true;
 }
 
-void ViewProviderRichAnno::updateData(const App::Property* p)
+void ViewProviderRichAnno::updateData(const App::Property* prop)
 {
     // only if there is a frame we can enable the frame line parameters
     if (getViewObject()) {
@@ -95,21 +94,21 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
         }
     }
 
-    ViewProviderDrawingView::updateData(p);
+    ViewProviderDrawingView::updateData(prop);
 }
 
-void ViewProviderRichAnno::onChanged(const App::Property* p)
+void ViewProviderRichAnno::onChanged(const App::Property* prop)
 {
-    if ((p == &LineColor) ||
-        (p == &LineWidth) ||
-        (p == &LineStyle)) {
-        QGIView* qgiv = getQView();
+    if ((prop == &LineColor) ||
+        (prop == &LineWidth) ||
+        (prop == &LineStyle)) {
+        auto* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
     }
 
-    ViewProviderDrawingView::onChanged(p);
+    ViewProviderDrawingView::onChanged(prop);
 }
 
 TechDraw::DrawRichAnno* ViewProviderRichAnno::getViewObject() const
@@ -182,4 +181,24 @@ bool ViewProviderRichAnno::canDelete(App::DocumentObject *obj) const
     // view will get the page as new parent if the view is deleted
     Q_UNUSED(obj)
     return true;
+}
+
+
+std::vector<App::DocumentObject*> ViewProviderRichAnno::claimChildren() const
+{
+    // What can reasonably have a RichAnno as a parent? A leader? a bit unconventional, but not forbidden.
+    // Another RichAnno? Maybe? Balloons? Dimensions? This is a bit of a corner case. Typically, a
+    // RichAnno would belong to something rather than owning something.
+
+    std::vector<App::DocumentObject*> temp;
+    const std::vector<App::DocumentObject*>& candidates = getViewObject()->getInList();
+    for (auto& obj : candidates) {
+        if (obj->isDerivedFrom<TechDraw::DrawViewBalloon>() ||
+            obj->isDerivedFrom<TechDraw::DrawLeaderLine>()  ||
+            obj->isDerivedFrom<TechDraw::DrawRichAnno>() ||
+            obj->isDerivedFrom<TechDraw::DrawViewDimension>() ) {
+            temp.push_back(obj);
+       }
+   }
+   return temp;
 }

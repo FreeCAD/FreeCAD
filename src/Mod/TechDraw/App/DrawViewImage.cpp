@@ -52,6 +52,8 @@ DrawViewImage::DrawViewImage()
                       "Embedded image file. System use only.");// n/a to end users
     ADD_PROPERTY_TYPE(Width, (100), vgroup, App::Prop_None, "The width of cropped image");
     ADD_PROPERTY_TYPE(Height, (100), vgroup, App::Prop_None, "The height of cropped image");
+    ADD_PROPERTY_TYPE(Owner, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
+                      "Feature to which this symbol is attached");
 
     ScaleType.setValue("Custom");
     Scale.setStatus(App::Property::Hidden, false);

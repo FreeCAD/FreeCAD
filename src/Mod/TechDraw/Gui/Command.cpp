@@ -79,6 +79,7 @@
 #include "TaskSectionView.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
+#include "CommandHelpers.h"
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
@@ -1558,8 +1559,17 @@ void CmdTechDrawSymbol::activated(int iMsg)
         doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSymbol', 'Symbol', '%s')",
               FeatName.c_str(), FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Symbol = svg", FeatName.c_str());
+
+        auto baseView = CommandHelpers::firstViewInSelection(this);
+        if (baseView) {
+            auto baseName = baseView->getNameInDocument();
+            doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
+                      FeatName.c_str(), baseName);
+        }
+
         doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                   FeatName.c_str());
+
         updateActive();
         commitCommand();
     }
@@ -1721,6 +1731,12 @@ CmdTechDrawSpreadsheetView::CmdTechDrawSpreadsheetView() : Command("TechDraw_Spr
 void CmdTechDrawSpreadsheetView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
     const std::vector<App::DocumentObject*> spreads =
         getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
     if (spreads.size() != 1) {
@@ -1730,12 +1746,6 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     }
     std::string SpreadName = spreads.front()->getNameInDocument();
 
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
-
     openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
     std::string FeatName = getUniqueObjectName("Sheet");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
@@ -1744,6 +1754,15 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
               FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
               SpreadName.c_str());
+
+    // look for an owner view in the selection
+    auto baseView = CommandHelpers::firstViewInSelection(this);
+    if (baseView) {
+        auto baseName = baseView->getNameInDocument();
+        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
+                  FeatName.c_str(), baseName);
+    }
+
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
     updateActive();

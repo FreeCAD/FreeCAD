@@ -53,6 +53,7 @@
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderPage.h"
 #include "MDIViewPage.h"
+#include "CommandHelpers.h"
 
 
 using namespace TechDrawGui;
@@ -268,11 +269,20 @@ void CmdTechDrawImage::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Image");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
+
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
               FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
+
+    auto baseView = CommandHelpers::firstViewInSelection(this);
+    if (baseView) {
+        auto baseName = baseView->getNameInDocument();
+        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
+                  FeatName.c_str(), baseName);
+    }
+
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();
