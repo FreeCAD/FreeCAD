@@ -50,19 +50,8 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "ExportOCAF.h"
+#include "Tools.h"
 
-
-#if OCC_VERSION_HEX >= 0x070500
-// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
-#define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
-
-static inline Quantity_ColorRGBA convertColor(const App::Color& c)
-{
-    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), 1.0 - c.a);
-}
 
 using namespace Import;
 
@@ -313,7 +302,7 @@ int ExportOCAF::saveShape(Part::Feature* part,
 
                 if (!faceLabel.IsNull()) {
                     const App::Color& color = colors[index - 1];
-                    col = convertColor(color);
+                    col = Tools::convertColor(color);
                     aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                 }
             }
@@ -322,7 +311,7 @@ int ExportOCAF::saveShape(Part::Feature* part,
     }
     else if (!colors.empty()) {
         App::Color color = colors.front();
-        col = convertColor(color);
+        col = Tools::convertColor(color);
         aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
     }
 
@@ -423,7 +412,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
 
                         if (!faceLabel.IsNull()) {
                             const App::Color& color = colors[index - 1];
-                            col = convertColor(color);
+                            col = Tools::convertColor(color);
                             aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                         }
                     }
@@ -433,7 +422,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
             }
             else if (!colors.empty()) {
                 App::Color color = colors.front();
-                col = convertColor(color);
+                col = Tools::convertColor(color);
                 aColorTool->SetColor(label, col, XCAFDoc_ColorGen);
             }
         }

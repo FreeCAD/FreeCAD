@@ -55,6 +55,7 @@
 #include <Mod/Part/App/ShapeMapHasher.h>
 
 #include "ImportOCAF.h"
+#include "Tools.h"
 
 
 #ifdef HAVE_TBB
@@ -64,23 +65,6 @@
 #endif
 
 using namespace Import;
-
-#if OCC_VERSION_HEX >= 0x070500
-// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
-#define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
-
-static inline App::Color convertColor(const Quantity_ColorRGBA& c)
-{
-    Standard_Real r, g, b;
-    c.GetRGB().Values(r, g, b, OCC_COLOR_SPACE);
-    return App::Color(static_cast<float>(r),
-                      static_cast<float>(g),
-                      static_cast<float>(b),
-                      1.0f - static_cast<float>(c.Alpha()));
-}
 
 #define OCAF_KEEP_PLACEMENT
 
@@ -414,7 +398,7 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
     if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
-        color = convertColor(aColor);
+        color = Tools::convertColor(aColor);
         std::vector<App::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
@@ -436,7 +420,7 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
             || aColorTool->GetColor(xp.Current(), XCAFDoc_ColorSurf, aColor)
             || aColorTool->GetColor(xp.Current(), XCAFDoc_ColorCurv, aColor)) {
             int index = faces.FindIndex(xp.Current());
-            color = convertColor(aColor);
+            color = Tools::convertColor(aColor);
             faceColors[index - 1] = color;
             found_face_color = true;
         }
@@ -547,7 +531,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             jt = myColorMap.find(Part::ShapeMapHasher {}(xp.Current()));
             if (jt != myColorMap.end()) {
                 int index = faces.FindIndex(xp.Current());
-                faceColors[index - 1] = convertColor(jt->second);
+                faceColors[index - 1] = Tools::convertColor(jt->second);
             }
             xp.Next();
         }
