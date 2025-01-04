@@ -64,14 +64,14 @@ def getStringList(objects):
 def getDefaultColor(objectType):
     '''getDefaultColor(string): returns a color value for the given object
     type (Wall, Structure, Window, WindowGlass)'''
-    transparency = 0.0
+    alpha = 1.0
     if objectType == "Wall":
         c = params.get_param_arch("WallColor")
     elif objectType == "Structure":
         c = params.get_param_arch("StructureColor")
     elif objectType == "WindowGlass":
         c = params.get_param_arch("WindowGlassColor")
-        transparency = params.get_param_arch("WindowTransparency") / 100.0
+        alpha = 1.0 - params.get_param_arch("WindowTransparency") / 100.0
     elif objectType == "Rebar":
         c = params.get_param_arch("RebarColor")
     elif objectType == "Panel":
@@ -82,11 +82,11 @@ def getDefaultColor(objectType):
         c = params.get_param_arch("ColorHelpers")
     elif objectType == "Construction":
         c = params.get_param("constructioncolor")
-        transparency = 0.80
+        alpha = 0.2
     else:
         c = params.get_param_view("DefaultShapeColor")
     r, g, b, _ = Draft.get_rgba_tuple(c)
-    return (r, g, b, transparency)
+    return (r, g, b, alpha)
 
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
