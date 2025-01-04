@@ -194,6 +194,44 @@ class TestHole(unittest.TestCase):
         self.Doc.recompute()
         self.assertEqual(len(self.Hole.Shape.Faces), 7)
 
+    def testThreadTypeChange(self):
+        self.Hole.ThreadType = 1
+        self.assertEqual(self.Hole.ThreadType, 'ISOMetricProfile')
+        self.Hole.ThreadSize = 11
+        self.assertEqual(self.Hole.ThreadSize, 'M4')
+        self.Hole.ThreadType = 2
+        self.assertEqual(self.Hole.ThreadType, 'ISOMetricFineProfile')
+        # Size should be auto-selected to M4x0.5
+        # This currently only works when using the GUI task-panel
+        # self.assertEqual(self.Hole.ThreadSize, 'M4x0.5')
+
+        # ThreadSize should maintain 1/4"
+        designation = '1/4'
+
+        self.Hole.ThreadType = 3
+        self.assertEqual(self.Hole.ThreadType, 'UNC')
+        self.Hole.ThreadSize = 9
+        self.assertEqual(self.Hole.ThreadSize, designation)
+        self.Hole.ThreadType = 4
+        self.assertEqual(self.Hole.ThreadType, 'UNF')
+        self.assertEqual(self.Hole.ThreadSize, designation)
+        self.Hole.ThreadType = 5
+        self.assertEqual(self.Hole.ThreadType, 'UNEF')
+        self.assertEqual(self.Hole.ThreadSize, designation)
+        self.Hole.ThreadType = 6
+        self.assertEqual(self.Hole.ThreadType, 'NPT')
+        self.assertEqual(self.Hole.ThreadSize, designation)
+        self.Hole.ThreadType = 7
+        self.assertEqual(self.Hole.ThreadType, 'BSP')
+        self.assertEqual(self.Hole.ThreadSize, designation)
+        self.Hole.ThreadType = 8
+        self.assertEqual(self.Hole.ThreadType, 'BSW')
+        self.assertEqual(self.Hole.ThreadSize, designation)
+        self.Hole.ThreadType = 9
+        self.assertEqual(self.Hole.ThreadType, 'BSF')
+        self.assertEqual(self.Hole.ThreadSize, designation)
+
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestHole")
