@@ -95,27 +95,12 @@ struct PythonConsoleP
     QString output, error, info, historyFile;
     QStringList statements;
     bool interactive;
-    QMap<QString, QColor> colormap; // Color map
     ParameterGrp::handle hGrpSettings;
     PythonConsoleP()
     {
         type = Normal;
         interactive = false;
         historyFile = QString::fromUtf8((App::Application::getUserAppDataDir() + "PythonHistory.log").c_str());
-        colormap[QLatin1String("Text")] = qApp->palette().windowText().color();
-        colormap[QLatin1String("Bookmark")] = Qt::cyan;
-        colormap[QLatin1String("Breakpoint")] = Qt::red;
-        colormap[QLatin1String("Keyword")] = Qt::blue;
-        colormap[QLatin1String("Comment")] = QColor(0, 170, 0);
-        colormap[QLatin1String("Block comment")] = QColor(160, 160, 164);
-        colormap[QLatin1String("Number")] = Qt::blue;
-        colormap[QLatin1String("String")] = Qt::red;
-        colormap[QLatin1String("Character")] = Qt::red;
-        colormap[QLatin1String("Class name")] = QColor(255, 170, 0);
-        colormap[QLatin1String("Define name")] = QColor(255, 170, 0);
-        colormap[QLatin1String("Operator")] = QColor(160, 160, 164);
-        colormap[QLatin1String("Python output")] = QColor(170, 170, 127);
-        colormap[QLatin1String("Python error")] = Qt::red;
     }
 };
 
@@ -450,7 +435,10 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     // use the console highlighter
     pythonSyntax = new PythonConsoleHighlighter(this);
-    pythonSyntax->setDocument(this->document());
+    setSyntaxHighlighter(pythonSyntax);
+
+    setVisibleLineNumbers(false);
+    setEnabledHighlightCurrentLine(false);
 
     // create the window for call tips
     d->callTipsList = new CallTipsList(this);
@@ -511,7 +499,6 @@ PythonConsole::~PythonConsole()
     saveHistory();
     Base::PyGILStateLocker lock;
     d->hGrpSettings->Detach(this);
-    delete pythonSyntax;
     Py_XDECREF(d->_stdoutPy);
     Py_XDECREF(d->_stderrPy);
     Py_XDECREF(d->_stdinPy);
@@ -520,7 +507,7 @@ PythonConsole::~PythonConsole()
 }
 
 /** Set new font and colors according to the parameters. */
-void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sReason )
+void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sReason)
 {
     const auto & rGrp = static_cast<ParameterGrp &>(rCaller);
 
@@ -534,33 +521,6 @@ void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sR
         }
     }
 
-    if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
-        int fontSize = rGrp.GetInt("FontSize", 10);
-        QString fontFamily = QString::fromLatin1(rGrp.GetASCII("Font", "Courier").c_str());
-
-        QFont font(fontFamily, fontSize);
-        setFont(font);
-        QFontMetrics metric(font);
-        int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
-        setTabStopWidth(width);
-#else
-        setTabStopDistance(width);
-#endif
-    }
-    else {
-        QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
-        if (it != d->colormap.end()) {
-            QColor color = it.value();
-            unsigned int col = App::Color::asPackedRGB<QColor>(color);
-            auto value = static_cast<unsigned long>(col);
-            value = rGrp.GetUnsigned(sReason, value);
-            col = static_cast<unsigned int>(value);
-            color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
-            pythonSyntax->setColor(QString::fromLatin1(sReason), color);
-        }
-    }
-
     if (strcmp(sReason, "PythonBlockCursor") == 0) {
         bool block = rGrp.GetBool("PythonBlockCursor", false);
         if (block) {
@@ -569,6 +529,10 @@ void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sR
         else {
             setCursorWidth(1);
         }
+    }
+
+    if (strcmp(sReason, "EnableLineNumber") != 0) {
+        TextEditor::OnChange(rCaller, sReason);
     }
 }
 

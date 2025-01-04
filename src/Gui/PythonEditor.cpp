@@ -87,6 +87,25 @@ PythonEditor::~PythonEditor()
     delete d;
 }
 
+void PythonEditor::OnChange(Base::Subject<const char*> &rCaller, const char* sReason)
+{
+    const auto & rGrp = static_cast<ParameterGrp &>(rCaller);
+
+    if (strcmp(sReason, "EnableBlockCursor") == 0 ||
+        strcmp(sReason, "FontSize") == 0 ||
+        strcmp(sReason, "Font") == 0) {
+        bool block = rGrp.GetBool("EnableBlockCursor", false);
+        if (block) {
+            setCursorWidth(QFontMetrics(font()).averageCharWidth());
+        }
+        else {
+            setCursorWidth(1);
+        }
+    }
+
+    TextEditor::OnChange(rCaller, sReason);
+}
+
 void PythonEditor::setFileName(const QString& fn)
 {
     d->filename = fn;
