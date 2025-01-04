@@ -108,7 +108,15 @@ class BOPFeatures:
             displayMode = source.ViewObject.DisplayMode
             src = source
             while displayMode == "Link":
-                src = src.LinkedObject
+                if getattr(src, "LinkedObject", None):
+                    src = src.LinkedObject
+                elif getattr(src, "Base", None):
+                    # Draft Link array
+                    src = src.Base
+                else:
+                    break
+                if not hasattr(src, "ViewObject"):
+                    break
                 displayMode = src.ViewObject.DisplayMode
             if displayMode in target.ViewObject.getEnumerationsOfProperty("DisplayMode"):
                 target.ViewObject.DisplayMode = displayMode
