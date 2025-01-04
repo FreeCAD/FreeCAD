@@ -606,6 +606,7 @@ SET(FemGuiTests_SRCS
 
 SET(FemGuiUtils_SRCS
     femguiutils/__init__.py
+    femguiutils/disambiguate_solid_selection.py
     femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
 )
