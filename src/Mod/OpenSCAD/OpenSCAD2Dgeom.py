@@ -34,13 +34,7 @@ class Overlappingfaces():
     def __init__(self,facelist):
         self.sortedfaces = sorted(facelist,key=(lambda shape: shape.Area),reverse=True)
         self.builddepdict()
-        #self.faceindex = {}
-        #for idx,face in enumerate(self.sortesfaces):
-        #    self.faceindex[face.hashCode()] = idx
-
-#    def __len__(self):
-#        return len(self.sortedfaces)
-
+        
     @staticmethod
     def dofacesoverlapboundbox(bigface,smallface):
         return bigface.BoundBox.isIntersection(smallface.BoundBox)
@@ -59,15 +53,11 @@ class Overlappingfaces():
 
     @staticmethod
     def dofacesoverlapboolean(bigface,smallface):
-        #import FreeCAD,FreeCADGui
-        #FreeCAD.Console.PrintLog('intersecting %d %d\n'%(bigfacei,smallfacei))
-        #FreeCADGui.updateGui()
         return bigface.common(smallface).Area > 0
 
     def builddepdict(self):
         import Part
         import itertools
-        #isinsidelist = []
         self.isinsidedict = {}
         #for bigface, smallface in itertools.combinations(sortedfaces,2):
         for bigfacei, smallfacei in\
@@ -85,7 +75,6 @@ class Overlappingfaces():
                             self.sortedfaces[bigfacei],\
                             self.sortedfaces[smallfacei])
             if overlap:
-                #isinsidelist.append((bigfacei,smallfacei))
                 smallinbig = self.isinsidedict.get(bigfacei,[])
                 smallinbig.append(smallfacei)
                 if len(smallinbig) == 1:
@@ -96,7 +85,6 @@ class Overlappingfaces():
         if faceidx not in dict1:
             return curdepth+1
         else:
-        #print(dict1[faceidx],[(finddepth(dict1,childface,curdepth)) for childface in dict1[faceidx]])
             return max([(Overlappingfaces.finddepth(dict1,childface,curdepth+1)) for childface in dict1[faceidx]])
 
     def findrootdepth(self):
@@ -112,12 +100,6 @@ class Overlappingfaces():
                 return False
         return True
 
-    #@staticmethod
-    #def subtreedict(rootface,parantdict):
-    #    '''biuld a subtree dictinary'''
-    #    newdict = parantdict.copy()
-    #    del newdict[rootface]
-    #    return newdict
 
     @staticmethod
     def directchildren(isinsidedict,parent):
@@ -132,9 +114,6 @@ class Overlappingfaces():
                 dchildren.append(child)
         return dchildren
 
-    #@staticmethod
-    #def indirectchildren(isinsidedict,parent):
-     #   return [child for child in isinsidedict.get(parent,[]) if child in isinsidedict]
 
     @staticmethod
     def printtree(isinsidedict,facenum):
@@ -188,7 +167,6 @@ class Overlappingfaces():
         def removefaces(rfaces):
             for tfi in directchildren[::-1]:
                 finishedwith.append(tfi)
-                #del faces[tfi]
                 if tfi in isinsidedict:
                     del isinsidedict[tfi]
                 for key,value in isinsidedict.items():
@@ -207,24 +185,19 @@ class Overlappingfaces():
         isinsidedict=self.isinsidedict.copy()
         finishedwith=[]
         while not all([Overlappingfaces.hasnoparentstatic(isinsidedict,fi) for fi in range(len(faces))]):
-            #print([(Overlappingfaces.hasnoparentstatic(isinsidedict,fi),\
-                #Overlappingfaces.directchildren(isinsidedict,fi)) for fi in range(len(faces))])
             for fi in range(len(faces))[::-1]:
                 directchildren = Overlappingfaces.directchildren(isinsidedict,fi)
                 if not directchildren:
                     continue
                 elif len(directchildren) == 1:
                     faces[fi]=faces[fi].cut(faces[directchildren[0]])
-                    #print(fi,'-' ,directchildren[0], faces[fi],faces[directchildren[0]])
                     removefaces(directchildren)
                 else:
                     toolface=fusefaces([faces[tfi] for tfi in directchildren])
                     faces[fi]=faces[fi].cut(toolface)
-                    #print(fi, '- ()', directchildren, [faces[tfi] for tfi in directchildren])
                     removefaces(directchildren)
-                #print(fi,directchildren)
+                
         faces =[face for index,face in enumerate(faces) if index not in finishedwith]
-#        return faces
         return fusefaces(faces)
 
 def findConnectedEdges(edgelist,eps=1e-6,debug=False):
@@ -232,7 +205,6 @@ def findConnectedEdges(edgelist,eps=1e-6,debug=False):
 
     def vertequals(v1,v2,eps=1e-6):
         '''check two vertices for equality'''
-        #return all([abs(c1-c2)<eps for c1,c2 in zip(v1.Point,v2.Point)])
         return v1.Point.sub(v2.Point).Length<eps
 
     def vertindex(forward):
@@ -270,7 +242,6 @@ def findConnectedEdges(edgelist,eps=1e-6,debug=False):
         #we are finished for this edge
         debuglist.append(newedge)
         retlist.append([item[0] for item in newedge]) #strip off direction
-    #print(debuglist)
     if debug:
         return retlist,debuglist
     else:
@@ -327,13 +298,11 @@ def edgestowires(edgelist,eps=0.001):
                 tobeclosed = outerd < eps*2
                 # OpenSCAD uses 0.001 for corase grid
                 #from draftlibs import fcvec, fcgeo
-                #w2=fcgeo.superWire(path,tobeclosed)
                 w2=superWireReverse(debug,tobeclosed)
                 wirelist.append(w2)
             else:#this locks up FreeCAD
                 comp=Part.Compound(path)
                 wirelist.append(comp.connectEdgesToWires(False,eps).Wires[0])
-                #wirelist.append(comp.connectEdgesToWires(False,0.1).Wires[0])
         else:
             done = False
             try:
@@ -371,17 +340,10 @@ def subtractfaces2(faces):
     return fusefaces([subtractfaces(facegroup) for facegroup in findoverlappingfaces(faces)])
 
 def edgestofaces(edges,algo=3,eps=0.001):
-    #edges=[]
-    #for shapeobj in (objs):
-    #    edges.extend(shapeobj.Shape.Edges)
-    #taken from Drafttools
-    #from draftlibs import fcvec, fcgeo
     import Part
-    #wires = fcgeo.findWires(edges)
     wires = edgestowires(edges,eps)
     facel=[]
     for w in wires:
-        #assert(len(w.Edges)>1)
         if not w.isClosed():
             p0 = w.Vertexes[0].Point
             p1 = w.Vertexes[-1].Point
@@ -389,15 +351,11 @@ def edgestofaces(edges,algo=3,eps=0.001):
             try:
                 edges2.append(Part.LineSegment(p1,p0).toShape())
                 w = Part.Wire(edges2)
-                #w = Part.Wire(fcgeo.sortEdges(edges2))
             except OCCError:
                 comp=Part.Compound(edges2)
                 w = comp.connectEdgesToWires(False,eps).Wires[0]
         facel.append(Part.Face(w))
-        #if w.isValid: #debugging
-        #    facel.append(Part.Face(w))
-        #else:
-        #    Part.show(w)
+
     if algo is None:
         return facel
     elif algo == 1: #stable behavior
@@ -425,7 +383,6 @@ def superWireReverse(debuglist,closed=False):
     except ImportError: #workaround for Version 0.12
         from draftlibs.fcgeo import findMidpoint #workaround for Version 0.12
     import Part
-    #edges = sortEdges(edgeslist)
     print(debuglist)
     newedges = []
     for i in range(len(debuglist)):
