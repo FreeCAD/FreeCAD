@@ -37,6 +37,8 @@
 
 """FreeCAD WebGL Exporter"""
 
+from typing import NotRequired, TypedDict
+
 import FreeCAD
 import Mesh
 import Draft
@@ -51,7 +53,12 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     FreeCADGui = None
-    def translate(ctxt, txt): return txt
+
+    def translate(ctxt, txt):
+        return txt
+
+
+import numpy as np
 
 ## @package importWebGL
 #  \ingroup ARCH
@@ -60,9 +67,10 @@ else:
 #  This module provides tools to export HTML files containing the
 #  exported objects in WebGL format and a simple three.js-based viewer.
 
-disableCompression = False # Compress object data before sending to JS
-base = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&()*+-:;/=>?@[]^_,.{|}~`' # safe str chars for js in all cases
-baseFloat = ',.-0123456789'
+disableCompression = False  # Compress object data before sending to JS
+base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&()*+-:;/=>?@[]^_,.{|}~`"  # safe str chars for js in all cases
+baseFloat = ",.-0123456789"
+
 
 def getHTMLTemplate():
     return textwrap.dedent("""\
@@ -652,69 +660,47 @@ def getHTMLTemplate():
     </html>
     """)
 
-def export( exportList, filename, colors = None, camera = None ):
+
+def export(
+    exportList, filename: str, colors: dict[str, str] | None = None, camera: str | None = None
+):
     """Exports objects to an html file"""
 
     global disableCompression, base, baseFloat
 
-    data = { 'camera':{}, 'file':{}, 'objects':[] }
+    data = {"camera": {}, "file": {}, "objects": []}
 
-    if not FreeCADGui and not camera:
-        camera = OfflineRenderingUtils.getCamera(FreeCAD.ActiveDocument.FileName)
-
-    if camera:
-        # REF: https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Arch/OfflineRenderingUtils.py
-        camnode = OfflineRenderingUtils.getCoinCamera(camera)
-        cameraPosition = camnode.position.getValue().getValue()
-        data['camera']['type'] = 'Orthographic'
-        if 'PerspectiveCamera' in camera: data['camera']['type'] = 'Perspective'
-        data['camera']['focalDistance'] = camnode.focalDistance.getValue()
-        data['camera']['position_x'] = cameraPosition[0]
-        data['camera']['position_y'] = cameraPosition[1]
-        data['camera']['position_z'] = cameraPosition[2]
-    else:
-        v = FreeCADGui.ActiveDocument.ActiveView
-        data['camera']['type'] = v.getCameraType()
-        data['camera']['focalDistance'] = v.getCameraNode().focalDistance.getValue()
-        data['camera']['position_x'] = v.viewPosition().Base.x
-        data['camera']['position_y'] = v.viewPosition().Base.y
-        data['camera']['position_z'] = v.viewPosition().Base.z
+    populate_camera(data["camera"], camera)
 
     # Take the objects out of groups
     objectslist = Draft.get_group_contents(exportList, walls=True, addgroups=False)
     # objectslist = Arch.pruneIncluded(objectslist)
 
     for obj in objectslist:
-
         # Pull all obj data before we dig down the links
         label = obj.Label
-
-        color = '#cccccc'
-        opacity = 1.0
-        if FreeCADGui and hasattr(obj.ViewObject, "ShapeColor"):
-            color = Draft.getrgb(obj.ViewObject.ShapeColor, testbw = False)
-            opacity = int((100 - obj.ViewObject.Transparency)/5) / 20 # 0>>1 with step of 0.05
-        elif colors:
-            if label in colors:
-                color = Draft.getrgb(colors[label], testbw = False)
+        color, opacity = get_view_properties(obj, label, colors)
 
         validObject = False
-        if obj.isDerivedFrom('Mesh::Feature'):
+        if obj.isDerivedFrom("Mesh::Feature"):
             mesh = obj.Mesh
             validObject = True
-        if obj.isDerivedFrom('Part::Feature'):
+        if obj.isDerivedFrom("Part::Feature"):
             objShape = obj.Shape
             validObject = True
-        if obj.isDerivedFrom('App::Link'):
+        if obj.isDerivedFrom("App::Link"):
             linkPlacement = obj.LinkPlacement
-            while True: # drill down to get to the actual obj
+            while True:  # drill down to get to the actual obj
                 if obj.isDerivedFrom("App::Link"):
-                    if obj.ViewObject.OverrideMaterial: color = Draft.getrgb(obj.ViewObject.ShapeMaterial.DiffuseColor, testbw = False)
+                    if obj.ViewObject.OverrideMaterial:
+                        color = Draft.getrgb(
+                            obj.ViewObject.ShapeMaterial.DiffuseColor, testbw=False
+                        )
                     obj = obj.LinkedObject
                     if hasattr(obj, "__len__"):
-                        FreeCAD.Console.PrintMessage(label + ": Sub-Links are Unsupported.\n")
+                        FreeCAD.Console.PrintMessage(f"{label}: Sub-Links are Unsupported.\n")
                         break
-                elif obj.isDerivedFrom('Part::Feature'):
+                elif obj.isDerivedFrom("Part::Feature"):
                     objShape = obj.Shape.copy(False)
                     objShape.Placement = linkPlacement
                     validObject = True
@@ -725,12 +711,22 @@ def export( exportList, filename, colors = None, camera = None ):
                     validObject = True
                     break
 
-        if not validObject: continue
+        if not validObject:
+            continue
 
-        objdata = { 'name': label, 'color': color, 'opacity': opacity, 'verts':'', 'facets':'', 'wires':[], 'faceColors':[], 'facesToFacets':[], 'floats':[] }
+        objdata = {
+            "name": label,
+            "color": color,
+            "opacity": opacity,
+            "verts": "",
+            "facets": "",
+            "wires": [],
+            "faceColors": [],
+            "facesToFacets": [],
+            "floats": [],
+        }
 
-        if obj.isDerivedFrom('Part::Feature'):
-
+        if obj.isDerivedFrom("Part::Feature"):
             deviation = 0.5
             if FreeCADGui and hasattr(obj.ViewObject, "Deviation"):
                 deviation = obj.ViewObject.Deviation
@@ -738,10 +734,10 @@ def export( exportList, filename, colors = None, camera = None ):
                 # obj.ViewObject.DiffuseColor is length=1 when all faces are the same color, length=len(faces) for when they're not
                 if len(obj.ViewObject.DiffuseColor) == len(objShape.Faces):
                     for fc in obj.ViewObject.DiffuseColor:
-                        objdata['faceColors'].append( Draft.getrgb(fc, testbw = False) )
+                        objdata["faceColors"].append(Draft.getrgb(fc, testbw=False))
 
             # get verts and facets for ENTIRE object
-            shapeData = objShape.tessellate( deviation )
+            shapeData = objShape.tessellate(deviation)
             mesh = Mesh.Mesh(shapeData)
 
             if len(objShape.Faces) > 1:
@@ -749,147 +745,236 @@ def export( exportList, filename, colors = None, camera = None ):
                 # This is done by matching the results of a tessellate() on EACH FACE to the overall tessellate stored in shapeData
                 # if there is any error in matching these two then we display the whole object as one face and forgo the face colors
                 for f in objShape.Faces:
-                    faceData = f.tessellate( deviation )
+                    faceData = f.tessellate(deviation)
                     found = True
-                    for fv in range( len(faceData[0]) ): # face verts. List of type Vector()
+                    # face verts. List of type Vector()
+                    for fv in range(len(faceData[0])):
                         found = False
-                        for sv in range( len(shapeData[0]) ): #shape verts
-                            if faceData[0][fv] == shapeData[0][sv]: # do not use isEqual() here
-                                faceData[0][fv] = sv # replace with the index of shapeData[0]
+                        for sv in range(len(shapeData[0])):  # shape verts
+                            # do not use isEqual() here
+                            if faceData[0][fv] == shapeData[0][sv]:
+                                # replace with the index of shapeData[0]
+                                faceData[0][fv] = sv
                                 found = True
                                 break
-                        if not found: break
+                        if not found:
+                            break
                     if not found:
                         FreeCAD.Console.PrintMessage("Facet to Face Mismatch.\n")
-                        objdata['facesToFacets'] = []
+                        objdata["facesToFacets"] = []
                         break
 
                     # map each of the face facets to the shape facets and make a list of shape facet indices that belong to this face
                     facetList = []
-                    for ff in faceData[1]: # face facets
+                    for ff in faceData[1]:  # face facets
                         found = False
-                        for sf in range( len(shapeData[1]) ): #shape facets
-                            if faceData[0][ff[0]] in shapeData[1][sf] and faceData[0][ff[1]] in shapeData[1][sf] and faceData[0][ff[2]] in shapeData[1][sf]:
+                        for sf in range(len(shapeData[1])):  # shape facets
+                            if (
+                                faceData[0][ff[0]] in shapeData[1][sf]
+                                and faceData[0][ff[1]] in shapeData[1][sf]
+                                and faceData[0][ff[2]] in shapeData[1][sf]
+                            ):
                                 facetList.append(sf)
                                 found = True
                                 break
-                        if not found: break
+                        if not found:
+                            break
                     if not found:
                         FreeCAD.Console.PrintMessage("Facet List Mismatch.\n")
-                        objdata['facesToFacets'] = []
+                        objdata["facesToFacets"] = []
                         break
 
-                    objdata['facesToFacets'].append( baseEncode(facetList) )
+                    if not disableCompression:
+                        facetList = baseEncode(facetList)
 
-            wires = [] # Add wires
+                    objdata["facesToFacets"].append(facetList)
+
+            wires = []  # Add wires
             for f in objShape.Faces:
                 for w in f.Wires:
                     wo = Part.Wire(Part.__sortEdges__(w.Edges))
+                    # use strings to avoid 0.00001 written as 1e-05
                     wire = []
-                    for v in wo.discretize(QuasiDeflection = 0.005):
-                        wire.append( '{:.5f}'.format(v.x) ) # use strings to avoid 0.00001 written as 1e-05
-                        wire.append( '{:.5f}'.format(v.y) )
-                        wire.append( '{:.5f}'.format(v.z) )
-                    wires.append( wire )
+                    for v in wo.discretize(QuasiDeflection=0.005):
+                        wire.extend([f"{v.x:.5f}", f"{v.y:.5f}", f"{v.z:.5f}"])
+                    wires.append(wire)
 
             if not disableCompression:
-                for w in range( len(wires) ):
-                    for wv in range( len(wires[w]) ):
-                        found = False
-                        for f in range( len(objdata['floats']) ):
-                            if objdata['floats'][f] == wires[w][wv]:
-                                wires[w][wv] = f
-                                found = True
-                                break
-                        if not found:
-                            objdata['floats'].append( wires[w][wv] )
-                            wires[w][wv] = len(objdata['floats'])-1
-                    wires[w] = baseEncode(wires[w])
-            objdata['wires'] = wires
+                wires, objdata["floats"] = compress_wires(wires, objdata["floats"])
+            objdata["wires"] = wires
 
         vIndex = {}
         verts = []
         for p in mesh.Points:
             vIndex[p.Index] = p.Index
-            pVec = p.Vector
-            verts.extend(["{:.5f}".format(pVec.x), "{:.5f}".format(pVec.y), "{:.5f}".format(pVec.z)])
+            verts.extend([f"{p.Vector.x:.5f}", f"{p.Vector.y:.5f}", f"{p.Vector.z:.5f}"])
 
-        # create floats list to compress verts and wires being written into the JS
+        facets = [vIndex[i] for f in mesh.Facets for i in f.PointIndices]
+
         if not disableCompression:
-            for v in range( len(verts) ):
-                found = False
-                for f in range( len(objdata['floats']) ):
-                    if objdata['floats'][f] == verts[v]:
-                        verts[v] = f
-                        found = True
-                        break
-                if not found:
-                    objdata['floats'].append( verts[v] )
-                    verts[v] = len(objdata['floats'])-1
-        objdata['verts'] = baseEncode(verts)
+            verts, objdata["floats"] = compress_verts(verts, objdata["floats"])
+            objdata["floats"] = compress_floats(objdata["floats"])
+            facets = baseEncode(facets)
+            verts = baseEncode(verts)
 
-        facets = []
-        for f in mesh.Facets:
-            for i in f.PointIndices:
-                facets.append( vIndex[i] )
-        objdata['facets'] = baseEncode(facets)
+        objdata["facets"] = facets
+        objdata["verts"] = verts
 
-        # compress floats
-        if not disableCompression:
-            # use ratio of 7x base13 to 4x base90 because 13^7 ~ 90^4
-            fullstr = json.dumps(objdata['floats'], separators=(',', ':'))
-            fullstr = fullstr.replace('[', '').replace(']', '').replace('"', '')
-            floatStr = ''
-            baseFloatCt = len(baseFloat)
-            baseCt = len(base)
-            for fs in range( 0, len(fullstr), 7 ): # chunks of 7 chars, skip the first one
-                str7 = fullstr[fs:(fs+7)]
-                quotient = 0
-                for s in range( len(str7) ):
-                    quotient += baseFloat.find(str7[s]) * pow(baseFloatCt, (6-s))
-                for v in range(4):
-                    floatStr += base[ quotient % baseCt ]
-                    quotient = int(quotient / baseCt)
-            objdata['floats'] = floatStr
-
-        data['objects'].append( objdata )
+        data["objects"].append(objdata)
 
     html = getHTMLTemplate()
-
-    html = html.replace('$pagetitle',FreeCAD.ActiveDocument.Label)
+    html = html.replace("$pagetitle", FreeCAD.ActiveDocument.Label)
     version = FreeCAD.Version()
-    html = html.replace('$version',version[0] + '.' + version[1] + '.' + version[2])
+    html = html.replace("$version", f"{version[0]}.{version[1]}.{version[2]}")
 
     # Remove data compression in JS
-    data['compressed'] = not disableCompression
-    data['base'] = base
-    data['baseFloat'] = baseFloat
+    data["compressed"] = not disableCompression
+    data["base"] = base
+    data["baseFloat"] = baseFloat
 
-    html = html.replace('$data', json.dumps(data, separators=(',', ':')) ) # Shape Data
+    html = html.replace("$data", json.dumps(data, separators=(",", ":")))  # Shape Data
 
     outfile = pyopen(filename, "w")
-    outfile.write( html )
+    outfile.write(html)
     outfile.close()
-    FreeCAD.Console.PrintMessage( translate("Arch", "Successfully written") + ' ' + filename + "\n" )
+    FreeCAD.Console.PrintMessage(translate("Arch", "Successfully written") + f" {filename}\n")
 
-def baseEncode( arr ):
+
+def get_view_properties(obj, label: str, colors: dict[str, str] | None) -> tuple[str, float]:
+    """Get the color and opacity of the object"""
+    color = "#cccccc"
+    opacity = 1.0
+    if FreeCADGui and hasattr(obj.ViewObject, "ShapeColor"):
+        color = Draft.getrgb(obj.ViewObject.ShapeColor, testbw=False)
+        opacity = int((100 - obj.ViewObject.Transparency) / 5) / 20  # 0>>1 with step of 0.05
+    elif colors:
+        if label in colors:
+            color = Draft.getrgb(colors[label], testbw=False)
+    return color, opacity
+
+
+class CameraDict(TypedDict):
+    """Dictionary for camera contents"""
+
+    type: NotRequired[str]
+    focalDistance: NotRequired[str]
+    position_x: NotRequired[str]
+    position_y: NotRequired[str]
+    position_z: NotRequired[str]
+
+
+def populate_camera(data: CameraDict, camera: str | None):
+    if not FreeCADGui and not camera:
+        camera = OfflineRenderingUtils.getCamera(FreeCAD.ActiveDocument.FileName)
+
+    if camera:
+        # REF: src/Mod/BIM/OfflineRenderingUtils.py
+        camnode = OfflineRenderingUtils.getCoinCamera(camera)
+        cameraPosition = camnode.position.getValue().getValue()
+        data["type"] = "Orthographic"
+        if "PerspectiveCamera" in camera:
+            data["type"] = "Perspective"
+        data["focalDistance"] = camnode.focalDistance.getValue()
+        data["position_x"] = cameraPosition[0]
+        data["position_y"] = cameraPosition[1]
+        data["position_z"] = cameraPosition[2]
+    else:
+        v = FreeCADGui.ActiveDocument.ActiveView
+        data["type"] = v.getCameraType()
+        data["focalDistance"] = v.getCameraNode().focalDistance.getValue()
+        data["position_x"] = v.viewPosition().Base.x
+        data["position_y"] = v.viewPosition().Base.y
+        data["position_z"] = v.viewPosition().Base.z
+
+
+def compress_floats(floats: list[str]) -> str:
+    """Compress floats to base 90
+
+    Use ratio of 7x base13 to 4x base90 because 13^7 ~ 90^4
+    """
+    fullstr = json.dumps(floats, separators=(",", ":"))
+    fullstr = fullstr.replace("[", "").replace("]", "").replace('"', "")
+    floatStr = ""
+    baseFloatCt = len(baseFloat)
+    baseCt = len(base)
+    for fs in range(0, len(fullstr), 7):  # chunks of 7 chars, skip the first one
+        str7 = fullstr[fs : (fs + 7)]
+        quotient = 0
+        for s in range(len(str7)):
+            quotient += baseFloat.find(str7[s]) * pow(baseFloatCt, (6 - s))
+        for v in range(4):
+            floatStr += base[quotient % baseCt]
+            quotient = int(quotient / baseCt)
+    return floatStr
+
+
+def compress_wires(wires: list[list[str]], floats: list[str]) -> tuple[list[list[str]], list[str]]:
+    """
+    Create floats list to compress wires being written into the JS
+    """
+    lengths = []
+    for w in wires:
+        lengths.append(len(w))
+        floats.extend(w)
+
+    float_arr, all_wires = np.unique(floats, return_inverse=True)
+    wire_arrays = np.array_split(all_wires, np.cumsum(lengths[:-1]))
+    return [baseEncode(w.tolist()) for w in wire_arrays], float_arr.tolist()
+
+
+def compress_verts(verts: list[str], floats: list[str]) -> tuple[list[int], list[str]]:
+    """
+    Create floats list to compress verts and wires being written into the JS
+    """
+    floats_v, ind, verts_v = np.unique(verts, return_index=True, return_inverse=True)
+
+    # Reorder as np.unique orders the resulting array (needed for facet matching)
+    floats_v = floats_v[ind.argsort()]
+    reindex = dict(zip(ind.argsort(), np.arange(ind.size)))
+    verts_v = np.vectorize(lambda entry: reindex[entry])(verts_v)
+
+    # Get repeated indexes already existing from previous steps
+    v_in_w = np.nonzero(np.isin(floats_v, floats))[0]
+    w_in_v = np.nonzero(np.isin(floats, floats_v))[0]
+    v_in_w2 = np.where(~np.isin(floats_v, floats))
+
+    # Order values the same
+    v_in_w = v_in_w[floats_v[v_in_w].argsort()]
+    w_in_v = w_in_v[np.array(floats)[w_in_v].argsort()]
+
+    # Replace repeated indexes that exist in floats
+    new_index = len(floats)
+    verts_v += new_index
+    for vw, wv in zip(v_in_w + new_index, w_in_v):
+        verts_v[verts_v == vw] = wv
+
+    # Remove indexes of repeated entries in floats_v
+    for vw in (v_in_w + new_index)[v_in_w.argsort()][::-1]:
+        verts_v[verts_v > vw] -= 1
+
+    return verts_v.tolist(), np.concatenate([floats, floats_v[v_in_w2]]).tolist()
+
+
+def baseEncode(arr: list[int]) -> str:
     """Compresses an array of ints into a base90 string"""
 
-    global disableCompression, base
-    if disableCompression: return arr
-    if len(arr) == 0: return ''
+    global base
+    if len(arr) == 0:
+        return ""
 
     longest = 0
     output = []
     baseCt = len(base)
-    for v in range( len(arr) ):
-        buffer = ''
+    for v in range(len(arr)):
+        buffer = ""
         quotient = arr[v]
         while True:
-            buffer += base[ quotient % baseCt ]
+            buffer += base[quotient % baseCt]
             quotient = int(quotient / baseCt)
-            if quotient == 0: break
-        output.append( buffer )
-        if len(buffer) > longest: longest = len(buffer)
-    output = [('{:>'+str(longest)+'}').format(x) for x in output] # pad each element
-    return str(longest) + ('').join(output)
+            if quotient == 0:
+                break
+        output.append(buffer)
+        if len(buffer) > longest:
+            longest = len(buffer)
+    output = [("{:>" + str(longest) + "}").format(x) for x in output]  # pad each element
+    return str(longest) + ("").join(output)
