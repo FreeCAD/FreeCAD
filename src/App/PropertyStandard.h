@@ -1092,6 +1092,9 @@ public:
 
 protected:
     Color getPyValue(PyObject* py) const override;
+
+private:
+    bool oldProgramVersion {false};
 };
 
 
@@ -1295,8 +1298,10 @@ private:
     void verifyIndex(int index) const;
     void setMinimumSizeOne();
     int resizeByOneIfNeeded(int index);
+    void convertAlpha(std::vector<App::Material>& materials);
 
     Format formatVersion {Version_0};
+    bool oldProgramVersion {false};
 };
 
 
