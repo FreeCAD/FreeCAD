@@ -154,7 +154,10 @@ def write_step_equation(f, ccxwriter):
             ccxwriter.solver_obj.TimeMaximumStep,
         )
     elif ccxwriter.analysis_type == "buckling":
-        analysis_parameter = f"{ccxwriter.solver_obj.BucklingFactors}\n"
+        analysis_parameter = "{},{}".format(
+            ccxwriter.solver_obj.BucklingFactors,
+            ccxwriter.solver_obj.BucklingAccuracy,
+        )
 
     # write analysis type line, analysis parameter line
     f.write(analysis_type + "\n")
