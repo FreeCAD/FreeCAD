@@ -193,6 +193,7 @@ SET(TDTestFile_SRCS
     TDTest/TestHatch.svg
     TDTest/TestImage.png
     TDTest/TestSymbol.svg
+    TDTest/TestNonAsciiSymbol.svg
     TDTest/TestTemplate.svg
 )
 
