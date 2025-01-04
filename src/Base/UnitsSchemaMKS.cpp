@@ -26,6 +26,7 @@
 #include <unistd.h>
 #endif
 
+#include "Units.h"
 #include "UnitsSchemaMKS.h"
 #include <cmath>
 
@@ -38,8 +39,8 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
     Unit unit = quant.getUnit();
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Unit::Length) {  // Length handling ============================
-        if (UnitValue < 1e-6) {  // smaller than 0.001 nm -> scientific notation
+    if (unit == Units::Length) {  // Length handling ============================
+        if (UnitValue < 1e-6) {   // smaller than 0.001 nm -> scientific notation
             unitString = "mm";
             factor = 1.0;
         }
@@ -68,7 +69,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e3;
         }
     }
-    else if (unit == Unit::Area) {
+    else if (unit == Units::Area) {
         if (UnitValue < 100) {
             unitString = "mm^2";
             factor = 1.0;
@@ -86,7 +87,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e12;
         }
     }
-    else if (unit == Unit::Volume) {
+    else if (unit == Units::Volume) {
         if (UnitValue < 1e3) {  // smaller than 1 ul
             unitString = "mm^3";
             factor = 1.0;
@@ -104,7 +105,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e9;
         }
     }
-    else if (unit == Unit::Mass) {
+    else if (unit == Units::Mass) {
         if (UnitValue < 1e-6) {
             unitString = "\xC2\xB5g";
             factor = 1e-9;
@@ -126,7 +127,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e3;
         }
     }
-    else if (unit == Unit::Density) {
+    else if (unit == Units::Density) {
         if (UnitValue < 0.0001) {
             unitString = "kg/m^3";
             factor = 0.000000001;
@@ -140,11 +141,11 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1.0;
         }
     }
-    else if (unit == Unit::Acceleration) {
+    else if (unit == Units::Acceleration) {
         unitString = "m/s^2";
         factor = 1000.0;
     }
-    else if ((unit == Unit::Pressure) || (unit == Unit::Stress)) {
+    else if ((unit == Units::Pressure) || (unit == Units::Stress)) {
         if (UnitValue < 10.0) {  // Pa is the smallest
             unitString = "Pa";
             factor = 0.001;
@@ -166,7 +167,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 0.001;
         }
     }
-    else if ((unit == Unit::Stiffness)) {
+    else if ((unit == Units::Stiffness)) {
         if (UnitValue < 1) {  // mN/m is the smallest
             unitString = "mN/m";
             factor = 1e-3;
@@ -184,7 +185,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e6;
         }
     }
-    else if ((unit == Unit::StiffnessDensity)) {
+    else if ((unit == Units::StiffnessDensity)) {
         if (UnitValue < 1e-3) {
             unitString = "Pa/m";
             factor = 1e-6;
@@ -202,7 +203,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e3;
         }
     }
-    else if (unit == Unit::ThermalConductivity) {
+    else if (unit == Units::ThermalConductivity) {
         if (UnitValue > 1000000) {
             unitString = "W/mm/K";
             factor = 1000000.0;
@@ -212,7 +213,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1000.0;
         }
     }
-    else if (unit == Unit::ThermalExpansionCoefficient) {
+    else if (unit == Units::ThermalExpansionCoefficient) {
         if (UnitValue < 0.001) {
             unitString = "\xC2\xB5m/m/K";
             factor = 0.000001;
@@ -222,7 +223,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1.0;
         }
     }
-    else if (unit == Unit::VolumetricThermalExpansionCoefficient) {
+    else if (unit == Units::VolumetricThermalExpansionCoefficient) {
         if (UnitValue < 0.001) {
             unitString = "mm^3/m^3/K";
             factor = 1e-9;
@@ -232,15 +233,15 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1.0;
         }
     }
-    else if (unit == Unit::SpecificHeat) {
+    else if (unit == Units::SpecificHeat) {
         unitString = "J/kg/K";
         factor = 1000000.0;
     }
-    else if (unit == Unit::ThermalTransferCoefficient) {
+    else if (unit == Units::ThermalTransferCoefficient) {
         unitString = "W/m^2/K";
         factor = 1.0;
     }
-    else if (unit == Unit::Force) {
+    else if (unit == Units::Force) {
         if (UnitValue < 1e3) {
             unitString = "mN";
             factor = 1.0;
@@ -258,7 +259,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e9;
         }
     }
-    //    else if (unit == Unit::Moment) {
+    //    else if (unit == Units::Moment) {
     //        if (UnitValue < 1e6) {
     //            unitString = "mNm";
     //            factor = 1e3;
@@ -276,7 +277,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
     //            factor = 1e12;
     //        }
     //    }
-    else if (unit == Unit::Power) {
+    else if (unit == Units::Power) {
         if (UnitValue < 1e6) {
             unitString = "mW";
             factor = 1e3;
@@ -290,7 +291,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e9;
         }
     }
-    else if (unit == Unit::ElectricPotential) {
+    else if (unit == Units::ElectricPotential) {
         if (UnitValue < 1e6) {
             unitString = "mV";
             factor = 1e3;
@@ -308,11 +309,11 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e6;
         }
     }
-    else if (unit == Unit::ElectricCharge) {
+    else if (unit == Units::ElectricCharge) {
         unitString = "C";
         factor = 1.0;
     }
-    else if (unit == Unit::CurrentDensity) {
+    else if (unit == Units::CurrentDensity) {
         if (UnitValue <= 1e3) {
             unitString = "A/m^2";
             factor = 1e-6;
@@ -322,7 +323,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1;
         }
     }
-    else if (unit == Unit::MagneticFluxDensity) {
+    else if (unit == Units::MagneticFluxDensity) {
         if (UnitValue <= 1e-3) {
             unitString = "G";
             factor = 1e-4;
@@ -332,23 +333,23 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1.0;
         }
     }
-    else if (unit == Unit::MagneticFieldStrength) {
+    else if (unit == Units::MagneticFieldStrength) {
         unitString = "A/m";
         factor = 1e-3;
     }
-    else if (unit == Unit::MagneticFlux) {
+    else if (unit == Units::MagneticFlux) {
         unitString = "Wb";
         factor = 1e6;
     }
-    else if (unit == Unit::Magnetization) {
+    else if (unit == Units::Magnetization) {
         unitString = "A/m";
         factor = 1e-3;
     }
-    else if (unit == Unit::ElectromagneticPotential) {
+    else if (unit == Units::ElectromagneticPotential) {
         unitString = "Wb/m";
         factor = 1e3;
     }
-    else if (unit == Unit::ElectricalConductance) {
+    else if (unit == Units::ElectricalConductance) {
         if (UnitValue < 1e-9) {
             unitString = "\xC2\xB5S";
             factor = 1e-12;
@@ -362,7 +363,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e-6;
         }
     }
-    else if (unit == Unit::ElectricalResistance) {
+    else if (unit == Units::ElectricalResistance) {
         if (UnitValue < 1e9) {
             unitString = "Ohm";
             factor = 1e6;
@@ -376,7 +377,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e12;
         }
     }
-    else if (unit == Unit::ElectricalConductivity) {
+    else if (unit == Units::ElectricalConductivity) {
         if (UnitValue < 1e-3) {
             unitString = "mS/m";
             factor = 1e-12;
@@ -394,7 +395,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e-3;
         }
     }
-    else if (unit == Unit::ElectricalCapacitance) {
+    else if (unit == Units::ElectricalCapacitance) {
         if (UnitValue < 1e-15) {
             unitString = "pF";
             factor = 1e-18;
@@ -418,7 +419,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e-6;
         }
     }
-    else if (unit == Unit::ElectricalInductance) {
+    else if (unit == Units::ElectricalInductance) {
         if (UnitValue < 1e-6) {
             unitString = "nH";
             factor = 1e-3;
@@ -436,11 +437,11 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e6;
         }
     }
-    else if (unit == Unit::VacuumPermittivity) {
+    else if (unit == Units::VacuumPermittivity) {
         unitString = "F/m";
         factor = 1e-9;
     }
-    else if (unit == Unit::Work) {
+    else if (unit == Units::Work) {
         if (UnitValue < 1.602176634e-10) {
             unitString = "eV";
             factor = 1.602176634e-13;
@@ -474,15 +475,15 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e6;
         }
     }
-    else if (unit == Unit::SpecificEnergy) {
+    else if (unit == Units::SpecificEnergy) {
         unitString = "m^2/s^2";
         factor = 1000000;
     }
-    else if (unit == Unit::HeatFlux) {
+    else if (unit == Units::HeatFlux) {
         unitString = "W/m^2";
         factor = 1.0;
     }
-    else if (unit == Unit::Frequency) {
+    else if (unit == Units::Frequency) {
         if (UnitValue < 1e3) {
             unitString = "Hz";
             factor = 1.0;
@@ -504,19 +505,19 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e12;
         }
     }
-    else if (unit == Unit::Velocity) {
+    else if (unit == Units::Velocity) {
         unitString = "m/s";
         factor = 1000.0;
     }
-    else if (unit == Unit::DynamicViscosity) {
+    else if (unit == Units::DynamicViscosity) {
         unitString = "Pa*s";
         factor = 0.001;
     }
-    else if (unit == Unit::KinematicViscosity) {
+    else if (unit == Units::KinematicViscosity) {
         unitString = "m^2/s";
         factor = 1e6;
     }
-    else if (unit == Unit::VolumeFlowRate) {
+    else if (unit == Units::VolumeFlowRate) {
         if (UnitValue < 1e-3) {  // smaller than 0.001 mm^3/s -> scientific notation
             unitString = "m^3/s";
             factor = 1e9;
@@ -538,11 +539,11 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e9;
         }
     }
-    else if (unit == Unit::DissipationRate) {
+    else if (unit == Units::DissipationRate) {
         unitString = "W/kg";
         factor = 1e6;
     }
-    else if (unit == Unit::InverseLength) {
+    else if (unit == Units::InverseLength) {
         if (UnitValue < 1e-6) {  // smaller than 0.001 1/km -> scientific notation
             unitString = "1/m";
             factor = 1e-3;
@@ -572,7 +573,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1e-3;
         }
     }
-    else if (unit == Unit::InverseArea) {
+    else if (unit == Units::InverseArea) {
         if (UnitValue < 1e-12) {  // smaller than 0.001 1/km^2 -> scientific notation
             unitString = "1/m^2";
             factor = 1e-6;
@@ -594,7 +595,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
             factor = 1.0;
         }
     }
-    else if (unit == Unit::InverseVolume) {
+    else if (unit == Units::InverseVolume) {
         if (UnitValue < 1e-6) {
             unitString = "1/m^3";
             factor = 1e-9;

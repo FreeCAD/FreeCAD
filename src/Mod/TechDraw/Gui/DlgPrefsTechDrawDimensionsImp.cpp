@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #include <App/Application.h>
+#include "Base/Units.h"
 
 #include "DlgPrefsTechDrawDimensionsImp.h"
 #include "ui_DlgPrefsTechDrawDimensions.h"
@@ -41,9 +42,9 @@ DlgPrefsTechDrawDimensionsImp::DlgPrefsTechDrawDimensionsImp( QWidget* parent )
   , ui(new Ui_DlgPrefsTechDrawDimensionsImp)
 {
     ui->setupUi(this);
-    ui->plsb_FontSize->setUnit(Base::Unit::Length);
+    ui->plsb_FontSize->setUnit(Base::Units::Length);
     ui->plsb_FontSize->setMinimum(0);
-    ui->plsb_ArrowSize->setUnit(Base::Unit::Length);
+    ui->plsb_ArrowSize->setUnit(Base::Units::Length);
     ui->plsb_ArrowSize->setMinimum(0);
 }
 

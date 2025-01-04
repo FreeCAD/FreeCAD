@@ -61,7 +61,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     ui->listWidgetReferences->setEnabled(!useAllEdges);
     double r = pcFillet->Radius.getValue();
 
-    ui->filletRadius->setUnit(Base::Unit::Length);
+    ui->filletRadius->setUnit(Base::Units::Length);
     ui->filletRadius->setValue(r);
     ui->filletRadius->setMinimum(0);
     ui->filletRadius->selectNumber();

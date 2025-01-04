@@ -29,6 +29,7 @@
 #include <QCoreApplication>
 #include "UnitsSchema.h"
 #include "Quantity.h"
+#include "Base/Units.h"
 
 using PyObject = struct _object;
 using PyMethodDef = struct PyMethodDef;
@@ -91,9 +92,9 @@ public:
                                 const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
 
     /// generate a value for a quantity with default user preferred system
-    static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
+    static double toDouble(PyObject* args, const Base::Unit& u = Units::NullUnit);
     /// generate a value for a quantity with default user preferred system
-    static Quantity toQuantity(PyObject* args, const Base::Unit& u = Base::Unit());
+    static Quantity toQuantity(PyObject* args, const Base::Unit& u = Base::Units::NullUnit);
 
     // set the number of decimals
     static void setDecimals(int);

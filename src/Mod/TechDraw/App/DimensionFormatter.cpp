@@ -69,13 +69,13 @@ std::string DimensionFormatter::formatValue(const qreal value,
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
     if (angularMeasure) {
-        asQuantity.setUnit(Base::Unit::Angle);
+        asQuantity.setUnit(Base::Units::Angle);
     }
     else if (areaMeasure) {
-        asQuantity.setUnit(Base::Unit::Area);
+        asQuantity.setUnit(Base::Units::Area);
     }
     else {
-        asQuantity.setUnit(Base::Unit::Length);
+        asQuantity.setUnit(Base::Units::Length);
     }
 
     // this handles mm to inch/km/parsec etc and decimal positions but

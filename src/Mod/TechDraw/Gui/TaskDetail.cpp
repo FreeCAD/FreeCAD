@@ -260,14 +260,14 @@ void TaskDetail::setUiFromFeat()
     ui->pbDragger->setText(tr("Drag Highlight"));
     ui->pbDragger->setEnabled(true);
     int decimals = Base::UnitsApi::getDecimals();
-    ui->qsbX->setUnit(Base::Unit::Length);
+    ui->qsbX->setUnit(Base::Units::Length);
     ui->qsbX->setDecimals(decimals);
     ui->qsbX->setValue(anchor.x);
-    ui->qsbY->setUnit(Base::Unit::Length);
+    ui->qsbY->setUnit(Base::Units::Length);
     ui->qsbY->setDecimals(decimals);
     ui->qsbY->setValue(anchor.y);
     ui->qsbRadius->setDecimals(decimals);
-    ui->qsbRadius->setUnit(Base::Unit::Length);
+    ui->qsbRadius->setUnit(Base::Units::Length);
     ui->qsbRadius->setValue(radius);
     ui->qsbScale->setDecimals(decimals);
     ui->cbScaleType->setCurrentIndex(ScaleType);

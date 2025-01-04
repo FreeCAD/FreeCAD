@@ -915,8 +915,8 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                     QMessageBox::warning(Gui::getMainWindow(),
                                          tr("Invalid wedge parameters"),
                                          tr("X min must not be equal to X max!"));
-                    return false;
-                }
+            return false;
+        }
                 else if (ui->wedgeYmin->value().getValue() == ui->wedgeYmax->value().getValue()) {
                     QMessageBox::warning(Gui::getMainWindow(),
                                          tr("Invalid wedge parameters"),

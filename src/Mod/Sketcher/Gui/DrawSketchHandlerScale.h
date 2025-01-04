@@ -473,7 +473,9 @@ void DSHScaleController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekThird: {
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Third, handler->scaleFactor, Base::Unit());
+                setOnViewParameterValue(OnViewParameter::Third,
+                                        handler->scaleFactor,
+                                        Base::Units::NullUnit);
             }
 
             Base::Vector3d start = toVector3d(handler->referencePoint);
