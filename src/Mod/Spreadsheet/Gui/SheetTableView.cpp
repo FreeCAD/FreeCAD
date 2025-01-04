@@ -182,6 +182,7 @@ SheetTableView::SheetTableView(QWidget* parent)
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    verticalHeader()->setDefaultAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     contextMenu.addAction(actionProperties);
     connect(actionProperties, &QAction::triggered, this, &SheetTableView::cellProperties);
