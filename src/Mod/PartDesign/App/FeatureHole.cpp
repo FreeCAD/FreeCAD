@@ -1158,32 +1158,13 @@ void Hole::updateThreadDepthParam()
     }
 }
 
-std::optional<double> Hole::determineDiameter() const
+std::optional<double> Hole::determineDiameter(int threadType, int threadSize) const
 {
     // Diameter parameter depends on Threaded, ThreadType, ThreadSize, and ThreadFit
 
-    int threadType = ThreadType.getValue();
-    int threadSize = ThreadSize.getValue();
-    if (threadType < 0) {
-        // When restoring the feature it might be in an inconsistent state.
-        // So, just silently ignore it instead of throwing an exception.
-        if (isRestoring())
-            return std::nullopt;
-        throw Base::IndexError("Thread type out of range");
-    }
-    if (threadSize < 0) {
-        // When restoring the feature it might be in an inconsistent state.
-        // So, just silently ignore it instead of throwing an exception.
-        if (isRestoring())
-            return std::nullopt;
-        throw Base::IndexError("Thread size out of range");
-    }
     double diameter = threadDescription[threadType][threadSize].diameter;
     double pitch = threadDescription[threadType][threadSize].pitch;
     double clearance = 0.0;
-
-    if (threadType == 0)
-        return std::nullopt;
 
     if (Threaded.getValue()) {
 
@@ -1351,14 +1332,27 @@ std::optional<double> Hole::determineDiameter() const
 
 void Hole::updateDiameterParam()
 {
+    if (isRestoring()) {
+        // When restoring the feature might be in an inconsistent state.
+        // So, just silently ignore it instead of throwing an exception.
+        return;
+    }
+
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
-    if (threadType > 0 && threadSize > 0)
-        ThreadDiameter.setValue(
-            threadDescription[threadType][threadSize].diameter
-        );
-    if (auto opt = determineDiameter())
-        Diameter.setValue(opt.value());
+
+    if (threadType < 0)
+        throw Base::IndexError("Thread type out of range");
+    if (threadSize < 0)
+        throw Base::IndexError("Thread size out of range");
+
+    if (threadType > 0) {
+        if (auto opt = determineDiameter(threadType, threadSize))
+            Diameter.setValue(opt.value());
+        if (threadSize > 0) {
+            ThreadDiameter.setValue(threadDescription[threadType][threadSize].diameter);
+        }
+    }
 }
 
 double Hole::getThreadProfileAngle()
@@ -1601,10 +1595,6 @@ void Hole::onChanged(const App::Property* prop)
         ProfileBased::onChanged(&ThreadClass);
         ProfileBased::onChanged(&HoleCutType);
         ProfileBased::onChanged(&Threaded);
-
-        // Diameter parameter depends on this
-        if (type != "None")
-            updateDiameterParam();
     }
     else if (prop == &Threaded) {
         std::string type(ThreadType.getValueAsString());
@@ -1667,9 +1657,10 @@ void Hole::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &ThreadSize) {
-        updateDiameterParam();
-        if (!isRestoring())
+        if (!isRestoring()) {
+            updateDiameterParam();
             updateThreadDepthParam();
+        }
         // updateHoleCutParams() will later automatically be called because
     }
     else if (prop == &ThreadFit) {
