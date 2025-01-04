@@ -71,17 +71,18 @@ public:
     class Autofill
     {
         public:
-            static constexpr const char *Author       = "author";
-            static constexpr const char *Date         = "date";
-            static constexpr const char *Organization = "organization";
-            static constexpr const char *Organisation = "organisation";
-            static constexpr const char *Owner        = "owner";
-            static constexpr const char *Company      = "company";
-            static constexpr const char *Scale        = "scale";
-            static constexpr const char *Sheet        = "sheet";
-            static constexpr const char *Title        = "title";
-            static constexpr const char *PageNumber   = "page_number";
-            static constexpr const char *PageCount    = "page_count";
+            static constexpr const char *Author        = "author";
+            static constexpr const char *Date          = "date";
+            static constexpr const char *Organization  = "organization";
+            static constexpr const char *Organisation  = "organisation";
+            static constexpr const char *Owner         = "owner";
+            static constexpr const char *Company       = "company";
+            static constexpr const char *Scale         = "scale";
+            static constexpr const char *Sheet         = "sheet";
+            static constexpr const char *Title         = "title";
+            static constexpr const char *PageNumber    = "page_number";
+            static constexpr const char *PageCount     = "page_count";
+            static constexpr const char *DrawingNumber = "drawing_number";
     };
 
 private:
