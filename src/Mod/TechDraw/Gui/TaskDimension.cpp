@@ -66,9 +66,15 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     }
     ui->cbEqualTolerance->setChecked(parent->getDimFeat()->EqualTolerance.getValue());
     connect(ui->cbEqualTolerance, &QCheckBox::stateChanged, this, &TaskDimension::onEqualToleranceChanged);
-    // if EqualTolerance overtolernace must not be negative
-    if (parent->getDimFeat()->EqualTolerance.getValue())
-        ui->qsbOvertolerance->setMinimum(0.0);
+
+    // Overtolerance must not be negative
+    ui->qsbOvertolerance->setMinimum(0.0);
+    ui->qsbOvertolerance->setMaximum(DBL_MAX);
+
+    // Undertolenace must not be positive
+    ui->qsbUndertolerance->setMaximum(0.0);
+    ui->qsbUndertolerance->setMinimum(-DBL_MAX);
+
     if ((parent->getDimFeat()->Type.isValue("Angle")) ||
         (parent->getDimFeat()->Type.isValue("Angle3Pt"))) {
         ui->qsbOvertolerance->setUnit(Base::Unit::Angle);
@@ -220,14 +226,12 @@ void TaskDimension::onEqualToleranceChanged()
         // if OverTolerance is negative or zero, first set it to zero
         if (ui->qsbOvertolerance->value().getValue() < 0)
             ui->qsbOvertolerance->setValue(0.0);
-        ui->qsbOvertolerance->setMinimum(0.0);
         ui->qsbUndertolerance->setValue(-1.0 * ui->qsbOvertolerance->value().getValue());
         ui->qsbUndertolerance->setUnit(ui->qsbOvertolerance->value().getUnit());
         ui->qsbUndertolerance->setDisabled(true);
         ui->leFormatSpecifierUnderTolerance->setDisabled(true);
     }
     else {
-        ui->qsbOvertolerance->setMinimum(-DBL_MAX);
         if (!ui->cbTheoreticallyExact->isChecked()) {
             ui->qsbUndertolerance->setDisabled(false);
             ui->leFormatSpecifierUnderTolerance->setDisabled(false);
