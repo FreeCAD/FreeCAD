@@ -22,14 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, import tests."""
+
 ## @package test_import
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, import tests.
 
 ## \addtogroup drafttests
 # @{
-import drafttests.auxiliary as aux
+
+from drafttests import auxiliary as aux
 from drafttests import test_base
 
 

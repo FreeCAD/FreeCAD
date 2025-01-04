@@ -21,6 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+"""Unit tests for the Draft Workbench, base classes."""
+
 import unittest
 
 import FreeCAD as App

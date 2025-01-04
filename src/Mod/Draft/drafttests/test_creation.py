@@ -22,22 +22,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, object creation tests."""
+
 ## @package test_creation
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, object creation tests.
 
 ## \addtogroup drafttests
 # @{
+
 import math
 
 import FreeCAD as App
 import Draft
-import drafttests.auxiliary as aux
-
 from FreeCAD import Vector
-from draftutils.messages import _msg
 from drafttests import test_base
+from draftutils.messages import _msg
 
 
 class DraftCreation(test_base.DraftTestCaseDoc):
