@@ -31,6 +31,8 @@
 #include <Inventor/elements/SoCacheElement.h>
 #endif
 
+#include <qdebug.h>
+
 #include "So3DAnnotation.h"
 
 using namespace Gui;
