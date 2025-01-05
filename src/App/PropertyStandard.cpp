@@ -1970,17 +1970,14 @@ PyObject* PropertyMap::getPyObject()
 
 void PropertyMap::setPyObject(PyObject* value)
 {
-    if (PyDict_Check(value)) {
-
+    if (PyMapping_Check(value)) {
         std::map<std::string, std::string> values;
         // get key and item list
-        PyObject* keyList = PyDict_Keys(value);
-
-        PyObject* itemList = PyDict_Values(value);
+        PyObject* keyList = PyMapping_Keys(value);
+        PyObject* itemList = PyMapping_Values(value);
         Py_ssize_t nSize = PyList_Size(keyList);
 
         for (Py_ssize_t i = 0; i < nSize; ++i) {
-
             // check on the key:
             std::string keyStr;
             PyObject* key = PyList_GetItem(keyList, i);
@@ -1988,7 +1985,7 @@ void PropertyMap::setPyObject(PyObject* value)
                 keyStr = PyUnicode_AsUTF8(key);
             }
             else {
-                std::string error("type of the key need to be unicode or string, not");
+                std::string error("type of the key need to be string, not ");
                 error += key->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
@@ -1999,16 +1996,19 @@ void PropertyMap::setPyObject(PyObject* value)
                 values[keyStr] = PyUnicode_AsUTF8(item);
             }
             else {
-                std::string error("type in list must be string or unicode, not ");
+                std::string error("type in values must be string, not ");
                 error += item->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
         }
 
+        Py_XDECREF(itemList);
+        Py_XDECREF(keyList);
+
         setValues(values);
     }
     else {
-        std::string error("type must be a dict object");
+        std::string error("type must be a dict or object with mapping protocol, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }
