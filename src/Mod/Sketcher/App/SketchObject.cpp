@@ -6728,6 +6728,7 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
 
     std::vector<int> delgeometries;
 
+    // TODO: This can become significantly costly if there are lots of constraints and poles
     for (auto& [cpGeoId, numConstr] : poleGeoIdsAndConstraints) {
         if (cpGeoId == GeoEnum::GeoUndef) {
             continue;
@@ -6735,7 +6736,13 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
 
         // look for a circle at geoid index
         for (auto const& constr : vals) {
+            if (constr->Type == Sketcher::InternalAlignment
+                || constr->Type == Sketcher::Weight
+                || !constr->involvesGeoId(cpGeoId)) {
+                continue;
+            }
             if (constr->Type != Sketcher::Equal) {
+                ++numConstr;
                 continue;
             }
             bool firstIsInCPGeoIds = std::any_of(poleGeoIdsAndConstraints.begin(),
@@ -6756,7 +6763,7 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
             // because the radius magnitude no longer makes sense without the B-Spline.
         }
 
-        if (numConstr < 2) { // IA
+        if (numConstr < 1) { // IA
             delgeometries.push_back(cpGeoId);
         }
     }
