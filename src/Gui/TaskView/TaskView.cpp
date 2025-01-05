@@ -416,7 +416,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
             QDialogButtonBox* box = active->ActiveCtrl->standardButtons();
             QList<QAbstractButton*> list = box->buttons();
             for (auto pb : list) {
-                if (box->buttonRole(pb) == QDialogButtonBox::RejectRole) {
+                if (box->buttonRole(pb) == active->ActiveDialog->roleOnEscape) {
                     if (pb->isEnabled()) {
 #if defined(FC_OS_MACOSX)
                         // #0001354: Crash on using Enter-Key for confirmation of chamfer or fillet
