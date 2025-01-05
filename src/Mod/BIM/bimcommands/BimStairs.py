@@ -54,18 +54,24 @@ class Arch_Stairs:
         from draftutils import params
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
         FreeCADGui.addModule("Arch")
-        if FreeCADGui.Selection.getSelection():
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
             n = []
             nStr = ""
-            for obj in FreeCADGui.Selection.getSelection():
+            for obj in sel:
                 if nStr != "":
                     nStr += ","
                 nStr += "FreeCAD.ActiveDocument." + obj.Name
-            FreeCADGui.doCommand("obj = Arch.makeStairs(baseobj=["+nStr+"])")
+            #'obj' in GUI not the same as obj in script,
+            # make it 'stairs' to distinguish one from another
+            #Create Stairs object with steps numbers in user preference
+            FreeCADGui.doCommand("stairs = Arch.makeStairs(baseobj=["+nStr+"],steps="+str(params.get_param_arch("StairsSteps"))+")")
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(stairs)")
         else:
-            FreeCADGui.doCommand("obj = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
+            FreeCADGui.doCommand("stairs = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
         FreeCADGui.addModule("Draft")
-        FreeCADGui.doCommand("Draft.autogroup(obj)")
+        FreeCADGui.doCommand("Draft.autogroup(stairs)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

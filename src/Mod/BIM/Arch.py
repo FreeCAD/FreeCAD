@@ -832,7 +832,6 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
             stair.Label = label
             ArchStairs._Stairs(stair)
             stairs.append(stair)
-            stairs[0].Label = label
             i = 1
         else:
             i = 0
@@ -841,17 +840,12 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
             stair.Label = label
             ArchStairs._Stairs(stair)
             stairs.append(stair)
-            stairs[i].Label = label
             stairs[i].Base = baseobjI
-
-            if len(baseobjI.Shape.Edges) > 1:
-                stepsI = 1                              #'landing' if 'multi-edges' currently
-            elif steps:
+            if steps:
                 stepsI = steps
             else:
                 stepsI = 20
             setProperty(stairs[i],None,width,height,stepsI)
-
             if i > 1:
                 additions.append(stairs[i])
                 stairs[i].LastSegment = stairs[i-1]

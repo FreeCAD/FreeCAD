@@ -287,11 +287,11 @@ class _Stairs(ArchComponent.Component):
             if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
-                        base = obj.Base.Shape.copy()
-
+                        base = Part.Shape(obj.Base.Shape)
         # special case NumberOfSteps = 1 : multi-edges landing
         if (not base) and obj.Width.Value and obj.Height.Value and (obj.NumberOfSteps > 0):
-            if obj.Base:
+            # Check if there is obj.Base and its validity to proceed
+            if self.ensureBase(obj):
                 if not hasattr(obj.Base,'Shape'):
                     return
                 if obj.Base.Shape.Solids:
@@ -334,6 +334,7 @@ class _Stairs(ArchComponent.Component):
                     ## TODO - Found Part.sortEdges() occasionally return less edges then 'input'
                     edges = Part.sortEdges(obj.Base.Shape.Edges)[0]
                     self.makeMultiEdgesLanding(obj,edges)
+            # Build Stairs if there is no obj.Base or even obj.Base is not valid
             else:
                 if not obj.Length.Value:
                     return
