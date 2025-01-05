@@ -7093,28 +7093,35 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     std::vector<int> delGeoId;
 
     std::vector<Base::Vector3d> poles = bsp->getPoles();
-    std::vector<Base::Vector3d> newpoles = bspline->getPoles();
-    std::vector<int> poleIndexInNew(bsp->countPoles(), -1);
-
+    std::vector<Base::Vector3d> newPoles = bspline->getPoles();
 
     // on fully removing a knot the knot geometry changes
     std::vector<double> knots = bsp->getKnots();
-    std::vector<double> newknots = bspline->getKnots();
-    std::vector<int> knotIndexInNew(bsp->countKnots(), -1);
+    std::vector<double> newKnots = bspline->getKnots();
 
     std::map<Sketcher::InternalAlignmentType, std::vector<int>>
-        indexInNew {{Sketcher::BSplineControlPoint, {bsp->countPoles(), -1}},
-                    {Sketcher::BSplineKnotPoint, {bsp->countKnots(), -1}}};
+        indexInNew {{Sketcher::BSplineControlPoint, {}},
+                    {Sketcher::BSplineKnotPoint, {}}};
+    indexInNew[Sketcher::BSplineControlPoint].reserve(poles.size());
+    indexInNew[Sketcher::BSplineKnotPoint].reserve(knots.size());
 
-    for (int j = 0; j < int(poles.size()); j++) {
-        const auto it = std::find(newpoles.begin(), newpoles.end(), poles[j]);
-        indexInNew[Sketcher::BSplineControlPoint][j] = it - newpoles.begin();
+    for (const auto& pole : poles) {
+        const auto it = std::find(newPoles.begin(), newPoles.end(), pole);
+        indexInNew[Sketcher::BSplineControlPoint].emplace_back(it - newPoles.begin());
     }
+    std::replace(indexInNew[Sketcher::BSplineControlPoint].begin(),
+                 indexInNew[Sketcher::BSplineControlPoint].end(),
+                 int(newPoles.size()),
+                 -1);
 
-    for (int j = 0; j < int(knots.size()); j++) {
-        const auto it = std::find(newknots.begin(), newknots.end(), knots[j]);
-        indexInNew[Sketcher::BSplineKnotPoint][j] = it - newknots.begin();
+    for (const auto& knot : knots) {
+        const auto it = std::find(newKnots.begin(), newKnots.end(), knot);
+        indexInNew[Sketcher::BSplineKnotPoint].emplace_back(it - newKnots.begin());
     }
+    std::replace(indexInNew[Sketcher::BSplineKnotPoint].begin(),
+                 indexInNew[Sketcher::BSplineKnotPoint].end(),
+                 int(newKnots.size()),
+                 -1);
 
     const std::vector<Sketcher::Constraint*>& cvals = Constraints.getValues();
 
@@ -7230,22 +7237,24 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     std::vector<int> delGeoId;
 
     std::vector<Base::Vector3d> poles = bsp->getPoles();
-    std::vector<Base::Vector3d> newpoles = bspline->getPoles();
+    std::vector<Base::Vector3d> newPoles = bspline->getPoles();
     std::vector<int> poleIndexInNew(poles.size(), -1);
 
     for (size_t j = 0; j < poles.size(); j++) {
-        const auto it = std::find(newpoles.begin(), newpoles.end(), poles[j]);
-        poleIndexInNew[j] = it - newpoles.begin();
+        const auto it = std::find(newPoles.begin(), newPoles.end(), poles[j]);
+        poleIndexInNew[j] = it - newPoles.begin();
     }
+    std::replace(poleIndexInNew.begin(), poleIndexInNew.end(), int(newPoles.size()), -1);
 
     std::vector<double> knots = bsp->getKnots();
-    std::vector<double> newknots = bspline->getKnots();
+    std::vector<double> newKnots = bspline->getKnots();
     std::vector<int> knotIndexInNew(knots.size(), -1);
 
     for (size_t j = 0; j < knots.size(); j++) {
-        const auto it = std::find(newknots.begin(), newknots.end(), knots[j]);
-        knotIndexInNew[j] = it - newknots.begin();
+        const auto it = std::find(newKnots.begin(), newKnots.end(), knots[j]);
+        knotIndexInNew[j] = it - newKnots.begin();
     }
+    std::replace(knotIndexInNew.begin(), knotIndexInNew.end(), int(newKnots.size()), -1);
 
     const std::vector<Sketcher::Constraint*>& cvals = Constraints.getValues();
 
