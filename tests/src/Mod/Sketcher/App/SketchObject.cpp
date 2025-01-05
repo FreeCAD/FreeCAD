@@ -832,6 +832,44 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfBSpline)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
 }
 
+// TODO: Needs to be done for other curves too but currently they are working as intended
+TEST_F(SketchObjectTest, testDeleteOnlyUnusedInternalGeometryOfBSpline)
+{
+    // NOTE: We test only non-periodic B-spline here. Periodic B-spline should behave exactly the
+    // same.
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    int geoIdBsp = getObject()->addGeometry(nonPeriodicBSpline.get());
+    // Ensure "exposed" internal geometry
+    getObject()->exposeInternalGeometry(geoIdBsp);
+    Base::Vector3d coords(1.0, 1.0, 0.0);
+    Part::GeomPoint point(coords);
+    int geoIdPnt = getObject()->addGeometry(&point);
+    const auto constraints = getObject()->Constraints.getValues();
+    auto it = std::find_if(constraints.begin(), constraints.end(), [&geoIdBsp](const auto* constr) {
+        return constr->Type == Sketcher::ConstraintType::InternalAlignment
+            && constr->AlignmentType == Sketcher::InternalAlignmentType::BSplineControlPoint
+            && constr->Second == geoIdBsp && constr->InternalAlignmentIndex == 1;
+    });
+    // One Assert to avoid
+    EXPECT_NE(it, constraints.end());
+    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
+    constraint->Type = Sketcher::ConstraintType::Coincident;
+    constraint->First = geoIdPnt;
+    constraint->FirstPos = Sketcher::PointPos::start;
+    constraint->Second = (*it)->First;
+    constraint->SecondPos = Sketcher::PointPos::mid;
+    getObject()->addConstraint(constraint);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoIdBsp);
+
+    // Assert
+    // Ensure there are 3 curves: the B-spline, its pole, and the point coincident on the pole
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
+}
+
 TEST_F(SketchObjectTest, testSplitLineSegment)
 {
     // Arrange
@@ -1419,6 +1457,8 @@ TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToZero)
     auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
     assert(nonPeriodicBSpline);
     int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+    auto bsp1 = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotCount = bsp1->countKnots();
 
     // Act
     // Try decreasing mult to zero.
@@ -1426,8 +1466,8 @@ TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToZero)
     getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
     // Assert
     // Knot should disappear. We start with 3 (unique) knots, so expect 2.
-    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
-    EXPECT_EQ(bsp->countKnots(), 2);
+    auto bsp2 = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp2->countKnots(), oldKnotCount - 1);
 }
 
 TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToDisallowed)
@@ -1489,15 +1529,17 @@ TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSplineToZero)
     auto PeriodicBSpline = createTypicalPeriodicBSpline();
     assert(PeriodicBSpline);
     int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+    auto bsp1 = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotCount = bsp1->countKnots();
 
     // Act
     // Try decreasing mult to zero.
     // NOTE: we still use OCCT notation of knot index starting with 1 (not 0).
     getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
     // Assert
-    // Knot should disappear. We start with 3 (unique) knots, so expect 2.
-    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
-    EXPECT_EQ(bsp->countKnots(), 5);
+    // Knot should disappear.
+    auto bsp2 = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp2->countKnots(), oldKnotCount - 1);
 }
 
 TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSplineToDisallowed)
