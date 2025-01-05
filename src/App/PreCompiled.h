@@ -100,6 +100,7 @@
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
+#include <boost/scope_exit.hpp>
 
 #endif  //_PreComp_
 
