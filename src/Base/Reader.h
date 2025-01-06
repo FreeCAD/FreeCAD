@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_READER_H
-#define BASE_READER_H
+#ifndef SRC_BASE_READER_H_
+#define SRC_BASE_READER_H_
 
 #include <bitset>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>
@@ -251,8 +252,8 @@ public:
     const char* addFile(const char* Name, Base::Persistence* Object);
     /// process the requested file writes
     void readFiles(zipios::ZipInputStream& zipstream) const;
-    /// get all registered file names
-    const std::vector<std::string>& getFilenames() const;
+    /// Returns whether reader has any registered filenames
+    bool hasFilenames() const;
     /// returns true if reading the file \a filename has failed
     bool hasReadFailed(const std::string& filename) const;
     bool isRegistered(Base::Persistence* Object) const;
@@ -364,7 +365,6 @@ public:
     std::vector<FileEntry> FileList;
 
 private:
-    std::vector<std::string> FileNames;
     mutable std::vector<std::string> FailedFiles;
 
     std::bitset<32> StatusBits;
@@ -392,4 +392,4 @@ private:
 }  // namespace Base
 
 
-#endif
+#endif  // SRC_BASE_READER_H_
