@@ -3,7 +3,7 @@ name = "FreeCAD"
 version = "0.22.0"
 description = "pixi instructions for FreeCAD"
 authors = ["looooo <sppedflyer@gmail.com>"]
-channels = ["conda-forge/label/pivy_rc", "conda-forge"]
+channels = ["conda-forge"]
 platforms = [ "linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64" ]
 
 [dependencies]
@@ -34,7 +34,7 @@ ply = "*"
 pre-commit = "*"
 pybind11 = "*"
 pyside6 = "*"
-python = "3.12"
+python = "3.13"
 pyyaml = "*"
 qt6-main = "*"
 scipy = ">=1.14.1,<2"
@@ -75,6 +75,7 @@ sed = "*"
 sysroot_linux-64 = "*"
 xorg-x11-server-common-cos6-x86_64 = "*"
 xorg-x11-server-xvfb-cos6-x86_64 = "*"
+xorg-xproto = "*"
 
 ## Linux Dependencies (aarch64)
 [target.linux-aarch64.dependencies]
@@ -108,6 +109,7 @@ sed = "*"
 sysroot_linux-aarch64 = "*"
 xorg-x11-server-common-cos7-aarch64 = "*"
 xorg-x11-server-xvfb-cos7-aarch64 = "*"
+xorg-xproto = "*"
 
 ## macOS Dependencies (Intel)
 [target.osx-64.dependencies]
