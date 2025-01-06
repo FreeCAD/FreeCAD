@@ -76,7 +76,12 @@ TEST_F(PropertySheetTest, validAliases)  // NOLINT
 
 TEST_F(PropertySheetTest, invalidAliases)  // NOLINT
 {
-    std::vector<std::string> invalidAliases {"A1", "ZZ1234", "mm"};
+    std::vector<std::string> invalidAliases {"A1",
+                                             "ZZ1234",
+                                             "mm",
+                                             "no spaces allowed",
+                                             "\'NoLeadingQuotes"};
+
     for (const auto& name : invalidAliases) {
         EXPECT_FALSE(propertySheet()->isValidAlias(name))
             << "\"" << name << "\" was accepted as an alias name, and should not be";

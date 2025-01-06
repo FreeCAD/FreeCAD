@@ -64,7 +64,7 @@
     <keyword>architecture</keyword>
 	<keyword>assembly</keyword>
 	<keyword>part</keyword>
-    <keyword translate="no">coin</keyword>  
+    <keyword translate="no">coin</keyword>
   </keywords>
   <url type="homepage">https://www.freecad.org/</url>
   <url type="bugtracker">https://github.com/FreeCAD/FreeCAD/issues</url>

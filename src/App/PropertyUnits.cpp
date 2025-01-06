@@ -48,7 +48,9 @@ TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat)
 
 Base::Quantity PropertyQuantity::getQuantityValue() const
 {
-    return Quantity(_dValue, _Unit);
+    Quantity quantity(_dValue, _Unit);
+    quantity.setFormat(_Format);
+    return quantity;
 }
 
 const char* PropertyQuantity::getEditorName() const
@@ -66,7 +68,7 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject* value)
     Base::Quantity quant;
 
     if (PyUnicode_Check(value)) {
-        quant = Quantity::parse(QString::fromUtf8(PyUnicode_AsUTF8(value)));
+        quant = Quantity::parse(PyUnicode_AsUTF8(value));
     }
     else if (PyFloat_Check(value)) {
         quant = Quantity(PyFloat_AsDouble(value), _Unit);
@@ -129,7 +131,9 @@ void PropertyQuantity::setPathValue(const ObjectIdentifier& /*path*/, const boos
 
 const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier& /*path*/) const
 {
-    return Quantity(_dValue, _Unit);
+    Quantity quantity(_dValue, _Unit);
+    quantity.setFormat(_Format);
+    return quantity;
 }
 
 //**************************************************************************

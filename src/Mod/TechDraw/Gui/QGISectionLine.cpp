@@ -470,7 +470,7 @@ void QGISectionLine::setSectionColor(QColor c)
 
 QColor QGISectionLine::getSectionColor()
 {
-    return PreferencesGui::sectionLineQColor();
+    return getColor();
 }
 
 void QGISectionLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

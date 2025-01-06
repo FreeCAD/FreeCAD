@@ -108,7 +108,7 @@ public:
     sclerp(const Placement& p0, const Placement& p1, double t, bool shorten = true);
 
     /// Returns string representation of the placement, useful for debugging
-    std::string toString();
+    std::string toString() const;
 
 private:
     Vector3<double> _pos;

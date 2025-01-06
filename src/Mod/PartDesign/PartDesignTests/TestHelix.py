@@ -161,7 +161,7 @@ class TestHelix(unittest.TestCase):
             helix.Angle = 0
             helix.Mode = 0
             self.Doc.recompute()
- 
+
             self.assertTrue(helix.Shape.isValid())
             bbox = helix.Shape.BoundBox
             self.assertAlmostEqual(bbox.ZMin/((10**exponent)**3),0,places=4)

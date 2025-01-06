@@ -2095,11 +2095,10 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
 
 QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint)
 {
-    QString nameStr;           // name parameter string
+    std::string nameStr;       // name parameter string
     QString valueStr;          // dimensional value string
-    QString presentationStr;   // final return string
-    QString unitStr;           // the actual unit string
-    QString baseUnitStr;       // the expected base unit string
+    std::string unitStr;       // the actual unit string
+    std::string baseUnitStr;   // the expected base unit string
     double factor;             // unit scaling factor, currently not used
     Base::UnitSystem unitSys;  // current unit system
 
@@ -2108,10 +2107,11 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     }
 
     // Get the current name parameter string of the constraint
-    nameStr = QString::fromStdString(constraint->Name);
+    nameStr = constraint->Name;
 
     // Get the current value string including units
-    valueStr = constraint->getPresentationValue().getUserString(factor, unitStr);
+    valueStr =
+        QString::fromStdString(constraint->getPresentationValue().getUserString(factor, unitStr));
 
     // Hide units if user has requested it, is being displayed in the base
     // units, and the schema being used has a clear base unit in the first
@@ -2127,19 +2127,19 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
         switch (unitSys) {
             case Base::UnitSystem::SI1:
             case Base::UnitSystem::MmMin:
-                baseUnitStr = QString::fromLatin1("mm");
+                baseUnitStr = "mm";
                 break;
 
             case Base::UnitSystem::SI2:
-                baseUnitStr = QString::fromLatin1("m");
+                baseUnitStr = "m";
                 break;
 
             case Base::UnitSystem::ImperialDecimal:
-                baseUnitStr = QString::fromLatin1("in");
+                baseUnitStr = "in";
                 break;
 
             case Base::UnitSystem::Centimeters:
-                baseUnitStr = QString::fromLatin1("cm");
+                baseUnitStr = "cm";
                 break;
 
             default:
@@ -2147,9 +2147,9 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
                 break;
         }
 
-        if (!baseUnitStr.isEmpty()) {
+        if (!baseUnitStr.empty()) {
             // expected unit string matches actual unit string. remove.
-            if (QString::compare(baseUnitStr, unitStr) == 0) {
+            if (baseUnitStr.compare(unitStr) == 0) {
                 // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
                 QRegularExpression rxUnits(
                     QString::fromUtf8(" \\D*$"));  // space + any non digits at end of string
@@ -2171,17 +2171,19 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     %N - the constraint name parameter
     %V - the value of the dimensional constraint, including any unit characters
     */
-    if (constraintParameters.bShowDimensionalName && !nameStr.isEmpty()) {
+    if (constraintParameters.bShowDimensionalName && !nameStr.empty()) {
+        QString presentationStr;
         if (constraintParameters.sDimensionalStringFormat.contains(QLatin1String("%V"))
             || constraintParameters.sDimensionalStringFormat.contains(QLatin1String("%N"))) {
             presentationStr = constraintParameters.sDimensionalStringFormat;
-            presentationStr.replace(QLatin1String("%N"), nameStr);
+            presentationStr.replace(QLatin1String("%N"), QString::fromStdString(nameStr));
             presentationStr.replace(QLatin1String("%V"), valueStr);
         }
         else {
             // user defined format string does not contain any valid parameter, using default format
             // "%N = %V"
-            presentationStr = nameStr + QLatin1String(" = ") + valueStr;
+            presentationStr =
+                QString::fromStdString(nameStr) + QString::fromLatin1(" = ") + valueStr;
         }
 
         return presentationStr;

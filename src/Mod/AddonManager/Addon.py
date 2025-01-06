@@ -35,7 +35,7 @@ import xml.etree.ElementTree
 import addonmanager_freecad_interface as fci
 from addonmanager_macro import Macro
 import addonmanager_utilities as utils
-from addonmanager_utilities import construct_git_url
+from addonmanager_utilities import construct_git_url, process_date_string_to_python_datetime
 from addonmanager_metadata import (
     Metadata,
     MetadataReader,
@@ -251,48 +251,14 @@ class Addon:
             elif self.macro and self.macro.date:
                 # Try to parse the date:
                 try:
-                    self._cached_update_date = self._process_date_string_to_python_datetime(
+                    self._cached_update_date = process_date_string_to_python_datetime(
                         self.macro.date
                     )
-                except SyntaxError as e:
+                except ValueError as e:
                     fci.Console.PrintWarning(str(e) + "\n")
             else:
                 fci.Console.PrintWarning(f"No update date info for {self.name}\n")
         return self._cached_update_date
-
-    def _process_date_string_to_python_datetime(self, date_string: str) -> datetime:
-        split_result = re.split(r"[ ./-]+", date_string.strip())
-        if len(split_result) != 3:
-            raise SyntaxError(
-                f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"
-            )
-
-        if int(split_result[0]) > 2000:  # Assume YYYY-MM-DD
-            try:
-                year = int(split_result[0])
-                month = int(split_result[1])
-                day = int(split_result[2])
-                return datetime(year, month, day)
-            except (OverflowError, OSError, ValueError):
-                raise SyntaxError(
-                    f"In macro {self.name}, unrecognized date string {date_string} (expected YYYY-MM-DD)"
-                )
-        elif int(split_result[2]) > 2000:
-            # Two possibilities, impossible to distinguish in the general case: DD-MM-YYYY and
-            # MM-DD-YYYY. See if the first one makes sense, and if not, try the second
-            if int(split_result[1]) <= 12:
-                year = int(split_result[2])
-                month = int(split_result[1])
-                day = int(split_result[0])
-            else:
-                year = int(split_result[2])
-                month = int(split_result[0])
-                day = int(split_result[1])
-            return datetime(year, month, day)
-        else:
-            raise SyntaxError(
-                f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"
-            )
 
     @classmethod
     def from_macro(cls, macro: Macro):

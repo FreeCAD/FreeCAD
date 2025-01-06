@@ -696,7 +696,7 @@
           </property>
           <property name="toolTip">
            <string>Shape of line end caps.  The default (round) should almost
-always be the right choice.   Flat or square caps are useful 
+always be the right choice.  Flat or square caps are useful
 if you are planning to use a drawing as a 1:1 cutting guide.
 </string>
           </property>

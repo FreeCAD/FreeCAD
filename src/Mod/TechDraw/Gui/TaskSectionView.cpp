@@ -65,7 +65,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_applyDeferred(0),
     m_directionIsSet(false),
     m_modelIsDirty(false),
-    m_scaleEdited(false)
+    m_scaleEdited(false),
+    m_directionChanged(false)
 {
     //existence of base is guaranteed by CmdTechDrawSectionView (Command.cpp)
 
@@ -94,7 +95,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_applyDeferred(0),
     m_directionIsSet(true),
     m_modelIsDirty(false),
-    m_scaleEdited(false)
+    m_scaleEdited(false),
+    m_directionChanged(false)
 {
     //existence of section is guaranteed by ViewProviderViewSection.setEdit
 
@@ -122,7 +124,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
 
 void TaskSectionView::setUiPrimary()
 {
-    //    Base::Console().Message("TSV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("Create Section View"));
 
     // note DPGI will have a custom scale type and scale = 1.0.  In this case,
@@ -155,7 +156,6 @@ void TaskSectionView::setUiPrimary()
 
 void TaskSectionView::setUiEdit()
 {
-    //    Base::Console().Message("TSV::setUiEdit()\n");
     setWindowTitle(QObject::tr("Edit Section View"));
     std::string temp = m_section->SectionSymbol.getValue();
     QString qTemp = QString::fromStdString(temp);
@@ -238,7 +238,6 @@ void TaskSectionView::setUiCommon(Base::Vector3d origin)
 //save the start conditions
 void TaskSectionView::saveSectionState()
 {
-    //    Base::Console().Message("TSV::saveSectionState()\n");
     if (m_section) {
         m_saveSymbol = m_section->SectionSymbol.getValue();
         m_saveScale = m_section->getScale();
@@ -255,7 +254,6 @@ void TaskSectionView::saveSectionState()
 //restore the start conditions
 void TaskSectionView::restoreSectionState()
 {
-    //    Base::Console().Message("TSV::restoreSectionState()\n");
     if (!m_section)
         return;
 
@@ -271,63 +269,62 @@ void TaskSectionView::restoreSectionState()
 //the VectorEditWidget reports a change in direction
 void TaskSectionView::slotViewDirectionChanged(Base::Vector3d newDirection)
 {
-    //    Base::Console().Message("TSV::slotViewDirectionChanged(%s)\n",
-    //                            DrawUtil::formatVector(newDirection).c_str());
     Base::Vector3d projectedViewDirection = m_base->projectPoint(newDirection, false);
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
     m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
     checkAll(false);
+    directionChanged(true);
     applyAligned();
 }
 
 //the CompassWidget reports that the view direction angle has changed
 void TaskSectionView::slotChangeAngle(double newAngle)
 {
-    //    Base::Console().Message("TSV::slotChangeAngle(%.3f)\n", newAngle);
     double angleRadians = newAngle * M_PI / 180.0;
     double unitX = cos(angleRadians);
     double unitY = sin(angleRadians);
     Base::Vector3d localUnit(unitX, unitY, 0.0);
     m_viewDirectionWidget->setValueNoNotify(localUnit);
     checkAll(false);
+    directionChanged(true);
     applyAligned();
 }
 
 //preset view directions
 void TaskSectionView::onUpClicked()
 {
-    //    Base::Console().Message("TSV::onUpClicked()\n");
     checkAll(false);
     m_compass->setToNorth();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, 1.0, 0.0));
+    directionChanged(true);
     applyAligned();
 }
 
 void TaskSectionView::onDownClicked()
 {
-    //    Base::Console().Message("TSV::onDownClicked()\n");
     checkAll(false);
     m_compass->setToSouth();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, -1.0, 0.0));
+    directionChanged(true);
     applyAligned();
 }
 
 void TaskSectionView::onLeftClicked()
 {
-    //    Base::Console().Message("TSV::onLeftClicked()\n");
     checkAll(false);
     m_compass->setToWest();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(-1.0, 0.0, 0.0));
+    directionChanged(true);
     applyAligned();
 }
 
 void TaskSectionView::onRightClicked()
 {
-    //    Base::Console().Message("TSV::onRightClicked()\n");
     checkAll(false);
     m_compass->setToEast();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(1.0, 0.0, 0.0));
+    directionChanged(true);
     applyAligned();
 }
 
@@ -425,8 +422,6 @@ void TaskSectionView::updateNowClicked() { apply(true); }
 //******************************************************************************
 bool TaskSectionView::apply(bool forceUpdate)
 {
-//    Base::Console().Message("TSV::apply() - liveUpdate: %d force: %d deferred: %d\n",
-//                            ui->cbLiveUpdate->isChecked(), forceUpdate, m_applyDeferred);
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do
         m_applyDeferred++;
@@ -471,7 +466,6 @@ bool TaskSectionView::apply(bool forceUpdate)
 
 void TaskSectionView::applyQuick(std::string dir)
 {
-    //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
     m_dirName = dir;
     enableAll(true);
     apply();
@@ -479,7 +473,6 @@ void TaskSectionView::applyQuick(std::string dir)
 
 void TaskSectionView::applyAligned()
 {
-    //    Base::Console().Message("TSV::applyAligned()\n");
     m_dirName = "Aligned";
     enableAll(true);
     m_directionIsSet = true;
@@ -492,7 +485,6 @@ void TaskSectionView::applyAligned()
 
 TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 {
-    // Base::Console().Message("TSV::createSectionView()\n");
     if (!isBaseValid()) {
         failNoObject();
         return nullptr;
@@ -564,7 +556,6 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         double rotation = requiredRotation(viewDirectionAngle);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
-
     }
     Gui::Command::commitCommand();
     return m_section;
@@ -572,7 +563,6 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
 void TaskSectionView::updateSectionView()
 {
-    // Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
     if (!isSectionValid()) {
         failNoObject();
         return;
@@ -620,11 +610,15 @@ void TaskSectionView::updateSectionView()
             //Note: DirectionName is to be deprecated in the future
             m_section->setCSFromBase(m_dirName.c_str());
         }
+
         //auto orientation of view relative to base view
-        double viewDirectionAngle = m_compass->positiveValue();
-        double rotation = requiredRotation(viewDirectionAngle);
-        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
-                           m_sectionName.c_str(), rotation);
+        if (directionChanged()) {
+            double viewDirectionAngle = m_compass->positiveValue();
+            double rotation = requiredRotation(viewDirectionAngle);
+            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
+                               m_sectionName.c_str(), rotation);
+            directionChanged(false);
+        }
     }
     Gui::Command::commitCommand();
 }
@@ -687,7 +681,6 @@ double TaskSectionView::requiredRotation(double inputAngle)
 
 bool TaskSectionView::accept()
 {
-    //    Base::Console().Message("TSV::accept()\n");
     apply(true);
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return true;
@@ -695,7 +688,6 @@ bool TaskSectionView::accept()
 
 bool TaskSectionView::reject()
 {
-    //    Base::Console().Message("TSV::reject()\n");
     if (!m_section) {//no section created, nothing to undo
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         return false;

@@ -3,15 +3,15 @@
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
 # *   License along with this program; if not, write to the Free Software   *
@@ -66,7 +66,7 @@ def create_document(document, filename=None, shapemode=0, strategy=0, silent=Fal
                1 = coin only
                2 = no representation
     strategy:  0 = only root object
-               1 = only bbuilding structure,
+               1 = only building structure
                2 = all children
     """
 
@@ -86,7 +86,7 @@ def create_document_object(
                1 = coin only
                2 = no representation
     strategy:  0 = only root object
-               1 = only bbuilding structure,
+               1 = only building structure
                2 = all children
     """
 
@@ -201,10 +201,18 @@ def create_ifcfile():
     application = "FreeCAD"
     version = FreeCAD.Version()
     version = ".".join([str(v) for v in version[0:3]])
+    freecadorg = api_run(
+        "owner.add_organisation",
+        ifcfile,
+        identification="FreeCAD.org",
+        name="The FreeCAD project"
+    )
     application = api_run(
         "owner.add_application",
         ifcfile,
+        application_developer=freecadorg,
         application_full_name=application,
+        application_identifier=application,
         version=version,
     )
     # context
@@ -227,9 +235,14 @@ def create_ifcfile():
         parent=model3d,
     )
     # unit
-    # for now, assign a default metre unit, as per https://blenderbim.org/docs-python/autoapi/ifcopenshell/api/unit/assign_unit/index.html
+    # for now, assign a default metre + sqm +degrees unit, as per
+    # https://docs.ifcopenshell.org/autoapi/ifcopenshell/api/unit/index.html
     # TODO allow to set this at creation, from the current FreeCAD units schema
-    api_run("unit.assign_unit", ifcfile)
+    length = api_run("unit.add_si_unit", ifcfile, unit_type="LENGTHUNIT")
+    area = api_run("unit.add_si_unit", ifcfile, unit_type="AREAUNIT")
+    angle = api_run("unit.add_conversion_based_unit", ifcfile, name="degree")
+    api_run("unit.assign_unit", ifcfile, units=[length, area, angle])
+    # TODO add user history
     return ifcfile
 
 
@@ -397,7 +410,7 @@ def get_children(
 
 
 def get_freecad_children(obj):
-    """Returns the childen of this object that exist in the documemt"""
+    """Returns the children of this object that exist in the document"""
 
     objs = []
     children = get_children(obj)

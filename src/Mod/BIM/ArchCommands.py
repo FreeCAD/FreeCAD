@@ -64,14 +64,14 @@ def getStringList(objects):
 def getDefaultColor(objectType):
     '''getDefaultColor(string): returns a color value for the given object
     type (Wall, Structure, Window, WindowGlass)'''
-    transparency = 0.0
+    alpha = 1.0
     if objectType == "Wall":
         c = params.get_param_arch("WallColor")
     elif objectType == "Structure":
         c = params.get_param_arch("StructureColor")
     elif objectType == "WindowGlass":
         c = params.get_param_arch("WindowGlassColor")
-        transparency = params.get_param_arch("WindowTransparency") / 100.0
+        alpha = 1.0 - params.get_param_arch("WindowTransparency") / 100.0
     elif objectType == "Rebar":
         c = params.get_param_arch("RebarColor")
     elif objectType == "Panel":
@@ -82,11 +82,11 @@ def getDefaultColor(objectType):
         c = params.get_param_arch("ColorHelpers")
     elif objectType == "Construction":
         c = params.get_param("constructioncolor")
-        transparency = 0.80
+        alpha = 0.2
     else:
         c = params.get_param_view("DefaultShapeColor")
     r, g, b, _ = Draft.get_rgba_tuple(c)
-    return (r, g, b, transparency)
+    return (r, g, b, alpha)
 
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
@@ -169,7 +169,7 @@ def removeComponents(objectsList,host=None):
                     # Check if o and o.Base has Attachment Support, and
                     # if the support is the host object itself - thus a cyclic
                     # dependency and probably creating TNP.
-                    # If above is postive, remove its AttachmentSupport:
+                    # If above is positive, remove its AttachmentSupport:
                     if hasattr(o,"Base") and o.Base:
                         objList = [o, o.Base]
                     else:
@@ -771,7 +771,7 @@ def pruneIncluded(objectslist,strict=False):
                         # don't consider a PartDesign_Body with a PartDesign_Clone that references obj
                         pass
                     elif parent.isDerivedFrom("PartDesign::SubShapeBinder") or (hasattr(parent, "TypeId") and parent.TypeId == "PartDesign::ShapeBinder"):
-                        # don't consider a PartDesign_SubShapeBinder or PartDesign_ShapeBinder referncing this object from another object
+                        # don't consider a PartDesign_SubShapeBinder or PartDesign_ShapeBinder referencing this object from another object
                         pass
                     elif hasattr(parent,"Host") and parent.Host == obj:
                         pass

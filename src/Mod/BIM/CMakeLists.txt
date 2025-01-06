@@ -59,12 +59,14 @@ SET(importers_SRCS
     importers/importWebGL.py
     importers/importJSON.py
     importers/importSH3D.py
+    importers/importSH3DHelper.py
     importers/import3DS.py
     importers/importSHP.py
     importers/importGBXML.py
     importers/exportIFCStructuralTools.py
     importers/exportIFC.py
     importers/exportIFCHelper.py
+    importers/samples/Sample.sh3d
 )
 
 SET(Dice3DS_SRCS
@@ -199,6 +201,10 @@ SET(BIMGuiIcon_SVG
     Resources/icons/BIMWorkbench.svg
 )
 
+SET(ImportersSample_Files
+    importers/samples/Sample.sh3d
+)
+
 ADD_CUSTOM_TARGET(BIM ALL
     SOURCES ${Arch_SRCS}
             ${Arch_QRC_SRCS}
@@ -209,6 +215,10 @@ ADD_CUSTOM_TARGET(BIM ALL
             ${bimcommands_SRCS}
             ${nativeifc_SRCS}
             ${BIMGuiIcon_SVG}
+)
+
+ADD_CUSTOM_TARGET(ImporterPythonTestData ALL
+    SOURCES ${ImportersSample_Files}
 )
 
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Arch_SRCS})
@@ -223,6 +233,12 @@ fc_target_copy_resource(BIM
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
     ${Arch_presets}
 )
+
+fc_target_copy_resource(ImporterPythonTestData
+    ${CMAKE_SOURCE_DIR}/src/Mod/BIM
+    ${CMAKE_BINARY_DIR}/Mod/BIM
+    ${ImportersSample_Files})
+
 
 IF (BUILD_GUI)
     fc_target_copy_resource(BIM

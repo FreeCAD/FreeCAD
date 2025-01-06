@@ -250,7 +250,7 @@ const std::string TaskFemConstraintPressure::getReferences() const
 
 std::string TaskFemConstraintPressure::getPressure() const
 {
-    return ui->if_pressure->value().getSafeUserString().toStdString();
+    return ui->if_pressure->value().getSafeUserString();
 }
 
 bool TaskFemConstraintPressure::getReverse() const

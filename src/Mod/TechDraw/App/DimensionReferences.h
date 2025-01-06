@@ -55,7 +55,7 @@ class TechDrawExport ReferenceEntry
 {
 public:
     ReferenceEntry() = default;
-    ReferenceEntry( App::DocumentObject* docObject, std::string subName, App::Document* document = nullptr);
+    ReferenceEntry( App::DocumentObject* docObject, const std::string& subName, App::Document* document = nullptr);
     ReferenceEntry(const ReferenceEntry& other);
     ~ReferenceEntry() = default;
 

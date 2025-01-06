@@ -121,7 +121,7 @@ DlgCheckableMessageBox::DlgCheckableMessageBox(QWidget *parent) :
     m_d->ui.setupUi(this);
     m_d->ui.pixmapLabel->setVisible(false);
     connect(m_d->ui.buttonBox, &QDialogButtonBox::accepted, this, &DlgCheckableMessageBox::accept);
-    connect(m_d->ui.buttonBox, &QDialogButtonBox::rejected, this, &DlgCheckableMessageBox::reject); 
+    connect(m_d->ui.buttonBox, &QDialogButtonBox::rejected, this, &DlgCheckableMessageBox::reject);
     connect(m_d->ui.buttonBox, &QDialogButtonBox::clicked,
         this, &DlgCheckableMessageBox::slotClicked);
 }

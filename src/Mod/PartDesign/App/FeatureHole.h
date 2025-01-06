@@ -90,11 +90,11 @@ public:
         const char * designation;
         double diameter;
         double pitch;
-        double CoreHole;
+        double TapDrill;
     };
     static const ThreadDescription threadDescription[][171];
 
-    static const double metricHoleDiameters[36][4];
+    static const double metricHoleDiameters[51][4];
 
     using UTSClearanceDefinition = struct {
         std::string designation;
@@ -151,6 +151,24 @@ private:
     static const char* HoleCutType_UNEF_Enums[];
     static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
+
+    /* NPT profile */
+    static const char* HoleCutType_NPT_Enums[];
+    static const char* ThreadSize_NPT_Enums[];
+
+    /* BSP profile */
+    static const char* HoleCutType_BSP_Enums[];
+    static const char* ThreadSize_BSP_Enums[];
+
+    /* BSW profile */
+    static const char* HoleCutType_BSW_Enums[];
+    static const char* ThreadSize_BSW_Enums[];
+    static const char* ThreadClass_BSW_Enums[];
+
+    /* BSF profile */
+    static const char* HoleCutType_BSF_Enums[];
+    static const char* ThreadSize_BSF_Enums[];
+    static const char* ThreadClass_BSF_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size][2];
 
@@ -218,9 +236,11 @@ private:
     void updateThreadDepthParam();
     void readCutDefinitions();
 
+    double getCountersinkAngle() const;
     double getThreadClassClearance() const;
     double getThreadRunout(int mode = 1) const;
     double getThreadPitch() const;
+    double getThreadProfileAngle();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);

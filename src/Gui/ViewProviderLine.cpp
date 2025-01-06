@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoAsciiText.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
 # include <Inventor/nodes/SoPickStyle.h>
@@ -48,6 +47,8 @@ PROPERTY_SOURCE(Gui::ViewProviderLine, Gui::ViewProviderDatum)
 ViewProviderLine::ViewProviderLine()
 {
     sPixmap = "Std_Axis";
+
+    pLabel = new SoText2();
 }
 
 ViewProviderLine::~ViewProviderLine() = default;
@@ -63,17 +64,17 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
     if (strncmp(name, axisRoles[0], strlen(axisRoles[0])) == 0) {
         // X-axis: red
         ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisXColor());
-        pLabel->string.setValue(SbString("X"));
+        pLabel->string.setValue("X");
     }
     else if (strncmp(name, axisRoles[1], strlen(axisRoles[1])) == 0) {
         // Y-axis: green
         ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisYColor());
-        pLabel->string.setValue(SbString("Y"));
+        pLabel->string.setValue("Y");
     }
     else if (strncmp(name, axisRoles[2], strlen(axisRoles[2])) == 0) {
         // Z-axis: blue
         ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisZColor());
-        pLabel->string.setValue(SbString("Z"));
+        pLabel->string.setValue("Z");
     }
     else {
         noRole = true;
@@ -114,5 +115,5 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
     ps->style.setValue(SoPickStyle::SHAPE_ON_TOP);
     sep->addChild(ps);
 
-    sep->addChild ( getLabel () );
+    sep->addChild (pLabel);
 }

@@ -1163,13 +1163,12 @@ PropertyUnitItem::PropertyUnitItem() = default;
 QVariant PropertyUnitItem::toString(const QVariant& prop) const
 {
     const Base::Quantity& unit = prop.value<Base::Quantity>();
-    QString string = unit.getUserString();
+    std::string str = unit.getUserString();
     if (hasExpression()) {
-        string +=
-            QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+        str += fmt::format("  ( {} )", getExpressionString());
     }
 
-    return {string};
+    return {QString::fromStdString(str)};
 }
 
 QVariant PropertyUnitItem::value(const App::Property* prop) const
@@ -1186,8 +1185,7 @@ void PropertyUnitItem::setValue(const QVariant& value)
     if (!hasExpression() && value.canConvert<Base::Quantity>()) {
         const Base::Quantity& val = value.value<Base::Quantity>();
         Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-        QString unit = Base::UnitsApi::toString(val, format);
-        setPropertyValue(unit);
+        setPropertyValue(Base::UnitsApi::toString(val, format));
     }
 }
 
@@ -1770,14 +1768,14 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    QString data = QString::fromLatin1("[")
-        + Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ")
-        + Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ")
-        + Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
+    std::string str = fmt::format("[{} {} {}]",
+                                  Base::Quantity(value.x, Base::Unit::Length).getUserString(),
+                                  Base::Quantity(value.y, Base::Unit::Length).getUserString(),
+                                  Base::Quantity(value.z, Base::Unit::Length).getUserString());
     if (hasExpression()) {
-        data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+        str += fmt::format("  ( {} )", getExpressionString());
     }
-    return {data};
+    return {QString::fromStdString(str)};
 }
 
 
@@ -1801,11 +1799,11 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
 
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    QString data = QString::fromLatin1("(%1, %2, %3)")
-                       .arg(Base::UnitsApi::toNumber(x, format),
-                            Base::UnitsApi::toNumber(y, format),
-                            Base::UnitsApi::toNumber(z, format));
-    setPropertyValue(data);
+    std::string val = fmt::format("({}, {}, {})",
+                                  Base::UnitsApi::toNumber(x, format),
+                                  Base::UnitsApi::toNumber(y, format),
+                                  Base::UnitsApi::toNumber(z, format));
+    setPropertyValue(val);
 }
 
 void PropertyVectorDistanceItem::setEditorData(QWidget* editor, const QVariant& data) const
@@ -2516,12 +2514,13 @@ QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
     angle = Base::toDegrees<double>(angle);
 
     QLocale loc;
-    QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
-                                     "Angle: %4")
-                       .arg(loc.toString(dir.x, 'f', decimals()),
-                            loc.toString(dir.y, 'f', decimals()),
-                            loc.toString(dir.z, 'f', decimals()),
-                            Base::Quantity(angle, Base::Unit::Angle).getUserString());
+    QString data =
+        QString::fromUtf8("Axis: (%1 %2 %3)\n"
+                          "Angle: %4")
+            .arg(loc.toString(dir.x, 'f', decimals()),
+                 loc.toString(dir.y, 'f', decimals()),
+                 loc.toString(dir.z, 'f', decimals()),
+                 QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()));
     return {data};
 }
 
@@ -2534,11 +2533,12 @@ QVariant PropertyRotationItem::toString(const QVariant& prop) const
     angle = Base::toDegrees<double>(angle);
 
     QLocale loc;
-    QString data = QString::fromUtf8("[(%1 %2 %3); %4]")
-                       .arg(loc.toString(dir.x, 'f', lowPrec),
-                            loc.toString(dir.y, 'f', lowPrec),
-                            loc.toString(dir.z, 'f', lowPrec),
-                            Base::Quantity(angle, Base::Unit::Angle).getUserString());
+    QString data =
+        QString::fromUtf8("[(%1 %2 %3); %4]")
+            .arg(loc.toString(dir.x, 'f', lowPrec),
+                 loc.toString(dir.y, 'f', lowPrec),
+                 loc.toString(dir.z, 'f', lowPrec),
+                 QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()));
     return {data};
 }
 
@@ -2557,12 +2557,12 @@ void PropertyRotationItem::setValue(const QVariant& value)
     double angle {};
     h.getValue(axis, angle);
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    QString data = QString::fromLatin1("App.Rotation(App.Vector(%1,%2,%3),%4)")
-                       .arg(Base::UnitsApi::toNumber(axis.x, format),
-                            Base::UnitsApi::toNumber(axis.y, format),
-                            Base::UnitsApi::toNumber(axis.z, format),
-                            Base::UnitsApi::toNumber(angle, format));
-    setPropertyValue(data);
+    std::string val = fmt::format("App.Rotation(App.Vector({},{},{}),{})",
+                                  Base::UnitsApi::toNumber(axis.x, format),
+                                  Base::UnitsApi::toNumber(axis.y, format),
+                                  Base::UnitsApi::toNumber(axis.z, format),
+                                  Base::UnitsApi::toNumber(angle, format));
+    setPropertyValue(val);
 }
 
 QWidget* PropertyRotationItem::createEditor(QWidget* parent,
@@ -2818,16 +2818,17 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     pos = p.getPosition();
 
     QLocale loc;
-    QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
-                                     "Angle: %4\n"
-                                     "Position: (%5  %6  %7)")
-                       .arg(loc.toString(dir.x, 'f', decimals()),
-                            loc.toString(dir.y, 'f', decimals()),
-                            loc.toString(dir.z, 'f', decimals()),
-                            Base::Quantity(angle, Base::Unit::Angle).getUserString(),
-                            Base::Quantity(pos.x, Base::Unit::Length).getUserString(),
-                            Base::Quantity(pos.y, Base::Unit::Length).getUserString(),
-                            Base::Quantity(pos.z, Base::Unit::Length).getUserString());
+    QString data =
+        QString::fromUtf8("Axis: (%1 %2 %3)\n"
+                          "Angle: %4\n"
+                          "Position: (%5  %6  %7)")
+            .arg(loc.toString(dir.x, 'f', decimals()),
+                 loc.toString(dir.y, 'f', decimals()),
+                 loc.toString(dir.z, 'f', decimals()),
+                 QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.x, Base::Unit::Length).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.y, Base::Unit::Length).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.z, Base::Unit::Length).getUserString()));
     return {data};
 }
 
@@ -2842,14 +2843,15 @@ QVariant PropertyPlacementItem::toString(const QVariant& prop) const
     pos = p.getPosition();
 
     QLocale loc;
-    QString data = QString::fromUtf8("[(%1 %2 %3); %4; (%5  %6  %7)]")
-                       .arg(loc.toString(dir.x, 'f', lowPrec),
-                            loc.toString(dir.y, 'f', lowPrec),
-                            loc.toString(dir.z, 'f', lowPrec),
-                            Base::Quantity(angle, Base::Unit::Angle).getUserString(),
-                            Base::Quantity(pos.x, Base::Unit::Length).getUserString(),
-                            Base::Quantity(pos.y, Base::Unit::Length).getUserString(),
-                            Base::Quantity(pos.z, Base::Unit::Length).getUserString());
+    QString data =
+        QString::fromUtf8("[(%1 %2 %3); %4; (%5  %6  %7)]")
+            .arg(loc.toString(dir.x, 'f', lowPrec),
+                 loc.toString(dir.y, 'f', lowPrec),
+                 loc.toString(dir.z, 'f', lowPrec),
+                 QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.x, Base::Unit::Length).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.y, Base::Unit::Length).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.z, Base::Unit::Length).getUserString()));
     return {data};
 }
 
@@ -2872,17 +2874,17 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     h.getValue(axis, angle);
 
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    QString data = QString::fromLatin1("App.Placement("
-                                       "App.Vector(%1,%2,%3),"
-                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")
-                       .arg(Base::UnitsApi::toNumber(pos.x, format),
-                            Base::UnitsApi::toNumber(pos.y, format),
-                            Base::UnitsApi::toNumber(pos.z, format),
-                            Base::UnitsApi::toNumber(axis.x, format),
-                            Base::UnitsApi::toNumber(axis.y, format),
-                            Base::UnitsApi::toNumber(axis.z, format),
-                            Base::UnitsApi::toNumber(angle, format));
-    setPropertyValue(data);
+    std::string str = fmt::format("App.Placement("
+                                  "App.Vector({},{},{}),"
+                                  "App.Rotation(App.Vector({},{},{}),{}))",
+                                  Base::UnitsApi::toNumber(pos.x, format),
+                                  Base::UnitsApi::toNumber(pos.y, format),
+                                  Base::UnitsApi::toNumber(pos.z, format),
+                                  Base::UnitsApi::toNumber(axis.x, format),
+                                  Base::UnitsApi::toNumber(axis.y, format),
+                                  Base::UnitsApi::toNumber(axis.z, format),
+                                  Base::UnitsApi::toNumber(angle, format));
+    setPropertyValue(str);
 }
 
 QWidget* PropertyPlacementItem::createEditor(QWidget* parent,

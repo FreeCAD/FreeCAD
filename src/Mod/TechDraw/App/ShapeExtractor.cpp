@@ -47,6 +47,7 @@
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/FeaturePartCircle.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Measure/App/ShapeFinder.h>
 //#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ShapeExtractor.h"
@@ -55,6 +56,7 @@
 #include "Preferences.h"
 
 using namespace TechDraw;
+using namespace Measure;
 using DU = DrawUtil;
 using SU = ShapeUtils;
 
@@ -166,7 +168,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             continue;
         } else if (s.ShapeType() < TopAbs_SOLID) {
             //clean up composite shapes
-            TopoDS_Shape cleanShape = stripInfiniteShapes(s);
+            TopoDS_Shape cleanShape = ShapeFinder::ShapeFinder::stripInfiniteShapes(s);
             if (!cleanShape.IsNull()) {
                 builder.Add(comp, cleanShape);
             }
@@ -226,7 +228,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
             auto shape = Part::Feature::getShape(l);    // TODO:  getTopoShape() ?
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
-                shape = stripInfiniteShapes(shape);
+                shape = ShapeFinder::stripInfiniteShapes(shape);
             }
             if (!checkShape(l, shape)) {
                 continue;
@@ -285,7 +287,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
         }
         Part::TopoShape ts(shape);
         if (ts.isInfinite()) {
-            shape = stripInfiniteShapes(shape);
+            shape = ShapeFinder::stripInfiniteShapes(shape);
             ts = Part::TopoShape(shape);
         }
         //ts might be garbage now, better check
@@ -379,30 +381,6 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
     return baseShape;
 }
 
-//inShape is a compound
-//The shapes of datum features (Axis, Plan and CS) are infinite
-//Infinite shapes can not be projected, so they need to be removed.
-TopoDS_Shape ShapeExtractor::stripInfiniteShapes(TopoDS_Shape inShape)
-{
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-
-    TopoDS_Iterator it(inShape);
-    for (; it.More(); it.Next()) {
-        TopoDS_Shape s = it.Value();
-        if (s.ShapeType() < TopAbs_SOLID) {
-            //look inside composite shapes
-            s = stripInfiniteShapes(s);
-        } else if (Part::TopoShape(s).isInfinite()) {
-            continue;
-        } else {
-            //simple shape
-        }
-        builder.Add(comp, s);
-    }
-    return TopoDS_Shape(std::move(comp));
-}
 
 bool ShapeExtractor::is2dObject(const App::DocumentObject* obj)
 {
