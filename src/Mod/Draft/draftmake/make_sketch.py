@@ -2,6 +2,7 @@
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2024 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -32,9 +33,8 @@ import math
 import FreeCAD as App
 import DraftVecUtils
 import DraftGeomUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.translate import translate
 
 
@@ -50,21 +50,21 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     objects_list: can be single or list of objects of Draft type objects,
         Part::Feature, Part.Shape, or mix of them.
 
-    autoconstraints(False): if True, constraints will be automatically added to
-        wire nodes, rectangles and circles.
+    autoconstraints(False): if True, coincident, horizontal and vertical
+        constraints will be added automatically.
 
-    addTo(None) : if set to an existing sketch, geometry will be added to it
+    addTo(None): if set to an existing sketch, geometry will be added to it
         instead of creating a new one.
 
     delete(False): if True, the original object will be deleted.
-        If set to a string 'all' the object and all its linked object will be
+        If set to a string "all" the object and all its linked object will be
         deleted.
 
-    name('Sketch'): the name for the new sketch object.
+    name("Sketch"): the name for the new sketch object.
 
     radiusPrecision(-1): If <0, disable radius constraint. If =0, add individual
         radius constraint. If >0, the radius will be rounded according to this
-        precision, and 'Equal' constraint will be added to curve with equal
+        precision, and "Equal" constraint will be added to curve with equal
         radius within precision.
 
     tol(1e-3): Tolerance used to check if the shapes are planar and coplanar.
@@ -76,17 +76,11 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         return
 
     import Part
-    from Sketcher import Constraint
-    import Sketcher
-
-    start_point = 1
-    end_point = 2
-    middle_point = 3
 
     if App.GuiUp:
         v_dir = gui_utils.get_3d_view().getViewDirection()
     else:
-        v_dir = App.Base.Vector(0,0,-1)
+        v_dir = App.Vector(0, 0, -1)
 
     # lists to accumulate shapes with defined normal and undefined normal
     shape_norm_yes = list()
@@ -98,16 +92,16 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     for obj in objects_list:
         if isinstance(obj,Part.Shape):
             shape = obj
-        elif not hasattr(obj,'Shape'):
+        elif not hasattr(obj, "Shape"):
             App.Console.PrintError(translate("draft",
-                                   "No shape found")+"\n")
+                                   "No shape found") + "\n")
             return None
         else:
             shape = obj.Shape
 
         if not DraftGeomUtils.is_planar(shape, tol):
             App.Console.PrintError(translate("draft",
-                                   "All Shapes must be planar")+"\n")
+                                   "All Shapes must be planar") + "\n")
             return None
 
         if DraftGeomUtils.get_normal(shape, tol):
@@ -123,7 +117,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         for shape in shapes_list[1:]:
             if not DraftGeomUtils.are_coplanar(shapes_list[0], shape, tol):
                 App.Console.PrintError(translate("draft",
-                                       "All Shapes must be coplanar")+"\n")
+                                       "All Shapes must be coplanar") + "\n")
                 return None
         # define sketch normal
         normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
@@ -135,7 +129,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
             poly = Part.makePolygon(points)
             if not DraftGeomUtils.is_planar(poly, tol):
                 App.Console.PrintError(translate("draft",
-                                       "All Shapes must be coplanar")+"\n")
+                                       "All Shapes must be coplanar") + "\n")
                 return None
             normal = DraftGeomUtils.get_normal(poly, tol)
             if not normal:
@@ -162,15 +156,15 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
             if radiusPrecision<0:
                 return
             if radiusPrecision==0:
-                constraints.append(Constraint('Radius',
+                constraints.append(Constraint("Radius",
                         nobj.GeometryCount-1, edge.Curve.Radius))
                 return
             r = round(edge.Curve.Radius,radiusPrecision)
-            constraints.append(Constraint('Equal',
-                    radiuses[r],nobj.GeometryCount-1))
+            constraints.append(Constraint("Equal",
+                    radiuses[r], nobj.GeometryCount-1))
         except KeyError:
             radiuses[r] = nobj.GeometryCount-1
-            constraints.append(Constraint('Radius',nobj.GeometryCount-1, r))
+            constraints.append(Constraint("Radius", nobj.GeometryCount-1, r))
         except AttributeError:
             pass
 
@@ -195,139 +189,35 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         ok = False
         tp = utils.get_type(obj)
 
-        if tp in ["Circle","Ellipse"]:
-            if obj.Shape.Edges:
-                edge = obj.Shape.Edges[0]
-                if len(edge.Vertexes) == 1:
-                    newedge = DraftGeomUtils.orientEdge(edge, normal)
-                    nobj.addGeometry(newedge)
-                else:
-                    # make new ArcOfCircle
-                    circle = DraftGeomUtils.orientEdge(edge, normal)
-                    first  = math.radians(obj.FirstAngle)
-                    last   = math.radians(obj.LastAngle)
-                    arc    = Part.ArcOfCircle(circle, first, last)
-                    nobj.addGeometry(arc)
-                addRadiusConstraint(edge)
-                ok = True
-
-        elif tp in ["Wire", "Rectangle", "Polygon"] and obj.FilletRadius.Value == 0:
-            if obj.Shape.Edges:
-                for edge in obj.Shape.Edges:
-                    nobj.addGeometry(DraftGeomUtils.orientEdge(edge, normal))
-                if autoconstraints:
-                    closed = tp in ["Rectangle", "Polygon"] or obj.Closed
-                    last = nobj.GeometryCount
-                    segs = list(range(last - len(obj.Shape.Edges), last))
-                    nexts = segs[1:] + ([segs[0]] if closed else [None])
-                    for seg, next in zip(segs, nexts):
-                        if next is not None:
-                            constraints.append(Constraint("Coincident",seg, end_point, next, start_point))
-                        if DraftGeomUtils.isAligned(nobj.Geometry[seg], "x"):
-                            constraints.append(Constraint("Vertical", seg))
-                        elif DraftGeomUtils.isAligned(nobj.Geometry[seg], "y"):
-                            constraints.append(Constraint("Horizontal", seg))
-                ok = True
-
-        elif tp == "BSpline":
-            if obj.Shape.Edges:
-                edge = DraftGeomUtils.orientEdge(obj.Shape.Edges[0], normal)
-                nobj.addGeometry(edge)
-                nobj.exposeInternalGeometry(nobj.GeometryCount-1)
-                ok = True
-
-        elif tp == "BezCurve":
-            if obj.Shape.Edges:
-                for piece in obj.Shape.Edges:
-                    bez = piece.Curve
-                    bsp = bez.toBSpline(bez.FirstParameter,bez.LastParameter).toShape()
-                    edge = DraftGeomUtils.orientEdge(bsp.Edges[0], normal)
-                    nobj.addGeometry(edge)
-                    nobj.exposeInternalGeometry(nobj.GeometryCount-1)
-                ok = True
-                # TODO: set coincident constraint for vertexes in multi-edge bezier curve
-
-        elif  tp == "Point":
-            shape = obj.Shape.copy()
+        if tp == "Point":
+            # obj.Shape.copy() does not work properly for a Draft_Point.
+            # The coords of the point are multiplied by 2.
+            # We therefore create a Part Vertex instead.
+            shape = Part.Vertex(obj.Shape.Point)
             if angle:
-                shape.rotate(App.Base.Vector(0,0,0), axis, -1*angle)
+                shape.rotate(App.Vector(0, 0, 0), axis, -angle)
             point = Part.Point(shape.Point)
             nobj.addGeometry(point)
             ok = True
 
-        elif tp == 'Shape' or hasattr(obj,'Shape'):
-            shape = obj if tp == 'Shape' else obj.Shape
-            if not shape.Wires:
-                for e in shape.Edges:
-                    # unconnected edges
-                    newedge = convertBezier(e)
-                    nobj.addGeometry(DraftGeomUtils.orientEdge(
-                                        newedge, normal, make_arc=True))
-                    addRadiusConstraint(newedge)
-
-            if autoconstraints:
-                for wire in shape.Wires:
-                    last_count = nobj.GeometryCount
-                    edges = wire.OrderedEdges
-                    for edge in edges:
-                        newedge = convertBezier(edge)
-                        nobj.addGeometry(DraftGeomUtils.orientEdge(
-                                            newedge, normal, make_arc=True))
-                        addRadiusConstraint(newedge)
-                    for i,g in enumerate(nobj.Geometry[last_count:]):
-                        if edges[i].Closed:
-                            continue
-                        seg = last_count+i
-
-                        if DraftGeomUtils.isAligned(g,"x"):
-                            constraints.append(Constraint("Vertical",seg))
-                        elif DraftGeomUtils.isAligned(g,"y"):
-                            constraints.append(Constraint("Horizontal",seg))
-
-                        if seg == nobj.GeometryCount-1:
-                            if not wire.isClosed():
-                                break
-                            g2 = nobj.Geometry[last_count]
-                            seg2 = last_count
-                        else:
-                            seg2 = seg+1
-                            g2 = nobj.Geometry[seg2]
-
-                        end1 = g.value(g.LastParameter)
-                        start2 = g2.value(g2.FirstParameter)
-                        if DraftVecUtils.equals(end1,start2) :
-                            constraints.append(Constraint(
-                                "Coincident",seg,end_point,seg2,start_point))
-                            continue
-                        end2 = g2.value(g2.LastParameter)
-                        start1 = g.value(g.FirstParameter)
-                        if DraftVecUtils.equals(end2,start1):
-                            constraints.append(Constraint(
-                                "Coincident",seg,start_point,seg2,end_point))
-                        elif DraftVecUtils.equals(start1,start2):
-                            constraints.append(Constraint(
-                                "Coincident",seg,start_point,seg2,start_point))
-                        elif DraftVecUtils.equals(end1,end2):
-                            constraints.append(Constraint(
-                                "Coincident",seg,end_point,seg2,end_point))
-            else:
-                for wire in shape.Wires:
-                    for edge in wire.OrderedEdges:
-                        newedge = convertBezier(edge)
-                        nobj.addGeometry(DraftGeomUtils.orientEdge(
-                                            newedge, normal, make_arc=True))
+        elif tp == "Shape" or hasattr(obj, "Shape"):
+            shape = obj if tp == "Shape" else obj.Shape
+            for e in shape.Edges:
+                newedge = convertBezier(e)
+                nobj.addGeometry(DraftGeomUtils.orientEdge(
+                                    newedge, normal, make_arc=True))
+                addRadiusConstraint(newedge)
             ok = True
-        gui_utils.format_object(nobj,obj)
-        if ok and delete and hasattr(obj,'Shape'):
-            doc = obj.Document
+
+        if ok and delete:
             def delObj(obj):
                 if obj.InList:
                     App.Console.PrintWarning(translate("draft",
-                        "Cannot delete object {} with dependency".format(obj.Label))+"\n")
+                        "Cannot delete object {} with dependency".format(obj.Label)) + "\n")
                 else:
-                    doc.removeObject(obj.Name)
+                    obj.Document.removeObject(obj.Name)
             try:
-                if delete == 'all':
+                if delete == "all":
                     objs = [obj]
                     while objs:
                         obj = objs[0]
@@ -337,10 +227,14 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
                     delObj(obj)
             except Exception as ex:
                 App.Console.PrintWarning(translate("draft",
-                    "Failed to delete object {}: {}".format(obj.Label,ex))+"\n")
-
+                    "Failed to delete object {}: {}".format(obj.Label, ex)) + "\n")
 
     nobj.addConstraint(constraints)
+    if autoconstraints:
+        nobj.detectMissingPointOnPointConstraints(utils.tolerance())
+        nobj.makeMissingPointOnPointCoincident(True)
+        nobj.detectMissingVerticalHorizontalConstraints(utils.tolerance())
+        nobj.makeMissingVerticalHorizontal(True)
 
     return nobj
 

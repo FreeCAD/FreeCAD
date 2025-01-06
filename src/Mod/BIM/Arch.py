@@ -696,6 +696,20 @@ def makeRoof(baseobj=None,
     return obj
 
 
+def makeSchedule():
+    """makeSchedule(): Creates a schedule object in the active document"""
+
+    import ArchSchedule
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Schedule")
+    obj.Label = translate("Arch","Schedule")
+    ArchSchedule._ArchSchedule(obj)
+    if FreeCAD.GuiUp:
+        ArchSchedule._ViewProviderArchSchedule(obj.ViewObject)
+    if hasattr(obj,"CreateSpreadsheet") and obj.CreateSpreadsheet:
+        obj.Proxy.getSpreadSheet(obj, force=True)
+    return obj
+
+
 def makeSectionPlane(objectslist=None,name=None):
 
     """makeSectionPlane([objectslist],[name]) : Creates a Section plane objects including the
@@ -832,7 +846,6 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
             stair.Label = label
             ArchStairs._Stairs(stair)
             stairs.append(stair)
-            stairs[0].Label = label
             i = 1
         else:
             i = 0
@@ -841,17 +854,12 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
             stair.Label = label
             ArchStairs._Stairs(stair)
             stairs.append(stair)
-            stairs[i].Label = label
             stairs[i].Base = baseobjI
-
-            if len(baseobjI.Shape.Edges) > 1:
-                stepsI = 1                              #'landing' if 'multi-edges' currently
-            elif steps:
+            if steps:
                 stepsI = steps
             else:
                 stepsI = 20
             setProperty(stairs[i],None,width,height,stepsI)
-
             if i > 1:
                 additions.append(stairs[i])
                 stairs[i].LastSegment = stairs[i-1]

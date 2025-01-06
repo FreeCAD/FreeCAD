@@ -21,9 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Run this file to create a standard test document for Draft objects.
 
-Use it as input to the program executable.
+Use it as input for the program executable.
 
 ::
 
@@ -34,20 +35,22 @@ Or load it as a module and use the defined function.
 >>> import drafttests.draft_test_objects as dt
 >>> dt.create_test_file()
 """
+
 ## @package draft_test_objects
 # \ingroup drafttests
 # \brief Run this file to create a standard test document for Draft objects.
 
 ## \addtogroup drafttests
 # @{
+
 import datetime
 
 import FreeCAD as App
 import Part
 import Draft
-
-from draftutils.messages import _msg, _wrn
 from FreeCAD import Vector
+from draftutils.messages import _msg, _wrn
+
 
 if App.GuiUp:
     import FreeCADGui as Gui

@@ -1,5 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
-# *   Copyright (c) 2023 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+# *                                                                         *
 # *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
@@ -20,48 +21,38 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Unit tests for the Draft Workbench, array tests."""
+"""Unit tests for the Draft Workbench, base classes."""
 
-## @package test_array
-# \ingroup drafttests
-# \brief Unit tests for the Draft Workbench, array tests.
+import unittest
 
-## \addtogroup drafttests
-# @{
-
-import Draft
-from FreeCAD import Vector
-from drafttests import test_base
+import FreeCAD as App
+from drafttests import auxiliary as aux
+from draftutils.messages import _msg
+from draftutils.todo import ToDo
 
 
-class DraftArray(test_base.DraftTestCaseDoc):
-    """Test Draft array functions."""
+class DraftTestCaseDoc(unittest.TestCase):
+    """Base class for Draft tests that require a document."""
 
-    def test_link_array(self):
-        """Create a link array."""
-        box = self.doc.addObject("Part::Box", "Box")
-        box.Label = "Box"
-        self.doc.recompute()
+    def setUp(self):
+        """Set up a new document for each test."""
+        aux.draw_header()
+        # name = self.__class__.__name__
+        name = "___".join(self.id().split(".")[2:])  # unique name for each test
+        if not name in App.listDocuments():
+            App.newDocument(name)
+        App.setActiveDocument(name)
+        self.doc = App.ActiveDocument
+        _msg("  Temporary document '{}'".format(self.doc.Name))
 
-        array = Draft.make_ortho_array(box, v_x=Vector(100.0, 0.0, 0.0),
-                                            v_y=Vector(0.0, 100.0, 0.0),
-                                            v_z=Vector(0.0, 0.0, 100.0),
-                                            n_x=12, n_y=1, n_z=1, use_link=True)
+    def tearDown(self):
+        """Close the document after each test."""
+        App.closeDocument(self.doc.Name)
 
-        Draft.autogroup(array)
-        array.ExpandArray = True
-        array.Fuse = False
-        self.doc.recompute(None, True, True)
 
-        array.NumberX = 6
-        self.doc.recompute(None, True, True)
-        self.assertEqual(array.Count, array.NumberX)
+class DraftTestCaseNoDoc(unittest.TestCase):
+    """Base class for Draft tests that do not require a document."""
 
-        array.NumberX = 24
-        self.doc.recompute(None, True, True)
-        self.assertEqual(array.Count, array.NumberX)
-
-        self.doc.recompute(None, True, True)
-        self.assertEqual(array.Count, array.NumberX)
-
-## @}
+    def setUp(self):
+        """Draw the header."""
+        aux.draw_header()

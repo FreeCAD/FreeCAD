@@ -112,6 +112,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAutoRemoveRedundants->onSave();
     ui->checkBoxUnifiedCoincident->onSave();
     ui->checkBoxHorVerAuto->onSave();
+    ui->checkBoxAddExtGeo->onSave();
 
     enum
     {
@@ -186,6 +187,7 @@ void SketcherSettings::loadSettings()
     setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
+    ui->checkBoxAddExtGeo->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();

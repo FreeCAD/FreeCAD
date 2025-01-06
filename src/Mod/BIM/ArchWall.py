@@ -318,8 +318,11 @@ class _Wall(ArchComponent.Component):
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
-            return
+
+        # Wall can do without Base, validity to be tested in getExtrusionData()
+        # Remarked out ensureBase() below
+        #if not self.ensureBase(obj):
+        #    return
 
         import Part
         import DraftGeomUtils
@@ -832,7 +835,7 @@ class _Wall(ArchComponent.Component):
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):
-            if obj.Base:
+            if obj.Base and hasattr(obj.Base,'Shape'):
                 normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
                 if normal is None:
                     normal = Vector(0,0,1)
@@ -863,7 +866,8 @@ class _Wall(ArchComponent.Component):
                         elif varwidth:
                             layers.append(varwidth)
 
-        if obj.Base:
+        # Check if there is obj.Base and its validity to proceed
+        if self.ensureBase(obj):
             if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
@@ -1210,6 +1214,8 @@ class _Wall(ArchComponent.Component):
 
                         if baseface:
                             base,placement = self.rebase(baseface)
+
+        # Build Wall if there is no obj.Base or even obj.Base is not valid
         else:
             if layers:
                 totalwidth = sum([abs(l) for l in layers])

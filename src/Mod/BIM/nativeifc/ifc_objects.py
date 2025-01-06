@@ -3,20 +3,20 @@
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
@@ -84,6 +84,8 @@ class ifc_object:
                 obj.ViewObject.signalChangeIcon()
         elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Geometry":
             self.edit_geometry(obj, prop)
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Quantities":
+            self.edit_quantity(obj, prop)
         elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) not in NON_PSETS:
             # Treat all property groups outside the default ones as Psets
             # print("DEBUG: editinog pset prop",prop)
@@ -352,6 +354,11 @@ class ifc_object:
             # TODO remove type?
             # Not doing anything right now because an unset Type property could screw the ifc file
             pass
+
+
+    def edit_quantity(self, obj, prop):
+        """Edits the given quantity"""
+        pass  # TODO implement
 
     def get_section_data(self, obj):
         """Returns two things: a list of objects and a cut plane"""
