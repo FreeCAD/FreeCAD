@@ -130,6 +130,8 @@
 #include "NavigationAnimation.h"
 #include "Utilities.h"
 
+#include <Inventor/So3DAnnotation.h>
+
 
 FC_LOG_LEVEL_INIT("3DViewer", true, true)
 
@@ -2387,6 +2389,11 @@ void View3DInventorViewer::renderScene()
     try {
         // Render normal scenegraph.
         inherited::actualRedraw();
+
+        So3DAnnotation::render = true;
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glra->apply(SoDelayedAnnotationsElement::getDelayedPaths(state));
+        So3DAnnotation::render = false;
     }
     catch (const Base::MemoryException&) {
         // FIXME: If this exception appears then the background and camera position get broken somehow. (Werner 2006-02-01)
