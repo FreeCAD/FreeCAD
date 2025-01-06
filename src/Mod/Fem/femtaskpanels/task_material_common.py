@@ -135,7 +135,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.form = [self.parameterWidget, self.selectionWidget]
 
         # check references, has to be after initialisation of selectionWidget
-        self.material_tree.UUID = self.get_material_uuid(self.material)
+        self.material_tree.UUID = self.uuid
         self.set_mat_params_in_input_fields(self.material)
 
         self.selectionWidget.has_equal_references_shape_types()
@@ -169,50 +169,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         if category == "Fluid":
             material_filter.RequiredModels = [uuids.Fluid]
             self.material_tree.setFilter(material_filter)
-
-    def get_material_uuid(self, material):
-        if self.uuid:
-            try:
-                self.material_manager.getMaterial(self.uuid)
-                return self.uuid
-            except:
-                return ""
-
-        if not self.material:
-            return ""
-
-        for a_mat in self.material_manager.Materials:
-            # check if every item of the current material fits to a known material card
-            # if all items were found we know it is the right card
-            # we can hereby not simply perform
-            # set(self.materials[a_mat].items()) ^ set(material.items())
-            # because entries are often identical, just appear in the set in a different order
-            unmatched_item = False
-            a_mat_prop = self.material_manager.getMaterial(a_mat).Properties.items()
-            for item in material.items():
-                if item not in a_mat_prop:
-                    unmatched_item = True
-                    # often the difference is just a decimal e.g. "120" to "120.0"
-                    # therefore first check if the item name exists
-                    for a_mat_item in a_mat_prop:
-                        if item[0] == a_mat_item[0]:
-                            # now check if we have a number value in a unit
-                            if item[1].split() and not self.isfloat(item[1].split()[0]):
-                                break
-                            if item[1].split() and float(item[1].split()[0]) == float(
-                                a_mat_item[1].split()[0]
-                            ):
-                                unmatched_item = False
-                            elif not item[1].split():
-                                # handle the case where item[1] is an empty string
-                                if not self.isfloat(item[1]):
-                                    break
-                                if float(item[1]) == float(a_mat_item[1]):
-                                    unmatched_item = False
-                    break
-            if not unmatched_item:
-                return a_mat
-        return ""
 
     def toggleInputFieldsReadOnly(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
