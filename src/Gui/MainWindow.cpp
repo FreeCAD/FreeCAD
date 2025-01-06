@@ -333,7 +333,7 @@ struct MainWindowP
 /* TRANSLATOR Gui::MainWindow */
 
 MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
-    : QMainWindow(parent, f /*WDestructiveClose*/)
+    : FramelessWindow(parent, f /*WDestructiveClose*/)
 {
     d = new MainWindowP;
     d->splashscreen = nullptr;
@@ -1561,7 +1561,8 @@ void MainWindow::populateToolBarMenu(QMenu* menu)
     for (const auto& toolbar : toolbars) {
         if (auto parent = toolbar->parentWidget()) {
             if (parent == this || parent == statusBar() || parent->parentWidget() == statusBar()
-                || parent->parentWidget() == menuBar()) {
+                || (isFrameless() && parent->parentWidget() == menuWidget())
+                || (!isFrameless() && parent->parentWidget() == menuBar())) {
                 QAction* action = toolbar->toggleViewAction();
                 action->setToolTip(tr("Toggles this toolbar"));
                 action->setStatusTip(tr("Toggles this toolbar"));

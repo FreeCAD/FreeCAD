@@ -85,6 +85,9 @@ void DlgSettingsUI::saveSettings()
 
     // TaskWatcher
     ui->showTaskWatcherCheckBox->onSave();
+
+    // Others
+    ui->framelessWindowCheckBox->onSave();
 }
 
 void DlgSettingsUI::loadSettings()
@@ -114,6 +117,9 @@ void DlgSettingsUI::loadSettings()
 
     // TaskWatcher
     ui->showTaskWatcherCheckBox->onRestore();
+
+    // Others
+    ui->framelessWindowCheckBox->onRestore();
 
     loadStyleSheet();
 }

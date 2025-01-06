@@ -509,7 +509,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Suggested Actions</string>
+      <string>Others</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
@@ -525,6 +525,25 @@
         </property>
         <property name="prefPath" stdset="0">
          <cstring>General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="framelessWindowCheckBox">
+        <property name="toolTip">
+         <string>Hide native title bar and implement a custom one</string>
+        </property>
+        <property name="text">
+         <string>Custom title bar</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>FramelessWindow</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>MainWindow</cstring>
         </property>
        </widget>
       </item>
