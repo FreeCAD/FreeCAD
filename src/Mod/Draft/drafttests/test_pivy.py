@@ -22,18 +22,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, Coin (Pivy) tests."""
+
 ## @package test_pivy
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, Coin (Pivy) tests.
 
 ## \addtogroup drafttests
 # @{
-import FreeCADGui as Gui
-import drafttests.auxiliary as aux
 
-from draftutils.messages import _msg
+import FreeCADGui as Gui
+from drafttests import auxiliary as aux
 from drafttests import test_base
+from draftutils.messages import _msg
 
 
 class DraftPivy(test_base.DraftTestCaseDoc):

@@ -21,14 +21,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the DraftGeomUtils module."""
 
-import FreeCAD
+"""Unit tests for the Draft Workbench, DraftGeomUtils module tests."""
+
 import Part
 import DraftGeomUtils
-import drafttests.auxiliary as aux
-from draftutils.messages import _msg
+from FreeCAD import Vector
 from drafttests import test_base
+from draftutils.messages import _msg
+
 
 class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
     """Testing the functions in the file DraftGeomUtils.py"""
@@ -62,10 +63,10 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with straight edges and various combination of Orientation: the wires 1-4 are all equivalent
-        points = [FreeCAD.Vector(0.0, 0.0, 0.0),
-                  FreeCAD.Vector(1500.0, 2000.0, 0.0),
-                  FreeCAD.Vector(4500.0, 2000.0, 0.0),
-                  FreeCAD.Vector(4500.0, 2000.0, 2500.0)]
+        points = [Vector(0.0, 0.0, 0.0),
+                  Vector(1500.0, 2000.0, 0.0),
+                  Vector(4500.0, 2000.0, 0.0),
+                  Vector(4500.0, 2000.0, 2500.0)]
 
         edges = []
         for start, end in zip(points[:-1], points[1:]):
@@ -80,10 +81,10 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with straight edges and various combination of Orientation: the wires 1-4 are all equivalent
-        points = [FreeCAD.Vector(0.0, 0.0, 0.0),
-                  FreeCAD.Vector(1500.0, 2000.0, 0.0),
-                  FreeCAD.Vector(4500.0, 2000.0, 0.0),
-                  FreeCAD.Vector(4500.0, 2000.0, 2500.0)]
+        points = [Vector(0.0, 0.0, 0.0),
+                  Vector(1500.0, 2000.0, 0.0),
+                  Vector(4500.0, 2000.0, 0.0),
+                  Vector(4500.0, 2000.0, 2500.0)]
 
         edges = []
         for start, end in zip(points[:-1], points[1:]):
@@ -99,10 +100,10 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with straight edges and various combination of Orientation: the wires 1-4 are all equivalent
-        points = [FreeCAD.Vector(0.0, 0.0, 0.0),
-                  FreeCAD.Vector(1500.0, 2000.0, 0.0),
-                  FreeCAD.Vector(4500.0, 2000.0, 0.0),
-                  FreeCAD.Vector(4500.0, 2000.0, 2500.0)]
+        points = [Vector(0.0, 0.0, 0.0),
+                  Vector(1500.0, 2000.0, 0.0),
+                  Vector(4500.0, 2000.0, 0.0),
+                  Vector(4500.0, 2000.0, 2500.0)]
 
         edges = []
         for start, end in zip(points[:-1], points[1:]):
@@ -119,10 +120,10 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with straight edges and various combination of Orientation: the wires 1-4 are all equivalent
-        points = [FreeCAD.Vector(0.0, 0.0, 0.0),
-                  FreeCAD.Vector(1500.0, 2000.0, 0.0),
-                  FreeCAD.Vector(4500.0, 2000.0, 0.0),
-                  FreeCAD.Vector(4500.0, 2000.0, 2500.0)]
+        points = [Vector(0.0, 0.0, 0.0),
+                  Vector(1500.0, 2000.0, 0.0),
+                  Vector(4500.0, 2000.0, 0.0),
+                  Vector(4500.0, 2000.0, 2500.0)]
 
         edges = []
         for start, end in zip(points[:-1], points[1:]):
@@ -138,11 +139,11 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with arcs and various combination of Orientation: the wires 5-8 are all equivalent
-        points = [FreeCAD.Vector(0.0, 0.0, 0.0),
-                  FreeCAD.Vector(1000.0, 1000.0, 0.0),
-                  FreeCAD.Vector(2000.0, 0.0, 0.0),
-                  FreeCAD.Vector(3000.0, 0.0, 1000.0),
-                  FreeCAD.Vector(4000.0, 0.0, 0.0)]
+        points = [Vector(0.0, 0.0, 0.0),
+                  Vector(1000.0, 1000.0, 0.0),
+                  Vector(2000.0, 0.0, 0.0),
+                  Vector(3000.0, 0.0, 1000.0),
+                  Vector(4000.0, 0.0, 0.0)]
 
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):
@@ -157,11 +158,11 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with arcs and various combination of Orientation: the wires 5-8 are all equivalent
-        points = [FreeCAD.Vector(0.0, 0.0, 0.0),
-                  FreeCAD.Vector(1000.0, 1000.0, 0.0),
-                  FreeCAD.Vector(2000.0, 0.0, 0.0),
-                  FreeCAD.Vector(3000.0, 0.0, 1000.0),
-                  FreeCAD.Vector(4000.0, 0.0, 0.0)]
+        points = [Vector(0.0, 0.0, 0.0),
+                  Vector(1000.0, 1000.0, 0.0),
+                  Vector(2000.0, 0.0, 0.0),
+                  Vector(3000.0, 0.0, 1000.0),
+                  Vector(4000.0, 0.0, 0.0)]
 
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):
@@ -177,11 +178,11 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with arcs and various combination of Orientation: the wires 5-8 are all equivalent
-        points = [FreeCAD.Vector(0.0, 0.0, 0.0),
-                  FreeCAD.Vector(1000.0, 1000.0, 0.0),
-                  FreeCAD.Vector(2000.0, 0.0, 0.0),
-                  FreeCAD.Vector(3000.0, 0.0, 1000.0),
-                  FreeCAD.Vector(4000.0, 0.0, 0.0)]
+        points = [Vector(0.0, 0.0, 0.0),
+                  Vector(1000.0, 1000.0, 0.0),
+                  Vector(2000.0, 0.0, 0.0),
+                  Vector(3000.0, 0.0, 1000.0),
+                  Vector(4000.0, 0.0, 0.0)]
 
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):
@@ -198,11 +199,11 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with arcs and various combination of Orientation: the wires 5-8 are all equivalent
-        points = [FreeCAD.Vector(0.0, 0.0, 0.0),
-                  FreeCAD.Vector(1000.0, 1000.0, 0.0),
-                  FreeCAD.Vector(2000.0, 0.0, 0.0),
-                  FreeCAD.Vector(3000.0, 0.0, 1000.0),
-                  FreeCAD.Vector(4000.0, 0.0, 0.0)]
+        points = [Vector(0.0, 0.0, 0.0),
+                  Vector(1000.0, 1000.0, 0.0),
+                  Vector(2000.0, 0.0, 0.0),
+                  Vector(3000.0, 0.0, 1000.0),
+                  Vector(4000.0, 0.0, 0.0)]
 
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):

@@ -23,21 +23,22 @@
 # *                                                                         *
 # ***************************************************************************
 """Unit tests for the Draft Workbench, SVG import and export tests."""
+
 ## @package test_svg
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, SVG import and export tests.
 
 ## \addtogroup drafttests
 # @{
+
 import os
 import unittest
 
 import FreeCAD as App
 import Draft
-import drafttests.auxiliary as aux
-
-from draftutils.messages import _msg
+from drafttests import auxiliary as aux
 from drafttests import test_base
+from draftutils.messages import _msg
 
 try:
     import Arch
@@ -56,7 +57,7 @@ class DraftSVG(test_base.DraftTestCaseDoc):
         _msg("  Test '{}'".format(operation))
         _msg("  This test requires an SVG file to read.")
 
-        file = 'Mod/Draft/drafttest/test.svg'
+        file = "Mod/Draft/drafttest/test.svg"
         in_file = os.path.join(App.getResourceDir(), file)
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
@@ -70,7 +71,7 @@ class DraftSVG(test_base.DraftTestCaseDoc):
         operation = "importSVG.export"
         _msg("  Test '{}'".format(operation))
 
-        file = 'Mod/Draft/drafttest/out_test.svg'
+        file = "Mod/Draft/drafttest/out_test.svg"
         out_file = os.path.join(App.getResourceDir(), file)
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
@@ -85,15 +86,15 @@ class DraftSVG(test_base.DraftTestCaseDoc):
         import Part
         import Draft
 
-        sb = Part.makeBox(1,1,1)
-        b = self.doc.addObject('Part::Feature','Box')
+        sb = Part.makeBox(1, 1, 1)
+        b = self.doc.addObject("Part::Feature", "Box")
         b.Shape = sb
 
         s = Arch.makeSpace(b)
         self.doc.recompute()
 
         try:
-            Draft.get_svg(s, direction=App.Vector(0,0,0))
+            Draft.get_svg(s, direction=App.Vector(0, 0, 0))
         except AttributeError as err:
             self.fail("Cryptic exception thrown: {}".format(err))
         except ValueError as err:

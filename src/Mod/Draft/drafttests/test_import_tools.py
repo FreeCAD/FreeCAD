@@ -23,13 +23,15 @@
 # *                                                                         *
 # ***************************************************************************
 """Unit tests for the Draft Workbench, tools import tests."""
+
 ## @package test_import_tools
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, tools import tests.
 
 ## \addtogroup drafttests
 # @{
-import drafttests.auxiliary as aux
+
+from drafttests import auxiliary as aux
 from drafttests import test_base
 
 

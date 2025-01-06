@@ -22,21 +22,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, Airfoil DAT import and export tests."""
+
 ## @package test_airfoildat
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, Airfoil DAT tests.
 
 ## \addtogroup drafttests
 # @{
+
 import os
 
 import FreeCAD as App
 import Draft
-import drafttests.auxiliary as aux
-
-from draftutils.messages import _msg
+from drafttests import auxiliary as aux
 from drafttests import test_base
+from draftutils.messages import _msg
 
 
 class DraftAirfoilDAT(test_base.DraftTestCaseDoc):
@@ -48,7 +50,7 @@ class DraftAirfoilDAT(test_base.DraftTestCaseDoc):
         _msg("  Test '{}'".format(operation))
         _msg("  This test requires a DAT file with airfoil data to read.")
 
-        file = 'Mod/Draft/drafttest/test.dat'
+        file = "Mod/Draft/drafttest/test.dat"
         in_file = os.path.join(App.getResourceDir(), file)
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
@@ -62,7 +64,7 @@ class DraftAirfoilDAT(test_base.DraftTestCaseDoc):
         operation = "importAirfoilDAT.export"
         _msg("  Test '{}'".format(operation))
 
-        file = 'Mod/Draft/drafttest/out_test.dat'
+        file = "Mod/Draft/drafttest/out_test.dat"
         out_file = os.path.join(App.getResourceDir(), file)
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))

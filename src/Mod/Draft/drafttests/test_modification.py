@@ -22,21 +22,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, object modification tests."""
+
 ## @package test_modification
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, object modification tests.
 
 ## \addtogroup drafttests
 # @{
-import FreeCAD as App
-import Draft
-import drafttests.auxiliary as aux
-import Part
 
+import FreeCAD as App
+import Part
+import Draft
 from FreeCAD import Vector
-from draftutils.messages import _msg, _wrn
+from drafttests import auxiliary as aux
 from drafttests import test_base
+from draftutils.messages import _msg
 
 
 class DraftModification(test_base.DraftTestCaseDoc):
