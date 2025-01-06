@@ -2627,8 +2627,12 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     this->Constraints.setValues(std::move(newConstraints));
 }
 
-int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId,
-                                      PointPos toPosId, bool doNotTransformTangencies)
+// clang-format on
+int SketchObject::transferConstraints(int fromGeoId,
+                                      PointPos fromPosId,
+                                      int toGeoId,
+                                      PointPos toPosId,
+                                      bool doNotTransformTangencies)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -2637,56 +2641,44 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
     std::vector<Constraint*> newVals(vals);
     bool changed = false;
     for (int i = 0; i < int(newVals.size()); i++) {
-        if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId
-            && !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId)
-            && !(toGeoId < 0 && vals[i]->Second < 0)) {
-
-            std::unique_ptr<Constraint> constNew(newVals[i]->clone());
-            constNew->First = toGeoId;
-            constNew->FirstPos = toPosId;
-
-            // If not explicitly confirmed, nothing guarantees that a tangent can be freely
-            // transferred to another coincident point, as the transfer destination edge most likely
-            // won't be intended to be tangent. However, if it is an end to end point tangency, the
-            // user expects it to be substituted by a coincidence constraint.
-            if (vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
-                if (!doNotTransformTangencies) {
-                    constNew->Type = Sketcher::Coincident;
-                }
-            }
-            // With respect to angle constraints, if it is a DeepSOIC style angle constraint
-            // (segment+segment+point), then no problem arises as the segments are PosId=none. In
-            // this case there is no call to this function.
-            //
-            // However, other angle constraints are problematic because they are created on
-            // segments, but internally operate on vertices, PosId=start Such constraint may not be
-            // successfully transferred on deletion of the segments.
-            else if (vals[i]->Type == Sketcher::Angle) {
-                continue;
-            }
-
-            Constraint* constPtr = constNew.release();
-            newVals[i] = constPtr;
-            changed = true;
+        if (vals[i]->Type == Sketcher::InternalAlignment) {
+            // Transferring internal alignment constraint can cause malformed constraints.
+            // For example a B-spline pole being a point instead of a circle.
+            continue;
         }
-        else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId
-                 && !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId)
-                 && !(toGeoId < 0 && vals[i]->First < 0)) {
-
+        else if (vals[i]->involvesGeoIdAndPosId(fromGeoId, fromPosId)
+                 && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)) {
             std::unique_ptr<Constraint> constNew(newVals[i]->clone());
-            constNew->Second = toGeoId;
-            constNew->SecondPos = toPosId;
-            // If not explicitly confirmed, nothing guarantees that a tangent can be freely
-            // transferred to another coincident point, as the transfer destination edge most likely
-            // won't be intended to be tangent. However, if it is an end to end point tangency, the
-            // user expects it to be substituted by a coincidence constraint.
-            if (vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
-                if (!doNotTransformTangencies) {
-                    constNew->Type = Sketcher::Coincident;
-                }
-            }
-            else if (vals[i]->Type == Sketcher::Angle) {
+            constNew->substituteIndexAndPos(fromGeoId, fromPosId, toGeoId, toPosId);
+            if (vals[i]->First < 0 && vals[i]->Second < 0) {
+                // TODO: Can `vals[i]->Third` be involved as well?
+                // If it is, we need to be sure at most ONE of these is external
                 continue;
+            }
+
+            switch (vals[i]->Type) {
+                case Sketcher::Tangent:
+                case Sketcher::Perpendicular: {
+                    // If not explicitly confirmed, nothing guarantees that a tangent can be freely
+                    // transferred to another coincident point, as the transfer destination edge
+                    // most likely won't be intended to be tangent. However, if it is an end to end
+                    // point tangency, the user expects it to be substituted by a coincidence
+                    // constraint.
+                    if (!doNotTransformTangencies) {
+                        constNew->Type = Sketcher::Coincident;
+                    }
+                }
+                case Sketcher::Angle:
+                    // With respect to angle constraints, if it is a DeepSOIC style angle constraint
+                    // (segment+segment+point), then no problem arises as the segments are
+                    // PosId=none. In this case there is no call to this function.
+                    //
+                    // However, other angle constraints are problematic because they are created on
+                    // segments, but internally operate on vertices, PosId=start Such constraint may
+                    // not be successfully transferred on deletion of the segments.
+                    continue;
+                default:
+                    break;
             }
 
             Constraint* constPtr = constNew.release();
@@ -2701,6 +2693,7 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
     }
     return 0;
 }
+// clang-format off
 
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
