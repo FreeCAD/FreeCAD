@@ -446,12 +446,10 @@ BaseExport extern PyObject* PyExc_FC_AbortIOException;
 #define PY_TRY	try
 
 #define __PY_CATCH(R)                                               \
-    catch(Base::Exception &e)                                       \
+    catch(const Base::Exception &e)                                 \
     {                                                               \
-        auto pye = e.getPyExceptionType();                          \
-        if(!pye)                                                    \
-            pye = Base::PyExc_FC_GeneralError;                      \
-        _Py_ErrorObj(R,pye,e.getPyObject());                        \
+        e.setPyException();                                         \
+        R;                                                          \
     }                                                               \
     catch(const std::exception &e)                                  \
     {                                                               \
