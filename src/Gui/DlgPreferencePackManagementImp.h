@@ -75,7 +75,7 @@ private:
     std::unique_ptr<Ui_DlgPreferencePackManagement> ui;
 
     void addTreeNode(const std::string& name, const std::vector<std::string>& contents, TreeWidgetType twt);
-    void updateTree(void);
+    void updateTree();
 };
 
 } // namespace Dialog

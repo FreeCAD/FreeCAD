@@ -50,7 +50,7 @@ DlgPreferencePackManagementImp::DlgPreferencePackManagementImp(QWidget* parent)
     updateTree();
 }
 
-void DlgPreferencePackManagementImp::updateTree(void)
+void DlgPreferencePackManagementImp::updateTree()
 {
     // Separate out user-saved packs from installed packs: we can remove individual user-saved packs,
     // but can only disable individual installed packs (though we can completely uninstall the pack's
