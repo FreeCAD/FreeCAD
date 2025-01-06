@@ -663,7 +663,7 @@ int ToolBarManager::toolBarIconSize(QWidget* widget) const
                 s = _menuBarIconSize;
             }
             else {
-                s *= 0.6;
+                s *= 0.8;
             }
         }
     }
@@ -821,6 +821,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     }
 
     setMovable(!areToolBarsLocked());
+    setTitleToolbarsMovable(!areTitleToolBarsLocked());
 }
 
 void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
@@ -942,6 +943,8 @@ void ToolBarManager::restoreState() const
     statusBarAreaWidget->restoreState(sbToolBars);
     menuBarRightAreaWidget->restoreState(mbRightToolBars);
     menuBarLeftAreaWidget->restoreState(mbLeftToolBars);
+
+    setTitleToolbarsMovable(!areTitleToolBarsLocked());
 }
 
 bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
@@ -1234,6 +1237,11 @@ bool Gui::ToolBarManager::areToolBarsLocked() const
     return hGeneral->GetBool("LockToolBars", false);
 }
 
+bool Gui::ToolBarManager::areTitleToolBarsLocked() const
+{
+    return hGeneral->GetBool("LockTitleToolBars", true);
+}
+
 void Gui::ToolBarManager::setToolBarsLocked(bool locked) const
 {
     hGeneral->SetBool("LockToolBars", locked);
@@ -1241,11 +1249,38 @@ void Gui::ToolBarManager::setToolBarsLocked(bool locked) const
     setMovable(!locked);
 }
 
+void Gui::ToolBarManager::setTitleToolBarsLocked(bool locked) const
+{
+    hGeneral->SetBool("LockTitleToolBars", locked);
+
+    setTitleToolbarsMovable(!locked);
+}
+
 void Gui::ToolBarManager::setMovable(bool movable) const
 {
     for (auto& tb : toolBars()) {
+        auto parent = tb->parentWidget();
+        if (parent == statusBarAreaWidget
+            || parent == menuBarLeftAreaWidget
+            || parent == menuBarRightAreaWidget) {
+            continue;
+        }
         tb->setMovable(movable);
         tb->updateCustomGripVisibility();
+    }
+}
+
+void Gui::ToolBarManager::setTitleToolbarsMovable(bool movable) const
+{
+    for (auto& tb : toolBars()) {
+        auto parent = tb->parentWidget();
+
+        if (parent == statusBarAreaWidget
+            || parent == menuBarLeftAreaWidget
+            || parent == menuBarRightAreaWidget) {
+            tb->setMovable(movable);
+            tb->updateCustomGripVisibility();
+        }
     }
 }
 
