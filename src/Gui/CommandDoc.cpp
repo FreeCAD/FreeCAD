@@ -944,7 +944,7 @@ bool StdCmdSaveAll::isActive()
 //===========================================================================
 // Std_SaveGroup
 //===========================================================================
-class StdCmdSaveGroup : public Gui::GroupCommand
+class StdCmdSaveGroup: public Gui::GroupCommand
 {
 public:
     StdCmdSaveGroup()
@@ -963,11 +963,14 @@ public:
         addCommand("Std_SaveAs");
         addCommand("Std_SaveCopy");
         addCommand("Std_SaveAll");
-        addCommand(); //separator
+        addCommand();  // separator
         addCommand("Std_Export");
     }
 
-    const char* className() const override { return "StdCmdSaveGroup"; }
+    const char* className() const override
+    {
+        return "StdCmdSaveGroup";
+    }
 };
 
 //===========================================================================
