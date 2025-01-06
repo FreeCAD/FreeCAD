@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FemMaterial</class>
- <widget class="QWidget" name="FemMaterial">
+ <class>FemMaterialReinforcement</class>
+ <widget class="QWidget" name="FemMaterialReinforcement">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>FEM material</string>
+   <string>FEM material reinforcement</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -30,62 +30,21 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-       <layout class="QGridLayout" name="gridLayout_2">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="MatGui::MaterialTreeWidget" name="wgt_material_tree"/>
+        </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="lbl_material_descr">
           <property name="text">
-           <string>Material</string>
+           <string></string>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="cb_materials_m">
-          <item>
-           <property name="text">
-            <string>Choose</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Properties</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="pb_edit_m">
-          <property name="text">
-           <string>Edit</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="l_name_m">
-          <property name="text">
-           <string>TextLabel</string>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QLabel" name="l_description_m">
-        <property name="text">
-         <string>Description</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -104,61 +63,20 @@
      <layout class="QVBoxLayout" name="verticalLayout_6">
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="MatGui::MaterialTreeWidget" name="wgt_reinf_tree"/>
+        </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="lbl_reinf_descr">
           <property name="text">
-           <string>Material</string>
+           <string></string>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="cb_materials_r">
-          <item>
-           <property name="text">
-            <string>Choose</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Properties</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="pb_edit_r">
-          <property name="text">
-           <string>Edit</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="l_name_r">
-          <property name="text">
-           <string>TextLabel</string>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QLabel" name="l_description_r">
-        <property name="text">
-         <string>Description</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -178,6 +96,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MatGui::MaterialTreeWidget</class>
+   <extends>QWidget</extends>
+   <header>Mod/Material/Gui/MaterialTreeWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
