@@ -750,81 +750,97 @@ void SketchObject::updateGeoHistory() {
     FC_TIME_LOG(t,"update geometry history (" << geoHistory->size() << ", " << geoMap.size()<<')');
 }
 
-void SketchObject::generateId(const Part::Geometry *geo)
+// clang-format on
+void SketchObject::generateId(const Part::Geometry* geo)
 {
-    if(!geoHistoryLevel) {
-        GeometryFacade::setId(geo, ++geoLastId);
-        geoMap[GeometryFacade::getId(geo)] = (long)Geometry.getSize();
+    auto preReturn = [this, &geo](auto& newId) {
+        GeometryFacade::setId(geo, newId);
+        geoMap[Sketcher::GeometryFacade::getId(geo)] = (long)Geometry.getSize();
+    };
+
+    auto isNotInGeoMap = [this](auto& id) {
+        if (geoMap.find(id) == geoMap.end()) {
+            return true;
+        }
+        FC_TRACE("ignore " << id);
+        return false;
+    };
+
+    if (geoHistoryLevel == 0) {
+        preReturn(++geoLastId);
         return;
     }
 
-    if(!geoHistory)
+    if (!geoHistory) {
         updateGeoHistory();
+    }
 
     // Search geo history to see if the start point and end point belongs to
     // some deleted geometries. Prefer matching both start and end point. If
     // can't then try start and then end. Generate new id if none is found.
-    auto pstart = getPoint(geo,PointPos::start);
-    auto it = geoHistory->find(pstart,false);
-    auto pend = getPoint(geo,PointPos::end);
+    auto pstart = getPoint(geo, PointPos::start);
+    auto it = geoHistory->find(pstart, false);
+    auto pend = getPoint(geo, PointPos::end);
     auto it2 = it;
-    if(pstart!=pend) {
-        it2 = geoHistory->find(pend,false);
-        if(it2 == geoHistory->end())
+    if (pstart != pend) {
+        it2 = geoHistory->find(pend, false);
+        if (it2 == geoHistory->end()) {
             it2 = it;
+        }
     }
-    long newId = -1;
     std::vector<long> found;
 
-    if(geoHistoryLevel<=1 && (it==geoHistory->end() || it2==it)) {
-        // level<=1 means we only reuse id if both start and end matches
-        newId = ++geoLastId;
-        goto END;
+    if (geoHistoryLevel <= 1 && (it == geoHistory->end() || it2 == it)) {
+        // level <= 1 means we only reuse id if both start and end matches
+        preReturn(++geoLastId);
+        return;
     }
 
-    if(it!=geoHistory->end()) {
-        for(long id  : *it) {
-            if(geoMap.find(id)==geoMap.end()) {
-                if(it2 == it) {
-                    newId = id;
-                    goto END;
-                }
-                found.push_back(id);
-            }else
-                FC_TRACE("ignore " << id);
+    if (it != geoHistory->end()) {
+        // `find_if` avoids checking twice
+        auto iterOfId = std::find_if(it->begin(), it->end(), isNotInGeoMap);
+        if (iterOfId != it->end() && it2 == it) {
+            preReturn(*iterOfId);
+            return;
+        }
+        std::copy_if(iterOfId, it->end(), std::back_inserter(found), isNotInGeoMap);
+    }
+    if (found.empty()) {
+        // no candidate exists
+        if (it2 == it) {
+            preReturn(++geoLastId);
+            return;
+        }
+        auto iterOfId = std::find_if(it->begin(), it->end(), isNotInGeoMap);
+        if (iterOfId != it->end()) {
+            preReturn(*iterOfId);
+            return;
+        }
+        preReturn(++geoLastId);
+        return;
+    }
+
+    auto isInIt2 = [this, &it2](auto& id) {
+        if (it2->find(id) != it2->end()) {
+            return true;
+        }
+        FC_TRACE("ignore " << id);
+        return false;
+    };
+
+    // already some candidate exists, search for matching of both
+    // points
+    if (it2 != it) {
+        auto iterOfId = std::find_if(found.begin(), found.end(), isInIt2);
+        if (iterOfId != found.end()) {
+            preReturn(*iterOfId);
+            return;
         }
     }
-    if(it2!=it) {
-        if(found.empty()) {
-            // no candidate exists
-            for(long id : *it2) {
-                if(geoMap.find(id)==geoMap.end()) {
-                    newId = id;
-                    goto END;
-                }
-                FC_TRACE("ignore " << id);
-            }
-        }else{
-            // already some candidate exists, search for matching of both
-            // points
-            for(long id : found) {
-                if(it2->find(id)!=it2->end()) {
-                    newId = id;
-                    goto END;
-                }
-                FC_TRACE("ignore " << id);
-            }
-        }
-    }
-    if(found.size()) {
-        FC_TRACE("found " << found.front());
-        newId = found.front();
-    }else
-        newId = ++geoLastId;
-END:
-    GeometryFacade::setId(geo, newId);
-    geoMap[newId] = (long)Geometry.getSize();
+    FC_TRACE("found " << found.front());
+    preReturn(found.front());
 }
+// clang-format off
 
 int SketchObject::setDatum(int ConstrId, double Datum)
 {
