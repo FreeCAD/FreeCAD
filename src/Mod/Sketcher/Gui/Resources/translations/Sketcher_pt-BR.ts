@@ -514,7 +514,7 @@ e uma aresta usada como interface.</translation>
       <location filename="../../CommandConstraints.cpp" line="9358"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation>Criar uma restrição de simetria entre dois pontos 
+      <translation>Criar uma restrição de simetria entre dois pontos
 em relação a uma linha ou um terceiro ponto</translation>
     </message>
   </context>
@@ -6588,7 +6588,7 @@ Clicar com o botão esquerdo em um espaço vazio validará a restrição atual. 
       <location filename="../../DrawSketchHandlerRotate.h" line="504"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
-      <translation>Se esta opção estiver selecionada, as restrições dimensionais são excluídas da operação. 
+      <translation>Se esta opção estiver selecionada, as restrições dimensionais são excluídas da operação.
 Em vez disso, restrições de igualdade são aplicadas entre os objetos originais e suas cópias.</translation>
     </message>
   </context>
@@ -7371,7 +7371,7 @@ Em vez disso, restrições de igualdade são aplicadas entre os objetos originai
       <location filename="../../DrawSketchHandlerTranslate.h" line="491"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
-      <translation>Se esta opção estiver selecionada, as restrições dimensionais são excluídas da operação. 
+      <translation>Se esta opção estiver selecionada, as restrições dimensionais são excluídas da operação.
 Em vez disso, restrições de igualdade são aplicadas entre os objetos originais e suas cópias.</translation>
     </message>
   </context>

@@ -281,7 +281,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../first_run.ui" line="62"/>
       <source>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</source>
-      <translation>Menedżer dodatków zapewnia dostęp do obszernej biblioteki przydatnych rozszerzeń dla FreeCAD, od osób trzecich. 
+      <translation>Menedżer dodatków zapewnia dostęp do obszernej biblioteki przydatnych rozszerzeń dla FreeCAD, od osób trzecich.
 Nie można zagwarantować ich bezpieczeństwa ani funkcjonalności.</translation>
     </message>
     <message>
@@ -1703,9 +1703,9 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
-      <translation>Niepowodzenie nie udało się uruchomić polecenia, którego może brakować 
-w Twojej instalacji środowiska Python. 
-Upewnij się, że w systemie jest zainstalowane to polecenie 
+      <translation>Niepowodzenie nie udało się uruchomić polecenia, którego może brakować
+w Twojej instalacji środowiska Python.
+Upewnij się, że w systemie jest zainstalowane to polecenie
 i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</translation>
     </message>
     <message>

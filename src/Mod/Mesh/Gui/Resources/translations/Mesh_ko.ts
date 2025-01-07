@@ -1456,7 +1456,7 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation>만약 이 옵션이 설정되면 퐁 셰이딩이 사용되고, 아닌 경우에는 플랫 셰이딩이 사용됩니다. 셰이딩은 표면의 외관을 정의합니다. 
+      <translation>만약 이 옵션이 설정되면 퐁 셰이딩이 사용되고, 아닌 경우에는 플랫 셰이딩이 사용됩니다. 셰이딩은 표면의 외관을 정의합니다.
 
 플랫 셰이딩을 사용할경우 표면의 법선이 정점마다 정의되지 않기 때문에 곡면을 표현하는데에 외관이 비현실적으로 표현 될 수 있습니다. 반면, 퐁 셰이딩을 사용할 경우 곡면의 평탄화된 외관을 표현합니다.</translation>
     </message>
@@ -1488,7 +1488,7 @@ to a smoother appearance.
  If face angle &lt; crease angle, smooth shading is used</source>
       <translation>크리즈 각도는 두 면사이의 임계각도입니다.
 
-만약 면의 각도 ≥ 크리즈 각도일 경우 패싯 쉐이딩이 사용되고 
+만약 면의 각도 ≥ 크리즈 각도일 경우 패싯 쉐이딩이 사용되고
 면의 각도 &lt; 크리즈 각도일 경우,  스무스 쉐이딩이 사용됩니다</translation>
     </message>
   </context>
