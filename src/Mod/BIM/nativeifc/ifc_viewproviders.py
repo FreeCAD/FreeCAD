@@ -380,6 +380,7 @@ class ifc_vp_object:
         from nativeifc import ifc_materials  # lazy import
         from nativeifc import ifc_layers  # lazy import
         from nativeifc import ifc_types  # lazy import
+        from nativeifc import ifc_classification  # lazy import
 
         # generic data loading
         ifc_geometry.add_geom_properties(vobj.Object)
@@ -387,6 +388,7 @@ class ifc_vp_object:
         ifc_materials.show_material(vobj.Object)
         ifc_layers.add_layers(vobj.Object)
         ifc_types.show_type(vobj.Object)
+        ifc_classification.show_classification(vobj.Object)
 
         # expand children
         if self.hasChildren(vobj.Object):

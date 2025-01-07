@@ -41,7 +41,7 @@ public:
     /// constructor
     ViewProviderDimension();
     /// destructor
-    ~ViewProviderDimension() override;
+    ~ViewProviderDimension() override = default;
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
@@ -89,6 +89,9 @@ public:
     int prefStandardAndStyle() const;
     bool canDelete(App::DocumentObject* obj) const override;
     void setPixmapForType();
+
+    std::vector<App::DocumentObject*> claimChildren() const override;
+
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;

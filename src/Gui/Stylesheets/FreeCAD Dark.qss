@@ -2366,18 +2366,8 @@ QColumnView::item:!selected:hover {
   background-color: @ThemeAccentColor1;
 }
 
-QTableCornerButton::section {
-  background-color: #444444;
-  border: 1px transparent #020202;
-  border-radius: 0px;
-}
-
 QTableView::item {
     color: white;
-}
-QTableView {
-  /*qproperty-AliasedCellBackgroundColor: #f700ff;*/
-  /*qproperty-aliasBgColor: #f700ff;*/
 }
 
 /* QHeaderView ------------------------------------------------------------
@@ -2385,30 +2375,36 @@ QTableView {
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
 
 --------------------------------------------------------------------------- */
+
+QTableCornerButton::section {
+  background-color: #333333;
+  border-radius: 0px; /*if you remove this line it breaks it*/
+  border-bottom: 1px solid #020202;
+  border-right: 1px solid #020202;
+  border-top: 0px solid #020202;
+  border-left: 0px solid #020202;
+}
+
 QHeaderView {
   background-color: transparent;
-  /* text-align: bottom; */
+  margin: -1px; /* fix for misalignement*/
 }
 
 QHeaderView:disabled {
-  /* background-color: #444444; */
   color: #adadad;
 }
 
 QHeaderView::section {
   background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
-  color: white;
-  border-bottom: 1px solid #020202;
-  border-right: 1px solid #020202;
-  border-top: 1px solid #020202;
-  border-left: 1px solid transparent;
+  color: #ffffff;
+  padding: 4px;
 }
 
 QHeaderView::section::horizontal {
-  /* padding-top: 1px;
-  padding-bottom: 1px;
-  padding-left: 5px;
-  padding-right: 0px; */
+  border-bottom: 2px solid #020202;
+  border-right: 0px solid transparent;
+  border-top: 2px solid #020202;
+  border-left: 1px solid #020202;
 }
 
 QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-one {
@@ -2420,11 +2416,16 @@ QHeaderView::section::horizontal:disabled {
 }
 
 QHeaderView::section::vertical {
+  border-bottom: 0px solid transparent;
+  border-right: 1px solid #020202;
   border-top: 1px solid #020202;
+  border-left: 1px solid #020202;
+  margin-left: 1px;
+  margin-right: 1px;
 }
 
 QHeaderView::section::vertical::first, QHeaderView::section::vertical::only-one {
-  border-top: 2px solid #020202;
+  /* border-top: 2px solid #020202; */
 }
 
 QHeaderView::section::vertical:disabled {
