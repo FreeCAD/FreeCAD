@@ -132,33 +132,16 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             }
 
             if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
-                Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
+                Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1) {
                 *item << "PartDesign_MultiTransform";
-
-            if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-                *item << "Std_Placement"
-                      << "Std_ToggleVisibility"
-                      << "Std_ShowSelection"
-                      << "Std_HideSelection"
-                      << "Std_ToggleSelectability"
-                      << "Std_TreeSelectAllInstances"
-                      << "Separator"
-                      << "Std_RandomColor"
-                      << "Std_ToggleTransparency"
-                      << "Std_Cut"
-                      << "Std_Copy"
-                      << "Std_Paste"
-                      << "Std_Delete"
-                      << "Separator";
             }
         }
     }
 
-    if (strcmp(recipient, "View") == 0) {
-        if (item->hasItems())
-            *item << "Separator";
-        Gui::StdWorkbench::setupContextMenu(recipient, item);
+    if (item->hasItems()) {
+        *item << "Separator";
     }
+    Gui::StdWorkbench::setupContextMenu(recipient, item);
 }
 
 void Workbench::activated()
