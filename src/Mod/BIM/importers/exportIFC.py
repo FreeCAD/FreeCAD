@@ -48,8 +48,7 @@ from importers.importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
+import FreeCADGui
 
 __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
@@ -339,6 +338,8 @@ def export(exportList, filename, colors=None, preferences=None):
     shapedefs = {} # { ShapeDefString:[shapes],... }
     spatialelements = {} # {Name:IfcEntity, ... }
     uids = [] # store used UIDs to avoid reuse (some FreeCAD objects might have same IFC UID, ex. copy/pasted objects
+    classifications = {} # {Name:IfcEntity, ... }
+    curvestyles = {}
 
     # build clones table
 
@@ -932,6 +933,33 @@ def export(exportList, filename, colors=None, preferences=None):
                     None,
                     [product],
                     pset
+                )
+
+        # Classifications
+
+        classification = getattr(obj, "StandardCode", "")
+        if classification:
+            name, code = classification.split(" ", 1)
+            if name in classifications:
+                system = classifications[name]
+            else:
+                system = ifcfile.createIfcClassification(None, None, None, name)
+                classifications[name] = system
+            for ref in getattr(system, "HasReferences", []):
+                if code.startswith(ref.Name):
+                    break
+            else:
+                ref = ifcfile.createIfcClassificationReference(None, code, None, system)
+            if getattr(ref, "ClassificationRefForObjects", None):
+                rel = ref.ClassificationRefForObjects[0]
+                rel.RelatedObjects = rel.RelatedObjects + [product]
+            else:
+                rel = ifcfile.createIfcRelAssociatesClassification(
+                    ifcopenshell.guid.new(),
+                    history,'FreeCADClassificationRel',
+                    None,
+                    [product],
+                    ref
                 )
 
         count += 1
@@ -2471,7 +2499,7 @@ def writeJson(filename,ifcfile):
 def create_annotation(anno, ifcfile, context, history, preferences):
     """Creates an annotation object"""
 
-    # uses global ifcbin, curvestyles
+    global curvestyles, ifcbin
     objectType = None
     ovc = None
     zvc = None
@@ -2479,6 +2507,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
+    description = getattr(anno, "Description", None)
     if anno.isDerivedFrom("Part::Feature"):
         if Draft.getType(anno) == "Hatch":
             objectType = "HATCH"

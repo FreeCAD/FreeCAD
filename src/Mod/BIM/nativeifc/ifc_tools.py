@@ -185,9 +185,11 @@ def create_ifcfile():
     param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
     user = param.GetString("prefAuthor", "")
     user = user.split("<")[0].strip()
+    org = param.GetString("prefCompany", "")
+    person = None
+    organisation = None
     if user:
         person = api_run("owner.add_person", ifcfile, family_name=user)
-    org = param.GetString("prefCompany", "")
     if org:
         organisation = api_run("owner.add_organisation", ifcfile, name=org)
     if user and org:
@@ -1633,11 +1635,14 @@ def remove_tree(objs):
 def recompute(children):
     """Temporary function to recompute objects. Some objects don't get their
     shape correctly at creation"""
-    import time
-    stime = time.time()
+    #import time
+    #stime = time.time()
+    doc = None
     for c in children:
-        c.touch()
-    if not FreeCAD.ActiveDocument.Recomputing:
-        FreeCAD.ActiveDocument.recompute()
-    endtime = "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
-    print("DEBUG: Extra recomputing of",len(children),"objects took",endtime)
+        if c:
+            c.touch()
+            doc = c.Document
+    if doc:
+        doc.recompute()
+    #endtime = "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
+    #print("DEBUG: Extra recomputing of",len(children),"objects took",endtime)

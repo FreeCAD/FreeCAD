@@ -193,6 +193,7 @@ SET(nativeifc_SRCS
     nativeifc/ifc_openshell.py
     nativeifc/ifc_types.py
     nativeifc/ifc_export.py
+    nativeifc/ifc_classification.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})
