@@ -508,7 +508,7 @@ int Preferences::CenterLineStyle()
 int Preferences::HighlightLineStyle()
 {
     // default is line #2 dashed, which is index 1
-    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighLight", 1) + 1;
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighlight", 1) + 1;
 }
 
 int Preferences::HiddenLineStyle()
@@ -549,21 +549,16 @@ std::string Preferences::currentElementDefFile()
 int Preferences::LineCapStyle()
 {
     int currentIndex = LineCapIndex();
-    int result{0x20};
-        switch (currentIndex) {
+    switch (currentIndex) {
         case 0:
-            result = static_cast<Qt::PenCapStyle>(0x20);   //round;
-            break;
+            return static_cast<Qt::PenCapStyle>(0x20);   //round;
         case 1:
-            result = static_cast<Qt::PenCapStyle>(0x10);   //square;
-            break;
+            return static_cast<Qt::PenCapStyle>(0x10);   //square;
         case 2:
-            result = static_cast<Qt::PenCapStyle>(0x00);   //flat
-            break;
+            return static_cast<Qt::PenCapStyle>(0x00);   //flat
         default:
-            result = static_cast<Qt::PenCapStyle>(0x20);
+            return static_cast<Qt::PenCapStyle>(0x20);
     }
-    return result;
 }
 
 //! returns the line cap index without conversion to a Qt::PenCapStyle
@@ -655,4 +650,35 @@ void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
     getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
 }
 
+bool Preferences::enforceISODate()
+{
+    return getPreferenceGroup("Standards")->GetBool("EnforceISODate", false);
+}
 
+//! if true, shapes are validated before use and problematic ones are skipped.
+//! validating shape takes time, but can prevent crashes/bad results in occt.
+//! this would normally be set to false and set to true to aid in debugging/support.
+bool Preferences::checkShapesBeforeUse()
+{
+    return getPreferenceGroup("General")->GetBool("CheckShapesBeforeUse", false);
+}
+
+
+//! if true, shapes which fail validation are saved as brep files
+bool Preferences::debugBadShape()
+{
+    return getPreferenceGroup("debug")->GetBool("debugBadShape", false);
+}
+
+
+//! if true, automatically switch to TD workbench when a Page is set in edit (double click)
+bool Preferences::switchOnClick()
+{
+    return getPreferenceGroup("General")->GetBool("SwitchToWB", true);
+}
+
+//! if true, svg symbols will use the old scaling logic.
+bool Preferences::useLegacySvgScaling()
+{
+    return getPreferenceGroup("General")->GetBool("LegacySvgScaling", false);
+}

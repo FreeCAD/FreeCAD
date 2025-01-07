@@ -53,7 +53,7 @@ const bool COMMIT = false;
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
     : QDialog(parent),
-      varSet(dynamic_cast<App::VarSet*>(viewProvider->getObject())),
+      varSet(viewProvider->getObject<App::VarSet>()),
       ui(new Ui_DlgAddPropertyVarSet),
       comboBoxGroup(this),
       completerType(this),
@@ -174,9 +174,7 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
     connLineEditNameTextChanged = connect(ui->lineEditName, &QLineEdit::textChanged,
             this, &DlgAddPropertyVarSet::onNamePropertyChanged);
 
-    std::string title = "Add a property to " + varSet->getFullName();
-    setWindowTitle(QString::fromStdString(title));
-
+    setTitle();
     setOkEnabled(false);
 
     ui->lineEditName->setFocus();
@@ -186,6 +184,11 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
 
     // FC_ERR("Initialize widgets");
     // printFocusChain(ui->lineEditName);
+}
+
+void DlgAddPropertyVarSet::setTitle()
+{
+    setWindowTitle(QObject::tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
 }
 
 void DlgAddPropertyVarSet::setOkEnabled(bool enabled)
@@ -219,6 +222,15 @@ void DlgAddPropertyVarSet::removeEditor()
     }
 }
 
+void DlgAddPropertyVarSet::changeEvent(QEvent* e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+        setTitle();
+    }
+    QDialog::changeEvent(e);
+}
+
 static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
 {
     const char *editor = prop->getEditorName();
@@ -233,14 +245,13 @@ static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
     return item;
 }
 
-void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& type)
+void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
+                                     [[maybe_unused]]std::string& type)
 {
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
     }));
-    if (type == "App::PropertyFont") {
-        propertyItem->setEditorData(editor.get(), QVariant());
-    }
+    propertyItem->setEditorData(editor.get(), QVariant());
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QString::fromUtf8("editor"));
     auto formLayout = qobject_cast<QFormLayout*>(layout());
@@ -386,9 +397,10 @@ private:
 void DlgAddPropertyVarSet::checkName() {
     std::string name = ui->lineEditName->text().toStdString();
     if(name.empty() || name != Base::Tools::getIdentifier(name)) {
-        critical(QObject::tr("Invalid name"),
-                 QObject::tr("The property name must only contain alpha numericals,\n"
-                             "underscore, and must not start with a digit."));
+        QMessageBox::critical(getMainWindow(),
+                              QObject::tr("Invalid name"),
+                              QObject::tr("The property name must only contain alpha numericals, "
+                                          "underscore, and must not start with a digit."));
         clearEditors(!CLEAR_NAME);
         throw CreatePropertyException("Invalid name");
     }

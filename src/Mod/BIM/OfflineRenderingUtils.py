@@ -220,6 +220,8 @@ def getGuiData(filename):
                 if isinstance(properties,dict):
                     for propname in properties.keys():
                         if properties[propname]["type"] == "App::PropertyColorList":
+                            if not guidata[key][propname]["value"]:
+                                continue
                             df = zdoc.open(guidata[key][propname]["value"])
                             buf = df.read()
                             df.close()

@@ -53,7 +53,7 @@
 #endif
 
 #include <App/Document.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
@@ -1357,9 +1357,10 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
     }
 
     if (pcReferenceAxis->isDerivedFrom<App::Line>()) {
-        const App::Line* line = static_cast<const App::Line*>(pcReferenceAxis);
-        base = Base::Vector3d(0, 0, 0);
-        line->Placement.getValue().multVec(Base::Vector3d(1, 0, 0), dir);
+        auto* line = static_cast<const App::Line*>(pcReferenceAxis);
+        Base::Placement plc = line->Placement.getValue();
+        base = plc.getPosition();
+        plc.getRotation().multVec(Base::Vector3d(0, 0, 1), dir);
 
         verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
         return;

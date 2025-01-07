@@ -42,6 +42,9 @@ exclude: |
         src/App/ExpressionParser.tab.h|
         src/App/ExpressionParser.y|
         src/App/lex.ExpressionParser.c|
+        src/Gui/3Dconnexion/navlib|
+        src/Gui/QSint|
+        src/Gui/Quarter|
         src/Mod/Import/App/SCL|
         src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|
@@ -51,7 +54,7 @@ exclude: |
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 2c9f875913ee60ca25ce70243dc24d5b6415598c # frozen: v4.6.0
+    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b # frozen: v5.0.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -59,11 +62,11 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black
-    rev: b965c2a5026f8ba399283ba3e01898b012853c79 # frozen: 24.8.0
+    rev: 1b2427a2b785cc4aac97c19bb4b9a0de063f9547 # frozen: 24.10.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 7d85583be209cb547946c82fbe51f4bc5dd1d017 # frozen: v18.1.8
+    rev: fed9a1f62c22af0bc846a260ebfeb0844368fd93  # frozen: v19.1.4
     hooks:
         -   id: clang-format

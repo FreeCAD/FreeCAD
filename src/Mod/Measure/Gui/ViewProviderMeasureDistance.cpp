@@ -254,7 +254,7 @@ SbMatrix ViewProviderMeasureDistance::getMatrix()
     Base::Vector3d localXAxis = (vec2 - vec1).Normalize();
     Base::Vector3d localYAxis = getTextDirection(localXAxis, tolerance).Normalize();
 
-    // X and Y axis have to be 90° to eachother
+    // X and Y axis have to be 90° to each other
     assert(fabs(localYAxis.Dot(localXAxis)) < tolerance);
     Base::Vector3d localZAxis = localYAxis.Cross(localXAxis).Normalize();
 
@@ -478,23 +478,23 @@ void ViewProviderMeasureDistance::redrawAnnotation()
 
     auto propDistance =
         dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
-    setLabelValue(propDistance->getQuantityValue().getUserString());
+    setLabelValue(QString::fromStdString(propDistance->getQuantityValue().getUserString()));
 
     // Set delta distance
     auto propDistanceX =
         static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceX"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
-        ->text.setValue("Δx: " + propDistanceX->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue(("Δx: " + propDistanceX->getQuantityValue().getUserString()).c_str());
 
     auto propDistanceY =
         static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceY"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
-        ->text.setValue("Δy: " + propDistanceY->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue(("Δy: " + propDistanceY->getQuantityValue().getUserString()).c_str());
 
     auto propDistanceZ =
         static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceZ"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
-        ->text.setValue("Δz: " + propDistanceZ->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue(("Δz: " + propDistanceZ->getQuantityValue().getUserString()).c_str());
 
     // Set matrix
     SbMatrix matrix = getMatrix();
@@ -528,7 +528,6 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
             ->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
     }
-
 
     ViewProviderMeasureBase::onChanged(prop);
 }

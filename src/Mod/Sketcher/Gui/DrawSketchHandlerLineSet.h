@@ -70,8 +70,8 @@ public:
     /// mode table
     enum SELECT_MODE
     {
-        STATUS_SEEK_First,  /**< enum value ----. */
-        STATUS_SEEK_Second, /**< enum value ----. */
+        STATUS_SEEK_First,
+        STATUS_SEEK_Second,
         STATUS_Do,
         STATUS_Close
     };
@@ -554,11 +554,11 @@ public:
                         static_cast<int>(lastEndPosId),
                         firstCurve,
                         static_cast<int>(firstPosId));
+                    firstsegment = true;
                 }
                 Gui::Command::commitCommand();
 
-                tryAutoRecomputeIfNotSolve(
-                    static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -572,13 +572,13 @@ public:
                     if (SegmentMode == SEGMENT_MODE_Line) {  // avoid redundant constraints.
                         if (sugConstr1.size() > 0) {
                             removeRedundantHorizontalVertical(
-                                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()),
+                                sketchgui->getObject<Sketcher::SketchObject>(),
                                 sugConstr1,
                                 sugConstr2);
                         }
                         else {
                             removeRedundantHorizontalVertical(
-                                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()),
+                                sketchgui->getObject<Sketcher::SketchObject>(),
                                 virtualsugConstr1,
                                 sugConstr2);
                         }
@@ -599,8 +599,7 @@ public:
                     sugConstr2.clear();
                 }
 
-                tryAutoRecomputeIfNotSolve(
-                    static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 unsetCursor();
 
@@ -653,13 +652,13 @@ public:
                     if (SegmentMode == SEGMENT_MODE_Line) {  // avoid redundant constraints.
                         if (sugConstr1.size() > 0) {
                             removeRedundantHorizontalVertical(
-                                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()),
+                                sketchgui->getObject<Sketcher::SketchObject>(),
                                 sugConstr1,
                                 sugConstr2);
                         }
                         else {
                             removeRedundantHorizontalVertical(
-                                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()),
+                                sketchgui->getObject<Sketcher::SketchObject>(),
                                 virtualsugConstr1,
                                 sugConstr2);
                         }
@@ -678,8 +677,7 @@ public:
                     sugConstr2.clear();
                 }
 
-                tryAutoRecomputeIfNotSolve(
-                    static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 // remember the vertex for the next rounds constraint..
                 previousCurve = getHighestCurveIndex();

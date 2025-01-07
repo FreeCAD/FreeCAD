@@ -107,7 +107,7 @@
 #include "MaterialObject.h"
 #include "MeasureManagerPy.h"
 #include "Origin.h"
-#include "OriginFeature.h"
+#include "Datums.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
 #include "SuppressibleExtension.h"
@@ -2060,6 +2060,7 @@ void Application::initTypes()
     App::PropertyElectricCharge             ::init();
     App::PropertyElectricCurrent            ::init();
     App::PropertyElectricPotential          ::init();
+    App::PropertyElectromagneticPotential   ::init();
     App::PropertyFrequency                  ::init();
     App::PropertyForce                      ::init();
     App::PropertyHeatFlux                   ::init();
@@ -2147,9 +2148,11 @@ void Application::initTypes()
     App::TextDocument              ::init();
     App::Placement                 ::init();
     App::PlacementPython           ::init();
-    App::OriginFeature             ::init();
+    App::DatumElement              ::init();
     App::Plane                     ::init();
     App::Line                      ::init();
+    App::Point                     ::init();
+    App::LocalCoordinateSystem     ::init();
     App::Part                      ::init();
     App::Origin                    ::init();
     App::Link                      ::init();
@@ -2249,7 +2252,9 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("run-test,t", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
     ("run-open,r", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
+    ("macro-path,E", value< vector<string> >()->composing(),"Additional macro paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
+    ("disable-addon", value< vector<string> >()->composing(),"Disable a given addon.")
     ("single-instance", "Allow to run a single instance of the application")
     ("safe-mode", "Force enable safe mode")
     ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
@@ -2290,7 +2295,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 #endif
     ;
 
-   
+
     //0000723: improper handling of qt specific command line arguments
     std::vector<std::string> args;
     bool merge=false;
@@ -2425,10 +2430,29 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["AdditionalModulePaths"] = temp;
     }
 
+    if (vm.count("macro-path")) {
+        vector<string> Macros = vm["macro-path"].as< vector<string> >();
+        string temp;
+        for (const auto & It : Macros)
+            temp += It + ";";
+        temp.erase(temp.end()-1);
+        mConfig["AdditionalMacroPaths"] = temp;
+    }
+
     if (vm.count("python-path")) {
         vector<string> Paths = vm["python-path"].as< vector<string> >();
         for (const auto & It : Paths)
             Base::Interpreter().addPythonPath(It.c_str());
+    }
+
+    if (vm.count("disable-addon")) {
+        auto Addons = vm["disable-addon"].as< vector<string> >();
+        string temp;
+        for (const auto & It : Addons) {
+            temp += It + ";";
+        }
+        temp.erase(temp.end()-1);
+        mConfig["DisabledAddons"] = temp;
     }
 
     if (vm.count("input-file")) {
@@ -2579,7 +2603,7 @@ void Application::initConfig(int argc, char ** argv)
 
     // extract home paths
     ExtractUserPath();
-    
+
     if (vm.count("safe-mode")) {
         SafeMode::StartSafeMode();
     }
@@ -3049,7 +3073,7 @@ void Application::LoadParameters()
     }
 }
 
-#if defined(_MSC_VER) && BOOST_VERSION < 108300
+#if defined(_MSC_VER) && BOOST_VERSION < 108200
     // fix weird error while linking boost (all versions of VC)
     // VS2010: https://forum.freecad.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
     namespace boost { namespace program_options { std::string arg="arg"; } }

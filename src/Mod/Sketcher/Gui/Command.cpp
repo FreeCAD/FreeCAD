@@ -34,7 +34,7 @@
 #endif
 
 #include <App/DocumentObjectGroup.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -605,6 +605,9 @@ void CmdSketcherMapSketch::activated(int iMsg)
 
             return;
         }
+        std::sort(sketches.begin(), sketches.end(), [](const auto &a, const auto &b) {
+            return QString::fromUtf8(a->Label.getValue()) < QString::fromUtf8(b->Label.getValue());
+        });
 
         bool ok;
         QStringList items;

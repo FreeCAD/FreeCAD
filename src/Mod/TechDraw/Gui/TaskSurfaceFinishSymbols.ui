@@ -265,7 +265,7 @@
         <string>Use ISO standard</string>
        </property>
        <property name="text">
-        <string>ISO</string>
+        <string notr="true">ISO</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -278,7 +278,7 @@
         <string>Use ASME standard</string>
        </property>
        <property name="text">
-        <string>ASME</string>
+        <string notr="true">ASME</string>
        </property>
       </widget>
      </item>

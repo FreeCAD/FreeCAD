@@ -58,7 +58,7 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp* DressUpView, QWidg
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+    PartDesign::Draft* pcDraft = DressUpView->getObject<PartDesign::Draft>();
     double a = pcDraft->Angle.getValue();
 
     ui->draftAngle->setMinimum(pcDraft->Angle.getMinimum());
@@ -270,11 +270,6 @@ TaskDraftParameters::~TaskDraftParameters()
         Base::PyException e;  // extract the Python error text
         e.ReportException();
     }
-}
-
-bool TaskDraftParameters::event(QEvent* e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
 }
 
 void TaskDraftParameters::changeEvent(QEvent* e)

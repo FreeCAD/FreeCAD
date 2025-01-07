@@ -21,17 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
 #define BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
 
-#include <QString>
 #include "UnitsSchema.h"
-
 
 namespace Base
 {
-
 
 /*  Milli metric / Newton / Seconds unit schema for use in FEM.
  *  Lengths are always in mm.
@@ -42,12 +38,10 @@ namespace Base
 class UnitsSchemaFemMilliMeterNewton: public UnitsSchema
 {
 public:
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
 };
 
-
 }  // namespace Base
-
 
 #endif  // BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H

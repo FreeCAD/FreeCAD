@@ -44,8 +44,8 @@ protected:
     }
 
     Base::Quantity parse_quantity_text_as_quantity(const char* quantity_text) {
-        auto quantity_qstr = QString::fromStdString(std::string(quantity_text));
-        auto quantity_result = Base::Quantity::parse(quantity_qstr);
+        auto quantity_str = std::string(quantity_text);
+        auto quantity_result = Base::Quantity::parse(quantity_str);
         return quantity_result;
     }
 
@@ -95,8 +95,8 @@ TEST_F(ExpressionParserTest, functionPARSEQUANT)
         EXPECT_EQ(expression_result, quantity_result) << "mismatch:"
             " expression_text='" + std::string(expression_text) + "'"
             " quantity_text='" + std::string(quantity_text) + "'"
-            " expression_representation='" + expression_result.getUserString().toStdString() + "'"
-            " quantity_representation='" + quantity_result.getUserString().toStdString() + "'"
+            " expression_representation='" + expression_result.getUserString() + "'"
+            " quantity_representation='" + quantity_result.getUserString() + "'"
         ;
     }
 

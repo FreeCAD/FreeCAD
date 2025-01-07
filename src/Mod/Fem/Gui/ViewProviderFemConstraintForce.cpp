@@ -66,7 +66,7 @@ bool ViewProviderFemConstraintForce::setEdit(int ModNum)
 
 void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 {
-    auto pcConstraint = static_cast<Fem::ConstraintForce*>(this->getObject());
+    auto pcConstraint = this->getObject<Fem::ConstraintForce>();
 
     if (prop == &pcConstraint->Reversed || prop == &pcConstraint->DirectionVector) {
         updateSymbol();
@@ -80,7 +80,7 @@ void ViewProviderFemConstraintForce::transformSymbol(const Base::Vector3d& point
                                                      const Base::Vector3d& normal,
                                                      SbMatrix& mat) const
 {
-    auto obj = static_cast<const Fem::ConstraintForce*>(this->getObject());
+    auto obj = this->getObject<const Fem::ConstraintForce>();
     bool rev = obj->Reversed.getValue();
     float s = obj->getScaleFactor();
     // Symbol length from .iv file

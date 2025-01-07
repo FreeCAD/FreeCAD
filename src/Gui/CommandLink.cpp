@@ -646,7 +646,7 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
   : Command("Std_LinkSelectLinked")
 {
     sGroup        = "Link";
-    sMenuText     = QT_TR_NOOP("Go to linked object");
+    sMenuText     = QT_TR_NOOP("&Go to linked object");
     sToolTipText  = QT_TR_NOOP("Select the linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinked";
     sStatusTip    = sToolTipText;
@@ -774,7 +774,7 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
   : Command("Std_LinkSelectLinkedFinal")
 {
     sGroup        = "Link";
-    sMenuText     = QT_TR_NOOP("Go to the deepest linked object");
+    sMenuText     = QT_TR_NOOP("Go to the &deepest linked object");
     sToolTipText  = QT_TR_NOOP("Select the deepest linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinkedFinal";
     sStatusTip    = sToolTipText;
@@ -809,7 +809,7 @@ StdCmdLinkSelectAllLinks::StdCmdLinkSelectAllLinks()
   : Command("Std_LinkSelectAllLinks")
 {
     sGroup        = "Link";
-    sMenuText     = QT_TR_NOOP("Select all links");
+    sMenuText     = QT_TR_NOOP("Select &all links");
     sToolTipText  = QT_TR_NOOP("Select all links to the current selected object");
     sWhatsThis    = "Std_LinkSelectAllLinks";
     sStatusTip    = sToolTipText;
@@ -849,7 +849,7 @@ public:
         : GroupCommand("Std_LinkSelectActions")
     {
         sGroup        = "View";
-        sMenuText     = QT_TR_NOOP("Link navigation");
+        sMenuText     = QT_TR_NOOP("&Link navigation");
         sToolTipText  = QT_TR_NOOP("Link navigation actions");
         sWhatsThis    = "Std_LinkSelectActions";
         sStatusTip    = QT_TR_NOOP("Link navigation actions");

@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport
-      Father="ArcOfConic2dPy"
-      Name="ArcOfHyperbola2dPy"
-      PythonName="Part.Geom2d.ArcOfHyperbola2d"
-      Twin="Geom2dArcOfHyperbola"
-      TwinPointer="Geom2dArcOfHyperbola"
-      Include="Mod/Part/App/Geometry2d.h"
-      Namespace="Part"
-      FatherInclude="Mod/Part/App/Geom2d/ArcOfConic2dPy.h"
-      FatherNamespace="Part"
-      Constructor="true">
-    <Documentation>
-      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>Describes a portion of an hyperbola</UserDocu>
-    </Documentation>
-    <Attribute Name="MajorRadius" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The major radius of the hyperbola.</UserDocu>
-      </Documentation>
-      <Parameter Name="MajorRadius" Type="Float"/>
-    </Attribute>
-    <Attribute Name="MinorRadius" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The minor radius of the hyperbola.</UserDocu>
-      </Documentation>
-      <Parameter Name="MinorRadius" Type="Float"/>
-    </Attribute>
-    <Attribute Name="Hyperbola" ReadOnly="true">
-      <Documentation>
-        <UserDocu>The internal hyperbola representation</UserDocu>
-      </Documentation>
-      <Parameter Name="Hyperbola" Type="Object"/>
-    </Attribute>
-  </PythonExport>
+    <PythonExport
+        Father="ArcOfConic2dPy"
+        Name="ArcOfHyperbola2dPy"
+        PythonName="Part.Geom2d.ArcOfHyperbola2d"
+        Twin="Geom2dArcOfHyperbola"
+        TwinPointer="Geom2dArcOfHyperbola"
+        Include="Mod/Part/App/Geometry2d.h"
+        Namespace="Part"
+        FatherInclude="Mod/Part/App/Geom2d/ArcOfConic2dPy.h"
+        FatherNamespace="Part"
+        Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>Describes a portion of an hyperbola</UserDocu>
+        </Documentation>
+        <Attribute Name="MajorRadius" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The major radius of the hyperbola.</UserDocu>
+            </Documentation>
+            <Parameter Name="MajorRadius" Type="Float"/>
+        </Attribute>
+        <Attribute Name="MinorRadius" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The minor radius of the hyperbola.</UserDocu>
+            </Documentation>
+            <Parameter Name="MinorRadius" Type="Float"/>
+        </Attribute>
+        <Attribute Name="Hyperbola" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The internal hyperbola representation</UserDocu>
+            </Documentation>
+            <Parameter Name="Hyperbola" Type="Object"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>

@@ -300,11 +300,11 @@
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
+          <property name="toolTip">
+           <string>Number of threads used for analysis</string>
+          </property>
           <property name="minimum">
            <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>40</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AnalysisNumCPUs</cstring>
@@ -355,7 +355,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Spooles equation solver</string>
+            <string>SPOOLES equation solver</string>
            </property>
           </item>
           <item>

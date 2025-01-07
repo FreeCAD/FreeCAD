@@ -42,21 +42,9 @@ public:
     std::vector<App::DocumentObject*> extensionClaimChildren()const override;
     std::vector<App::DocumentObject*> extensionClaimChildren3D()const override;
 
-    void extensionAttach(App::DocumentObject *pcObject) override;
-    void extensionUpdateData(const App::Property* prop) override;
-
-    void updateOriginSize();
-
-protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
-
 private:
     std::vector<App::DocumentObject*> constructChildren (
             const std::vector<App::DocumentObject*> &children ) const;
-
-    boost::signals2::connection connectChangedObjectApp;
-    boost::signals2::connection connectChangedObjectGui;
 };
 
 using ViewProviderOriginGroupExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension>;

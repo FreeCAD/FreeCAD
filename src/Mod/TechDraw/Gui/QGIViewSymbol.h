@@ -59,6 +59,8 @@ public:
 protected:
     virtual void drawSvg();
     void symbolToSvg(QByteArray qba);
+    double legacyScaler(TechDraw::DrawViewSymbol* feature) const;
+    double symbolScaler(TechDraw::DrawViewSymbol* feature) const;
 
     QGDisplayArea* m_displayArea;
     QGCustomSvg *m_svgItem;

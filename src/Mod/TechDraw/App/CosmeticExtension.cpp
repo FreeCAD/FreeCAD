@@ -205,8 +205,7 @@ std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos, bool
     TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(tempPos);
     verts.push_back(cv);
     CosmeticVertexes.setValues(verts);
-    std::string result = cv->getTagAsString();
-    return result;
+    return cv->getTagAsString();
 }
 
 /// retrieve a cosmetic vertex by unique id
@@ -427,7 +426,7 @@ void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
 /// remove the cosmetic edges with the given tags from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::vector<std::string>& delTags)
 {
-    // Base::Console().Message("DVP::removeCE(%d tages)\n", delTags.size());
+    // Base::Console().Message("DVP::removeCE(%d tags)\n", delTags.size());
     std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& t: delTags) {
         removeCosmeticEdge(t);

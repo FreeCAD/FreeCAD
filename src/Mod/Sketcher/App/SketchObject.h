@@ -46,6 +46,20 @@ namespace Sketcher
 
 class SketchAnalysis;
 
+struct ExternalToAdd
+{
+    App::DocumentObject* obj;
+    std::string subname;
+    bool defining;
+    bool intersection;
+};
+enum class ExtType
+{
+    Projection,
+    Intersection,
+    Both
+};
+
 class SketcherExport SketchObject: public Part::Part2DObject
 {
     typedef Part::Part2DObject inherited;
@@ -68,6 +82,7 @@ public:
     Part ::PropertyGeometryList Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App ::PropertyLinkSubList ExternalGeometry;
+    App::PropertyIntegerList ExternalTypes;
     App ::PropertyLinkListHidden Exports;
     Part ::PropertyGeometryList ExternalGeo;
     App ::PropertyBool FullyConstrained;
@@ -203,6 +218,9 @@ public:
     /// Sync frozen external geometries
     int syncGeometry(const std::vector<int>& geoIds);
 
+    template<typename returnType>
+    returnType performActionByGeomType(const Part::Geometry* geo);
+
     /** returns a pointer to a given Geometry index, possible indexes are:
      *  id>=0 for user defined geometries,
      *  id==-1 for the horizontal sketch axis,
@@ -231,7 +249,9 @@ public:
         return ExternalGeo.getValues();
     }
     /// rebuilds external geometry (projection onto the sketch plane)
-    void rebuildExternalGeometry(bool defining = false, bool intersection = false);
+    // It uses std::optional because this function is actually used to both recompute external
+    // geometries but also to add new external geometries. Ideally this should be refactored.
+    void rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd = std::nullopt);
     /// returns the number of external Geometry entities
     int getExternalGeometryCount() const
     {
@@ -332,14 +352,25 @@ public:
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
-    int movePoint(int GeoId,
-                  PointPos PosId,
-                  const Base::Vector3d& toPoint,
-                  bool relative = false,
-                  bool updateGeoBeforeMoving = false);
+    int moveGeometries(std::vector<GeoElementId> geoEltIds,
+                       const Base::Vector3d& toPoint,
+                       bool relative = false,
+                       bool updateGeoBeforeMoving = false);
+    int moveGeometry(int GeoId,
+                     PointPos PosId,
+                     const Base::Vector3d& toPoint,
+                     bool relative = false,
+                     bool updateGeoBeforeMoving = false);
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
+    template<class geomType>
+    static Base::Vector3d getPointForGeometry(const geomType* geo, PointPos PosId)
+    {
+        (void)geo;
+        (void)PosId;
+        return Base::Vector3d();
+    }
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
@@ -381,6 +412,22 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
     int extend(int geoId, double increment, PointPos endPoint);
+    /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
+    /// the constraint that will replace the given one (which is to be deleted). NOTE: Currently
+    /// assuming all constraints on the end points of the old curve have been transferred or
+    /// destroyed
+    /// Returns whether or not new constraint(s) was/were added.
+    bool deriveConstraintsForPieces(const int oldId,
+                                    const std::vector<int>& newIds,
+                                    const Constraint* con,
+                                    std::vector<Constraint*>& newConstraints);
+    // Explicitly giving `newGeos` for cases where they are not yet added
+    bool deriveConstraintsForPieces(const int oldId,
+                                    const std::vector<int>& newIds,
+                                    const std::vector<const Part::Geometry*>& newGeo,
+                                    const Constraint* con,
+                                    std::vector<Constraint*>& newConstraints);
+
     /// split a curve
     int split(int geoId, const Base::Vector3d& point);
     /*!
@@ -422,6 +469,8 @@ public:
                 double perpscale = 1.0);
 
     int removeAxesAlignment(const std::vector<int>& geoIdList);
+    static bool isClosedCurve(const Part::Geometry* geo);
+    static bool hasInternalGeometry(const Part::Geometry* geo);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
@@ -434,6 +483,14 @@ public:
      geometry \retval int - returns -1 on error, otherwise the number of deleted elements
      */
     int deleteUnusedInternalGeometry(int GeoId, bool delgeoid = false);
+    /*!
+     \brief Same as `deleteUnusedInternalGeometry`, but changes `GeoId` to the new Id of the
+     geometry, or to `GeoEnum::GeoUndef` if the geometry is deleted as well. \param GeoId - the
+     geometry having the internal geometry to delete \param delgeoid - if true in addition to the
+     unused internal geometry also deletes the GeoId geometry \retval int - returns -1 on error,
+     otherwise the number of deleted elements
+     */
+    int deleteUnusedInternalGeometryAndUpdateGeoId(int& GeoId, bool delgeoid = false);
     /*!
      \brief Approximates the given geometry with a B-spline
      \param GeoId - the geometry to approximate
@@ -636,6 +693,8 @@ public: /* Solver exposed interface */
     }
     /// Forwards a request for a temporary initMove to the solver using the current sketch state as
     /// a reference (enables dragging)
+
+    inline int initTemporaryMove(std::vector<GeoElementId> moved, bool fine = true);
     inline int initTemporaryMove(int geoId, PointPos pos, bool fine = true);
     /// Forwards a request for a temporary initBSplinePieceMove to the solver using the current
     /// sketch state as a reference (enables dragging)
@@ -647,8 +706,11 @@ public: /* Solver exposed interface */
      * state as a reference (enables dragging). NOTE: A temporary move operation must always be
      * preceded by a initTemporaryMove() operation.
      */
+    inline int moveGeometriesTemporary(std::vector<GeoElementId> moved,
+                                       Base::Vector3d toPoint,
+                                       bool relative = false);
     inline int
-    moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
+    moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
     /// forwards a request to update an extension of a geometry of the solver to the solver.
     inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension>&& ext)
     {
@@ -848,7 +910,7 @@ protected:
     supportedGeometry(const std::vector<Part::Geometry*>& geoList) const;
 
     void updateGeoHistory();
-    void generateId(Part::Geometry* geo);
+    void generateId(const Part::Geometry* geo);
 
     /*!
      \brief Transfer constraints on lines being filleted.
@@ -920,6 +982,11 @@ protected:
                      int thirdGeoId = GeoEnum::GeoUndef,
                      Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
 
+    std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(const Constraint* constr,
+                                                              const int deletedGeoId) const;
+
+    void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
@@ -934,7 +1001,7 @@ private:
 
     /** this internal flag indicate that an operation modifying the geometry, but not the DoF of the
        sketch took place (e.g. toggle construction), so if next action is a movement of a point
-       (movePoint), the geometry must be updated first.
+       (moveGeometry), the geometry must be updated first.
     */
     bool solverNeedsUpdate;
 
@@ -995,7 +1062,8 @@ private:
     // mapping from Geometry[*].Id to index of Geometry
     std::map<long, int> geoMap;
 
-    int geoHistoryLevel;
+    // keep geoHistoryLevel and the code who ise it for easier porting of stuff from LS3 branch
+    const int geoHistoryLevel = 1;
     std::vector<long> geoIdHistory;
     long geoLastId;
 
@@ -1005,16 +1073,19 @@ private:
     mutable std::map<std::string, std::string> internalElementMap;
 };
 
-inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine /*=true*/)
+inline int SketchObject::initTemporaryMove(std::vector<GeoElementId> moved, bool fine /*=true*/)
 {
-    // if a previous operation did not update the geometry (including geometry extensions)
-    // or constraints (including any deleted pointer, as in renameConstraint) of the solver,
-    // here we update them before starting a temporary operation.
     if (solverNeedsUpdate) {
         solve();
     }
 
-    return solvedSketch.initMove(geoId, pos, fine);
+    return solvedSketch.initMove(moved, fine);
+}
+
+inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine /*=true*/)
+{
+    std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
+    return initTemporaryMove(moved, fine);
 }
 
 inline int SketchObject::initTemporaryBSplinePieceMove(int geoId,
@@ -1032,12 +1103,19 @@ inline int SketchObject::initTemporaryBSplinePieceMove(int geoId,
     return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
 }
 
-inline int SketchObject::moveTemporaryPoint(int geoId,
-                                            PointPos pos,
-                                            Base::Vector3d toPoint,
-                                            bool relative /*=false*/)
+inline int SketchObject::moveGeometriesTemporary(std::vector<GeoElementId> geoEltIds,
+                                                 Base::Vector3d toPoint,
+                                                 bool relative /*=false*/)
 {
-    return solvedSketch.movePoint(geoId, pos, toPoint, relative);
+    return solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
+}
+inline int SketchObject::moveGeometryTemporary(int geoId,
+                                               PointPos pos,
+                                               Base::Vector3d toPoint,
+                                               bool relative /*=false*/)
+{
+    std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
+    return moveGeometriesTemporary(moved, toPoint, relative);
 }
 
 

@@ -621,7 +621,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap),
                          (9, 21, 14))
         self.assertEqual( revolution.Shape.ElementReverseMap["Vertex9"][1].count(";"), 3)
-        self.assertEqual( revolution.Shape.ElementReverseMap["Face9"].count(";"), 16)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face9"].count(";"), 14)
         # Arrange for an UpToFace mode test
         revolution.Type = 3
         revolution.UpToFace = (pad, ("Face4"))
@@ -639,8 +639,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Previously the condition counted the number of ";" (element map operations prefix)
         # If the number of operations changes then the number of ";" will change accordingly
         #
-        # However, it is more useful to count the number of times an elemement name is
-        # present in the MappedName of an element (a MappedName is definined also using the
+        # However, it is more useful to count the number of times an element name is
+        # present in the MappedName of an element (a MappedName is defined also using the
         # element names - "Vertex*", "Edge*", "Face*" - used by an OCCT operation to generate
         # output elements)
         self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)
@@ -2149,10 +2149,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
         doc.Pad.Visibility = False
         doc.Sketch001.Visibility = False
-        doc.Sketch.movePoint(3, 0, App.Vector(-5, 0, 0), 1)
-        doc.Sketch.movePoint(0, 0, App.Vector(0.000000, -5, 0), 1)
-        doc.Sketch.movePoint(1, 0, App.Vector(-5, 0.000000, 0), 1)
-        doc.Sketch.movePoint(2, 0, App.Vector(-0, -5, 0), 1)
+        doc.Sketch.moveGeometry(3, 0, App.Vector(-5, 0, 0), 1)
+        doc.Sketch.moveGeometry(0, 0, App.Vector(0.000000, -5, 0), 1)
+        doc.Sketch.moveGeometry(1, 0, App.Vector(-5, 0.000000, 0), 1)
+        doc.Sketch.moveGeometry(2, 0, App.Vector(-0, -5, 0), 1)
         doc.recompute()
         # If Sketch001 is still at the right start point, we are good.
         self.assertTrue(doc.Sketch001.AttachmentOffset.Matrix == App.Matrix())
@@ -2269,6 +2269,124 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertTrue(doc.Sketch001.AttachmentOffset.Matrix == App.Matrix())
         matrix1 = App.Matrix()
         matrix1.A34 = 10  # Z offset by 10
+        self.assertTrue(doc.Sketch001.Placement.Matrix == matrix1)
+
+    def testPD_TNPSketchPadSketchSplit(self):
+        """Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has geometry split"""
+        doc = App.ActiveDocument
+        App.activeDocument().addObject("PartDesign::Body", "Body")
+        doc.Body.newObject("Sketcher::SketchObject", "Sketch")
+        doc.Sketch.AttachmentSupport = (doc.XY_Plane, [""])
+        doc.Sketch.MapMode = "FlatFace"
+        geoList = []
+        geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(40, 0, 0)))
+        geoList.append(Part.LineSegment(App.Vector(40, 0, 0), App.Vector(40, 20, 0)))
+        geoList.append(Part.LineSegment(App.Vector(40, 20, 0), App.Vector(0, 20, 0)))
+        geoList.append(Part.LineSegment(App.Vector(0, 20, 0), App.Vector(0, 0, 0)))
+        doc.Sketch.addGeometry(geoList, False)
+        constraintList = []
+        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
+        # constraintList.append(Sketcher.Constraint("Horizontal", 0))
+        constraintList.append(Sketcher.Constraint("Horizontal", 2))
+        constraintList.append(Sketcher.Constraint("Vertical", 1))
+        constraintList.append(Sketcher.Constraint("Vertical", 3))
+        constraintList.append(Sketcher.Constraint("DistanceX", 0, 40))
+        constraintList.append(Sketcher.Constraint("DistanceY", 1, 20))
+        constraintList.append(Sketcher.Constraint("DistanceX", 0, 1, 0))
+        constraintList.append(Sketcher.Constraint("DistanceY", 0, 1, 0))
+        doc.Sketch.addConstraint(constraintList)
+        doc.recompute()
+        doc.Body.newObject("PartDesign::Pad", "Pad")
+        doc.Pad.Profile = (
+            doc.Sketch,
+            [
+                "",
+            ],
+        )
+        doc.Pad.Length = 10
+        doc.Pad.ReferenceAxis = (doc.Sketch, ["N_Axis"])
+        doc.Sketch.Visibility = False
+        doc.Pad.Length = 10.000000
+        doc.Pad.TaperAngle = 0.000000
+        doc.Pad.UseCustomVector = 0
+        doc.Pad.Direction = (0, 0, 1)
+        doc.Pad.ReferenceAxis = (doc.Sketch, ["N_Axis"])
+        doc.Pad.AlongSketchNormal = 1
+        doc.Pad.Type = 0
+        doc.Pad.UpToFace = None
+        doc.Pad.Reversed = 0
+        doc.Pad.Midplane = 0
+        doc.Pad.Offset = 0
+        doc.Pad.Refine = True
+        doc.recompute()
+        doc.Sketch.Visibility = False
+        doc.Body.newObject("Sketcher::SketchObject", "Sketch001")
+        doc.Sketch001.AttachmentSupport = (
+            doc.Pad,
+            [
+                "Face6",
+            ],
+        )
+        doc.Sketch001.MapMode = "FlatFace"
+        geoList = []
+        geoList.append(Part.LineSegment(App.Vector(5, 5, 0), App.Vector(5, 10, 0)))
+        geoList.append(Part.LineSegment(App.Vector(5, 10, 0), App.Vector(25, 10, 0)))
+        geoList.append(Part.LineSegment(App.Vector(25, 10, 0), App.Vector(25, 5, 0)))
+        geoList.append(Part.LineSegment(App.Vector(25, 5, 0), App.Vector(5, 5, 0)))
+        doc.Sketch001.addGeometry(geoList, False)
+        del geoList
+        constraintList = []
+        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
+        constraintList.append(Sketcher.Constraint("Vertical", 0))
+        constraintList.append(Sketcher.Constraint("Vertical", 2))
+        constraintList.append(Sketcher.Constraint("Horizontal", 1))
+        constraintList.append(Sketcher.Constraint("Horizontal", 3))
+        doc.Sketch001.addConstraint(constraintList)
+        doc.recompute()
+        doc.Body.newObject("PartDesign::Pad", "Pad001")
+        doc.Pad001.Profile = (
+            doc.Sketch001,
+            [
+                "",
+            ],
+        )
+        doc.Pad001.Length = 10
+        doc.Pad001.ReferenceAxis = (doc.Sketch001, ["N_Axis"])
+        doc.Sketch001.Visibility = False
+        doc.Pad001.Length = 10.000000
+        doc.Pad001.TaperAngle = 0.000000
+        doc.Pad001.UseCustomVector = 0
+        doc.Pad001.Direction = (0, 0, 1)
+        doc.Pad001.ReferenceAxis = (doc.Sketch001, ["N_Axis"])
+        doc.Pad001.AlongSketchNormal = 1
+        doc.Pad001.Type = 0
+        doc.Pad001.UpToFace = None
+        doc.Pad001.Reversed = 0
+        doc.Pad001.Midplane = 0
+        doc.Pad001.Offset = 0
+        doc.recompute()
+        doc.Pad.Visibility = False
+        doc.Sketch001.Visibility = False
+
+        self.assertAlmostEqual(doc.Pad.Shape.Volume,8000)
+
+        doc.Sketch.split(0, App.Vector(10,0,0)) # Geo 0 moves to Geo 3, create Geo4
+        doc.Sketch.split(4, App.Vector(30,0,0)) # Create Geo5
+        doc.Sketch.moveGeometry(4, 1, App.Vector(10,2,0), False)
+        doc.Sketch.moveGeometry(4, 2, App.Vector(30, 2, 0), False)
+        doc.recompute()
+        self.assertAlmostEqual(doc.Pad.Shape.Volume,7400)   # Prove the points moved
+        self.assertTrue(doc.Sketch001.isValid())    # Check for a TNP fail.
+        # If Sketch001 is still at the right start point, we are good.
+        self.assertTrue(doc.Sketch001.AttachmentOffset.Matrix == App.Matrix())
+        matrix1 = App.Matrix()
+        matrix1.A34 = 10  # Z offset by 10.
         self.assertTrue(doc.Sketch001.Placement.Matrix == matrix1)
 
     def testPD_TNPSketchPadSketchConstructionChange(self):
@@ -2628,13 +2746,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         self.PadSketch.trim(2, App.Vector(7.337847, -25.000000, 0))
         self.PadSketch.addConstraint(Sketcher.Constraint("Equal", 3, 1))
-        self.PadSketch.addConstraint(Sketcher.Constraint("Horizontal", 5))
-        self.PadSketch.addConstraint(Sketcher.Constraint("Radius", 4, 73.031111))
-        self.PadSketch.setDatum(18, App.Units.Quantity("70.000000 mm"))
-        self.PadSketch.addConstraint(
+        radConstr = self.PadSketch.addConstraint(Sketcher.Constraint("Radius", 4, 73.031111))
+        self.PadSketch.setDatum(radConstr, App.Units.Quantity("70.000000 mm"))
+        distYConstr = self.PadSketch.addConstraint(
             Sketcher.Constraint("DistanceY", 4, 3, -1, 1, 88.867210)
         )
-        self.PadSketch.setDatum(19, App.Units.Quantity("80.000000 mm"))
+        self.PadSketch.setDatum(distYConstr, App.Units.Quantity("80.000000 mm"))
 
         self.Doc.recompute()
         self.assertTrue(self.Sketch001.isValid())

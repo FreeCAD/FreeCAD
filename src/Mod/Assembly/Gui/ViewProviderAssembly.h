@@ -60,6 +60,7 @@ struct MovingObject
                  std::string& s)
         : obj(o)
         , plc(p)
+        , ref(nullptr)
         , rootObj(ro)
         , sub(s)
     {}
@@ -67,9 +68,8 @@ struct MovingObject
     // Default constructor
     MovingObject()
         : obj(nullptr)
-        , plc(Base::Placement())
+        , ref(nullptr)
         , rootObj(nullptr)
-        , sub("")
     {}
 
     ~MovingObject()

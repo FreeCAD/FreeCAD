@@ -60,7 +60,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
 
     # mesh
     if not mesh:
-        message += "No mesh object defined in the analysis.\n"
+        message += "A single mesh object must be defined in the analysis.\n"
     if mesh:
         if (
             mesh.FemMesh.VolumeCount == 0
@@ -69,7 +69,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         ):
             message += (
                 "FEM mesh has no volume elements, "
-                "either define a shell thicknesses or "
+                "either define shell thicknesses or "
                 "provide a FEM mesh with volume elements.\n"
             )
         if (
@@ -158,7 +158,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
                 )
         if femutils.is_of_type(mat_obj, "Fem::MaterialReinforced"):
             # additional tests for reinforced materials,
-            # they are needed for result calculation not for ccx analysis
+            # they are needed for result calculation, not for ccx analysis
             mat_map_m = mat_obj.Material
             if "AngleOfFriction" in mat_map_m:
                 # print(Units.Quantity(mat_map_m["AngleOfFriction"]).Value)
@@ -181,7 +181,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
                     )
             else:
                 message += (
-                    "No CompressiveStrength defined for the matrinx "
+                    "No CompressiveStrength defined for the matrix "
                     "of at least one reinforced material.\n"
                 )
             mat_map_r = mat_obj.Reinforcement
@@ -303,13 +303,13 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
             # this needs to be checked only once either here or in shell_thicknesses
             message += (
                 "Beam sections and shell thicknesses in one analysis "
-                "is not supported at the moment.\n"
+                "are not supported at the moment.\n"
             )
         if member.geos_fluidsection:
             # this needs to be checked only once either here or in shell_thicknesses
             message += (
                 "Beam sections and fluid sections in one analysis "
-                "is not supported at the moment.\n"
+                "are not supported at the moment.\n"
             )
         has_no_references = False
         for b in member.geos_beamsection:

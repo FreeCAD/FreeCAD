@@ -59,6 +59,7 @@
 #include "FemSettings.h"
 
 #ifdef FC_USE_VTK
+#include <Mod/Fem/App/FemPostFilter.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 #include <Mod/Fem/Gui/ViewProviderFemPostObject.h>
 #endif
@@ -1334,7 +1335,7 @@ CmdFemCreateElementsSet::CmdFemCreateElementsSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Erase Elements");
+    sMenuText = QT_TR_NOOP("Erase elements");
     sToolTipText = QT_TR_NOOP("Creates a FEM mesh elements set");
     sWhatsThis = "FEM_CreateElementsSet";
     sStatusTip = sToolTipText;

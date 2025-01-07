@@ -34,7 +34,6 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Quantity.h>
-#include <Base/Tools.h>
 
 #include "DrawPage.h"
 #include "DrawSVGTemplate.h"
@@ -183,13 +182,13 @@ void DrawSVGTemplate::extractTemplateAttributes(QDomDocument& templateDocument)
 
     // Obtain the width
     QString str = docElement.attribute(QString::fromLatin1("width"));
-    quantity = Base::Quantity::parse(str);
+    quantity = Base::Quantity::parse(str.toStdString());
     quantity.setUnit(Base::Unit::Length);
 
     Width.setValue(quantity.getValue());
 
     str = docElement.attribute(QString::fromLatin1("height"));
-    quantity = Base::Quantity::parse(str);
+    quantity = Base::Quantity::parse(str.toStdString());
     quantity.setUnit(Base::Unit::Length);
 
     Height.setValue(quantity.getValue());
@@ -205,7 +204,7 @@ bool DrawSVGTemplate::getTemplateDocument(std::string sourceFile, QDomDocument& 
     if (sourceFile.empty()) {
         return false;
     }
-    QFile templateFile(Base::Tools::fromStdString(sourceFile));
+    QFile templateFile(QString::fromStdString(sourceFile));
     if (!templateFile.open(QIODevice::ReadOnly)) {
         Base::Console().Error("DrawSVGTemplate::processTemplate can't read embedded template %s!\n", PageResult.getValue());
         return false;

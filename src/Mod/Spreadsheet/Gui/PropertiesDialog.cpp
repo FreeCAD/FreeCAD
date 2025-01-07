@@ -111,9 +111,9 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet,
         ui->styleUnderline->setChecked(true);
     }
 
-    ui->displayUnit->setText(Base::Tools::fromStdString(displayUnit.stringRep));
+    ui->displayUnit->setText(QString::fromStdString(displayUnit.stringRep));
 
-    ui->alias->setText(Base::Tools::fromStdString(alias));
+    ui->alias->setText(QString::fromStdString(alias));
 
     // Colors
     connect(ui->foregroundColor,
@@ -241,9 +241,9 @@ void PropertiesDialog::aliasChanged(const QString& text)
 {
     QPalette palette = ui->alias->palette();
 
-    aliasOk = text.isEmpty() || sheet->isValidAlias(Base::Tools::toStdString(text));
+    aliasOk = text.isEmpty() || sheet->isValidAlias(text.toStdString());
 
-    alias = aliasOk ? Base::Tools::toStdString(text) : "";
+    alias = aliasOk ? text.toStdString() : "";
     palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
     ui->alias->setPalette(palette);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);

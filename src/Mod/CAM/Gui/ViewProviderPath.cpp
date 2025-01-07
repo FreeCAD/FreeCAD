@@ -44,8 +44,8 @@
 #include <Base/Stream.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/SoAxisCrossKit.h>
-#include <Gui/SoFCBoundingBox.h>
+#include <Gui/Inventor/SoAxisCrossKit.h>
+#include <Gui/Inventor/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Mod/CAM/App/FeaturePath.h>
 #include <Mod/CAM/App/PathSegmentWalker.h>
@@ -255,7 +255,7 @@ ViewProviderPath::ViewProviderPath()
     pArrow->set("zAxis.appearance.drawStyle", "style INVISIBLE");
     pArrow->set("zHead.transform", "translation 0 0 0");
     pArrowScale->setPart("shape", pArrow);
-    pArrowScale->scaleFactor = 1.0f;
+    pArrowScale->scaleFactor = 2.0f;
     pArrowGroup->addChild(pArrowScale);
 
     pcArrowSwitch->addChild(pArrowGroup);

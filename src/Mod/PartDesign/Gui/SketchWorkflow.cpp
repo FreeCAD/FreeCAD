@@ -47,7 +47,7 @@
 #include <App/Document.h>
 #include <App/Link.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -247,7 +247,7 @@ public:
 
         guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
-        auto Feat = appdocument->getObject(FeatName.c_str());
+        auto Feat = activeBody->getDocument()->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat, "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
         Gui::Command::updateActive();

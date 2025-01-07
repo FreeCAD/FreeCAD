@@ -855,6 +855,10 @@ class _ViewProviderSite:
         return True
 
     def setupContextMenu(self, vobj, menu):
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         QtCore.QObject.connect(actionEdit,
@@ -963,11 +967,20 @@ class _ViewProviderSite:
         https://forum.freecad.org/viewtopic.php?t=75883
         """
 
+        from pivy import coin
+
+        def find_node(parent, nodetype):
+            for i in range(parent.getNumChildren()):
+                if isinstance(parent.getChild(i), nodetype):
+                    return parent.getChild(i)
+            return None
+
         if not hasattr(self, "terrain_switches"):
             if vobj.RootNode.getNumChildren() > 2:
-                main_switch = vobj.RootNode.getChild(2) # The display mode switch.
+                main_switch = find_node(vobj.RootNode, coin.SoSwitch)
+                if not main_switch:
+                    return
                 if main_switch.getNumChildren() == 4:   # Check if all display modes are available.
-                    from pivy import coin
                     self.terrain_switches = []
                     for node in tuple(main_switch.getChildren()):
                         new_switch = coin.SoSwitch()

@@ -411,7 +411,11 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
         femelement_table_array = np.zeros_like(referenced_femelements)
         femelement_table_array[list(femelement_table)] = 1
         remaining_femelements_array = femelement_table_array > referenced_femelements
-        remaining_femelements = [i.item() for i in np.nditer(remaining_femelements_array.nonzero())]
+        (non_zeros,) = remaining_femelements_array.nonzero()
+        if non_zeros.size:
+            remaining_femelements = [i.item() for i in np.nditer(non_zeros)]
+        else:
+            remaining_femelements = []
         count_femelements += len(remaining_femelements)
         for fem_object in fem_objects:
             obj = fem_object["Object"]
@@ -1581,7 +1585,6 @@ def get_contact_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj)
 # ***** tie faces ****************************************************************************
 def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
     # see comment get_contact_obj_faces
-    # solid mesh is same as contact, but face mesh is not allowed for tie
     # TODO get rid of duplicate code for contact and tie
 
     slave_faces, master_faces = [], []
@@ -1616,27 +1619,23 @@ def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
     FreeCAD.Console.PrintLog(f"Slave: {slave_ref[0].Name}, {slave_ref}\n")
     FreeCAD.Console.PrintLog(f"Master: {master_ref[0].Name}, {master_ref}\n")
 
-    if is_solid_femmesh(femmesh):
-        # get the nodes, sorted and duplicates removed
-        slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
-        masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
-        # FreeCAD.Console.PrintLog("slaveface_nds: {}\n".format(slaveface_nds))
-        # FreeCAD.Console.PrintLog("masterface_nds: {}\n".format(slaveface_nds))
+    # get the nodes, sorted and duplicates removed
+    slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
+    masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
+    # FreeCAD.Console.PrintLog("slaveface_nds: {}\n".format(slaveface_nds))
+    # FreeCAD.Console.PrintLog("masterface_nds: {}\n".format(slaveface_nds))
 
-        # fill the bit_pattern_dict and search for the faces
-        slave_bit_pattern_dict = get_bit_pattern_dict(
-            femelement_table, femnodes_ele_table, slaveface_nds
-        )
-        master_bit_pattern_dict = get_bit_pattern_dict(
-            femelement_table, femnodes_ele_table, masterface_nds
-        )
+    # fill the bit_pattern_dict and search for the faces
+    slave_bit_pattern_dict = get_bit_pattern_dict(
+        femelement_table, femnodes_ele_table, slaveface_nds
+    )
+    master_bit_pattern_dict = get_bit_pattern_dict(
+        femelement_table, femnodes_ele_table, masterface_nds
+    )
 
-        # get the faces ids
-        slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
-        master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
-
-    elif is_face_femmesh(femmesh):
-        FreeCAD.Console.PrintError("Shell mesh is not allowed for constraint tie.\n")
+    # get the faces ids
+    slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
+    master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
 
     FreeCAD.Console.PrintLog(f"slave_faces: {slave_faces}\n")
     FreeCAD.Console.PrintLog(f"master_faces: {master_faces}\n")

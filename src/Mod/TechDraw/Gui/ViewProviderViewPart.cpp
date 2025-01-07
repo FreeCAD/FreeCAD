@@ -299,7 +299,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
                                         dvd->getNameInDocument());
     }
     else {
-        auto* view = dynamic_cast<TechDraw::DrawView*>(getObject());
+        auto* view = getObject<TechDraw::DrawView>();
         Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
     }
 

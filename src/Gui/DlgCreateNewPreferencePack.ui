@@ -32,6 +32,13 @@
      <item>
       <widget class="QLineEdit" name="lineEdit"/>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Browse</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -39,11 +46,11 @@
      <property name="columnCount">
       <number>1</number>
      </property>
-     <attribute name="headerMinimumSectionSize">
-      <number>50</number>
-     </attribute>
      <attribute name="headerDefaultSectionSize">
       <number>250</number>
+     </attribute>
+     <attribute name="headerMinimumSectionSize">
+      <number>50</number>
      </attribute>
      <attribute name="headerShowSortIndicator" stdset="0">
       <bool>true</bool>

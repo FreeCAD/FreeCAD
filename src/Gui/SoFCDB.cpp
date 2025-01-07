@@ -53,10 +53,7 @@
 #include "GestureNavigationStyle.h"
 #include "NavigationStyle.h"
 #include "SelectionObject.h"
-#include "So3DAnnotation.h"
-#include "SoAxisCrossKit.h"
-#include "SoFCBackgroundGradient.h"
-#include "SoFCBoundingBox.h"
+#include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
 #include "SoFCColorGradient.h"
 #include "SoFCColorLegend.h"
@@ -67,13 +64,18 @@
 #include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
-#include "SoMouseWheelEvent.h"
 #include "SoTextLabel.h"
 #include "SoDatumLabel.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
+#include "Inventor/So3DAnnotation.h"
 #include "Inventor/SoAutoZoomTranslation.h"
+#include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoDrawingGrid.h"
+#include "Inventor/SoFCBackgroundGradient.h"
+#include "Inventor/SoFCBoundingBox.h"
+#include "Inventor/SoMouseWheelEvent.h"
+#include "Inventor/SoFCTransform.h"
 #include "propertyeditor/PropertyItem.h"
 #include "ArcEngine.h"
 
@@ -93,6 +95,7 @@ SbBool Gui::SoFCDB::isInitialized()
 void Gui::SoFCDB::init()
 {
     SoInteraction                   ::init();
+    SoDevicePixelRatioElement       ::initClass();
     SoGLRenderActionElement         ::initClass();
     SoFCInteractiveElement          ::initClass();
     SoGLWidgetElement               ::initClass();
@@ -134,6 +137,7 @@ void Gui::SoFCDB::init()
     SoAxisCrossKit                  ::initClass();
     SoRegPoint                      ::initClass();
     SoDrawingGrid                   ::initClass();
+    SoFCTransform                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
     SoFCCSysDragger                 ::initClass();

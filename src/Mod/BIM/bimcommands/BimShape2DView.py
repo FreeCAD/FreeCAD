@@ -38,7 +38,8 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
     def GetResources(self):
         d = super().GetResources()
         d["Pixmap"] = "Arch_BuildingPart_Tree"
-        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Shape-based view")
+        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section view")
+        d['Accel'] = "V, V"
         return d
 
     def proceed(self):
@@ -87,4 +88,19 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         self.finish()
 
 
+class BIM_Shape2DCut(BIM_Shape2DView):
+
+    def GetResources(self):
+        d = super().GetResources()
+        d["Pixmap"] = "Arch_View_Cut"
+        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section cut")
+        d['Accel'] = "V, C"
+        return d
+
+    def proceed(self):
+        super().proceed()
+        FreeCADGui.doCommand("sv.ProjectionMode = \"Cutfaces\"")
+
+
 FreeCADGui.addCommand("BIM_Shape2DView", BIM_Shape2DView())
+FreeCADGui.addCommand("BIM_Shape2DCut", BIM_Shape2DCut())

@@ -63,7 +63,12 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     ui->cbNewFaceFinder->onSave();
     ui->sbScrubCount->onSave();
 
+    ui->cbDebugBadShape->onSave();
+    ui->cbValidateShapes->onSave();
+
     saveBalloonOverride();
+
+    ui->cbSwitchWB->onSave();
 }
 
 
@@ -113,7 +118,12 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->cbNewFaceFinder->onRestore();
     ui->sbScrubCount->onRestore();
 
+    ui->cbDebugBadShape->onRestore();
+    ui->cbValidateShapes->onRestore();
+
     loadBalloonOverride();
+
+    ui->cbSwitchWB->onRestore();
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadBalloonOverride()

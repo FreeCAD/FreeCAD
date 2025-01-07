@@ -89,7 +89,7 @@ void DlgSettingsImportExport::changeEvent(QEvent* e)
         ui->retranslateUi(this);
     }
     else {
-        QWidget::changeEvent(e);
+        PreferencePage::changeEvent(e);
     }
 }
 

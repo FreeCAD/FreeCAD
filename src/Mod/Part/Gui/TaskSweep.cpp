@@ -199,7 +199,7 @@ void SweepWidget::findShapes()
             }
         }
 
-        if (!shape.Infinite() && 
+        if (!shape.Infinite() &&
             (shape.ShapeType() == TopAbs_FACE ||
             shape.ShapeType() == TopAbs_WIRE ||
             shape.ShapeType() == TopAbs_EDGE ||
@@ -412,7 +412,7 @@ void SweepWidget::onButtonPathToggled(bool on)
         d->buttonText = d->ui.buttonPath->text();
         d->ui.buttonPath->setText(tr("Done"));
         d->ui.buttonPath->setEnabled(true);
-        d->ui.labelPath->setText(tr("Select one or more connected edges in the 3d view and press 'Done'"));
+        d->ui.labelPath->setText(tr("Select one or more connected edges in the 3D view and press 'Done'"));
         d->ui.labelPath->setEnabled(true);
 
         Gui::Selection().clearSelection();

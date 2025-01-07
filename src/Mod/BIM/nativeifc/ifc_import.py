@@ -3,20 +3,20 @@
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
@@ -49,7 +49,7 @@ def open(filename):
     doc = FreeCAD.newDocument()
     doc.Label = name
     FreeCAD.setActiveDocument(doc.Name)
-    insert(filename, doc.Name, singledoc=True)
+    insert(filename, doc.Name, singledoc=None)
     del FreeCAD.IsOpeningIFC
     QtCore.QTimer.singleShot(100, unset_modified)
     return doc
@@ -62,9 +62,13 @@ def insert(
     shapemode=None,
     switchwb=None,
     silent=False,
-    singledoc=None,
+    singledoc=False,
 ):
-    """Inserts an IFC document in a FreeCAD document"""
+    """Inserts an IFC document in a FreeCAD document.
+    Singledoc defines if the produced result is a locked document or not. The
+    strategy is:
+    - When opening IFC files, locked/unlocked depends on the preferences (default locked)
+    - When inserting IFC files, always unlocked (an IFC doc object is created)"""
 
     from PySide import QtCore  # lazy loading
 
@@ -78,7 +82,7 @@ def insert(
     except:
         document = FreeCAD.newDocument()
     if singledoc is None:
-        singledoc = PARAMS.GetBool("SingleDoc", False)
+        singledoc = PARAMS.GetBool("SingleDoc", True)
     if singledoc:
         prj_obj = ifc_tools.convert_document(document, filename, shapemode, strategy)
         QtCore.QTimer.singleShot(100, toggle_lock_on)

@@ -28,23 +28,24 @@
 #include <Mod/Mesh/MeshGlobal.h>
 #include <iosfwd>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 #include <xercesc/util/XercesDefs.hpp>
 
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMDocument;
+class DOMElement;
+class DOMNode;
 class DOMNodeList;
+class DOMNamedNodeMap;
+class XercesDOMParser;
 }  // namespace XERCES_CPP_NAMESPACE
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class DOMDocument;
-class DOMNodeList;
-XERCES_CPP_NAMESPACE_END
-#endif
+
+namespace zipios
+{
+class FileCollection;
+}
 
 namespace MeshCore
 {
@@ -84,19 +85,41 @@ public:
     }
 
 private:
+    struct Component
+    {
+        int id = -1;
+        int objectId = -1;
+        std::string path;
+        Base::Matrix4D transform;
+    };
+    static std::unique_ptr<XERCES_CPP_NAMESPACE::XercesDOMParser> makeDomParser();
+    bool TryLoad();
     bool LoadModel(std::istream&);
-    bool LoadModel(XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument&);
-    bool LoadResources(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList*);
-    bool LoadBuild(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList*);
-    bool LoadItems(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList*);
-    bool LoadObjects(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList*);
-    void LoadMesh(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList*, int id);
-    void LoadVertices(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList*, MeshPointArray&);
-    void LoadTriangles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList*, MeshFacetArray&);
+    bool LoadModel(std::istream&, const Component&);
+    bool TryLoadModel(std::istream&, const Component&);
+    bool LoadModel(XERCES_CPP_NAMESPACE::DOMDocument&, const Component&);
+    bool LoadResourcesAndBuild(XERCES_CPP_NAMESPACE::DOMElement*, const Component&);
+    bool LoadResources(XERCES_CPP_NAMESPACE::DOMNodeList*, const Component&);
+    bool LoadBuild(XERCES_CPP_NAMESPACE::DOMNodeList*);
+    bool LoadItems(XERCES_CPP_NAMESPACE::DOMNodeList*);
+    void LoadItem(XERCES_CPP_NAMESPACE::DOMNamedNodeMap*);
+    bool LoadObject(XERCES_CPP_NAMESPACE::DOMNodeList*, const Component&);
+    void LoadComponents(XERCES_CPP_NAMESPACE::DOMNodeList*, int id);
+    void LoadComponent(XERCES_CPP_NAMESPACE::DOMNodeList*, int id);
+    void LoadComponent(XERCES_CPP_NAMESPACE::DOMNamedNodeMap*, int id);
+    void LoadMesh(XERCES_CPP_NAMESPACE::DOMNodeList*, int id, const Component&);
+    void LoadVertices(XERCES_CPP_NAMESPACE::DOMNodeList*, MeshPointArray&);
+    void ReadVertices(XERCES_CPP_NAMESPACE::DOMNodeList*, MeshPointArray&);
+    void LoadTriangles(XERCES_CPP_NAMESPACE::DOMNodeList*, MeshFacetArray&);
+    void ReadTriangles(XERCES_CPP_NAMESPACE::DOMNodeList*, MeshFacetArray&);
+    bool LoadMeshFromComponents();
+    std::optional<Base::Matrix4D> ReadTransform(XERCES_CPP_NAMESPACE::DOMNode*);
 
 private:
+    std::vector<Component> components;
     using MeshKernelAndTransform = std::pair<MeshKernel, Base::Matrix4D>;
     std::unordered_map<int, MeshKernelAndTransform> meshes;
+    std::unique_ptr<zipios::FileCollection> file;
     std::unique_ptr<std::istream> zip;
 };
 

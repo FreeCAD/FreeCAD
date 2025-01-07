@@ -37,6 +37,7 @@
 #include <src/App/InitApplication.h>
 
 #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/MaterialValue.h>
 #include <Mod/Material/App/Model.h>
 #include <Mod/Material/App/ModelManager.h>
 #include <Mod/Material/App/ModelUuids.h>
@@ -220,10 +221,11 @@ TEST_F(TestMaterial, TestAddAppearanceModel)
     EXPECT_EQ(models->size(), 0);
 }
 
-QString parseQuantity(const char *string)
+QString parseQuantity(const std::string& value)
 {
-    QString value = QString::fromStdString(string);
-    return Base::Quantity::parse(value).getUserString();
+    auto quantity = Base::Quantity::parse(value);
+    quantity.setFormat(Materials::MaterialValue::getQuantityFormat());
+    return QString::fromStdString(quantity.getUserString());
 }
 
 TEST_F(TestMaterial, TestCalculiXSteel)
@@ -340,12 +342,11 @@ TEST_F(TestMaterial, TestCalculiXSteel)
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("SpecularColor")), QString::fromStdString("(0.9800, 0.9800, 0.9800, 1.0)"));
     EXPECT_DOUBLE_EQ(steel->getAppearanceValue(QString::fromStdString("Transparency")).toDouble(), 0.0);
 
-    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("Density")).getUserString(), parseQuantity("7900.00 kg/m^3"));
-    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("YoungsModulus")).getUserString(), parseQuantity("210.00 GPa"));
-    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("SpecificHeat")).getUserString(), parseQuantity("590.00 J/kg/K"));
-    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalConductivity")).getUserString(), parseQuantity("43.00 W/m/K"));
-    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalExpansionCoefficient")).getUserString(), parseQuantity("12.00 µm/m/K"));
-
+    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("Density")).getUserString(), parseQuantity("7900.00 kg/m^3").toStdString());
+    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("YoungsModulus")).getUserString(), parseQuantity("210.00 GPa").toStdString());
+    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("SpecificHeat")).getUserString(), parseQuantity("590.00 J/kg/K").toStdString());
+    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalConductivity")).getUserString(), parseQuantity("43.00 W/m/K").toStdString());
+    EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalExpansionCoefficient")).getUserString(), parseQuantity("12.00 µm/m/K").toStdString());
 }
 
 TEST_F(TestMaterial, TestColumns)

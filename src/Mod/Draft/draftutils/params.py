@@ -23,12 +23,16 @@
 
 """ Contains a parameter observer class and parameter related functions."""
 
+import os
 import PySide.QtCore as QtCore
 import xml.etree.ElementTree as ET
 
 import FreeCAD as App
 import Draft_rc
-import Arch_rc
+try:
+    import Arch_rc
+except ModuleNotFoundError:
+    pass
 
 from draftutils import init_draft_statusbar
 from draftutils.translate import translate
@@ -369,6 +373,10 @@ def _get_param_dictionary():
 
     param_dict = {}
 
+    hatch_pattern_file = os.path.join(
+        App.getResourceDir().replace("\\", "/"), "Mod/TechDraw/PAT/FCPAT.pat"
+    )
+
     # Draft parameters that are not in the preferences:
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
@@ -385,7 +393,9 @@ def _get_param_dictionary():
         "fillmode":                    ("bool",      True),
         "GlobalMode":                  ("bool",      False),
         "GridHideInOtherWorkbenches":  ("bool",      True),
-        "HatchPatternResolution":      ("int",       128),
+        "HatchPatternFile":            ("string",    hatch_pattern_file),
+        "HatchPatternName":            ("string",    "Diamond"),
+        "HatchPatternResolution":      ("int",       128),  # used for SVG patterns
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
         "labeltype":                   ("string",    "Custom"),
@@ -479,12 +489,6 @@ def _get_param_dictionary():
         "MaxDeviationExport":          ("float",     0.1),
     }
 
-    # For the Mod/TechDraw/PAT parameters we do not check the preferences:
-    param_dict["Mod/TechDraw/PAT"] = {
-        "FilePattern":                 ("string",    ""),
-        "NamePattern":                 ("string",    "Diamant"),
-    }
-
     # For the General parameters we do not check the preferences:
     param_dict["General"] = {
         "ToolbarIconSize":             ("int",       24),
@@ -534,7 +538,8 @@ def _get_param_dictionary():
                 ":/ui/preferences-archdefaults.ui",
                 ":/ui/preferences-dae.ui",
                 ":/ui/preferences-ifc.ui",
-                ":/ui/preferences-ifc-export.ui"):
+                ":/ui/preferences-ifc-export.ui",
+                ":/ui/preferences-sh3d-import.ui",):
 
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)

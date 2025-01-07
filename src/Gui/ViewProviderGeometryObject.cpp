@@ -32,18 +32,18 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
-
-#include <Inventor/nodes/SoResetTransform.h>
 
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
 
 #include "Application.h"
 #include "Document.h"
-#include "SoFCBoundingBox.h"
+#include "Inventor/SoFCBoundingBox.h"
 #include "SoFCSelection.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderGeometryObject.h"
@@ -92,6 +92,10 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
                       App::Prop_None,
                       "Set if the object is selectable in the 3d view");
 
+    pickStyle = new SoPickStyle();
+    pickStyle->ref();
+    pickStyle->style.setValue(SoPickStyle::SHAPE);
+    pcRoot->insertChild(pickStyle, 1);
     Selectable.setValue(isSelectionEnabled());
 
     pcShapeMaterial = new SoMaterial;
@@ -112,6 +116,7 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
     pcShapeMaterial->unref();
     pcBoundingBox->unref();
     pcBoundColor->unref();
+    pickStyle->unref();
 }
 
 bool ViewProviderGeometryObject::isSelectionEnabled() const
@@ -174,7 +179,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
     else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
-        auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
+        auto geometry = getObject<App::GeoFeature>();
         if (geometry && prop == &geometry->Placement) {
             const App::PropertyComplexGeoData* data = geometry->getPropertyOfGeometry();
             if (data) {
@@ -186,8 +191,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
     }
     else if (std::string(prop->getName()) == "ShapeMaterial") {
         // Set the appearance from the material
-        auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
-        if (geometry) {
+        if (auto geometry = getObject<App::GeoFeature>()) {
             /*
              * Change the appearance only if the appearance hasn't been set explicitly. A cached
              * material appearance is used to see if the current appearance matches the last
@@ -350,6 +354,8 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
             }
         }
     }
+
+    pickStyle->style.setValue(selectable ? SoPickStyle::SHAPE : SoPickStyle::UNPICKABLE);
 }
 
 PyObject* ViewProviderGeometryObject::getPyObject()

@@ -92,6 +92,7 @@ public:
 
     Part::PropertyTopoShapeList SavedGeometry;
     App::PropertyVectorList BoxCorners;
+    App::PropertyBool UseActualArea;
 
     enum RefType
     {
@@ -203,14 +204,18 @@ public:
         return m_corrector;
     }
 
-    // these should probably be static as they don't use the dimension at all
-    std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
-    std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
+    static std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
+    static std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
+    static double getArcAngle(Base::Vector3d center, Base::Vector3d startPoint, Base::Vector3d endPoint);
 
     // autocorrect support methods
     void saveFeatureBox();
     Base::BoundBox3d getSavedBox();
     Base::BoundBox3d getFeatureBox();
+
+    static double getActualArea(const TopoDS_Face& face);
+    static double getFilledArea(const TopoDS_Face& face);
+    static Base::Vector3d getFaceCenter(const TopoDS_Face& face);
 
 protected:
     void handleChangedPropertyType(Base::XMLReader&, const char*, App::Property*) override;

@@ -145,7 +145,7 @@ class ViewProviderToleranceSet:
         vobj.Proxy = self
 
     def getIcon(self):
-        return getIconPath("preferences-part_design.svg")
+        return ":/icons/preferences-part_design.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj

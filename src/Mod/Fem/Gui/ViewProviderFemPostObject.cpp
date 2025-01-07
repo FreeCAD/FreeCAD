@@ -719,9 +719,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
         c = m_colorBar->getColor(value);
         diffcol[i].setValue(c.r, c.g, c.b);
-        transp[i] = std::max(c.a, overallTransp);
+        transp[i] = std::max(c.transparency(), overallTransp);
         edgeDiffcol[i].setValue(cEdge.r, cEdge.g, cEdge.b);
-        edgeTransp[i] = std::max(cEdge.a, overallTransp);
+        edgeTransp[i] = std::max(cEdge.transparency(), overallTransp);
     }
 
     m_material->diffuseColor.finishEditing();
@@ -761,7 +761,7 @@ void ViewProviderFemPostObject::WriteTransparency()
 
 void ViewProviderFemPostObject::updateData(const App::Property* p)
 {
-    Fem::FemPostObject* postObject = static_cast<Fem::FemPostObject*>(getObject());
+    Fem::FemPostObject* postObject = getObject<Fem::FemPostObject>();
     if (p == &postObject->Data) {
         updateVtk();
     }
@@ -846,7 +846,7 @@ bool ViewProviderFemPostObject::setupPipeline()
         return false;
     }
 
-    auto postObject = static_cast<Fem::FemPostObject*>(getObject());
+    auto postObject = getObject<Fem::FemPostObject>();
 
     vtkDataObject* data = postObject->Data.getValue();
     if (!data) {
@@ -903,7 +903,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
     bool ResetColorBarRange;
 
     // the point filter delivers a single value thus recoloring the bar is senseless
-    if (static_cast<Fem::FemPostObject*>(getObject())->getTypeId()
+    if (getObject<Fem::FemPostObject>()->getTypeId()
         == Base::Type::fromName("Fem::FemPostDataAtPointFilter")) {
         ResetColorBarRange = false;
     }

@@ -59,82 +59,82 @@
        </property>
        <item>
         <property name="text">
-         <string>c11</string>
+         <string notr="true">c11</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>f7</string>
+         <string notr="true">f7</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h6</string>
+         <string notr="true">h6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h7</string>
+         <string notr="true">h7</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h9</string>
+         <string notr="true">h9</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h9</string>
+         <string notr="true">h9</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h9</string>
+         <string notr="true">h9</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h6</string>
+         <string notr="true">h6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h6</string>
+         <string notr="true">h6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h6</string>
+         <string notr="true">h6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h6</string>
+         <string notr="true">h6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>h6</string>
+         <string notr="true">h6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>k6</string>
+         <string notr="true">k6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>n6</string>
+         <string notr="true">n6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>r6</string>
+         <string notr="true">r6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>s6</string>
+         <string notr="true">s6</string>
         </property>
        </item>
       </widget>
@@ -149,7 +149,7 @@
      <item row="0" column="1">
       <widget class="QLabel" name="lbBaseField">
        <property name="text">
-        <string>             H11/</string>
+        <string notr="true">             H11/</string>
        </property>
       </widget>
      </item>

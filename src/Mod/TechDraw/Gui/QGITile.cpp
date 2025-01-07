@@ -30,9 +30,9 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawTileWeld.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGITile.h"
 #include "PreferencesGui.h"
@@ -42,6 +42,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     m_textL(QString::fromUtf8(" ")),
@@ -70,10 +71,7 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
 
     m_wide = getSymbolWidth();
     m_high = getSymbolHeight();
-//    m_high = prefFontSize();
-    m_textL  = QString();
-    m_textR  = QString();
-    m_textC  = QString();
+
     m_fontName = prefTextFont();
     m_font = QFont(m_fontName);
 
@@ -89,55 +87,19 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     m_colCurrent = m_colNormal;
 }
 
-QGITile::~QGITile()
-{
-
-}
 
 void QGITile::draw()
 {
-//    Base::Console().Message("QGIT::draw()\n");
-
     prepareGeometryChange();
     m_wide = getSymbolWidth();
     m_high = getSymbolHeight();
 
     makeText();
     makeSymbol();
-
-    double textWidthL = m_qgTextL->boundingRect().width();
-    double textWidthR = m_qgTextR->boundingRect().width();
-    double totalWidth = m_wide + textWidthL + textWidthR;
-    if (m_row == 0) {     //arrowSide
-        double x = m_origin.x();
-        double y = m_origin.y() - (m_high * 0.5);    //inverted y!!
-        setPos(x, y);
-    } else if (m_row == -1) {    //otherSide
-        if (getAltWeld()) {
-            if (isTailRight()) {
-                double x = m_origin.x() + (0.5 * totalWidth); //move to right 1/2 tile width
-                double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
-                setPos(x, y);
-            } else {
-                double x = m_origin.x() - (0.5 * totalWidth); //move to left 1/2 tile width
-                double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
-                setPos(x, y);
-            }
-        } else {
-            double x = m_origin.x();
-            double y = m_origin.y() + (m_high * 0.5);    //inverted y!!
-            setPos(x, y);
-        }
-    } else {
-        double x = m_origin.x() + m_col * totalWidth;
-        double y = m_origin.y() - (m_row * m_high) - (m_high * 0.5);    //inverted y!!
-        setPos(x, y);
-    }
 }
 
 void QGITile::makeSymbol()
 {
-//    Base::Console().Message("QGIT::makeSymbol()\n");
 //    m_effect->setColor(m_colCurrent);
 //    m_qgSvg->setGraphicsEffect(m_effect);
 
@@ -156,12 +118,9 @@ void QGITile::makeSymbol()
 
 void QGITile::makeText()
 {
-//    Base::Console().Message("QGIT::makeText()\n");
     prepareGeometryChange();
-//    m_font.setPixelSize(prefFontSize());
     double verticalFudge = 0.10;
 
-    //(0, 0) is 1/2 up symbol (above line symbol)!
     m_qgTextL->setFont(m_font);
     m_qgTextL->setPlainText(m_textL);
     m_qgTextL->setColor(m_colCurrent);
@@ -194,7 +153,7 @@ void QGITile::makeText()
     charWidth = textWidth / m_textR.size();
     hMargin = 1;
     if (!m_textR.isEmpty()) {
-        hMargin = (m_wide / 2.0) + (charWidth);
+        hMargin = (m_wide / 2) + (charWidth);
     }
     double textHeightR = m_qgTextR->boundingRect().height();
     if (m_row < 0) {                      // below line
@@ -217,7 +176,7 @@ void QGITile::makeText()
 }
 
 //read whole text file into std::string
-std::string QGITile::getStringFromFile(std::string inSpec)
+std::string QGITile::getStringFromFile(const std::string& inSpec)
 {
     Base::FileInfo fi(inSpec);
     Base::ifstream f(fi);
@@ -238,41 +197,40 @@ void QGITile::setTileScale(double s)
     m_scale = s;
 }
 
-void QGITile::setTileTextLeft(std::string s)
+void QGITile::setTileTextLeft(const std::string& text)
 {
-    m_textL = QString::fromUtf8(s.c_str());
+    m_textL = QString::fromUtf8(text.c_str());
 }
 
-void QGITile::setTileTextRight(std::string s)
+void QGITile::setTileTextRight(const std::string& text)
 {
-    m_textR = QString::fromUtf8(s.c_str());
+    m_textR = QString::fromUtf8(text.c_str());
 }
 
-void QGITile::setTileTextCenter(std::string s)
+void QGITile::setTileTextCenter(const std::string& text)
 {
-    m_textC = QString::fromUtf8(s.c_str());
+    m_textC = QString::fromUtf8(text.c_str());
 }
 
-void QGITile::setFont(QFont f, double fSizePx)
+void QGITile::setFont(const QFont& font, double fSizePx)
 {
-//    Base::Console().Message("QGIT::setFont(%s, %.3f)\n", qPrintable(f.family()), fSizePx);
-    m_font = f;
+    m_font = font;
     m_font.setPixelSize(fSizePx);
 }
 
-void QGITile::setFont(std::string fName, double fSizePx)
+
+void QGITile::setFont(const std::string &fName, double fSizePx)
 {
-    QString qFName = Base::Tools::fromStdString(fName);
-    QFont f(qFName);
-    setFont(f, fSizePx);
+    QString qFName = QString::fromStdString(fName);
+    QFont font(qFName);
+    setFont(font, fSizePx);
 }
 
 
-void QGITile::setSymbolFile(std::string s)
+void QGITile::setSymbolFile(const std::string &fileSpec)
 {
-//    Base::Console().Message("QGIT::setSymbolFile(%s)\n", s.c_str());
-    if (!s.empty()) {
-        m_svgPath = QString::fromUtf8(s.c_str());
+    if (!fileSpec.empty()) {
+        m_svgPath = QString::fromUtf8(fileSpec.c_str());
     }
 }
 
@@ -309,12 +267,12 @@ void QGITile::setPrettySel() {
     draw();
 }
 
-bool QGITile::isTailRight()
+bool QGITile::isTailRight() const
 {
     return m_tailRight;
 }
 
-bool QGITile::getAltWeld()
+bool QGITile::getAltWeld() const
 {
     return m_altWeld;
 }
@@ -328,24 +286,22 @@ QColor QGITile::getTileColor() const
 
 double QGITile::getSymbolWidth() const
 {
-    double w = Preferences::getPreferenceGroup("Dimensions")->GetFloat("SymbolSize", 64);
+    double symbolWidth = Preferences::getPreferenceGroup("Dimensions")->GetFloat("SymbolSize", 64);
 //     symbols are only nominally 64x64. they actually have a "border" of 4 - 0.5*stroke(0.5)
 //     so we'll say effectively 62x62? 60 x 60
-//    double w = 64.0;
-    double fudge = 4.0;              //allowance for tile border
-    w = w - fudge;
-    w = w * getSymbolFactor();
-    return w;
+    constexpr double borderAllow = 4.0;              //allowance for tile border
+    symbolWidth = symbolWidth - borderAllow;
+    symbolWidth = symbolWidth * getSymbolFactor();
+    return symbolWidth;
 }
 
 double QGITile::getSymbolHeight() const
 {
-    double h = Preferences::getPreferenceGroup("Dimensions")->GetFloat("SymbolSize", 64);
-    double fudge = 4.0;
-    h = h - fudge;
-//    double h = 60.0;
-    h = h * getSymbolFactor();
-    return h;
+    double height = Preferences::getPreferenceGroup("Dimensions")->GetFloat("SymbolSize", 64);
+    double borderAllow = 4.0;
+    height = height - borderAllow;
+    height = height * getSymbolFactor();
+    return height;
 }
 
 //make symbols larger or smaller than standard
@@ -356,7 +312,6 @@ double QGITile::getSymbolFactor() const
 
 double QGITile::prefFontSize() const
 {
-//    Base::Reference<ParameterGrp> hGrp = Preferences::getPreferenceGroup("Dimensions");
     return Preferences::dimFontSizeMM();
 }
 
@@ -369,4 +324,62 @@ QRectF QGITile::boundingRect() const
 {
     return childrenBoundingRect();
 }
+
+
+//! determine where to position the tile based on which fields are used.
+QPointF QGITile::calcTilePosition()
+{
+    constexpr double OneHalf{0.5};
+    auto xDir = m_leaderXDirection;     // "right"
+    auto yDir = m_leaderYDirection;     // "up"
+    Base::Vector3d stdX{1, 0, 0};
+    auto dot = stdX.Dot(xDir);
+    if (dot < 0) {
+        // our leader points left, so yDir should be +Y, but we need -Y up
+        yDir = -yDir;
+    }
+
+    double textWidthL = m_qgTextL->boundingRect().width();
+    double textWidthR = m_qgTextR->boundingRect().width();
+    double totalWidth = m_wide + textWidthL + textWidthR;
+
+    if (m_row == 0) {     //arrowSide
+        double offsetDistanceY = getSymbolHeight() * OneHalf;
+        auto vOffset = yDir * offsetDistanceY;
+        auto netPosition = m_origin + DU::toQPointF(vOffset);
+        return netPosition;
+    }
+
+    if (m_row == -1) {    //otherSide
+        if (getAltWeld()) {
+            if (isTailRight()) {
+                auto hOffset = DU::toQPointF(xDir * (OneHalf * totalWidth));          //move to right 1/2 tile width
+                auto vOffset = DU::toQPointF(yDir * (getSymbolHeight() * OneHalf));   // move down 1/2 tile height
+                auto netPosition = m_origin + hOffset - vOffset;
+                return netPosition;
+            }
+            auto hOffset = DU::toQPointF(xDir * (OneHalf * totalWidth));
+            auto vOffset = DU::toQPointF(yDir * (OneHalf * getSymbolHeight()));
+            auto netPosition = m_origin - hOffset - vOffset;    // left and down
+            return netPosition;
+        }
+
+        auto vOffset = DU::toQPointF(yDir * (OneHalf * getSymbolHeight()));     // down 1/2 tile height
+        auto netPosition = m_origin - vOffset;
+        return netPosition;
+    }
+
+    auto hOffset = DU::toQPointF(xDir * (m_col * totalWidth));
+    auto vOffset = DU::toQPointF(yDir * ((m_row * m_high) + (m_high * OneHalf)));
+    auto netPosition = m_origin + hOffset - vOffset;
+
+    return netPosition;
+}
+
+void QGITile::setLocalAxes(Base::Vector3d xdir, Base::Vector3d ydir)
+{
+    m_leaderXDirection = xdir;
+    m_leaderYDirection = ydir;
+}
+
 

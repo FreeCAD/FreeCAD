@@ -287,7 +287,7 @@ void SketcherValidation::onFindReversedClicked()
                 *sketch,
                 tr("Reversed external geometry"),
                 tr("%1 reversed external-geometry arcs were found. Their endpoints are"
-                   " encircled in 3d view.\n\n"
+                   " encircled in 3D view.\n\n"
                    "%2 constraints are linking to the endpoints. The constraints have"
                    " been listed in Report view (menu View -> Panels -> Report view).\n\n"
                    "Click \"Swap endpoints in constraints\" button to reassign endpoints."
@@ -302,7 +302,7 @@ void SketcherValidation::onFindReversedClicked()
                 *sketch,
                 tr("Reversed external geometry"),
                 tr("%1 reversed external-geometry arcs were found. Their endpoints are "
-                   "encircled in 3d view.\n\n"
+                   "encircled in 3D view.\n\n"
                    "However, no constraints linking to the endpoints were found.")
                     .arg(points.size() / 2));
 

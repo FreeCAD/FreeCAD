@@ -64,6 +64,8 @@ public:
         return transactionID;
     }
 
+    bool event(QEvent* event) override;
+
 protected Q_SLOTS:
     void onButtonRefSel(const bool checked);
     void doubleClicked(QListWidgetItem* item);
@@ -76,7 +78,7 @@ protected Q_SLOTS:
 protected:
     void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
     bool wasDoubleClicked = false;
-    bool KeyEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent* ke) override;
     void hideOnError();
     void addAllEdges(QListWidget* listWidget);
     void deleteRef(QListWidget* listWidget);
@@ -93,8 +95,9 @@ protected:
     template<typename T = App::DocumentObject> T* getObject() const
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
+
         if (!DressUpView.expired()) {
-            return dynamic_cast<T*>(DressUpView->getObject());
+            return DressUpView->getObject<T>();
         }
 
         return nullptr;
@@ -102,6 +105,7 @@ protected:
 
 private:
     void tryAddSelection(const std::string& doc, const std::string& obj, const std::string& sub);
+    void setDressUpVisibility(bool visible);
 
 protected:
     QWidget* proxy;

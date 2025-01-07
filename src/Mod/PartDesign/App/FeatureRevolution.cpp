@@ -80,6 +80,12 @@ short Revolution::mustExecute() const
 
 App::DocumentObjectExecReturn* Revolution::execute()
 {
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     // Validate parameters
     // All angles are in radians unless explicitly stated
     double angleDeg = Angle.getValue();
@@ -213,12 +219,16 @@ App::DocumentObjectExecReturn* Revolution::execute()
         }
 
         if (!result.isNull()) {
+            // store shape before refinement
+            this->rawShape = result;
             result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
             this->AddSubShape.setValue(result);
 
             if (!base.isNull()) {
                 result = result.makeElementFuse(base);
+                // store shape before refinement
+                this->rawShape = result;
                 result = refineShapeIfActive(result);
             }
             this->Shape.setValue(getSolid(result));

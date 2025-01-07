@@ -60,6 +60,7 @@
 #include <Quarter/Quarter.h>
 
 #include "Application.h"
+#include "ApplicationPy.h"
 #include "AxisOriginPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -115,11 +116,12 @@
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderMaterialObject.h"
-#include "ViewProviderOrigin.h"
-#include "ViewProviderOriginFeature.h"
+#include "ViewProviderCoordinateSystem.h"
+#include "ViewProviderDatum.h"
 #include "ViewProviderOriginGroup.h"
 #include "ViewProviderPlacement.h"
 #include "ViewProviderPlane.h"
+#include "ViewProviderPoint.h"
 #include "ViewProviderPart.h"
 #include "ViewProviderFeaturePython.h"
 #include "ViewProviderTextDocument.h"
@@ -435,7 +437,7 @@ Application::Application(bool GUIenabled)
                                                              "FreeCADGui",
                                                              FreeCADGui_doc,
                                                              -1,
-                                                             Application::Methods,
+                                                             ApplicationPy::Methods,
                                                              nullptr,
                                                              nullptr,
                                                              nullptr,
@@ -446,7 +448,7 @@ Application::Application(bool GUIenabled)
         }
         else {
             // extend the method list
-            PyModule_AddFunctions(module, Application::Methods);
+            PyModule_AddFunctions(module, ApplicationPy::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
         Py::Module(module).setAttr(std::string("HasQtBug_129596"),
@@ -559,8 +561,15 @@ Application::Application(bool GUIenabled)
     _pcWorkbenchDictionary = PyDict_New();
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    // Instantiate the 3Dconnexion controller
-    pNavlibInterface = new NavlibInterface();
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        // Instantiate the 3Dconnexion controller
+        pNavlibInterface = new NavlibInterface();
+    }
+    else {
+        pNavlibInterface = nullptr;
+    }
 #endif
 
     if (GUIenabled) {
@@ -2068,14 +2077,15 @@ void Application::initTypes()
     Gui::ViewProviderGeometryPython             ::init();
     Gui::ViewProviderPlacement                  ::init();
     Gui::ViewProviderPlacementPython            ::init();
-    Gui::ViewProviderOriginFeature              ::init();
+    Gui::ViewProviderDatum                      ::init();
     Gui::ViewProviderPlane                      ::init();
+    Gui::ViewProviderPoint                      ::init();
     Gui::ViewProviderLine                       ::init();
     Gui::ViewProviderGeoFeatureGroup            ::init();
     Gui::ViewProviderGeoFeatureGroupPython      ::init();
     Gui::ViewProviderOriginGroup                ::init();
     Gui::ViewProviderPart                       ::init();
-    Gui::ViewProviderOrigin                     ::init();
+    Gui::ViewProviderCoordinateSystem           ::init();
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
@@ -2250,11 +2260,8 @@ void Application::runApplication()
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
 
-    // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
-    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
-    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
@@ -2276,6 +2283,10 @@ void Application::runApplication()
     MainWindow mw;
     mw.setProperty("QuitOnClosed", true);
 
+    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
+    // Needs to be set after app is created to override platform defaults (qt commit a2aa1f81a81)
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
+
 #ifdef FC_DEBUG  // redirect Coin messages to FreeCAD
     SoDebugError::setHandlerCallback(messageHandlerCoin, 0);
 #endif
@@ -2296,12 +2307,22 @@ void Application::runApplication()
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    Instance->pNavlibInterface->enableNavigation();
+    if (Instance->pNavlibInterface) {
+        Instance->pNavlibInterface->enableNavigation();
+    }
 #endif
 
     runEventLoop(mainApp);
 
     Base::Console().Log("Finish: Event loop left\n");
+}
+
+bool Application::hiddenMainWindow()
+{
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    auto it = cfg.find("StartHidden");
+
+    return it != cfg.end();
 }
 
 bool Application::testStatus(Status pos) const

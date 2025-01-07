@@ -1,7 +1,7 @@
 This folder (`locale`) contains translations for [TechDraw workbench templates](https://wiki.freecad.org/TechDraw_Templates) in the parent `Templates` folder.
 The name of each `locale` subfolder represents a language, which follows [IETF BCP 47 standardized codes](https://en.wikipedia.org/wiki/IETF_language_tag). The original TechDraw templates in the parent folder are written using American English (`en-US`).
 
-As such, the most basic name for a locale subfolder will include an [ISO 639 language code](https://en.wikipedia.org/wiki/ISO_639) (e.g. `de` for German). If it's necessary, additional subtags can be added to describe language variants. For instance variants spoken in a particular country, or a specific script. Those subtags are combinable and are based in other standards. 
+As such, the most basic name for a locale subfolder will include an [ISO 639 language code](https://en.wikipedia.org/wiki/ISO_639) (e.g. `de` for German). If it's necessary, additional subtags can be added to describe language variants. For instance variants spoken in a particular country, or a specific script. Those subtags are combinable and are based in other standards.
 
 The most common additional subtag is an additional country code to describe a regional variant of the language (e.g. `de-DE` for German spoken in Germany, `es-AR` for Spanish spoken in Argentina, or `zh-CN` for Simplified Chinese in Mainland China). Country subtags are based on [the ISO 3166-1 standard's country codes](https://en.wikipedia.org/wiki/ISO_3166-1).
 

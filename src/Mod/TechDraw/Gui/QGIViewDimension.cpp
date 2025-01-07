@@ -362,10 +362,10 @@ void QGIDatumLabel::updateFrameRect() {
     int paddingRight = fontSize * 0.3;
     int paddingBottom = fontSize * 0.125;
     // Why top and bottom padding different?
-    // Because the m_dimText bouding box isn't relative to X height :(
+    // Because the m_dimText bounding box isn't relative to X height :(
     // And we want padding to be relative to X height
     // TODO: make QGCustomLabel::boundingBoxXHeight
-    m_frame->setRect(m_textItems->childrenBoundingRect().adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom)); // Update bouding rect
+    m_frame->setRect(m_textItems->childrenBoundingRect().adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom)); // Update bounding rect
 }
 
 void QGIDatumLabel::setLineWidth(double lineWidth)
@@ -466,7 +466,7 @@ void QGIDatumLabel::setFont(QFont font)
     QFont tFont(font);
     double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
-    tFont.setPixelSize((int)(fontSize * tolAdj));
+    tFont.setPixelSize(std::max(1, (int)(fontSize * tolAdj)));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
     updateFrameRect();

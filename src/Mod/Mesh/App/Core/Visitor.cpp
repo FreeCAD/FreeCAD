@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <cmath>
+#endif
 
 #include "Algorithm.h"
 #include "Approximation.h"
@@ -73,14 +76,13 @@ unsigned long MeshKernel::VisitNeighbourFacets(MeshFacetVisitor& rclFVisitor,
                 if (clNBFacet->IsFlag(MeshFacet::VISIT)) {
                     continue;  // neighbour facet already visited
                 }
-                else {
-                    // visit and mark
-                    ulVisited++;
-                    clNextLevel.push_back(j);
-                    clNBFacet->SetFlag(MeshFacet::VISIT);
-                    if (!rclFVisitor.Visit(*clNBFacet, *clCurrFacet, j, ulLevel)) {
-                        return ulVisited;
-                    }
+
+                // visit and mark
+                ulVisited++;
+                clNextLevel.push_back(j);
+                clNBFacet->SetFlag(MeshFacet::VISIT);
+                if (!rclFVisitor.Visit(*clNBFacet, *clCurrFacet, j, ulLevel)) {
+                    return ulVisited;
                 }
             }
         }
@@ -111,8 +113,7 @@ unsigned long MeshKernel::VisitNeighbourFacetsOverCorners(MeshFacetVisitor& rclF
 
     while (!aclCurrentLevel.empty()) {
         // visit all neighbours of the current level
-        for (std::vector<FacetIndex>::iterator pCurrFacet = aclCurrentLevel.begin();
-             pCurrFacet < aclCurrentLevel.end();
+        for (auto pCurrFacet = aclCurrentLevel.begin(); pCurrFacet < aclCurrentLevel.end();
              ++pCurrFacet) {
             for (int i = 0; i < 3; i++) {
                 const MeshFacet& rclFacet = raclFAry[*pCurrFacet];
@@ -234,7 +235,7 @@ bool MeshPlaneVisitor::AllowVisit(const MeshFacet& face,
     }
     MeshGeomFacet triangle = mesh.GetFacet(face);
     for (const auto& pnt : triangle._aclPoints) {
-        if (fabs(fitter->GetDistanceToPlane(pnt)) > max_deviation) {
+        if (std::fabs(fitter->GetDistanceToPlane(pnt)) > max_deviation) {
             return false;
         }
     }

@@ -29,7 +29,7 @@
 #endif
 
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
@@ -89,12 +89,14 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         return false;
     App::DocumentObject *parent = nullptr;
     std::string subname;
-    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, &parent, &subname);
     if (activeBody != body) {
         parent = obj;
+        subname.clear();
     }
     else {
-        parent = getParent(obj, subname);
+        subname += obj->getNameInDocument();
+        subname += '.';
     }
 
     Gui::cmdGuiDocument(parent, std::ostringstream() << "setEdit("
@@ -514,7 +516,7 @@ bool isFeatureMovable(App::DocumentObject* const feat)
     if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
         auto attachable = feat->getExtensionByType<Part::AttachExtension>();
         App::DocumentObject* support = attachable->AttachmentSupport.getValue();
-        if (support && !support->isDerivedFrom<App::OriginFeature>()) {
+        if (support && !support->isDerivedFrom<App::DatumElement>()) {
             return false;
         }
     }
@@ -545,19 +547,19 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
             }
             if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
                 App::DocumentObject* axis = prop->getValue();
-                if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
+                if (axis && !axis->isDerivedFrom<App::DatumElement>()){
                     unique_objs.insert(axis);
                 }
             }
             if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
                 App::DocumentObject* axis = prop->getValue();
-                if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
+                if (axis && !axis->isDerivedFrom<App::DatumElement>()){
                     unique_objs.insert(axis);
                 }
             }
             if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
                 App::DocumentObject* axis = prop->getValue();
-                if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
+                if (axis && !axis->isDerivedFrom<App::DatumElement>()){
                     unique_objs.insert(axis);
                 }
             }
@@ -576,9 +578,9 @@ void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
     if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
         auto attachable = feat->getExtensionByType<Part::AttachExtension>();
         App::DocumentObject* support = attachable->AttachmentSupport.getValue();
-        if (support && support->isDerivedFrom<App::OriginFeature>()) {
-            auto originfeat = static_cast<App::OriginFeature*>(support);
-            App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
+        if (support && support->isDerivedFrom<App::DatumElement>()) {
+            auto originfeat = static_cast<App::DatumElement*>(support);
+            App::DatumElement* targetOriginFeature = targetbody->getOrigin()->getDatumElement(originfeat->Role.getValue());
             if (targetOriginFeature) {
                 attachable->AttachmentSupport.setValue(static_cast<App::DocumentObject*>(targetOriginFeature), "");
             }
@@ -588,9 +590,9 @@ void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
         auto prim = static_cast<PartDesign::ProfileBased*>(feat);
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
             App::DocumentObject* axis = prop->getValue();
-            if (axis && axis->isDerivedFrom<App::OriginFeature>()){
-                auto originfeat = static_cast<App::OriginFeature*>(axis);
-                App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
+            if (axis && axis->isDerivedFrom<App::DatumElement>()){
+                auto originfeat = static_cast<App::DatumElement*>(axis);
+                App::DatumElement* targetOriginFeature = targetbody->getOrigin()->getDatumElement(originfeat->Role.getValue());
                 if (targetOriginFeature) {
                     prop->setValue(static_cast<App::DocumentObject*>(targetOriginFeature), std::vector<std::string>(0));
                 }
