@@ -32,7 +32,7 @@ namespace Dialog {
 class Ui_DlgOnlineHelp;
 
 /** This class implements the dialog for downloading the online documentation.
- * Moreover it allows to specify location of the start page an an external browser.
+ * Moreover it allows one to specify location of the start page an an external browser.
  * Here you can specify to use a proxy if necessary and some more stuff.
  * \author Werner Mayer
  */

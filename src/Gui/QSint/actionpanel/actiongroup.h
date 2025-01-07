@@ -72,7 +72,7 @@ public:
       one below another.
 
       Set \a addToLayout to \a false if you want to add the action to the specified layout manually.
-      This allows to do custom actions arrangements, i.e. horizontal etc.
+      This allows one to do custom actions arrangements, i.e. horizontal etc.
 
       If \a addStretch is set to \a true (default),
       ActionLabel will be automatically aligned to the left side of the ActionGroup.

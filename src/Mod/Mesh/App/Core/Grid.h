@@ -45,7 +45,7 @@ class MeshGrid;
 static constexpr float MESHGRID_BBOX_EXTENSION = 10.0F;
 
 /**
- * The MeshGrid allows to divide a global mesh object into smaller regions
+ * The MeshGrid allows one to divide a global mesh object into smaller regions
  * of elements (e.g. facets, points or edges) depending on the resolution
  * of the grid. All grid elements in the grid structure have the same size.
  *

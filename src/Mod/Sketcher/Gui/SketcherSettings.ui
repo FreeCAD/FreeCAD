@@ -124,7 +124,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxEnableEscape">
         <property name="toolTip">
-         <string>Allow to leave sketch edit mode when pressing Esc button</string>
+         <string>Allow leaving sketch edit mode when pressing Esc button</string>
         </property>
         <property name="text">
          <string>Esc can leave sketch edit mode</string>

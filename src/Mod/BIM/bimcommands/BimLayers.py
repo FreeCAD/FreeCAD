@@ -124,7 +124,7 @@ class BIM_Layers:
         self.dialog.tree.setRootIsDecorated(False)  # removes spacing in first column
         self.dialog.tree.setSelectionMode(
             QtGui.QTreeView.ExtendedSelection
-        )  # allow to select many
+        )  # allow one to select many
 
         # fill the tree view
         self.update()

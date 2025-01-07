@@ -85,7 +85,7 @@ class SequencerLauncher;
  *        seq2.next ();
  *      }
  *
- *      seq1.next ( true ); // allow to cancel
+ *      seq1.next ( true ); // allow one to cancel
  *    }
  *  }
  *  catch(const Base::AbortException&){

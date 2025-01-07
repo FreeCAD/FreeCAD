@@ -168,11 +168,11 @@ class _Geometry(object):
         :returns: True if successful, False if maximum depth achieved
         """
 
-        # do not allow to increase depth if we are already at stop depth
+        # do not allow one to increase depth if we are already at stop depth
         if self.maximumDepth == self.stop:
             return False
 
-        # do not allow to increase depth if we are already at
+        # do not allow one to increase depth if we are already at
         # maximum usable depth
 
         if self.maximumDepth <= maximumUsableDepth:

@@ -125,7 +125,7 @@ class BezCurve(gui_lines.Line):
                     self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # does this make sense for a BCurve?
-                    # DNC: allows to close the curve
+                    # DNC: allows one to close the curve
                     # by placing ends close to each other
                     # with tol = Draft tolerance
                     # old code has been to insensitive
@@ -327,7 +327,7 @@ class CubicBezCurve(gui_lines.Line):
                         # add point to "clicked list"
                         self.node.append(self.point)
                         self.drawUpdate(self.point)
-                        # DNC: allows to close the curve
+                        # DNC: allows one to close the curve
                         # by placing ends close to each other
                         # with tol = Draft tolerance
                         # old code has been to insensitive
@@ -363,7 +363,7 @@ class CubicBezCurve(gui_lines.Line):
                     if len(self.node) > 2:
                         self.node[-3] = 2 * self.node[-2] - self.node[-1]
                         self.drawUpdate(self.point)
-                        # DNC: allows to close the curve
+                        # DNC: allows one to close the curve
                         # by placing ends close to each other
                         # with tol = Draft tolerance
                         # old code has been to insensitive

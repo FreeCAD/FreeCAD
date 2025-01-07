@@ -24,7 +24,7 @@ __author__ = "Sebastian Hoogen"
 __url__ = ["https://www.freecad.org"]
 
 '''
-This functions allows to replace an object in the feature hierarchy
+This functions allows one to replace an object in the feature hierarchy
 '''
 
 

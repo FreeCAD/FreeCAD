@@ -182,7 +182,7 @@ public:
      * one gets created automatically if needed.
      *
      * If a url handler is registered that supports its scheme it will be delegated
-     * to this handler. This mechanism allows to change the default behaviour.
+     * to this handler. This mechanism allows one to change the default behaviour.
      */
     void loadUrls(App::Document*, const QList<QUrl>&);
     /**
@@ -288,7 +288,7 @@ protected:
     void dragEnterEvent(QDragEnterEvent * e) override;
     /**
      * This method is called from the Qt framework automatically whenever a
-     * QTranslator object has been installed. This allows to translate all
+     * QTranslator object has been installed. This allows one to translate all
      * relevant user visible text.
      */
     void changeEvent(QEvent *e) override;

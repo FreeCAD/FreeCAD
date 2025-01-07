@@ -798,7 +798,7 @@ private:
      * The implementation is on the order of the groups provided by the QR decomposition used to
      * reveal the parameters (see System::identifyDependentParameters in GCS). Zeros are made over
      * the pilot of the full R matrix of the QR decomposition, which is a top triangular
-     * matrix.This, together with the permutation matrix, allow to know groups of dependent
+     * matrix.This, together with the permutation matrix, allow one to know groups of dependent
      * parameters (cols between rank and full size). Each group refers to a new parameter not
      * affected by the rank in combination with other free parameters intervening in the rank
      * (because of the triangular shape of the R matrix). This results in that each the first column

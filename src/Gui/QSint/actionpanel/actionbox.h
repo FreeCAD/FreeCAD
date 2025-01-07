@@ -57,7 +57,7 @@ namespace QSint
     connect(action2, SIGNAL(clicked()), this, SLOT(action2clicked()));
     \endcode
 
-    createItem() also allows to create an ActionLabel from already existing QAction:
+    createItem() also allows one to create an ActionLabel from already existing QAction:
 
     \code
     QAction myAction3(":/icons/action3icon.png", "Action3 Text");
@@ -195,7 +195,7 @@ public:
       one below another.
 
       You can add action to the specified layout passing it as \a l parameter.
-      This allows to do custom actions arrangements, i.e. horizontal etc.
+      This allows one to do custom actions arrangements, i.e. horizontal etc.
 
       \since 0.2
       */

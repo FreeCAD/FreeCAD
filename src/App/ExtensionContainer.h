@@ -39,7 +39,7 @@ class Extension;
  * impossible to handle multiple inheritance in the C-API for python extensions. Also using multiple
  * parent classes in python is currently not possible with the default object approach.
  *
- * The concept of extensions allow to circumvent those problems. Extensions are FreeCAD objects
+ * The concept of extensions allows one to circumvent those problems. Extensions are FreeCAD objects
  * which work like normal objects in the sense that they use properties and class methods to define
  * their functionality. However, they are not exposed as individual usable entities but are used to
  * extend other objects. A extended object gets all the properties and methods of the extension.

@@ -35,7 +35,7 @@ class ifc_object:
 
     def __init__(self, otype=None):
         self.cached = True  # this marks that the object is freshly created and its shape should be taken from cache
-        self.virgin_placement = True  # this allows to set the initial placement without triggering any placement change
+        self.virgin_placement = True  # this allows one to set the initial placement without triggering any placement change
         if otype:
             self.Type = (
                 otype[0].upper() + otype[1:]

@@ -872,7 +872,7 @@ bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
 {
     // As long as this widget is a top-level window (either in 'TopLevel' or 'FullScreen' mode) we
     // need to be notified when an action is added to a widget. This action must also be added to
-    // this window to allow to make use of its shortcut (if defined).
+    // this window to allow one to make use of its shortcut (if defined).
     // Note: We don't need to care about removing an action if its parent widget gets destroyed.
     // This does the action itself for us.
     if (watched != this && e->type() == QEvent::ActionAdded) {

@@ -90,7 +90,7 @@ class DocumentObject(object):
         "removes the to-be-recomputed flag of this object"
         return self.__object__.purgeTouched()
     def __setstate__(self,value):
-        """allows to save custom attributes of this object as strings, so
+        """allows saving custom attributes of this object as strings, so
         they can be saved when saving the FreeCAD document"""
         return None
     def __getstate__(self):
@@ -223,7 +223,7 @@ class ViewProvider(object):
         "returns the documentation string of a given property"
         return self.__vobject__.getDocumentationOfProperty(attr)
     def __setstate__(self,value):
-        """allows to save custom attributes of this object as strings, so
+        """allows saving custom attributes of this object as strings, so
         they can be saved when saving the FreeCAD document"""
         return None
     def __getstate__(self):

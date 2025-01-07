@@ -368,7 +368,7 @@ have the same values.</string>
       </size>
      </property>
      <property name="toolTip">
-      <string>Allows to cut objects intersecting each other
+      <string>Allows cutting objects intersecting each other
 for the price that all cut objects
 will get the same color</string>
      </property>
