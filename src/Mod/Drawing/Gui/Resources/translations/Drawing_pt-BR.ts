@@ -336,7 +336,7 @@
       <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation>A impressora utiliza uma orientação diferente do que o desenho.
+      <translation>A impressora utiliza uma orientação diferente do que o desenho. 
 Deseja continuar?</translation>
     </message>
     <message>

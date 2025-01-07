@@ -69,7 +69,7 @@ FreeCADwiki unter https://wiki.freecad.org geholt</translation>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation>Die Dokumentationsseiten werden aus einer automatischen Markdown Konvertierung
+      <translation>Die Dokumentationsseiten werden aus einer automatischen Markdown Konvertierung 
 des FreeCAD Wikis geholt, das auf FreeCAD&apos;s GitHub Account bereitgestellt wird. Dies kann mit einer
 benutzerdefinierten Formatvorlage gestaltet werden und kann schöner aussehen als die Wiki Option. Die &apos;Markdown&apos; oder
 &apos;Pandoc&apos; Python Module sollten für optimale Ergebnisse installiert werden.</translation>
@@ -111,7 +111,7 @@ der es dir ermöglicht, ihn geöffnet zu halten, während du in der 3D Ansicht a
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation>Hier kann den Pfad zu einer alternativen CSS-Datei angeben werden, mit der die Markdown-Seiten
+      <translation>Hier kann den Pfad zu einer alternativen CSS-Datei angeben werden, mit der die Markdown-Seiten 
 gestalten sein sollen. Dies funktioniert nur, wenn die obige
 Markdown Version ausgewählt ist.</translation>
     </message>

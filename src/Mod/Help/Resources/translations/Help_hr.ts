@@ -21,10 +21,10 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Postavite ovo na prilagođeni URL ili mapu gdje se nalaze datoteke pomoći.
-Lako možete preuzeti dokumentaciju za korištenje izvan mreže pomoću
-Upravitelja Dodataka i instaliranjem dodatka &quot;offline dokumentacija&amp;quot.
-Ako je ovo polje prazno, FreeCAD će automatski pretraživati datoteke za pomoć na
+      <translation>Postavite ovo na prilagođeni URL ili mapu gdje se nalaze datoteke pomoći. 
+Lako možete preuzeti dokumentaciju za korištenje izvan mreže pomoću 
+Upravitelja Dodataka i instaliranjem dodatka &quot;offline dokumentacija&amp;quot. 
+Ako je ovo polje prazno, FreeCAD će automatski pretraživati datoteke za pomoć na 
 zadanoj lokaciji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -103,7 +103,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation>Dokumentacija će se otvoriti u Ugrađenom dijalogu koji se može pohraniti u prozoru FreeCAD-a,
+      <translation>Dokumentacija će se otvoriti u Ugrađenom dijalogu koji se može pohraniti u prozoru FreeCAD-a, 
 što vam omogućuje da ga držite otvorenim dok radite u 3D prikazu.Ovo zahtijeva komponentu PySide QtWebengineWidgets</translation>
     </message>
     <message>
@@ -111,8 +111,8 @@ which allows you to keep it open while working in the 3D view. This requires the
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation>Ovdje možete navesti putanju do alternativne CSS datoteke
-koja će se koristiti za oblikovanje stranica Markdowna.
+      <translation>Ovdje možete navesti putanju do alternativne CSS datoteke 
+koja će se koristiti za oblikovanje stranica Markdowna. 
 Ova opcija će raditi samo ako ste odabrali Markdown verziju gore.</translation>
     </message>
     <message>

@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Ha ez ki van jelölve akkor a Többmátrix tárgy Parametrikus lesz</translation>
+      <translation>Ha ez kijelölt, akkor a Többmátrix objektum változós lesz</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>
@@ -57,7 +57,7 @@
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>A sokszög, hasáb vagy csonka maximális felületeinek száma. Ha az fn nagyobb mint ez az érték akkor ezt a tárgyat mint kört veszi figyelembe. Állítsa 0-ra a határtalansághoz</translation>
+      <translation>A sokszög, hasáb vagy csonka maximális felületeinek száma. Ha az fn nagyobb mint ez az érték akkor ezt az objektumot mint kört veszi figyelembe. Állítsa 0-ra a határtalansághoz</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Please select 3 objects first</source>
-      <translation>Kérem válasszon ki először 3 tárgyat</translation>
+      <translation>Kérem válasszon ki először 3 objektumot</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="334"/>
@@ -423,12 +423,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="304"/>
       <source>Replace Object</source>
-      <translation>Cserélje ki a tárgyat</translation>
+      <translation>Cserélje ki az objektumot</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation>Tárgy cseréje fanézetben. Kérjük, válassza ki a régi, új és szülő tárgyakat</translation>
+      <translation>Objektum cseréje fanézetben. Kérjük, válassza ki a régi, új és szülő objektumokat</translation>
     </message>
   </context>
   <context>
@@ -436,12 +436,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="317"/>
       <source>Remove Objects and their Children</source>
-      <translation>A tárgy és az összes al rész tárgyak eltávolítása</translation>
+      <translation>Az objektum és az összes alpontja eltávolítása</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Eltávolítja a kijelölt tárgyakat és minden rész altárgyát, melyek nem hivatkoznak más tárgyakra</translation>
+      <translation>Eltávolítja a kijelölt objektumokat és minden alpontját, melyek nem hivatkoznak más objektumokra</translation>
     </message>
   </context>
   <context>
@@ -467,7 +467,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="549"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Hálóként exportálja a tárgyakat és egy logikai művelet végrehajtásához használja az OpenSCAD-t</translation>
+      <translation>Hálóként exportálja az objektumokat és egy logikai művelet végrehajtásához használja az OpenSCAD-t</translation>
     </message>
   </context>
   <context>
