@@ -491,9 +491,9 @@ void StdCmdExport::activated(int iMsg)
 
     bool filenameWasGenerated = false;
     bool didActiveDocumentChange = lastActiveDocument != getActiveGuiDocument();
-    bool didSelectedObjectChange = lastExportedObject != selection.front();
+    bool didExportedObjectChange = lastExportedObject != selection.front();
     // We want to generate a new default name in four cases:
-    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename || didActiveDocumentChange || didSelectedObjectChange) {
+    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename || didActiveDocumentChange || didExportedObjectChange) {
         // First, get the name and path of the current .FCStd file, if there is one:
         QString docFilename = QString::fromUtf8(
             App::GetApplication().getActiveDocument()->getFileName());
@@ -512,7 +512,7 @@ void StdCmdExport::activated(int iMsg)
             defaultExportPath = Gui::FileDialog::getWorkingDirectory();
         }
 
-        if (lastExportUsedGeneratedFilename || didActiveDocumentChange || didSelectedObjectChange) {  /*<- static, true on first call*/
+        if (lastExportUsedGeneratedFilename || didActiveDocumentChange || didExportedObjectChange) {  /*<- static, true on first call*/
             defaultFilename = defaultExportPath + QLatin1Char('/') + createDefaultExportBasename();
 
             // Append the last extension used, if there is one.
