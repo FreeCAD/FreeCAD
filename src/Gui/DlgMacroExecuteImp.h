@@ -69,6 +69,7 @@ private:
 
 protected:
     void fillUpList();
+    void fillUpListForDir(const QString& dirPath, bool systemWide);
     QStringList filterFiles(const QString&);
 
 protected:

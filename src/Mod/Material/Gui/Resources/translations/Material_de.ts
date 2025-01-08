@@ -1191,7 +1191,7 @@ Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     <name>StdCmdSetAppearance</name>
     <message>
       <location filename="../../Command.cpp" line="89"/>
-      <source>Appearance...</source>
+      <source>&amp;Appearance...</source>
       <translation>Darstellung...</translation>
     </message>
     <message>
@@ -1205,7 +1205,7 @@ Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     <name>StdCmdSetMaterial</name>
     <message>
       <location filename="../../Command.cpp" line="118"/>
-      <source>Material...</source>
+      <source>&amp;Material...</source>
       <translation>Material...</translation>
     </message>
     <message>

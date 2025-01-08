@@ -1,5 +1,7 @@
+// SPDX-License-Identifier: LGPL-2.0-or-later
+
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,59 +22,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemMeshObject_H
-#define Fem_FemMeshObject_H
-
-#include <App/FeaturePython.h>
-#include <App/GeoFeature.h>
-#include <App/SuppressibleExtension.h>
-
-#include "FemMesh.h"
-#include "FemMeshProperty.h"
+//! CommandHelpers is a collection of methods for common actions in commands
 
 
-namespace Fem
-{
+#ifndef COMMANDHELPERS_H
+#define COMMANDHELPERS_H
 
-class FemExport FemMeshObject: public App::GeoFeature
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshObject);
+#include <string>
+#include <vector>
 
-public:
-    /// Constructor
-    FemMeshObject();
-    ~FemMeshObject() override;
+#include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Base/Vector3D.h>
 
-    /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override
-    {
-        return "FemGui::ViewProviderFemMesh";
-    }
-    App::DocumentObjectExecReturn* execute() override
-    {
-        return App::DocumentObject::StdReturn;
-    }
-    short mustExecute() const override;
-    PyObject* getPyObject() override;
-    const App::PropertyComplexGeoData* getPropertyOfGeometry() const override
-    {
-        return &FemMesh;
-    }
+namespace App {
+class DocumentObject;
+}
 
-    PropertyFemMesh FemMesh;
+namespace Gui {
+class Command;
+}
 
-protected:
-    /// get called by the container when a property has changed
-    void onChanged(const App::Property* prop) override;
+namespace TechDraw {
+class DrawView;
+class DrawViewPart;
 
-private:
-    App::SuppressibleExtension suppressibleExt;
-};
+namespace CommandHelpers {
 
-using FemMeshObjectPython = App::FeaturePythonT<FemMeshObject>;
+TechDraw::DrawView* firstViewInSelection(Gui::Command* cmd);
+TechDraw::DrawView* firstNonSpreadsheetInSelection(Gui::Command* cmd);
 
+std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
+                                                TechDraw::DrawViewPart* &dvp,
+                                                std::string subType = "Edge");
 
-}  // namespace Fem
+void getSelectedShapes(Gui::Command* cmd,
+                       std::vector<App::DocumentObject*>& shapes,
+                       std::vector<App::DocumentObject*>& xShapes,
+                       App::DocumentObject* faceObj,
+                       std::string& faceName);
+
+std::pair<App::DocumentObject*, std::string> faceFromSelection();
+std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
 
 
-#endif  // Fem_FemMeshObject_H
+}   // end namespace CommandHelpers
+}   // end namespace TechDraw
+
+#endif

@@ -848,6 +848,9 @@ class WallHandler(BaseHandler):
             wall = Arch.makeWall(solid)
         else:
             wall = Arch.makeWall(sweep)
+        # For some reason the Length of the spine is not propagated to the
+        # wall itself...
+        wall.Length = spine.Length
         return wall
 
     def _get_wall_details(self, floor, elm):

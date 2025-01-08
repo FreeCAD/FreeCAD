@@ -40,6 +40,8 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/DrawRichAnno.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
 
 #include "PreferencesGui.h"
 #include "ZVALUE.h"
@@ -72,9 +74,6 @@ ViewProviderBalloon::ViewProviderBalloon()
     StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
-ViewProviderBalloon::~ViewProviderBalloon()
-{
-}
 
 bool ViewProviderBalloon::doubleClicked()
 {
@@ -84,7 +83,7 @@ bool ViewProviderBalloon::doubleClicked()
 
 void ViewProviderBalloon::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    auto* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
     func->trigger(act, [this]() {
@@ -111,12 +110,12 @@ bool ViewProviderBalloon::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderBalloon::updateData(const App::Property* p)
+void ViewProviderBalloon::updateData(const App::Property* prop)
 {
     //Balloon handles X, Y updates differently that other QGIView
     //call QGIViewBalloon::updateView
-    if (p == &(getViewObject()->X)  ||
-        p == &(getViewObject()->Y) ){
+    if (prop == &(getViewObject()->X)  ||
+        prop == &(getViewObject()->Y) ){
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
@@ -124,22 +123,22 @@ void ViewProviderBalloon::updateData(const App::Property* p)
     }
 
     //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
-    Gui::ViewProviderDocumentObject::updateData(p);
+    Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-void ViewProviderBalloon::onChanged(const App::Property* p)
+void ViewProviderBalloon::onChanged(const App::Property* prop)
 {
-    if ((p == &Font)  ||
-        (p == &Fontsize) ||
-        (p == &Color) ||
-        (p == &LineWidth) ||
-        (p == &LineVisible)) {
+    if ((prop == &Font)  ||
+        (prop == &Fontsize) ||
+        (prop == &Color) ||
+        (prop == &LineWidth) ||
+        (prop == &LineVisible)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
     }
-    Gui::ViewProviderDocumentObject::onChanged(p);
+    Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
 TechDraw::DrawViewBalloon* ViewProviderBalloon::getViewObject() const
@@ -189,3 +188,24 @@ bool ViewProviderBalloon::onDelete(const std::vector<std::string> & parms)
     }
     return true;
 }
+
+std::vector<App::DocumentObject*> ViewProviderBalloon::claimChildren() const
+{
+    // What can reasonably have a Balloon as a parent? A leader? a bit unconventional, but not forbidden.
+    // A RichAnno? Maybe? Another Balloon? Maybe?
+
+    std::vector<App::DocumentObject*> temp;
+    const std::vector<App::DocumentObject*>& candidates = getViewObject()->getInList();
+    for (auto& obj : candidates) {
+        if (obj->isDerivedFrom<TechDraw::DrawViewBalloon>() ||
+            obj->isDerivedFrom<TechDraw::DrawLeaderLine>()  ||
+            obj->isDerivedFrom<TechDraw::DrawRichAnno>() ) {
+            temp.push_back(obj);
+       }
+   }
+   return temp;
+}
+
+
+
+

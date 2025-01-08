@@ -216,6 +216,25 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxAddExtGeo">
+        <property name="toolTip">
+         <string>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</string>
+        </property>
+        <property name="text">
+         <string>Always add external geometry as reference</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AlwaysExtGeoReference</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

@@ -49,7 +49,8 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 
-verbose = True # change this for silent recomputes
+PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+VERBOSE = True # change this for silent recomputes
 
 
 
@@ -94,28 +95,33 @@ class _ArchSchedule:
             self.setSchedulePropertySpreadsheet(sp, obj)
         obj.removeProperty("Result")
         from draftutils.messages import _wrn
+        if "Description" in obj.PropertiesList:
+            if obj.getTypeOfProperty("Description") == "App::PropertyStringList":
+                obj.Operation = obj.Description
+                obj.removeProperty("Description")
+                _wrn("v0.21, " + sp.Label + ", " + translate("Arch", "renamed property 'Description' to 'Operation'"))
         _wrn("v0.21, " + obj.Label + ", " + translate("Arch", "removed property 'Result', and added property 'AutoUpdate'"))
         if sp is not None:
             _wrn("v0.21, " + sp.Label + ", " + translate("Arch", "added property 'Schedule'"))
 
     def setProperties(self,obj):
 
-        if not "Description" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Description",       "Arch",QT_TRANSLATE_NOOP("App::Property","The description column"))
+        if not "Operation" in obj.PropertiesList:
+            obj.addProperty("App::PropertyStringList","Operation",       "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"))
         if not "Value" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Value",             "Arch",QT_TRANSLATE_NOOP("App::Property","The values column"))
+            obj.addProperty("App::PropertyStringList","Value",             "Schedule",QT_TRANSLATE_NOOP("App::Property","The values column"))
         if not "Unit" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Unit",              "Arch",QT_TRANSLATE_NOOP("App::Property","The units column"))
+            obj.addProperty("App::PropertyStringList","Unit",              "Schedule",QT_TRANSLATE_NOOP("App::Property","The units column"))
         if not "Objects" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Objects",           "Arch",QT_TRANSLATE_NOOP("App::Property","The objects column"))
+            obj.addProperty("App::PropertyStringList","Objects",           "Schedule",QT_TRANSLATE_NOOP("App::Property","The objects column"))
         if not "Filter" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Filter",            "Arch",QT_TRANSLATE_NOOP("App::Property","The filter column"))
+            obj.addProperty("App::PropertyStringList","Filter",            "Schedule",QT_TRANSLATE_NOOP("App::Property","The filter column"))
         if not "CreateSpreadsheet" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "CreateSpreadsheet", "Arch",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"))
+            obj.addProperty("App::PropertyBool",      "CreateSpreadsheet", "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"))
         if not "DetailedResults" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "DetailedResults",   "Arch",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
+            obj.addProperty("App::PropertyBool",      "DetailedResults",   "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
         if not "AutoUpdate" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "AutoUpdate",        "Arch",QT_TRANSLATE_NOOP("App::Property","If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed"))
+            obj.addProperty("App::PropertyBool",      "AutoUpdate",        "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed"))
             obj.AutoUpdate = True
 
         # To add the doc observer:
@@ -191,7 +197,7 @@ class _ArchSchedule:
         # clearAll removes the custom property, we need to re-add it:
         self.setSchedulePropertySpreadsheet(sp, obj)
         # set headers
-        sp.set("A1","Description")
+        sp.set("A1","Operation")
         sp.set("B1","Value")
         sp.set("C1","Unit")
         sp.setStyle('A1:C1', 'bold', 'add')
@@ -209,26 +215,26 @@ class _ArchSchedule:
 
         # verify the data
 
-        if not obj.Description:
+        if not obj.Operation:
             # empty description column
             return
         for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
             # different number of items in each column
-            if len(obj.Description) != len(p):
+            if len(obj.Operation) != len(p):
                 return
 
         self.data = {} # store all results in self.data, so it lives even without spreadsheet
-        li = 1 # row index - starts at 2 to leave 2 blank rows for the title
+        self.li = 1 # row index - starts at 2 to leave 2 blank rows for the title
 
-        for i in range(len(obj.Description)):
-            li += 1
-            if not obj.Description[i]:
+        for i in range(len(obj.Operation)):
+            self.li += 1
+            if not obj.Operation[i]:
                 # blank line
                 continue
             # write description
-            self.data["A"+str(li)] = obj.Description[i]
-            if verbose:
-                l= "OPERATION: "+obj.Description[i]
+            self.data["A"+str(self.li)] = obj.Operation[i]
+            if VERBOSE:
+                l= "OPERATION: "+obj.Operation[i]
                 print("")
                 print (l)
                 print (len(l)*"=")
@@ -237,6 +243,10 @@ class _ArchSchedule:
 
             objs = obj.Objects[i]
             val = obj.Value[i]
+            unit = obj.Unit[i]
+            details = obj.DetailedResults
+            ifcfile = None
+            elts = None
             if val:
                 import Draft,Arch
                 if objs:
@@ -244,143 +254,316 @@ class _ArchSchedule:
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
                     objs = [o for o in objs if o is not None]
                 else:
+                    if hasattr(getattr(FreeCAD.ActiveDocument, "Proxy", None), "ifcfile"):
+                        ifcfile = FreeCAD.ActiveDocument.Proxy.ifcfile
                     objs = FreeCAD.ActiveDocument.Objects
                 if len(objs) == 1:
+                    if hasattr(objs[0], "StepId"):
+                        from nativeifc import ifc_tools
+                        ifcfile = ifc_tools.get_ifcfile(objs[0])
                     # remove object itself if the object is a group
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
                         objs = objs[0].Group
                 objs = Draft.get_group_contents(objs)
-                objs = Arch.pruneIncluded(objs,strict=True)
+                objs = Arch.pruneIncluded(objs,strict=True,silent=True)
                 # Remove all schedules and spreadsheets:
                 objs = [o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]]
+
+                # filter elements
+
                 if obj.Filter[i]:
-                    # apply filters
-                    nobjs = []
-                    for o in objs:
-                        props = [p.upper() for p in o.PropertiesList]
-                        ok = True
-                        for f in obj.Filter[i].split(";"):
-                            args = [a.strip() for a in f.strip().split(":")]
-                            if args[0][0] == "!":
-                                inv = True
-                                prop = args[0][1:].upper()
-                            else:
-                                inv = False
-                                prop = args[0].upper()
-                            fval = args[1].upper()
-                            if prop == "TYPE":
-                                prop = "IFCTYPE"
-                            if inv:
-                                if prop in props:
-                                    csprop = o.PropertiesList[props.index(prop)]
-                                    if fval in getattr(o,csprop).upper():
-                                        ok = False
-                            else:
-                                if not (prop in props):
-                                    ok = False
-                                else:
-                                    csprop = o.PropertiesList[props.index(prop)]
-                                    if not (fval in getattr(o,csprop).upper()):
-                                        ok = False
-                        if ok:
-                            nobjs.append(o)
-                    objs = nobjs
+                    if ifcfile:
+                        elts = self.get_ifc_elements(ifcfile, obj.Filter[i])
+                    else:
+                        objs = self.apply_filter(objs, obj.Filter[i])
 
                 # perform operation: count or retrieve property
 
-                if val.upper() == "COUNT":
-                    val = len(objs)
-                    if verbose:
-                        print (val, ",".join([o.Label for o in objs]))
-                    self.data["B"+str(li)] = str(val)
-                    if obj.DetailedResults:
-                        # additional blank line...
-                        li += 1
-                        self.data["A"+str(li)] = " "
-                else:
-                    vals = val.split(".")
-                    if vals[0][0].islower():
-                        # old-style: first member is not a property
-                        vals = vals[1:]
-                    sumval = 0
+                if ifcfile:
+                    if elts:
+                        self.update_from_elts(elts, val, unit, details)
+                elif objs:
+                    self.update_from_objs(objs, val, unit, details)
 
-                    # get unit
-                    tp = None
-                    unit = None
-                    q = None
-                    if obj.Unit[i]:
-                        unit = obj.Unit[i]
-                        unit = unit.replace("^","")  # get rid of existing power symbol
-                        unit = unit.replace("2","^2")
-                        unit = unit.replace("3","^3")
-                        unit = unit.replace("²","^2")
-                        unit = unit.replace("³","^3")
-                        if "2" in unit:
-                            tp = FreeCAD.Units.Area
-                        elif "3" in unit:
-                            tp = FreeCAD.Units.Volume
-                        elif "deg" in unit:
-                            tp = FreeCAD.Units.Angle
-                        else:
-                            tp = FreeCAD.Units.Length
-
-                    # format value
-                    dv = params.get_param("Decimals",path="Units")
-                    fs = "{:."+str(dv)+"f}" # format string
-                    for o in objs:
-                        if verbose:
-                            l = o.Name+" ("+o.Label+"):"
-                            print (l+(40-len(l))*" ",end="")
-                        try:
-                            d = o
-                            for v in vals:
-                                d = getattr(d,v)
-                            if hasattr(d,"Value"):
-                                d = d.Value
-                        except Exception:
-                            FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
-                        else:
-                            if verbose:
-                                if tp and unit:
-                                    v = fs.format(FreeCAD.Units.Quantity(d,tp).getValueAs(unit).Value)
-                                    print(v,unit)
-                                else:
-                                    print(fs.format(d))
-                            if obj.DetailedResults:
-                                li += 1
-                                self.data["A"+str(li)] = o.Name+" ("+o.Label+")"
-                                if tp and unit:
-                                    q = FreeCAD.Units.Quantity(d,tp)
-                                    self.data["B"+str(li)] = str(q.getValueAs(unit).Value)
-                                    self.data["C"+str(li)] = unit
-                                else:
-                                    self.data["B"+str(li)] = str(d)
-
-                            if not sumval:
-                                sumval = d
-                            else:
-                                sumval += d
-                    val = sumval
-                    if tp:
-                        q = FreeCAD.Units.Quantity(val,tp)
-
-                    # write data
-                    if obj.DetailedResults:
-                        li += 1
-                        self.data["A"+str(li)] = "TOTAL"
-                    if q and unit:
-                        self.data["B"+str(li)] = str(q.getValueAs(unit).Value)
-                        self.data["C"+str(li)] = unit
-                    else:
-                        self.data["B"+str(li)] = str(val)
-                    if verbose:
-                        if tp and unit:
-                            v = fs.format(FreeCAD.Units.Quantity(val,tp).getValueAs(unit).Value)
-                            print("TOTAL:"+34*" "+v+" "+unit)
-                        else:
-                            v = fs.format(val)
-                            print("TOTAL:"+34*" "+v)
         self.setSpreadsheetData(obj)
+        self.save_ifc_props(obj)
+
+    def apply_filter(self, objs, filters):
+        """Applies the given filters to the given list of objects"""
+
+        nobjs = []
+        for o in objs:
+            props = [p.upper() for p in o.PropertiesList]
+            ok = True
+            for f in filters.split(";"):
+                args = [a.strip() for a in f.strip().split(":")]
+                if args[0][0] == "!":
+                    inv = True
+                    prop = args[0][1:].upper()
+                else:
+                    inv = False
+                    prop = args[0].upper()
+                fval = args[1].upper()
+                if prop == "TYPE":
+                    prop = "IFCTYPE"
+                if inv:
+                    if prop in props:
+                        csprop = o.PropertiesList[props.index(prop)]
+                        if fval in getattr(o,csprop).upper():
+                            ok = False
+                else:
+                    if not (prop in props):
+                        ok = False
+                    else:
+                        csprop = o.PropertiesList[props.index(prop)]
+                        if not (fval in getattr(o,csprop).upper()):
+                            ok = False
+            if ok:
+                nobjs.append(o)
+        return nobjs
+
+    def get_ifc_elements(self, ifcfile, filters):
+        """Retrieves IFC elements corresponding to the given filters"""
+
+        elts = []
+        for el in ifcfile.by_type("IfcProduct"):
+            ok = True
+            for f in filters.split(";"):
+                args = [a.strip() for a in f.strip().split(":")]
+                if args[0][0] == "!":
+                    inv = True
+                    prop = args[0][1:]
+                else:
+                    inv = False
+                    prop = args[0]
+                fval = args[1]
+                if prop.upper() in ["CLASS", "IFCCLASS", "IFCTYPE"]:
+                    prop = "is_a"
+                if inv:
+                    if prop == "is_a":
+                        if not fval.upper().startswith("IFC"):
+                            fval = "Ifc" + fval
+                        fval = fval.replace(" ","")
+                        if el.is_a(fval):
+                            ok = False
+                    else:
+                        if prop in dir(el):
+                            rval = getattr(el, prop)
+                            if hasattr(rval, "id"):
+                                if fval.startswith("#"):
+                                    fval = int(fval[1:])
+                            if rval == fval:
+                                ok = False
+                else:
+                    if prop == "is_a":
+                        if not fval.upper().startswith("IFC"):
+                            fval = "Ifc" + fval
+                        fval = fval.replace(" ","")
+                        if not el.is_a(fval):
+                            ok = False
+                    else:
+                        if prop in dir(el):
+                            rval = getattr(el, prop)
+                            if hasattr(rval, "id"):
+                                if fval.startswith("#"):
+                                    fval = int(fval[1:])
+                            if rval != fval:
+                                ok = False
+                        else:
+                            ok = False
+            if ok:
+                elts.append(el)
+        return elts
+
+    def update_from_objs(self, objs, val, unit, details):
+        """Updates the spreadsheet data from FreeCAD objects"""
+
+        if val.upper() == "COUNT":
+            val = len(objs)
+            if VERBOSE:
+                print (val, ",".join([o.Label for o in objs]))
+            self.data["B"+str(self.li)] = str(val)
+            if details:
+                # additional blank line...
+                self.li += 1
+                self.data["A"+str(self.li)] = " "
+        else:
+            vals = val.split(".")
+            if vals[0][0].islower():
+                # old-style: first member is not a property
+                vals = vals[1:]
+            sumval = 0
+
+            # get unit
+            tp = None
+            unit = None
+            q = None
+            if unit:
+                unit = unit.replace("^","")  # get rid of existing power symbol
+                unit = unit.replace("2","^2")
+                unit = unit.replace("3","^3")
+                unit = unit.replace("²","^2")
+                unit = unit.replace("³","^3")
+                if "2" in unit:
+                    tp = FreeCAD.Units.Area
+                elif "3" in unit:
+                    tp = FreeCAD.Units.Volume
+                elif "deg" in unit:
+                    tp = FreeCAD.Units.Angle
+                else:
+                    tp = FreeCAD.Units.Length
+
+            # format value
+            dv = params.get_param("Decimals",path="Units")
+            fs = "{:."+str(dv)+"f}" # format string
+            for o in objs:
+                if VERBOSE:
+                    l = o.Name+" ("+o.Label+"):"
+                    print (l+(40-len(l))*" ",end="")
+                try:
+                    d = o
+                    for v in vals:
+                        d = getattr(d,v)
+                    if hasattr(d,"Value"):
+                        d = d.Value
+                except Exception:
+                    t = translate("Arch","Unable to retrieve value from object")
+                    FreeCAD.Console.PrintWarning(t+": "+o.Name+"."+".".join(vals)+"\n")
+                else:
+                    if VERBOSE:
+                        if tp and unit:
+                            v = fs.format(FreeCAD.Units.Quantity(d,tp).getValueAs(unit).Value)
+                            print(v,unit)
+                        elif isinstance(d, str):
+                            if d.replace('.', '', 1).isdigit():
+                                print(fs.format(d))
+                            else:
+                                print(d)
+                        else:
+                            print(fs.format(d))
+                    if details:
+                        self.li += 1
+                        self.data["A"+str(self.li)] = o.Name+" ("+o.Label+")"
+                        if tp and unit:
+                            q = FreeCAD.Units.Quantity(d,tp)
+                            self.data["B"+str(self.li)] = str(q.getValueAs(unit).Value)
+                            self.data["C"+str(self.li)] = unit
+                        else:
+                            self.data["B"+str(self.li)] = str(d)
+
+                    if sumval:
+                        sumval += d
+                    else:
+                        sumval = d
+            val = sumval
+            if tp:
+                q = FreeCAD.Units.Quantity(val,tp)
+
+            # write data
+            if details:
+                self.li += 1
+                self.data["A"+str(self.li)] = "TOTAL"
+            if q and unit:
+                self.data["B"+str(self.li)] = str(q.getValueAs(unit).Value)
+                self.data["C"+str(self.li)] = unit
+            else:
+                self.data["B"+str(self.li)] = str(val)
+            if VERBOSE:
+                if tp and unit:
+                    v = fs.format(FreeCAD.Units.Quantity(val,tp).getValueAs(unit).Value)
+                    print("TOTAL:"+34*" "+v+" "+unit)
+                elif isinstance(val, str):
+                    if val.replace('.', '', 1).isdigit():
+                        v = fs.format(val)
+                        print("TOTAL:"+34*" "+v)
+                    else:
+                        print("TOTAL:"+34*" "+val)
+                else:
+                    v = fs.format(val)
+                    print("TOTAL:"+34*" "+v)
+
+    def update_from_elts(self, elts, val, unit, details):
+        """Updates the spreadsheet data from IFC elements"""
+
+        if val.upper() == "COUNT":
+            val = len(elts)
+            if VERBOSE:
+                print ("COUNT:", val, "(", ",".join(["#"+str(e.id()) for e in elts]), ")")
+            self.data["B"+str(self.li)] = str(val)
+            if details:
+                # additional blank line...
+                self.li += 1
+                self.data["A"+str(self.li)] = " "
+        else:
+            total = 0
+            for el in elts:
+                if val in dir(el):
+                    elval = getattr(el, val, "")
+                    if isinstance(elval, tuple):
+                        if len(elval) == 1:
+                            elval = elval[0]
+                        elif len(elval) == 0:
+                            elval = ""
+                    if hasattr(elval, "is_a") and elval.is_a("IfcRelationship"):
+                        for att in dir(elval):
+                            if att.startswith("Relating"):
+                                targ = getattr(elval, att)
+                                if targ != el:
+                                    elval = targ
+                                    break
+                            elif att.startswith("Related"):
+                                if not elval in getattr(elval, att):
+                                    elval = str(getattr(elval, att))
+                                    break
+                    if details:
+                        self.li += 1
+                        name = el.Name if el.Name else ""
+                        self.data["A"+str(self.li)] = "#" + str(el.id()) + name
+                        self.data["B"+str(self.li)] = str(elval)
+                        if VERBOSE:
+                            print("#"+str(el.id())+"."+val+" = "+str(elval))
+                    if isinstance(elval, str) and elval.replace('.', '', 1).isdigit():
+                        total += float(elval)
+                    elif isinstance(elval, (int, float)):
+                        total += elval
+            if total:
+                if details:
+                    self.li += 1
+                    self.data["A"+str(self.li)] = "TOTAL"
+                self.data["B"+str(self.li)] = str(total)
+                if VERBOSE:
+                    print("TOTAL:",str(total))
+
+    def create_ifc(self, obj, ifcfile, export=False):
+        """Creates an IFC element for this object"""
+
+        from nativeifc import ifc_tools  # lazy loading
+
+        proj = ifcfile.by_type("IfcProject")[0]
+        elt = ifc_tools.api_run("root.create_entity", ifcfile, ifc_class="IfcControl")
+        ifc_tools.set_attribute(ifcfile, elt, "Name", obj.Label)
+        ifc_tools.api_run("project.assign_declaration", ifcfile, definitions=[elt], relating_context=proj)
+        if not export:
+            ifc_tools.add_properties(obj, ifcfile, elt)
+        return elt
+
+    def save_ifc_props(self, obj, ifcfile=None, elt=None):
+        """Saves the object data to IFC"""
+
+        from nativeifc import ifc_psets  # lazy loading
+
+        ifc_psets.edit_pset(obj, "Operation", "::".join(obj.Operation), ifcfile=ifcfile, element=elt)
+        ifc_psets.edit_pset(obj, "Value", "::".join(obj.Value), ifcfile=ifcfile, element=elt)
+        ifc_psets.edit_pset(obj, "Unit", "::".join(obj.Unit), ifcfile=ifcfile, element=elt)
+        ifc_psets.edit_pset(obj, "Objects", "::".join(obj.Objects), ifcfile=ifcfile, element=elt)
+        ifc_psets.edit_pset(obj, "Filter", "::".join(obj.Filter), ifcfile=ifcfile, element=elt)
+
+    def  export_ifc(self, obj, ifcfile):
+        """Exports the object to IFC (does not modify the FreeCAD object)."""
+
+        elt = self.create_ifc(obj, ifcfile, export=True)
+        self.save_ifc_props(obj, ifcfile, elt)
+        return elt
 
     def dumps(self):
 
@@ -417,7 +600,15 @@ class _ViewProviderArchSchedule:
             return None
 
         self.taskd = ArchScheduleTaskPanel(vobj.Object)
+        if not self.taskd.form.isVisible():
+            from PySide import QtCore
+            QtCore.QTimer.singleShot(100, self.showEditor)
         return True
+
+    def showEditor(self):
+
+        if hasattr(self, "taskd"):
+            self.taskd.form.show()
 
     def unsetEdit(self, vobj, mode):
         if mode != 0:
@@ -507,30 +698,37 @@ class ArchScheduleTaskPanel:
         h = params.get_param_arch("ScheduleDialogHeight")
         self.form.resize(w,h)
 
+        # restore default states
+        self.form.checkAutoUpdate.setChecked(PARAMS.GetBool("ScheduleAutoUpdate", False))
+
         # set delegate - Not using custom delegates for now...
         #self.form.list.setItemDelegate(ScheduleDelegate())
         #self.form.list.setEditTriggers(QtGui.QAbstractItemView.DoubleClicked)
 
         # connect slots
-        QtCore.QObject.connect(self.form.buttonAdd, QtCore.SIGNAL("clicked()"), self.add)
-        QtCore.QObject.connect(self.form.buttonDel, QtCore.SIGNAL("clicked()"), self.remove)
-        QtCore.QObject.connect(self.form.buttonClear, QtCore.SIGNAL("clicked()"), self.clear)
-        QtCore.QObject.connect(self.form.buttonImport, QtCore.SIGNAL("clicked()"), self.importCSV)
-        QtCore.QObject.connect(self.form.buttonExport, QtCore.SIGNAL("clicked()"), self.export)
-        QtCore.QObject.connect(self.form.buttonSelect, QtCore.SIGNAL("clicked()"), self.select)
-        QtCore.QObject.connect(self.form.buttonBox, QtCore.SIGNAL("accepted()"), self.accept)
-        QtCore.QObject.connect(self.form.buttonBox, QtCore.SIGNAL("rejected()"), self.reject)
-        QtCore.QObject.connect(self.form, QtCore.SIGNAL("rejected()"), self.reject)
+        self.form.buttonAdd.clicked.connect(self.add)
+        self.form.buttonDel.clicked.connect(self.remove)
+        self.form.buttonClear.clicked.connect(self.clear)
+        self.form.buttonImport.clicked.connect(self.importCSV)
+        self.form.buttonExport.clicked.connect(self.export)
+        self.form.buttonSelect.clicked.connect(self.select)
+        self.form.buttonBox.accepted.connect(self.accept)
+        self.form.buttonBox.rejected.connect(self.reject)
+        self.form.rejected.connect(self.reject)
         self.form.list.clearContents()
 
         if self.obj:
-            for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
-                if len(obj.Description) != len(p):
-                    return
-            self.form.list.setRowCount(len(obj.Description))
+            #for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
+            #    if len(obj.Operation) != len(p):
+            #        return
+            self.form.list.setRowCount(len(obj.Operation))
             for i in range(5):
-                for j in range(len(obj.Description)):
-                    item = QtGui.QTableWidgetItem([obj.Description,obj.Value,obj.Unit,obj.Objects,obj.Filter][i][j])
+                for j in range(len(obj.Operation)):
+                    try:
+                        text = [obj.Operation,obj.Value,obj.Unit,obj.Objects,obj.Filter][i][j]
+                    except:
+                        text = ""
+                    item = QtGui.QTableWidgetItem(text)
                     self.form.list.setItem(j,i,item)
             self.form.lineEditName.setText(self.obj.Label)
             self.form.checkSpreadsheet.setChecked(self.obj.CreateSpreadsheet)
@@ -646,7 +844,7 @@ class ArchScheduleTaskPanel:
         import csv
         with open(filename, 'w') as csvfile:
             csvfile = csv.writer(csvfile,delimiter=delimiter)
-            csvfile.writerow([translate("Arch","Description"),translate("Arch","Value"),translate("Arch","Unit")])
+            csvfile.writerow([translate("Arch","Operation"),translate("Arch","Value"),translate("Arch","Unit")])
             if self.obj.DetailedResults:
                 csvfile.writerow(["","",""])
             for i in self.getRows():
@@ -664,7 +862,7 @@ class ArchScheduleTaskPanel:
         """Exports the results as a Markdown file"""
 
         with open(filename, 'w') as mdfile:
-            mdfile.write("| "+translate("Arch","Description")+" | "+translate("Arch","Value")+" | "+translate("Arch","Unit")+" |\n")
+            mdfile.write("| "+translate("Arch","Operation")+" | "+translate("Arch","Value")+" | "+translate("Arch","Unit")+" |\n")
             mdfile.write("| --- | --- | --- |\n")
             if self.obj.DetailedResults:
                 mdfile.write("| | | |\n")
@@ -704,6 +902,9 @@ class ArchScheduleTaskPanel:
         params.set_param_arch("ScheduleDialogWidth",self.form.width())
         params.set_param_arch("ScheduleDialogHeight",self.form.height())
 
+        # store default states
+        PARAMS.SetBool("ScheduleAutoUpdate", self.form.checkAutoUpdate.isChecked())
+
         # commit values
         self.writeValues()
         self.form.hide()
@@ -723,13 +924,8 @@ class ArchScheduleTaskPanel:
         """commits values and recalculate"""
 
         if not self.obj:
-            self.obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Schedule")
-            self.obj.Label = translate("Arch","Schedule")
-            _ArchSchedule(self.obj)
-            if FreeCAD.GuiUp:
-                _ViewProviderArchSchedule(self.obj.ViewObject)
-            if hasattr(self.obj,"CreateSpreadsheet") and self.obj.CreateSpreadsheet:
-                self.obj.Proxy.getSpreadSheet(self.obj, force=True)
+            import Arch
+            self.obj = Arch.makeSchedule()
         lists = [ [], [], [], [], [] ]
         for i in range(self.form.list.rowCount()):
             for j in range(5):
@@ -739,7 +935,7 @@ class ArchScheduleTaskPanel:
                 else:
                     lists[j].append("")
         FreeCAD.ActiveDocument.openTransaction("Edited Schedule")
-        self.obj.Description = lists[0]
+        self.obj.Operation = lists[0]
         self.obj.Value = lists[1]
         self.obj.Unit = lists[2]
         self.obj.Objects = lists[3]
