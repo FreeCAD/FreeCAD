@@ -96,56 +96,6 @@ StdCmdOpen::StdCmdOpen()
 
 void StdCmdOpen::activated(int iMsg)
 {
-    // clang-format off
-    auto checkPartialRestore = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::PartialRestore)) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-            QObject::tr("There were errors while loading the file. Some data might have been "
-                        "modified or not recovered at all. Look in the report view for more "
-                        "specific information about the objects involved."));
-        }
-    };
-
-    auto checkRestoreError = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::RestoreError)) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-            QObject::tr("There were serious errors while loading the file. Some data might have "
-                        "been modified or not recovered at all. Saving the project will most "
-                        "likely result in loss of data."));
-        }
-    };
-
-    auto checkMigrationLCS = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::MigrateLCS)) {
-            auto grp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-            if (!grp->GetBool("ShowLCSMigrationWarning", true)) {
-                return;
-            }
-
-            // Display the warning message
-            QMessageBox msgBox(QMessageBox::Warning,
-                QObject::tr("File Migration Warning"),
-                QObject::tr("This file was created with an older version of %1. "
-                    "Origin axes had incorrect placements, which have now been corrected.\n\n"
-                    "However, if you save this file in the current version and reopen it in an"
-                    " older version of %1, the origin axes will be misaligned. Additionally, "
-                    "if your file references these origin axes, your file will likely be broken.")
-                .arg(QApplication::applicationName()),
-                QMessageBox::Ok);
-
-            QCheckBox* checkBox = new QCheckBox(QObject::tr("Don't show this warning again"));
-            msgBox.setCheckBox(checkBox);
-
-            msgBox.exec();
-
-            // Save preference if the user selects "Don't show again"
-            if (checkBox->isChecked()) {
-                grp->SetBool("ShowLCSMigrationWarning", false);
-            }
-        }
-    };
-    // clang-format on
-
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
@@ -163,7 +113,7 @@ void StdCmdOpen::activated(int iMsg)
         filetypes.erase(it);
         filetypes.insert(filetypes.begin(), "FCStd");
     }
-    for (it=filetypes.begin();it != filetypes.end();++it) {
+    for (it = filetypes.begin(); it != filetypes.end(); ++it) {
         formatList += QLatin1String(" *.");
         formatList += QLatin1String(it->c_str());
     }
@@ -173,7 +123,7 @@ void StdCmdOpen::activated(int iMsg)
     std::map<std::string, std::string> FilterList = App::GetApplication().getImportFilters();
     std::map<std::string, std::string>::iterator jt;
     // Make sure the format name for FCStd is the very first in the list
-    for (jt=FilterList.begin();jt != FilterList.end();++jt) {
+    for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
         if (jt->first.find("*.FCStd") != std::string::npos) {
             formatList += QLatin1String(jt->first.c_str());
             formatList += QLatin1String(";;");
@@ -181,7 +131,7 @@ void StdCmdOpen::activated(int iMsg)
             break;
         }
     }
-    for (jt=FilterList.begin();jt != FilterList.end();++jt) {
+    for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
         formatList += QLatin1String(jt->first.c_str());
         formatList += QLatin1String(";;");
     }
@@ -189,7 +139,10 @@ void StdCmdOpen::activated(int iMsg)
 
     QString selectedFilter;
     QStringList fileList = FileDialog::getOpenFileNames(getMainWindow(),
-        QObject::tr("Open document"), QString(), formatList, &selectedFilter);
+                                                        QObject::tr("Open document"),
+                                                        QString(),
+                                                        formatList,
+                                                        &selectedFilter);
     if (fileList.isEmpty()) {
         return;
     }
@@ -198,24 +151,26 @@ void StdCmdOpen::activated(int iMsg)
     SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
     if (dict.isEmpty()) {
         QMessageBox::critical(getMainWindow(),
-            qApp->translate("StdCmdOpen", "Cannot open file"),
-            qApp->translate("StdCmdOpen", "Loading the file %1 is not supported").arg(fileList.front()));
+                              qApp->translate("StdCmdOpen", "Cannot open file"),
+                              qApp->translate("StdCmdOpen", "Loading the file %1 is not supported")
+                                  .arg(fileList.front()));
     }
     else {
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
 
-            // Set flag indicating that this load/restore has been initiated by the user (not by a macro)
+            // Set flag indicating that this load/restore has been initiated by the user (not by a
+            // macro)
             getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, true);
 
             getGuiApplication()->open(it.key().toUtf8(), it.value().toLatin1());
 
             getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, false);
 
-            App::Document *doc = App::GetApplication().getActiveDocument();
+            App::Document* doc = App::GetApplication().getActiveDocument();
 
-            checkPartialRestore(doc);
-            checkRestoreError(doc);
-            checkMigrationLCS(doc);
+            getGuiApplication()->checkPartialRestore(doc);
+            getGuiApplication()->checkRestoreError(doc);
+            getGuiApplication()->checkMigrationLCS(doc);
         }
     }
 }

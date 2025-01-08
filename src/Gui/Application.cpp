@@ -26,6 +26,7 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
+#include <QCheckBox>
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileInfo>
@@ -706,7 +707,16 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
 
             // load the file with the module
             if (File.hasExtension("FCStd")) {
-                Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+                Command::doCommand(Command::App,
+                                   "%s.openDocument(u\"%s\")",
+                                   Module,
+                                   unicodepath.c_str());
+                setStatus(UserInitiatedOpenDocument, false);
+                App::Document* doc = App::GetApplication().getActiveDocument();
+                Gui::Application::checkPartialRestore(doc);
+                Gui::Application::checkRestoreError(doc);
+                Gui::Application::checkMigrationLCS(doc);
+                Gui::Application::checkForRecomputes();
                 if (activeDocument()) {
                     activeDocument()->setModified(false);
                 }
@@ -722,9 +732,13 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                std::string code = fmt::format("from freecad import module_io\n"
-                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
-                                               Module, unicodepath, "insert", DocName);
+                std::string code =
+                    fmt::format("from freecad import module_io\n"
+                                "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
+                                Module,
+                                unicodepath,
+                                "insert",
+                                DocName);
                 Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // Commit the transaction
@@ -1005,6 +1019,64 @@ void Application::checkForRecomputes() {
         QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
                               QObject::tr("Failed to recompute some document(s).\n"
                                           "Please check report view for more details."));
+}
+
+void Application::checkPartialRestore(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::PartialRestore)) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Error"),
+            QObject::tr("There were errors while loading the file. Some data might have been "
+                        "modified or not recovered at all. Look in the report view for more "
+                        "specific information about the objects involved."));
+    }
+}
+
+void Application::checkRestoreError(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::RestoreError)) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Error"),
+            QObject::tr("There were serious errors while loading the file. Some data might have "
+                        "been modified or not recovered at all. Saving the project will most "
+                        "likely result in loss of data."));
+    }
+}
+
+void Application::checkMigrationLCS(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::MigrateLCS)) {
+        auto grp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+        if (!grp->GetBool("ShowLCSMigrationWarning", true)) {
+            return;
+        }
+
+        // Display the warning message
+        QMessageBox msgBox(
+            QMessageBox::Warning,
+            QObject::tr("File Migration Warning"),
+            QObject::tr(
+                "This file was created with an older version of %1. "
+                "Origin axes had incorrect placements, which have now been corrected.\n\n"
+                "However, if you save this file in the current version and reopen it in an"
+                " older version of %1, the origin axes will be misaligned. Additionally, "
+                "if your file references these origin axes, your file will likely be broken.")
+                .arg(QApplication::applicationName()),
+            QMessageBox::Ok);
+
+        QCheckBox* checkBox = new QCheckBox(QObject::tr("Don't show this warning again"));
+        msgBox.setCheckBox(checkBox);
+
+        msgBox.exec();
+
+        // Save preference if the user selects "Don't show again"
+        if (checkBox->isChecked()) {
+            grp->SetBool("ShowLCSMigrationWarning", false);
+        }
+    }
 }
 
 void Application::slotActiveDocument(const App::Document& Doc)
