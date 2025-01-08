@@ -34,9 +34,14 @@ class RemoteDebugger():
         self.dialog.buttonBox.accepted.connect(self.accept)
         self.dialog.buttonBox.rejected.connect(self.reject)
 
+        self.prefs = App.ParamGet("User parameter:BaseApp/Macro/Debugger")
+        index = self.prefs.GetInt("TabIndex", 0)
+        self.dialog.tabWidget.setCurrentIndex(index)
+
     def accept(self):
         try:
             index = self.dialog.tabWidget.currentIndex()
+            self.prefs.SetInt("TabIndex", index)
 
             if index == 0: # winpdb
                 passwd = self.dialog.lineEditPassword.text()
