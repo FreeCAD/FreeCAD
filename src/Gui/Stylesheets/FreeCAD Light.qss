@@ -457,7 +457,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qmenubar
 
 --------------------------------------------------------------------------- */
 QMenuBar {
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   color: black;
   selection-background-color: @ThemeAccentColor1;
 }
