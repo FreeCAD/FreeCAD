@@ -203,32 +203,30 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
 {
     bool ret = false;
     Quantity_ColorRGBA aColor;
-    if (aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor)) {
-        App::Color c = Tools::convertColor(aColor);
-        if (!check || info.faceColor != c) {
-            info.faceColor = c;
-            info.hasFaceColor = true;
-            ret = true;
+    if (!check || info.faceColor != c) {
+        if (aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor)) {
+            App::Color c = Tools::convertColor(aColor);
+                info.faceColor = c;
+                info.hasFaceColor = true;
+                ret = true;
         }
-    }
-    if (!noDefault && !info.hasFaceColor && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
-        App::Color c = Tools::convertColor(aColor);
-        if (!check || info.faceColor != c) {
-            info.faceColor = c;
-            info.hasFaceColor = true;
-            ret = true;
+        if (!noDefault && !info.hasFaceColor && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
+            App::Color c = Tools::convertColor(aColor);
+                info.faceColor = c;
+                info.hasFaceColor = true;
+                ret = true;
         }
-    }
-    if (aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor)) {
-        App::Color c = Tools::convertColor(aColor);
-        // Some STEP include a curve color with the same value of the face
-        // color. And this will look weird in FC. So for shape with face
-        // we'll ignore the curve color, if it is the same as the face color.
-        if ((c != info.faceColor || !TopExp_Explorer(shape, TopAbs_FACE).More())
-            && (!check || info.edgeColor != c)) {
-            info.edgeColor = c;
-            info.hasEdgeColor = true;
-            ret = true;
+        if (aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor)) {
+            App::Color c = Tools::convertColor(aColor);
+            // Some STEP include a curve color with the same value of the face
+            // color. And this will look weird in FC. So for shape with face
+            // we'll ignore the curve color, if it is the same as the face color.
+            if ((c != info.faceColor || !TopExp_Explorer(shape, TopAbs_FACE).More())
+            {
+                info.edgeColor = c;
+                info.hasEdgeColor = true;
+                ret = true;
+            }
         }
     }
     if (!check) {
