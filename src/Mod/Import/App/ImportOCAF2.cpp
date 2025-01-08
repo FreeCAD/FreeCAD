@@ -206,15 +206,16 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
     if (!check || info.faceColor != c) {
         if (aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor)) {
             App::Color c = Tools::convertColor(aColor);
-                info.faceColor = c;
-                info.hasFaceColor = true;
-                ret = true;
+            info.faceColor = c;
+            info.hasFaceColor = true;
+            ret = true;
         }
-        if (!noDefault && !info.hasFaceColor && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
+        if (!noDefault && !info.hasFaceColor
+            && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
             App::Color c = Tools::convertColor(aColor);
-                info.faceColor = c;
-                info.hasFaceColor = true;
-                ret = true;
+            info.faceColor = c;
+            info.hasFaceColor = true;
+            ret = true;
         }
         if (aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor)) {
             App::Color c = Tools::convertColor(aColor);
