@@ -29,6 +29,7 @@
 #include <QSignalBlocker>
 #include <QTextStream>
 #include <QTimer>
+#include <QSize>
 #endif
 
 #include <App/Document.h>
@@ -617,6 +618,8 @@ void DlgMacroExecuteImp::onToolbarButtonClicked()
         QMessageBox msgBox;
         QAbstractButton* doNotShowAgainButton =
             msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
+        QSize textSize = doNotShowAgainButton->sizeHint();
+        doNotShowAgainButton->setMinimumWidth(textSize.width() + 40);
         msgBox.setText(tr("Guided Walkthrough"));
         msgBox.setInformativeText(tr("This will guide you in setting up this macro in a custom \
 global toolbar.  Instructions will be in red text inside the dialog.\n\
