@@ -2392,21 +2392,20 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
 
     findReplacement();
 
-    auto performCoincidenceChecksOrChanges = [&](auto& constr) -> std::optional<bool> {
-        if (constr->Type != Sketcher::Coincident) {
-            if (onlyCoincident) {
-                return true;
-            }
-            return std::nullopt;
-        }
+    auto performCoincidenceChecksOrChanges = [&](auto& constr) -> bool {
         bool firstSucceeded = transferToReplacement(constr->First, constr->FirstPos);
         bool secondSucceeded = transferToReplacement(constr->Second, constr->SecondPos);
         return (firstSucceeded || secondSucceeded)
             && (constr->First != constr->Second || constr->FirstPos != constr->SecondPos);
     };
 
-    auto performOtherConstraintChecksOrChanges = [&](auto& constr) -> std::optional<bool> {
+    auto performAllConstraintChecksOrChanges = [&](auto& constr) -> std::optional<bool> {
+        if (constr->Type != Sketcher::Coincident && onlyCoincident) {
+            return true;
+        }
         switch (constr->Type) {
+            case Sketcher::Coincident:
+                return performCoincidenceChecksOrChanges(constr);
             case Sketcher::Distance:
             case Sketcher::DistanceX:
             case Sketcher::DistanceY: {
@@ -2429,37 +2428,28 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
                 return false;
             }
             default:
-                return true;
+                return std::nullopt;
         }
     };
 
     // remove or redirect any constraints associated with the given point
     for (auto& constr : vals) {
         // keep the constraint if it doesn't involve the point
-        if (constr->involvesGeoIdAndPosId(geoId, posId)) {
-            auto didCoincidenceCheckWork = performCoincidenceChecksOrChanges(constr);
-            if (didCoincidenceCheckWork == true) {
-                newVals.push_back(constr);
+        if (!constr->involvesGeoIdAndPosId(geoId, posId)) {
+            // for these constraints remove the constraint even if it is not directly associated
+            // with the given point
+            if ((constr->Type == Sketcher::Distance || constr->Type == Sketcher::DistanceX
+                 || constr->Type == Sketcher::DistanceY)
+                && (constr->First == geoId && constr->FirstPos == PointPos::none
+                    && (posId == PointPos::start || posId == PointPos::end))) {
                 continue;
             }
-            else if (didCoincidenceCheckWork == false) {
-                continue;
-            }
-            // The check failed, which means it's not a coincidence constraint and
-            // `onlyCoincident` is `false`
-            if (performOtherConstraintChecksOrChanges(constr) == false) {
-                continue;
-            }
-        }
-        // for these constraints remove the constraint even if it is not directly associated with
-        // the given point
-        if ((constr->Type == Sketcher::Distance || constr->Type == Sketcher::DistanceX
-             || constr->Type == Sketcher::DistanceY)
-            && (constr->First == geoId && constr->FirstPos == PointPos::none
-                && (posId == PointPos::start || posId == PointPos::end))) {
+            newVals.push_back(constr);
             continue;
         }
-        newVals.push_back(constr);
+        if (performAllConstraintChecksOrChanges(constr) != false) {
+            newVals.push_back(constr);
+        }
     }
 
     if (newVals.size() < vals.size()) {
