@@ -426,7 +426,6 @@ class ToolBitSelector(object):
         self.toolModel.takeColumn(3)
         self.toolModel.takeColumn(2)
 
-
     def loadToolLibraries(self):
         """
         Load the tool libraries in to self.libraryModel
