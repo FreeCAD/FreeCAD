@@ -394,7 +394,6 @@ class ToolBitSelector(object):
         self.factory = ModelFactory()
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
         self.libraryModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
-        self.factory.find_libraries(self.libraryModel)
 
         self.setupUI()
         self.title = self.form.windowTitle()
@@ -426,29 +425,45 @@ class ToolBitSelector(object):
         self.toolModel.takeColumn(3)
         self.toolModel.takeColumn(2)
 
-    def setupUI(self):
-        Path.Log.track()
-        self.loadData()  # Load the initial data for the tool model
 
-        self.form.tools.setModel(self.toolModel)
-        self.form.tools.selectionModel().selectionChanged.connect(self.enableButtons)
-        self.form.tools.doubleClicked.connect(partial(self.selectedOrAllToolControllers))
+    def loadToolLibraries(self):
+        """
+        Load the tool libraries in to self.libraryModel
+        and populate the tooldock form combobox with the
+        libraries names
+        """
+        Path.Log.track()
+
+        # load the tool libraries
+        self.factory.find_libraries(self.libraryModel)
 
         # Set the library model to the combobox
         self.form.cboLibraries.setModel(self.libraryModel)
+
+        # Set the current library as the selected item in the combobox
+        current_lib = self.currentLibrary(True)  # True to get short name only
+        currentIndex = self.form.cboLibraries.findText(current_lib)
+
+        if currentIndex == -1 and self.libraryModel.rowCount() > 0:
+            # If current library is not found, default to the first item
+            currentIndex = 0
+
+        self.form.cboLibraries.setCurrentIndex(currentIndex)
+
+    def setupUI(self):
+        Path.Log.track()
 
         # Connect the library change to reload data and update tooltip
         self.form.cboLibraries.currentIndexChanged.connect(self.loadData)
         self.form.cboLibraries.currentIndexChanged.connect(self.updateLibraryTooltip)
 
-        # Set the current library as the selected item in the combobox
-        current_lib = self.currentLibrary(True)  # True to get short name only
-        currentIndex = self.form.cboLibraries.findText(current_lib)
-        if currentIndex == -1 and self.libraryModel.rowCount() > 0:
-            # If current library is not found, default to the first item
-            currentIndex = 0
-        self.form.cboLibraries.setCurrentIndex(currentIndex)
-        self.updateLibraryTooltip(currentIndex)  # Initialize the tooltip
+        # Load the tool libraries.
+        # This will trigger a change in current index of the cboLibraries combobox
+        self.loadToolLibraries()
+
+        self.form.tools.setModel(self.toolModel)
+        self.form.tools.selectionModel().selectionChanged.connect(self.enableButtons)
+        self.form.tools.doubleClicked.connect(partial(self.selectedOrAllToolControllers))
 
         self.form.libraryEditorOpen.clicked.connect(self.libraryEditorOpen)
         self.form.addToolController.clicked.connect(self.selectedOrAllToolControllers)
