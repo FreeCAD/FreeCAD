@@ -247,6 +247,7 @@ class ModelFactory:
         """
         Path.Log.track()
         path = Path.Preferences.lastPathToolLibrary()
+        model.clear()
 
         if os.path.isdir(path):  # opening all tables in a directory
             libFiles = [f for f in glob.glob(path + os.path.sep + "*.fctl")]
