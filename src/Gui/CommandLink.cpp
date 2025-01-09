@@ -877,7 +877,7 @@ public:
         sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Link actions");
         sToolTipText  = QT_TR_NOOP("Actions that apply to link objects");
-        sWhatsThis    = "Std_LinkMakeRelative";
+        sWhatsThis    = "Std_LinkActions";
         sStatusTip    = QT_TR_NOOP("Actions that apply to link objects");
         eType         = AlterDoc;
         bCanLog       = false;
