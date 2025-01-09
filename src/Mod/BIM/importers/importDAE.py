@@ -42,11 +42,6 @@ __url__    = "https://www.freecad.org"
 
 DEBUG = True
 
-try:
-    # Python 2 forward compatibility
-    range = xrange
-except NameError:
-    pass
 
 def checkCollada():
 
