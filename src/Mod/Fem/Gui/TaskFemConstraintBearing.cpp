@@ -66,18 +66,18 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint* Co
     this->groupLayout()->addWidget(proxy);
 
     // setup ranges
-    ui->spinDiameter->setMinimum(-FLOAT_MAX);
-    ui->spinDiameter->setMaximum(FLOAT_MAX);
-    ui->spinOtherDiameter->setMinimum(-FLOAT_MAX);
-    ui->spinOtherDiameter->setMaximum(FLOAT_MAX);
-    ui->spinCenterDistance->setMinimum(-FLOAT_MAX);
-    ui->spinCenterDistance->setMaximum(FLOAT_MAX);
-    ui->spinForce->setMinimum(-FLOAT_MAX);
-    ui->spinForce->setMaximum(FLOAT_MAX);
-    ui->spinTensionForce->setMinimum(-FLOAT_MAX);
-    ui->spinTensionForce->setMaximum(FLOAT_MAX);
-    ui->spinDistance->setMinimum(-FLOAT_MAX);
-    ui->spinDistance->setMaximum(FLOAT_MAX);
+    ui->spinDiameter->setMinimum(-FLT_MAX);
+    ui->spinDiameter->setMaximum(FLT_MAX);
+    ui->spinOtherDiameter->setMinimum(-FLT_MAX);
+    ui->spinOtherDiameter->setMaximum(FLT_MAX);
+    ui->spinCenterDistance->setMinimum(-FLT_MAX);
+    ui->spinCenterDistance->setMaximum(FLT_MAX);
+    ui->spinForce->setMinimum(-FLT_MAX);
+    ui->spinForce->setMaximum(FLT_MAX);
+    ui->spinTensionForce->setMinimum(-FLT_MAX);
+    ui->spinTensionForce->setMaximum(FLT_MAX);
+    ui->spinDistance->setMinimum(-FLT_MAX);
+    ui->spinDistance->setMaximum(FLT_MAX);
 
     // Get the feature data
     Fem::ConstraintBearing* pcConstraint = ConstraintView->getObject<Fem::ConstraintBearing>();

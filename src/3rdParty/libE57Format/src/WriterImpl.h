@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2010 Stan Coleby (scoleby@intelisum.com)
  * Copyright (c) 2020 PTC Inc.
+ * Copyright (c) 2022 Andy Maloney <asmaloney@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person or organization
  * obtaining a copy of the software and accompanying documentation covered by
@@ -28,17 +29,21 @@
 #pragma once
 
 #include "E57SimpleData.h"
+#include "E57SimpleWriter.h"
 
 namespace e57
 {
-
-   //! most of the functions follows Writer
    class WriterImpl
    {
    public:
-      WriterImpl( const ustring &filePath, const ustring &coordinateMetaData );
-
+      WriterImpl( const ustring &filePath, const WriterOptions &options );
       ~WriterImpl();
+
+      // disallow copying a WriterImpl
+      WriterImpl( const WriterImpl & ) = delete;
+      WriterImpl &operator=( WriterImpl const & ) = delete;
+      WriterImpl( const WriterImpl && ) = delete;
+      WriterImpl &operator=( const WriterImpl && ) = delete;
 
       bool IsOpen() const;
 
@@ -46,8 +51,9 @@ namespace e57
 
       int64_t NewImage2D( Image2D &image2DHeader );
 
-      int64_t WriteImage2DData( int64_t imageIndex, Image2DType imageType, Image2DProjection imageProjection,
-                                void *pBuffer, int64_t start, int64_t count );
+      size_t WriteImage2DData( int64_t imageIndex, Image2DType imageType,
+                               Image2DProjection imageProjection, uint8_t *pBuffer, int64_t start,
+                               size_t count );
 
       int64_t NewData3D( Data3D &data3DHeader );
 
@@ -55,7 +61,7 @@ namespace e57
       CompressedVectorWriter SetUpData3DPointsData( int64_t dataIndex, size_t pointCount,
                                                     const Data3DPointsData_t<COORDTYPE> &buffers );
 
-      bool WriteData3DGroupsData( int64_t dataIndex, int64_t groupCount, int64_t *idElementValue,
+      bool WriteData3DGroupsData( int64_t dataIndex, size_t groupCount, int64_t *idElementValue,
                                   int64_t *startPointIndex, int64_t *pointCount );
 
       StructureNode GetRawE57Root();
@@ -73,15 +79,5 @@ namespace e57
       VectorNode data3D_;
 
       VectorNode images2D_;
-
-      //! @brief This function writes the projection image
-      //! @param image 1 of 3 projects or the visual
-      //! @param imageType identifies the image format desired.
-      //! @param pBuffer pointer the buffer
-      //! @param start position in the block to start reading
-      //! @param count size of desired chuck or buffer size
-      int64_t WriteImage2DNode( StructureNode image, Image2DType imageType, void *pBuffer, int64_t start,
-                                int64_t count );
    }; // end Writer class
-
 } // end namespace e57
