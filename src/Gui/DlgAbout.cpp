@@ -22,7 +22,9 @@
 
 #include "PreCompiled.h"
 #include <qbitmap.h>
+#include <qgraphicssvgitem.h>
 #include <qpainter.h>
+#include <qsvgrenderer.h>
 
 #ifndef _PreComp_
 #include <cstdlib>
@@ -211,97 +213,68 @@ AboutDialog::~AboutDialog()
 QPixmap AboutDialog::aboutImage() const
 {
     // See if we have a custom About screen image set
-    QImage about_image;
-    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
+    QSvgRenderer about_image;
+    QFileInfo fi(QString::fromLatin1("images:about_image.svg"));
     if (fi.isFile() && fi.exists()) {
-        about_image.load(fi.filePath(), "PNG");
+        about_image.load(fi.filePath());
     }
 
     const auto about_path_key = "AboutImage";
     const auto& about_path = App::Application::Config()[about_path_key];
 
-    if (!about_path.empty() && about_image.isNull()) {
+    Base::Console().Log("About image: empty ? %d valid ? %d\n", about_path.empty(), about_image.isValid());
+
+    if (!about_path.empty() && !about_image.isValid()) {
         QString path = QString::fromStdString(about_path);
         if (QDir(path).isRelative()) {
             QString home = QString::fromStdString(App::Application::getHomePath());
             path = QFileInfo(QDir(home), path).absoluteFilePath();
         }
+
         about_image.load(path);
 
+        Base::Console().Log("About image: path ? %s valid2 ? %d\n", path.toStdString().c_str(), about_image.isValid());
+
         // Now try the icon paths
-        if (about_image.isNull()) {
-            about_image = Gui::BitmapFactory().pixmap(about_path.c_str()).toImage();
+        if (!about_image.isValid()) {
+            QString fileName = QString::fromLatin1("icons:") + QString::fromStdString(about_path) +QString::fromLatin1(".svg");
+            QFileInfo fi(fileName);
+            about_image.load(fi.filePath());
+            Base::Console().Log("About image: path ? %s valid2 ? %d\n", fileName.toStdString().c_str(), about_image.isValid());
+            // TODO(Shvedov) implement
+            //Gui::BitmapFactory().loadSvg(about_image, about_path.c_str());
         }
-        if (!about_image.isNull()) {
-            // Drawing version number
-            auto major = QString::fromStdString(App::Application::Config()["BuildVersionMajor"]);
-            auto minor = QString::fromStdString(App::Application::Config()["BuildVersionMinor"]);
-            auto point = QString::fromStdString(App::Application::Config()["BuildVersionPoint"]);
-            auto suffix = QString::fromStdString(App::Application::Config()["BuildVersionSuffix"]);
-            auto version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
+    }
 
-            // Create painter, set its font
-            QPainter painter(&about_image);
-            painter.setPen(QPen(Qt::black));
-            QFont font {};
-            font.setBold(true);
-            font.setPixelSize(18);
-            painter.setFont(font);
+    QPixmap pixmap;
 
-            // Calculate position of target text (this is sniper work (=, not
-            // sure is this stable enough)
-            auto rect = about_image.rect();
-            rect.adjust(rect.width() * 0.755, rect.height() * 0.656, 0, 0);
+    if (about_image.isValid())
+    {
+        QGraphicsSvgItem item;
+        item.setSharedRenderer(&about_image);
 
-            // Draw version
-            painter.drawText(rect, version);
+        pixmap = QPixmap(item.boundingRect().size().toSize());
+        pixmap.fill(Qt::transparent);
 
-            // If we are are in development version - draw the warning tape
-            // styled borders on top and bottom
-            if (suffix == QLatin1String("dev"))
-            {
-                // Take region of visible image
-                auto lines_region = QRegion(QBitmap::fromImage(about_image.createAlphaMask()));
+        QPainter painter(&pixmap);
+        painter.setRenderHint(QPainter::Antialiasing);
+        QStyleOptionGraphicsItem opt;
 
-                int width = about_image.rect().width();
-                int height = about_image.rect().height();
+        QGraphicsSvgItem svg_item;
+        svg_item.setSharedRenderer (&about_image);
+        svg_item.paint(&painter, &opt);
 
-                // Remove the center part of this region and set it as clipping
-                // region.
-                lines_region -= lines_region.boundingRect().adjusted(0, height / 10, 0, - height / 10);
-                painter.setClipRegion(lines_region);
-
-                // Hard code the width of line
-                constexpr const int line_width = 30;
-
-                // Create drawing pen
-                QPen pen {};
-                pen.setWidth(line_width);
-
-                // The color switcher
-                bool odd = false;
-
-                // Iterating through the top border of image
-                for (int pos = 0; pos < width + height; pos += line_width)
-                {
-                    // Create vertical line
-                    QLineF line (pos, 0, pos, height*2);
-
-                    // Rotate it 45 degrees clockwise
-                    line.setAngle(line.angle() - 45);
-                    // Pick color
-                    pen.setColor(odd ? Qt::black : Qt::yellow);
-                    odd = !odd;
-                    painter.setPen(pen);
-                    // Draw line
-                    painter.drawLine(line);
-                }
-            }
+        if(about_image.elementExists(QLatin1String("dev_layer")))
+        {
+            QGraphicsSvgItem dev_item;
+            dev_item.setSharedRenderer (&about_image);
+            dev_item.setElementId(QLatin1String("dev_layer"));
+            dev_item.paint(&painter, &opt);
         }
     }
 
 
-    return QPixmap::fromImage(about_image);
+    return pixmap;
 }
 
 void AboutDialog::showOrHideImage(const QRect& rect)
