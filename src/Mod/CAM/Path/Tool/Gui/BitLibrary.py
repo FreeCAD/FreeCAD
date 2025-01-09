@@ -481,10 +481,12 @@ class ToolBitSelector(object):
             self.form.cboLibraries.setToolTip(translate("CAM_Toolbit", "No library selected"))
 
     def enableButtons(self):
+        # Set buttons inactive
+        self.form.addToolController.setEnabled(False)
         selected = len(self.form.tools.selectedIndexes()) >= 1
         if selected:
             jobs = len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"]) >= 1
-        self.form.addToolController.setEnabled(selected and jobs)
+            self.form.addToolController.setEnabled(selected and jobs)
 
     def libraryEditorOpen(self):
         library = ToolBitLibrary()
