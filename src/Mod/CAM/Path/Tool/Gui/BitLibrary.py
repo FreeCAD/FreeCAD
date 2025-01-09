@@ -422,8 +422,6 @@ class ToolBitSelector(object):
             # Get the data for the selected index
             libPath = self.libraryModel.item(currentIndex).data(_PathRole)
             self.factory.library_open(self.toolModel, libPath)
-        else:
-            pass
 
         self.toolModel.takeColumn(3)
         self.toolModel.takeColumn(2)
