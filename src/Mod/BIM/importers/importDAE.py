@@ -57,7 +57,7 @@ def checkCollada():
     try:
         import collada
     except ImportError:
-        FreeCAD.Console.PrintError(translate("Arch","pycollada not found, collada support is disabled.")+"\n")
+        FreeCAD.Console.PrintError(translate('BIM', 'pycollada not found, collada support is disabled.') + '\n')
         return False
     else:
         return True
@@ -301,4 +301,4 @@ def export(exportList,filename,tessellation=1,colors=None):
     colmesh.scenes.append(myscene)
     colmesh.scene = myscene
     colmesh.write(filename)
-    FreeCAD.Console.PrintMessage(translate("Arch","file %s successfully created.") % filename + "\n")
+    FreeCAD.Console.PrintMessage(translate("BIM", f'file "{filename}" successfully created.' + "\n"))
