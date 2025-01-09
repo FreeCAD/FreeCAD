@@ -326,7 +326,7 @@ void PropertiesDialog::apply()
 
 void PropertiesDialog::selectAlias()
 {
-    ui->tabWidget->setCurrentIndex(4);
+    ui->tabWidget->setCurrentIndex(0);
     ui->alias->setFocus();
 }
 
