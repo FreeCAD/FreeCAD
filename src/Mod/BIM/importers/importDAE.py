@@ -68,26 +68,23 @@ def xml_escape(text: str, entities: dict[str, str] = None) -> str:
     return sax_escape(text, entities=entities)
 
 
-def check_collada_import() -> bool:
+def import_collada() -> bool:
     """Return True if the `collada` module is available.
 
     Also imports the module.
 
     """
-
     global collada
     try:
         import collada
     except ImportError:
         FreeCAD.Console.PrintError(translate("BIM", "pycollada not found, collada support is disabled.") + "\n")
         return False
-    else:
-        return True
+    return True
 
 
 def triangulate(shape):
     """Triangulate the given shape."""
-
     mesher = params.get_param_arch("ColladaMesher")
     tessellation = params.get_param_arch("ColladaTessellation")
     grading = params.get_param_arch("ColladaGrading")
@@ -114,8 +111,7 @@ def triangulate(shape):
 
 def open(filename):
     """Called when FreeCAD wants to open a file."""
-
-    if not check_collada_import():
+    if not import_collada():
         return
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
@@ -127,8 +123,7 @@ def open(filename):
 
 def insert(filename, docname):
     """Called when FreeCAD wants to import a file."""
-
-    if not check_collada_import():
+    if not import_collada():
         return
     try:
         doc = FreeCAD.getDocument(docname)
@@ -141,10 +136,9 @@ def insert(filename, docname):
 
 def read(filename):
     """Read a DAE file."""
-
     col = collada.Collada(filename, ignore=[collada.common.DaeUnsupportedError])
     # Read the unitmeter info from DAE file and compute unit to convert to mm.
-    unitmeter = col.assetInfo.unitmeter or 1
+    unitmeter = col.assetInfo.unitmeter or 1.0
     unit = unitmeter / 0.001
     # for geom in col.geometries:
     # for geom in col.scene.objects("geometry"):
@@ -203,8 +197,7 @@ def export(
              mode if you want to be able to export colors.
 
     """
-
-    if not check_collada_import():
+    if not import_collada():
         return
     if colors is None:
         colors = {}
@@ -340,7 +333,7 @@ def export(
                     )
                     col_mesh.effects.append(effect)
                     col_mesh.materials.append(mat)
-                    mat_ref = "ref_" + obj.Name
+                    mat_ref = f"ref_{obj.Name}"
                     mat_node = collada.scene.MaterialNode(
                             symbol=mat_ref,
                             target=mat,
