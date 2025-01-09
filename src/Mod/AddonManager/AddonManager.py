@@ -59,7 +59,7 @@ from Widgets.addonmanager_widget_global_buttons import WidgetGlobalButtonBar
 from Widgets.addonmanager_widget_progress_bar import Progress
 from package_list import PackageListItemModel
 from Addon import Addon
-from manage_python_dependencies import (
+from addonmanager_python_deps_gui import (
     PythonPackageManager,
 )
 from addonmanager_cache import local_cache_needs_update

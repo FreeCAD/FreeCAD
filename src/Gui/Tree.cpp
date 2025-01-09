@@ -620,7 +620,6 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
-    this->setDragDropMode(QTreeWidget::InternalMove);
     this->setColumnCount(3);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -748,6 +747,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     setColumnHidden(1, TreeParams::getHideColumn());
     setColumnHidden(2, TreeParams::getHideInternalNames());
     header()->setVisible(!TreeParams::getHideColumn() || !TreeParams::getHideInternalNames());
+    TreeParams::onFontSizeChanged();
 }
 
 TreeWidget::~TreeWidget()

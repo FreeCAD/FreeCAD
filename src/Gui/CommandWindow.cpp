@@ -109,7 +109,7 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
   : Command("Std_CloseActiveWindow")
 {
     sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Cl&ose");
+    sMenuText     = QT_TR_NOOP("&Close");
     sToolTipText  = QT_TR_NOOP("Close active window");
     sWhatsThis    = "Std_CloseActiveWindow";
     sStatusTip    = QT_TR_NOOP("Close active window");
@@ -141,7 +141,7 @@ StdCmdCloseAllWindows::StdCmdCloseAllWindows()
   : Command("Std_CloseAllWindows")
 {
     sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Close Al&l");
+    sMenuText     = QT_TR_NOOP("Close A&ll");
     sToolTipText  = QT_TR_NOOP("Close all windows");
     sWhatsThis    = "Std_CloseAllWindows";
     sStatusTip    = QT_TR_NOOP("Close all windows");
@@ -169,7 +169,7 @@ StdCmdActivateNextWindow::StdCmdActivateNextWindow()
   : Command("Std_ActivateNextWindow")
 {
     sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Ne&xt");
+    sMenuText     = QT_TR_NOOP("&Next");
     sToolTipText  = QT_TR_NOOP("Activate next window");
     sWhatsThis    = "Std_ActivateNextWindow";
     sStatusTip    = QT_TR_NOOP("Activate next window");
@@ -198,7 +198,7 @@ StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
   : Command("Std_ActivatePrevWindow")
 {
     sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Pre&vious");
+    sMenuText     = QT_TR_NOOP("&Previous");
     sToolTipText  = QT_TR_NOOP("Activate previous window");
     sWhatsThis    = "Std_ActivatePrevWindow";
     sStatusTip    = QT_TR_NOOP("Activate previous window");
@@ -278,7 +278,7 @@ StdCmdDockViewMenu::StdCmdDockViewMenu()
   : Command("Std_DockViewMenu")
 {
     sGroup        = "View";
-    sMenuText     = QT_TR_NOOP("Panels");
+    sMenuText     = QT_TR_NOOP("&Panels");
     sToolTipText  = QT_TR_NOOP("List of available dock panels");
     sWhatsThis    = "Std_DockViewMenu";
     sStatusTip    = QT_TR_NOOP("List of available dock panels");
@@ -314,7 +314,7 @@ StdCmdToolBarMenu::StdCmdToolBarMenu()
   : Command("Std_ToolBarMenu")
 {
     sGroup        = "View";
-    sMenuText     = QT_TR_NOOP("Tool&bars");
+    sMenuText     = QT_TR_NOOP("&Toolbars");
     sToolTipText  = QT_TR_NOOP("Toggles this window");
     sWhatsThis    = "Std_ToolBarMenu";
     sStatusTip    = QT_TR_NOOP("Toggles this window");

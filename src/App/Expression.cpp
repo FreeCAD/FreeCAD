@@ -2294,7 +2294,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         return Py::String(args[0]->getPyValue().as_string());
     case PARSEQUANT: {
         auto quantity_text = args[0]->getPyValue().as_string();
-        auto quantity_object =  Quantity::parse(QString::fromStdString(quantity_text));
+        auto quantity_object =  Quantity::parse(quantity_text);
         return Py::asObject(new QuantityPy(new Quantity(quantity_object)));
     }
     case TRANSLATIONM: {
@@ -2453,56 +2453,12 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case ABS:
         unit = v1.getUnit();
         break;
-    case SQRT: {
-        unit = v1.getUnit();
-
-        // All components of unit must be either zero or dividable by 2
-        UnitSignature s = unit.getSignature();
-        if ( !((s.Length % 2) == 0) &&
-              ((s.Mass % 2) == 0) &&
-              ((s.Time % 2) == 0) &&
-              ((s.ElectricCurrent % 2) == 0) &&
-              ((s.ThermodynamicTemperature % 2) == 0) &&
-              ((s.AmountOfSubstance % 2) == 0) &&
-              ((s.LuminousIntensity % 2) == 0) &&
-              ((s.Angle % 2) == 0))
-            _EXPR_THROW("All dimensions must be even to compute the square root.",expr);
-
-        unit = Unit(s.Length /2,
-                    s.Mass / 2,
-                    s.Time / 2,
-                    s.ElectricCurrent / 2,
-                    s.ThermodynamicTemperature / 2,
-                    s.AmountOfSubstance / 2,
-                    s.LuminousIntensity / 2,
-                    s.Angle);
+    case SQRT:
+        unit = v1.getUnit().sqrt();
         break;
-    }
-    case CBRT: {
-        unit = v1.getUnit();
-
-        // All components of unit must be either zero or dividable by 3
-        UnitSignature s = unit.getSignature();
-        if ( !((s.Length % 3) == 0) &&
-              ((s.Mass % 3) == 0) &&
-              ((s.Time % 3) == 0) &&
-              ((s.ElectricCurrent % 3) == 0) &&
-              ((s.ThermodynamicTemperature % 3) == 0) &&
-              ((s.AmountOfSubstance % 3) == 0) &&
-              ((s.LuminousIntensity % 3) == 0) &&
-              ((s.Angle % 3) == 0))
-            _EXPR_THROW("All dimensions must be multiples of 3 to compute the cube root.",expr);
-
-        unit = Unit(s.Length /3,
-                    s.Mass / 3,
-                    s.Time / 3,
-                    s.ElectricCurrent / 3,
-                    s.ThermodynamicTemperature / 3,
-                    s.AmountOfSubstance / 3,
-                    s.LuminousIntensity / 3,
-                    s.Angle);
+    case CBRT:
+        unit = v1.getUnit().cbrt();
         break;
-    }
     case ATAN2:
         if (e2.isNone())
             _EXPR_THROW("Invalid second argument.",expr);

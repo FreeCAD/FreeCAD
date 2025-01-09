@@ -555,38 +555,23 @@ PyObject* SketchObjectPy::carbonCopy(PyObject* args)
 
 PyObject* SketchObjectPy::addExternal(PyObject* args)
 {
-    char* ObjectName;
-    char* SubName;
-    PyObject* defining;      // this is an optional argument default false
-    PyObject* intersection;  // this is an optional argument default false
-    bool isDefining;
-    bool isIntersection;
+    char* ObjectName = nullptr;
+    char* SubName = nullptr;
+    PyObject* defining = Py_False;
+    PyObject* intersection = Py_False;
     if (!PyArg_ParseTuple(args,
-                          "ssO!O!",
+                          "ss|O!O!",
                           &ObjectName,
                           &SubName,
                           &PyBool_Type,
                           &defining,
                           &PyBool_Type,
                           &intersection)) {
-        if (!PyArg_ParseTuple(args, "ssO!", &ObjectName, &SubName, &PyBool_Type, &defining)) {
-            PyErr_Clear();
-            if (!PyArg_ParseTuple(args, "ss", &ObjectName, &SubName)) {
-                return nullptr;
-            }
-            else {
-                isDefining = false;
-            }
-        }
-        else {
-            isDefining = Base::asBoolean(defining);
-        }
-        isIntersection = false;
+        return nullptr;
     }
-    else {
-        isDefining = Base::asBoolean(defining);
-        isIntersection = Base::asBoolean(intersection);
-    }
+
+    bool isDefining = Base::asBoolean(defining);
+    bool isIntersection = Base::asBoolean(intersection);
 
     // get the target object for the external link
     Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
@@ -780,8 +765,8 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
             str << "Cannot set the datum because the sketch contains conflicting constraints";
         }
         else if (err == -2) {
-            str << "Datum " << (const char*)Quantity.getUserString().toUtf8()
-                << " for the constraint with index " << Index << " is invalid";
+            str << "Datum " << Quantity.getUserString() << " for the constraint with index "
+                << Index << " is invalid";
         }
         else if (err == -4) {
             str << "Negative datum values are not valid for the constraint with index " << Index;
@@ -793,8 +778,7 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
             str << "Cannot set the datum because of invalid geometry";
         }
         else {
-            str << "Unexpected problem at setting datum "
-                << (const char*)Quantity.getUserString().toUtf8()
+            str << "Unexpected problem at setting datum " << Quantity.getUserString()
                 << " for the constraint with index " << Index;
         }
         PyErr_SetString(PyExc_ValueError, str.str().c_str());

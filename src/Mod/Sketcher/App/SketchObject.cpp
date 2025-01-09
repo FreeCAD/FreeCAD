@@ -127,7 +127,7 @@ FC_LOG_LEVEL_INIT("Sketch", true, true)
 
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
-SketchObject::SketchObject()
+SketchObject::SketchObject() : geoLastId(0)
 {
     ADD_PROPERTY_TYPE(
         Geometry, (nullptr), "Sketch", (App::PropertyType)(App::Prop_None), "Sketch geometry");
@@ -164,9 +164,6 @@ SketchObject::SketchObject()
                       "Sketch",
                       (App::PropertyType)(App::Prop_None),
                       "Tolerance for fitting arcs of projected external geometry");
-    geoLastId = 0;
-    geoHistoryLevel = 1;
-
     ADD_PROPERTY(InternalShape,
                  (Part::TopoShape()));
     ADD_PROPERTY_TYPE(MakeInternals,
@@ -3512,7 +3509,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                                                                     Constraint* constr) {
         // TODO: Move code currently later in this method (that does as per the following description) here.
         /* It is possible that the trimming entity has both a PointOnObject constraint to the
-         * trimmed entity, and a simple Tangent contstraint to the trimmed entity. In this case we
+         * trimmed entity, and a simple Tangent constraint to the trimmed entity. In this case we
          * want to change to a single end-to-end tangency, i.e we want to ensure that constrType1 is
          * set to Sketcher::Tangent, that the secondPos1 is captured from the PointOnObject, and
          * also make sure that the PointOnObject constraint is deleted. The below loop ensures this,
@@ -8213,7 +8210,7 @@ static Part::Geometry *fitArcs(std::vector<std::unique_ptr<Part::Geometry> > &ar
                                double tol)
 {
     double radius = 0.0;
-    double m;
+    double m = 0.0;
     Base::Vector3d center;
     for (auto &geo : arcs) {
         if (auto arc = Base::freecad_dynamic_cast<Part::GeomArcOfCircle>(geo.get())) {
@@ -8228,27 +8225,27 @@ static Part::Geometry *fitArcs(std::vector<std::unique_ptr<Part::Geometry> > &ar
         } else
             return nullptr;
     }
-    if (radius == 0.0)
+    if (radius == 0.0) {
         return nullptr;
+    }
     if (P1.SquareDistance(P2) < Precision::Confusion()) {
         Part::GeomCircle* circle = new Part::GeomCircle();
         circle->setCenter(center);
         circle->setRadius(radius);
         return circle;
     }
-    else if (arcs.size() == 1) {
+    if (arcs.size() == 1) {
         auto res = arcs.front().release();
         arcs.clear();
         return res;
     }
-    else {
-        GeomLProp_CLProps prop(Handle(Geom_Curve)::DownCast(arcs.front()->handle()),m,0,Precision::Confusion());
-        gp_Pnt midPoint = prop.Value();
-        GC_MakeArcOfCircle arc(P1, midPoint, P2);
-        auto geo = new Part::GeomArcOfCircle();
-        geo->setHandle(arc.Value());
-        return geo;
-    }
+
+    GeomLProp_CLProps prop(Handle(Geom_Curve)::DownCast(arcs.front()->handle()),m,0,Precision::Confusion());
+    gp_Pnt midPoint = prop.Value();
+    GC_MakeArcOfCircle arc(P1, midPoint, P2);
+    auto geo = new Part::GeomArcOfCircle();
+    geo->setHandle(arc.Value());
+    return geo;
 }
 
 void SketchObject::validateExternalLinks()

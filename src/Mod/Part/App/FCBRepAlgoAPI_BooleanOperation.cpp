@@ -56,7 +56,7 @@ FCBRepAlgoAPI_BooleanOperation::FCBRepAlgoAPI_BooleanOperation(const TopoDS_Shap
     SetRunParallel(Standard_True);
     SetNonDestructive(Standard_True);
 }
-  
+
 void FCBRepAlgoAPI_BooleanOperation::setAutoFuzzy()
 {
     FCBRepAlgoAPIHelper::setAutoFuzzy(this);

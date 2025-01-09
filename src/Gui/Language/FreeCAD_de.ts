@@ -184,12 +184,12 @@
     </message>
     <message>
       <location filename="../CommandView.cpp" line="915"/>
-      <source>Toggle transparency</source>
+      <source>Toggle transparenc&amp;y</source>
       <translation>Transparenzmodus umschalten</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1028"/>
-      <source>Toggle selectability</source>
+      <source>Toggle se&amp;lectability</source>
       <translation>Selektierbarkeit an/aus</translation>
     </message>
     <message>
@@ -283,7 +283,7 @@
     </message>
     <message>
       <location filename="../Workbench.cpp" line="531"/>
-      <source>Measure</source>
+      <source>&amp;Measure</source>
       <translation>Messen</translation>
     </message>
   </context>
@@ -425,7 +425,7 @@
     <name>EditMode</name>
     <message>
       <location filename="../Application.h" line="264"/>
-      <source>Default</source>
+      <source>&amp;Default</source>
       <translation>Standard</translation>
     </message>
     <message>
@@ -435,7 +435,7 @@
     </message>
     <message>
       <location filename="../Application.h" line="269"/>
-      <source>Transform</source>
+      <source>Trans&amp;form</source>
       <translation>Bewegen</translation>
     </message>
     <message>
@@ -445,7 +445,7 @@
     </message>
     <message>
       <location filename="../Application.h" line="274"/>
-      <source>Cutting</source>
+      <source>Cu&amp;tting</source>
       <translation>Schneiden</translation>
     </message>
     <message>
@@ -455,7 +455,7 @@
     </message>
     <message>
       <location filename="../Application.h" line="279"/>
-      <source>Color</source>
+      <source>&amp;Color</source>
       <translation>Farbe</translation>
     </message>
     <message>
@@ -4739,7 +4739,7 @@ Die Spalte "Status" zeigt an, ob das Dokument wiederhergestellt werden konnte.</
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="343"/>
-      <source>Finish</source>
+      <source>&amp;Finish</source>
       <translation>Fertig</translation>
     </message>
     <message>
@@ -6840,7 +6840,7 @@ Stattdessen ein anderes Verzeichnis angeben?</translation>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
-      <source>Automatic Python modules documentation</source>
+      <source>Automatic Python &amp;Modules Documentation</source>
       <translation>Automatische Python Modul Dokumentation</translation>
     </message>
     <message>
@@ -7557,7 +7557,7 @@ Stattdessen ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="565"/>
-      <source>Preferences...</source>
+      <source>Prefere&amp;nces...</source>
       <translation>Einstellungen...</translation>
     </message>
     <message>
@@ -7977,25 +7977,25 @@ Weitere Einzelheiten finden sich im Ausgabefenster.</translation>
     <message>
       <location filename="../CommandView.cpp" line="338"/>
       <location filename="../CommandView.cpp" line="571"/>
-      <source>Save views...</source>
+      <source>&amp;Save views...</source>
       <translation>Ansichten speichern...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
       <location filename="../CommandView.cpp" line="572"/>
-      <source>Load views...</source>
+      <source>&amp;Load views...</source>
       <translation>Ansichten laden...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
       <location filename="../CommandView.cpp" line="573"/>
-      <source>Freeze view</source>
+      <source>F&amp;reeze view</source>
       <translation>Ansicht einfrieren</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="574"/>
-      <source>Clear views</source>
+      <source>&amp;Clear views</source>
       <translation>Ansichten löschen</translation>
     </message>
     <message>
@@ -8046,7 +8046,7 @@ Trotzdem fortfahren?</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1967"/>
-      <source>Save image</source>
+      <source>Save &amp;image</source>
       <translation>Bild speichern</translation>
     </message>
     <message>
@@ -8943,7 +8943,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
       <location filename="../CommandView.cpp" line="2979"/>
       <location filename="../CommandView.cpp" line="2980"/>
       <location filename="../CommandView.cpp" line="2982"/>
-      <source>Box element selection</source>
+      <source>Bo&amp;x element selection</source>
       <translation>Box-Element Auswahl</translation>
     </message>
   </context>
@@ -8951,7 +8951,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdBoxSelection</name>
     <message>
       <location filename="../CommandView.cpp" line="2753"/>
-      <source>Box selection</source>
+      <source>&amp;Box selection</source>
       <translation>Rechteckauswahl</translation>
     </message>
     <message>
@@ -8993,7 +8993,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdActivateNextWindow</name>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
-      <source>Ne&amp;xt</source>
+      <source>&amp;Next</source>
       <translation>Nächs&amp;tes Fenster</translation>
     </message>
     <message>
@@ -9007,7 +9007,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdActivatePrevWindow</name>
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
-      <source>Pre&amp;vious</source>
+      <source>&amp;Previous</source>
       <translation>&amp;Vorheriges Fenster</translation>
     </message>
     <message>
@@ -9021,7 +9021,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdAlignment</name>
     <message>
       <location filename="../CommandDoc.cpp" line="1626"/>
-      <source>Alignment...</source>
+      <source>Ali&amp;gnment...</source>
       <translation>Ausrichtung...</translation>
     </message>
     <message>
@@ -9035,7 +9035,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdAxisCross</name>
     <message>
       <location filename="../CommandView.cpp" line="2221"/>
-      <source>Toggle axis cross</source>
+      <source>Toggle a&amp;xis cross</source>
       <translation>Achsenkreuz ein-/ausblenden</translation>
     </message>
     <message>
@@ -9063,7 +9063,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdCloseActiveWindow</name>
     <message>
       <location filename="../CommandWindow.cpp" line="112"/>
-      <source>Cl&amp;ose</source>
+      <source>&amp;Close</source>
       <translation>Schl&amp;ießen</translation>
     </message>
     <message>
@@ -9077,7 +9077,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdCloseAllWindows</name>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
-      <source>Close Al&amp;l</source>
+      <source>Close A&amp;ll</source>
       <translation>Alles sch&amp;ließen</translation>
     </message>
     <message>
@@ -9105,7 +9105,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdCopy</name>
     <message>
       <location filename="../CommandDoc.cpp" line="1125"/>
-      <source>C&amp;opy</source>
+      <source>&amp;Copy</source>
       <translation>&amp;Kopieren</translation>
     </message>
     <message>
@@ -9119,7 +9119,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdCut</name>
     <message>
       <location filename="../CommandDoc.cpp" line="1097"/>
-      <source>&amp;Cut</source>
+      <source>Cu&amp;t</source>
       <translation>&amp;Ausschneiden</translation>
     </message>
     <message>
@@ -9147,7 +9147,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDemoMode</name>
     <message>
       <location filename="../CommandView.cpp" line="3212"/>
-      <source>View turntable...</source>
+      <source>View &amp;turntable...</source>
       <translation>Drehscheibe...</translation>
     </message>
     <message>
@@ -9161,7 +9161,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDependencyGraph</name>
     <message>
       <location filename="../CommandDoc.cpp" line="577"/>
-      <source>Dependency graph...</source>
+      <source>Dependency gra&amp;ph...</source>
       <translation>Abhängigkeitsdiagramm...</translation>
     </message>
     <message>
@@ -9189,7 +9189,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDlgMacroExecute</name>
     <message>
       <location filename="../CommandMacro.cpp" line="94"/>
-      <source>Macros ...</source>
+      <source>Ma&amp;cros...</source>
       <translation>Makros...</translation>
     </message>
     <message>
@@ -9203,7 +9203,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
       <location filename="../CommandMacro.cpp" line="123"/>
-      <source>Execute macro</source>
+      <source>&amp;Execute macro</source>
       <translation>Makro ausführen</translation>
     </message>
     <message>
@@ -9217,7 +9217,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <location filename="../CommandMacro.cpp" line="51"/>
-      <source>&amp;Macro recording ...</source>
+      <source>&amp;Macro recording...</source>
       <translation>&amp;Makro aufzeichnen...</translation>
     </message>
     <message>
@@ -9241,7 +9241,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDlgParameter</name>
     <message>
       <location filename="../CommandStd.cpp" line="381"/>
-      <source>E&amp;dit parameters ...</source>
+      <source>E&amp;dit parameters...</source>
       <translation>P&amp;arameter bearbeiten...</translation>
     </message>
     <message>
@@ -9255,7 +9255,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDlgPreferences</name>
     <message>
       <location filename="../CommandStd.cpp" line="406"/>
-      <source>&amp;Preferences ...</source>
+      <source>Prefere&amp;nces ...</source>
       <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
@@ -9269,7 +9269,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDockViewMenu</name>
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
-      <source>Panels</source>
+      <source>&amp;Panels</source>
       <translation>Fenster</translation>
     </message>
     <message>
@@ -9283,7 +9283,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDrawStyle</name>
     <message>
       <location filename="../CommandView.cpp" line="648"/>
-      <source>Draw style</source>
+      <source>&amp;Draw style</source>
       <translation>Darstellungsart</translation>
     </message>
     <message>
@@ -9297,7 +9297,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdDuplicateSelection</name>
     <message>
       <location filename="../CommandDoc.cpp" line="1200"/>
-      <source>Duplicate selection</source>
+      <source>Duplicate selecti&amp;on</source>
       <translation>Auswahl duplizieren</translation>
     </message>
     <message>
@@ -9381,7 +9381,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdFreeCADDonation</name>
     <message>
       <location filename="../CommandStd.cpp" line="576"/>
-      <source>Donate</source>
+      <source>Support FreeCA&amp;D</source>
       <translation>Spenden</translation>
     </message>
     <message>
@@ -9394,7 +9394,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdFreeCADFAQ</name>
     <message>
       <location filename="../CommandStd.cpp" line="715"/>
-      <source>FreeCAD FAQ</source>
+      <source>FreeCAD FA&amp;Q</source>
       <translation>FreeCAD FAQ</translation>
     </message>
     <message>
@@ -9412,7 +9412,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdFreeCADForum</name>
     <message>
       <location filename="../CommandStd.cpp" line="687"/>
-      <source>FreeCAD Forum</source>
+      <source>FreeCAD &amp;Forum</source>
       <translation>FreeCAD-Forum</translation>
     </message>
     <message>
@@ -9430,12 +9430,12 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdFreeCADPowerUserHub</name>
     <message>
       <location filename="../CommandStd.cpp" line="659"/>
-      <source>Python scripting documentation</source>
+      <source>&amp;Python Scripting Documentation</source>
       <translation>Python Scripting Dokumentation</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="660"/>
-      <source>Python scripting documentation on the FreeCAD website</source>
+      <source>&amp;Python scripting documentation on the FreeCAD website</source>
       <translation>Python Scripting Dokumentation auf der FreeCAD Website</translation>
     </message>
     <message>
@@ -9449,7 +9449,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <message>
       <location filename="../CommandStd.cpp" line="631"/>
       <location filename="../CommandStd.cpp" line="634"/>
-      <source>Users documentation</source>
+      <source>&amp;User Documentation</source>
       <translation>Benutzerdokumentation</translation>
     </message>
     <message>
@@ -9463,7 +9463,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <message>
       <location filename="../CommandStd.cpp" line="603"/>
       <location filename="../CommandStd.cpp" line="606"/>
-      <source>FreeCAD Website</source>
+      <source>FreeCAD W&amp;ebsite</source>
       <translation>FreeCAD Webseite</translation>
     </message>
     <message>
@@ -9476,7 +9476,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdFreezeViews</name>
     <message>
       <location filename="../CommandView.cpp" line="323"/>
-      <source>Freeze display</source>
+      <source>F&amp;reeze display</source>
       <translation>Ansicht einfrieren</translation>
     </message>
     <message>
@@ -9503,7 +9503,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdHideObjects</name>
     <message>
       <location filename="../CommandView.cpp" line="1234"/>
-      <source>Hide all objects</source>
+      <source>Hide all &amp;objects</source>
       <translation>Alle Objekte ausblenden</translation>
     </message>
     <message>
@@ -9517,7 +9517,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdHideSelection</name>
     <message>
       <location filename="../CommandView.cpp" line="1086"/>
-      <source>Hide selection</source>
+      <source>&amp;Hide selection</source>
       <translation>Auswahl ausblenden</translation>
     </message>
     <message>
@@ -9647,7 +9647,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdLinkSelectActions</name>
     <message>
       <location filename="../CommandLink.cpp" line="852"/>
-      <source>Link navigation</source>
+      <source>&amp;Link navigation</source>
       <translation>Verknüpfungsnavigation</translation>
     </message>
     <message>
@@ -9661,7 +9661,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
       <location filename="../CommandLink.cpp" line="812"/>
-      <source>Select all links</source>
+      <source>Select &amp;all links</source>
       <translation>Alle Verknüpfungen auswählen</translation>
     </message>
     <message>
@@ -9674,7 +9674,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdLinkSelectLinked</name>
     <message>
       <location filename="../CommandLink.cpp" line="649"/>
-      <source>Go to linked object</source>
+      <source>&amp;Go to linked object</source>
       <translation>Zum verknüpften Objekt gehen</translation>
     </message>
     <message>
@@ -9687,7 +9687,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
       <location filename="../CommandLink.cpp" line="777"/>
-      <source>Go to the deepest linked object</source>
+      <source>Go to the &amp;deepest linked object</source>
       <translation>Zum tiefsten verknüpften Objekt gehen</translation>
     </message>
     <message>
@@ -9713,7 +9713,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdMacroAttachDebugger</name>
     <message>
       <location filename="../CommandMacro.cpp" line="149"/>
-      <source>Attach to remote debugger...</source>
+      <source>&amp;Attach to remote debugger...</source>
       <translation>An Remote-Debugger anhängen...</translation>
     </message>
     <message>
@@ -9727,7 +9727,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdMacroStartDebug</name>
     <message>
       <location filename="../CommandMacro.cpp" line="174"/>
-      <source>Debug macro</source>
+      <source>&amp;Debug macro</source>
       <translation>Makro debuggen			</translation>
     </message>
     <message>
@@ -9741,7 +9741,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdMacroStepInto</name>
     <message>
       <location filename="../CommandMacro.cpp" line="258"/>
-      <source>Step into</source>
+      <source>Step &amp;into</source>
       <translation>Einzelschritt</translation>
     </message>
     <message>
@@ -9755,7 +9755,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdMacroStepOver</name>
     <message>
       <location filename="../CommandMacro.cpp" line="231"/>
-      <source>Step over</source>
+      <source>Step &amp;over</source>
       <translation>Einen Schritt weiter</translation>
     </message>
     <message>
@@ -9769,7 +9769,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdMacroStopDebug</name>
     <message>
       <location filename="../CommandMacro.cpp" line="204"/>
-      <source>Stop debugging</source>
+      <source>&amp;Stop debugging</source>
       <translation>Debuggen stoppen</translation>
     </message>
     <message>
@@ -9783,7 +9783,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <name>StdCmdMergeProjects</name>
     <message>
       <location filename="../CommandDoc.cpp" line="524"/>
-      <source>Merge document...</source>
+      <source>&amp;Merge document...</source>
       <translation>Dokument zusammenführen...</translation>
     </message>
     <message>
@@ -9830,7 +9830,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <message>
       <location filename="../CommandStd.cpp" line="524"/>
       <location filename="../CommandStd.cpp" line="527"/>
-      <source>Help</source>
+      <source>&amp;Help</source>
       <translation>Hilfe</translation>
     </message>
     <message>
@@ -9947,7 +9947,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdPrintPdf</name>
     <message>
       <location filename="../CommandDoc.cpp" line="952"/>
-      <source>&amp;Export PDF...</source>
+      <source>Export P&amp;DF...</source>
       <translation>PDF &amp;exportieren...</translation>
     </message>
     <message>
@@ -9961,7 +9961,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdPrintPreview</name>
     <message>
       <location filename="../CommandDoc.cpp" line="922"/>
-      <source>&amp;Print preview...</source>
+      <source>Print previe&amp;w...</source>
       <translation>&amp;Druckvorschau...</translation>
     </message>
     <message>
@@ -10007,7 +10007,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdRandomColor</name>
     <message>
       <location filename="../CommandFeat.cpp" line="80"/>
-      <source>Random color</source>
+      <source>Random &amp;color</source>
       <translation>Zufällige Farbe</translation>
     </message>
     <message>
@@ -10021,7 +10021,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdRecentFiles</name>
     <message>
       <location filename="../CommandStd.cpp" line="140"/>
-      <source>Open Recent</source>
+      <source>Open &amp;Recent</source>
       <translation>Zuletzt geöffnete Dateien</translation>
     </message>
     <message>
@@ -10035,7 +10035,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdRecentMacros</name>
     <message>
       <location filename="../CommandStd.cpp" line="181"/>
-      <source>Recent macros</source>
+      <source>&amp;Recent macros</source>
       <translation>Aktuelle Makros</translation>
     </message>
     <message>
@@ -10063,7 +10063,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdRefresh</name>
     <message>
       <location filename="../CommandDoc.cpp" line="1466"/>
-      <source>&amp;Refresh</source>
+      <source>Refres&amp;h</source>
       <translation>A&amp;ktualisieren</translation>
     </message>
     <message>
@@ -10077,7 +10077,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdReportBug</name>
     <message>
       <location filename="../CommandStd.cpp" line="768"/>
-      <source>Report a bug</source>
+      <source>Report an &amp;Issue</source>
       <translation>Einen Fehler melden</translation>
     </message>
     <message>
@@ -10091,7 +10091,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdRevert</name>
     <message>
       <location filename="../CommandDoc.cpp" line="793"/>
-      <source>Revert</source>
+      <source>Rever&amp;t</source>
       <translation>Änderungen widerrufen</translation>
     </message>
     <message>
@@ -10119,7 +10119,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdSaveAll</name>
     <message>
       <location filename="../CommandDoc.cpp" line="765"/>
-      <source>Save All</source>
+      <source>Sa&amp;ve All</source>
       <translation>Alle speichern</translation>
     </message>
     <message>
@@ -10147,7 +10147,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdSaveCopy</name>
     <message>
       <location filename="../CommandDoc.cpp" line="738"/>
-      <source>Save a &amp;Copy...</source>
+      <source>Save a Cop&amp;y...</source>
       <translation>Eine Kopie spei&amp;chern...</translation>
     </message>
     <message>
@@ -10167,7 +10167,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <message>
       <location filename="../CommandView.cpp" line="3153"/>
       <location filename="../CommandView.cpp" line="3155"/>
-      <source>Scene inspector</source>
+      <source>Scene &amp;inspector</source>
       <translation>Szenengraph untersuchen</translation>
     </message>
   </context>
@@ -10181,7 +10181,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <message>
       <location filename="../CommandView.cpp" line="3568"/>
       <location filename="../CommandView.cpp" line="3570"/>
-      <source>Show selection bounding box</source>
+      <source>Sho&amp;w selection bounding box</source>
       <translation>Auswahlbegrenzungsrahmen zeigen</translation>
     </message>
   </context>
@@ -10203,7 +10203,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdSelectVisibleObjects</name>
     <message>
       <location filename="../CommandView.cpp" line="1114"/>
-      <source>Select visible objects</source>
+      <source>&amp;Select visible objects</source>
       <translation>Sichtbare Objekte auswählen</translation>
     </message>
     <message>
@@ -10231,7 +10231,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdShowObjects</name>
     <message>
       <location filename="../CommandView.cpp" line="1197"/>
-      <source>Show all objects</source>
+      <source>Show &amp;all objects</source>
       <translation>Alle Objekte einblenden</translation>
     </message>
     <message>
@@ -10273,7 +10273,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdTextDocument</name>
     <message>
       <location filename="../CommandStd.cpp" line="795"/>
-      <source>Add text document</source>
+      <source>Add te&amp;xt document</source>
       <translation>Textdokument hinzufügen</translation>
     </message>
     <message>
@@ -10287,13 +10287,13 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdTextureMapping</name>
     <message>
       <location filename="../CommandView.cpp" line="3185"/>
-      <source>Texture mapping...</source>
+      <source>Text&amp;ure mapping...</source>
       <translation>Texturabbildung...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3186"/>
       <location filename="../CommandView.cpp" line="3188"/>
-      <source>Texture mapping</source>
+      <source>Text&amp;ure mapping</source>
       <translation>Texturabbildung</translation>
     </message>
   </context>
@@ -10315,7 +10315,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdToggleBreakpoint</name>
     <message>
       <location filename="../CommandMacro.cpp" line="285"/>
-      <source>Toggle breakpoint</source>
+      <source>Toggle &amp;breakpoint</source>
       <translation>Haltepunkt an/aus</translation>
     </message>
     <message>
@@ -10329,7 +10329,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdToggleClipPlane</name>
     <message>
       <location filename="../CommandView.cpp" line="595"/>
-      <source>Clipping plane</source>
+      <source>Clippin&amp;g plane</source>
       <translation>Schnittebene</translation>
     </message>
     <message>
@@ -10343,7 +10343,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdToggleNavigation</name>
     <message>
       <location filename="../CommandView.cpp" line="2172"/>
-      <source>Toggle navigation/Edit mode</source>
+      <source>Toggle navigation/&amp;Edit mode</source>
       <translation>Navigations-/Editier-Modus</translation>
     </message>
     <message>
@@ -10357,7 +10357,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdToggleObjects</name>
     <message>
       <location filename="../CommandView.cpp" line="1156"/>
-      <source>Toggle all objects</source>
+      <source>To&amp;ggle all objects</source>
       <translation>Alle Objekte umschalten</translation>
     </message>
     <message>
@@ -10371,7 +10371,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdToggleSelectability</name>
     <message>
       <location filename="../CommandView.cpp" line="1006"/>
-      <source>Toggle selectability</source>
+      <source>Toggle se&amp;lectability</source>
       <translation>Auswählbarkeit umschalten</translation>
     </message>
     <message>
@@ -10385,7 +10385,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdToggleVisibility</name>
     <message>
       <location filename="../CommandView.cpp" line="868"/>
-      <source>Toggle visibility</source>
+      <source>Toggle &amp;visibility</source>
       <translation>Ein-/ausblenden</translation>
     </message>
     <message>
@@ -10399,7 +10399,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdToolBarMenu</name>
     <message>
       <location filename="../CommandWindow.cpp" line="317"/>
-      <source>Tool&amp;bars</source>
+      <source>&amp;Toolbars</source>
       <translation>Symbol&amp;leisten</translation>
     </message>
     <message>
@@ -10427,7 +10427,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdTransformManip</name>
     <message>
       <location filename="../CommandDoc.cpp" line="1592"/>
-      <source>Transform</source>
+      <source>Trans&amp;form</source>
       <translation>Bewegen</translation>
     </message>
     <message>
@@ -10511,7 +10511,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdUserEditMode</name>
     <message>
       <location filename="../CommandStd.cpp" line="864"/>
-      <source>Edit mode</source>
+      <source>Edit &amp;mode</source>
       <translation>Bearbeitungsmodus</translation>
     </message>
     <message>
@@ -10539,7 +10539,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewBottom</name>
     <message>
       <location filename="../CommandView.cpp" line="1299"/>
-      <source>Bottom</source>
+      <source>&amp;5 Bottom</source>
       <translation>Untersicht</translation>
     </message>
     <message>
@@ -10567,7 +10567,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewDimetric</name>
     <message>
       <location filename="../CommandView.cpp" line="1468"/>
-      <source>Dimetric</source>
+      <source>&amp;Dimetric</source>
       <translation>Dimetrisch</translation>
     </message>
     <message>
@@ -10623,7 +10623,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewFitAll</name>
     <message>
       <location filename="../CommandView.cpp" line="1564"/>
-      <source>Fit all</source>
+      <source>&amp;Fit all</source>
       <translation>Einpassen</translation>
     </message>
     <message>
@@ -10637,7 +10637,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewFitSelection</name>
     <message>
       <location filename="../CommandView.cpp" line="1595"/>
-      <source>Fit selection</source>
+      <source>Fit &amp;selection</source>
       <translation>Auswahl einpassen</translation>
     </message>
     <message>
@@ -10651,7 +10651,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewFront</name>
     <message>
       <location filename="../CommandView.cpp" line="1323"/>
-      <source>Front</source>
+      <source>&amp;1 Front</source>
       <translation>Vorderansicht</translation>
     </message>
     <message>
@@ -10665,7 +10665,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewHome</name>
     <message>
       <location filename="../CommandView.cpp" line="1271"/>
-      <source>Home</source>
+      <source>&amp;Home</source>
       <translation>Home</translation>
     </message>
     <message>
@@ -10679,7 +10679,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewIsometric</name>
     <message>
       <location filename="../CommandView.cpp" line="1444"/>
-      <source>Isometric</source>
+      <source>&amp;Isometric</source>
       <translation>Isometrisch</translation>
     </message>
     <message>
@@ -10693,7 +10693,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
       <location filename="../CommandView.cpp" line="2494"/>
-      <source>Issue camera position</source>
+      <source>Issue camera &amp;position</source>
       <translation>Kameraposition ausgeben</translation>
     </message>
     <message>
@@ -10707,7 +10707,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
       <location filename="../CommandView.cpp" line="2465"/>
-      <source>Stereo Interleaved Columns</source>
+      <source>Stereo Interleaved &amp;Columns</source>
       <translation>Vertikales Interlacing</translation>
     </message>
     <message>
@@ -10721,7 +10721,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
       <location filename="../CommandView.cpp" line="2437"/>
-      <source>Stereo Interleaved Rows</source>
+      <source>Stereo Interleaved &amp;Rows</source>
       <translation>Horizontales Interlacing</translation>
     </message>
     <message>
@@ -10735,7 +10735,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewIvStereoOff</name>
     <message>
       <location filename="../CommandView.cpp" line="2352"/>
-      <source>Stereo Off</source>
+      <source>Stereo &amp;Off</source>
       <translation>Stereo aus</translation>
     </message>
     <message>
@@ -10749,7 +10749,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
       <location filename="../CommandView.cpp" line="2409"/>
-      <source>Stereo quad buffer</source>
+      <source>Stereo &amp;quad buffer</source>
       <translation>Stereo Vierfachpuffer</translation>
     </message>
     <message>
@@ -10763,7 +10763,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
       <location filename="../CommandView.cpp" line="2381"/>
-      <source>Stereo red/cyan</source>
+      <source>Stereo re&amp;d/cyan</source>
       <translation>Stereo rot/cyan</translation>
     </message>
     <message>
@@ -10777,7 +10777,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewLeft</name>
     <message>
       <location filename="../CommandView.cpp" line="1347"/>
-      <source>Left</source>
+      <source>&amp;6 Left</source>
       <translation>Seitenansicht von links</translation>
     </message>
     <message>
@@ -10791,7 +10791,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewRear</name>
     <message>
       <location filename="../CommandView.cpp" line="1371"/>
-      <source>Rear</source>
+      <source>&amp;4 Rear</source>
       <translation>Rückansicht</translation>
     </message>
     <message>
@@ -10819,7 +10819,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewRight</name>
     <message>
       <location filename="../CommandView.cpp" line="1395"/>
-      <source>Right</source>
+      <source>&amp;3 Right</source>
       <translation>Seitenansicht von rechts</translation>
     </message>
     <message>
@@ -10833,7 +10833,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewRotateLeft</name>
     <message>
       <location filename="../CommandView.cpp" line="1514"/>
-      <source>Rotate Left</source>
+      <source>Rotate &amp;Left</source>
       <translation>Nach links drehen</translation>
     </message>
     <message>
@@ -10847,7 +10847,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewRotateRight</name>
     <message>
       <location filename="../CommandView.cpp" line="1539"/>
-      <source>Rotate Right</source>
+      <source>Rotate &amp;Right</source>
       <translation>Nach rechts drehen</translation>
     </message>
     <message>
@@ -10875,7 +10875,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewTop</name>
     <message>
       <location filename="../CommandView.cpp" line="1419"/>
-      <source>Top</source>
+      <source>&amp;2 Top</source>
       <translation>Draufsicht</translation>
     </message>
     <message>
@@ -10889,7 +10889,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdViewTrimetric</name>
     <message>
       <location filename="../CommandView.cpp" line="1491"/>
-      <source>Trimetric</source>
+      <source>&amp;Trimetric</source>
       <translation>Trimetrisch</translation>
     </message>
     <message>
@@ -10959,7 +10959,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdCmdWorkbench</name>
     <message>
       <location filename="../CommandStd.cpp" line="75"/>
-      <source>Workbench</source>
+      <source>&amp;Workbench</source>
       <translation>Arbeitsbereich</translation>
     </message>
     <message>
@@ -11015,7 +11015,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdRecallWorkingView</name>
     <message>
       <location filename="../CommandView.cpp" line="3914"/>
-      <source>Recall working view</source>
+      <source>R&amp;ecall working view</source>
       <translation>Arbeitsansicht wiederherstellen</translation>
     </message>
     <message>
@@ -11029,7 +11029,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdStoreWorkingView</name>
     <message>
       <location filename="../CommandView.cpp" line="3884"/>
-      <source>Store working view</source>
+      <source>St&amp;ore working view</source>
       <translation>Arbeitsansicht speichern</translation>
     </message>
     <message>
@@ -11043,7 +11043,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeCollapseDocument</name>
     <message>
       <location filename="../CommandView.cpp" line="3363"/>
-      <source>Collapse/Expand</source>
+      <source>Collapse/E&amp;xpand</source>
       <translation>Reduzieren/Erweitern</translation>
     </message>
     <message>
@@ -11057,7 +11057,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeDrag</name>
     <message>
       <location filename="../CommandView.cpp" line="3492"/>
-      <source>Initiate dragging</source>
+      <source>Initiate &amp;dragging</source>
       <translation>Ziehen initiieren</translation>
     </message>
     <message>
@@ -11070,7 +11070,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeMultiDocument</name>
     <message>
       <location filename="../CommandView.cpp" line="3346"/>
-      <source>Multi document</source>
+      <source>&amp;Multi document</source>
       <translation>Mehrfachdokument</translation>
     </message>
     <message>
@@ -11084,7 +11084,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreePreSelection</name>
     <message>
       <location filename="../CommandView.cpp" line="3456"/>
-      <source>Pre-selection</source>
+      <source>&amp;4 Pre-selection</source>
       <translation>Vorauswahl</translation>
     </message>
     <message>
@@ -11097,7 +11097,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeRecordSelection</name>
     <message>
       <location filename="../CommandView.cpp" line="3474"/>
-      <source>Record selection</source>
+      <source>&amp;5 Record selection</source>
       <translation>Auswahl aufzeichnen</translation>
     </message>
     <message>
@@ -11110,7 +11110,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeSelection</name>
     <message>
       <location filename="../CommandView.cpp" line="3024"/>
-      <source>Go to selection</source>
+      <source>&amp;Go to selection</source>
       <translation>Gehe zu Selektion</translation>
     </message>
     <message>
@@ -11124,7 +11124,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeSingleDocument</name>
     <message>
       <location filename="../CommandView.cpp" line="3329"/>
-      <source>Single document</source>
+      <source>&amp;Single document</source>
       <translation>Einzeldokument</translation>
     </message>
     <message>
@@ -11138,7 +11138,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeSyncPlacement</name>
     <message>
       <location filename="../CommandView.cpp" line="3438"/>
-      <source>Sync placement</source>
+      <source>&amp;3 Sync placement</source>
       <translation>Sync-Platzierung</translation>
     </message>
     <message>
@@ -11151,7 +11151,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeSyncSelection</name>
     <message>
       <location filename="../CommandView.cpp" line="3420"/>
-      <source>Sync selection</source>
+      <source>&amp;2 Sync selection</source>
       <translation>Sync-Auswahl</translation>
     </message>
     <message>
@@ -11164,7 +11164,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdTreeSyncView</name>
     <message>
       <location filename="../CommandView.cpp" line="3402"/>
-      <source>Sync view</source>
+      <source>&amp;1 Sync view</source>
       <translation>Sync-Ansicht</translation>
     </message>
     <message>
@@ -11177,7 +11177,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdViewBoxZoom</name>
     <message>
       <location filename="../CommandView.cpp" line="2719"/>
-      <source>Box zoom</source>
+      <source>&amp;Box zoom</source>
       <translation>Zoomen mit Rechteck</translation>
     </message>
     <message>
@@ -11191,7 +11191,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdViewDock</name>
     <message>
       <location filename="../CommandView.cpp" line="1664"/>
-      <source>Docked</source>
+      <source>&amp;Docked</source>
       <translation>Angedockt</translation>
     </message>
     <message>
@@ -11205,7 +11205,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdViewDockUndockFullscreen</name>
     <message>
       <location filename="../CommandView.cpp" line="1784"/>
-      <source>Document window</source>
+      <source>D&amp;ocument window</source>
       <translation>Dokumentfenster</translation>
     </message>
     <message>
@@ -11219,7 +11219,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdViewFullscreen</name>
     <message>
       <location filename="../CommandView.cpp" line="1754"/>
-      <source>Fullscreen</source>
+      <source>&amp;Fullscreen</source>
       <translation>Vollbild</translation>
     </message>
     <message>
@@ -11233,7 +11233,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdViewScreenShot</name>
     <message>
       <location filename="../CommandView.cpp" line="1926"/>
-      <source>Save image...</source>
+      <source>Save &amp;image...</source>
       <translation>Bild speichern...</translation>
     </message>
     <message>
@@ -11247,7 +11247,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdViewUndock</name>
     <message>
       <location filename="../CommandView.cpp" line="1693"/>
-      <source>Undocked</source>
+      <source>&amp;Undocked</source>
       <translation>Abgedockt</translation>
     </message>
     <message>
@@ -11261,7 +11261,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdViewZoomIn</name>
     <message>
       <location filename="../CommandView.cpp" line="2544"/>
-      <source>Zoom In</source>
+      <source>Zoom &amp;In</source>
       <translation>Vergrößern</translation>
     </message>
     <message>
@@ -11275,7 +11275,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <name>StdViewZoomOut</name>
     <message>
       <location filename="../CommandView.cpp" line="2573"/>
-      <source>Zoom Out</source>
+      <source>Zoom &amp;Out</source>
       <translation>Verkleinern</translation>
     </message>
     <message>
@@ -11316,7 +11316,7 @@ Trotzdem fortfahren?
     <name>Std_DrawStyle</name>
     <message>
       <location filename="../CommandView.cpp" line="727"/>
-      <source>As is</source>
+      <source>&amp;1 As is</source>
       <translation>Original</translation>
     </message>
     <message>
@@ -11326,7 +11326,7 @@ Trotzdem fortfahren?
     </message>
     <message>
       <location filename="../CommandView.cpp" line="732"/>
-      <source>Points</source>
+      <source>&amp;2 Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
@@ -11336,7 +11336,7 @@ Trotzdem fortfahren?
     </message>
     <message>
       <location filename="../CommandView.cpp" line="737"/>
-      <source>Wireframe</source>
+      <source>&amp;3 Wireframe</source>
       <translation>Drahtgitter</translation>
     </message>
     <message>
@@ -11346,7 +11346,7 @@ Trotzdem fortfahren?
     </message>
     <message>
       <location filename="../CommandView.cpp" line="742"/>
-      <source>Hidden line</source>
+      <source>&amp;4 Hidden line</source>
       <translation>Versteckte Linie</translation>
     </message>
     <message>
@@ -11356,7 +11356,7 @@ Trotzdem fortfahren?
     </message>
     <message>
       <location filename="../CommandView.cpp" line="747"/>
-      <source>No shading</source>
+      <source>&amp;5 No shading</source>
       <translation>Keine Schattierung</translation>
     </message>
     <message>
@@ -11366,7 +11366,7 @@ Trotzdem fortfahren?
     </message>
     <message>
       <location filename="../CommandView.cpp" line="752"/>
-      <source>Shaded</source>
+      <source>&amp;6 Shaded</source>
       <translation>Schattiert</translation>
     </message>
     <message>
@@ -11376,7 +11376,7 @@ Trotzdem fortfahren?
     </message>
     <message>
       <location filename="../CommandView.cpp" line="757"/>
-      <source>Flat lines</source>
+      <source>&amp;7 Flat lines</source>
       <translation>Flache Linien</translation>
     </message>
     <message>
@@ -11517,7 +11517,7 @@ Trotzdem fortfahren?</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="539"/>
-      <source>Standard views</source>
+      <source>Standard &amp;views</source>
       <translation>Standardansichten</translation>
     </message>
     <message>
@@ -11527,7 +11527,7 @@ Trotzdem fortfahren?</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
-      <source>Axonometric</source>
+      <source>A&amp;xonometric</source>
       <translation>Axonometrisch</translation>
     </message>
     <message>
@@ -11542,7 +11542,7 @@ Trotzdem fortfahren?</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="544"/>
-      <source>Visibility</source>
+      <source>V&amp;isibility</source>
       <translation>Sichtbarkeit</translation>
     </message>
     <message>
@@ -12119,7 +12119,7 @@ Zurzeit verfügt dieses System über folgende Arbeitsbereiche:&lt;/p&gt;&lt;/bod
     <name>StdViewLoadImage</name>
     <message>
       <location filename="../CommandView.cpp" line="2097"/>
-      <source>Load image...</source>
+      <source>&amp;Load image...</source>
       <translation>Bild laden...</translation>
     </message>
     <message>
@@ -12892,7 +12892,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <name>StdCmdExportDependencyGraph</name>
     <message>
       <location filename="../CommandDoc.cpp" line="609"/>
-      <source>Export dependency graph...</source>
+      <source>Export dependency &amp;graph...</source>
       <translation>Abhängigkeitsdiagramm exportieren...</translation>
     </message>
     <message>
@@ -12906,7 +12906,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <name>StdCmdSelBack</name>
     <message>
       <location filename="../CommandView.cpp" line="3241"/>
-      <source>Selection back</source>
+      <source>Selection &amp;back</source>
       <translation>Vorherige Auswahl</translation>
     </message>
     <message>
@@ -12919,7 +12919,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <name>StdCmdSelForward</name>
     <message>
       <location filename="../CommandView.cpp" line="3275"/>
-      <source>Selection forward</source>
+      <source>Selection &amp;forward</source>
       <translation>Nächste Auswahl</translation>
     </message>
     <message>
@@ -12975,7 +12975,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <name>StdCmdToggleTransparency</name>
     <message>
       <location filename="../CommandView.cpp" line="899"/>
-      <source>Toggle transparency</source>
+      <source>Toggle transparenc&amp;y</source>
       <translation>Transparenzmodus umschalten</translation>
     </message>
     <message>
@@ -12988,7 +12988,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <name>StdCmdDockOverlayAll</name>
     <message>
       <location filename="../CommandView.cpp" line="3612"/>
-      <source>Toggle overlay for all</source>
+      <source>Toggle overl&amp;ay for all</source>
       <translation>Überlagerungsmodus für alle umschalten</translation>
     </message>
     <message>
@@ -13001,7 +13001,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
       <location filename="../CommandView.cpp" line="3636"/>
-      <source>Toggle transparent for all</source>
+      <source>Toggle tra&amp;nsparent for all</source>
       <translation>Umschalten der Transparenz für alle</translation>
     </message>
     <message>
@@ -13016,7 +13016,7 @@ Dadurch bleiben die angedockten Fenster jederzeit transparent.</translation>
     <name>StdCmdDockOverlayToggle</name>
     <message>
       <location filename="../CommandView.cpp" line="3661"/>
-      <source>Toggle overlay</source>
+      <source>Toggle &amp;overlay</source>
       <translation>Überlagerungsmodus umschalten</translation>
     </message>
     <message>
@@ -13029,7 +13029,7 @@ Dadurch bleiben die angedockten Fenster jederzeit transparent.</translation>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3685"/>
-      <source>Toggle transparent mode</source>
+      <source>Toggle tran&amp;sparent mode</source>
       <translation>Transparenzmodus umschalten</translation>
     </message>
     <message>
@@ -13044,7 +13044,7 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
       <location filename="../CommandView.cpp" line="3710"/>
-      <source>Toggle left</source>
+      <source>Toggle &amp;left</source>
       <translation>Links umschalten</translation>
     </message>
     <message>
@@ -13057,7 +13057,7 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
       <location filename="../CommandView.cpp" line="3735"/>
-      <source>Toggle right</source>
+      <source>Toggle &amp;right</source>
       <translation>Rechts umschalten</translation>
     </message>
     <message>
@@ -13070,7 +13070,7 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
       <location filename="../CommandView.cpp" line="3760"/>
-      <source>Toggle top</source>
+      <source>Toggle &amp;top</source>
       <translation>Oben umschalten</translation>
     </message>
     <message>
@@ -13083,7 +13083,7 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
       <location filename="../CommandView.cpp" line="3785"/>
-      <source>Toggle bottom</source>
+      <source>Toggle &amp;bottom</source>
       <translation>Unten umschalten</translation>
     </message>
     <message>
@@ -13096,7 +13096,7 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3810"/>
-      <source>Bypass mouse events in docked overlay windows</source>
+      <source>Bypass &amp;mouse events in docked overlay windows</source>
       <translation>Mausereignisse in angedockten Überlagerungs-Fenstern umgehen</translation>
     </message>
     <message>
@@ -13335,7 +13335,7 @@ der Region nicht transparent sind.</translation>
     <name>StdCmdProjectInfo</name>
     <message>
       <location filename="../CommandDoc.cpp" line="832"/>
-      <source>Document i&amp;nformation...</source>
+      <source>Doc&amp;ument information...</source>
       <translation>Dokumenti&amp;nformation...</translation>
     </message>
     <message>
@@ -13349,7 +13349,7 @@ der Region nicht transparent sind.</translation>
     <name>StdCmdProjectUtil</name>
     <message>
       <location filename="../CommandDoc.cpp" line="863"/>
-      <source>Document utility...</source>
+      <source>Do&amp;cument utility...</source>
       <translation>Dokument-Dienstprogramm...</translation>
     </message>
     <message>
@@ -13377,7 +13377,7 @@ der Region nicht transparent sind.</translation>
     <name>StdCmdProperties</name>
     <message>
       <location filename="../CommandDoc.cpp" line="1736"/>
-      <source>Properties</source>
+      <source>Propert&amp;ies</source>
       <translation>Eigenschaften</translation>
     </message>
     <message>
@@ -13447,7 +13447,7 @@ der Region nicht transparent sind.</translation>
     <name>StdCmdAlignToSelection</name>
     <message>
       <location filename="../CommandView.cpp" line="3946"/>
-      <source>Align to selection</source>
+      <source>&amp;Align to selection</source>
       <translation>Auf die Auswahl ausrichten</translation>
     </message>
     <message>

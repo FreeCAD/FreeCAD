@@ -93,8 +93,13 @@ public:
 
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
 
+    /** Draw a beam in the line where the cursor is. */
     void lineNumberAreaPaintEvent(QPaintEvent* );
     int lineNumberAreaWidth();
+    void setVisibleLineNumbers(bool value);
+    bool isVisibleLineNumbers() const;
+    void setEnabledHighlightCurrentLine(bool value);
+    bool isEnabledHighlightCurrentLine() const;
 
 private Q_SLOTS:
     void updateLineNumberAreaWidth(int newBlockCount);
@@ -102,9 +107,6 @@ private Q_SLOTS:
     void highlightCurrentLine();
 
 protected:
-    void keyPressEvent (QKeyEvent * e) override;
-    /** Draw a beam in the line where the cursor is. */
-    void paintEvent (QPaintEvent * e) override;
     void resizeEvent(QResizeEvent* e) override;
     QWidget* getMarker() const
     { return lineNumberArea; }
@@ -117,6 +119,22 @@ private:
 
     friend class SyntaxHighlighter;
 };
+
+/** subclass of TextEditor that serves as base class for the
+ *  python editor and the python console where we handle
+ *  the tab key conversion to spaces, depending on user settings
+ */
+class GuiExport PythonTextEditor : public TextEditor
+{
+    Q_OBJECT
+public:
+    explicit PythonTextEditor(QWidget *parent = nullptr);
+    ~PythonTextEditor() override;
+
+protected:
+    void keyPressEvent(QKeyEvent *) override;
+};
+
 
 class LineMarker : public QWidget
 {

@@ -43,8 +43,6 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
 
-int const MaterialProperty::PRECISION = 6;
-
 MaterialProperty::MaterialProperty()
 {
     _valuePtr = std::make_shared<MaterialValue>(MaterialValue::None);
@@ -127,14 +125,14 @@ QString MaterialProperty::getString() const
     }
     if (getType() == MaterialValue::Quantity) {
         auto quantity = getValue().value<Base::Quantity>();
-        return quantity.getUserString();
+        return QString::fromStdString(quantity.getUserString());
     }
     if (getType() == MaterialValue::Float) {
         auto value = getValue();
         if (value.isNull()) {
             return {};
         }
-        return QString(QLatin1String("%L1")).arg(value.toFloat(), 0, 'g', PRECISION);
+        return QString(QLatin1String("%L1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -180,8 +178,8 @@ QString MaterialProperty::getDictionaryString() const
     if (getType() == MaterialValue::Quantity) {
         auto quantity = getValue().value<Base::Quantity>();
         auto string = QString(QLatin1String("%1 %2"))
-                          .arg(quantity.getValue(), 0, 'g', PRECISION)
-                          .arg(quantity.getUnit().getString());
+                          .arg(quantity.getValue(), 0, 'g', MaterialValue::PRECISION)
+                          .arg(QString::fromStdString(quantity.getUnit().getString()));
         return string;
     }
     if (getType() == MaterialValue::Float) {
@@ -189,7 +187,7 @@ QString MaterialProperty::getDictionaryString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QLatin1String("%1")).arg(value.toFloat(), 0, 'g', PRECISION);
+        return QString(QLatin1String("%1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -268,7 +266,7 @@ QVariant MaterialProperty::getColumnNull(int column) const
 
     switch (valueType) {
         case MaterialValue::Quantity: {
-            Base::Quantity quant = Base::Quantity(0, getColumnUnits(column));
+            Base::Quantity quant = Base::Quantity(0, getColumnUnits(column).toStdString());
             return QVariant::fromValue(quant);
         }
 
@@ -308,7 +306,7 @@ void MaterialProperty::setValue(const QString& value)
     }
     else if (_valuePtr->getType() == MaterialValue::Quantity) {
         try {
-            setQuantity(Base::Quantity::parse(value));
+            setQuantity(Base::Quantity::parse(value.toStdString()));
         }
         catch (const Base::ParserError& e) {
             Base::Console().Log("MaterialProperty::setValue Error '%s' - '%s'\n",
@@ -387,17 +385,19 @@ void MaterialProperty::setFloat(const QString& value)
 
 void MaterialProperty::setQuantity(const Base::Quantity& value)
 {
-    _valuePtr->setValue(QVariant(QVariant::fromValue(value)));
+    auto quantity = value;
+    quantity.setFormat(MaterialValue::getQuantityFormat());
+    _valuePtr->setValue(QVariant(QVariant::fromValue(quantity)));
 }
 
 void MaterialProperty::setQuantity(double value, const QString& units)
 {
-    setQuantity(Base::Quantity(value, units));
+    setQuantity(Base::Quantity(value, units.toStdString()));
 }
 
 void MaterialProperty::setQuantity(const QString& value)
 {
-    setQuantity(Base::Quantity::parse(value));
+    setQuantity(Base::Quantity::parse(value.toStdString()));
 }
 
 void MaterialProperty::setList(const QList<QVariant>& value)
@@ -1038,7 +1038,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
             if (value.isNull()) {
                 return {};
             }
-            return value.value<Base::Quantity>().getUserString();
+            return QString::fromStdString(value.value<Base::Quantity>().getUserString());
         }
         if (property->getType() == MaterialValue::Float) {
             auto value = property->getValue();
@@ -1046,7 +1046,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
                 return {};
             }
             return QString(QLatin1String("%L1"))
-                .arg(value.toFloat(), 0, 'g', MaterialProperty::PRECISION);
+                .arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
         }
         return property->getValue().toString();
     }

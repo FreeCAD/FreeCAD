@@ -33,7 +33,7 @@
 #include <App/PropertyLinks.h>
 #include "SimulationGroup.h"
 
-#include <3rdParty/OndselSolver/OndselSolver/enum.h>
+#include <OndselSolver/enum.h>
 
 namespace MbD
 {
@@ -157,8 +157,8 @@ public:
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
     App::DocumentObject* getJointOfPartConnectingToGround(App::DocumentObject* part,
                                                           std::string& name);
-    std::vector<App::DocumentObject*> getGroundedParts();
-    std::vector<App::DocumentObject*> fixGroundedParts();
+    std::unordered_set<App::DocumentObject*> getGroundedParts();
+    std::unordered_set<App::DocumentObject*> fixGroundedParts();
     void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);
 
     bool isJointConnectingPartToGround(App::DocumentObject* joint, const char* partPropName);
@@ -166,7 +166,7 @@ public:
 
     bool isObjInSetOfObjRefs(App::DocumentObject* obj, const std::vector<ObjRef>& pairs);
     void removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
-                                 std::vector<App::DocumentObject*> groundedObjs);
+                                 std::unordered_set<App::DocumentObject*> groundedObjs);
     void traverseAndMarkConnectedParts(App::DocumentObject* currentPart,
                                        std::vector<ObjRef>& connectedParts,
                                        const std::vector<App::DocumentObject*>& joints);
@@ -186,7 +186,6 @@ public:
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
 
     std::vector<AssemblyLink*> getSubAssemblies();
-    void updateGroundedJointsPlacements();
 
     std::vector<App::DocumentObject*> getMotionsFromSimulation(App::DocumentObject* sim);
 

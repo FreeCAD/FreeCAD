@@ -147,7 +147,7 @@ TaskMeasure::TaskMeasure()
     auto* settingsLayout = new QHBoxLayout();
     settingsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
     settingsLayout->addWidget(mSettings);
-    formLayout->addRow(QStringLiteral(), settingsLayout);
+    formLayout->addRow(QStringLiteral(""), settingsLayout);
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
@@ -466,11 +466,11 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     // If the control modifier is pressed, the object is just added to the current measurement
     // If the control modifier is not pressed, a new measurement will be started. If autosave is on,
     // the old measurement will be saved otherwise discharded. Shift inverts the autosave behaviour
-    // temporarly
+    // temporarily
     const auto modifier = QGuiApplication::keyboardModifiers();
     const bool ctrl = (modifier & Qt::ControlModifier) > 0;
     const bool shift = (modifier & Qt::ShiftModifier) > 0;
-    // shift inverts the current state temporarly
+    // shift inverts the current state temporarily
     const auto autosave = (mAutoSave && !shift) || (!mAutoSave && shift);
     if ((!ctrl && Selection().getSelectionStyle() == SelectionStyle::NormalSelection)
         || (ctrl && Selection().getSelectionStyle() == SelectionStyle::GreedySelection)) {

@@ -508,7 +508,7 @@ int Preferences::CenterLineStyle()
 int Preferences::HighlightLineStyle()
 {
     // default is line #2 dashed, which is index 1
-    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighLight", 1) + 1;
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighlight", 1) + 1;
 }
 
 int Preferences::HiddenLineStyle()
@@ -650,6 +650,11 @@ void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
     getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
 }
 
+bool Preferences::enforceISODate()
+{
+    return getPreferenceGroup("Standards")->GetBool("EnforceISODate", false);
+}
+
 //! if true, shapes are validated before use and problematic ones are skipped.
 //! validating shape takes time, but can prevent crashes/bad results in occt.
 //! this would normally be set to false and set to true to aid in debugging/support.
@@ -670,4 +675,10 @@ bool Preferences::debugBadShape()
 bool Preferences::switchOnClick()
 {
     return getPreferenceGroup("General")->GetBool("SwitchToWB", true);
+}
+
+//! if true, svg symbols will use the old scaling logic.
+bool Preferences::useLegacySvgScaling()
+{
+    return getPreferenceGroup("General")->GetBool("LegacySvgScaling", false);
 }

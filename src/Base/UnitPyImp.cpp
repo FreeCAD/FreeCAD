@@ -34,23 +34,24 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string UnitPy::representation() const
 {
-    const UnitSignature& Sig = getUnitPtr()->getSignature();
     std::stringstream ret;
+    Unit* self = getUnitPtr();
+
     ret << "Unit: ";
-    ret << getUnitPtr()->getString().toUtf8().constData() << " (";
-    ret << Sig.Length << ",";
-    ret << Sig.Mass << ",";
-    ret << Sig.Time << ",";
-    ret << Sig.ElectricCurrent << ",";
-    ret << Sig.ThermodynamicTemperature << ",";
-    ret << Sig.AmountOfSubstance << ",";
-    ret << Sig.LuminousIntensity << ",";
-    ret << Sig.Angle << ")";
-    std::string type = getUnitPtr()->getTypeString().toUtf8().constData();
+    ret << self->getString() << " (";
+    ret << (*self).length() << ",";
+    ret << (*self).mass() << ",";
+    ret << (*self).time() << ",";
+    ret << (*self).electricCurrent() << ",";
+    ret << (*self).thermodynamicTemperature() << ",";
+    ret << (*self).amountOfSubstance() << ",";
+    ret << (*self).luminousIntensity() << ",";
+    ret << (*self).angle() << ")";
+
+    std::string type = self->getTypeString();
     if (!type.empty()) {
         ret << " [" << type << "]";
     }
-
     return ret.str();
 }
 
@@ -83,10 +84,10 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     // get string
     char* string {};
     if (PyArg_ParseTuple(args, "et", "utf-8", &string)) {
-        QString qstr = QString::fromUtf8(string);
+        std::string str(string);
         PyMem_Free(string);
         try {
-            *self = Quantity::parse(qstr).getUnit();
+            *self = Quantity::parse(str).getUnit();
             return 0;
         }
         catch (const Base::ParserError& e) {
@@ -206,24 +207,20 @@ PyObject* UnitPy::richCompare(PyObject* v, PyObject* w, int op)
 
 Py::String UnitPy::getType() const
 {
-    return {getUnitPtr()->getTypeString().toUtf8(), "utf-8"};
+    return {getUnitPtr()->getTypeString(), "utf-8"};
 }
 
 Py::Tuple UnitPy::getSignature() const
 {
-    const UnitSignature& Sig = getUnitPtr()->getSignature();
     Py::Tuple tuple(8);
-    tuple.setItem(0, Py::Long(Sig.Length));
-    tuple.setItem(1, Py::Long(Sig.Mass));
-    tuple.setItem(2, Py::Long(Sig.Time));
-    tuple.setItem(3, Py::Long(Sig.ElectricCurrent));
-    tuple.setItem(4, Py::Long(Sig.ThermodynamicTemperature));
-    tuple.setItem(5, Py::Long(Sig.AmountOfSubstance));
-    tuple.setItem(6, Py::Long(Sig.LuminousIntensity));
-    tuple.setItem(7, Py::Long(Sig.Angle));
+    Unit* self = getUnitPtr();
+
+    for (auto i = 0; i < tuple.size(); i++) {
+        tuple.setItem(i, Py::Long((*self)[i]));
+    }
+
     return tuple;
 }
-
 
 PyObject* UnitPy::getCustomAttributes(const char* /*attr*/) const
 {

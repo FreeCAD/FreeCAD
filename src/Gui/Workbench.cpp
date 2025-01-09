@@ -536,12 +536,12 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "Clipboard");
     qApp->translate("Workbench", "Workbench");
     qApp->translate("Workbench", "Structure");
-    qApp->translate("Workbench", "Standard views");
+    qApp->translate("Workbench", "Standard &views");
     qApp->translate("Workbench", "Individual views");
-    qApp->translate("Workbench", "Axonometric");
+    qApp->translate("Workbench", "A&xonometric");
     qApp->translate("Workbench", "&Stereo");
     qApp->translate("Workbench", "&Zoom");
-    qApp->translate("Workbench", "Visibility");
+    qApp->translate("Workbench", "V&isibility");
     qApp->translate("Workbench", "&View");
     qApp->translate("Workbench", "&Tools");
     qApp->translate("Workbench", "&Macro");
@@ -646,14 +646,14 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_Edit" << "Std_Properties" << "Separator" << "Std_UserEditMode" << "Separator" << "Std_DlgPreferences";
 
     auto axoviews = new MenuItem;
-    axoviews->setCommand("Axonometric");
+    axoviews->setCommand("A&xonometric");
     *axoviews << "Std_ViewIsometric"
               << "Std_ViewDimetric"
               << "Std_ViewTrimetric";
 
     // Standard views
     auto stdviews = new MenuItem;
-    stdviews->setCommand("Standard views");
+    stdviews->setCommand("Standard &views");
     *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_AlignToSelection" << axoviews
               << "Separator" << "Std_ViewHome" << "Std_ViewFront" << "Std_ViewTop"
               << "Std_ViewRight" << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
@@ -674,7 +674,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
 
     // Visibility
     auto visu = new MenuItem;
-    visu->setCommand("Visibility");
+    visu->setCommand("V&isibility");
     *visu << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
           << "Std_SelectVisibleObjects"
           << "Separator" << "Std_ToggleObjects" << "Std_ShowObjects" << "Std_HideObjects"

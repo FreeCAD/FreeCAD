@@ -719,7 +719,8 @@ void DlgSettingsGeneral::newPreferencePackDialogAccepted()
         return false;
     });
     auto preferencePackName = newPreferencePackDialog->preferencePackName();
-    Application::Instance->prefPackManager()->save(preferencePackName, selectedTemplates);
+    auto preferencePackDirectory = newPreferencePackDialog->preferencePackDirectory();
+    Application::Instance->prefPackManager()->save(preferencePackName, preferencePackDirectory, selectedTemplates);
     recreatePreferencePackMenu();
 }
 

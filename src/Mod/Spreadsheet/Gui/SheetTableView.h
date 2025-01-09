@@ -26,7 +26,7 @@
 #include <QHeaderView>
 #include <QTableView>
 #include <QTimer>
-
+#include <QMenu>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 
@@ -109,7 +109,7 @@ protected:
     Spreadsheet::Sheet* sheet;
     int tabCounter;
 
-    QMenu* contextMenu;
+    QMenu contextMenu;
 
     QAction* actionProperties;
     QAction* actionRecompute;

@@ -60,6 +60,7 @@
 #include <Quarter/Quarter.h>
 
 #include "Application.h"
+#include "ApplicationPy.h"
 #include "AxisOriginPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -436,7 +437,7 @@ Application::Application(bool GUIenabled)
                                                              "FreeCADGui",
                                                              FreeCADGui_doc,
                                                              -1,
-                                                             Application::Methods,
+                                                             ApplicationPy::Methods,
                                                              nullptr,
                                                              nullptr,
                                                              nullptr,
@@ -447,7 +448,7 @@ Application::Application(bool GUIenabled)
         }
         else {
             // extend the method list
-            PyModule_AddFunctions(module, Application::Methods);
+            PyModule_AddFunctions(module, ApplicationPy::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
         Py::Module(module).setAttr(std::string("HasQtBug_129596"),
@@ -2281,6 +2282,10 @@ void Application::runApplication()
     Application app(true);
     MainWindow mw;
     mw.setProperty("QuitOnClosed", true);
+
+    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
+    // Needs to be set after app is created to override platform defaults (qt commit a2aa1f81a81)
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
 #ifdef FC_DEBUG  // redirect Coin messages to FreeCAD
     SoDebugError::setHandlerCallback(messageHandlerCoin, 0);

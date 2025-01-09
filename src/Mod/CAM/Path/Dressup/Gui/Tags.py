@@ -330,7 +330,7 @@ class HoldingTagMarker:
         self.sphere = coin.SoSphere()
         self.scale = coin.SoType.fromName("SoShapeScale").createInstance()
         self.scale.setPart("shape", self.sphere)
-        self.scale.scaleFactor.setValue(7)
+        self.scale.scaleFactor.setValue(14)
         self.material = coin.SoMaterial()
         self.sep.addChild(self.pos)
         self.sep.addChild(self.material)

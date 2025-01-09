@@ -43,7 +43,7 @@ class SoSwitchMarker(coin.SoSwitch):
         super().__init__()  # Initialize the SoSwitch base class
 
         self.axis_thickness = 3
-        self.scaleFactor = 20
+        self.scaleFactor = 40
 
         view_params = App.ParamGet("User parameter:BaseApp/Preferences/View")
         param_x_axis_color = view_params.GetUnsigned("AxisXColor", 0xCC333300)

@@ -140,11 +140,6 @@ public:
         return !operator==(other);
     }
 
-    // void save(QTextStream& stream);
-
-    // Define precision for displaying floating point values
-    static int const PRECISION;
-
 protected:
     void setType(const QString& type);
     // void setType(MaterialValue::ValueType type) { _valueType = type; }

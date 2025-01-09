@@ -1437,18 +1437,24 @@ TaskPostContours::TaskPostContours(ViewProviderFemPostContours* view, QWidget* p
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
+    auto obj = getObject<Fem::FemPostContoursFilter>();
+
     // load filter settings
-    updateEnumerationList(getTypedObject<Fem::FemPostContoursFilter>()->Field, ui->fieldsCB);
-    updateEnumerationList(getTypedObject<Fem::FemPostContoursFilter>()->VectorMode, ui->vectorsCB);
+    updateEnumerationList(obj->Field, ui->fieldsCB);
+    updateEnumerationList(obj->VectorMode, ui->vectorsCB);
     // for a new filter, initialize the coloring
-    auto colorState = getObject<Fem::FemPostContoursFilter>()->NoColor.getValue();
+    auto colorState = obj->NoColor.getValue();
     if (!colorState && getTypedView<ViewProviderFemPostObject>()->Field.getValue() == 0) {
         getTypedView<ViewProviderFemPostObject>()->Field.setValue(1);
     }
 
-    ui->numberContoursSB->setValue(
-        getObject<Fem::FemPostContoursFilter>()->NumberOfContours.getValue());
+    ui->numberContoursSB->setValue(obj->NumberOfContours.getValue());
     ui->noColorCB->setChecked(colorState);
+
+    auto ext = obj->getExtension<Fem::FemPostSmoothFilterExtension>();
+    ui->ckb_smoothing->setChecked(ext->EnableSmoothing.getValue());
+    ui->dsb_relaxation->setValue(ext->RelaxationFactor.getValue());
+    ui->dsb_relaxation->setEnabled(ext->EnableSmoothing.getValue());
 
     // connect
     connect(ui->fieldsCB,
@@ -1464,6 +1470,11 @@ TaskPostContours::TaskPostContours(ViewProviderFemPostContours* view, QWidget* p
             this,
             &TaskPostContours::onNumberOfContoursChanged);
     connect(ui->noColorCB, &QCheckBox::toggled, this, &TaskPostContours::onNoColorChanged);
+    connect(ui->ckb_smoothing, &QCheckBox::toggled, this, &TaskPostContours::onSmoothingChanged);
+    connect(ui->dsb_relaxation,
+            qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this,
+            &TaskPostContours::onRelaxationChanged);
 }
 
 TaskPostContours::~TaskPostContours() = default;
@@ -1549,6 +1560,22 @@ void TaskPostContours::onNoColorChanged(bool state)
     recompute();
 }
 
+void TaskPostContours::onSmoothingChanged(bool state)
+{
+    auto ext = static_cast<Fem::FemPostContoursFilter*>(getObject())
+                   ->getExtension<Fem::FemPostSmoothFilterExtension>();
+    ext->EnableSmoothing.setValue(state);
+    ui->dsb_relaxation->setEnabled(state);
+    recompute();
+}
+
+void TaskPostContours::onRelaxationChanged(double value)
+{
+    auto ext = static_cast<Fem::FemPostContoursFilter*>(getObject())
+                   ->getExtension<Fem::FemPostSmoothFilterExtension>();
+    ext->RelaxationFactor.setValue(value);
+    recompute();
+}
 
 // ***************************************************************************
 // cut filter

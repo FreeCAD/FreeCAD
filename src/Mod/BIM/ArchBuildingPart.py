@@ -531,6 +531,8 @@ class ViewProviderBuildingPart:
                 return ":/icons/Arch_Floor_Tree.svg"
             elif self.Object.IfcType == "Building":
                 return ":/icons/Arch_Building_Tree.svg"
+            elif self.Object.IfcType == "Annotation":
+                return ":/icons/BIM_ArchView.svg"
         return ":/icons/Arch_BuildingPart_Tree.svg"
 
     def attach(self,vobj):

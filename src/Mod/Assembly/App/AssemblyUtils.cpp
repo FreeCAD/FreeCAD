@@ -33,6 +33,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
@@ -536,7 +537,9 @@ App::DocumentObject* getObjFromRef(const App::DocumentObject* obj, const std::st
         // getViewProviderName instead of isDerivedFrom to avoid dependency on sketcher
         const auto isDerivedFromVpSketch =
             strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0;
-        return isDerivedFromVpSketch || obj->isDerivedFrom<PartApp::Datum>();
+        return isDerivedFromVpSketch || obj->isDerivedFrom<PartApp::Datum>()
+            || obj->isDerivedFrom<App::DatumElement>()
+            || obj->isDerivedFrom<App::LocalCoordinateSystem>();
     };
 
     // Helper function to handle PartDesign::Body objects

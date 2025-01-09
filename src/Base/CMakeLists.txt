@@ -256,6 +256,7 @@ SET(FreeCADBase_CPP_SRCS
     Rotation.cpp
     RotationPyImp.cpp
     Sequencer.cpp
+    ServiceProvider.cpp
     SmartPtrPy.cpp
     Stream.cpp
     Swap.cpp
@@ -319,6 +320,7 @@ SET(FreeCADBase_HPP_SRCS
     QtTools.h
     Reader.h
     Rotation.h
+    ServiceProvider.h
     Sequencer.h
     SmartPtrPy.h
     Stream.h
@@ -356,7 +358,7 @@ IF (MSVC)
         ${FreeCADBase_SRCS}
         StackWalker.cpp
         StackWalker.h
-)
+    )
 ENDIF(MSVC)
 
 # Use external zipios++ if specified.

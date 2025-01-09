@@ -1,24 +1,23 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2015 Stefan TrÃ¶ger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
  ***************************************************************************/
 
@@ -207,9 +206,9 @@ const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getS
 {
     static const std::vector<SetupData> setupData = {
         // clang-format off
-        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
-        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
-        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1, 1), M_PI * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(-1, 1, 1), M_PI * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0)},
         {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
@@ -272,6 +271,56 @@ void LocalCoordinateSystem::unsetupObject()
         if (std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
             if (!obj->isRemoving()) {
                 obj->getDocument()->removeObject(obj->getNameInDocument());
+            }
+        }
+    }
+}
+
+void LocalCoordinateSystem::onDocumentRestored()
+{
+    GeoFeature::onDocumentRestored();
+
+    // In 0.22 origins did not have point.
+    migrateOriginPoint();
+
+    // In 0.22 the axis placement were wrong. The X axis had identity placement instead of the Z.
+    // This was fixed but we need to migrate old files.
+    migrateXAxisPlacement();
+}
+
+void LocalCoordinateSystem::migrateOriginPoint()
+{
+    auto features = OriginFeatures.getValues();
+
+    auto isOrigin = [](App::DocumentObject* obj) {
+        return obj->isDerivedFrom<App::DatumElement>() &&
+            strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), PointRoles[0]) == 0;
+    };
+    if (std::none_of(features.begin(), features.end(), isOrigin)) {
+        auto data = getData(PointRoles[0]);
+        auto* origin = createDatum(data);
+        features.push_back(origin);
+        OriginFeatures.setValues(features);
+    }
+}
+
+void LocalCoordinateSystem::migrateXAxisPlacement()
+{
+    constexpr const double tolerance = 1e-5;
+    auto features = OriginFeatures.getValues();
+
+    const auto& setupData = getSetupData();
+    for (auto* obj : features) {
+        auto* feature = dynamic_cast <App::DatumElement*> (obj);
+        if (!feature) { continue; }
+        for (auto data : setupData) {
+            // ensure the rotation is correct for the role
+            if (std::strcmp(feature->Role.getValue(), data.role) == 0) {
+                if (!feature->Placement.getValue().getRotation().isSame(data.rot, tolerance)) {
+                    feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
+                    getDocument()->setStatus(App::Document::MigrateLCS, true);
+                }
+                break;
             }
         }
     }

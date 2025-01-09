@@ -78,7 +78,7 @@ class PathTestBase(unittest.TestCase):
             self.assertEqual(side, Path.Geom.Side.Right)
 
     def assertCircle(self, edge, pt, r):
-        """Verivy that edge is a circle at given location."""
+        """Verify that edge is a circle at given location."""
         curve = edge.Curve
         self.assertIs(type(curve), Part.Circle)
         self.assertCoincide(curve.Center, Vector(pt.x, pt.y, pt.z))

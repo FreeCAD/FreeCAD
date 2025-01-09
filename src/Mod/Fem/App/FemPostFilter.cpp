@@ -516,6 +516,104 @@ DocumentObjectExecReturn* FemPostClipFilter::execute()
 }
 
 // ***************************************************************************
+// smoothing filter extension
+const App::PropertyQuantityConstraint::Constraints FemPostSmoothFilterExtension::angleRange = {
+    0.0,
+    180.0,
+    1.0};
+const App::PropertyIntegerConstraint::Constraints FemPostSmoothFilterExtension::iterationRange = {
+    0,
+    VTK_INT_MAX,
+    1};
+const App::PropertyFloatConstraint::Constraints FemPostSmoothFilterExtension::relaxationRange = {
+    0,
+    1.0,
+    0.01};
+
+EXTENSION_PROPERTY_SOURCE(Fem::FemPostSmoothFilterExtension, App::DocumentObjectExtension)
+
+FemPostSmoothFilterExtension::FemPostSmoothFilterExtension()
+{
+    EXTENSION_ADD_PROPERTY_TYPE(BoundarySmoothing,
+                                (true),
+                                "Smoothing",
+                                App::Prop_None,
+                                "Smooth vertices on the boundary");
+    EXTENSION_ADD_PROPERTY_TYPE(EdgeAngle,
+                                (15),
+                                "Smoothing",
+                                App::Prop_None,
+                                "Angle to control smoothing along edges");
+    EXTENSION_ADD_PROPERTY_TYPE(EnableSmoothing,
+                                (false),
+                                "Smoothing",
+                                App::Prop_None,
+                                "Enable Laplacian smoothing");
+    EXTENSION_ADD_PROPERTY_TYPE(FeatureAngle,
+                                (45),
+                                "Smoothing",
+                                App::Prop_None,
+                                "Angle for sharp edge identification");
+    EXTENSION_ADD_PROPERTY_TYPE(EdgeSmoothing,
+                                (false),
+                                "Smoothing",
+                                App::Prop_None,
+                                "Smooth align sharp interior edges");
+    EXTENSION_ADD_PROPERTY_TYPE(RelaxationFactor,
+                                (0.05),
+                                "Smoothing",
+                                App::Prop_None,
+                                "Factor to control vertex displacement");
+    EXTENSION_ADD_PROPERTY_TYPE(Iterations,
+                                (20),
+                                "Smoothing",
+                                App::Prop_None,
+                                "Number of smoothing iterations");
+
+    EdgeAngle.setConstraints(&angleRange);
+    FeatureAngle.setConstraints(&angleRange);
+    Iterations.setConstraints(&iterationRange);
+    RelaxationFactor.setConstraints(&relaxationRange);
+
+    m_smooth = vtkSmartPointer<vtkSmoothPolyDataFilter>::New();
+    // override default VTK values
+    m_smooth->SetNumberOfIterations(EnableSmoothing.getValue() ? Iterations.getValue() : 0);
+    m_smooth->SetBoundarySmoothing(BoundarySmoothing.getValue());
+    m_smooth->SetEdgeAngle(EdgeAngle.getValue());
+    m_smooth->SetFeatureAngle(FeatureAngle.getValue());
+    m_smooth->SetFeatureEdgeSmoothing(EdgeSmoothing.getValue());
+    m_smooth->SetRelaxationFactor(RelaxationFactor.getValue());
+
+    initExtensionType(FemPostSmoothFilterExtension::getExtensionClassTypeId());
+}
+
+void FemPostSmoothFilterExtension::extensionOnChanged(const App::Property* prop)
+{
+    if (prop == &EnableSmoothing || prop == &Iterations) {
+        // if disabled, set iterations to zero to do nothing
+        m_smooth->SetNumberOfIterations(EnableSmoothing.getValue() ? Iterations.getValue() : 0);
+    }
+    else if (prop == &BoundarySmoothing) {
+        m_smooth->SetBoundarySmoothing(static_cast<const App::PropertyBool*>(prop)->getValue());
+    }
+    else if (prop == &EdgeAngle) {
+        m_smooth->SetEdgeAngle(static_cast<const App::PropertyAngle*>(prop)->getValue());
+    }
+    else if (prop == &FeatureAngle) {
+        m_smooth->SetFeatureAngle(static_cast<const App::PropertyAngle*>(prop)->getValue());
+    }
+    else if (prop == &EdgeSmoothing) {
+        m_smooth->SetFeatureEdgeSmoothing(static_cast<const App::PropertyBool*>(prop)->getValue());
+    }
+    else if (prop == &RelaxationFactor) {
+        m_smooth->SetRelaxationFactor(static_cast<const App::PropertyFloat*>(prop)->getValue());
+    }
+    else {
+        DocumentObjectExtension::extensionOnChanged(prop);
+    }
+}
+
+// ***************************************************************************
 // contours filter
 PROPERTY_SOURCE(Fem::FemPostContoursFilter, Fem::FemPostFilter)
 
@@ -543,10 +641,13 @@ FemPostContoursFilter::FemPostContoursFilter()
     FilterPipeline contours;
     m_contours = vtkSmartPointer<vtkContourFilter>::New();
     m_contours->ComputeScalarsOn();
+    smoothExtension.getFilter()->SetInputConnection(m_contours->GetOutputPort());
     contours.source = m_contours;
-    contours.target = m_contours;
+    contours.target = smoothExtension.getFilter();
     addFilterPipeline(contours, "contours");
     setActiveFilterPipeline("contours");
+
+    smoothExtension.initExtension(this);
 }
 
 FemPostContoursFilter::~FemPostContoursFilter() = default;

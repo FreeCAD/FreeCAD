@@ -134,7 +134,7 @@ ElementNamePair GeoFeature::_getElementName(const char* name,
     }
 }
 
-DocumentObject* GeoFeature::resolveElement(DocumentObject* obj,
+DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
                                            const char* subname,
                                            ElementNamePair& elementName,
                                            bool append,

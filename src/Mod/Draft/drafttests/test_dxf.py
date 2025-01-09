@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,42 +22,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, DXF import and export tests."""
+
 ## @package test_dxf
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, DXF import and export tests.
 
 ## \addtogroup drafttests
 # @{
+
 import os
-import unittest
 
 import FreeCAD as App
 import Draft
-import drafttests.auxiliary as aux
-
+from drafttests import auxiliary as aux
+from drafttests import test_base
 from draftutils.messages import _msg
 
 
-class DraftDXF(unittest.TestCase):
+class DraftDXF(test_base.DraftTestCaseDoc):
     """Test reading and writing of DXF files with Draft."""
-
-    def setUp(self):
-        """Set up a new document to hold the tests.
-
-        This is executed before every test, so we create a document
-        to hold the objects.
-        """
-        aux.draw_header()
-        self.doc_name = self.__class__.__name__
-        if App.ActiveDocument:
-            if App.ActiveDocument.Name != self.doc_name:
-                App.newDocument(self.doc_name)
-        else:
-            App.newDocument(self.doc_name)
-        App.setActiveDocument(self.doc_name)
-        self.doc = App.ActiveDocument
-        _msg("  Temporary document '{}'".format(self.doc_name))
 
     def test_read_dxf(self):
         """Read a DXF file and import its elements as Draft objects."""
@@ -64,7 +50,7 @@ class DraftDXF(unittest.TestCase):
         _msg("  Test '{}'".format(operation))
         _msg("  This test requires a DXF file to read.")
 
-        file = 'Mod/Draft/drafttest/test.dxf'
+        file = "Mod/Draft/drafttest/test.dxf"
         in_file = os.path.join(App.getResourceDir(), file)
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
@@ -78,7 +64,7 @@ class DraftDXF(unittest.TestCase):
         operation = "importDXF.export"
         _msg("  Test '{}'".format(operation))
 
-        file = 'Mod/Draft/drafttest/out_test.dxf'
+        file = "Mod/Draft/drafttest/out_test.dxf"
         out_file = os.path.join(App.getResourceDir(), file)
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
@@ -86,12 +72,5 @@ class DraftDXF(unittest.TestCase):
         Draft.export_dxf = aux.fake_function
         obj = Draft.export_dxf(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
-
-    def tearDown(self):
-        """Finish the test.
-
-        This is executed after each test, so we close the document.
-        """
-        App.closeDocument(self.doc_name)
 
 ## @}

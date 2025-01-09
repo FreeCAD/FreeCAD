@@ -466,7 +466,7 @@ void QGIDatumLabel::setFont(QFont font)
     QFont tFont(font);
     double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
-    tFont.setPixelSize((int)(fontSize * tolAdj));
+    tFont.setPixelSize(std::max(1, (int)(fontSize * tolAdj)));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
     updateFrameRect();

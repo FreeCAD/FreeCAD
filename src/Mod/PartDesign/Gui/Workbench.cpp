@@ -85,19 +85,22 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
         body = PartDesignGui::getBodyFor (feature, false, false, true);
         // lote of assertion so feature should be marked as a tip
-        if ( selection.size () == 1 && feature && (
-            ( feature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) && body ) ||
-            ( feature->isDerivedFrom ( Part::Feature::getClassTypeId () ) && body &&
+        if ( selection.size() == 1 && feature && body && (
+            feature->isDerivedFrom<PartDesign::Feature>() ||
+            ( feature->isDerivedFrom<Part::Feature>() &&
               body->BaseFeature.getValue() == feature )
         ) ) {
             *item << "PartDesign_MoveTip";
         }
 
         if (strcmp(recipient, "Tree") == 0) {
-
             Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
-            if ( !selection.empty() && activeView ) {
+            if (activeView ) {
+                if (feature && feature->isDerivedFrom<PartDesign::Body>()){
+                    *item   << "Std_ToggleFreeze";
+                }
+
                 bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
                                         PartDesign::Body::getClassTypeId () ) > 0;
 
@@ -120,11 +123,9 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                             break;
                         }
                     }
-
                     if (addMoveFeature) {
                         *item   << "PartDesign_MoveFeature";
                     }
-
                     if (addMoveFeatureInTree) {
                         *item   << "PartDesign_MoveFeatureInTree";
                     }
@@ -380,14 +381,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, part);
     part->setCommand("&Part Design");
 
-    // datums
-    Gui::MenuItem* datums = new Gui::MenuItem;
-    datums->setCommand("Create a datum");
-
-    *datums << "PartDesign_Point"
-            << "PartDesign_Line"
-            << "PartDesign_Plane";
-
     // additives
     Gui::MenuItem* additives = new Gui::MenuItem;
     additives->setCommand("Create an additive feature");
@@ -429,8 +422,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     *part << "PartDesign_Body"
           << "Separator"
-          << datums
-          << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
@@ -490,8 +481,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Sketcher_ValidateSketch"
           << "Part_CheckGeometry"
           << "PartDesign_SubShapeBinder"
-          << "PartDesign_Clone"
-          << "PartDesign_CompDatums";
+          << "PartDesign_Clone";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Modeling");
