@@ -488,7 +488,7 @@ class ToolBitSelector(object):
     def libraryEditorOpen(self):
         library = ToolBitLibrary()
         library.open()
-        self.loadData()
+        self.loadToolLibraries()
 
     def selectedOrAllTools(self):
         """
