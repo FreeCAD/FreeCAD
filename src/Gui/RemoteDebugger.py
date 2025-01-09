@@ -37,6 +37,10 @@ class RemoteDebugger():
         self.prefs = App.ParamGet("User parameter:BaseApp/Macro/Debugger")
         index = self.prefs.GetInt("TabIndex", 0)
         self.dialog.tabWidget.setCurrentIndex(index)
+        address = self.prefs.GetString("VSCodeAddress", "localhost")
+        port = self.prefs.GetInt("VSCodePort", 5678)
+        self.dialog.lineEditAddress.setText(address)
+        self.dialog.spinBoxPort.setValue(port)
 
     def accept(self):
         try:
@@ -52,6 +56,8 @@ class RemoteDebugger():
             elif index == 1: # VS code
                 address = self.dialog.lineEditAddress.text()
                 port = self.dialog.spinBoxPort.value()
+                self.prefs.SetString("VSCodeAddress", address)
+                self.prefs.SetInt("VSCodePort", port)
 
                 import debugpy
 
