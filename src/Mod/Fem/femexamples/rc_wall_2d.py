@@ -128,7 +128,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # material
     matrixprop = {}
-    matrixprop["Name"] = "Concrete-EN-C35/45"
+    matrixprop["Name"] = "Concrete-EN-C35_45"
     matrixprop["YoungsModulus"] = "32000 MPa"
     matrixprop["PoissonRatio"] = "0.17"
     matrixprop["CompressiveStrength"] = "15.75 MPa"
