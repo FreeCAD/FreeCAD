@@ -694,6 +694,7 @@ def add_properties(
                 obj.addProperty("App::PropertyString", attr, "IFC")
             if value is not None:
                 setattr(obj, attr, str(value))
+
     # annotation properties
     if ifcentity.is_a("IfcGridAxis"):
         axisdata = ifc_export.get_axis(ifcentity)
@@ -754,10 +755,6 @@ def add_properties(
                     obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
     elif ifcentity.is_a("IfcControl"):
         ifc_psets.show_psets(obj)
-
-    # link Label2 and Description
-    if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
-        obj.setExpression("Label2", "Description")
 
 
 def remove_unused_properties(obj):

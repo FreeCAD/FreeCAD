@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ****************************************************************************
+    **
+    ** Copyright (C) 2022 The Qt Company Ltd.
+    ** Contact: https://www.qt.io/licensing/
+    **
+    ** This file is part of the Qt VS Tools.
+    **
+    ** $QT_BEGIN_LICENSE:GPL-EXCEPT$
+    ** Commercial License Usage
+    ** Licensees holding valid commercial Qt licenses may use this file in
+    ** accordance with the commercial license agreement provided with the
+    ** Software or, alternatively, in accordance with the terms contained in
+    ** a written agreement between you and The Qt Company. For licensing terms
+    ** and conditions see https://www.qt.io/terms-conditions. For further
+    ** information use the contact form at https://www.qt.io/contact-us.
+    **
+    ** GNU General Public License Usage
+    ** Alternatively, this file may be used under the terms of the GNU
+    ** General Public License version 3 as published by the Free Software
+    ** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
+    ** included in the packaging of this file. Please review the following
+    ** information to ensure the GNU General Public License requirements will
+    ** be met: https://www.gnu.org/licenses/gpl-3.0.html.
+    **
+    ** $QT_END_LICENSE$
+    **
+    ****************************************************************************
+-->
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+    <Type Name="QPropertyData&lt;*&gt;">
+        <DisplayString>{val}</DisplayString>
+        <Expand>
+            <Item Name="[value]">val</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="QQuickItemPrivate">
+        <Intrinsic Name="_hasExtraData" Expression="extra.d.d != 0" />
+        <Intrinsic Name="_extraData" Expression="(*(ExtraData*)extra.d.d)" />
+        <Intrinsic Name="_objectName" Expression="(extraData-&gt;objectName).val.d.ptr" />
+        <DisplayString Condition="_hasExtraData()">{{ x = {x,g}, y = {y,g}, z = {_extraData().z,g}, width = {width,g}, height = {height,g} }}</DisplayString>
+        <DisplayString>{{ x = {x,g}, y = {y,g}, width = {width,g}, height = {height,g} }}</DisplayString>
+        <Expand>
+            <Item Name="x">x</Item>
+            <Item Name="y">y</Item>
+            <Item Name="z" Condition="_hasExtraData()">_extraData().z</Item>
+            <Item Name="scale" Condition="_hasExtraData()">_extraData().scale</Item>
+            <Item Name="rotation" Condition="_hasExtraData()">_extraData().rotation</Item>
+            <Item Name="opacity" Condition="_hasExtraData()">_extraData().opacity</Item>
+            <Item Name="width">width</Item>
+            <Item Name="height">height</Item>
+            <Item Name="implicitWidth">implicitWidth</Item>
+            <Item Name="implicitHeight">implicitHeight</Item>
+            <Item Name="visible">effectiveVisible</Item>
+            <Item Name="enabled">explicitEnable</Item>
+            <Item Name="objectName" Condition="_objectName() != 0">_objectName(),na</Item>
+            <Item Name="parentItem">parentItem</Item>
+            <Item Name="childItems">childItems, nr</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="QQuickItem">
+      <DisplayString>{d_ptr.d,na}</DisplayString>
+      <Expand>
+        <ExpandedItem>d_ptr.d</ExpandedItem>
+      </Expand>
+    </Type>
+
+    <Type Name="QUuid">
+        <DisplayString>{{{data1,Xb}-{data2,Xb}-{data3,Xb}-{(data4[0]),nvoXb}{(data4[1]),nvoXb}-{(data4[2]),nvoXb}{(data4[3]),nvoXb}{(data4[4]),nvoXb}{(data4[5]),nvoXb}{(data4[6]),nvoXb}{(data4[7]),nvoXb}}}</DisplayString>
+    </Type>
+
+   <Type Name="QSpecialInteger&lt;*&gt;">
+        <DisplayString>{val}</DisplayString>
+        <Expand>
+            <Item Name="[value]">val</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QBasicAtomicInteger&lt;*&gt;">
+        <DisplayString>{_q_value}</DisplayString>
+        <Expand>
+            <Item Name="[value]">_q_value</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QBasicAtomicPointer&lt;*&gt;">
+        <Intrinsic Name="isNull" Expression="value()==0" />
+        <Intrinsic Name="value" Expression="_q_value.value()" />
+        <DisplayString Condition="isNull()">empty</DisplayString>
+        <DisplayString Condition="!isNull()">{_q_value}</DisplayString>
+        <Expand>
+            <Item Name=" " Condition="!isNull()">*value()</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QPoint">
+        <AlternativeType Name="QPointF"/>
+        <DisplayString>{{ x = {xp}, y = {yp} }}</DisplayString>
+        <Expand>
+            <Item Name="[x]">xp</Item>
+            <Item Name="[y]">yp</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QRect">
+        <DisplayString>{{ x = {x1}, y = {y1}, width = {x2 - x1 + 1}, height = {y2 - y1 + 1} }}</DisplayString>
+        <Expand>
+            <Item Name="[x]">x1</Item>
+            <Item Name="[y]">y1</Item>
+            <Item Name="[width]">x2 - x1 + 1</Item>
+            <Item Name="[height]">y2 - y1 + 1</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QRectF">
+        <DisplayString>{{ x = {xp}, y = {yp}, width = {w}, height = {h} }}</DisplayString>
+        <Expand>
+            <Item Name="[x]">xp</Item>
+            <Item Name="[y]">yp</Item>
+            <Item Name="[width]">w</Item>
+            <Item Name="[height]">h</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QSize">
+        <AlternativeType Name="QSizeF"/>
+        <DisplayString>{{ width = {wd}, height = {ht} }}</DisplayString>
+        <Expand>
+            <Item Name="[width]">wd</Item>
+            <Item Name="[height]">ht</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QLine">
+        <AlternativeType Name="QLineF"/>
+        <DisplayString>{{ start point = {pt1}, end point = {pt2} }}</DisplayString>
+        <Expand>
+            <Synthetic Name="[start point]">
+                <DisplayString>{pt1}</DisplayString>
+                <Expand>
+                    <ExpandedItem>pt1</ExpandedItem>
+                </Expand>
+            </Synthetic>
+            <Synthetic Name="[end point]">
+                <DisplayString>{pt2}</DisplayString>
+                <Expand>
+                    <ExpandedItem>pt2</ExpandedItem>
+                </Expand>
+            </Synthetic>
+
+        </Expand>
+    </Type>
+
+   <Type Name="QPolygon">
+        <DisplayString>{{ size={d-&gt;size} }}</DisplayString>
+        <Expand>
+            <Item Name="[referenced]">d-&gt;ref.atomic._q_value</Item>
+            <ArrayItems>
+                <Size>d-&gt;size</Size>
+                <ValuePointer>(QPoint*)((reinterpret_cast&lt;char*&gt;(d)) + d-&gt;offset)</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+   <Type Name="QPolygonF">
+        <DisplayString>{{ size={d-&gt;size} }}</DisplayString>
+        <Expand>
+            <Item Name="[closed]">
+                d-&gt;size &gt; 0
+                &amp;&amp; ((((QPointF*)((reinterpret_cast&lt;char*&gt;(d)) + d-&gt;offset)[0]).xp
+                == (((QPointF*)((reinterpret_cast&lt;char*&gt;(d)) + d-&gt;offset)[d-&gt;size - 1]).xp)
+                &amp;&amp; ((((QPointF*)((reinterpret_cast&lt;char*&gt;(d)) + d-&gt;offset)[0]).yp
+                == (((QPointF*)((reinterpret_cast&lt;char*&gt;(d)) + d-&gt;offset)[d-&gt;size - 1]).yp)
+            </Item>
+            <Item Name="[referenced]">d-&gt;ref.atomic._q_value</Item>
+            <ArrayItems>
+                <Size>d-&gt;size</Size>
+                <ValuePointer>(QPointF*)((reinterpret_cast&lt;char*&gt;(d)) + d-&gt;offset)</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="QVector2D">
+        <DisplayString>{{ x = {xp}, y = {yp} }}</DisplayString>
+        <Expand>
+            <Item Name="[x]">xp</Item>
+            <Item Name="[y]">yp</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="QVector3D">
+        <DisplayString>{{ x = {xp}, y = {yp}, z = {zp} }}</DisplayString>
+        <Expand>
+            <Item Name="[x]">xp</Item>
+            <Item Name="[y]">yp</Item>
+            <Item Name="[z]">zp</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="QVector4D">
+        <DisplayString>{{ x = {xp}, y = {yp}, z = {zp}, w = {wp} }}</DisplayString>
+        <Expand>
+            <Item Name="[x]">xp</Item>
+            <Item Name="[y]">yp</Item>
+            <Item Name="[z]">zp</Item>
+            <Item Name="[w]">wp</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="QMatrix">
+        <DisplayString>
+            {{ m11 = {_m11}, m12 = {_m12}, m21 = {_m21}, m22 = {_m22}, ... }}
+        </DisplayString>
+        <Expand>
+            <Item Name="[m11]">_m11</Item>
+            <Item Name="[m12]">_m12</Item>
+            <Item Name="[m21]">_m21</Item>
+            <Item Name="[m22]">_m22</Item>
+            <Item Name="[dx]">_dx</Item>
+            <Item Name="[dy]">_dy</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="QMatrix4x4">
+        <DisplayString>
+            {{ m11 = {m[0][0]}, m12 = {m[1][0]}, m13 = {m[2][0]}, m14 = {m[3][0]}, ... }}
+        </DisplayString>
+        <Expand>
+            <Item Name="[m11]">m[0][0]</Item>
+            <Item Name="[m12]">m[1][0]</Item>
+            <Item Name="[m13]">m[2][0]</Item>
+            <Item Name="[m14]">m[3][0]</Item>
+            <Item Name="[m21]">m[0][1]</Item>
+            <Item Name="[m22]">m[1][1]</Item>
+            <Item Name="[m23]">m[2][1]</Item>
+            <Item Name="[m24]">m[3][1]</Item>
+            <Item Name="[m31]">m[0][2]</Item>
+            <Item Name="[m32]">m[1][2]</Item>
+            <Item Name="[m33]">m[2][2]</Item>
+            <Item Name="[m34]">m[3][2]</Item>
+            <Item Name="[m41]">m[0][3]</Item>
+            <Item Name="[m42]">m[1][3]</Item>
+            <Item Name="[m43]">m[2][3]</Item>
+            <Item Name="[m44]">m[3][3]</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QSizePolicy">
+        <DisplayString>
+            {{ horizontal = {static_cast&lt;Policy&gt;(bits.horPolicy)}, vertical = {static_cast&lt;Policy&gt;(bits.verPolicy)}, type = {ControlType(1 &lt;&lt; bits.ctype)} }}
+        </DisplayString>
+        <Expand>
+            <Synthetic Name="[vertical policy]">
+                <DisplayString>QSizePolicy::Policy::{static_cast&lt;Policy&gt;(bits.verPolicy)}</DisplayString>
+            </Synthetic>
+            <Synthetic Name="[horizontal policy]">
+                <DisplayString>QSizePolicy::Policy::{static_cast&lt;Policy&gt;(bits.horPolicy)}</DisplayString>
+            </Synthetic>
+            <Synthetic Name="[control type]">
+                <DisplayString>QSizePolicy::ControlType::{ControlType(1 &lt;&lt; bits.ctype)}</DisplayString>
+            </Synthetic>
+            <Synthetic Name="[expanding directions]">
+                <DisplayString
+                    Condition="(static_cast&lt;Policy&gt;(bits.verPolicy) &amp; ExpandFlag)">
+                    Qt::Vertical (2)
+                </DisplayString>
+                <DisplayString
+                    Condition="(static_cast&lt;Policy&gt;(bits.horPolicy) &amp; ExpandFlag)">
+                    Qt::Horizontal (1)
+                </DisplayString>
+            </Synthetic>
+            <Item Name="[vertical stretch]">static_cast&lt;int&gt;(bits.verStretch)</Item>
+            <Item Name="[horizontal stretch]">static_cast&lt;int&gt;(bits.horStretch)</Item>
+            <Item Name="[has height for width]">bits.hfw == 1</Item>
+            <Item Name="[has width for height]">bits.wfh == 1</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QChar">
+        <DisplayString>{ucs,c}</DisplayString>
+        <StringView>ucs,c</StringView>
+        <Expand>
+            <Item Name="[latin 1]">ucs > 0xff ? '\0' : char(ucs),c</Item>
+            <Item Name="[unicode]">ucs,c</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QString">
+        <DisplayString>&quot;{(reinterpret_cast&lt;unsigned short*&gt;(d.ptr)),sub}&quot;</DisplayString>
+        <StringView>(reinterpret_cast&lt;unsigned short*&gt;(d.ptr)),sub</StringView>
+        <Expand>
+            <Item Name="[size]">d.size</Item>
+            <ArrayItems>
+                <Size>d.size</Size>
+                <ValuePointer>d.ptr</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="QStringRef">
+        <DisplayString Condition="m_string == nullptr">{m_string,[m_size]} u""</DisplayString>
+        <DisplayString Condition="m_string != nullptr">{m_string-&gt;d.ptr+m_position,[m_size]}</DisplayString>
+        <StringView Condition="m_string == nullptr">""</StringView>
+        <StringView Condition="m_string != nullptr">m_string,[m_position+m_size]</StringView>
+        <Expand>
+            <Item Name="[position]" ExcludeView="simple">m_position</Item>
+            <Item Name="[size]" ExcludeView="simple">m_size</Item>
+            <ArrayItems Condition="m_string != nullptr">
+                <Size>m_size</Size>
+                <ValuePointer>m_string-&gt;d.ptr+m_position</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="QStringView">
+        <DisplayString>{m_data,[m_size]}</DisplayString>
+        <StringView>m_data,[m_size]</StringView>
+        <Expand>
+            <Item Name="[size]" ExcludeView="simple">m_size</Item>
+            <ArrayItems>
+                <Size>m_size</Size>
+                <ValuePointer>m_data</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="QByteArray">
+        <DisplayString>&quot;{((reinterpret_cast&lt;char*&gt;(d.ptr))),sb}&quot;</DisplayString>
+        <StringView>((reinterpret_cast&lt;char*&gt;(d.ptr))),sb</StringView>
+        <Expand>
+            <Item Name="[size]">d.size</Item>
+            <ArrayItems>
+                <Size>d.size</Size>
+                <ValuePointer>d.ptr</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="QUrl">
+        <Intrinsic Name="isEmpty" Expression="size==0">
+            <Parameter Name="size" Type="int"/>
+        </Intrinsic>
+        <Intrinsic Name="memberOffset" Expression="sizeof(QAtomicInt) + sizeof(int) + (sizeof(QString) * count)">
+            <Parameter Name="count" Type="int"/>
+        </Intrinsic>
+        <Intrinsic Name="scheme" Expression="*((QString*)(((char*)(d) + memberOffset(0))))" />
+        <Intrinsic Name="username" Expression="*((QString*)(((char*)(d) + memberOffset(1))))" />
+        <Intrinsic Name="password" Expression="*((QString*)(((char*)(d) + memberOffset(2))))" />
+        <Intrinsic Name="host" Expression="*((QString*)(((char*)(d) + memberOffset(3))))" />
+        <Intrinsic Name="path" Expression="*((QString*)(((char*)(d) + memberOffset(4))))" />
+        <Intrinsic Name="query" Expression="*((QString*)(((char*)(d) + memberOffset(5))))" />
+        <Intrinsic Name="fragment" Expression="*((QString*)(((char*)(d) + memberOffset(6))))" />
+
+        <DisplayString Condition="!isEmpty(scheme().d-&gt;size)">{scheme()}://{host()}{path()}</DisplayString>
+        <DisplayString Condition="isEmpty(scheme().d-&gt;size)">{path()}</DisplayString>
+        <Expand>
+            <Item Name="[scheme]">scheme()</Item>
+            <Item Name="[username]">username()</Item>
+            <Item Name="[password]">password()</Item>
+            <Item Name="[host]">host()</Item>
+            <Item Name="[path]">path()</Item>
+            <Item Name="[query]">query()</Item>
+            <Item Name="[fragment]">fragment()</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="QDate">
+        <DisplayString>{{ julian day = {jd} }}</DisplayString>
+    </Type>
+
+   <Type Name="QTime">
+        <Intrinsic Name="hour" Expression="mds / 3600000" />
+        <Intrinsic Name="minute" Expression="(mds % 3600000) / 60000" />
+        <Intrinsic Name="second" Expression="(mds / 1000) % 60" />
+        <Intrinsic Name="millisecond" Expression="mds % 1000" />
+        <DisplayString Condition="mds == 1">{{ millisecond = {mds} }}</DisplayString>
+        <DisplayString Condition="mds != 1">{{ milliseconds = {mds} }}</DisplayString>
+        <Expand>
+            <Item Name="[hour]"
+                  Condition="(mds / 3600000) == 1">hour(), d</Item>
+            <Item Name="[hours]"
+                  Condition="(mds / 3600000) != 1">hour(), d</Item>
+            <Item Name="[minute]"
+                  Condition="((mds % 3600000) / 60000) == 1">minute(), d</Item>
+            <Item Name="[minutes]"
+                  Condition="((mds % 3600000) / 60000) != 1">minute(), d</Item>
+            <Item Name="[second]"
+                  Condition="((mds / 1000) % 60) == 1">second(), d</Item>
+            <Item Name="[seconds]"
+                  Condition="((mds / 1000) % 60) != 1">second(), d</Item>
+            <Item Name="[millisecond]"
+                  Condition="(mds % 1000) == 1">millisecond(), d</Item>
+            <Item Name="[milliseconds]"
+                  Condition="(mds % 1000) != 1">millisecond(), d</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QPair&lt;*,*&gt;">
+        <DisplayString>({first}, {second})</DisplayString>
+        <Expand>
+            <Item Name="[first]">first</Item>
+            <Item Name="[second]">second</Item>
+        </Expand>
+    </Type>
+
+   <Type Name="QList&lt;*&gt;">
+        <AlternativeType Name="QVector&lt;*&gt;"/>
+        <DisplayString>{{ size={d.size} }}</DisplayString>
+        <Expand>
+            <ArrayItems>
+                <Size>d.size</Size>
+                <ValuePointer>reinterpret_cast&lt;$T1*&gt;(d.ptr)</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+   <Type Name="QVarLengthArray&lt;*&gt;">
+        <DisplayString>{{ size={s} }}</DisplayString>
+        <Expand>
+            <Item Name="[capacity]">a</Item>
+            <ArrayItems>
+                <Size>s</Size>
+                <ValuePointer>ptr</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="QMap&lt;*,*&gt;">
+        <AlternativeType Name="QMultiMap&lt;*,*&gt;"/>
+        <DisplayString>{{ size={d.d-&gt;m._Mypair._Myval2._Myval2._Mysize} }}</DisplayString>
+        <Expand>
+            <TreeItems>
+                <Size>d.d-&gt;m._Mypair._Myval2._Myval2._Mysize</Size>
+                <HeadPointer>d.d-&gt;m._Mypair._Myval2._Myval2._Myhead-&gt;_Parent</HeadPointer>
+                <LeftPointer>_Left</LeftPointer>
+                <RightPointer>_Right</RightPointer>
+                <ValueNode Condition="_Isnil == 0" Name="[{_Myval.first}]">_Myval,view(MapHelper)</ValueNode>
+            </TreeItems>
+        </Expand>
+    </Type>
+
+    <Type Name="std::pair&lt;*, *&gt;" IncludeView="MapHelper">
+        <DisplayString>{second}</DisplayString>
+    </Type>
+
+    <Type Name="QHashPrivate::Node&lt;*,*&gt;">
+        <DisplayString>{value}</DisplayString>
+        <Expand>
+            <Item Name="key">key</Item>
+            <Item Name="value">value</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="QHashPrivate::MultiNode&lt;*,*&gt;">
+        <DisplayString Condition="value-&gt;next == 0">{value-&gt;value}</DisplayString>
+        <DisplayString Condition="value-&gt;next != 0 &amp;&amp; value-&gt;next-&gt;next == 0">({value-&gt;value}, {value-&gt;next-&gt;value})</DisplayString>
+        <DisplayString Condition="value-&gt;next != 0 &amp;&amp; value-&gt;next-&gt;next != 0">({value-&gt;value}, {value-&gt;next-&gt;value}, ...)</DisplayString>
+        <Expand>
+            <LinkedListItems>
+                <HeadPointer>value</HeadPointer>
+                <NextPointer>next</NextPointer>
+                <ValueNode>value</ValueNode>
+            </LinkedListItems>
+        </Expand>
+    </Type>
+
+    <Type Name="QHash&lt;*,*&gt;">
+        <AlternativeType Name="QMultiHash&lt;*,*&gt;"/>
+        <Intrinsic Name="getOffset" Category="Method" Expression="d-&gt;spans[span].offsets[offset]">
+            <Parameter Name="span" Type="int" />
+            <Parameter Name="offset" Type="int" />
+        </Intrinsic>
+        <Intrinsic Name="getKey" Category="Method" Expression="((Node*)(char *)&amp;(d-&gt;spans[span].entries[d-&gt;spans[span].offsets[offset]].storage))->key">
+            <Parameter Name="span" Type="int" />
+            <Parameter Name="offset" Type="int" />
+        </Intrinsic>
+        <Intrinsic Name="getNode" Category="Method" Expression="*((Node*)(char *)&amp;(d-&gt;spans[span].entries[d-&gt;spans[span].offsets[offset]].storage))">
+            <Parameter Name="span" Type="int" />
+            <Parameter Name="offset" Type="int" />
+        </Intrinsic>
+
+        <DisplayString>{{ size={d-&gt;size} }}</DisplayString>
+        <Expand>
+            <CustomListItems MaxItemsPerView="5000">
+                <Variable Name="iSpan" InitialValue="0" />
+                <Variable Name="spanCount" InitialValue="d-&gt;numBuckets" />
+                <Size>d-&gt;size</Size>
+                <Loop>
+                    <If Condition="iSpan != spanCount">
+                        <Item Name="[{getKey(iSpan, 0)}]" Condition="getOffset(iSpan, 0) != 255">getNode(iSpan, 0)</Item>
+                        <Item Name="[{getKey(iSpan, 1)}]" Condition="getOffset(iSpan, 1) != 255">getNode(iSpan, 1)</Item>
+                        <Item Name="[{getKey(iSpan, 2)}]" Condition="getOffset(iSpan, 2) != 255">getNode(iSpan, 2)</Item>
+                        <Item Name="[{getKey(iSpan, 3)}]" Condition="getOffset(iSpan, 3) != 255">getNode(iSpan, 3)</Item>
+                        <Item Name="[{getKey(iSpan, 4)}]" Condition="getOffset(iSpan, 4) != 255">getNode(iSpan, 4)</Item>
+                        <Item Name="[{getKey(iSpan, 5)}]" Condition="getOffset(iSpan, 5) != 255">getNode(iSpan, 5)</Item>
+                        <Item Name="[{getKey(iSpan, 6)}]" Condition="getOffset(iSpan, 6) != 255">getNode(iSpan, 6)</Item>
+                        <Item Name="[{getKey(iSpan, 7)}]" Condition="getOffset(iSpan, 7) != 255">getNode(iSpan, 7)</Item>
+                        <Item Name="[{getKey(iSpan, 8)}]" Condition="getOffset(iSpan, 8) != 255">getNode(iSpan, 8)</Item>
+                        <Item Name="[{getKey(iSpan, 9)}]" Condition="getOffset(iSpan, 9) != 255">getNode(iSpan, 9)</Item>
+                        <Item Name="[{getKey(iSpan, 10)}]" Condition="getOffset(iSpan, 10) != 255">getNode(iSpan, 10)</Item>
+                        <Item Name="[{getKey(iSpan, 11)}]" Condition="getOffset(iSpan, 11) != 255">getNode(iSpan, 11)</Item>
+                        <Item Name="[{getKey(iSpan, 12)}]" Condition="getOffset(iSpan, 12) != 255">getNode(iSpan, 12)</Item>
+                        <Item Name="[{getKey(iSpan, 13)}]" Condition="getOffset(iSpan, 13) != 255">getNode(iSpan, 13)</Item>
+                        <Item Name="[{getKey(iSpan, 14)}]" Condition="getOffset(iSpan, 14) != 255">getNode(iSpan, 14)</Item>
+                        <Item Name="[{getKey(iSpan, 15)}]" Condition="getOffset(iSpan, 15) != 255">getNode(iSpan, 15)</Item>
+                        <Item Name="[{getKey(iSpan, 16)}]" Condition="getOffset(iSpan, 16) != 255">getNode(iSpan, 16)</Item>
+                        <Item Name="[{getKey(iSpan, 17)}]" Condition="getOffset(iSpan, 17) != 255">getNode(iSpan, 17)</Item>
+                        <Item Name="[{getKey(iSpan, 18)}]" Condition="getOffset(iSpan, 18) != 255">getNode(iSpan, 18)</Item>
+                        <Item Name="[{getKey(iSpan, 19)}]" Condition="getOffset(iSpan, 19) != 255">getNode(iSpan, 19)</Item>
+                        <Item Name="[{getKey(iSpan, 20)}]" Condition="getOffset(iSpan, 20) != 255">getNode(iSpan, 20)</Item>
+                        <Item Name="[{getKey(iSpan, 21)}]" Condition="getOffset(iSpan, 21) != 255">getNode(iSpan, 21)</Item>
+                        <Item Name="[{getKey(iSpan, 22)}]" Condition="getOffset(iSpan, 22) != 255">getNode(iSpan, 22)</Item>
+                        <Item Name="[{getKey(iSpan, 23)}]" Condition="getOffset(iSpan, 23) != 255">getNode(iSpan, 23)</Item>
+                        <Item Name="[{getKey(iSpan, 24)}]" Condition="getOffset(iSpan, 24) != 255">getNode(iSpan, 24)</Item>
+                        <Item Name="[{getKey(iSpan, 25)}]" Condition="getOffset(iSpan, 25) != 255">getNode(iSpan, 25)</Item>
+                        <Item Name="[{getKey(iSpan, 26)}]" Condition="getOffset(iSpan, 26) != 255">getNode(iSpan, 26)</Item>
+                        <Item Name="[{getKey(iSpan, 27)}]" Condition="getOffset(iSpan, 27) != 255">getNode(iSpan, 27)</Item>
+                        <Item Name="[{getKey(iSpan, 28)}]" Condition="getOffset(iSpan, 28) != 255">getNode(iSpan, 28)</Item>
+                        <Item Name="[{getKey(iSpan, 29)}]" Condition="getOffset(iSpan, 29) != 255">getNode(iSpan, 29)</Item>
+                        <Item Name="[{getKey(iSpan, 30)}]" Condition="getOffset(iSpan, 30) != 255">getNode(iSpan, 30)</Item>
+                        <Item Name="[{getKey(iSpan, 31)}]" Condition="getOffset(iSpan, 31) != 255">getNode(iSpan, 31)</Item>
+                        <Item Name="[{getKey(iSpan, 32)}]" Condition="getOffset(iSpan, 32) != 255">getNode(iSpan, 32)</Item>
+                        <Item Name="[{getKey(iSpan, 33)}]" Condition="getOffset(iSpan, 33) != 255">getNode(iSpan, 33)</Item>
+                        <Item Name="[{getKey(iSpan, 34)}]" Condition="getOffset(iSpan, 34) != 255">getNode(iSpan, 34)</Item>
+                        <Item Name="[{getKey(iSpan, 35)}]" Condition="getOffset(iSpan, 35) != 255">getNode(iSpan, 35)</Item>
+                        <Item Name="[{getKey(iSpan, 36)}]" Condition="getOffset(iSpan, 36) != 255">getNode(iSpan, 36)</Item>
+                        <Item Name="[{getKey(iSpan, 37)}]" Condition="getOffset(iSpan, 37) != 255">getNode(iSpan, 37)</Item>
+                        <Item Name="[{getKey(iSpan, 38)}]" Condition="getOffset(iSpan, 38) != 255">getNode(iSpan, 38)</Item>
+                        <Item Name="[{getKey(iSpan, 39)}]" Condition="getOffset(iSpan, 39) != 255">getNode(iSpan, 39)</Item>
+                        <Item Name="[{getKey(iSpan, 40)}]" Condition="getOffset(iSpan, 40) != 255">getNode(iSpan, 40)</Item>
+                        <Item Name="[{getKey(iSpan, 41)}]" Condition="getOffset(iSpan, 41) != 255">getNode(iSpan, 41)</Item>
+                        <Item Name="[{getKey(iSpan, 42)}]" Condition="getOffset(iSpan, 42) != 255">getNode(iSpan, 42)</Item>
+                        <Item Name="[{getKey(iSpan, 43)}]" Condition="getOffset(iSpan, 43) != 255">getNode(iSpan, 43)</Item>
+                        <Item Name="[{getKey(iSpan, 44)}]" Condition="getOffset(iSpan, 44) != 255">getNode(iSpan, 44)</Item>
+                        <Item Name="[{getKey(iSpan, 45)}]" Condition="getOffset(iSpan, 45) != 255">getNode(iSpan, 45)</Item>
+                        <Item Name="[{getKey(iSpan, 46)}]" Condition="getOffset(iSpan, 46) != 255">getNode(iSpan, 46)</Item>
+                        <Item Name="[{getKey(iSpan, 47)}]" Condition="getOffset(iSpan, 47) != 255">getNode(iSpan, 47)</Item>
+                        <Item Name="[{getKey(iSpan, 48)}]" Condition="getOffset(iSpan, 48) != 255">getNode(iSpan, 48)</Item>
+                        <Item Name="[{getKey(iSpan, 49)}]" Condition="getOffset(iSpan, 49) != 255">getNode(iSpan, 49)</Item>
+                        <Item Name="[{getKey(iSpan, 50)}]" Condition="getOffset(iSpan, 50) != 255">getNode(iSpan, 50)</Item>
+                        <Item Name="[{getKey(iSpan, 51)}]" Condition="getOffset(iSpan, 51) != 255">getNode(iSpan, 51)</Item>
+                        <Item Name="[{getKey(iSpan, 52)}]" Condition="getOffset(iSpan, 52) != 255">getNode(iSpan, 52)</Item>
+                        <Item Name="[{getKey(iSpan, 53)}]" Condition="getOffset(iSpan, 53) != 255">getNode(iSpan, 53)</Item>
+                        <Item Name="[{getKey(iSpan, 54)}]" Condition="getOffset(iSpan, 54) != 255">getNode(iSpan, 54)</Item>
+                        <Item Name="[{getKey(iSpan, 55)}]" Condition="getOffset(iSpan, 55) != 255">getNode(iSpan, 55)</Item>
+                        <Item Name="[{getKey(iSpan, 56)}]" Condition="getOffset(iSpan, 56) != 255">getNode(iSpan, 56)</Item>
+                        <Item Name="[{getKey(iSpan, 57)}]" Condition="getOffset(iSpan, 57) != 255">getNode(iSpan, 57)</Item>
+                        <Item Name="[{getKey(iSpan, 58)}]" Condition="getOffset(iSpan, 58) != 255">getNode(iSpan, 58)</Item>
+                        <Item Name="[{getKey(iSpan, 59)}]" Condition="getOffset(iSpan, 59) != 255">getNode(iSpan, 59)</Item>
+                        <Item Name="[{getKey(iSpan, 60)}]" Condition="getOffset(iSpan, 60) != 255">getNode(iSpan, 60)</Item>
+                        <Item Name="[{getKey(iSpan, 61)}]" Condition="getOffset(iSpan, 61) != 255">getNode(iSpan, 61)</Item>
+                        <Item Name="[{getKey(iSpan, 62)}]" Condition="getOffset(iSpan, 62) != 255">getNode(iSpan, 62)</Item>
+                        <Item Name="[{getKey(iSpan, 63)}]" Condition="getOffset(iSpan, 63) != 255">getNode(iSpan, 63)</Item>
+                        <Item Name="[{getKey(iSpan, 64)}]" Condition="getOffset(iSpan, 64) != 255">getNode(iSpan, 64)</Item>
+                        <Item Name="[{getKey(iSpan, 65)}]" Condition="getOffset(iSpan, 65) != 255">getNode(iSpan, 65)</Item>
+                        <Item Name="[{getKey(iSpan, 66)}]" Condition="getOffset(iSpan, 66) != 255">getNode(iSpan, 66)</Item>
+                        <Item Name="[{getKey(iSpan, 67)}]" Condition="getOffset(iSpan, 67) != 255">getNode(iSpan, 67)</Item>
+                        <Item Name="[{getKey(iSpan, 68)}]" Condition="getOffset(iSpan, 68) != 255">getNode(iSpan, 68)</Item>
+                        <Item Name="[{getKey(iSpan, 69)}]" Condition="getOffset(iSpan, 69) != 255">getNode(iSpan, 69)</Item>
+                        <Item Name="[{getKey(iSpan, 70)}]" Condition="getOffset(iSpan, 70) != 255">getNode(iSpan, 70)</Item>
+                        <Item Name="[{getKey(iSpan, 71)}]" Condition="getOffset(iSpan, 71) != 255">getNode(iSpan, 71)</Item>
+                        <Item Name="[{getKey(iSpan, 72)}]" Condition="getOffset(iSpan, 72) != 255">getNode(iSpan, 72)</Item>
+                        <Item Name="[{getKey(iSpan, 73)}]" Condition="getOffset(iSpan, 73) != 255">getNode(iSpan, 73)</Item>
+                        <Item Name="[{getKey(iSpan, 74)}]" Condition="getOffset(iSpan, 74) != 255">getNode(iSpan, 74)</Item>
+                        <Item Name="[{getKey(iSpan, 75)}]" Condition="getOffset(iSpan, 75) != 255">getNode(iSpan, 75)</Item>
+                        <Item Name="[{getKey(iSpan, 76)}]" Condition="getOffset(iSpan, 76) != 255">getNode(iSpan, 76)</Item>
+                        <Item Name="[{getKey(iSpan, 77)}]" Condition="getOffset(iSpan, 77) != 255">getNode(iSpan, 77)</Item>
+                        <Item Name="[{getKey(iSpan, 78)}]" Condition="getOffset(iSpan, 78) != 255">getNode(iSpan, 78)</Item>
+                        <Item Name="[{getKey(iSpan, 79)}]" Condition="getOffset(iSpan, 79) != 255">getNode(iSpan, 79)</Item>
+                        <Item Name="[{getKey(iSpan, 80)}]" Condition="getOffset(iSpan, 80) != 255">getNode(iSpan, 80)</Item>
+                        <Item Name="[{getKey(iSpan, 81)}]" Condition="getOffset(iSpan, 81) != 255">getNode(iSpan, 81)</Item>
+                        <Item Name="[{getKey(iSpan, 82)}]" Condition="getOffset(iSpan, 82) != 255">getNode(iSpan, 82)</Item>
+                        <Item Name="[{getKey(iSpan, 83)}]" Condition="getOffset(iSpan, 83) != 255">getNode(iSpan, 83)</Item>
+                        <Item Name="[{getKey(iSpan, 84)}]" Condition="getOffset(iSpan, 84) != 255">getNode(iSpan, 84)</Item>
+                        <Item Name="[{getKey(iSpan, 85)}]" Condition="getOffset(iSpan, 85) != 255">getNode(iSpan, 85)</Item>
+                        <Item Name="[{getKey(iSpan, 86)}]" Condition="getOffset(iSpan, 86) != 255">getNode(iSpan, 86)</Item>
+                        <Item Name="[{getKey(iSpan, 87)}]" Condition="getOffset(iSpan, 87) != 255">getNode(iSpan, 87)</Item>
+                        <Item Name="[{getKey(iSpan, 88)}]" Condition="getOffset(iSpan, 88) != 255">getNode(iSpan, 88)</Item>
+                        <Item Name="[{getKey(iSpan, 89)}]" Condition="getOffset(iSpan, 89) != 255">getNode(iSpan, 89)</Item>
+                        <Item Name="[{getKey(iSpan, 90)}]" Condition="getOffset(iSpan, 90) != 255">getNode(iSpan, 90)</Item>
+                        <Item Name="[{getKey(iSpan, 91)}]" Condition="getOffset(iSpan, 91) != 255">getNode(iSpan, 91)</Item>
+                        <Item Name="[{getKey(iSpan, 92)}]" Condition="getOffset(iSpan, 92) != 255">getNode(iSpan, 92)</Item>
+                        <Item Name="[{getKey(iSpan, 93)}]" Condition="getOffset(iSpan, 93) != 255">getNode(iSpan, 93)</Item>
+                        <Item Name="[{getKey(iSpan, 94)}]" Condition="getOffset(iSpan, 94) != 255">getNode(iSpan, 94)</Item>
+                        <Item Name="[{getKey(iSpan, 95)}]" Condition="getOffset(iSpan, 95) != 255">getNode(iSpan, 95)</Item>
+                        <Item Name="[{getKey(iSpan, 96)}]" Condition="getOffset(iSpan, 96) != 255">getNode(iSpan, 96)</Item>
+                        <Item Name="[{getKey(iSpan, 97)}]" Condition="getOffset(iSpan, 97) != 255">getNode(iSpan, 97)</Item>
+                        <Item Name="[{getKey(iSpan, 98)}]" Condition="getOffset(iSpan, 98) != 255">getNode(iSpan, 98)</Item>
+                        <Item Name="[{getKey(iSpan, 99)}]" Condition="getOffset(iSpan, 99) != 255">getNode(iSpan, 99)</Item>
+                        <Item Name="[{getKey(iSpan, 100)}]" Condition="getOffset(iSpan, 100) != 255">getNode(iSpan, 100)</Item>
+                        <Item Name="[{getKey(iSpan, 101)}]" Condition="getOffset(iSpan, 101) != 255">getNode(iSpan, 101)</Item>
+                        <Item Name="[{getKey(iSpan, 102)}]" Condition="getOffset(iSpan, 102) != 255">getNode(iSpan, 102)</Item>
+                        <Item Name="[{getKey(iSpan, 103)}]" Condition="getOffset(iSpan, 103) != 255">getNode(iSpan, 103)</Item>
+                        <Item Name="[{getKey(iSpan, 104)}]" Condition="getOffset(iSpan, 104) != 255">getNode(iSpan, 104)</Item>
+                        <Item Name="[{getKey(iSpan, 105)}]" Condition="getOffset(iSpan, 105) != 255">getNode(iSpan, 105)</Item>
+                        <Item Name="[{getKey(iSpan, 106)}]" Condition="getOffset(iSpan, 106) != 255">getNode(iSpan, 106)</Item>
+                        <Item Name="[{getKey(iSpan, 107)}]" Condition="getOffset(iSpan, 107) != 255">getNode(iSpan, 107)</Item>
+                        <Item Name="[{getKey(iSpan, 108)}]" Condition="getOffset(iSpan, 108) != 255">getNode(iSpan, 108)</Item>
+                        <Item Name="[{getKey(iSpan, 109)}]" Condition="getOffset(iSpan, 109) != 255">getNode(iSpan, 109)</Item>
+                        <Item Name="[{getKey(iSpan, 110)}]" Condition="getOffset(iSpan, 110) != 255">getNode(iSpan, 110)</Item>
+                        <Item Name="[{getKey(iSpan, 111)}]" Condition="getOffset(iSpan, 111) != 255">getNode(iSpan, 111)</Item>
+                        <Item Name="[{getKey(iSpan, 112)}]" Condition="getOffset(iSpan, 112) != 255">getNode(iSpan, 112)</Item>
+                        <Item Name="[{getKey(iSpan, 113)}]" Condition="getOffset(iSpan, 113) != 255">getNode(iSpan, 113)</Item>
+                        <Item Name="[{getKey(iSpan, 114)}]" Condition="getOffset(iSpan, 114) != 255">getNode(iSpan, 114)</Item>
+                        <Item Name="[{getKey(iSpan, 115)}]" Condition="getOffset(iSpan, 115) != 255">getNode(iSpan, 115)</Item>
+                        <Item Name="[{getKey(iSpan, 116)}]" Condition="getOffset(iSpan, 116) != 255">getNode(iSpan, 116)</Item>
+                        <Item Name="[{getKey(iSpan, 117)}]" Condition="getOffset(iSpan, 117) != 255">getNode(iSpan, 117)</Item>
+                        <Item Name="[{getKey(iSpan, 118)}]" Condition="getOffset(iSpan, 118) != 255">getNode(iSpan, 118)</Item>
+                        <Item Name="[{getKey(iSpan, 119)}]" Condition="getOffset(iSpan, 119) != 255">getNode(iSpan, 119)</Item>
+                        <Item Name="[{getKey(iSpan, 120)}]" Condition="getOffset(iSpan, 120) != 255">getNode(iSpan, 120)</Item>
+                        <Item Name="[{getKey(iSpan, 121)}]" Condition="getOffset(iSpan, 121) != 255">getNode(iSpan, 121)</Item>
+                        <Item Name="[{getKey(iSpan, 122)}]" Condition="getOffset(iSpan, 122) != 255">getNode(iSpan, 122)</Item>
+                        <Item Name="[{getKey(iSpan, 123)}]" Condition="getOffset(iSpan, 123) != 255">getNode(iSpan, 123)</Item>
+                        <Item Name="[{getKey(iSpan, 124)}]" Condition="getOffset(iSpan, 124) != 255">getNode(iSpan, 124)</Item>
+                        <Item Name="[{getKey(iSpan, 125)}]" Condition="getOffset(iSpan, 125) != 255">getNode(iSpan, 125)</Item>
+                        <Item Name="[{getKey(iSpan, 126)}]" Condition="getOffset(iSpan, 126) != 255">getNode(iSpan, 126)</Item>
+                        <Item Name="[{getKey(iSpan, 127)}]" Condition="getOffset(iSpan, 127) != 255">getNode(iSpan, 127)</Item>
+                        <Exec>iSpan++</Exec>
+                    </If>
+                </Loop>
+            </CustomListItems>
+        </Expand>
+    </Type>
+
+    <Type Name="QSet&lt;*&gt;">
+        <DisplayString>{{ size={q_hash.d-&gt;size} }}</DisplayString>
+        <Expand>
+            <ExpandedItem>q_hash</ExpandedItem>
+        </Expand>
+    </Type>
+
+    <Type Name="QVariant">
+        <Intrinsic Name="typeId" Expression="*(int*)(&amp;((const QtPrivate::QMetaTypeInterface *)(d.packedType &lt;&lt; 2))->typeId)">
+        </Intrinsic>
+        <Intrinsic Name="dataStar" Expression="(&amp;(d.data.data))">
+        </Intrinsic>
+        <Intrinsic Name="sharedDataStar" Expression="(d.is_shared ? reinterpret_cast&lt;const void *&gt;((size_t)(d.data.shared) + d.data.shared-&gt;offset) : (&amp;(d.data.data)))">
+        </Intrinsic>
+
+        <DisplayString Condition="d.is_null">(null)</DisplayString>
+
+        <!-- Static core pointers -->
+        <DisplayString Condition="typeId() == QMetaType::QObjectStar">QObject*</DisplayString>
+
+        <!-- Static core template classes -->
+        <DisplayString Condition="typeId() == QMetaType::QVariantMap">{*(QMap&lt;QString,QVariant&gt;*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QVariantList">{*(QList&lt;QVariant&gt;*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QVariantHash">{*(QHash&lt;QString,QVariant&gt;*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QVariantPair">QVariantPair</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QByteArrayList">{*(QList&lt;QByteArray&gt;*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QStringList">{*(QList&lt;QString&gt;*) sharedDataStar()}</DisplayString>
+
+       <!-- Static primitives-->
+        <DisplayString Condition="typeId() == QMetaType::Bool">{*(bool*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::Int">{*(int*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::UInt">{*(unsigned int*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::LongLong">{*(long long*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::ULongLong">{*(unsigned long long*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::Double">{*(double*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::VoidStar">{*(void**) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::Long">{*(long*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::Short">{*(short*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::Char">{*(char*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::Char16">{*(char16_t*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::Char32">{*(char32_t*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::ULong">{*(unsigned long*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::UShort">{*(unsigned short*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::UChar">{*(unsigned char*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::Float">{*(float*) dataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::SChar">{*(signed char*) dataStar()}</DisplayString>
+
+        <!-- Static core classes -->
+        <DisplayString Condition="typeId() == QMetaType::QChar">{*(QChar*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QString">{*(QString*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QByteArray">{*(QByteArray*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QDate">{*(QDate*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QTime">{*(QTime*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QDateTime">QDateTime</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QUrl">QUrl</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QLocale">QLocale</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QRect">{*(QRect*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QRectF">{*(QRectF*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QSize">{*(QSize*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QSizeF">{*(QSizeF*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QLine">{*(QLine*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QLineF">{*(QLineF*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QPoint">{*(QPoint*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QPointF">{*(QPointF*) sharedDataStar()}</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QEasingCurve">EasingCurve</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QUuid">Uuid</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QRegularExpression">RegularExpression</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QJsonValue">QJsonValue</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QJsonObject">QJsonObject</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QJsonArray">QJsonArray</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QJsonDocument">QJsonDocument</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QCborValue">QCborValue</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QCborArray">QCborArray</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QCborMap">QCborMap</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QModelIndex">ModelIndex</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QPersistentModelIndex">QPersistentModelIndex</DisplayString>
+
+         <!-- Static gui classes -->
+        <DisplayString Condition="typeId() == QMetaType::QFont">QFont</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QPixmap">QPixmap</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QBrush">QBrush</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QColor">QColor</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QPalette">QPalette</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QIcon">QIcon</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QImage">QImage</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QPolygon">QPolygon</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QRegion">QRegion</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QBitmap">QBitmap</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QCursor">QCursor</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QKeySequence">QKeySequence</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QPen">QPen</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QTextLength">QTextLength</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QTextFormat">QTextFormat</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QTransform">QTransform</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QMatrix4x4">QMatrix4x4</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QVector2D">QVector2D</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QVector3D">QVector3D</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QVector4D">QVector4D</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QQuaternion">QQuaternion</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QPolygonF">QPolygonF</DisplayString>
+        <DisplayString Condition="typeId() == QMetaType::QColorSpace">QColorSpace</DisplayString>
+
+        <!-- Static widget classes -->
+        <DisplayString Condition="typeId() == QMetaType::QSizePolicy">QSizePolicy</DisplayString>
+
+        <!-- Unhandled : display the typeId-->
+        <DisplayString>QMetaType::Type ({typeId()})</DisplayString>
+
+        <Expand>
+            <ExpandedItem Condition="typeId() == QMetaType::QString">*(QString*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QByteArray">*(QByteArray*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QDate">*(QDate*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QTime">*(QTime*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QRect">*(QRect*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QRectF">*(QRectF*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QSize">*(QSize*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QSizeF">*(QSizeF*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QLine">*(QLine*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QLineF">*(QLineF*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QPoint">*(QPoint*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QPointF">*(QPointF*) sharedDataStar()</ExpandedItem>
+
+            <ExpandedItem Condition="typeId() == QMetaType::QVariantMap">*(QMap&lt;QString,QVariant&gt;*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QVariantList">*(QList&lt;QVariant&gt;*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QVariantHash">*(QHash&lt;QString,QVariant&gt;*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QByteArrayList">*(QList&lt;QByteArray&gt;*) sharedDataStar()</ExpandedItem>
+            <ExpandedItem Condition="typeId() == QMetaType::QStringList">*(QList&lt;QString&gt;*) sharedDataStar()</ExpandedItem>
+        </Expand>
+   </Type>
+
+</AutoVisualizer>
