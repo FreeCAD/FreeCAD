@@ -1750,6 +1750,10 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     visible = obj->Visibility.getValue();
                     obj->Visibility.setValue(!visible);
                 }
+
+                // to prevent selection of the item via QTreeWidget::mousePressEvent
+                event->accept();
+                return;
             }
         }
     }
