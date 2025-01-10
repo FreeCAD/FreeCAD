@@ -317,7 +317,7 @@ void CmdSurfaceExtendFace::activated(int)
 
 bool CmdSurfaceExtendFace::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Part::Feature>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSurfaceSections)

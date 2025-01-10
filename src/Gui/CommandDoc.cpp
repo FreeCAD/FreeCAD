@@ -1698,7 +1698,7 @@ bool StdCmdAlignment::isActive()
 {
     if (ManualAlignment::hasInstance())
         return false;
-    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 2;
+    return Gui::Selection().countObjectsOfType<App::GeoFeature>() == 2;
 }
 
 //===========================================================================

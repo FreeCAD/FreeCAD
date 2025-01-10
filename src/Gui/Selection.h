@@ -393,6 +393,13 @@ public:
             const char* pDocName=nullptr, ResolveMode resolve = ResolveMode::OldStyleElement) const;
 
     /**
+     * A convenience template-based method that returns the number of objects of the given type.
+     * \a T must be based on Base::BaseClass, otherwise 0 is returned.
+     */
+    template<typename T> inline unsigned int countObjectsOfType(
+            const char* pDocName=nullptr, ResolveMode resolve = ResolveMode::OldStyleElement) const;
+
+    /**
      * Does basically the same as the method above unless that it accepts a string literal as first argument.
      * \a typeName must be a registered type, otherwise 0 is returned.
      */
@@ -723,6 +730,15 @@ protected:
 
     SelectionStyle selectionStyle;
 };
+
+/**
+ * A convenience template-based method that returns the number of objects of the given type.
+ */
+template<typename T>
+inline unsigned int SelectionSingleton::countObjectsOfType(const char* pDocName, ResolveMode resolve) const {
+    static_assert(std::is_base_of<App::DocumentObject, T>::value, "Template parameter T must be derived from App::DocumentObject");
+    return this->countObjectsOfType(T::getClassTypeId(), pDocName, resolve);
+}
 
 /**
  * A convenience template-based method that returns an array with the correct types already.
