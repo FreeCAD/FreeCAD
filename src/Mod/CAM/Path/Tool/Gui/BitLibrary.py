@@ -440,6 +440,9 @@ class ToolBitSelector(object):
         """
         Path.Log.track()
 
+        # Get the current library so we can try and maintain any previous selection
+        current_lib = self.currentLibrary(True)  # True to get short name only
+
         # load the tool libraries
         self.factory.find_libraries(self.libraryModel)
 
@@ -447,9 +450,9 @@ class ToolBitSelector(object):
         self.form.cboLibraries.setModel(self.libraryModel)
 
         # Set the current library as the selected item in the combobox
-        current_lib = self.currentLibrary(True)  # True to get short name only
         currentIndex = self.form.cboLibraries.findText(current_lib)
 
+        # Set the selected library as the currentIndex in the combobox
         if currentIndex == -1 and self.libraryModel.rowCount() > 0:
             # If current library is not found, default to the first item
             currentIndex = 0
