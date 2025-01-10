@@ -132,11 +132,11 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                 }
             }
 
-            if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
-                Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
+            if (Gui::Selection().countObjectsOfType<PartDesign::Transformed>() -
+                Gui::Selection().countObjectsOfType<PartDesign::MultiTransform>() == 1 )
                 *item << "PartDesign_MultiTransform";
 
-            if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
+            if (Gui::Selection().countObjectsOfType<App::DocumentObject>() > 0) {
                 *item << "Std_Placement"
                       << "Std_ToggleVisibility"
                       << "Std_ShowSelection"

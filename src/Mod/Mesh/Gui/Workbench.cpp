@@ -158,7 +158,7 @@ void Workbench::deactivated()
 void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
 {
     StdWorkbench::setupContextMenu(recipient, item);
-    if (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Mesh::Feature>() > 0) {
         *item << "Separator"
               << "Mesh_Import"
               << "Mesh_Export"

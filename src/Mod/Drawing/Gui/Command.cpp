@@ -479,7 +479,7 @@ CmdDrawingOpenBrowserView::CmdDrawingOpenBrowserView()
 void CmdDrawingOpenBrowserView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    unsigned int n = getSelection().countObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    unsigned int n = getSelection().countObjectsOfType<Drawing::FeaturePage>();
     if (n != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Wrong selection"),
@@ -691,7 +691,7 @@ CmdDrawingExportPage::CmdDrawingExportPage()
 void CmdDrawingExportPage::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    unsigned int n = getSelection().countObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    unsigned int n = getSelection().countObjectsOfType<Drawing::FeaturePage>();
     if (n != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Wrong selection"),
@@ -757,7 +757,7 @@ void CmdDrawingProjectShape::activated(int iMsg)
 
 bool CmdDrawingProjectShape::isActive(void)
 {
-    int ct = Gui::Selection().countObjectsOfType(Part::Feature::getClassTypeId());
+    int ct = Gui::Selection().countObjectsOfType<Part::Feature>();
     return (ct > 0 && !Gui::Control().activeDialog());
 }
 
