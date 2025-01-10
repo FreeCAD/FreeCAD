@@ -218,7 +218,7 @@ class _TableView(PySide.QtGui.QTableView):
             self._copyTool(uuid, dst + i)
 
     def dropEvent(self, event):
-        """ Handle drop events on the tool table"""
+        """Handle drop events on the tool table"""
         Path.Log.track()
         mime = event.mimeData()
         data = mime.data("application/x-qstandarditemmodeldatalist")
@@ -807,7 +807,7 @@ class ToolBitLibrary(object):
         self.form.close()
 
     def libPaths(self):
-        """ Get the file path for the last used tool library """
+        """Get the file path for the last used tool library"""
         lib = Path.Preferences.lastFileToolLibrary()
         loc = Path.Preferences.lastPathToolLibrary()
 
@@ -885,7 +885,7 @@ class ToolBitLibrary(object):
         self.toolSelect([], [])
 
     def librarySaveAs(self, path):
-        """ Save the tooltable to a format to use with an external system """
+        """Save the tooltable to a format to use with an external system"""
         TooltableTypeJSON = translate("CAM_ToolBit", "Tooltable JSON (*.fctl)")
         TooltableTypeLinuxCNC = translate("CAM_ToolBit", "LinuxCNC tooltable (*.tbl)")
         TooltableTypeCamotics = translate("CAM_ToolBit", "CAMotics tooltable (*.json)")
@@ -977,7 +977,7 @@ class ToolBitLibrary(object):
                     Path.Log.error("Could not find tool #{} ".format(toolNr))
 
     def libararySaveCamotics(self, path):
-        """ Export the tool table to a file for use with camotics """
+        """Export the tool table to a file for use with camotics"""
 
         SHAPEMAP = {
             "ballend": "Ballnose",
