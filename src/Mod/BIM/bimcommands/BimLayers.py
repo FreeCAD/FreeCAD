@@ -269,12 +269,11 @@ class BIM_Layers:
 
             # transparency
             transparency = self.model.item(row, 6).data(QtCore.Qt.DisplayRole)
-            if transparency:
-                if obj.ViewObject.Transparency != transparency:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.Transparency = transparency
+            if obj.ViewObject.Transparency != transparency:
+                if not changed:
+                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    changed = True
+                obj.ViewObject.Transparency = transparency
 
             # line print color
             color = self.model.item(row, 7).data(QtCore.Qt.UserRole)
