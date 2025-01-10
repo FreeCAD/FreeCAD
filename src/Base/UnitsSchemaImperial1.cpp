@@ -44,7 +44,7 @@ std::string UnitsSchemaImperial1::schemaTranslate(const Quantity& quant,
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Units::Length) {        // Length handling ============================
+    if (unit == Units::Length) {       // Length handling ============================
         if (UnitValue < 0.00000254) {  // smaller then 0.001 thou -> inch and scientific notation
             unitString = "in";
             factor = 25.4;
@@ -325,8 +325,8 @@ std::string UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quan
 
     // now do special treatment on all cases seems necessary:
     if (unit == Units::Length) {  // Length handling ============================
-        unitString = "ft";       // always ft
-        factor = 304.8;          // 12 * 25.4
+        unitString = "ft";        // always ft
+        factor = 304.8;           // 12 * 25.4
     }
     else if (unit == Units::Area) {
         unitString = "ft^2";  // always sq.ft

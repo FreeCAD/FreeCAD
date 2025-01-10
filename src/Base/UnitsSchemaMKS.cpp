@@ -39,7 +39,7 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
 
     // now do special treatment on all cases seems necessary:
     if (unit == Units::Length) {  // Length handling ============================
-        if (UnitValue < 1e-6) {  // smaller than 0.001 nm -> scientific notation
+        if (UnitValue < 1e-6) {   // smaller than 0.001 nm -> scientific notation
             unitString = "mm";
             factor = 1.0;
         }
