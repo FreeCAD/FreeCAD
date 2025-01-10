@@ -211,11 +211,7 @@ class BIM_Layers:
                         )
 
             # visibility
-            checked = (
-                True
-                if self.model.item(row, 0).checkState() == QtCore.Qt.Checked
-                else False
-            )
+            checked = self.model.item(row, 0).checkState() == QtCore.Qt.Checked
             if checked != obj.ViewObject.Visibility:
                 if not changed:
                     FreeCAD.ActiveDocument.openTransaction("Layers change")
@@ -224,48 +220,45 @@ class BIM_Layers:
 
             # label
             label = self.model.item(row, 1).text()
-            if label:
-                if obj.Label != label:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.Label = label
+            # Setting Label="" is possible in the Property editor but we avoid it here:
+            if label and obj.Label != label:
+                if not changed:
+                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    changed = True
+                obj.Label = label
 
             # line width
             width = self.model.item(row, 2).data(QtCore.Qt.DisplayRole)
-            if width:
-                if obj.ViewObject.LineWidth != width:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.LineWidth = width
+            # Setting LineWidth=0 is possible in the Property editor but we avoid it here:
+            if width and obj.ViewObject.LineWidth != width:
+                if not changed:
+                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    changed = True
+                obj.ViewObject.LineWidth = width
 
             # draw style
             style = self.model.item(row, 3).text()
-            if style:
-                if obj.ViewObject.DrawStyle != style:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.DrawStyle = style
+            if obj.ViewObject.DrawStyle != style:
+                if not changed:
+                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    changed = True
+                obj.ViewObject.DrawStyle = style
 
             # line color
             color = self.model.item(row, 4).data(QtCore.Qt.UserRole)
-            if color:
-                if obj.ViewObject.LineColor[3:] != color:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.LineColor = color
+            if obj.ViewObject.LineColor[3:] != color:
+                if not changed:
+                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    changed = True
+                obj.ViewObject.LineColor = color
 
             # shape color
             color = self.model.item(row, 5).data(QtCore.Qt.UserRole)
-            if color:
-                if obj.ViewObject.ShapeColor[3:] != color:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.ShapeColor = color
+            if obj.ViewObject.ShapeColor[3:] != color:
+                if not changed:
+                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    changed = True
+                obj.ViewObject.ShapeColor = color
 
             # transparency
             transparency = self.model.item(row, 6).data(QtCore.Qt.DisplayRole)
@@ -277,16 +270,11 @@ class BIM_Layers:
 
             # line print color
             color = self.model.item(row, 7).data(QtCore.Qt.UserRole)
-            if color:
-                if not "LinePrintColor" in obj.ViewObject.PropertiesList:
-                    if hasattr(obj.ViewObject.Proxy, "set_properties"):
-                        obj.ViewObject.Proxy.set_properties(obj.ViewObject)
-                if "LinePrintColor" in obj.ViewObject.PropertiesList:
-                    if obj.ViewObject.LinePrintColor[3:] != color:
-                        if not changed:
-                            FreeCAD.ActiveDocument.openTransaction("Layers change")
-                            changed = True
-                        obj.ViewObject.LinePrintColor = color
+            if obj.ViewObject.LinePrintColor[3:] != color:
+                if not changed:
+                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    changed = True
+                obj.ViewObject.LinePrintColor = color
 
         # recompute
         if changed:
