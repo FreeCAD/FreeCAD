@@ -165,6 +165,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/refactored_grbl_post.py
     Path/Post/scripts/refactored_linuxcnc_post.py
     Path/Post/scripts/refactored_mach3_mach4_post.py
+    Path/Post/scripts/refactored_masso_g3_post.py
     Path/Post/scripts/refactored_test_post.py
     Path/Post/scripts/rml_post.py
     Path/Post/scripts/rrf_post.py
@@ -348,6 +349,7 @@ SET(Tests_SRCS
     CAMTests/TestRefactoredGrblPost.py
     CAMTests/TestRefactoredLinuxCNCPost.py
     CAMTests/TestRefactoredMach3Mach4Post.py
+    CAMTests/TestRefactoredMassoG3Post.py
     CAMTests/TestRefactoredTestPost.py
     CAMTests/TestRefactoredTestPostGCodes.py
     CAMTests/TestRefactoredTestPostMCodes.py
