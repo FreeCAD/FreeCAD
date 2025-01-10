@@ -170,7 +170,7 @@ DrawViewDimension::DrawViewDimension()
                       App::Prop_Output,
                       "Overtolerance value\nIf 'Equal Tolerance' is true this is also\nthe negated "
                       "value for 'Under Tolerance'");
-    OverTolerance.setUnit(Base::Unit::Length);
+    OverTolerance.setUnit(Base::Units::Length);
     OverTolerance.setConstraints(&ToleranceConstraint);
     ADD_PROPERTY_TYPE(UnderTolerance,
                       (0.0),
@@ -178,7 +178,7 @@ DrawViewDimension::DrawViewDimension()
                       App::Prop_Output,
                       "Undertolerance value\nIf 'Equal Tolerance' is true it will be replaced\nby "
                       "negative value of 'Over Tolerance'");
-    UnderTolerance.setUnit(Base::Unit::Length);
+    UnderTolerance.setUnit(Base::Units::Length);
     UnderTolerance.setConstraints(&ToleranceConstraint);
     ADD_PROPERTY_TYPE(Inverted,
                       (false),
@@ -321,12 +321,12 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         FormatSpec.setValue(getDefaultFormatSpec().c_str());
         auto type = static_cast<DimensionType>(Type.getValue());
         if (type == DimensionType::Angle || type == DimensionType::Angle3Pt) {
-            OverTolerance.setUnit(Base::Unit::Angle);
-            UnderTolerance.setUnit(Base::Unit::Angle);
+            OverTolerance.setUnit(Base::Units::Angle);
+            UnderTolerance.setUnit(Base::Units::Angle);
         }
         else {
-            OverTolerance.setUnit(Base::Unit::Length);
-            UnderTolerance.setUnit(Base::Unit::Length);
+            OverTolerance.setUnit(Base::Units::Length);
+            UnderTolerance.setUnit(Base::Units::Length);
         }
     }
     else if (prop == &TheoreticalExact) {
@@ -412,8 +412,8 @@ void DrawViewDimension::onDocumentRestored()
 
     auto type = static_cast<DimensionType>(Type.getValue());
     if (type == DimensionType::Angle || type == DimensionType::Angle3Pt) {
-        OverTolerance.setUnit(Base::Unit::Angle);
-        UnderTolerance.setUnit(Base::Unit::Angle);
+        OverTolerance.setUnit(Base::Units::Angle);
+        UnderTolerance.setUnit(Base::Units::Angle);
     }
 }
 

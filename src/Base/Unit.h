@@ -85,79 +85,6 @@ public:
     /// get the type as an string such as "Area", "Length" or "Pressure".
     std::string getTypeString() const;
 
-    /** Predefined Unit types. */
-    //@{
-    /// Length unit
-    static const Unit Length;
-    /// Mass unit
-    static const Unit Mass;
-
-    /// Angle
-    static const Unit Angle;
-    static const Unit AngleOfFriction;
-
-    static const Unit Density;
-
-    static const Unit Area;
-    static const Unit Volume;
-    static const Unit TimeSpan;
-    static const Unit Frequency;
-    static const Unit Velocity;
-    static const Unit Acceleration;
-    static const Unit Temperature;
-
-    static const Unit CurrentDensity;
-    static const Unit ElectricCurrent;
-    static const Unit ElectricPotential;
-    static const Unit ElectricCharge;
-    static const Unit MagneticFieldStrength;
-    static const Unit MagneticFlux;
-    static const Unit MagneticFluxDensity;
-    static const Unit Magnetization;
-    static const Unit ElectricalCapacitance;
-    static const Unit ElectricalInductance;
-    static const Unit ElectricalConductance;
-    static const Unit ElectricalResistance;
-    static const Unit ElectricalConductivity;
-    static const Unit ElectromagneticPotential;
-    static const Unit AmountOfSubstance;
-    static const Unit LuminousIntensity;
-
-    // Pressure
-    static const Unit CompressiveStrength;
-    static const Unit Pressure;
-    static const Unit ShearModulus;
-    static const Unit Stress;
-    static const Unit UltimateTensileStrength;
-    static const Unit YieldStrength;
-    static const Unit YoungsModulus;
-
-    static const Unit Stiffness;
-    static const Unit StiffnessDensity;
-
-    static const Unit Force;
-    static const Unit Work;
-    static const Unit Power;
-    static const Unit Moment;
-
-    static const Unit SpecificEnergy;
-    static const Unit ThermalConductivity;
-    static const Unit ThermalExpansionCoefficient;
-    static const Unit VolumetricThermalExpansionCoefficient;
-    static const Unit SpecificHeat;
-    static const Unit ThermalTransferCoefficient;
-    static const Unit HeatFlux;
-    static const Unit DynamicViscosity;
-    static const Unit KinematicViscosity;
-    static const Unit VacuumPermittivity;
-    static const Unit VolumeFlowRate;
-    static const Unit DissipationRate;
-
-    static const Unit InverseLength;
-    static const Unit InverseArea;
-    static const Unit InverseVolume;
-
-    //@}
 private:
     uint32_t Val;
 };
@@ -174,6 +101,74 @@ inline Unit& Unit::operator/=(const Unit& that)
     return *this;
 }
 
+//--------------------------------------------------------------------------------------------------
+
+namespace Units
+{
+
+// clang-format off
+const Unit AmountOfSubstance          (0, 0, 0, 0, 0, 1);
+const Unit ElectricCurrent            (0, 0, 0, 1);
+const Unit Length                     (1);
+const Unit LuminousIntensity          (0, 0, 0, 0, 0, 0, 1);
+const Unit Mass                       (0, 1);
+const Unit Temperature                (0, 0, 0, 0, 1);
+const Unit TimeSpan                   (0, 0, 1);
+
+// all other units
+const Unit Acceleration               (1, 0, -2);
+const Unit Angle                      (0, 0, 0, 0, 0, 0, 0, 1);
+const Unit AngleOfFriction            (0, 0, 0, 0, 0, 0, 0, 1);
+const Unit Area                       (2);
+const Unit CompressiveStrength        (-1, 1, -2);
+const Unit CurrentDensity             (-2, 0, 0, 1);
+const Unit Density                    (-3, 1);
+const Unit DissipationRate            (2, 0, -3); // https://cfd-online.com/Wiki/Turbulence_dissipation_rate
+const Unit DynamicViscosity           (-1, 1, -1);
+const Unit ElectricalCapacitance      (-2, -1, 4, 2);
+const Unit ElectricalConductance      (-2, -1, 3, 2);
+const Unit ElectricalConductivity     (-3, -1, 3, 2);
+const Unit ElectricalInductance       (2, 1, -2, -2);
+const Unit ElectricalResistance       (2, 1, -3, -2);
+const Unit ElectricCharge             (0, 0, 1, 1);
+const Unit ElectricPotential          (2, 1, -3, -1);
+const Unit ElectromagneticPotential   (1, 1, -2, -1);
+const Unit Force                      (1, 1, -2);
+const Unit Frequency                  (0, 0, -1);
+const Unit HeatFlux                   (0, 1, -3, 0, 0);
+const Unit InverseArea                (-2, 0, 0);
+const Unit InverseLength              (-1, 0, 0);
+const Unit InverseVolume              (-3, 0, 0);
+const Unit KinematicViscosity         (2, 0, -1);
+const Unit MagneticFieldStrength      (-1,0,0,1);
+const Unit MagneticFlux               (2,1,-2,-1);
+const Unit MagneticFluxDensity        (0,1,-2,-1);
+const Unit Magnetization              (-1,0,0,1);
+const Unit Moment                     (2, 1, -2);
+const Unit Pressure                   (-1,1,-2);
+const Unit Power                      (2, 1, -3);
+const Unit ShearModulus               (-1,1,-2);
+const Unit SpecificEnergy             (2, 0, -2);
+const Unit SpecificHeat               (2, 0, -2, 0, -1);
+const Unit Stiffness                  (0, 1, -2);
+const Unit StiffnessDensity           (-2, 1, -2);
+const Unit Stress                     (-1,1,-2);
+const Unit ThermalConductivity        (1, 1, -3, 0, -1);
+const Unit ThermalExpansionCoefficient(0, 0, 0, 0, -1);
+const Unit ThermalTransferCoefficient (0, 1, -3, 0, -1);
+const Unit UltimateTensileStrength    (-1,1,-2);
+const Unit VacuumPermittivity         (-3, -1, 4,  2);
+const Unit Velocity                   (1, 0, -1);
+const Unit Volume                     (3);
+const Unit VolumeFlowRate             (3, 0, -1);
+const Unit VolumetricThermalExpansionCoefficient(0, 0, 0, 0, -1);
+const Unit Work                       (2, 1, -2);
+const Unit YieldStrength              (-1,1,-2);
+const Unit YoungsModulus              (-1,1,-2);
+// clang-format on
+
+
+}  // namespace Units
 }  // namespace Base
 
 #endif  // BASE_Unit_H

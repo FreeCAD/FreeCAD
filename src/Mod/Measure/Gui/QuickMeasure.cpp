@@ -181,13 +181,13 @@ void QuickMeasure::addSelectionToMeasurement()
 
 static QString areaStr(double value)
 {
-    Base::Quantity area(value, Base::Unit::Area);
+    Base::Quantity area(value, Base::Units::Area);
     return QString::fromStdString(area.getUserString());
 }
 
 static QString lenghtStr(double value)
 {
-    Base::Quantity dist(value, Base::Unit::Length);
+    Base::Quantity dist(value, Base::Units::Length);
     return QString::fromStdString(dist.getUserString());
 }
 
@@ -200,8 +200,8 @@ void QuickMeasure::printResult()
     /* deactivated because computing the volumes/area of solids makes a significant
     slow down in selection of complex solids.
     else if (mtype == MeasureType::Volumes) {
-        Base::Quantity area(measurement->area(), Base::Unit::Area);
-        Base::Quantity vol(measurement->volume(), Base::Unit::Volume);
+        Base::Quantity area(measurement->area(), Base::Units::Area);
+        Base::Quantity vol(measurement->volume(), Base::Units::Volume);
         print(tr("Volume: %1, Area:
     %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
     }*/

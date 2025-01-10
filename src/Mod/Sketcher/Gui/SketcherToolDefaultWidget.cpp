@@ -355,7 +355,7 @@ void SketcherToolDefaultWidget::configureParameterInitialValue(int parameterinde
 void SketcherToolDefaultWidget::configureParameterUnit(int parameterindex, const Base::Unit& unit)
 {
     // For reference unit can be changed with :
-    // setUnit(Base::Unit::Length); Base::Unit::Angle
+    // setUnit(Base::Units::Length); Base::Units::Angle
     Base::StateLocker lock(blockParameterSlots, true);
     if (parameterindex < nParameters) {
         getParameterSpinBox(parameterindex)->setUnit(unit);

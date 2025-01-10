@@ -106,11 +106,11 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     ui->dirX->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirY->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirZ->setDecimals(Base::UnitsApi::getDecimals());
-    ui->spinLenFwd->setUnit(Base::Unit::Length);
+    ui->spinLenFwd->setUnit(Base::Units::Length);
     ui->spinLenFwd->setValue(10.0);
-    ui->spinLenRev->setUnit(Base::Unit::Length);
-    ui->spinTaperAngle->setUnit(Base::Unit::Angle);
-    ui->spinTaperAngle->setUnit(Base::Unit::Angle);
+    ui->spinLenRev->setUnit(Base::Units::Length);
+    ui->spinTaperAngle->setUnit(Base::Units::Angle);
+    ui->spinTaperAngle->setUnit(Base::Units::Angle);
     findShapes();
 
     Gui::ItemViewSelection sel(ui->treeWidget);

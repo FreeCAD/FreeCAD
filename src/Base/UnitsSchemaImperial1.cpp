@@ -44,7 +44,7 @@ std::string UnitsSchemaImperial1::schemaTranslate(const Quantity& quant,
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Unit::Length) {        // Length handling ============================
+    if (unit == Units::Length) {        // Length handling ============================
         if (UnitValue < 0.00000254) {  // smaller then 0.001 thou -> inch and scientific notation
             unitString = "in";
             factor = 25.4;
@@ -74,29 +74,29 @@ std::string UnitsSchemaImperial1::schemaTranslate(const Quantity& quant,
             factor = 25.4;
         }
     }
-    else if (unit == Unit::Angle) {
+    else if (unit == Units::Angle) {
         unitString = "\xC2\xB0";
         factor = 1.0;
     }
-    else if (unit == Unit::Area) {
+    else if (unit == Units::Area) {
         // TODO: Cascade for the Areas
         // default action for all cases without special treatment:
         unitString = "in^2";
         factor = 645.16;
     }
-    else if (unit == Unit::Volume) {
+    else if (unit == Units::Volume) {
         // TODO: Cascade for the Volume
         // default action for all cases without special treatment:
         unitString = "in^3";
         factor = 16387.064;
     }
-    else if (unit == Unit::Mass) {
+    else if (unit == Units::Mass) {
         // TODO: Cascade for the weights
         // default action for all cases without special treatment:
         unitString = "lb";
         factor = 0.45359237;
     }
-    else if (unit == Unit::Pressure) {
+    else if (unit == Units::Pressure) {
         if (UnitValue < 6894.744) {  // psi is the smallest
             unitString = "psi";
             factor = 6.894744825494;
@@ -110,11 +110,11 @@ std::string UnitsSchemaImperial1::schemaTranslate(const Quantity& quant,
             factor = 6.894744825494;
         }
     }
-    else if (unit == Unit::Stiffness) {  // Conversion to lbf/in
+    else if (unit == Units::Stiffness) {  // Conversion to lbf/in
         unitString = "lbf/in";
         factor = 4.448222 / 0.0254;
     }
-    else if (unit == Unit::Velocity) {
+    else if (unit == Units::Velocity) {
         unitString = "in/min";
         factor = 25.4 / 60;
     }
@@ -136,45 +136,45 @@ std::string UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& qu
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Unit::Length) {  // Length handling ============================
+    if (unit == Units::Length) {  // Length handling ============================
         unitString = "in";
         factor = 25.4;
     }
-    else if (unit == Unit::Angle) {
+    else if (unit == Units::Angle) {
         unitString = "\xC2\xB0";
         factor = 1.0;
     }
-    else if (unit == Unit::Area) {
+    else if (unit == Units::Area) {
         // TODO: Cascade for the Areas
         // default action for all cases without special treatment:
         unitString = "in^2";
         factor = 645.16;
     }
-    else if (unit == Unit::Volume) {
+    else if (unit == Units::Volume) {
         // TODO: Cascade for the Volume
         // default action for all cases without special treatment:
         unitString = "in^3";
         factor = 16387.064;
     }
-    else if (unit == Unit::Mass) {
+    else if (unit == Units::Mass) {
         // TODO: Cascade for the weights
         // default action for all cases without special treatment:
         unitString = "lb";
         factor = 0.45359237;
     }
-    else if (unit == Unit::Pressure) {
+    else if (unit == Units::Pressure) {
         unitString = "psi";
         factor = 6.894744825494;
     }
-    else if (unit == Unit::Stiffness) {
+    else if (unit == Units::Stiffness) {
         unitString = "lbf/in";
         factor = 4.448222 / 0.0254;
     }
-    else if (unit == Unit::Velocity) {
+    else if (unit == Units::Velocity) {
         unitString = "in/min";
         factor = 25.4 / 60;
     }
-    else if (unit == Unit::Acceleration) {
+    else if (unit == Units::Acceleration) {
         unitString = "in/min^2";
         factor = 25.4 / 3600;
     }
@@ -194,7 +194,7 @@ std::string UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
     // this schema expresses distances in feet + inches + fractions
     // ex: 3'- 4 1/4" with proper rounding
     Unit unit = quant.getUnit();
-    if (unit == Unit::Length) {
+    if (unit == Units::Length) {
         unitString = "in";
         factor = 25.4;
 
@@ -291,19 +291,19 @@ std::string UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
         // Done!
         return output.str();
     }
-    else if (unit == Unit::Angle) {
+    else if (unit == Units::Angle) {
         unitString = "\xC2\xB0";
         factor = 1.0;
     }
-    else if (unit == Unit::Area) {
+    else if (unit == Units::Area) {
         unitString = "sqft";
         factor = 92903.04;
     }
-    else if (unit == Unit::Volume) {
+    else if (unit == Units::Volume) {
         unitString = "cft";
         factor = 28316846.592;
     }
-    else if (unit == Unit::Velocity) {
+    else if (unit == Units::Velocity) {
         unitString = "in/min";
         factor = 25.4 / 60;
     }
@@ -324,36 +324,36 @@ std::string UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quan
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Unit::Length) {  // Length handling ============================
+    if (unit == Units::Length) {  // Length handling ============================
         unitString = "ft";       // always ft
         factor = 304.8;          // 12 * 25.4
     }
-    else if (unit == Unit::Area) {
+    else if (unit == Units::Area) {
         unitString = "ft^2";  // always sq.ft
         factor = 92903.04;
     }
-    else if (unit == Unit::Volume) {
+    else if (unit == Units::Volume) {
         unitString = "ft^3";  // always cu. ft
         factor = 28316846.592;
     }
-    else if (unit == Unit::Mass) {
+    else if (unit == Units::Mass) {
         unitString = "lb";  // always lbs.
         factor = 0.45359237;
     }
-    else if (unit == Unit::Pressure) {
+    else if (unit == Units::Pressure) {
         unitString = "psi";
         factor = 6.894744825494;
     }
-    else if (unit == Unit::Stiffness) {
+    else if (unit == Units::Stiffness) {
         unitString = "lbf/in";
         factor = 4.448222 / 0.0254;
     }
-    else if (unit == Unit::Velocity) {
+    else if (unit == Units::Velocity) {
         unitString = "mph";
         factor = 447.04;  // 1mm/sec => mph
     }
     // this schema expresses angles in degrees + minutes + seconds
-    else if (unit == Unit::Angle) {
+    else if (unit == Units::Angle) {
         unitString = "deg";
         std::string degreeString = "\xC2\xB0";      // degree symbol
         std::string minuteString = "\xE2\x80\xB2";  // prime symbol

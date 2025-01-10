@@ -118,8 +118,8 @@ void TaskCosVertex::setUiPrimary()
     int decimals = Base::UnitsApi::getDecimals();
     ui->dsbX->setDecimals(decimals);
     ui->dsbY->setDecimals(decimals);
-    ui->dsbX->setUnit(Base::Unit::Length);
-    ui->dsbY->setUnit(Base::Unit::Length);
+    ui->dsbX->setUnit(Base::Units::Length);
+    ui->dsbY->setUnit(Base::Units::Length);
 }
 
 // set the ui x,y to apparent coords (ie invertY)

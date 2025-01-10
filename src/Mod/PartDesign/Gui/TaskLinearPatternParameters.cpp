@@ -87,11 +87,11 @@ void TaskLinearPatternParameters::setupParameterUI(QWidget* widget)
     ui->comboMode->setEnabled(true);
     ui->spinLength->blockSignals(true);
     ui->spinLength->setEnabled(true);
-    ui->spinLength->setUnit(Base::Unit::Length);
+    ui->spinLength->setUnit(Base::Units::Length);
     ui->spinLength->blockSignals(false);
     ui->spinOffset->blockSignals(true);
     ui->spinOffset->setEnabled(true);
-    ui->spinOffset->setUnit(Base::Unit::Length);
+    ui->spinOffset->setUnit(Base::Units::Length);
     ui->spinOffset->blockSignals(false);
     ui->spinOccurrences->setEnabled(true);
 

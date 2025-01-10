@@ -718,7 +718,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 {
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
-    asQuantity.setUnit(Base::Unit::Length);
+    asQuantity.setUnit(Base::Units::Length);
     std::string userString = asQuantity.getUserString();
     if (Base::UnitsApi::isMultiUnitLength() || (!hideUnits() && useSystemDecimals())) {
         // just return the user string
@@ -778,7 +778,7 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
 {
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
-    asQuantity.setUnit(Base::Unit::Angle);
+    asQuantity.setUnit(Base::Units::Angle);
     QString qUserString = QString::fromStdString(asQuantity.getUserString());
     if (Base::UnitsApi::isMultiUnitAngle()) {
         // just return the user string

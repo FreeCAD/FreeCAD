@@ -168,7 +168,7 @@ void TaskRichAnno::setUiPrimary()
         std::string baseName = m_baseFeat->getNameInDocument();
         ui->leBaseView->setText(QString::fromStdString(baseName));
     }
-    ui->dsbWidth->setUnit(Base::Unit::Length);
+    ui->dsbWidth->setUnit(Base::Units::Length);
     ui->dsbWidth->setMinimum(0);
     ui->dsbWidth->setValue(prefWeight());
 

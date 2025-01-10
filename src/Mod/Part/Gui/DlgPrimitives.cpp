@@ -1994,10 +1994,10 @@ Location::Location(QWidget* parent, Part::Feature* feature)
     connect(ui->viewPositionButton, &QPushButton::clicked,
             this, &Location::onViewPositionButton);
 
-    ui->XPositionQSB->setUnit(Base::Unit::Length);
-    ui->YPositionQSB->setUnit(Base::Unit::Length);
-    ui->ZPositionQSB->setUnit(Base::Unit::Length);
-    ui->AngleQSB->setUnit(Base::Unit::Angle);
+    ui->XPositionQSB->setUnit(Base::Units::Length);
+    ui->YPositionQSB->setUnit(Base::Units::Length);
+    ui->ZPositionQSB->setUnit(Base::Units::Length);
+    ui->AngleQSB->setUnit(Base::Units::Angle);
 
     // fill location widget if object already exists
     if (feature) {

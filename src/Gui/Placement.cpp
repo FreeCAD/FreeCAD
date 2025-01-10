@@ -495,25 +495,25 @@ void Placement::setupConnections()
 
 void Placement::setupUnits()
 {
-    ui->xPos->setUnit(Base::Unit::Length);
-    ui->yPos->setUnit(Base::Unit::Length);
-    ui->zPos->setUnit(Base::Unit::Length);
-    ui->axialPos->setUnit(Base::Unit::Length);
-    ui->xCnt->setValue(Base::Quantity(0, Base::Unit::Length));
-    ui->yCnt->setValue(Base::Quantity(0, Base::Unit::Length));
-    ui->zCnt->setValue(Base::Quantity(0, Base::Unit::Length));
-    ui->angle->setUnit(Base::Unit::Angle);
+    ui->xPos->setUnit(Base::Units::Length);
+    ui->yPos->setUnit(Base::Units::Length);
+    ui->zPos->setUnit(Base::Units::Length);
+    ui->axialPos->setUnit(Base::Units::Length);
+    ui->xCnt->setValue(Base::Quantity(0, Base::Units::Length));
+    ui->yCnt->setValue(Base::Quantity(0, Base::Units::Length));
+    ui->zCnt->setValue(Base::Quantity(0, Base::Units::Length));
+    ui->angle->setUnit(Base::Units::Angle);
     ui->yawAngle->setMaximum(180.0F);
     ui->yawAngle->setMinimum(-180.0F);
-    ui->yawAngle->setUnit(Base::Unit::Angle);
+    ui->yawAngle->setUnit(Base::Units::Angle);
     ui->yawAngle->checkRangeInExpression(true);
     ui->pitchAngle->setMaximum(90.0F);
     ui->pitchAngle->setMinimum(-90.0F);
-    ui->pitchAngle->setUnit(Base::Unit::Angle);
+    ui->pitchAngle->setUnit(Base::Units::Angle);
     ui->pitchAngle->checkRangeInExpression(true);
     ui->rollAngle->setMaximum(180.0F);
     ui->rollAngle->setMinimum(-180.0F);
-    ui->rollAngle->setUnit(Base::Unit::Angle);
+    ui->rollAngle->setUnit(Base::Units::Angle);
     ui->rollAngle->checkRangeInExpression(true);
 }
 
@@ -743,9 +743,9 @@ void Placement::onApplyAxialClicked()
     else {
         newPos = Base::Vector3d(curPos.x+(axis.x*axPos),curPos.y+(axis.y*axPos),curPos.z+(axis.z*axPos));
     }
-    ui->xPos->setValue(Base::Quantity(newPos.x,Base::Unit::Length));
-    ui->yPos->setValue(Base::Quantity(newPos.y,Base::Unit::Length));
-    ui->zPos->setValue(Base::Quantity(newPos.z,Base::Unit::Length));
+    ui->xPos->setValue(Base::Quantity(newPos.x,Base::Units::Length));
+    ui->yPos->setValue(Base::Quantity(newPos.y,Base::Units::Length));
+    ui->zPos->setValue(Base::Quantity(newPos.z,Base::Units::Length));
     signalMapper->blockSignals(false);
     onPlacementChanged(0);
 }
@@ -954,15 +954,15 @@ void Placement::setPlacement(const Base::Placement& p)
 void Placement::setPlacementData(const Base::Placement& p)
 {
     QSignalBlocker block(signalMapper);
-    ui->xPos->setValue(Base::Quantity(p.getPosition().x, Base::Unit::Length));
-    ui->yPos->setValue(Base::Quantity(p.getPosition().y, Base::Unit::Length));
-    ui->zPos->setValue(Base::Quantity(p.getPosition().z, Base::Unit::Length));
+    ui->xPos->setValue(Base::Quantity(p.getPosition().x, Base::Units::Length));
+    ui->yPos->setValue(Base::Quantity(p.getPosition().y, Base::Units::Length));
+    ui->zPos->setValue(Base::Quantity(p.getPosition().z, Base::Units::Length));
 
     double Y,P,R;
     p.getRotation().getYawPitchRoll(Y,P,R);
-    ui->yawAngle->setValue(Base::Quantity(Y, Base::Unit::Angle));
-    ui->pitchAngle->setValue(Base::Quantity(P, Base::Unit::Angle));
-    ui->rollAngle->setValue(Base::Quantity(R, Base::Unit::Angle));
+    ui->yawAngle->setValue(Base::Quantity(Y, Base::Units::Angle));
+    ui->pitchAngle->setValue(Base::Quantity(P, Base::Units::Angle));
+    ui->rollAngle->setValue(Base::Quantity(R, Base::Units::Angle));
 
     double angle;
     Base::Vector3d axis;
@@ -970,7 +970,7 @@ void Placement::setPlacementData(const Base::Placement& p)
     ui->xAxis->setValue(axis.x);
     ui->yAxis->setValue(axis.y);
     ui->zAxis->setValue(axis.z);
-    ui->angle->setValue(Base::Quantity(Base::toDegrees(angle), Base::Unit::Angle));
+    ui->angle->setValue(Base::Quantity(Base::toDegrees(angle), Base::Units::Angle));
 }
 
 Base::Placement Placement::getPlacement() const

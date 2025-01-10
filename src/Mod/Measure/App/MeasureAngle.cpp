@@ -59,7 +59,7 @@ MeasureAngle::MeasureAngle()
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Angle between the two elements");
-    Angle.setUnit(Base::Unit::Angle);
+    Angle.setUnit(Base::Units::Angle);
 }
 
 MeasureAngle::~MeasureAngle() = default;

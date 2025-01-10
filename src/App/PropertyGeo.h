@@ -141,7 +141,7 @@ public:
 
     Base::Unit getUnit() const override
     {
-        return Base::Unit::Length;
+        return Base::Units::Length;
     }
 
     const char* getEditorName() const override
@@ -169,7 +169,7 @@ public:
 
     Base::Unit getUnit() const override
     {
-        return Base::Unit::Length;
+        return Base::Units::Length;
     }
 
     const char* getEditorName() const override
@@ -197,7 +197,7 @@ public:
 
     Base::Unit getUnit() const override
     {
-        return Base::Unit::Length;
+        return Base::Units::Length;
     }
 
     const char* getEditorName() const override

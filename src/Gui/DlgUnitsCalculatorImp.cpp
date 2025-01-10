@@ -86,24 +86,24 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
     ui->ValueInput->setText(QString::fromLatin1("1 cm"));
     ui->UnitInput->setText(QString::fromLatin1("in"));
 
-    units << Base::Unit::Acceleration << Base::Unit::AmountOfSubstance << Base::Unit::Angle
-          << Base::Unit::Area << Base::Unit::Density << Base::Unit::CurrentDensity
-          << Base::Unit::DissipationRate << Base::Unit::DynamicViscosity
-          << Base::Unit::ElectricalCapacitance << Base::Unit::ElectricalInductance
-          << Base::Unit::ElectricalConductance << Base::Unit::ElectricalResistance
-          << Base::Unit::ElectricalConductivity << Base::Unit::ElectricCharge
-          << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential << Base::Unit::Force
-          << Base::Unit::Frequency << Base::Unit::HeatFlux << Base::Unit::InverseArea
-          << Base::Unit::InverseLength << Base::Unit::InverseVolume
-          << Base::Unit::KinematicViscosity << Base::Unit::Length << Base::Unit::LuminousIntensity
-          << Base::Unit::Mass << Base::Unit::MagneticFieldStrength << Base::Unit::MagneticFlux
-          << Base::Unit::MagneticFluxDensity << Base::Unit::Magnetization << Base::Unit::Power
-          << Base::Unit::Pressure << Base::Unit::SpecificEnergy << Base::Unit::SpecificHeat
-          << Base::Unit::Stiffness << Base::Unit::Temperature << Base::Unit::ThermalConductivity
-          << Base::Unit::ThermalExpansionCoefficient << Base::Unit::ThermalTransferCoefficient
-          << Base::Unit::TimeSpan << Base::Unit::VacuumPermittivity << Base::Unit::Velocity
-          << Base::Unit::Volume << Base::Unit::VolumeFlowRate
-          << Base::Unit::VolumetricThermalExpansionCoefficient << Base::Unit::Work;
+    units << Base::Units::Acceleration << Base::Units::AmountOfSubstance << Base::Units::Angle
+          << Base::Units::Area << Base::Units::Density << Base::Units::CurrentDensity
+          << Base::Units::DissipationRate << Base::Units::DynamicViscosity
+          << Base::Units::ElectricalCapacitance << Base::Units::ElectricalInductance
+          << Base::Units::ElectricalConductance << Base::Units::ElectricalResistance
+          << Base::Units::ElectricalConductivity << Base::Units::ElectricCharge
+          << Base::Units::ElectricCurrent << Base::Units::ElectricPotential << Base::Units::Force
+          << Base::Units::Frequency << Base::Units::HeatFlux << Base::Units::InverseArea
+          << Base::Units::InverseLength << Base::Units::InverseVolume
+          << Base::Units::KinematicViscosity << Base::Units::Length << Base::Units::LuminousIntensity
+          << Base::Units::Mass << Base::Units::MagneticFieldStrength << Base::Units::MagneticFlux
+          << Base::Units::MagneticFluxDensity << Base::Units::Magnetization << Base::Units::Power
+          << Base::Units::Pressure << Base::Units::SpecificEnergy << Base::Units::SpecificHeat
+          << Base::Units::Stiffness << Base::Units::Temperature << Base::Units::ThermalConductivity
+          << Base::Units::ThermalExpansionCoefficient << Base::Units::ThermalTransferCoefficient
+          << Base::Units::TimeSpan << Base::Units::VacuumPermittivity << Base::Units::Velocity
+          << Base::Units::Volume << Base::Units::VolumeFlowRate
+          << Base::Units::VolumetricThermalExpansionCoefficient << Base::Units::Work;
     for (const Base::Unit& it : units) {
         ui->unitsBox->addItem(QString::fromStdString(it.getTypeString()));
     }

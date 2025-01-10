@@ -38,10 +38,10 @@ DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
   , ui(new Ui_DlgPrefsTechDrawGeneralImp)
 {
     ui->setupUi(this);
-    ui->plsb_LabelSize->setUnit(Base::Unit::Length);
+    ui->plsb_LabelSize->setUnit(Base::Units::Length);
     ui->plsb_LabelSize->setMinimum(0);
 
-    ui->psb_GridSpacing->setUnit(Base::Unit::Length);
+    ui->psb_GridSpacing->setUnit(Base::Units::Length);
     ui->psb_GridSpacing->setMinimum(0);
 }
 

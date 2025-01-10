@@ -44,13 +44,13 @@ std::string UnitsSchemaMeterDecimal::schemaTranslate(const Base::Quantity& quant
                                                      std::string& unitString)
 {
     static std::array<std::pair<Unit, std::pair<std::string, double>>, 7> unitSpecs {{
-        {Unit::Length, {"m", 1e0}},
-        {Unit::Area, {"m^2", 1e6}},
-        {Unit::Volume, {"m^3", 1e9}},
-        {Unit::Power, {"W", 1000000}},
-        {Unit::ElectricPotential, {"V", 1000000}},
-        {Unit::HeatFlux, {"W/m^2", 1.0}},
-        {Unit::Velocity, {"m/s", 1e3}},
+        {Units::Length, {"m", 1e0}},
+        {Units::Area, {"m^2", 1e6}},
+        {Units::Volume, {"m^3", 1e9}},
+        {Units::Power, {"W", 1000000}},
+        {Units::ElectricPotential, {"V", 1000000}},
+        {Units::HeatFlux, {"W/m^2", 1.0}},
+        {Units::Velocity, {"m/s", 1e3}},
     }};
 
     const auto unit = quant.getUnit();

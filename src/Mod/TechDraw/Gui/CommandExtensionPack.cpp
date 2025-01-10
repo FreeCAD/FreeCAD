@@ -1838,7 +1838,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     //make area unit-aware
     Base::Quantity asQuantity;
     asQuantity.setValue(totalArea);
-    asQuantity.setUnit(Base::Unit::Area);
+    asQuantity.setUnit(Base::Units::Area);
 
     QString qUserString = QString::fromStdString(asQuantity.getUserString());
     if (qUserString.endsWith(QString::fromUtf8("^2"))) {

@@ -117,7 +117,7 @@ public:
     double getParameter(int parameterindex);
     bool isParameterSet(int parameterindex);
     void
-    updateVisualValue(int parameterindex, double val, const Base::Unit& unit = Base::Unit::Length);
+    updateVisualValue(int parameterindex, double val, const Base::Unit& unit = Base::Units::Length);
 
     void setParameterEnabled(int parameterindex, bool active = true);
     void setParameterFocus(int parameterindex);

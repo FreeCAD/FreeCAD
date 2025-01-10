@@ -66,26 +66,26 @@ MeasureDistance::MeasureDistance()
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Distance between the two elements");
-    Distance.setUnit(Base::Unit::Length);
+    Distance.setUnit(Base::Units::Length);
 
     ADD_PROPERTY_TYPE(DistanceX,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Distance in X direction");
-    DistanceX.setUnit(Base::Unit::Length);
+    DistanceX.setUnit(Base::Units::Length);
     ADD_PROPERTY_TYPE(DistanceY,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Distance in Y direction");
-    DistanceY.setUnit(Base::Unit::Length);
+    DistanceY.setUnit(Base::Units::Length);
     ADD_PROPERTY_TYPE(DistanceZ,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Distance in Z direction");
-    DistanceZ.setUnit(Base::Unit::Length);
+    DistanceZ.setUnit(Base::Units::Length);
 
     ADD_PROPERTY_TYPE(Position1,
                       (Base::Vector3d(0.0, 0.0, 0.0)),
@@ -327,26 +327,26 @@ MeasureDistanceDetached::MeasureDistanceDetached()
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Distance between the two elements");
-    Distance.setUnit(Base::Unit::Length);
+    Distance.setUnit(Base::Units::Length);
 
     ADD_PROPERTY_TYPE(DistanceX,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Distance in X direction");
-    DistanceX.setUnit(Base::Unit::Length);
+    DistanceX.setUnit(Base::Units::Length);
     ADD_PROPERTY_TYPE(DistanceY,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Distance in Y direction");
-    DistanceY.setUnit(Base::Unit::Length);
+    DistanceY.setUnit(Base::Units::Length);
     ADD_PROPERTY_TYPE(DistanceZ,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Distance in Z direction");
-    DistanceZ.setUnit(Base::Unit::Length);
+    DistanceZ.setUnit(Base::Units::Length);
 
     ADD_PROPERTY_TYPE(Position1,
                       (Base::Vector3d(0.0, 0.0, 0.0)),

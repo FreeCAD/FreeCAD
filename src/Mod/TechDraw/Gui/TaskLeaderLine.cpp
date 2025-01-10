@@ -239,7 +239,7 @@ void TaskLeaderLine::setUiPrimary()
     DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
     ui->cboxEndSym->setCurrentIndex(TechDraw::ArrowType::NONE);
 
-    ui->dsbWeight->setUnit(Base::Unit::Length);
+    ui->dsbWeight->setUnit(Base::Units::Length);
     ui->dsbWeight->setMinimum(0);
     ui->dsbWeight->setValue(TechDraw::LineGroup::getDefaultWidth("Graphic"));
 

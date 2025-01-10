@@ -261,11 +261,11 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             Base::Quantity quant;
             if ((*it)->Type == Sketcher::Angle) {
                 double datum = Base::toDegrees<double>((*it)->getValue());
-                quant.setUnit(Base::Unit::Angle);
+                quant.setUnit(Base::Units::Angle);
                 quant.setValue(datum);
             }
             else {
-                quant.setUnit(Base::Unit::Length);
+                quant.setUnit(Base::Units::Length);
                 quant.setValue((*it)->getValue());
             }
 

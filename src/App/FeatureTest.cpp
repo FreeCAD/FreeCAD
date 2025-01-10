@@ -143,7 +143,7 @@ FeatureTest::FeatureTest()
                       "An example property which has the types 'Output', 'ReadOnly' and 'Hidden'");
 
     ADD_PROPERTY(QuantityLength, (1.0));
-    QuantityLength.setUnit(Base::Unit::Length);
+    QuantityLength.setUnit(Base::Units::Length);
     ADD_PROPERTY(QuantityOther, (5.0));
     QuantityOther.setUnit(Base::Unit(-3, 1));
     // clang-format on
