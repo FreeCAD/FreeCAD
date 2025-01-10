@@ -59,6 +59,7 @@ translate = FreeCAD.Qt.translate
 
 
 def checkWorkingDir():
+    """Check the tool library directory writable and configure a new library if required"""
     # users shouldn't use the example toolbits and libraries.
     # working directory should be writable
     Path.Log.track()
@@ -97,7 +98,8 @@ def checkWorkingDir():
     Path.Preferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
     Path.Log.debug("setting workingdir to: {}".format(workingdir))
 
-    # Copy only files of default Path/Tool folder to working directory (targeting the README.md help file)
+    # Copy only files of default Path/Tool folder to working directory
+    # (targeting the README.md help file)
     src_toolfiles = os.listdir(defaultdir)
     for file_name in src_toolfiles:
         if file_name in ["README.md"]:
@@ -216,6 +218,7 @@ class _TableView(PySide.QtGui.QTableView):
             self._copyTool(uuid, dst + i)
 
     def dropEvent(self, event):
+        """ Handle drop events on the tool table"""
         Path.Log.track()
         mime = event.mimeData()
         data = mime.data("application/x-qstandarditemmodeldatalist")
@@ -400,9 +403,11 @@ class ToolBitSelector(object):
         self.title = self.form.windowTitle()
 
     def columnNames(self):
+        """Define the column names to display"""
         return ["#", "Tool"]
 
     def currentLibrary(self, shortNameOnly):
+        """Get the file path for the current tool library"""
         libfile = Path.Preferences.lastFileToolLibrary()
         if libfile is None or libfile == "":
             return ""
@@ -411,6 +416,7 @@ class ToolBitSelector(object):
         return libfile
 
     def loadData(self):
+        """Load the toolbits for the selected tool library"""
         Path.Log.track()
         self.toolModel.clear()
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
@@ -451,6 +457,7 @@ class ToolBitSelector(object):
         self.form.cboLibraries.setCurrentIndex(currentIndex)
 
     def setupUI(self):
+        """Setup the form and load the tooltable data"""
         Path.Log.track()
 
         # Connect the library change to reload data and update tooltip
@@ -469,6 +476,7 @@ class ToolBitSelector(object):
         self.form.addToolController.clicked.connect(self.selectedOrAllToolControllers)
 
     def updateLibraryTooltip(self, index):
+        """Add a tooltip to the combobox"""
         if index != -1:
             item = self.libraryModel.item(index)
             if item:
@@ -480,6 +488,7 @@ class ToolBitSelector(object):
             self.form.cboLibraries.setToolTip(translate("CAM_Toolbit", "No library selected"))
 
     def enableButtons(self):
+        """Enable button to add tool controller when a tool is selected"""
         # Set buttons inactive
         self.form.addToolController.setEnabled(False)
         selected = len(self.form.tools.selectedIndexes()) >= 1
@@ -580,6 +589,7 @@ class ToolBitLibrary(object):
         self.title = self.form.windowTitle()
 
     def toolBitNew(self):
+        """Create a new toolbit"""
         Path.Log.track()
 
         # select the shape file
@@ -611,6 +621,7 @@ class ToolBitLibrary(object):
         self.librarySave()
 
     def toolBitExisting(self):
+        """Add an existing toolbit to the library"""
 
         filenames = PathToolBitGui.GetToolFiles()
 
@@ -627,6 +638,7 @@ class ToolBitLibrary(object):
         self.librarySave()
 
     def toolDelete(self):
+        """Delete a tool"""
         Path.Log.track()
         selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
         for row in sorted(list(selectedRows), key=lambda r: -r):
@@ -650,6 +662,7 @@ class ToolBitLibrary(object):
         return self.form.exec_()
 
     def libraryPath(self):
+        """Select and load a tool library"""
         Path.Log.track()
         path = PySide.QtGui.QFileDialog.getExistingDirectory(
             self.form, "Tool Library Path", Path.Preferences.lastPathToolLibrary()
@@ -661,6 +674,7 @@ class ToolBitLibrary(object):
         self.loadData()
 
     def cleanupDocument(self):
+        """Clean up the document"""
         # This feels like a hack.  Remove the toolbit object
         # remove the editor from the dialog
         # re-enable all the controls
@@ -673,6 +687,7 @@ class ToolBitLibrary(object):
         self.lockoff()
 
     def accept(self):
+        """Handle accept signal"""
         self.editor.accept()
         self.temptool.Proxy.saveToFile(self.temptool, self.temptool.File)
         self.librarySave()
@@ -680,9 +695,11 @@ class ToolBitLibrary(object):
         self.cleanupDocument()
 
     def reject(self):
+        """Handle reject signal"""
         self.cleanupDocument()
 
     def lockon(self):
+        """Set the state of the form widgets: inactive"""
         self.toolTableView.setEnabled(False)
         self.form.toolCreate.setEnabled(False)
         self.form.toolDelete.setEnabled(False)
@@ -694,6 +711,7 @@ class ToolBitLibrary(object):
         self.form.librarySave.setEnabled(False)
 
     def lockoff(self):
+        """Set the state of the form widgets: active"""
         self.toolTableView.setEnabled(True)
         self.form.toolCreate.setEnabled(True)
         self.form.toolDelete.setEnabled(True)
@@ -706,6 +724,7 @@ class ToolBitLibrary(object):
         self.form.librarySave.setEnabled(True)
 
     def toolEdit(self, selected):
+        """Edit the selected tool bit"""
         Path.Log.track()
         item = self.toolModel.item(selected.row(), 0)
 
@@ -736,6 +755,7 @@ class ToolBitLibrary(object):
         print("all done")
 
     def libraryNew(self):
+        """Create a new tool library"""
         TooltableTypeJSON = translate("CAM_ToolBit", "Tooltable JSON (*.fctl)")
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
@@ -759,6 +779,7 @@ class ToolBitLibrary(object):
         self.loadData()
 
     def librarySave(self):
+        """Save the tool library"""
         library = {}
         tools = []
         library["version"] = 1
@@ -786,6 +807,7 @@ class ToolBitLibrary(object):
         self.form.close()
 
     def libPaths(self):
+        """ Get the file path for the last used tool library """
         lib = Path.Preferences.lastFileToolLibrary()
         loc = Path.Preferences.lastPathToolLibrary()
 
@@ -800,6 +822,7 @@ class ToolBitLibrary(object):
         ]
 
     def loadData(self, path=None):
+        """Load tooltable data"""
         Path.Log.track(path)
         self.toolTableView.setUpdatesEnabled(False)
         self.form.TableList.setUpdatesEnabled(False)
@@ -836,6 +859,7 @@ class ToolBitLibrary(object):
         self.form.TableList.setUpdatesEnabled(True)
 
     def setupUI(self):
+        """Setup the form and load the tool library data"""
         Path.Log.track()
         self.form.TableList.setModel(self.listModel)
         self.toolTableView.setModel(self.toolModel)
@@ -861,7 +885,7 @@ class ToolBitLibrary(object):
         self.toolSelect([], [])
 
     def librarySaveAs(self, path):
-
+        """ Save the tooltable to a format to use with an external system """
         TooltableTypeJSON = translate("CAM_ToolBit", "Tooltable JSON (*.fctl)")
         TooltableTypeLinuxCNC = translate("CAM_ToolBit", "LinuxCNC tooltable (*.tbl)")
         TooltableTypeCamotics = translate("CAM_ToolBit", "CAMotics tooltable (*.json)")
@@ -889,7 +913,7 @@ class ToolBitLibrary(object):
                 self.librarySave()
 
     def libararySaveLinuxCNC(self, path):
-        # linuxcnc line template
+        """Export the tool table to a file for use with linuxcnc"""
         LIN = "T{} P{} X{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{}; {}"
         with open(path, "w") as fp:
             fp.write(";\n")
@@ -953,6 +977,7 @@ class ToolBitLibrary(object):
                     Path.Log.error("Could not find tool #{} ".format(toolNr))
 
     def libararySaveCamotics(self, path):
+        """ Export the tool table to a file for use with camotics """
 
         SHAPEMAP = {
             "ballend": "Ballnose",
