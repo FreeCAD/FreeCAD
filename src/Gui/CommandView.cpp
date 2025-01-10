@@ -976,7 +976,11 @@ void StdCmdToggleTransparency::activated(int iMsg)
         }
     }
 
-    int transparency = oneTransparent ? 0 : 70;
+    auto hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int userTransparency = hGrp->GetInt("ToggleTransparency", 70);
+
+    int transparency = oneTransparent ? 0 : userTransparency;
 
     for (auto* view : viewsToToggle) {
         App::Property* prop = view->getPropertyByName("Transparency");
