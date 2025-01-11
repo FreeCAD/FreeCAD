@@ -117,7 +117,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
     #   00000 - 00099  tests that don't fit any other category
     #   00100 - 09999  tests for all of the various arguments/options
     #   10000 - 18999  tests for the various G codes at 10000 + 10 * g_code_value
-    #   19000 - 19999  tests for the A, B, and C axis outputs
+    #   19000 - 19999  tests for the A, B, and C axis outputs and F parameter processing
     #   20000 - 29999  tests for the various M codes at 20000 + 10 * m_code_value
     #
     #############################################################################
@@ -1671,3 +1671,74 @@ G90
                     f"B{b_inches_output_expected} C{c_inches_output_expected}",
                     "--inches",
                 )
+
+    #############################################################################
+
+    def test19120(self):
+        """Test F parameter handling."""
+        #
+        # Note that FreeCAD internal units are (mm or degrees) per second
+        # and postprocessor outputs are usually in (mm or degrees) per minute
+        #
+        axes_test_values = (
+            # test using all possible axes
+            (
+                "G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456",
+                "G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000 F74.074",
+                "G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 "
+                "U2.7559 V3.1496 W3.5433 F2.9163",
+            ),
+            # test using just XYZ
+            (
+                "G1 X10.00 Y20.00 Z30.00 F1.23456",
+                "G1 X10.000 Y20.000 Z30.000 F74.074",
+                "G1 X0.3937 Y0.7874 Z1.1811 F2.9163",
+            ),
+            # test using just UVW
+            (
+                "G1 U70 V80 W90 F1.23456",
+                "G1 U70.000 V80.000 W90.000 F74.074",
+                "G1 U2.7559 V3.1496 W3.5433 F2.9163",
+            ),
+            # test using just ABC, which should not convert the feed rate for --inches
+            (
+                "G1 A40 B50 C60 F1.23456",
+                "G1 A40.000 B50.000 C60.000 F74.074",
+                "G1 A40.0000 B50.0000 C60.0000 F74.0736",
+            ),
+            # test using XYZ and ABC
+            (
+                "G1 X10 Y20 Z30 A40 B50 C60 F1.23456",
+                "G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 F74.074",
+                "G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 F2.9163",
+            ),
+            # test using ABC and UVW
+            (
+                "G1 A40 B50 C60 U70 V80 W90 F1.23456",
+                "G1 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074",
+                "G1 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163",
+            ),
+            # test using X and A only
+            (
+                "G1 X10 A40 F1.23456",
+                "G1 X10.000 A40.000 F74.074",
+                "G1 X0.3937 A40.0000 F2.9163",
+            ),
+            # test using A and U only
+            (
+                "G1 A40 U70 F1.23456",
+                "G1 A40.000 U70.000 F74.074",
+                "G1 A40.0000 U2.7559 F2.9163",
+            ),
+            # test using A only, which should not convert the feed rate for --inches
+            (
+                "G1 A40 F1.23456",
+                "G1 A40.000 F74.074",
+                "G1 A40.0000 F74.0736",
+            ),
+        )
+        for input_value, metric_output_expected, inches_output_expected in axes_test_values:
+            with self.subTest("F feed speed test", input_value=input_value):
+                self.compare_third_line(input_value, metric_output_expected, "")
+                self.compare_third_line(input_value, inches_output_expected, "--inches")
