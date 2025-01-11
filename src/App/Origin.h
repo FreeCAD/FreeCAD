@@ -48,10 +48,10 @@ public:
         return "Gui::ViewProviderCoordinateSystem";
     }
 
-    bool isOrigin() override
+    bool isOrigin() const override
     {
         return true;
-    };
+    }
 };
 
 }  // namespace App

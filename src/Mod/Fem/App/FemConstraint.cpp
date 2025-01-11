@@ -516,14 +516,12 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub& direct
     }
 
     if (obj->isDerivedFrom<App::Line>()) {
-        Base::Vector3d vec(1.0, 0.0, 0.0);
-        static_cast<App::Line*>(obj)->Placement.getValue().multVec(vec, vec);
+        Base::Vector3d vec = static_cast<App::Line*>(obj)->getDirection();
         return vec;
     }
 
     if (obj->isDerivedFrom<App::Plane>()) {
-        Base::Vector3d vec(0.0, 0.0, 1.0);
-        static_cast<App::Plane*>(obj)->Placement.getValue().multVec(vec, vec);
+        Base::Vector3d vec = static_cast<App::Plane*>(obj)->getDirection();
         return vec;
     }
 

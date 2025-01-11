@@ -1358,9 +1358,8 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
 
     if (pcReferenceAxis->isDerivedFrom<App::Line>()) {
         auto* line = static_cast<const App::Line*>(pcReferenceAxis);
-        Base::Placement plc = line->Placement.getValue();
-        base = plc.getPosition();
-        plc.getRotation().multVec(Base::Vector3d(0, 0, 1), dir);
+        base = line->getBasePoint();
+        dir = line->getDirection();
 
         verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
         return;
