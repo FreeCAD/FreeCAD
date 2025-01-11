@@ -201,13 +201,9 @@ bool CmdSurfaceCurveOnMesh::isActive()
     }
 
     // Check for the selected mesh feature (all Mesh types)
-    Base::Type meshType = Base::Type::fromName("Mesh::Feature");
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc && doc->countObjectsOfType(meshType) > 0) {
-        return true;
-    }
-
-    return false;
+    // Use string based check to avoid linking to Mesh module
+    return doc && doc->countObjectsOfType("Mesh::Feature") > 0;
 }
 
 //===========================================================================

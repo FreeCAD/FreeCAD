@@ -636,7 +636,7 @@ void CmdMeshVertexCurvatureInfo::activated(int)
 bool CmdMeshVertexCurvatureInfo::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Curvature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Curvature>() == 0) {
         return false;
     }
 
@@ -1070,7 +1070,7 @@ void CmdMeshEvaluation::activated(int)
 bool CmdMeshEvaluation::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
     return true;
@@ -1109,7 +1109,7 @@ void CmdMeshEvaluateFacet::activated(int)
 bool CmdMeshEvaluateFacet::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
@@ -1152,7 +1152,7 @@ bool CmdMeshRemoveComponents::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     App::Document* doc = getDocument();
-    if (!(doc && doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)) {
+    if (!(doc && doc->countObjectsOfType<Mesh::Feature>() > 0)) {
         return false;
     }
     Gui::Document* viewDoc = Gui::Application::Instance->getDocument(doc);
@@ -1237,7 +1237,7 @@ void CmdMeshRemoveCompByHand::activated(int)
 bool CmdMeshRemoveCompByHand::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
@@ -1596,7 +1596,7 @@ void CmdMeshFillInteractiveHole::activated(int)
 bool CmdMeshFillInteractiveHole::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
