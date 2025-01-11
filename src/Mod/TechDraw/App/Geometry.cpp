@@ -1442,7 +1442,7 @@ TopoShape Vertex::asTopoShape(double scale)
 {
     Base::Vector3d point = DU::toVector3d(BRep_Tool::Pnt(getOCCVertex()));
     point = point / scale;
-    BRepBuilderAPI_MakeVertex mkVert(DU::togp_Pnt(point));
+    BRepBuilderAPI_MakeVertex mkVert(DU::to<gp_Pnt>(point));
     return TopoShape(mkVert.Vertex());
 }
 
@@ -1643,7 +1643,7 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
         throw Base::RuntimeError("GU::asCircle received non-circular edge!");
     }
 
-    gp_Pnt gCenter = DU::togp_Pnt(center);
+    gp_Pnt gCenter = DU::to<gp_Pnt>(center);
     gp_Dir gNormal{0, 0, 1};
     Handle(Geom_Circle) circleFromParms = GC_MakeCircle(gCenter, gNormal, radius);
 
@@ -1825,7 +1825,7 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
             iFace++;
             continue;
         }
-        auto faceCenter = DU::togp_Pnt(face->getCenter());
+        auto faceCenter = DU::to<gp_Pnt>(face->getCenter());
         auto faceCenterVertex = BRepBuilderAPI_MakeVertex(faceCenter);
         auto distance = DU::simpleMinDist(faceCenterVertex, bigCheeseOCCFace);
         if (distance > EWTOLERANCE) {
