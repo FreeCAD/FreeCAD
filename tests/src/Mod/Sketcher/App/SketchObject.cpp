@@ -48,6 +48,18 @@ void setupEllipse(Part::GeomEllipse& ellipse)
     ellipse.setMinorRadius(minorRadius);
 }
 
+void setupArcOfHyperbola(Part::GeomArcOfHyperbola& arcOfHyperbola)
+{
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double majorRadius = 4.0;
+    double minorRadius = 3.0;
+    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    arcOfHyperbola.setCenter(coordsCenter);
+    arcOfHyperbola.setMajorRadius(majorRadius);
+    arcOfHyperbola.setMinorRadius(minorRadius);
+    arcOfHyperbola.setRange(startParam, endParam, true);
+}
+
 void setupArcOfParabola(Part::GeomArcOfParabola& aop)
 {
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
@@ -560,6 +572,302 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurvePeriodic)
     // non-trivial as well. This is the best we can do.
     EXPECT_DOUBLE_EQ(ptStart[0], ptEnd[0]);
     EXPECT_DOUBLE_EQ(ptStart[1], ptEnd[1]);
+}
+
+TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
+{
+    // Arrange
+    int geoId1 = 42, geoId2 = 10, geoId3 = 0, geoId4 = -8;
+
+    Sketcher::Constraint* nullConstr = nullptr;
+
+    Sketcher::Constraint constr1;
+    constr1.Type = Sketcher::ConstraintType::Coincident;
+    constr1.First = geoId1;
+    constr1.FirstPos = Sketcher::PointPos::start;
+    constr1.Second = geoId2;
+    constr1.SecondPos = Sketcher::PointPos::end;
+
+    Sketcher::Constraint constr2;
+    constr2.Type = Sketcher::ConstraintType::Tangent;
+    constr2.First = geoId4;
+    constr2.FirstPos = Sketcher::PointPos::none;
+    constr2.Second = geoId3;
+    constr2.SecondPos = Sketcher::PointPos::none;
+    constr2.Third = geoId1;
+    constr2.ThirdPos = Sketcher::PointPos::start;
+
+    // Act
+    auto nullConstrAfter = getObject()->getConstraintAfterDeletingGeo(nullConstr, 5);
+
+    // Assert
+    EXPECT_EQ(nullConstrAfter, nullptr);
+
+    // Act
+    getObject()->changeConstraintAfterDeletingGeo(nullConstr, 5);
+
+    // Assert
+    EXPECT_EQ(nullConstr, nullptr);
+
+    // Act
+    // delete typical in-sketch geo
+    auto constr1PtrAfter1 = getObject()->getConstraintAfterDeletingGeo(&constr1, 5);
+    // delete external geo (negative id)
+    auto constr1PtrAfter2 = getObject()->getConstraintAfterDeletingGeo(&constr1, -5);
+    // Delete a geo involved in the constraint
+    auto constr1PtrAfter3 = getObject()->getConstraintAfterDeletingGeo(&constr1, 10);
+
+    // Assert
+    EXPECT_EQ(constr1.Type, Sketcher::ConstraintType::Coincident);
+    EXPECT_EQ(constr1.First, geoId1);
+    EXPECT_EQ(constr1.Second, geoId2);
+    EXPECT_EQ(constr1PtrAfter1->First, geoId1 - 1);
+    EXPECT_EQ(constr1PtrAfter1->Second, geoId2 - 1);
+    EXPECT_EQ(constr1PtrAfter2->Third, Sketcher::GeoEnum::GeoUndef);
+    EXPECT_EQ(constr1PtrAfter3.get(), nullptr);
+
+    // Act
+    getObject()->changeConstraintAfterDeletingGeo(&constr2, -3);
+
+    // Assert
+    EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::Tangent);
+    EXPECT_EQ(constr2.First, geoId4 + 1);
+    EXPECT_EQ(constr2.Second, geoId3);
+    EXPECT_EQ(constr2.Third, geoId1);
+
+    // Act
+    // Delete a geo involved in the constraint
+    getObject()->changeConstraintAfterDeletingGeo(&constr2, 0);
+
+    // Assert
+    EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::None);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfEllipse)
+{
+    // Arrange
+    Part::GeomEllipse ellipse;
+    setupEllipse(ellipse);
+    int geoId = getObject()->addGeometry(&ellipse);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::EllipseMajorDiameter,
+                               Sketcher::InternalAlignmentType::EllipseMinorDiameter,
+                               Sketcher::InternalAlignmentType::EllipseFocus1,
+                               Sketcher::InternalAlignmentType::EllipseFocus2}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfHyperbola)
+{
+    // Arrange
+    Part::GeomArcOfHyperbola aoh;
+    setupArcOfHyperbola(aoh);
+    int geoId = getObject()->addGeometry(&aoh);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::HyperbolaMajor,
+                               Sketcher::InternalAlignmentType::HyperbolaMinor,
+                               Sketcher::InternalAlignmentType::HyperbolaFocus}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfParabola)
+{
+    // Arrange
+    Part::GeomArcOfParabola aoh;
+    setupArcOfParabola(aoh);
+    int geoId = getObject()->addGeometry(&aoh);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::ParabolaFocalAxis,
+                               Sketcher::InternalAlignmentType::ParabolaFocus}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfBSpline)
+{
+    // NOTE: We test only non-periodic B-spline here. Periodic B-spline should behave exactly the
+    // same.
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    std::map<Sketcher::InternalAlignmentType, int> numConstraintsOfThisType;
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::BSplineControlPoint,
+                               Sketcher::InternalAlignmentType::BSplineKnotPoint}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        numConstraintsOfThisType[alignmentType] =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+    }
+    EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineControlPoint],
+              nonPeriodicBSpline->countPoles());
+    EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineKnotPoint],
+              nonPeriodicBSpline->countKnots());
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+// TODO: Needs to be done for other curves too but currently they are working as intended
+TEST_F(SketchObjectTest, testDeleteOnlyUnusedInternalGeometryOfBSpline)
+{
+    // NOTE: We test only non-periodic B-spline here. Periodic B-spline should behave exactly the
+    // same.
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    int geoIdBsp = getObject()->addGeometry(nonPeriodicBSpline.get());
+    // Ensure "exposed" internal geometry
+    getObject()->exposeInternalGeometry(geoIdBsp);
+    Base::Vector3d coords(1.0, 1.0, 0.0);
+    Part::GeomPoint point(coords);
+    int geoIdPnt = getObject()->addGeometry(&point);
+    const auto constraints = getObject()->Constraints.getValues();
+    auto it = std::find_if(constraints.begin(), constraints.end(), [&geoIdBsp](const auto* constr) {
+        return constr->Type == Sketcher::ConstraintType::InternalAlignment
+            && constr->AlignmentType == Sketcher::InternalAlignmentType::BSplineControlPoint
+            && constr->Second == geoIdBsp && constr->InternalAlignmentIndex == 1;
+    });
+    // One Assert to avoid
+    EXPECT_NE(it, constraints.end());
+    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
+    constraint->Type = Sketcher::ConstraintType::Coincident;
+    constraint->First = geoIdPnt;
+    constraint->FirstPos = Sketcher::PointPos::start;
+    constraint->Second = (*it)->First;
+    constraint->SecondPos = Sketcher::PointPos::mid;
+    getObject()->addConstraint(constraint);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoIdBsp);
+
+    // Assert
+    // Ensure there are 3 curves: the B-spline, its pole, and the point coincident on the pole
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
 }
 
 TEST_F(SketchObjectTest, testSplitLineSegment)
@@ -1141,6 +1449,329 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToZero)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+    auto bsp1 = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotCount = bsp1->countKnots();
+
+    // Act
+    // Try decreasing mult to zero.
+    // NOTE: we still use OCCT notation of knot index starting with 1 (not 0).
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
+    // Assert
+    // Knot should disappear. We start with 3 (unique) knots, so expect 2.
+    auto bsp2 = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp2->countKnots(), oldKnotCount - 1);
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToDisallowed)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try modifying such that resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+    EXPECT_THROW(getObject()->modifyBSplineKnotMultiplicity(geoId, 2, 3), Base::ValueError);
+    // TODO: Try modifying such that resultant multiplicity < 0
+    // TODO: This should immediately throw exception
+    EXPECT_THROW(getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -2), Base::ValueError);
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSpline)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotsNum = bsp->countKnots();
+    int oldMultiplicityOfTargetKnot = bsp->getMultiplicities()[1];
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, 1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[1], oldMultiplicityOfTargetKnot + 1);
+    // This should still be a non-periodic spline
+    EXPECT_FALSE(bsp->isPeriodic());
+    // TODO: Expect shape is preserved
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[1], oldMultiplicityOfTargetKnot);
+    // This should still be a non-periodic spline
+    EXPECT_FALSE(bsp->isPeriodic());
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSplineToZero)
+{
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+    auto bsp1 = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotCount = bsp1->countKnots();
+
+    // Act
+    // Try decreasing mult to zero.
+    // NOTE: we still use OCCT notation of knot index starting with 1 (not 0).
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
+    // Assert
+    // Knot should disappear.
+    auto bsp2 = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp2->countKnots(), oldKnotCount - 1);
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSplineToDisallowed)
+{
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try modifying such that resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+    EXPECT_THROW(getObject()->modifyBSplineKnotMultiplicity(geoId, 2, 3), Base::ValueError);
+    // TODO: Try modifying such that resultant multiplicity < 0
+    // TODO: This should immediately throw exception
+    EXPECT_THROW(getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -2), Base::ValueError);
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSpline)
+{
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotsNum = bsp->countKnots();
+    int oldMultiplicityOfTargetKnot = bsp->getMultiplicities()[1];
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, 1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[1], oldMultiplicityOfTargetKnot + 1);
+    // This should still be a periodic spline
+    EXPECT_TRUE(bsp->isPeriodic());
+    // TODO: Expect shape is preserved
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    getObject()->modifyBSplineKnotMultiplicity(geoId, 2, -1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum);
+    // This should decrement the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[1], oldMultiplicityOfTargetKnot);
+    // This should still be a non-periodic spline
+    EXPECT_TRUE(bsp->isPeriodic());
+}
+
+TEST_F(SketchObjectTest, testInsertKnotInNonPeriodicBSpline)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act and Assert
+    // Try inserting knot with zero multiplicity
+    // zero multiplicity knot should immediately throw exception
+    EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 0.5, 0), Base::ValueError);
+
+    // Act and Assert
+    // Try inserting knot with multiplicity > degree
+    // This should immediately throw exception
+    EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 0.5, 4), Base::ValueError);
+
+    // Act and Assert
+    // TODO: Try inserting at an existing knot with resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+    // FIXME: Not happening. May be ignoring existing values.
+    // EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 1.0, 3), Base::ValueError);
+
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotsNum = bsp->countKnots();
+    int oldMultiplicityOfTargetKnot = bsp->getMultiplicities()[1];
+
+    // Act
+    // Add at a general position (where no knot exists)
+    getObject()->insertBSplineKnot(geoId, 0.5, 1);
+    // Assert
+    // This should add to both the knot and multiplicity "vectors"
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum + 1);
+    // This should still be a non-periodic spline
+    EXPECT_FALSE(bsp->isPeriodic());
+
+    // Act
+    // Add a knot at an existing knot
+    getObject()->insertBSplineKnot(geoId, 1.0, 1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    // (Since we previously added a knot, this means the total is still one more than original)
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum + 1);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[2], oldMultiplicityOfTargetKnot + 1);
+    // This should still be a non-periodic spline
+    EXPECT_FALSE(bsp->isPeriodic());
+}
+
+TEST_F(SketchObjectTest, testInsertKnotInPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act and Assert
+    // Try inserting knot with zero multiplicity
+    // zero multiplicity knot should immediately throw exception
+    EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 0.5, 0), Base::ValueError);
+
+    // Act and Assert
+    // Try inserting knot with multiplicity > degree
+    // This should immediately throw exception
+    EXPECT_THROW(getObject()->insertBSplineKnot(geoId, 0.5, 4), Base::ValueError);
+
+    // Act and Assert
+    // TODO: Try inserting at an existing knot with resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    auto bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    int oldKnotsNum = bsp->countKnots();
+    int oldMultiplicityOfTargetKnot = bsp->getMultiplicities()[2];
+
+    // Act
+    // Add at a general position (where no knot exists)
+    getObject()->insertBSplineKnot(geoId, 0.5, 1);
+    // Assert
+    // This should add to both the knot and multiplicity "vectors"
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum + 1);
+    // This should still be a periodic spline
+    EXPECT_TRUE(bsp->isPeriodic());
+
+    // Act
+    // Add a knot at an existing knot
+    getObject()->insertBSplineKnot(geoId, 1.0, 1);
+    // Assert
+    // This should not alter the sizes of knot and multiplicity vectors.
+    bsp = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(geoId));
+    EXPECT_EQ(bsp->countKnots(), oldKnotsNum + 1);
+    // This should increment the multiplicity.
+    EXPECT_EQ(bsp->getMultiplicities()[3], oldMultiplicityOfTargetKnot + 1);
+    // This should still be a periodic spline
+    EXPECT_TRUE(bsp->isPeriodic());
+}
+
+TEST_F(SketchObjectTest, testJoinCurves)
+{
+    // Arrange
+    // Make two curves
+    Base::Vector3d coordsCenter(0.0, 0.0, 0.0);
+    double radius = 3.0, startParam = M_PI / 2, endParam = M_PI;
+    Part::GeomArcOfCircle arcOfCircle;
+    arcOfCircle.setCenter(coordsCenter);
+    arcOfCircle.setRadius(radius);
+    arcOfCircle.setRange(startParam, endParam, true);
+    int geoId1 = getObject()->addGeometry(&arcOfCircle);
+
+    Base::Vector3d coords1(0.1, 0.0, 0.0);
+    Base::Vector3d coords2(3.0, 4.0, 0.0);
+    Part::GeomLineSegment lineSeg;
+    lineSeg.setPoints(coords1, coords2);
+    int geoId2 = getObject()->addGeometry(&lineSeg);
+
+    // Act
+    // Join these curves
+    getObject()->join(geoId1, Sketcher::PointPos::start, geoId2, Sketcher::PointPos::start);
+
+    // Assert
+    // Check they are replaced (here it means there is only one curve left after internal
+    // geometries are removed)
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
+{
+    // Arrange
+    // Make two curves
+    Base::Vector3d coordsCenter(0.0, 0.0, 0.0);
+    double radius = 3.0, startParam = M_PI / 2, endParam = M_PI;
+    Part::GeomArcOfCircle arcOfCircle;
+    arcOfCircle.setCenter(coordsCenter);
+    arcOfCircle.setRadius(radius);
+    arcOfCircle.setRange(startParam, endParam, true);
+    int geoId1 = getObject()->addGeometry(&arcOfCircle);
+
+    Base::Vector3d coords1(0.0, 0.0, 0.0);
+    Base::Vector3d coords2(3.0, 0.0, 0.0);
+    Part::GeomLineSegment lineSeg;
+    lineSeg.setPoints(coords1, coords2);
+    int geoId2 = getObject()->addGeometry(&lineSeg);
+
+    // Add end-to-end tangent between these
+    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
+    constraint->Type = Sketcher::ConstraintType::Tangent;
+    constraint->First = geoId1;
+    constraint->FirstPos = Sketcher::PointPos::start;
+    constraint->Second = geoId2;
+    constraint->SecondPos = Sketcher::PointPos::start;
+    getObject()->addConstraint(constraint);
+
+    // Act
+    // Join these curves
+    getObject()->join(geoId1, Sketcher::PointPos::start, geoId2, Sketcher::PointPos::start, 1);
+
+    // Assert
+    // Check they are replaced (here it means there is only one curve left after internal
+    // geometries are removed)
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+    // TODO: Check the shape is conserved (how?)
+    // Check there is no C-0 knot (should be possible for the chosen example)
+    auto mults = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(0))
+                     ->getMultiplicities();
+    EXPECT_TRUE(std::all_of(mults.begin(), mults.end(), [](auto mult) {
+        return mult >= 1;
+    }));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits1)
