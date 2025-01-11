@@ -203,6 +203,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     QuantityParser.y
     Unit.h
     Unit.cpp
+    Units.h
     UnitPyImp.cpp
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})

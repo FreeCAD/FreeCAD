@@ -49,6 +49,7 @@
 #endif
 
 #include <Base/Quantity.h>
+#include "Base/Units.h"
 
 #include "SoFCCSysDragger.h"
 #include "Inventor/So3DAnnotation.h"
@@ -324,7 +325,7 @@ void TDragger::drag()
 
     Base::Quantity quantity(static_cast<double>(translationIncrementCount.getValue())
                                 * translationIncrement.getValue(),
-                            Base::Unit::Length);
+                            Base::Units::Length);
 
     QString message =
         QString::fromLatin1("%1 %2").arg(QObject::tr("Translation:"), QString::fromStdString(quantity.getUserString()));
@@ -607,10 +608,10 @@ void TPlanarDragger::drag()
 
     Base::Quantity quantityX(static_cast<double>(translationIncrementXCount.getValue())
                                  * translationIncrement.getValue(),
-                             Base::Unit::Length);
+                             Base::Units::Length);
     Base::Quantity quantityY(static_cast<double>(translationIncrementYCount.getValue())
                                  * translationIncrement.getValue(),
-                             Base::Unit::Length);
+                             Base::Units::Length);
 
     QString message = QString::fromLatin1("%1 %2, %3")
                           .arg(QObject::tr("Translation XY:"),
@@ -937,7 +938,7 @@ void RDragger::drag()
 
     Base::Quantity quantity(static_cast<double>(rotationIncrementCount.getValue()) * (180.0 / M_PI)
                                 * rotationIncrement.getValue(),
-                            Base::Unit::Angle);
+                            Base::Units::Angle);
 
     QString message =
         QString::fromLatin1("%1 %2").arg(QObject::tr("Rotation:"), QString::fromStdString(quantity.getUserString()));

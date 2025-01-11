@@ -31,6 +31,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Unit.h>
+#include "Base/Units.h"
 #include <CXX/Objects.hxx>
 
 #include "FeatureTest.h"
@@ -142,11 +143,10 @@ FeatureTest::FeatureTest()
                       (App::PropertyType)(Prop_Output | Prop_ReadOnly | Prop_Hidden),
                       "An example property which has the types 'Output', 'ReadOnly' and 'Hidden'");
 
-    ADD_PROPERTY(QuantityLength, (1.0));
-    QuantityLength.setUnit(Base::Unit::Length);
-    ADD_PROPERTY(QuantityOther, (5.0));
-    QuantityOther.setUnit(Base::Unit(-3, 1));
-    // clang-format on
+  ADD_PROPERTY(QuantityLength,(1.0));
+  QuantityLength.setUnit(Base::Units::Length);
+  ADD_PROPERTY(QuantityOther,(5.0));
+  QuantityOther.setUnit(Base::Units::Density);
 }
 
 FeatureTest::~FeatureTest() = default;

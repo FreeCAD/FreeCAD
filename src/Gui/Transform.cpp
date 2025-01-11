@@ -323,9 +323,9 @@ void Transform::setTransformStrategy(TransformStrategy* ts)
         delete strategy;
     strategy = ts;
     Base::Vector3d cnt = strategy->getRotationCenter();
-    ui->xCnt->setValue(Base::Quantity(cnt.x, Base::Unit::Length));
-    ui->yCnt->setValue(Base::Quantity(cnt.y, Base::Unit::Length));
-    ui->zCnt->setValue(Base::Quantity(cnt.z, Base::Unit::Length));
+    ui->xCnt->setValue(Base::Quantity(cnt.x, Base::Units::Length));
+    ui->yCnt->setValue(Base::Quantity(cnt.y, Base::Units::Length));
+    ui->zCnt->setValue(Base::Quantity(cnt.z, Base::Units::Length));
     this->setDisabled(strategy->transformObjects().empty());
 }
 
@@ -368,9 +368,9 @@ void Transform::onApplyButtonClicked()
     }
 
     Base::Vector3d cnt = strategy->getRotationCenter();
-    ui->xCnt->setValue(Base::Quantity(cnt.x, Base::Unit::Length));
-    ui->yCnt->setValue(Base::Quantity(cnt.y, Base::Unit::Length));
-    ui->zCnt->setValue(Base::Quantity(cnt.z, Base::Unit::Length));
+    ui->xCnt->setValue(Base::Quantity(cnt.x, Base::Units::Length));
+    ui->yCnt->setValue(Base::Quantity(cnt.y, Base::Units::Length));
+    ui->zCnt->setValue(Base::Quantity(cnt.z, Base::Units::Length));
 }
 
 Base::Vector3d Transform::getDirection() const

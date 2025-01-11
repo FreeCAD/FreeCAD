@@ -30,6 +30,7 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
+#include <Base/Units.h>
 
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
@@ -121,11 +122,11 @@ Quantity Constraint::getPresentationValue() const
         case DistanceX:
         case DistanceY:
             quantity.setValue(Value);
-            quantity.setUnit(Unit::Length);
+            quantity.setUnit(Units::Length);
             break;
         case Angle:
             quantity.setValue(toDegrees<double>(Value));
-            quantity.setUnit(Unit::Angle);
+            quantity.setUnit(Units::Angle);
             break;
         case SnellsLaw:
         case Weight:

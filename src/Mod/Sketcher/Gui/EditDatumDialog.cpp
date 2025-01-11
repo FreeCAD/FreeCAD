@@ -96,21 +96,21 @@ int EditDatumDialog::exec(bool atCursor)
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
             dlg.setWindowTitle(tr("Insert angle"));
-            init_val.setUnit(Base::Unit::Angle);
+            init_val.setUnit(Base::Units::Angle);
             ui_ins_datum->label->setText(tr("Angle:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherAngle"));
         }
         else if (Constr->Type == Sketcher::Radius) {
             dlg.setWindowTitle(tr("Insert radius"));
-            init_val.setUnit(Base::Unit::Length);
+            init_val.setUnit(Base::Units::Length);
             ui_ins_datum->label->setText(tr("Radius:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength"));
         }
         else if (Constr->Type == Sketcher::Diameter) {
             dlg.setWindowTitle(tr("Insert diameter"));
-            init_val.setUnit(Base::Unit::Length);
+            init_val.setUnit(Base::Units::Length);
             ui_ins_datum->label->setText(tr("Diameter:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength"));
@@ -130,7 +130,7 @@ int EditDatumDialog::exec(bool atCursor)
         }
         else {
             dlg.setWindowTitle(tr("Insert length"));
-            init_val.setUnit(Base::Unit::Length);
+            init_val.setUnit(Base::Units::Length);
             ui_ins_datum->label->setText(tr("Length:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength"));

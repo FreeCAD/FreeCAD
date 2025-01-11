@@ -44,6 +44,7 @@
 #include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
+#include "Base/Units.h"
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
@@ -221,7 +222,7 @@ public:
         ok = parseString(copy, res, value, path);
 
         // If result does not have unit: add default unit
-        if (res.getUnit().isEmpty()){
+        if (res.getUnit() == Units::NullUnit){
             res.setUnit(unit);
         }
 

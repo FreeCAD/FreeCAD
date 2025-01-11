@@ -162,8 +162,8 @@ void TaskProjGroup::initializeUi()
     // Initially toggle view checkboxes if needed
     setupViewCheckboxes(true);
 
-    ui->sbXSpacing->setUnit(Base::Unit::Length);
-    ui->sbYSpacing->setUnit(Base::Unit::Length);
+    ui->sbXSpacing->setUnit(Base::Units::Length);
+    ui->sbYSpacing->setUnit(Base::Units::Length);
 
     if (Preferences::useCameraDirection()) {
         ui->butCam->setChecked(true);
@@ -959,7 +959,7 @@ void DirectionEditDialog::createUI() {
     auto* xLayout = new QHBoxLayout;
     auto* xLabel = new QLabel(QStringLiteral("X: "));
     xSpinBox = new Gui::QuantitySpinBox;
-    xSpinBox->setUnit(Base::Unit::Length);
+    xSpinBox->setUnit(Base::Units::Length);
     xLayout->addWidget(xLabel);
     xLayout->addWidget(xSpinBox);
 
@@ -967,7 +967,7 @@ void DirectionEditDialog::createUI() {
     auto* yLayout = new QHBoxLayout;
     auto* yLabel = new QLabel(QStringLiteral("Y: "));
     ySpinBox = new Gui::QuantitySpinBox;
-    ySpinBox->setUnit(Base::Unit::Length);
+    ySpinBox->setUnit(Base::Units::Length);
     yLayout->addWidget(yLabel);
     yLayout->addWidget(ySpinBox);
 
@@ -975,7 +975,7 @@ void DirectionEditDialog::createUI() {
     auto* zLayout = new QHBoxLayout;
     auto* zLabel = new QLabel(QStringLiteral("Z: "));
     zSpinBox = new Gui::QuantitySpinBox;
-    zSpinBox->setUnit(Base::Unit::Length);
+    zSpinBox->setUnit(Base::Units::Length);
     zLayout->addWidget(zLabel);
     zLayout->addWidget(zSpinBox);
 
@@ -986,7 +986,7 @@ void DirectionEditDialog::createUI() {
     directionGroup->setLayout(directionLayout);
 
     angleSpinBox = new Gui::QuantitySpinBox;
-    angleSpinBox->setUnit(Base::Unit::Angle);
+    angleSpinBox->setUnit(Base::Units::Angle);
 
     auto* buttonsLayout = new QHBoxLayout;
     auto* okButton = new QPushButton(tr("OK"));

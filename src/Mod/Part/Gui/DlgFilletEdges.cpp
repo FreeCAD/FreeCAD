@@ -86,7 +86,7 @@ QWidget *FilletRadiusDelegate::createEditor(QWidget *parent, const QStyleOptionV
         return nullptr;
 
     Gui::QuantitySpinBox *editor = new Gui::QuantitySpinBox(parent);
-    editor->setUnit(Base::Unit::Length);
+    editor->setUnit(Base::Units::Length);
     editor->setMinimum(0.0);
     editor->setMaximum(INT_MAX);
     editor->setSingleStep(0.1);
@@ -235,11 +235,11 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 
     ui->filletStartRadius->setMaximum(INT_MAX);
     ui->filletStartRadius->setMinimum(0);
-    ui->filletStartRadius->setUnit(Base::Unit::Length);
+    ui->filletStartRadius->setUnit(Base::Units::Length);
 
     ui->filletEndRadius->setMaximum(INT_MAX);
     ui->filletEndRadius->setMinimum(0);
-    ui->filletEndRadius->setUnit(Base::Unit::Length);
+    ui->filletEndRadius->setUnit(Base::Units::Length);
 
     d->object = nullptr;
     d->selection = new EdgeFaceSelection(d->object);
@@ -667,8 +667,8 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
                 //model->setData(model->index(index, 1), QVariant(QLocale().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
                 //model->setData(model->index(index, 2), QVariant(QLocale().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
-                model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius1, Base::Unit::Length)));
-                model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius2, Base::Unit::Length)));
+                model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius1, Base::Units::Length)));
+                model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius2, Base::Units::Length)));
 
                 startRadius = et.radius1;
                 endRadius = et.radius2;
@@ -824,8 +824,8 @@ void DlgFilletEdges::onShapeObjectActivated(int itemPos)
             model->setData(model->index(index, 0), QVariant(id), Qt::UserRole);
           //model->setData(model->index(index, 1), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
           //model->setData(model->index(index, 2), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
-            model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
-            model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
+            model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Units::Length)));
+            model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Units::Length)));
             std::stringstream element;
             element << "Edge" << id;
             if (Gui::Selection().isSelected(part, element.str().c_str()))

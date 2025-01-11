@@ -1009,7 +1009,7 @@ void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position,
     }
 
     SbString text;
-    std::string doubleString = unit == Base::Unit::Length
+    const std::string doubleString = unit == Base::Units::Length
         ? lengthToDisplayFormat(val, 1)
         : angleToDisplayFormat(val * 180.0 / M_PI, 1);
     text.sprintf(" (%s)", doubleString.c_str());

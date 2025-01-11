@@ -183,15 +183,15 @@ void TaskCenterLine::setUiPrimary()
         ui->cboxStyle->setCurrentIndex(Preferences::CenterLineStyle() - 1);
     }
 
-    ui->qsbVertShift->setUnit(Base::Unit::Length);
-    ui->qsbHorizShift->setUnit(Base::Unit::Length);
+    ui->qsbVertShift->setUnit(Base::Units::Length);
+    ui->qsbHorizShift->setUnit(Base::Units::Length);
     Base::Quantity qVal;
-    qVal.setUnit(Base::Unit::Length);
+    qVal.setUnit(Base::Units::Length);
     qVal.setValue(getExtendBy());
     ui->qsbExtend->setValue(qVal);
 
     Base::Quantity qAngle;
-    qAngle.setUnit(Base::Unit::Angle);
+    qAngle.setUnit(Base::Units::Angle);
     ui->qsbRotate->setValue(qAngle);
     int precision = Base::UnitsApi::getDecimals();
     ui->qsbRotate->setDecimals(precision);
@@ -234,7 +234,7 @@ void TaskCenterLine::setUiEdit()
         ui->rbAligned->setChecked(true);
 
     Base::Quantity qVal;
-    qVal.setUnit(Base::Unit::Length);
+    qVal.setUnit(Base::Units::Length);
     qVal.setValue(m_cl->m_vShift);
     ui->qsbVertShift->setValue(qVal);
     qVal.setValue(m_cl->m_hShift);
@@ -243,7 +243,7 @@ void TaskCenterLine::setUiEdit()
     ui->qsbExtend->setValue(qVal);
 
     Base::Quantity qAngle;
-    qAngle.setUnit(Base::Unit::Angle);
+    qAngle.setUnit(Base::Units::Angle);
     ui->qsbRotate->setValue(qAngle);
     int precision = Base::UnitsApi::getDecimals();
     ui->qsbRotate->setDecimals(precision);

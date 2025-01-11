@@ -522,7 +522,7 @@ void DSHRotateController::configureToolWidget()
         WParameter::First,
         QApplication::translate("TaskSketcherTool_p4_rotate", "Copies (+'U'/ -'J')"));
     toolWidget->setParameter(OnViewParameter::First, 0.0);
-    toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
+    toolWidget->configureParameterUnit(OnViewParameter::First, Base::Units::NullUnit);
     toolWidget->configureParameterMin(OnViewParameter::First, 0.0);     // NOLINT
     toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);  // NOLINT
     toolWidget->configureParameterDecimals(OnViewParameter::First, 0);
@@ -618,7 +618,7 @@ void DSHRotateController::adaptParameters(Base::Vector2d onSketchPos)
         case SelectMode::SeekSecond: {
             double range = Base::toDegrees(handler->startAngle);
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Third, range, Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Third, range, Base::Units::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->centerPoint);
@@ -630,7 +630,7 @@ void DSHRotateController::adaptParameters(Base::Vector2d onSketchPos)
             double range = Base::toDegrees(handler->totalAngle);
 
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Units::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->centerPoint);

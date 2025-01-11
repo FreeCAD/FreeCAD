@@ -190,11 +190,11 @@ void TaskSectionView::setUiCommon(Base::Vector3d origin)
     QString qTemp = QString::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
 
-    ui->sbOrgX->setUnit(Base::Unit::Length);
+    ui->sbOrgX->setUnit(Base::Units::Length);
     ui->sbOrgX->setValue(origin.x);
-    ui->sbOrgY->setUnit(Base::Unit::Length);
+    ui->sbOrgY->setUnit(Base::Units::Length);
     ui->sbOrgY->setValue(origin.y);
-    ui->sbOrgZ->setUnit(Base::Unit::Length);
+    ui->sbOrgZ->setUnit(Base::Units::Length);
     ui->sbOrgZ->setValue(origin.z);
 
     enableAll(false);

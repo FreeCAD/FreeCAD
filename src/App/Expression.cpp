@@ -43,6 +43,7 @@
 #include <App/ObjectIdentifier.h>
 #include <App/PropertyUnits.h>
 #include <Base/Interpreter.h>
+#include <Base/Units.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
@@ -503,7 +504,7 @@ static inline Quantity pyToQuantity(const Py::Object &pyobj,
 }
 
 Py::Object pyFromQuantity(const Quantity &quantity) {
-    if(!quantity.getUnit().isEmpty())
+    if(quantity.getUnit() != Units::NullUnit)
         return Py::asObject(new QuantityPy(new Quantity(quantity)));
     double v = quantity.getValue();
     long l;
@@ -2126,7 +2127,7 @@ double FunctionExpression::extractLengthValueArgument(
 {
     Quantity argumentQuantity = pyToQuantity(arguments[argumentIndex]->getPyValue(), expression);
 
-    if (!(argumentQuantity.isDimensionlessOrUnit(Unit::Length))) {
+    if (!(argumentQuantity.isDimensionlessOrUnit(Units::Length))) {
         _EXPR_THROW("Unit must be either empty or a length.", expression);
     }
 
@@ -2222,7 +2223,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         Py::Object rotationAngleParameter = args[1]->getPyValue();
         Quantity rotationAngle = pyToQuantity(rotationAngleParameter, expr, "Invalid rotation angle.");
 
-        if (!(rotationAngle.isDimensionlessOrUnit(Unit::Angle)))
+        if (!(rotationAngle.isDimensionlessOrUnit(Units::Angle)))
             _EXPR_THROW("Unit must be either empty or an angle.", expr);
 
         Rotation rotation = Base::Rotation(
@@ -2366,7 +2367,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         switch (f) {
         case VANGLE:
-            return Py::asObject(new QuantityPy(new Quantity(vector1.GetAngle(vector2) * 180 / M_PI, Unit::Angle)));
+            return Py::asObject(new QuantityPy(new Quantity(vector1.GetAngle(vector2) * 180 / M_PI, Units::Angle)));
         case VCROSS:
             return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
         case VDOT:
@@ -2377,14 +2378,14 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         switch (f) {
         case VLINEDIST:
-            return Py::asObject(new QuantityPy(new Quantity(vector1.DistanceToLine(vector2, vector3), Unit::Length)));
+            return Py::asObject(new QuantityPy(new Quantity(vector1.DistanceToLine(vector2, vector3), Units::Length)));
         case VLINESEGDIST:
             return Py::asObject(new Base::VectorPy(vector1.DistanceToLineSegment(vector2, vector3)));
         case VLINEPROJ:
             vector1.ProjectToLine(vector2, vector3);
             return Py::asObject(new Base::VectorPy(vector1));
         case VPLANEDIST:
-            return Py::asObject(new QuantityPy(new Quantity(vector1.DistanceToPlane(vector2, vector3), Unit::Length)));
+            return Py::asObject(new QuantityPy(new Quantity(vector1.DistanceToPlane(vector2, vector3), Units::Length)));
         case VPLANEPROJ:
             vector1.ProjectToPlane(vector2, vector3);
             return Py::asObject(new Base::VectorPy(vector1));
@@ -2408,7 +2409,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     }
 
     double output;
-    Unit unit;
+    Unit unit = Units::NullUnit;
     double scaler = 1;
 
     double value = v1.getValue();
@@ -2421,19 +2422,19 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case ROTATIONX:
     case ROTATIONY:
     case ROTATIONZ:
-        if (!(v1.isDimensionlessOrUnit(Unit::Angle)))
+        if (!(v1.isDimensionlessOrUnit(Units::Angle)))
             _EXPR_THROW("Unit must be either empty or an angle.", expr);
 
         // Convert value to radians
         value *= M_PI / 180.0;
-        unit = Unit();
+        unit = Units::NullUnit;
         break;
     case ACOS:
     case ASIN:
     case ATAN:
         if (!v1.isDimensionless())
             _EXPR_THROW("Unit must be empty.", expr);
-        unit = Unit::Angle;
+        unit = Units::Angle;
         scaler = 180.0 / M_PI;
         break;
     case EXP:
@@ -2444,7 +2445,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case COSH:
         if (!v1.isDimensionless())
             _EXPR_THROW("Unit must be empty.",expr);
-        unit = Unit();
+        unit = Units::NullUnit;
         break;
     case ROUND:
     case TRUNC:
@@ -2454,10 +2455,10 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         unit = v1.getUnit();
         break;
     case SQRT:
-        unit = v1.getUnit().sqrt();
+        unit = v1.getUnit().root(2);
         break;
     case CBRT:
-        unit = v1.getUnit().cbrt();
+        unit = v1.getUnit().root(3);
         break;
     case ATAN2:
         if (e2.isNone())
@@ -2465,7 +2466,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         if (v1.getUnit() != v2.getUnit())
             _EXPR_THROW("Units must be equal.",expr);
-        unit = Unit::Angle;
+        unit = Units::Angle;
         scaler = 180.0 / M_PI;
         break;
     case MOD:
@@ -2506,7 +2507,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         unit = v1.getUnit();
         break;
     case TRANSLATIONM:
-        if (v1.isDimensionlessOrUnit(Unit::Length) && v2.isDimensionlessOrUnit(Unit::Length) && v3.isDimensionlessOrUnit(Unit::Length))
+        if (v1.isDimensionlessOrUnit(Units::Length) && v2.isDimensionlessOrUnit(Units::Length) && v3.isDimensionlessOrUnit(Units::Length))
             break;
         _EXPR_THROW("Translation units must be a length or dimensionless.", expr);
     default:
