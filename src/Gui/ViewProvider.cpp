@@ -105,6 +105,7 @@ ViewProvider::ViewProvider()
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();
+    pcModeSwitch->setName("ModeSwitch");
     pcTransform  = new SoFCTransform();
     pcTransform->ref();
     pcRoot->addChild(pcTransform);

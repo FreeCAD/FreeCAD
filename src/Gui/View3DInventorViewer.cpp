@@ -443,6 +443,7 @@ void View3DInventorViewer::init()
     backgroundroot = new SoSeparator;
     backgroundroot->ref();
     this->backgroundroot->addChild(cam);
+    this->backgroundroot->setName("backgroundroot");
 
     // Background stuff
     pcBackGround = new SoFCBackgroundGradient;
@@ -451,6 +452,7 @@ void View3DInventorViewer::init()
     // Set up foreground, overlaid scenegraph.
     this->foregroundroot = new SoSeparator;
     this->foregroundroot->ref();
+    this->foregroundroot->setName("foregroundroot");
 
     auto lm = new SoLightModel;
     lm->model = SoLightModel::BASE_COLOR;
@@ -493,9 +495,14 @@ void View3DInventorViewer::init()
     pEventCallback->addEventCallback(SoEvent::getClassTypeId(), handleEventCB, this);
 
     dimensionRoot = new SoSwitch(SO_SWITCH_NONE);
+    dimensionRoot->setName("RootDimensions");
     pcViewProviderRoot->addChild(dimensionRoot);
-    dimensionRoot->addChild(new SoSwitch()); //first one will be for the 3d dimensions.
-    dimensionRoot->addChild(new SoSwitch()); //second one for the delta dimensions.
+    auto dimensions3d = new SoSwitch();
+    dimensions3d->setName("_3dDimensions");
+    dimensionRoot->addChild(dimensions3d); //first one will be for the 3d dimensions.
+    auto dimensionsDelta = new SoSwitch();
+    dimensionsDelta->setName("DeltaDimensions");
+    dimensionRoot->addChild(dimensionsDelta); //second one for the delta dimensions.
 
     // This is a callback node that logs all action that traverse the Inventor tree.
 #if defined (FC_DEBUG) && defined(FC_LOGGING_CB)
@@ -521,6 +528,7 @@ void View3DInventorViewer::init()
     // Create group for the physical object
     objectGroup = new SoGroup();
     objectGroup->ref();
+    objectGroup->setName("ObjectGroup");
     pcViewProviderRoot->addChild(objectGroup);
 
     // Set our own render action which show a bounding box if
