@@ -104,8 +104,7 @@ Main window
 ==================================================================================================*/
 QMainWindow,
 QDialog,
-QDockWidget,
-QToolBar  {
+QDockWidget {
     background-color: #f0f0f0; /* main background color */
 }
 
@@ -884,6 +883,12 @@ QToolBar {
   background-color: #f0f0f0;
   /* border: 1px solid #ababab; */
   /* font-weight: bold; */
+}
+
+/* fix background color for toolbars that are the on menubar. */
+QToolBar:only-one {
+  background-color: transparent;
+  /* margin-top: -3px; */
 }
 
 QToolBar:horizontal {
@@ -1875,7 +1880,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtabwidget-and-qtabb
 --------------------------------------------------------------------------- */
 QTabBar, QDockWidget QTabBar {
   qproperty-drawBase: 0;
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   /* left: 5px; move to the right by 5px - removed for fix */
 }
 
