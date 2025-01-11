@@ -191,6 +191,28 @@ class DimensionBase(DraftAnnotation):
                             _tip)
             obj.Dimline = App.Vector(0, 1, 0)
 
+    def update_properties_1v1(self, obj, vobj):
+        """Update view properties."""
+        vobj.Proxy.set_graphics_properties(vobj, vobj.PropertiesList)
+        if hasattr(vobj, "ArrowType"):
+            _wrn(
+                "v1.1, "
+                + obj.Label
+                + ", "
+                + translate("draft", "migrated 'ArrowType' property to 'ArrowTypeEnd'")
+            )
+            vobj.ArrowTypeEnd = vobj.ArrowType
+        if hasattr(vobj, "ArrowSize"):
+            _wrn(
+                "v1.1, "
+                + obj.Label
+                + ", "
+                + translate("draft", "migrated 'ArrowSize' property to 'ArrowSizeEnd'")
+            )
+            vobj.ArrowSizeEnd = vobj.ArrowSize
+
+        super().update_properties_1v1(obj, vobj)
+
     def update_properties_0v21(self, obj, vobj):
         """Update view properties."""
         vobj.Proxy.set_text_properties(vobj, vobj.PropertiesList)
@@ -302,6 +324,10 @@ class LinearDimension(DimensionBase):
         if not getattr(obj, "ViewObject", None):
             return
         vobj = obj.ViewObject
+
+        if hasattr(vobj, "ArrowType") or hasattr(vobj, "ArrowSize"):
+            super().update_properties_1v1(obj, vobj)
+
         if hasattr(vobj, "TextColor"):
             return
         super().update_properties_0v21(obj, vobj)
@@ -567,6 +593,10 @@ class AngularDimension(DimensionBase):
         if not getattr(obj, "ViewObject", None):
             return
         vobj = obj.ViewObject
+
+        if hasattr(vobj, "ArrowType") or hasattr(vobj, "ArrowSize"):
+            super().update_properties_1v1(obj, vobj)
+
         if hasattr(vobj, "TextColor"):
             return
         super().update_properties_0v21(obj, vobj)
