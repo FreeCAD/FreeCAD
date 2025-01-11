@@ -887,15 +887,6 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
         spinprojector->setSphere(SbSphere {SbVec3f {0, 0, 0}, FCSphereSheetProjector::defaultSphereRadius});
     }
 
-    if (this->rotationCenterMode && this->rotationCenterFound) {
-        SbVec3f hitpoint = this->rotationCenter;
-
-        // set to the given position
-        SbVec3f direction;
-        viewer->getSoRenderManager()->getCamera()->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-        viewer->getSoRenderManager()->getCamera()->position = hitpoint - viewer->getSoRenderManager()->getCamera()->focalDistance.getValue() * direction;
-    }
-
     // 0000333: Turntable camera rotation
     SbMatrix mat;
     viewer->getSoRenderManager()->getCamera()->orientation.getValue().getValue(mat);
@@ -912,16 +903,12 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
         r.setValue(axis, radians);
     }
     r.invert();
-    this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
 
     if (this->rotationCenterMode && this->rotationCenterFound) {
-        float ratio = vp.getViewportAspectRatio();
-        SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(vp.getViewportAspectRatio());
-        SbPlane panplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
-        SbVec2f posn;
-        posn[0] = float(this->localPos[0]) / float(std::max((int)(glsize[0]-1), 1));
-        posn[1] = float(this->localPos[1]) / float(std::max((int)(glsize[1]-1), 1));
-        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, posn, SbVec2f(0.5,0.5));
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, rotationCenter);
+    }
+    else {
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
     }
 
     // Calculate an average angle magnitude value to make the transition
@@ -963,15 +950,6 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
 {
     assert(this->spinprojector);
 
-    if (this->rotationCenterMode && this->rotationCenterFound) {
-        SbVec3f hitpoint = this->rotationCenter;
-
-        // set to the given position
-        SbVec3f direction;
-        viewer->getSoRenderManager()->getCamera()->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-        viewer->getSoRenderManager()->getCamera()->position = hitpoint - viewer->getSoRenderManager()->getCamera()->focalDistance.getValue() * direction;
-    }
-
     // 0000333: Turntable camera rotation
     SbMatrix mat;
     viewer->getSoRenderManager()->getCamera()->orientation.getValue().getValue(mat);
@@ -989,19 +967,12 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
         r.setValue(axis, radians);
     }
     r.invert();
-    this->reorientCamera(cam, r);
 
     if (this->rotationCenterMode && this->rotationCenterFound) {
-        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-        SbVec2s glsize(vp.getViewportSizePixels());
-
-        float ratio = vp.getViewportAspectRatio();
-        SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(vp.getViewportAspectRatio());
-        SbPlane panplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
-        SbVec2f posn;
-        posn[0] = float(this->localPos[0]) / float(std::max((int)(glsize[0]-1), 1));
-        posn[1] = float(this->localPos[1]) / float(std::max((int)(glsize[1]-1), 1));
-        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, posn, SbVec2f(0.5,0.5));
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, rotationCenter);
+    }
+    else {
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
     }
 
     hasDragged = true;
