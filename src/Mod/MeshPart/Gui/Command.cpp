@@ -335,11 +335,7 @@ bool CmdMeshPartCurveOnMesh::isActive()
 
     // Check for the selected mesh feature (all Mesh types)
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc && doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
-        return true;
-    }
-
-    return false;
+    return doc && doc->countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 

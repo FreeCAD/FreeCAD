@@ -4407,6 +4407,12 @@ int Document::countObjectsOfType(const Base::Type& typeId) const
     return ct;
 }
 
+int Document::countObjectsOfType(const char* typeName) const
+{
+    Base::Type type = Base::Type::fromName(typeName);
+    return type.isBad() ? 0 : countObjectsOfType(type);
+}
+
 PyObject* Document::getPyObject()
 {
     return Py::new_reference_to(d->DocumentPythonObject);
