@@ -53,7 +53,7 @@ class TestPathVcarve(PathTestBase):
     def testFinishingPass(self):
         self.doc = FreeCAD.newDocument()
         part = FreeCAD.ActiveDocument.addObject("Part::Feature", "TestShape")
-        rect = Part.makePolygon([(0,0,0), (5,0,0), (5,10,0), (0,10,0), (0,0,0)])
+        rect = Part.makePolygon([(0, 0, 0), (5, 0, 0), (5, 10, 0), (0, 10, 0), (0, 0, 0)])
         part.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
         job = PathJob.Create("Job", [part])
         tool_file = PathToolBit.findToolBit("60degree_Vbit.fctb")
