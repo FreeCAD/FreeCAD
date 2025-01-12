@@ -325,9 +325,18 @@ private:
         auto lprojx = projx.Length();  // Px = a cos t
         auto lprojy = projy.Length();  // Py = b sin t
 
-        double t = std::acos(lprojx / firstRadius);
-
-        secondRadius = lprojy / std::sin(t);  // b = Py / sin t
+        if (lprojx > firstRadius) {
+            secondRadius = 0.0;
+        }
+        else {
+            double t = std::acos(lprojx / firstRadius);
+            if (t == 0.0) {
+                secondRadius = 0.0;
+            }
+            else {
+                secondRadius = lprojy / std::sin(t);  // b = Py / sin t
+            }
+        }
 
         secondAxis = projy.Normalize() * secondRadius;
     }
