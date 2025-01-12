@@ -59,10 +59,6 @@ try:
 except :
     RENDER_IS_AVAILABLE = False
 
-# Sometimes, the Part::Sweep creates a "twisted" sweep that
-#   impeeds the creation of the corresponding wall.
-FIX_INVALID_SWEEP = True
-
 # SweetHome3D is in cm while FreeCAD is in mm
 FACTOR = 10
 DEFAULT_WALL_WIDTH = 100
@@ -729,14 +725,14 @@ class WallHandler(BaseHandler):
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}' ..."
 
-        wall = None
+        wall = base_object = None
         if self.importer.preferences["MERGE"]:
             wall = self.get_fc_object(elm.get("id"), 'wall')
 
         if not wall:
             prev = self._get_sibling_wall(parent, elm, 'wallAtStart')
             next = self._get_sibling_wall(parent, elm, 'wallAtEnd')
-            wall = self._create_wall(floor, prev, next, elm)
+            wall, base_object = self._create_wall(floor, prev, next, elm)
             if not wall:
                 _log(f"No wall created for {elm.get('id')}. Skipping!")
                 return
@@ -745,10 +741,13 @@ class WallHandler(BaseHandler):
 
         wall.IfcType = "Wall"
         wall.Label = f"wall{i}"
-
         self._set_properties(wall, elm)
 
         floor.addObject(wall)
+        if base_object:
+            floor.addObject(base_object)
+            base_object.Visibility = False
+
         self.importer.add_wall(wall)
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
@@ -797,41 +796,52 @@ class WallHandler(BaseHandler):
         prev_wall_details = self._get_wall_details(floor, prev)
         next_wall_details = self._get_wall_details(floor, next)
 
+        is_wall_straight = wall_details[5] == 0
+
         # Is the wall curved (i.e. arc_extent != 0) ?
-        if wall_details[5] != 0:
-            section_start, section_end, spine = self._create_curved_segment(
-                wall_details,
-                prev_wall_details,
-                next_wall_details)
-        else:
+        if is_wall_straight:
             section_start, section_end, spine = self._create_straight_segment(
                 wall_details,
                 prev_wall_details,
                 next_wall_details)
+        else:
+            section_start, section_end, spine = self._create_curved_segment(
+                wall_details,
+                prev_wall_details,
+                next_wall_details)
 
+        base_object = None
         sweep = self._make_sweep(section_start, section_end, spine)
         # Sometimes the Part::Sweep creates a "twisted" sweep which
         # result in a broken wall. The solution is to use a compound
         # object based on ruled surface instead.
+        # See https://github.com/FreeCAD/FreeCAD/issues/18658 and related OCCT
+        #   ticket
         if (sweep.Shape.isNull() or not sweep.Shape.isValid()):
-            _wrn(f"Sweep's shape is not valid. Reversing end section ...")
-            _msg(f"    end: {self._ps(section_end)}")
-            points = list(map(lambda v: v.Point, section_end.Shape.reversed().Vertexes))
-            App.ActiveDocument.removeObject(sweep.Label)
-            App.ActiveDocument.removeObject(section_end.Label)
-            assert len(points) == 4, f"section_end.reversed() did not produce 4 points: {len(points)} elements in list..."
-            section_end = Draft.makeRectangle(points, face=False)
-            if self.importer.preferences["DEBUG"]:
-                _color_section(section_end)
-            sweep = self._make_sweep(section_start, section_end, spine)
-            _msg(f"rev_end: {self._ps(section_end)}")
-        wall = Arch.makeWall(sweep)
-        # For some reason the Length of the spine is not propagated to the
-        # wall itself...
+            if not is_wall_straight:
+                _wrn(f"Sweep's shape is not valid, but mitigation is not available!")
+                wall = Arch.makeWall(sweep)
+            else:
+                _wrn(f"Sweep's shape is not valid. Using ruled surface instead ...")
+                App.ActiveDocument.removeObject(sweep.Label)
+                compound_solid, base_object = self._make_compound(section_start, section_end, spine)
+                wall = Arch.makeWall(compound_solid)
+        else:
+            wall = Arch.makeWall(sweep)
         wall.Length = spine.Length
-        return wall
+        return wall, base_object
 
     def _make_sweep(self, section_start, section_end, spine):
+        """Creates a Part::Sweep from sections and a spine.
+
+        Args:
+            section_start (Rectangle): the first section of the Sweep
+            section_end (Rectangle): the last section of the Sweep
+            spine (Line): the path of the Sweep
+
+        Returns:
+            Part::Sweep: the Part::Sweep
+        """
         App.ActiveDocument.recompute([section_start, section_end, spine])
         sweep = App.ActiveDocument.addObject('Part::Sweep')
         sweep.Sections = [section_start, section_end]
@@ -843,6 +853,34 @@ class WallHandler(BaseHandler):
         spine.Visibility = False
         sweep.recompute(True)
         return sweep
+
+    def _make_compound(self, section_start, section_end, spine):
+        """Creates a compound from sections
+
+        This is used as a mitigation for a criss-crossed Part::Sweep.
+
+        Args:
+            section_start (Rectangle): the first section of the Sweep
+            section_end (Rectangle): the last section of the Sweep
+            spine (Line): not really used...
+
+        Returns:
+            Compound: the compound
+        """
+        App.ActiveDocument.recompute([section_start, section_end, spine])
+        ruled_surface = App.ActiveDocument.addObject('Part::RuledSurface')
+        ruled_surface.Curve1 = section_start
+        ruled_surface.Curve2 = section_end
+        ruled_surface.recompute()
+        compound = App.activeDocument().addObject("Part::Compound")
+        compound.Links = [ruled_surface, section_start, section_end, spine]
+        compound.recompute()
+
+        compound_solid = App.ActiveDocument.addObject("Part::Feature")
+        compound_solid.Shape = Part.Solid(Part.Shell(compound.Shape.Faces))
+        compound_solid.Label = compound_solid.Label + "-mitigation"
+
+        return compound_solid, compound
 
     def _get_wall_details(self, floor, elm):
         """Returns the relevant element for the given wall.
@@ -972,7 +1010,7 @@ class WallHandler(BaseHandler):
                 _log(f"    wall: {self._pe(lside)},{self._pe(rside)}")
                 _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
                 _log(f"intersec: {self._pv(i_start)},{self._pv(i_end)}")
-            section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z], face=False)
+            section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z], face=True)
             if self.importer.preferences["DEBUG"]:
                 _log(f"section: {section}")
         else:
@@ -981,7 +1019,7 @@ class WallHandler(BaseHandler):
             center = start if at_start else end
             a1, a2, _ = self._get_normal_angles(wall_details)
             z_rotation = a1 if at_start else a2
-            section = Draft.makeRectangle(thickness, height, face=False)
+            section = Draft.makeRectangle(thickness, height, face=True)
             Draft.move([section], App.Vector(-thickness/2, 0, 0))
             Draft.rotate([section], 90, ORIGIN, X_NORM)
             Draft.rotate([section], z_rotation, ORIGIN, Z_NORM)
