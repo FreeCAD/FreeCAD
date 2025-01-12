@@ -44,7 +44,7 @@
 //            // reference
 //            replace(ref, newRef)
 //        else:
-//            // auto correct phase 2 - to be implemented
+//            // auto correct phase 2
 //            // we don't have any geometry that is identical to our saved geometry.
 //            // finding a match now becomes guess work.  we have to find the most
 //            // similar geometry (with at least some level of same-ness) and use
@@ -68,7 +68,6 @@
 #include <Base/Tools.h>
 
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/Measure/App/ShapeFinder.h>
 
 #include "GeometryMatcher.h"
 #include "DimensionReferences.h"
@@ -78,7 +77,6 @@
 #include "Preferences.h"
 
 using namespace TechDraw;
-using namespace Measure;
 using DU = DrawUtil;
 
 //! true if references point to valid geometry and the valid geometry matches the
@@ -175,17 +173,17 @@ bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceSta
             continue;
         }
 
-        // we did not find an exact match, so check for a similar match
+        // we did not find an exact match, so check for an similar match
         success = fix1GeomSimilar(fixedRef, savedGeometry.at(iRef).getShape());
         if (success) {
-            // we did find a similar match
+            // we did find an similar match
             referenceState.at(iRef) = true;
             repairedRefs.push_back(fixedRef);
             iRef++;
             continue;
         }
 
-        // we did not find a similar match the geometry
+        // we did not find an similar match the geometry
         result = false;
         referenceState.at(iRef) = false;
         repairedRefs.push_back(fixedRef);
@@ -291,8 +289,7 @@ bool DimensionAutoCorrect::findExactEdge2d(ReferenceEntry& refToFix, const Part:
             return true;
         }
     }
-
-    // no match, return the input reference
+    // no match
     return false;
 }
 
@@ -416,16 +413,8 @@ bool DimensionAutoCorrect::findSimilarEdge3d(ReferenceEntry& refToFix,
 bool DimensionAutoCorrect::isMatchingGeometry(const ReferenceEntry& ref,
                                               const Part::TopoShape& savedGeometry) const
 {
-    Part::TopoShape temp;
-    if (ref.is3d()) {
-        auto shape3d = ShapeFinder::getLocatedShape(*ref.getObject(), ref.getSubName(true));
-        temp = Part::TopoShape(shape3d);
-    } else {
-        auto shape2d = ref.getGeometry();
-        temp = Part::TopoShape(shape2d);
-    }
-
-
+    // Base::Console().Message("DAC::isMatchingGeometry()\n");
+    Part::TopoShape temp = ref.asCanonicalTopoShape();
     if (temp.isNull()) {
         // this shouldn't happen as we already know that this ref points to valid geometry
         return false;
@@ -446,7 +435,7 @@ ReferenceEntry DimensionAutoCorrect::searchObjForVert(App::DocumentObject* obj,
                                                       bool exact) const
 {
     (void)exact;
-    auto shape3d = ShapeFinder::getLocatedShape(*obj, "");
+    auto shape3d = Part::Feature::getShape(obj);
     if (shape3d.IsNull()) {
         // how to handle this?
         return {};
@@ -454,7 +443,7 @@ ReferenceEntry DimensionAutoCorrect::searchObjForVert(App::DocumentObject* obj,
     auto vertsAll = getDimension()->getVertexes(shape3d);
     size_t iVert {1};
     for (auto& vert : vertsAll) {
-        bool isSame = getMatcher()->compareGeometry(refVertex, vert);
+        bool isSame = getMatcher()->compareGeometry(vert, refVertex);
         if (isSame) {
             auto newSubname = std::string("Vertex") + std::to_string(iVert);
             return {obj, newSubname, getDimension()->getDocument()};
