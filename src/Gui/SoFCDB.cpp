@@ -147,6 +147,7 @@ void Gui::SoFCDB::init()
     SoFCPathAnnotation              ::initClass();
     SoMouseWheelEvent               ::initClass();
     So3DAnnotation                  ::initClass();
+    SoDelayedAnnotationsElement     ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
