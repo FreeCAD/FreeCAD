@@ -79,6 +79,7 @@ public:
     Py::Object isEnabledNaviCube(const Py::Tuple& args);
     Py::Object setNaviCubeCorner(const Py::Tuple& args);
 
+    Py::Object getNavigationStyle(const Py::Tuple&);
 
 private:
     using method_varargs_handler = PyObject* (*)(PyObject *_self, PyObject *_args);
