@@ -2923,8 +2923,7 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
         return;
     }
 
-    // call father
-    ViewProviderPart::onChanged(prop);
+    ViewProvider2DObject::onChanged(prop);
 }
 
 void SketcherGui::ViewProviderSketch::startRestoring()
@@ -2960,14 +2959,14 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 
 void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
-    ViewProviderPart::attach(pcFeat);
+    ViewProvider2DObject::attach(pcFeat);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     menu->addAction(tr("Edit sketch"), receiver, member);
     // Call the extensions
-    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
+    ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderSketch::setEdit(int ModNum)
