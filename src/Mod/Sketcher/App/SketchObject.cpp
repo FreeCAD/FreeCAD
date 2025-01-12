@@ -6775,12 +6775,9 @@ int SketchObject::deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delge
 
 int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid)
 {
-    const auto* bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(GeoId));
-
     // First we search existing IA
-    std::vector<std::pair<int, int> > poleGeoIdsAndConstraints(bsp->countPoles(), {GeoEnum::GeoUndef, 0});
-
-    std::vector<std::pair<int, int> > knotGeoIdsAndConstraints(bsp->countKnots(), {GeoEnum::GeoUndef, 0});
+    std::map<int, int> poleGeoIdsAndConstraints;
+    std::map<int, int> knotGeoIdsAndConstraints;
 
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
@@ -6792,10 +6789,10 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
 
         switch (constr->AlignmentType) {
         case Sketcher::BSplineControlPoint:
-            poleGeoIdsAndConstraints[constr->InternalAlignmentIndex].first = constr->First;
+            poleGeoIdsAndConstraints[constr->First] = 0;
             break;
         case Sketcher::BSplineKnotPoint:
-            knotGeoIdsAndConstraints[constr->InternalAlignmentIndex].first = constr->First;
+            knotGeoIdsAndConstraints[constr->First] = 0;
             break;
         default:
             return -1;
@@ -6804,52 +6801,38 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
 
     std::vector<int> delgeometries;
 
-    // TODO: This can become significantly costly if there are lots of constraints and poles
-    for (auto& [cpGeoId, numConstr] : poleGeoIdsAndConstraints) {
-        if (cpGeoId == GeoEnum::GeoUndef) {
+    // Update all control point constraint counts.
+    // EXCLUDES internal alignment and related constraints.
+    for (auto const& constr : vals) {
+        // We do not ignore weight constraints as we did with radius constraints,
+        // because the radius magnitude no longer makes sense without the B-Spline.
+        if (constr->Type == Sketcher::InternalAlignment
+            || constr->Type == Sketcher::Weight) {
             continue;
         }
-
-        // look for a circle at geoid index
-        for (auto const& constr : vals) {
-            if (constr->Type == Sketcher::InternalAlignment
-                || constr->Type == Sketcher::Weight
-                || !constr->involvesGeoId(cpGeoId)) {
-                continue;
-            }
-            if (constr->Type != Sketcher::Equal) {
-                ++numConstr;
-                continue;
-            }
-            bool firstIsInCPGeoIds = std::any_of(poleGeoIdsAndConstraints.begin(),
-                                                 poleGeoIdsAndConstraints.end(),
-                                                 [&constr](const auto& _pair) {
-                                                     return _pair.first == constr->First;
-                                                 });
-            bool secondIsInCPGeoIds = std::any_of(poleGeoIdsAndConstraints.begin(),
-                                                  poleGeoIdsAndConstraints.end(),
-                                                  [&constr](const auto& _pair) {
-                                                      return _pair.first == constr->Second;
-                                                  });
-            // the equality constraint constrains a pole but it is not interpole
-            if (firstIsInCPGeoIds != secondIsInCPGeoIds) {
-                ++numConstr;
-            }
-            // We do not ignore weight constraints as we did with radius constraints,
-            // because the radius magnitude no longer makes sense without the B-Spline.
+        bool firstIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->First) == 1;
+        bool secondIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->Second) == 1;
+        if (constr->Type == Sketcher::Equal && firstIsInCPGeoIds == secondIsInCPGeoIds) {
+            continue;
         }
+        // any equality constraint constraining a pole is not interpole
+        if (firstIsInCPGeoIds) {
+            ++poleGeoIdsAndConstraints[constr->First];
+        }
+        if (secondIsInCPGeoIds) {
+            ++poleGeoIdsAndConstraints[constr->Second];
+        }
+    }
 
+    for (auto& [cpGeoId, numConstr] : poleGeoIdsAndConstraints) {
         if (numConstr < 1) { // IA
             delgeometries.push_back(cpGeoId);
         }
     }
 
     for (auto& [kGeoId, numConstr] : knotGeoIdsAndConstraints) {
-        if (kGeoId == GeoEnum::GeoUndef) {
-            continue;
-        }
-
-        // look for a point at geoid index
+        // Update all control point constraint counts.
+        // INCLUDES internal alignment and related constraints.
         auto tempGeoID = kGeoId;  // C++17 and earlier do not support captured structured bindings
         numConstr = std::count_if(vals.begin(), vals.end(), [&tempGeoID](const auto& constr) {
             return constr->involvesGeoId(tempGeoID);
