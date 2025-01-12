@@ -254,6 +254,7 @@ generate_from_xml(LinkViewPy)
 generate_from_xml(ViewProviderLinkPy)
 generate_from_xml(AxisOriginPy)
 generate_from_xml(CommandPy)
+generate_from_xml(NavigationStylePy)
 
 generate_from_py(FreeCADGuiInit GuiInitScript.h)
 
@@ -886,6 +887,7 @@ SET(View3D_CPP_SRCS
     Multisample.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
+    NavigationStylePyImp.cpp
     InventorNavigationStyle.cpp
     CADNavigationStyle.cpp
     RevitNavigationStyle.cpp
@@ -919,6 +921,7 @@ SET(View3D_SRCS
     Multisample.h
     MouseSelection.h
     NavigationStyle.h
+    NavigationStylePy.xml
     GestureNavigationStyle.h
     SplitView3DInventor.h
     View.h
