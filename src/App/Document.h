@@ -338,7 +338,6 @@ public:
     /// Returns an array with the correct types already.
     template<typename T>
     inline std::vector<T*> getObjectsOfType() const;
-    int countObjectsOfType(const Base::Type& typeId) const;
     template<typename T>
     inline int countObjectsOfType() const;
     int countObjectsOfType(const char* typeName) const;
@@ -593,6 +592,7 @@ protected:
     std::vector<App::DocumentObject*> readObjects(Base::XMLReader& reader);
     void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer& writer) const;
     bool saveToFile(const char* filename) const;
+    int countObjectsOfType(const Base::Type& typeId) const;
 
     void onBeforeChange(const Property* prop) override;
     void onChanged(const Property* prop) override;

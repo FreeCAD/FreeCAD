@@ -387,14 +387,9 @@ public:
      * If no document name is given the active document is assumed.
      *
      * Set 'resolve' to true to resolve any sub object inside selection SubName
-     * field
-     */
-    unsigned int countObjectsOfType(const Base::Type& typeId=App::DocumentObject::getClassTypeId(),
-            const char* pDocName=nullptr, ResolveMode resolve = ResolveMode::OldStyleElement) const;
-
-    /**
-     * A convenience template-based method that returns the number of objects of the given type.
-     * \a T must be based on Base::BaseClass, otherwise 0 is returned.
+     * field.
+     * 
+     * The typename T must be based on App::DocumentObject.
      */
     template<typename T> inline unsigned int countObjectsOfType(
             const char* pDocName=nullptr, ResolveMode resolve = ResolveMode::OldStyleElement) const;
@@ -714,6 +709,9 @@ protected:
 
     static App::DocumentObject *getObjectOfType(_SelObj &sel, Base::Type type,
             ResolveMode resolve, const char **subelement=nullptr);
+
+    unsigned int countObjectsOfType(const Base::Type& typeId=App::DocumentObject::getClassTypeId(),
+            const char* pDocName=nullptr, ResolveMode resolve = ResolveMode::OldStyleElement) const;
 
     static SelectionSingleton* _pcSingleton;
 
