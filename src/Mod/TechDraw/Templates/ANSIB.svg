@@ -605,7 +605,7 @@
        stroke-width="1px"
        word-spacing="0px"
        style="line-height:0%;text-decoration-line:none;text-indent:0;text-transform:none"
-       freecad:editable="DrawingNumber"><tspan
+       freecad:editable="drawing_number" freecad:autofill="drawing_number"><tspan
          id="tspan3792-9"
          x="350.77899"
          y="251.48938">Drawing Number</tspan></text>
