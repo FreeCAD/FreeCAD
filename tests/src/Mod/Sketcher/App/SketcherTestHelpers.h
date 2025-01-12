@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <gtest/gtest.h>
+
+#include <FCConfig.h>
+
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
@@ -8,128 +13,51 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <src/App/InitApplication.h>
 
+class SketchObjectTest: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite();
+    void SetUp() override;
+    void TearDown() override;
+    Sketcher::SketchObject* getObject();
+
+private:
+    // TODO: use shared_ptr or something else here?
+    Sketcher::SketchObject* _sketchobj;
+    std::string _docName;
+    std::vector<const char*> allowedTypes {"Vertex",
+                                           "Edge",
+                                           "ExternalEdge",
+                                           "H_Axis",
+                                           "V_Axis",
+                                           "RootPoint"};
+};
+
 namespace SketcherTestHelpers
 {
 
 using namespace Sketcher;
 
-void setupLineSegment(Part::GeomLineSegment& lineSeg)
-{
-    Base::Vector3d coords1(1.0, 2.0, 0.0);
-    Base::Vector3d coords2(3.0, 4.0, 0.0);
-    lineSeg.setPoints(coords1, coords2);
-}
+void setupLineSegment(Part::GeomLineSegment& lineSeg);
 
-void setupCircle(Part::GeomCircle& circle)
-{
-    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
-    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
-    double radius = 3.0;
-    circle.setCenter(coordsCenter);
-    circle.setRadius(radius);
-}
+void setupCircle(Part::GeomCircle& circle);
 
-void setupArcOfCircle(Part::GeomArcOfCircle& arcOfCircle)
-{
-    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
-    double radius = 3.0;
-    double startParam = M_PI / 3, endParam = M_PI * 1.5;
-    arcOfCircle.setCenter(coordsCenter);
-    arcOfCircle.setRadius(radius);
-    arcOfCircle.setRange(startParam, endParam, true);
-}
+void setupArcOfCircle(Part::GeomArcOfCircle& arcOfCircle);
 
-void setupEllipse(Part::GeomEllipse& ellipse)
-{
-    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
-    double majorRadius = 4.0;
-    double minorRadius = 3.0;
-    ellipse.setCenter(coordsCenter);
-    ellipse.setMajorRadius(majorRadius);
-    ellipse.setMinorRadius(minorRadius);
-}
+void setupEllipse(Part::GeomEllipse& ellipse);
 
-void setupArcOfHyperbola(Part::GeomArcOfHyperbola& arcOfHyperbola)
-{
-    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
-    double majorRadius = 4.0;
-    double minorRadius = 3.0;
-    double startParam = M_PI / 3, endParam = M_PI * 1.5;
-    arcOfHyperbola.setCenter(coordsCenter);
-    arcOfHyperbola.setMajorRadius(majorRadius);
-    arcOfHyperbola.setMinorRadius(minorRadius);
-    arcOfHyperbola.setRange(startParam, endParam, true);
-}
+void setupArcOfHyperbola(Part::GeomArcOfHyperbola& arcOfHyperbola);
 
-void setupArcOfParabola(Part::GeomArcOfParabola& aop)
-{
-    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
-    double focal = 3.0;
-    double startParam = -M_PI * 1.5, endParam = M_PI * 1.5;
-    aop.setCenter(coordsCenter);
-    aop.setFocal(focal);
-    aop.setRange(startParam, endParam, true);
-}
+void setupArcOfParabola(Part::GeomArcOfParabola& aop);
 
-std::unique_ptr<Part::GeomBSplineCurve> createTypicalNonPeriodicBSpline()
-{
-    int degree = 3;
-    std::vector<Base::Vector3d> poles;
-    poles.emplace_back(1, 0, 0);
-    poles.emplace_back(1, 1, 0);
-    poles.emplace_back(1, 0.5, 0);
-    poles.emplace_back(0, 1, 0);
-    poles.emplace_back(0, 0, 0);
-    std::vector<double> weights(5, 1.0);
-    std::vector<double> knotsNonPeriodic = {0.0, 1.0, 2.0};
-    std::vector<int> multiplicitiesNonPeriodic = {degree + 1, 1, degree + 1};
-    return std::make_unique<Part::GeomBSplineCurve>(poles,
-                                                    weights,
-                                                    knotsNonPeriodic,
-                                                    multiplicitiesNonPeriodic,
-                                                    degree,
-                                                    false);
-}
+std::unique_ptr<Part::GeomBSplineCurve> createTypicalNonPeriodicBSpline();
 
-std::unique_ptr<Part::GeomBSplineCurve> createTypicalPeriodicBSpline()
-{
-    int degree = 3;
-    std::vector<Base::Vector3d> poles;
-    poles.emplace_back(1, 0, 0);
-    poles.emplace_back(1, 1, 0);
-    poles.emplace_back(1, 0.5, 0);
-    poles.emplace_back(0, 1, 0);
-    poles.emplace_back(0, 0, 0);
-    std::vector<double> weights(5, 1.0);
-    std::vector<double> knotsPeriodic = {0.0, 0.3, 1.0, 1.5, 1.8, 2.0};
-    std::vector<int> multiplicitiesPeriodic(6, 1);
-    return std::make_unique<Part::GeomBSplineCurve>(poles,
-                                                    weights,
-                                                    knotsPeriodic,
-                                                    multiplicitiesPeriodic,
-                                                    degree,
-                                                    true);
-}
+std::unique_ptr<Part::GeomBSplineCurve> createTypicalPeriodicBSpline();
 
-int countConstraintsOfType(const Sketcher::SketchObject* obj, const Sketcher::ConstraintType cType)
-{
-    const std::vector<Sketcher::Constraint*>& constraints = obj->Constraints.getValues();
-
-    int result = std::count_if(constraints.begin(),
-                               constraints.end(),
-                               [&cType](const Sketcher::Constraint* constr) {
-                                   return constr->Type == cType;
-                               });
-
-    return result;
-}
+int countConstraintsOfType(const Sketcher::SketchObject* obj, const Sketcher::ConstraintType cType);
 
 // Get point at the parameter after scaling the range to [0, 1].
-Base::Vector3d getPointAtNormalizedParameter(const Part::GeomCurve& curve, double param)
-{
-    return curve.pointAtParameter(curve.getFirstParameter()
-                                  + (curve.getLastParameter() - curve.getFirstParameter()) * param);
-}
+Base::Vector3d getPointAtNormalizedParameter(const Part::GeomCurve& curve, double param);
 
 // TODO: How to set up B-splines here?
 // It's not straightforward to change everything from a "default" one.
