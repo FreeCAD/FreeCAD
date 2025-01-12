@@ -61,7 +61,7 @@ except :
 
 # Sometimes, the Part::Sweep creates a "twisted" sweep that
 #   impeeds the creation of the corresponding wall.
-FIX_INVALID_SWEEP = False
+FIX_INVALID_SWEEP = True
 
 # SweetHome3D is in cm while FreeCAD is in mm
 FACTOR = 10
@@ -752,7 +752,7 @@ class WallHandler(BaseHandler):
         self.importer.add_wall(wall)
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
-            App.ActiveDocument.recompute([wall])
+            wall.recompute(True)
             for baseboard in elm.findall('baseboard'):
                 self._import_baseboard(floor, wall, baseboard)
 
@@ -809,6 +809,30 @@ class WallHandler(BaseHandler):
                 prev_wall_details,
                 next_wall_details)
 
+        sweep = self._make_sweep(section_start, section_end, spine)
+        # Sometimes the Part::Sweep creates a "twisted" sweep which
+        # result in a broken wall. The solution is to use a compound
+        # object based on ruled surface instead.
+        if (sweep.Shape.isNull() or not sweep.Shape.isValid()):
+            _wrn(f"Sweep's shape is not valid. Reversing end section ...")
+            _msg(f"    end: {self._ps(section_end)}")
+            points = list(map(lambda v: v.Point, section_end.Shape.reversed().Vertexes))
+            App.ActiveDocument.removeObject(sweep.Label)
+            App.ActiveDocument.removeObject(section_end.Label)
+            assert len(points) == 4, f"section_end.reversed() did not produce 4 points: {len(points)} elements in list..."
+            section_end = Draft.makeRectangle(points, face=False)
+            if self.importer.preferences["DEBUG"]:
+                _color_section(section_end)
+            sweep = self._make_sweep(section_start, section_end, spine)
+            _msg(f"rev_end: {self._ps(section_end)}")
+        wall = Arch.makeWall(sweep)
+        # For some reason the Length of the spine is not propagated to the
+        # wall itself...
+        wall.Length = spine.Length
+        return wall
+
+    def _make_sweep(self, section_start, section_end, spine):
+        App.ActiveDocument.recompute([section_start, section_end, spine])
         sweep = App.ActiveDocument.addObject('Part::Sweep')
         sweep.Sections = [section_start, section_end]
         sweep.Spine = spine
@@ -817,41 +841,8 @@ class WallHandler(BaseHandler):
         section_start.Visibility = False
         section_end.Visibility = False
         spine.Visibility = False
-        App.ActiveDocument.recompute([sweep])
-        # Sometimes the Part::Sweep creates a "twisted" sweep which
-        # result in a broken wall. The solution is to use a compound
-        # object based on ruled surface instead.
-        if FIX_INVALID_SWEEP and (sweep.Shape.isNull() or not sweep.Shape.isValid()):
-            _log(f"Part::Sweep for wall#{elm.get('id')} is invalid. Using ruled surface instead ...")
-            ruled_surface = App.ActiveDocument.addObject('Part::RuledSurface')
-            ruled_surface.Curve1 = section_start
-            ruled_surface.Curve2 = section_end
-            App.ActiveDocument.recompute([ruled_surface])
-            _log(f"Creating compound object ...")
-            compound = App.ActiveDocument.addObject('Part::Compound')
-            compound.Links = [ruled_surface, section_start, section_end]
-            App.ActiveDocument.recompute([compound])
-            _log(f"Creating solid ...")
-            solid = App.ActiveDocument.addObject("Part::Feature")
-            solid.Shape = Part.Solid(Part.Shell(compound.Shape.Faces))
-            doc = App.ActiveDocument
-            doc.removeObject(compound.Label)
-            doc.recompute()
-            doc.removeObject(ruled_surface.Label)
-            doc.recompute()
-            doc.removeObject(sweep.Label)
-            doc.recompute()
-            doc.removeObject(spine.Label)
-            doc.recompute()
-            doc.removeObject(section_start.Label)
-            doc.removeObject(section_end.Label)
-            wall = Arch.makeWall(solid)
-        else:
-            wall = Arch.makeWall(sweep)
-        # For some reason the Length of the spine is not propagated to the
-        # wall itself...
-        wall.Length = spine.Length
-        return wall
+        sweep.recompute(True)
+        return sweep
 
     def _get_wall_details(self, floor, elm):
         """Returns the relevant element for the given wall.
@@ -981,7 +972,7 @@ class WallHandler(BaseHandler):
                 _log(f"    wall: {self._pe(lside)},{self._pe(rside)}")
                 _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
                 _log(f"intersec: {self._pv(i_start)},{self._pv(i_end)}")
-            section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z])
+            section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z], face=False)
             if self.importer.preferences["DEBUG"]:
                 _log(f"section: {section}")
         else:
@@ -990,24 +981,15 @@ class WallHandler(BaseHandler):
             center = start if at_start else end
             a1, a2, _ = self._get_normal_angles(wall_details)
             z_rotation = a1 if at_start else a2
-            section = Draft.makeRectangle(thickness, height)
+            section = Draft.makeRectangle(thickness, height, face=False)
             Draft.move([section], App.Vector(-thickness/2, 0, 0))
             Draft.rotate([section], 90, ORIGIN, X_NORM)
             Draft.rotate([section], z_rotation, ORIGIN, Z_NORM)
             Draft.move([section], center)
 
         if self.importer.preferences["DEBUG"]:
-            App.ActiveDocument.recompute()
-            view = section.ViewObject
-            line_colors = [view.LineColor] * len(section.Shape.Edges)
-            for i in range(0, len(line_colors)):
-                line_colors[i] = hex2rgb(DEBUG_EDGES_COLORS[i%len(DEBUG_EDGES_COLORS)])
-            view.LineColorArray = line_colors
-            point_colors = [view.PointColor] * len(section.Shape.Vertexes)
-            for i in range(0, len(point_colors)):
-                point_colors[i] = hex2rgb(DEBUG_POINT_COLORS[i%len(DEBUG_POINT_COLORS)])
-            view.PointColorArray = point_colors
-            view.PointSize = 5
+            section.recompute()
+            _color_section(section)
 
         return section
 
@@ -1716,3 +1698,16 @@ def hex2rgb(hexcode):
 
 def _hex2transparency(hexcode):
     return 100 - int(int(hexcode[0:2], 16) * 100 / 255)
+
+
+def _color_section(section):
+    view = section.ViewObject
+    line_colors = [view.LineColor] * len(section.Shape.Edges)
+    for i in range(0, len(line_colors)):
+        line_colors[i] = hex2rgb(DEBUG_EDGES_COLORS[i%len(DEBUG_EDGES_COLORS)])
+    view.LineColorArray = line_colors
+    point_colors = [view.PointColor] * len(section.Shape.Vertexes)
+    for i in range(0, len(point_colors)):
+        point_colors[i] = hex2rgb(DEBUG_POINT_COLORS[i%len(DEBUG_POINT_COLORS)])
+    view.PointColorArray = point_colors
+    view.PointSize = 5
