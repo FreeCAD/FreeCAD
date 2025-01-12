@@ -21,6 +21,10 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <qbitmap.h>
+#include <qgraphicssvgitem.h>
+#include <qpainter.h>
+#include <qsvgrenderer.h>
 
 #ifndef _PreComp_
 #include <cstdlib>
@@ -209,28 +213,68 @@ AboutDialog::~AboutDialog()
 QPixmap AboutDialog::aboutImage() const
 {
     // See if we have a custom About screen image set
-    QPixmap about_image;
-    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
+    QSvgRenderer about_image;
+    QFileInfo fi(QString::fromLatin1("images:about_image.svg"));
     if (fi.isFile() && fi.exists()) {
-        about_image.load(fi.filePath(), "PNG");
+        about_image.load(fi.filePath());
     }
 
-    std::string about_path = App::Application::Config()["AboutImage"];
-    if (!about_path.empty() && about_image.isNull()) {
+    const auto about_path_key = "AboutImage";
+    const auto& about_path = App::Application::Config()[about_path_key];
+
+    Base::Console().Log("About image: empty ? %d valid ? %d\n", about_path.empty(), about_image.isValid());
+
+    if (!about_path.empty() && !about_image.isValid()) {
         QString path = QString::fromStdString(about_path);
         if (QDir(path).isRelative()) {
             QString home = QString::fromStdString(App::Application::getHomePath());
             path = QFileInfo(QDir(home), path).absoluteFilePath();
         }
+
         about_image.load(path);
 
+        Base::Console().Log("About image: path ? %s valid2 ? %d\n", path.toStdString().c_str(), about_image.isValid());
+
         // Now try the icon paths
-        if (about_image.isNull()) {
-            about_image = Gui::BitmapFactory().pixmap(about_path.c_str());
+        if (!about_image.isValid()) {
+            QString fileName = QString::fromLatin1("icons:") + QString::fromStdString(about_path) +QString::fromLatin1(".svg");
+            QFileInfo fi(fileName);
+            about_image.load(fi.filePath());
+            Base::Console().Log("About image: path ? %s valid2 ? %d\n", fileName.toStdString().c_str(), about_image.isValid());
+            // TODO(Shvedov) implement
+            //Gui::BitmapFactory().loadSvg(about_image, about_path.c_str());
         }
     }
 
-    return about_image;
+    QPixmap pixmap;
+
+    if (about_image.isValid())
+    {
+        QGraphicsSvgItem item;
+        item.setSharedRenderer(&about_image);
+
+        pixmap = QPixmap(item.boundingRect().size().toSize());
+        pixmap.fill(Qt::transparent);
+
+        QPainter painter(&pixmap);
+        painter.setRenderHint(QPainter::Antialiasing);
+        QStyleOptionGraphicsItem opt;
+
+        QGraphicsSvgItem svg_item;
+        svg_item.setSharedRenderer (&about_image);
+        svg_item.paint(&painter, &opt);
+
+        if(about_image.elementExists(QLatin1String("dev_layer")))
+        {
+            QGraphicsSvgItem dev_item;
+            dev_item.setSharedRenderer (&about_image);
+            dev_item.setElementId(QLatin1String("dev_layer"));
+            dev_item.paint(&painter, &opt);
+        }
+    }
+
+
+    return pixmap;
 }
 
 void AboutDialog::showOrHideImage(const QRect& rect)
