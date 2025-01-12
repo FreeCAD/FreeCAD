@@ -33,10 +33,7 @@
 #include <App/GeoFeature.h>
 #include <App/DocumentObject.h>
 #include <App/Document.h>
-#include <App/Link.h>
 #include <Base/Console.h>
-
-#include <Mod/Measure/App/ShapeFinder.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -48,12 +45,11 @@
 #include "CosmeticVertex.h"
 
 using namespace TechDraw;
-using namespace Measure;
 using DU = DrawUtil;
 using SU = ShapeUtils;
 
 
-ReferenceEntry::ReferenceEntry( App::DocumentObject* docObject, const std::string& subName, App::Document* document)
+ReferenceEntry::ReferenceEntry( App::DocumentObject* docObject, std::string subName, App::Document* document)
 {
     setObject(docObject);
     setSubName(subName);
@@ -70,7 +66,7 @@ ReferenceEntry::ReferenceEntry( App::DocumentObject* docObject, const std::strin
 ReferenceEntry::ReferenceEntry(const ReferenceEntry& other)
 {
     setObject(other.getObject());
-    setSubName(other.getSubName(true));
+    setSubName(other.getSubName());
     setObjectName(other.getObjectName());
     setDocument(other.getDocument());
 }
@@ -83,7 +79,7 @@ ReferenceEntry& ReferenceEntry::operator=(const ReferenceEntry& otherRef)
         return *this;
     }
     setObject(otherRef.getObject());
-    setSubName(otherRef.getSubName(true));
+    setSubName(otherRef.getSubName());
     setObjectName(otherRef.getObjectName());
     setDocument(otherRef.getDocument());
     return *this;
@@ -98,6 +94,8 @@ bool ReferenceEntry::operator==(const ReferenceEntry& otherRef) const
 
 TopoDS_Shape ReferenceEntry::getGeometry() const
 {
+    // Base::Console().Message("RE::getGeometry() - objectName: %s  sub: **%s**\n",
+    //                        getObjectName(), getSubName());
     // first, make sure the object has not been deleted!
     App::DocumentObject* obj = getDocument()->getObject(getObjectName().c_str());
     if (!obj) {
@@ -114,13 +112,24 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
     }
 
     // 3d geometry
-    return ShapeFinder::getLocatedShape(*getObject(), getSubName(true));
+    Part::TopoShape shape = Part::Feature::getTopoShape(getObject());
+    auto geoFeat = getObject<App::GeoFeature>();
+    if (geoFeat) {
+        shape.setPlacement(geoFeat->globalPlacement());
+    }
+
+    if (getSubName().empty()) {
+        return shape.getShape();
+    }
+    // TODO: what happens if the subelement is no longer present?
+    return shape.getSubShape(getSubName().c_str());
 }
 
 
 //! get a shape for this 2d reference
 TopoDS_Shape ReferenceEntry::getGeometry2d() const
 {
+    // Base::Console().Message("RE::getGeometry2d()\n");
     std::string gType;
     try {
         auto dvp = getObject<TechDraw::DrawViewPart>();   //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
@@ -151,6 +160,7 @@ TopoDS_Shape ReferenceEntry::getGeometry2d() const
     }
     catch (...) {
         Base::Console().Message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **%s**\n", gType.c_str());
+        return {};
     }
 
     return {};
@@ -162,8 +172,12 @@ std::string ReferenceEntry::getSubName(bool longForm) const
     if (longForm) {
         return m_subName;
     }
-
-    return ShapeFinder::getLastTerm(m_subName);
+    std::string workingSubName(m_subName);
+    size_t lastDot = workingSubName.rfind('.');
+    if (lastDot != std::string::npos) {
+        workingSubName = workingSubName.substr(lastDot + 1);
+    }
+    return workingSubName;
 }
 
 
@@ -184,8 +198,10 @@ App::DocumentObject* ReferenceEntry::getObject() const
 //! return the reference geometry as a Part::TopoShape.
 Part::TopoShape ReferenceEntry::asTopoShape() const
 {
+    // Base::Console().Message("RE::asTopoShape()\n");
     TopoDS_Shape geom = getGeometry();
     if (geom.IsNull()) {
+        // throw Base::RuntimeError("Dimension Reference has null geometry");
         return {};
     }
     if (geom.ShapeType() == TopAbs_VERTEX) {
@@ -206,6 +222,7 @@ Part::TopoShape ReferenceEntry::asTopoShape() const
 //! returns unscaled, unrotated version of inShape. inShape is assumed to be a 2d shape, but this is not enforced.
 Part::TopoShape ReferenceEntry::asCanonicalTopoShape() const
 {
+    // Base::Console().Message("RE::asCanonicalTopoShape()\n");
     if (is3d()) {
         return asTopoShape();
     }
@@ -223,6 +240,7 @@ Part::TopoShape ReferenceEntry::asCanonicalTopoShape() const
 //! operations.
 Part::TopoShape ReferenceEntry::asCanonicalTopoShape(const Part::TopoShape& inShape, const DrawViewPart& dvp)
 {
+    // Base::Console().Message("RE::(static)asCanonicalTopoShape()\n");
     gp_Ax2 OXYZ;
     auto unscaledShape = SU::scaleShape(inShape.getShape(), 1.0 / dvp.getScale());
     if (dvp.Rotation.getValue() != 0.0) {
@@ -252,6 +270,7 @@ Part::TopoShape ReferenceEntry::asTopoShapeFace(const TopoDS_Face &face)
 
 std::string ReferenceEntry::geomType() const
 {
+    // Base::Console().Message("RE::geomType() - subName: **%s**\n", getSubName().c_str());
     return DrawUtil::getGeomTypeFromName(getSubName());
 }
 
@@ -276,21 +295,14 @@ bool ReferenceEntry::isWholeObject() const
 //! true if this reference point to 3d model geometry
 bool ReferenceEntry::is3d() const
 {
-    if (getObject() &&
-        getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
-        !getSubName().empty()) {
-        // this is a well formed 2d reference
+    if (!getObject()) {
+        // we should really fail here?
+        return false;
+    }
+    if (getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         return false;
     }
 
-    if (getObject() &&
-        getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
-        getSubName().empty()) {
-        // this is a broken 3d reference, so it should be treated as 3d
-        return true;
-    }
-
-    // either we have no object or we have an object and it is a 3d object
     return true;
 }
 
@@ -298,6 +310,7 @@ bool ReferenceEntry::is3d() const
 //! true if the target of this reference has a shape
 bool ReferenceEntry::hasGeometry() const
 {
+    // Base::Console().Message("RE::hasGeometry()\n");
     if (!getObject()) {
         return false;
     }
@@ -308,7 +321,6 @@ bool ReferenceEntry::hasGeometry() const
     }
 
     // 3d reference
-    // TODO: shouldn't this be ShapeFinder.getLocatedShape?
     auto shape = Part::Feature::getTopoShape(getObject());
     auto subShape = shape.getSubShape(getSubName().c_str());
 
