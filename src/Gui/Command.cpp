@@ -380,7 +380,7 @@ void Command::setupCheckable(int iMsg) {
         }
         bool wasBlocked = action->blockSignals(true);
         action->setChecked(checked);
-        if (!wasBlocked) // if previus was true doesn't change
+        if (!wasBlocked) // if the original block signal value was true, we do nothing
             action->blockSignals(wasBlocked);
         if(action!=_pcAction->action())
             _pcAction->setChecked(checked,true);
