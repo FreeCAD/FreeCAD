@@ -1756,14 +1756,14 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
     try {
         if (item->type() == TreeWidget::DocumentType) {
             Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
-            if (doc) {
-                if (doc->getDocument()->testStatus(App::Document::PartialDoc)) {
-                    contextItem = item;
-                    onReloadDoc();
-                }
-                else if (!doc->setActiveView()) {
-                    doc->setActiveView(nullptr, View3DInventor::getClassTypeId());
-                }
+            if (!doc)
+                return;
+            if (doc->getDocument()->testStatus(App::Document::PartialDoc)) {
+                contextItem = item;
+                onReloadDoc();
+            }
+            else if (!doc->setActiveView()) {
+                doc->setActiveView(nullptr, View3DInventor::getClassTypeId());
             }
         }
         else if (item->type() == TreeWidget::ObjectType) {

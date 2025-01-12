@@ -360,29 +360,30 @@ void Command::setupCheckable(int iMsg) {
     }else
         action = _pcAction->action();
 
-    if (action) {
-        bool checkable = action->isCheckable();
-        _pcAction->setCheckable(checkable);
-        if(checkable) {
-            bool checked = false;
-            switch(triggerSource()) {
-            case TriggerNone:
-                checked = !action->isChecked();
-                break;
-            case TriggerAction:
-                checked = _pcAction->isChecked();
-                break;
-            case TriggerChildAction:
-                checked = action->isChecked();
-                break;
-            }
-            bool wasBlocked = action->blockSignals(true);
-            action->setChecked(checked);
-            if (!wasBlocked) // if previus was true doesn't change
-                action->blockSignals(wasBlocked);
-            if(action!=_pcAction->action())
-                _pcAction->setChecked(checked,true);
+    if(!action)
+        return;
+
+    bool checkable = action->isCheckable();
+    _pcAction->setCheckable(checkable);
+    if(checkable) {
+        bool checked = false;
+        switch(triggerSource()) {
+        case TriggerNone:
+            checked = !action->isChecked();
+            break;
+        case TriggerAction:
+            checked = _pcAction->isChecked();
+            break;
+        case TriggerChildAction:
+            checked = action->isChecked();
+            break;
         }
+        bool wasBlocked = action->blockSignals(true);
+        action->setChecked(checked);
+        if (!wasBlocked) // if previus was true doesn't change
+            action->blockSignals(wasBlocked);
+        if(action!=_pcAction->action())
+            _pcAction->setChecked(checked,true);
     }
 
 }
