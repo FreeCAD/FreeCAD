@@ -992,6 +992,10 @@ QAbstractSpinBox:up-button {
   margin-bottom:-1px;
 }
 
+QAbstractSpinBox:up-button:disabled {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #444444);
+}
+
 QAbstractSpinBox::up-arrow, QAbstractSpinBox::up-arrow:disabled, QAbstractSpinBox::up-arrow:off {
   image: url(qss:images_classic/arrow-up-lightgray.png);
   height: 8px;
@@ -1017,6 +1021,10 @@ QAbstractSpinBox:down-button {
   margin-top:-1px;
 }
 
+QAbstractSpinBox:down-button:disabled {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #444444);
+}
+
 QAbstractSpinBox::down-arrow, QAbstractSpinBox::down-arrow:disabled, QAbstractSpinBox::down-arrow:off {
   image: url(qss:images_classic/arrow-down-lightgray.png);
   height: 8px;
@@ -1027,6 +1035,10 @@ QAbstractSpinBox::down-arrow:hover {
   image: url(qss:images_classic/arrow-down-white.png);
   height: 8px;
   width: 8px;
+}
+
+QAbstractSpinBox:disabled {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #444444);
 }
 
 QAbstractSpinBox:hover {
