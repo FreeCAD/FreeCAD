@@ -335,7 +335,7 @@ class SH3DImporter:
         if App.GuiUp:
             Gui.updateGui()
 
-    def set_property(self, obj, type_, name, description, value, valid_values=None):
+    def set_property(self, obj, type_, name, description, value, valid_values=None, group="SweetHome3D"):
         """Set the attribute of the given object as an FC property
 
         Note that the method has a default behavior when the value is not specified.
@@ -349,7 +349,7 @@ class SH3DImporter:
             valid_values (list): an optional list of valid values
         """
 
-        self._add_property(obj, type_, name, description)
+        self._add_property(obj, type_, name, description, group)
         if valid_values:
             setattr(obj, name, valid_values)
         if value is None:
@@ -368,7 +368,7 @@ class SH3DImporter:
             _log(f"Setting @{obj}.{name} = {value}")
         setattr(obj, name, value)
 
-    def _add_property(self, obj, property_type, name, description):
+    def _add_property(self, obj, property_type, name, description, group="SweetHome3D"):
         """Add an property to the FC object.
 
         All properties will be added under the 'SweetHome3D' group
@@ -380,7 +380,7 @@ class SH3DImporter:
             description (str): a short description of the property to add
         """
         if name not in obj.PropertiesList:
-            obj.addProperty(property_type, name, "SweetHome3D", description)
+            obj.addProperty(property_type, name, group, description)
 
     def get_fc_object(self, id, sh_type):
         """Returns the FC doc element corresponding to the imported id and sh_type
@@ -747,6 +747,7 @@ class WallHandler(BaseHandler):
         if base_object:
             floor.addObject(base_object)
             base_object.Visibility = False
+            base_object.Label = base_object.Label + "-" + wall.Label
 
         self.importer.add_wall(wall)
 
@@ -818,17 +819,19 @@ class WallHandler(BaseHandler):
         # See https://github.com/FreeCAD/FreeCAD/issues/18658 and related OCCT
         #   ticket
         if (sweep.Shape.isNull() or not sweep.Shape.isValid()):
-            if not is_wall_straight:
-                _wrn(f"Sweep's shape is not valid, but mitigation is not available!")
-                wall = Arch.makeWall(sweep)
-            else:
-                _wrn(f"Sweep's shape is not valid. Using ruled surface instead ...")
+            if is_wall_straight:
+                _log(f"Sweep's shape is invalid, using ruled surface instead ...")
                 App.ActiveDocument.removeObject(sweep.Label)
                 compound_solid, base_object = self._make_compound(section_start, section_end, spine)
                 wall = Arch.makeWall(compound_solid)
+            else:
+                _wrn(f"Sweep's shape is invalid, but mitigation is not available!")
+                wall = Arch.makeWall(sweep)
         else:
             wall = Arch.makeWall(sweep)
+
         wall.Length = spine.Length
+
         return wall, base_object
 
     def _make_sweep(self, section_start, section_end, spine):
@@ -878,7 +881,6 @@ class WallHandler(BaseHandler):
 
         compound_solid = App.ActiveDocument.addObject("Part::Feature")
         compound_solid.Shape = Part.Solid(Part.Shell(compound.Shape.Faces))
-        compound_solid.Label = compound_solid.Label + "-mitigation"
 
         return compound_solid, compound
 
@@ -961,10 +963,17 @@ class WallHandler(BaseHandler):
         # direction in xYz coordinate system). We therefore need to invert
         # the start and end angle (as in SweetHome the wall is drawn in
         # clockwise fashion).
+        length = 0
         if invert_angle:
             spine = Draft.makeCircle(radius, placement, False, a1, a2)
+            length = abs(radius * math.radians(a2 - a1))
         else:
             spine = Draft.makeCircle(radius, placement, False, a2, a1)
+            length = abs(radius * math.radians(a1 - a2))
+
+        # The Length property is used in the Wall to calculate volume, etc...
+        # Since make Circle does not calculate this Length I calculate it here...
+        self.importer.set_property(spine, "App::PropertyFloat", "Length", "The length of the Arc", length, group="Draft")
 
         App.ActiveDocument.recompute([section_start, section_end, spine])
         if self.importer.preferences["DEBUG"]:
