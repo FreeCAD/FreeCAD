@@ -345,7 +345,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Kérjük, válasszon egy önállóan elhelyezett tárgyat a hely meghatározásához.</translation>
+      <translation>Kérjük, válasszon egy önállóan elhelyezett objektumot a hely meghatározásához.</translation>
     </message>
   </context>
   <context>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>B-görbe felület illesztése</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

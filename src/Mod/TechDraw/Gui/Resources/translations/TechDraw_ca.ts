@@ -4,7 +4,7 @@
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="654"/>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>Afegeix una línia central entre 2 línies</translation>
     </message>
@@ -12,7 +12,7 @@
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="658"/>
+      <location filename="../../CommandAnnotate.cpp" line="663"/>
       <source>Add Centerline between 2 Points</source>
       <translation>Afegeix una línia central entre 2 punts</translation>
     </message>
@@ -20,7 +20,7 @@
   <context>
     <name>CmdMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="287"/>
+      <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Add Midpoint Vertices</source>
       <translation>Afegeix vèrtex de punt central</translation>
     </message>
@@ -28,7 +28,7 @@
   <context>
     <name>CmdQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="291"/>
+      <location filename="../../CommandAnnotate.cpp" line="289"/>
       <source>Add Quadrant Vertices</source>
       <translation>Afegeix vèrtexs de quadrant</translation>
     </message>
@@ -36,12 +36,12 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="790"/>
+      <location filename="../../CommandAnnotate.cpp" line="795"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="791"/>
+      <location filename="../../CommandAnnotate.cpp" line="796"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>Afegeix una línia central entre 2 línies</translation>
     </message>
@@ -49,12 +49,12 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="865"/>
+      <location filename="../../CommandAnnotate.cpp" line="870"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="866"/>
+      <location filename="../../CommandAnnotate.cpp" line="871"/>
       <source>Add Centerline between 2 Points</source>
       <translation>Afegeix una línia central entre 2 punts</translation>
     </message>
@@ -62,12 +62,12 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="983"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="979"/>
+      <location filename="../../CommandAnnotate.cpp" line="984"/>
       <source>Add Cosmetic Line Through 2 Points</source>
       <translation>Afegeix una línia cosmètica amb 2 punts</translation>
     </message>
@@ -88,12 +88,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="688"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>Insert Active View (3D View)</source>
       <translation>Insereix una vista activa (vista 3D)</translation>
     </message>
@@ -114,12 +114,12 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="533"/>
+      <location filename="../../CommandAnnotate.cpp" line="531"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="534"/>
+      <location filename="../../CommandAnnotate.cpp" line="532"/>
       <source>Insert Annotation</source>
       <translation>Insereix una anotació</translation>
     </message>
@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1640"/>
+      <location filename="../../Command.cpp" line="1662"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1641"/>
+      <location filename="../../Command.cpp" line="1663"/>
       <source>Insert BIM Workbench Object</source>
       <translation>Insereix un objecte del banc de treball de BIM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1642"/>
+      <location filename="../../Command.cpp" line="1664"/>
       <source>Insert a View of a Section Plane from BIM Workbench</source>
       <translation>Insereix una vista d'un pla de secció des d'un banc de treball de BIM</translation>
     </message>
@@ -145,12 +145,12 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1264"/>
+      <location filename="../../Command.cpp" line="1276"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1265"/>
+      <location filename="../../Command.cpp" line="1277"/>
       <source>Insert Balloon Annotation</source>
       <translation>Insereix una anotació en un globus</translation>
     </message>
@@ -158,17 +158,17 @@
   <context>
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="576"/>
+      <location filename="../../CommandAnnotate.cpp" line="581"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="577"/>
+      <location filename="../../CommandAnnotate.cpp" line="582"/>
       <source>Insert Center Line</source>
       <translation>Insereix Línia Central</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="650"/>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Add Centerline to Faces</source>
       <translation>Afegeix una línia central a les cares</translation>
     </message>
@@ -176,12 +176,12 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1328"/>
+      <location filename="../../Command.cpp" line="1340"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1341"/>
       <source>Insert Clip Group</source>
       <translation>Insereix un grup clip</translation>
     </message>
@@ -189,12 +189,12 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1365"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Add View to Clip Group</source>
       <translation>Afegeix una vista al grup clip</translation>
     </message>
@@ -202,12 +202,12 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1449"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Remove View from Clip Group</source>
       <translation>Lleva una vista del ClipGroup</translation>
     </message>
@@ -215,17 +215,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="872"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Insert Complex Section View</source>
       <translation>Insereix una vista de secció complexa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Insert a Complex Section View</source>
       <translation>Insereix una vista de secció complexa</translation>
     </message>
@@ -233,12 +233,12 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1283"/>
+      <location filename="../../CommandAnnotate.cpp" line="1288"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1284"/>
+      <location filename="../../CommandAnnotate.cpp" line="1289"/>
       <source>Remove Cosmetic Object</source>
       <translation>Lleva un objecte cosmètic</translation>
     </message>
@@ -246,12 +246,12 @@
   <context>
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="394"/>
+      <location filename="../../CommandAnnotate.cpp" line="392"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="395"/>
+      <location filename="../../CommandAnnotate.cpp" line="393"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Afegeix un vèrtex cosmètic</translation>
     </message>
@@ -259,17 +259,17 @@
   <context>
     <name>CmdTechDrawCosmeticVertexGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="207"/>
+      <location filename="../../CommandAnnotate.cpp" line="205"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="208"/>
+      <location filename="../../CommandAnnotate.cpp" line="206"/>
       <source>Insert Cosmetic Vertex</source>
       <translation>Insereix un vèrtex cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="283"/>
+      <location filename="../../CommandAnnotate.cpp" line="281"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Afegeix un vèrtex cosmètic</translation>
     </message>
@@ -277,17 +277,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1401"/>
+      <location filename="../../CommandAnnotate.cpp" line="1406"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1402"/>
+      <location filename="../../CommandAnnotate.cpp" line="1407"/>
       <source>Change Appearance of Lines</source>
       <translation>Canvia l'aparença de les línies</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1403"/>
+      <location filename="../../CommandAnnotate.cpp" line="1408"/>
       <source>Change Appearance of selected Lines</source>
       <translation>Canvia l'aparença de les línies seleccionades</translation>
     </message>
@@ -295,12 +295,12 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="998"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="999"/>
+      <location filename="../../Command.cpp" line="1011"/>
       <source>Insert Detail View</source>
       <translation>Insereix una vista de detall</translation>
     </message>
@@ -343,17 +343,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1577"/>
+      <location filename="../../Command.cpp" line="1599"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1578"/>
+      <location filename="../../Command.cpp" line="1600"/>
       <source>Insert Draft Workbench Object</source>
       <translation>Insereix un objecte del banc de treball d'Esbós</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>Insereix una vista d'un objecte del banc de treball d'esbós</translation>
     </message>
@@ -361,35 +361,30 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1816"/>
+      <location filename="../../Command.cpp" line="1849"/>
       <source>File</source>
       <translation>Fitxer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1817"/>
+      <location filename="../../Command.cpp" line="1850"/>
       <source>Export Page as DXF</source>
       <translation>Exporta la pàgina com a DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1851"/>
+      <location filename="../../Command.cpp" line="1884"/>
       <source>Save DXF file</source>
       <translation>Desa el fitxer DXF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1852"/>
-      <source>DXF (*.dxf)</source>
-      <translation>DXF (*.dxf)</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1775"/>
+      <location filename="../../Command.cpp" line="1806"/>
       <source>File</source>
       <translation>Fitxer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1776"/>
+      <location filename="../../Command.cpp" line="1807"/>
       <source>Export Page as SVG</source>
       <translation>Exportar una pàgina com a SVG</translation>
     </message>
@@ -397,17 +392,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1662"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1661"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1663"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1662"/>
       <source>Extend Line</source>
       <translation>Estén una línia</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1664"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1663"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Esteneu una línia cosmètica o una línia central als dos extrems:
 - Especifiqueu la distància delta (opcional)
@@ -418,17 +413,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1767"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
       <source>Calculate the area of selected faces</source>
       <translation>Calcula l'àrea de les cares seleccionades</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1768"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1767"/>
       <source>Select several faces then click this tool</source>
       <translation>Seleccioneu diverses cares i després feu clic a aquesta eina</translation>
     </message>
@@ -550,17 +545,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionChangeLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="780"/>
+      <location filename="../../CommandExtensionPack.cpp" line="779"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="781"/>
+      <location filename="../../CommandExtensionPack.cpp" line="780"/>
       <source>Change Line Attributes</source>
       <translation>Canvia els atributs de la línia</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="782"/>
+      <location filename="../../CommandExtensionPack.cpp" line="781"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
       <translation>Canvieu els atributs de les línies cosmètiques i les línies centrals:
 - Especifiqueu els atributs de la línia (opcional)
@@ -571,19 +566,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionCircleCenterLines</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="248"/>
+      <location filename="../../CommandExtensionPack.cpp" line="247"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="249"/>
-      <location filename="../../CommandExtensionPack.cpp" line="352"/>
+      <location filename="../../CommandExtensionPack.cpp" line="248"/>
+      <location filename="../../CommandExtensionPack.cpp" line="351"/>
       <source>Add Circle Centerlines</source>
       <translation>Afegeix línies centrals del cercle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="250"/>
-      <location filename="../../CommandExtensionPack.cpp" line="353"/>
+      <location filename="../../CommandExtensionPack.cpp" line="249"/>
+      <location filename="../../CommandExtensionPack.cpp" line="352"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Afegeix línies centrals als cercles i arcs:
 - Especifiqueu els atributs de la línia (opcional)
@@ -594,17 +589,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionCircleCenterLinesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="282"/>
+      <location filename="../../CommandExtensionPack.cpp" line="281"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="283"/>
+      <location filename="../../CommandExtensionPack.cpp" line="282"/>
       <source>Add Circle Centerlines</source>
       <translation>Afegeix línies centrals del cercle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="284"/>
+      <location filename="../../CommandExtensionPack.cpp" line="283"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Afegeix línies centrals als cercles i arcs:
 - Especifiqueu els atributs de la línia (opcional)
@@ -903,17 +898,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionDrawCirclesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1106"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1105"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1107"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1106"/>
       <source>Add Cosmetic Circle</source>
       <translation>Afegeix un cercle cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1108"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1107"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Afegiu un cercle cosmètic basat en dos vèrtexs:
 - Especifiqueu els atributs de la línia (opcional)
@@ -925,19 +920,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionDrawCosmArc</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="941"/>
+      <location filename="../../CommandExtensionPack.cpp" line="940"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="942"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1194"/>
+      <location filename="../../CommandExtensionPack.cpp" line="941"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1193"/>
       <source>Add Cosmetic Arc</source>
       <translation>Afegeix un arc cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="943"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1196"/>
+      <location filename="../../CommandExtensionPack.cpp" line="942"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1195"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
       <translation>Afegiu un arc estètic en sentit contrari a les agulles del rellotge basat en tres vèrtexs:
 - Especifiqueu els atributs de la línia (opcional)
@@ -950,19 +945,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1005"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1004"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1006"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1185"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1005"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1184"/>
       <source>Add Cosmetic Circle</source>
       <translation>Afegeix un cercle cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1007"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1186"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1006"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1185"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Afegiu un cercle cosmètic basat en dos vèrtexs:
 - Especifiqueu els atributs de la línia (opcional)
@@ -974,18 +969,18 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle3Points</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1070"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1072"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1205"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1204"/>
       <source>Add Cosmetic Circle 3 Points</source>
       <translation>Afegeix Cercle Cosmètic amb 3 punts</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1073"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1072"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
       <translation>Afegiu un cercle cosmètic basat en tres vèrtexs:
 - Especifiqueu els atributs de la línia (opcional)
@@ -993,7 +988,7 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
 - Feu clic a aquesta eina</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1207"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1206"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
       <translation>Afegiu un cercle cosmètic basat en tres vèrtexs:
 - Especifiqueu els atributs de la línia (opcional)
@@ -1004,19 +999,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1592"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1591"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1732"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1592"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1731"/>
       <source>Extend Line</source>
       <translation>Estén una línia</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1594"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1733"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1593"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1732"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Esteneu una línia cosmètica o una línia central als dos extrems:
 - Especifiqueu la distància delta (opcional)
@@ -1027,19 +1022,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionHoleCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="172"/>
+      <location filename="../../CommandExtensionPack.cpp" line="171"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="173"/>
-      <location filename="../../CommandExtensionPack.cpp" line="361"/>
+      <location filename="../../CommandExtensionPack.cpp" line="172"/>
+      <location filename="../../CommandExtensionPack.cpp" line="360"/>
       <source>Add Bolt Circle Centerlines</source>
       <translation>Afegeix línies centrals de cercle de cargols</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="174"/>
-      <location filename="../../CommandExtensionPack.cpp" line="362"/>
+      <location filename="../../CommandExtensionPack.cpp" line="173"/>
+      <location filename="../../CommandExtensionPack.cpp" line="361"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
       <translation>Afegiu línies centrals a un patró circular de cercles:
 - Especifiqueu els atributs de la línia (opcional)
@@ -1156,17 +1151,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionLinePPGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1356"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1355"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1357"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1356"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Afegeix una línia paral·lela cosmètica</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1358"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1357"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Afegiu una línia paral·lela cosmètica a una altra línia a través d'un vèrtex:
 - Seleccioneu una línia
@@ -1177,19 +1172,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionLineParallel</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1287"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1286"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1288"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1427"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1287"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1426"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Afegeix una línia paral·lela cosmètica</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1289"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1429"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1288"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1428"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Afegiu una línia paral·lela cosmètica a una altra línia a través d'un vèrtex:
 - Seleccioneu una línia
@@ -1200,19 +1195,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionLinePerpendicular</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1321"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1320"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1322"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1436"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1321"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1435"/>
       <source>Add Cosmetic Perpendicular Line</source>
       <translation>Afegeix una línia perpendicular cosmètica</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1324"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1438"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1323"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1437"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Afegiu una línia perpendicular cosmètica a una altra línia a través d'un vèrtex:
 - Seleccioneu una línia
@@ -1223,17 +1218,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionLockUnlockView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1464"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1463"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1465"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1464"/>
       <source>Lock/Unlock View</source>
       <translation>Bloquejar/Desbloquejar vista</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1466"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1465"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
       <translation>Bloquejar o desbloquejar la posició d'una vista:
 - Seleccioneu una sola vista
@@ -1353,17 +1348,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionSelectLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="745"/>
+      <location filename="../../CommandExtensionPack.cpp" line="744"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="746"/>
+      <location filename="../../CommandExtensionPack.cpp" line="745"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
       <translation>Seleccioneu Atributs de línia, Espaiat en cascada i Distància delta</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="747"/>
+      <location filename="../../CommandExtensionPack.cpp" line="746"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
       <translation>Seleccioneu els atributs per a línies i línies centrals noves, i especifiqueu l'espaiat en cascada i la distància delta:
 - Feu clic a aquesta eina
@@ -1374,19 +1369,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1627"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1626"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1628"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1740"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1627"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1739"/>
       <source>Shorten Line</source>
       <translation>Escurçar línia</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1629"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1741"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1628"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1740"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Escorceu una línia cosmètica o una línia central als dos extrems:
 - Especifiqueu la distància delta (opcional)
@@ -1397,19 +1392,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionThreadBoltBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="569"/>
+      <location filename="../../CommandExtensionPack.cpp" line="568"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="570"/>
-      <location filename="../../CommandExtensionPack.cpp" line="717"/>
+      <location filename="../../CommandExtensionPack.cpp" line="569"/>
+      <location filename="../../CommandExtensionPack.cpp" line="716"/>
       <source>Add Cosmetic Thread Bolt Bottom View</source>
       <translation>Afegeix la vista inferior del cargol de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="572"/>
-      <location filename="../../CommandExtensionPack.cpp" line="719"/>
+      <location filename="../../CommandExtensionPack.cpp" line="571"/>
+      <location filename="../../CommandExtensionPack.cpp" line="718"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Afegiu una rosca estètica a la vista superior o inferior de cargols/cargols/barres:
 - Especifiqueu els atributs de la línia (opcional)
@@ -1420,19 +1415,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionThreadBoltSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="461"/>
+      <location filename="../../CommandExtensionPack.cpp" line="460"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="462"/>
-      <location filename="../../CommandExtensionPack.cpp" line="707"/>
+      <location filename="../../CommandExtensionPack.cpp" line="461"/>
+      <location filename="../../CommandExtensionPack.cpp" line="706"/>
       <source>Add Cosmetic Thread Bolt Side View</source>
       <translation>Afegeix la vista lateral del cargol de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="463"/>
-      <location filename="../../CommandExtensionPack.cpp" line="710"/>
+      <location filename="../../CommandExtensionPack.cpp" line="462"/>
+      <location filename="../../CommandExtensionPack.cpp" line="709"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Afegiu una rosca cosmètica a la vista lateral d'un cargol/cargol/barra:
 - Especifiqueu els atributs de la línia (opcional)
@@ -1443,19 +1438,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionThreadHoleBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="515"/>
+      <location filename="../../CommandExtensionPack.cpp" line="514"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="516"/>
-      <location filename="../../CommandExtensionPack.cpp" line="697"/>
+      <location filename="../../CommandExtensionPack.cpp" line="515"/>
+      <location filename="../../CommandExtensionPack.cpp" line="696"/>
       <source>Add Cosmetic Thread Hole Bottom View</source>
       <translation>Afegeix la vista inferior del forat de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="517"/>
-      <location filename="../../CommandExtensionPack.cpp" line="700"/>
+      <location filename="../../CommandExtensionPack.cpp" line="516"/>
+      <location filename="../../CommandExtensionPack.cpp" line="699"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Afegiu una rosca estètica a la vista superior o inferior dels forats:
 - Especifiqueu els atributs de la línia (opcional)
@@ -1466,19 +1461,19 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionThreadHoleSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="407"/>
+      <location filename="../../CommandExtensionPack.cpp" line="406"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="408"/>
-      <location filename="../../CommandExtensionPack.cpp" line="688"/>
+      <location filename="../../CommandExtensionPack.cpp" line="407"/>
+      <location filename="../../CommandExtensionPack.cpp" line="687"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Afegeix la vista lateral del forat de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="409"/>
-      <location filename="../../CommandExtensionPack.cpp" line="690"/>
+      <location filename="../../CommandExtensionPack.cpp" line="408"/>
+      <location filename="../../CommandExtensionPack.cpp" line="689"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Afegiu una rosca cosmètica a la vista lateral d'un forat:
 - Especifiqueu els atributs de la línia (opcional)
@@ -1489,17 +1484,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionThreadsGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="604"/>
+      <location filename="../../CommandExtensionPack.cpp" line="603"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="605"/>
+      <location filename="../../CommandExtensionPack.cpp" line="604"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Afegeix la vista lateral del forat de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="606"/>
+      <location filename="../../CommandExtensionPack.cpp" line="605"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Afegiu una rosca cosmètica a la vista lateral d'un forat:
 - Especifiqueu els atributs de la línia (opcional)
@@ -1510,17 +1505,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawExtensionVertexAtIntersection</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="841"/>
+      <location filename="../../CommandExtensionPack.cpp" line="840"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="842"/>
+      <location filename="../../CommandExtensionPack.cpp" line="841"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
       <translation>Afegeix vèrtexs d'intersecció cosmètics</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="844"/>
+      <location filename="../../CommandExtensionPack.cpp" line="843"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</source>
       <translation>Afegiu vèrtexs cosmètics a la intersecció de les vores seleccionades:
 - Seleccioneu dues vores
@@ -1553,12 +1548,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="679"/>
+      <location filename="../../CommandAnnotate.cpp" line="684"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="680"/>
+      <location filename="../../CommandAnnotate.cpp" line="685"/>
       <source>Add Centerline to Faces</source>
       <translation>Afegeix una línia central a les cares</translation>
     </message>
@@ -1566,12 +1561,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="171"/>
+      <location filename="../../CommandDecorate.cpp" line="172"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="172"/>
+      <location filename="../../CommandDecorate.cpp" line="173"/>
       <source>Apply Geometric Hatch to Face</source>
       <translation>Aplica trama geomètrica a la cara</translation>
     </message>
@@ -1579,12 +1574,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="75"/>
+      <location filename="../../CommandDecorate.cpp" line="76"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="76"/>
+      <location filename="../../CommandDecorate.cpp" line="77"/>
       <source>Hatch a Face using Image File</source>
       <translation>Tramat d'una cara utilitzant un fitxer d'imatge</translation>
     </message>
@@ -1618,28 +1613,28 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="242"/>
+      <location filename="../../CommandDecorate.cpp" line="243"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="243"/>
+      <location filename="../../CommandDecorate.cpp" line="244"/>
       <source>Insert Bitmap Image</source>
       <translation>Insereix una imatge de mapa de bits</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="244"/>
-      <location filename="../../CommandDecorate.cpp" line="246"/>
+      <location filename="../../CommandDecorate.cpp" line="245"/>
+      <location filename="../../CommandDecorate.cpp" line="247"/>
       <source>Insert Bitmap from a file into a page</source>
       <translation>Insereix una imatge de mapa de bits d'un fitxer en una pàgina</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="261"/>
+      <location filename="../../CommandDecorate.cpp" line="262"/>
       <source>Select an Image File</source>
       <translation>Selecciona un fitxer d'imatge</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="263"/>
+      <location filename="../../CommandDecorate.cpp" line="264"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>Fitxers d'imatge (*.jpg *.jpeg *.png *.bmp);;Tots els fitxers (*)</translation>
     </message>
@@ -1660,12 +1655,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawLeaderLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="93"/>
+      <location filename="../../CommandAnnotate.cpp" line="91"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="94"/>
+      <location filename="../../CommandAnnotate.cpp" line="92"/>
       <source>Add Leaderline to View</source>
       <translation>Afegeix un línia guia a la vista</translation>
     </message>
@@ -1699,12 +1694,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="455"/>
+      <location filename="../../CommandAnnotate.cpp" line="453"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="456"/>
+      <location filename="../../CommandAnnotate.cpp" line="454"/>
       <source>Add Midpoint Vertices</source>
       <translation>Afegeix vèrtex de punt central</translation>
     </message>
@@ -1712,12 +1707,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawPageDefault</name>
     <message>
-      <location filename="../../Command.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="109"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Insert Default Page</source>
       <translation>Insereix una pàgina per defecte</translation>
     </message>
@@ -1725,22 +1720,22 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="170"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="171"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Insert Page using Template</source>
       <translation>Insereix una pàgina utilitzant una plantilla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Select a Template File</source>
       <translation>Selecciona un fitxer de plantilla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Template (*.svg)</source>
       <translation>Plantilla (*.svg)</translation>
     </message>
@@ -1748,12 +1743,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawPrintAll</name>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Print All Pages</source>
       <translation>Imprimir totes les pàgines</translation>
     </message>
@@ -1761,12 +1756,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1880"/>
+      <location filename="../../Command.cpp" line="1913"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1881"/>
+      <location filename="../../Command.cpp" line="1914"/>
       <source>Project shape...</source>
       <translation>Projecta la forma...</translation>
     </message>
@@ -1774,17 +1769,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1042"/>
+      <location filename="../../Command.cpp" line="1054"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1043"/>
+      <location filename="../../Command.cpp" line="1055"/>
       <source>Insert Projection Group</source>
       <translation>Insereix un grup de projeccions</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1044"/>
+      <location filename="../../Command.cpp" line="1056"/>
       <source>Insert multiple linked views of drawable object(s)</source>
       <translation>Insereix diverses vistes enllaçades d'objectes dibuixables</translation>
     </message>
@@ -1792,12 +1787,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="494"/>
+      <location filename="../../CommandAnnotate.cpp" line="492"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="495"/>
+      <location filename="../../CommandAnnotate.cpp" line="493"/>
       <source>Add Quadrant Vertices</source>
       <translation>Afegeix vèrtexs de quadrant</translation>
     </message>
@@ -1818,12 +1813,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Redraw Page</source>
       <translation>Torna a dibuixar una pàgina</translation>
     </message>
@@ -1831,12 +1826,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawRichTextAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="155"/>
+      <location filename="../../CommandAnnotate.cpp" line="153"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="156"/>
+      <location filename="../../CommandAnnotate.cpp" line="154"/>
       <source>Insert Rich Text Annotation</source>
       <translation>Insereix una anotació de text enriquit</translation>
     </message>
@@ -1844,22 +1839,22 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="717"/>
+      <location filename="../../Command.cpp" line="729"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="730"/>
       <source>Insert a simple or complex Section View</source>
       <translation>Insereix una vista de secció simple o complexa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="795"/>
       <source>Section View</source>
       <translation>Vista de secció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="787"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Complex Section</source>
       <translation>Secció complexa</translation>
     </message>
@@ -1867,12 +1862,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="809"/>
+      <location filename="../../Command.cpp" line="821"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="810"/>
+      <location filename="../../Command.cpp" line="822"/>
       <source>Insert Section View</source>
       <translation>Insereix una vista de secció</translation>
     </message>
@@ -1880,12 +1875,12 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1480"/>
+      <location filename="../../CommandAnnotate.cpp" line="1485"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1481"/>
+      <location filename="../../CommandAnnotate.cpp" line="1486"/>
       <source>Show/Hide Invisible Edges</source>
       <translation>Mostra/amaga les arestes invisibles</translation>
     </message>
@@ -1893,17 +1888,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../Command.cpp" line="1733"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1712"/>
+      <location filename="../../Command.cpp" line="1734"/>
       <source>Insert Spreadsheet View</source>
       <translation>Insereix una vista de full de càlcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1713"/>
+      <location filename="../../Command.cpp" line="1735"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Insereix vista a un full de càlcul</translation>
     </message>
@@ -1996,17 +1991,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1609"/>
+      <location filename="../../CommandAnnotate.cpp" line="1614"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1610"/>
+      <location filename="../../CommandAnnotate.cpp" line="1615"/>
       <source>Create a Surface Finish Symbol</source>
       <translation>Crear un símbol d'acabat superficial</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1611"/>
+      <location filename="../../CommandAnnotate.cpp" line="1616"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
       <translation>Seleccioneu una vista&lt;br&gt;    - premeu aquest botó&lt;br&gt;    - seleccioneu els atributs del símbol d'acabat superficial del panell obert</translation>
     </message>
@@ -2014,17 +2009,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1522"/>
+      <location filename="../../Command.cpp" line="1534"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1523"/>
+      <location filename="../../Command.cpp" line="1535"/>
       <source>Insert SVG Symbol</source>
       <translation>Insereix un símbol SVG</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1524"/>
+      <location filename="../../Command.cpp" line="1536"/>
       <source>Insert symbol from an SVG file</source>
       <translation>Insereix un símbol des d'un fitxer SGV</translation>
     </message>
@@ -2032,13 +2027,13 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="296"/>
+      <location filename="../../CommandDecorate.cpp" line="306"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="297"/>
-      <location filename="../../CommandDecorate.cpp" line="298"/>
+      <location filename="../../CommandDecorate.cpp" line="307"/>
+      <location filename="../../CommandDecorate.cpp" line="308"/>
       <source>Turn View Frames On/Off</source>
       <translation>Activa o desactiva els marcs de la vista</translation>
     </message>
@@ -2072,17 +2067,17 @@ En fer clic esquerre en un espai en blanc, validarà la cota actual. En fer clic
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="303"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Insert View</source>
       <translation>Insereix vista</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Insert a View in current page.
 Selected objects, spreadsheets or Arch WB section planes will be added.
 Without a selection, a file browser lets you select a SVG or image file.</source>
@@ -2090,26 +2085,16 @@ Without a selection, a file browser lets you select a SVG or image file.</source
 S'afegiran objectes, fulls de càlcul o plans de secció del banc d'Arquitectura seleccionats.
 Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'imatge o SVG.</translation>
     </message>
-    <message>
-      <location filename="../../Command.cpp" line="430"/>
-      <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
-      <translation>Si voleu inserir una vista d'objectes existents, seleccioneu-los abans d'invocar aquesta eina. Sense una selecció, s'obrirà un navegador de fitxers per inserir un fitxer SVG o d'imatge.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="431"/>
-      <source>Do not show this message again</source>
-      <translation>No tornis a mostrar aquest missatge</translation>
-    </message>
   </context>
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1545"/>
+      <location filename="../../CommandAnnotate.cpp" line="1550"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1546"/>
+      <location filename="../../CommandAnnotate.cpp" line="1551"/>
       <source>Add Welding Information to Leaderline</source>
       <translation>Afegeix la informació de soldadura a la línia guia</translation>
     </message>
@@ -2117,90 +2102,86 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="196"/>
       <source>Drawing create page</source>
       <translation>Crea una pàgina de dibuix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Create BIM View</source>
       <translation>Crear una vista BIM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="489"/>
+      <location filename="../../Command.cpp" line="501"/>
       <source>Create view</source>
       <translation>Crear vista</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="636"/>
+      <location filename="../../Command.cpp" line="648"/>
       <source>Create broken view</source>
       <translation>Crear una vista trencada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1126"/>
+      <location filename="../../Command.cpp" line="1138"/>
       <source>Create Projection Group</source>
       <translation>Crear un grup de projeccions</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1346"/>
+      <location filename="../../Command.cpp" line="1358"/>
       <source>Create Clip</source>
       <translation>Crea un salt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
-      <source>ClipGroupAdd</source>
-      <translation>Afegir al grup de retall</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1489"/>
-      <source>ClipGroupRemove</source>
-      <translation>Eliminar del grup de retall</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1859"/>
+      <location filename="../../PagePrinter.cpp" line="422"/>
+      <location filename="../../Command.cpp" line="1892"/>
       <source>Save page to DXF</source>
       <translation>Desar pàgina com a DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <location filename="../../Command.cpp" line="1550"/>
+      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Create Symbol</source>
       <translation>Crear Símbol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1613"/>
+      <location filename="../../Command.cpp" line="1430"/>
+      <source>Add clip group</source>
+      <translation type="unfinished">Add clip group</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1501"/>
+      <source>Remove clip group</source>
+      <translation type="unfinished">Remove clip group</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1635"/>
       <source>Create DraftView</source>
       <translation>Crea una vista d'Esbós</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1687"/>
+      <location filename="../../Command.cpp" line="1709"/>
       <source>Create ArchView</source>
       <translation>Crea una vista d'Arquitectura</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="347"/>
+      <location filename="../../Command.cpp" line="1759"/>
       <source>Create spreadsheet view</source>
       <translation>Crea una vista de full de càlcul</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="404"/>
-      <source>Save page to dxf</source>
-      <translation>Guardar pàgina com dxf</translation>
-    </message>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="341"/>
+      <location filename="../../CommandAnnotate.cpp" line="339"/>
       <source>Add Midpoint Vertices</source>
       <translation>Afegeix vèrtex de punt central</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="368"/>
+      <location filename="../../CommandAnnotate.cpp" line="366"/>
       <source>Add Quadrant Vertices</source>
       <translation>Afegeix vèrtexs de quadrant</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="551"/>
+      <location filename="../../CommandAnnotate.cpp" line="549"/>
       <source>Create Annotation</source>
       <translation>Crear Anotació</translation>
     </message>
@@ -2385,28 +2366,28 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Crea una cota</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="203"/>
+      <location filename="../../TaskHatch.cpp" line="202"/>
       <source>Create Hatch</source>
       <translation>Crear trama</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="240"/>
+      <location filename="../../TaskHatch.cpp" line="239"/>
       <source>Update Hatch</source>
       <translation>Actualitzar tramat</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="122"/>
+      <location filename="../../CommandDecorate.cpp" line="123"/>
       <source>Remove old Hatch</source>
       <translation>Eliminar tramat antic</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="201"/>
+      <location filename="../../CommandDecorate.cpp" line="202"/>
       <source>Create GeomHatch</source>
       <translation>Crear TramaGeom</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="271"/>
-      <location filename="../../Command.cpp" line="471"/>
+      <location filename="../../CommandDecorate.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="483"/>
       <source>Create Image</source>
       <translation>Crear imatge</translation>
     </message>
@@ -2421,12 +2402,12 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Arrossegar Dimensió</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="589"/>
+      <location filename="../../QGSPage.cpp" line="625"/>
       <source>Create Balloon</source>
       <translation>Crea un globus</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="268"/>
+      <location filename="../../TaskActiveView.cpp" line="267"/>
       <source>Create ActiveView</source>
       <translation>Crea una Vista Activa</translation>
     </message>
@@ -2451,48 +2432,48 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Actualitza la línia cosmètica</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="435"/>
+      <location filename="../../TaskDetail.cpp" line="434"/>
       <source>Create Detail View</source>
       <translation>Crea una vista de detall</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="477"/>
+      <location filename="../../TaskDetail.cpp" line="476"/>
       <source>Update Detail</source>
       <translation>Actualitza el detall</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="348"/>
+      <location filename="../../TaskLeaderLine.cpp" line="346"/>
       <source>Create Leader</source>
       <translation>Crea una línia de referència</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="437"/>
+      <location filename="../../TaskLeaderLine.cpp" line="433"/>
       <source>Edit Leader</source>
       <translation>Edita una línia de referència</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="290"/>
+      <location filename="../../TaskRichAnno.cpp" line="289"/>
       <source>Create Anno</source>
       <translation>Crea una anotació</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="352"/>
+      <location filename="../../TaskRichAnno.cpp" line="351"/>
       <source>Edit Anno</source>
       <translation>Edita una anotació</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="505"/>
+      <location filename="../../TaskSectionView.cpp" line="495"/>
       <source>Create SectionView</source>
       <translation>Crea una vista de secció</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="559"/>
       <source>Create ComplexSection</source>
       <translation>Crear secció complexa</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="653"/>
-      <location filename="../../TaskSectionView.cpp" line="586"/>
+      <location filename="../../TaskComplexSection.cpp" line="652"/>
+      <location filename="../../TaskSectionView.cpp" line="574"/>
       <source>Edit Section View</source>
       <translation>Edita la vista de secció</translation>
     </message>
@@ -2507,7 +2488,7 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Edita el Símbol de Soldadura</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="138"/>
+      <location filename="../../TaskCosVertex.cpp" line="137"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Afegeix un vèrtex cosmètic</translation>
     </message>
@@ -2612,167 +2593,167 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Crear cota de longitud de l'arc</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="107"/>
+      <location filename="../../CommandExtensionPack.cpp" line="106"/>
       <source>TechDraw Hole Circle</source>
       <translation>TechDraw Forat del cercle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="128"/>
+      <location filename="../../CommandExtensionPack.cpp" line="127"/>
       <source>Bolt Circle Centerlines</source>
       <translation>Línies centrals de cercle de cargols</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="206"/>
+      <location filename="../../CommandExtensionPack.cpp" line="205"/>
       <source>TechDraw Circle Centerlines</source>
       <translation>TechDraw Línies centrals del cercle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="209"/>
+      <location filename="../../CommandExtensionPack.cpp" line="208"/>
       <source>Circle Centerlines</source>
       <translation>Línies centrals del cercle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="387"/>
+      <location filename="../../CommandExtensionPack.cpp" line="386"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>TechDraw Costat del forat de la rosca</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="390"/>
+      <location filename="../../CommandExtensionPack.cpp" line="389"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>Costat del forat de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="441"/>
+      <location filename="../../CommandExtensionPack.cpp" line="440"/>
       <source>TechDraw Thread Bolt Side</source>
       <translation>TechDraw Costat del cargol de la rosca</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="444"/>
+      <location filename="../../CommandExtensionPack.cpp" line="443"/>
       <source>Cosmetic Thread Bolt Side</source>
       <translation>Costat del cargol de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="495"/>
+      <location filename="../../CommandExtensionPack.cpp" line="494"/>
       <source>TechDraw Thread Hole Bottom</source>
       <translation>TechDraw Fons del forat de la rosca</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="498"/>
+      <location filename="../../CommandExtensionPack.cpp" line="497"/>
       <source>Cosmetic Thread Hole Bottom</source>
       <translation>Fons del forat de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="549"/>
+      <location filename="../../CommandExtensionPack.cpp" line="548"/>
       <source>TechDraw Thread Bolt Bottom</source>
       <translation>TechDraw Fons del cargol de la rosca</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="552"/>
+      <location filename="../../CommandExtensionPack.cpp" line="551"/>
       <source>Cosmetic Thread Bolt Bottom</source>
       <translation>Fons del cargol de rosca cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="797"/>
+      <location filename="../../CommandExtensionPack.cpp" line="796"/>
       <source>TechDraw Change Line Attributes</source>
       <translation>TechDraw Canvia els atributs de la línia</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="800"/>
+      <location filename="../../CommandExtensionPack.cpp" line="799"/>
       <source>Change Line Attributes</source>
       <translation>Canvia els atributs de la línia</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="858"/>
+      <location filename="../../CommandExtensionPack.cpp" line="857"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
       <translation>TechDraw Vèrtexs d'intersecció cosmètics</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="861"/>
+      <location filename="../../CommandExtensionPack.cpp" line="860"/>
       <source>Cosmetic Intersection Vertex(es)</source>
       <translation>Vèrtexs d'intersecció cosmètics</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="904"/>
+      <location filename="../../CommandExtensionPack.cpp" line="903"/>
       <source>TechDraw Cosmetic Arc</source>
       <translation>TechDraw Arc cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="907"/>
+      <location filename="../../CommandExtensionPack.cpp" line="906"/>
       <source>Cosmetic Arc</source>
       <translation>Arc cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="977"/>
+      <location filename="../../CommandExtensionPack.cpp" line="976"/>
       <source>TechDraw Cosmetic Circle</source>
       <translation>TechDraw Cercle cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="980"/>
+      <location filename="../../CommandExtensionPack.cpp" line="979"/>
       <source>Cosmetic Circle</source>
       <translation>Cercle cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1040"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1039"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
       <translation>TechDraw Cercle cosmètic amb 3 punts</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1043"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1042"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>Cercle cosmètic amb 3 punts</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1231"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1230"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
       <translation>TechDraw Línia paral·lela/perpendicular cosmètica</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1234"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1233"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
       <translation>Línia paral·lela/perpendicular cosmètica</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1480"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1479"/>
       <source>TechDraw Lock/Unlock View</source>
       <translation>TechDraw bloquejar/desbloquejar vista</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1483"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1482"/>
       <source>Lock/Unlock View</source>
       <translation>Bloquejar/Desbloquejar vista</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1508"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1507"/>
       <source>TechDraw Extend/Shorten Line</source>
       <translation>TechDraw estendre/escurçar línia</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1511"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1510"/>
       <source>Extend/Shorten Line</source>
       <translation>Estendre/Escurçar línia</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1780"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1779"/>
       <source>TechDraw calculate selected area</source>
       <translation>TechDraw Calcular àrea seleccionada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1822"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1821"/>
       <source>Calculate Face Area</source>
       <translation>Calcular àrea de la cara</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1912"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1911"/>
       <source>TechDraw calculate selected arc length</source>
       <translation>TechDraw Calcular longitud de l'arc seleccionat</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1949"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1948"/>
       <source>Calculate Edge Length</source>
       <translation>Calcular longitud de la vora</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.cpp" line="191"/>
+      <location filename="../../TaskCustomizeFormat.cpp" line="190"/>
       <source>Customize Format</source>
       <translation>Personalitzar el format</translation>
     </message>
@@ -2782,7 +2763,7 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Símbols d'acabat superficial</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="406"/>
+      <location filename="../../TaskCenterLine.cpp" line="405"/>
       <source>Create Centerline</source>
       <translation>Crea una línia central</translation>
     </message>
@@ -2975,72 +2956,72 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Més funcions</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="100"/>
+      <location filename="../../mrichtextedit.cpp" line="99"/>
       <source>Standard</source>
       <translation>Estàndard</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="101"/>
+      <location filename="../../mrichtextedit.cpp" line="100"/>
       <source>Heading 1</source>
       <translation>Encapçalament 1</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="102"/>
+      <location filename="../../mrichtextedit.cpp" line="101"/>
       <source>Heading 2</source>
       <translation>Encapçalament 2</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="103"/>
+      <location filename="../../mrichtextedit.cpp" line="102"/>
       <source>Heading 3</source>
       <translation>Encapçalament 3</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="104"/>
+      <location filename="../../mrichtextedit.cpp" line="103"/>
       <source>Heading 4</source>
       <translation>Encapçalament 4</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="105"/>
+      <location filename="../../mrichtextedit.cpp" line="104"/>
       <source>Monospace</source>
       <translation>Monospace</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="165"/>
+      <location filename="../../mrichtextedit.cpp" line="164"/>
       <source>Remove character formatting</source>
       <translation>Lleva la formatació de caràcters</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="170"/>
+      <location filename="../../mrichtextedit.cpp" line="169"/>
       <source>Remove all formatting</source>
       <translation>Lleva tota la formatació</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="174"/>
+      <location filename="../../mrichtextedit.cpp" line="173"/>
       <source>Edit document source</source>
       <translation>Edita la font del document</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="268"/>
+      <location filename="../../mrichtextedit.cpp" line="267"/>
       <source>Document source</source>
       <translation>Font del document</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="371"/>
+      <location filename="../../mrichtextedit.cpp" line="370"/>
       <source>Create a link</source>
       <translation>Crea un enllaç</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="372"/>
+      <location filename="../../mrichtextedit.cpp" line="371"/>
       <source>Link URL:</source>
       <translation>URL de l'enllaç:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="705"/>
+      <location filename="../../mrichtextedit.cpp" line="704"/>
       <source>Select an image</source>
       <translation>Seleccioneu una imatge</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="707"/>
+      <location filename="../../mrichtextedit.cpp" line="706"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Tot (*)</translation>
     </message>
@@ -3048,216 +3029,226 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="319"/>
-      <location filename="../../CommandAnnotate.cpp" line="420"/>
-      <location filename="../../CommandAnnotate.cpp" line="1309"/>
-      <location filename="../../CommandAnnotate.cpp" line="1317"/>
-      <location filename="../../CommandAnnotate.cpp" line="1364"/>
-      <location filename="../../CommandAnnotate.cpp" line="1506"/>
-      <location filename="../../CommandAnnotate.cpp" line="1513"/>
-      <location filename="../../CommandAnnotate.cpp" line="1577"/>
+      <location filename="../../CommandAnnotate.cpp" line="317"/>
+      <location filename="../../CommandAnnotate.cpp" line="418"/>
+      <location filename="../../CommandAnnotate.cpp" line="1314"/>
+      <location filename="../../CommandAnnotate.cpp" line="1322"/>
+      <location filename="../../CommandAnnotate.cpp" line="1369"/>
+      <location filename="../../CommandAnnotate.cpp" line="1511"/>
+      <location filename="../../CommandAnnotate.cpp" line="1518"/>
+      <location filename="../../CommandAnnotate.cpp" line="1582"/>
       <location filename="../../CommandCreateDims.cpp" line="2279"/>
       <location filename="../../CommandCreateDims.cpp" line="2288"/>
-      <location filename="../../Command.cpp" line="620"/>
-      <location filename="../../Command.cpp" line="630"/>
-      <location filename="../../Command.cpp" line="846"/>
-      <location filename="../../Command.cpp" line="963"/>
-      <location filename="../../Command.cpp" line="970"/>
+      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="858"/>
       <location filename="../../Command.cpp" line="975"/>
-      <location filename="../../Command.cpp" line="1013"/>
-      <location filename="../../Command.cpp" line="1112"/>
-      <location filename="../../Command.cpp" line="1378"/>
-      <location filename="../../Command.cpp" line="1395"/>
-      <location filename="../../Command.cpp" line="1400"/>
-      <location filename="../../Command.cpp" line="1409"/>
-      <location filename="../../Command.cpp" line="1462"/>
-      <location filename="../../Command.cpp" line="1481"/>
-      <location filename="../../Command.cpp" line="1593"/>
-      <location filename="../../Command.cpp" line="1668"/>
-      <location filename="../../Command.cpp" line="1674"/>
-      <location filename="../../Command.cpp" line="1725"/>
+      <location filename="../../Command.cpp" line="982"/>
+      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="1025"/>
+      <location filename="../../Command.cpp" line="1124"/>
+      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1474"/>
+      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1696"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
-      <location filename="../../Command.cpp" line="1113"/>
+      <location filename="../../Command.cpp" line="643"/>
+      <location filename="../../Command.cpp" line="1125"/>
       <source>No Shapes, Groups or Links in this selection</source>
       <translation>No hi ha cap forma, grup ni enllaç en aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="581"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Empty selection</source>
       <translation>Selecció buida</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="430"/>
+      <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
+      <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="433"/>
+      <source>Do not show this message again</source>
+      <translation type="unfinished">Do not show this message again</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="447"/>
       <source>Select a SVG or Image file to open</source>
       <translation>Selecciona un fitxer SVG o d'Imatge per a obrir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>SVG or Image files</source>
       <translation>Fitxers SVG o d'Imatge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="582"/>
+      <location filename="../../Command.cpp" line="594"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
       <translation>Si us plau, seleccioneu objectes per trencar o una vista base i objectes de definició del trencament.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="621"/>
+      <location filename="../../Command.cpp" line="633"/>
       <source>No Break objects found in this selection</source>
       <translation>No s'ha trobat cap objecte de trencament en aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="847"/>
-      <location filename="../../Command.cpp" line="1014"/>
+      <location filename="../../Command.cpp" line="859"/>
+      <location filename="../../Command.cpp" line="1026"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>Seleccioneu com a mínim 1 objecte DrawViewPart com a base.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="964"/>
+      <location filename="../../Command.cpp" line="976"/>
       <source>I do not know what base view to use.</source>
       <translation>No sé quina vista base utilitzar.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="971"/>
+      <location filename="../../Command.cpp" line="983"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
       <translation>No s'ha seleccionat cap vista base, figura, grup o enllaç</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="976"/>
+      <location filename="../../Command.cpp" line="988"/>
       <source>No profile object found in selection</source>
       <translation>No s'ha trobat cap objecte de perfil en aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1669"/>
+      <location filename="../../Command.cpp" line="1691"/>
       <source>Please select only 1 BIM Section.</source>
       <translation>Seleccioneu només 1 secció BIM.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1697"/>
       <source>No BIM Sections in selection.</source>
       <translation>No hi ha cap secció BIM en la selecció.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="370"/>
-      <location filename="../../CommandDecorate.cpp" line="377"/>
-      <location filename="../../CommandDecorate.cpp" line="384"/>
+      <location filename="../../Command.cpp" line="1833"/>
+      <source>No Drawing Page</source>
+      <translation type="unfinished">No Drawing Page</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1834"/>
+      <source>FreeCAD could not find a page to export</source>
+      <translation type="unfinished">FreeCAD could not find a page to export</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="394"/>
+      <location filename="../../CommandDecorate.cpp" line="401"/>
       <location filename="../../CommandCreateDims.cpp" line="2093"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
       <location filename="../../CommandCreateDims.cpp" line="2550"/>
       <location filename="../../CommandCreateDims.cpp" line="2558"/>
       <location filename="../../CommandCreateDims.cpp" line="2567"/>
-      <location filename="../../Command.cpp" line="1180"/>
-      <location filename="../../Command.cpp" line="1187"/>
-      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1192"/>
+      <location filename="../../Command.cpp" line="1199"/>
       <location filename="../../Command.cpp" line="1207"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1796"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="1219"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1795"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1925"/>
       <source>Incorrect selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2551"/>
-      <location filename="../../Command.cpp" line="1181"/>
+      <location filename="../../Command.cpp" line="1193"/>
       <source>Select an object first</source>
       <translation>Seleccioneu primer un objecte</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2559"/>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1200"/>
       <source>Too many objects selected</source>
       <translation>Hi ha masses objectes seleccionats</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2568"/>
-      <location filename="../../Command.cpp" line="1196"/>
+      <location filename="../../Command.cpp" line="1208"/>
       <source>Create a page first.</source>
       <translation>Crear una pàgina primer.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2094"/>
       <location filename="../../CommandCreateDims.cpp" line="2388"/>
-      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1220"/>
       <source>No View of a Part in selection.</source>
       <translation>No hi ha cap vista d'una peça en la selecció.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1379"/>
+      <location filename="../../Command.cpp" line="1391"/>
       <source>Select one Clip group and one View.</source>
       <translation>Seleccioneu un grup clip i una vista.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1396"/>
+      <location filename="../../Command.cpp" line="1408"/>
       <source>Select exactly one View to add to group.</source>
       <translation>Seleccioneu exactament una vista per a afegir al grup.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1413"/>
       <source>Select exactly one Clip group.</source>
       <translation>Seleccioneu exactament un grup clip.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1410"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Clip i Vista han de ser de la mateixa pàgina.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1475"/>
       <source>Select exactly one View to remove from Group.</source>
       <translation>Seleccioneu exactament una vista per a eliminar del grup.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1482"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>View does not belong to a Clip</source>
       <translation>La Vista no pertany a un Clip</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1541"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Choose an SVG file to open</source>
       <translation>Triar un fitxer SVG per obrir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1556"/>
       <source>Scalable Vector Graphic</source>
       <translation>Vector grafic escalable</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="450"/>
+      <location filename="../../Command.cpp" line="1556"/>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1616"/>
       <source>Select at least one object.</source>
       <translation>Selecciona com a mínim un objecte.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1726"/>
+      <location filename="../../Command.cpp" line="1754"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Selecciona exactament un objecte de full de càlcul.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1800"/>
-      <source>No Drawing View</source>
-      <translation>Sense vistes de dibuix</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1801"/>
-      <source>Open Drawing View before attempting export to SVG.</source>
-      <translation>Obri les vistes de dibuix abans d'intentar l'exportació a SVG.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1836"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>Can not export selection</source>
       <translation>No es pot exportar la selecció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1837"/>
+      <location filename="../../Command.cpp" line="1870"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>La pàgina conté DrawViewArch que no s'exportaran. Voleu continuar?</translation>
     </message>
@@ -3267,13 +3258,8 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Advertència de corba d'el·lipse</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2443"/>
-      <source>BSpline Curve Warning</source>
-      <translation>Advertència de corba BSpline</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="391"/>
-      <location filename="../../CommandDecorate.cpp" line="397"/>
+      <location filename="../../CommandDecorate.cpp" line="408"/>
+      <location filename="../../CommandDecorate.cpp" line="414"/>
       <location filename="../../CommandCreateDims.cpp" line="1925"/>
       <location filename="../../CommandCreateDims.cpp" line="1932"/>
       <location filename="../../CommandCreateDims.cpp" line="2133"/>
@@ -3281,32 +3267,12 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <location filename="../../CommandCreateDims.cpp" line="2226"/>
       <location filename="../../CommandCreateDims.cpp" line="2402"/>
       <location filename="../../CommandCreateDims.cpp" line="2418"/>
-      <location filename="../../TaskDimRepair.cpp" line="125"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
+      <location filename="../../TaskDimRepair.cpp" line="124"/>
+      <location filename="../../TaskDimRepair.cpp" line="136"/>
+      <location filename="../../TaskDimRepair.cpp" line="147"/>
       <location filename="../../TaskDimension.cpp" line="442"/>
       <source>Incorrect Selection</source>
       <translation>Selecció incorrecta</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="2454"/>
-      <source>BSpline Curve Error</source>
-      <translation>Error de corba BSpline</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="2109"/>
-      <source>Selection contains both 2d and 3d geometry</source>
-      <translation>La selecció conté ambdues geometries 2D i 3D</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="2134"/>
-      <source>Can not make 2d extent dimension from selection</source>
-      <translation>No pots fer una cota d'extensió 2D d'aquesta selecció</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="2149"/>
-      <source>Can not make 3d extent dimension from selection</source>
-      <translation>No pots fer una cota d'extensió 3D d'aquesta selecció</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2227"/>
@@ -3329,9 +3295,19 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>L'aresta seleccionada és una el·lipse. El valor serà aproximat. Voleu continuar?</translation>
     </message>
     <message>
+      <location filename="../../CommandCreateDims.cpp" line="2443"/>
+      <source>B-spline Curve Warning</source>
+      <translation type="unfinished">B-spline Curve Warning</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="2444"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>L'aresta seleccionada és una B-Spline. El valor serà aproximat. Voleu continuar?</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2454"/>
+      <source>B-spline Curve Error</source>
+      <translation type="unfinished">B-spline Curve Error</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2455"/>
@@ -3349,6 +3325,21 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>No hi ha cap aresta o vèrtex 3D en la selecció</translation>
     </message>
     <message>
+      <location filename="../../CommandCreateDims.cpp" line="2109"/>
+      <source>Selection contains both 2D and 3D geometry</source>
+      <translation type="unfinished">Selection contains both 2D and 3D geometry</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2134"/>
+      <source>Can not make 2D extent dimension from selection</source>
+      <translation type="unfinished">Can not make 2D extent dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2149"/>
+      <source>Can not make 3D extent dimension from selection</source>
+      <translation type="unfinished">Can not make 3D extent dimension from selection</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="2280"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Seleccioneu 2 objectes punt i una vista. (1)</translation>
@@ -3359,22 +3350,22 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Seleccioneu 2 objectes punt i una vista. (2)</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="107"/>
-      <location filename="../../CommandAnnotate.cpp" line="168"/>
-      <location filename="../../CommandAnnotate.cpp" line="220"/>
-      <location filename="../../CommandAnnotate.cpp" line="407"/>
-      <location filename="../../CommandAnnotate.cpp" line="468"/>
-      <location filename="../../CommandAnnotate.cpp" line="507"/>
-      <location filename="../../CommandAnnotate.cpp" line="589"/>
-      <location filename="../../CommandAnnotate.cpp" line="693"/>
-      <location filename="../../CommandAnnotate.cpp" line="804"/>
-      <location filename="../../CommandAnnotate.cpp" line="879"/>
-      <location filename="../../CommandAnnotate.cpp" line="992"/>
-      <location filename="../../CommandAnnotate.cpp" line="1143"/>
-      <location filename="../../CommandAnnotate.cpp" line="1296"/>
-      <location filename="../../CommandAnnotate.cpp" line="1415"/>
-      <location filename="../../CommandAnnotate.cpp" line="1493"/>
-      <location filename="../../CommandAnnotate.cpp" line="1559"/>
+      <location filename="../../CommandAnnotate.cpp" line="105"/>
+      <location filename="../../CommandAnnotate.cpp" line="166"/>
+      <location filename="../../CommandAnnotate.cpp" line="218"/>
+      <location filename="../../CommandAnnotate.cpp" line="405"/>
+      <location filename="../../CommandAnnotate.cpp" line="466"/>
+      <location filename="../../CommandAnnotate.cpp" line="505"/>
+      <location filename="../../CommandAnnotate.cpp" line="594"/>
+      <location filename="../../CommandAnnotate.cpp" line="698"/>
+      <location filename="../../CommandAnnotate.cpp" line="809"/>
+      <location filename="../../CommandAnnotate.cpp" line="884"/>
+      <location filename="../../CommandAnnotate.cpp" line="997"/>
+      <location filename="../../CommandAnnotate.cpp" line="1148"/>
+      <location filename="../../CommandAnnotate.cpp" line="1301"/>
+      <location filename="../../CommandAnnotate.cpp" line="1420"/>
+      <location filename="../../CommandAnnotate.cpp" line="1498"/>
+      <location filename="../../CommandAnnotate.cpp" line="1564"/>
       <location filename="../../CommandCreateDims.cpp" line="1515"/>
       <location filename="../../CommandCreateDims.cpp" line="1563"/>
       <location filename="../../CommandCreateDims.cpp" line="1611"/>
@@ -3398,34 +3389,34 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <location filename="../../CommandExtensionDims.cpp" line="1546"/>
       <location filename="../../CommandExtensionDims.cpp" line="1939"/>
       <location filename="../../CommandExtensionDims.cpp" line="2198"/>
-      <location filename="../../Command.cpp" line="729"/>
-      <location filename="../../Command.cpp" line="822"/>
-      <location filename="../../Command.cpp" line="885"/>
-      <location filename="../../CommandExtensionPack.cpp" line="296"/>
-      <location filename="../../CommandExtensionPack.cpp" line="619"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1122"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1371"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1677"/>
+      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="834"/>
+      <location filename="../../Command.cpp" line="897"/>
+      <location filename="../../CommandExtensionPack.cpp" line="295"/>
+      <location filename="../../CommandExtensionPack.cpp" line="618"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1121"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1370"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1676"/>
       <source>Task In Progress</source>
       <translation>Tasca en procés</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="108"/>
-      <location filename="../../CommandAnnotate.cpp" line="169"/>
-      <location filename="../../CommandAnnotate.cpp" line="221"/>
-      <location filename="../../CommandAnnotate.cpp" line="408"/>
-      <location filename="../../CommandAnnotate.cpp" line="469"/>
-      <location filename="../../CommandAnnotate.cpp" line="508"/>
-      <location filename="../../CommandAnnotate.cpp" line="590"/>
-      <location filename="../../CommandAnnotate.cpp" line="694"/>
-      <location filename="../../CommandAnnotate.cpp" line="805"/>
-      <location filename="../../CommandAnnotate.cpp" line="880"/>
-      <location filename="../../CommandAnnotate.cpp" line="993"/>
-      <location filename="../../CommandAnnotate.cpp" line="1144"/>
-      <location filename="../../CommandAnnotate.cpp" line="1297"/>
-      <location filename="../../CommandAnnotate.cpp" line="1416"/>
-      <location filename="../../CommandAnnotate.cpp" line="1494"/>
-      <location filename="../../CommandAnnotate.cpp" line="1560"/>
+      <location filename="../../CommandAnnotate.cpp" line="106"/>
+      <location filename="../../CommandAnnotate.cpp" line="167"/>
+      <location filename="../../CommandAnnotate.cpp" line="219"/>
+      <location filename="../../CommandAnnotate.cpp" line="406"/>
+      <location filename="../../CommandAnnotate.cpp" line="467"/>
+      <location filename="../../CommandAnnotate.cpp" line="506"/>
+      <location filename="../../CommandAnnotate.cpp" line="595"/>
+      <location filename="../../CommandAnnotate.cpp" line="699"/>
+      <location filename="../../CommandAnnotate.cpp" line="810"/>
+      <location filename="../../CommandAnnotate.cpp" line="885"/>
+      <location filename="../../CommandAnnotate.cpp" line="998"/>
+      <location filename="../../CommandAnnotate.cpp" line="1149"/>
+      <location filename="../../CommandAnnotate.cpp" line="1302"/>
+      <location filename="../../CommandAnnotate.cpp" line="1421"/>
+      <location filename="../../CommandAnnotate.cpp" line="1499"/>
+      <location filename="../../CommandAnnotate.cpp" line="1565"/>
       <location filename="../../CommandCreateDims.cpp" line="1516"/>
       <location filename="../../CommandCreateDims.cpp" line="1564"/>
       <location filename="../../CommandCreateDims.cpp" line="1612"/>
@@ -3449,235 +3440,235 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <location filename="../../CommandExtensionDims.cpp" line="1547"/>
       <location filename="../../CommandExtensionDims.cpp" line="1940"/>
       <location filename="../../CommandExtensionDims.cpp" line="2199"/>
-      <location filename="../../Command.cpp" line="730"/>
-      <location filename="../../Command.cpp" line="823"/>
-      <location filename="../../Command.cpp" line="886"/>
-      <location filename="../../CommandExtensionPack.cpp" line="297"/>
-      <location filename="../../CommandExtensionPack.cpp" line="620"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1123"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1372"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
+      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="898"/>
+      <location filename="../../CommandExtensionPack.cpp" line="296"/>
+      <location filename="../../CommandExtensionPack.cpp" line="619"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1122"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1371"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1677"/>
       <source>Close active task dialog and try again.</source>
       <translation>Tanca el quadre de diàleg de tasques actiu i intenta-ho altra vegada.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="122"/>
-      <location filename="../../CommandAnnotate.cpp" line="127"/>
-      <location filename="../../CommandAnnotate.cpp" line="720"/>
-      <location filename="../../CommandAnnotate.cpp" line="726"/>
-      <location filename="../../CommandAnnotate.cpp" line="753"/>
-      <location filename="../../CommandAnnotate.cpp" line="763"/>
-      <location filename="../../CommandAnnotate.cpp" line="769"/>
-      <location filename="../../CommandAnnotate.cpp" line="840"/>
-      <location filename="../../CommandAnnotate.cpp" line="849"/>
-      <location filename="../../CommandAnnotate.cpp" line="906"/>
-      <location filename="../../CommandAnnotate.cpp" line="913"/>
-      <location filename="../../CommandAnnotate.cpp" line="940"/>
-      <location filename="../../CommandAnnotate.cpp" line="952"/>
-      <location filename="../../CommandAnnotate.cpp" line="962"/>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
-      <location filename="../../CommandAnnotate.cpp" line="1045"/>
-      <location filename="../../CommandAnnotate.cpp" line="1053"/>
-      <location filename="../../CommandAnnotate.cpp" line="1073"/>
-      <location filename="../../CommandAnnotate.cpp" line="1109"/>
-      <location filename="../../CommandAnnotate.cpp" line="1173"/>
-      <location filename="../../CommandAnnotate.cpp" line="1196"/>
-      <location filename="../../CommandAnnotate.cpp" line="1218"/>
-      <location filename="../../CommandAnnotate.cpp" line="1254"/>
-      <location filename="../../CommandAnnotate.cpp" line="1428"/>
-      <location filename="../../CommandAnnotate.cpp" line="1435"/>
-      <location filename="../../CommandAnnotate.cpp" line="1712"/>
-      <location filename="../../CommandAnnotate.cpp" line="1725"/>
+      <location filename="../../CommandHelpers.cpp" line="110"/>
+      <location filename="../../CommandHelpers.cpp" line="123"/>
+      <location filename="../../CommandAnnotate.cpp" line="120"/>
+      <location filename="../../CommandAnnotate.cpp" line="125"/>
+      <location filename="../../CommandAnnotate.cpp" line="725"/>
+      <location filename="../../CommandAnnotate.cpp" line="731"/>
+      <location filename="../../CommandAnnotate.cpp" line="758"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="774"/>
+      <location filename="../../CommandAnnotate.cpp" line="845"/>
+      <location filename="../../CommandAnnotate.cpp" line="854"/>
+      <location filename="../../CommandAnnotate.cpp" line="911"/>
+      <location filename="../../CommandAnnotate.cpp" line="918"/>
+      <location filename="../../CommandAnnotate.cpp" line="945"/>
+      <location filename="../../CommandAnnotate.cpp" line="957"/>
+      <location filename="../../CommandAnnotate.cpp" line="967"/>
+      <location filename="../../CommandAnnotate.cpp" line="1027"/>
+      <location filename="../../CommandAnnotate.cpp" line="1050"/>
+      <location filename="../../CommandAnnotate.cpp" line="1058"/>
+      <location filename="../../CommandAnnotate.cpp" line="1078"/>
+      <location filename="../../CommandAnnotate.cpp" line="1114"/>
+      <location filename="../../CommandAnnotate.cpp" line="1178"/>
+      <location filename="../../CommandAnnotate.cpp" line="1201"/>
+      <location filename="../../CommandAnnotate.cpp" line="1223"/>
+      <location filename="../../CommandAnnotate.cpp" line="1259"/>
+      <location filename="../../CommandAnnotate.cpp" line="1433"/>
+      <location filename="../../CommandAnnotate.cpp" line="1440"/>
       <source>Wrong Selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="123"/>
-      <source>Can not attach leader.  No base View selected.</source>
-      <translation>No es pot adjuntar la guia. No s'ha seleccionat cap vista de base.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="128"/>
-      <location filename="../../CommandAnnotate.cpp" line="727"/>
-      <location filename="../../CommandAnnotate.cpp" line="907"/>
-      <location filename="../../CommandAnnotate.cpp" line="1046"/>
+      <location filename="../../CommandAnnotate.cpp" line="126"/>
+      <location filename="../../CommandAnnotate.cpp" line="732"/>
+      <location filename="../../CommandAnnotate.cpp" line="912"/>
+      <location filename="../../CommandAnnotate.cpp" line="1051"/>
       <source>You must select a base View for the line.</source>
       <translation>Heu de seleccionar una vista de base per a la línia.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="320"/>
-      <location filename="../../CommandAnnotate.cpp" line="421"/>
+      <location filename="../../CommandAnnotate.cpp" line="318"/>
+      <location filename="../../CommandAnnotate.cpp" line="419"/>
       <source>No DrawViewPart objects in this selection</source>
       <translation>No hi ha cap objecte DrawViewPart en aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="721"/>
-      <location filename="../../CommandAnnotate.cpp" line="914"/>
+      <location filename="../../CommandAnnotate.cpp" line="726"/>
+      <location filename="../../CommandAnnotate.cpp" line="919"/>
       <source>No base View in Selection.</source>
       <translation>No hi ha cap Vista de base en la selecció.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="754"/>
+      <location filename="../../CommandAnnotate.cpp" line="759"/>
       <source>You must select Faces or an existing CenterLine.</source>
       <translation>Heu de seleccionar cares o una línia central existent.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="764"/>
+      <location filename="../../CommandAnnotate.cpp" line="769"/>
       <source>No CenterLine in selection.</source>
       <translation>No hi ha cap línia central en la selecció.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="770"/>
-      <location filename="../../CommandAnnotate.cpp" line="841"/>
-      <location filename="../../CommandAnnotate.cpp" line="953"/>
+      <location filename="../../CommandAnnotate.cpp" line="775"/>
+      <location filename="../../CommandAnnotate.cpp" line="846"/>
+      <location filename="../../CommandAnnotate.cpp" line="958"/>
       <source>Selection is not a CenterLine.</source>
       <translation>La selecció no és una línia central.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="850"/>
+      <location filename="../../CommandAnnotate.cpp" line="855"/>
       <source>Selection not understood.</source>
       <translation>No s'ha entès la selecció.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="941"/>
+      <location filename="../../CommandAnnotate.cpp" line="946"/>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>
       <translation>Heu de seleccionar 2 vèrtex o una línia central existent.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="963"/>
+      <location filename="../../CommandAnnotate.cpp" line="968"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
       <translation>Es necessiten 2 vèrtexs o 1 línia central.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1023"/>
-      <location filename="../../CommandAnnotate.cpp" line="1174"/>
+      <location filename="../../CommandAnnotate.cpp" line="1028"/>
+      <location filename="../../CommandAnnotate.cpp" line="1179"/>
       <source>Selection is empty.</source>
       <translation>La selecció és buida.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1054"/>
+      <location filename="../../CommandAnnotate.cpp" line="1059"/>
       <source>Not enough points in selection.</source>
       <translation>No hi ha prou punts a la selecció.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1074"/>
+      <location filename="../../CommandAnnotate.cpp" line="1079"/>
       <source>Selection is not a Cosmetic Line.</source>
       <translation>La selecció no és una línia cosmètica.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1110"/>
+      <location filename="../../CommandAnnotate.cpp" line="1115"/>
       <source>You must select 2 Vertexes.</source>
       <translation>S'han de triar 2 vèrtexs.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1197"/>
+      <location filename="../../CommandAnnotate.cpp" line="1202"/>
       <source>You must select a base View for the circle.</source>
       <translation>Heu de seleccionar una vista base pel cercle.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1255"/>
+      <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <source>Please select a center for the circle.</source>
       <translation>Si us plau, seleccioneu un centre pel cercle.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1310"/>
-      <location filename="../../CommandAnnotate.cpp" line="1507"/>
+      <location filename="../../CommandAnnotate.cpp" line="1315"/>
+      <location filename="../../CommandAnnotate.cpp" line="1512"/>
       <source>Nothing selected</source>
       <translation>No s'ha seleccionat res</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1318"/>
+      <location filename="../../CommandAnnotate.cpp" line="1323"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Com a mínim 1 objecte de la selecció no és una vista de peça</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1365"/>
+      <location filename="../../CommandAnnotate.cpp" line="1370"/>
       <source>Unknown object type in selection</source>
       <translation>Tipus d'objecte desconegut en la selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1436"/>
+      <location filename="../../CommandAnnotate.cpp" line="1441"/>
       <source>No View in Selection.</source>
       <translation>No hi ha cap vista en la selecció.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../CommandAnnotate.cpp" line="1434"/>
       <source>You must select a View and/or lines.</source>
       <translation>Heu de seleccionar una vista i/o línies.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1219"/>
+      <location filename="../../CommandAnnotate.cpp" line="121"/>
+      <source>Can not attach leader. No base View selected.</source>
+      <translation type="unfinished">Can not attach leader. No base View selected.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1224"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
       <translation>La selecció no és un cercle cosmètic ni un arc de cercle cosmètic.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1514"/>
+      <location filename="../../CommandAnnotate.cpp" line="1519"/>
       <source>No Part Views in this selection</source>
       <translation>No hi ha cap vista de peça en la selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1578"/>
+      <location filename="../../CommandAnnotate.cpp" line="1583"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
       <translation>Seleccioneu exactament una única línia guia o un únic símbol de soldadura.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1639"/>
+      <location filename="../../CommandAnnotate.cpp" line="1644"/>
       <source>SurfaceFinishSymbols</source>
       <translation>Símbols d'acabat superficial</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1640"/>
+      <location filename="../../CommandAnnotate.cpp" line="1645"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>L'objecte seleccionat no forma part d'una vista ni d'una línia guia</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1713"/>
+      <location filename="../../CommandHelpers.cpp" line="111"/>
       <source>No Part View in Selection</source>
       <translation>No hi ha cap vista de peça a la selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1726"/>
+      <location filename="../../CommandHelpers.cpp" line="124"/>
       <source>No %1 in Selection</source>
       <translation>No hi ha cap %1 a la selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="110"/>
+      <location filename="../../CommandDecorate.cpp" line="111"/>
       <source>Replace Hatch?</source>
       <translation>Voleu reemplaçar la trama?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="111"/>
-      <source>Some Faces in selection are already hatched.  Replace?</source>
-      <translation>Algunes cares en la selecció ja tenen trama. Voleu reemplaçar-les?</translation>
+      <location filename="../../CommandDecorate.cpp" line="112"/>
+      <source>Some Faces in selection are already hatched. Replace?</source>
+      <translation type="unfinished">Some Faces in selection are already hatched. Replace?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="318"/>
+      <location filename="../../CommandDecorate.cpp" line="335"/>
       <source>No TechDraw Page</source>
       <translation>No hi ha cap pàgina TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="319"/>
+      <location filename="../../CommandDecorate.cpp" line="336"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>Es necessita una pàgina TechDraw per a aquesta ordre</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="371"/>
+      <location filename="../../CommandDecorate.cpp" line="388"/>
       <source>Select a Face first</source>
       <translation>Seleccioneu primer una cara</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="378"/>
+      <location filename="../../CommandDecorate.cpp" line="395"/>
       <source>No TechDraw object in selection</source>
       <translation>No hi ha cap objecte TechDraw en la selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="385"/>
+      <location filename="../../CommandDecorate.cpp" line="402"/>
       <source>Create a page to insert.</source>
       <translation>Creeu una pàgina per a inserir.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="392"/>
-      <location filename="../../CommandDecorate.cpp" line="398"/>
+      <location filename="../../CommandDecorate.cpp" line="409"/>
+      <location filename="../../CommandDecorate.cpp" line="415"/>
       <source>No Faces to hatch in this selection</source>
       <translation>No hi ha cares on aplicar el tramat en aquesta selecció</translation>
     </message>
@@ -3698,77 +3689,72 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>No hi ha cap pàgina de dibuix en el document.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="347"/>
+      <location filename="../../MDIViewPage.cpp" line="311"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="348"/>
-      <location filename="../../MDIViewPage.cpp" line="556"/>
+      <location filename="../../MDIViewPage.cpp" line="312"/>
+      <location filename="../../MDIViewPage.cpp" line="474"/>
       <source>All Files (*.*)</source>
       <translation>Tots els arxius (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="350"/>
+      <location filename="../../MDIViewPage.cpp" line="314"/>
       <source>Export Page As PDF</source>
       <translation>Exporta la Pàgina com a PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="555"/>
-      <source>SVG (*.svg)</source>
-      <translation>SVG (*.svg)</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="558"/>
+      <location filename="../../MDIViewPage.cpp" line="476"/>
       <source>Export page as SVG</source>
       <translation>Exporta la Pàgina com a SVG</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="212"/>
+      <location filename="../../ViewProviderPage.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="157"/>
       <source>Are you sure you want to continue?</source>
       <translation>Segur que voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="233"/>
+      <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Show drawing</source>
       <translation>Mostra el dibuix</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="237"/>
       <source>Toggle Keep Updated</source>
       <translation>Commuta per l'actualització automàtica</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="51"/>
+      <location filename="../../TemplateTextField.cpp" line="50"/>
       <source>Click to update text</source>
       <translation>Feu clic per a actualitzar el text</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="220"/>
+      <location filename="../../TaskLeaderLine.cpp" line="219"/>
       <source>New Leader Line</source>
       <translation>Línia guia nova</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="263"/>
+      <location filename="../../TaskLeaderLine.cpp" line="261"/>
       <source>Edit Leader Line</source>
       <translation>Edita la línia guia</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="140"/>
+      <location filename="../../TaskRichAnno.cpp" line="139"/>
       <source>Rich text creator</source>
       <translation>Creador de text enriquit</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="102"/>
-      <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="344"/>
+      <location filename="../../TaskRichAnno.cpp" line="101"/>
+      <location filename="../../TaskRichAnno.cpp" line="239"/>
+      <location filename="../../QGIRichAnno.cpp" line="342"/>
       <source>Rich text editor</source>
       <translation>Editor de text enriquit</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="109"/>
+      <location filename="../../TaskCosVertex.cpp" line="108"/>
       <source>New Cosmetic Vertex</source>
       <translation>Vèrtex cosmètic nou</translation>
     </message>
@@ -3778,37 +3764,37 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Seleccioneu un símbol</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="93"/>
+      <location filename="../../TaskActiveView.cpp" line="92"/>
       <source>ActiveView to TD View</source>
       <translation>VistaActiva en Vista TD</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="109"/>
+      <location filename="../../TaskActiveView.cpp" line="108"/>
       <source>No Main Window</source>
       <translation>No hi ha cap finestra principal</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="110"/>
+      <location filename="../../TaskActiveView.cpp" line="109"/>
       <source>Can not find the main window</source>
       <translation>No s'ha pogut trobar la finestra principal</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="144"/>
+      <location filename="../../TaskActiveView.cpp" line="143"/>
       <source>No 3D Viewer</source>
       <translation>No hi ha cap visor 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="145"/>
+      <location filename="../../TaskActiveView.cpp" line="144"/>
       <source>Can not find a 3D viewer</source>
       <translation>No s'ha pogut trobar cap visor 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="169"/>
+      <location filename="../../TaskCenterLine.cpp" line="168"/>
       <source>Create Center Line</source>
       <translation>Crea una línia central</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="212"/>
+      <location filename="../../TaskCenterLine.cpp" line="211"/>
       <source>Edit Center Line</source>
       <translation>Edita la línia central</translation>
     </message>
@@ -3818,35 +3804,40 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Crea una vista de secció</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="161"/>
+      <location filename="../../TaskSectionView.cpp" line="153"/>
+      <source>No direction set</source>
+      <translation type="unfinished">No direction set</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSectionView.cpp" line="159"/>
       <source>Edit Section View</source>
       <translation>Edita la vista de secció</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="138"/>
+      <location filename="../../TaskComplexSection.cpp" line="137"/>
       <source>New Complex Section</source>
       <translation>Nova selecció complexa</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="179"/>
+      <location filename="../../TaskComplexSection.cpp" line="178"/>
       <source>Edit Complex Section</source>
       <translation>Editar selecció complexa</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="217"/>
-      <location filename="../../TaskSectionView.cpp" line="232"/>
+      <location filename="../../TaskComplexSection.cpp" line="216"/>
+      <location filename="../../TaskSectionView.cpp" line="230"/>
       <source>Current View Direction</source>
       <translation>Direcció de vista actual</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="218"/>
-      <location filename="../../TaskSectionView.cpp" line="233"/>
+      <location filename="../../TaskComplexSection.cpp" line="217"/>
+      <location filename="../../TaskSectionView.cpp" line="231"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>La direcció de la vista en coordenades de la vista base</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="716"/>
-      <location filename="../../TaskSectionView.cpp" line="648"/>
+      <location filename="../../TaskComplexSection.cpp" line="715"/>
+      <location filename="../../TaskSectionView.cpp" line="640"/>
       <source>Operation Failed</source>
       <translation>Ha fallat l'operació</translation>
     </message>
@@ -3871,18 +3862,18 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Edita la línia cosmètica</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="99"/>
+      <location filename="../../TaskDetail.cpp" line="98"/>
       <source>New Detail View</source>
       <translation>Nova vista de detall</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="179"/>
+      <location filename="../../TaskDetail.cpp" line="178"/>
       <source>Edit Detail View</source>
       <translation>Edita la vista de detall</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="126"/>
-      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="127"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="87"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -4002,43 +3993,43 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2422"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2066"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2065"/>
       <source>Selection is empty</source>
       <translation>La selecció és buida</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2438"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2073"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2072"/>
       <source>No object selected</source>
       <translation>No hi ha cap objecte seleccionat</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="124"/>
+      <location filename="../../CommandExtensionPack.cpp" line="123"/>
       <source>TechDraw Hole Circle</source>
       <translation>TechDraw Forat del cercle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="125"/>
+      <location filename="../../CommandExtensionPack.cpp" line="124"/>
       <source>Fewer than three circles selected</source>
       <translation>S'han seleccionat menys de tres cercles</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1797"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1796"/>
       <source>No faces in selection.</source>
       <translation>No hi ha cap cara a la selecció.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1927"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1926"/>
       <source>No edges in selection.</source>
       <translation>No hi ha cap aresta a la selecció.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2151"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2150"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>TechDraw Costat del forat de la rosca</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2152"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2151"/>
       <source>Please select two straight lines</source>
       <translation>Si us plau, seleccioneu dues línies rectes</translation>
     </message>
@@ -4051,8 +4042,8 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
     <message>
       <location filename="../../TaskDimension.cpp" line="147"/>
       <location filename="../../TaskDimension.cpp" line="162"/>
-      <source>Dimension not found.  Was it deleted? Can not continue.</source>
-      <translation>No s'ha trobat la cota. S'ha eliminat? No es pot seguir.</translation>
+      <source>Dimension not found. Was it deleted? Can not continue.</source>
+      <translation type="unfinished">Dimension not found. Was it deleted? Can not continue.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="443"/>
@@ -4060,12 +4051,12 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Seleccioneu 2 vèrtexs o 1 vora</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="229"/>
+      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="231"/>
       <source>Please select a Line Group</source>
       <translation>Si us plau, seleccioneu un grup de línies</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="240"/>
+      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="242"/>
       <source>%1 defines these line widths:
  thin: %2
  graphic: %3
@@ -4076,12 +4067,12 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
  gruixut: %4</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="98"/>
+      <location filename="../../TaskHatch.cpp" line="97"/>
       <source>Create Face Hatch</source>
       <translation>Crear tramat de cara</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="110"/>
+      <location filename="../../TaskHatch.cpp" line="109"/>
       <source>Edit Face Hatch</source>
       <translation>Editar tramat de cara</translation>
     </message>
@@ -4121,33 +4112,29 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Nombre màxim del grau de rugositat</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="67"/>
+      <location filename="../../TaskDimRepair.cpp" line="66"/>
       <source>Dimension Repair</source>
       <translation>Reparar cota</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="126"/>
+      <location filename="../../TaskDimRepair.cpp" line="125"/>
       <source>Can not use references from a different View</source>
       <translation>No pots utilitzar referències d'una altra vista</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="138"/>
-      <source>Can not make a dimension from selection</source>
-      <translation>No pots fer una cota d'aquesta selecció</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimRepair.cpp" line="149"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Can not make dimension from selection</source>
       <translation>No pots fer una cota d'aquesta selecció</translation>
     </message>
     <message>
+      <location filename="../../AppTechDrawGui.cpp" line="170"/>
       <location filename="../../AppTechDrawGui.cpp" line="171"/>
       <location filename="../../AppTechDrawGui.cpp" line="172"/>
       <location filename="../../AppTechDrawGui.cpp" line="173"/>
       <location filename="../../AppTechDrawGui.cpp" line="174"/>
       <location filename="../../AppTechDrawGui.cpp" line="175"/>
       <location filename="../../AppTechDrawGui.cpp" line="176"/>
-      <location filename="../../AppTechDrawGui.cpp" line="177"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
@@ -4167,7 +4154,7 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Error de paràmetre</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="338"/>
+      <location filename="../../PagePrinter.cpp" line="262"/>
       <source>Document Name:</source>
       <translation>Nom del document:</translation>
     </message>
@@ -4203,10 +4190,10 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
+      <location filename="../../ViewProviderPage.cpp" line="217"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="143"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <source>Object dependencies</source>
       <translation>Dependències de l'objecte</translation>
     </message>
@@ -4231,21 +4218,21 @@ it has a weld symbol that would become broken.</source>
       <translation>No podeu suprimir aquesta vista perquè conté una línia guia que es trencaria.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
+      <location filename="../../ViewProviderPage.cpp" line="208"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>La pàgina no està buida, per tant 
 es poden perdre els següents objectes de referència:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="142"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="136"/>
       <source>The group cannot be deleted because its items have the following
 section or detail views, or leader lines that would get broken:</source>
       <translation>El grup no es pot suprimir perquè els seus elements tenen la secció,
 les vistes de detall o les línies guia següents que es trencarien:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="156"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="151"/>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
       <translation>El grup de projeccions no està buit, per tant es poden perdre els objectes de referència següents:</translation>
@@ -4287,8 +4274,8 @@ perquè conté una soldadura de mosaic que es trencaria.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
-      <source>Use 3d Background</source>
-      <translation>Utilitzar fons 3D</translation>
+      <source>Use 3D Background</source>
+      <translation type="unfinished">Use 3D Background</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
@@ -4347,17 +4334,9 @@ perquè conté una soldadura de mosaic que es trencaria.</translation>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="488"/>
+      <location filename="../../TaskComplexSection.cpp" line="487"/>
       <source> updates pending</source>
       <translation> actualitzacions pendents</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSectionView</name>
-    <message>
-      <location filename="../../TaskSectionView.cpp" line="154"/>
-      <source>No direction set</source>
-      <translation>No s'ha establert cap direcció</translation>
     </message>
   </context>
   <context>
@@ -4501,11 +4480,6 @@ This directory will be used for the symbol selection.</source>
       <translation>Camí del directori de símbols de soldadura.
 Aquest directori s'utilitza per a la selecció del símbol.</translation>
     </message>
-    <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="308"/>
-      <source>*.svg</source>
-      <translation>*.svg</translation>
-    </message>
   </context>
   <context>
     <name>TechDrawGui::DlgPageChooser</name>
@@ -4516,8 +4490,8 @@ Aquest directori s'utilitza per a la selecció del símbol.</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
-      <source>FreeCAD could not determine which Page to use.  Please select a Page.</source>
-      <translation>FreeCAD no ha pogut determinar quina pàgina utilitzar. Si us plau, seleccioneu una pàgina.</translation>
+      <source>FreeCAD could not determine which Page to use. Please select a Page.</source>
+      <translation type="unfinished">FreeCAD could not determine which Page to use. Please select a Page.</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
@@ -4534,7 +4508,7 @@ Aquest directori s'utilitza per a la selecció del símbol.</translation>
       <translation>Avançat</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="378"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="129"/>
       <source>If checked, TechDraw will attempt to build faces using the
 line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
@@ -4542,216 +4516,248 @@ can be a performance penalty in complex models.</source>
       <translation>Si està marcada, TechDraw intentarà crear cares utilitzant els segments de línia retornats per l'algoritme d'eliminació de la línia oculta. S'han de detectar cares per a utilitzar el tramat, però en models complexos hi pot haver problemes de baix rendiment.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="384"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="135"/>
       <source>Detect Faces</source>
       <translation>Detecta les cares</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="296"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="440"/>
       <source>Highlights border of section cut in section views</source>
       <translation>Ressalta la vora del tall de la secció en les vistes de secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="443"/>
       <source>Show Section Edges</source>
       <translation>Mostra les arestes de les seccions</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="67"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="59"/>
       <source>Dump intermediate results during Section view processing</source>
       <translation>Aboca els resultats intermedis durant el processament de vista de secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="70"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="34"/>
+      <source>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</source>
+      <translation type="unfinished">If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="37"/>
+      <source>Switch Workbench on Click</source>
+      <translation type="unfinished">Switch Workbench on Click</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="62"/>
       <source>Debug Section</source>
       <translation>Depura la secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="274"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="82"/>
+      <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</source>
+      <translation type="unfinished">If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="107"/>
       <source>Dump intermediate results during Detail view processing</source>
       <translation>Aboca els resultats intermedis durant el processament de la vista de detall</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="277"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="110"/>
       <source>Debug Detail</source>
       <translation>Detall de depuració</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="131"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>
+      <source>If checked, the system will attempt to automatically correct dimension references when the model changes.</source>
+      <translation type="unfinished">If checked, the system will attempt to automatically correct dimension references when the model changes.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="173"/>
+      <source>If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
+</source>
+      <translation type="unfinished">If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
+</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="177"/>
+      <source>Validate Shapes</source>
+      <translation type="unfinished">Validate Shapes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="196"/>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
       <translation>Inclou les arestes amb una geometria inesperada (longitud zero, etc.) en els resultats</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="134"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="199"/>
       <source>Allow Crazy Edges</source>
       <translation>Permet arestes extravagants</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="45"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="308"/>
+      <source>If checked, shapes that fail validation will be saved as BREP files for later analysis.</source>
+      <translation type="unfinished">If checked, shapes that fail validation will be saved as BREP files for later analysis.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
+      <source>Debug Bad Shape</source>
+      <translation type="unfinished">Debug Bad Shape</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="335"/>
       <source>Perform a fuse operation on input shape(s) before Section view processing</source>
       <translation>Realitza una operació de fusió en les formes d'entrada abans del processament de la vista de secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="48"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="338"/>
       <source>Fuse Before Section</source>
       <translation>Fusiona abans de la secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="118"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="466"/>
+      <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
+For large scalings, you might get an error about too many SVG tiles.
+Then you need to increase the tile limit.</source>
+      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
+For large scalings, you might get an error about too many SVG tiles.
+Then you need to increase the tile limit.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="501"/>
+      <source>Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.</source>
+      <translation type="unfinished">Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="512"/>
+      <source>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</source>
+      <translation type="unfinished">Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="75"/>
       <source>Edge Fuzz</source>
       <translation>Zona de selecció al voltant de les arestes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="95"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="411"/>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
       <translation>Mida de l'àrea de selecció al voltant de les arestes
 Cada unitat té una amplada aproximada de 0.1 mm</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="176"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="265"/>
       <source>Mark Fuzz</source>
       <translation>Zona de selecció al voltant de les marques centrals</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="208"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="363"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
       <translation>Àrea de selecció al voltant de les marques centrals
 Cada unitat té una amplada aproximada de 0.1 mm</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="350"/>
-      <source>If checked, system will attempt to automatically correct dimension references when the model changes.</source>
-      <translation>Si està marcat, el sistema intentarà automàticament dimensionar correctament les referències quan el model canviï.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="356"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="157"/>
       <source>Auto Correct Dimension Refs</source>
       <translation>Automàticament dimensionar correctament les referències</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="334"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="85"/>
       <source>Use New Face Finder Algorithm</source>
       <translation>Utilitzar algorisme nou de cerca de cares</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="419"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="228"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
       <translation>El nombre de vegades que FreeCAD hauria d'intentar eliminar les vores superposades retornades per l'algorisme d'eliminació de línies ocultes. Un valor de 0 indica que no s'eliminen, 1 indica una sola passada i 2 indica que s'hauria de realitzar una segona passada. Els valors superiors a 2 generalment no són productius. Cada passada augmenta el temps necessari per produir el dibuix.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="231"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="301"/>
       <source>Max SVG Hatch Tiles</source>
       <translation>Nombre màxim de mosaics de la trama SGV</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="412"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="459"/>
       <source>Max PAT Hatch Segments</source>
       <translation>Nombre màxim de segments de la trama PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="147"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="272"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
       <translation>Nombre màxim de segments de tramat que s'han d'utilitzar en aplicar un tramat en una cara amb un patró PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="238"/>
-      <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about too many SVG tiles.
-Then you need to increase the tile limit.</source>
-      <translation>Límit dels mosaics SVG de 64 x 64 píxels que s'utilitza per a aplicar el tramat a una sola cara.
-Per a grans escales, pot produir un error en molts mosaics SVG.
-Per consegüent, heu d'augmentar el límit de mosaics.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="315"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="212"/>
       <source>Issue progress messages while building View geometry</source>
       <translation>Emetre missatges de progrés en construir la geometria de vista</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="318"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="215"/>
       <source>Report Progress</source>
       <translation>Informar progrés</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="331"/>
-      <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</source>
-      <translation>Si està marcat, FreeCAD utilitzarà el nou algorisme de cerca de cares. Si no ho està, FreeCAD utilitzarà el cercador de cares original.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="405"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="258"/>
       <source>Overlap Edges Scrub Passes</source>
       <translation>Passades en l'eliminació de vores superposades</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="449"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="452"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="504"/>
       <source>Behaviour Overrides</source>
-      <translation type="unfinished">Behaviour Overrides</translation>
+      <translation>Sobreescriure comportament</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="460"/>
-      <source>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</source>
-      <translation type="unfinished">Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="515"/>
       <source>Use Default</source>
-      <translation type="unfinished">Use Default</translation>
+      <translation>Utilitzar predeterminat</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="532"/>
       <source>Balloon Drag</source>
-      <translation type="unfinished">Balloon Drag</translation>
+      <translation>Arrossegament de globus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="487"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="539"/>
       <source>Check this box to include the Alt key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Alt key in the modifiers.</translation>
+      <translation>Marqueu aquesta casella per a incloure la tecla Alt com a modificadora.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="490"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="542"/>
       <source>Alt</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="497"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="549"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Shift key in the modifiers.</translation>
+      <translation>Marqueu aquesta casella per a incloure la tecla Shift com a modificadora.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="500"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="552"/>
       <source>Shift</source>
       <translation>Shift</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="507"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Meta/Start/Super key in the modifiers.</translation>
+      <translation>Marqueu aquesta casella per a incloure la tecla Meta/Start/Super com a modificadora.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="510"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="562"/>
       <source>Meta</source>
-      <translation type="unfinished">Meta</translation>
+      <translation>Meta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="517"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="569"/>
       <source>Check this box to include the Control key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Control key in the modifiers.</translation>
+      <translation>Marqueu aquesta casella per a incloure la tecla Control com a modificadora.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="520"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="572"/>
       <source>Control</source>
-      <translation type="unfinished">Control</translation>
+      <translation>Control</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="538"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="590"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Els elements en &lt;span style=&quot; font-style:italic;&quot;&gt;cursiva&lt;/span&gt; són els valors predeterminats per a objectes nous. No tenen cap efecte sobre els objectes existents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4765,283 +4771,293 @@ Per consegüent, heu d'augmentar el límit de mosaics.</translation>
       <translation>Anotació</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="627"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="643"/>
       <source>Section Line Style</source>
       <translation>Estil de la línia de secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="80"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="410"/>
       <source>Section Cut Surface</source>
       <translation>Superfície de tall de secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="353"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="224"/>
       <source>Default appearance of cut surface in section view</source>
       <translation>Aspecte per defecte de la superfície de tall en la vista de secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="366"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="237"/>
       <source>Hide</source>
       <translation>Amaga</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="371"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="242"/>
       <source>Solid Color</source>
       <translation>Color sòlid</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="376"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="247"/>
       <source>SVG Hatch</source>
       <translation>Trama SGV</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="381"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="252"/>
       <source>PAT Hatch</source>
       <translation>Trama PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="203"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="91"/>
       <source>If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</source>
       <translation>Si està marcat, l'anotació de secció serà dibuixada a la vista Font. Si no ho està, no es mostrarà cap línia, fletxa ni símbol de secció a la vista Font.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="206"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="94"/>
       <source>Show Section Line in Source View</source>
       <translation>Mostrar línia de secció a la vista Font</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="56"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="279"/>
       <source>This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</source>
       <translation>Aquesta casella controla mostrar o no un ressaltat al voltant de l'àrea de detall de la vista font.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="59"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="282"/>
       <source>Detail Source Show Highlight</source>
       <translation>Mostrar ressaltat als detalls de la vista font</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="123"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="134"/>
       <source>If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</source>
       <translation>Si està marcat, es dibuixarà la línia de tall a la vista font. Si no ho està, només es mostrarà els canvis de marques, fletxes i símbols.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="126"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="137"/>
       <source>Include Cut Line in Section Annotation</source>
       <translation>Incloure línia de tall a l'anotació de secció</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="180"/>
       <source>Balloon Leader Kink Length</source>
       <translation>Longitud del plec de la línia guia del globus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="192"/>
       <source>Broken View Break Type</source>
       <translation>Tipus de trencament de la vista trencada</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="464"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="375"/>
       <source>No Break Lines</source>
       <translation>Sense línies de trencament</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="469"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="380"/>
       <source>ZigZag Lines</source>
       <translation>Línies zig-zag</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="474"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="385"/>
       <source>Simple Lines</source>
       <translation>Línies simples</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="493"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="482"/>
+      <source>If this box is checked, templates will auto fill date fields using ccyy-mm-dd format even if that is not the standard format for the current locale.</source>
+      <translation type="unfinished">If this box is checked, templates will auto fill date fields using ccyy-mm-dd format even if that is not the standard format for the current locale.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
+      <source>Enforce ISO 8601 Date Format</source>
+      <translation type="unfinished">Enforce ISO 8601 Date Format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="509"/>
       <source>Lines</source>
       <translation>Línies</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="547"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="563"/>
       <source>Standard to be used to draw non-continuous lines.</source>
       <translation>Estàndard que s'utilitzarà per a dibuixar línies no-contínues.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="749"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="698"/>
+      <source>Shape of line end caps.  The default (round) should almost
+always be the right choice.  Flat or square caps are useful
+if you are planning to use a drawing as a 1:1 cutting guide.
+</source>
+      <translation type="unfinished">Shape of line end caps.  The default (round) should almost
+always be the right choice.  Flat or square caps are useful
+if you are planning to use a drawing as a 1:1 cutting guide.
+</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="765"/>
       <source>Line group used to set line widths</source>
       <translation>Grup de línies que s'utilitzarà per a definir amplades de línia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="752"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="768"/>
       <source>Line Width Group</source>
       <translation>Grup d'ample de línia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="227"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="303"/>
       <source>Detail View Outline Shape</source>
       <translation>Forma del contorn de vista de detall</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="395"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="423"/>
       <source>Outline shape for detail views</source>
       <translation>Forma del contorn per a les vistes de detall</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="700"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="716"/>
       <source>Square</source>
       <translation>Quadrat</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="612"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="628"/>
       <source>Line style of detail highlight on base view</source>
       <translation>Estil de línia del ressaltat de detall en la vista de base</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="615"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="631"/>
       <source>Detail Highlight Style</source>
       <translation>Estil del ressaltat del detall</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="534"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="550"/>
       <source>Center Line Style</source>
       <translation>Estil de la línia central</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="346"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="398"/>
       <source>Balloon Shape</source>
       <translation>Forma del globus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="414"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="116"/>
       <source>Shape of balloon annotations</source>
       <translation>Forma dels globus de les anotacions</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="111"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="358"/>
       <source>Balloon Leader End</source>
       <translation>Final de la línia guia del globus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="179"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="260"/>
       <source>This checkbox controls whether or not to display the outline around a detail view.</source>
       <translation>Aquesta casella controla mostrar o no el contorn al voltant de la vista de detalls.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="182"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="263"/>
       <source>Detail View Show Matting</source>
       <translation>Mostra l'ajustament de la vista de detalls</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="93"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="159"/>
       <source>Style for balloon leader line ends</source>
       <translation>Estil del final de les línies guies dels globus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="177"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>Longitud de la part horitzontal de la línia guia del globus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="466"/>
       <source>Length of balloon leader line kink</source>
       <translation>Llargària del plec de la línia d'anotació del globus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="240"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="205"/>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
       <translation>Restringeix el final de la línia del triangle ple a les direccions verticals o horitzontals</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="243"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="208"/>
       <source>Balloon Orthogonal Triangle</source>
       <translation>Globus amb triangle ortogonal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="292"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="321"/>
       <source>Forces last leader line segment to be horizontal</source>
       <translation>Obliga l'últim segment de la línia guia a ser horitzontal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="295"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="324"/>
       <source>Leader Line Auto Horizontal</source>
       <translation>Línia guia horitzontal de manera automàtica</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="322"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="67"/>
       <source>Show arc center marks in views</source>
       <translation>Mostra les marques del centre de l'arc en les vistes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="325"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="70"/>
       <source>Show Center Marks</source>
       <translation>Mostra les marques centrals</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="265"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
       <source>Show arc centers in printed output</source>
       <translation>Mostra els centres d'arc en les impressions</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="268"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="43"/>
       <source>Print Center Marks</source>
       <translation>Imprimeix les marques centrals</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="160"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="441"/>
       <source>Show or hide marks at direction changes on ComplexSection lines.</source>
       <translation>Mostrar o ocultar marques als canvis de direcció en línies de secció complexa.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="163"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="444"/>
       <source>Complex Section Line Marks</source>
       <translation>Marques de línia de secció complexa</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="771"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="787"/>
       <source>Hidden Line Style</source>
       <translation>Estil de línia amagada</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="664"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="680"/>
       <source>Line Standard</source>
       <translation>Estàndard de línia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="764"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="780"/>
       <source>Line End Cap Shape</source>
       <translation>Forma del cap de la línia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="682"/>
-      <source>Shape of line end caps.  The default (round) should almost
-always be the right choice.   Flat or square caps are useful 
-if you are planning to use a drawing as a 1:1 cutting guide.
-</source>
-      <translation>Forma dels caps de la línia.  Gairebé sempre, la predeterminada
-(redó) serà l'opció correcta.  Caps plans o quadrats són útils 
-si tens pensat utilitzar el dibuix com una guia de tall 1:1.
-</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="695"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="711"/>
       <source>Round</source>
       <translation>Redó</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="705"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="721"/>
       <source>Flat</source>
       <translation>Pla</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="796"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="812"/>
       <source>Break Line Style</source>
       <translation>Estil de línia de trencament</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="803"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="819"/>
       <source>Style of line to be used in BrokenView.</source>
       <translation>Estil de línia a utilitzar a la vista de trencament.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="833"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="849"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Els elements en &lt;span style=&quot; font-style:italic;&quot;&gt;cursiva&lt;/span&gt; són els valors predeterminats per a objectes nous. No tenen cap efecte sobre els objectes existents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5200,11 +5216,6 @@ si tens pensat utilitzar el dibuix com una guia de tall 1:1.
       <translation>Ressaltat del detall</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
-      <source>If checked FreeCAD will use a single color for all text and lines.</source>
-      <translation>Si està marcat, FreeCAD utilitzarà un sol color per a tots els texts i línies.</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Leaderline</source>
       <translation>Línia guia</translation>
@@ -5238,6 +5249,11 @@ si tens pensat utilitzar el dibuix com una guia de tall 1:1.
       <location filename="../../DlgPrefsTechDrawColors.ui" line="223"/>
       <source>Face color (if not transparent)</source>
       <translation>Color de la cara (si no és transparent)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
+      <source>If checked, FreeCAD will use a single color for all text and lines.</source>
+      <translation type="unfinished">If checked, FreeCAD will use a single color for all text and lines.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="87"/>
@@ -5304,19 +5320,37 @@ si tens pensat utilitzar el dibuix com una guia de tall 1:1.
       <translation>Utilitza els decimals globals</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
-      <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</source>
-      <translation>Controla l'espaiat entre el punt de cota i el començament de la línia d'extensió per a cotes ASME.</translation>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="443"/>
+      <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
+ Value * linewidth is the gap.
+ Normally, no gap is used. If using a gap, the recommended value is 8.</source>
+      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
+ Value * linewidth is the gap.
+ Normally, no gap is used. If using a gap, the recommended value is 8.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="461"/>
+      <source>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
+ Normally, no gap is used. If using a gap, the recommended value is 6.</source>
+      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
+ Normally, no gap is used. If using a gap, the recommended value is 6.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
-      <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
-      <translation>Controla l'espaiat entre una línia de cota i un text de cota per a cotes ISO.</translation>
+      <source>Controls the gap size between dimension line and dimension text for ISO dimensions.</source>
+      <translation type="unfinished">Controls the gap size between dimension line and dimension text for ISO dimensions.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
       <source>Line Spacing - ISO</source>
       <translation>Espaiat de línia - ISO</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="493"/>
+      <source>Controls the gap size between dimension line and dimension text.
+ Value * linewidth is the line spacing.</source>
+      <translation type="unfinished">Controls the gap size between dimension line and dimension text.
+ Value * linewidth is the line spacing.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="537"/>
@@ -5383,6 +5417,11 @@ Aquesta configuració només és per a la barra d'eines. Trieu el que trieu, tot
       <translation>Format de cota</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="405"/>
+      <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</source>
+      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="408"/>
       <source>Extension Gap Factor - ISO</source>
       <translation>Factor d'espai d'extensió - ISO</translation>
@@ -5440,14 +5479,14 @@ Multiplicador de 'Mida de tipografia'</translation>
       <translation>Mida de la punta de fletxa</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="405"/>
-      <source>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.</source>
-      <translation>Controla l'espaiat entre el punt de cota i el començament de la línia d'extensió per a cotes ISO.</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="415"/>
       <source>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</source>
       <translation>Deixeu-ho en blanc per a un format de cota automàtic. Utilitzeu els especificadors %f, %g o %w per a sobreescriure-ho.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
+      <source>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</source>
+      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="436"/>
@@ -5455,60 +5494,37 @@ Multiplicador de 'Mida de tipografia'</translation>
       <translation>Factor d'espai d'extensió - ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="443"/>
-      <source>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.
- Value * linewidth is the gap.
- Normally, no gap is used. If using a gap, the recommended value is 8.</source>
-      <translation>Controla la mida d'espaiat entre el punt de cota i l'inici de la línia d'extensió per a les cotes ISO.
- El valor * l'amplada de línia és l'espaiat.
- Normalment, no s'utilitza cap espaiat. Si s'utilitza un espaiat, el valor recomanat és 8.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="461"/>
-      <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
- Normally, no gap is used. If using a gap, the recommended value is 6.</source>
-      <translation>Controla la mida d'espaiat entre el punt de cota i l'inici de la línia d'extensió per a les cotes ASME. El valor * l'amplada de línia és l'espaiat.
- Normalment, no s'utilitza cap espaiat. Si s'utilitza un espaiat, el valor recomanat és 6.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="493"/>
-      <source>Controls the size of spacing between dimension line and dimension text.
- Value * linewidth is the line spacing.</source>
-      <translation>Controla l'espaiat entre una línia de cota i un text de cota.
- El valor * l'amplada de línia és l'espaiat.</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="521"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Els elements en &lt;span style=&quot; font-style:italic;&quot;&gt;cursiva&lt;/span&gt; són els valors predeterminats per a objectes nous. No tenen cap efecte sobre els objectes existents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="162"/>
       <source>Single tool</source>
       <translation>Eina única</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="164"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
       <source>Separated tools</source>
       <translation>Eines separades</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="165"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="164"/>
       <source>Both</source>
       <translation>Ambdós</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="183"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="182"/>
       <source>Auto</source>
       <translation>Auto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="184"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="183"/>
       <source>Diameter</source>
       <translation>Diàmetre</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="185"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="184"/>
       <source>Radius</source>
       <translation>Radi</translation>
     </message>
@@ -5627,14 +5643,14 @@ for ProjectionGroups</source>
       <translation>Estàndard a utilitzar per a dibuixar les línies de secció. Això afecta la posició de les fletxes i símbols.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="385"/>
-      <source>ANSI</source>
-      <translation>ANSI</translation>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
+      <source>If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</source>
+      <translation type="unfinished">If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="390"/>
-      <source>ISO</source>
-      <translation>ISO</translation>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
+      <source>Use 3D Camera Direction</source>
+      <translation type="unfinished">Use 3D Camera Direction</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
@@ -5785,16 +5801,6 @@ for ProjectionGroups</source>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="831"/>
       <source>View Defaults</source>
       <translation>Veure predeterminats</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
-      <source>If checked, the 3d camera direction (or normal of a selected face) will be used as the view direction.  If not checked, Views will be created as Front Views.</source>
-      <translation>Si està marcat, la direcció de la càmera 3D (o la normal de la cara seleccionada) serà utilitzada com a direcció de la vista. Si no ho està, les vistes es crearan com a vistes frontals.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
-      <source>Use 3d Camera Direction</source>
-      <translation>Utilitzar direcció de la càmera 3D</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="871"/>
@@ -6057,79 +6063,69 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="90"/>
+      <location filename="../../MDIViewPage.cpp" line="89"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Activa/desactiva l'&amp;actualització automàtica</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="93"/>
+      <location filename="../../MDIViewPage.cpp" line="92"/>
       <source>Toggle &amp;Frames</source>
       <translation>Activa/desactiva els &amp;marcs</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="96"/>
+      <location filename="../../MDIViewPage.cpp" line="95"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exporta SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="99"/>
+      <location filename="../../MDIViewPage.cpp" line="98"/>
       <source>Export DXF</source>
       <translation>Exporta DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="102"/>
+      <location filename="../../MDIViewPage.cpp" line="101"/>
       <source>Export PDF</source>
       <translation>Exporta a PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="104"/>
       <source>Print All Pages</source>
       <translation>Imprimir totes les pàgines</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="465"/>
+      <location filename="../../MDIViewPage.cpp" line="393"/>
       <source>Different orientation</source>
       <translation>Orientació diferent</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="466"/>
-      <source>The printer uses a different orientation  than the drawing.
+      <location filename="../../MDIViewPage.cpp" line="394"/>
+      <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation>La impressora utilitza una orientació diferent que la del dibuix. Voleu continuar?</translation>
+      <translation>La impressora utilitza una mida de paper diferent que la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="475"/>
+      <location filename="../../MDIViewPage.cpp" line="403"/>
       <source>Different paper size</source>
       <translation>Mida de paper diferent</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="476"/>
+      <location filename="../../MDIViewPage.cpp" line="404"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La impressora utilitza una mida de paper diferent que la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="579"/>
+      <location filename="../../MDIViewPage.cpp" line="495"/>
       <source>Save DXF file</source>
       <translation>Desa el fitxer DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="580"/>
-      <source>DXF (*.dxf)</source>
-      <translation>DXF (*.dxf)</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="607"/>
+      <location filename="../../MDIViewPage.cpp" line="518"/>
       <source>Save PDF file</source>
       <translation>Desa el fitxer PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="608"/>
-      <source>PDF (*.pdf)</source>
-      <translation>PDF (*.pdf)</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="1152"/>
+      <location filename="../../MDIViewPage.cpp" line="1061"/>
       <source>Selected:</source>
       <translation>Seleccionat:</translation>
     </message>
@@ -6413,11 +6409,6 @@ Do you want to continue?</source>
       <translation>Allarga una mica la línia.</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="308"/>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
       <location filename="../../TaskCenterLine.ui" line="145"/>
       <source>Color</source>
       <translation>Color</translation>
@@ -6583,18 +6574,18 @@ Do you want to continue?</source>
       <translation>Actualitzar ara</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="174"/>
+      <location filename="../../TaskComplexSection.cpp" line="173"/>
       <source>No direction set</source>
-      <translation>No s'ha establert cap direcció</translation>
+      <translation type="unfinished">No direction set</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="562"/>
-      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskComplexSection.cpp" line="561"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>ComplexSection</source>
       <translation>Secció complexa</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="715"/>
+      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>No es pot continuar. No s'ha trobat l'objecte * %1 o %2.</translation>
     </message>
@@ -6613,7 +6604,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="66"/>
-      <location filename="../../TaskCosVertex.cpp" line="115"/>
+      <location filename="../../TaskCosVertex.cpp" line="114"/>
       <source>Point Picker</source>
       <translation>Seleccionador de punts</translation>
     </message>
@@ -6628,38 +6619,28 @@ Do you want to continue?</source>
       <translation>Posició</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="106"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosVertex.ui" line="142"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosVertex.cpp" line="160"/>
-      <location filename="../../TaskCosVertex.cpp" line="249"/>
+      <location filename="../../TaskCosVertex.cpp" line="159"/>
+      <location filename="../../TaskCosVertex.cpp" line="248"/>
       <source>Pick Points</source>
       <translation>Selecciona punts</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="174"/>
+      <location filename="../../TaskCosVertex.cpp" line="173"/>
       <source>Pick a point for cosmetic vertex</source>
       <translation>Selecciona un punt per al vèrtex cosmètic</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="177"/>
+      <location filename="../../TaskCosVertex.cpp" line="176"/>
       <source>Escape picking</source>
       <translation>Anul·lar la selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="202"/>
+      <location filename="../../TaskCosVertex.cpp" line="201"/>
       <source>Left click to set a point</source>
       <translation>Feu clic al botó esquerre per a definir un punt</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="277"/>
+      <location filename="../../TaskCosVertex.cpp" line="276"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>S'ha abandonat l'edició en procés. Torna a començar.</translation>
     </message>
@@ -6679,32 +6660,14 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
       <location filename="../../TaskCosmeticLine.ui" line="140"/>
-      <source>2d Point</source>
-      <translation>Punt 2D</translation>
+      <source>2D Point</source>
+      <translation type="unfinished">2D Point</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="77"/>
       <location filename="../../TaskCosmeticLine.ui" line="156"/>
-      <source>3d Point</source>
-      <translation>Punt 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticLine.ui" line="94"/>
-      <location filename="../../TaskCosmeticLine.ui" line="173"/>
-      <source>X:</source>
-      <translation>X:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticLine.ui" line="108"/>
-      <location filename="../../TaskCosmeticLine.ui" line="187"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticLine.ui" line="122"/>
-      <location filename="../../TaskCosmeticLine.ui" line="201"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
+      <source>3D Point</source>
+      <translation type="unfinished">3D Point</translation>
     </message>
   </context>
   <context>
@@ -7020,7 +6983,7 @@ Do you want to continue?</source>
       <translation>Previsualització:</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.cpp" line="81"/>
+      <location filename="../../TaskCustomizeFormat.cpp" line="80"/>
       <source>Customize Format</source>
       <translation>Personalitzar el format</translation>
     </message>
@@ -7049,24 +7012,14 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="83"/>
-      <location filename="../../TaskDetail.cpp" line="261"/>
+      <location filename="../../TaskDetail.cpp" line="260"/>
       <source>Drag Highlight</source>
       <translation>Arrossega el ressaltat</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDetail.ui" line="114"/>
-      <source>X</source>
-      <translation>X</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="134"/>
       <source>x position of detail highlight within view</source>
       <translation>posició x del ressaltat del detall en la vista</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDetail.ui" line="153"/>
-      <source>Y</source>
-      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="160"/>
@@ -7158,6 +7111,18 @@ Personalitzat: s'utilitza el factor d'escala personalitzat</translation>
       <translation>Teòricament exacta</translation>
     </message>
     <message>
+      <location filename="../../TaskDimension.ui" line="137"/>
+      <source>If checked, the content of &apos;Format Spec&apos; will
+be used instead of the dimension value</source>
+      <translation type="unfinished">If checked, the content of &apos;Format Spec&apos; will
+be used instead of the dimension value</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="176"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
       <location filename="../../TaskDimension.ui" line="199"/>
       <source>Reverses usual direction of dimension line terminators</source>
       <translation>Inverteix la direcció habitual dels acabadors de línies de cota</translation>
@@ -7216,13 +7181,6 @@ el valor negat per 'Sobretolerància'.</translation>
       <translation>Text a mostrar</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="137"/>
-      <source>If checked the content of &apos;Format Spec&apos; will
-be used instead of the dimension value</source>
-      <translation>Si està marcat, el contingut d''Especificació de format' serà
-utilitzat en contres del valor de cota</translation>
-    </message>
-    <message>
       <location filename="../../TaskDimension.ui" line="141"/>
       <source>Arbitrary Text</source>
       <translation>Text arbitrari</translation>
@@ -7246,11 +7204,6 @@ utilitzat en contres del valor de cota</translation>
       <location filename="../../TaskDimension.ui" line="169"/>
       <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
       <translation>Especifica el format de la subtolerància en l'estil printf(), o un text arbitrari</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="176"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si està marcat, el contingut de l'especificació de format per la tolerància, &lt;/p&gt;&lt;p&gt;s'utilitzarà en contres del valor de la tolerància&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="179"/>
@@ -7388,7 +7341,7 @@ utilitzat en contres del valor de cota</translation>
   <context>
     <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
-      <location filename="../../TaskLineDecor.cpp" line="468"/>
+      <location filename="../../TaskLineDecor.cpp" line="467"/>
       <source>Restore Invisible Lines</source>
       <translation>Restaura les línies no visibles</translation>
     </message>
@@ -7504,6 +7457,11 @@ utilitzat en contres del valor de cota</translation>
       <translation>Amplia/encongeix el patró (només SVG)</translation>
     </message>
     <message>
+      <location filename="../../TaskHatch.ui" line="107"/>
+      <source>SVG Line Color</source>
+      <translation type="unfinished">SVG Line Color</translation>
+    </message>
+    <message>
       <location filename="../../TaskHatch.ui" line="133"/>
       <source>Color of pattern lines (SVG Only)</source>
       <translation>Color de les línies del patró (només SVG)</translation>
@@ -7527,11 +7485,6 @@ utilitzat en contres del valor de cota</translation>
       <location filename="../../TaskHatch.ui" line="140"/>
       <source>Rotation the pattern (degrees)</source>
       <translation>Rotació del patró (graus)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHatch.ui" line="107"/>
-      <source>Svg Line Color</source>
-      <translation>Color de línia SVG</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
@@ -7567,7 +7520,7 @@ Podeu seleccionar més punts per a obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
-      <location filename="../../TaskLeaderLine.cpp" line="507"/>
+      <location filename="../../TaskLeaderLine.cpp" line="501"/>
       <source>Pick Points</source>
       <translation>Selecciona punts</translation>
     </message>
@@ -7642,57 +7595,57 @@ Podeu seleccionar més punts per a obtenir segments de línia.</translation>
       <translation>Guió punt punt</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="227"/>
+      <location filename="../../TaskLeaderLine.cpp" line="226"/>
       <source>Pick points</source>
       <translation>Selecciona punts</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="276"/>
-      <location filename="../../TaskLeaderLine.cpp" line="694"/>
-      <location filename="../../TaskLeaderLine.cpp" line="751"/>
-      <location filename="../../TaskLeaderLine.cpp" line="773"/>
+      <location filename="../../TaskLeaderLine.cpp" line="274"/>
+      <location filename="../../TaskLeaderLine.cpp" line="688"/>
+      <location filename="../../TaskLeaderLine.cpp" line="759"/>
+      <location filename="../../TaskLeaderLine.cpp" line="781"/>
       <source>Edit points</source>
       <translation>Edita punts</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="521"/>
+      <location filename="../../TaskLeaderLine.cpp" line="515"/>
       <source>Edit Points</source>
       <translation>Edita punts</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="538"/>
-      <location filename="../../TaskLeaderLine.cpp" line="590"/>
+      <location filename="../../TaskLeaderLine.cpp" line="532"/>
+      <location filename="../../TaskLeaderLine.cpp" line="584"/>
       <source>Pick a starting point for leader line</source>
       <translation>Trieu un punt inicial per a la línia guia</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="541"/>
+      <location filename="../../TaskLeaderLine.cpp" line="535"/>
       <source>Save Points</source>
       <translation>Desa punts</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="573"/>
+      <location filename="../../TaskLeaderLine.cpp" line="567"/>
       <source>Click and drag markers to adjust leader line</source>
       <translation>Feu clic i arrossegueu els marcadors per a ajustar la línia guia</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="576"/>
-      <location filename="../../TaskLeaderLine.cpp" line="593"/>
+      <location filename="../../TaskLeaderLine.cpp" line="570"/>
+      <location filename="../../TaskLeaderLine.cpp" line="587"/>
       <source>Save changes</source>
       <translation>Desa els canvis</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="624"/>
+      <location filename="../../TaskLeaderLine.cpp" line="618"/>
       <source>Left click to set a point</source>
       <translation>Feu clic al botó esquerre per a definir un punt</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="650"/>
+      <location filename="../../TaskLeaderLine.cpp" line="644"/>
       <source>Press OK or Cancel to continue</source>
       <translation>Premeu D'acord o Cancel·la per a continuar</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="768"/>
+      <location filename="../../TaskLeaderLine.cpp" line="776"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>S'ha abandonat l'edició en procés. Torna a començar.</translation>
     </message>
@@ -7715,6 +7668,11 @@ Podeu seleccionar més punts per a obtenir segments de línia.</translation>
       <translation>Línies</translation>
     </message>
     <message>
+      <location filename="../../TaskLineDecor.ui" line="99"/>
+      <source>The use of the Qt line style is being phased out. Please use a standard line style instead.</source>
+      <translation type="unfinished">The use of the Qt line style is being phased out. Please use a standard line style instead.</translation>
+    </message>
+    <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
       <source>Style</source>
       <translation>Estil</translation>
@@ -7728,11 +7686,6 @@ Podeu seleccionar més punts per a obtenir segments de línia.</translation>
       <location filename="../../TaskLineDecor.ui" line="45"/>
       <source>Weight</source>
       <translation>Pes</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLineDecor.ui" line="99"/>
-      <source>The use of the Qt line style is being phased out.  Please use a standard line style instead.</source>
-      <translation>L'ús de l'estil de la línia s'està eliminant. Si us plau, utilitzeu un estil de línia estàndard.</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="145"/>
@@ -8241,12 +8194,12 @@ usant l'espaiat X/Y donat</translation>
       <translation>Guió punt punt</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="181"/>
+      <location filename="../../TaskRichAnno.cpp" line="180"/>
       <source>Input the annotation text directly or start the rich text editor</source>
       <translation>Introduïu directament el text de l’anotació o inicieu l’editor de text enriquit</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="283"/>
+      <location filename="../../TaskRichAnno.cpp" line="282"/>
       <source>RichTextAnnotation</source>
       <translation>Anotació de text enriquit</translation>
     </message>
@@ -8368,23 +8321,8 @@ usant l'espaiat X/Y donat</translation>
       <source>Section Plane Location</source>
       <translation>Ubicació del pla de secció</translation>
     </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="318"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="372"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="413"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
     <message numerus="yes">
-      <location filename="../../TaskSectionView.cpp" line="435"/>
+      <location filename="../../TaskSectionView.cpp" line="428"/>
       <source>%n update(s) pending</source>
       <translation>
         <numerusform>%n actualització pendent</numerusform>
@@ -8392,12 +8330,12 @@ usant l'espaiat X/Y donat</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="445"/>
+      <location filename="../../TaskSectionView.cpp" line="438"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>No hi ha res a aplicar. Encara no s'ha triat la direcció de la secció</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="647"/>
+      <location filename="../../TaskSectionView.cpp" line="639"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>No es pot continuar. No s'ha trobat l'objecte * %1 o %2.</translation>
     </message>
@@ -8514,16 +8452,6 @@ usant l'espaiat X/Y donat</translation>
       <translation>Angle de símbol:</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="268"/>
-      <source>ISO</source>
-      <translation>ISO</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="281"/>
-      <source>ASME</source>
-      <translation>ASME</translation>
-    </message>
-    <message>
       <location filename="../../TaskHoleShaftFit.ui" line="29"/>
       <source>Hole /Shaft Fit ISO 286</source>
       <translation>Ajustament forat/eix ISO 286</translation>
@@ -8539,66 +8467,9 @@ usant l'espaiat X/Y donat</translation>
       <translation>Ajustament de forat</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="62"/>
-      <source>c11</source>
-      <translation>c11</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="67"/>
-      <source>f7</source>
-      <translation>f7</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="72"/>
-      <location filename="../../TaskHoleShaftFit.ui" line="97"/>
-      <location filename="../../TaskHoleShaftFit.ui" line="102"/>
-      <location filename="../../TaskHoleShaftFit.ui" line="107"/>
-      <location filename="../../TaskHoleShaftFit.ui" line="112"/>
-      <location filename="../../TaskHoleShaftFit.ui" line="117"/>
-      <source>h6</source>
-      <translation>h6</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="77"/>
-      <source>h7</source>
-      <translation>h7</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="82"/>
-      <location filename="../../TaskHoleShaftFit.ui" line="87"/>
-      <location filename="../../TaskHoleShaftFit.ui" line="92"/>
-      <source>h9</source>
-      <translation>h9</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="122"/>
-      <source>k6</source>
-      <translation>k6</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="127"/>
-      <source>n6</source>
-      <translation>n6</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="132"/>
-      <source>r6</source>
-      <translation>r6</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="137"/>
-      <source>s6</source>
-      <translation>s6</translation>
-    </message>
-    <message>
       <location filename="../../TaskHoleShaftFit.ui" line="145"/>
       <source>loose fit</source>
       <translation>ajustament fluix</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleShaftFit.ui" line="152"/>
-      <source>             H11/</source>
-      <translation>             H11/</translation>
     </message>
   </context>
   <context>
@@ -8663,7 +8534,7 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDraw_2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <location filename="../../CommandAnnotate.cpp" line="660"/>
       <source>Adds a Centerline between 2 Lines</source>
       <translation>Afegeix una línia central entre 2 línies</translation>
     </message>
@@ -8671,7 +8542,7 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDraw_2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <location filename="../../CommandAnnotate.cpp" line="664"/>
       <source>Adds a Centerline between 2 Points</source>
       <translation>Afegeix una línia central entre 2 punts</translation>
     </message>
@@ -8679,7 +8550,7 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="789"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Insert complex Section View</source>
       <translation>Insereix una vista de secció complexa</translation>
     </message>
@@ -8687,7 +8558,7 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDraw_CosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="284"/>
+      <location filename="../../CommandAnnotate.cpp" line="282"/>
       <source>Inserts a Cosmetic Vertex into a View</source>
       <translation>Insereix un vèrtex cosmètic en una vista</translation>
     </message>
@@ -8710,7 +8581,7 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDraw_FaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="651"/>
+      <location filename="../../CommandAnnotate.cpp" line="656"/>
       <source>Adds a Centerline to Faces</source>
       <translation>Afegeix una línia central a una cara</translation>
     </message>
@@ -8726,7 +8597,7 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDraw_Midpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="288"/>
+      <location filename="../../CommandAnnotate.cpp" line="286"/>
       <source>Inserts Cosmetic Vertices at Midpoint of selected Edges</source>
       <translation>Insereix un vèrtex cosmètic en el punt central de les arestes seleccionades</translation>
     </message>
@@ -8734,7 +8605,7 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDraw_Quadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="292"/>
+      <location filename="../../CommandAnnotate.cpp" line="290"/>
       <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
       <translation>Insereix un vèrtex cosmètic en els punts quadrants dels cercles seleccionats</translation>
     </message>
@@ -8742,7 +8613,7 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="784"/>
+      <location filename="../../Command.cpp" line="796"/>
       <source>Insert simple Section View</source>
       <translation>Insereix una vista de secció simple</translation>
     </message>
@@ -9100,22 +8971,22 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TechDrawGui::TaskDimRepair</name>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="82"/>
+      <location filename="../../TaskDimRepair.cpp" line="81"/>
       <source>Object Name</source>
       <translation>Nom de l’objecte</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="82"/>
+      <location filename="../../TaskDimRepair.cpp" line="81"/>
       <source>Object Label</source>
       <translation>Etiqueta de l’objecte</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="82"/>
+      <location filename="../../TaskDimRepair.cpp" line="81"/>
       <source>SubElement</source>
       <translation>Subelement</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="237"/>
+      <location filename="../../TaskDimRepair.cpp" line="236"/>
       <source>Repair Dimension</source>
       <translation>Reparar cota</translation>
     </message>
@@ -9291,14 +9162,14 @@ usant l'espaiat X/Y donat</translation>
   <context>
     <name>TaskBalloon</name>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="183"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="182"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
       <translation>Ara no pots esborrar aquest globus perquè
 hi ha un diàleg de tasca obert.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="186"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="185"/>
       <source>Can Not Delete</source>
       <translation>No es pot esborrar</translation>
     </message>
@@ -9468,44 +9339,9 @@ hi ha un diàleg de tasca obert.</translation>
       <translation>Vista</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="61"/>
-      <source>Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</source>
-      <translation>Tracta el punt central com a un punt 2D dins de la vista pare. La coordenada Z s'ignora.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="64"/>
-      <source>2d Point</source>
-      <translation>Punt 2D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="77"/>
-      <source>Treat the center point as a 3d point and project it onto the parent View.</source>
-      <translation>Tracta el punt central com a un punt 3D i projecta'l a la vista pare.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="80"/>
-      <source>3d Point</source>
-      <translation>Punt 3D</translation>
-    </message>
-    <message>
       <location filename="../../TaskCosmeticCircle.ui" line="90"/>
       <source>Circle Center</source>
       <translation>Centre del cercle</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="101"/>
-      <source>X:</source>
-      <translation>X:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="115"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="129"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="147"/>
@@ -9533,6 +9369,26 @@ hi ha un diàleg de tasca obert.</translation>
       <translation>Angle final (convencional) de l'arc en graus.</translation>
     </message>
     <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="61"/>
+      <source>Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</source>
+      <translation type="unfinished">Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="64"/>
+      <source>2D Point</source>
+      <translation type="unfinished">2D Point</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="77"/>
+      <source>Treat the center point as a 3D point and project it onto the parent View.</source>
+      <translation type="unfinished">Treat the center point as a 3D point and project it onto the parent View.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="80"/>
+      <source>3D Point</source>
+      <translation type="unfinished">3D Point</translation>
+    </message>
+    <message>
       <location filename="../../TaskCosmeticCircle.ui" line="188"/>
       <source>End Angle:</source>
       <translation>Angle final:</translation>
@@ -9556,12 +9412,12 @@ hi ha un diàleg de tasca obert.</translation>
   <context>
     <name>CmdTechDrawCosmeticCircle</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1129"/>
+      <location filename="../../CommandAnnotate.cpp" line="1134"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1130"/>
+      <location filename="../../CommandAnnotate.cpp" line="1135"/>
       <source>Add Cosmetic Circle</source>
       <translation>Afegeix un cercle cosmètic</translation>
     </message>
@@ -9569,17 +9425,17 @@ hi ha un diàleg de tasca obert.</translation>
   <context>
     <name>CmdTechDrawExtensionArcLengthAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1896"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1895"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1897"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1896"/>
       <source>Calculate the arc length of selected edges</source>
       <translation>Calcula la longitud de l'arc de les vores seleccionades</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1898"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1897"/>
       <source>Select several edges&lt;br&gt;    - click this tool</source>
       <translation>Seleccioneu diverses vores&lt;br&gt;    - premeu aquesta eina</translation>
     </message>
@@ -9992,13 +9848,13 @@ hi ha un diàleg de tasca obert.</translation>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="538"/>
+      <location filename="../../Command.cpp" line="550"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="539"/>
-      <location filename="../../Command.cpp" line="540"/>
+      <location filename="../../Command.cpp" line="551"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Insert Broken View</source>
       <translation>Insereix vista trencada</translation>
     </message>
@@ -10009,21 +9865,6 @@ hi ha un diàleg de tasca obert.</translation>
       <location filename="../../TaskProjGroup.cpp" line="955"/>
       <source>Direction</source>
       <translation>Direcció</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.cpp" line="960"/>
-      <source>X: </source>
-      <translation>X: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.cpp" line="968"/>
-      <source>Y: </source>
-      <translation>Y: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.cpp" line="976"/>
-      <source>Z: </source>
-      <translation>Z: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="992"/>

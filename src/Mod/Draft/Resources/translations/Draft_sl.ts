@@ -90,241 +90,246 @@
       <translation>Izvozi sloge v datoteko JSON</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
-      <source>Text</source>
-      <translation>Besedilo</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="214"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Pisava besedil in kót</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="217"/>
       <source>Font name</source>
       <translation>Ime pisave</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="243"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="253"/>
       <source>The font size in system units</source>
       <translation>Velikost pisave v enotah sistema</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="256"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="300"/>
       <source>Lines and arrows</source>
       <translation>Črte in puščice</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
-      <source>Show line</source>
-      <translation>Pokaži črto</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="288"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="332"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="342"/>
       <source>The width of the lines</source>
       <translation>Debelina črt</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
       <source> px</source>
       <translation> sl. točk</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="308"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="330"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="352"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
       <source>The type of arrows or markers to use for dimensions and labels</source>
       <translation>Vrste puščic in označevalnikov pri kotah in oznakah</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="362"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="372"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="406"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="416"/>
       <source>The size of the arrows or markers in system units</source>
       <translation>Velikost puščic oz. označevalnikov, merjena v sistemskih enotah</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="382"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="392"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>The color of lines and arrows</source>
       <translation>Barva črt in puščic</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="385"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="429"/>
       <source>Line and arrow color</source>
       <translation>Barva črt in puščic</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="497"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="518"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="528"/>
       <source>The distance the dimension line is additionally extended</source>
       <translation>Dolžina dodatnega podaljšanja kotirne črte</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="537"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="547"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="521"/>
+      <source>Dimension line overshoot</source>
+      <translation>Prekoračitev kotirne črte</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
+      <source>Extension line length</source>
+      <translation>Dolžina pomožnih kotnic</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="558"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="568"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
       <translation>Dolžina dodatnega podaljšanja pomožne kotirne črte preko kotirne črte</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
       <source>Font size</source>
       <translation>Velikost pisave</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="263"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="273"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
       <translation>Medvrstični razmik pri večvrstnih napisih in oznakah (odnosno z velikostjo pisave)</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
-      <source>Line spacing</source>
-      <translation>Razmik med vrsticami</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="280"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="290"/>
       <source>The color of texts, dimension texts and label texts</source>
       <translation>Barva napisov, besedila kót in besedila oznak</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="283"/>
       <source>Text color</source>
       <translation>Barva besedila</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="402"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>Units</source>
       <translation>Enote</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="408"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="418"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
       <translation>Množilni količnik, ki vpliva na velikost napisov in oznak</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Scale multiplier</source>
       <translation>Množitelj merila</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="452"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="462"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>Če je označeno, bo vrednosti mere pripisana enota</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
       <source>Show unit</source>
       <translation>Prikaži enoto</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="454"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Določite veljavno enoto za dolžino, kot npr. mm, m, in, ft, ki se bo uporabljala za prikazovanje mer</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="457"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="478"/>
       <source>Unit override</source>
       <translation>Nadomestna enota</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="492"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="502"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Število decimalnih mest pri prikazovanju mer</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
-      <source>Decimals</source>
-      <translation>Decimalke</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="557"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="567"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="578"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="588"/>
       <source>The distance between the dimension text and the dimension line</source>
       <translation>Razmik med napisom kote in kotirno črto</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="560"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="581"/>
       <source>Text spacing</source>
       <translation>Razmik besedila</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="262"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="272"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="306"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="316"/>
       <source>If it is checked it will display the dimension line</source>
       <translation>Če je označeno, se pomožna kotirna črta prikaže</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
+      <source>Annotations</source>
+      <translation>Pripisi</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="208"/>
+      <source>Texts</source>
+      <translation>Napisi</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="266"/>
+      <source>Line spacing factor</source>
+      <translation>Količnik medvrstičnega razmika</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="309"/>
+      <source>Show dimension line</source>
+      <translation>Prikaži kotnico</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="335"/>
       <source>Line width</source>
       <translation>Debelina črte</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>Arrow type</source>
       <translation>Vrsta puščice</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="378"/>
       <source>Dot</source>
       <translation>Pika</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="339"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="383"/>
       <source>Circle</source>
       <translation>Krog</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="344"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="388"/>
       <source>Arrow</source>
       <translation>Puščica</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="349"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="393"/>
       <source>Tick</source>
       <translation>Kljukica</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="354"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="398"/>
       <source>Tick-2</source>
       <translation>Kljukica-2</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="365"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="409"/>
       <source>Arrow size</source>
       <translation>Velikost puščice</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="495"/>
+      <source>Number of decimals</source>
+      <translation>Število decimalk</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="512"/>
       <source>Dimension details</source>
       <translation>Podrobnosti kote</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
-      <source>Dimension overshoot</source>
-      <translation>Prekoračitev s kotirno črto</translation>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
+      <source>Extension line overshoot</source>
+      <translation>Prekoračitev pomožne kotirne črte</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="517"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="538"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="548"/>
       <source>The length of the extension lines</source>
       <translation>Dolžina pomožnih kotirnih črt</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="520"/>
-      <source>Extension lines</source>
-      <translation>Pomožne kotirne črte</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="540"/>
-      <source>Extension overshoot</source>
-      <translation>Prekoračitev pomožne kotirne črte</translation>
     </message>
   </context>
   <context>
@@ -704,8 +709,8 @@ Vezana razpostavitev je učinkovitejša pri ustvarjanju večjega števila dvojni
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
-      <source>Reset 3d point selection</source>
-      <translation>Ponastavi 3d izbiro točk</translation>
+      <source>Reset 3D point selection</source>
+      <translation type="unfinished">Reset 3D point selection</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -1004,7 +1009,7 @@ will be moved to the center of the view.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="386"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
       <source>Line width</source>
       <translation>Debelina črte</translation>
     </message>
@@ -1012,7 +1017,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="393"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1092,27 +1097,28 @@ will be moved to the center of the view.</translation>
       <translation>Barva oblike</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="598"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
       <source>Annotations</source>
       <translation>Pripisi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="555"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="564"/>
       <source>Text spacing</source>
       <translation>Razmik besedila</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="372"/>
       <source>Text color</source>
       <translation>Barva besedila</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="473"/>
       <source>Dimensions</source>
       <translation>Kote</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
       <source>Dot</source>
       <translation>Pika</translation>
     </message>
@@ -1122,124 +1128,124 @@ will be moved to the center of the view.</translation>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="315"/>
       <source>Texts</source>
       <translation>Napisi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="328"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="358"/>
       <source>Line spacing factor</source>
       <translation>Količnik medvrstičnega razmika</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="349"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation type="unfinished">The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="389"/>
       <source>Lines and arrows</source>
       <translation>Črte in puščice</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="413"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
       <source>Circle</source>
       <translation>Krog</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="418"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="427"/>
       <source>Arrow</source>
       <translation>Puščica</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="432"/>
       <source>Tick</source>
       <translation>Kljukica</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="437"/>
       <source>Tick-2</source>
       <translation>Kljukica-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="486"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
       <translation>Če je označeno, bo meri na koti dodan znak enote</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="503"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation>Povozitev enote kotiranja. Če želite uporabite trenutne enote programa, pustite prazno.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="517"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Dolžina podaljšanja kotnice preko pomožnih kotnic</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="379"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation>Barva napisov, besedila kót in besedila oznak</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
       <source>Font name</source>
       <translation>Ime pisave</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="334"/>
       <source>The font for texts, dimensions and labels</source>
       <translation>Pisava napisov, besedila kót in besedila oznak</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="311"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
       <source>Font size</source>
       <translation>Velikost pisave</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
       <source>The height for texts, dimension texts and label texts</source>
       <translation>Velikost napisov, besedila kót in besedila oznak</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="335"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
       <translation>Medvrstični razmik pri večvrstnih napisih in oznakah (odnosno z velikostjo pisave)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="342"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
       <source>Scale multiplier</source>
       <translation>Množitelj merila</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="459"/>
       <source>Line and arrow color</source>
       <translation>Barva črt in puščic</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="400"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
       <source>Arrow type</source>
       <translation>Vrsta puščice</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="436"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="445"/>
       <source>Arrow size</source>
       <translation>Velikost puščic</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="501"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="510"/>
       <source>Dim line overshoot</source>
       <translation type="unfinished">Dim line overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="518"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="527"/>
       <source>Ext line length</source>
       <translation type="unfinished">Ext line length</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="534"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1249,42 +1255,42 @@ vrednost določa vrzel med merjeno točko in koncem kotirne črte, pozitivna vre
 določa največjo dolžino pomožnih kotnic. Velja le za preme kote.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="538"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="547"/>
       <source>Ext line overshoot</source>
       <translation type="unfinished">Ext line overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="554"/>
       <source>The length of extension lines above the dimension line</source>
       <translation>Dolžina pomožne kotnice preko kotnice</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="571"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Razmik med kotirno črto in besedilom mere</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="581"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="590"/>
       <source>Apply the above style to selected object(s)</source>
       <translation>Uporabi na izbranih predmetih zgornji slog</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="595"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="604"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation>Uveljavi zgornji slog na vseh pripisih (napisi, kote in oznake)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="479"/>
       <source>Show unit</source>
       <translation>Prikaži enoto</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="496"/>
       <source>Unit override</source>
       <translation>Nadomestna enota</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="584"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="593"/>
       <source>Selected</source>
       <translation>Izbrano</translation>
     </message>
@@ -1532,12 +1538,12 @@ accidentally and modifying the entered value.</translation>
       <translation>Barva pomožne geometrije</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="319"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="318"/>
       <source>Draft classic style</source>
       <translation>Običajni slog izrisa (Draft)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="324"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="323"/>
       <source>Bitsnpieces style</source>
       <translation>Slog "drobnarije"</translation>
     </message>
@@ -1607,54 +1613,54 @@ kateri bodo dodani med stalne vzorce</translation>
       <translation>Besedila in mere</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="41"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="93"/>
       <source>Internal font</source>
       <translation>Notranja pisava</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="54"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="106"/>
       <source>Font size</source>
       <translation>Velikost pisave</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="209"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="73"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="310"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="501"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="540"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="569"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="598"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="125"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="332"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="523"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="562"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="591"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="620"/>
       <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="418"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="440"/>
       <source>Number of decimals</source>
       <translation>Število decimalk</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="556"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="578"/>
       <source>Extension line overshoot</source>
       <translation>Prekoračitev pomožne kotirne črte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="482"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="504"/>
       <source>Dimension line overshoot</source>
       <translation>Prekoračitev kotirne črte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="20"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="72"/>
       <source>Texts</source>
       <translation>Napisi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="26"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="78"/>
       <source>Font name or family</source>
       <translation>Družina ali ime pisave</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="33"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="85"/>
       <source>The default font for texts, dimensions and labels. It can be a font name such
 as "Arial", a style such as "sans", "serif" or "mono", or a family such as
 "Arial,Helvetica,sans", or a name with a style such as "Arial:Bold".</source>
@@ -1663,182 +1669,187 @@ privzeti slog kot npr. "sans", "serif" ali "s stalno širno", lahko je družina,
 kot npr. "Arial,Helvetica,sans" ali ime s slogom, kot npr. "Arial:krepko".</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="67"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="119"/>
       <source>The default height for texts, dimension texts and label texts</source>
       <translation>Privzeta velikost napisov, besedila kót in besedila oznak</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="99"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="151"/>
       <source>Line spacing factor</source>
       <translation>Količnik medvrstičnega razmika</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="106"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="158"/>
       <source>The default line spacing for multi-line texts and labels (relative to the font size)</source>
       <translation>Privzeti medvrstični razmik pri večvrstnih napisih in oznakah (odnosno z velikostjo pisave)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="125"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Scale multiplier</source>
       <translation>Množitelj merila</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="132"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="20"/>
+      <source>Annotations</source>
+      <translation>Pripisi</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="39"/>
       <source>The default annotation scale multiplier. This is the inverse of the scale set
 in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>Privzeti množilnik velikosti pripisov je obratna vrednost merila, nastavljenega
 v Gradniku velikosti pripisov. Če je merilo 1:100, je množilnik 100.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="155"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="177"/>
       <source>Text color</source>
       <translation>Barva besedila</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="162"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="184"/>
       <source>The default color for texts, dimension texts and label texts</source>
       <translation>Privzeta barva napisov, besedila kót in besedila oznak</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="185"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="207"/>
       <source>Lines and arrows</source>
       <translation>Črte in puščice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="191"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="213"/>
       <source>If checked, the dimension line is displayed by default</source>
       <translation>Če je označno, se kotnica privzeto prikaže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="194"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="216"/>
       <source>Show dimension line</source>
       <translation>Prikaži kotnico</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="210"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="232"/>
       <source>Line width</source>
       <translation>Širina črte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="217"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="239"/>
       <source>The default line width</source>
       <translation>Privzeta debelina črt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="220"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="242"/>
       <location filename="../ui/preferences-draft.ui" line="338"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="246"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="268"/>
       <source>Arrow type</source>
       <translation>Vrsta puščice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="259"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="281"/>
       <source>The default symbol displayed at the ends of dimension lines</source>
       <translation>Privzeti znak na koncih kotirnih črt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="269"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="291"/>
       <source>Dot</source>
       <translation>Pika</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="274"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="296"/>
       <source>Circle</source>
       <translation>Krog</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="279"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="301"/>
       <source>Arrow</source>
       <translation>Puščica</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="284"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="306"/>
       <source>Tick</source>
       <translation>Kljukica</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="289"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="311"/>
       <source>Tick-2</source>
       <translation>Kljukica-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="297"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="319"/>
       <source>Arrow size</source>
       <translation>Velikost puščice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="304"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="326"/>
       <source>The default arrow size</source>
       <translation>Privzeta velikost puščic</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="329"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="351"/>
       <source>Line and arrow color</source>
       <translation>Barva črt in puščic</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="336"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="358"/>
       <source>The default color for lines and arrows</source>
       <translation>Privzeta barva črt in puščic</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="359"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="381"/>
       <source>Units</source>
       <translation>Enote</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="365"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="387"/>
       <source>If checked, a unit symbol is added to dimension texts by default</source>
       <translation>Če je označeno, bo meri na koti kot privzeto dodana oznaka enote</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="368"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="390"/>
       <source>Show unit</source>
       <translation>Prikaži enoto</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="384"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="406"/>
       <source>Unit override</source>
       <translation>Nadomestna enota</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="397"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="419"/>
       <source>The default unit override for dimensions. Enter a unit such as m
 or cm, leave blank to use the current unit defined in FreeCAD.</source>
       <translation>Povozi privzeto enoto kotiranja. Vnesite enoto, kot npr. m ali cm,
 ali pustite prazno, če želite, da velja privzeta enota FreeCADa.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="425"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="447"/>
       <source>The default number of decimal places for dimension texts</source>
       <translation>Privzeto številko decimalk mere</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="460"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="482"/>
       <source>The optional string inserted between the feet and inches values in dimensions</source>
       <translation>Poljubni znaki, ki se pri kotiranju vrinejo med vrednost v čevljih in vrednost v palcih</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="476"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="498"/>
       <source>Dimension details</source>
       <translation>Podrobnosti kote</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="517"/>
       <source>The default distance the dimension line is extended past the extension lines</source>
       <translation>Privzeto podaljšanje kotirne črte preko pomožnih kotirnih črt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="524"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="546"/>
       <source>Extension line length</source>
       <translation>Dolžina pomožnih kotnic</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="531"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="553"/>
       <source>The default length of extension lines. Use 0 for full extension lines. A negative
 value defines the gap between the ends of the extension lines and the measured
 points. A positive value defines the maximum length of the extension lines. Only
@@ -1846,42 +1857,42 @@ used for linear dimensions.</source>
       <translation>Privzeta dolžina pomožnih kotirnih črt. 0 pomeni neprekinjene pomožne kotirne črte. Negativna vrednost določa vrzel med merjeno točko in koncem kotirne črte, pozitivna vrednost pa določa največjo dolžino pomožnih kotnic. Velja le za preme kote.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="563"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="585"/>
       <source>The default length of extension lines above the dimension line</source>
       <translation>Privzeto podaljšanje pomožnih kotnic preko kotirne črte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="592"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="614"/>
       <source>The default space between the dimension line and the dimension text</source>
       <translation>Privzeti razmik med kotirno črto in besedilom mere</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="620"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="642"/>
       <source>ShapeStrings</source>
       <translation>Besedilne oblike</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="633"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="655"/>
       <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
       <translation>Datoteke pisav (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="585"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="607"/>
       <source>Text spacing</source>
       <translation>Razmik besedila</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="447"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="469"/>
       <source>Feet separator</source>
       <translation>Ločilnik čevljev</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="626"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="648"/>
       <source>Default ShapeString font file</source>
       <translation>Privzeta datoteka pisave besedilne oblike</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="636"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="658"/>
       <source>Select a font file</source>
       <translation>Izberite datoteko pisave</translation>
     </message>
@@ -2298,81 +2309,88 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
       <translation>Mreža in pripenjanje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="423"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="458"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="496"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="422"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="457"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="495"/>
       <source>Shift</source>
       <translation>Premakni (Shift)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="375"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="374"/>
       <source>Always snap</source>
       <translation>Vedno pripenjaj</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="133"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="92"/>
+      <source>If checked, the outline of a human figure is displayed at the bottom left
+corner of the grid. Only effective if "Show grid border" is enabled.</source>
+      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
+corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="132"/>
       <source>Major lines every</source>
       <translation type="unfinished">Major lines every</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="146"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="145"/>
       <source>The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</source>
       <translation type="unfinished">The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="150"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="221"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="149"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="220"/>
       <source> squares</source>
       <translation type="unfinished"> squares</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="218"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="217"/>
       <source>The number of squares in the X and Y direction of the grid</source>
       <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="394"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="393"/>
       <source>Snap modifier</source>
       <translation>Spremenilnik pripenjanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="410"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="409"/>
       <source>The Snap modifier key</source>
       <translation>Spremenilna tipka pripenjanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="428"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="463"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="501"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="427"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="462"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="500"/>
       <source>Ctrl</source>
       <translation>Ctrl</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="433"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="468"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="506"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="432"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="467"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="505"/>
       <source>Alt</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="441"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="440"/>
       <source>Constrain modifier</source>
       <translation>Spremenilnik omejil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="448"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="447"/>
       <source>The Constrain modifier key</source>
       <translation>Spremenilna tipka omejil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="476"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="475"/>
       <source>Alt modifier</source>
       <translation>Spremenilnik Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="482"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
       <translation>Alt spremenilna tipka. Njena vloga je odvisna od ukaza.</translation>
     </message>
@@ -2384,7 +2402,7 @@ Use Draft ToggleGrid to change this for the active view.</source>
 To lahko za dejavno okno spremenite v Risarjevem (Draft) ukazu PreklopiMrežo.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="186"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="185"/>
       <source>The distance between grid lines</source>
       <translation>Razmik med mrežnimi črtami</translation>
     </message>
@@ -2433,63 +2451,54 @@ ki v spodnjem levem vogalu prikazuje velikost glavnega polja</translation>
       <translation>Pokaži obrobo mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="92"/>
-      <source>If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if the BIM workbench is installed and
-"Show grid border" is enabled.</source>
-      <translation>Če je označeno, bo v levem spodnjem kotu mreže prikazana človeška postava.
-Ta možnost je mogoča le, če je nameščeno BIM delovno okolje in omogočena
-možnost "Prikaži mejo mreže".</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="97"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="96"/>
       <source>Show human figure</source>
       <translation>Prikaži človeško postavo</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="113"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="112"/>
       <source>If checked, the two main axes of the grid are colored red, green or blue
 if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>Če je označno, se glavni osi na mreži, v primeru, da se ujemata z osmi 
 občega koordinatnega sistema, obarvajo rdeče, zeleno ali modro</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="117"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="116"/>
       <source>Use colored axes</source>
       <translation>Uporabi barvne osi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="179"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="178"/>
       <source>Grid spacing</source>
       <translation>Razmik v mreži</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="211"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="210"/>
       <source>Grid size</source>
       <translation>Korak mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="240"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="239"/>
       <source>Grid transparency</source>
       <translation>Prozornost mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="250"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="249"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="266"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="265"/>
       <source>Grid color</source>
       <translation>Barva mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="296"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="295"/>
       <source>Snapping and modifier keys</source>
       <translation>Tipke za spreminjanje in pripenjanje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="302"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="301"/>
       <source>Snap symbol style</source>
       <translation>Slog znakov pripenjanja</translation>
     </message>
@@ -2504,32 +2513,32 @@ občega koordinatnega sistema, obarvajo rdeče, zeleno ali modro</translation>
       <translation> sekund</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="309"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="308"/>
       <source>The style for snap symbols</source>
       <translation>Slog za znake pripenjanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="345"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="344"/>
       <source>Snap symbol color</source>
       <translation>Barva znakov pripenjanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="352"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="351"/>
       <source>The color for snap symbols</source>
       <translation>Barva znakov za pripenjanje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="371"/>
       <source>If checked, snapping is activated without the need to press the Snap modifier key</source>
       <translation>Če je označeno, bo pripenjanje omogočeno brez pritiska na spremenilno tipko pripenjanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="273"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="272"/>
       <source>The color of the grid</source>
       <translation>Barva mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="247"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="246"/>
       <source>The overall transparency of the grid</source>
       <translation>Prozornost na celotni mreži</translation>
     </message>
@@ -2695,19 +2704,9 @@ občega koordinatnega sistema, obarvajo rdeče, zeleno ali modro</translation>
       <translation>Če je označeno, bo Risarjeva (draft) orodna vrstica pripenjanja vidna le med ukazi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="774"/>
-      <source>If checked, the Snap widget is displayed in the Draft statusbar</source>
-      <translation>Če je označeno, se Gradnik pripenjanja prikaže v vrstici stanja Risarja (Draft)</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="777"/>
       <source>Show the Snap widget in the Draft Workbench</source>
       <translation>Prikaži Gradnik pripenjanja v delovnem okolju Risar (Draft)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="793"/>
-      <source>If checked, the Annotation scale widget is displayed in the Draft statusbar</source>
-      <translation>Če je označeno, se Gradnik velikosti pripisov prikaže v vrstici stanja Risarja (Draft)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="796"/>
@@ -2819,37 +2818,47 @@ občega koordinatnega sistema, obarvajo rdeče, zeleno ali modro</translation>
       <source>Z</source>
       <translation>Z</translation>
     </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="774"/>
+      <source>If checked, the Snap widget is displayed in the Draft status bar</source>
+      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="793"/>
+      <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
+      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+    </message>
   </context>
   <context>
     <name>draft</name>
     <message>
       <location filename="../../DraftGui.py" line="58"/>
-      <location filename="../../DraftGui.py" line="545"/>
+      <location filename="../../DraftGui.py" line="548"/>
       <source>Relative</source>
       <translation>Odnosno</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="59"/>
-      <location filename="../../DraftGui.py" line="550"/>
+      <location filename="../../DraftGui.py" line="553"/>
       <source>Global</source>
       <translation>Splošno</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="60"/>
-      <location filename="../../DraftGui.py" line="568"/>
-      <location filename="../../DraftGui.py" line="828"/>
+      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="827"/>
       <source>Continue</source>
       <translation>Nadaljuj</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
-      <location filename="../../DraftGui.py" line="576"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>Close</source>
       <translation>Zapri</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="62"/>
-      <location filename="../../DraftGui.py" line="587"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <location filename="../../draftguitools/gui_move.py" line="216"/>
       <location filename="../../draftguitools/gui_rotate.py" line="287"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
@@ -2905,7 +2914,7 @@ občega koordinatnega sistema, obarvajo rdeče, zeleno ali modro</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="72"/>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Select edge</source>
       <translation>Izberite rob</translation>
     </message>
@@ -2921,7 +2930,7 @@ občega koordinatnega sistema, obarvajo rdeče, zeleno ali modro</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="75"/>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="581"/>
       <source>Wipe</source>
       <translation>Počisti</translation>
     </message>
@@ -2942,417 +2951,417 @@ občega koordinatnega sistema, obarvajo rdeče, zeleno ali modro</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="946"/>
-      <location filename="../../WorkingPlane.py" line="1495"/>
-      <location filename="../../WorkingPlane.py" line="1496"/>
+      <location filename="../../WorkingPlane.py" line="1499"/>
+      <location filename="../../WorkingPlane.py" line="1500"/>
       <source>Top</source>
       <translation>Zgoraj</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="957"/>
-      <location filename="../../WorkingPlane.py" line="1517"/>
-      <location filename="../../WorkingPlane.py" line="1518"/>
+      <location filename="../../WorkingPlane.py" line="1521"/>
+      <location filename="../../WorkingPlane.py" line="1522"/>
       <source>Front</source>
       <translation>Spredaj</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="975"/>
-      <location filename="../../WorkingPlane.py" line="1539"/>
-      <location filename="../../WorkingPlane.py" line="1540"/>
+      <location filename="../../WorkingPlane.py" line="1543"/>
+      <location filename="../../WorkingPlane.py" line="1544"/>
       <source>Side</source>
       <translation>Stran</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1198"/>
       <location filename="../../WorkingPlane.py" line="1199"/>
-      <location filename="../../WorkingPlane.py" line="1473"/>
-      <location filename="../../WorkingPlane.py" line="1474"/>
+      <location filename="../../WorkingPlane.py" line="1477"/>
+      <location filename="../../WorkingPlane.py" line="1478"/>
       <source>Auto</source>
       <translation>Samodejno</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1199"/>
-      <location filename="../../WorkingPlane.py" line="1657"/>
+      <location filename="../../WorkingPlane.py" line="1661"/>
       <source>Current working plane:</source>
       <translation>Trenutna delovna ravnina:</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1265"/>
-      <location filename="../../WorkingPlane.py" line="1290"/>
+      <location filename="../../WorkingPlane.py" line="1294"/>
       <source>Selected shapes do not define a plane</source>
       <translation>Izbrane oblike ne morejo določiti ravnine</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1616"/>
+      <location filename="../../WorkingPlane.py" line="1620"/>
       <source>No previous working plane</source>
       <translation>Ni predhodne delovne ravnine</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1626"/>
+      <location filename="../../WorkingPlane.py" line="1630"/>
       <source>No next working plane</source>
       <translation>Ni naslednje delovne ravnine</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1661"/>
+      <location filename="../../WorkingPlane.py" line="1665"/>
       <source>Axes:</source>
       <translation>Osi:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1668"/>
+      <location filename="../../WorkingPlane.py" line="1672"/>
       <source>Position:</source>
       <translation>Položaj:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="496"/>
-      <location filename="../../DraftGui.py" line="524"/>
-      <location filename="../../DraftGui.py" line="1474"/>
-      <location filename="../../DraftGui.py" line="1489"/>
-      <location filename="../../draftguitools/gui_groups.py" line="239"/>
+      <location filename="../../DraftGui.py" line="499"/>
+      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="1473"/>
+      <location filename="../../DraftGui.py" line="1488"/>
+      <location filename="../../draftguitools/gui_groups.py" line="242"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
       <translation>Brez</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="523"/>
+      <location filename="../../DraftGui.py" line="526"/>
       <source>active command:</source>
       <translation>dejaven ukaz:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="525"/>
+      <location filename="../../DraftGui.py" line="528"/>
       <source>Active Draft command</source>
       <translation>Dejaven izrisovalni ukaz</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="526"/>
+      <location filename="../../DraftGui.py" line="529"/>
       <source>X coordinate of next point</source>
       <translation>Sorednica X naslednje točke</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="530"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="528"/>
+      <location filename="../../DraftGui.py" line="531"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="533"/>
       <source>Y coordinate of next point</source>
       <translation>Sorednica Y naslednje točke</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Z coordinate of next point</source>
       <translation>Sorednica Z naslednje točke</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>Enter point</source>
       <translation>Vnesi točko</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="534"/>
+      <location filename="../../DraftGui.py" line="537"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Vnesi novo točko z danimi sorednicami</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="535"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Length</source>
       <translation>Dolžina</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="536"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="232"/>
+      <location filename="../../DraftGui.py" line="539"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="233"/>
       <source>Angle</source>
       <translation>Kot</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="537"/>
+      <location filename="../../DraftGui.py" line="540"/>
       <source>Length of current segment</source>
       <translation>Dolžina trenutnega odseka</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
+      <location filename="../../DraftGui.py" line="541"/>
       <source>Angle of current segment</source>
       <translation>Kot trenutnega odseka</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="541"/>
+      <location filename="../../DraftGui.py" line="544"/>
       <source>Check this to lock the current angle</source>
       <translation>Označite, če želite zakleniti trenutni kot</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="542"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <location filename="../../DraftGui.py" line="810"/>
       <source>Radius</source>
       <translation>Polmer</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="546"/>
       <location filename="../../DraftGui.py" line="811"/>
       <source>Radius of Circle</source>
       <translation>Polmer kroga</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="548"/>
+      <location filename="../../DraftGui.py" line="551"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>Sorednice (koordinate) odnosno na zadnjo točko ali na 
 izhodišče koordinatnega sistema, če je treba določiti prvo točko</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="553"/>
+      <location filename="../../DraftGui.py" line="556"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Sorednice (koordinate) odnosno na obči koordinatni sistem.
 Odoznačite, če želite uporabljati koordinatni sistem delavne ravnine</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="555"/>
+      <location filename="../../DraftGui.py" line="558"/>
       <source>Filled</source>
       <translation>Zapolnjeno</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="559"/>
+      <location filename="../../DraftGui.py" line="562"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation>Označite, če želite, da se predmet prikaže kot poln, sicer bo videti kot žični model.
 Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi delove osnovnike" omogočena</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="561"/>
+      <location filename="../../DraftGui.py" line="564"/>
       <source>Finish</source>
       <translation>Končaj</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="563"/>
+      <location filename="../../DraftGui.py" line="566"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Zaključi trenutno risanje ali urejanje</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
+      <location filename="../../DraftGui.py" line="569"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Če je označeno, se ukaz ne bo zaključil, dokler ponovno ne pritisnete gumba za ukaz</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="574"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Če je označeno, bo odmik namesto običajno izveden v načinu OCC, tj. na vse strani</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="575"/>
       <source>OCC-style offset</source>
       <translation>Odmik v slogu OCC</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="574"/>
+      <location filename="../../DraftGui.py" line="577"/>
       <source>Undo</source>
       <translation>Razveljavi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="588"/>
+      <location filename="../../DraftGui.py" line="591"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>Če je označeno, bodo objekti kopirani namesto premaknjeni</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="575"/>
+      <location filename="../../DraftGui.py" line="578"/>
       <source>Undo the last segment</source>
       <translation>Razveljavi zadnji odsek</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="577"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>Finishes and closes the current line</source>
       <translation>Zaključi in sklene trenutno črto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="582"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Izbriše obstoječe odseke tega črtovja in začne iz zadnje točke</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>Set WP</source>
       <translation>Ponastavi DR</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="581"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Prilagodi delavno ravnino glede na zadnji odsek</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="586"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Izbere obstoječi rob za izmero s to koto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <source>Sides</source>
       <translation>Strani</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>Number of sides</source>
       <translation>Število strani</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="589"/>
+      <location filename="../../DraftGui.py" line="592"/>
       <source>Modify subelements</source>
       <translation>Preoblikuj podprvine</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="590"/>
+      <location filename="../../DraftGui.py" line="593"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Če je označeno, bodo namesto celotnega predmeta preoblikovane le podprvine</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="591"/>
+      <location filename="../../DraftGui.py" line="594"/>
       <source>Create text</source>
       <translation>Ustvari besedilo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="592"/>
+      <location filename="../../DraftGui.py" line="595"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>Pritisnite ta gumb, da ustvarite besedilni predmet ali zaključite besedilo z dvema praznima vrsticama</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="614"/>
+      <location filename="../../DraftGui.py" line="617"/>
       <source>Change default style for new objects</source>
       <translation>Spremeni privzeti slog pri novih predmetih</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="615"/>
+      <location filename="../../DraftGui.py" line="618"/>
       <source>Toggle construction mode</source>
       <translation>Preklopi pomožni način</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="616"/>
-      <location filename="../../DraftGui.py" line="1477"/>
-      <location filename="../../DraftGui.py" line="1492"/>
+      <location filename="../../DraftGui.py" line="619"/>
+      <location filename="../../DraftGui.py" line="1476"/>
+      <location filename="../../DraftGui.py" line="1491"/>
       <source>Autogroup off</source>
       <translation>Samodejno združevanje izklopljeno</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="693"/>
+      <location filename="../../DraftGui.py" line="696"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
       <translation>Črta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="701"/>
+      <location filename="../../DraftGui.py" line="704"/>
       <source>DWire</source>
       <translation>Izrisno črtovje</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="722"/>
       <source>Circle</source>
       <translation>Krog</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="727"/>
       <source>Arc</source>
       <translation>Lok</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="729"/>
+      <location filename="../../DraftGui.py" line="732"/>
       <location filename="../../draftguitools/gui_rotate.py" line="290"/>
       <source>Rotate</source>
       <translation>Zasukaj</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="733"/>
+      <location filename="../../DraftGui.py" line="736"/>
       <source>Point</source>
       <translation>Točka</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="761"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Label</source>
       <translation>Oznaka</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="763"/>
+      <location filename="../../DraftGui.py" line="765"/>
       <source>Label type</source>
       <translation>Vrsta oznak</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
-      <location filename="../../draftguitools/gui_offset.py" line="241"/>
-      <location filename="../../draftguitools/gui_offset.py" line="258"/>
-      <location filename="../../draftguitools/gui_offset.py" line="323"/>
+      <location filename="../../DraftGui.py" line="781"/>
+      <location filename="../../draftguitools/gui_offset.py" line="240"/>
+      <location filename="../../draftguitools/gui_offset.py" line="257"/>
+      <location filename="../../draftguitools/gui_offset.py" line="322"/>
       <source>Offset</source>
       <translation>Odmik</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="784"/>
-      <location filename="../../DraftGui.py" line="802"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="227"/>
+      <location filename="../../DraftGui.py" line="786"/>
+      <location filename="../../DraftGui.py" line="803"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
       <source>Distance</source>
       <translation>Oddaljenost</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="785"/>
-      <location filename="../../DraftGui.py" line="803"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
+      <location filename="../../DraftGui.py" line="787"/>
+      <location filename="../../DraftGui.py" line="804"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="230"/>
       <source>Offset distance</source>
       <translation>Velikost odmika</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="799"/>
+      <location filename="../../DraftGui.py" line="800"/>
       <source>Trimex</source>
       <translation>Dosekaj</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="876"/>
       <location filename="../../DraftGui.py" line="877"/>
       <location filename="../../DraftGui.py" line="878"/>
-      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="880"/>
       <location filename="../../DraftGui.py" line="881"/>
       <location filename="../../DraftGui.py" line="882"/>
-      <location filename="../../DraftGui.py" line="883"/>
       <source>Local {}</source>
       <translation>Krajevni {}</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="884"/>
       <location filename="../../DraftGui.py" line="885"/>
       <location filename="../../DraftGui.py" line="886"/>
-      <location filename="../../DraftGui.py" line="887"/>
+      <location filename="../../DraftGui.py" line="888"/>
       <location filename="../../DraftGui.py" line="889"/>
       <location filename="../../DraftGui.py" line="890"/>
-      <location filename="../../DraftGui.py" line="891"/>
       <source>Global {}</source>
       <translation>Obče {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1485"/>
+      <location filename="../../DraftGui.py" line="1484"/>
       <source>Autogroup:</source>
       <translation>Samozdruževanje:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1624"/>
+      <location filename="../../DraftGui.py" line="1623"/>
       <source>Modify objects</source>
       <translation>Preoblikuj predmete</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1773"/>
+      <location filename="../../DraftGui.py" line="1772"/>
       <source>Faces</source>
       <translation>Ploskve</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1774"/>
+      <location filename="../../DraftGui.py" line="1773"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1775"/>
+      <location filename="../../DraftGui.py" line="1774"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1776"/>
+      <location filename="../../DraftGui.py" line="1775"/>
       <source>Facebinder elements</source>
       <translation>Predmeti vezalnika površij</translation>
     </message>
@@ -3419,8 +3428,8 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="853"/>
-      <location filename="../../draftmake/make_sketch.py" line="126"/>
-      <location filename="../../draftmake/make_sketch.py" line="138"/>
+      <location filename="../../draftmake/make_sketch.py" line="120"/>
+      <location filename="../../draftmake/make_sketch.py" line="132"/>
       <source>All Shapes must be coplanar</source>
       <translation>Vse oblike morajo biti soravninske (koplanarne)</translation>
     </message>
@@ -3430,10 +3439,10 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>Izbrane oblike morajo tvoriti ravnino</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1296"/>
-      <location filename="../../WorkingPlane.py" line="1297"/>
-      <location filename="../../WorkingPlane.py" line="1566"/>
-      <location filename="../../WorkingPlane.py" line="1567"/>
+      <location filename="../../WorkingPlane.py" line="1300"/>
+      <location filename="../../WorkingPlane.py" line="1301"/>
+      <location filename="../../WorkingPlane.py" line="1570"/>
+      <location filename="../../WorkingPlane.py" line="1571"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="52"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="59"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="66"/>
@@ -3457,14 +3466,24 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>Nastavi velikost pripisov po meri kot x:x, x=x</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="209"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
+      <source>Draft scale widget</source>
+      <translation type="unfinished">Draft scale widget</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
       <source>Set the scale used by draft annotation tools</source>
       <translation>Nastavi merilo pripisnim orodjem izrisa</translation>
     </message>
     <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
+      <source>Draft snap widget</source>
+      <translation type="unfinished">Draft snap widget</translation>
+    </message>
+    <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="831"/>
-      <location filename="../../draftutils/utils.py" line="1082"/>
+      <location filename="../../draftutils/gui_utils.py" line="865"/>
+      <location filename="../../draftutils/utils.py" line="1076"/>
       <location filename="../../draftmake/make_patharray.py" line="169"/>
       <location filename="../../draftmake/make_patharray.py" line="329"/>
       <location filename="../../draftmake/make_label.py" line="194"/>
@@ -3484,37 +3503,37 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
-      <location filename="../../draftutils/gui_utils.py" line="839"/>
+      <location filename="../../draftutils/gui_utils.py" line="873"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Napačen vnos: predmeta {} ni v dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="164"/>
+      <location filename="../../draftutils/gui_utils.py" line="165"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Novega predmeta ni mogoče vstaviti v prevelikosten del</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="270"/>
+      <location filename="../../draftutils/gui_utils.py" line="271"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Znak ni uveden. Uporabljanje privzetega znaka.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="715"/>
+      <location filename="../../draftutils/gui_utils.py" line="749"/>
       <source>image is Null</source>
       <translation>slika je ničelna</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="721"/>
+      <location filename="../../draftutils/gui_utils.py" line="755"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>imena datoteke ni v sistemu ali v mapi z viri</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="780"/>
+      <location filename="../../draftutils/gui_utils.py" line="814"/>
       <source>unable to load texture</source>
       <translation>ustroja ni mogoče naložiti</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="845"/>
+      <location filename="../../draftutils/gui_utils.py" line="879"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nima 'ViewObject.RootNode' (KorenskoVozlišče.PogledaPredmeta).</translation>
     </message>
@@ -3565,12 +3584,12 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>Predmeti imajo različne postavitve. Razdalja med izhodiščema:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1122"/>
+      <location filename="../../draftutils/utils.py" line="1116"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>Ta zmožnost bo zastarala čez {}. Uporabite '{}'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1124"/>
+      <location filename="../../draftutils/utils.py" line="1118"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>Ta zmožnost bo zastarala. Uporabite '{}'.</translation>
     </message>
@@ -3595,7 +3614,7 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>%s ni mogoče spremeniti, ker je njegova postavitev le za branje.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1045"/>
+      <location filename="../../draftutils/utils.py" line="1039"/>
       <source>Wrong input: unknown document {}</source>
       <translation>Napačen vnos: neznan dokument {}</translation>
     </message>
@@ -3633,7 +3652,7 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>Nastavi položaj besedila</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="83"/>
+      <location filename="../../draftguitools/gui_lines.py" line="87"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="117"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="66"/>
@@ -3641,26 +3660,26 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>Izberite prvo točko</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="170"/>
+      <location filename="../../draftguitools/gui_lines.py" line="174"/>
       <source>Create Line</source>
       <translation>Ustvari črto</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="192"/>
+      <location filename="../../draftguitools/gui_lines.py" line="196"/>
       <source>Create Wire</source>
       <translation>Ustvarite črtovje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="363"/>
+      <location filename="../../draftguitools/gui_lines.py" line="367"/>
       <source>Polyline</source>
       <translation>Črtovje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="225"/>
-      <location filename="../../draftguitools/gui_lines.py" line="233"/>
-      <location filename="../../draftguitools/gui_lines.py" line="240"/>
-      <location filename="../../draftguitools/gui_lines.py" line="248"/>
-      <location filename="../../draftguitools/gui_lines.py" line="258"/>
+      <location filename="../../draftguitools/gui_lines.py" line="229"/>
+      <location filename="../../draftguitools/gui_lines.py" line="237"/>
+      <location filename="../../draftguitools/gui_lines.py" line="244"/>
+      <location filename="../../draftguitools/gui_lines.py" line="252"/>
+      <location filename="../../draftguitools/gui_lines.py" line="262"/>
       <location filename="../../draftguitools/gui_splines.py" line="142"/>
       <location filename="../../draftguitools/gui_splines.py" line="147"/>
       <location filename="../../draftguitools/gui_beziers.py" line="152"/>
@@ -3669,12 +3688,12 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>Izberite naslednjo točko</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="330"/>
+      <location filename="../../draftguitools/gui_lines.py" line="334"/>
       <source>Unable to create a Wire from selected objects</source>
       <translation>Črtovja iz izbranih predmetov ni bilo mogoče ustvariti</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="355"/>
+      <location filename="../../draftguitools/gui_lines.py" line="359"/>
       <source>Convert to Wire</source>
       <translation>Pretvori v črtovje</translation>
     </message>
@@ -3850,22 +3869,22 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>Za urejanje izberite izrisni (Draft) predmet</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="476"/>
+      <location filename="../../draftguitools/gui_edit.py" line="484"/>
       <source>Edit node</source>
       <translation>Uredi vozlišče</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="531"/>
+      <location filename="../../draftguitools/gui_edit.py" line="539"/>
       <source>No edit point found for selected object</source>
       <translation>Na izbranem predmetu ni mogoče najti nobene točke za urejanje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="787"/>
+      <location filename="../../draftguitools/gui_edit.py" line="802"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Izbranih je preveč predmetov, največje število je nastavljeno na:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="795"/>
+      <location filename="../../draftguitools/gui_edit.py" line="810"/>
       <source>: this object is not editable</source>
       <translation>: tega predmeta ni mogoče urejati</translation>
     </message>
@@ -3896,13 +3915,13 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="227"/>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="280"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="291"/>
       <source>Style exists</source>
       <translation>Slog že obstaja</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="228"/>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="281"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="292"/>
       <source>This style name already exists</source>
       <translation>To ime sloga že obstaja</translation>
     </message>
@@ -3917,32 +3936,32 @@ ali poskusite shraniti v starejšo različico DWGja.</translation>
       <translation>Ta slog je uporabljen za nekatere predmete v tem dokumentu. Ali ste prepričani?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="271"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="282"/>
       <source>Rename style</source>
       <translation>Preimenuj slog</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="272"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="283"/>
       <source>New name:</source>
       <translation>Novo ime:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="293"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="305"/>
       <source>Open styles file</source>
       <translation>Odpri datoteko slogov</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="295"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="307"/>
       <source>JSON files (*.json *.JSON)</source>
       <translation>JSON datoteke (*.json *.JSON)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="315"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="327"/>
       <source>JSON file (*.json)</source>
       <translation>Datoteka JSON (*.json)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="313"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="325"/>
       <source>Save styles file</source>
       <translation>Shrani datoteko slogov</translation>
     </message>
@@ -4036,32 +4055,32 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Samozdruževanje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="250"/>
+      <location filename="../../draftguitools/gui_groups.py" line="248"/>
       <source>Add new Layer</source>
       <translation>Dodaj novo plast</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="304"/>
+      <location filename="../../draftguitools/gui_groups.py" line="302"/>
       <source>Add to construction group</source>
       <translation>Dodaj v skupino pomagal</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="354"/>
+      <location filename="../../draftguitools/gui_groups.py" line="352"/>
       <source>Add a new group with a given name</source>
       <translation>Dodaj novo skupino z določenim imenom</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="382"/>
+      <location filename="../../draftguitools/gui_groups.py" line="380"/>
       <source>Add group</source>
       <translation>Dodaj skupino</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="384"/>
+      <location filename="../../draftguitools/gui_groups.py" line="382"/>
       <source>Group name</source>
       <translation>Ime skupine</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="391"/>
+      <location filename="../../draftguitools/gui_groups.py" line="389"/>
       <source>Group</source>
       <translation>Skupina</translation>
     </message>
@@ -4071,27 +4090,27 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Obrni koto</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="77"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="80"/>
       <source>Fillet radius</source>
       <translation>Polmer zaokrožitve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="80"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="83"/>
       <source>Radius of fillet</source>
       <translation>Polmer zaokrožitve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="108"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="111"/>
       <source>Enter radius.</source>
       <translation>Vnesite polmer.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="146"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="149"/>
       <source>Fillet cannot be created</source>
       <translation>Zaokrožitve ni mogoče izvesti</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="171"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="166"/>
       <source>Create fillet</source>
       <translation>Ustvari zaokrožitev</translation>
     </message>
@@ -4116,7 +4135,7 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Kliknite kamor koli na črto, da jo presekate.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="103"/>
+      <location filename="../../draftguitools/gui_split.py" line="102"/>
       <source>Split line</source>
       <translation>Presekaj črto</translation>
     </message>
@@ -4131,43 +4150,43 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation type="unfinished">This object is not supported.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="143"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="144"/>
       <source>Only a single face can be extruded.</source>
       <translation type="unfinished">Only a single face can be extruded.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="158"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="159"/>
       <source>Trimex is not supported yet on this type of object.</source>
       <translation type="unfinished">Trimex is not supported yet on this type of object.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="188"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="189"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Izberite razdaljo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="234"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="235"/>
       <source>Offset angle</source>
       <translation>Kót odmika</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="500"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="503"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Teh predmetov ni mogoče prirezati, le izrisna (Draft) črtovja in loki imajo to možnost.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Ni mogoče prirezati teh predmetov, preveč črtovij</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="522"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
       <source>These objects don't intersect.</source>
       <translation>Ti predmeti se ne sekajo.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="528"/>
       <source>Too many intersection points.</source>
       <translation>Preveč presečišč.</translation>
     </message>
@@ -4498,12 +4517,12 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Izberite končno točko pomika</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="448"/>
+      <location filename="../../draftguitools/gui_stretch.py" line="456"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Pretvori pravokotnik v črtovje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="477"/>
+      <location filename="../../draftguitools/gui_stretch.py" line="485"/>
       <source>Stretch</source>
       <translation>Raztegni</translation>
     </message>
@@ -4600,7 +4619,7 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Odmika Bezierjevih krivulj FreeCAD še ne podpira</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="110"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="115"/>
       <source>Create 2D view</source>
       <translation>Ustvari 2D pogled</translation>
     </message>
@@ -4811,37 +4830,37 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Somernostna določilka:</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="119"/>
+      <location filename="../../draftobjects/shapestring.py" line="121"/>
       <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
       <translation>dodane lastnosti "Združi", "Poravnava", "Sklic poravnave", "Ohrani levi rob", "Kót poševnosti" in "Prevelikost na mero"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="121"/>
+      <location filename="../../draftobjects/shapestring.py" line="123"/>
       <source>changed 'Tracking' property type</source>
       <translation>spremenjena vrsta lastnosti "Sledenje"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="178"/>
+      <location filename="../../draftobjects/shapestring.py" line="186"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation>Besedilna oblika: kot poševnost mora biti v razponu od -80 do 80 stopinj</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="190"/>
+      <location filename="../../draftobjects/shapestring.py" line="198"/>
       <source>ShapeString: string has no wires</source>
       <translation>Besedilna oblika: niz je brez črtovij</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="223"/>
+      <location filename="../../draftobjects/shapestring.py" line="231"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation>Besedilna oblika: pri enem znaku je ustvarjanje ploskve spodletelo</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="77"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="79"/>
       <source>added view property 'ScaleMultiplier'</source>
       <translation>dodana lastnost pogleda "MnožilnikMerila"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="80"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="82"/>
       <source>added view property 'AnnotationStyle'</source>
       <translation>dodana lastnost pogleda "PripisniSlog"</translation>
     </message>
@@ -4910,27 +4929,22 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Način poravnave {} ni uveljavljen</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_sketch.py" line="103"/>
+      <location filename="../../draftmake/make_sketch.py" line="97"/>
       <source>No shape found</source>
       <translation>Ni najdenih oblik</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_sketch.py" line="110"/>
+      <location filename="../../draftmake/make_sketch.py" line="104"/>
       <source>All Shapes must be planar</source>
       <translation>Vse oblike morajo biti ravninske</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_fillet.py" line="62"/>
-      <source>Two objects are needed.</source>
-      <translation type="unfinished">Two objects are needed.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_fillet.py" line="69"/>
-      <source>One object is not valid.</source>
-      <translation type="unfinished">One object is not valid.</translation>
-    </message>
-    <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
+      <source>Two edges are needed.</source>
+      <translation type="unfinished">Two edges are needed.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_fillet.py" line="79"/>
       <source>Edges are not connected or radius is too large.</source>
       <translation type="unfinished">Edges are not connected or radius is too large.</translation>
     </message>
@@ -5268,14 +5282,14 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Dodaj novo plast</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="437"/>
+      <location filename="../../draftviewproviders/view_base.py" line="438"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="267"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="82"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="445"/>
+      <location filename="../../draftviewproviders/view_base.py" line="446"/>
       <location filename="../../draftviewproviders/view_wire.py" line="160"/>
       <source>Flatten</source>
       <translation>Splošči</translation>
@@ -5443,64 +5457,64 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Besedilo</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="213"/>
+      <location filename="../../draftobjects/dimension.py" line="199"/>
       <source>added view property 'TextColor'</source>
       <translation>dodana lastnost pogleda "BarvaBesedila"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/text.py" line="94"/>
-      <location filename="../../draftobjects/label.py" line="258"/>
-      <location filename="../../draftobjects/dimension.py" line="215"/>
+      <location filename="../../draftobjects/text.py" line="95"/>
+      <location filename="../../draftobjects/label.py" line="256"/>
+      <location filename="../../draftobjects/dimension.py" line="201"/>
       <source>renamed 'DisplayMode' options to 'World/Screen'</source>
       <translation>možnosti "Prikaznega načina" preimenovane v "Obče/Zaslon"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="254"/>
+      <location filename="../../draftobjects/label.py" line="252"/>
       <source>renamed view property 'TextFont' to 'FontName'</source>
       <translation>preimenovana lastnost pogleda "PisavaBesedila" v "NazivPisave"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="256"/>
+      <location filename="../../draftobjects/label.py" line="254"/>
       <source>renamed view property 'TextSize' to 'FontSize'</source>
       <translation>preimenovana lastnost pogleda "VelikostBesedila" v "VelikostPisave"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="321"/>
+      <location filename="../../draftobjects/label.py" line="319"/>
       <source>No Target</source>
       <translation type="unfinished">No Target</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="402"/>
+      <location filename="../../draftobjects/label.py" line="400"/>
       <source>Invalid label type</source>
       <translation type="unfinished">Invalid label type</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="417"/>
+      <location filename="../../draftobjects/label.py" line="415"/>
       <source>Tag not available for object</source>
       <translation type="unfinished">Tag not available for object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="424"/>
+      <location filename="../../draftobjects/label.py" line="422"/>
       <source>Material not available for object</source>
       <translation type="unfinished">Material not available for object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="433"/>
+      <location filename="../../draftobjects/label.py" line="431"/>
       <source>Position not available for (sub)object</source>
       <translation type="unfinished">Position not available for (sub)object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="449"/>
+      <location filename="../../draftobjects/label.py" line="447"/>
       <source>Length not available for (sub)object</source>
       <translation type="unfinished">Length not available for (sub)object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="463"/>
+      <location filename="../../draftobjects/label.py" line="461"/>
       <source>Area not available for (sub)object</source>
       <translation type="unfinished">Area not available for (sub)object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="476"/>
+      <location filename="../../draftobjects/label.py" line="474"/>
       <source>Volume not available for (sub)object</source>
       <translation type="unfinished">Volume not available for (sub)object</translation>
     </message>
@@ -5540,7 +5554,7 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation type="unfinished">Select 3 vertices, one or more shapes or an object to define a working plane</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="194"/>
+      <location filename="../../draftutils/params.py" line="201"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation>Ali želite posodobiti možnosti SVG vzorcev
@@ -5557,12 +5571,12 @@ obstoječih predmetov v vseh odprtih dokumentih?</translation>
       <translation>prenešena lastnost "PointList" v "PointObject"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="75"/>
+      <location filename="../../draftobjects/layer.py" line="74"/>
       <source>changed 'Group' property type</source>
       <translation type="unfinished">changed 'Group' property type</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="99"/>
+      <location filename="../../draftobjects/layer.py" line="100"/>
       <source>updated view properties</source>
       <translation type="unfinished">updated view properties</translation>
     </message>
@@ -5589,6 +5603,26 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
       <translation type="unfinished">Sketch is too complex to edit: it is suggested to use the default Sketcher editor</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="128"/>
+      <source>Unable to build Facebinder</source>
+      <translation type="unfinished">Unable to build Facebinder</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="131"/>
+      <source>No valid faces for Facebinder</source>
+      <translation type="unfinished">No valid faces for Facebinder</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="134"/>
+      <source>Unable to build Facebinder, resuming with Sew disabled</source>
+      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="201"/>
+      <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
+      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
     </message>
   </context>
   <context>
@@ -5671,17 +5705,17 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
       <translation>Pred tem ukazom morate izbrati izhodiščni predmet</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="80"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="83"/>
       <source>Fillet</source>
       <translation>Zaokrožitev</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="90"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="93"/>
       <source>Delete original objects</source>
       <translation>Odstranjeni izvorne predmete</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="96"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="99"/>
       <source>Create chamfer</source>
       <translation>Ustvari posneti rob</translation>
     </message>
@@ -5727,7 +5761,7 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
       <translation>Naklon</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="328"/>
+      <location filename="../../draftguitools/gui_offset.py" line="327"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Smer odmika ni določena. S premikom kazalke na eno stran predmeta najprej nakažite smer</translation>
     </message>
@@ -5801,17 +5835,17 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
       <translation>Točkovni predmet nima lastne točke. Ne more se uporabljati za razpostavljanje.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="110"/>
+      <location filename="../../draftobjects/bspline.py" line="117"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
       <translation>_BSpline.createGeometry: zaprta z enako prvo/zadnjo točko. Geometrija ni bila posodobljena.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="101"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="103"/>
       <source>Writing camera position</source>
       <translation>Zapisovanje položaja kamere</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="118"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="120"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Zapisovanje stanja prikazanosti/skritosti predmeta</translation>
     </message>
@@ -5822,7 +5856,7 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="284"/>
-      <location filename="../../draftobjects/label.py" line="326"/>
+      <location filename="../../draftobjects/label.py" line="324"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
@@ -5862,67 +5896,67 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
       <translation>Nova plast</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="325"/>
+      <location filename="../../draftobjects/label.py" line="323"/>
       <source>Custom</source>
       <translation>Po meri</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="327"/>
+      <location filename="../../draftobjects/label.py" line="325"/>
       <source>Label</source>
       <translation>Oznaka</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="328"/>
+      <location filename="../../draftobjects/label.py" line="326"/>
       <source>Position</source>
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="329"/>
+      <location filename="../../draftobjects/label.py" line="327"/>
       <source>Length</source>
       <translation>Dolžina</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="330"/>
+      <location filename="../../draftobjects/label.py" line="328"/>
       <source>Area</source>
       <translation>Površina</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="331"/>
+      <location filename="../../draftobjects/label.py" line="329"/>
       <source>Volume</source>
       <translation>Prostornina</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="332"/>
+      <location filename="../../draftobjects/label.py" line="330"/>
       <source>Tag</source>
       <translation>značka, mostiček (povezovalni ostanek pri CNC izrezovanju)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="333"/>
+      <location filename="../../draftobjects/label.py" line="331"/>
       <source>Material</source>
       <translation>Snov</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="334"/>
+      <location filename="../../draftobjects/label.py" line="332"/>
       <source>Label + Position</source>
       <translation>Oznaka + Položaj</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="335"/>
+      <location filename="../../draftobjects/label.py" line="333"/>
       <source>Label + Length</source>
       <translation>Oznaka + Dolžina</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="336"/>
+      <location filename="../../draftobjects/label.py" line="334"/>
       <source>Label + Area</source>
       <translation>Oznaka + Površina</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="337"/>
+      <location filename="../../draftobjects/label.py" line="335"/>
       <source>Label + Volume</source>
       <translation>Oznaka + Prostornina</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="341"/>
+      <location filename="../../draftobjects/label.py" line="339"/>
       <source>Label + Material</source>
       <translation>Oznaka + Snov</translation>
     </message>
@@ -6050,12 +6084,12 @@ upoštevan le prvi od vsakega.</translation>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="306"/>
+      <location filename="../../draftguitools/gui_lines.py" line="310"/>
       <source>Polyline</source>
       <translation>Črtovje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="309"/>
+      <location filename="../../draftguitools/gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
       <translation>Ustvari večtočkovno črto (črtovje). CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
     </message>
@@ -6534,12 +6568,12 @@ Create a group first to use this tool.</source>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="309"/>
+      <location filename="../../draftguitools/gui_groups.py" line="307"/>
       <source>Add to construction group</source>
       <translation>Dodaj v skupino pomagal</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="312"/>
+      <location filename="../../draftguitools/gui_groups.py" line="310"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -6551,12 +6585,12 @@ in spremeni njihov videz v slog pomožnih črt.
   <context>
     <name>Draft_AddNamedGroup</name>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="360"/>
+      <location filename="../../draftguitools/gui_groups.py" line="358"/>
       <source>Add a new named group</source>
       <translation>Dodaj novo poimenovano skupino</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="364"/>
+      <location filename="../../draftguitools/gui_groups.py" line="362"/>
       <source>Add a new group with a given name.</source>
       <translation>Dodaj novo skupino z danim imenom.</translation>
     </message>
@@ -6609,12 +6643,12 @@ If other objects are selected they are ignored.</source>
   <context>
     <name>Draft_Fillet</name>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="65"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="68"/>
       <source>Fillet</source>
       <translation>Zaokrožitev</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="68"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="71"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation>Ustvari zaokrožitev med izbranima črtovjema ali robovoma.</translation>
     </message>
@@ -7187,12 +7221,12 @@ Npr. površja razbije v enostavnjše ploskve in črtovja, ter nato na robove. Pr
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../draftobjects/text.py" line="57"/>
+      <location filename="../../draftobjects/text.py" line="56"/>
       <source>The placement of the base point of the first line</source>
       <translation>Postavitev izhodiščne točke prve črte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/text.py" line="69"/>
+      <location filename="../../draftobjects/text.py" line="68"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
       <translation>Besedilo, ki ga prikazuje ta predmet.
@@ -7254,32 +7288,32 @@ To je seznam nizov, ki bodo prikazani vsak v svoji vrsti.</translation>
       <translation>Združi ploskve, če se prekrivajo, običajno pa ni potrebno (lahko zelo počasno)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="47"/>
+      <location filename="../../draftobjects/hatch.py" line="49"/>
       <source>The base object used by this object</source>
       <translation>Izhodiščni predmet tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="50"/>
+      <location filename="../../draftobjects/hatch.py" line="52"/>
       <source>The PAT file used by this object</source>
       <translation>Datoteka PAT, ki jo uporablja ta predmet</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="53"/>
+      <location filename="../../draftobjects/hatch.py" line="55"/>
       <source>The pattern name used by this object</source>
       <translation>Ime vzorca, ki ga uporablja ta predmet</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="56"/>
+      <location filename="../../draftobjects/hatch.py" line="58"/>
       <source>The pattern scale used by this object</source>
       <translation>Merilo vzorca, ki ga uporablja ta predmet</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="59"/>
+      <location filename="../../draftobjects/hatch.py" line="61"/>
       <source>The pattern rotation used by this object</source>
       <translation>Zasuk vzorca, ki ga uporablja ta predmet</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="62"/>
+      <location filename="../../draftobjects/hatch.py" line="64"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
       <translation>Če je nastavljeno na "Napak", se črtkanje izvede, kakršno je, ne da bi bilo premaknjeno (na ploskvah, ki so izven XY, lahko to privede do napačnega izida)</translation>
     </message>
@@ -7301,71 +7335,71 @@ set True for fusion or False for compound</source>
 vklopite, če želite združevanje oz. izklopite, če želite sestavljanje</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="44"/>
+      <location filename="../../draftobjects/circle.py" line="45"/>
       <source>Start angle of the arc</source>
       <translation>Začetni kot loka</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="49"/>
+      <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
       <translation>Končni kot loka (za poln krog je 
                 vrednost enaka začetnemu kotu)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="53"/>
+      <location filename="../../draftobjects/circle.py" line="54"/>
       <source>Radius of the circle</source>
       <translation>Polmer kroga</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="57"/>
-      <location filename="../../draftobjects/polygon.py" line="67"/>
-      <location filename="../../draftobjects/ellipse.py" line="57"/>
-      <location filename="../../draftobjects/rectangle.py" line="57"/>
+      <location filename="../../draftobjects/circle.py" line="58"/>
+      <location filename="../../draftobjects/polygon.py" line="68"/>
+      <location filename="../../draftobjects/ellipse.py" line="58"/>
+      <location filename="../../draftobjects/rectangle.py" line="58"/>
       <source>Create a face</source>
       <translation>Ustvari ploskev</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="61"/>
-      <location filename="../../draftobjects/polygon.py" line="71"/>
-      <location filename="../../draftobjects/bezcurve.py" line="69"/>
-      <location filename="../../draftobjects/rectangle.py" line="66"/>
-      <location filename="../../draftobjects/wire.py" line="92"/>
-      <location filename="../../draftobjects/bspline.py" line="56"/>
+      <location filename="../../draftobjects/circle.py" line="62"/>
+      <location filename="../../draftobjects/polygon.py" line="72"/>
+      <location filename="../../draftobjects/bezcurve.py" line="70"/>
+      <location filename="../../draftobjects/rectangle.py" line="67"/>
+      <location filename="../../draftobjects/wire.py" line="93"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
       <source>The area of this object</source>
       <translation>Površina tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="59"/>
+      <location filename="../../draftobjects/layer.py" line="60"/>
       <source>The objects that are part of this layer</source>
       <translation>Predmeti, ki so zajeti v tej plasti</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="47"/>
+      <location filename="../../draftobjects/polygon.py" line="48"/>
       <source>Number of faces</source>
       <translation>Število ploskev</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="51"/>
+      <location filename="../../draftobjects/polygon.py" line="52"/>
       <source>Radius of the control circle</source>
       <translation>Polmer nadzornega kroga</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="55"/>
+      <location filename="../../draftobjects/polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
       <translation>Način risanja mnogokotnika iz nadzornega kroga</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="59"/>
-      <location filename="../../draftobjects/rectangle.py" line="51"/>
-      <location filename="../../draftobjects/wire.py" line="76"/>
+      <location filename="../../draftobjects/polygon.py" line="60"/>
+      <location filename="../../draftobjects/rectangle.py" line="52"/>
+      <location filename="../../draftobjects/wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Polmer zaokrožitev robov</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="63"/>
-      <location filename="../../draftobjects/rectangle.py" line="54"/>
-      <location filename="../../draftobjects/wire.py" line="80"/>
+      <location filename="../../draftobjects/polygon.py" line="64"/>
+      <location filename="../../draftobjects/rectangle.py" line="55"/>
+      <location filename="../../draftobjects/wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Velikost posnetega roba na vogalih</translation>
     </message>
@@ -7399,14 +7433,14 @@ vklopite, če želite združevanje oz. izklopite, če želite sestavljanje</tran
       <translation>Pokaži posamezne predmete razpostavitve (le pri Vezanih razpostavitvah)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="68"/>
+      <location filename="../../draftobjects/label.py" line="67"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
       <translation>Položaj konice opisnice.
 Ta točka je lahko dopolnjena s puščico ali drugim znakom.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="82"/>
+      <location filename="../../draftobjects/label.py" line="81"/>
       <source>Object, and optionally subelement, whose properties will be displayed
 as 'Text', depending on 'Label Type'.
 
@@ -7417,7 +7451,7 @@ as 'Text', depending on 'Label Type'.
 "Tarče" se ne bo uporabljalo, če je "Vrsta oznake" nastavljena na "Po meri".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="112"/>
+      <location filename="../../draftobjects/label.py" line="111"/>
       <source>The list of points defining the leader line; normally a list of three points.
 
 The first point should be the position of the text, that is, the 'Placement',
@@ -7438,7 +7472,7 @@ vrednosti "Smer ravnega odseka", "Dolžina ravnega odseka" in znaka.
 "Točke" lahko določena kot seznam poljubnih točk.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="127"/>
+      <location filename="../../draftobjects/label.py" line="126"/>
       <source>The direction of the straight segment of the leader line.
 
 If 'Custom' is chosen, the points of the leader can be specified by
@@ -7449,7 +7483,7 @@ assigning a custom list to the 'Points' attribute.</source>
 v značilki "Točke" kot seznam točk po meri.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="145"/>
+      <location filename="../../draftobjects/label.py" line="144"/>
       <source>The length of the straight segment of the leader line.
 
 This is an oriented distance; if it is negative, the line will be drawn
@@ -7462,17 +7496,17 @@ levo ali pod "Besedilom", sicer pa desno oz. nad njim,
 odvisno od vrednosti "Smer ravnosti".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="159"/>
+      <location filename="../../draftobjects/label.py" line="158"/>
       <source>The placement of the 'Text' element in 3D space</source>
       <translation>Postavitev predmeta "Besedilo" v 3D prostor</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="169"/>
+      <location filename="../../draftobjects/label.py" line="168"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
       <translation>Besedilo, ki naj se prikaže pri "Vrsti oznake" nastavljeni na "Po meri"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="184"/>
+      <location filename="../../draftobjects/label.py" line="183"/>
       <source>The text displayed by this label.
 
 This property is read-only, as the final text depends on 'Label Type',
@@ -7485,7 +7519,7 @@ Ta lastnost je le za branje, saj je besedilo odvisno od
 "Besedilo po meri" je prikazano le, če je "Vrsta oznake" nastavljena na "Po meri".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="219"/>
+      <location filename="../../draftobjects/label.py" line="218"/>
       <source>The type of information displayed by this label.
 
 If 'Custom' is chosen, the contents of 'Custom Text' will be used.
@@ -7730,112 +7764,112 @@ Ta lastnost je le za branje, saj je število odvisno od števila točk v "Točko
       <translation>Dodatni zamik, postavitev in zasuk, ki bodo uveljavljeni pri vsakem dvojniku</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="57"/>
+      <location filename="../../draftobjects/shape2dview.py" line="63"/>
       <source>The base object this 2D view must represent</source>
       <translation>Osnovni objekt, ki ga mora predstavljati ta 2D pogled</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="62"/>
+      <location filename="../../draftobjects/shape2dview.py" line="68"/>
       <source>The projection vector of this object</source>
       <translation>Vektor preslikavanja tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="68"/>
+      <location filename="../../draftobjects/shape2dview.py" line="74"/>
       <source>The way the viewed object must be projected</source>
       <translation>Način preslikave opazovanega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="75"/>
+      <location filename="../../draftobjects/shape2dview.py" line="81"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>Kazala ploskev, ki naj se preslikajo v načinu Posameznih ploskev</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="80"/>
+      <location filename="../../draftobjects/shape2dview.py" line="86"/>
       <source>Show hidden lines</source>
       <translation>Prikaži skrite črte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="86"/>
+      <location filename="../../draftobjects/shape2dview.py" line="92"/>
       <source>Fuse wall and structure objects of same type and material</source>
       <translation>Zlij steno s konstrukcijskimi predmeti enake vrste in snovi</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="91"/>
+      <location filename="../../draftobjects/shape2dview.py" line="97"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
       <translation>Razdeli elipse in B-zlepke na črtne odseke</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="97"/>
+      <location filename="../../draftobjects/shape2dview.py" line="103"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
       <translation type="unfinished">For Cutlines and Cutfaces modes, this leaves the faces at the cut location</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="103"/>
+      <location filename="../../draftobjects/shape2dview.py" line="109"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
       <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="109"/>
+      <location filename="../../draftobjects/shape2dview.py" line="115"/>
       <source>If this is True, this object will include only visible objects</source>
       <translation>Če drži, potem bo ta predmet vključeval le vidne predmete</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="115"/>
+      <location filename="../../draftobjects/shape2dview.py" line="121"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
       <translation>Seznam izključujočih točk. Katerikoli rob bi se dotaknil teh točk, ne bo izrisan.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="120"/>
+      <location filename="../../draftobjects/shape2dview.py" line="126"/>
       <source>A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.</source>
       <translation>Seznam izključujočih imen predmetov. Če je ime opazovaneg predmeta na seznamu, ta ne bo izrisan.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="125"/>
+      <location filename="../../draftobjects/shape2dview.py" line="131"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
       <translation>Če drži, potem se obravnava le telesne geometrije. To povozi lastnost "Le telesa" izhodiščnega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="130"/>
+      <location filename="../../draftobjects/shape2dview.py" line="136"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
       <translation>Če drži, je vsebina v primeru izvedljivosti rezana do robov prerezne ravnine. To povozi lastnost "Zamejitev" osnovnega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="135"/>
+      <location filename="../../draftobjects/shape2dview.py" line="141"/>
       <source>This object will be recomputed only if this is True.</source>
       <translation>Ta predmet bo preračunan le, če to drži.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="45"/>
+      <location filename="../../draftobjects/bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
       <translation>Točke Bezierjeve krivulje</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="49"/>
+      <location filename="../../draftobjects/bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
       <translation>Stopnja Bezierjeve funkcije</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="53"/>
+      <location filename="../../draftobjects/bezcurve.py" line="54"/>
       <source>Continuity</source>
       <translation>Zveznost</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="57"/>
+      <location filename="../../draftobjects/bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
       <translation>Ali naj bo Bezierjeva krivulja sklenjena, ali ne</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="61"/>
+      <location filename="../../draftobjects/bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
       <translation>Ustvari ploskev, če je ta krivulja sklenjena</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="65"/>
+      <location filename="../../draftobjects/bezcurve.py" line="66"/>
       <source>The length of this object</source>
       <translation>Dolžina tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wpproxy.py" line="42"/>
+      <location filename="../../draftobjects/wpproxy.py" line="43"/>
       <source>The placement of this object</source>
       <translation>Postavitev tega predmeta</translation>
     </message>
@@ -7855,12 +7889,12 @@ Ta lastnost je le za branje, saj je število odvisno od števila točk v "Točko
       <translation>Z položaj</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/ellipse.py" line="44"/>
+      <location filename="../../draftobjects/ellipse.py" line="45"/>
       <source>Start angle of the elliptical arc</source>
       <translation>Začetni kot eliptičnega loka</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/ellipse.py" line="48"/>
+      <location filename="../../draftobjects/ellipse.py" line="49"/>
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
@@ -7868,52 +7902,52 @@ Ta lastnost je le za branje, saj je število odvisno od števila točk v "Točko
                 (za sklenjeno elipso mora vrednost biti enaka začetnemu kotu)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/ellipse.py" line="51"/>
+      <location filename="../../draftobjects/ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
       <translation>Mali polmer elipse</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/ellipse.py" line="54"/>
+      <location filename="../../draftobjects/ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
       <translation>Veliki polmer elipse</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/ellipse.py" line="60"/>
+      <location filename="../../draftobjects/ellipse.py" line="61"/>
       <source>Area of this object</source>
       <translation>Površina tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="45"/>
+      <location filename="../../draftobjects/fillet.py" line="50"/>
       <source>The start point of this line.</source>
       <translation>Začetna točka te črte.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="53"/>
+      <location filename="../../draftobjects/fillet.py" line="58"/>
       <source>The end point of this line.</source>
       <translation>Končna točka te črte.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="61"/>
+      <location filename="../../draftobjects/fillet.py" line="66"/>
       <source>The length of this line.</source>
       <translation>Dolžina te črte.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="69"/>
+      <location filename="../../draftobjects/fillet.py" line="74"/>
       <source>Radius to use to fillet the corner.</source>
       <translation>Polmer zaokrožitve vogala.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="136"/>
+      <location filename="../../draftobjects/dimension.py" line="135"/>
       <source>The normal direction of the text of the dimension</source>
       <translation>Običajna smer besedila kotnic</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="149"/>
+      <location filename="../../draftobjects/dimension.py" line="148"/>
       <source>The object measured by this dimension object</source>
       <translation>Objekt, izmerjen s to koto</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="166"/>
+      <location filename="../../draftobjects/dimension.py" line="165"/>
       <source>The object, and specific subelements of it,
 that this dimension object is measuring.
 
@@ -7930,7 +7964,7 @@ Obstajajo različne možnosti:
 - Ločni predmet in njegov rob.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="189"/>
+      <location filename="../../draftobjects/dimension.py" line="188"/>
       <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7946,7 +7980,7 @@ that displays the measured angle.</source>
 - Pri kotnih kotah določa polmer kotirnega loka, ki prikazuje izmerjen kot.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="248"/>
+      <location filename="../../draftobjects/dimension.py" line="234"/>
       <source>Starting point of the dimension line.
 
 If it is a radius dimension it will be the center of the arc.
@@ -7957,7 +7991,7 @@ If it is a diameter dimension it will be a point that lies on the arc.</source>
 Če je premerna kota, je to točka, ki leži na loku.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="262"/>
+      <location filename="../../draftobjects/dimension.py" line="248"/>
       <source>Ending point of the dimension line.
 
 If it is a radius or diameter dimension
@@ -7968,14 +8002,14 @@ it will be a point that lies on the arc.</source>
 bo to točka, ki leži na loku.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="274"/>
+      <location filename="../../draftobjects/dimension.py" line="260"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
       <translation>Smer kotirne črte.
 Če ostane "(0,0,0)", bo smer samodejno določena.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="291"/>
+      <location filename="../../draftobjects/dimension.py" line="277"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated
@@ -7992,27 +8026,27 @@ iz lastnosti "Začetka" in "Konca".
 polmer oz. premer, odvisno od značilnosti "Premer".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="302"/>
+      <location filename="../../draftobjects/dimension.py" line="288"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
       <translation>Pri merjenju krožnih lokov določa, ali se prikazuje velikost polmera ali premera</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="517"/>
+      <location filename="../../draftobjects/dimension.py" line="513"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>Začetni kót kotnice (krožnega loka).
 Lok se izriše v nasprotni smeri urinega kazalca.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="528"/>
+      <location filename="../../draftobjects/dimension.py" line="524"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>Zaključni kót kotirne črte (krožnega loka).
 Lok se izriše v nasprotni smeri urinega kazalca.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="543"/>
+      <location filename="../../draftobjects/dimension.py" line="539"/>
       <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
@@ -8023,7 +8057,7 @@ To je navadno točka, v kateri se dva odseka črte ali njuna podaljška
 sekata in tvorita merjeni "Kót".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="557"/>
+      <location filename="../../draftobjects/dimension.py" line="553"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
@@ -8034,132 +8068,132 @@ Ta lastnost je le za branje, saj je vrednost izračunana iz
 lastnosti "Prvega kota" in "Zadnjega kota".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="45"/>
+      <location filename="../../draftobjects/rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
       <translation>Dolžina pravokotnika</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="48"/>
+      <location filename="../../draftobjects/rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
       <translation>Višina pravokotnika</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="60"/>
+      <location filename="../../draftobjects/rectangle.py" line="61"/>
       <source>Horizontal subdivisions of this rectangle</source>
       <translation>Vodoravne razdelitve tega pravokotnika</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="63"/>
+      <location filename="../../draftobjects/rectangle.py" line="64"/>
       <source>Vertical subdivisions of this rectangle</source>
       <translation>Navpične razdelitve tega pravokotnika</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="44"/>
+      <location filename="../../draftobjects/facebinder.py" line="47"/>
       <source>Linked faces</source>
       <translation>Povezane ploskve</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="47"/>
+      <location filename="../../draftobjects/facebinder.py" line="50"/>
       <source>Specifies if splitter lines must be removed</source>
       <translation>Določa, ali morajo biti delitvene črte odstranjene</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="50"/>
+      <location filename="../../draftobjects/facebinder.py" line="53"/>
       <source>An optional extrusion value to be applied to all faces</source>
       <translation>Izbirna vrednost izrivanja, ki bo izvedena na vseh ploskvah</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="53"/>
+      <location filename="../../draftobjects/facebinder.py" line="56"/>
       <source>An optional offset value to be applied to all faces</source>
       <translation>Izbirna vrednost odmikanja, ki bo izvedena na vseh ploskvah</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="56"/>
+      <location filename="../../draftobjects/facebinder.py" line="59"/>
       <source>This specifies if the shapes sew</source>
       <translation>To določa, ali se oblike sprijemajo</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="59"/>
+      <location filename="../../draftobjects/facebinder.py" line="62"/>
       <source>The area of the faces of this Facebinder</source>
       <translation>Površina ploskev tega Vezalnika površij</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/block.py" line="43"/>
+      <location filename="../../draftobjects/block.py" line="44"/>
       <source>The components of this block</source>
       <translation>Sestavine tega zbira</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="48"/>
+      <location filename="../../draftobjects/wire.py" line="49"/>
       <source>The vertices of the wire</source>
       <translation>Oglišča črtovja</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="52"/>
+      <location filename="../../draftobjects/wire.py" line="53"/>
       <source>If the wire is closed or not</source>
       <translation>Ali je črtovje sklenjeno ali ne</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="56"/>
+      <location filename="../../draftobjects/wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
       <translation>Izhodiščni predmet je črtovje, sestavljeno iz dveh predmetov</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="60"/>
+      <location filename="../../draftobjects/wire.py" line="61"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
       <translation>Orodni predmet je črtovje, sestavljeno iz dveh predmetov</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="64"/>
+      <location filename="../../draftobjects/wire.py" line="65"/>
       <source>The start point of this line</source>
       <translation>Začetna točka te črte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="68"/>
+      <location filename="../../draftobjects/wire.py" line="69"/>
       <source>The end point of this line</source>
       <translation>Končna točka te črte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="72"/>
+      <location filename="../../draftobjects/wire.py" line="73"/>
       <source>The length of this line</source>
       <translation>Dolžina te črte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="84"/>
+      <location filename="../../draftobjects/wire.py" line="85"/>
       <source>Create a face if this object is closed</source>
       <translation>Ustvari ploskev, če je ta predmet sklenjen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="88"/>
+      <location filename="../../draftobjects/wire.py" line="89"/>
       <source>The number of subdivisions of each edge</source>
       <translation>Število razdelitev vsakega roba</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="45"/>
+      <location filename="../../draftobjects/bspline.py" line="46"/>
       <source>The points of the B-spline</source>
       <translation>Točke B-zlepka</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="49"/>
+      <location filename="../../draftobjects/bspline.py" line="50"/>
       <source>If the B-spline is closed or not</source>
       <translation>Ali je B-zlepek sklenjen ali ne</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="53"/>
+      <location filename="../../draftobjects/bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
       <translation>Ustvari ploskev, če je ta zlepek sklenjen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="66"/>
+      <location filename="../../draftobjects/bspline.py" line="73"/>
       <source>Parameterization factor</source>
       <translation>Količnik odoločiljenja</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draftlink.py" line="99"/>
+      <location filename="../../draftobjects/draftlink.py" line="100"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
       <translation>Vsili usklajeni vzorec postavitve tudi, ko so razpostavljeni predmeti razširjeni</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draftlink.py" line="112"/>
+      <location filename="../../draftobjects/draftlink.py" line="113"/>
       <source>Show the individual array elements</source>
       <translation>Prikaži posamezne predmete razpostavitve</translation>
     </message>
@@ -8368,7 +8402,7 @@ preko kotnice</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="461"/>
+      <location filename="../../draftviewproviders/view_base.py" line="462"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="90"/>
       <source>Transform</source>
       <translation>Preoblikuj</translation>
@@ -8399,10 +8433,10 @@ preko kotnice</translation>
       <translation>Nagib</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="205"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
-      <location filename="../../InitGui.py" line="208"/>
+      <location filename="../../InitGui.py" line="209"/>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
       <source>Import-Export</source>
       <translation>Uvozi-Izvozi</translation>
     </message>

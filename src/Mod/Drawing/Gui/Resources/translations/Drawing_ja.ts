@@ -636,7 +636,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Page</source>
-      <translation>用紙</translation>
+      <translation>ページ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>

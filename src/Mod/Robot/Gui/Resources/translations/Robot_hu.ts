@@ -332,7 +332,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="429"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Felülír egyes pálya aspektust a pálya alapértékek megváltoztatásával</translation>
+      <translation>Felülír egyes pálya szempontot a pálya alapértékek megváltoztatásával</translation>
     </message>
   </context>
   <context>

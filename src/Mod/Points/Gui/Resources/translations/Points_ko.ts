@@ -4,158 +4,158 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="239"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>점</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Convert to points...</source>
-      <translation type="unfinished">Convert to points...</translation>
+      <translation>점으로 변환...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
-      <location filename="../../Command.cpp" line="210"/>
+      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Convert to points</source>
-      <translation type="unfinished">Convert to points</translation>
+      <translation>점으로 변환</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="153"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>점</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Export points...</source>
-      <translation type="unfinished">Export points...</translation>
+      <translation>점 추출...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="122"/>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="155"/>
+      <location filename="../../Command.cpp" line="157"/>
       <source>Exports a point cloud</source>
-      <translation type="unfinished">Exports a point cloud</translation>
+      <translation>점 집합을 추출한다</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location filename="../../Command.cpp" line="67"/>
-      <source>Points</source>
-      <translation type="unfinished">Points</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="68"/>
-      <source>Import points...</source>
-      <translation type="unfinished">Import points...</translation>
+      <source>Points</source>
+      <translation>점</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="71"/>
+      <source>Import points...</source>
+      <translation>점 가져오기...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="72"/>
       <source>Imports a point cloud</source>
-      <translation type="unfinished">Imports a point cloud</translation>
+      <translation>접 집합을 가져온다</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>점</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="376"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>점 집합을 합침</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="377"/>
+      <location filename="../../Command.cpp" line="379"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>일련의 점 집합을 하나로 합친다</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="294"/>
+      <location filename="../../Command.cpp" line="327"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>점</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="328"/>
       <source>Cut point cloud</source>
-      <translation type="unfinished">Cut point cloud</translation>
+      <translation>점 집합 자르기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
-      <location filename="../../Command.cpp" line="298"/>
+      <location filename="../../Command.cpp" line="329"/>
+      <location filename="../../Command.cpp" line="331"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation type="unfinished">Cuts a point cloud with a picked polygon</translation>
+      <translation>선택된 다각형을 활용 점 집합을 자른다</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>점</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="439"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>점 집합 조립</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
-      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>점들을 조립하여 점 집합으로 전환한다</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="167"/>
+      <location filename="../../Command.cpp" line="200"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>점</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Transform Points</source>
-      <translation type="unfinished">Transform Points</translation>
+      <translation>점 변환</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="169"/>
-      <location filename="../../Command.cpp" line="171"/>
+      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="204"/>
       <source>Test to transform a point cloud</source>
-      <translation type="unfinished">Test to transform a point cloud</translation>
+      <translation>점 집합에서 점 변환을 테스트</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="92"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>점 가져오기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>점 변환</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Convert to points</source>
-      <translation type="unfinished">Convert to points</translation>
+      <translation>점으로 변환</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="485"/>
       <location filename="../../ViewProvider.cpp" line="653"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>점 잘라내기</translation>
     </message>
   </context>
   <context>
@@ -163,12 +163,12 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII points import</source>
-      <translation type="unfinished">ASCII points import</translation>
+      <translation>좌표 형식으로 입력된 점을 가져온다</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
       <source>Template:</source>
-      <translation type="unfinished">Template:</translation>
+      <translation>템플릿:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
@@ -183,12 +183,12 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="70"/>
       <source>Ignore</source>
-      <translation type="unfinished">Ignore</translation>
+      <translation>무시</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="80"/>
       <source>Number of points</source>
-      <translation type="unfinished">Number of points</translation>
+      <translation>점들의 갯수</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
@@ -203,7 +203,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>
       <source>Point format</source>
-      <translation type="unfinished">Point format</translation>
+      <translation>점 표현 방식</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
@@ -223,12 +223,12 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
       <source>Points format:</source>
-      <translation type="unfinished">Points format:</translation>
+      <translation>점 표현 방식:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="188"/>
       <source>X,Y,Z</source>
-      <translation type="unfinished">X,Y,Z</translation>
+      <translation>X,Y,Z 좌표</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="193"/>
@@ -240,7 +240,7 @@
       <location filename="../../DlgPointsRead.ui" line="237"/>
       <location filename="../../DlgPointsRead.ui" line="273"/>
       <source>Next block:</source>
-      <translation type="unfinished">Next block:</translation>
+      <translation>다음 블럭:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="209"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>미리보기</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
@@ -291,26 +291,36 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <location filename="../../Command.cpp" line="141"/>
+      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>점 표현방식들</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <location filename="../../Command.cpp" line="141"/>
+      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>All Files</source>
       <translation>모든 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="227"/>
-      <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <location filename="../../Command.cpp" line="117"/>
+      <source>Points not at Origin</source>
+      <translation type="unfinished">Points not at Origin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="228"/>
+      <location filename="../../Command.cpp" line="118"/>
+      <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
+      <translation type="unfinished">The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="260"/>
+      <source>Distance</source>
+      <translation>거리</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="261"/>
       <source>Enter maximum distance:</source>
-      <translation type="unfinished">Enter maximum distance:</translation>
+      <translation>최대 거리를 입력</translation>
     </message>
   </context>
   <context>
@@ -318,7 +328,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Points tools</source>
-      <translation type="unfinished">Points tools</translation>
+      <translation>점 도구</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>

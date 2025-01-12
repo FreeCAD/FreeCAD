@@ -67,7 +67,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>메쉬와 평면을 활용 단면을 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -85,13 +85,13 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>평면을 가지고 메쉬 자르기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>평면을 가지고 메쉬 자르기</translation>
     </message>
   </context>
   <context>

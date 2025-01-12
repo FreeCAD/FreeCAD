@@ -11,7 +11,7 @@
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="20"/>
       <source>Source</source>
-      <translation>출처</translation>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>

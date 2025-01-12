@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Command.cpp" line="418"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Insertar una proyección ortogonal de una parte in el actual dibujo</translation>
+      <translation>Insertar una proyección ortogonal de una parte en el dibujo activo</translation>
     </message>
   </context>
   <context>
@@ -194,7 +194,7 @@
       <location filename="../../Command.cpp" line="742"/>
       <location filename="../../Command.cpp" line="743"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Projectar silueta a un plano definido por el usuario</translation>
+      <translation>Proyectar forma en un plano definido por el usuario</translation>
     </message>
   </context>
   <context>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>&amp;Spreadsheet View</source>
-      <translation>Vista &amp;Hoja de cálculo</translation>
+      <translation>&amp;Vista de hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="809"/>

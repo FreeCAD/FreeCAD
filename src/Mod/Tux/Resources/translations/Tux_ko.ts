@@ -6,7 +6,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="85"/>
       <source>Select</source>
-      <translation>선택</translation>
+      <translation>선택하기</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="86"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Navigation style</source>
-      <translation>탐색 스타일</translation>
+      <translation>내비게이션 스타일</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="91"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Middle mouse button or H key.</source>
-      <translation>마우스 가운데 버튼 또는 H 키.</translation>
+      <translation>마우스 가운데 버튼 또는 H 키를 누릅니다.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="95"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="569"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>설정</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="570"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="574"/>
       <source>Free Turntable</source>
-      <translation type="unfinished">Free Turntable</translation>
+      <translation>무료 턴테이블</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="575"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="576"/>
       <source>Undefined</source>
-      <translation>정의되지 않음</translation>
+      <translation>미정의</translation>
     </message>
   </context>
 </TS>

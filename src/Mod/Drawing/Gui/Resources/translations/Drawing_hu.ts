@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="778"/>
       <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Beilleszt a kiválasztott tárgy(ak)ról egy Tervezet nézetet az aktív rajzba</translation>
+      <translation>Beilleszt a kiválasztott objektum(ok)ról egy Tervrajz nézetet az aktív rajzba</translation>
     </message>
   </context>
   <context>
@@ -697,7 +697,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../Command.cpp" line="332"/>
       <source>Select a Part object.</source>
-      <translation>Objektum rész kiválasztása.</translation>
+      <translation>Alkatrész objektum kiválasztása.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -722,13 +722,13 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
-      <translation>Jelöljön ki pontosan egy tárgy alkotórészt.</translation>
+      <translation>Jelöljön ki pontosan egy alkatrész objektumot.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <location filename="../../Command.cpp" line="698"/>
       <source>Select one Page object.</source>
-      <translation>Válasszon ki egy teljes oldal tárgyat.</translation>
+      <translation>Válasszon ki egy rajzlapot.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="704"/>
@@ -743,25 +743,25 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../Command.cpp" line="823"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Jelöljön ki pontosan egy számolótábla tárgyat.</translation>
+      <translation>Jelöljön ki pontosan egy táblázat objektumot.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="47"/>
       <location filename="../../TaskOrthoViews.cpp" line="1041"/>
       <source>Make axonometric...</source>
-      <translation>Axonometrikus létrehozás...</translation>
+      <translation>Tengelymetszet létrehozás...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="48"/>
       <location filename="../../TaskOrthoViews.cpp" line="1042"/>
       <source>Edit axonometric settings...</source>
-      <translation>Axonometrikus beállítások szerkesztése...</translation>
+      <translation>Tengelymetszet beállítások szerkesztése...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="49"/>
       <location filename="../../TaskOrthoViews.cpp" line="1043"/>
       <source>Make orthographic</source>
-      <translation>Ortografikus létrehozás</translation>
+      <translation>Függőleges vetület létrehozás</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="141"/>

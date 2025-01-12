@@ -106,7 +106,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="548"/>
       <source>Annotation</source>
-      <translation>Jegyzet</translation>
+      <translation>Megjegyzés</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="551"/>

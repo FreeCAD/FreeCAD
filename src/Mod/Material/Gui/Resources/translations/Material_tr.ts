@@ -57,7 +57,7 @@
     <message>
       <location filename="../../Array2D.cpp" line="78"/>
       <source>Delete row</source>
-      <translation type="unfinished">Delete row</translation>
+      <translation>Satırı sil</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="140"/>
@@ -76,7 +76,7 @@
       <location filename="../../Array3D.cpp" line="77"/>
       <location filename="../../Array3D.cpp" line="81"/>
       <source>Delete row</source>
-      <translation type="unfinished">Delete row</translation>
+      <translation>Satırı sil</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="231"/>
@@ -88,7 +88,7 @@
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>Silmeyi Onayla</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
@@ -105,12 +105,12 @@
   <context>
     <name>MatGui::ArrayDelegate</name>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="153"/>
+      <location filename="../../ArrayDelegate.cpp" line="150"/>
       <source>False</source>
       <translation>Yanlış</translation>
     </message>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="154"/>
+      <location filename="../../ArrayDelegate.cpp" line="151"/>
       <source>True</source>
       <translation>Doğru</translation>
     </message>
@@ -118,12 +118,12 @@
   <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="441"/>
+      <location filename="../../BaseDelegate.cpp" line="439"/>
       <source>False</source>
       <translation>Yanlış</translation>
     </message>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="442"/>
+      <location filename="../../BaseDelegate.cpp" line="440"/>
       <source>True</source>
       <translation>Doğru</translation>
     </message>
@@ -482,7 +482,7 @@
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
       <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
+      <translation>Fiziksel</translation>
     </message>
   </context>
   <context>
@@ -627,7 +627,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
       <source>File...</source>
-      <translation type="unfinished">File...</translation>
+      <translation>Dosya...</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="104"/>
@@ -780,13 +780,13 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="546"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="545"/>
       <source>Favorites</source>
       <translation type="unfinished">Favorites</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="553"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="552"/>
       <source>Recent</source>
       <translation type="unfinished">Recent</translation>
     </message>
@@ -861,7 +861,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
+      <translation>Fiziksel</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="236"/>
@@ -1178,7 +1178,7 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="561"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>Silmeyi Onayla</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="174"/>
@@ -1191,8 +1191,8 @@ If unchecked, they will be sorted by their name.</translation>
     <name>StdCmdSetAppearance</name>
     <message>
       <location filename="../../Command.cpp" line="89"/>
-      <source>Appearance...</source>
-      <translation type="unfinished">Appearance...</translation>
+      <source>&amp;Appearance...</source>
+      <translation type="unfinished">&amp;Appearance...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1205,8 +1205,8 @@ If unchecked, they will be sorted by their name.</translation>
     <name>StdCmdSetMaterial</name>
     <message>
       <location filename="../../Command.cpp" line="118"/>
-      <source>Material...</source>
-      <translation>Malzeme...</translation>
+      <source>&amp;Material...</source>
+      <translation type="unfinished">&amp;Material...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

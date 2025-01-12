@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="565"/>
       <source>Drawing</source>
-      <translation>Dessin</translation>
+      <translation>Mise en plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>

@@ -1704,7 +1704,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>Dőlésszög:</translation>
+      <translation>Szög:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -2102,12 +2102,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
-      <translation>Importálás-Exportálás</translation>
+      <translation>Importáló-Exportáló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="336"/>
       <source>All Mesh Files</source>
-      <translation>Minden hálótest fájl</translation>
+      <translation>Összes hálótest adat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="337"/>
@@ -2138,7 +2138,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <location filename="../../Command.cpp" line="341"/>
       <location filename="../../Command.cpp" line="403"/>
       <source>Object File Format</source>
-      <translation>Tárgy fájl formátum</translation>
+      <translation>OFF adatformátum</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -2215,7 +2215,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="413"/>
       <source>Asymptote Format</source>
-      <translation>Érintő formátum</translation>
+      <translation>Asymptote formátum</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="414"/>
@@ -2275,7 +2275,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1805"/>
       <source>Enter scaling factor:</source>
-      <translation>Adja meg a skálafaktort:</translation>
+      <translation>Adja meg a méretezési tényezőt:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="77"/>
@@ -2311,12 +2311,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
-      <translation>Hagyja lyuk betöltő üzemmódban</translation>
+      <translation>Hagyja furat betöltő üzemmódban</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
-      <translation>Hagyja eltávolítása módban</translation>
+      <translation>Hagyja eltávolítás módban</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1831"/>
@@ -2331,7 +2331,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="519"/>
       <source>Annotation</source>
-      <translation>Jegyzet</translation>
+      <translation>Megjegyzés</translation>
     </message>
   </context>
   <context>

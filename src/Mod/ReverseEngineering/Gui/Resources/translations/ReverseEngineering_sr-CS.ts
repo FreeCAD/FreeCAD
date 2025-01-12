@@ -576,7 +576,7 @@
     <message>
       <location filename="../../SegmentationManual.cpp" line="352"/>
       <source>Create</source>
-      <translation>Spakuj</translation>
+      <translation>Napravi</translation>
     </message>
   </context>
   <context>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>Uklopi B-Splajn površinu</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

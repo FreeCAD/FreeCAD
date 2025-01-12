@@ -126,7 +126,7 @@
       <location filename="../../Command.cpp" line="1091"/>
       <location filename="../../Command.cpp" line="1093"/>
       <source>Information about face</source>
-      <translation>Інфармацыя аб грані</translation>
+      <translation>Інфармацыя пра грань</translation>
     </message>
   </context>
   <context>
@@ -661,7 +661,7 @@
       <location filename="../../Command.cpp" line="614"/>
       <location filename="../../Command.cpp" line="616"/>
       <source>Information about curvature</source>
-      <translation>Інфармацыя аб крывізне</translation>
+      <translation>Інфармацыя пра крывізну</translation>
     </message>
   </context>
   <context>

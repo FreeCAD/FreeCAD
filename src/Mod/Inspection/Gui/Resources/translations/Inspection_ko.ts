@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>검사(비교)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection...</source>
-      <translation type="unfinished">Inspection...</translation>
+      <translation>검사(비교)..</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Get distance information</source>
-      <translation type="unfinished">Get distance information</translation>
+      <translation>범위 정보 얻기</translation>
     </message>
   </context>
   <context>
@@ -24,18 +24,18 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>검사(비교)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual inspection...</source>
-      <translation type="unfinished">Visual inspection...</translation>
+      <translation>시각적으로 검사(비교)..</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <location filename="../../Command.cpp" line="51"/>
       <source>Visual inspection</source>
-      <translation type="unfinished">Visual inspection</translation>
+      <translation>시각적으로 검사(비교)</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="237"/>
       <source>Visual Inspection</source>
-      <translation type="unfinished">Visual Inspection</translation>
+      <translation>시각적으로 검사(비교)</translation>
     </message>
   </context>
   <context>
@@ -51,12 +51,12 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation type="unfinished">Visual Inspection</translation>
+      <translation>시각적으로 검사(비교)</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
       <source>Actual</source>
-      <translation type="unfinished">Actual</translation>
+      <translation>실제 값</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
@@ -67,17 +67,17 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation type="unfinished">Nominal</translation>
+      <translation>이론 값</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
       <source>Parameter</source>
-      <translation>매개 변수</translation>
+      <translation>매개변수</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>검색 범위</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
@@ -96,38 +96,38 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="489"/>
       <source>Remove annotations</source>
-      <translation type="unfinished">Remove annotations</translation>
+      <translation>주석 삭제</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="490"/>
       <source>Do you want to remove all annotations?</source>
-      <translation type="unfinished">Do you want to remove all annotations?</translation>
+      <translation>정말로 모든 주석을 삭제하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="548"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>주석</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="551"/>
       <source>Leave info mode</source>
-      <translation type="unfinished">Leave info mode</translation>
+      <translation>정보 모드 종료</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="682"/>
       <source>Distance: &gt; %1</source>
-      <translation type="unfinished">Distance: &gt; %1</translation>
+      <translation>거리: &gt;%1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="686"/>
       <source>Distance: &lt; %1</source>
-      <translation type="unfinished">Distance: &lt; %1</translation>
+      <translation>거리: &lt;%1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="706"/>
       <location filename="../../ViewProviderInspection.cpp" line="723"/>
       <source>Distance: %1</source>
-      <translation type="unfinished">Distance: %1</translation>
+      <translation>거리: %1</translation>
     </message>
   </context>
 </TS>

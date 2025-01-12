@@ -345,12 +345,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="156"/>
       <source>Refine Shape Feature</source>
-      <translation>Nettoyer la forme</translation>
+      <translation>Affiner la forme</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Créer une fonction pour nettoyer la forme</translation>
+      <translation>Créer une fonction pour affiner la forme</translation>
     </message>
   </context>
   <context>
