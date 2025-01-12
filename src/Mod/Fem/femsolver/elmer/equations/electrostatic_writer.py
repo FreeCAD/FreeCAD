@@ -125,22 +125,17 @@ class ESwriter:
                     # output the FreeCAD label as comment
                     if obj.Label:
                         self.write.boundary(name, "! FreeCAD Name", obj.Label)
-                    if obj.PotentialEnabled:
-                        if hasattr(obj, "Potential"):
-                            # Potential was once a float and scaled not fitting SI units
-                            if isinstance(obj.Potential, float):
-                                savePotential = obj.Potential
-                                obj.removeProperty("Potential")
-                                obj.addProperty(
-                                    "App::PropertyElectricPotential",
-                                    "Potential",
-                                    "Parameter",
-                                    "Electric Potential",
-                                )
-                                # scale to match SI units
-                                obj.Potential = savePotential * 1e6
-                            potential = float(obj.Potential.getValueAs("V"))
-                            self.write.boundary(name, "Potential", potential)
+                    if obj.BoundaryCondition == "Dirichlet":
+                        if obj.PotentialEnabled:
+                            self.write.boundary(
+                                name, "Potential", obj.Potential.getValueAs("V").Value
+                            )
+                    elif obj.BoundaryCondition == "Neumann":
+                        self.write.boundary(
+                            name,
+                            "Surface Charge Density",
+                            obj.SurfaceChargeDensity.getValueAs("C/m^2").Value,
+                        )
                     if obj.PotentialConstant:
                         self.write.boundary(name, "Potential Constant", True)
                     if obj.ElectricInfinity:
@@ -148,8 +143,7 @@ class ESwriter:
                     if obj.ElectricForcecalculation:
                         self.write.boundary(name, "Calculate Electric Force", True)
                     if obj.CapacitanceBodyEnabled:
-                        if hasattr(obj, "CapacitanceBody"):
-                            self.write.boundary(name, "Capacitance Body", obj.CapacitanceBody)
+                        self.write.boundary(name, "Capacitance Body", obj.CapacitanceBody)
                 self.write.handled(obj)
 
 

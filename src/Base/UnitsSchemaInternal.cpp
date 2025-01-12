@@ -364,6 +364,10 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, std:
         unitString = "C";
         factor = 1.0;
     }
+    else if (unit == Unit::SurfaceChargeDensity) {
+        unitString = "C/m^2";
+        factor = 1e-6;
+    }
     else if (unit == Unit::CurrentDensity) {
         if (UnitValue <= 1e3) {
             unitString = "A/m^2";
