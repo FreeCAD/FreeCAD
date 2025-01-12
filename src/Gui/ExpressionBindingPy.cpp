@@ -55,44 +55,28 @@ ExpressionBindingPy::~ExpressionBindingPy() = default;
 
 ExpressionBinding* ExpressionBindingPy::asBinding(QWidget* obj)
 {
-    ExpressionBinding* expr = nullptr;
     if (obj) {
-        do {
-            auto qsb = qobject_cast<QuantitySpinBox*>(obj);
-            if (qsb) {
-                expr = qsb;
-                break;
-            }
-            auto usp = qobject_cast<UIntSpinBox*>(obj);
-            if (usp) {
-                expr = usp;
-                break;
-            }
-            auto isp = qobject_cast<IntSpinBox*>(obj);
-            if (isp) {
-                expr = isp;
-                break;
-            }
-            auto dsp = qobject_cast<DoubleSpinBox*>(obj);
-            if (dsp) {
-                expr = dsp;
-                break;
-            }
-            auto exp = qobject_cast<ExpLineEdit*>(obj);
-            if (exp) {
-                expr = exp;
-                break;
-            }
-            auto inp = qobject_cast<InputField*>(obj);
-            if (inp) {
-                expr = inp;
-                break;
-            }
+        if (auto qsb = qobject_cast<QuantitySpinBox*>(obj)) {
+            return qsb;
         }
-        while (false);
+        if (auto usp = qobject_cast<UIntSpinBox*>(obj)) {
+            return usp;
+        }
+        if (auto isp = qobject_cast<IntSpinBox*>(obj)) {
+            return isp;
+        }
+        if (auto dsp = qobject_cast<DoubleSpinBox*>(obj)) {
+            return dsp;
+        }
+        if (auto exp = qobject_cast<ExpLineEdit*>(obj)) {
+            return exp;
+        }
+        if (auto inp = qobject_cast<InputField*>(obj)) {
+            return inp;
+        }
     }
 
-    return expr;
+    return nullptr;
 }
 
 Py::Object ExpressionBindingPy::repr()
