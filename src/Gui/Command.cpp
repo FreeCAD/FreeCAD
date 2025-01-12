@@ -251,10 +251,7 @@ bool Command::isViewOfType(Base::Type t) const
     Gui::BaseView *v = d->getActiveView();
     if (!v)
         return false;
-    if (v->isDerivedFrom(t))
-        return true;
-    else
-        return false;
+    return v->isDerivedFrom(t);
 }
 
 void Command::initAction()
@@ -363,29 +360,29 @@ void Command::setupCheckable(int iMsg) {
     }else
         action = _pcAction->action();
 
-    if(!action)
-        return;
-
-    bool checkable = action->isCheckable();
-    _pcAction->setCheckable(checkable);
-    if(checkable) {
-        bool checked = false;
-        switch(triggerSource()) {
-        case TriggerNone:
-            checked = !action->isChecked();
-            break;
-        case TriggerAction:
-            checked = _pcAction->isChecked();
-            break;
-        case TriggerChildAction:
-            checked = action->isChecked();
-            break;
+    if (action) {
+        bool checkable = action->isCheckable();
+        _pcAction->setCheckable(checkable);
+        if(checkable) {
+            bool checked = false;
+            switch(triggerSource()) {
+            case TriggerNone:
+                checked = !action->isChecked();
+                break;
+            case TriggerAction:
+                checked = _pcAction->isChecked();
+                break;
+            case TriggerChildAction:
+                checked = action->isChecked();
+                break;
+            }
+            bool wasBlocked = action->blockSignals(true);
+            action->setChecked(checked);
+            if (!wasBlocked) // if previus was true doesn't change
+                action->blockSignals(wasBlocked);
+            if(action!=_pcAction->action())
+                _pcAction->setChecked(checked,true);
         }
-        bool blocked = action->blockSignals(true);
-        action->setChecked(checked);
-        action->blockSignals(blocked);
-        if(action!=_pcAction->action())
-            _pcAction->setChecked(checked,true);
     }
 
 }
@@ -774,10 +771,10 @@ void Command::_copyVisual(const char *file, int line, const char* to, const char
 void Command::_copyVisual(const char *file, int line, const char* to, const char* attr_to, const char* from, const char* attr_from)
 {
     auto doc = App::GetApplication().getActiveDocument();
-    if(!doc)
-        return;
-    return _copyVisual(file,line,doc->getObject(to),attr_to,
-            doc->getObject(from),attr_from);
+    if(doc) {
+        return _copyVisual(file,line,doc->getObject(to),attr_to,
+                doc->getObject(from),attr_from);
+    }
 }
 
 void Command::_copyVisual(const char *file, int line, const App::DocumentObject *to, const char* attr_to, const App::DocumentObject *from, const char *attr_from)
@@ -795,7 +792,8 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
     auto objCmd = getObjectCmd(to);
     if(it!=attrMap.end()) {
         auto obj = from;
-        for(int depth=0;;++depth) {
+        int depth = 0;
+        while (true) {
             auto vp = dynamic_cast<Gui::ViewProviderLink*>(
                     Gui::Application::Instance->getViewProvider(obj));
             if(vp && vp->OverrideMaterial.getValue()) {
@@ -803,7 +801,7 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
                         objCmd.c_str(),attr_to,getObjectCmd(obj).c_str(),it->second.c_str());
                 return;
             }
-            auto linked = obj->getLinkedObject(false,nullptr,false,depth);
+            auto linked = obj->getLinkedObject(false,nullptr,false,depth ++);
             if(!linked || linked==obj)
                 break;
             obj = linked;

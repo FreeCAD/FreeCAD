@@ -201,7 +201,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
-        const auto * const event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
@@ -212,7 +211,10 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
-            this->addToLog(event->getPosition(), event->getTime());
+            const auto * const event = (const SoLocation2Event *) ev;
+            if (event) {
+                this->addToLog(event->getPosition(), event->getTime());
+            }
             this->spin(posn);
             moveCursorPosition();
             processed = true;
@@ -264,8 +266,11 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
         break;
     case BUTTON3DOWN:
-        if (curmode == NavigationStyle::SPINNING) { break; }
-        else if (newmode == NavigationStyle::ZOOMING) { break; }
+        if (curmode == NavigationStyle::SPINNING ||
+            newmode == NavigationStyle::ZOOMING) {
+            break;
+        }
+
         newmode = NavigationStyle::PANNING;
 
         if (curmode == NavigationStyle::DRAGGING) {
