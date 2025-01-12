@@ -101,6 +101,7 @@ SET(TechDrawGui_SRCS
     CommandCreateDims.cpp
     CommandDecorate.cpp
     CommandAnnotate.cpp
+    CommandAlign.cpp
     CommandExtensionDims.cpp
     CommandExtensionDims.h
     CommandExtensionPack.cpp
