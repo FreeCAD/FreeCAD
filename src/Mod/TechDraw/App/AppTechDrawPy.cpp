@@ -270,6 +270,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges- those are valid wires
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         std::vector<TopoDS_Wire> sortedWires;
         try {
@@ -326,6 +328,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges, since that may be the outline
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         PyObject* outerWire = nullptr;
         std::vector<TopoDS_Wire> sortedWires;
@@ -389,6 +393,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges, since that may be the outline
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         PyObject* outerWire = nullptr;
         std::vector<TopoDS_Wire> sortedWires;
