@@ -224,6 +224,7 @@ void NavigationStyle::initialize()
     this->currentmode = NavigationStyle::IDLE;
     this->animationEnabled = true;
     this->spinningAnimationEnabled = false;
+    this->spinningEnabled = true;
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
@@ -865,6 +866,10 @@ SbVec3f NavigationStyle::getFocalPoint() const
  */
 void NavigationStyle::spin(const SbVec2f & pointerpos)
 {
+    if (!isSpinningEnabled()) {
+        return;
+    }
+
     if (this->log.historysize < 2)
         return;
     assert(this->spinprojector);
@@ -1217,6 +1222,22 @@ SbBool NavigationStyle::isAnimating() const
 SbBool NavigationStyle::isSpinning() const
 {
     return currentmode == NavigationStyle::SPINNING;
+}
+
+/**
+ * @return Whether or not spinning is enabled
+ */
+SbBool NavigationStyle::isSpinningEnabled() const
+{
+    return spinningEnabled;
+}
+
+/**
+ * @brief Decide if it should be possible to start a spinning action
+ */
+void NavigationStyle::setSpinningEnabled(const SbBool enable)
+{
+    spinningEnabled = enable;
 }
 
 void NavigationStyle::startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait) const

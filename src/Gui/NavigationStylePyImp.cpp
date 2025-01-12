@@ -40,6 +40,19 @@ std::string NavigationStylePy::representation() const
     return {"<NavigationStyle object>"};
 }
 
+/** Sets the spinning enabled state */
+PyObject* NavigationStylePy::setSpinningEnabled(PyObject *args)
+{
+    PY_TRY {
+        int pEnabled;
+        if (!PyArg_ParseTuple(args, "p", &pEnabled))
+            return nullptr;
+
+        getNavigationStylePtr()->setSpinningEnabled(pEnabled);
+        Py_Return;
+    } PY_CATCH;
+}
+
 PyObject* NavigationStylePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
