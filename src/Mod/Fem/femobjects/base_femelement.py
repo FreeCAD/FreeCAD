@@ -45,6 +45,8 @@ class BaseFemElement(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             prop.add_to_object(obj)
 
+        obj.addExtension("App::SuppressibleExtensionPython")
+
     def _get_properties(self):
         prop = []
 
@@ -71,3 +73,6 @@ class BaseFemElement(base_fempythonobject.BaseFemPythonObject):
             if prop.name == "References":
                 # change References to App::PropertyLinkSubListGlobal
                 prop.handle_change_type(obj, old_type="App::PropertyLinkSubList")
+
+        if not obj.hasExtension("App::SuppressibleExtensionPython"):
+            obj.addExtension("App::SuppressibleExtensionPython")

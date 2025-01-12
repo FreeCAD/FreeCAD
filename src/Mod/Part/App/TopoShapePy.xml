@@ -898,7 +898,7 @@ ShapeType is interpreted as in the method getTolerance
     <Methode Name="inTolerance" Const="true">
       <Documentation>
         <UserDocu>Determines which shapes have a tolerance within a given interval
-inTolerance(value, [ShapeType=Shape]) -> ShapeList
+inTolerance(valmin, valmax, [ShapeType=Shape]) -> ShapeList
 --
 ShapeType is interpreted as in the method getTolerance
         </UserDocu>

@@ -2,7 +2,7 @@
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 FreeCAD Developers                                 *
-# *   Copyright (c) 2023 FreeCAD Project Association                        *
+# *   Copyright (c) 2023-2025 FreeCAD Project Association                   *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -31,8 +31,11 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+from draftgeoutils import geometry
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
+from draftutils.messages import _err, _msg, _wrn
+from draftutils.translate import translate
 
 
 class Facebinder(DraftObject):
@@ -71,6 +74,7 @@ class Facebinder(DraftObject):
             return
 
         if not obj.Faces:
+            self._report_face_error(obj)
             return
 
         import Part
@@ -81,64 +85,121 @@ class Facebinder(DraftObject):
                     if "Face" in sub:
                         face = Part.getShape(sel[0], sub, needSubElement=True, retType=0)
                         faces.append(face)
-        except Exception:
-            print("Draft: error building facebinder")
+        except Part.OCCError:
+            self._report_face_error(obj)
             return
 
         if not faces:
+            self._report_face_error(obj)
             return
 
-        offset_val = obj.Offset.Value if hasattr(obj, "Offset") else 0
-        extrusion_val = obj.Extrusion.Value if hasattr(obj, "Extrusion") else 0
-
+        obj_sew = getattr(obj, "Sew", True)
         try:
-            if offset_val:
-                offsets = []
-                for face in faces:
-                    if face.Surface.isPlanar():
-                        norm = face.normalAt(0, 0)
-                        dist = norm.multiply(offset_val)
-                        face.translate(dist)
-                        offsets.append(face)
-                    else:
-                        offset = face.makeOffsetShape(offset_val, 1e-7)
-                        offsets.extend(offset.Faces)
-                faces = offsets
-
-            shp = faces.pop()
-            if faces:
-                shp = shp.fuse(faces)
-            area = shp.Area  # take area after offsetting and fusing, but before extruding
-
-            if extrusion_val:
-                extrusions = []
-                for face in shp.Faces:
-                    if face.Surface.isPlanar():
-                        extrusion = face.extrude(face.normalAt(0, 0).multiply(extrusion_val))
-                        extrusions.append(extrusion)
-                    else:
-                        extrusion = face.makeOffsetShape(extrusion_val, 1e-7, fill=True)
-                        extrusions.extend(extrusion.Solids)
-                shp = extrusions.pop()
-                if extrusions:
-                    shp = shp.fuse(extrusions)
-
-            if len(shp.Faces) > 1:
-                if getattr(obj, "Sew", True):
-                    shp.sewShape()
-                if getattr(obj, "RemoveSplitter", True):
-                    shp = shp.removeSplitter()
-
+            shp, area = self._build_shape(obj, faces, sew=obj_sew)
         except Exception:
-            print("Draft: error building facebinder")
-            return
+            if not obj_sew:
+                self._report_build_error(obj)
+                return
+            self._report_sew_error(obj)
+            try:
+                shp, area = self._build_shape(obj, faces, sew=False)
+            except Exception:
+                self._report_build_error(obj)
+                return
+        if not shp.isValid():
+            if not obj_sew:
+                self._report_build_error(obj)
+                return
+            self._report_sew_error(obj)
+            try:
+                shp, area = self._build_shape(obj, faces, sew=False)
+            except Exception:
+                self._report_build_error(obj)
+                return
 
-        if shp.__class__.__name__ == "Compound":
+        if shp.ShapeType == "Compound":
             obj.Shape = shp
         else:
             obj.Shape = Part.Compound([shp])  # nest in compound to ensure default Placement
         obj.Area = area
         self.props_changed_clear()
+
+    def _report_build_error(self, obj):
+        _err(obj.Label + ": " + translate("draft", "Unable to build Facebinder"))
+
+    def _report_face_error(self, obj):
+        _wrn(obj.Label + ": " + translate("draft", "No valid faces for Facebinder"))
+
+    def _report_sew_error(self, obj):
+        _wrn(obj.Label + ": " + translate("draft", "Unable to build Facebinder, resuming with Sew disabled"))
+
+    def _build_shape(self, obj, faces, sew=False):
+        """returns the built shape and the area of the offset faces"""
+        import Part
+        offs_val = getattr(obj, "Offset", 0)
+        extr_val = getattr(obj, "Extrusion", 0)
+
+        shp = Part.Compound(faces)
+        # Sew before offsetting to ensure corners stay connected:
+        if sew:
+            shp.sewShape()
+            if shp.ShapeType != "Compound":
+                shp = Part.Compound([shp])
+
+        if offs_val:
+            offsets = []
+            for sub in shp.SubShapes:
+                offsets.append(sub.makeOffsetShape(offs_val, 1e-7, join=2))
+            shp = Part.Compound(offsets)
+
+        area = shp.Area  # take area after offsetting original faces, but before extruding
+
+        if extr_val:
+            extrudes = []
+            for sub in shp.SubShapes:
+                ext = sub.makeOffsetShape(extr_val, 1e-7, inter=True, join=2, fill=True)
+                extrudes.append(self._convert_to_planar(obj, ext))
+            shp = Part.Compound(extrudes)
+
+        subs = shp.SubShapes
+        shp = subs.pop()
+        if subs:
+            shp = shp.fuse(subs)
+
+        if len(shp.Faces) > 1:
+            if getattr(obj, "RemoveSplitter", True):
+                shp = shp.removeSplitter()
+
+        return shp, area
+
+    def _convert_to_planar(self, obj, shp):
+        """convert flat B-spline faces to planar faces if possible"""
+        import Part
+        faces = []
+        for face in shp.Faces:
+            if face.Surface.TypeId == "Part::GeomPlane":
+                faces.append(face)
+            elif not geometry.is_planar(face):
+                faces.append(face)
+            else:
+                edges = []
+                for edge in face.Edges:
+                    if edge.Curve.TypeId == "Part::GeomLine" or geometry.is_straight_line(edge):
+                        verts = edge.Vertexes
+                        edges.append(Part.makeLine(verts[0].Point, verts[1].Point))
+                    else:
+                        edges.append(edge)
+                wires = [Part.Wire(x) for x in Part.sortEdges(edges)]
+                face = Part.makeFace(wires, "Part::FaceMakerCheese")
+                face.fix(1e-7, 0, 1)
+                faces.append(face)
+        solid = Part.makeSolid(Part.makeShell(faces))
+        if solid.isValid():
+            return solid
+        _msg(obj.Label + ": " + translate("draft",
+            "Converting flat B-spline faces of Facebinder to planar faces failed"
+        ))
+        return shp
 
     def onChanged(self, obj, prop):
         self.props_changed_store(prop)

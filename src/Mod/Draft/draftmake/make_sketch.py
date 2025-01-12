@@ -176,7 +176,13 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
 
     axis = App.Vector(0, 0, 1).cross(normal)
-    angle = DraftVecUtils.angle(normal, App.Vector(0, 0, 1)) * App.Units.Radian
+    if axis.Length > 1e-6:
+        axis.normalize()
+    elif normal.z >= 0:
+        axis = App.Vector(0, 0, 1)
+    else:
+        axis = App.Vector(0, 0, -1)
+    angle = math.degrees(DraftVecUtils.angle(normal, App.Vector(0, 0, 1)))
     rotation = App.Rotation(axis, angle)
 
     point = shapes_list[0].Vertexes[0].Point

@@ -277,7 +277,7 @@ QGIViewBalloon::QGIViewBalloon()
     arrow->setPrettyNormal();
     arrow->setStyle(prefDefaultArrow());
 
-    balloonLabel->setZValue(ZVALUE::LABEL);
+    balloonLabel->setZValue(ZVALUE::BALLOON);
     arrow->setZValue(ZVALUE::DIMENSION);
 
     balloonLines->setZValue(ZVALUE::DIMENSION);

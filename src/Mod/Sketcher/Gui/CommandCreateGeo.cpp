@@ -39,6 +39,7 @@
 #include <Gui/SelectionFilter.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/Window.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/Geometry2d.h>
 #include <Mod/Sketcher/App/Constraint.h>
@@ -1515,7 +1516,11 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherProjection, "Sketcher_Projection")
 void CmdSketcherProjection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerExternal>());
+    bool extGeoRef = Gui::WindowParameter::getDefaultParameter()
+                         ->GetGroup("Mod/Sketcher/General")
+                         ->GetBool("AlwaysExtGeoReference", false);
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerExternal>(extGeoRef, false));
 }
 
 bool CmdSketcherProjection::isActive()
@@ -1546,12 +1551,17 @@ CmdSketcherIntersection::CmdSketcherIntersection()
 
 CONSTRUCTION_UPDATE_ACTION(CmdSketcherIntersection, "Sketcher_Intersection")
 
-void CmdSketcherIntersection::activated(int)
+void CmdSketcherIntersection::activated(int iMsg)
 {
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerExternal>(true));
+    Q_UNUSED(iMsg);
+    bool extGeoRef = Gui::WindowParameter::getDefaultParameter()
+                         ->GetGroup("Mod/Sketcher/General")
+                         ->GetBool("AlwaysExtGeoReference", false);
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerExternal>(extGeoRef, true));
 }
 
-bool CmdSketcherIntersection::isActive(void)
+bool CmdSketcherIntersection::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }

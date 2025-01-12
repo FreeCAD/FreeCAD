@@ -235,12 +235,11 @@ class LayerManager:
 
             # transparency
             transparency = self.model.item(row,6).data(QtCore.Qt.DisplayRole)
-            if transparency:
-                if vobj.Transparency != transparency:
-                    if not changed:
-                        doc.openTransaction("Layers change")
-                        changed = True
-                    vobj.Transparency = transparency
+            if vobj.Transparency != transparency:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.Transparency = transparency
 
             # line print color
             color = self.model.item(row,7).data(QtCore.Qt.UserRole)
