@@ -169,26 +169,11 @@ private:
     double Value;
 
     constexpr static std::array<const char*, ConstraintType::NumConstraintTypes> type2str {
-        {"None",
-         "Coincident",
-         "Horizontal",
-         "Vertical",
-         "Parallel",
-         "Tangent",
-         "Distance",
-         "DistanceX",
-         "DistanceY",
-         "Angle",
-         "Perpendicular",
-         "Radius",
-         "Equal",
-         "PointOnObject",
-         "Symmetric",
-         "InternalAlignment",
-         "SnellsLaw",
-         "Block",
-         "Diameter",
-         "Weight"}};
+        {"None",      "Coincident",    "Horizontal",    "Vertical",
+         "Parallel",  "Tangent",       "Distance",      "DistanceX",
+         "DistanceY", "Angle",         "Perpendicular", "Radius",
+         "Equal",     "PointOnObject", "Symmetric",     "InternalAlignment",
+         "SnellsLaw", "Block",         "Diameter",      "Weight"}};
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
         internalAlignmentType2str {{"Undef",
