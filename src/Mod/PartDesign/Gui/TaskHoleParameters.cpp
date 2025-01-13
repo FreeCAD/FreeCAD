@@ -156,23 +156,22 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
     ui->Reversed->setChecked(pcHole->Reversed.getValue());
 
-    ui->ModelThread->setChecked(pcHole->ModelThread.getValue());
+    bool isThreaded = ui->Threaded->isChecked();
+    bool isModeled = pcHole->ModelThread.getValue();
+    ui->ModelThread->setChecked(isModeled);
     ui->UseCustomThreadClearance->setChecked(pcHole->UseCustomThreadClearance.getValue());
     ui->CustomThreadClearance->setValue(pcHole->CustomThreadClearance.getValue());
     ui->ThreadDepthType->setCurrentIndex(pcHole->ThreadDepthType.getValue());
     ui->ThreadDepth->setValue(pcHole->ThreadDepth.getValue());
 
-    // conditional enabling of thread modeling options
     ui->ModelThread->setEnabled(ui->Threaded->isChecked() && ui->ThreadType->currentIndex() != 0);
-    ui->UseCustomThreadClearance->setEnabled(ui->Threaded->isChecked()
-                                             && ui->ModelThread->isChecked());
-    ui->CustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
-                                          && ui->UseCustomThreadClearance->isChecked());
+    ui->CustomClearanceWidget->setVisible(isThreaded && isModeled);
+    ui->CustomThreadClearance->setEnabled(ui->UseCustomThreadClearance->isChecked());
     ui->UpdateView->setChecked(false);
-    ui->UpdateView->setEnabled(ui->ModelThread->isChecked());
+    ui->UpdateView->setVisible(isThreaded && isModeled);
 
     ui->Depth->setEnabled(std::string(pcHole->DepthType.getValueAsString()) == "Dimension");
-    ui->ThreadDepthType->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
+    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
     ui->ThreadDepth->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
                                 && std::string(pcHole->ThreadDepthType.getValueAsString())
                                     == "Dimension");
@@ -265,51 +264,35 @@ void TaskHoleParameters::threadedChanged()
     bool isChecked = ui->Threaded->isChecked();
     pcHole->Threaded.setValue(isChecked);
 
-    ui->ModelThread->setEnabled(isChecked);
-    ui->ThreadDepthType->setEnabled(isChecked);
-    ui->ThreadDepth->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
-                                && std::string(pcHole->ThreadDepthType.getValueAsString())
-                                    == "Dimension");
-
-    // conditional enabling of thread modeling options
-    ui->UseCustomThreadClearance->setEnabled(ui->Threaded->isChecked()
-                                             && ui->ModelThread->isChecked());
-    ui->CustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
-                                          && ui->UseCustomThreadClearance->isChecked());
-
-
-    // update view not active if modeling threads
-    // this will also ensure that the feature is recomputed.
-    ui->UpdateView->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
-    setUpdateBlocked(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
-                     && !(ui->UpdateView->isChecked()));
-
-    pcHole->Threaded.setValue(ui->Threaded->isChecked());
+    // run modelThreadChanged 
+    // it will handle the visibility of the model options
+    modelThreadChanged();
     recomputeFeature();
 }
 
 void TaskHoleParameters::modelThreadChanged()
 {
     auto pcHole = getObject<PartDesign::Hole>();
-
-    pcHole->ModelThread.setValue(ui->ModelThread->isChecked());
+    bool isThreaded = pcHole->Threaded.getValue();
+    bool isModeled = isThreaded && ui->ModelThread->isChecked();
+    if (!isThreaded) {
+        ui->ModelThread->setChecked(false);
+    }
+    pcHole->ModelThread.setValue(isModeled);
 
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
-    ui->UpdateView->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
-    setUpdateBlocked(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
-                     && !(ui->UpdateView->isChecked()));
+    ui->UpdateView->setVisible(isModeled);
+    setUpdateBlocked(isModeled && !(ui->UpdateView->isChecked()));
 
     // conditional enabling of thread modeling options
-    ui->UseCustomThreadClearance->setEnabled(ui->Threaded->isChecked()
-                                             && ui->ModelThread->isChecked());
-    ui->CustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
-                                          && ui->UseCustomThreadClearance->isChecked());
+    ui->CustomClearanceWidget->setVisible(isModeled);
+    ui->CustomThreadClearance->setEnabled(ui->UseCustomThreadClearance->isChecked());
 
-    ui->ThreadDepthType->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
-    ui->ThreadDepth->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
-                                && std::string(pcHole->ThreadDepthType.getValueAsString())
-                                    == "Dimension");
+    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
+    ui->ThreadDepth->setEnabled(
+        std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
+    );
 
     recomputeFeature();
 }
