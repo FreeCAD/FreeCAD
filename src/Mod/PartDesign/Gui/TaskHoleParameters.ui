@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>395</width>
-    <height>702</height>
+    <height>726</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,33 +20,6 @@
    <string>Task Hole Parameters</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_10">
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Profile</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="ThreadType">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="1" column="0">
@@ -62,62 +35,6 @@
          <property name="text">
           <string>Size</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="ThreadSize">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLabel" name="labelThreadClearance">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Clearance</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="ThreadFit">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>Hole clearance
-Only available for holes without thread</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>Standard</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Close</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Wide</string>
-          </property>
-         </item>
         </widget>
        </item>
       </layout>
@@ -268,9 +185,213 @@ over 90: larger hole radius at the bottom</string>
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="ThreadSize">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item row="5" column="0" rowspan="2">
+   <item row="10" column="0">
+    <widget class="QGroupBox" name="DrillGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Drill Point</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="drillPointFlat">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Flat</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">drillPointButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QRadioButton" name="drillPointAngled">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Angled</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">drillPointButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefQuantitySpinBox" name="DrillPointAngle" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="keyboardTracking" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">deg</string>
+          </property>
+          <property name="minimum" stdset="0">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="DrillForDepth">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>The size of the drill point will be taken into
+account for the depth of blind holes</string>
+        </property>
+        <property name="text">
+         <string>Take into account for depth</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QWidget" name="ClearanceWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="labelThreadClearance">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Clearance</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="ThreadFit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Hole clearance
+Only available for holes without thread</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Standard</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Close</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Wide</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_10">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Profile</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="ThreadType">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="7" column="0" rowspan="2">
     <widget class="QGroupBox" name="ThreadGroupBox">
      <property name="title">
       <string/>
@@ -512,7 +633,7 @@ Note that the calculation can take some time</string>
      </layout>
     </widget>
    </item>
-   <item row="7" column="0">
+   <item row="9" column="0">
     <widget class="QGroupBox" name="CutGroupBox">
      <property name="title">
       <string/>
@@ -666,100 +787,6 @@ the screw's top below the surface</string>
         </property>
         <property name="text">
          <string>Custom values</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QGroupBox" name="DrillGroupBox">
-     <property name="title">
-      <string/>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_7">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Drill Point</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QRadioButton" name="drillPointFlat">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Flat</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">drillPointButtonGroup</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QRadioButton" name="drillPointAngled">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Angled</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">drillPointButtonGroup</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="Gui::PrefQuantitySpinBox" name="DrillPointAngle" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="keyboardTracking" stdset="0">
-           <bool>false</bool>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">deg</string>
-          </property>
-          <property name="minimum" stdset="0">
-           <double>0.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="DrillForDepth">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>The size of the drill point will be taken into
-account for the depth of blind holes</string>
-        </property>
-        <property name="text">
-         <string>Take into account for depth</string>
         </property>
        </widget>
       </item>
