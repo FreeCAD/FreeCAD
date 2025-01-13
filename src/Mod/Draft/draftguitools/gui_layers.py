@@ -168,7 +168,7 @@ class LayerManager:
         for row in range(self.model.rowCount()):
 
             # get or create layer
-            name = self.model.item(row,1).toolTip()
+            name = self.model.item(row, 1).toolTip()
             obj = None
             if name:
                 obj = doc.getObject(name)
@@ -181,7 +181,7 @@ class LayerManager:
             vobj = obj.ViewObject
 
             # visibility
-            checked = True if self.model.item(row,0).checkState() == QtCore.Qt.Checked else False
+            checked = self.model.item(row, 0).checkState() == QtCore.Qt.Checked
             if checked != vobj.Visibility:
                 if not changed:
                     doc.openTransaction("Layers change")
@@ -189,52 +189,49 @@ class LayerManager:
                 vobj.Visibility = checked
 
             # label
-            label = self.model.item(row,1).text()
-            if label:
-                if obj.Label != label:
-                    if not changed:
-                        doc.openTransaction("Layers change")
-                        changed = True
-                    obj.Label = label
+            label = self.model.item(row, 1).text()
+            # Setting Label="" is possible in the Property editor but we avoid it here:
+            if label and obj.Label != label:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                obj.Label = label
 
             # line width
-            width = self.model.item(row,2).data(QtCore.Qt.DisplayRole)
-            if width:
-                if vobj.LineWidth != width:
-                    if not changed:
-                        doc.openTransaction("Layers change")
-                        changed = True
-                    vobj.LineWidth = width
+            width = self.model.item(row, 2).data(QtCore.Qt.DisplayRole)
+            # Setting LineWidth=0 is possible in the Property editor but we avoid it here:
+            if width and vobj.LineWidth != width:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.LineWidth = width
 
             # draw style
-            style = self.model.item(row,3).text()
-            if style:
-                if vobj.DrawStyle != style:
-                    if not changed:
-                        doc.openTransaction("Layers change")
-                        changed = True
-                    vobj.DrawStyle = style
+            style = self.model.item(row, 3).text()
+            if vobj.DrawStyle != style:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.DrawStyle = style
 
             # line color
-            color = self.model.item(row,4).data(QtCore.Qt.UserRole)
-            if color:
-                if vobj.LineColor[:3] != color:
-                    if not changed:
-                        doc.openTransaction("Layers change")
-                        changed = True
-                    vobj.LineColor = color
+            color = self.model.item(row, 4).data(QtCore.Qt.UserRole)
+            if vobj.LineColor[:3] != color:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.LineColor = color
 
             # shape color
-            color = self.model.item(row,5).data(QtCore.Qt.UserRole)
-            if color:
-                if vobj.ShapeColor[:3] != color:
-                    if not changed:
-                        doc.openTransaction("Layers change")
-                        changed = True
-                    vobj.ShapeColor = color
+            color = self.model.item(row, 5).data(QtCore.Qt.UserRole)
+            if vobj.ShapeColor[:3] != color:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.ShapeColor = color
 
             # transparency
-            transparency = self.model.item(row,6).data(QtCore.Qt.DisplayRole)
+            transparency = self.model.item(row, 6).data(QtCore.Qt.DisplayRole)
             if vobj.Transparency != transparency:
                 if not changed:
                     doc.openTransaction("Layers change")
@@ -242,17 +239,12 @@ class LayerManager:
                 vobj.Transparency = transparency
 
             # line print color
-            color = self.model.item(row,7).data(QtCore.Qt.UserRole)
-            if color:
-                if not "LinePrintColor" in vobj.PropertiesList:
-                    if hasattr(vobj.Proxy,"set_properties"):
-                        vobj.Proxy.set_properties(vobj)
-                if "LinePrintColor" in vobj.PropertiesList:
-                    if vobj.LinePrintColor[:3] != color:
-                        if not changed:
-                            doc.openTransaction("Layers change")
-                            changed = True
-                        vobj.LinePrintColor = color
+            color = self.model.item(row, 7).data(QtCore.Qt.UserRole)
+            if vobj.LinePrintColor[:3] != color:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.LinePrintColor = color
 
         # recompute
         if changed:
@@ -410,7 +402,7 @@ class LayerManager:
                 onrows.append(index.row())
         for row in range(self.model.rowCount()):
             if not row in onrows:
-                self.model.item(row,0).setCheckState(QtCore.Qt.Unchecked)
+                self.model.item(row, 0).setCheckState(QtCore.Qt.Unchecked)
 
 
 if App.GuiUp:
