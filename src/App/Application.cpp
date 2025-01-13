@@ -63,6 +63,7 @@
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/ConsoleObserver.h>
+#include <Base/ServiceProvider.h>
 #include <Base/CoordinateSystemPy.h>
 #include <Base/Exception.h>
 #include <Base/ExceptionFactory.h>
@@ -89,6 +90,7 @@
 #include "Application.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
+#include "Services.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
@@ -2217,6 +2219,8 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
     new Base::ExceptionProducer<Base::PropertyError>;
+
+    Base::registerServiceImplementation<CenterOfMassProvider>(new NullCenterOfMass);
 }
 
 namespace {

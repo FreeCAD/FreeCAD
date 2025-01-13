@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
@@ -22,11 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include "Services.h"
 
-#include "ServiceProvider.h"
-
-namespace Base
+std::optional<Base::Vector3d>
+App::NullCenterOfMass::ofDocumentObject([[maybe_unused]] DocumentObject* object) const
 {
-Base::ServiceProvider globalServiceProvider;
+    return std::nullopt;
 }

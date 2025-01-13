@@ -149,6 +149,8 @@
 #include "ToroidPy.h"
 #include "TopoShape.h"
 
+#include <gp_Quaternion.hxx>
+
 
 #if OCC_VERSION_HEX >= 0x070600
 using GeomAdaptor_HCurve = GeomAdaptor_Curve;
@@ -2127,10 +2129,25 @@ void GeomConic::setLocation(const Base::Vector3d& Center)
 
 Base::Vector3d GeomConic::getCenter() const
 {
-    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(handle());
     gp_Ax1 axis = conic->Axis();
     const gp_Pnt& loc = axis.Location();
-    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+    return Base::Vector3d(loc.X(), loc.Y(), loc.Z());
+}
+
+std::optional<Base::Rotation> GeomConic::getRotation() const
+{
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(handle());
+
+    if (!conic) {
+        return {};
+    }
+
+    gp_Trsf trsf;
+    trsf.SetTransformation(conic->Position(), gp_Ax3());
+
+    auto q = trsf.GetRotation();
+    return Base::Rotation(q.X(), q.Y(), q.Z(), q.W());
 }
 
 void GeomConic::setCenter(const Base::Vector3d& Center)
@@ -2142,7 +2159,6 @@ void GeomConic::setCenter(const Base::Vector3d& Center)
         conic->SetLocation(p1);
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
@@ -4803,28 +4819,36 @@ GeomPlane* GeomSurface::toPlane(bool clone, double tol) const
     if (isDerivedFrom(GeomPlane::getClassTypeId())) {
         if (clone) {
             return dynamic_cast<GeomPlane*>(this->clone());
-        } else {
+        }
+        else {
             return dynamic_cast<GeomPlane*>(this->copy());
         }
     }
 
     gp_Pln pln;
-    if (!isPlanar(&pln, tol))
+    if (!isPlanar(&pln, tol)) {
         return nullptr;
+    }
 
     auto res = new GeomPlane(pln);
     res->copyNonTag(this);
-    if (clone)
+    if (clone) {
         res->tag = this->tag;
+    }
     return res;
+}
+
+std::optional<Base::Rotation> GeomSurface::getRotation() const
+{
+    return {};
 }
 
 TopoDS_Shape GeomSurface::toShape() const
 {
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
-    Standard_Real u1,u2,v1,v2;
-    s->Bounds(u1,u2,v1,v2);
-    BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2, Precision::Confusion() );
+    Standard_Real u1, u2, v1, v2;
+    s->Bounds(u1, u2, v1, v2);
+    BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2, Precision::Confusion());
     return mkBuilder.Shape();
 }
 
@@ -5180,9 +5204,24 @@ GeomElementarySurface::~GeomElementarySurface()
 
 Base::Vector3d GeomElementarySurface::getLocation(void) const
 {
-    Handle(Geom_ElementarySurface) surf =  Handle(Geom_ElementarySurface)::DownCast(handle());
+    Handle(Geom_ElementarySurface) surf = Handle(Geom_ElementarySurface)::DownCast(handle());
     gp_Pnt loc = surf->Location();
-    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+    return Base::Vector3d(loc.X(), loc.Y(), loc.Z());
+}
+
+std::optional<Base::Rotation> GeomPlane::getRotation() const
+{
+    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(handle());
+
+    if (!s) {
+        return {};
+    }
+
+    gp_Trsf trsf;
+    trsf.SetTransformation(s->Position().Ax2(),gp_Ax3());
+    auto q = trsf.GetRotation();
+
+    return Base::Rotation(q.X(),q.Y(),q.Z(),q.W());
 }
 
 Base::Vector3d GeomElementarySurface::getDir(void) const
@@ -5409,6 +5448,12 @@ double GeomCone::getRadius() const
 double GeomCone::getSemiAngle() const
 {
     return mySurface->SemiAngle();
+}
+
+Base::Vector3d GeomCone::getApex() const
+{
+    Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast(handle());
+    return Base::convertTo<Base::Vector3d>(s->Apex());
 }
 
 bool GeomCone::isSame(const Geometry &_other, double tol, double atol) const
