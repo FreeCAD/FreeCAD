@@ -169,6 +169,7 @@ class SH3DImporter:
         self.default_floor = None
         self.floors = {}
         self.walls = []
+        self.space_upper_faces = []
 
     def import_sh3d_from_string(self, home:str):
         """Import the SH3D Home from a String.
@@ -281,7 +282,6 @@ class SH3DImporter:
             self._refresh()
 
         _msg(f"Successfully imported home '{home.get('name')}' ...")
-
 
     def _get_object_count(self, home):
         """Get an approximate count of object to be imported
@@ -422,6 +422,26 @@ class SH3DImporter:
         if self.default_floor or not level_id:
             return self.default_floor
         return self.floors.get(level_id, None)
+
+    def get_space(self, p):
+        """Returns the Space this point belongs to.
+
+        An point belongs to a space if it is the closest space below that point
+
+        Args:
+            p (Point): the point for which to determine the closest space.
+
+        Returns:
+            Space: the space the object belongs to or None
+        """
+        space_min_z = float('inf')
+        closest_space = None
+        for (space, upper_face) in self.space_upper_faces:
+            face_com_z = upper_face.CenterOfMass.z
+            p_com = App.Vector(p.x, p.y, face_com_z)
+            if upper_face.isInside(p_com, 1, True) and p_com.distanceToPoint(p) < space_min_z and face_com_z < p.z:
+                closest_space = space
+        return closest_space
 
     def add_wall(self, wall):
         self.walls.append(wall)
@@ -596,6 +616,61 @@ class BaseHandler:
         """
         return self.importer.get_floor(level_id)
 
+    def get_space(self, point):
+        """Returns the Space this object belongs to.
+
+        An point belongs to a space if it is the closest space below that point
+
+        Args:
+            point (point): the point for which to determine the closest space.
+
+        Returns:
+            Space: the space the object belongs to or None
+        """
+        return self.importer.get_space(point)
+
+    def _get_upper_face(self, faces):
+        """Returns the upper face of a given list of faces
+
+        More specifically returns the face with the highest z.
+        It is used to figure out which space a furniture belongs to.
+
+        Args:
+            faces (list): The list of faces
+
+        Returns:
+            Face: the upper face
+        """
+        upper_face = None
+        com_max_z = -float('inf')
+        for face in faces:
+            com = face.CenterOfMass
+            if com.z > com_max_z:
+                upper_face = face
+                com_max_z = com.z
+        return upper_face
+    
+    def _get_lower_face(self, faces):
+        """Returns the lower face of a given list of faces
+
+        More specifically returns the face with the lowest z.
+        It is used to figure out which space a furniture belongs to.
+
+        Args:
+            faces (list): The list of faces
+
+        Returns:
+            Face: the lower face
+        """
+        lower_face = None
+        com_min_z = float('inf')
+        for face in faces:
+            com = face.CenterOfMass
+            if com.z < com_min_z:
+                lower_face = face
+                com_min_z = com.z
+        return lower_face
+
 
 class LevelHandler(BaseHandler):
     """A helper class to import a SH3D `<level>` object."""
@@ -660,6 +735,8 @@ class RoomHandler(BaseHandler):
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <room> '{elm.get('id')}' ..."
 
+        # A Room is composed of a space with the slab as the base object
+
         points = []
         for point in elm.findall('point'):
             x = float(point.get('x'))
@@ -675,14 +752,39 @@ class RoomHandler(BaseHandler):
             line = Draft.make_wire(points, placement=App.Placement(), closed=True, face=True, support=None)
             slab = Arch.makeStructure(line, height=floor.floorThickness)
 
-        slab.Label = elm.get('name', 'Room')
+        slab.Label = elm.get('name', 'Room-slab') + '-slab'
         slab.IfcType = "Slab"
         slab.Normal = -Z_NORM
 
         color = elm.get('floorColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
         set_color_and_transparency(slab, color)
         self._set_properties(slab, elm)
-        floor.addObject(slab)
+
+        slab.recompute(True)
+
+        # No 1-to-1 correspondance between SH3D <room> and FC element.
+        # Creating a fake SH3D elemement in order to take advantage of the
+        # different lookup facilities. NOTE the suffix '-space' for both
+        # the sh_type and id...
+        space = None
+        if self.importer.preferences["MERGE"]:
+            space = self.get_fc_object(elm.get("id")+"-space", 'room-space')
+
+        if not space:
+            space = Arch.makeSpace(slab)
+            space.IfcType = "Space"
+            space.Label = elm.get('name', 'Room')
+            self._set_space_properties(space, elm)
+
+        self.importer.fc_objects[slab.id] = slab
+        self.importer.fc_objects[space.id] = space
+
+        upper_face = self._get_upper_face(slab.Shape.Faces)
+        self.importer.space_upper_faces.append((space, upper_face))
+
+        slab.Visibility = True
+
+        floor.addObject(space)
 
     def _set_properties(self, obj, elm):
         floor_color = elm.get('floorColor',self.importer.preferences["DEFAULT_FLOOR_COLOR"])
@@ -704,6 +806,10 @@ class RoomHandler(BaseHandler):
         self.setp(obj, "App::PropertyString", "ceilingColor", "The room's ceiling color", ceiling_color)
         self.setp(obj, "App::PropertyFloat", "ceilingShininess", "The room's ceiling shininess", elm)
         self.setp(obj, "App::PropertyBool", "ceilingFlat", "", elm)
+
+    def _set_space_properties(self, obj, elm):
+        self.setp(obj, "App::PropertyString", "shType", "The element type", 'room-space')
+        self.setp(obj, "App::PropertyString", "id", "The slab's id", elm.get('id', str(uuid.uuid4()))+"-space")
 
 
 class WallHandler(BaseHandler):
@@ -1308,7 +1414,6 @@ class BaseFurnitureHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "depthInPlan", "The object's depth in the plan view", elm)
         self.setp(obj, "App::PropertyFloat", "heightInPlan", "The object's height in the plan view", elm)
 
-
     def _get_mesh(self, elm):
         model = elm.get('model')
         if model not in self.importer.zip.namelist():
@@ -1500,7 +1605,12 @@ class FurnitureHandler(BaseFurnitureHandler):
             group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
             self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures on this floor", group.Name)
 
-        floor.getObject(floor.FurnitureGroupName).addObject(feature)
+        space = self.get_space(feature.Mesh.BoundBox.Center)
+        if space:
+            space.Group = space.Group + [feature]
+        else:
+            _log(f"No space found to enclose {feature.Label}. Adding to generic group.")
+            floor.getObject(floor.FurnitureGroupName).addObject(feature)
 
         # We add the object to the list of known object that can then
         # be referenced elsewhere in the SH3D model (i.e. lights).
