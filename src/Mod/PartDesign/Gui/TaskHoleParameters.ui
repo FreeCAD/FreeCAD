@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>395</width>
-    <height>726</height>
+    <height>732</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,6 +22,31 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="4" column="1">
+      <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Taper angle for the hole
+90 degree: straight hole
+under 90: smaller hole radius at the bottom
+over 90: larger hole radius at the bottom</string>
+       </property>
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
+       </property>
+       <property name="minimum" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
@@ -38,19 +63,6 @@
         </widget>
        </item>
       </layout>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Diameter</string>
-       </property>
-      </widget>
      </item>
      <item row="2" column="1">
       <widget class="Gui::PrefQuantitySpinBox" name="Diameter" native="true">
@@ -73,6 +85,39 @@
         <double>0.000000000000000</double>
        </property>
       </widget>
+     </item>
+     <item row="4" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QCheckBox" name="Reversed">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Reverses the hole direction</string>
+         </property>
+         <property name="text">
+          <string>Reversed</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="Tapered">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Tapered</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item row="3" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -127,61 +172,16 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
-       <item>
-        <widget class="QCheckBox" name="Reversed">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>Reverses the hole direction</string>
-         </property>
-         <property name="text">
-          <string>Reversed</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="Tapered">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Tapered</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="4" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle" native="true">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_7">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="toolTip">
-        <string>Taper angle for the hole
-90 degree: straight hole
-under 90: smaller hole radius at the bottom
-over 90: larger hole radius at the bottom</string>
-       </property>
-       <property name="keyboardTracking" stdset="0">
-        <bool>false</bool>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">deg</string>
-       </property>
-       <property name="minimum" stdset="0">
-        <double>0.000000000000000</double>
+       <property name="text">
+        <string>Diameter</string>
        </property>
       </widget>
      </item>
@@ -192,6 +192,22 @@ over 90: larger hole radius at the bottom</string>
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QCheckBox" name="Threaded">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Whether the hole gets a thread</string>
+       </property>
+       <property name="text">
+        <string>Threaded</string>
        </property>
       </widget>
      </item>
@@ -399,22 +415,6 @@ Only available for holes without thread</string>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="2" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QCheckBox" name="Threaded">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Whether the hole gets a thread</string>
-          </property>
-          <property name="text">
-           <string>Threaded</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QLabel" name="label_5">
           <property name="sizePolicy">
