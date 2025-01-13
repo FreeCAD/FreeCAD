@@ -152,7 +152,7 @@ protected:
     /** Ensure the state machine is the provided mode
      * but only if the mode is an earlier state.
      *
-     * This allows to return to previous states (e.g.
+     * This allows one to return to previous states (e.g.
      * for modification), only if that state has previously
      * been completed.
      */
@@ -337,7 +337,7 @@ private:
  * - handling of continuous creation mode
  *
  * This class is intended to be used by instantiating the template with a new DSH type, and
- * then derive the new type from the instantiated template. This allows to inherit all
+ * then derive the new type from the instantiated template. This allows one to inherit all
  * the functionality, have direct access to all handler members, while allowing the DSH creator to
  * add additional data members and functions (and avoiding extensive usage of macros).
  *
@@ -1001,8 +1001,8 @@ protected:
     /** @brief Function that performs a sketcher solver diagnose (determination of DoF and dependent
      * parameters), taking into account the suggested AutoConstraints.
      *
-     * @details This function allows to refresh solver information by taking into account any added
-     * constraint, such as the ones introduced by a widget or on-screen parameters during the
+     * @details This function allows one to refresh solver information by taking into account any
+     * added constraint, such as the ones introduced by a widget or on-screen parameters during the
      * execution of the DSH.
      *
      * Ultimately, it is intended to operate in combination with functions obtaining point/element
