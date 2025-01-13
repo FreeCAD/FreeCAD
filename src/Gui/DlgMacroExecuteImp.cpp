@@ -248,10 +248,10 @@ QStringList DlgMacroExecuteImp::filterFiles(const QString& folder)
 void DlgMacroExecuteImp::fillUpListForDir(const QString& dirPath, bool systemWide)
 {
     QStringList filteredByContent = this->filterFiles(dirPath);
-    ui->userMacroListBox->clear();
+    auto* macroListBox = systemWide ? ui->systemMacroListBox : ui->userMacroListBox;
+    macroListBox->clear();
     for (auto& fn : filteredByContent) {
-        auto* parent = systemWide ? ui->systemMacroListBox : ui->userMacroListBox;
-        auto item = new MacroItem(parent, systemWide, dirPath);
+        auto item = new MacroItem(macroListBox, systemWide, dirPath);
         item->setFileName(0, fn);
     }
 }
