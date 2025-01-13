@@ -134,38 +134,20 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
     ui->Depth->setValue(pcHole->Depth.getValue());
-    if (pcHole->DrillPoint.getValue() == 0L) {
-        ui->drillPointFlat->setChecked(true);
-    }
-    else {
-        ui->drillPointAngled->setChecked(true);
-    }
+
     ui->DrillPointAngle->setMinimum(pcHole->DrillPointAngle.getMinimum());
     ui->DrillPointAngle->setMaximum(pcHole->DrillPointAngle.getMaximum());
     ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
     ui->DrillForDepth->setChecked(pcHole->DrillForDepth.getValue());
-    // drill point settings are only enabled (sensible) if type is 'Dimension'
-    if (std::string(pcHole->DepthType.getValueAsString()) == "Dimension") {
-        ui->drillPointFlat->setEnabled(true);
-        ui->drillPointAngled->setEnabled(true);
-        ui->DrillPointAngle->setEnabled(true);
-        ui->DrillForDepth->setEnabled(true);
-    }
-    else {
-        ui->drillPointFlat->setEnabled(false);
-        ui->drillPointAngled->setEnabled(false);
-        ui->DrillPointAngle->setEnabled(false);
-        ui->DrillForDepth->setEnabled(false);
-    }
-    // drill point is sensible but flat, disable angle and option
-    if (!ui->drillPointFlat->isChecked()) {
-        ui->DrillPointAngle->setEnabled(true);
-        ui->DrillForDepth->setEnabled(true);
-    }
-    else {
-        ui->DrillPointAngle->setEnabled(false);
-        ui->DrillForDepth->setEnabled(false);
-    }
+
+    bool isFlatDrill = pcHole->DrillPoint.getValue() == 0L;
+    bool depthIsDimension = std::string(pcHole->DepthType.getValueAsString()) == "Dimension";
+    ui->DrillGroupBox->setVisible(depthIsDimension);
+    ui->drillPointFlat->setChecked(isFlatDrill);
+    ui->drillPointAngled->setChecked(!isFlatDrill);
+    ui->DrillPointAngle->setEnabled(!isFlatDrill);
+    ui->DrillForDepth->setVisible(!isFlatDrill);
+
     ui->Tapered->setChecked(pcHole->Tapered.getValue());
     // Angle is only enabled (sensible) if tapered
     ui->TaperedAngle->setEnabled(pcHole->Tapered.getValue());
@@ -526,23 +508,14 @@ void TaskHoleParameters::depthChanged(int index)
 
     hole->DepthType.setValue(index);
 
-    // disable drill point widgets if not 'Dimension'
-    if (std::string(hole->DepthType.getValueAsString()) == "Dimension") {
-        ui->drillPointFlat->setEnabled(true);
-        ui->drillPointAngled->setEnabled(true);
-        ui->DrillPointAngle->setEnabled(true);
-        ui->DrillForDepth->setEnabled(true);
-    }
-    else {  // through all
-        ui->drillPointFlat->setEnabled(false);
-        ui->drillPointAngled->setEnabled(false);
-        ui->DrillPointAngle->setEnabled(false);
-        ui->DrillForDepth->setEnabled(false);
-    }
+    bool DepthisDimension = (
+        std::string(hole->DepthType.getValueAsString()) == "Dimension"
+    );
+
+    ui->DrillGroupBox->setVisible(DepthisDimension);
     recomputeFeature();
     // enabling must be handled after recompute
-    ui->ThreadDepth->setEnabled(std::string(hole->ThreadDepthType.getValueAsString())
-                                == "Dimension");
+    ui->ThreadDepth->setEnabled(DepthisDimension);
 }
 
 void TaskHoleParameters::depthValueChanged(double value)
@@ -558,11 +531,11 @@ void TaskHoleParameters::drillPointChanged()
     if (auto hole = getObject<PartDesign::Hole>()) {
         if (sender() == ui->drillPointFlat) {
             hole->DrillPoint.setValue(0L);
-            ui->DrillForDepth->setEnabled(false);
+            ui->DrillForDepth->setVisible(false);
         }
         else if (sender() == ui->drillPointAngled) {
             hole->DrillPoint.setValue(1L);
-            ui->DrillForDepth->setEnabled(true);
+            ui->DrillForDepth->setVisible(true);
         }
         else {
             assert(0);

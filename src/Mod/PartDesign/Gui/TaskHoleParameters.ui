@@ -974,22 +974,6 @@ account for the depth of blind holes</string>
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>drillPointAngled</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>DrillForDepth</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>112</x>
-     <y>686</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>113</x>
-     <y>718</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <buttongroups>
   <buttongroup name="directionButtonGroup"/>
