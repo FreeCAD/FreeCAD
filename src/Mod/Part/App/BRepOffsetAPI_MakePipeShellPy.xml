@@ -14,7 +14,10 @@
         Delete="true">
         <Documentation>
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net"/>
-            <UserDocu>Describes a portion of a circle</UserDocu>
+            <UserDocu>Low level API to create a PipeShell using OCC API
+
+            Ref: https://dev.opencascade.org/doc/refman/html/class_b_rep_offset_a_p_i___make_pipe_shell.html
+            </UserDocu>
         </Documentation>
         <Methode Name="setFrenetMode">
             <Documentation>
