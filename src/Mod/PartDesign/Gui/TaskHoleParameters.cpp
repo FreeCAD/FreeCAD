@@ -73,10 +73,13 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
+    bool isNone = std::string(pcHole->ThreadType.getValueAsString()) == "None";
+
+    ui->Threaded->setHidden(isNone);
+    ui->ThreadSize->setHidden(isNone);
+    ui->labelSize->setHidden(isNone);
 
     ui->Threaded->setChecked(pcHole->Threaded.getValue());
-    ui->Threaded->setDisabled(std::string(pcHole->ThreadType.getValueAsString()) == "None");
-
     ui->ThreadType->setCurrentIndex(pcHole->ThreadType.getValue());
 
     ui->ThreadSize->clear();
@@ -85,7 +88,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         ui->ThreadSize->addItem(tr(it.c_str()));
     }
     ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
-    ui->ThreadSize->setEnabled(pcHole->ThreadType.getValue() != 0L);
 
     ui->ThreadClass->clear();
     cursor = pcHole->ThreadClass.getEnumVector();
@@ -169,7 +171,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     bool isThreaded = ui->Threaded->isChecked();
     bool isModeled = pcHole->ModelThread.getValue();
     ui->ThreadGroupBox->setVisible(isThreaded);
-    ui->ClearanceWidget->setHidden(isThreaded);
+    ui->ClearanceWidget->setHidden(isNone || isThreaded);
     ui->ModelThread->setChecked(isModeled);
     ui->UseCustomThreadClearance->setChecked(pcHole->UseCustomThreadClearance.getValue());
     ui->CustomThreadClearance->setValue(pcHole->CustomThreadClearance.getValue());
@@ -622,7 +624,13 @@ void TaskHoleParameters::threadTypeChanged(int index)
     hole->ThreadType.setValue(index);
 
     // Threaded checkbox is meaningless if no thread profile is selected.
-    ui->Threaded->setDisabled(std::string(hole->ThreadType.getValueAsString()) == "None");
+    bool isNone = std::string(hole->ThreadType.getValueAsString()) == "None";
+    bool isThreaded = hole->Threaded.getValue();
+    ui->Threaded->setHidden(isNone);
+    ui->ThreadGroupBox->setHidden(isNone || !isThreaded);
+    ui->ThreadSize->setHidden(isNone);
+    ui->labelSize->setHidden(isNone);
+    ui->ClearanceWidget->setHidden(isNone || isThreaded);
 
     // size and clearance
     if (TypeClass == QByteArray("ISO")) {
