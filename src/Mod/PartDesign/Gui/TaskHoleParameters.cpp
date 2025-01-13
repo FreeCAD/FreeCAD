@@ -158,6 +158,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     bool isThreaded = ui->Threaded->isChecked();
     bool isModeled = pcHole->ModelThread.getValue();
+    ui->ThreadGroupBox->setVisible(isThreaded);
+    ui->ClearanceWidget->setHidden(isThreaded);
     ui->ModelThread->setChecked(isModeled);
     ui->UseCustomThreadClearance->setChecked(pcHole->UseCustomThreadClearance.getValue());
     ui->CustomThreadClearance->setValue(pcHole->CustomThreadClearance.getValue());
@@ -264,6 +266,8 @@ void TaskHoleParameters::threadedChanged()
     bool isChecked = ui->Threaded->isChecked();
     pcHole->Threaded.setValue(isChecked);
 
+    ui->ThreadGroupBox->setVisible(isChecked);
+    ui->ClearanceWidget->setHidden(isChecked);
     // run modelThreadChanged 
     // it will handle the visibility of the model options
     modelThreadChanged();
