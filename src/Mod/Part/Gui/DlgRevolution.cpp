@@ -105,9 +105,9 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     ui->xPos->setRange(-DBL_MAX,DBL_MAX);
     ui->yPos->setRange(-DBL_MAX,DBL_MAX);
     ui->zPos->setRange(-DBL_MAX,DBL_MAX);
-    ui->xPos->setUnit(Base::Unit::Length);
-    ui->yPos->setUnit(Base::Unit::Length);
-    ui->zPos->setUnit(Base::Unit::Length);
+    ui->xPos->setUnit(Base::Units::Length);
+    ui->yPos->setUnit(Base::Units::Length);
+    ui->zPos->setUnit(Base::Units::Length);
 
     ui->xDir->setRange(-DBL_MAX,DBL_MAX);
     ui->yDir->setRange(-DBL_MAX,DBL_MAX);
@@ -117,7 +117,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     ui->zDir->setUnit(Base::Unit());
     ui->zDir->setValue(1.0);
 
-    ui->angle->setUnit(Base::Unit::Angle);
+    ui->angle->setUnit(Base::Units::Angle);
     ui->angle->setValue(360.0);
     findShapes();
 

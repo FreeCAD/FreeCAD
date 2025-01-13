@@ -169,7 +169,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
                     Base::Quantity q =
                         *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
-                    if (q.getUnit() == Base::Unit::Angle) {
+                    if (q.getUnit() == Base::Units::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
                 }
@@ -304,7 +304,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
                     Base::Quantity q =
                         *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
-                    if (q.getUnit() == Base::Unit::Angle) {
+                    if (q.getUnit() == Base::Units::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
                 }
@@ -555,7 +555,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 if (PyObject_TypeCheck(oNumArg5, &(Base::QuantityPy::Type))) {
                     Base::Quantity q =
                         *(static_cast<Base::QuantityPy*>(oNumArg5)->getQuantityPtr());
-                    if (q.getUnit() == Base::Unit::Angle) {
+                    if (q.getUnit() == Base::Units::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
                 }
@@ -565,7 +565,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 if (PyObject_TypeCheck(oNumArg5, &(Base::QuantityPy::Type))) {
                     Base::Quantity q =
                         *(static_cast<Base::QuantityPy*>(oNumArg5)->getQuantityPtr());
-                    if (q.getUnit() == Base::Unit::Angle) {
+                    if (q.getUnit() == Base::Units::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
                 }

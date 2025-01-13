@@ -63,8 +63,8 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
 {
     ui->setupUi(this);
 
-    ui->qsbWidth->setUnit(Base::Unit::Length);
-    ui->qsbHeight->setUnit(Base::Unit::Length);
+    ui->qsbWidth->setUnit(Base::Units::Length);
+    ui->qsbHeight->setUnit(Base::Units::Length);
 
     setUiPrimary();
     connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::onCropChanged);

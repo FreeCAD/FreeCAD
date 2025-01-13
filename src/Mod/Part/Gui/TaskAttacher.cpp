@@ -72,7 +72,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
         return QString::fromLatin1(obj->getNameInDocument());
     }
 
-    // Hide the TNP string from the user. ie show "Body.Pad.Face6"  and not : 
+    // Hide the TNP string from the user. ie show "Body.Pad.Face6"  and not :
     // "Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
     App::ElementNamePair el;
     App::GeoFeature::resolveElement(obj, sub.c_str(), el, true);
@@ -441,7 +441,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
         }
 
         // In case the attaching object is in a link to a part.
-        // For instance : 
+        // For instance :
         // - Part1
         // - - LinkToPart2
         // - - - Cube
@@ -454,7 +454,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     }
 
     // if we reach this point it means that attaching object's group is outside of
-    // the scope of the attached object. For instance: 
+    // the scope of the attached object. For instance:
     // - Part1
     // - - Part2
     // - - - Cube
@@ -906,9 +906,9 @@ void TaskAttacher::updateAttachmentOffsetUI()
     ui->attachmentOffsetPitch->blockSignals(bBlock);
     ui->attachmentOffsetRoll->blockSignals(bBlock);
 
-    ui->attachmentOffsetX->setValue(Base::Quantity(pos.x, Base::Unit::Length));
-    ui->attachmentOffsetY->setValue(Base::Quantity(pos.y, Base::Unit::Length));
-    ui->attachmentOffsetZ->setValue(Base::Quantity(pos.z, Base::Unit::Length));
+    ui->attachmentOffsetX->setValue(Base::Quantity(pos.x, Base::Units::Length));
+    ui->attachmentOffsetY->setValue(Base::Quantity(pos.y, Base::Units::Length));
+    ui->attachmentOffsetZ->setValue(Base::Quantity(pos.z, Base::Units::Length));
     ui->attachmentOffsetYaw->setValue(yaw);
     ui->attachmentOffsetPitch->setValue(pitch);
     ui->attachmentOffsetRoll->setValue(roll);

@@ -144,11 +144,11 @@ void TaskCosmeticCircle::setUiPrimary()
         displayCenter = DU::invertY(displayCenter);
     }
 
-    ui->qsbCenterX->setUnit(Base::Unit::Length);
+    ui->qsbCenterX->setUnit(Base::Units::Length);
     ui->qsbCenterX->setValue(displayCenter.x);
-    ui->qsbCenterY->setUnit(Base::Unit::Length);
+    ui->qsbCenterY->setUnit(Base::Units::Length);
     ui->qsbCenterY->setValue(displayCenter.y);
-    ui->qsbCenterY->setUnit(Base::Unit::Length);
+    ui->qsbCenterY->setUnit(Base::Units::Length);
     ui->qsbCenterZ->setValue(displayCenter.z);
 
     double radius = (mathPoints[1] - mathPoints[0]).Length() / m_partFeat->getScale();

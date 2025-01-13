@@ -406,7 +406,7 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth,
                                         Base::toDegrees(range),
-                                        Base::Unit::Angle);
+                                        Base::Units::Angle);
             }
 
             onViewParameters[OnViewParameter::Third]->setPoints(start, end);

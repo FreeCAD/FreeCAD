@@ -26,71 +26,71 @@ TEST(Unit, TestTypeString)
     auto toString = [](const Base::Unit& unit) {
         return unit.getTypeString();
     };
-    EXPECT_EQ(toString(Base::Unit::Acceleration), "Acceleration");
-    EXPECT_EQ(toString(Base::Unit::AmountOfSubstance), "AmountOfSubstance");
-    EXPECT_EQ(toString(Base::Unit::Angle), "Angle");
-    EXPECT_EQ(toString(Base::Unit::AngleOfFriction), "Angle");  // same unit as Angle
-    EXPECT_EQ(toString(Base::Unit::Area), "Area");
-    EXPECT_EQ(toString(Base::Unit::CurrentDensity), "CurrentDensity");
-    EXPECT_EQ(toString(Base::Unit::Density), "Density");
-    EXPECT_EQ(toString(Base::Unit::DissipationRate), "DissipationRate");
-    EXPECT_EQ(toString(Base::Unit::DynamicViscosity), "DynamicViscosity");
-    EXPECT_EQ(toString(Base::Unit::ElectricalCapacitance), "ElectricalCapacitance");
-    EXPECT_EQ(toString(Base::Unit::ElectricalConductance), "ElectricalConductance");
-    EXPECT_EQ(toString(Base::Unit::ElectricalConductivity), "ElectricalConductivity");
-    EXPECT_EQ(toString(Base::Unit::ElectricalInductance), "ElectricalInductance");
-    EXPECT_EQ(toString(Base::Unit::ElectricalResistance), "ElectricalResistance");
-    EXPECT_EQ(toString(Base::Unit::ElectricCharge), "ElectricCharge");
-    EXPECT_EQ(toString(Base::Unit::ElectricCurrent), "ElectricCurrent");
-    EXPECT_EQ(toString(Base::Unit::ElectricPotential), "ElectricPotential");
-    EXPECT_EQ(toString(Base::Unit::Frequency), "Frequency");
-    EXPECT_EQ(toString(Base::Unit::Force), "Force");
-    EXPECT_EQ(toString(Base::Unit::HeatFlux), "HeatFlux");
-    EXPECT_EQ(toString(Base::Unit::InverseArea), "InverseArea");
-    EXPECT_EQ(toString(Base::Unit::InverseLength), "InverseLength");
-    EXPECT_EQ(toString(Base::Unit::InverseVolume), "InverseVolume");
-    EXPECT_EQ(toString(Base::Unit::KinematicViscosity), "KinematicViscosity");
-    EXPECT_EQ(toString(Base::Unit::Length), "Length");
-    EXPECT_EQ(toString(Base::Unit::LuminousIntensity), "LuminousIntensity");
-    EXPECT_EQ(toString(Base::Unit::MagneticFieldStrength), "MagneticFieldStrength");
-    EXPECT_EQ(toString(Base::Unit::MagneticFlux), "MagneticFlux");
-    EXPECT_EQ(toString(Base::Unit::MagneticFluxDensity), "MagneticFluxDensity");
-    EXPECT_EQ(toString(Base::Unit::Magnetization),
+    EXPECT_EQ(toString(Base::Units::Acceleration), "Acceleration");
+    EXPECT_EQ(toString(Base::Units::AmountOfSubstance), "AmountOfSubstance");
+    EXPECT_EQ(toString(Base::Units::Angle), "Angle");
+    EXPECT_EQ(toString(Base::Units::AngleOfFriction), "Angle");  // same unit as Angle
+    EXPECT_EQ(toString(Base::Units::Area), "Area");
+    EXPECT_EQ(toString(Base::Units::CurrentDensity), "CurrentDensity");
+    EXPECT_EQ(toString(Base::Units::Density), "Density");
+    EXPECT_EQ(toString(Base::Units::DissipationRate), "DissipationRate");
+    EXPECT_EQ(toString(Base::Units::DynamicViscosity), "DynamicViscosity");
+    EXPECT_EQ(toString(Base::Units::ElectricalCapacitance), "ElectricalCapacitance");
+    EXPECT_EQ(toString(Base::Units::ElectricalConductance), "ElectricalConductance");
+    EXPECT_EQ(toString(Base::Units::ElectricalConductivity), "ElectricalConductivity");
+    EXPECT_EQ(toString(Base::Units::ElectricalInductance), "ElectricalInductance");
+    EXPECT_EQ(toString(Base::Units::ElectricalResistance), "ElectricalResistance");
+    EXPECT_EQ(toString(Base::Units::ElectricCharge), "ElectricCharge");
+    EXPECT_EQ(toString(Base::Units::ElectricCurrent), "ElectricCurrent");
+    EXPECT_EQ(toString(Base::Units::ElectricPotential), "ElectricPotential");
+    EXPECT_EQ(toString(Base::Units::Frequency), "Frequency");
+    EXPECT_EQ(toString(Base::Units::Force), "Force");
+    EXPECT_EQ(toString(Base::Units::HeatFlux), "HeatFlux");
+    EXPECT_EQ(toString(Base::Units::InverseArea), "InverseArea");
+    EXPECT_EQ(toString(Base::Units::InverseLength), "InverseLength");
+    EXPECT_EQ(toString(Base::Units::InverseVolume), "InverseVolume");
+    EXPECT_EQ(toString(Base::Units::KinematicViscosity), "KinematicViscosity");
+    EXPECT_EQ(toString(Base::Units::Length), "Length");
+    EXPECT_EQ(toString(Base::Units::LuminousIntensity), "LuminousIntensity");
+    EXPECT_EQ(toString(Base::Units::MagneticFieldStrength), "MagneticFieldStrength");
+    EXPECT_EQ(toString(Base::Units::MagneticFlux), "MagneticFlux");
+    EXPECT_EQ(toString(Base::Units::MagneticFluxDensity), "MagneticFluxDensity");
+    EXPECT_EQ(toString(Base::Units::Magnetization),
               "MagneticFieldStrength");  // same as MagneticFieldStrength
-    EXPECT_EQ(toString(Base::Unit::Mass), "Mass");
-    EXPECT_EQ(toString(Base::Unit::Pressure), "Pressure");
-    EXPECT_EQ(toString(Base::Unit::Power), "Power");
-    EXPECT_EQ(toString(Base::Unit::ShearModulus), "Pressure");  // same as Pressure
-    EXPECT_EQ(toString(Base::Unit::SpecificEnergy), "SpecificEnergy");
-    EXPECT_EQ(toString(Base::Unit::SpecificHeat), "SpecificHeat");
-    EXPECT_EQ(toString(Base::Unit::Stiffness), "Stiffness");
-    EXPECT_EQ(toString(Base::Unit::Stress), "Pressure");  // same as Pressure
-    EXPECT_EQ(toString(Base::Unit::Temperature), "Temperature");
-    EXPECT_EQ(toString(Base::Unit::ThermalConductivity), "ThermalConductivity");
-    EXPECT_EQ(toString(Base::Unit::ThermalExpansionCoefficient), "ThermalExpansionCoefficient");
-    EXPECT_EQ(toString(Base::Unit::ThermalTransferCoefficient), "ThermalTransferCoefficient");
-    EXPECT_EQ(toString(Base::Unit::TimeSpan), "TimeSpan");
-    EXPECT_EQ(toString(Base::Unit::UltimateTensileStrength), "Pressure");  // same as Pressure
-    EXPECT_EQ(toString(Base::Unit::VacuumPermittivity), "VacuumPermittivity");
-    EXPECT_EQ(toString(Base::Unit::Velocity), "Velocity");
-    EXPECT_EQ(toString(Base::Unit::Volume), "Volume");
-    EXPECT_EQ(toString(Base::Unit::VolumeFlowRate), "VolumeFlowRate");
-    EXPECT_EQ(toString(Base::Unit::VolumetricThermalExpansionCoefficient),
+    EXPECT_EQ(toString(Base::Units::Mass), "Mass");
+    EXPECT_EQ(toString(Base::Units::Pressure), "Pressure");
+    EXPECT_EQ(toString(Base::Units::Power), "Power");
+    EXPECT_EQ(toString(Base::Units::ShearModulus), "Pressure");  // same as Pressure
+    EXPECT_EQ(toString(Base::Units::SpecificEnergy), "SpecificEnergy");
+    EXPECT_EQ(toString(Base::Units::SpecificHeat), "SpecificHeat");
+    EXPECT_EQ(toString(Base::Units::Stiffness), "Stiffness");
+    EXPECT_EQ(toString(Base::Units::Stress), "Pressure");  // same as Pressure
+    EXPECT_EQ(toString(Base::Units::Temperature), "Temperature");
+    EXPECT_EQ(toString(Base::Units::ThermalConductivity), "ThermalConductivity");
+    EXPECT_EQ(toString(Base::Units::ThermalExpansionCoefficient), "ThermalExpansionCoefficient");
+    EXPECT_EQ(toString(Base::Units::ThermalTransferCoefficient), "ThermalTransferCoefficient");
+    EXPECT_EQ(toString(Base::Units::TimeSpan), "TimeSpan");
+    EXPECT_EQ(toString(Base::Units::UltimateTensileStrength), "Pressure");  // same as Pressure
+    EXPECT_EQ(toString(Base::Units::VacuumPermittivity), "VacuumPermittivity");
+    EXPECT_EQ(toString(Base::Units::Velocity), "Velocity");
+    EXPECT_EQ(toString(Base::Units::Volume), "Volume");
+    EXPECT_EQ(toString(Base::Units::VolumeFlowRate), "VolumeFlowRate");
+    EXPECT_EQ(toString(Base::Units::VolumetricThermalExpansionCoefficient),
               "ThermalExpansionCoefficient");
-    EXPECT_EQ(toString(Base::Unit::Work), "Work");
-    EXPECT_EQ(toString(Base::Unit::YieldStrength), "Pressure");  // same as Pressure
-    EXPECT_EQ(toString(Base::Unit::YoungsModulus), "Pressure");  // same unit as Pressure
+    EXPECT_EQ(toString(Base::Units::Work), "Work");
+    EXPECT_EQ(toString(Base::Units::YieldStrength), "Pressure");  // same as Pressure
+    EXPECT_EQ(toString(Base::Units::YoungsModulus), "Pressure");  // same unit as Pressure
 }
 TEST(Unit, strings)
 {
-    EXPECT_STREQ(Base::Unit::Acceleration.getString().c_str(), "mm/s^2");
-    EXPECT_STREQ(Base::Unit::AmountOfSubstance.getString().c_str(), "mol");
-    EXPECT_STREQ(Base::Unit::Angle.getString().c_str(), "deg");
-    EXPECT_STREQ(Base::Unit::AngleOfFriction.getString().c_str(), "deg");
-    EXPECT_STREQ(Base::Unit::Area.getString().c_str(), "mm^2");
-    EXPECT_STREQ(Base::Unit::CurrentDensity.getString().c_str(), "A/mm^2");
-    EXPECT_STREQ(Base::Unit::Density.getString().c_str(), "kg/mm^3");
-    EXPECT_STREQ(Base::Unit::DissipationRate.getString().c_str(), "mm^2/s^3");
+    EXPECT_STREQ(Base::Units::Acceleration.getString().c_str(), "mm/s^2");
+    EXPECT_STREQ(Base::Units::AmountOfSubstance.getString().c_str(), "mol");
+    EXPECT_STREQ(Base::Units::Angle.getString().c_str(), "deg");
+    EXPECT_STREQ(Base::Units::AngleOfFriction.getString().c_str(), "deg");
+    EXPECT_STREQ(Base::Units::Area.getString().c_str(), "mm^2");
+    EXPECT_STREQ(Base::Units::CurrentDensity.getString().c_str(), "A/mm^2");
+    EXPECT_STREQ(Base::Units::Density.getString().c_str(), "kg/mm^3");
+    EXPECT_STREQ(Base::Units::DissipationRate.getString().c_str(), "mm^2/s^3");
 }
 
 TEST(Unit, TestEqual)

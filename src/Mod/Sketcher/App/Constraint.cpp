@@ -121,11 +121,11 @@ Quantity Constraint::getPresentationValue() const
         case DistanceX:
         case DistanceY:
             quantity.setValue(Value);
-            quantity.setUnit(Unit::Length);
+            quantity.setUnit(Units::Length);
             break;
         case Angle:
             quantity.setValue(toDegrees<double>(Value));
-            quantity.setUnit(Unit::Angle);
+            quantity.setUnit(Units::Angle);
             break;
         case SnellsLaw:
         case Weight:

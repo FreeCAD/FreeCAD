@@ -618,7 +618,7 @@ void DSHRotateController::adaptParameters(Base::Vector2d onSketchPos)
         case SelectMode::SeekSecond: {
             double range = Base::toDegrees(handler->startAngle);
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Third, range, Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Third, range, Base::Units::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->centerPoint);
@@ -630,7 +630,7 @@ void DSHRotateController::adaptParameters(Base::Vector2d onSketchPos)
             double range = Base::toDegrees(handler->totalAngle);
 
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Units::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->centerPoint);

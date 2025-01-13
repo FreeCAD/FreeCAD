@@ -37,13 +37,13 @@ std::string UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant,
                                                     std::string& unitString)
 {
     static std::array<std::pair<Unit, std::pair<std::string, double>>, 7> unitSpecs {{
-        {Unit::Length, {"cm", 10.0}},
-        {Unit::Area, {"m^2", 1000000.0}},
-        {Unit::Volume, {"m^3", 1000000000.0}},
-        {Unit::Power, {"W", 1000000.0}},
-        {Unit::ElectricPotential, {"V", 1000000.0}},
-        {Unit::HeatFlux, {"W/m^2", 1.0}},
-        {Unit::Velocity, {"mm/min", 1.0 / 60}},
+        {Units::Length, {"cm", 10.0}},
+        {Units::Area, {"m^2", 1000000.0}},
+        {Units::Volume, {"m^3", 1000000000.0}},
+        {Units::Power, {"W", 1000000.0}},
+        {Units::ElectricPotential, {"V", 1000000.0}},
+        {Units::HeatFlux, {"W/m^2", 1.0}},
+        {Units::Velocity, {"mm/min", 1.0 / 60}},
     }};
 
     const auto unit = quant.getUnit();

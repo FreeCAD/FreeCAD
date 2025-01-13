@@ -67,9 +67,9 @@ LocationWidget::LocationWidget (QWidget * parent)
     box->addWidget(dLabel, 3, 0, 1, 1);
     box->addWidget(dValue, 3, 1, 1, 1);
 
-    xValue->setUnit(Base::Unit::Length);
-    yValue->setUnit(Base::Unit::Length);
-    zValue->setUnit(Base::Unit::Length);
+    xValue->setUnit(Base::Units::Length);
+    yValue->setUnit(Base::Units::Length);
+    zValue->setUnit(Base::Units::Length);
 
     auto gridLayout = new QGridLayout(this);
     gridLayout->addLayout(box, 0, 0, 1, 2);

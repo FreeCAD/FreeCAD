@@ -257,7 +257,7 @@ protected:
     drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2);
     void drawDoubleAtCursor(const Base::Vector2d& position,
                             const double radius,
-                            Base::Unit unit = Base::Unit::Length);
+                            Base::Unit unit = Base::Units::Length);
 
     int getPreselectPoint() const;
     int getPreselectCurve() const;

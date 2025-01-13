@@ -94,7 +94,7 @@ void TaskCSysDragger::setupGui()
   tSpinBox = new QuantitySpinBox(incrementsBox);
   tSpinBox->setMinimum(0.0);
   tSpinBox->setMaximum(std::numeric_limits<double>::max());
-  tSpinBox->setUnit(Base::Unit::Length);
+  tSpinBox->setUnit(Base::Units::Length);
   tSpinBox->setMinimumWidth(spinBoxWidth);
   gridLayout->addWidget(tSpinBox, 0, 1, Qt::AlignLeft);
 
@@ -104,7 +104,7 @@ void TaskCSysDragger::setupGui()
   rSpinBox = new QuantitySpinBox(incrementsBox);
   rSpinBox->setMinimum(0.0);
   rSpinBox->setMaximum(180.0);
-  rSpinBox->setUnit(Base::Unit::Angle);
+  rSpinBox->setUnit(Base::Units::Angle);
   rSpinBox->setMinimumWidth(spinBoxWidth);
   gridLayout->addWidget(rSpinBox, 1, 1, Qt::AlignLeft);
 

@@ -1769,9 +1769,9 @@ QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
     std::string str = fmt::format("[{} {} {}]",
-                                  Base::Quantity(value.x, Base::Unit::Length).getUserString(),
-                                  Base::Quantity(value.y, Base::Unit::Length).getUserString(),
-                                  Base::Quantity(value.z, Base::Unit::Length).getUserString());
+                                  Base::Quantity(value.x, Base::Units::Length).getUserString(),
+                                  Base::Quantity(value.y, Base::Units::Length).getUserString(),
+                                  Base::Quantity(value.z, Base::Units::Length).getUserString());
     if (hasExpression()) {
         str += fmt::format("  ( {} )", getExpressionString());
     }
@@ -1794,9 +1794,9 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     }
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
 
-    Base::Quantity x = Base::Quantity(value.x, Base::Unit::Length);
-    Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
-    Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
+    Base::Quantity x = Base::Quantity(value.x, Base::Units::Length);
+    Base::Quantity y = Base::Quantity(value.y, Base::Units::Length);
+    Base::Quantity z = Base::Quantity(value.z, Base::Units::Length);
 
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
     std::string val = fmt::format("({}, {}, {})",
@@ -1836,7 +1836,7 @@ QVariant PropertyVectorDistanceItem::editorData(QWidget* editor) const
 
 Base::Quantity PropertyVectorDistanceItem::x() const
 {
-    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().x, Base::Unit::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().x, Base::Units::Length);
 }
 
 void PropertyVectorDistanceItem::setX(Base::Quantity x)
@@ -1846,7 +1846,7 @@ void PropertyVectorDistanceItem::setX(Base::Quantity x)
 
 Base::Quantity PropertyVectorDistanceItem::y() const
 {
-    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().y, Base::Unit::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().y, Base::Units::Length);
 }
 
 void PropertyVectorDistanceItem::setY(Base::Quantity y)
@@ -1856,7 +1856,7 @@ void PropertyVectorDistanceItem::setY(Base::Quantity y)
 
 Base::Quantity PropertyVectorDistanceItem::z() const
 {
-    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().z, Base::Unit::Length);
+    return Base::Quantity(data(1, Qt::EditRole).value<Base::Vector3d>().z, Base::Units::Length);
 }
 
 void PropertyVectorDistanceItem::setZ(Base::Quantity z)
@@ -2424,7 +2424,7 @@ Base::Quantity PropertyRotationItem::getAngle() const
 
     const Base::Rotation& val = value.value<Base::Rotation>();
     double angle = h.getAngle(val);
-    return Base::Quantity(Base::toDegrees<double>(angle), Base::Unit::Angle);
+    return Base::Quantity(Base::toDegrees<double>(angle), Base::Units::Angle);
 }
 
 void PropertyRotationItem::setAngle(Base::Quantity angle)
@@ -2520,7 +2520,7 @@ QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
             .arg(loc.toString(dir.x, 'f', decimals()),
                  loc.toString(dir.y, 'f', decimals()),
                  loc.toString(dir.z, 'f', decimals()),
-                 QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()));
+                 QString::fromStdString(Base::Quantity(angle, Base::Units::Angle).getUserString()));
     return {data};
 }
 
@@ -2538,7 +2538,7 @@ QVariant PropertyRotationItem::toString(const QVariant& prop) const
             .arg(loc.toString(dir.x, 'f', lowPrec),
                  loc.toString(dir.y, 'f', lowPrec),
                  loc.toString(dir.z, 'f', lowPrec),
-                 QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()));
+                 QString::fromStdString(Base::Quantity(angle, Base::Units::Angle).getUserString()));
     return {data};
 }
 
@@ -2699,7 +2699,7 @@ Base::Quantity PropertyPlacementItem::getAngle() const
 
     const Base::Placement& val = value.value<Base::Placement>();
     double angle = h.getAngle(val.getRotation());
-    return Base::Quantity(Base::toDegrees<double>(angle), Base::Unit::Angle);
+    return Base::Quantity(Base::toDegrees<double>(angle), Base::Units::Angle);
 }
 
 void PropertyPlacementItem::setAngle(Base::Quantity angle)
@@ -2825,10 +2825,10 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
             .arg(loc.toString(dir.x, 'f', decimals()),
                  loc.toString(dir.y, 'f', decimals()),
                  loc.toString(dir.z, 'f', decimals()),
-                 QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.x, Base::Unit::Length).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.y, Base::Unit::Length).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.z, Base::Unit::Length).getUserString()));
+                 QString::fromStdString(Base::Quantity(angle, Base::Units::Angle).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.x, Base::Units::Length).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.y, Base::Units::Length).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.z, Base::Units::Length).getUserString()));
     return {data};
 }
 
@@ -2848,10 +2848,10 @@ QVariant PropertyPlacementItem::toString(const QVariant& prop) const
             .arg(loc.toString(dir.x, 'f', lowPrec),
                  loc.toString(dir.y, 'f', lowPrec),
                  loc.toString(dir.z, 'f', lowPrec),
-                 QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.x, Base::Unit::Length).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.y, Base::Unit::Length).getUserString()),
-                 QString::fromStdString(Base::Quantity(pos.z, Base::Unit::Length).getUserString()));
+                 QString::fromStdString(Base::Quantity(angle, Base::Units::Angle).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.x, Base::Units::Length).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.y, Base::Units::Length).getUserString()),
+                 QString::fromStdString(Base::Quantity(pos.z, Base::Units::Length).getUserString()));
     return {data};
 }
 

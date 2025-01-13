@@ -99,9 +99,9 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     // FIXME: Not used yet
     ui->textLabel2->hide();
     ui->thickness->hide();
-    ui->searchRadius->setUnit(Base::Unit::Length);
+    ui->searchRadius->setUnit(Base::Units::Length);
     ui->searchRadius->setRange(0, DBL_MAX);
-    ui->thickness->setUnit(Base::Unit::Length);
+    ui->thickness->setUnit(Base::Units::Length);
     ui->thickness->setRange(0, DBL_MAX);
 
     App::Document* doc = App::GetApplication().getActiveDocument();
