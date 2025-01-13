@@ -439,7 +439,7 @@ public:
      *
      * @param pDocName: document name. If no document name is given the objects
      * of the active are returned. If nothing for this Document is selected an
-     * empty vector is returned. If document name is "*", then all document is
+     * empty vector is returned. If document name is "*", then all documents are
      * considered.
      * @param typeId: specify the type of object to be returned.
      * @param resolve: sub-object resolving mode.
@@ -447,7 +447,7 @@ public:
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
-     * there is more than one selections.
+     * there is more than one selection.
      *
      * @return The returned vector reflects the sequence of selection.
      */

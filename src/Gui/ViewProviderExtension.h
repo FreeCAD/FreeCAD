@@ -48,8 +48,7 @@ class ViewProviderDocumentObject;
  */
 class GuiExport ViewProviderExtension : public App::Extension
 {
-
-    //The cass does not have properties itself, but it is important to provide the property access
+    //The class does not have properties itself, but it is important to provide the property access
     //functions.
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderExtension);
 
@@ -124,7 +123,6 @@ public:
 
 private:
     bool m_ignoreOverlayIcon = false;
-  //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
 
 } //Gui

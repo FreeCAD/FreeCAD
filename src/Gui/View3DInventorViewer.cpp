@@ -486,8 +486,6 @@ void View3DInventorViewer::init()
     // increase refcount before passing it to setScenegraph(), to avoid
     // premature destruction
     pcViewProviderRoot->ref();
-    // is not really working with Coin3D.
-    //redrawOverlayOnSelectionChange(pcSelection);
     setSceneGraph(pcViewProviderRoot);
     // Event callback node
     pEventCallback = new SoEventCallback();
@@ -810,7 +808,7 @@ bool View3DInventorViewer::searchNode(SoNode* node) const
     searchAction.setInterest(SoSearchAction::FIRST);
     searchAction.apply(this->getSceneGraph());
     SoPath* selectionPath = searchAction.getPath();
-    return selectionPath ? true : false;
+    return selectionPath != nullptr;
 }
 
 bool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const

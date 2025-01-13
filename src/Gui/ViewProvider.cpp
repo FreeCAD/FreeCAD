@@ -96,10 +96,10 @@ ViewProvider::ViewProvider()
     setStatus(UpdateData, true);
 
 
-    // SoFCSeparater and SoFCSelectionRoot can both track render cache setting.
+    // SoFCSeparator and SoFCSelectionRoot can both track render cache setting.
     // We change to SoFCSelectionRoot so that we can dynamically change full
     // selection mode (full highlight vs. boundbox). Note that comparing to
-    // SoFCSeparater, there are some small overhead with SoFCSelectionRoot for
+    // SoFCSeparator, there are some small overhead with SoFCSelectionRoot for
     // selection context tracking.
     //
     // pcRoot = new SoFCSeparator(true);
@@ -906,6 +906,7 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const
     }
     return vec;
 }
+
 bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
     if(!isSelectable())
         return false;
