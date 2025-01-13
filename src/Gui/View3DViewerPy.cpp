@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
+# include <string>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -97,6 +98,10 @@ void View3DInventorViewerPy::init_type()
         "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled.");
     add_varargs_method("grabFramebuffer", &View3DInventorViewerPy::grabFramebuffer,
         "grabFramebuffer() -> QImage: renders and returns a 32-bit RGB image of the framebuffer.");
+
+    add_varargs_method("setOverrideMode", &View3DInventorViewerPy::setOverrideMode,
+        "setOverrideMode(mode): sets the display override mode.");
+
     add_varargs_method("setEnabledNaviCube", &View3DInventorViewerPy::setEnabledNaviCube,
         "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.");
     add_varargs_method("isEnabledNaviCube", &View3DInventorViewerPy::isEnabledNaviCube,
@@ -579,6 +584,17 @@ Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
     PythonWrapper wrap;
     wrap.loadGuiModule();
     return wrap.fromQImage(img.mirrored());
+}
+
+Py::Object View3DInventorViewerPy::setOverrideMode(const Py::Tuple& args)
+{
+    const char* mode;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &mode)) {
+        throw Py::Exception();
+    }
+
+    _viewer->setOverrideMode(std::string(mode));
+    return Py::None();
 }
 
 Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)
