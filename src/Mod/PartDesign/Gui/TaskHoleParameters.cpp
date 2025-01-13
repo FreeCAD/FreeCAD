@@ -119,6 +119,16 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         ui->HoleCutType->addItem(tr(it.c_str()));
     }
     ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
+
+    bool isNotCut = pcHole->HoleCutType.getValue() == 0L;
+    ui->labelHoleCutDiameter->setHidden(isNotCut);
+    ui->labelHoleCutDepth->setHidden(isNotCut);
+    ui->labelHoleCutCountersinkAngle->setHidden(isNotCut);
+    ui->HoleCutDiameter->setHidden(isNotCut);
+    ui->HoleCutDepth->setHidden(isNotCut);
+    ui->HoleCutCountersinkAngle->setHidden(isNotCut);
+    ui->HoleCutCustomValues->setHidden(isNotCut);
+
     ui->HoleCutCustomValues->setChecked(pcHole->HoleCutCustomValues.getValue());
     ui->HoleCutCustomValues->setDisabled(pcHole->HoleCutCustomValues.isReadOnly());
     // HoleCutDiameter must not be smaller or equal than the Diameter
@@ -383,6 +393,16 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     // we must do this after recomputeFeature() because this gives us the info if
     // the type is a countersink and thus if HoleCutCountersinkAngle can be enabled
     std::string HoleCutTypeString = hole->HoleCutType.getValueAsString();
+
+    bool isNotCut = HoleCutTypeString == "None";
+    ui->labelHoleCutDiameter->setHidden(isNotCut);
+    ui->labelHoleCutDepth->setHidden(isNotCut);
+    ui->labelHoleCutCountersinkAngle->setHidden(isNotCut);
+    ui->HoleCutDiameter->setHidden(isNotCut);
+    ui->HoleCutDepth->setHidden(isNotCut);
+    ui->HoleCutCountersinkAngle->setHidden(isNotCut);
+    ui->HoleCutCustomValues->setHidden(isNotCut);
+
     if (HoleCutTypeString == "None" || HoleCutTypeString == "Counterbore"
         || HoleCutTypeString == "Countersink" || HoleCutTypeString == "Counterdrill") {
         ui->HoleCutCustomValues->setEnabled(false);
