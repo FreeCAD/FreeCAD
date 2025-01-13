@@ -183,17 +183,6 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
 
-QRectF QGCustomText::boundingRect() const
-{
-    if (toPlainText().isEmpty()) {
-        return QRectF();
-    } else if (tightBounding) {
-        return tightBoundingRect();
-    } else {
-        return QGraphicsTextItem::boundingRect();
-    }
-}
-
 QRectF QGCustomText::tightBoundingRect() const
 {
     QFontMetrics qfm(font());
@@ -204,9 +193,22 @@ QRectF QGCustomText::tightBoundingRect() const
 
     // Adjust the bounding box 50% towards the Qt tightBoundingRect(),
     // except chomp some extra empty space above the font (1.75*y_adj)
+    // wf: this does not work with all fonts.  it depends on where the glyph is located within
+    //     the em square.  see https://github.com/FreeCAD/FreeCAD/issues/11452
+    // TODO: how to know where the glyph is going to be placed?
     result.adjust(x_adj, 1.75*y_adj, -x_adj, -y_adj);
 
     return result;
+}
+
+//! a boundingRect for text alignment, that does not adversely affect rendering.
+QRectF QGCustomText::alignmentRect() const
+{
+    if (tightBounding) {
+        return tightBoundingRect();
+    } else {
+        return boundingRect();
+    }
 }
 
 // Calculate the amount of difference between tight and relaxed bounding boxes
