@@ -10,7 +10,3 @@
 [submodule "src/3rdParty/libkdtree"]
 	path = src/3rdParty/libkdtree
 	url = https://github.com/nvmd/libkdtree
-
-[submodule "src/3rdParty/libkdtree"]
-	path = src/3rdParty/libkdtree
-	url = https://github.com/nvmd/libkdtree
