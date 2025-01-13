@@ -39,7 +39,7 @@ namespace Sketcher
  Important note: New constraint types must be always added at the end but before
  'NumConstraintTypes'. This is mandatory in order to keep the handling of constraint types upward
  compatible which means that this program version ignores later introduced constraint types when
- reading them from a project file.
+ reading them from a project file. They also must be added to the 'type2str' array in this file.
  */
 enum ConstraintType : int
 {
@@ -169,25 +169,11 @@ private:
     double Value;
 
     constexpr static std::array<const char*, ConstraintType::NumConstraintTypes> type2str {
-        {"None",
-         "Horizontal",
-         "Vertical",
-         "Parallel",
-         "Tangent",
-         "Distance",
-         "DistanceX",
-         "DistanceY",
-         "Angle",
-         "Perpendicular",
-         "Radius",
-         "Equal",
-         "PointOnObject",
-         "Symmetric",
-         "InternalAlignment",
-         "SnellsLaw",
-         "Block",
-         "Diameter",
-         "Weight"}};
+        {"None",      "Coincident",    "Horizontal",    "Vertical",
+         "Parallel",  "Tangent",       "Distance",      "DistanceX",
+         "DistanceY", "Angle",         "Perpendicular", "Radius",
+         "Equal",     "PointOnObject", "Symmetric",     "InternalAlignment",
+         "SnellsLaw", "Block",         "Diameter",      "Weight"}};
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
         internalAlignmentType2str {{"Undef",
