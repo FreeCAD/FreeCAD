@@ -113,12 +113,12 @@ SoFCUnifiedSelection::SoFCUnifiedSelection()
 {
     SO_NODE_CONSTRUCTOR(SoFCUnifiedSelection);
 
-    SO_NODE_ADD_FIELD(colorHighlight, (SbColor(1.0f, 0.6f, 0.0f)));
-    SO_NODE_ADD_FIELD(colorSelection, (SbColor(0.1f, 0.8f, 0.1f)));
-    SO_NODE_ADD_FIELD(highlightMode,  (AUTO));
-    SO_NODE_ADD_FIELD(selectionMode,  (ON));
-    SO_NODE_ADD_FIELD(selectionRole,  (true));
-    SO_NODE_ADD_FIELD(useNewSelection, (true));
+    SO_NODE_ADD_FIELD(colorHighlight,   (SbColor(1.0f, 0.6f, 0.0f)));
+    SO_NODE_ADD_FIELD(colorSelection,   (SbColor(0.1f, 0.8f, 0.1f)));
+    SO_NODE_ADD_FIELD(highlightMode,    (AUTO));
+    SO_NODE_ADD_FIELD(selectionMode,    (ON));
+    SO_NODE_ADD_FIELD(selectionEnabled, (true));
+    SO_NODE_ADD_FIELD(useNewSelection,  (true));
 
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, AUTO);
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, ON);
@@ -729,7 +729,7 @@ void
 SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
 {
     // If off then don't handle this event
-    if (!selectionRole.getValue()) {
+    if (!selectionEnabled.getValue()) {
         inherited::handleEvent(action);
         return;
     }

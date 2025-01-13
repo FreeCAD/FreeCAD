@@ -76,7 +76,7 @@ public:
     SoSFColor colorSelection;
     SoSFEnum highlightMode;
     SoSFEnum selectionMode;
-    SoSFBool selectionRole;
+    SoSFBool selectionEnabled;
     SoSFBool useNewSelection;
 
     void doAction(SoAction *action) override;
