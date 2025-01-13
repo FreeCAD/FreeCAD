@@ -623,7 +623,7 @@
      text-anchor="middle"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="SCALE"
+     freecad:editable="scale"
      freecad:autofill="scale"><tspan
        id="tspan3333-6-6"
        x="229.75246"
