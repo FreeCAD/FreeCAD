@@ -96,6 +96,12 @@ public:
         SNAP_MODE_45Degree
     };
 
+    QString getToolHintText() const override
+    {
+        return QWidget::tr("Press <b>M</b> to change mode, <b>left click</b> to start drawing "
+                           "and <b>right click</b> to stop drawing");
+    }
+
     void registerPressedKey(bool pressed, int key) override
     {
         if (Mode == STATUS_SEEK_Second && key == SoKeyboardEvent::M && pressed

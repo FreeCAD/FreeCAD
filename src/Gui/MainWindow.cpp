@@ -275,6 +275,7 @@ struct MainWindowP
 {
     DimensionWidget* sizeLabel;
     QLabel* actionLabel;
+    QLabel* hintLabel;
     QLabel* rightSideLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -391,6 +392,12 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
 
+
+    // hint label
+    d->hintLabel = new QLabel(statusBar());
+    statusBar()->addWidget(d->hintLabel);
+
+    // right side label
     d->rightSideLabel = new QLabel(statusBar());
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusBar()->addPermanentWidget(d->rightSideLabel);
@@ -2219,6 +2226,16 @@ void MainWindow::showStatus(int type, const QString& message)
     }
     d->currentStatusType = -type;
     statusBar()->showMessage(msg.simplified(), timeout);
+}
+
+void MainWindow::showHint(const QString& hint)
+{
+    d->hintLabel->setText(hint);
+}
+
+void MainWindow::hideHint()
+{
+    d->hintLabel->setText({});
 }
 
 

@@ -74,6 +74,21 @@ public:
     {}
     ~DrawSketchHandlerPolygon() override = default;
 
+    QString getToolHintText() const override
+    {
+        switch (state()) {
+            case SelectMode::SeekFirst:
+                return QWidget::tr("Use <b>left click</b> to pick polygon center, "
+                                   "<b>U</b>/<b>J</b> to increase/decrease number of sides");
+            case SelectMode::SeekSecond:
+                return QWidget::tr(
+                    "Use mouse to pick rotation and size, <b>left click</b> to confirm, "
+                    "<b>U</b>/<b>J</b> to increase/decrease number of sides");
+            default:
+                return {};
+        }
+    }
+
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {

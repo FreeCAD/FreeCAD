@@ -59,6 +59,7 @@ bool ToolHandler::activate()
         oldCursor = cw->cursor();
 
         updateCursor();
+        updateHint();
 
         this->preActivated();
         this->activated();
@@ -74,6 +75,8 @@ void ToolHandler::deactivate()
     this->postDeactivated();
 
     unsetCursor();
+
+    Gui::MainWindow::getInstance()->hideHint();
 }
 
 //**************************************************************************
@@ -233,6 +236,15 @@ void ToolHandler::updateCursor()
     if (cursorstring != QString::fromLatin1("None")) {
         setCrosshairCursor(cursorstring);
     }
+}
+QString ToolHandler::getToolHintText() const
+{
+    return QString();
+}
+
+void ToolHandler::updateHint() const
+{
+    Gui::getMainWindow()->showHint(getToolHintText());
 }
 
 void ToolHandler::applyCursor()
