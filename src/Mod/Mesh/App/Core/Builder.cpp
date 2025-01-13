@@ -128,7 +128,7 @@ void MeshBuilder::AddFacet(const Base::Vector3f& pt1,
 
 void MeshBuilder::AddFacet(Base::Vector3f* facetPoints, unsigned char flag, unsigned long prop)
 {
-    this->_seq->next(true);  // allow to cancel
+    this->_seq->next(true);  // allow one to cancel
 
     // adjust circulation direction
     if ((((facetPoints[1] - facetPoints[0]) % (facetPoints[2] - facetPoints[0])) * facetPoints[3])
@@ -171,7 +171,7 @@ void MeshBuilder::SetNeighbourhood()
     FacetIndex facetIdx = 0;
 
     for (auto& mf : _meshKernel._aclFacetArray) {
-        this->_seq->next(true);  // allow to cancel
+        this->_seq->next(true);  // allow one to cancel
         for (int i = 0; i < 3; i++) {
             Edge edge(mf._aulPoints[i], mf._aulPoints[(i + 1) % 3], facetIdx);
             std::set<Edge>::iterator e = edges.find(edge);

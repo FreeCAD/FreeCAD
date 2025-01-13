@@ -254,7 +254,6 @@ class TestInvoluteGear(unittest.TestCase):
         profile.HighPrecision = False
         profile.NumberOfTeeth = 8
         body = self.Doc.addObject('PartDesign::Body','GearBody')
-        body.AllowCompound = False
         body.addObject(profile)
         cylinder = body.newObject('PartDesign::AdditiveCylinder','GearCylinder')
         default_dedendum = 1.25
@@ -325,7 +324,9 @@ class TestInvoluteGear(unittest.TestCase):
         return distance < Precision.intersection()
 
     def assertSolid(self, shape, msg=None):
-        self.assertEqual(shape.ShapeType, 'Solid', msg=msg)
+        # we don't check shape.ShapeType for 'Solid' as with body.AllowCompound==True
+        # we get, also in the good case, our solid wrapped in a compound.
+        self.assertEqual(len(shape.Solids), 1, msg=msg)
 
 
 def inv(a):

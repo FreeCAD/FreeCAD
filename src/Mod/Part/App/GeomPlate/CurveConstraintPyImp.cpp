@@ -60,7 +60,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
     // GeomPlate_CurveConstraint has a default constructor but OCCT doesn't check
     // if neither a 2d, 3d or curve on surface is set when accessing the functions
     // Length(), FirstParameter(), LastParameter(), ...
-    // Thus, we don't allow to create an empty GeomPlate_CurveConstraint instance
+    // Thus, we don't allow one to create an empty GeomPlate_CurveConstraint instance
 
     static const std::array<const char *, 7> keywords{"Boundary", "Order", "NbPts", "TolDist", "TolAng", "TolCurv",
                                                       nullptr};

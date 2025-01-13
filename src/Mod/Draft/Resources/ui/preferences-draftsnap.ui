@@ -354,7 +354,7 @@ Major grid lines are thicker than minor grid lines.</string>
          <color>
           <red>255</red>
           <green>170</green>
-          <blue>255</blue>
+          <blue>0</blue>
          </color>
         </property>
         <property name="prefEntry" stdset="0">

@@ -5405,7 +5405,7 @@ void System::identifyDependentParametersSparseQR(const Eigen::MatrixXd& J,
                               nontransprank,
                               Rparams,
                               false,
-                              true);  // do not transpose allow to diagnose parameters
+                              true);  // do not transpose allow one to diagnose parameters
 
     identifyDependentParameters(SqrJ, Rparams, nontransprank, pdiagnoselist, silent);
 }

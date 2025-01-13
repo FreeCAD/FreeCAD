@@ -737,7 +737,7 @@ QValidator::State InputField::validate(QString& input, int& pos) const
         std::string unitStr;
         res.getUserString(factor, unitStr);
         double value = res.getValue()/factor;
-        // disallow to enter numbers out of range
+        // disallow one to enter numbers out of range
         if (value > this->Maximum || value < this->Minimum)
             return QValidator::Invalid;
     }

@@ -1719,7 +1719,7 @@ class FacebinderTaskPanel:
 
     def addElement(self):
         if self.obj:
-            for sel in FreeCADGui.Selection.getSelectionEx():
+            for sel in FreeCADGui.Selection.getSelectionEx("", 0):
                 if sel.HasSubObjects:
                     obj = sel.Object
                     for elt in sel.SubElementNames:

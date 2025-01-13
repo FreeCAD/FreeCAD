@@ -894,6 +894,12 @@ QToolBar {
   /* font-weight: bold; */
 }
 
+/* fix background color for toolbars that are the on menubar. */
+QToolBar:only-one {
+  background-color: transparent;
+  /* margin-top: -3px; */
+}
+
 QToolBar:horizontal {
   padding-top: 3px;
   padding-left: 3px;
@@ -1908,7 +1914,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtabwidget-and-qtabb
 --------------------------------------------------------------------------- */
 QTabBar, QDockWidget QTabBar {
   qproperty-drawBase: 0;
-  background-color: #333333;
+  /* background-color: #333333; */
   /* left: 5px; move to the right by 5px - removed for fix */
 }
 

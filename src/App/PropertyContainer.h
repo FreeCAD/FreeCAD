@@ -70,7 +70,7 @@ struct AppExport PropertyData
   };
 
   //purpose of this struct is to be constructible from all acceptable container types and to
-  //be able to return the offset to a property from the accepted containers. This allows to use
+  //be able to return the offset to a property from the accepted containers. This allows you to use
   //one function implementation for multiple container types without losing all type safety by
   //accepting void*
   struct OffsetBase

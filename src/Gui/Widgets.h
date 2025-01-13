@@ -53,7 +53,7 @@ class PrefCheckBox;
 class CommandViewItemPrivate;
 
 /**
- * This class allows to drag one or more items which correspond to a Command object.
+ * This class allows one to drag one or more items which correspond to a Command object.
  * The dragged items can be dropped onto the @ref Gui::PythonConsole.
  * @see CommandViewItem, Command
  * @author Werner Mayer
