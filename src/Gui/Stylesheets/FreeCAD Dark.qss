@@ -2425,7 +2425,7 @@ QHeaderView:disabled {
 }
 
 QHeaderView::section {
-  background-color: qlineargradient(x1:0, y0:0, x2:0, y1:1, stop:0 #333333, stop:1 #252525);
+  background-color: qlineargradient(x1:0, y0:0, x2:0, y1:1, stop:0 #252525, stop:1 #333333);
   color: #ffffff;
   padding: 4px;
 }
