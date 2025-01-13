@@ -886,7 +886,7 @@
        x="220.65581"
        y="278.57715"
        style="line-height:0%"
-       freecad:editable="FC-Scale"
+       freecad:editable="scale"
        freecad:autofill="scale"><tspan
          id="tspan197">SCALE</tspan></text>
     <text

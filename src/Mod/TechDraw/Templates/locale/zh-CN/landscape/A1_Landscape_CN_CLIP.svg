@@ -214,7 +214,7 @@
                 <text x="657" y="575" freecad:editable="CHECKED_NAME"><tspan>审核人</tspan></text>
                 <text x="729" y="581" freecad:editable="TOTAL_SHEETS"><tspan> 99 </tspan></text>
                 <text x="754" y="581" freecad:editable="OF_SHEET"><tspan> 1 </tspan></text>
-                <text x="763" y="572" freecad:editable="SCALE"><tspan>M x:x</tspan></text>
+                <text x="763" y="572" freecad:editable="scale"><tspan>M x:x</tspan></text>
                 <text x="726.5" y="572" fill="#000000" text-align="center" freecad:editable="STAGE-S"><tspan/></text>
                 <text x="733" y="572" fill="#000000" text-align="center" freecad:editable="STAGE-A"><tspan/></text>
                 <text x="739.5" y="572" fill="#000000" text-align="center" freecad:editable="STAGE-B"><tspan/></text>
