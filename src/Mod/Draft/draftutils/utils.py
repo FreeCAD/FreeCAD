@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   (c) 2009, 2010                                                        *
-# *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
-# *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2024 The FreeCAD Project Association                    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -40,7 +41,7 @@ import PySide.QtCore as QtCore
 
 import FreeCAD as App
 from draftutils import params
-from draftutils.messages import  _wrn, _err, _log
+from draftutils.messages import _wrn, _err, _log
 from draftutils.translate import translate
 
 # TODO: move the functions that require the graphical interface
@@ -174,7 +175,7 @@ def type_check(args_and_types, name="?"):
     for v, t in args_and_types:
         if not isinstance(v, t):
             w = "typecheck[{}]: '{}' is not {}".format(name, v, t)
-            _wrn(w)
+            _err(w)
             raise TypeError("Draft." + str(name))
 
 
@@ -884,26 +885,103 @@ def get_rgba_tuple(color, typ=1.0):
         return color
 
 
-def filter_objects_for_modifiers(objects, isCopied=False):
-    filteredObjects = []
-    for obj in objects:
-        if hasattr(obj, "MoveBase") and obj.MoveBase and obj.Base:
+def _modifiers_process_subselection(sels, copy):
+    data_list = []
+    sel_info = []
+    for sel in sels:
+        for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+            if not ("Vertex" in sub or "Edge" in sub):
+                continue
+            if copy and "Vertex" in sub:
+                continue
+            obj = sel.Object.getSubObject(sub, 1)
+            pla = sel.Object.getSubObject(sub, 3)
+            if "Vertex" in sub:
+                vert_idx = int(sub.rpartition("Vertex")[2]) - 1
+                edge_idx = -1
+            else:
+                vert_idx = -1
+                edge_idx = int(sub.rpartition("Edge")[2]) - 1
+            data_list.append((obj, vert_idx, edge_idx, pla))
+            sel_info.append(("", sel.Object.Name, sub))
+    return data_list, sel_info
+
+
+def _modifiers_process_selection(sels, copy, scale=False, add_movable_children=False):
+    # Only when creating ghosts and if copy is False, should add_movable_children be True.
+    objects = []
+    places = []
+    sel_info = []
+    for sel in sels:
+        for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+            obj = sel.Object.getSubObject(sub, 1)
+            # Get the global placement of the parent:
+            if obj == sel.Object:
+                pla = App.Placement()
+            else:
+                pla = sel.Object.getSubObject(sub.rpartition(obj.Name)[0], 3)
+            objs = _modifiers_get_group_contents(obj)
+            if add_movable_children:
+                children = []
+                for obj in objs:
+                    children.extend(_modifiers_get_movable_children(obj))
+                objs.extend(children)
+            objs = _modifiers_filter_objects(objs, copy, scale)
+            objects.extend(objs)
+            places.extend(len(objs) * [pla])
+            if "." in sub:
+                sub = sub.rpartition(".")[0] + "."
+            elif "Face" in sub or "Edge" in sub or "Vertex" in sub:
+                sub = ""
+            sel_info.append(("", sel.Object.Name, sub))
+    return objects, places, sel_info
+
+
+def _modifiers_get_group_contents(obj):
+    from draftutils import groups
+    return groups.get_group_contents(obj, addgroups=True, spaces=True, noarchchild=True)
+
+
+def _modifiers_get_movable_children(obj):
+    result = []
+    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "getMovableChildren"):
+        children = obj.Proxy.getMovableChildren(obj)
+        result.extend(children)
+        for child in children:
+            result.extend(_modifiers_get_movable_children(child))
+    return result
+
+
+def _modifiers_filter_objects(objs, copy, scale=False):
+
+    def is_scalable(obj):
+        if hasattr(obj, "Placement") and hasattr(obj, "Shape"):
+            return True
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+            return True
+        if obj.isDerivedFrom("App::Annotation"):
+            return True
+        return False
+
+    result = []
+    for obj in objs:
+        if not copy and hasattr(obj, "MoveBase") and obj.MoveBase and obj.Base:
             parents = []
             for parent in obj.Base.InList:
                 if parent.isDerivedFrom("Part::Feature"):
                     parents.append(parent.Name)
             if len(parents) > 1:
-                warningMessage = translate("draft", "%s shares a base with %d other objects. Please check if you want to modify this.") % (obj.Name,len(parents) - 1)
-                App.Console.PrintError(warningMessage)
-                if App.GuiUp:
-                    Gui.getMainWindow().showMessage(warningMessage, 0)
-            filteredObjects.append(obj.Base)
-        elif hasattr(obj,"Placement") and obj.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
-            App.Console.PrintError(translate("draft", "%s cannot be modified because its placement is readonly.") % obj.Name)
-            continue
-        else:
-            filteredObjects.append(obj)
-    return filteredObjects
+                message = translate("draft", "%s shares a base with %d other objects. Please check if you want to modify this.") % (obj.Name,len(parents) - 1)
+                _err(message)
+            if not scale or utils.get_type(obj.Base) == "Wire":
+                result.append(obj.Base)
+        elif not copy \
+                and hasattr(obj, "Placement") \
+                and "ReadOnly" in obj.getEditorMode("Placement"):
+            _err(translate("draft", "%s cannot be modified because its placement is readonly") % obj.Name)
+        elif not scale or is_scalable(obj):
+            result.append(obj)
+    return result
 
 
 def is_closed_edge(edge_index, object):
