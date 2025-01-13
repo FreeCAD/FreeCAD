@@ -154,7 +154,7 @@ bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);
-        // don't allow to delete
+        // don't allow one to delete
         return false;
    }
    else if (!viewSection.empty()) {

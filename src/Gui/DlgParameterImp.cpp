@@ -513,7 +513,7 @@ void ParameterGroup::contextMenuEvent(QContextMenuEvent* event)
     QTreeWidgetItem* item = currentItem();
     if (item && item->isSelected()) {
         expandAct->setEnabled(item->childCount() > 0);
-        // do not allow to import parameters from a non-empty parameter group
+        // do not allow one to import parameters from a non-empty parameter group
         importAct->setEnabled(item->childCount() == 0);
 
         if (item->isExpanded()) {

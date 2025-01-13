@@ -413,8 +413,8 @@ public:
     /** Assignment operator. */
     MeshKernel& operator=(const MeshKernel& rclMesh);
     MeshKernel& operator=(MeshKernel&& rclMesh);
-    /** This allows to assign the mesh structure directly. The caller must make sure that the point
-     * indices are correctly set but the neighbourhood gets checked and corrected if \a
+    /** This allows one to assign the mesh structure directly. The caller must make sure that the
+     * point indices are correctly set but the neighbourhood gets checked and corrected if \a
      * checkNeighbourHood is true.
      */
     void Assign(const MeshPointArray& rPoints,

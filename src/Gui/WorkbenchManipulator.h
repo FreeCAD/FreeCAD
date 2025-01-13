@@ -38,7 +38,7 @@ class MenuItem;
 class ToolBarItem;
 
 /**
- * The WorkbenchManipulator is a class that allows to modify the workbench
+ * The WorkbenchManipulator is a class that allows one to modify the workbench
  * by adding or removing commands.
  * WorkbenchManipulator provides methods to manipulate the MenuItem, ToolBarItem or
  * DockWindowItems structure before setting up the workbench.

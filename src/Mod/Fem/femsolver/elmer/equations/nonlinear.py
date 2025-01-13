@@ -72,7 +72,7 @@ class Proxy(linear.Proxy):
         obj.NonlinearNewtonAfterIterations = (3, 1, 500, 1)
         # for small numbers we must set an expression because we don't have a UI,
         # the user has to view and edit the tolerance via the property editor and
-        # this does not yet allow to view and edit small numbers in scientific notation
+        # this does not yet allow one to view and edit small numbers in scientific notation
         # forum thread: https://forum.freecad.org/viewtopic.php?p=613897#p613897
         obj.setExpression("NonlinearTolerance", "1e-7")
         obj.setExpression("NonlinearNewtonAfterTolerance", "1e-3")

@@ -206,7 +206,7 @@ public:
     std::unique_ptr<QWidget> createToolWidget() const;
 
     /** @brief Returns whether this tool expects/supports a visible tool widget. Emphasis is in
-     * visibility, so to allow to adapt the interface accordingly.
+     * visibility, so to allow one to adapt the interface accordingly.
      * This is an NVI interface and specific handlers must overload the corresponding virtual
      * function.
      */

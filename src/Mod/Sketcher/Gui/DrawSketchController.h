@@ -39,7 +39,7 @@ namespace SketcherGui
     the possible construction modes supported by the tool.
 
     @details Different construction modes of a DSH may use different types of controls. This class
-    allows to instantiate a handler template class to provide such construction mode specific
+    allows one to instantiate a handler template class to provide such construction mode specific
     controls.
 
     Each different type of control is a template class deriving from this.

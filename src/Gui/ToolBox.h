@@ -43,7 +43,7 @@ namespace DockWnd
  *
  * Items are added using addItem(), or inserted at particular positions using insertItem(). The total number of
  * items is given by count(). Items can be deleted with delete, or removed from the toolbox with removeItem().
- * Combining removeItem() and insertItem() allows to move items to different positions.
+ * Combining removeItem() and insertItem() allows one to move items to different positions.
  *
  * The current item widget is returned by currentItem() and set with setCurrentItem(). If you prefer you can
  * work in terms of indexes using currentIndex(), setCurrentIndex(), indexOf() and item().

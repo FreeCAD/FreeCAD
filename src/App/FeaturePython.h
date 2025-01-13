@@ -162,7 +162,7 @@ public:
 };
 
 /**
- * Generic Python feature class which allows to behave every DocumentObject
+ * Generic Python feature class which allows one to behave every DocumentObject
  * derived class as Python feature -- simply by subclassing.
  * @author Werner Mayer
  */

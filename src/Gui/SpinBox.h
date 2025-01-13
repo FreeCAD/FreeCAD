@@ -106,7 +106,7 @@ class UIntSpinBoxPrivate;
 /**
  * The UIntSpinBox class does basically the same as Qt's QSpinBox unless
  * that it works with unsigned int's instead.
- * This allows to use numbers in the range of [0, UINT_MAX]
+ * This allows one to use numbers in the range of [0, UINT_MAX]
  * @author Werner Mayer
  */
 class GuiExport UIntSpinBox : public QSpinBox, public ExpressionSpinBox
