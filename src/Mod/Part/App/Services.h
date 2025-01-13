@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
@@ -22,11 +21,27 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef PART_SERVICES_H
+#define PART_SERVICES_H
 
-#include "ServiceProvider.h"
+#include <Attacher.h>
+#include <App/Services.h>
 
-namespace Base
+class AttacherSubObjectPlacement final: public App::SubObjectPlacementProvider
 {
-Base::ServiceProvider globalServiceProvider;
-}
+public:
+    AttacherSubObjectPlacement();
+
+    Base::Placement calculate(App::SubObjectT object, Base::Placement basePlacement) const override;
+
+private:
+    std::unique_ptr<Attacher::AttachEngine3D> attacher;
+};
+
+class PartCenterOfMass final: public App::CenterOfMassProvider
+{
+public:
+    std::optional<Base::Vector3d> ofDocumentObject(App::DocumentObject* object) const override;
+};
+
+#endif  // PART_SERVICES_H

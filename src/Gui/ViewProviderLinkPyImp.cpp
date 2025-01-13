@@ -46,27 +46,14 @@ std::string ViewProviderLinkPy::representation() const
 
 Py::Object ViewProviderLinkPy::getDraggingPlacement() const {
     return Py::asObject(new Base::PlacementPy(new Base::Placement(
-                    getViewProviderLinkPtr()->currentDraggingPlacement())));
+                    getViewProviderLinkPtr()->getDraggerPlacement())));
 }
 
 void ViewProviderLinkPy::setDraggingPlacement(Py::Object arg) {
     if(!PyObject_TypeCheck(arg.ptr(),&Base::PlacementPy::Type))
         throw Py::TypeError("expects a placement");
-    getViewProviderLinkPtr()->updateDraggingPlacement(
+    getViewProviderLinkPtr()->setDraggerPlacement(
             *static_cast<Base::PlacementPy*>(arg.ptr())->getPlacementPtr());
-}
-
-Py::Boolean ViewProviderLinkPy::getUseCenterballDragger() const {
-    return {getViewProviderLinkPtr()->isUsingCenterballDragger()};
-}
-
-void ViewProviderLinkPy::setUseCenterballDragger(Py::Boolean arg) {
-    try {
-        getViewProviderLinkPtr()->enableCenterballDragger(arg);
-    }catch(const Base::Exception &e){
-        e.setPyException();
-        throw Py::Exception();
-    }
 }
 
 Py::Object ViewProviderLinkPy::getLinkView() const {

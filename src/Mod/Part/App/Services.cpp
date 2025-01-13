@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
@@ -22,11 +21,35 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include "Services.h"
 
-#include "ServiceProvider.h"
-
-namespace Base
+AttacherSubObjectPlacement::AttacherSubObjectPlacement()
+    : attacher(std::make_unique<Attacher::AttachEngine3D>())
 {
-Base::ServiceProvider globalServiceProvider;
+    attacher->setUp({}, Attacher::mmMidpoint);
+}
+
+Base::Placement AttacherSubObjectPlacement::calculate(App::SubObjectT object,
+                                                         Base::Placement basePlacement) const
+{
+    attacher->setReferences({object});
+
+    auto calculatedAttachment = attacher->calculateAttachedPlacement(basePlacement);
+
+    return basePlacement.inverse() * calculatedAttachment;
+}
+
+std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentObject* object) const
+{
+    if (const auto feature = dynamic_cast<Part::Feature*>(object)) {
+        const auto shape = feature->Shape.getShape();
+
+        if (const auto cog = shape.centerOfGravity()) {
+            const Base::Placement comPlacement { *cog, Base::Rotation { } };
+
+            return (feature->Placement.getValue().inverse() * comPlacement).getPosition();
+        }
+    }
+
+    return {};
 }
