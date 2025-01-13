@@ -734,27 +734,18 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         return;
     }
 
-    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
+    auto highlightMode = static_cast<HighlightModes>(this->highlightMode.getValue());
     const SoEvent * event = action->getEvent();
-
-    // If we don't need to pick for locate highlighting,
-    // then just behave as separator and return.
-    // NOTE: we still have to pick for ON even though we don't have
-    // to re-render, because the app needs to be notified as the mouse
-    // goes over locate highlight nodes.
-    //if (highlightMode.getValue() == OFF) {
-    //    inherited::handleEvent( action );
-    //    return;
-    //}
 
     //
     // If this is a mouseMotion event, then check for locate highlighting
     //
-    if (event->isOfType(SoLocation2Event::getClassTypeId())) {
+    bool isMouseMotionEvent = event->isOfType(SoLocation2Event::getClassTypeId());
+    if (isMouseMotionEvent) {
         // NOTE: If preselection is off then we do not check for a picked point because otherwise this search may slow
         // down extremely the system on really big data sets. In this case we just check for a picked point if the data
         // set has been selected.
-        if (mymode == AUTO || mymode == ON) {
+        if (highlightMode == AUTO || highlightMode == ON) {
             // check to see if the mouse is over our geometry...
             auto infos = this->getPickedList(action,true);
             if(!infos.empty())
