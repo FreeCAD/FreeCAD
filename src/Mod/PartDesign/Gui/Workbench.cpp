@@ -101,13 +101,10 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                     *item   << "Std_ToggleFreeze";
                 }
 
-                bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
-                                        PartDesign::Body::getClassTypeId () ) > 0;
-
-                if ( docHaveBodies ) {
+                if (activeView->getAppDocument()->countObjectsOfType<PartDesign::Body>() > 0) {
                     bool addMoveFeature = true;
                     bool addMoveFeatureInTree = (body != nullptr);
-                    for (auto sel: selection) {
+                    for (auto sel : selection) {
                         // if at least one selected feature cannot be moved to a body
                         // disable the entry
                         if ( addMoveFeature && !PartDesign::Body::isAllowed ( sel.pObject ) ) {
@@ -132,11 +129,11 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                 }
             }
 
-            if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
-                Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
+            if (Gui::Selection().countObjectsOfType<PartDesign::Transformed>() -
+                Gui::Selection().countObjectsOfType<PartDesign::MultiTransform>() == 1 )
                 *item << "PartDesign_MultiTransform";
 
-            if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
+            if (Gui::Selection().countObjectsOfType<App::DocumentObject>() > 0) {
                 *item << "Std_Placement"
                       << "Std_ToggleVisibility"
                       << "Std_ShowSelection"

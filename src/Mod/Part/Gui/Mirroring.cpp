@@ -64,6 +64,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/FeatureMirroring.h>
 #include <App/Datums.h>
 
 #include "Mirroring.h"
@@ -289,7 +290,7 @@ bool Mirroring::accept()
     }
 
     Gui::WaitCursor wc;
-    unsigned int count = activeDoc->countObjectsOfType(Base::Type::fromName("Part::Mirroring"));
+    unsigned int count = activeDoc->countObjectsOfType<Part::Mirroring>();
     activeDoc->openTransaction("Mirroring");
 
     QString shape, label, selectionString;

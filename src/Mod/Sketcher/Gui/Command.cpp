@@ -328,7 +328,7 @@ void CmdSketcherEditSketch::activated(int iMsg)
 
 bool CmdSketcherEditSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherLeaveSketch)
@@ -539,7 +539,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
 
 bool CmdSketcherReorientSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherMapSketch)
@@ -763,12 +763,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
 bool CmdSketcherMapSketch::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Base::Type sketch_type = Base::Type::fromName("Part::Part2DObject");
     std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
-    if (doc && doc->countObjectsOfType(sketch_type) > 0 && !selobjs.empty())
-        return true;
-
-    return false;
+    return doc && doc->countObjectsOfType<Part::Part2DObject>() > 0 && !selobjs.empty();
 }
 
 DEF_STD_CMD_A(CmdSketcherViewSketch)
@@ -843,7 +839,7 @@ bool CmdSketcherValidateSketch::isActive()
 {
     if (Gui::Control().activeDialog())
         return false;
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherMirrorSketch)
@@ -970,7 +966,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 
 bool CmdSketcherMirrorSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
 }
 
 DEF_STD_CMD_A(CmdSketcherMergeSketches)
@@ -1059,7 +1055,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
 
 bool CmdSketcherMergeSketches::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 1;
 }
 
 // Acknowledgement of idea and original python macro goes to SpritKopf:

@@ -707,7 +707,7 @@ std::tuple<bool, PartDesign::Body*> SketchWorkflow::shouldCreateBody()
         pdBody->Placement.setValue(xLink->Placement.getValue());
     }
     if (!pdBody) {
-        if (appdocument->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0) {
+        if (appdocument->countObjectsOfType<PartDesign::Body>() == 0) {
             shouldMakeBody = true;
         }
         else {

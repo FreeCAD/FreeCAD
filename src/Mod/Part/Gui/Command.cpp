@@ -344,8 +344,7 @@ void CmdPartCut::activated(int iMsg)
 
 bool CmdPartCut::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink)==2;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) == 2;
 }
 
 //===========================================================================
@@ -404,8 +403,7 @@ void CmdPartCommon::activated(int iMsg)
 
 bool CmdPartCommon::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -483,8 +481,7 @@ void CmdPartFuse::activated(int iMsg)
 
 bool CmdPartFuse::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -839,8 +836,7 @@ CmdPartCompound::CmdPartCompound()
 void CmdPartCompound::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    unsigned int n = getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
+    unsigned int n = getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink);
     if (n < 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one shape or more, please."));
@@ -872,8 +868,7 @@ void CmdPartCompound::activated(int iMsg)
 
 bool CmdPartCompound::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -921,7 +916,7 @@ void CmdPartSection::activated(int iMsg)
 
 bool CmdPartSection::isActive()
 {
-    return getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) == 2;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) == 2;
 }
 
 //===========================================================================
@@ -1032,7 +1027,7 @@ void CmdPartExport::activated(int iMsg)
 
 bool CmdPartExport::isActive()
 {
-    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
+    return Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1158,8 +1153,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 
 bool CmdPartMakeSolid::isActive()
 {
-    return Gui::Selection().countObjectsOfType
-        (App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
+    return Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1360,7 +1354,7 @@ void CmdPartMakeFace::activated(int iMsg)
 
 bool CmdPartMakeFace::isActive()
 {
-    return (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0 &&
+    return (Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0 &&
             !Gui::Control().activeDialog());
 }
 
@@ -1892,8 +1886,7 @@ void CmdPartThickness::activated(int iMsg)
 
 bool CmdPartThickness::isActive()
 {
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectsSelected = Gui::Selection().countObjectsOfType(partid, nullptr, Gui::ResolveMode::FollowLink) > 0;
+    bool objectsSelected = Gui::Selection().countObjectsOfType<Part::Feature>(nullptr, Gui::ResolveMode::FollowLink) > 0;
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 
@@ -1923,7 +1916,7 @@ void CmdShapeInfo::activated(int iMsg)
 bool CmdShapeInfo::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Part::Feature::getClassTypeId()) == 0)
+    if (!doc || doc->countObjectsOfType<Part::Feature>() == 0)
         return false;
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
@@ -2107,8 +2100,7 @@ void CmdColorPerFace::activated(int iMsg)
 
 bool CmdColorPerFace::isActive()
 {
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectSelected = Gui::Selection().countObjectsOfType(partid) == 1;
+    bool objectSelected = Gui::Selection().countObjectsOfType<Part::Feature>() == 1;
     return (hasActiveDocument() && !Gui::Control().activeDialog() && objectSelected);
 }
 

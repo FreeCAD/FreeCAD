@@ -526,7 +526,6 @@ std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const cha
 
 unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, const char* pDocName, ResolveMode resolve) const
 {
-    unsigned int iNbr=0;
     App::Document *pcDoc = nullptr;
     if(!pDocName || strcmp(pDocName,"*") != 0) {
         pcDoc = getDocument(pDocName);
@@ -534,12 +533,9 @@ unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, co
             return 0;
     }
 
-    for (auto &sel : _SelList) {
-        if((!pcDoc||pcDoc==sel.pDoc) && getObjectOfType(sel, typeId, resolve))
-            iNbr++;
-    }
-
-    return iNbr;
+    return std::count_if(_SelList.begin(), _SelList.end(), [&](auto& sel) {
+        return (!pcDoc || pcDoc == sel.pDoc) && getObjectOfType(sel, typeId, resolve);
+    });
 }
 
 unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const char* pDocName, ResolveMode resolve) const

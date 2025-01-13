@@ -4397,14 +4397,15 @@ Document::findObjects(const Base::Type& typeId, const char* objname, const char*
 
 int Document::countObjectsOfType(const Base::Type& typeId) const
 {
-    int ct = 0;
-    for (const auto& it : d->objectMap) {
-        if (it.second->getTypeId().isDerivedFrom(typeId)) {
-            ct++;
-        }
-    }
+    return std::count_if(d->objectMap.begin(), d->objectMap.end(), [&](const auto& it) {
+        return it.second->getTypeId().isDerivedFrom(typeId);
+    });
+}
 
-    return ct;
+int Document::countObjectsOfType(const char* typeName) const
+{
+    Base::Type type = Base::Type::fromName(typeName);
+    return type.isBad() ? 0 : countObjectsOfType(type);
 }
 
 PyObject* Document::getPyObject()
