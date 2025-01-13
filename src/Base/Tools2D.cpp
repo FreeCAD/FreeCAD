@@ -53,7 +53,7 @@ double Vector2d::GetAngle(const Vector2d& vec) const
         return acos(fNum);
     }
 
-    return -FLOAT_MAX;  // division by zero
+    return -FLT_MAX;  // division by zero
 }
 
 void Vector2d::ProjectToLine(const Vector2d& point, const Vector2d& line)
@@ -174,13 +174,13 @@ bool Line2d::Intersect(const Line2d& rclLine, Vector2d& rclV) const
         m1 = (clV2.y - clV1.y) / (clV2.x - clV1.x);
     }
     else {
-        m1 = DOUBLE_MAX;
+        m1 = DBL_MAX;
     }
     if (fabs(rclLine.clV2.x - rclLine.clV1.x) > 1e-10) {
         m2 = (rclLine.clV2.y - rclLine.clV1.y) / (rclLine.clV2.x - rclLine.clV1.x);
     }
     else {
-        m2 = DOUBLE_MAX;
+        m2 = DBL_MAX;
     }
     if (m1 == m2) { /****** RETURN ERR (parallel lines) *************/
         return false;
@@ -190,11 +190,11 @@ bool Line2d::Intersect(const Line2d& rclLine, Vector2d& rclV) const
     b2 = rclLine.clV1.y - m2 * rclLine.clV1.x;
 
     // calc intersection
-    if (m1 == DOUBLE_MAX) {
+    if (m1 == DBL_MAX) {
         rclV.x = clV1.x;
         rclV.y = m2 * rclV.x + b2;
     }
-    else if (m2 == DOUBLE_MAX) {
+    else if (m2 == DBL_MAX) {
         rclV.x = rclLine.clV1.x;
         rclV.y = m1 * rclV.x + b1;
     }
