@@ -1276,6 +1276,31 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                 return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
+    def createFootprintGroup(self):
+        """Sets up the Coin group for footprint display mode"""
+
+        from pivy import coin
+
+        tex = coin.SoTexture2()
+        image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+        if not image is None:
+            tex.image = image
+        texcoords = coin.SoTextureCoordinatePlane()
+        s = params.get_param_arch("patternScale")
+        texcoords.directionS.setValue(s,0,0)
+        texcoords.directionT.setValue(0,s,0)
+
+        self.fcoords = coin.SoCoordinate3()
+        self.fset = coin.SoIndexedFaceSet()
+
+        sep = coin.SoSeparator()
+        sep.addChild(tex)
+        sep.addChild(texcoords)
+        sep.addChild(self.fcoords)
+        sep.addChild(self.fset)
+
+        return sep
+
     def attach(self,vobj):
         """Add display modes' data to the coin scenegraph.
 
@@ -1286,28 +1311,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         in that mode. This might include colors of faces, or the draw style of
         lines. This data is stored as additional coin nodes which are children
         of the display mode node.
-
-        Add the textures used in the Footprint display mode.
         """
 
         self.Object = vobj.Object
-        from pivy import coin
-        tex = coin.SoTexture2()
-        image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
-        if not image is None:
-            tex.image = image
-        texcoords = coin.SoTextureCoordinatePlane()
-        s = params.get_param_arch("patternScale")
-        texcoords.directionS.setValue(s,0,0)
-        texcoords.directionT.setValue(0,s,0)
-        self.fcoords = coin.SoCoordinate3()
-        self.fset = coin.SoIndexedFaceSet()
-        sep = coin.SoSeparator()
-        sep.addChild(tex)
-        sep.addChild(texcoords)
-        sep.addChild(self.fcoords)
-        sep.addChild(self.fset)
-        vobj.RootNode.addChild(sep)
         ArchComponent.ViewProviderComponent.attach(self,vobj)
 
     def updateData(self,obj,prop):
@@ -1361,7 +1367,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             List containing the names of the new display modes.
         """
 
-        modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Footprint"]
+        modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)
         return modes
 
     def setDisplayMode(self,mode):
@@ -1386,26 +1392,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         str:
             The name of the display mode the view provider has switched to.
         """
-
-        self.fset.coordIndex.deleteValues(0)
-        self.fcoords.point.deleteValues(0)
         if mode == "Footprint":
-            if hasattr(self,"Object"):
-                faces = self.Object.Proxy.getFootprint(self.Object)
-                if faces:
-                    verts = []
-                    fdata = []
-                    idx = 0
-                    for face in faces:
-                        tri = face.tessellate(1)
-                        for v in tri[0]:
-                            verts.append([v.x,v.y,v.z])
-                        for f in tri[1]:
-                            fdata.extend([f[0]+idx,f[1]+idx,f[2]+idx,-1])
-                        idx += len(tri[0])
-                    self.fcoords.point.setValues(verts)
-                    self.fset.coordIndex.setValues(0,len(fdata),fdata)
-            return "Wireframe"
+            self.updateFootprint()
+            return "Footprint"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
     def setupContextMenu(self, vobj, menu):

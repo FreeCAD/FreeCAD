@@ -1245,6 +1245,25 @@ class ViewProviderComponent:
                             obj.ViewObject.update()
         return
 
+    def updateFootprint(self):
+        self.fset.coordIndex.deleteValues(0)
+        self.fcoords.point.deleteValues(0)
+        if hasattr(self,"Object"):
+            faces = self.Object.Proxy.getFootprint(self.Object)
+            if faces:
+                verts = []
+                fdata = []
+                idx = 0
+                for face in faces:
+                    tri = face.tessellate(1)
+                    for v in tri[0]:
+                        verts.append([v.x,v.y,v.z])
+                    for f in tri[1]:
+                        fdata.extend([f[0]+idx,f[1]+idx,f[2]+idx,-1])
+                    idx += len(tri[0])
+                self.fcoords.point.setValues(verts)
+                self.fset.coordIndex.setValues(0,len(fdata),fdata)
+
     def getIcon(self):
         """Return the path to the appropriate icon.
 
@@ -1320,7 +1339,7 @@ class ViewProviderComponent:
         lines. This data is stored as additional coin nodes which are children
         of the display mode node.
 
-        Add the HiRes display mode.
+        Add the HiRes and Footprint display modes (if provided by object).
 
         Parameters
         ----------
@@ -1335,6 +1354,12 @@ class ViewProviderComponent:
         self.hiresgroup.addChild(self.meshcolor)
         self.hiresgroup.setName("HiRes")
         vobj.addDisplayMode(self.hiresgroup,"HiRes");
+
+        if hasattr(self,"createFootprintGroup"):
+            self.footprintgroup = self.createFootprintGroup()
+            self.footprintgroup.setName("Footprint")
+            vobj.addDisplayMode(self.footprintgroup,"Footprint")
+
         return
 
     def getDisplayModes(self,vobj):
@@ -1355,6 +1380,8 @@ class ViewProviderComponent:
         """
 
         modes=["HiRes"]
+        if hasattr(self, "footprintgroup") and self.footprintgroup is not None:
+            modes.append("Footprint")
         return modes
 
     def setDisplayMode(self,mode):

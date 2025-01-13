@@ -401,7 +401,7 @@ class _Space(ArchComponent.Component):
 
         "returns the horizontal area at the center of the space"
 
-        self.face = self.getFootprint(obj)
+        self.face = self.getFootprint(obj)[0]
         if self.face:
             if not notouch:
                 if hasattr(obj,"PerimeterLength"):
@@ -412,8 +412,7 @@ class _Space(ArchComponent.Component):
             return 0
 
     def getFootprint(self,obj):
-
-        "returns a face that represents the footprint of this space at the center of mass"
+        """Get the faces that make up the footprint of this space at the center of mass."""
 
         import Part
         import DraftGeomUtils
@@ -430,7 +429,7 @@ class _Space(ArchComponent.Component):
             dv = FreeCAD.Vector(obj.Shape.CenterOfMass.x,obj.Shape.CenterOfMass.y,obj.Shape.BoundBox.ZMin)
             dv = dv.sub(obj.Shape.CenterOfMass)
             w.translate(dv)
-            return Part.Face(w)
+            return [Part.Face(w)]
         except Part.OCCError:
             return None
 
@@ -684,28 +683,12 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
     def getDisplayModes(self,vobj):
 
-        modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Footprint"]
+        modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)
         return modes
 
     def setDisplayMode(self,mode):
-
-        self.fset.coordIndex.deleteValues(0)
-        self.fcoords.point.deleteValues(0)
         if mode == "Footprint":
-            if hasattr(self,"Object"):
-                face = self.Object.Proxy.getFootprint(self.Object)
-                if face:
-                    verts = []
-                    fdata = []
-                    idx = 0
-                    tri = face.tessellate(1)
-                    for v in tri[0]:
-                        verts.append([v.x,v.y,v.z])
-                    for f in tri[1]:
-                        fdata.extend([f[0]+idx,f[1]+idx,f[2]+idx,-1])
-                    idx += len(tri[0])
-                    self.fcoords.point.setValues(verts)
-                    self.fset.coordIndex.setValues(0,len(fdata),fdata)
+            self.updateFootprint()
             return "Points"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
