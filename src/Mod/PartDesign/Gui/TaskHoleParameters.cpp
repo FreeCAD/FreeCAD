@@ -549,6 +549,7 @@ void TaskHoleParameters::drillForDepthChanged()
 
 void TaskHoleParameters::taperedChanged()
 {
+    ui->TaperedAngle->setEnabled(ui->Tapered->isChecked());
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->Tapered.setValue(ui->Tapered->isChecked());
         recomputeFeature();
