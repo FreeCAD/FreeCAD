@@ -27,6 +27,10 @@ if(FREECAD_USE_CCACHE)
     endif()
 endif()
 
+if(WIN32)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()
+
 project(FreeCAD)
 
 set(PACKAGE_VERSION_MAJOR "1")
