@@ -232,7 +232,7 @@
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
       <source>Inserts a symbol from a SVG file in the active drawing</source>
-      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
+      <translation>Lägger till en symbol från en SVG-fil till den aktiva ritningen</translation>
     </message>
   </context>
   <context>
