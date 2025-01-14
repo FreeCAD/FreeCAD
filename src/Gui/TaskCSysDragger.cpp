@@ -120,7 +120,8 @@ TaskTransform::~TaskTransform()
     savePreferences();
 }
 
-void TaskTransform::dragStartCallback(void* data, SoDragger*)
+void TaskTransform::dragStartCallback([[maybe_unused]] void* data,
+                                      [[maybe_unused]] SoDragger* dragger)
 {
     // This is called when a manipulator is about to manipulating
     if (firstDrag) {
@@ -130,7 +131,7 @@ void TaskTransform::dragStartCallback(void* data, SoDragger*)
     }
 }
 
-void TaskTransform::dragMotionCallback(void* data, SoDragger* dragger)
+void TaskTransform::dragMotionCallback(void* data, [[maybe_unused]] SoDragger* dragger)
 {
     auto task = static_cast<TaskTransform*>(data);
 
@@ -557,7 +558,7 @@ void TaskTransform::onPickTransformOrigin()
                                                           : SelectionMode::None);
 }
 
-void TaskTransform::onPlacementModeChange(int index)
+void TaskTransform::onPlacementModeChange([[maybe_unused]] int index)
 {
     placementMode = ui->placementComboBox->currentData().value<PlacementMode>();
 
