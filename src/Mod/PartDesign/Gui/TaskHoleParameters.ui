@@ -23,7 +23,7 @@
    <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="4" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -42,14 +42,14 @@
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</string>
        </property>
-       <property name="keyboardTracking" stdset="0">
+       <property name="keyboardTracking">
         <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
-       </property>
-       <property name="minimum" stdset="0">
-        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -71,7 +71,7 @@ over 90: larger hole radius at the bottom</string>
       </layout>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="Diameter" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="Diameter">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -87,14 +87,14 @@ over 90: larger hole radius at the bottom</string>
        <property name="toolTip">
         <string>Hole diameter</string>
        </property>
-       <property name="keyboardTracking" stdset="0">
+       <property name="keyboardTracking">
         <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
-       </property>
-       <property name="minimum" stdset="0">
-        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -169,7 +169,7 @@ over 90: larger hole radius at the bottom</string>
       </layout>
      </item>
      <item row="3" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="Depth" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="Depth">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -182,7 +182,7 @@ over 90: larger hole radius at the bottom</string>
          <height>20</height>
         </size>
        </property>
-       <property name="keyboardTracking" stdset="0">
+       <property name="keyboardTracking">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
@@ -277,7 +277,7 @@ over 90: larger hole radius at the bottom</string>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDiameter" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDiameter">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -293,17 +293,17 @@ over 90: larger hole radius at the bottom</string>
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
         </property>
-        <property name="keyboardTracking" stdset="0">
+        <property name="keyboardTracking">
          <bool>false</bool>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
-        </property>
-        <property name="minimum" stdset="0">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="singleStep" stdset="0">
-         <double>0.100000000000000</double>
         </property>
        </widget>
       </item>
@@ -321,7 +321,7 @@ over 90: larger hole radius at the bottom</string>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDepth" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDepth">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -338,17 +338,17 @@ over 90: larger hole radius at the bottom</string>
          <string>For countersinks this is the depth of
 the screw's top below the surface</string>
         </property>
-        <property name="keyboardTracking" stdset="0">
+        <property name="keyboardTracking">
          <bool>false</bool>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
-        </property>
-        <property name="minimum" stdset="0">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="singleStep" stdset="0">
-         <double>0.100000000000000</double>
         </property>
        </widget>
       </item>
@@ -366,7 +366,7 @@ the screw's top below the surface</string>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="HoleCutCountersinkAngle" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="HoleCutCountersinkAngle">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -379,14 +379,14 @@ the screw's top below the surface</string>
           <height>20</height>
          </size>
         </property>
-        <property name="keyboardTracking" stdset="0">
+        <property name="keyboardTracking">
          <bool>false</bool>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
-        </property>
-        <property name="minimum" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -463,7 +463,7 @@ the screw's top below the surface</string>
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::PrefQuantitySpinBox" name="DrillPointAngle" native="true">
+         <widget class="Gui::PrefQuantitySpinBox" name="DrillPointAngle">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -476,14 +476,14 @@ the screw's top below the surface</string>
             <height>20</height>
            </size>
           </property>
-          <property name="keyboardTracking" stdset="0">
+          <property name="keyboardTracking">
            <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">deg</string>
-          </property>
-          <property name="minimum" stdset="0">
-           <double>0.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -744,7 +744,7 @@ Note that the calculation can take some time</string>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_12">
            <item>
-            <widget class="Gui::PrefQuantitySpinBox" name="ThreadDepth" native="true">
+            <widget class="Gui::PrefQuantitySpinBox" name="ThreadDepth">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -757,7 +757,7 @@ Note that the calculation can take some time</string>
                <height>20</height>
               </size>
              </property>
-             <property name="keyboardTracking" stdset="0">
+             <property name="keyboardTracking">
               <bool>false</bool>
              </property>
              <property name="unit" stdset="0">
@@ -805,7 +805,7 @@ Note that the calculation can take some time</string>
           </widget>
          </item>
          <item>
-          <widget class="Gui::PrefQuantitySpinBox" name="CustomThreadClearance" native="true">
+          <widget class="Gui::PrefQuantitySpinBox" name="CustomThreadClearance">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -821,14 +821,14 @@ Note that the calculation can take some time</string>
            <property name="toolTip">
             <string>Custom Thread clearance value</string>
            </property>
-           <property name="keyboardTracking" stdset="0">
+           <property name="keyboardTracking">
             <bool>false</bool>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
            </property>
            <property name="unit" stdset="0">
             <string notr="true">mm</string>
-           </property>
-           <property name="singleStep" stdset="0">
-            <double>0.100000000000000</double>
            </property>
           </widget>
          </item>
@@ -936,7 +936,7 @@ Only available for holes without thread</string>
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>
