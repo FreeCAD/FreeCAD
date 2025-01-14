@@ -215,7 +215,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
     starttime = time.time()
 
-    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template
+    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template, curvestyles
 
     if preferences is None:
         preferences = getPreferences()
@@ -1321,7 +1321,6 @@ def export(exportList, filename, colors=None, preferences=None):
 
     annos = {}
     if preferences['EXPORT_2D']:
-        global curvestyles
         curvestyles = {}
         if annotations and preferences['DEBUG']: print("exporting 2D objects...")
         for anno in annotations:
