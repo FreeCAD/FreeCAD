@@ -1850,8 +1850,6 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
         if(!propLinkPlacement || propLinkPlacement == prop) {
-            const auto &pla = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-            // ViewProviderGeometryObject::updateTransform(pla, pcTransform);
             const auto &v = ext->getScaleVector();
             if(canScale(v))
                 pcTransform->scaleFactor.setValue(v.x,v.y,v.z);

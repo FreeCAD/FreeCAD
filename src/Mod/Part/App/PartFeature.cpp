@@ -82,8 +82,6 @@
 using namespace Part;
 namespace sp = std::placeholders;
 
-constexpr const int MaterialPrecision = 6;
-
 FC_LOG_LEVEL_INIT("Part",true,true)
 
 PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
