@@ -649,7 +649,7 @@ class BaseHandler:
                 upper_face = face
                 com_max_z = com.z
         return upper_face
-    
+
     def _get_lower_face(self, faces):
         """Returns the lower face of a given list of faces
 
@@ -936,6 +936,8 @@ class WallHandler(BaseHandler):
         else:
             wall = Arch.makeWall(sweep)
 
+        # Keep track of base object. Used for baseboard import
+        self.importer.set_property(wall, "App::PropertyLinkList", "BaseObjects", "The different base objects whose sweep failed. Kept for compatibility reasons", [section_start, section_end, spine])
         wall.Length = spine.Length
 
         return wall, base_object
@@ -1253,19 +1255,27 @@ class WallHandler(BaseHandler):
         """
         return (b - a).cross(c - a).normalize()
 
-    def _ps(self, section):
+    def _ps(self, section, print_z: bool = False):
         # Pretty print a Section in a condensed way
-        v = section.Shape.Vertexes
-        return f"[{self._pv(v[0].Point)}, {self._pv(v[1].Point)}, {self._pv(v[2].Point)}, {self._pv(v[3].Point)}]"
+        if hasattr(section, 'Shape'):
+            v = section.Shape.Vertexes
+        else:
+            # a Part.Face
+            v = section.Vertexes
+        return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}, {self._pv(v[2].Point, print_z)}, {self._pv(v[3].Point, print_z)}]"
 
-    def _pe(self, edge):
+    def _pe(self, edge, print_z: bool = False):
         # Print an Edge in a condensed way
         v = edge.Vertexes
-        return f"[{self._pv(v[0].Point)}, {self._pv(v[1].Point)}]"
+        return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}]"
 
-    def _pv(self, vect):
+    def _pv(self, v, print_z: bool = False, ndigits: None = None):
         # Print an Vector in a condensed way
-        return f"({round(getattr(vect, 'X', getattr(vect,'x')))},{round(getattr(vect, 'Y', getattr(vect,'y')))})"
+        if hasattr(v,'X'):
+            return f"({round(getattr(v, 'X'), ndigits)},{round(getattr(v, 'Y'), ndigits)}{',' + str(round(getattr(v, 'Z'), ndigits)) if print_z else ''})"
+        elif hasattr(v,'x'):
+            return f"({round(getattr(v, 'x'), ndigits)},{round(getattr(v, 'y'), ndigits)}{',' + str(round(getattr(v, 'z'), ndigits)) if print_z else ''})"
+        raise ValueError(f"Expected a Point or Vector, got {type(v)}")
 
     def _set_wall_colors(self, wall, elm):
         """Set the `wall`'s color taken from `elm`.
@@ -1298,32 +1308,41 @@ class WallHandler(BaseHandler):
             Part::Extrusion: the newly created object
         """
         wall_width = float(wall.Width)
+
         baseboard_width = dim_sh2fc(elm.get('thickness'))
         baseboard_height = dim_sh2fc(elm.get('height'))
-        vertexes = wall.Shape.Vertexes
 
-        # The left side is defined as the face on the left hand side when going
-        # from (xStart,yStart) to (xEnd,yEnd). Assume the points are always
-        # created in the same order. We then have on the lefthand side the points
-        # 1 and 2, while on the righthand side we have the points 4 and 6
+        # This is brittle in case the wall is merged and the there are already
+        # some doors, windows, etc...
         side = elm.get('attribute')
-        if side == 'leftSideBaseboard':
-            p_start = vertexes[0].Point
-            p_end = vertexes[2].Point
-            p_normal = vertexes[4].Point
-        elif side == 'rightSideBaseboard':
-            p_start = vertexes[4].Point
-            p_end = vertexes[6].Point
-            p_normal = vertexes[0].Point
-        else:
-            raise ValueError(f"Invalid SweetHome3D file: invalid baseboard with 'attribute'={side}")
+        faces = wall.Base.Shape.Faces
+        face = faces[1] if side == 'leftSideBaseboard' else faces[3]
 
-        v_normal = p_normal - p_start
-        v_baseboard = v_normal * (baseboard_width/wall_width)
-        p0 = p_start
-        p1 = p_end
-        p2 = p_end - v_baseboard
-        p3 = p_start - v_baseboard
+        # Once I have the face, I get the lowest edge.
+        lowest_z = float('inf')
+        bottom_edge = None
+        for edge in face.Edges:
+            if edge.CenterOfMass.z < lowest_z:
+                lowest_z = edge.CenterOfMass.z
+                bottom_edge = edge
+
+        p_normal = face.normalAt(bottom_edge.CenterOfMass.x, bottom_edge.CenterOfMass.y)
+        p_normal.z = 0
+        offset_vector = p_normal.normalize().multiply(baseboard_width)
+        offset_bottom_edge = bottom_edge.translated(offset_vector)
+
+        if self.importer.preferences["DEBUG"]:
+            _log(f"Creating {side} for {wall.Label} from edge {self._pe(bottom_edge, True)} to {self._pe(offset_bottom_edge, True)} (normal={self._pv(p_normal, True, 4)})")
+
+        edge0 = bottom_edge.copy()
+        edge1 = Part.makeLine(bottom_edge.Vertexes[1].Point, offset_bottom_edge.Vertexes[1].Point)
+        edge2 = offset_bottom_edge
+        edge3 = Part.makeLine(offset_bottom_edge.Vertexes[0].Point, bottom_edge.Vertexes[0].Point)
+
+        # make sure all edges are coplanar...
+        ref_z = bottom_edge.CenterOfMass.z
+        for edge in [edge0, edge1, edge2, edge3]:
+            edge.Vertexes[0].Point.z = edge.Vertexes[1].Point.z = ref_z
 
         baseboard_id = f"{wall.id}-{side}"
         baseboard = None
@@ -1331,10 +1350,8 @@ class WallHandler(BaseHandler):
             baseboard = self.get_fc_object(baseboard_id, 'baseboard')
 
         if not baseboard:
-            # I first add a rectangle
-            base = Draft.makeRectangle([p0, p1, p2, p3], face=True, support=None)
-            base.Visibility = False
-            # and then I extrude
+            base = App.ActiveDocument.addObject("Part::Feature", "baseboard")
+            base.Shape = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
             baseboard = App.ActiveDocument.addObject('Part::Extrusion', f"{wall.Label} {side}")
             baseboard.Base = base
 
