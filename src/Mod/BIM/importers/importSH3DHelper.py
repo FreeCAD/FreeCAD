@@ -1634,7 +1634,13 @@ class FurnitureHandler(BaseFurnitureHandler):
             group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
             self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures on this floor", group.Name)
 
-        space = self.get_space(feature.Mesh.BoundBox.Center)
+        if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
+            p = feature.Shape.BoundBox.Center
+        else:
+            p = feature.Mesh.BoundBox.Center
+
+        space = self.get_space(p)
+
         if space:
             space.Group = space.Group + [feature]
         else:
@@ -1680,10 +1686,10 @@ class FurnitureHandler(BaseFurnitureHandler):
 
         if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
             shape = Part.Shape()
-            shape.makeShapeFromMesh(mesh.Topology, 0.100000)
+            shape.makeShapeFromMesh(mesh.Topology, 1)
             equipment = Arch.makeEquipment(name=name)
             equipment.Shape = shape
-            equipment.purgeTouched()
+            # equipment.purgeTouched()
         else:
             equipment = App.ActiveDocument.addObject("Mesh::Feature", name)
             equipment.Mesh = mesh
