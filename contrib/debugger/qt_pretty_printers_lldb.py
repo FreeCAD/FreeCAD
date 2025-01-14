@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long
 """
- QT Pretty Printer for LLDB 
+ QT Pretty Printer for LLDB
 
  Currently supports displaying the following QT types in the debugger
      * QString
@@ -11,7 +11,7 @@
  (lldb) command script import {Your FreeCAD source dir}/contrib/debugger/qt_pretty_printers_lldb.py
 
  (lldb) frame variable test
- (QString) test = "This is a test string." 
+ (QString) test = "This is a test string."
  (lldb)
 
 
@@ -27,8 +27,8 @@
              "stopOnEntry": false,
              "program": "${workspaceFolder}/build/bin/FreeCAD",
              "args": [],
-             "cwd": "${workspaceFolder}/build/",            
-             "preLaunchTask": "CMake: build",         
+             "cwd": "${workspaceFolder}/build/",
+             "preLaunchTask": "CMake: build",      
              "preRunCommands": [
                  "command script import ${workspaceFolder}/contrib/debugger/qt_pretty_printers_lldb.py"
              ]
@@ -37,8 +37,8 @@
  }
 
 
- Note: There may be variances between different operating systems and/or build configurations 
-       in how QString data is stored internally.  This was tested on debian12/amd64 and 
+ Note: There may be variances between different operating systems and/or build configurations
+       in how QString data is stored internally.  This was tested on debian12/amd64 and
        macOS/arm64. @BootsSiR
 """
 # pylint: enable=line-too-long

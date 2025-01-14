@@ -63,7 +63,7 @@
  }
 
 
- Note: There may be variances between different operating systems and/or build configurations 
+ Note: There may be variances between different operating systems and/or build configurations
        in how QString data is stored internally.  This was tested on debian12/amd64. @BootsSiR
 """
 # pylint: enable=line-too-long
@@ -122,4 +122,3 @@ def register_qt_printers(objfile=None):
         print("QT pretty-printer script loaded.")
         gdb.pretty_printers.append(lookup_function)
         print("QT pretty-printer registered.")
-        
