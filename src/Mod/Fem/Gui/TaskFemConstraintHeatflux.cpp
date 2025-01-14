@@ -111,16 +111,16 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
 
     // Fill data into dialog elements
     ui->qsb_ambienttemp_conv->setMinimum(0);
-    ui->qsb_ambienttemp_conv->setMaximum(FLOAT_MAX);
+    ui->qsb_ambienttemp_conv->setMaximum(FLT_MAX);
 
     ui->qsb_film_coef->setMinimum(0);
-    ui->qsb_film_coef->setMaximum(FLOAT_MAX);
+    ui->qsb_film_coef->setMaximum(FLT_MAX);
 
     ui->dsb_emissivity->setMinimum(0);
-    ui->dsb_emissivity->setMaximum(FLOAT_MAX);
+    ui->dsb_emissivity->setMaximum(FLT_MAX);
 
     ui->qsb_ambienttemp_rad->setMinimum(0);
-    ui->qsb_ambienttemp_rad->setMaximum(FLOAT_MAX);
+    ui->qsb_ambienttemp_rad->setMaximum(FLT_MAX);
 
     ui->qsb_ambienttemp_conv->setValue(pcConstraint->AmbientTemp.getQuantityValue());
     ui->qsb_film_coef->setValue(pcConstraint->FilmCoef.getQuantityValue());

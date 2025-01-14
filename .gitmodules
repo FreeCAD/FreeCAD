@@ -7,3 +7,7 @@
 [submodule "src/3rdParty/GSL"]
 	path = src/3rdParty/GSL
 	url = https://github.com/microsoft/GSL
+[submodule "src/3rdParty/libE57Format"]
+	path = src/3rdParty/libE57Format
+	url = https://github.com/asmaloney/libE57Format
+
