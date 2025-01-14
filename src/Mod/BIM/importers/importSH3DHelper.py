@@ -616,18 +616,18 @@ class BaseHandler:
         """
         return self.importer.get_floor(level_id)
 
-    def get_space(self, point):
+    def get_space(self, p):
         """Returns the Space this object belongs to.
 
         An point belongs to a space if it is the closest space below that point
 
         Args:
-            point (point): the point for which to determine the closest space.
+            p (point): the point for which to determine the closest space.
 
         Returns:
             Space: the space the object belongs to or None
         """
-        return self.importer.get_space(point)
+        return self.importer.get_space(p)
 
     def _get_upper_face(self, faces):
         """Returns the upper face of a given list of faces
@@ -860,7 +860,9 @@ class WallHandler(BaseHandler):
         if self.importer.preferences["IMPORT_FURNITURES"]:
             wall.recompute(True)
             for baseboard in elm.findall('baseboard'):
-                self._import_baseboard(floor, wall, baseboard)
+                space = self._import_baseboard(floor, wall, baseboard)
+                if space:
+                    space.Boundaries = space.Boundaries + [wall]
 
     def _get_sibling_wall(self, parent, wall, sibling_attribute_name):
         sibling_wall_id = wall.get(sibling_attribute_name, None)
@@ -1376,7 +1378,17 @@ class WallHandler(BaseHandler):
             group = floor.newObject("App::DocumentObjectGroup", "Baseboards")
             self.setp(floor, "App::PropertyString", "BaseboardGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
 
-        floor.getObject(floor.BaseboardGroupName).addObject(baseboard)
+        baseboard.recompute(True)
+
+        space = self.get_space(baseboard.Shape.BoundBox.Center)
+        if space:
+            space.Group = space.Group + [baseboard]
+        else:
+            _log(f"No space found to enclose {baseboard.Label}. Adding to generic group.")
+            floor.getObject(floor.BaseboardGroupName).addObject(baseboard)
+
+        # Returns the Space for the wall to be added to the space.Boundaries
+        return space
 
 
 class BaseFurnitureHandler(BaseHandler):
