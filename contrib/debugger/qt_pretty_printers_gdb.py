@@ -122,3 +122,4 @@ def register_qt_printers(objfile=None):
         print("QT pretty-printer script loaded.")
         gdb.pretty_printers.append(lookup_function)
         print("QT pretty-printer registered.")
+        
