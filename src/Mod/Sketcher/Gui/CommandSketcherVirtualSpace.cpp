@@ -61,9 +61,7 @@ bool isSketcherVirtualSpaceActive(Gui::Document* doc, bool actsOnSelection)
                 if (!actsOnSelection) {
                     return true;
                 }
-                else if (Gui::Selection().countObjectsOfType(
-                             Sketcher::SketchObject::getClassTypeId())
-                         > 0) {
+                else if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
                     return true;
                 }
             }
@@ -111,7 +109,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
 
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
         // Now we check whether we have a constraint selected or not.
         selection = getSelection().getSelectionEx();
 

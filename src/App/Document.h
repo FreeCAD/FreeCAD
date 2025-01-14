@@ -338,7 +338,9 @@ public:
     /// Returns an array with the correct types already.
     template<typename T>
     inline std::vector<T*> getObjectsOfType() const;
-    int countObjectsOfType(const Base::Type& typeId) const;
+    template<typename T>
+    inline int countObjectsOfType() const;
+    int countObjectsOfType(const char* typeName) const;
     /// get the number of objects in the document
     int countObjects() const;
     //@}
@@ -590,6 +592,7 @@ protected:
     std::vector<App::DocumentObject*> readObjects(Base::XMLReader& reader);
     void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer& writer) const;
     bool saveToFile(const char* filename) const;
+    int countObjectsOfType(const Base::Type& typeId) const;
 
     void onBeforeChange(const Property* prop) override;
     void onChanged(const Property* prop) override;
@@ -649,6 +652,14 @@ inline std::vector<T*> Document::getObjectsOfType() const
         type.push_back(static_cast<T*>(it));
     }
     return type;
+}
+
+template<typename T>
+inline int Document::countObjectsOfType() const
+{
+    static_assert(std::is_base_of<App::DocumentObject, T>::value,
+                  "T must be derived from App::DocumentObject");
+    return this->countObjectsOfType(T::getClassTypeId());
 }
 
 

@@ -233,7 +233,7 @@ void CmdApproxPlane::activated(int)
 
 bool CmdApproxPlane::isActive()
 {
-    if (getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<App::GeoFeature>() > 0) {
         return true;
     }
     return false;
@@ -301,7 +301,7 @@ void CmdApproxCylinder::activated(int)
 
 bool CmdApproxCylinder::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -349,7 +349,7 @@ void CmdApproxSphere::activated(int)
 
 bool CmdApproxSphere::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -407,7 +407,7 @@ void CmdApproxPolynomial::activated(int)
 
 bool CmdApproxPolynomial::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -442,7 +442,7 @@ bool CmdSegmentation::isActive()
     if (Gui::Control().activeDialog()) {
         return false;
     }
-    return Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSegmentationManual)
@@ -521,7 +521,7 @@ void CmdSegmentationFromComponents::activated(int)
 
 bool CmdSegmentationFromComponents::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -591,7 +591,7 @@ void CmdMeshBoundary::activated(int)
 
 bool CmdMeshBoundary::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return Gui::Selection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPoissonReconstruction)
@@ -676,7 +676,7 @@ void CmdViewTriangulation::activated(int)
 
 bool CmdViewTriangulation::isActive()
 {
-    return (Gui::Selection().countObjectsOfType(Points::Structured::getClassTypeId()) > 0);
+    return (Gui::Selection().countObjectsOfType<Points::Structured>() > 0);
 }
 
 void CreateReverseEngineeringCommands()
