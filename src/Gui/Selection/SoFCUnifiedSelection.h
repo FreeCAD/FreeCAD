@@ -50,7 +50,7 @@ class ViewProviderDocumentObject;
 /**  Unified Selection node
  *  This is the new selection node for the 3D Viewer which will
  *  gradually remove all the low level selection nodes in the view
- *  provider. The handling of the highlighting and the selection will
+ *  provider. The handling of the preselection and the selection will
  *  be unified here.
  *  \author Jürgen Riegel
  */
@@ -65,7 +65,7 @@ public:
     SoFCUnifiedSelection();
     void applySettings();
 
-    enum HighlightModes {
+    enum SelectionModes {
         AUTO, ON, OFF
     };
 
@@ -74,7 +74,7 @@ public:
 
     SoSFColor colorHighlight;
     SoSFColor colorSelection;
-    SoSFEnum highlightMode;
+    SoSFEnum preselectionMode;
     SoSFEnum selectionMode;
     SoSFBool selectionEnabled;
     SoSFBool useNewSelection;
@@ -109,8 +109,8 @@ private:
         std::string element;
     };
 
-    bool setHighlight(const PickedInfo &);
-    bool setHighlight(SoFullPath *path, const SoDetail *det,
+    bool setPreselect(const PickedInfo &);
+    bool setPreselect(SoFullPath *path, const SoDetail *det,
             ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z);
     bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown=false);
 

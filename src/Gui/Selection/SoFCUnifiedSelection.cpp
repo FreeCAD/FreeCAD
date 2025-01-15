@@ -115,15 +115,15 @@ SoFCUnifiedSelection::SoFCUnifiedSelection()
 
     SO_NODE_ADD_FIELD(colorHighlight,   (SbColor(1.0f, 0.6f, 0.0f)));
     SO_NODE_ADD_FIELD(colorSelection,   (SbColor(0.1f, 0.8f, 0.1f)));
-    SO_NODE_ADD_FIELD(highlightMode,    (AUTO));
+    SO_NODE_ADD_FIELD(preselectionMode, (AUTO));
     SO_NODE_ADD_FIELD(selectionMode,    (ON));
     SO_NODE_ADD_FIELD(selectionEnabled, (true));
     SO_NODE_ADD_FIELD(useNewSelection,  (true));
 
-    SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, AUTO);
-    SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, ON);
-    SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, OFF);
-    SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
+    SO_NODE_DEFINE_ENUM_VALUE(PreselectionModes, AUTO);
+    SO_NODE_DEFINE_ENUM_VALUE(PreselectionModes, ON);
+    SO_NODE_DEFINE_ENUM_VALUE(PreselectionModes, OFF);
+    SO_NODE_SET_SF_ENUM_TYPE (preselectionMode, PreselectionModes);
 
     // Documentation of SoFullPath:
     // Since the SoFullPath is derived from SoPath and contains no private data, you can cast SoPath instances to the SoFullPath type.
@@ -177,7 +177,7 @@ void SoFCUnifiedSelection::applySettings()
     bool enablePre = hGrp->GetBool("EnablePreselection", true);
     bool enableSel = hGrp->GetBool("EnableSelection", true);
     if (!enablePre) {
-        this->highlightMode = SoFCUnifiedSelection::OFF;
+        this->preselectionMode = SoFCUnifiedSelection::OFF;
     }
     else {
         // Search for a user defined value with the current color as default
@@ -315,10 +315,10 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
         auto preaction = static_cast<SoFCEnableHighlightAction*>(action);
         if (preaction->highlight) {
-            this->highlightMode = SoFCUnifiedSelection::AUTO;
+            this->preselectionMode = SoFCUnifiedSelection::AUTO;
         }
         else {
-            this->highlightMode = SoFCUnifiedSelection::OFF;
+            this->preselectionMode = SoFCUnifiedSelection::OFF;
         }
     }
 
@@ -353,7 +353,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 currenthighlight = nullptr;
             }
         }
-        else if (highlightMode.getValue() != OFF
+        else if (preselectionMode.getValue() != OFF
                     && hilaction->SelChange.Type == SelectionChanges::SetPreselect) {
             if (currenthighlight) {
                 SoHighlightElementAction hlAction;
@@ -487,15 +487,16 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     inherited::doAction( action );
 }
 
-bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
+bool SoFCUnifiedSelection::setPreselect(const PickedInfo &info) {
     if(!info.pp)
-        return setHighlight(nullptr,nullptr,nullptr,nullptr,0.0,0.0,0.0);
+        return setPreselect(nullptr,nullptr,nullptr,nullptr,0.0,0.0,0.0);
+
     const auto &pt = info.pp->getPoint();
-    return setHighlight(static_cast<SoFullPath*>(info.pp->getPath()),
+    return setPreselect(static_cast<SoFullPath*>(info.pp->getPath()),
             info.pp->getDetail(), info.vpd, info.element.c_str(), pt[0],pt[1],pt[2]);
 }
 
-bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
+bool SoFCUnifiedSelection::setPreselect(SoFullPath *path, const SoDetail *det,
         ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z)
 {
     Base::FlagToggler<SbBool> flag(setPreSelection);
@@ -597,7 +598,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     auto pPath = static_cast<SoFullPath *>(pp->getPath());
     const auto &pt = pp->getPoint();
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
+    auto preselectionMode = static_cast<SelectionModes>(this->preselectionMode.getValue());
     static char buf[513];
     auto subName = info.element;
     std::string objectName = objname;
@@ -618,7 +619,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
                 return false;
             }
 
-            if (ok && mymode == OFF) {
+            if (ok && preselectionMode == OFF) {
                 snprintf(buf, 512, "Selected: %s.%s.%s (%g, %g, %g)",
                          docname, objname, info.element.c_str(), fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,
                          fabs(pt[1]) > 1e-7 ? pt[1] : 0.0, fabs(pt[2]) > 1e-7 ? pt[2] : 0.0);
@@ -701,7 +702,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         if (ok)
             type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
 
-        if (mymode == OFF) {
+        if (preselectionMode == OFF) {
             snprintf(buf, 512, "Selected: %s.%s.%s (%g, %g, %g)",
                      docname, objectName.c_str(), subName.c_str(), fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,
                      fabs(pt[1]) > 1e-7 ? pt[1] : 0.0, fabs(pt[2]) > 1e-7 ? pt[2] : 0.0);
@@ -734,24 +735,24 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         return;
     }
 
-    auto highlightMode = static_cast<HighlightModes>(this->highlightMode.getValue());
+    auto preselectionMode = static_cast<SelectionModes>(this->preselectionMode.getValue());
     const SoEvent * event = action->getEvent();
 
     //
-    // If this is a mouseMotion event, then check for locate highlighting
+    // If this is a mouseMotion event, then check for preselected entities.
     //
     bool isMouseMotionEvent = event->isOfType(SoLocation2Event::getClassTypeId());
     if (isMouseMotionEvent) {
         // NOTE: If preselection is off then we do not check for a picked point because otherwise this search may slow
         // down extremely the system on really big data sets. In this case we just check for a picked point if the data
         // set has been selected.
-        if (highlightMode == AUTO || highlightMode == ON) {
+        if (preselectionMode == AUTO || preselectionMode == ON) {
             // check to see if the mouse is over our geometry...
             auto infos = this->getPickedList(action,true);
             if(!infos.empty())
-                setHighlight(infos[0]);
+                setPreselect(infos[0]);
             else {
-                setHighlight(PickedInfo());
+                setPreselect(PickedInfo());
                 if (this->preSelection > 0) {
                     this->preSelection = 0;
                     // touch() makes sure to call GLRenderBelowPath so that the cursor can be updated
