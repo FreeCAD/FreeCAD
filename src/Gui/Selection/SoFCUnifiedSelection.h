@@ -80,12 +80,9 @@ public:
     SoSFBool useNewSelection;
 
     void doAction(SoAction *action) override;
-    //virtual void GLRender(SoGLRenderAction * action);
 
     void handleEvent(SoHandleEventAction * action) override;
     void GLRenderBelowPath(SoGLRenderAction * action) override;
-    //virtual void GLRenderInPath(SoGLRenderAction * action);
-    //static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
     static bool hasHighlight();
 
@@ -93,14 +90,8 @@ public:
 
 protected:
     ~SoFCUnifiedSelection() override;
-    //virtual void redrawHighlighted(SoAction * act, SbBool flag);
-    //virtual SbBool readInstance(SoInput *  in, unsigned short  flags);
 
 private:
-    //static void turnoffcurrent(SoAction * action);
-    //void setOverride(SoGLRenderAction * action);
-    //SbBool isHighlighted(SoAction *action);
-    //SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
     static int getPriority(const SoPickedPoint* p);
 
     struct PickedInfo {
@@ -118,7 +109,7 @@ private:
 
     Gui::Document       *pcDocument{nullptr};
 
-    static SoFullPath * currenthighlight;
+    static SoFullPath * currentHighlightPath;
     SoFullPath * detailPath;
 
     SbBool setPreSelection;

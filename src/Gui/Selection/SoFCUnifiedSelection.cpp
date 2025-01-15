@@ -100,7 +100,7 @@ void printPreselectionInfo(const char* documentName,
                            double precision);
 }
 
-SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = nullptr;
+SoFullPath * Gui::SoFCUnifiedSelection::currentHighlightPath = nullptr;
 
 // *************************************************************************
 
@@ -144,9 +144,9 @@ SoFCUnifiedSelection::~SoFCUnifiedSelection()
 {
     // If we're being deleted and we're the current highlight,
     // NULL out that variable
-    if (currenthighlight) {
-        currenthighlight->unref();
-        currenthighlight = nullptr;
+    if (currentHighlightPath) {
+        currentHighlightPath->unref();
+        currentHighlightPath = nullptr;
     }
     if (detailPath) {
         detailPath->unref();
@@ -167,16 +167,15 @@ void SoFCUnifiedSelection::finish()
 }
 
 bool SoFCUnifiedSelection::hasHighlight() {
-    return currenthighlight != nullptr;
+    return currentHighlightPath != nullptr;
 }
 
 void SoFCUnifiedSelection::applySettings()
 {
     float transparency;
     ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    bool enablePre = hGrp->GetBool("EnablePreselection", true);
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    if (!enablePre) {
+    bool enablePreselection = hGrp->GetBool("EnablePreselection", true);
+    if (!enablePreselection) {
         this->preselectionMode = SoFCUnifiedSelection::OFF;
     }
     else {
@@ -188,7 +187,8 @@ void SoFCUnifiedSelection::applySettings()
         this->colorHighlight.setValue(highlightColor);
     }
 
-    if (!enableSel) {
+    bool enableSelection = hGrp->GetBool("EnableSelection", true);
+    if (!enableSelection) {
         this->selectionMode = SoFCUnifiedSelection::OFF;
     }
     else {
@@ -313,8 +313,8 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
 void SoFCUnifiedSelection::doAction(SoAction *action)
 {
     if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-        auto preaction = static_cast<SoFCEnableHighlightAction*>(action);
-        if (preaction->highlight) {
+        auto enableHighlightAction = static_cast<SoFCEnableHighlightAction*>(action);
+        if (enableHighlightAction->highlight) {
             this->preselectionMode = SoFCUnifiedSelection::AUTO;
         }
         else {
@@ -323,8 +323,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
-        auto selaction = static_cast<SoFCEnableSelectionAction*>(action);
-        if (selaction->selection) {
+        auto enableSelectionAction = static_cast<SoFCEnableSelectionAction*>(action);
+        if (enableSelectionAction->selection) {
             this->selectionMode = SoFCUnifiedSelection::ON;
         }
         else {
@@ -333,52 +333,52 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCSelectionColorAction::getClassTypeId()) {
-        auto colaction = static_cast<SoFCSelectionColorAction*>(action);
-        this->colorSelection = colaction->selectionColor;
+        auto selectionColorAction = static_cast<SoFCSelectionColorAction*>(action);
+        this->colorSelection = selectionColorAction->selectionColor;
     }
 
     if (action->getTypeId() == SoFCHighlightColorAction::getClassTypeId()) {
-        auto colaction = static_cast<SoFCHighlightColorAction*>(action);
-        this->colorHighlight = colaction->highlightColor;
+        auto highlightColorAction = static_cast<SoFCHighlightColorAction*>(action);
+        this->colorHighlight = highlightColorAction->highlightColor;
     }
 
     if (action->getTypeId() == SoFCHighlightAction::getClassTypeId()) {
-        auto hilaction = static_cast<SoFCHighlightAction*>(action);
+        auto highlightAction = static_cast<SoFCHighlightAction*>(action);
         // Do not clear currently highlighted object when setting new pre-selection
-        if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
-            if (currenthighlight) {
-                SoHighlightElementAction hlAction;
-                hlAction.apply(currenthighlight);
-                currenthighlight->unref();
-                currenthighlight = nullptr;
+        if (!setPreSelection && highlightAction->SelChange.Type == SelectionChanges::RmvPreselect) {
+            if (currentHighlightPath) {
+                SoHighlightElementAction highlightAction;
+                highlightAction.apply(currentHighlightPath);
+                currentHighlightPath->unref();
+                currentHighlightPath = nullptr;
             }
         }
         else if (preselectionMode.getValue() != OFF
-                    && hilaction->SelChange.Type == SelectionChanges::SetPreselect) {
-            if (currenthighlight) {
-                SoHighlightElementAction hlAction;
-                hlAction.apply(currenthighlight);
-                currenthighlight->unref();
-                currenthighlight = nullptr;
+                    && highlightAction->SelChange.Type == SelectionChanges::SetPreselect) {
+            if (currentHighlightPath) {
+                SoHighlightElementAction highlightAction;
+                highlightAction.apply(currentHighlightPath);
+                currentHighlightPath->unref();
+                currentHighlightPath = nullptr;
             }
 
-            App::Document* doc = App::GetApplication().getDocument(hilaction->SelChange.pDocName);
-            App::DocumentObject* obj = doc->getObject(hilaction->SelChange.pObjectName);
+            App::Document* doc = App::GetApplication().getDocument(highlightAction->SelChange.pDocName);
+            App::DocumentObject* obj = doc->getObject(highlightAction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
-            SoDetail* detail = vp->getDetail(hilaction->SelChange.pSubName);
+            SoDetail* detail = vp->getDetail(highlightAction->SelChange.pSubName);
 
-            SoHighlightElementAction hlAction;
-            hlAction.setHighlighted(true);
-            hlAction.setColor(this->colorHighlight.getValue());
-            hlAction.setElement(detail);
-            hlAction.apply(vp->getRoot());
+            SoHighlightElementAction highlightAction;
+            highlightAction.setHighlighted(true);
+            highlightAction.setColor(this->colorHighlight.getValue());
+            highlightAction.setElement(detail);
+            highlightAction.apply(vp->getRoot());
             delete detail;
 
             SoSearchAction sa;
             sa.setNode(vp->getRoot());
             sa.apply(vp->getRoot());
-            currenthighlight = static_cast<SoFullPath*>(sa.getPath()->copy());
-            currenthighlight->ref();
+            currentHighlightPath = static_cast<SoFullPath*>(sa.getPath()->copy());
+            currentHighlightPath->ref();
         }
 
         if (useNewSelection.getValue())
@@ -386,30 +386,30 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
-        auto selaction = static_cast<SoFCSelectionAction*>(action);
+        auto selectionAction = static_cast<SoFCSelectionAction*>(action);
         if(selectionMode.getValue() == ON
-            && (selaction->SelChange.Type == SelectionChanges::AddSelection
-                || selaction->SelChange.Type == SelectionChanges::RmvSelection))
+            && (selectionAction->SelChange.Type == SelectionChanges::AddSelection
+                || selectionAction->SelChange.Type == SelectionChanges::RmvSelection))
         {
             // selection changes inside the 3d view are handled in handleEvent()
-            App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
-            App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
+            App::Document* doc = App::GetApplication().getDocument(selectionAction->SelChange.pDocName);
+            App::DocumentObject* obj = doc->getObject(selectionAction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
             if (vp && (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable()) {
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
-                auto subName = selaction->SelChange.pSubName;
+                auto subName = selectionAction->SelChange.pSubName;
                 App::ElementNamePair elementName;;
                 App::GeoFeature::resolveElement(obj, subName, elementName);
                 if (Data::isMappedElement(subName)
                     && !elementName.oldName.empty()) {      // If we have a shortened element name
                     subName = elementName.oldName.c_str();  // use it.
                 }
-                if(!selaction->SelChange.pSubName || !selaction->SelChange.pSubName[0] ||
+                if(!selectionAction->SelChange.pSubName || !selectionAction->SelChange.pSubName[0] ||
                     vp->getDetailPath(subName,detailPath,true,detail))
                 {
                     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-                    if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
+                    if (selectionAction->SelChange.Type == SelectionChanges::AddSelection) {
                         if (detail)
                             type = SoSelectionElementAction::Append;
                         else
@@ -434,13 +434,13 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 delete detail;
             }
         }
-        else if (selaction->SelChange.Type == SelectionChanges::ClrSelection) {
+        else if (selectionAction->SelChange.Type == SelectionChanges::ClrSelection) {
             SoSelectionElementAction selectionAction(SoSelectionElementAction::None);
             for(int i=0;i<this->getNumChildren();++i)
                 selectionAction.apply(this->getChild(i));
         }
         else if(selectionMode.getValue() == ON
-                    && selaction->SelChange.Type == SelectionChanges::SetSelection) {
+                    && selectionAction->SelChange.Type == SelectionChanges::SetSelection) {
             std::vector<ViewProvider*> vps;
             if (this->pcDocument)
                 vps = this->pcDocument->getViewProvidersOfType(ViewProviderDocumentObject::getClassTypeId());
@@ -459,22 +459,22 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 }
             }
         }
-        else if (selaction->SelChange.Type == SelectionChanges::SetPreselectSignal) {
+        else if (selectionAction->SelChange.Type == SelectionChanges::SetPreselectSignal) {
             // selection changes inside the 3d view are handled in handleEvent()
-            App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
-            App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
+            App::Document* doc = App::GetApplication().getDocument(selectionAction->SelChange.pDocName);
+            App::DocumentObject* obj = doc->getObject(selectionAction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()) &&
                 (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable())
             {
                 detailPath->truncate(0);
                 SoDetail *det = nullptr;
-                if(vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,det)) {
-                    setHighlight(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
-                            selaction->SelChange.pSubName,
-                            selaction->SelChange.x,
-                            selaction->SelChange.y,
-                            selaction->SelChange.z);
+                if(vp->getDetailPath(selectionAction->SelChange.pSubName,detailPath,true,det)) {
+                    setPreselect(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
+                            selectionAction->SelChange.pSubName,
+                            selectionAction->SelChange.x,
+                            selectionAction->SelChange.y,
+                            selectionAction->SelChange.z);
                 }
                 delete det;
             }
@@ -514,32 +514,32 @@ bool SoFCUnifiedSelection::setPreselect(SoFullPath *path, const SoDetail *det,
 
 
         int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
-        if(ret<0 && currenthighlight)
+        if(ret<0 && currentHighlightPath)
             return true;
 
         if(ret) {
-            if (currenthighlight) {
+            if (currentHighlightPath) {
                 SoHighlightElementAction action;
                 action.setHighlighted(false);
-                action.apply(currenthighlight);
-                currenthighlight->unref();
-                currenthighlight = nullptr;
+                action.apply(currentHighlightPath);
+                currentHighlightPath->unref();
+                currentHighlightPath = nullptr;
             }
-            currenthighlight = static_cast<SoFullPath*>(path->copy());
-            currenthighlight->ref();
+            currentHighlightPath = static_cast<SoFullPath*>(path->copy());
+            currentHighlightPath->ref();
             highlighted = true;
         }
     }
 
-    if(currenthighlight) {
+    if(currentHighlightPath) {
         SoHighlightElementAction action;
         action.setHighlighted(highlighted);
         action.setColor(this->colorHighlight.getValue());
         action.setElement(det);
-        action.apply(currenthighlight);
+        action.apply(currentHighlightPath);
         if(!highlighted) {
-            currenthighlight->unref();
-            currenthighlight = nullptr;
+            currentHighlightPath->unref();
+            currentHighlightPath = nullptr;
             Selection().rmvPreselect();
         }
         this->touch();
@@ -1644,9 +1644,9 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     }
 
     if(action->isOfType(SoHighlightElementAction::getClassTypeId())) {
-        auto hlAction = static_cast<SoHighlightElementAction*>(action);
-        if(hlAction->isHighlighted()) {
-            if(hlAction->getElement()) {
+        auto highlightAction = static_cast<SoHighlightElementAction*>(action);
+        if(highlightAction->isHighlighted()) {
+            if(highlightAction->getElement()) {
                 auto ctx = getActionContext(action,this,SelContextPtr(),false);
                 if(ctx && ctx->hlAll) {
                     ctx->hlAll = false;
@@ -1656,7 +1656,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
                 auto ctx = getActionContext(action,this,SelContextPtr());
                 assert(ctx);
                 ctx->hlAll = true;
-                ctx->hlColor = hlAction->getColor();
+                ctx->hlColor = highlightAction->getColor();
                 touch();
                 return false;
             }
