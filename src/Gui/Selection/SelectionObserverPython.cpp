@@ -32,37 +32,16 @@ using namespace Gui;
 
 std::vector<SelectionObserverPython*> SelectionObserverPython::_instances;
 
-SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, ResolveMode resolve)
-    : SelectionObserver(true, resolve), inst(obj)
+void SelectionObserverPythonHandler::init(const Py::Object& obj)
 {
+    this->inst = obj;
+
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj.ptr(),#_name,py_##_name);
     FC_PY_SEL_OBSERVER
 }
 
-SelectionObserverPython::~SelectionObserverPython() = default;
-
-void SelectionObserverPython::addObserver(const Py::Object& obj, ResolveMode resolve)
-{
-    _instances.push_back(new SelectionObserverPython(obj, resolve));
-}
-
-void SelectionObserverPython::removeObserver(const Py::Object& obj)
-{
-    SelectionObserverPython* obs=nullptr;
-    for (std::vector<SelectionObserverPython*>::iterator it =
-        _instances.begin(); it != _instances.end(); ++it) {
-        if ((*it)->inst == obj) {
-            obs = *it;
-            _instances.erase(it);
-            break;
-        }
-    }
-
-    delete obs;
-}
-
-void SelectionObserverPython::onSelectionChanged(const SelectionChanges& msg)
+void SelectionObserverPythonHandler::handleSelectionChanged(const SelectionChanges& msg)
 {
     switch (msg.Type)
     {
@@ -92,7 +71,7 @@ void SelectionObserverPython::onSelectionChanged(const SelectionChanges& msg)
     }
 }
 
-void SelectionObserverPython::pickedListChanged()
+void SelectionObserverPythonHandler::pickedListChanged()
 {
     if(py_pickedListChanged.isNone())
         return;
@@ -106,7 +85,7 @@ void SelectionObserverPython::pickedListChanged()
     }
 }
 
-void SelectionObserverPython::addSelection(const SelectionChanges& msg)
+void SelectionObserverPythonHandler::addSelection(const SelectionChanges& msg)
 {
     if(py_addSelection.isNone())
         return;
@@ -129,7 +108,7 @@ void SelectionObserverPython::addSelection(const SelectionChanges& msg)
     }
 }
 
-void SelectionObserverPython::removeSelection(const SelectionChanges& msg)
+void SelectionObserverPythonHandler::removeSelection(const SelectionChanges& msg)
 {
     if(py_removeSelection.isNone())
         return;
@@ -147,7 +126,7 @@ void SelectionObserverPython::removeSelection(const SelectionChanges& msg)
     }
 }
 
-void SelectionObserverPython::setSelection(const SelectionChanges& msg)
+void SelectionObserverPythonHandler::setSelection(const SelectionChanges& msg)
 {
     if(py_setSelection.isNone())
         return;
@@ -163,7 +142,7 @@ void SelectionObserverPython::setSelection(const SelectionChanges& msg)
     }
 }
 
-void SelectionObserverPython::clearSelection(const SelectionChanges& msg)
+void SelectionObserverPythonHandler::clearSelection(const SelectionChanges& msg)
 {
     if(py_clearSelection.isNone())
         return;
@@ -179,7 +158,7 @@ void SelectionObserverPython::clearSelection(const SelectionChanges& msg)
     }
 }
 
-void SelectionObserverPython::setPreselection(const SelectionChanges& msg)
+void SelectionObserverPythonHandler::setPreselection(const SelectionChanges& msg)
 {
     if(py_setPreselection.isNone())
         return;
@@ -197,7 +176,7 @@ void SelectionObserverPython::setPreselection(const SelectionChanges& msg)
     }
 }
 
-void SelectionObserverPython::removePreselection(const SelectionChanges& msg)
+void SelectionObserverPythonHandler::removePreselection(const SelectionChanges& msg)
 {
     if(py_removePreselection.isNone())
         return;
@@ -213,4 +192,37 @@ void SelectionObserverPython::removePreselection(const SelectionChanges& msg)
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }
+}
+
+
+SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, ResolveMode resolve)
+    : SelectionObserver(true, resolve)
+{
+    this->init(obj);
+}
+
+SelectionObserverPython::~SelectionObserverPython() = default;
+
+void SelectionObserverPython::addObserver(const Py::Object& obj, ResolveMode resolve)
+{
+    _instances.push_back(new SelectionObserverPython(obj, resolve));
+}
+
+void SelectionObserverPython::removeObserver(const Py::Object& obj)
+{
+    SelectionObserverPython* obs=nullptr;
+    for (auto it =_instances.begin(); it != _instances.end(); ++it) {
+        if ((*it)->inst == obj) {
+            obs = *it;
+            _instances.erase(it);
+            break;
+        }
+    }
+
+    delete obs;
+}
+
+void SelectionObserverPython::onSelectionChanged(const SelectionChanges& msg)
+{
+    handleSelectionChanged(msg);
 }
