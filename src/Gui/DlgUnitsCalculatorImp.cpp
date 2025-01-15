@@ -105,7 +105,7 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
           << Base::Unit::Volume << Base::Unit::VolumeFlowRate
           << Base::Unit::VolumetricThermalExpansionCoefficient << Base::Unit::Work;
     for (const Base::Unit& it : units) {
-        ui->unitsBox->addItem(it.getTypeString());
+        ui->unitsBox->addItem(QString::fromStdString(it.getTypeString()));
     }
 
     ui->quantitySpinBox->setValue(1.0);
@@ -138,20 +138,21 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
     // explicitly check for "ee" like in "eeV" because this would trigger an exception in Base::Unit
     // since it expects then a scientific notation number like "1e3"
     if ((ui->UnitInput->text().mid(0, 2) == QString::fromLatin1("ee"))
-        || Base::Unit(ui->UnitInput->text()).getTypeString().isEmpty()) {
+        || Base::Unit(ui->UnitInput->text().toStdString()).getTypeString().empty()) {
         ui->ValueOutput->setText(
             QString::fromLatin1("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));
         ui->pushButton_Copy->setEnabled(false);
     }
     else {  // the unit is valid
         // we can only convert units of the same type, thus check
-        if (Base::Unit(ui->UnitInput->text()).getTypeString() != quant.getUnit().getTypeString()) {
+        if (Base::Unit(ui->UnitInput->text().toStdString()).getTypeString()
+            != quant.getUnit().getTypeString()) {
             ui->ValueOutput->setText(tr("unit mismatch"));
             ui->pushButton_Copy->setEnabled(false);
         }
         else {  // the unit is valid and has the same type
             double convertValue =
-                Base::Quantity::parse(QString::fromLatin1("1") + ui->UnitInput->text()).getValue();
+                Base::Quantity::parse("1" + ui->UnitInput->text().toStdString()).getValue();
             // we got now e.g. for "1 in" the value '25.4' because 1 in = 25.4 mm
             // the result is now just quant / convertValue because the input is always in a base
             // unit (an input of "1 cm" will immediately be converted to "10 mm" by Gui::InputField
@@ -201,11 +202,11 @@ void DlgUnitsCalculator::onUnitsBoxActivated(int index)
     // SI units use [m], not [mm] for lengths
     //
     Base::Quantity q = ui->quantitySpinBox->value();
-    int32_t old = q.getUnit().getSignature().Length;
+    int32_t old = q.getUnit().length();
     double value = q.getValue();
 
     Base::Unit unit = units[index];
-    int32_t len = unit.getSignature().Length;
+    int32_t len = unit.length();
     ui->quantitySpinBox->setValue(Base::Quantity(value * std::pow(10.0, 3 * (len - old)), unit));
 }
 

@@ -84,7 +84,7 @@ def getPreferences():
         3 = One compound per storey
     """
     if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
-        Gui.showPreferences("Import-Export", 0)
+        Gui.showPreferencesByName("Import-Export", ":/ui/preferences-ifc.ui")
 
     preferences = {
         'DEBUG': params.get_param_arch("ifcDebug"),
@@ -774,8 +774,9 @@ def getVector(entity,scaling=1000):
     return v
 
 
-def get2DShape(representation,scaling=1000):
-    """Returns a shape from a 2D IfcShapeRepresentation"""
+def get2DShape(representation,scaling=1000,notext=False):
+    """Returns a shape from a 2D IfcShapeRepresentation
+    if notext is True, no Draft text is created"""
 
     import Part
     import DraftVecUtils
@@ -872,16 +873,22 @@ def get2DShape(representation,scaling=1000):
                         pts.append(c)
                     return pts
 
-                for s in el.Segments:
-                    if s.is_a("IfcLineIndex"):
-                        result.append(Part.makePolygon(index2points(s)))
-                    elif s.is_a("IfcArcIndex"):
-                        [p1, p2, p3] = index2points(s)
-                        result.append(Part.Arc(p1, p2, p3))
-                    else:
-                        raise RuntimeError("Illegal IfcIndexedPolyCurve segment")
+                if not el.Segments:
+                    # use all points
+                    verts = [FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0) for c in coords]
+                    verts = [v.multiply(scaling) for v in verts]
+                    result.append(Part.makePolygon(verts))
+                else:
+                    for s in el.Segments:
+                        if s.is_a("IfcLineIndex"):
+                            result.append(Part.makePolygon(index2points(s)))
+                        elif s.is_a("IfcArcIndex"):
+                            [p1, p2, p3] = index2points(s)
+                            result.append(Part.Arc(p1, p2, p3))
+                        else:
+                            raise RuntimeError("Illegal IfcIndexedPolyCurve segment: "+s.is_a())
             else:
-                print("getCurveSet: unhandled element: ", el)
+                print("importIFCHelper.getCurveSet: unhandled element: ", el)
 
         return result
 
@@ -903,6 +910,8 @@ def get2DShape(representation,scaling=1000):
                 else:
                     result = preresult
             elif item.is_a("IfcTextLiteral"):
+                if notext:
+                    continue
                 pl = getPlacement(item.Placement, scaling)
                 if pl:
                     t = Draft.make_text(item.Literal.split(";"), pl)
@@ -1052,7 +1061,7 @@ def applyColorDict(doc,colordict=None):
                 if hasattr(obj.ViewObject,"ShapeColor"):
                     obj.ViewObject.ShapeColor = tuple(color[0:3])
                 if hasattr(obj.ViewObject,"Transparency") and (len(color) >= 4):
-                    obj.ViewObject.Transparency = color[3]
+                    obj.ViewObject.Transparency = 1.0 - color[3]
     else:
         print("No valid color dict to apply")
 

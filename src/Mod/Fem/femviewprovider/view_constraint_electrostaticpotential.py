@@ -36,7 +36,17 @@ from . import view_base_femconstraint
 
 class VPConstraintElectroStaticPotential(view_base_femconstraint.VPBaseFemConstraint):
 
+    def __init__(self, vobj):
+        super().__init__(vobj)
+        mat = vobj.ShapeAppearance[0]
+        mat.DiffuseColor = (1.0, 0.0, 0.2, 0.0)
+        vobj.ShapeAppearance = mat
+
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self, vobj, mode, task_constraint_electrostaticpotential._TaskPanel
         )
+
+    def attach(self, vobj):
+        super().attach(vobj)
+        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintElectrostaticPotential.iv")

@@ -402,7 +402,7 @@ class ArchReference:
                         writemode = False
                 elif "<Property name=\"Shape\" type=\"Part::PropertyPartShape\"" in line:
                     writemode = True
-                elif writemode and "<Part file=" in line:
+                elif writemode and "<Part" in line and "file=" in line:
                     n = re.findall(r'file=\"(.*?)\"',line)
                     if n:
                         part = n[0]

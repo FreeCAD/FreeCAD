@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
+# *   Copyright (c) 2022-2024 FreeCAD Project Association AISBL             *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -32,18 +32,33 @@ import shutil
 import subprocess
 import sys
 from functools import partial
-from typing import Dict, List, Tuple
+from typing import Dict, Iterable, List, Tuple, TypedDict
 
 import addonmanager_freecad_interface as fci
 
-import FreeCAD
-import FreeCADGui
-from freecad.utils import get_python_exe
-from PySide import QtCore, QtGui, QtWidgets
+try:
+    from PySide import QtCore, QtGui, QtWidgets
+    from PySide.QtUiTools import QUiLoader
+except ImportError:
+    try:
+        from PySide6 import QtCore, QtGui, QtWidgets
+        from PySide6.QtUiTools import QUiLoader
+    except ImportError:
+        from PySide2 import QtCore, QtGui, QtWidgets
+        from PySide2.QtUiTools import QUiLoader
+
+try:
+    from freecad.utils import get_python_exe
+except ImportError:
+
+    def get_python_exe():
+        return shutil.which("python")
+
 
 import addonmanager_utilities as utils
 
-translate = FreeCAD.Qt.translate
+translate = fci.translate
+
 
 # pylint: disable=too-few-public-methods
 
@@ -65,30 +80,30 @@ class CheckForPythonPackageUpdatesWorker(QtCore.QThread):
         function in a parent thread. emits a python_package_updates_available signal if updates
         are available for any of the installed Python packages."""
 
-        if check_for_python_package_updates():
+        if python_package_updates_are_available():
             self.python_package_updates_available.emit()
 
 
-def check_for_python_package_updates() -> bool:
+def python_package_updates_are_available() -> bool:
     """Returns True if any of the Python packages installed into the AdditionalPythonPackages
     directory have updates available, or False if they are all up-to-date."""
 
-    vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
+    vendor_path = os.path.join(fci.DataPaths().data_dir, "AdditionalPythonPackages")
     package_counter = 0
     try:
         outdated_packages_stdout = call_pip(["list", "-o", "--path", vendor_path])
     except PipFailed as e:
-        FreeCAD.Console.PrintError(str(e) + "\n")
+        fci.Console.PrintError(str(e) + "\n")
         return False
-    FreeCAD.Console.PrintLog("Output from pip -o:\n")
+    fci.Console.PrintLog("Output from pip -o:\n")
     for line in outdated_packages_stdout:
         if len(line) > 0:
             package_counter += 1
-        FreeCAD.Console.PrintLog(f"  {line}\n")
+        fci.Console.PrintLog(f"  {line}\n")
     return package_counter > 0
 
 
-def call_pip(args) -> List[str]:
+def call_pip(args: List[str]) -> List[str]:
     """Tries to locate the appropriate Python executable and run pip with version checking
     disabled. Fails if Python can't be found or if pip is not installed."""
 
@@ -103,17 +118,64 @@ def call_pip(args) -> List[str]:
         except subprocess.CalledProcessError:
             pip_failed = True
 
-        result = []
         if not pip_failed:
             data = proc.stdout
-            result = data.split("\n")
+            return data.split("\n")
         elif proc:
             raise PipFailed(proc.stderr)
         else:
             raise PipFailed("pip timed out")
     else:
         raise PipFailed("Could not locate Python executable on this system")
-    return result
+
+
+def parse_pip_list_output(all_packages, outdated_packages) -> Dict[str, Dict[str, str]]:
+    """Parses the output from pip into a dictionary with update information in it. The pip
+    output should be an array of lines of text."""
+
+    # All Packages output looks like this:
+    # Package    Version
+    # ---------- -------
+    # gitdb      4.0.9
+    # setuptools 41.2.0
+
+    # Outdated Packages output looks like this:
+    # Package    Version Latest Type
+    # ---------- ------- ------ -----
+    # pip        21.0.1  22.1.2 wheel
+    # setuptools 41.2.0  63.2.0 wheel
+
+    packages = {}
+    skip_counter = 0
+    for line in all_packages:
+        if skip_counter < 2:
+            skip_counter += 1
+            continue
+        entries = line.split()
+        if len(entries) > 1:
+            package_name = entries[0]
+            installed_version = entries[1]
+            packages[package_name] = {
+                "installed_version": installed_version,
+                "available_version": "",
+            }
+
+    skip_counter = 0
+    for line in outdated_packages:
+        if skip_counter < 2:
+            skip_counter += 1
+            continue
+        entries = line.split()
+        if len(entries) > 1:
+            package_name = entries[0]
+            installed_version = entries[1]
+            available_version = entries[2]
+            packages[package_name] = {
+                "installed_version": installed_version,
+                "available_version": available_version,
+            }
+
+    return packages
 
 
 class PythonPackageManager:
@@ -139,14 +201,22 @@ class PythonPackageManager:
                 self.all_packages_stdout = call_pip(["list", "--path", self.vendor_path])
                 self.outdated_packages_stdout = call_pip(["list", "-o", "--path", self.vendor_path])
             except PipFailed as e:
-                FreeCAD.Console.PrintError(str(e) + "\n")
+                fci.Console.PrintError(str(e) + "\n")
                 self.error.emit(str(e))
             self.finished.emit()
 
+    class DependentAddon(TypedDict):
+        name: str
+        optional: bool
+
     def __init__(self, addons):
-        self.dlg = FreeCADGui.PySideUic.loadUi(
+        ui_file = QtCore.QFile(
             os.path.join(os.path.dirname(__file__), "PythonDependencyUpdateDialog.ui")
         )
+        ui_file.open(QtCore.QFile.OpenModeFlag.ReadOnly)
+        loader = QUiLoader()
+        self.dlg = loader.load(ui_file)
+
         self.addons = addons
         self.vendor_path = utils.get_pip_target_directory()
         self.worker_thread = None
@@ -167,9 +237,9 @@ class PythonPackageManager:
                     "This appears to be the first time this version of Python has been used with the Addon Manager. "
                     "Would you like to install the same auto-installed dependencies for it?",
                 ),
-                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             )
-            if result == QtWidgets.QMessageBox.Yes:
+            if result == QtWidgets.QMessageBox.StandardButton.Yes:
                 self._reinstall_all_packages()
 
         self._add_current_python_version()
@@ -198,7 +268,7 @@ class PythonPackageManager:
             QtWidgets.QTableWidgetItem(translate("AddonsInstaller", "Processing, please wait...")),
         )
         self.dlg.tableWidget.horizontalHeader().setSectionResizeMode(
-            0, QtWidgets.QHeaderView.ResizeToContents
+            0, QtWidgets.QHeaderView.ResizeMode.ResizeToContents
         )
 
     def _worker_finished(self):
@@ -206,15 +276,13 @@ class PythonPackageManager:
         all_packages_stdout = self.worker_object.all_packages_stdout
         outdated_packages_stdout = self.worker_object.outdated_packages_stdout
 
-        self.package_list = self._parse_pip_list_output(
-            all_packages_stdout, outdated_packages_stdout
-        )
+        self.package_list = parse_pip_list_output(all_packages_stdout, outdated_packages_stdout)
         self.dlg.buttonUpdateAll.clicked.connect(
             partial(self._update_all_packages, self.package_list)
         )
 
         self.dlg.tableWidget.setRowCount(len(self.package_list))
-        updateButtons = []
+        update_buttons = []
         counter = 0
         update_counter = 0
         self.dlg.tableWidget.setSortingEnabled(False)
@@ -243,10 +311,10 @@ class PythonPackageManager:
                 QtWidgets.QTableWidgetItem(", ".join(dependencies)),
             )
             if len(package_details["available_version"]) > 0:
-                updateButtons.append(QtWidgets.QPushButton(translate("AddonsInstaller", "Update")))
-                updateButtons[-1].setIcon(QtGui.QIcon(":/icons/button_up.svg"))
-                updateButtons[-1].clicked.connect(partial(self._update_package, package_name))
-                self.dlg.tableWidget.setCellWidget(counter, 4, updateButtons[-1])
+                update_buttons.append(QtWidgets.QPushButton(translate("AddonsInstaller", "Update")))
+                update_buttons[-1].setIcon(QtGui.QIcon(":/icons/button_up.svg"))
+                update_buttons[-1].clicked.connect(partial(self._update_package, package_name))
+                self.dlg.tableWidget.setCellWidget(counter, 4, update_buttons[-1])
                 update_counter += 1
             else:
                 self.dlg.tableWidget.removeCellWidget(counter, 3)
@@ -255,16 +323,16 @@ class PythonPackageManager:
 
         self.dlg.tableWidget.horizontalHeader().setStretchLastSection(False)
         self.dlg.tableWidget.horizontalHeader().setSectionResizeMode(
-            0, QtWidgets.QHeaderView.Stretch
+            0, QtWidgets.QHeaderView.ResizeMode.Stretch
         )
         self.dlg.tableWidget.horizontalHeader().setSectionResizeMode(
-            1, QtWidgets.QHeaderView.ResizeToContents
+            1, QtWidgets.QHeaderView.ResizeMode.ResizeToContents
         )
         self.dlg.tableWidget.horizontalHeader().setSectionResizeMode(
-            2, QtWidgets.QHeaderView.ResizeToContents
+            2, QtWidgets.QHeaderView.ResizeMode.ResizeToContents
         )
         self.dlg.tableWidget.horizontalHeader().setSectionResizeMode(
-            3, QtWidgets.QHeaderView.ResizeToContents
+            3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents
         )
 
         if update_counter > 0:
@@ -272,7 +340,7 @@ class PythonPackageManager:
         else:
             self.dlg.buttonUpdateAll.setEnabled(False)
 
-    def _get_dependent_addons(self, package):
+    def _get_dependent_addons(self, package) -> List[DependentAddon]:
         dependent_addons = []
         for addon in self.addons:
             # if addon.installed_version is not None:
@@ -281,54 +349,6 @@ class PythonPackageManager:
             elif package.lower() in addon.python_optional:
                 dependent_addons.append({"name": addon.name, "optional": True})
         return dependent_addons
-
-    def _parse_pip_list_output(self, all_packages, outdated_packages) -> Dict[str, Dict[str, str]]:
-        """Parses the output from pip into a dictionary with update information in it. The pip
-        output should be an array of lines of text."""
-
-        # All Packages output looks like this:
-        # Package    Version
-        # ---------- -------
-        # gitdb      4.0.9
-        # setuptools 41.2.0
-
-        # Outdated Packages output looks like this:
-        # Package    Version Latest Type
-        # ---------- ------- ------ -----
-        # pip        21.0.1  22.1.2 wheel
-        # setuptools 41.2.0  63.2.0 wheel
-
-        packages = {}
-        skip_counter = 0
-        for line in all_packages:
-            if skip_counter < 2:
-                skip_counter += 1
-                continue
-            entries = line.split()
-            if len(entries) > 1:
-                package_name = entries[0]
-                installed_version = entries[1]
-                packages[package_name] = {
-                    "installed_version": installed_version,
-                    "available_version": "",
-                }
-
-        skip_counter = 0
-        for line in outdated_packages:
-            if skip_counter < 2:
-                skip_counter += 1
-                continue
-            entries = line.split()
-            if len(entries) > 1:
-                package_name = entries[0]
-                installed_version = entries[1]
-                available_version = entries[2]
-                packages[package_name] = {
-                    "installed_version": installed_version,
-                    "available_version": available_version,
-                }
-
-        return packages
 
     def _update_package(self, package_name) -> None:
         """Run pip --upgrade on the given package. Updates all dependent packages as well."""
@@ -340,20 +360,22 @@ class PythonPackageManager:
                     QtWidgets.QTableWidgetItem(translate("AddonsInstaller", "Updating...")),
                 )
                 break
-        QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
+        QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.ProcessEventsFlag.AllEvents, 50)
 
         try:
-            FreeCAD.Console.PrintLog(
+            fci.Console.PrintLog(
                 f"Running 'pip install --upgrade --target {self.vendor_path} {package_name}'\n"
             )
             call_pip(["install", "--upgrade", package_name, "--target", self.vendor_path])
             self._create_list_from_pip()
             while self.worker_thread.isRunning():
-                QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
+                QtCore.QCoreApplication.processEvents(
+                    QtCore.QEventLoop.ProcessEventsFlag.AllEvents, 50
+                )
         except PipFailed as e:
-            FreeCAD.Console.PrintError(str(e) + "\n")
+            fci.Console.PrintError(str(e) + "\n")
             return
-        QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
+        QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.ProcessEventsFlag.AllEvents, 50)
 
     def _update_all_packages(self, package_list) -> None:
         """Updates all packages with available updates."""
@@ -365,7 +387,7 @@ class PythonPackageManager:
             ):
                 updates.append(package_name)
 
-        FreeCAD.Console.PrintLog(f"Running update for {len(updates)} Python packages...\n")
+        fci.Console.PrintLog(f"Running update for {len(updates)} Python packages...\n")
         for package_name in updates:
             self._update_package(package_name)
 
@@ -377,7 +399,7 @@ class PythonPackageManager:
 
         migrated = False
 
-        old_directory = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
+        old_directory = os.path.join(fci.DataPaths().data_dir, "AdditionalPythonPackages")
 
         new_directory = utils.get_pip_target_directory()
         new_directory_name = new_directory.rsplit(os.path.sep, 1)[1]
@@ -395,10 +417,10 @@ class PythonPackageManager:
                 continue
             old_path = os.path.join(old_directory, content_item)
             new_path = os.path.join(new_directory, content_item)
-            FreeCAD.Console.PrintLog(
+            fci.Console.PrintLog(
                 f"Moving {content_item} into the new (versioned) directory structure\n"
             )
-            FreeCAD.Console.PrintLog(f"   {old_path} --> {new_path}\n")
+            fci.Console.PrintLog(f"   {old_path} --> {new_path}\n")
             shutil.move(old_path, new_path)
             migrated = True
 
@@ -415,10 +437,9 @@ class PythonPackageManager:
         return migrated
 
     @classmethod
-    def get_known_python_versions(cls) -> List[Tuple[int, int, int]]:
+    def get_known_python_versions(cls) -> List[Tuple[int, int]]:
         """Get the list of Python versions that the Addon Manager has seen before."""
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        known_python_versions_string = pref.GetString("KnownPythonVersions", "[]")
+        known_python_versions_string = fci.Preferences().get("KnownPythonVersions")
         known_python_versions = json.loads(known_python_versions_string)
         return known_python_versions
 
@@ -428,8 +449,7 @@ class PythonPackageManager:
         major, minor, _ = platform.python_version_tuple()
         if not [major, minor] in known_python_versions:
             known_python_versions.append((major, minor))
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        pref.SetString("KnownPythonVersions", json.dumps(known_python_versions))
+        fci.Preferences().set("KnownPythonVersions", json.dumps(known_python_versions))
 
     @classmethod
     def _current_python_version_is_new(cls) -> bool:
@@ -441,8 +461,8 @@ class PythonPackageManager:
             return True
         return False
 
-    def _load_old_package_list(self) -> List[str]:
-        """Gets the list of packages from the package installation manifest"""
+    def _load_old_package_list(self) -> Iterable[str]:
+        """Gets iterable of packages from the package installation manifest"""
 
         known_python_versions = self.get_known_python_versions()
         if not known_python_versions:
@@ -450,12 +470,12 @@ class PythonPackageManager:
         last_version = known_python_versions[-1]
         expected_directory = f"py{last_version[0]}{last_version[1]}"
         expected_directory = os.path.join(
-            FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages", expected_directory
+            fci.DataPaths().data_dir, "AdditionalPythonPackages", expected_directory
         )
         # For now just do this synchronously
         worker_object = PythonPackageManager.PipRunner(expected_directory)
         worker_object.process()
-        packages = self._parse_pip_list_output(
+        packages = parse_pip_list_output(
             worker_object.all_packages_stdout, worker_object.outdated_packages_stdout
         )
         return packages.keys()
@@ -472,5 +492,5 @@ class PythonPackageManager:
         try:
             call_pip(args)
         except PipFailed as e:
-            FreeCAD.Console.PrintError(str(e) + "\n")
+            fci.Console.PrintError(str(e) + "\n")
             return

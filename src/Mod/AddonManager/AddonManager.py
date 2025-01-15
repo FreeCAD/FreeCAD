@@ -56,9 +56,10 @@ import addonmanager_freecad_interface as fci
 import AddonManager_rc  # pylint: disable=unused-import
 from composite_view import CompositeView
 from Widgets.addonmanager_widget_global_buttons import WidgetGlobalButtonBar
+from Widgets.addonmanager_widget_progress_bar import Progress
 from package_list import PackageListItemModel
 from Addon import Addon
-from manage_python_dependencies import (
+from addonmanager_python_deps_gui import (
     PythonPackageManager,
 )
 from addonmanager_cache import local_cache_needs_update
@@ -310,7 +311,7 @@ class CommandAddonManager(QtCore.QObject):
         )
         self.button_bar.python_dependencies.clicked.connect(self.show_python_updates_dialog)
         self.button_bar.developer_tools.clicked.connect(self.show_developer_tools)
-        self.composite_view.package_list.ui.progressBar.stop_clicked.connect(self.stop_update)
+        self.composite_view.package_list.stop_loading.connect(self.stop_update)
         self.composite_view.package_list.setEnabled(False)
         self.composite_view.execute.connect(self.execute_macro)
         self.composite_view.install.connect(self.launch_installer_gui)
@@ -327,9 +328,6 @@ class CommandAddonManager(QtCore.QObject):
 
         # begin populating the table in a set of sub-threads
         self.startup()
-
-        # set the label text to start with
-        self.show_information(translate("AddonsInstaller", "Loading addon information"))
 
         # rock 'n roll!!!
         self.dialog.exec()
@@ -522,9 +520,8 @@ class CommandAddonManager(QtCore.QObject):
             self.update_cache = True  # Make sure to trigger the other cache updates, if the json
             # file was missing
             self.create_addon_list_worker = CreateAddonListWorker()
-            self.create_addon_list_worker.status_message.connect(self.show_information)
             self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
-            self.update_progress_bar(10, 100)
+            self.update_progress_bar(translate("AddonsInstaller", "Creating addon list"), 10, 100)
             self.create_addon_list_worker.finished.connect(
                 self.do_next_startup_phase
             )  # Link to step 2
@@ -534,7 +531,7 @@ class CommandAddonManager(QtCore.QObject):
                 utils.get_cache_file_name("package_cache.json")
             )
             self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
-            self.update_progress_bar(10, 100)
+            self.update_progress_bar(translate("AddonsInstaller", "Loading addon list"), 10, 100)
             self.create_addon_list_worker.finished.connect(
                 self.do_next_startup_phase
             )  # Link to step 2
@@ -568,9 +565,10 @@ class CommandAddonManager(QtCore.QObject):
                 self.update_cache = True  # Make sure to trigger the other cache updates, if the
                 # json file was missing
                 self.create_addon_list_worker = CreateAddonListWorker()
-                self.create_addon_list_worker.status_message.connect(self.show_information)
                 self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
-                self.update_progress_bar(10, 100)
+                self.update_progress_bar(
+                    translate("AddonsInstaller", "Creating macro list"), 10, 100
+                )
                 self.create_addon_list_worker.finished.connect(
                     self.do_next_startup_phase
                 )  # Link to step 2
@@ -608,7 +606,6 @@ class CommandAddonManager(QtCore.QObject):
     def update_metadata_cache(self) -> None:
         if self.update_cache:
             self.update_metadata_cache_worker = UpdateMetadataCacheWorker(self.item_model.repos)
-            self.update_metadata_cache_worker.status_message.connect(self.show_information)
             self.update_metadata_cache_worker.finished.connect(
                 self.do_next_startup_phase
             )  # Link to step 4
@@ -644,7 +641,6 @@ class CommandAddonManager(QtCore.QObject):
     def load_macro_metadata(self) -> None:
         if self.update_cache:
             self.load_macro_metadata_worker = CacheMacroCodeWorker(self.item_model.repos)
-            self.load_macro_metadata_worker.status_message.connect(self.show_information)
             self.load_macro_metadata_worker.update_macro.connect(self.on_package_updated)
             self.load_macro_metadata_worker.progress_made.connect(self.update_progress_bar)
             self.load_macro_metadata_worker.finished.connect(self.do_next_startup_phase)
@@ -798,12 +794,6 @@ class CommandAddonManager(QtCore.QObject):
                 return
         self.item_model.append_item(addon_repo)
 
-    def show_information(self, message: str) -> None:
-        """shows generic text in the information pane"""
-
-        self.composite_view.package_list.ui.progressBar.set_status(message)
-        self.composite_view.package_list.ui.progressBar.repaint()
-
     def append_to_repos_list(self, repo: Addon) -> None:
         """this function allows threads to update the main list of workbenches"""
         self.item_model.append_item(repo)
@@ -862,15 +852,12 @@ class CommandAddonManager(QtCore.QObject):
 
     def hide_progress_widgets(self) -> None:
         """hides the progress bar and related widgets"""
-
-        self.composite_view.package_list.ui.progressBar.hide()
-        self.composite_view.package_list.ui.view_bar.search.setFocus()
+        self.composite_view.package_list.set_loading(False)
 
     def show_progress_widgets(self) -> None:
-        if self.composite_view.package_list.ui.progressBar.isHidden():
-            self.composite_view.package_list.ui.progressBar.show()
+        self.composite_view.package_list.set_loading(True)
 
-    def update_progress_bar(self, current_value: int, max_value: int) -> None:
+    def update_progress_bar(self, message: str, current_value: int, max_value: int) -> None:
         """Update the progress bar, showing it if it's hidden"""
 
         max_value = max_value if max_value > 0 else 1
@@ -881,14 +868,14 @@ class CommandAddonManager(QtCore.QObject):
             current_value = max_value
 
         self.show_progress_widgets()
-        region_size = 100.0 / self.number_of_progress_regions
-        completed_region_portion = (self.current_progress_region - 1) * region_size
-        current_region_portion = (float(current_value) / float(max_value)) * region_size
-        value = completed_region_portion + current_region_portion
-        self.composite_view.package_list.ui.progressBar.set_value(
-            value * 10
-        )  # Out of 1000 segments, so it moves sort of smoothly
-        self.composite_view.package_list.ui.progressBar.repaint()
+
+        progress = Progress(
+            status_text=message,
+            number_of_tasks=self.number_of_progress_regions,
+            current_task=self.current_progress_region - 1,
+            current_task_progress=current_value / max_value,
+        )
+        self.composite_view.package_list.update_loading_progress(progress)
 
     def stop_update(self) -> None:
         self.cleanup_workers()

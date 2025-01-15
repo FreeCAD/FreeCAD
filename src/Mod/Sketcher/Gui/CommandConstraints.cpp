@@ -81,7 +81,7 @@ bool isCreateConstraintActive(Gui::Document* doc)
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
-                if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId())
+                if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>()
                     > 0) {
                     return true;
                 }
@@ -2502,7 +2502,7 @@ protected:
             Base::Vector3d p2 = line->getEndPoint();
             if (fabs(p1.y - p2.y) < Precision::Confusion()) { // effectively vertical
                 p2 = p1 + (p2 - p1).Length() * Base::Vector3d(0.0, 1.0, 0.0);
-                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+                Gui::cmdAppObjectArgs(Obj, "moveGeometry(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
             }
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", GeoId1);
         }
@@ -2530,7 +2530,7 @@ protected:
             Base::Vector3d p2 = line->getEndPoint();
             if (fabs(p1.x - p2.x) < Precision::Confusion()) { // effectively vertical
                 p2 = p1 + (p2 - p1).Length() * Base::Vector3d(1.0, 0.0, 0.0);
-                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+                Gui::cmdAppObjectArgs(Obj, "moveGeometry(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
             }
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", GeoId1);
         }
@@ -10013,7 +10013,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
 
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
         // Now we check whether we have a constraint selected or not.
 
         // get the selection
@@ -10137,7 +10137,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
 
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
         // Now we check whether we have a constraint selected or not.
 
         // get the selection

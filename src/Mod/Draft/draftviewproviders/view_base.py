@@ -289,11 +289,12 @@ class ViewProviderDraft(object):
                             else:
                                 path = "None"
                     if path and vobj.RootNode:
-                        if vobj.RootNode.getChildren().getLength() > 2:
-                            if vobj.RootNode.getChild(2).getChildren().getLength() > 0:
-                                innodes = vobj.RootNode.getChild(2).getChild(0).getChildren().getLength()
+                        switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+                        if switch is not None:
+                            if switch.getChildren().getLength() > 0:
+                                innodes = switch.getChild(0).getChildren().getLength()
                                 if  innodes > 2:
-                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(innodes-1)
+                                    r = switch.getChild(0).getChild(innodes-1)
                                     i = QtCore.QFileInfo(path)
                                     if self.texture:
                                         r.removeChild(self.texture)

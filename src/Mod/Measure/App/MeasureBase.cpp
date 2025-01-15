@@ -180,7 +180,8 @@ QString MeasureBase::getResultString()
     }
 
     if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
-        return static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString();
+        return QString::fromStdString(
+            static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString());
     }
 
 

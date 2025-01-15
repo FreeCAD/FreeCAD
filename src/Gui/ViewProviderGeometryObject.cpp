@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -91,17 +92,24 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
                       App::Prop_None,
                       "Set if the object is selectable in the 3d view");
 
+    pickStyle = new SoPickStyle();
+    pickStyle->ref();
+    pickStyle->style.setValue(SoPickStyle::SHAPE);
+    pcRoot->insertChild(pickStyle, 1);
     Selectable.setValue(isSelectionEnabled());
 
     pcShapeMaterial = new SoMaterial;
     setCoinAppearance(mat);
     pcShapeMaterial->ref();
+    pcShapeMaterial->setName("ShapeMaterial");
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();
+    pcBoundingBox->setName("BoundingBox");
 
     pcBoundColor = new SoBaseColor();
     pcBoundColor->ref();
+    pcBoundColor->setName("BoundColor");
 
     sPixmap = "Feature";
 }
@@ -111,6 +119,7 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
     pcShapeMaterial->unref();
     pcBoundingBox->unref();
     pcBoundColor->unref();
+    pickStyle->unref();
 }
 
 bool ViewProviderGeometryObject::isSelectionEnabled() const
@@ -296,6 +305,7 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         blue = ((bbcol >> 8) & 0xff) / 255.0F;
 
         pcBoundSwitch = new SoSwitch();
+        pcBoundSwitch->setName("BoundSwitch");
         auto pBoundingSep = new SoSeparator();
         auto lineStyle = new SoDrawStyle;
         lineStyle->lineWidth = 2.0F;
@@ -348,6 +358,8 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
             }
         }
     }
+
+    pickStyle->style.setValue(selectable ? SoPickStyle::SHAPE : SoPickStyle::UNPICKABLE);
 }
 
 PyObject* ViewProviderGeometryObject::getPyObject()

@@ -141,8 +141,13 @@ TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sket
         dir = -dir;
         cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
     }
-    struct Part::cutTopoShapeFaces *nearFace;
-    struct Part::cutTopoShapeFaces *farFace;
+
+    if (cfaces.empty()) {
+        return shape;
+    }
+
+    struct Part::cutTopoShapeFaces *nearFace {};
+    struct Part::cutTopoShapeFaces *farFace {};
     nearFace = farFace = &cfaces.front();
     for (auto &face : cfaces) {
         if (face.distsq > farFace->distsq) {

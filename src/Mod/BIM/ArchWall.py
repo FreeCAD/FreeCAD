@@ -318,8 +318,11 @@ class _Wall(ArchComponent.Component):
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
-            return
+
+        # Wall can do without Base, validity to be tested in getExtrusionData()
+        # Remarked out ensureBase() below
+        #if not self.ensureBase(obj):
+        #    return
 
         import Part
         import DraftGeomUtils
@@ -337,7 +340,7 @@ class _Wall(ArchComponent.Component):
             if hasattr(baseProxy,"getPropertySet"):
                 # get full list of PropertySet
                 propSetListCur = baseProxy.getPropertySet(obj.Base)
-                # get updated name (if any) of the selected PropertySet 
+                # get updated name (if any) of the selected PropertySet
                 propSetSelectedNameCur = baseProxy.getPropertySet(obj.Base,
                                          propSetUuid=propSetPickedUuidPrev)
         if propSetSelectedNameCur:  # True if selection is not deleted
@@ -613,11 +616,11 @@ class _Wall(ArchComponent.Component):
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
 
-        if (prop == "ArchSketchPropertySet" 
+        if (prop == "ArchSketchPropertySet"
             and Draft.getType(obj.Base) == "ArchSketch"):
             baseProxy = obj.Base.Proxy
             if hasattr(baseProxy,"getPropertySet"):
-                uuid = baseProxy.getPropertySet(obj, 
+                uuid = baseProxy.getPropertySet(obj,
                                  propSetName=obj.ArchSketchPropertySet)
                 self.ArchSkPropSetPickedUuid = uuid
         if (hasattr(obj,"ArchSketchData") and obj.ArchSketchData
@@ -832,7 +835,7 @@ class _Wall(ArchComponent.Component):
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):
-            if obj.Base:
+            if obj.Base and hasattr(obj.Base,'Shape'):
                 normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
                 if normal is None:
                     normal = Vector(0,0,1)
@@ -863,7 +866,8 @@ class _Wall(ArchComponent.Component):
                         elif varwidth:
                             layers.append(varwidth)
 
-        if obj.Base:
+        # Check if there is obj.Base and its validity to proceed
+        if self.ensureBase(obj):
             if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
@@ -1210,6 +1214,8 @@ class _Wall(ArchComponent.Component):
 
                         if baseface:
                             base,placement = self.rebase(baseface)
+
+        # Build Wall if there is no obj.Base or even obj.Base is not valid
         else:
             if layers:
                 totalwidth = sum([abs(l) for l in layers])
@@ -1336,12 +1342,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                             cols = []
                             for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
-                                c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
+                                c = (c[0],c[1],c[2],1.0-obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:
                                     if "(" in mat.Material['DiffuseColor']:
                                         c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                 if 'Transparency' in mat.Material:
-                                    c = (c[0],c[1],c[2],float(mat.Material['Transparency']))
+                                    c = (c[0],c[1],c[2],1.0-float(mat.Material['Transparency']))
                                 cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
                             obj.ViewObject.DiffuseColor = cols
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)

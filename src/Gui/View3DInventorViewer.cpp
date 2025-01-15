@@ -35,6 +35,8 @@
 # include <GL/glu.h>
 # endif
 
+# include <fmt/format.h>
+
 # include <Inventor/SbBox.h>
 # include <Inventor/SoEventManager.h>
 # include <Inventor/SoPickedPoint.h>
@@ -107,6 +109,7 @@
 #include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "Selection.h"
+#include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCOffscreenRenderer.h"
@@ -440,6 +443,7 @@ void View3DInventorViewer::init()
     backgroundroot = new SoSeparator;
     backgroundroot->ref();
     this->backgroundroot->addChild(cam);
+    this->backgroundroot->setName("backgroundroot");
 
     // Background stuff
     pcBackGround = new SoFCBackgroundGradient;
@@ -448,6 +452,7 @@ void View3DInventorViewer::init()
     // Set up foreground, overlaid scenegraph.
     this->foregroundroot = new SoSeparator;
     this->foregroundroot->ref();
+    this->foregroundroot->setName("foregroundroot");
 
     auto lm = new SoLightModel;
     lm->model = SoLightModel::BASE_COLOR;
@@ -490,9 +495,14 @@ void View3DInventorViewer::init()
     pEventCallback->addEventCallback(SoEvent::getClassTypeId(), handleEventCB, this);
 
     dimensionRoot = new SoSwitch(SO_SWITCH_NONE);
+    dimensionRoot->setName("RootDimensions");
     pcViewProviderRoot->addChild(dimensionRoot);
-    dimensionRoot->addChild(new SoSwitch()); //first one will be for the 3d dimensions.
-    dimensionRoot->addChild(new SoSwitch()); //second one for the delta dimensions.
+    auto dimensions3d = new SoSwitch();
+    dimensions3d->setName("_3dDimensions");
+    dimensionRoot->addChild(dimensions3d); //first one will be for the 3d dimensions.
+    auto dimensionsDelta = new SoSwitch();
+    dimensionsDelta->setName("DeltaDimensions");
+    dimensionRoot->addChild(dimensionsDelta); //second one for the delta dimensions.
 
     // This is a callback node that logs all action that traverse the Inventor tree.
 #if defined (FC_DEBUG) && defined(FC_LOGGING_CB)
@@ -518,6 +528,7 @@ void View3DInventorViewer::init()
     // Create group for the physical object
     objectGroup = new SoGroup();
     objectGroup->ref();
+    objectGroup->setName("ObjectGroup");
     pcViewProviderRoot->addChild(objectGroup);
 
     // Set our own render action which show a bounding box if
@@ -2360,6 +2371,7 @@ void View3DInventorViewer::renderScene()
     // Render our scenegraph with the image.
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
     SoState* state = glra->getState();
+    SoDevicePixelRatioElement::set(state, devicePixelRatio());
     SoGLWidgetElement::set(state, qobject_cast<QtGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(state, glra);
     SoGLVBOActivatedElement::set(state, this->vboEnabled);
@@ -2508,7 +2520,7 @@ void View3DInventorViewer::printDimension() const
     float fWidth = -1.0;
     getDimensions(fHeight, fWidth);
 
-    QString dim;
+    std::string dim;
 
     if (fWidth >= 0.0 && fHeight >= 0.0) {
         // Translate screen units into user's unit schema
@@ -2516,14 +2528,14 @@ void View3DInventorViewer::printDimension() const
         Base::Quantity qHeight(Base::Quantity::MilliMetre);
         qWidth.setValue(fWidth);
         qHeight.setValue(fHeight);
-        QString wStr = Base::UnitsApi::schemaTranslate(qWidth);
-        QString hStr = Base::UnitsApi::schemaTranslate(qHeight);
+        auto wStr = Base::UnitsApi::schemaTranslate(qWidth);
+        auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
         // Create final string and update window
-        dim = QString::fromLatin1("%1 x %2").arg(wStr, hStr);
+        dim = fmt::format("{} x {}", wStr, hStr);
     }
 
-    getMainWindow()->setPaneText(2, dim);
+    getMainWindow()->setPaneText(2, QString::fromStdString(dim));
 }
 
 void View3DInventorViewer::selectAll()

@@ -104,7 +104,7 @@ public:
      *
      * @return Return the owner object of the element
      */
-    static DocumentObject* resolveElement(App::DocumentObject* obj,
+    static DocumentObject* resolveElement(const App::DocumentObject* obj,
                                           const char* subname,
                                           ElementNamePair& elementName,
                                           bool append = false,
@@ -195,6 +195,7 @@ public:
     static Base::Placement
     getGlobalPlacement(DocumentObject* targetObj, DocumentObject* rootObj, const std::string& sub);
     static Base::Placement getGlobalPlacement(DocumentObject* targetObj, PropertyXLinkSub* prop);
+    static Base::Placement getGlobalPlacement(const DocumentObject* obj);
 
 protected:
     void onChanged(const Property* prop) override;

@@ -1,24 +1,23 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2015 Stefan TrÃ¶ger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
  ***************************************************************************/
 
@@ -46,6 +45,7 @@ PROPERTY_SOURCE(App::Point, App::DatumElement)
 PROPERTY_SOURCE(App::LocalCoordinateSystem, App::GeoFeature)
 
 DatumElement::DatumElement(bool hideRole)
+    : baseDir{0.0, 0.0, 1.0}
 {
     ADD_PROPERTY_TYPE(Role,
                       (""),
@@ -64,12 +64,12 @@ DatumElement::~DatumElement() = default;
 bool DatumElement::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
 {
     Q_UNUSED(subname);
-    Placement.getValue().getRotation().multVec(Base::Vector3d(0., 0., 1.), direction);
+    Placement.getValue().getRotation().multVec(baseDir, direction);
 
     return true;
 }
 
-App::LocalCoordinateSystem* DatumElement::getLCS()
+App::LocalCoordinateSystem* DatumElement::getLCS() const
 {
     auto inList = getInList();
     for (auto* obj : inList) {
@@ -82,10 +82,47 @@ App::LocalCoordinateSystem* DatumElement::getLCS()
     return nullptr;
 }
 
-bool DatumElement::isOriginFeature()
+bool DatumElement::isOriginFeature() const
 {
-    auto lcs = getLCS();
+    const auto* lcs = getLCS();
     return lcs ? lcs->isOrigin() : false;
+}
+
+Base::Vector3d DatumElement::getBasePoint() const
+{
+    Base::Placement plc = Placement.getValue();
+    return plc.getPosition();
+}
+
+Base::Vector3d DatumElement::getDirection() const
+{
+    Base::Vector3d dir(baseDir);
+    Base::Placement plc = Placement.getValue();
+    Base::Rotation rot = plc.getRotation();
+    rot.multVec(dir, dir);
+    return dir;
+}
+
+Base::Vector3d DatumElement::getBaseDirection() const
+{
+    return baseDir;
+}
+
+void DatumElement::setBaseDirection(const Base::Vector3d& dir)
+{
+    baseDir = dir;
+}
+
+// ----------------------------------------------------------------------------
+
+Line::Line()
+{
+    setBaseDirection(Base::Vector3d(1, 0, 0));
+}
+
+Point::Point()
+{
+    setBaseDirection(Base::Vector3d(0, 0, 0));
 }
 
 // ----------------------------------------------------------------------------
@@ -219,7 +256,7 @@ const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getS
     return setupData;
 }
 
-DatumElement* LocalCoordinateSystem::createDatum(SetupData& data)
+DatumElement* LocalCoordinateSystem::createDatum(const SetupData& data)
 {
     App::Document* doc = getDocument();
     std::string objName = doc->getUniqueObjectName(data.role);
@@ -274,6 +311,31 @@ void LocalCoordinateSystem::unsetupObject()
                 obj->getDocument()->removeObject(obj->getNameInDocument());
             }
         }
+    }
+}
+
+void LocalCoordinateSystem::onDocumentRestored()
+{
+    GeoFeature::onDocumentRestored();
+
+    // In 0.22 origins did not have point.
+    migrateOriginPoint();
+}
+
+void LocalCoordinateSystem::migrateOriginPoint()
+{
+    auto features = OriginFeatures.getValues();
+
+    auto isOrigin = [](App::DocumentObject* obj) {
+        return obj->isDerivedFrom<App::DatumElement>() &&
+            strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), PointRoles[0]) == 0;
+    };
+    if (std::none_of(features.begin(), features.end(), isOrigin)) {
+        auto data = getData(PointRoles[0]);
+        auto* origin = createDatum(data);
+        origin->purgeTouched();
+        features.push_back(origin);
+        OriginFeatures.setValues(features);
     }
 }
 

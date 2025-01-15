@@ -66,6 +66,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadType->addItem(tr("UTS coarse profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS fine profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS extra fine profile"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("ANSI pipe profile"), QByteArray("NPT"));
+    ui->ThreadType->addItem(tr("BSP pipe profile"), QByteArray("BSP"));
+    ui->ThreadType->addItem(tr("BSW whitworth profile"), QByteArray("BSW"));
+    ui->ThreadType->addItem(tr("BSF whitworth fine profile"), QByteArray("BSF"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
@@ -81,7 +85,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         ui->ThreadSize->addItem(tr(it.c_str()));
     }
     ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
-    ui->ThreadSize->setEnabled(!pcHole->Threaded.getValue() && pcHole->ThreadType.getValue() != 0L);
+    ui->ThreadSize->setEnabled(pcHole->ThreadType.getValue() != 0L);
 
     ui->ThreadClass->clear();
     cursor = pcHole->ThreadClass.getEnumVector();

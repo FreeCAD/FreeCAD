@@ -24,6 +24,7 @@
 #define GUI_VIEW3DINVENTOR_H
 
 #include <memory>
+#include <optional>
 #include <QImage>
 #include <QtOpenGL.h>
 
@@ -31,6 +32,7 @@
 
 #include "MDIView.h"
 
+#include "Base/Vector3D.h"
 
 class QPrinter;
 class QStackedWidget;
@@ -43,6 +45,16 @@ class View3DPy;
 class View3DSettings;
 class NaviCubeSettings;
 
+struct RayPickInfo
+{
+    bool isValid;
+    Base::Vector3d point;
+    std::string document;
+    std::string object;
+    std::optional<std::string> parentObject;
+    std::optional<std::string> component;
+    std::optional<std::string> subName;
+};
 class GuiExport GLOverlayWidget : public QWidget
 {
     Q_OBJECT
@@ -98,6 +110,8 @@ public:
      * GL widget to get all key events in \a TopLevel or \a Fullscreen mode.
      */
     void setCurrentViewMode(ViewMode b) override;
+    RayPickInfo getObjInfoRay(Base::Vector3d* startvec,
+                                 Base::Vector3d* dirvec);
     bool setCamera(const char* pCamera);
     void toggleClippingPlane();
     bool hasClippingPlane() const;

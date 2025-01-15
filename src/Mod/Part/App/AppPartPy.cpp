@@ -152,11 +152,16 @@ PartExport std::vector<TopoShape> getPyShapes(PyObject *obj) {
     return ret;
 }
 
+namespace
+{
+
 struct EdgePoints {
     gp_Pnt v1, v2;
     std::list<TopoDS_Edge>::iterator it;
     TopoDS_Edge edge;
 };
+
+}
 
 PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
 {

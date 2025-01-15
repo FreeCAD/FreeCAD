@@ -66,10 +66,6 @@
 
 using namespace Gui;
 
-#ifndef GL_MULTISAMPLE
-#define GL_MULTISAMPLE  0x809D
-#endif
-
 // http://doc.qt.digia.com/qq/qq26-openglcanvas.html
 
 GraphicsView::GraphicsView()

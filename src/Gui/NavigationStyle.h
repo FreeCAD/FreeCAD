@@ -189,6 +189,8 @@ public:
 
     SbVec3f getRotationCenter(SbBool&) const;
 
+    PyObject *getPyObject() override;
+
 protected:
     void initialize();
     void finalize();
@@ -278,6 +280,8 @@ protected:
     SbRotation spinincrement;
     SbSphereSheetProjector * spinprojector;
     //@}
+
+    PyObject* pythonObject;
 
 private:
     friend class NavigationAnimator;

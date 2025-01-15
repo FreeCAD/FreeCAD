@@ -359,6 +359,8 @@ public:
 
     /** @name Subelement management */
     //@{
+    /// Search to see if a SubShape matches
+    static Data::MappedElement chooseMatchingSubShapeByPlaneOrLine(const TopoShape& shapeToFind, const TopoShape& shapeToLookIn);
     /// Unlike \ref getTypeAndIndex() this function only handles the supported
     /// element types.
     static std::pair<std::string, unsigned long> getElementTypeAndIndex(const char* Name);

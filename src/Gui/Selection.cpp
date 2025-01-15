@@ -526,7 +526,6 @@ std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const cha
 
 unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, const char* pDocName, ResolveMode resolve) const
 {
-    unsigned int iNbr=0;
     App::Document *pcDoc = nullptr;
     if(!pDocName || strcmp(pDocName,"*") != 0) {
         pcDoc = getDocument(pDocName);
@@ -534,12 +533,9 @@ unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, co
             return 0;
     }
 
-    for (auto &sel : _SelList) {
-        if((!pcDoc||pcDoc==sel.pDoc) && getObjectOfType(sel, typeId, resolve))
-            iNbr++;
-    }
-
-    return iNbr;
+    return std::count_if(_SelList.begin(), _SelList.end(), [&](auto& sel) {
+        return (!pcDoc || pcDoc == sel.pDoc) && getObjectOfType(sel, typeId, resolve);
+    });
 }
 
 unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const char* pDocName, ResolveMode resolve) const
@@ -702,7 +698,7 @@ std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, dou
     mmz.setValue(fabs(z) > precision ? z : 0.0);
 
     double xfactor, yfactor, zfactor;
-    QString xunit, yunit, zunit;
+    std::string xunit, yunit, zunit;
 
     Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
     Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
@@ -712,9 +708,9 @@ std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, dou
     double yuser = fabs(y) > precision ? y / yfactor : 0.0;
     double zuser = fabs(z) > precision ? z / zfactor : 0.0;
 
-    std::array<std::pair<double, std::string>, 3> ret = {std::make_pair(xuser, xunit.toUtf8().constBegin()),
-                                                         std::make_pair(yuser, yunit.toUtf8().constBegin()),
-                                                         std::make_pair(zuser, zunit.toUtf8().constBegin())};
+    std::array<std::pair<double, std::string>, 3> ret = {std::make_pair(xuser, xunit),
+                                                         std::make_pair(yuser, yunit),
+                                                         std::make_pair(zuser, zunit)};
     return ret;
 }
 

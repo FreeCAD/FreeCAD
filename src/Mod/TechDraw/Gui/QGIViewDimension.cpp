@@ -418,21 +418,21 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
         m_unitText->setPlainText(QString());
     }
 
-    QRectF labelBox = m_dimText->boundingRect();
+    QRectF labelBox = m_dimText->alignmentRect();
     double right = labelBox.right();
     double top = labelBox.top();
     double bottom = labelBox.bottom();
     double middle = (top + bottom) / 2.0;
 
     //set unit position
-    QRectF unitBox = m_unitText->boundingRect();
+    QRectF unitBox = m_unitText->alignmentRect();
     double unitWidth = unitBox.width();
     double unitRight = right + unitWidth;
     // Set the m_unitText font *baseline* at same height as the m_dimText font baseline
     m_unitText->setPos(right, 0.0);
 
     //set tolerance position
-    QRectF overBox = m_tolTextOver->boundingRect();
+    QRectF overBox = m_tolTextOver->alignmentRect();
     double tolLeft  = unitRight;
 
     // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
@@ -466,7 +466,7 @@ void QGIDatumLabel::setFont(QFont font)
     QFont tFont(font);
     double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
-    tFont.setPixelSize((int)(fontSize * tolAdj));
+    tFont.setPixelSize(std::max(1, (int)(fontSize * tolAdj)));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
     updateFrameRect();

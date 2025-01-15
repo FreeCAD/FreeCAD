@@ -322,7 +322,7 @@ StdCmdPythonHelp::StdCmdPythonHelp()
     , server(nullptr)
 {
     sGroup = "Tools";
-    sMenuText = QT_TR_NOOP("Automatic Python Modules Documentation");
+    sMenuText = QT_TR_NOOP("Automatic Python &Modules Documentation");
     sToolTipText = QT_TR_NOOP("Opens the Python Modules documentation");
     sWhatsThis = "Std_PythonHelp";
     sStatusTip = sToolTipText;
@@ -364,7 +364,7 @@ void StdCmdPythonHelp::activated(int iMsg)
 
 bool Gui::OpenURLInBrowser(const char* URL)
 {
-    // The webbrowser Python module allows to start the system browser in an OS-independent way
+    // The webbrowser Python module allows one to start the system browser in an OS-independent way
     Base::PyGILStateLocker lock;
     try {
         PyObject* module = PyImport_ImportModule("webbrowser");

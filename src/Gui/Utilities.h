@@ -104,6 +104,28 @@ struct vec_traits<App::Color> {
 private:
     const vec_type& v;
 };
+
+template <>
+inline SbMatrix convertTo<SbMatrix, Base::Matrix4D>(const Base::Matrix4D& vec2)
+{
+    double dMtrx[16];
+    vec2.getGLMatrix(dMtrx);
+    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3], // clazy:exclude=rule-of-two-soft
+                    dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
+                    dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
+                    dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+}
+
+template <>
+inline Base::Matrix4D convertTo<Base::Matrix4D, SbMatrix>(const SbMatrix& vec2)
+{
+    Base::Matrix4D mat;
+    for(int i=0;i<4;++i) {
+        for(int j=0;j<4;++j)
+            mat[i][j] = vec2[j][i];
+    }
+    return mat;
+}
 }
 
 namespace App{ class DocumentObject; }

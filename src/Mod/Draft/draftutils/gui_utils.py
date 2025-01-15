@@ -132,7 +132,7 @@ def autogroup(obj):
     if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
-            import ifc_tools
+            from nativeifc import ifc_tools
             parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
             if parent != active_group:
                 ifc_tools.aggregate(obj, parent)
@@ -405,7 +405,7 @@ def get_diffuse_color(objs):
                 return obj.ViewObject.DiffuseColor
             else:
                 col = obj.ViewObject.ShapeColor
-                col = (col[0], col[1], col[2], obj.ViewObject.Transparency / 100.0)
+                col = (col[0], col[1], col[2], 1.0 - obj.ViewObject.Transparency / 100.0)
                 return [col] * len(obj.Shape.Faces)
         elif obj.hasExtension("App::GeoFeatureGroupExtension"):
             cols = []
@@ -894,6 +894,14 @@ def get_bbox(obj, debug=False):
     xmax, ymax, zmax = bb.getMax().getValue()
 
     return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
+
+
+# Code by Yorik van Havre.
+def find_coin_node(parent, nodetype):
+    for i in range(parent.getNumChildren()):
+        if isinstance(parent.getChild(i), nodetype):
+            return parent.getChild(i)
+    return None
 
 
 # Code by Chris Hennes (chennes).

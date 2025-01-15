@@ -260,7 +260,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         if (SC.State() == TopAbs_IN) {
             result.Reverse();
         }
- 
+
         fix.LimitTolerance(result, Precision::Confusion() * size * Tolerance.getValue() ); // significant precision reduction due to helical approximation - needed to allow fusion to succeed
 
         AddSubShape.setValue(result);
@@ -408,8 +408,7 @@ TopoDS_Shape Helix::generateHelixPath(double breakAtTurn)
     bool turned = axisOffset < 0;
     // since the factor does not only change the radius but also the path position, we must shift its offset back
     // using the square of the factor
-    double noAngle = angle == 0. ? 1. : 0.; // alternative to the legacy use of an auxiliary path
-    double startOffset = 10000.0 * std::fabs(noAngle * (profileCenter * axisVector) - baseVector * axisVector);
+    double startOffset = 10000.0 * std::fabs((angle <= 0. ? 1. : 0.) * (profileCenter * axisVector) - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane

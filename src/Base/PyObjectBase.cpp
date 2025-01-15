@@ -96,7 +96,7 @@ PyObjectBase::~PyObjectBase()
  * To prevent subclasses of PyTypeObject to be subclassed in Python we should remove
  * the Py_TPFLAGS_BASETYPE flag. For example, the classes App::VectorPy and App::MatrixPy
  * have removed this flag and its Python proxies App.Vector and App.Matrix cannot be subclassed.
- * In case we want to allow to derive from subclasses of PyTypeObject in Python
+ * In case we want to allow a new class to derive from subclasses of PyTypeObject in Python
  * we must either reimplement tp_new, tp_dealloc, tp_getattr, tp_setattr, tp_repr or set them to
  * 0 and define tp_base as 0.
  */
@@ -367,7 +367,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
     const char *attr{};
     attr = PyUnicode_AsUTF8(attro);
 
-    //Hint: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
+    //Hint: In general we don't allow one to delete attributes (i.e. value=0). However, if we want to allow
     //we must check then in _setattr() of all subclasses whether value is 0.
     if (!value) {
         PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);

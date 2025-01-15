@@ -151,22 +151,28 @@ IF(SPNAV_FOUND)
         SET(FreeCADGui_SDK_SRCS
             3Dconnexion/GuiAbstractNativeEvent.cpp
             3Dconnexion/GuiNativeEventLinuxX11.cpp
-            )
+        )
         SET(FreeCADGui_SDK_MOC_HDRS
             3Dconnexion/GuiAbstractNativeEvent.h
             3Dconnexion/GuiNativeEventLinuxX11.h
-            )
+        )
     else(SPNAV_USE_X11)
         SET(FreeCADGui_SDK_SRCS
             3Dconnexion/GuiAbstractNativeEvent.cpp
             3Dconnexion/GuiNativeEventLinux.cpp
-            )
+        )
         SET(FreeCADGui_SDK_MOC_HDRS
             3Dconnexion/GuiAbstractNativeEvent.h
             3Dconnexion/GuiNativeEventLinux.h
-            )
+        )
     endif(SPNAV_USE_X11)
     SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+    list(APPEND FreeCADGui_connexion_SRCS
+        ${FreeCADGui_SDK_SRCS}
+    )
+    list(APPEND FreeCADGui_connexion_HDRS
+        ${FreeCADGui_SDK_MOC_HDRS}
+    )
 
     add_definitions(-DSPNAV_FOUND)
     include_directories(
@@ -248,6 +254,7 @@ generate_from_xml(LinkViewPy)
 generate_from_xml(ViewProviderLinkPy)
 generate_from_xml(AxisOriginPy)
 generate_from_xml(CommandPy)
+generate_from_xml(NavigationStylePy)
 
 generate_from_py(FreeCADGuiInit GuiInitScript.h)
 
@@ -270,30 +277,42 @@ SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
 # The 3D Connexion SDK files
 if(FREECAD_USE_3DCONNEXION AND MSVC)
-SET(FreeCADGui_SDK_SRCS
-    3Dconnexion/I3dMouseParams.h
-    3Dconnexion/MouseParameters.cpp
-    3Dconnexion/MouseParameters.h
-    3Dconnexion/GuiAbstractNativeEvent.cpp
-    3Dconnexion/GuiNativeEventWin32.cpp
-)
-SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-SET(FreeCADGui_SDK_MOC_HDRS
-  3Dconnexion/GuiAbstractNativeEvent.h
-  3Dconnexion/GuiNativeEventWin32.h
-)
+    SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/I3dMouseParams.h
+        3Dconnexion/MouseParameters.cpp
+        3Dconnexion/MouseParameters.h
+        3Dconnexion/GuiAbstractNativeEvent.cpp
+        3Dconnexion/GuiNativeEventWin32.cpp
+    )
+    SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+    SET(FreeCADGui_SDK_MOC_HDRS
+      3Dconnexion/GuiAbstractNativeEvent.h
+      3Dconnexion/GuiNativeEventWin32.h
+    )
+    list(APPEND FreeCADGui_connexion_SRCS
+        ${FreeCADGui_SDK_SRCS}
+    )
+    list(APPEND FreeCADGui_connexion_HDRS
+        ${FreeCADGui_SDK_MOC_HDRS}
+    )
 endif(FREECAD_USE_3DCONNEXION AND MSVC)
 
 if(FREECAD_USE_3DCONNEXION AND APPLE)
-SET(FreeCADGui_SDK_SRCS
-    3Dconnexion/GuiAbstractNativeEvent.cpp
-    3Dconnexion/GuiNativeEventMac.cpp
-)
-SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-SET(FreeCADGui_SDK_MOC_HDRS
-  3Dconnexion/GuiAbstractNativeEvent.h
-  3Dconnexion/GuiNativeEventMac.h
-)
+    SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/GuiAbstractNativeEvent.cpp
+        3Dconnexion/GuiNativeEventMac.cpp
+    )
+    SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+    SET(FreeCADGui_SDK_MOC_HDRS
+      3Dconnexion/GuiAbstractNativeEvent.h
+      3Dconnexion/GuiNativeEventMac.h
+    )
+    list(APPEND FreeCADGui_connexion_SRCS
+        ${FreeCADGui_SDK_SRCS}
+    )
+    list(APPEND FreeCADGui_connexion_HDRS
+        ${FreeCADGui_SDK_MOC_HDRS}
+    )
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
@@ -306,9 +325,15 @@ if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
         ${NAVLIB_STUB_DIR}/navlib_stub.c
     )
     SOURCE_GROUP("3Dconnexion Navlib" FILES ${FreeCADGui_SDK_SRCS})
-	SET(FreeCADGui_SDK_MOC_HDRS
+    SET(FreeCADGui_SDK_MOC_HDRS
         3Dconnexion/navlib/NavlibInterface.h
-	)
+    )
+    list(APPEND FreeCADGui_connexion_SRCS
+        ${FreeCADGui_SDK_SRCS}
+    )
+    list(APPEND FreeCADGui_connexion_HDRS
+        ${FreeCADGui_SDK_MOC_HDRS}
+    )
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
 set_property(SOURCE GraphvizView.h GraphvizView.cpp PROPERTY SKIP_AUTOMOC ON)
@@ -378,6 +403,7 @@ SET(Gui_UIC_SRCS
     SceneInspector.ui
     InputVector.ui
     Placement.ui
+    TaskCSysDragger.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
@@ -390,9 +416,9 @@ SET(Gui_UIC_SRCS
     VectorListEditor.ui
 )
 
-if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
-	list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
-endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+    list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
@@ -581,10 +607,10 @@ SET(Dialog_Customize_HPP_SRCS
     ListWidgetDragBugFix.h
 )
 
-if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
-	list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
-	list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
-endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+    list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
+    list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
+endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
 
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
@@ -595,9 +621,9 @@ SET(Dialog_Customize_SRCS
     DlgToolbars.ui
 )
 
-if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
-	list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
-endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+    list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
 
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
@@ -862,6 +888,7 @@ SET(View3D_CPP_SRCS
     Multisample.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
+    NavigationStylePyImp.cpp
     InventorNavigationStyle.cpp
     CADNavigationStyle.cpp
     RevitNavigationStyle.cpp
@@ -895,6 +922,7 @@ SET(View3D_SRCS
     Multisample.h
     MouseSelection.h
     NavigationStyle.h
+    NavigationStylePy.xml
     GestureNavigationStyle.h
     SplitView3DInventor.h
     View.h
@@ -1042,6 +1070,7 @@ SET(Inventor_CPP_SRCS
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
+    SoDevicePixelRatioElement.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
@@ -1073,6 +1102,7 @@ SET(Inventor_SRCS
     SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
+    SoDevicePixelRatioElement.h
     SoTextLabel.h
     SoDatumLabel.h
     SoTouchEvents.h
@@ -1297,11 +1327,11 @@ SET(FreeCADGui_SRCS
     StartupProcess.h
     TransactionObject.h
     ToolHandler.h
-    ${FreeCADGui_SDK_MOC_HDRS}
 )
 
 SET(FreeCADGui_SRCS
-    ${FreeCADGui_SDK_SRCS}
+    ${FreeCADGui_connexion_SRCS}
+    ${FreeCADGui_connexion_HDRS}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
     ${qsint_MOC_SRCS}

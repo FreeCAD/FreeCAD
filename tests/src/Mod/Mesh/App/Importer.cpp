@@ -1,10 +1,20 @@
 #include <gtest/gtest.h>
 #include <Base/FileInfo.h>
 #include <Mod/Mesh/App/Core/IO/Reader3MF.h>
+#include <xercesc/util/PlatformUtils.hpp>
 #include <zipios++/fcoll.h>
 
+class ImporterTest: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
+    }
+};
+
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
-TEST(ImporterTest, Test3MF)
+TEST_F(ImporterTest, Test3MF)
 {
     std::string file(DATADIR);
     file.append("/tests/mesh.3mf");

@@ -370,7 +370,7 @@ void DlgDisplayPropertiesImp::reject()
 }
 
 /**
- * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
+ * Opens a dialog that allows one to modify the 'ShapeMaterial' property of all selected view providers.
  */
 void DlgDisplayPropertiesImp::onButtonCustomAppearanceClicked()
 {
@@ -393,7 +393,7 @@ void DlgDisplayPropertiesImp::onButtonCustomAppearanceClicked()
 }
 
 /**
- * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
+ * Opens a dialog that allows one to modify the 'ShapeMaterial' property of all selected view providers.
  */
 void DlgDisplayPropertiesImp::onButtonColorPlotClicked()
 {
