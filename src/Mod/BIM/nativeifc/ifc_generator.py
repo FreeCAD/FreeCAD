@@ -72,32 +72,21 @@ def generate_geometry(obj, cached=False):
                 obj.Shape = shape
                 if placement:
                     obj.Placement = placement
-<<<<<<< HEAD
                     return
         elif obj.ViewObject and obj.ShapeMode == "Coin":
             done = False
-=======
-        elif obj.ViewObject and obj.ShapeMode == "Coin":
->>>>>>> 7de1143308 (BIM: NativeIFC 2D support - basic import/export + linework annotations)
             node, placement = get_annotation_shape(element, ifcfile, coin=True)
             if node:
                 set_representation(obj.ViewObject, node)
                 colors = node[0]
-<<<<<<< HEAD
                 done = True
-=======
->>>>>>> 7de1143308 (BIM: NativeIFC 2D support - basic import/export + linework annotations)
             else:
                 set_representation(obj.ViewObject, None)
                 print_debug(obj)
             if placement:
                 obj.Placement = placement
-<<<<<<< HEAD
             if done:
                 return
-=======
-        return
->>>>>>> 7de1143308 (BIM: NativeIFC 2D support - basic import/export + linework annotations)
 
     # generate the shape or coin node
     elements = get_decomposition(obj)
