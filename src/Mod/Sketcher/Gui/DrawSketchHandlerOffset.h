@@ -735,9 +735,8 @@ private:
                                 break;
                             }
                         }
-                        else if (isLineSegment(*geo2)
-                                 || geo2->getTypeId() == Part::GeomArcOfConic::getClassTypeId()
-                                 || isBSplineCurve(*geo2)) {
+                        else if (isLineSegment(*geo2) || isBSplineCurve(*geo2)
+                                 || geo2->is<Part::GeomArcOfConic>()) {
                             // cases where arc is created by arc join mode.
                             Base::Vector3d p2, p3;
 

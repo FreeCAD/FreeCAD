@@ -573,7 +573,7 @@ Property* Sheet::setFloatProperty(CellAddress key, double value)
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertyFloat* floatProp;
 
-    if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
+    if (!prop || !prop->is<PropertyFloat>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -601,7 +601,7 @@ Property* Sheet::setIntegerProperty(CellAddress key, long value)
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertyInteger* intProp;
 
-    if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()) {
+    if (!prop || !prop->is<PropertyInteger>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -641,7 +641,7 @@ Property* Sheet::setQuantityProperty(CellAddress key, double value, const Base::
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertySpreadsheetQuantity* quantityProp;
 
-    if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
+    if (!prop || !prop->is<PropertySpreadsheetQuantity>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);

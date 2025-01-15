@@ -2480,8 +2480,8 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     // TODO: Add support for curved lines.
     const Part::Geometry* geo1 = getGeometry(geoId1);
     const Part::Geometry* geo2 = getGeometry(geoId2);
-    if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-        || geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+    if (!geo1->is<Part::GeomLineSegment>()
+        || !geo2->is<Part::GeomLineSegment>()) {
         delConstraintOnPoint(geoId1, posId1, false);
         delConstraintOnPoint(geoId2, posId2, false);
         return;
@@ -4458,7 +4458,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     std::string sketchArchType ("Sketcher::SketchObjectPython");
 
     // Only applicable to sketches
-    if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()
+    if (!pObj->is<Sketcher::SketchObject>()
         && sketchArchType != pObj->getTypeId().getName()) {
         if (rsn) {
             *rsn = rlNotASketch;
@@ -6913,13 +6913,15 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+    if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
         return false;
+    }
 
     const Part::Geometry* geo = getGeometry(GeoId);
 
-    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+    if (!geo->is<Part::GeomBSplineCurve>()) {
         return false;
+    }
 
     const auto* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
 
@@ -6960,7 +6962,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
 
     const Part::Geometry* geo = getGeometry(GeoId);
 
-    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+    if (!geo->is<Part::GeomBSplineCurve>())
         return false;
 
     const auto* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
@@ -7449,7 +7451,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     for (std::vector<Part::Geometry*>::const_iterator it = svals.begin(); it != svals.end(); ++it) {
         Part::Geometry* geoNew = (*it)->copy();
         generateId(geoNew);
-        if (construction && geoNew->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+        if (construction && !geoNew->is<Part::GeomPoint>()) {
             GeometryFacade::setConstruction(geoNew, true);
         }
         newVals.push_back(geoNew);
@@ -10111,7 +10113,7 @@ void SketchObject::onChanged(const App::Property* prop)
 
                     if (ext->testMigrationType(Part::GeometryMigrationExtension::Construction)) {
                         bool oldconstr = ext->getConstruction();
-                        if (geometryValue->getTypeId() == Part::GeomPoint::getClassTypeId()
+                        if (geometryValue->is<Part::GeomPoint>()
                             && !gf->isInternalAligned()) {
                             oldconstr = true;
                         }
