@@ -36,7 +36,9 @@ class GuiExport SelectionObserverPythonHandler
 public:
     /// Constructor
     explicit SelectionObserverPythonHandler() = default;
-    void init(const Py::Object& obj);
+    virtual ~SelectionObserverPythonHandler();
+
+    void init(PyObject* obj);
     void handleSelectionChanged(const SelectionChanges& msg);
 
 protected:
@@ -48,9 +50,9 @@ protected:
     void removePreselection(const SelectionChanges&);
     void pickedListChanged();
 
-    Py::Object inst;
-
 private:
+
+    PyObject* inst{nullptr};
 
 #define FC_PY_SEL_OBSERVER \
     FC_PY_ELEMENT(onSelectionChanged) \
@@ -89,6 +91,7 @@ public:
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
 
+    Py::Object inst;
     static std::vector<SelectionObserverPython*> _instances;
 };
 

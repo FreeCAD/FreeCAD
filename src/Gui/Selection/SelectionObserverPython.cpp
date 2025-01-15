@@ -32,13 +32,26 @@ using namespace Gui;
 
 std::vector<SelectionObserverPython*> SelectionObserverPython::_instances;
 
-void SelectionObserverPythonHandler::init(const Py::Object& obj)
+void SelectionObserverPythonHandler::init(PyObject* obj)
 {
     this->inst = obj;
 
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj.ptr(),#_name,py_##_name);
+#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj,#_name,py_##_name);
     FC_PY_SEL_OBSERVER
+}
+
+SelectionObserverPythonHandler::~SelectionObserverPythonHandler()
+{
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) py_##_name = Py::None();
+
+    try {
+        FC_PY_SEL_OBSERVER
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
 }
 
 void SelectionObserverPythonHandler::handleSelectionChanged(const SelectionChanges& msg)
@@ -198,7 +211,7 @@ void SelectionObserverPythonHandler::removePreselection(const SelectionChanges& 
 SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, ResolveMode resolve)
     : SelectionObserver(true, resolve)
 {
-    this->init(obj);
+    this->init(obj.ptr());
 }
 
 SelectionObserverPython::~SelectionObserverPython() = default;
