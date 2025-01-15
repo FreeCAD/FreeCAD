@@ -127,6 +127,13 @@ def get_export_preferences(ifcfile, preferred_context=None, create=None):
                         best_context = ifc_tools.api_run("context.add_context",
                                                          ifcfile,
                                                          context_type = preferred_context[0])
+    if not best_context:
+        if contexts:
+            best_context = contexts[0]
+        else:
+            best_context = ifc_tools.api_run("context.add_context",
+                                             ifcfile,
+                                             context_type = "Model")
     return prefs, best_context
 
 
