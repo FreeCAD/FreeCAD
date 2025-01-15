@@ -216,9 +216,9 @@ void SoFCSelection::doAction(SoAction *action)
 
     if(!useNewSelection.getValue()) {
 
-        if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-            auto preaction = static_cast<SoFCEnableHighlightAction*>(action);
-            if (preaction->highlight) {
+        if (action->getTypeId() == SoFCEnablePreselectionAction::getClassTypeId()) {
+            auto preaction = static_cast<SoFCEnablePreselectionAction*>(action);
+            if (preaction->enabled) {
                 this->preselectionMode = SoFCSelection::AUTO;
             }
             else {
@@ -228,7 +228,7 @@ void SoFCSelection::doAction(SoAction *action)
 
         if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
             auto selaction = static_cast<SoFCEnableSelectionAction*>(action);
-            if (selaction->selection) {
+            if (selaction->enabled) {
                 this->selectionMode = SoFCSelection::SEL_ON;
             }
             else {

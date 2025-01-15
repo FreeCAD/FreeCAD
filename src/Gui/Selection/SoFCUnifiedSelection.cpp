@@ -312,9 +312,9 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
 
 void SoFCUnifiedSelection::doAction(SoAction *action)
 {
-    if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-        auto enableHighlightAction = static_cast<SoFCEnableHighlightAction*>(action);
-        if (enableHighlightAction->highlight) {
+    if (action->getTypeId() == SoFCEnablePreselectionAction::getClassTypeId()) {
+        auto enablePreselectionAction = static_cast<SoFCEnablePreselectionAction*>(action);
+        if (enablePreselectionAction->enabled) {
             this->preselectionMode = SoFCUnifiedSelection::AUTO;
         }
         else {
@@ -324,7 +324,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
 
     if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
         auto enableSelectionAction = static_cast<SoFCEnableSelectionAction*>(action);
-        if (enableSelectionAction->selection) {
+        if (enableSelectionAction->enabled) {
             this->selectionMode = SoFCUnifiedSelection::ON;
         }
         else {

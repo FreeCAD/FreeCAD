@@ -100,7 +100,7 @@ public:
     SoFCEnableSelectionAction (const SbBool& sel);
     ~SoFCEnableSelectionAction() override;
 
-    SbBool selection;
+    SbBool enabled;
 
     static void initClass();
     static void finish();
@@ -113,19 +113,19 @@ private:
 };
 
 /**
- * The SoFCEnableHighlightAction class is used to inform an SoFCSelection node
+ * The SoFCEnablePreselectionAction class is used to inform an SoFCSelection node
  * whether preselection is enabled or disabled.
  * @author Werner Mayer
  */
-class GuiExport SoFCEnableHighlightAction : public SoAction
+class GuiExport SoFCEnablePreselectionAction : public SoAction
 {
-    SO_ACTION_HEADER(SoFCEnableHighlightAction);
+    SO_ACTION_HEADER(SoFCEnablePreselectionAction);
 
 public:
-    SoFCEnableHighlightAction (const SbBool& sel);
-    ~SoFCEnableHighlightAction() override;
+    SoFCEnablePreselectionAction (const SbBool& sel);
+    ~SoFCEnablePreselectionAction() override;
 
-    SbBool highlight;
+    SbBool enabled;
 
     static void initClass();
     static void finish();
@@ -164,7 +164,7 @@ private:
 
 /**
  * The SoFCHighlightColorAction class is used to inform an SoFCSelection node
- * which preselection color is used.
+ * which highlight color is used.
  * @author Werner Mayer
  */
 class GuiExport SoFCHighlightColorAction : public SoAction
