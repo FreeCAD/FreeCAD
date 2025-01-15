@@ -30,12 +30,6 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
        <property name="toolTip">
         <string>Taper angle for the hole
 90 degree: straight hole
@@ -77,12 +71,6 @@ over 90: larger hole radius at the bottom</string>
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
        </property>
        <property name="toolTip">
         <string>Hole diameter</string>
@@ -175,12 +163,6 @@ over 90: larger hole radius at the bottom</string>
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -284,12 +266,6 @@ over 90: larger hole radius at the bottom</string>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>20</height>
-         </size>
-        </property>
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
         </property>
@@ -327,12 +303,6 @@ over 90: larger hole radius at the bottom</string>
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>20</height>
-         </size>
         </property>
         <property name="toolTip">
          <string>For countersinks this is the depth of
@@ -372,12 +342,6 @@ the screw's top below the surface</string>
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>20</height>
-         </size>
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>
@@ -469,12 +433,6 @@ the screw's top below the surface</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
           </property>
           <property name="keyboardTracking">
            <bool>false</bool>
@@ -751,12 +709,6 @@ Note that the calculation can take some time</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>20</height>
-              </size>
-             </property>
              <property name="keyboardTracking">
               <bool>false</bool>
              </property>
@@ -811,12 +763,6 @@ Note that the calculation can take some time</string>
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>20</height>
-            </size>
            </property>
            <property name="toolTip">
             <string>Custom Thread clearance value</string>
