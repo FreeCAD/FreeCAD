@@ -222,7 +222,9 @@ if HAVE_QTNETWORK:
                     parsed_url = urlparse(proxy_string)
                     host = parsed_url.hostname
                     port = parsed_url.port
-                    scheme = 'http' if parsed_url.scheme == 'https' else parsed_url.scheme # There seems no https type: doc.qt.io/qt-6/qnetworkproxy.html#ProxyType-enum
+                    scheme = (
+                        "http" if parsed_url.scheme == "https" else parsed_url.scheme
+                    )  # There seems no https type: doc.qt.io/qt-6/qnetworkproxy.html#ProxyType-enum
                 except ValueError:
                     FreeCAD.Console.PrintError(
                         translate(
@@ -234,9 +236,9 @@ if HAVE_QTNETWORK:
                     return
 
                 FreeCAD.Console.PrintMessage(f"Using proxy {scheme}://{host}:{port} \n")
-                if scheme == 'http':
+                if scheme == "http":
                     _scheme = QtNetwork.QNetworkProxy.HttpProxy
-                elif scheme == 'socks5':
+                elif scheme == "socks5":
                     _scheme = QtNetwork.QNetworkProxy.Socks5Proxy
                 else:
                     FreeCAD.Console.PrintWarning(f"Unknown proxy scheme '{scheme}', using http. \n")
