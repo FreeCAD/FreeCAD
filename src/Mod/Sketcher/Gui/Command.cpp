@@ -166,7 +166,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
     std::string groupName;
     bool bAttach = false;
     bool groupSelected = false;
-    if (Gui::Selection().countObjectsOfType(App::DocumentObjectGroup::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<App::DocumentObjectGroup>() > 0) {
         auto selection = Gui::Selection().getSelection();
         if (selection.size() > 1) {
             Gui::TranslatedUserWarning(
