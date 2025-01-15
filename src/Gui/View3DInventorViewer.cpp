@@ -794,11 +794,11 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges & reason)
     {
         //Hint: do not create a tmp. instance of SelectionChanges
         SelectionChanges selChanges(SelectionChanges::RmvPreselect);
-        SoFCHighlightAction cAct(selChanges);
-        cAct.apply(pcViewProviderRoot);
+        SoFCPreselectionAction preselectionAction(selChanges);
+        preselectionAction.apply(pcViewProviderRoot);
     } else {
-        SoFCSelectionAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
+        SoFCSelectionAction selectionAction(Reason);
+        selectionAction.apply(pcViewProviderRoot);
     }
 }
 /// @endcond

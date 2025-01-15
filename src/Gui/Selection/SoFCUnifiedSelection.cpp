@@ -342,10 +342,10 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         this->colorHighlight = highlightColorAction->highlightColor;
     }
 
-    if (action->getTypeId() == SoFCHighlightAction::getClassTypeId()) {
-        auto highlightAction = static_cast<SoFCHighlightAction*>(action);
-        // Do not clear currently highlighted object when setting new pre-selection
-        if (!setPreSelection && highlightAction->SelChange.Type == SelectionChanges::RmvPreselect) {
+    if (action->getTypeId() == SoFCPreselectionAction::getClassTypeId()) {
+        auto preselectAction = static_cast<SoFCPreselectionAction*>(action);
+        // Do not clear currently preselected object when setting new pre-selection
+        if (!setPreSelection && preselectAction->SelChange.Type == SelectionChanges::RmvPreselect) {
             if (currentHighlightPath) {
                 SoHighlightElementAction highlightAction;
                 highlightAction.apply(currentHighlightPath);
@@ -354,7 +354,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             }
         }
         else if (preselectionMode.getValue() != OFF
-                    && highlightAction->SelChange.Type == SelectionChanges::SetPreselect) {
+                    && preselectAction->SelChange.Type == SelectionChanges::SetPreselect) {
             if (currentHighlightPath) {
                 SoHighlightElementAction highlightAction;
                 highlightAction.apply(currentHighlightPath);
@@ -362,10 +362,10 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 currentHighlightPath = nullptr;
             }
 
-            App::Document* doc = App::GetApplication().getDocument(highlightAction->SelChange.pDocName);
-            App::DocumentObject* obj = doc->getObject(highlightAction->SelChange.pObjectName);
+            App::Document* doc = App::GetApplication().getDocument(preselectAction->SelChange.pDocName);
+            App::DocumentObject* obj = doc->getObject(preselectAction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
-            SoDetail* detail = vp->getDetail(highlightAction->SelChange.pSubName);
+            SoDetail* detail = vp->getDetail(preselectAction->SelChange.pSubName);
 
             SoHighlightElementAction highlightAction;
             highlightAction.setHighlighted(true);

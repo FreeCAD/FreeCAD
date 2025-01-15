@@ -69,7 +69,7 @@
 using namespace Gui;
 
 
-SO_ACTION_SOURCE(SoFCHighlightAction)
+SO_ACTION_SOURCE(SoFCPreselectionAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
@@ -79,28 +79,28 @@ SO_ACTION_SOURCE(SoFCHighlightAction)
  * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
-void SoFCHighlightAction::initClass()
+void SoFCPreselectionAction::initClass()
 {
-  SO_ACTION_INIT_CLASS(SoFCHighlightAction,SoAction);
+  SO_ACTION_INIT_CLASS(SoFCPreselectionAction,SoAction);
 
-  SO_ENABLE(SoFCHighlightAction, SoSwitchElement);
+  SO_ENABLE(SoFCPreselectionAction, SoSwitchElement);
 
   SO_ACTION_ADD_METHOD(SoNode,nullAction);
 
-  SO_ENABLE(SoFCHighlightAction, SoModelMatrixElement);
-  SO_ENABLE(SoFCHighlightAction, SoShapeStyleElement);
-  SO_ENABLE(SoFCHighlightAction, SoComplexityElement);
-  SO_ENABLE(SoFCHighlightAction, SoComplexityTypeElement);
-  SO_ENABLE(SoFCHighlightAction, SoCoordinateElement);
-  SO_ENABLE(SoFCHighlightAction, SoFontNameElement);
-  SO_ENABLE(SoFCHighlightAction, SoFontSizeElement);
-  SO_ENABLE(SoFCHighlightAction, SoProfileCoordinateElement);
-  SO_ENABLE(SoFCHighlightAction, SoProfileElement);
-  SO_ENABLE(SoFCHighlightAction, SoSwitchElement);
-  SO_ENABLE(SoFCHighlightAction, SoUnitsElement);
-  SO_ENABLE(SoFCHighlightAction, SoViewVolumeElement);
-  SO_ENABLE(SoFCHighlightAction, SoViewingMatrixElement);
-  SO_ENABLE(SoFCHighlightAction, SoViewportRegionElement);
+  SO_ENABLE(SoFCPreselectionAction, SoModelMatrixElement);
+  SO_ENABLE(SoFCPreselectionAction, SoShapeStyleElement);
+  SO_ENABLE(SoFCPreselectionAction, SoComplexityElement);
+  SO_ENABLE(SoFCPreselectionAction, SoComplexityTypeElement);
+  SO_ENABLE(SoFCPreselectionAction, SoCoordinateElement);
+  SO_ENABLE(SoFCPreselectionAction, SoFontNameElement);
+  SO_ENABLE(SoFCPreselectionAction, SoFontSizeElement);
+  SO_ENABLE(SoFCPreselectionAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoFCPreselectionAction, SoProfileElement);
+  SO_ENABLE(SoFCPreselectionAction, SoSwitchElement);
+  SO_ENABLE(SoFCPreselectionAction, SoUnitsElement);
+  SO_ENABLE(SoFCPreselectionAction, SoViewVolumeElement);
+  SO_ENABLE(SoFCPreselectionAction, SoViewingMatrixElement);
+  SO_ENABLE(SoFCPreselectionAction, SoViewportRegionElement);
 
 
 
@@ -125,28 +125,28 @@ void SoFCHighlightAction::initClass()
   SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-void SoFCHighlightAction::finish()
+void SoFCPreselectionAction::finish()
 {
   atexit_cleanup();
 }
 
 
-SoFCHighlightAction::SoFCHighlightAction (const SelectionChanges &SelCh)
+SoFCPreselectionAction::SoFCPreselectionAction (const SelectionChanges &SelCh)
 :SelChange(SelCh)
 {
-  SO_ACTION_CONSTRUCTOR(SoFCHighlightAction);
+  SO_ACTION_CONSTRUCTOR(SoFCPreselectionAction);
 }
 
 
-SoFCHighlightAction::~SoFCHighlightAction() = default;
+SoFCPreselectionAction::~SoFCPreselectionAction() = default;
 
 
-void SoFCHighlightAction::beginTraversal(SoNode *node)
+void SoFCPreselectionAction::beginTraversal(SoNode *node)
 {
   traverse(node);
 }
 
-void SoFCHighlightAction::callDoAction(SoAction *action,SoNode *node)
+void SoFCPreselectionAction::callDoAction(SoAction *action,SoNode *node)
 {
   node->doAction(action);
 }
