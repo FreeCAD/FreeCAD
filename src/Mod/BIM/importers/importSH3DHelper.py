@@ -614,7 +614,7 @@ class SH3DImporter:
         environments = elm.findall('environment')
         if len(environments) > 0:
             environment = environments[0]
-            ground_color = environment.get('floorColor',self.preferences["DEFAULT_GROUND_COLOR"])
+            ground_color = environment.get('groundColor',self.preferences["DEFAULT_GROUND_COLOR"])
             sky_color = environment.get('ceilingColor', self.preferences["DEFAULT_SKY_COLOR"])
             lightColor = environment.get('lightColor', self.preferences["DEFAULT_SKY_COLOR"])
             ceillingLightColor = environment.get('ceillingLightColor', self.preferences["DEFAULT_SKY_COLOR"])
@@ -674,6 +674,7 @@ class SH3DImporter:
             self.site.EPWFile = '' # https://www.ladybug.tools/epwmap/ or https://climate.onebuilding.org
         else:
             _msg(f"No <compass> tag found in <{elm.tag}>")
+
 
 class BaseHandler:
     """The base class for all importers."""
@@ -861,9 +862,9 @@ class RoomHandler(BaseHandler):
             line = Draft.make_wire(points, placement=App.Placement(), closed=True, face=True, support=None)
             slab = Arch.makeStructure(line, height=floor.floorThickness)
 
-        slab.Label = elm.get('name', 'Room-slab') + '-slab'
+        slab.Label = elm.get('name', 'Room') + '-slab'
         slab.IfcType = "Slab"
-        slab.Normal = -Z_NORM
+        slab.Normal = Z_NORM
 
         color = elm.get('floorColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
         set_color_and_transparency(slab, color)
@@ -1049,6 +1050,7 @@ class WallHandler(BaseHandler):
 
         # Keep track of base object. Used for baseboard import
         self.importer.set_property(wall, "App::PropertyLinkList", "BaseObjects", "The different base objects whose sweep failed. Kept for compatibility reasons", [section_start, section_end, spine])
+        wall.Height = 0
         wall.Length = spine.Length
 
         return wall, base_object
@@ -1130,6 +1132,10 @@ class WallHandler(BaseHandler):
         arc_extent = ang_sh2fc(elm.get('arcExtent', 0))
         height_start = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
         height_end = dim_sh2fc(elm.get('heightAtEnd', dim_fc2sh(height_start)))
+
+        # NOTE: the wall height is adjusted with the floor thickness
+        height_start = height_start + floor.floorThickness
+        height_end = height_end + floor.floorThickness
 
         start = coord_sh2fc(App.Vector(x_start, y_start, z))
         end = coord_sh2fc(App.Vector(x_end, y_end, z))
@@ -1621,21 +1627,21 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
     def _create_door(self, floor, elm):
         # The window in SweetHome3D is defined with a width, depth, height.
         # Furthermore the (x.y.z) is the center point of the lower face of the
-        # window. In FC the placement is defined on the face of the whole that
-        # will contain the windows. The makes this calculation rather
-        # cumbersome.
+        # window. In FC the placement is defined on the face of the wall that
+        # contains the windows. The makes this calculation rather cumbersome.
         x_center = float(elm.get('x'))
         y_center = float(elm.get('y'))
         z_center = float(elm.get('elevation', 0))
-        z_center += dim_fc2sh(floor.Placement.Base.z)
 
         # This is the FC coordinate of the center point of the lower face of the
         # window. This then needs to be moved to the proper face on the wall and
         # offset properly with respect to the wall's face.
         center = coord_sh2fc(App.Vector(x_center, y_center, z_center))
+        center.z += floor.Placement.Base.z
+        center.z += floor.floorThickness
 
         wall_width = -DEFAULT_WALL_WIDTH
-        wall = self._get_wall(center)
+        wall = self._get_containing_wall(center)
         if wall:
             wall_width = wall.Width
         else:
@@ -1657,7 +1663,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         corner = center.add(center2corner)
         pl = App.Placement(
             corner,  # translation
-            App.Rotation(math.degrees(-angle), 0, 90),  # rotation
+            App.Rotation(math.degrees(ang_sh2fc(angle)), 0, 90),  # rotation
             ORIGIN  # rotation@coordinate
         )
 
@@ -1691,8 +1697,8 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             window.Hosts = [wall]
         return window
 
-    def _get_wall(self, point):
-        """Returns the wall that contains the given point.
+    def _get_containing_wall(self, point):
+        """Returns the wall containing `point`.
 
         Args:
             point (FreeCAD.Vector): the point to test for
@@ -1791,21 +1797,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         transform.rotateY(roll)
         transform.rotateZ(-angle)
 
-        # Then translate to its final destination:
-        #   x, y, floor.z + z
-        floor_z = floor.Placement.Base.z
-        distance = App.Vector(x, y, dim_fc2sh(floor_z) + z)
-        transform.move(coord_sh2fc(distance))
-
         mesh.transform(transform)
-
-        # I finally make sure that the furniture does not pass through the floor...
-        bb = mesh.BoundBox
-        if bb.ZMin < floor_z:
-            _msg(f"Adjusting furniture {elm.get('id')} by {abs(floor_z - bb.ZMin)} on z")
-            transform = App.Matrix()
-            transform.move(App.Vector(0, 0, floor_z - bb.ZMin))
-            mesh.transform(transform)
 
         if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
             shape = Part.Shape()
@@ -1815,6 +1807,11 @@ class FurnitureHandler(BaseFurnitureHandler):
         else:
             equipment = App.ActiveDocument.addObject("Mesh::Feature", name)
             equipment.Mesh = mesh
+
+        equipment.Placement.Base = coord_sh2fc(App.Vector(x, y, z))
+        equipment.Placement.Base.z += floor.Placement.Base.z
+        equipment.Placement.Base.z += floor.floorThickness
+        equipment.Placement.Base.z += mesh.BoundBox.ZLength / 2
 
         return equipment
 
