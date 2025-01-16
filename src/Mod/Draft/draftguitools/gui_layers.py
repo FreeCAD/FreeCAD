@@ -208,7 +208,7 @@ class LayerManager:
 
             # draw style
             style = self.model.item(row, 3).text()
-            if vobj.DrawStyle != style:
+            if style is not None and vobj.DrawStyle != style:
                 if not changed:
                     doc.openTransaction("Layers change")
                     changed = True
@@ -216,7 +216,7 @@ class LayerManager:
 
             # line color
             color = self.model.item(row, 4).data(QtCore.Qt.UserRole)
-            if vobj.LineColor[:3] != color:
+            if color is not None and vobj.LineColor[:3] != color:
                 if not changed:
                     doc.openTransaction("Layers change")
                     changed = True
@@ -224,7 +224,7 @@ class LayerManager:
 
             # shape color
             color = self.model.item(row, 5).data(QtCore.Qt.UserRole)
-            if vobj.ShapeColor[:3] != color:
+            if color is not None and vobj.ShapeColor[:3] != color:
                 if not changed:
                     doc.openTransaction("Layers change")
                     changed = True
@@ -232,7 +232,7 @@ class LayerManager:
 
             # transparency
             transparency = self.model.item(row, 6).data(QtCore.Qt.DisplayRole)
-            if vobj.Transparency != transparency:
+            if transparency is not None and vobj.Transparency != transparency:
                 if not changed:
                     doc.openTransaction("Layers change")
                     changed = True
@@ -240,7 +240,7 @@ class LayerManager:
 
             # line print color
             color = self.model.item(row, 7).data(QtCore.Qt.UserRole)
-            if vobj.LinePrintColor[:3] != color:
+            if color is not None and vobj.LinePrintColor[:3] != color:
                 if not changed:
                     doc.openTransaction("Layers change")
                     changed = True
