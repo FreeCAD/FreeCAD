@@ -3720,7 +3720,12 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     p2 = FreeCAD.Vector(_v)
                     lspc = FreeCAD.Vector(_h)
                     p1 = ob.Placement.multVec(p2 + lspc)
-                    dxf.append(dxfLibrary.Text(t1, p1, height=h1 * 0.8,
+                    justifyhor = ("Left", "Center", "Right").index(vobj.TextAlign)
+                    dxf.append(dxfLibrary.Text(t1,
+                                               p1,
+                                               alignment=p1 if justifyhor else None,
+                                               height=h1 * 0.8,
+                                               justifyhor=justifyhor,
                                                rotation=rotation,
                                                color=getACI(ob, text=True),
                                                style='STANDARD',
@@ -3730,7 +3735,11 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                         if rotation:
                             Z = FreeCAD.Vector(0, 0, 1)
                             ofs = FreeCAD.Rotation(Z, rotation).multVec(ofs)
-                        dxf.append(dxfLibrary.Text(t2, p1.add(ofs), height=h2 * 0.8,
+                        dxf.append(dxfLibrary.Text(t2,
+                                                   p1.add(ofs),
+                                                   alignment=p1.add(ofs) if justifyhor else None,
+                                                   height=h2 * 0.8,
+                                                   justifyhor=justifyhor,
                                                    rotation=rotation,
                                                    color=getACI(ob, text=True),
                                                    style='STANDARD',
@@ -3748,12 +3757,14 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     h = 1
                     if gui:
                         vobj = ob.ViewObject
-                        h = float(ob.ViewObject.FontSize)
+                        h = float(vobj.FontSize)
                         for text in vobj.Proxy.getTextData():
-                            pos = text[1].add(FreeCAD.Vector(-h/2,-h/2,0))
+                            pos = text[1].add(FreeCAD.Vector(0,-h/2,0))
                             dxf.append(dxfLibrary.Text(text[0],
                                                        pos,
+                                                       alignment=pos,
                                                        height=h,
+                                                       justifyhor=1,
                                                        color=getACI(ob),
                                                        style='STANDARD',
                                                        layer=getStrGroup(ob)))
@@ -3835,9 +3846,15 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                          ob.Position.z))
                         if gui:
                             height = float(ob.ViewObject.FontSize)
+                            justifyhor = ("Left", "Center", "Right").index(ob.ViewObject.Justification)
                         else:
                             height = 1
-                        dxf.append(dxfLibrary.Text(text, point, height=height,
+                            justifyhor = 0
+                        dxf.append(dxfLibrary.Text(text,
+                                                   point,
+                                                   alignment=point if justifyhor else None,
+                                                   height=height,
+                                                   justifyhor=justifyhor,
                                                    color=getACI(ob, text=True),
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
@@ -3846,16 +3863,20 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     # texts
                     if gui:
                         height = float(ob.ViewObject.FontSize)
+                        justifyhor = ("Left", "Center", "Right").index(ob.ViewObject.Justification)
                     else:
                         height = 1
-                    for text in ob.Text:
+                        justifyhor = 0
+                    for idx, text in enumerate(ob.Text):
                         point = DraftVecUtils.tup(Vector(ob.Placement.Base.x,
-                                                         ob.Placement.Base.y - (height * 1.2 * ob.Text.index(text)),
+                                                         ob.Placement.Base.y - (height * 1.2 * idx),
                                                          ob.Placement.Base.z))
                         rotation = math.degrees(ob.Placement.Rotation.Angle)
                         dxf.append(dxfLibrary.Text(text,
                                                    point,
+                                                   alignment=point if justifyhor else None,
                                                    height=height * 0.8,
+                                                   justifyhor=justifyhor,
                                                    rotation=rotation,
                                                    color=getACI(ob, text=True),
                                                    style='STANDARD',
