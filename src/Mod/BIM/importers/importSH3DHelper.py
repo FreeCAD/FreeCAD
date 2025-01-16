@@ -472,6 +472,8 @@ class SH3DImporter:
             self.site = self.fc_objects.get('Site')
         else:
             self.site = self._create_site()
+        self._set_site_properties(elm)
+
         if elm.get('name') in self.fc_objects:
             self.building = self.fc_objects.get(elm.get('name'))
         else:
@@ -566,6 +568,68 @@ class SH3DImporter:
                 self.progress_bar.next()
             self.current_object_count = self.current_object_count + 1
         list(map(_process, enumerate(elements)))
+
+    def _set_site_properties(self, elm):
+        # All information in environment?, backgroundImage?, print?, compass
+        # are added to the site object. Some are furthermore added to the ground
+        environments = elm.findall('environment')
+        if len(environments) > 0:
+            environment = environments[0]
+            self.set_property(self.site, "App::PropertyString", "groundColor", "", environment)
+            self.set_property(self.site, "App::PropertyBool", "backgroundImageVisibleOnGround3D", "", environment)
+            self.set_property(self.site, "App::PropertyString", "skyColor", "", environment)
+            self.set_property(self.site, "App::PropertyString", "lightColor", "", environment)
+            self.set_property(self.site, "App::PropertyFloat", "wallsAlpha", "", environment)
+            self.set_property(self.site, "App::PropertyBool", "allLevelsVisible", "", environment)
+            self.set_property(self.site, "App::PropertyBool", "observerCameraElevationAdjusted", "", environment)
+            self.set_property(self.site, "App::PropertyString", "ceillingLightColor", "", environment)
+            self.set_property(self.site, "App::PropertyEnumeration", "drawingMode", "", str(environment.get('drawingMode', 'FILL')), valid_values=["FILL", "OUTLINE", "FILL_AND_OUTLINE"])
+            self.set_property(self.site, "App::PropertyFloat", "subpartSizeUnderLight", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "photoWidth", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "photoHeight", "", environment)
+            self.set_property(self.site, "App::PropertyEnumeration", "photoAspectRatio", "", str(environment.get('photoAspectRatio', 'VIEW_3D_RATIO')), valid_values=["FREE_RATIO", "VIEW_3D_RATIO", "RATIO_4_3", "RATIO_3_2", "RATIO_16_9", "RATIO_2_1", "RATIO_24_10", "SQUARE_RATIO"])
+            self.set_property(self.site, "App::PropertyInteger", "photoQuality", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "videoWidth", "", environment)
+            self.set_property(self.site, "App::PropertyEnumeration", "videoAspectRatio", "", str(environment.get('videoAspectRatio', 'RATIO_4_3')), valid_values=["RATIO_4_3", "RATIO_16_9", "RATIO_24_10"])
+            self.set_property(self.site, "App::PropertyInteger", "photoQuality", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "videoQuality", "", environment)
+            self.set_property(self.site, "App::PropertyString", "videoSpeed", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "videoFrameRate", "", environment)
+        else:
+            _msg(f"No <environment> tag found in <{elm.tag}>")
+
+        bg_imgs = elm.findall('backgroundImage')
+        if len(bg_imgs) > 0:
+            bg_img = bg_imgs[0]
+            self.set_property(self.site, "App::PropertyString", "image", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistance", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistanceXStart", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistanceYStart", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistanceXEnd", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistanceYEnd", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "xOrigin", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "yOrigin", "", bg_img)
+            self.set_property(self.site, "App::PropertyBool", "visible", "Whether the background image is visible", bg_img)
+        else:
+            _msg(f"No <backgroundImage> tag found in <{elm.tag}>")
+
+        compasses = elm.findall('compass')
+        if len(compasses) > 0:
+            compass = compasses[0]
+            self.set_property(self.site, "App::PropertyFloat", "x", "The compass's x", compass)
+            self.set_property(self.site, "App::PropertyFloat", "y", "The compass's y", compass)
+            self.set_property(self.site, "App::PropertyFloat", "diameter", "The compass's diameter in cm", compass)
+            self.set_property(self.site, "App::PropertyFloat", "northDirection", "The compass's angle to the north in degree", compass)
+            self.set_property(self.site, "App::PropertyFloat", "longitude", "The compass's longitude", compass)
+            self.set_property(self.site, "App::PropertyFloat", "latitude", "The compass's latitude", compass)
+            self.set_property(self.site, "App::PropertyString", "timeZone", "The compass's TimeZone", compass)
+            self.set_property(self.site, "App::PropertyBool", "visible", "Whether the compass is visible", compass)
+            self.site.Declination = ang_sh2fc(math.degrees(float(self.site.northDirection)))
+            self.site.Longitude = math.degrees(float(self.site.longitude))
+            self.site.Latitude = math.degrees(float(self.site.latitude))
+            self.site.EPWFile = '' # https://www.ladybug.tools/epwmap/ or https://climate.onebuilding.org
+        else:
+            _msg(f"No <compass> tag found in <{elm.tag}>")
 
 class BaseHandler:
     """The base class for all importers."""
