@@ -32,6 +32,7 @@ import DraftGeomUtils
 import DraftVecUtils
 import draftutils.gui_utils as gui_utils
 import Mesh
+import MeshPart
 import numpy
 import Part
 from draftutils.messages import _err, _log, _msg, _wrn
@@ -248,6 +249,11 @@ class SH3DImporter:
         self._import_elements(home, 'wall')
 
         self._refresh()
+
+        if self.preferences["CREATE_GROUND_MESH"]:
+            self._create_ground_mesh(home)
+
+        self._refresh()
         if App.GuiUp and self.preferences["FIT_VIEW"]:
             Gui.SendMsgToActiveView("ViewFit")
 
@@ -307,6 +313,7 @@ class SH3DImporter:
             'CREATE_IFC_PROJECT': get_param_arch("sh3dCreateIFCProject"),
             'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
+            'CREATE_GROUND_MESH': get_param_arch("sh3dCreateGroundMesh"),
         }
 
     def _setup_handlers(self):
@@ -534,6 +541,31 @@ class SH3DImporter:
             self.set_property(floor, "App::PropertyString", "BaseboardGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
 
         return floor
+
+    def _create_ground_mesh(self, elm):
+        bb = self.building.Shape.BoundBox
+        dx = bb.XLength/2
+        dy = bb.YLength/2
+        SO = App.Vector(bb.XMin-dx, bb.YMin-dy, 0)
+        NO = App.Vector(bb.XMin-dx, bb.YMax+dy, 0)
+        NE = App.Vector(bb.XMax+dx, bb.YMax+dy, 0)
+        SE = App.Vector(bb.XMax+dx, bb.YMin-dy, 0)
+        edge0 = Part.makeLine(SO, NO)
+        edge1 = Part.makeLine(NO, NE)
+        edge2 = Part.makeLine(NE, SE)
+        edge3 = Part.makeLine(SE, SO)
+        # ground = App.ActiveDocument.addObject("Part::Feature", "Ground")
+        ground_face = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
+
+        ground =  App.ActiveDocument.addObject("Mesh::Feature", "Ground")
+        ground.Mesh = MeshPart.meshFromShape(Shape=ground_face, LinearDeflection=0.1, AngularDeflection=0.523599, Relative=False)
+        ground.Label = "Ground"
+
+        set_color_and_transparency(ground, self.site.groundColor)
+        ground.ViewObject.Transparency = 50
+        # TODO: apply possible <texture> within the <environment> element
+
+        self.site.addObject(ground)
 
     def _import_elements(self, parent, tag, update_progress=True):
         """Generic function to import a specific element.
