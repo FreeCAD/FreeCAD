@@ -430,23 +430,29 @@ class SH3DImporter:
             return self.default_floor
         return self.floors.get(level_id, None)
 
-    def get_space(self, p):
+    def get_space(self, floor, p):
         """Returns the Space this point belongs to.
 
         An point belongs to a space if it is the closest space below that point
 
         Args:
+            floor (level): the floor the point's parent belongs to.
             p (Point): the point for which to determine the closest space.
 
         Returns:
             Space: the space the object belongs to or None
         """
-        space_min_z = float('inf')
         closest_space = None
-        for (space, upper_face) in self.space_upper_faces:
-            face_com_z = upper_face.CenterOfMass.z
-            p_com = App.Vector(p.x, p.y, face_com_z)
-            if upper_face.isInside(p_com, 1, True) and p_com.distanceToPoint(p) < space_min_z and face_com_z < p.z:
+        for (space_floor, space, space_face) in self.space_upper_faces:
+            space_face_z = space_face.CenterOfMass.z
+            projection = App.Vector(p.x, p.y, space_face_z)
+            # Checks that:
+            #   - the point's projection is inside the face
+            #   - the point is above the face
+            #   - the point's parent and the face's are on the same level
+            # NOTE: If two rooms overlap on the same level, the result is
+            #   undefined...
+            if space_face.isInside(projection, 1, True) and space_face_z < p.z and space_floor.id == floor.id:
                 closest_space = space
         return closest_space
 
@@ -712,18 +718,19 @@ class BaseHandler:
         """
         return self.importer.get_floor(level_id)
 
-    def get_space(self, p):
-        """Returns the Space this object belongs to.
+    def get_space(self, floor, p):
+        """Returns the Space this point belongs to.
 
         An point belongs to a space if it is the closest space below that point
 
         Args:
-            p (point): the point for which to determine the closest space.
+            floor (level): the floor the point's parent belongs to.
+            p (Point): the point for which to determine the closest space.
 
         Returns:
             Space: the space the object belongs to or None
         """
-        return self.importer.get_space(p)
+        return self.importer.get_space(floor, p)
 
     def _get_upper_face(self, faces):
         """Returns the upper face of a given list of faces
@@ -876,7 +883,7 @@ class RoomHandler(BaseHandler):
         self.importer.fc_objects[space.id] = space
 
         upper_face = self._get_upper_face(slab.Shape.Faces)
-        self.importer.space_upper_faces.append((space, upper_face))
+        self.importer.space_upper_faces.append((floor, space, upper_face))
 
         slab.Visibility = True
 
@@ -1476,7 +1483,7 @@ class WallHandler(BaseHandler):
 
         baseboard.recompute(True)
 
-        space = self.get_space(baseboard.Shape.BoundBox.Center)
+        space = self.get_space(floor, baseboard.Shape.BoundBox.Center)
         if space:
             space.Group = space.Group + [baseboard]
         else:
@@ -1735,8 +1742,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         else:
             p = feature.Mesh.BoundBox.Center
 
-        space = self.get_space(p)
-
+        space = self.get_space(floor, p)
         if space:
             space.Group = space.Group + [feature]
         else:
