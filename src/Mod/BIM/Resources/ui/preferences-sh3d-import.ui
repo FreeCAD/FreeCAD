@@ -306,6 +306,22 @@
                 </property>
               </widget>
             </item>
+            <item>
+              <widget class="Gui::PrefCheckBox" name="checkBox_13">
+                <property name="toolTip">
+                  <string>Create a Mesh to represent the default ground level.</string>
+                </property>
+                <property name="text">
+                  <string>Create ground level Mesh</string>
+                </property>
+                <property name="prefEntry" stdset="0">
+                  <cstring>sh3dCreateGroundMesh</cstring>
+                </property>
+                <property name="prefPath" stdset="0">
+                  <cstring>Mod/Arch</cstring>
+                </property>
+              </widget>
+            </item>
           </layout>
         </widget>
       </item>
