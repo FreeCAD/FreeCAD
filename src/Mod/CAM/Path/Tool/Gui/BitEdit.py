@@ -202,7 +202,7 @@ class ToolBitEditor(object):
 
     def updateUI(self):
         Path.Log.track()
-        self.form.toolName.setText(self.tool.Label)
+        self.form.toolName.setText(self.tool.Label2)
         self.form.shapePath.setText(self.tool.BitShape)
 
         for lbl, qsb, editor in self.widgets:
@@ -218,7 +218,7 @@ class ToolBitEditor(object):
                 editor.attachTo(self.tool, "File")
             self.tool.BitShape = shapePath
             self.setupTool(self.tool)
-            self.form.toolName.setText(self.tool.Label)
+            self.form.toolName.setText(self.tool.Label2)
             if self.tool.BitBody and self.tool.BitBody.ViewObject:
                 if not self.tool.BitBody.ViewObject.Visibility:
                     self.tool.BitBody.ViewObject.Visibility = True
@@ -239,8 +239,8 @@ class ToolBitEditor(object):
 
         label = str(self.form.toolName.text())
         shape = str(self.form.shapePath.text())
-        if self.tool.Label != label:
-            self.tool.Label = label
+        if self.tool.Label2 != label:
+            self.tool.Label2 = label
         self._updateBitShape(shape)
 
         for lbl, qsb, editor in self.widgets:

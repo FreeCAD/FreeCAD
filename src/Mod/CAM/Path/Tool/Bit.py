@@ -437,7 +437,7 @@ class ToolBit(object):
     def templateAttrs(self, obj):
         attrs = {}
         attrs["version"] = 2
-        attrs["name"] = obj.Label
+        attrs["name"] = obj.Label2
         if Path.Preferences.toolsStoreAbsolutePaths():
             attrs["shape"] = obj.BitShape
         else:
@@ -467,6 +467,7 @@ class ToolBitFactory(object):
         Path.Log.track(attrs, path)
         obj = Factory.Create(name, attrs["shape"], path)
         obj.Label = attrs["name"]
+        obj.Label2 = attrs["name"]
         params = attrs["parameter"]
         for prop in params:
             PathUtil.setProperty(obj, prop, params[prop])
