@@ -30,7 +30,6 @@ import Arch
 import Draft
 import DraftGeomUtils
 import DraftVecUtils
-import draftutils.gui_utils as gui_utils
 import Mesh
 import MeshPart
 import numpy
@@ -314,6 +313,8 @@ class SH3DImporter:
             'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
             'CREATE_GROUND_MESH': get_param_arch("sh3dCreateGroundMesh"),
+            'DEFAULT_GROUND_COLOR': color_fc2sh(get_param_arch("sh3dDefaultGroundColor")),
+            'DEFAULT_SKY_COLOR': color_fc2sh(get_param_arch("sh3dDefaultSkyColor")),
         }
 
     def _setup_handlers(self):
@@ -613,14 +614,19 @@ class SH3DImporter:
         environments = elm.findall('environment')
         if len(environments) > 0:
             environment = environments[0]
-            self.set_property(self.site, "App::PropertyString", "groundColor", "", environment)
+            ground_color = environment.get('floorColor',self.preferences["DEFAULT_GROUND_COLOR"])
+            sky_color = environment.get('ceilingColor', self.preferences["DEFAULT_SKY_COLOR"])
+            lightColor = environment.get('lightColor', self.preferences["DEFAULT_SKY_COLOR"])
+            ceillingLightColor = environment.get('ceillingLightColor', self.preferences["DEFAULT_SKY_COLOR"])
+
+            self.set_property(self.site, "App::PropertyString", "groundColor", "", ground_color)
             self.set_property(self.site, "App::PropertyBool", "backgroundImageVisibleOnGround3D", "", environment)
-            self.set_property(self.site, "App::PropertyString", "skyColor", "", environment)
-            self.set_property(self.site, "App::PropertyString", "lightColor", "", environment)
+            self.set_property(self.site, "App::PropertyString", "skyColor", "", sky_color)
+            self.set_property(self.site, "App::PropertyString", "lightColor", "", lightColor)
             self.set_property(self.site, "App::PropertyFloat", "wallsAlpha", "", environment)
             self.set_property(self.site, "App::PropertyBool", "allLevelsVisible", "", environment)
             self.set_property(self.site, "App::PropertyBool", "observerCameraElevationAdjusted", "", environment)
-            self.set_property(self.site, "App::PropertyString", "ceillingLightColor", "", environment)
+            self.set_property(self.site, "App::PropertyString", "ceillingLightColor", "", ceillingLightColor)
             self.set_property(self.site, "App::PropertyEnumeration", "drawingMode", "", str(environment.get('drawingMode', 'FILL')), valid_values=["FILL", "OUTLINE", "FILL_AND_OUTLINE"])
             self.set_property(self.site, "App::PropertyFloat", "subpartSizeUnderLight", "", environment)
             self.set_property(self.site, "App::PropertyInteger", "photoWidth", "", environment)
@@ -1726,7 +1732,11 @@ class FurnitureHandler(BaseFurnitureHandler):
             feature = self.get_fc_object(furniture_id, 'pieceOfFurniture')
 
         if not feature:
-            feature = self._create_equipment(elm)
+            feature = self._create_equipment(floor, elm)
+
+        color = elm.get('color', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+        set_color_and_transparency(feature, color)
+
         self.setp(feature, "App::PropertyString", "shType", "The element type", 'pieceOfFurniture')
         self.set_furniture_common_properties(feature, elm)
         self.set_piece_of_furniture_common_properties(feature, elm)
@@ -1753,45 +1763,55 @@ class FurnitureHandler(BaseFurnitureHandler):
         # be referenced elsewhere in the SH3D model (i.e. lights).
         self.importer.fc_objects[feature.id] = feature
 
-    def _create_equipment(self, elm):
-
-        floor = self.get_floor(elm.get('level'))
-
+    def _create_equipment(self, floor, elm):
         width = dim_sh2fc(float(elm.get('width')))
         depth = dim_sh2fc(float(elm.get('depth')))
         height = dim_sh2fc(float(elm.get('height')))
         x = float(elm.get('x', 0))
         y = float(elm.get('y', 0))
         z = float(elm.get('elevation', 0.0))
-        angle = float(elm.get('angle', 0.0))
-        pitch = float(elm.get('pitch', 0.0))  # X Axis
-        roll = float(elm.get('roll', 0.0))  # Y Axis
+        height_in_plan = elm.get('heightInPlan', 0.0)
+        pitch = float(elm.get('pitch', 0.0))  # X SH3D Axis
+        roll = float(elm.get('roll', 0.0))    # Y SH3D Axis
+        angle = float(elm.get('angle', 0.0))  # Z SH3D Axis
         name = elm.get('name')
         mirrored = bool(elm.get('modelMirrored', "false") == "true")
 
-        # The meshes are normalized, facing up.
+        # The meshes are normalized, centered, facing up.
         # Center, Scale, X Rotation && Z Rotation (in FC axes), Move
         mesh = self._get_mesh(elm)
         bb = mesh.BoundBox
         transform = App.Matrix()
+        # In FC the reference is the "upper left" corner
         transform.move(-bb.Center)
-        # NOTE: the model is facing up, thus y and z are inverted
         transform.scale(width/bb.XLength, height/bb.YLength, depth/bb.ZLength)
+        # NOTE: the model is facing up, thus y and z are inverted
         transform.rotateX(math.pi/2)
         transform.rotateX(-pitch)
         transform.rotateY(roll)
         transform.rotateZ(-angle)
-        level_elevation = dim_fc2sh(floor.Placement.Base.z)
-        distance = App.Vector(x, y, level_elevation + z + (dim_fc2sh(height) / 2))
+
+        # Then translate to its final destination:
+        #   x, y, floor.z + z
+        floor_z = floor.Placement.Base.z
+        distance = App.Vector(x, y, dim_fc2sh(floor_z) + z)
         transform.move(coord_sh2fc(distance))
+
         mesh.transform(transform)
+
+        # I finally make sure that the furniture does not pass through the floor...
+        bb = mesh.BoundBox
+        if bb.ZMin < floor_z:
+            _msg(f"Adjusting furniture {elm.get('id')} by {abs(floor_z - bb.ZMin)} on z")
+            transform = App.Matrix()
+            transform.move(App.Vector(0, 0, floor_z - bb.ZMin))
+            mesh.transform(transform)
 
         if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
             shape = Part.Shape()
             shape.makeShapeFromMesh(mesh.Topology, 1)
             equipment = Arch.makeEquipment(name=name)
             equipment.Shape = shape
-            # equipment.purgeTouched()
         else:
             equipment = App.ActiveDocument.addObject("Mesh::Feature", name)
             equipment.Mesh = mesh
