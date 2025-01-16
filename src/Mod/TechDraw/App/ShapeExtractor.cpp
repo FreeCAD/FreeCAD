@@ -398,31 +398,20 @@ bool ShapeExtractor::is2dObject(const App::DocumentObject* obj)
 bool ShapeExtractor::isEdgeType(const App::DocumentObject* obj)
 {
     Base::Type t = obj->getTypeId();
-    if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
-        return true;
-    } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
-        return true;
-    } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
-        return true;
-    } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
-        return true;
-    }
-    return false;
+    return t.isDerivedFrom(Part::Line::getClassTypeId())
+           || t.isDerivedFrom(Part::Circle::getClassTypeId())
+           || t.isDerivedFrom(Part::Ellipse::getClassTypeId())
+           || t.isDerivedFrom(Part::RegularPolygon::getClassTypeId());
 }
 
 bool ShapeExtractor::isPointType(const App::DocumentObject* obj)
 {
-    if (obj) {
-        Base::Type t = obj->getTypeId();
-        if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
-            return true;
-        } else if (isDraftPoint(obj)) {
-            return true;
-        } else if (isDatumPoint(obj)) {
-            return true;
-        }
+    if (!obj) {
+        return false;
     }
-    return false;
+    return obj->isDerivedFrom<Part::Vertex>()
+           || isDraftPoint(obj)
+           || isDatumPoint(obj);
 }
 
 bool ShapeExtractor::isDraftPoint(const App::DocumentObject* obj)
@@ -486,17 +475,8 @@ TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
 
 bool ShapeExtractor::isSketchObject(const App::DocumentObject* obj)
 {
-// TODO:: the check for an object being a sketch should be done as in the commented
-// if statement below. To do this, we need to include Mod/Sketcher/SketchObject.h,
-// but that makes TechDraw dependent on Eigen libraries which we don't use.  As a
-// workaround we will inspect the object's class name.
-//    if (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-    std::string objTypeName = obj->getTypeId().getName();
-    std::string sketcherToken("Sketcher");
-    if (objTypeName.find(sketcherToken) != std::string::npos) {
-        return true;
-    }
-    return false;
+    // Use name to lookup to avoid dependency on Sketcher module
+    return obj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"));
 }
 
 

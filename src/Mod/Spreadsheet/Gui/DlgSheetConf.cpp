@@ -115,8 +115,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
             e.ReportException();
             FC_THROWM(Base::RuntimeError, "Failed to parse expression for property");
         }
-        if (expr->hasComponent()
-            || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+        if (expr->hasComponent() || !expr->isDerivedFrom<App::VariableExpression>()) {
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 
@@ -196,8 +195,7 @@ void DlgSheetConf::accept()
 
         std::string exprTxt(ui->lineEditProp->text().trimmed().toUtf8().constData());
         App::ExpressionPtr expr(App::Expression::parse(sheet, exprTxt));
-        if (expr->hasComponent()
-            || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+        if (expr->hasComponent() || !expr->isDerivedFrom<App::VariableExpression>()) {
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 

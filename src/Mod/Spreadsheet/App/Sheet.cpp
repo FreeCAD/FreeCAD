@@ -924,7 +924,7 @@ void Sheet::recomputeCell(CellAddress p)
         cellErrors.insert(p);
         cellUpdated(p);
 
-        if (e.isDerivedFrom(Base::AbortException::getClassTypeId())) {
+        if (e.isDerivedFrom<Base::AbortException>()) {
             throw;
         }
     }

@@ -139,10 +139,8 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
 
             switch (curve.GetType()) {
                 case GeomAbs_Line: {
-                    if (ob->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Datum"))) {
-                        return App::MeasureElementType::LINE;
-                    }
-                    return App::MeasureElementType::LINESEGMENT;
+                    return ob->isDerivedFrom<Part::Datum>() ? App::MeasureElementType::LINE
+                                                            : App::MeasureElementType::LINESEGMENT;
                 }
                 case GeomAbs_Circle: { return App::MeasureElementType::CIRCLE; }
                 case GeomAbs_BezierCurve:

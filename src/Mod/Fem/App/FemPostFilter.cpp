@@ -91,8 +91,7 @@ DocumentObjectExecReturn* FemPostFilter::execute()
 vtkDataObject* FemPostFilter::getInputData()
 {
     if (Input.getValue()) {
-        if (Input.getValue()->getTypeId().isDerivedFrom(
-                Base::Type::fromName("Fem::FemPostObject"))) {
+        if (Input.getValue()->isDerivedFrom<Fem::FemPostObject>()) {
             return Input.getValue<FemPostObject*>()->Data.getValue();
         }
         else {

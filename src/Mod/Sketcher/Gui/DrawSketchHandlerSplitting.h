@@ -70,7 +70,7 @@ public:
             if (geom->is<Part::GeomLineSegment>()
                 || geom->is<Part::GeomCircle>()
                 || geom->is<Part::GeomEllipse>()
-                || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
+                || geom->isDerivedFrom<Part::GeomArcOfConic>()
                 || geom->is<Part::GeomBSplineCurve>()) {
                 return true;
             }
@@ -122,7 +122,7 @@ public:
             if (geom->is<Part::GeomLineSegment>()
                 || geom->is<Part::GeomCircle>()
                 || geom->is<Part::GeomEllipse>()
-                || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
+                || geom->isDerivedFrom<Part::GeomArcOfConic>()
                 || geom->is<Part::GeomBSplineCurve>()) {
                 GeoId = curveGeoId;
             }
