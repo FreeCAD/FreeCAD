@@ -52,6 +52,9 @@ public:
     MenuItem* copy() const;
     uint count() const;
 
+    bool isHorizontal(void);
+    void setHorizontal(bool isHorizontal);
+
     void appendItem(MenuItem*);
     bool insertItem(MenuItem*, MenuItem*);
     MenuItem* afterItem(MenuItem*) const;
@@ -65,6 +68,8 @@ public:
 private:
     std::string _name;
     QList<MenuItem*> _items;
+
+    bool horizontal = false;
 };
 
 /**

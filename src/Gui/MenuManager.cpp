@@ -25,6 +25,9 @@
 # include <QApplication>
 # include <QMenu>
 # include <QMenuBar>
+# include <QToolButton>
+# include <QHBoxLayout>
+# include <QWidgetAction>
 #endif
 
 #include "MenuManager.h"
@@ -114,6 +117,16 @@ MenuItem* MenuItem::copy() const
 uint MenuItem::count() const
 {
     return _items.count();
+}
+
+bool MenuItem::isHorizontal()
+{
+    return horizontal;
+}
+
+void MenuItem::setHorizontal(bool isHorizontal)
+{
+    horizontal = isHorizontal;
 }
 
 void MenuItem::appendItem(MenuItem* item)
@@ -294,6 +307,34 @@ void MenuManager::setup(MenuItem* menuItems) const
     //menuBar->setUpdatesEnabled(true);
 }
 
+inline
+QWidget *makeHorizontalWidget(MenuItem *item, QMenu *menu)
+{
+    auto getQAction = [&mgr = Application::Instance->commandManager()](MenuItem *it){
+        QAction *result = nullptr;
+        if (QWidget tmp_w; mgr.addTo(it->command().c_str(), &tmp_w))
+            if (QList <QAction *> tmp_act_lst = tmp_w.actions(); !tmp_act_lst.isEmpty())
+                result = tmp_act_lst.front();
+        return result; };
+
+    auto makeQToolButton = [menu](QAction *act){
+        auto tb = new QToolButton ();
+        tb->setDefaultAction(act);
+        tb->setAutoRaise(true);
+        QObject::connect(tb, &QToolButton::triggered, menu, &QMenu::hide);
+        return tb; };
+
+    auto horizontal_widget = new QWidget();
+    auto lay = new QHBoxLayout(horizontal_widget);
+    const QList <MenuItem *> list_of_horizontal_items = item->getItems();
+    for (auto menu_item : list_of_horizontal_items)
+        if (auto act = getQAction(menu_item); act != nullptr)
+            lay->addWidget(makeQToolButton(act));
+    lay->addStretch(1);
+
+    return horizontal_widget;
+}
+
 void MenuManager::setup(MenuItem* item, QMenu* menu) const
 {
     CommandManager& mgr = Application::Instance->commandManager();
@@ -310,6 +351,7 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
             }
             else {
                 if (item->hasItems()) {
+                    if (item->isHorizontal() == false) {
                     // Creste a submenu
                     std::string menuName = item->command();
                     QMenu* submenu = menu->addMenu(QApplication::translate("Workbench", menuName.c_str()));
@@ -319,6 +361,28 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
                     // set the menu user data
                     action->setData(QString::fromLatin1(item->command().c_str()));
                     used_actions.append(action);
+                    } else {// adds a horizontal widget
+                        QWidgetAction *w_a = new QWidgetAction(menu);
+                        w_a->setDefaultWidget(makeHorizontalWidget(item, menu));
+
+                        // moves the clipboard commands to the top
+                        if (item->command() == "Clipboard thingies") {
+                            auto move_clipboards_actions_to_the_top = [w_a, menu](){
+                                const QList <QAction *> menu_actions = menu->actions();
+                                if (QAction *sep; !menu_actions.empty()){
+                                    sep = menu->insertSeparator(menu_actions.first());
+                                    menu->insertAction(sep, w_a);
+                                } else
+                                    menu->addAction(w_a);
+
+                                //: Context menu actions
+                                menu->insertSection(w_a, QObject::tr("Clipboard actions")); };
+                            QObject::connect(menu, &QMenu::aboutToShow, w_a, move_clipboards_actions_to_the_top);
+                        } else
+                            menu->addAction(w_a); // not the clipboard actions
+
+                        used_actions.append(w_a);
+                    } //end of horizontal widget
                 }
                 else {
                     // A command can have more than one QAction
@@ -347,7 +411,7 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
         }
 
         // fill up the submenu
-        if (item->hasItems()) {
+        if (item->hasItems() && item->isHorizontal() == false) {
             setup(item, used_actions.front()->menu());
         }
     }
