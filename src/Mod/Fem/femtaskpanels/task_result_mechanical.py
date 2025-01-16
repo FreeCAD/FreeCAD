@@ -83,12 +83,8 @@ class _TaskPanel:
         self.slider_max = False
         self.recurlim = min(200, sys.getrecursionlimit() / 2)
 
-        self.fem_prefs = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/General"
-        )
-        self.restore_result_settings_in_dialog = self.fem_prefs.GetBool(
-            "RestoreResultDialog", True
-        )
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
 
         # Connect Signals and Slots
         # result type radio buttons
@@ -190,9 +186,7 @@ class _TaskPanel:
             self.hsb_disp_factor_changed,
         )
 
-        self.result_widget.sb_displacement_factor.valueChanged.connect(
-            self.sb_disp_factor_changed
-        )
+        self.result_widget.sb_displacement_factor.valueChanged.connect(self.sb_disp_factor_changed)
         self.result_widget.sb_displacement_factor_max.valueChanged.connect(
             self.sb_disp_factor_max_changed
         )
@@ -290,11 +284,9 @@ class _TaskPanel:
             "show_disp": True,  # False,
             "disp_factor": 5.0,
             "disp_factor_max": 100.0,
-            "animate": [-1, -1, -1, -1], # steps, loops, rate, indicator (not used)
+            "animate": [-1, -1, -1, -1],  # steps, loops, rate, indicator (not used)
         }
-        self.result_widget.sb_displacement_factor_max.setValue(
-            100.0
-        )  # init non standard values
+        self.result_widget.sb_displacement_factor_max.setValue(100.0)  # init non standard values
 
     def getStandardButtons(self):
         return QtGui.QDialogButtonBox.Close
@@ -331,36 +323,24 @@ class _TaskPanel:
 
     def x_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
-            res_disp_u1 = self.get_scalar_disp_list(
-                self.result_obj.DisplacementVectors, 0
-            )
-            self.result_selected(
-                "U1", res_disp_u1, "mm", translate("FEM", "Displacement X")
-            )
+            res_disp_u1 = self.get_scalar_disp_list(self.result_obj.DisplacementVectors, 0)
+            self.result_selected("U1", res_disp_u1, "mm", translate("FEM", "Displacement X"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def y_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
-            res_disp_u2 = self.get_scalar_disp_list(
-                self.result_obj.DisplacementVectors, 1
-            )
-            self.result_selected(
-                "U2", res_disp_u2, "mm", translate("FEM", "Displacement Y")
-            )
+            res_disp_u2 = self.get_scalar_disp_list(self.result_obj.DisplacementVectors, 1)
+            self.result_selected("U2", res_disp_u2, "mm", translate("FEM", "Displacement Y"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def z_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
-            res_disp_u3 = self.get_scalar_disp_list(
-                self.result_obj.DisplacementVectors, 2
-            )
-            self.result_selected(
-                "U3", res_disp_u3, "mm", translate("FEM", "Displacement Z")
-            )
+            res_disp_u3 = self.get_scalar_disp_list(self.result_obj.DisplacementVectors, 2)
+            self.result_selected("U3", res_disp_u3, "mm", translate("FEM", "Displacement Z"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -542,9 +522,7 @@ class _TaskPanel:
         FreeCAD.FEM_dialog["results_type"] = "None"
         self.update()
         self.restore_result_dialog()
-        userdefined_eq = (
-            self.result_widget.user_def_eq.toPlainText()
-        )  # Get equation to be used
+        userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
         self.results_name = "User Defined: " + userdefined_eq
 
         # https://forum.freecad.org/viewtopic.php?f=18&t=42425&start=10#p368774 ff
@@ -644,9 +622,7 @@ class _TaskPanel:
         self.set_label(self.result_obj.Label, self.results_name)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers, res_values
-            )
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, res_values)
         self.set_result_stats(res_unit, minm, maxm)
         QtGui.QApplication.restoreOverrideCursor()
 
@@ -711,11 +687,7 @@ class _TaskPanel:
                 self.result_widget.hsb_displacement_factor.setValue(0.0)
             else:
                 self.result_widget.hsb_displacement_factor.setValue(
-                    round(
-                        value
-                        / self.result_widget.sb_displacement_factor_max.value()
-                        * 100.0
-                    )
+                    round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
                 )
 
     def disable_empty_result_buttons(self):
@@ -764,9 +736,7 @@ class _TaskPanel:
             )
             error_message = translate("FEM", the_error_messagetext) + "\n"
             FreeCAD.Console.PrintError(error_message)
-            QtGui.QMessageBox.critical(
-                None, translate("FEM", "Empty result mesh"), error_message
-            )
+            QtGui.QMessageBox.critical(None, translate("FEM", "Empty result mesh"), error_message)
         elif self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers):
             self.suitable_results = True
             hide_parts_constraints()
@@ -885,19 +855,15 @@ class _TaskPanel:
             pass
         try:
             self.hsb_displacement_factor = self.result_widget.sb_displacement_factor.value()
-            
+
         except:
             pass
         return
 
     def set_label(self, result_name, mesh_data):
         if len(self.animateText) == 0:
-            self.animateText.append(
-                CreateLabels.createLabel((-0.98, 0.90, 0), result_name)
-            )
-            self.animateText.append(
-                CreateLabels.createLabel((-0.98, 0.70, 0), mesh_data)
-            )
+            self.animateText.append(CreateLabels.createLabel((-0.98, 0.90, 0), result_name))
+            self.animateText.append(CreateLabels.createLabel((-0.98, 0.70, 0), mesh_data))
         else:
             self.animateText[1].set_text(mesh_data)
         pass
