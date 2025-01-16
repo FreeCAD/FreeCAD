@@ -33,11 +33,11 @@ namespace Gui
 /**
  * @class SoFCTransform
  * @brief A temporary workaround for coin3d/coin#534.
- * 
+ *
  * This class is a workaround for a missing feature to reduce the OpenGL stack size.
  * The issue was reported here: https://github.com/coin3d/coin/issues/534
  * And was merged here: https://github.com/coin3d/coin/pull/535
- * 
+ *
  * Once this feature is available in all supported versions of Coin3D, this class should
  * be removed and all instances should revert to using SoTransform.
  */

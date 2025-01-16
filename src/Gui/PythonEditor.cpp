@@ -65,7 +65,7 @@ struct PythonEditorP
  *  syntax highlighting for the Python language.
  */
 PythonEditor::PythonEditor(QWidget* parent)
-  : TextEditor(parent)
+    : PythonTextEditor(parent)
 {
     d = new PythonEditorP();
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
@@ -85,6 +85,25 @@ PythonEditor::PythonEditor(QWidget* parent)
 PythonEditor::~PythonEditor()
 {
     delete d;
+}
+
+void PythonEditor::OnChange(Base::Subject<const char*> &rCaller, const char* sReason)
+{
+    const auto & rGrp = static_cast<ParameterGrp &>(rCaller);
+
+    if (strcmp(sReason, "EnableBlockCursor") == 0 ||
+        strcmp(sReason, "FontSize") == 0 ||
+        strcmp(sReason, "Font") == 0) {
+        bool block = rGrp.GetBool("EnableBlockCursor", false);
+        if (block) {
+            setCursorWidth(QFontMetrics(font()).averageCharWidth());
+        }
+        else {
+            setCursorWidth(1);
+        }
+    }
+
+    TextEditor::OnChange(rCaller, sReason);
 }
 
 void PythonEditor::setFileName(const QString& fn)
@@ -205,7 +224,7 @@ void PythonEditor::keyPressEvent(QKeyEvent* e)
         setTextCursor(cursor);
         return; //skip default handler
     }
-    TextEditor::keyPressEvent(e); //wasn't enter key, so let base class handle it
+    PythonTextEditor::keyPressEvent(e); //wasn't enter key, so let base class handle it
 }
 
 void PythonEditor::onComment()

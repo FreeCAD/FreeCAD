@@ -199,7 +199,7 @@ void SweepWidget::findShapes()
             }
         }
 
-        if (!shape.Infinite() && 
+        if (!shape.Infinite() &&
             (shape.ShapeType() == TopAbs_FACE ||
             shape.ShapeType() == TopAbs_WIRE ||
             shape.ShapeType() == TopAbs_EDGE ||

@@ -560,7 +560,7 @@ PyObject *ViewProviderPy::getBoundingBox(PyObject *args) {
     PY_TRY {
         View3DInventor *view = nullptr;
         if(pyView)
-            view = static_cast<View3DInventorPy*>(pyView)->getView3DIventorPtr();
+            view = static_cast<View3DInventorPy*>(pyView)->getView3DInventorPtr();
         auto bbox = getViewProviderPtr()->getBoundingBox(subname, Base::asBoolean(transform), view);
         return new Base::BoundBoxPy(new Base::BoundBox3d(bbox));
     }

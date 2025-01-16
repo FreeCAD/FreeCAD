@@ -205,6 +205,8 @@ void TextEdit::createListBox()
 namespace Gui {
 struct TextEditorP
 {
+    bool highlightLine = true;
+    bool visibleMarker = true;
     QMap<QString, QColor> colormap; // Color map
     TextEditorP()
     {
@@ -265,6 +267,27 @@ TextEditor::~TextEditor()
     delete d;
 }
 
+void TextEditor::setVisibleLineNumbers(bool value)
+{
+    lineNumberArea->setVisible(value);
+    d->visibleMarker = value;
+}
+
+bool TextEditor::isVisibleLineNumbers() const
+{
+    return d->visibleMarker;
+}
+
+void TextEditor::setEnabledHighlightCurrentLine(bool value)
+{
+    d->highlightLine = value;
+}
+
+bool TextEditor::isEnabledHighlightCurrentLine() const
+{
+    return d->highlightLine;
+}
+
 int TextEditor::lineNumberAreaWidth()
 {
     return QtTools::horizontalAdvance(fontMetrics(), QLatin1String("0000")) + 10;
@@ -272,33 +295,42 @@ int TextEditor::lineNumberAreaWidth()
 
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
-    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+    int left = isVisibleLineNumbers() ? lineNumberAreaWidth() : 0;
+    setViewportMargins(left, 0, 0, 0);
 }
 
 void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
-    if (dy)
-        lineNumberArea->scroll(0, dy);
-    else
-        lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+    if (isVisibleLineNumbers()) {
+        if (dy) {
+            lineNumberArea->scroll(0, dy);
+        }
+        else {
+            lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+        }
 
-    if (rect.contains(viewport()->rect()))
-        updateLineNumberAreaWidth(0);
+        if (rect.contains(viewport()->rect())) {
+            updateLineNumberAreaWidth(0);
+        }
+    }
 }
 
 void TextEditor::resizeEvent(QResizeEvent *e)
 {
     QPlainTextEdit::resizeEvent(e);
 
-    QRect cr = contentsRect();
-    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+    if (isVisibleLineNumbers()) {
+        QRect cr = contentsRect();
+        int width = lineNumberAreaWidth();
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), width, cr.height()));
+    }
 }
 
 void TextEditor::highlightCurrentLine()
 {
     QList<QTextEdit::ExtraSelection> extraSelections;
 
-    if (!isReadOnly()) {
+    if (!isReadOnly() && isEnabledHighlightCurrentLine()) {
         QTextEdit::ExtraSelection selection;
         QColor lineColor = d->colormap[QLatin1String("Current line highlight")];
         unsigned int col = App::Color::asPackedRGB<QColor>(lineColor);
@@ -327,6 +359,9 @@ void TextEditor::drawMarker(int line, int x, int y, QPainter* p)
 
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
+    if (!isVisibleLineNumbers()) {
+        return;
+    }
     QPainter painter(lineNumberArea);
     //painter.fillRect(event->rect(), Qt::lightGray);
 
@@ -359,12 +394,71 @@ void TextEditor::setSyntaxHighlighter(SyntaxHighlighter* sh)
     this->highlighter = sh;
 }
 
-void TextEditor::keyPressEvent (QKeyEvent * e)
+/** Sets the font, font size and tab size of the editor. */
+void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReason)
+{
+    Q_UNUSED(rCaller);
+    ParameterGrp::handle hPrefGrp = getWindowParameter();
+    if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
+#ifdef FC_OS_LINUX
+        int fontSize = hPrefGrp->GetInt("FontSize", 15);
+#else
+        int fontSize = hPrefGrp->GetInt("FontSize", 10);
+#endif
+        QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
+
+        QFont font(fontFamily, fontSize);
+        setFont(font);
+        lineNumberArea->setFont(font);
+    }
+    else {
+        QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
+        if (it != d->colormap.end()) {
+            QColor color = it.value();
+            unsigned int col = App::Color::asPackedRGB<QColor>(color);
+            auto value = static_cast<unsigned long>(col);
+            value = hPrefGrp->GetUnsigned(sReason, value);
+            col = static_cast<unsigned int>(value);
+            color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
+            if (this->highlighter)
+                this->highlighter->setColor(QLatin1String(sReason), color);
+        }
+    }
+
+    if (strcmp(sReason, "TabSize") == 0 || strcmp(sReason, "FontSize") == 0) {
+        int tabWidth = hPrefGrp->GetInt("TabSize", 4);
+        QFontMetrics metric(font());
+        int fontSize = QtTools::horizontalAdvance(metric, QLatin1Char('0'));
+        setTabStopDistance(tabWidth * fontSize);
+    }
+
+    // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
+    if (strcmp(sReason, "EnableLineNumber") == 0) {
+        int width = 0;
+        QRect cr = contentsRect();
+        if (hPrefGrp->GetBool("EnableLineNumber", true)) {
+            width = lineNumberAreaWidth();
+        }
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), width, cr.height()));
+    }
+}
+
+// ------------------------------------------------------------------------------
+
+PythonTextEditor::PythonTextEditor(QWidget *parent)
+    : TextEditor(parent)
+{
+
+}
+
+PythonTextEditor::~PythonTextEditor() = default;
+
+void PythonTextEditor::keyPressEvent (QKeyEvent * e)
 {
     if ( e->key() == Qt::Key_Tab ) {
         ParameterGrp::handle hPrefGrp = getWindowParameter();
+        bool space = hPrefGrp->GetBool("Spaces", true);
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
-        bool space = hPrefGrp->GetBool( "Spaces", false );
         QString ch = space ? QString(indent, QLatin1Char(' '))
                            : QString::fromLatin1("\t");
 
@@ -389,7 +483,7 @@ void TextEditor::keyPressEvent (QKeyEvent * e)
                         break; // end of selection reached
                     cursor.setPosition(block.position());
                     cursor.insertText(ch);
-                        selEnd += ch.length();
+                    selEnd += ch.length();
                 }
             }
 
@@ -442,78 +536,10 @@ void TextEditor::keyPressEvent (QKeyEvent * e)
         return;
     }
 
-    TextEdit::keyPressEvent( e );
+    TextEditor::keyPressEvent( e );
 }
 
-/** Sets the font, font size and tab size of the editor. */
-void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReason)
-{
-    Q_UNUSED(rCaller);
-    ParameterGrp::handle hPrefGrp = getWindowParameter();
-    if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
-#ifdef FC_OS_LINUX
-        int fontSize = hPrefGrp->GetInt("FontSize", 15);
-#else
-        int fontSize = hPrefGrp->GetInt("FontSize", 10);
-#endif
-        QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
 
-        QFont font(fontFamily, fontSize);
-        setFont(font);
-        lineNumberArea->setFont(font);
-    }
-    else {
-        QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
-        if (it != d->colormap.end()) {
-            QColor color = it.value();
-            unsigned int col = App::Color::asPackedRGB<QColor>(color);
-            auto value = static_cast<unsigned long>(col);
-            value = hPrefGrp->GetUnsigned(sReason, value);
-            col = static_cast<unsigned int>(value);
-            color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
-            if (this->highlighter)
-                this->highlighter->setColor(QLatin1String(sReason), color);
-        }
-    }
-
-    if (strcmp(sReason, "TabSize") == 0 || strcmp(sReason, "FontSize") == 0) {
-        int tabWidth = hPrefGrp->GetInt("TabSize", 4);
-        QFontMetrics metric(font());
-        int fontSize = QtTools::horizontalAdvance(metric, QLatin1Char('0'));
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
-        setTabStopWidth(tabWidth * fontSize);
-#else
-        setTabStopDistance(tabWidth * fontSize);
-#endif
-    }
-
-    // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
-    if (strcmp(sReason, "EnableLineNumber") == 0) {
-        QRect cr = contentsRect();
-        bool show = hPrefGrp->GetBool("EnableLineNumber", true);
-        if(show)
-            lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
-        else
-            lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), 0, cr.height()));
-    }
-
-    if (strcmp(sReason, "EnableBlockCursor") == 0 ||
-        strcmp(sReason, "FontSize") == 0 ||
-        strcmp(sReason, "Font") == 0) {
-        bool block = hPrefGrp->GetBool("EnableBlockCursor", false);
-        if (block)
-            setCursorWidth(QFontMetrics(font()).averageCharWidth());
-        else
-            setCursorWidth(1);
-    }
-}
-
-void TextEditor::paintEvent (QPaintEvent * e)
-{
-    TextEdit::paintEvent( e );
-}
-
-// ------------------------------------------------------------------------------
 
 LineMarker::LineMarker(TextEditor* editor)
     : QWidget(editor), textEditor(editor)

@@ -129,7 +129,7 @@ Double click on an error in the tree view to see more information about it, incl
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>저작권 (c) Werner Mayer
 
-FreeCAD 유닛테스트는 FreeCAD의 일부이며 모듈별로 유닛테스트를 작성할 수 있습니다.</translation>
+FreeCAD UnitTest는 FreeCAD의 일부이며 사용자가 소유한 모듈에 대한 단위 테스트를 작성할 수 있도록 지원합니다.</translation>
     </message>
   </context>
 </TS>

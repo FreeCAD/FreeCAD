@@ -207,7 +207,7 @@ public:
         bool propagated = false; //flag that the event had been passed to superclass
     };
     std::shared_ptr<Flags> flags;
-    //storing these values as a separate unit allows to effectively write to
+    //storing these values as a separate unit allows one to effectively write to
     //const object. Statechart passes all events as const, unfortunately, so
     //this is a workaround. I've considered casting away const instead, but
     //the internet seems to have mixed opinion if it's undefined behavior or

@@ -591,7 +591,7 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
         <location filename="../../FitBSplineCurve.ui" line="14"/>
-        <source>Fit B-spline surface</source>
+        <source>Fit B-spline curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

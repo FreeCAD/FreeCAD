@@ -155,18 +155,12 @@ def scale_vertex(obj, vertex_index, scale, center):
     obj.Points = points
 
 
-scaleVertex = scale_vertex
-
-
 def scale_vector_from_center(vector, scale, center):
     """
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
     return vector.sub(center).scale(scale.x, scale.y, scale.z).add(center)
-
-
-scaleVectorFromCenter = scale_vector_from_center
 
 
 def scale_edge(obj, edge_index, scale, center):
@@ -179,9 +173,6 @@ def scale_edge(obj, edge_index, scale, center):
         scale_vertex(obj, 0, scale, center)
     else:
         scale_vertex(obj, edge_index+1, scale, center)
-
-
-scaleEdge = scale_edge
 
 
 def copy_scaled_edge(obj, edge_index, scale, center):
@@ -203,9 +194,6 @@ def copy_scaled_edge(obj, edge_index, scale, center):
     return make_line.make_line(vertex1, vertex2)
 
 
-copyScaledEdge = copy_scaled_edge
-
-
 def copy_scaled_edges(arguments):
     """
     Needed for SubObjects modifiers.
@@ -216,8 +204,5 @@ def copy_scaled_edges(arguments):
         copied_edges.append(copy_scaled_edge(argument[0], argument[1],
             argument[2], argument[3]))
     join.join_wires(copied_edges)
-
-
-copyScaledEdges = copy_scaled_edges
 
 ## @}

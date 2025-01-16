@@ -318,7 +318,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     BRepGProp::SurfaceProperties(shape, gprops);
     auto origin = gprops.CentreOfMass();
 
-    // TODO: Center of Mass might not lie on the surface, somehow snap to the closest point on the surface? 
+    // TODO: Center of Mass might not lie on the surface, somehow snap to the closest point on the surface?
 
     Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
     return std::make_shared<MeasureAreaInfo>(true, getFaceArea(shape), placement);
@@ -340,7 +340,7 @@ MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
         return std::make_shared<MeasurePositionInfo>(false, Base::Vector3d());
     }
 
-    TopoDS_Vertex vertex = TopoDS::Vertex(shape);    
+    TopoDS_Vertex vertex = TopoDS::Vertex(shape);
     auto point = BRep_Tool::Pnt(vertex);
     return std::make_shared<MeasurePositionInfo>( true, Base::Vector3d(point.X(), point.Y(), point.Z()));
 }
@@ -365,11 +365,11 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     Base::Vector3d position;
     if (sType == TopAbs_FACE) {
         TopoDS_Face face = TopoDS::Face(shape);
-        
+
         GProp_GProps gprops;
         BRepGProp::SurfaceProperties(face, gprops);
         vec = gprops.CentreOfMass();
-        
+
     } else if (sType == TopAbs_EDGE) {
         TopoDS_Edge edge = TopoDS::Edge(shape);
 

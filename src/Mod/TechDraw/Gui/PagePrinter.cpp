@@ -183,10 +183,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
     QString documentName = QString::fromUtf8(doc->getName());
     QPdfWriter pdfWriter(outputFile);
 
-    // setPdfVersion sets the printed PDF Version to comply with PDF/A-1b, more details under:
-    // https://www.kdab.com/creating-pdfa-documents-qt/ but this is not working as of Qt 5.12
-    // printer->setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
-    // pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+    // set the printed PDF Version to comply with PDF/A-1b, more details under:
+    // https://www.kdab.com/creating-pdfa-documents-qt/
+    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
 
     pdfWriter.setTitle(documentName);
     pdfWriter.setResolution(printer->resolution());
@@ -350,6 +349,7 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     // set up the pdfwriter
     QString outputFile = QString::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
+    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     QPageLayout pageLayout = pdfWriter.pageLayout();
     auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
     QString documentName = QString::fromUtf8(vpPage->getDrawPage()->getNameInDocument());

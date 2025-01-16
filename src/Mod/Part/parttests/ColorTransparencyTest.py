@@ -46,7 +46,7 @@ class ColorTransparencyTest(unittest.TestCase):
         of 0 corresponds to a fully transparent color, which is not desirable. It changes
         the transparency when loading to 1.0
         """
-        
+
         self._pg.SetUnsigned('DefaultShapeColor', 0xff000000)  # red
         obj = self._doc.addObject('Part::Box')
 
@@ -64,6 +64,6 @@ class ColorTransparencyTest(unittest.TestCase):
         obj = self._doc.addObject('App::Origin')
         t = self._doc.findObjects('App::Plane')[0].ViewObject.Transparency
 
-        self.assertEqual(t, 50,
-            'transparency of App::Plane object is {} instead of 50'.format(t))
+        self.assertEqual(t, 0,
+            'transparency of App::Plane object is {} instead of 0'.format(t))
 

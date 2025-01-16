@@ -72,10 +72,10 @@ using namespace Import;
 ImportOCAFOptions::ImportOCAFOptions()
 {
     defaultFaceColor.setPackedValue(0xCCCCCC00);
-    defaultFaceColor.a = 0;
+    defaultFaceColor.a = 1.0F;
 
     defaultEdgeColor.setPackedValue(421075455UL);
-    defaultEdgeColor.a = 0;
+    defaultEdgeColor.a = 1.0F;
 }
 
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) hDoc, App::Document* doc, const std::string& name)
@@ -114,12 +114,12 @@ ImportOCAFOptions ImportOCAF2::customImportOptions()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     defaultOptions.defaultFaceColor.setPackedValue(
         hGrp->GetUnsigned("DefaultShapeColor", defaultOptions.defaultFaceColor.getPackedValue()));
-    defaultOptions.defaultFaceColor.a = 0;
+    defaultOptions.defaultFaceColor.a = 1.0F;
 
     defaultOptions.defaultEdgeColor.setPackedValue(
         hGrp->GetUnsigned("DefaultShapeLineColor",
                           defaultOptions.defaultEdgeColor.getPackedValue()));
-    defaultOptions.defaultEdgeColor.a = 0;
+    defaultOptions.defaultEdgeColor.a = 1.0F;
 
     return defaultOptions;
 }
@@ -352,9 +352,6 @@ bool ImportOCAF2::createObject(App::Document* doc,
                             faceColors[idx] = faceColor;
                             hasFaceColors = true;
                             info.hasFaceColor = true;
-                        }
-                        else {
-                            assert(0);
                         }
                     }
                 }

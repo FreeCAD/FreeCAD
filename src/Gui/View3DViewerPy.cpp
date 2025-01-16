@@ -31,6 +31,7 @@
 #include <Base/MatrixPy.h>
 
 #include "PythonWrapper.h"
+#include "NavigationStyle.h"
 #include "View3DViewerPy.h"
 #include "View3DInventorViewer.h"
 
@@ -103,6 +104,10 @@ void View3DInventorViewerPy::init_type()
     add_varargs_method("setNaviCubeCorner", &View3DInventorViewerPy::setNaviCubeCorner,
         "setNaviCubeCorner(int): sets the corner where to show the navi cube:\n"
         "0=top left, 1=top right, 2=bottom left, 3=bottom right");
+
+    add_varargs_method("getNavigationStyle",&View3DInventorViewerPy::getNavigationStyle,
+    "getNavigationStyle() -> NavigationStyle\n" "Returns the current viewer navigation style class.\n"
+    );
 }
 
 View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
@@ -601,5 +606,17 @@ Py::Object View3DInventorViewerPy::setNaviCubeCorner(const Py::Tuple& args)
     if (pos < 0 || pos > 3)
         throw Py::IndexError("Value out of range");
     _viewer->setNaviCubeCorner(pos);
+    return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::getNavigationStyle(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    NavigationStyle* navigationStyle = _viewer->navigationStyle();
+    if (navigationStyle) {
+        return Py::asObject(navigationStyle->getPyObject());
+    }
     return Py::None();
 }

@@ -99,7 +99,7 @@ void CmdInspectElement::activated(int)
 bool CmdInspectElement::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Inspection::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Inspection::Feature>() == 0) {
         return false;
     }
 

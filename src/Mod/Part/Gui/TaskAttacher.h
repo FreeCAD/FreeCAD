@@ -113,6 +113,15 @@ private:
     void updateRefButton(int idx);
     void updateAttachmentOffsetUI();
 
+    void findCorrectObjAndSubInThisContext(App::DocumentObject*& obj, std::string& sub);
+    void handleInitialSelection();
+    struct SubAndObjName {
+        std::string objName;
+        std::string subName;
+    };
+    void addToReference(SubAndObjName  pair);
+    void addToReference(const std::vector<SubAndObjName >& pairs);
+
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
      * current set of references. Maintains selection when possible.

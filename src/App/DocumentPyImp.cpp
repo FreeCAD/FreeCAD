@@ -353,7 +353,7 @@ PyObject* DocumentPy::addObject(PyObject* args, PyObject* kwd)
         str << "No document object found of type '" << sType << "'" << std::ends;
         throw Py::TypeError(str.str());
     }
-    // Allows to hide the handling with Proxy in client python code
+    // Allows one to hide the handling with Proxy in client python code
     if (obj) {
         try {
             // the python binding class to the document object

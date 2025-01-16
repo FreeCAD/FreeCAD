@@ -3,15 +3,15 @@
 # *   Copyright (c) 2023 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Library General Public License (LGPL)   *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
 # *   License along with this program; if not, write to the Free Software   *
@@ -91,3 +91,38 @@ def convert_to_type(obj, keep_object=False):
     else:
         ifc_tools.remove_ifc_element(obj, delete_obj=True)
     ifc_tools.get_group(project, "IfcTypesGroup").addObject(type_obj)
+
+
+def edit_type(obj):
+    """Edits the type of this object"""
+
+    element = ifc_tools.get_ifc_element(obj)
+    ifcfile = ifc_tools.get_ifcfile(obj)
+    if not element or not ifcfile:
+        return
+
+    typerel = getattr(element, "IsTypedBy", None)
+    if obj.Type:
+        # verify the type is compatible -ex IFcWall in IfcWallType
+        if obj.Type.Class != element.is_a() + "Type":
+            t = translate("BIM","Error: Incompatible type")
+            FreeCAD.Console.PrintError(obj.Label+": "+t+": "+obj.Type.Class+"\n")
+            obj.Type = None
+            return
+        # change type
+        new_type = ifc_tools.get_ifc_element(obj.Type)
+        if not new_type:
+            return
+        for rel in typerel:
+            if rel.RelatingType == new_type:
+                return
+        # assign the new type
+        ifc_tools.api_run("type.assign_type",
+                          ifcfile,
+                          related_objects=[element],
+                          relating_type=new_type
+        )
+    elif typerel:
+        # TODO remove type?
+        # Not doing anything right now because an unset Type property could screw the ifc file
+        pass

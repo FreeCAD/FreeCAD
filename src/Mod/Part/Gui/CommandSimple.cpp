@@ -119,8 +119,7 @@ void CmdPartShapeFromMesh::activated(int iMsg)
 
 bool CmdPartShapeFromMesh::isActive()
 {
-    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
-    return Gui::Selection().countObjectsOfType(meshid) > 0;
+    return Gui::Selection().countObjectsOfType("Mesh::Feature") > 0;
 }
 //===========================================================================
 // Part_PointsFromMesh
@@ -205,8 +204,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
 
 bool CmdPartPointsFromMesh::isActive()
 {
-    Base::Type meshid = Base::Type::fromName("App::GeoFeature");
-    return Gui::Selection().countObjectsOfType(meshid) > 0;
+    return Gui::Selection().countObjectsOfType<App::GeoFeature>() > 0;
 }
 
 //===========================================================================

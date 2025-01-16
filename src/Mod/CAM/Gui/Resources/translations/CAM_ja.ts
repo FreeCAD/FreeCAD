@@ -149,9 +149,19 @@
       <translation>ジョブテンプレートのエクスポート</translation>
     </message>
     <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
+      <source>If enabled, include all post processing settings in the template.</source>
+      <translation type="unfinished">If enabled, include all post processing settings in the template.</translation>
+    </message>
+    <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
       <source>Post Processing</source>
-      <translation>後処理</translation>
+      <translation>ポストプロセス</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
+      <source>If enabled, tool controller definitions are stored in the template.</source>
+      <translation type="unfinished">If enabled, tool controller definitions are stored in the template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -164,19 +174,9 @@
       <translation>シートをセットアップ</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
-      <source>If enabled include all post processing settings in the template.</source>
-      <translation>有効な場合、テンプレートにすべての後処理設定を含めます。</translation>
-    </message>
-    <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>Hint about the current post processing configuration.</source>
-      <translation>現在の後処理設定に関するヒント。</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
-      <source>If enabled tool controller definitions are stored in the template.</source>
-      <translation>有効な場合、ツールコントローラー定義がテンプレートに保存されます。</translation>
+      <translation>現在のポストプロセス設定に関するヒント。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
@@ -188,14 +188,14 @@
       <source>Enable to include values of the SetupSheet in the template.
 
 Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</source>
-      <translation type="unfinished">Enable to include values of the SetupSheet in the template.
+      <translation>テンプレートにセットアップシートの値を含める場合は有効にしてください。
 
-Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</translation>
+デフォルトから変更された セットアップシートの値はすべて事前選択されます。この フィールドが選択されていない場合、現在のセットアップシートは変更されていません。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="84"/>
       <source>Enable to include the default heights for operations in the template.</source>
-      <translation type="unfinished">Enable to include the default heights for operations in the template.</translation>
+      <translation>テンプレートにデフォルトの工程高さを含める。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="87"/>
@@ -218,37 +218,32 @@ Any values of the SetupSheet that are changed from their default are preselected
       <translation>テンプレートにデフォルトの冷却モードを含める。</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
-      <source>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+      <location filename="../panels/DlgJobTemplateExport.ui" line="161"/>
+      <source>If enabled, the current size settings for the stock object are included in the template.
 
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
+      <translation type="unfinished">If enabled, the current size settings for the stock object are included in the template.
 
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
+For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
       <source>Hint about the current stock extent setting.</source>
-      <translation type="unfinished">Hint about the current stock extent setting.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
-      <source>If enabled the current placement of the stock solid is stored in the template.</source>
-      <translation type="unfinished">If enabled the current placement of the stock solid is stored in the template.</translation>
+      <translation>現在のストック範囲設定に関するヒント。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="210"/>
       <source>Hint about the current stock placement.</source>
-      <translation type="unfinished">Hint about the current stock placement.</translation>
+      <translation>現在のストック配置に関するヒント。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="110"/>
       <source>Tool Rapid Speeds</source>
-      <translation type="unfinished">Tool Rapid Speeds</translation>
+      <translation>ツールの高速速度</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="123"/>
@@ -260,9 +255,22 @@ Note that this option is disabled if a stock object from an existing solid is us
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
+      <translation>設定値をエクスポートするすべての工程を有効にします。
 
-Note that only operations which currently have configuration values set are listed.</translation>
+現在設定値が設定されている工程のみがリストされることに注意してください。</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
+      <source>If enabled, the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+
+This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+
+Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
+      <translation type="unfinished">If enabled, the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+
+This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+
+Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -270,22 +278,14 @@ Note that only operations which currently have configuration values set are list
       <translation>ストック</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="161"/>
-      <source>If enabled the current size settings for the stock object are included in the template.
-
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
-
-For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
-      <translation type="unfinished">If enabled the current size settings for the stock object are included in the template.
-
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
-
-For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</translation>
-    </message>
-    <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>範囲</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
+      <source>If enabled, the current placement of the stock solid is stored in the template.</source>
+      <translation type="unfinished">If enabled, the current placement of the stock solid is stored in the template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="194"/>
@@ -300,17 +300,17 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation>後処理</translation>
+      <translation>ポストプロセッサー</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
       <source>Select one of the post processors. FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.</source>
-      <translation type="unfinished">Select one of the post processors. FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.</translation>
+      <translation>ポストプロセッサーの 1 つを選択します。 FreeCAD には複数のポストプロセッサーが前もってインストールされています。少なくともその一つがユーザー設定で有効になっていることを確認してください。</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
       <source>Tool Controller Editor</source>
-      <translation type="unfinished">Tool Controller Editor</translation>
+      <translation>ツールコント ローラーエディター</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
@@ -335,12 +335,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
       <source>Horiz Rapid</source>
-      <translation type="unfinished">Horiz Rapid</translation>
+      <translation>水平高速</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="154"/>
       <source>Vert Rapid</source>
-      <translation type="unfinished">Vert Rapid</translation>
+      <translation>垂直高速</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
@@ -365,7 +365,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="293"/>
       <source>Any modifications only affect this ToolController!</source>
-      <translation type="unfinished">Any modifications only affect this ToolController!</translation>
+      <translation>変更はこのツールコントローラーにのみ影響します！</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
@@ -385,17 +385,17 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</source>
-      <translation type="unfinished">Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</translation>
+      <translation>プロパティ名。文字、数字、アンダー スコアのみを含めることができます。MixedCase の名前はスペースが追加されて「Mixed Case」のように表示されます。</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
       <source>The category group the property belongs to.</source>
-      <translation type="unfinished">The category group the property belongs to.</translation>
+      <translation>プロパティが属するカテゴリーグループ。</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="51"/>
       <source>The type of the property value.</source>
-      <translation type="unfinished">The type of the property value.</translation>
+      <translation>プロパティ値の種類。</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -405,7 +405,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
       <source>Check if you want to create several properties in a batch.</source>
-      <translation type="unfinished">Check if you want to create several properties in a batch.</translation>
+      <translation>複数のプロパティをバッチで作成する場合はチェックします。</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="44"/>
@@ -425,7 +425,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="82"/>
       <source>Enums</source>
-      <translation type="unfinished">Enums</translation>
+      <translation>列挙型</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
@@ -440,7 +440,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>
       <source>Library Manager</source>
-      <translation>ライブラリーの管理</translation>
+      <translation>ライブラリマネージャー</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
@@ -450,32 +450,32 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
       <source>Add existing Tool Bit to this library.</source>
-      <translation type="unfinished">Add existing Tool Bit to this library.</translation>
+      <translation>このライブラリに既存のツールビットを追加</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
       <source>Delete selected Tool Bit(s) from the library.</source>
-      <translation type="unfinished">Delete selected Tool Bit(s) from the library.</translation>
+      <translation>ライブラリから選択したツールビットを削除</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="99"/>
       <source>Select a working path for the tool library editor.</source>
-      <translation type="unfinished">Select a working path for the tool library editor.</translation>
+      <translation>ツールライブラリエディターの作業パスを選択</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="119"/>
       <source>Add New Tool Table</source>
-      <translation type="unfinished">Add New Tool Table</translation>
+      <translation>新しいツールテーブルを追加</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="139"/>
       <source>Save the selected library with a new name or export to another format</source>
-      <translation type="unfinished">Save the selected library with a new name or export to another format</translation>
+      <translation>選択したライブラリを新しい名前で保存するか、別の形式でエクスポート</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="190"/>
       <source>Table of Tool Bits of the library.</source>
-      <translation type="unfinished">Table of Tool Bits of the library.</translation>
+      <translation>ライブラリのツールビットの表</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
@@ -503,17 +503,17 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Choose a Tool Controller</source>
-      <translation type="unfinished">Choose a Tool Controller</translation>
+      <translation>ツールコントローラーを選択</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>ツールコントローラー</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="23"/>
       <source>Copy Selected Tools</source>
-      <translation type="unfinished">Copy Selected Tools</translation>
+      <translation>選択したツールをコピー</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
@@ -523,7 +523,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>CAMジョブを選択</translation>
     </message>
   </context>
   <context>
@@ -531,17 +531,17 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="14"/>
       <source>Choose a processor</source>
-      <translation>プロセッサを選択</translation>
+      <translation>プロセッサーを選択</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>プロセッサー</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>引数</translation>
     </message>
   </context>
   <context>
@@ -554,12 +554,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
       <source>Select what type of shape to use to constrain the underlying Path.</source>
-      <translation type="unfinished">Select what type of shape to use to constrain the underlying Path.</translation>
+      <translation>基本パスの制約に使用するシェイプの種類を選択</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>ボックスを作成</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
@@ -569,92 +569,87 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>既存のソリッドを使用</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
       <source>Select the body to be used to constrain the underlying Path.</source>
-      <translation type="unfinished">Select the body to be used to constrain the underlying Path.</translation>
+      <translation>基本パスの制約に使用されるボディーを選択</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="100"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>延長量 X</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Extension of bounding box&apos;s MinX</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinX</translation>
+      <translation>バウンディングボックスの MinX 延長量</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>Extension of bounding box&apos;s MaxX</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxX</translation>
+      <translation>バウンディングボックスの MaxX 延長量</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>延長量 Y</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>Extension of bounding box&apos;s MinY</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinY</translation>
+      <translation>バウンディングボックスの MinY 延長量</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Extension of bounding box&apos;s MaxY</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxY</translation>
+      <translation>バウンディングボックスの MaxY 延長量</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>延長量 Z</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>Extension of bounding box&apos;s MinZ</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinZ</translation>
+      <translation>バウンディングボックスの MinZ 延長量</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>Extension of bounding box&apos;s MaxZ</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxZ</translation>
+      <translation>バウンディングボックスの MaxZ 延長量</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
       <source>Radius of the Cylinder</source>
-      <translation type="unfinished">Radius of the Cylinder</translation>
+      <translation>円筒の半径</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
       <source>Height of the Cylinder</source>
-      <translation type="unfinished">Height of the Cylinder</translation>
+      <translation>円筒の高さ</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
       <source>Length of the Box</source>
-      <translation type="unfinished">Length of the Box</translation>
+      <translation>ボックスの奥行</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>Width of the Box</source>
-      <translation type="unfinished">Width of the Box</translation>
+      <translation>ボックスの幅</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="244"/>
       <source>Height of the Box</source>
-      <translation type="unfinished">Height of the Box</translation>
-    </message>
-    <message>
-      <location filename="../panels/DressupPathBoundary.ui" line="257"/>
-      <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
-      <translation type="unfinished">If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</translation>
+      <translation>ボックスの高さ</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>モデルのバウンディングボックスを延長</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -678,14 +673,19 @@ For stock from the Base object&apos;s bounding box it means the extra material i
       <translation>幅</translation>
     </message>
     <message>
+      <location filename="../panels/DressupPathBoundary.ui" line="257"/>
+      <source>If checked, the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
+      <translation type="unfinished">If checked, the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</translation>
+    </message>
+    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
       <source>Constrained to Inside</source>
-      <translation type="unfinished">Constrained to Inside</translation>
+      <translation>内側に制約</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="36"/>
       <source>List of operations with Base Geometry in current Job</source>
-      <translation type="unfinished">List of operations with Base Geometry in current Job</translation>
+      <translation>現在のジョブにおけるベースジオメトリーに対する工程のリスト</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
@@ -694,23 +694,23 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
-      <source>Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation type="unfinished">Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
+      <source>Select one or more features in the 3D view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
+      <translation type="unfinished">Select one or more features in the 3D view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
       <source>Add selected features to the list of base geometries for this operation</source>
-      <translation type="unfinished">Add selected features to the list of base geometries for this operation</translation>
+      <translation>この工程のベースオブジェクトリストに選択したフィーチャーを追加</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="79"/>
       <source>Remove the selected list items from the list of base geometries. The operation will not be applied to them.</source>
-      <translation type="unfinished">Remove the selected list items from the list of base geometries. The operation will not be applied to them.</translation>
+      <translation>選択したリスト項目をベースジオメトリーのリストから削除します。工程は適用されなくなります。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
       <source>Clears list of base geometries</source>
-      <translation type="unfinished">Clears list of base geometries</translation>
+      <translation>ベースジオメトリーのリストをクリア</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="49"/>
@@ -740,11 +740,11 @@ For stock from the Base object&apos;s bounding box it means the extra material i
 You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.
 
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</source>
-      <translation type="unfinished">Table of hole features and the determined radius of the associated hole.
+      <translation>穴フィーチャーと関連する穴の決定された半径の表。
 
-You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.
+フィーチャーを選択して「追加」を押すと、処理するフィーチャーを追加できます。フィーチャーが誤ってリストに追加された場合、「削除」で削除でき、処理されなくなります。
 
-Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</translation>
+「リセット」でリストから現在の全項目を削除でき、モデルからの工程に適したすべての円形の穴でリストを埋められます。フィーチャーを有効化/無効化、削除、追加すると後からリストを再度調整することができます。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="33"/>
@@ -759,18 +759,18 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="46"/>
-      <source>Add selected items from 3d view to the list of base geometries</source>
-      <translation type="unfinished">Add selected items from 3d view to the list of base geometries</translation>
+      <source>Add selected items from 3D view to the list of base geometries</source>
+      <translation type="unfinished">Add selected items from 3D view to the list of base geometries</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="56"/>
       <source>Remove selected list items from the list of base geometries. The operation is no longer applied to them.</source>
-      <translation type="unfinished">Remove selected list items from the list of base geometries. The operation is no longer applied to them.</translation>
+      <translation>選択したリスト項目をベースジオメトリーのリストから削除します。工程は今後適用されません。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
       <source>Remove all list items and fill list with all eligible features from the job&apos;s base object.</source>
-      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job&apos;s base object.</translation>
+      <translation>リストにあるすべての項目を削除し、ジョブのベースオブジェクトから取得した適切なすべてのフィーチャーでリストを埋めます。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
@@ -781,12 +781,12 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="76"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="99"/>
       <source>All objects will be processed using the same operation properties.</source>
-      <translation type="unfinished">All objects will be processed using the same operation properties.</translation>
+      <translation>すべてのオブジェクトが同じ工程プロパティを使用して処理されます。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="20"/>
       <source>List of locations to be processed.</source>
-      <translation type="unfinished">List of locations to be processed.</translation>
+      <translation>処理される位置のリスト</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
@@ -801,17 +801,17 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="40"/>
       <source>Opens a dialog to add arbitrary locations.</source>
-      <translation type="unfinished">Opens a dialog to add arbitrary locations.</translation>
+      <translation>任意の位置を追加するためのダイアログを開きます。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="50"/>
       <source>Remove selected location from the list. The operation is no longer applied to them.</source>
-      <translation type="unfinished">Remove selected location from the list. The operation is no longer applied to them.</translation>
+      <translation>選択した位置をリストから削除。工程は今後適用されません。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
       <source>Edit selected location.</source>
-      <translation type="unfinished">Edit selected location.</translation>
+      <translation>選択した位置を編集</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="63"/>
@@ -821,94 +821,94 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
       <source>All locations will be processed using the same operation properties.</source>
-      <translation type="unfinished">All locations will be processed using the same operation properties.</translation>
+      <translation>すべての位置が同じ工程プロパティを使用して処理されます。</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>開始深さ</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <source>Start Depth of the operation. The highest point in Z-axis the operation needs to process.</source>
-      <translation type="unfinished">Start Depth of the operation. The highest point in Z-axis the operation needs to process.</translation>
+      <translation>工程の開始深さ。工程を処理するのに必要なZ軸の最高点。</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <source>Transfer the Z value of the selected feature as the Start Depth for the operation.</source>
-      <translation type="unfinished">Transfer the Z value of the selected feature as the Start Depth for the operation.</translation>
+      <translation>選択したフィーチャーのZ値を工程の開始深さとして転送</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
-      <translation type="unfinished">The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</translation>
+      <translation>この工程で処理する必要のあるZ軸最小値に対応する工程の深さ</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
       <source>Transfer the Z value of the selected feature as the Final Depth for the operation.</source>
-      <translation type="unfinished">Transfer the Z value of the selected feature as the Final Depth for the operation.</translation>
+      <translation>選択したフィーチャーのZ値を工程の最終深さとして転送</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
       <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.</source>
-      <translation type="unfinished">The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.</translation>
+      <translation>工程がレイヤー間を下向きに移動する時のZ軸方向の深さ。 この値は使用するツール、切削する材料、利用可能な冷却方法など、多くの要因に依存します。 適切な値についてはツールメーカーのデータシートを参照してください。</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
       <source>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</source>
-      <translation type="unfinished">Depth of the final cut of the operation. Can be used to produce a cleaner finish.</translation>
+      <translation>工程の最終切削深さ。よりきれいな仕上げを行うために使用されます。</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>最終深さ</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="68"/>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>ステップダウン</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>仕上げステップダウン</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
       <source>Min Diameter</source>
-      <translation type="unfinished">Min Diameter</translation>
+      <translation>最小直径</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max Diameter</source>
-      <translation type="unfinished">Max Diameter</translation>
+      <translation>最大直径</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>安全高さ</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
       <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
-      <translation type="unfinished">The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</translation>
+      <translation>ツールビットを高速な動きで移動させても安全な高さ。 この高さ以下では、すべての横方向・下方向の動きは送り速度で行われます。</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
       <source>The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</source>
-      <translation type="unfinished">The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</translation>
+      <translation>ツールビットの横移動が治具または部品/ストック材料そのものによって妨げらない高さ。</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
       <source>Clearance Height</source>
-      <translation type="unfinished">Clearance Height</translation>
+      <translation>クリアランス高さ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
@@ -924,7 +924,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
       <source>The tool and its settings to be used for this operation.</source>
-      <translation type="unfinished">The tool and its settings to be used for this operation.</translation>
+      <translation>この工程で使用されるツールとその設定</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="255"/>
@@ -933,6 +933,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
       <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="96"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
@@ -971,48 +972,48 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
       <source>Type of adaptive operation</source>
-      <translation type="unfinished">Type of adaptive operation</translation>
+      <translation>自動工程のタイプ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
       <source>Cut Region</source>
-      <translation type="unfinished">Cut Region</translation>
+      <translation>切削領域</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="118"/>
       <source>Operation Type</source>
-      <translation type="unfinished">Operation Type</translation>
+      <translation>工程タイプ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
       <source>Step Over Percent</source>
-      <translation type="unfinished">Step Over Percent</translation>
+      <translation>重なり率（％）</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="148"/>
       <source>Accuracy vs Performance</source>
-      <translation type="unfinished">Accuracy vs Performance</translation>
+      <translation>精度 vs 効率</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="125"/>
       <source>Helix Ramp Angle</source>
-      <translation type="unfinished">Helix Ramp Angle</translation>
+      <translation>らせん傾斜角度</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="190"/>
       <source>Helix Cone Angle</source>
-      <translation type="unfinished">Helix Cone Angle</translation>
+      <translation>らせん円錐角度</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
       <source>Helix Max Diameter</source>
-      <translation type="unfinished">Helix Max Diameter</translation>
+      <translation>らせんの最大直径</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="104"/>
       <source>Lift Distance</source>
-      <translation type="unfinished">Lift Distance</translation>
+      <translation>持ち上げ距離</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="62"/>
@@ -1038,27 +1039,27 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
       <source>Use Outline</source>
-      <translation type="unfinished">Use Outline</translation>
+      <translation>アウトラインを使用</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="155"/>
       <source>Influences calculation performance vs stability and accuracy</source>
-      <translation type="unfinished">Influences calculation performance vs stability and accuracy</translation>
+      <translation>計算効率と安定性・精度に影響します</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="183"/>
       <source>Cut inside or outside of the selected shapes</source>
-      <translation type="unfinished">Cut inside or outside of the selected shapes</translation>
+      <translation>選択した形状の内側または外側を切削</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="197"/>
       <source>If greater than zero it limits the helix ramp diameter, otherwise 75 percent of tool diameter is used</source>
-      <translation type="unfinished">If greater than zero it limits the helix ramp diameter, otherwise 75 percent of tool diameter is used</translation>
+      <translation>0より大きい場合はらせん傾斜直径を制限します。それ以外の場合はツール直径の75%が使用されます。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="207"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
-      <translation type="unfinished">How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</translation>
+      <translation>クリア領域上を高速リンク移動する間にどれだけツールを引き上げるか。 リンクパスがクリアでない場合、ツールはクリアランスの高さまで上がります。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
@@ -1068,7 +1069,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
       <source>How much material to leave (i.e. for finishing operation)</source>
-      <translation type="unfinished">How much material to leave (i.e. for finishing operation)</translation>
+      <translation>残すべき材料の量（仕上げ工程用）</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="237"/>
@@ -1078,12 +1079,12 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
       <source>Angle of the helix ramp entry</source>
-      <translation type="unfinished">Angle of the helix ramp entry</translation>
+      <translation>らせん傾斜進入の角度</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="266"/>
       <source>Angle of the helix entry cone</source>
-      <translation type="unfinished">Angle of the helix entry cone</translation>
+      <translation>らせん進入円錐の角度</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="279"/>
@@ -1101,12 +1102,23 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <source>The direction in which the profile is performed, clockwise or counterclockwise.</source>
-      <translation type="unfinished">The direction in which the profile is performed, clockwise or counterclockwise.</translation>
+      <translation>プロファイルが実行される方向。時計回りまたは反時計回り。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
+      <source>CW</source>
+      <translation>CW</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
+      <source>CCW</source>
+      <translation>CCW</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
       <source>Width of chamfer cut.</source>
-      <translation type="unfinished">Width of chamfer cut.</translation>
+      <translation>面取り切削の幅</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="222"/>
@@ -1164,6 +1176,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation type="unfinished">Retract</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="32"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="135"/>
       <source>Dwell</source>
       <translation type="unfinished">Dwell</translation>
@@ -1179,16 +1192,45 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation type="unfinished">Keep Tool Down</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="25"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="88"/>
       <source>Time</source>
       <translation type="unfinished">Time</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="45"/>
+      <source>Tap Tip</source>
+      <translation type="unfinished">Tap Tip</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="50"/>
+      <source>2x Tap Tip</source>
+      <translation type="unfinished">2x Tap Tip</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="95"/>
       <source>Extend Depth</source>
       <translation type="unfinished">Extend Depth</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="89"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="110"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="103"/>
+      <source>ToolController</source>
+      <translation>ツールコントローラー</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="40"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="110"/>
       <source>None</source>
       <translation>なし</translation>
@@ -1211,22 +1253,22 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="176"/>
       <source>Feed retract</source>
-      <translation type="unfinished">Feed retract</translation>
+      <translation>送り速度で引き上げ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="179"/>
       <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
-      <translation type="unfinished">G85: Retract from the hole at the given feedrate instead of rapid move</translation>
+      <translation>G85: 高速移動の代わりに指定された送り速度で穴から引き上げ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
       <source>Start at Vertex</source>
-      <translation type="unfinished">Start at Vertex</translation>
+      <translation>頂点から開始</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>Specify the vertex number of the underlying shape string at which engraving should start.</source>
-      <translation type="unfinished">Specify the vertex number of the underlying shape string at which engraving should start.</translation>
+      <translation>彫刻を開始位置となるシェイプストリングの頂点番号を指定</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
@@ -1236,38 +1278,38 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
       <source>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.</source>
-      <translation type="unfinished">Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.</translation>
+      <translation>らせん工程を内側から開始して外側へ向かって進めるか、それとも外側から開始して中心に向かって進めるかを指定</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="74"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>内側</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="79"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>外側</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
       <source>The direction for the helix, clockwise or counterclockwise.</source>
-      <translation type="unfinished">The direction for the helix, clockwise or counterclockwise.</translation>
+      <translation>らせんの向き。時計回りまたは反時計回り。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
       <source>Specify the percent of the tool diameter each helix will be offset to the previous one. A step over of 100% means no overlap of the individual cuts.</source>
-      <translation type="unfinished">Specify the percent of the tool diameter each helix will be offset to the previous one. A step over of 100% means no overlap of the individual cuts.</translation>
+      <translation>ツール直径に対するパーセントを指定。各らせんは直前のらせんからその分だけずれます。重なり率100%は各切削が重ならないことを意味します。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
       <source>Step over percent</source>
-      <translation type="unfinished">Step over percent</translation>
+      <translation>重なり率（％）</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="101"/>
       <source>Extra Offset</source>
-      <translation type="unfinished">Extra Offset</translation>
+      <translation>追加オフセット</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
@@ -1292,7 +1334,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="78"/>
       <source>Default Length</source>
-      <translation type="unfinished">Default Length</translation>
+      <translation>デフォルト長さ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
@@ -1337,32 +1379,29 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="63"/>
       <source>Boundary Shape</source>
-      <translation type="unfinished">Boundary Shape</translation>
+      <translation>境界形状</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="88"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>切削モード</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="99"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
       <source>Climb</source>
       <translation type="unfinished">Climb</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="104"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <source>Conventional</source>
       <translation type="unfinished">Conventional</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="112"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>パターン</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
@@ -1373,16 +1412,16 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
       <source>The tool and its settings to be used for this operation</source>
-      <translation type="unfinished">The tool and its settings to be used for this operation</translation>
+      <translation>この工程で使用されるツールとその設定</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="70"/>
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</source>
-      <translation type="unfinished">Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
+      <translation>選択面の実際の形状（面が選択されていない場合は部品）によって面処理を制限するかどうか、あるいはバウンディングボックスを面取りする必要があるかどうかを指定。
 
-The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</translation>
+後者では、ストック面積全体の面に使用して以降の工程のための均一な高さを確保することができます。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
@@ -1432,7 +1471,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="171"/>
       <source>Angle in which the pattern is applied</source>
-      <translation type="unfinished">Angle in which the pattern is applied</translation>
+      <translation>パターンが適用される角度</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
@@ -1447,7 +1486,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="224"/>
       <source>Specify if this operation uses a starting point</source>
-      <translation type="unfinished">Specify if this operation uses a starting point</translation>
+      <translation>この工程が開始点を使用するかどうかを指定</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
@@ -1470,16 +1509,16 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation type="unfinished">Material Allowance</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="257"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="227"/>
       <source>Use Start Point</source>
-      <translation type="unfinished">Use Start Point</translation>
+      <translation>開始点を使用</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
       <source>Clear Edges</source>
-      <translation type="unfinished">Clear Edges</translation>
+      <translation>エッジをクリア</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
@@ -1509,12 +1548,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>X Offset</source>
-      <translation type="unfinished">X Offset</translation>
+      <translation>Xオフセット</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>Y Offset</source>
-      <translation type="unfinished">Y Offset</translation>
+      <translation>Yオフセット</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -1534,17 +1573,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="148"/>
       <source>ProbePoints.txt</source>
-      <translation type="unfinished">ProbePoints.txt</translation>
+      <translation>ProbePoints.txt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
       <source>Cut Side</source>
-      <translation type="unfinished">Cut Side</translation>
+      <translation>切削サイド</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
       <source>Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default)</source>
-      <translation type="unfinished">Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default)</translation>
+      <translation>ベースジオメトリーフィーチャーの内側または外側でプロファイルを実行するかどうかを指定。「補正を使用」がチェックされている場合（デフォルト）にのみ意味を持ちます。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
@@ -1555,57 +1594,77 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="89"/>
       <source>The direction in which the profile is performed, clockwise or counterclockwise</source>
-      <translation type="unfinished">The direction in which the profile is performed, clockwise or counterclockwise</translation>
+      <translation>プロファイルが実行される方向。時計回りまたは反時計回り。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="114"/>
       <source>The amount of extra material left by this operation in relation to the target shape</source>
-      <translation type="unfinished">The amount of extra material left by this operation in relation to the target shape</translation>
+      <translation>対象形状に関連づけられたこの工程によって残された余分な材料の量</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="121"/>
+      <source>Number of Passes</source>
+      <translation type="unfinished">Number of Passes</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="131"/>
+      <source>The number of passes to do. If more than one, requires a non-zero value for Pass Stepover.</source>
+      <translation type="unfinished">The number of passes to do. If more than one, requires a non-zero value for Pass Stepover.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="138"/>
+      <source>Pass Stepover</source>
+      <translation type="unfinished">Pass Stepover</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="151"/>
+      <source>If doing multiple passes, the extra offset of each additional pass.</source>
+      <translation type="unfinished">If doing multiple passes, the extra offset of each additional pass.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="164"/>
       <source>Check if this operation should use a starting point</source>
-      <translation type="unfinished">Check if this operation should use a starting point</translation>
+      <translation>この操作が開始点を使用するかどうかを確認</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="174"/>
       <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
-      <translation type="unfinished">Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</translation>
+      <translation>このプロファイル工程でベースジオメトリーの穴も処理する場合、チェック。 検出された穴は自動的に反対側の切削面にオフセットされ、外周同様に反対方向に処理されます。ドリル処理されることが前提の円筒形の穴は含まれないことに注意してください。</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
-      <source>If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</source>
-      <translation type="unfinished">If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="194"/>
       <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
-      <translation type="unfinished">Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</translation>
+      <translation>通常はドリル処理する円筒系の穴にもプロファイル工程を適用したい場合、チェック。適切なサイズのドリルが利用できない場合、または穴の数によってツール交換の必要がない場合に便利です。指定値に対して切削の面と方向が逆になることに注意してください。</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="204"/>
       <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
-      <translation type="unfinished">Check if this profile operation should also process the outside perimeter of the base geometry shapes</translation>
+      <translation>このプロファイル工程がベースジオメトリー形状の外周も処理する場合、チェック</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="177"/>
       <source>Process Holes</source>
-      <translation type="unfinished">Process Holes</translation>
+      <translation>穴を処理</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="184"/>
+      <source>If checked, the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</source>
+      <translation type="unfinished">If checked, the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="187"/>
       <source>Use Compensation</source>
-      <translation type="unfinished">Use Compensation</translation>
+      <translation>補正を使用</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="197"/>
       <source>Process Circles</source>
-      <translation type="unfinished">Process Circles</translation>
+      <translation>円を処理</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="207"/>
       <source>Process Perimeter</source>
-      <translation type="unfinished">Process Perimeter</translation>
+      <translation>外周を処理</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="71"/>
@@ -1621,35 +1680,35 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="169"/>
       <source>Center of Mass</source>
-      <translation type="unfinished">Center of Mass</translation>
+      <translation>重心</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="174"/>
       <source>Center of Bounding Box</source>
-      <translation type="unfinished">Center of Bounding Box</translation>
+      <translation>バウンディングボックスの中心</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="179"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>最低ポイント</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="112"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="184"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>最高ポイント</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="117"/>
       <source>Long Edge</source>
-      <translation type="unfinished">Long Edge</translation>
+      <translation>長いエッジ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="122"/>
       <source>Short Edge</source>
-      <translation type="unfinished">Short Edge</translation>
+      <translation>短いエッジ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="127"/>
@@ -1665,22 +1724,22 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="90"/>
       <source>Choose what point to use on the first selected feature</source>
-      <translation type="unfinished">Choose what point to use on the first selected feature</translation>
+      <translation>1番目に選択したフィーチャーでどのポイントを使用するか選択</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
       <source>Choose what point to use on the second selected feature</source>
-      <translation type="unfinished">Choose what point to use on the second selected feature</translation>
+      <translation>2番目に選択したフィーチャーでどのポイントを使用するか選択</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
       <source>No Base Geometry selected</source>
-      <translation type="unfinished">No Base Geometry selected</translation>
+      <translation>ベースジオメトリーが選択されていません</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="228"/>
       <source>No Base Geometry selected.</source>
-      <translation type="unfinished">No Base Geometry selected.</translation>
+      <translation>ベースジオメトリーが選択されていません。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
@@ -1710,7 +1769,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
       <source>Positive extends the end of the path, negative shortens</source>
-      <translation type="unfinished">Positive extends the end of the path, negative shortens</translation>
+      <translation>正の値でパス終端を延長、負の値で短縮</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
@@ -1737,12 +1796,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
       <source>Path Orientation</source>
-      <translation type="unfinished">Path Orientation</translation>
+      <translation>パスの方向</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
       <source>Choose the path orientation with regard to the feature(s) selected</source>
-      <translation type="unfinished">Choose the path orientation with regard to the feature(s) selected</translation>
+      <translation>選択されたフィーチャーに関するパスの方向を選択</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
@@ -1773,7 +1832,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
       <source>Cut Pattern</source>
-      <translation type="unfinished">Cut Pattern</translation>
+      <translation>切削パターン</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="119"/>
@@ -1789,7 +1848,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <source>Bounding Box</source>
-      <translation type="unfinished">Bounding Box</translation>
+      <translation>バウンディングボックス</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="91"/>
@@ -1827,7 +1886,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
       <source>Bounding box extra offset X, Y</source>
-      <translation type="unfinished">Bounding box extra offset X, Y</translation>
+      <translation>バウンディングボックス追加オフセット X, Y</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
@@ -1838,7 +1897,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation type="unfinished">Set the Z-axis depth offset from the target surface.</translation>
+      <translation>対象表面からの Z 軸深さオフセットを設定</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
@@ -1885,7 +1944,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
       <source>Depth offset</source>
-      <translation type="unfinished">Depth offset</translation>
+      <translation>深さオフセット</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
@@ -1907,13 +1966,13 @@ A step over of 100% results in no overlap between two different cycles.</transla
       <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="237"/>
       <source>Sample interval</source>
-      <translation type="unfinished">Sample interval</translation>
+      <translation>サンプル間隔</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="207"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="267"/>
       <source>Optimize Linear Paths</source>
-      <translation type="unfinished">Optimize Linear Paths</translation>
+      <translation>直線パスを最適化</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="277"/>
@@ -1970,7 +2029,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="93"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>式</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="103"/>
@@ -2022,7 +2081,7 @@ Default: &quot;5mm&quot;</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="138"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>安全</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="129"/>
@@ -2036,7 +2095,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>高速速度</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="192"/>
@@ -2112,8 +2171,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
-      <source>This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</source>
-      <translation type="unfinished">This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</translation>
+      <source>This value is used in discretizing arcs into segments. Smaller values will result in larger G-code. Larger values may cause unwanted segments in the medial line path.</source>
+      <translation type="unfinished">This value is used in discretizing arcs into segments. Smaller values will result in larger G-code. Larger values may cause unwanted segments in the medial line path.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
@@ -2132,8 +2191,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="140"/>
-      <source>After carving travel again the path to remove artifacts and imperfections</source>
-      <translation type="unfinished">After carving travel again the path to remove artifacts and imperfections</translation>
+      <source>After carving, travel again the path to remove artifacts and imperfections</source>
+      <translation type="unfinished">After carving, travel again the path to remove artifacts and imperfections</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="146"/>
@@ -2198,12 +2257,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
       <source>Modify...</source>
-      <translation type="unfinished">Modify...</translation>
+      <translation>変更...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="62"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>追加...</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="20"/>
@@ -2228,33 +2287,33 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="67"/>
       <source>Length Offset</source>
-      <translation type="unfinished">Length Offset</translation>
+      <translation>長さオフセット</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
-      <translation type="unfinished">Tool Parameter</translation>
+      <translation>ツールパラメーター</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
       <source>Flat Radius</source>
-      <translation type="unfinished">Flat Radius</translation>
+      <translation>フラット半径</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="110"/>
       <source>Corner Radius</source>
-      <translation type="unfinished">Corner Radius</translation>
+      <translation>コーナー半径</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="117"/>
       <source>Point/Tip Angle</source>
-      <translation type="unfinished">Point/Tip Angle</translation>
+      <translation>点/先端角度</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="124"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
+      <translation>切れ刃高さ</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
@@ -2336,7 +2395,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G-Code</source>
-      <translation type="unfinished">G-Code</translation>
+      <translation>Gコード</translation>
     </message>
   </context>
   <context>
@@ -2379,18 +2438,18 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="110"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
-      <translation type="unfinished">Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</translation>
+      <translation>新しいジョブのデフォルト値で、パスの計算に使用されます。小さくすると精度が向上しますが計算が遅くなります。</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="117"/>
       <source>Default Curve Accuracy</source>
-      <translation type="unfinished">Default Curve Accuracy</translation>
+      <translation>既定の曲線精度</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="154"/>
       <location filename="../preferences/PathJob.ui" line="279"/>
       <source>Post Processor</source>
-      <translation>後処理</translation>
+      <translation>ポストプロセッサー</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="166"/>
@@ -2400,7 +2459,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="177"/>
       <source>Default Path</source>
-      <translation type="unfinished">Default Path</translation>
+      <translation>デフォルトパス</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="230"/>
@@ -2410,17 +2469,17 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="251"/>
       <source>Open File Dialog</source>
-      <translation type="unfinished">Open File Dialog</translation>
+      <translation>ファイルダイアログを開く</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="256"/>
       <source>Open File Dialog on conflict</source>
-      <translation type="unfinished">Open File Dialog on conflict</translation>
+      <translation>競合時にファイルダイアログを開く</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="261"/>
       <source>Overwrite existing file</source>
-      <translation type="unfinished">Overwrite existing file</translation>
+      <translation>既存ファイルを上書き</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="266"/>
@@ -2430,21 +2489,21 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="305"/>
       <source>Default Post Processor</source>
-      <translation type="unfinished">Default Post Processor</translation>
+      <translation>デフォルトのポストプロセッサー</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="325"/>
       <source>Default Arguments</source>
-      <translation type="unfinished">Default Arguments</translation>
+      <translation>デフォルト引数</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="51"/>
       <source>Path to look for templates, post processors, tool tables and other external files.
 
 If left empty the macro directory is used.</source>
-      <translation>テンプレート、ポストプロセッサ、ツールテーブル、その他の外部ファイルを探すパスです。
+      <translation>テンプレート、ポストプロセッサー、ツールテーブル、その他の外部ファイルを探すパス。
 
-空の場合はマクロのディレクトリを使用します。</translation>
+空欄のままにするとマクロのディレクトリを使用します。</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="74"/>
@@ -2520,7 +2579,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="288"/>
       <source>Post Processors Selection</source>
-      <translation type="unfinished">Post Processors Selection</translation>
+      <translation>ポストプロセッサーの選択</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="298"/>
@@ -2530,7 +2589,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="312"/>
       <source>Select one of the post processors as the default.</source>
-      <translation type="unfinished">Select one of the post processors as the default.</translation>
+      <translation>ポストプロセッサーのいずれかをデフォルトとして選択</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="332"/>
@@ -2540,7 +2599,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="370"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>セットアップ</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="376"/>
@@ -2550,7 +2609,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="395"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>ボックスを作成</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="400"/>
@@ -2560,22 +2619,22 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>モデルのバウンディングボックスを延長</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>延長量 X</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="449"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>延長量 Y</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="462"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>延長量 Z</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="481"/>
@@ -2616,7 +2675,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="603"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>位置</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="647"/>
@@ -2635,7 +2694,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../preferences/PathJob.ui" line="658"/>
       <source>Store Absolute Paths</source>
-      <translation type="unfinished">Store Absolute Paths</translation>
+      <translation>絶対パスを保存</translation>
     </message>
   </context>
   <context>
@@ -2652,7 +2711,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>GUI</source>
-      <translation type="unfinished">GUI</translation>
+      <translation>GUI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="36"/>
@@ -2662,7 +2721,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="70"/>
       <source>Path highlight color</source>
-      <translation type="unfinished">Path highlight color</translation>
+      <translation>パスのハイライト色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="83"/>
@@ -2672,7 +2731,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="116"/>
       <source>Bounding box normal color</source>
-      <translation type="unfinished">Bounding box normal color</translation>
+      <translation>バウンディングボックスの通常色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="123"/>
@@ -2682,12 +2741,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="169"/>
       <source>Probe path color</source>
-      <translation type="unfinished">Probe path color</translation>
+      <translation>プローブパスの色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="215"/>
       <source>Bounding box selection color</source>
-      <translation type="unfinished">Bounding box selection color</translation>
+      <translation>バウンディングボックスの選択色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="261"/>
@@ -2727,12 +2786,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="317"/>
       <source>UI Settings</source>
-      <translation type="unfinished">UI Settings</translation>
+      <translation>UI 設定</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="326"/>
       <source>Path Selection Style</source>
-      <translation type="unfinished">Path Selection Style</translation>
+      <translation>パスの選択スタイル</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="339"/>
@@ -2747,7 +2806,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="354"/>
       <source>Bounding Box</source>
-      <translation type="unfinished">Bounding Box</translation>
+      <translation>バウンディングボックス</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="359"/>
@@ -2757,27 +2816,27 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="367"/>
       <source>Task Panel Layout</source>
-      <translation type="unfinished">Task Panel Layout</translation>
+      <translation>タスクパネルのレイアウト</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="381"/>
       <source>Classic</source>
-      <translation type="unfinished">Classic</translation>
+      <translation>クラシック</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="386"/>
       <source>Classic - reversed</source>
-      <translation type="unfinished">Classic - reversed</translation>
+      <translation>クラシック - 反転</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="391"/>
       <source>Multi Panel</source>
-      <translation type="unfinished">Multi Panel</translation>
+      <translation>マルチパネル</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="396"/>
       <source>Multi Panel - reversed</source>
-      <translation type="unfinished">Multi Panel - reversed</translation>
+      <translation>マルチパネル - 反転</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="14"/>
@@ -2823,12 +2882,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../preferences/Advanced.ui" line="111"/>
       <source>OpenCAMLib</source>
-      <translation type="unfinished">OpenCAMLib</translation>
+      <translation>OpenCAMLib</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="117"/>
       <source>If OpenCAMLib is installed with Python bindings it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</source>
-      <translation type="unfinished">If OpenCAMLib is installed with Python bindings it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</translation>
+      <translation>PythonバインディングのOpenCAMLibがインストールされている場合、追加の3D操作で使用できます。 注意: OpenCAMLibを有効にするにはFreeCADの再起動が必要です。</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="86"/>
@@ -2903,37 +2962,37 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="51"/>
       <source>X-&gt;A</source>
-      <translation type="unfinished">X-&gt;A</translation>
+      <translation>X→A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="56"/>
       <source>Y-&gt;A</source>
-      <translation type="unfinished">Y-&gt;A</translation>
+      <translation>Y→A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="61"/>
       <source>X-&gt;B</source>
-      <translation type="unfinished">X-&gt;B</translation>
+      <translation>X→B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="66"/>
       <source>Y-&gt;B</source>
-      <translation type="unfinished">Y-&gt;B</translation>
+      <translation>Y→B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="71"/>
       <source>X-&gt;C</source>
-      <translation type="unfinished">X-&gt;C</translation>
+      <translation>X→C</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="76"/>
       <source>Y-&gt;C</source>
-      <translation type="unfinished">Y-&gt;C</translation>
+      <translation>Y→C</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
       <source>Dogbones</source>
-      <translation type="unfinished">Dogbones</translation>
+      <translation>ドッグボーン</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
@@ -2959,22 +3018,22 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>
       <source>T-bone horizontal</source>
-      <translation type="unfinished">T-bone horizontal</translation>
+      <translation>T-ボーン水平方向</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="62"/>
       <source>T-bone vertical</source>
-      <translation type="unfinished">T-bone vertical</translation>
+      <translation>T-ボーンの垂直方向</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="67"/>
       <source>T-bone long edge</source>
-      <translation type="unfinished">T-bone long edge</translation>
+      <translation>T-ボーンの長辺エッジ</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="72"/>
       <source>T-bone short edge</source>
-      <translation type="unfinished">T-bone short edge</translation>
+      <translation>T-ボーンの短辺エッジ</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="80"/>
@@ -3009,7 +3068,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
       <source>adaptive</source>
-      <translation type="unfinished">adaptive</translation>
+      <translation>自動</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
@@ -3044,7 +3103,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="20"/>
       <source>Filter Angle</source>
-      <translation type="unfinished">Filter Angle</translation>
+      <translation>角度をフィルター</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="27"/>
@@ -3129,7 +3188,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>追加...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
@@ -3140,12 +3199,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
       <location filename="../panels/HoldingTagsEdit.ui" line="181"/>
       <source>Replace All</source>
-      <translation type="unfinished">Replace All</translation>
+      <translation>すべて置換</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="172"/>
       <source>Copy From</source>
-      <translation type="unfinished">Copy From</translation>
+      <translation>コピー元</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
@@ -3170,7 +3229,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
       <source>add</source>
-      <translation type="unfinished">add</translation>
+      <translation>追加</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
@@ -3195,7 +3254,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="97"/>
       <source>All objects will be profiled using the same depth and speed settings</source>
-      <translation type="unfinished">All objects will be profiled using the same depth and speed settings</translation>
+      <translation>すべてのオブジェクトが同じ深さと速度の設定を使用してプロファイルされます。</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="123"/>
@@ -3205,22 +3264,22 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>開始深さ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>最終深さ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="164"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>ステップダウン</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>仕上げステップダウン</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
@@ -3230,12 +3289,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="214"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>安全高さ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
       <source>Clearance Height</source>
-      <translation type="unfinished">Clearance Height</translation>
+      <translation>クリアランス高さ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>
@@ -3245,12 +3304,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="263"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>ツールコントローラー</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
       <source>The tool and its settings to be used for this operation.</source>
-      <translation type="unfinished">The tool and its settings to be used for this operation.</translation>
+      <translation>この工程で使用されるツールとその設定</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="273"/>
@@ -3275,7 +3334,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="14"/>
       <source>Z Depth Correction</source>
-      <translation type="unfinished">Z Depth Correction</translation>
+      <translation>Z深さ補正</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="41"/>
@@ -3300,12 +3359,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <source>Path Simulator</source>
-      <translation type="unfinished">Path Simulator</translation>
+      <translation>パスシミュレーター</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
       <source>Stop running simulation</source>
-      <translation>シミュレーションの実行を停止</translation>
+      <translation>実行中のシミュレーションを停止</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="38"/>
@@ -3316,7 +3375,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
-      <translation type="unfinished">Activate / resume simulation</translation>
+      <translation>シミュレーションを実行/再開</translation>
     </message>
     <message>
       <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
@@ -3327,27 +3386,27 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="75"/>
       <source>Pause simulation</source>
-      <translation type="unfinished">Pause simulation</translation>
+      <translation>シミュレーションを一時停止</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="78"/>
       <source>Pause</source>
-      <translation type="unfinished">Pause</translation>
+      <translation>一時停止</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="95"/>
       <source>Single step simulation</source>
-      <translation type="unfinished">Single step simulation</translation>
+      <translation>1ステップだけシミュレーション</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="98"/>
       <source>Step</source>
-      <translation type="unfinished">Step</translation>
+      <translation>ステップ</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="115"/>
       <source>Run simulation till end without animation</source>
-      <translation type="unfinished">Run simulation till end without animation</translation>
+      <translation>アニメーションなしで最後までシミュレーションを実行</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="118"/>
@@ -3368,18 +3427,18 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
-      <translation type="unfinished">Accuracy:</translation>
+      <translation>精度:</translation>
     </message>
     <message>
       <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation type="unfinished">Job:</translation>
+      <translation>ジョブ:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
       <source>* Note: Volumetric simulation, inaccuracies are inherent.</source>
-      <translation type="unfinished">* Note: Volumetric simulation, inaccuracies are inherent.</translation>
+      <translation>* 注意: 体積シミュレーションでは固有の精度不足が生じます。</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="29"/>
@@ -3412,7 +3471,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="42"/>
       <source>Tool Bit</source>
-      <translation type="unfinished">Tool Bit</translation>
+      <translation>ツールビット</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="48"/>
@@ -3427,7 +3486,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="68"/>
       <source>Shape File</source>
-      <translation type="unfinished">Shape File</translation>
+      <translation>シェイプファイル</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
@@ -3457,7 +3516,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="131"/>
       <source>Point/Tip Angle</source>
-      <translation type="unfinished">Point/Tip Angle</translation>
+      <translation>点/先端角度</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="148"/>
@@ -3482,7 +3541,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
       <source>Attributes</source>
-      <translation type="unfinished">Attributes</translation>
+      <translation>属性</translation>
     </message>
   </context>
   <context>
@@ -3490,12 +3549,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="20"/>
       <source>Tool Selector</source>
-      <translation type="unfinished">Tool Selector</translation>
+      <translation>ツールセレクター</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="51"/>
       <source>Library editor...</source>
-      <translation type="unfinished">Library editor...</translation>
+      <translation>ライブラリエディター...</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="75"/>
@@ -3510,7 +3569,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="101"/>
       <source>Add To Job</source>
-      <translation type="unfinished">Add To Job</translation>
+      <translation>作業に追加</translation>
     </message>
   </context>
   <context>
@@ -3518,7 +3577,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/PathEdit.ui" line="14"/>
       <source>Job Edit</source>
-      <translation type="unfinished">Job Edit</translation>
+      <translation>ジョブ編集</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
@@ -3555,7 +3614,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/PathEdit.ui" line="118"/>
       <source>Template Export</source>
-      <translation type="unfinished">Template Export</translation>
+      <translation>テンプレートのエクスポート</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="128"/>
@@ -3623,27 +3682,27 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>プロセッサー</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="189"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>引数</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="209"/>
       <source>Work Coordinate Systems</source>
-      <translation type="unfinished">Work Coordinate Systems</translation>
+      <translation>作業座標系</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="228"/>
       <source>Systems</source>
-      <translation type="unfinished">Systems</translation>
+      <translation>システム</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
       <source>Order By</source>
-      <translation type="unfinished">Order By</translation>
+      <translation>並べ替え</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="196"/>
@@ -3675,6 +3734,11 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+      <location filename="../panels/PathEdit.ui" line="397"/>
+      <source>If multiple coordinate systems are in use, setting this to TRUE will cause the G-code to be written to multiple output files as controlled by the &apos;order by&apos; property. For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
+      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the G-code to be written to multiple output files as controlled by the &apos;order by&apos; property. For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+    </message>
+    <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
       <source>Split Output</source>
       <translation type="unfinished">Split Output</translation>
@@ -3682,12 +3746,12 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="433"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>セットアップ</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="451"/>
       <source>Layout</source>
-      <translation type="unfinished">Layout</translation>
+      <translation>レイアウト</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="457"/>
@@ -3697,7 +3761,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="478"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>ボックスを作成</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="483"/>
@@ -3707,12 +3771,12 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>モデルのバウンディングボックスを延長</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>既存のソリッドを使用</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="501"/>
@@ -3727,17 +3791,17 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="558"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>延長量 X</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="578"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>延長量 Y</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="591"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>延長量 Z</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="610"/>
@@ -3763,32 +3827,32 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="672"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>配置</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="678"/>
       <source>Move to Origin</source>
-      <translation type="unfinished">Move to Origin</translation>
+      <translation>原点へ移動</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="685"/>
       <source>Set Origin</source>
-      <translation type="unfinished">Set Origin</translation>
+      <translation>原点を設定</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="692"/>
       <source>Center in Stock</source>
-      <translation type="unfinished">Center in Stock</translation>
+      <translation>ストックの中心</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="699"/>
       <source>XY in Stock</source>
-      <translation type="unfinished">XY in Stock</translation>
+      <translation>ストックのXY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="709"/>
       <source>Set</source>
-      <translation type="unfinished">Set</translation>
+      <translation>設定</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="715"/>
@@ -3808,32 +3872,32 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="736"/>
       <source>X=0</source>
-      <translation type="unfinished">X=0</translation>
+      <translation>X=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="743"/>
       <source>Y=0</source>
-      <translation type="unfinished">Y=0</translation>
+      <translation>Y=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="750"/>
       <source>Z=0</source>
-      <translation type="unfinished">Z=0</translation>
+      <translation>Z=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="757"/>
       <source>Link Stock and Model</source>
-      <translation type="unfinished">Link Stock and Model</translation>
+      <translation>ストックとモデルをリンク</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="767"/>
       <source>Move - XY</source>
-      <translation type="unfinished">Move - XY</translation>
+      <translation>移動 - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="925"/>
       <source>Rotate - XY</source>
-      <translation type="unfinished">Rotate - XY</translation>
+      <translation>回転 - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="981"/>
@@ -3844,7 +3908,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
       <location filename="../panels/PathEdit.ui" line="1041"/>
       <location filename="../panels/PathEdit.ui" line="1342"/>
       <source>Default Values</source>
-      <translation type="unfinished">Default Values</translation>
+      <translation>デフォルト値</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1047"/>
@@ -3854,7 +3918,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1053"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>開始深さ</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1137"/>
@@ -3906,17 +3970,12 @@ Default: &quot;5mm&quot;</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1430"/>
       <source>Active Tool</source>
-      <translation type="unfinished">Active Tool</translation>
+      <translation>アクティブツール</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1069"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="397"/>
-      <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+      <translation>最終深さ</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="400"/>
@@ -3956,7 +4015,7 @@ Default: OpFinalDepth</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1085"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>ステップダウン</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1092"/>
@@ -3975,7 +4034,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1110"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>式</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1120"/>
@@ -3999,7 +4058,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1155"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>安全</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1183"/>
@@ -4031,12 +4090,12 @@ Default: 3 mm</translation>
       <location filename="../panels/PathEdit.ui" line="1267"/>
       <location filename="../panels/PathEdit.ui" line="1279"/>
       <source>Feed</source>
-      <translation type="unfinished">Feed</translation>
+      <translation>フィード</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1291"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>スピンドル</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1311"/>
@@ -4051,7 +4110,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1348"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>高速速度</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1357"/>
@@ -4076,66 +4135,66 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1554"/>
       <source>Op Defaults</source>
-      <translation type="unfinished">Op Defaults</translation>
+      <translation>Op デフォルト</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="195"/>
+      <location filename="../../../InitGui.py" line="202"/>
       <source>Project Setup</source>
       <translation type="unfinished">Project Setup</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="196"/>
+      <location filename="../../../InitGui.py" line="203"/>
       <source>Tool Commands</source>
       <translation>ツールコマンド</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="198"/>
+      <location filename="../../../InitGui.py" line="205"/>
       <source>New Operations</source>
-      <translation type="unfinished">New Operations</translation>
+      <translation>新しい工程</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="201"/>
-      <location filename="../../../InitGui.py" line="235"/>
+      <location filename="../../../InitGui.py" line="208"/>
+      <location filename="../../../InitGui.py" line="243"/>
       <source>Path Modification</source>
-      <translation type="unfinished">Path Modification</translation>
+      <translation>パス変更</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="203"/>
+      <location filename="../../../InitGui.py" line="210"/>
       <source>Helpful Tools</source>
       <translation type="unfinished">Helpful Tools</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="206"/>
-      <location filename="../../../InitGui.py" line="220"/>
-      <location filename="../../../InitGui.py" line="227"/>
-      <location filename="../../../InitGui.py" line="234"/>
+      <location filename="../../../InitGui.py" line="213"/>
+      <location filename="../../../InitGui.py" line="228"/>
+      <location filename="../../../InitGui.py" line="235"/>
       <location filename="../../../InitGui.py" line="242"/>
-      <location filename="../../../InitGui.py" line="248"/>
       <location filename="../../../InitGui.py" line="250"/>
-      <location filename="../../../InitGui.py" line="253"/>
+      <location filename="../../../InitGui.py" line="256"/>
+      <location filename="../../../InitGui.py" line="258"/>
+      <location filename="../../../InitGui.py" line="261"/>
       <source>&amp;CAM</source>
       <translation type="unfinished">&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="221"/>
+      <location filename="../../../InitGui.py" line="229"/>
       <source>Path Dressup</source>
       <translation type="unfinished">Path Dressup</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="228"/>
+      <location filename="../../../InitGui.py" line="236"/>
       <source>Supplemental Commands</source>
       <translation type="unfinished">Supplemental Commands</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="243"/>
+      <location filename="../../../InitGui.py" line="251"/>
       <source>Specialty Operations</source>
       <translation type="unfinished">Specialty Operations</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="254"/>
+      <location filename="../../../InitGui.py" line="262"/>
       <source>Utils</source>
       <translation type="unfinished">Utils</translation>
     </message>
@@ -4178,22 +4237,22 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="712"/>
       <source>Tool number</source>
-      <translation type="unfinished">Tool number</translation>
+      <translation>ツール番号</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="715"/>
       <source>Horizontal feedrate</source>
-      <translation type="unfinished">Horizontal feedrate</translation>
+      <translation>水平方向の送り速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="718"/>
       <source>Vertical feedrate</source>
-      <translation type="unfinished">Vertical feedrate</translation>
+      <translation>垂直方向の送り速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="721"/>
       <source>Spindle RPM</source>
-      <translation type="unfinished">Spindle RPM</translation>
+      <translation>スピンドルのRPM</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="535"/>
@@ -4216,19 +4275,19 @@ Default: 3 mm</translation>
       <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="89"/>
+      <source>Choose a CAM Job</source>
+      <translation>CAMジョブを選択</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Deburr.py" line="181"/>
-      <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <source>CW</source>
+      <translation>CW</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="182"/>
-      <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="89"/>
-      <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <source>CCW</source>
+      <translation>CCW</translation>
     </message>
   </context>
   <context>
@@ -4274,12 +4333,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="115"/>
       <source>Default speed for horizontal rapid moves.</source>
-      <translation type="unfinished">Default speed for horizontal rapid moves.</translation>
+      <translation>水平方向のデフォルト高速移動速度。</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="121"/>
       <source>Default speed for vertical rapid moves.</source>
-      <translation type="unfinished">Default speed for vertical rapid moves.</translation>
+      <translation>垂直方向のデフォルト高速移動速度。</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="127"/>
@@ -4296,7 +4355,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="142"/>
       <source>The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.</source>
-      <translation type="unfinished">The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.</translation>
+      <translation>この入力欄の使用方法は SafeHeightExpression によって異なります - デフォルトでは値は開始深さに加えられ、また工程の安全高さとして使用されます。</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="148"/>
@@ -4404,7 +4463,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="938"/>
       <source>Locations of inserted holding tags</source>
-      <translation type="unfinished">Locations of inserted holding tags</translation>
+      <translation>挿入された保持タグの位置</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="944"/>
@@ -4583,7 +4642,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="167"/>
       <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
-      <translation type="unfinished">For computing Paths; smaller increases accuracy, but slows down computation</translation>
+      <translation>パスの計算用。小さいと精度が上がりますが計算が遅くなります。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="174"/>
@@ -4598,7 +4657,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="190"/>
       <source>Select the Type of Job</source>
-      <translation type="unfinished">Select the Type of Job</translation>
+      <translation>ジョブの種類を選択</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="198"/>
@@ -4621,12 +4680,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="298"/>
       <source>SetupSheet holding the settings for this job</source>
-      <translation type="unfinished">SetupSheet holding the settings for this job</translation>
+      <translation>このジョブの設定を保持しているセットアップシート</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="317"/>
       <source>The base objects for all operations</source>
-      <translation type="unfinished">The base objects for all operations</translation>
+      <translation>すべての工程のベースオブジェクト</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="347"/>
@@ -4643,7 +4702,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="515"/>
       <source>Select the type of Job</source>
-      <translation type="unfinished">Select the type of Job</translation>
+      <translation>ジョブの種類を選択</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="115"/>
@@ -4683,27 +4742,27 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="235"/>
       <source>Length of this stock box</source>
-      <translation type="unfinished">Length of this stock box</translation>
+      <translation>このストック直方体の奥行</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="241"/>
       <source>Width of this stock box</source>
-      <translation type="unfinished">Width of this stock box</translation>
+      <translation>このストック直方体の幅</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="247"/>
       <source>Height of this stock box</source>
-      <translation type="unfinished">Height of this stock box</translation>
+      <translation>このストック直方体の高さ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="287"/>
       <source>Radius of this stock cylinder</source>
-      <translation type="unfinished">Radius of this stock cylinder</translation>
+      <translation>このストック円筒の半径</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="293"/>
       <source>Height of this stock cylinder</source>
-      <translation type="unfinished">Height of this stock cylinder</translation>
+      <translation>このストック円筒の高さ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="329"/>
@@ -4729,19 +4788,19 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="922"/>
       <source>Type of adaptive operation</source>
-      <translation type="unfinished">Type of adaptive operation</translation>
+      <translation>自動工程のタイプ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="936"/>
       <source>Influences accuracy and performance</source>
-      <translation type="unfinished">Influences accuracy and performance</translation>
+      <translation>精度と効率に影響</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="123"/>
+      <location filename="../../../Path/Op/Helix.py" line="170"/>
       <location filename="../../../Path/Op/Adaptive.py" line="945"/>
       <location filename="../../../Path/Op/PocketBase.py" line="152"/>
       <source>Percent of cutter diameter to step over on each pass</source>
-      <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
+      <translation>カッター直径に対する各パスの重なり率（％）</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="954"/>
@@ -4772,7 +4831,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Adaptive.py" line="996"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1007"/>
       <source>Stop processing</source>
-      <translation type="unfinished">Stop processing</translation>
+      <translation>処理を停止</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1018"/>
@@ -4792,12 +4851,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1048"/>
       <source>Helix ramp entry angle (degrees)</source>
-      <translation type="unfinished">Helix ramp entry angle (degrees)</translation>
+      <translation>らせん傾斜進入角度（度）</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1057"/>
       <source>Helix cone angle (degrees)</source>
-      <translation type="unfinished">Helix cone angle (degrees)</translation>
+      <translation>らせん円錐角度 （度）</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1066"/>
@@ -5004,11 +5063,13 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="146"/>
+      <location filename="../../../Path/Op/Tapping.py" line="109"/>
       <source>Enable dwell</source>
       <translation type="unfinished">Enable dwell</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="155"/>
+      <location filename="../../../Path/Op/Tapping.py" line="118"/>
       <source>Calculate the tip length and subtract from final depth</source>
       <translation type="unfinished">Calculate the tip length and subtract from final depth</translation>
     </message>
@@ -5033,7 +5094,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Drilling.py" line="229"/>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="150"/>
       <source>Apply G99 retraction: only retract to RetractHeight between holes in this operation</source>
-      <translation type="unfinished">Apply G99 retraction: only retract to RetractHeight between holes in this operation</translation>
+      <translation>G99 リトレースを適用: この工程の穴の間 RetractHeight だけ引き上げ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="283"/>
@@ -5063,25 +5124,31 @@ Default: 3 mm</translation>
       <translation type="unfinished">When enabled connected extension edges are combined to wires.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="107"/>
+      <location filename="../../../Path/Op/Helix.py" line="161"/>
+      <location filename="../../../Path/Op/Helix.py" line="223"/>
       <source>The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)</source>
       <translation type="unfinished">The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="114"/>
+      <location filename="../../../Path/Op/Helix.py" line="150"/>
       <source>Start cutting from the inside or outside</source>
       <translation type="unfinished">Start cutting from the inside or outside</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="129"/>
-      <location filename="../../../Path/Op/Helix.py" line="152"/>
+      <location filename="../../../Path/Op/Helix.py" line="141"/>
+      <source>The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</source>
+      <translation type="unfinished">The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="176"/>
+      <location filename="../../../Path/Op/Helix.py" line="199"/>
       <source>Starting Radius</source>
-      <translation type="unfinished">Starting Radius</translation>
+      <translation>開始半径</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="141"/>
-      <location filename="../../../Path/Op/Helix.py" line="138"/>
-      <location filename="../../../Path/Op/Helix.py" line="163"/>
+      <location filename="../../../Path/Op/Helix.py" line="185"/>
+      <location filename="../../../Path/Op/Helix.py" line="210"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation type="unfinished">Extra value to stay away from final profile- good for roughing toolpath</translation>
     </message>
@@ -5126,7 +5193,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="138"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation type="unfinished">Extra offset to apply to the operation. Direction is operation dependent.</translation>
+      <translation>工程に適用する追加オフセット。方向は工程に依存して変わります。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="144"/>
@@ -5193,8 +5260,8 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="106"/>
       <location filename="../../../Path/Op/PocketBase.py" line="129"/>
-      <source>The direction that the toolpath should go around the part ClockWise (Climb) or CounterClockWise (Conventional)</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (Climb) or CounterClockWise (Conventional)</translation>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="124"/>
@@ -5230,6 +5297,22 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Profile.py" line="173"/>
       <source>Make True, if using Cutter Radius Compensation</source>
       <translation type="unfinished">Make True, if using Cutter Radius Compensation</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="182"/>
+      <source>The number of passes to do. If more than one, requires a non-zero value for Stepover</source>
+      <translation type="unfinished">The number of passes to do. If more than one, requires a non-zero value for Stepover</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="191"/>
+      <location filename="../../../Path/Op/Profile.py" line="336"/>
+      <source>If doing multiple passes, the extra offset of each additional pass</source>
+      <translation type="unfinished">If doing multiple passes, the extra offset of each additional pass</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="326"/>
+      <source>The number of passes to do. Requires a non-zero value for Stepover</source>
+      <translation type="unfinished">The number of passes to do. Requires a non-zero value for Stepover</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="125"/>
@@ -5417,7 +5500,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="307"/>
       <location filename="../../../Path/Op/Waterline.py" line="353"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation type="unfinished">Set the Z-axis depth offset from the target surface.</translation>
+      <translation>対象表面からの Z 軸深さオフセットを設定</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="322"/>
@@ -5622,7 +5705,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="82"/>
       <source>Total angle in Polar pattern</source>
-      <translation type="unfinished">Total angle in Polar pattern</translation>
+      <translation>軸周パターンの合計角度</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="90"/>
@@ -5684,12 +5767,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Tool/Bit.py" line="156"/>
       <source>The file of the tool</source>
-      <translation type="unfinished">The file of the tool</translation>
+      <translation>ツールのファイル</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Bit.py" line="162"/>
       <source>The name of the shape file</source>
-      <translation type="unfinished">The name of the shape file</translation>
+      <translation>シェイプファイルの名前</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Bit.py" line="168"/>
@@ -5700,7 +5783,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="68"/>
       <source>The active tool</source>
-      <translation type="unfinished">The active tool</translation>
+      <translation>アクティブなツール</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="75"/>
@@ -5715,22 +5798,22 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="87"/>
       <source>Feed rate for vertical moves in Z</source>
-      <translation type="unfinished">Feed rate for vertical moves in Z</translation>
+      <translation>Z方向での垂直移動の送り速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="93"/>
       <source>Feed rate for horizontal moves</source>
-      <translation type="unfinished">Feed rate for horizontal moves</translation>
+      <translation>水平移動の送り速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="99"/>
       <source>Rapid rate for vertical moves in Z</source>
-      <translation type="unfinished">Rapid rate for vertical moves in Z</translation>
+      <translation>Z方向での垂直移動の高速速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="105"/>
       <source>Rapid rate for horizontal moves</source>
-      <translation type="unfinished">Rapid rate for horizontal moves</translation>
+      <translation>水平移動の高速速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="292"/>
@@ -5740,7 +5823,27 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="41"/>
       <source>The toolpath to be copied</source>
-      <translation type="unfinished">The toolpath to be copied</translation>
+      <translation>コピーするツールパス</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="103"/>
+      <source>The time to dwell at bottom of tapping cycle</source>
+      <translation type="unfinished">The time to dwell at bottom of tapping cycle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="124"/>
+      <source>Controls how tool retracts Default=G98</source>
+      <translation type="unfinished">Controls how tool retracts Default=G98</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="133"/>
+      <source>The height where feed starts and height during retract tool when path is finished while in a peck operation</source>
+      <translation type="unfinished">The height where feed starts and height during retract tool when path is finished while in a peck operation</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="139"/>
+      <source>How far the tap depth is extended</source>
+      <translation type="unfinished">How far the tap depth is extended</translation>
     </message>
   </context>
   <context>
@@ -5815,64 +5918,64 @@ Default: 3 mm</translation>
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="204"/>
-      <location filename="../../../Path/Op/Helix.py" line="75"/>
+      <location filename="../../../Path/Op/Profile.py" line="222"/>
+      <location filename="../../../Path/Op/Helix.py" line="105"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>外側</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="205"/>
-      <location filename="../../../Path/Op/Helix.py" line="76"/>
+      <location filename="../../../Path/Op/Profile.py" line="223"/>
+      <location filename="../../../Path/Op/Helix.py" line="106"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation/>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="191"/>
-      <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <location filename="../../../Path/Op/Profile.py" line="209"/>
+      <source>CW</source>
+      <translation>CW</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="192"/>
-      <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <location filename="../../../Path/Op/Profile.py" line="210"/>
+      <source>CCW</source>
+      <translation>CCW</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="195"/>
+      <location filename="../../../Path/Op/Profile.py" line="213"/>
       <source>Collectively</source>
       <translation type="unfinished">Collectively</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="196"/>
+      <location filename="../../../Path/Op/Profile.py" line="214"/>
       <source>Individually</source>
       <translation type="unfinished">Individually</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="199"/>
+      <location filename="../../../Path/Op/Profile.py" line="217"/>
       <source>Round</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="200"/>
+      <location filename="../../../Path/Op/Profile.py" line="218"/>
       <source>Square</source>
       <translation>正方形</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="201"/>
+      <location filename="../../../Path/Op/Profile.py" line="219"/>
       <source>Miter</source>
       <translation type="unfinished">Miter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="380"/>
+      <location filename="../../../Path/Op/Profile.py" line="442"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation type="unfinished">The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="480"/>
+      <location filename="../../../Path/Op/Profile.py" line="542"/>
       <source>Unable to create path for face(s).</source>
       <translation type="unfinished">Unable to create path for face(s).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="619"/>
+      <location filename="../../../Path/Op/Profile.py" line="685"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
     </message>
@@ -5910,7 +6013,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="768"/>
       <source>No job</source>
-      <translation type="unfinished">No job</translation>
+      <translation>ジョブがありません</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="793"/>
@@ -5920,7 +6023,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1004"/>
       <source>operation time is</source>
-      <translation type="unfinished">operation time is</translation>
+      <translation>工程時間:</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1009"/>
@@ -6199,12 +6302,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="756"/>
       <source>No JOB</source>
-      <translation type="unfinished">No JOB</translation>
+      <translation>ジョブがありません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="781"/>
       <source>Canceling Waterline operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling Waterline operation. Error creating OCL cutter.</translation>
+      <translation>ウォーターライン工程をキャンセルしています。OCLカッターの作成中にエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="1000"/>
@@ -6238,7 +6341,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="693"/>
       <source>Base Location</source>
-      <translation type="unfinished">Base Location</translation>
+      <translation>ベース位置</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="806"/>
@@ -6260,7 +6363,7 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1000"/>
       <source>Diameters</source>
-      <translation type="unfinished">Diameters</translation>
+      <translation>直径</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1032"/>
@@ -6281,7 +6384,7 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
       <location filename="../../../Path/Op/Gui/Base.py" line="1292"/>
       <location filename="../../../Path/Op/Gui/Base.py" line="1293"/>
       <source>Pick Start Point</source>
-      <translation type="unfinished">Pick Start Point</translation>
+      <translation>開始点を選択</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1334"/>
@@ -6345,10 +6448,10 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../InitGui.py" line="88"/>
       <location filename="../../../InitGui.py" line="92"/>
-      <location filename="../../../InitGui.py" line="271"/>
+      <location filename="../../../InitGui.py" line="279"/>
       <location filename="../../AppPathGui.cpp" line="91"/>
       <source>CAM</source>
-      <translation type="unfinished">CAM</translation>
+      <translation>CAM</translation>
     </message>
   </context>
   <context>
@@ -6362,7 +6465,7 @@ Aborting op creation</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="188"/>
+      <location filename="../../../InitGui.py" line="195"/>
       <source>3D Operations</source>
       <translation>3D工程</translation>
     </message>
@@ -6396,7 +6499,7 @@ Aborting op creation</translation>
       <location filename="../../../PathCommands.py" line="147"/>
       <location filename="../../../PathCommands.py" line="151"/>
       <source>Toggle the Active State of the Operation</source>
-      <translation type="unfinished">Toggle the Active State of the Operation</translation>
+      <translation>工程のアクティブ状態を切り替え</translation>
     </message>
   </context>
   <context>
@@ -6405,7 +6508,7 @@ Aborting op creation</translation>
       <location filename="../../../PathCommands.py" line="188"/>
       <location filename="../../../PathCommands.py" line="189"/>
       <source>Copy the operation in the job</source>
-      <translation type="unfinished">Copy the operation in the job</translation>
+      <translation>ジョブ内の工程をコピー</translation>
     </message>
   </context>
   <context>
@@ -6822,7 +6925,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="335"/>
       <source>Z Depth Correction</source>
-      <translation type="unfinished">Z Depth Correction</translation>
+      <translation>Z深さ補正</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="337"/>
@@ -6856,7 +6959,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="255"/>
       <source>2.5D</source>
-      <translation type="unfinished">2.5D</translation>
+      <translation>2.5D</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="256"/>
@@ -6876,7 +6979,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="615"/>
       <source>Stock not a cylinder!</source>
-      <translation type="unfinished">Stock not a cylinder!</translation>
+      <translation>ストックが円筒ではありません！</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1012"/>
@@ -6943,7 +7046,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="59"/>
       <source>Creates a CAM Job</source>
-      <translation type="unfinished">Creates a CAM Job</translation>
+      <translation>CAMジョブを作成</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
@@ -6981,7 +7084,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="86"/>
       <source>Jobs</source>
-      <translation type="unfinished">Jobs</translation>
+      <translation>ジョブ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="183"/>
@@ -7058,12 +7161,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="101"/>
       <source>Export Template</source>
-      <translation type="unfinished">Export Template</translation>
+      <translation>テンプレートをエクスポート</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="105"/>
       <source>Exports CAM Job as a template to be used for other jobs</source>
-      <translation type="unfinished">Exports CAM Job as a template to be used for other jobs</translation>
+      <translation>CAMジョブを他のジョブで使用するテンプレートとしてエクスポート</translation>
     </message>
   </context>
   <context>
@@ -7071,7 +7174,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="364"/>
       <source>Cylinder: %.2f x %.2f</source>
-      <translation type="unfinished">Cylinder: %.2f x %.2f</translation>
+      <translation>円筒: %.2f x %.2f</translation>
     </message>
   </context>
   <context>
@@ -7080,7 +7183,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="53"/>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="55"/>
       <source>Check the CAM job for common errors</source>
-      <translation type="unfinished">Check the CAM job for common errors</translation>
+      <translation>CAMジョブの一般的なエラーを検査</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
@@ -7120,7 +7223,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="104"/>
       <source>Job Type</source>
-      <translation type="unfinished">Job Type</translation>
+      <translation>ジョブタイプ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="107"/>
@@ -7140,7 +7243,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="93"/>
       <source>Tool Number</source>
-      <translation type="unfinished">Tool Number</translation>
+      <translation>ツール番号</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="58"/>
@@ -7180,7 +7283,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>ツールコントローラー</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="60"/>
@@ -7215,27 +7318,27 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
       <source>X Size</source>
-      <translation type="unfinished">X Size</translation>
+      <translation>X サイズ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="96"/>
       <source>Y Size</source>
-      <translation type="unfinished">Y Size</translation>
+      <translation>Y サイズ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="97"/>
       <source>Z Size</source>
-      <translation type="unfinished">Z Size</translation>
+      <translation>Z サイズ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
       <source>Minimum Z</source>
-      <translation type="unfinished">Minimum Z</translation>
+      <translation>最小 Z</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
       <source>Maximum Z</source>
-      <translation type="unfinished">Maximum Z</translation>
+      <translation>最大 Z</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
@@ -7275,7 +7378,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
       <source>Order By</source>
-      <translation type="unfinished">Order By</translation>
+      <translation>並べ替え</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="57"/>
@@ -7285,7 +7388,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="64"/>
       <source>G-code File</source>
-      <translation type="unfinished">G-code File</translation>
+      <translation>Gコードファイル</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="67"/>
@@ -7295,7 +7398,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
       <source>Stops</source>
-      <translation type="unfinished">Stops</translation>
+      <translation>停止</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="81"/>
@@ -7315,17 +7418,17 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="63"/>
       <source>Post Processor Flags</source>
-      <translation type="unfinished">Post Processor Flags</translation>
+      <translation>ポストプロセッサーフラグ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="61"/>
       <source>File Size (kB)</source>
-      <translation type="unfinished">File Size (kB)</translation>
+      <translation>ファイルサイズ (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="68"/>
       <source>Line Count</source>
-      <translation type="unfinished">Line Count</translation>
+      <translation>行数</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
@@ -7340,7 +7443,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="56"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>日時</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
@@ -7367,7 +7470,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="419"/>
       <source>Tool Controller &apos;{}&apos; has no feedrate</source>
-      <translation type="unfinished">Tool Controller &apos;{}&apos; has no feedrate</translation>
+      <translation>ツールコントローラー &apos;{}&apos; に送り速度がありません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="431"/>
@@ -7395,18 +7498,18 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="613"/>
       <source>CAM Simulator</source>
-      <translation type="unfinished">CAM Simulator</translation>
+      <translation>CAMシミュレーター</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="352"/>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="615"/>
       <source>Simulate G-code on stock</source>
-      <translation type="unfinished">Simulate G-code on stock</translation>
+      <translation>ストックに対するGコードをシミュレート</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="307"/>
       <source>High</source>
-      <translation type="unfinished">High</translation>
+      <translation>高</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="309"/>
@@ -7421,7 +7524,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="350"/>
       <source>New CAM Simulator</source>
-      <translation type="unfinished">New CAM Simulator</translation>
+      <translation>新しいCAMシミュレーター</translation>
     </message>
   </context>
   <context>
@@ -7429,12 +7532,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="875"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>外側</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="876"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>内側</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="879"/>
@@ -7454,7 +7557,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Adaptive.py" line="160"/>
       <source>Adaptive clearing and profiling</source>
-      <translation type="unfinished">Adaptive clearing and profiling</translation>
+      <translation>自動によるクリーニングとプロファイリング</translation>
     </message>
   </context>
   <context>
@@ -7467,12 +7570,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Base.py" line="359"/>
       <source>Flood</source>
-      <translation type="unfinished">Flood</translation>
+      <translation>フラッド</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="360"/>
       <source>Mist</source>
-      <translation type="unfinished">Mist</translation>
+      <translation>ミスト</translation>
     </message>
   </context>
   <context>
@@ -7510,17 +7613,17 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Base.py" line="819"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
-      <translation type="unfinished">Tool Controller feedrates required to calculate the cycle time.</translation>
+      <translation>ツールコントローラーの送り速度ではサイクルタイムの計算が必要です。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="822"/>
       <source>Feedrate Error</source>
-      <translation type="unfinished">Feedrate Error</translation>
+      <translation>送り速度エラー</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="830"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
-      <translation type="unfinished">Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</translation>
+      <translation>ツールコントローラーの高速速度をセットアップシートに追加し、サイクルタイムをより正確にします。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="839"/>
@@ -7574,7 +7677,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
       <location filename="../../../Path/Op/Gui/Probe.py" line="69"/>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="112"/>
       <source>No valid toolcontroller</source>
-      <translation type="unfinished">No valid toolcontroller</translation>
+      <translation>有効なツールコントローラーがありません</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="181"/>
@@ -7594,12 +7697,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Post/scripts/generic_post.py" line="44"/>
       <source>Generic post processor</source>
-      <translation type="unfinished">Generic post processor</translation>
+      <translation>汎用ポストプロセッサー</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="647"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation type="unfinished">Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</translation>
+      <translation>自動工程で境界ワイヤーを決定できませんでした。ベースジオメトリーを選択していますか？</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="74"/>
@@ -7617,12 +7720,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="68"/>
       <source>G98</source>
-      <translation type="unfinished">G98</translation>
+      <translation>G98</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="69"/>
       <source>G99</source>
-      <translation type="unfinished">G99</translation>
+      <translation>G99</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="72"/>
@@ -7663,12 +7766,22 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
       <translation type="unfinished">Creates a Helical toolpath from the features of a base object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="71"/>
+      <location filename="../../../Path/Op/Helix.py" line="101"/>
+      <source>CW</source>
+      <translation>CW</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="102"/>
+      <source>CCW</source>
+      <translation>CCW</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="109"/>
       <source>Climb</source>
       <translation type="unfinished">Climb</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="72"/>
+      <location filename="../../../Path/Op/Helix.py" line="110"/>
       <source>Conventional</source>
       <translation type="unfinished">Conventional</translation>
     </message>
@@ -7817,35 +7930,35 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
       <location filename="../../../Path/Op/Slot.py" line="264"/>
       <location filename="../../../Path/Op/Slot.py" line="276"/>
       <source>Center of Mass</source>
-      <translation type="unfinished">Center of Mass</translation>
+      <translation>重心</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="266"/>
       <location filename="../../../Path/Op/Slot.py" line="278"/>
       <source>Center of Bounding Box</source>
-      <translation type="unfinished">Center of Bounding Box</translation>
+      <translation>バウンディングボックスの中心</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="269"/>
       <location filename="../../../Path/Op/Slot.py" line="281"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>最低ポイント</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="270"/>
       <location filename="../../../Path/Op/Slot.py" line="282"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>最高ポイント</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="271"/>
       <source>Long Edge</source>
-      <translation type="unfinished">Long Edge</translation>
+      <translation>長いエッジ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="272"/>
       <source>Short Edge</source>
-      <translation type="unfinished">Short Edge</translation>
+      <translation>短いエッジ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="273"/>
@@ -7959,7 +8072,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Slot.py" line="278"/>
       <source>Create a Slot operation from selected geometry or custom points.</source>
-      <translation type="unfinished">Create a Slot operation from selected geometry or custom points.</translation>
+      <translation>選択したジオメトリーまたはカスタム点からスロット工程を作成</translation>
     </message>
   </context>
   <context>
@@ -8099,12 +8212,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Surface.py" line="269"/>
       <source>3D Surface</source>
-      <translation type="unfinished">3D Surface</translation>
+      <translation>3Dサーフェス</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Surface.py" line="270"/>
       <source>Create a 3D Surface Operation from a model</source>
-      <translation type="unfinished">Create a 3D Surface Operation from a model</translation>
+      <translation>モデルから3Dサーフェス工程を作成</translation>
     </message>
   </context>
   <context>
@@ -8205,7 +8318,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="222"/>
       <source>Creates a medial line engraving toolpath</source>
-      <translation type="unfinished">Creates a medial line engraving toolpath</translation>
+      <translation>内部線彫刻ツールパスを作成</translation>
     </message>
   </context>
   <context>
@@ -8213,12 +8326,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="448"/>
       <source>Array</source>
-      <translation>整列</translation>
+      <translation>配列</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="449"/>
       <source>Creates an array from selected toolpath(s)</source>
-      <translation type="unfinished">Creates an array from selected toolpath(s)</translation>
+      <translation>選択したツールパスから配列を作成</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="467"/>
@@ -8249,7 +8362,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="94"/>
       <source>Creates a linked copy of another toolpath</source>
-      <translation type="unfinished">Creates a linked copy of another toolpath</translation>
+      <translation>別のツールパスのリンクコピーを作成</translation>
     </message>
   </context>
   <context>
@@ -8270,12 +8383,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Deburr.py" line="141"/>
       <source>Deburr</source>
-      <translation type="unfinished">Deburr</translation>
+      <translation>バリ取り</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Deburr.py" line="142"/>
       <source>Creates a Deburr toolpath along Edges or around Faces</source>
-      <translation type="unfinished">Creates a Deburr toolpath along Edges or around Faces</translation>
+      <translation>エッジまたは面の周りにバリ取りツールパスを作成</translation>
     </message>
   </context>
   <context>
@@ -8283,12 +8396,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="167"/>
       <source>Engrave</source>
-      <translation type="unfinished">Engrave</translation>
+      <translation>彫刻</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="170"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
-      <translation type="unfinished">Creates an Engraving toolpath around a Draft ShapeString</translation>
+      <translation>ドラフト ShapeString 周りの彫刻ツールパスを作成</translation>
     </message>
   </context>
   <context>
@@ -8301,7 +8414,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="75"/>
       <source>Create a Facing Operation from a model or face</source>
-      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
+      <translation>モデルまたは面からフェイシング工程を作成</translation>
     </message>
   </context>
   <context>
@@ -8309,12 +8422,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Pocket.py" line="57"/>
       <source>3D Pocket</source>
-      <translation type="unfinished">3D Pocket</translation>
+      <translation>3Dポケット</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Pocket.py" line="58"/>
       <source>Creates a 3D Pocket toolpath from a face or faces</source>
-      <translation type="unfinished">Creates a 3D Pocket toolpath from a face or faces</translation>
+      <translation>1面または複数面から3Dポケットツールパスを作成</translation>
     </message>
   </context>
   <context>
@@ -8322,12 +8435,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="72"/>
       <source>Pocket Shape</source>
-      <translation type="unfinished">Pocket Shape</translation>
+      <translation>ポケット形状</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="73"/>
       <source>Creates a pocket toolpath from a face or faces</source>
-      <translation type="unfinished">Creates a pocket toolpath from a face or faces</translation>
+      <translation>1面または複数面からポケットツールパスを作成</translation>
     </message>
   </context>
   <context>
@@ -8335,12 +8448,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="38"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>単純コピー</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="41"/>
       <source>Creates a non-parametric copy of another toolpath</source>
-      <translation type="unfinished">Creates a non-parametric copy of another toolpath</translation>
+      <translation>別のツールパスの非パラメトリックなコピーを作成</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="58"/>
@@ -8367,12 +8480,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="171"/>
       <source>Waterline</source>
-      <translation>水準面線</translation>
+      <translation>ウォーターライン</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="172"/>
       <source>Create a Waterline toolpath from a model</source>
-      <translation type="unfinished">Create a Waterline toolpath from a model</translation>
+      <translation>モデルからウォーターラインツールパスを作成</translation>
     </message>
   </context>
   <context>
@@ -8421,12 +8534,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="142"/>
       <source>Add Tool Controller to the Job</source>
-      <translation type="unfinished">Add Tool Controller to the Job</translation>
+      <translation>ジョブにツールコント ローラーを追加</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="143"/>
       <source>Add Tool Controller</source>
-      <translation type="unfinished">Add Tool Controller</translation>
+      <translation>ツールコント ローラーを追加</translation>
     </message>
   </context>
   <context>
@@ -8434,12 +8547,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="49"/>
       <source>Create Tool</source>
-      <translation type="unfinished">Create Tool</translation>
+      <translation>ツールを作成</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="50"/>
       <source>Creates a new ToolBit object</source>
-      <translation type="unfinished">Creates a new ToolBit object</translation>
+      <translation>新しいツールビットオブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -8447,7 +8560,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="72"/>
       <source>Save Tool as...</source>
-      <translation type="unfinished">Save Tool as...</translation>
+      <translation>名前を付けてツールを保存...</translation>
     </message>
   </context>
   <context>
@@ -8455,12 +8568,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="74"/>
       <source>Save Tool</source>
-      <translation type="unfinished">Save Tool</translation>
+      <translation>ツールを保存</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="79"/>
       <source>Save an existing ToolBit object to a file</source>
-      <translation type="unfinished">Save an existing ToolBit object to a file</translation>
+      <translation>既存のツールビットオブジェクトをファイルに保存</translation>
     </message>
   </context>
   <context>
@@ -8468,12 +8581,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="136"/>
       <source>Load Tool</source>
-      <translation type="unfinished">Load Tool</translation>
+      <translation>ツールを読み込む</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="139"/>
       <source>Load an existing ToolBit object from a file</source>
-      <translation type="unfinished">Load an existing ToolBit object from a file</translation>
+      <translation>既存のToolBitオブジェクトをファイルから読み込む</translation>
     </message>
   </context>
   <context>
@@ -8481,38 +8594,38 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="80"/>
       <source>Toolbit working directory not set up. Do that now?</source>
-      <translation type="unfinished">Toolbit working directory not set up. Do that now?</translation>
+      <translation>ツールビット作業ディレクトリが設定されていません。今すぐ設定しますか？</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="88"/>
       <source>Choose a writable location for your toolbits</source>
-      <translation type="unfinished">Choose a writable location for your toolbits</translation>
+      <translation>ツールビットの書き込み可能な位置を選択</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
       <source>Toolbit Working directory {} needs these sudirectories:
  {}
  Create them?</source>
-      <translation type="unfinished">Toolbit Working directory {} needs these sudirectories:
+      <translation>ツールビット作業ディレクトリ {} には以下のサブディレクトリが必要です:
  {}
- Create them?</translation>
+ これらを作成しますか？</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="143"/>
       <source>Copy example files to new {} directory?</source>
-      <translation type="unfinished">Copy example files to new {} directory?</translation>
+      <translation>サンプルファイルを新しい {} ディレクトリにコピーしますか？</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
-      <translation type="unfinished">Tooltable JSON (*.fctl)</translation>
+      <translation>ツールテーブル JSON (*.fctl)</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
-      <translation type="unfinished">Save toolbit library</translation>
+      <translation>ツールビットライブラリを保存</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
@@ -8527,12 +8640,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation type="unfinished">LinuxCNC tooltable (*.tbl)</translation>
+      <translation>LinuxCNC ツールテーブル (*.tbl)</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
-      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
+      <translation>CAMotics ツールテーブル (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8540,12 +8653,12 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="48"/>
       <source>ToolBit Dock</source>
-      <translation type="unfinished">ToolBit Dock</translation>
+      <translation>ツールビットドック</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="49"/>
       <source>Toggle the Toolbit Dock</source>
-      <translation type="unfinished">Toggle the Toolbit Dock</translation>
+      <translation>ツールビットドックを切り替え</translation>
     </message>
   </context>
   <context>
@@ -8553,23 +8666,23 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="75"/>
       <source>ToolBit Library editor</source>
-      <translation type="unfinished">ToolBit Library editor</translation>
+      <translation>ツールビットライブラリエディター</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="78"/>
       <source>Open an editor to manage ToolBit libraries</source>
-      <translation type="unfinished">Open an editor to manage ToolBit libraries</translation>
+      <translation>ツールビットライブラリーを管理するためにエディターを開く</translation>
     </message>
   </context>
   <context>
     <name>CAM_Profile</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="163"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="174"/>
       <source>Profile</source>
       <translation>プロファイル</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="164"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="175"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
     </message>
@@ -8579,7 +8692,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="116"/>
       <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation type="unfinished">Toolbit cannot be edited: Shapefile not found</translation>
+      <translation>ツールビットを編集できません: シェイプファイルが見つかりません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="192"/>
@@ -8589,22 +8702,22 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="198"/>
       <source>Invalid Filename</source>
-      <translation type="unfinished">Invalid Filename</translation>
+      <translation>無効なファイル名</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="241"/>
       <source>Select Tool Shape</source>
-      <translation type="unfinished">Select Tool Shape</translation>
+      <translation>ツールシェイプを選択</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="465"/>
       <source>Select a library</source>
-      <translation type="unfinished">Select a library</translation>
+      <translation>ライブラリを選択</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="467"/>
       <source>No library selected</source>
-      <translation type="unfinished">No library selected</translation>
+      <translation>ライブラリが選択されていません</translation>
     </message>
   </context>
   <context>
@@ -8618,6 +8731,60 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
       <location filename="../../../Path/Main/Gui/Camotics.py" line="312"/>
       <source>Simulate using CAMotics</source>
       <translation type="unfinished">Simulate using CAMotics</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DrillingTools</name>
+    <message>
+      <location filename="../../../InitGui.py" line="153"/>
+      <source>Drilling Operations</source>
+      <translation type="unfinished">Drilling Operations</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_Tapping</name>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="69"/>
+      <source>G98</source>
+      <translation>G98</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="70"/>
+      <source>G99</source>
+      <translation>G99</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="73"/>
+      <source>None</source>
+      <translation>なし</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="74"/>
+      <source>Drill Tip</source>
+      <translation>ドリルのヒント</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="75"/>
+      <source>2x Drill Tip</source>
+      <translation type="unfinished">2x Drill Tip</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Tapping.py" line="179"/>
+      <source>Tapping</source>
+      <translation type="unfinished">Tapping</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Tapping.py" line="183"/>
+      <source>Creates a Tapping toolpath from the features of a base object</source>
+      <translation type="unfinished">Creates a Tapping toolpath from the features of a base object</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Tapping</name>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="158"/>
+      <source>Tapping Operation requires a Tap tool with Pitch or TPI</source>
+      <translation type="unfinished">Tapping Operation requires a Tap tool with Pitch or TPI</translation>
     </message>
   </context>
 </TS>

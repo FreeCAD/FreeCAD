@@ -95,7 +95,7 @@ private:
 };
 
 /** The ILoggerBlocker class
- *  This class allows to temporary block then automatically restore arbitrary message types
+ *  This class allows one to temporary block then automatically restore arbitrary message types
  *  on a particular console observer.
  */
 class BaseExport ILoggerBlocker

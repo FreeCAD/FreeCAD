@@ -3,22 +3,21 @@
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
  ***************************************************************************/
 
@@ -51,12 +50,21 @@ public:
     ~DatumElement() override;
 
     /// Finds the origin object this plane belongs to
-    App::LocalCoordinateSystem* getLCS();
+    App::LocalCoordinateSystem* getLCS() const;
+    Base::Vector3d getBasePoint() const;
+    Base::Vector3d getDirection() const;
+    Base::Vector3d getBaseDirection() const;
 
     bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 
     /// Returns true if this DatumElement is part of a App::Origin.
-    bool isOriginFeature();
+    bool isOriginFeature() const;
+
+protected:
+    void setBaseDirection(const Base::Vector3d& dir);
+
+private:
+    Base::Vector3d baseDir;
 };
 
 class AppExport Plane: public App::DatumElement
@@ -75,6 +83,7 @@ class AppExport Line: public App::DatumElement
     PROPERTY_HEADER_WITH_OVERRIDE(App::DatumElement);
 
 public:
+    Line();
     const char* getViewProviderName() const override
     {
         return "Gui::ViewProviderLine";
@@ -86,6 +95,7 @@ class AppExport Point: public App::DatumElement
     PROPERTY_HEADER_WITH_OVERRIDE(App::DatumElement);
 
 public:
+    Point();
     const char* getViewProviderName() const override
     {
         return "Gui::ViewProviderPoint";
@@ -198,10 +208,10 @@ public:
     /// Points types
     static constexpr const char* PointRoles[1] = {"Origin"};
 
-    virtual bool isOrigin()
+    virtual bool isOrigin() const
     {
         return false;
-    };
+    }
 
     // Axis links
     PropertyLinkList OriginFeatures;
@@ -213,6 +223,7 @@ protected:
     void setupObject() override;
     /// Removes all planes and axis if they are still linked to the document
     void unsetupObject() override;
+    void onDocumentRestored() override;
 
 private:
     struct SetupData;
@@ -243,8 +254,10 @@ private:
     };
     static const std::vector<SetupData>& getSetupData();
 
-    DatumElement* createDatum(SetupData& data);
+    DatumElement* createDatum(const SetupData& data);
     SetupData getData(const char* role);
+
+    void migrateOriginPoint();
 };
 
 }  // namespace App

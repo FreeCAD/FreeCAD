@@ -130,12 +130,10 @@ class PostProcessor:
         exportObjectsWith() for final posting."""
 
         def __fixtureSetup(order, fixture, job):
-            """Convert a Fixure setting to _TempObject instance with a G0 move to a
+            """Convert a Fixture setting to _TempObject instance with a G0 move to a
             safe height every time the fixture coordinate system change.  Skip
             the move for first fixture, to avoid moving before tool and tool
-            height compensation is enabled.
-
-            """
+            height compensation is enabled."""
 
             fobj = _TempObject()
             c1 = Path.Command(fixture)
@@ -292,7 +290,7 @@ class WrapperPost(PostProcessor):
         self.load_script()
 
     def load_script(self):
-        # Dynamically load the script as a module
+        """Dynamically load the script as a module."""
         try:
             spec = importlib.util.spec_from_file_location("script_module", self.script_path)
             self.script_module = importlib.util.module_from_spec(spec)
@@ -309,7 +307,7 @@ class WrapperPost(PostProcessor):
         self._tooltipargs = getattr(self.script_module, "TOOLTIP_ARGS", [])
 
     def export(self):
-        # Dynamically reload the module for the export to ensure up-to-date usage
+        """Dynamically reload the module for the export to ensure up-to-date usage."""
 
         postables = self._buildPostList()
         Path.Log.debug(f"postables count: {len(postables)}")

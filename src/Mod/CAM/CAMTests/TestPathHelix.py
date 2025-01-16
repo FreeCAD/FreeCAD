@@ -140,7 +140,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                     )
 
     def testPathDirection(self):
-        """Verify that the generated paths obays the given parameters"""
+        """Verify that the generated paths obeys the given parameters"""
         helix = PathHelix.Create("Helix")
 
         def check(start_side, cut_mode, expected_direction):

@@ -30,7 +30,7 @@ __url__ = "https://www.freecad.org"
 import os
 import re
 import subprocess
-from PySide.QtCore import QProcess
+from PySide.QtCore import QProcess, QThread
 
 import FreeCAD
 from FreeCAD import Console
@@ -400,6 +400,8 @@ class GmshTools:
         else:
             Console.PrintMessage("  Mesh group objects, we need to get the elements.\n")
             for mg in self.mesh_obj.MeshGroupList:
+                if mg.Suppressed:
+                    continue
                 new_group_elements = meshtools.get_mesh_group_elements(mg, self.part_obj)
                 for ge in new_group_elements:
                     if ge not in self.group_elements:
@@ -479,6 +481,8 @@ class GmshTools:
             ):
                 self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshRegionList:
+                if mr_obj.Suppressed:
+                    continue
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)
                 # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
@@ -564,6 +568,8 @@ class GmshTools:
                 # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
+                if mr_obj.Suppressed:
+                    continue
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
                     if mr_obj.References:
                         belem_list = []
@@ -737,11 +743,12 @@ class GmshTools:
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
 
-        cpu_count = os.cpu_count()
-        if cpu_count is not None and cpu_count > 1:
-            geo.write("// enable multi-core processing\n")
-            geo.write(f"General.NumThreads = {cpu_count};\n")
-            geo.write("\n")
+        cpu_count = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
+            "NumOfThreads", QThread.idealThreadCount()
+        )
+        geo.write("// enable multi-core processing\n")
+        geo.write(f"General.NumThreads = {cpu_count};\n")
+        geo.write("\n")
 
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file

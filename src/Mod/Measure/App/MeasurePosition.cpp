@@ -131,7 +131,7 @@ QString MeasurePosition::getResultString()
     }
 
     Base::Vector3d value = Position.getValue();
-    QString unit = Position.getUnit().getString();
+    QString unit = QString::fromStdString(Position.getUnit().getString());
     int precision = 2;
     QString text;
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)

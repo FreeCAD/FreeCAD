@@ -16,11 +16,13 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/Quantity.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Reader.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Rotation.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/ServiceProvider.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Stream.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TimeInfo.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Tools.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Tools2D.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Tools3D.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/UniqueNameManager.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Unit.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Vector3D.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ViewProj.cpp

@@ -63,7 +63,7 @@ using namespace Import;
 ExportOCAFOptions::ExportOCAFOptions()
 {
     defaultColor.setPackedValue(0xCCCCCC00);
-    defaultColor.a = 0;
+    defaultColor.a = 1;
 }
 
 ExportOCAF2::ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func)
@@ -94,7 +94,7 @@ ExportOCAFOptions ExportOCAF2::customExportOptions()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     defaultOptions.defaultColor.setPackedValue(
         handle->GetUnsigned("DefaultShapeColor", defaultOptions.defaultColor.getPackedValue()));
-    defaultOptions.defaultColor.a = 0;
+    defaultOptions.defaultColor.a = 1;
 
     return defaultOptions;
 }
@@ -223,7 +223,7 @@ void ExportOCAF2::setupObject(TDF_Label label,
             // parent object internal name + '_i<index>'
             names.push_back(prefix + obj->getNameInDocument() + "_i" + name + ".");
         }
-        // Finally, the subname reference allows to use the label for naming
+        // Finally, the subname reference allows one to use the label for naming
         // with preceding '$'
         names.push_back(prefix + "$" + obj->Label.getValue() + ".");
     }

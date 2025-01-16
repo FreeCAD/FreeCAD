@@ -95,15 +95,21 @@ class _Axis:
         pl = obj.Placement
         geoms = []
         dist = 0
-        if obj.Distances and obj.Length.Value:
-            if len(obj.Distances) == len(obj.Angles):
-                for i in range(len(obj.Distances)):
+        distances = [0]
+        angles = [0]
+        if hasattr(obj, "Distances"):
+            distances = obj.Distances
+        if hasattr(obj, "Angles"):
+            angles = obj.Angles
+        if distances and obj.Length.Value:
+            if angles and len(distances) == len(angles):
+                for i in range(len(distances)):
                     if hasattr(obj.Length,"Value"):
                         l = obj.Length.Value
                     else:
                         l = obj.Length
-                    dist += obj.Distances[i]
-                    ang = math.radians(obj.Angles[i])
+                    dist += distances[i]
+                    ang = math.radians(angles[i])
                     p1 = Vector(dist,0,0)
                     p2 = Vector(dist+(l/math.cos(ang))*math.sin(ang),l,0)
                     if hasattr(obj,"Limit") and obj.Limit.Value:
@@ -274,8 +280,29 @@ class _ViewProviderAxis:
                     self.linecoords.point.setValues(verts)
                     self.lineset.coordIndex.setValues(0,len(vset),vset)
                     self.lineset.coordIndex.setNum(len(vset))
-            self.onChanged(obj.ViewObject,"BubbleSize")
-            self.onChanged(obj.ViewObject,"ShowLabel")
+        elif prop in ["Placement", "Length"] and not hasattr(obj, "Distances"):
+            # copy values from FlatLines/Wireframe nodes
+            rn = obj.ViewObject.RootNode
+            if rn.getNumChildren() < 3:
+                return
+            coords = rn.getChild(1)
+            pts = coords.point.getValues()
+            self.linecoords.point.setValues(pts)
+            #self.linecoords.point.setNum(len(pts))
+            sw = rn.getChild(2)
+            if sw.getNumChildren() < 4:
+                return
+            edges = sw.getChild(sw.getNumChildren()-2)
+            if not edges.getNumChildren():
+                return
+            if edges.getChild(0).getNumChildren() < 4:
+                return
+            eset = edges.getChild(0).getChild(3)
+            vset = eset.coordIndex.getValues()
+            self.lineset.coordIndex.setValues(0,len(vset),vset)
+            self.lineset.coordIndex.setNum(len(vset))
+        self.onChanged(obj.ViewObject,"BubbleSize")
+        self.onChanged(obj.ViewObject,"ShowLabel")
 
     def onChanged(self, vobj, prop):
 
@@ -317,7 +344,10 @@ class _ViewProviderAxis:
                                 pos = []
                             else:
                                 pos = [vobj.BubblePosition]
-                        for i in range(len(vobj.Object.Distances)):
+                        n = 0
+                        if hasattr(vobj.Object, "Distances"):
+                            n = len(vobj.Object.Distances)
+                        for i in range(n):
                             for p in pos:
                                 if hasattr(vobj.Object,"Limit") and vobj.Object.Limit.Value:
                                     verts = [vobj.Object.Placement.inverse().multVec(vobj.Object.Shape.Edges[i].Vertexes[0].Point),
@@ -679,7 +709,7 @@ class _AxisTaskPanel:
         'fills the treewidget'
         self.updating = True
         self.tree.clear()
-        if self.obj:
+        if self.obj and hasattr(self.obj, "Distances"):
             for i in range(len(self.obj.Distances)):
                 item = QtGui.QTreeWidgetItem(self.tree)
                 item.setText(0,str(i+1))

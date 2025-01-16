@@ -35,10 +35,10 @@
         <UserDocu>clear the sketch</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="movePoint">
+    <Methode Name="moveGeometry">
       <Documentation>
         <UserDocu>
-          movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+          moveGeometry(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
           to another location.
           It moves the specified point (or curve) to the given location by adding some
           temporary weak constraints and solve the sketch.

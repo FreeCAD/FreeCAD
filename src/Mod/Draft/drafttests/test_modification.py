@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,43 +22,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, object modification tests."""
+
 ## @package test_modification
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, object modification tests.
 
 ## \addtogroup drafttests
 # @{
-import unittest
 
 import FreeCAD as App
-import Draft
-import drafttests.auxiliary as aux
 import Part
-
+import Draft
 from FreeCAD import Vector
-from draftutils.messages import _msg, _wrn
+from drafttests import auxiliary as aux
+from drafttests import test_base
+from draftutils.messages import _msg
 
 
-class DraftModification(unittest.TestCase):
+class DraftModification(test_base.DraftTestCaseDoc):
     """Test Draft modification tools."""
-
-    def setUp(self):
-        """Set up a new document to hold the tests.
-
-        This is executed before every test, so we create a document
-        to hold the objects.
-        """
-        aux.draw_header()
-        self.doc_name = self.__class__.__name__
-        if App.ActiveDocument:
-            if App.ActiveDocument.Name != self.doc_name:
-                App.newDocument(self.doc_name)
-        else:
-            App.newDocument(self.doc_name)
-        App.setActiveDocument(self.doc_name)
-        self.doc = App.ActiveDocument
-        _msg("  Temporary document '{}'".format(self.doc_name))
 
     def test_move(self):
         """Create a line and move it."""
@@ -68,13 +53,13 @@ class DraftModification(unittest.TestCase):
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
         obj = Draft.make_line(a, b)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         c = Vector(3, 1, 0)
         _msg("  Translation vector")
         _msg("  c={}".format(c))
         Draft.move(obj, c)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         self.assertTrue(obj.Start.isEqual(Vector(3, 3, 0), 1e-6),
                         "'{}' failed".format(operation))
 
@@ -103,14 +88,14 @@ class DraftModification(unittest.TestCase):
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
         obj = Draft.make_line(a, b)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         c = Vector(-1, 1, 0)
         rot = 90
         _msg("  Rotation")
         _msg("  angle={} degrees".format(rot))
         Draft.rotate(obj, rot)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         self.assertTrue(obj.Start.isEqual(c, 1e-6),
                         "'{}' failed".format(operation))
 
@@ -125,7 +110,7 @@ class DraftModification(unittest.TestCase):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}".format(c))
         wire = Draft.make_wire([a, b, c])
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         offset = Vector(-1, 1, 0)
         _msg("  Offset")
@@ -149,7 +134,7 @@ class DraftModification(unittest.TestCase):
                  Part.makeLine(c, d),
                  Part.makeLine(a, d)]
         wire = Part.Wire(edges)
-        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj = self.doc.addObject("Part::Feature")
         obj.Shape = wire
 
         offset = Vector(0, -1, 0)
@@ -168,13 +153,13 @@ class DraftModification(unittest.TestCase):
         _msg("  length={0}, width={1}".format(length, width))
         rect = Draft.make_rectangle(length, width)
         rect.MakeFace = True
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         offset = Vector(0, -1, 0)
         _msg("  Offset")
         _msg("  vector={}".format(offset))
         obj = Draft.offset(rect, offset, copy=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         obj_is_ok = (obj.Shape.CenterOfGravity == Vector(5, 2, 0)
                      and obj.Length == 12
                      and obj.Height == 6)
@@ -196,7 +181,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Line 2")
         _msg("  c={0}, d={1}".format(c, d))
         line2 = Draft.make_line(c, d)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         Draft.trim_objects = aux.fake_function
         obj = Draft.trim_objects(line, line2)
@@ -217,7 +202,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Line 2")
         _msg("  c={0}, d={1}".format(c, d))
         line2 = Draft.make_line(c, d)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         Draft.extrude = aux.fake_function
         obj = Draft.extrude(line, line2)
@@ -260,7 +245,7 @@ class DraftModification(unittest.TestCase):
         obj = Draft.split(wire, b, index)
         # TODO: split needs to be modified so that it returns True or False.
         # Then checking for Wire001 is not needed
-        if App.ActiveDocument.Wire001:
+        if self.doc.Wire001:
             obj = True
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -277,39 +262,45 @@ class DraftModification(unittest.TestCase):
         _msg("  b={0}, c={1}".format(b, c))
         shape_line_1 = Part.makeLine(a, b)
         shape_line_2 = Part.makeLine(b, c)
-        line_1 = App.ActiveDocument.addObject("Part::Feature")
-        line_2 = App.ActiveDocument.addObject("Part::Feature")
+        line_1 = self.doc.addObject("Part::Feature")
+        line_2 = self.doc.addObject("Part::Feature")
         line_1.Shape = shape_line_1
         line_2.Shape = shape_line_2
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
+        # upgrade to wire
         obj = Draft.upgrade([line_1, line_2], delete=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         s = obj[0][0]
         _msg("  1: Result '{0}' ({1})".format(s.Shape.ShapeType, s.TypeId))
         self.assertTrue(bool(obj[0]), "'{}' failed".format(operation))
 
+        # upgrade to closed wire
         obj2 = Draft.upgrade(obj[0], delete=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         s2 = obj2[0][0]
         _msg("  2: Result '{0}' ({1})".format(s2.Shape.ShapeType, s2.TypeId))
         self.assertTrue(bool(obj2[0]), "'{}' failed".format(operation))
 
+        # upgrade to face
         obj3 = Draft.upgrade(obj2[0], delete=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         s3 = obj3[0][0]
         _msg("  3: Result '{0}' ({1})".format(s3.Shape.ShapeType, s3.TypeId))
         self.assertTrue(bool(obj3[0]), "'{}' failed".format(operation))
 
-        # when draftify, upgrade dont return a new object
+        # upgrade to Draft_Wire
         Draft.upgrade(obj3[0], delete=True)
-        App.ActiveDocument.recompute()
-        wire = App.ActiveDocument.Wire
+        # when draftifying, upgrade doesn't return a new object
+        wire = self.doc.ActiveObject
+        wire.MakeFace = True  # make test independent of fillmode parameter
+        self.doc.recompute()
         _msg("  4: Result '{0}' ({1})".format(wire.Proxy.Type, wire.TypeId))
         self.assertTrue(bool(wire), "'{}' failed".format(operation))
 
+        # Draft_Wire with face cannot be upgraded
         obj4 = Draft.upgrade(wire, delete=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         _msg("  The last object cannot be upgraded further")
         self.assertFalse(bool(obj4[0]), "'{}' failed".format(operation))
 
@@ -324,29 +315,34 @@ class DraftModification(unittest.TestCase):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, a={1}".format(c, a))
         wire = Draft.make_wire([a, b, c, a])
-        App.ActiveDocument.recompute()
+        wire.MakeFace = True  # make test independent of fillmode parameter
+        self.doc.recompute()
 
+        # downgrade to face
         obj = Draft.downgrade(wire, delete=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         s = obj[0][0]
         _msg("  1: Result '{0}' ({1})".format(s.Shape.ShapeType, s.TypeId))
         self.assertTrue(bool(obj[0]), "'{}' failed".format(operation))
 
+        # downgrade to wire
         obj2 = Draft.downgrade(obj[0], delete=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         s2 = obj2[0][0]
         _msg("  2: Result '{0}' ({1})".format(s2.Shape.ShapeType, s2.TypeId))
         self.assertTrue(bool(obj2[0]), "'{}' failed".format(operation))
 
+        # downgrade to edges
         obj3 = Draft.downgrade(obj2[0], delete=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         s3 = obj3[0][0]
         _msg("  3: Result 3 x '{0}' ({1})".format(s3.Shape.ShapeType,
                                                   s3.TypeId))
         self.assertTrue(len(obj3[0]) == 3, "'{}' failed".format(operation))
 
+        # edges cannot be downgraded
         obj4 = Draft.downgrade(obj3[0], delete=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         s4 = obj4[0]
         _msg("  4: Result '{}'".format(s4))
         _msg("  The last objects cannot be downgraded further")
@@ -365,7 +361,7 @@ class DraftModification(unittest.TestCase):
         wire = Draft.make_wire([a, b, c])
 
         obj = Draft.make_bspline(wire.Points)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         _msg("  1: Result '{0}' ({1})".format(obj.Proxy.Type, obj.TypeId))
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -377,7 +373,7 @@ class DraftModification(unittest.TestCase):
         """Create a prism and then a 2D projection of it."""
         operation = "Draft Shape2DView"
         _msg("  Test '{}'".format(operation))
-        prism = App.ActiveDocument.addObject("Part::Prism")
+        prism = self.doc.addObject("Part::Prism")
         prism.Polygon = 5
         # Rotate the prism 45 degrees around the Y axis
         prism.Placement.Rotation.Axis = Vector(0, 1, 0)
@@ -403,16 +399,16 @@ class DraftModification(unittest.TestCase):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
         wire = Draft.make_wire([a, b, c])
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         obj = Draft.make_sketch(wire, autoconstraints=True)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         _msg("  1: Result '{0}' ({1})".format(obj.Shape.ShapeType,
                                               obj.TypeId))
         self.assertTrue(obj, "'{}' failed".format(operation))
 
         obj2 = Draft.draftify(obj, delete=False)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         _msg("  2: Result '{0}' ({1})".format(obj2.Proxy.Type,
                                               obj2.TypeId))
         self.assertTrue(obj2, "'{}' failed".format(operation))
@@ -426,7 +422,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
         rect = Draft.make_rectangle(length, width)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         dir_x = Vector(5, 0, 0)
         dir_y = Vector(0, 4, 0)
@@ -455,7 +451,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
         rect = Draft.make_rectangle(length, width)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         center = Vector(-4, 0, 0)
         angle = 180
@@ -476,7 +472,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
         rect = Draft.make_rectangle(length, width)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         rad_distance = 10
         tan_distance = 8
@@ -563,8 +559,8 @@ class DraftModification(unittest.TestCase):
         """
         operation = "Draft Clone"
         _msg("  Test '{}'".format(operation))
-        box = App.ActiveDocument.addObject("Part::Box")
-        App.ActiveDocument.recompute()
+        box = self.doc.addObject("Part::Box")
+        self.doc.recompute()
         _msg("  object: '{0}' ({1})".format(box.Shape.ShapeType, box.TypeId))
 
         obj = Draft.make_clone(box)
@@ -581,18 +577,18 @@ class DraftModification(unittest.TestCase):
         operation = "Check attached Draft Clone behavior"
         _msg("  Test '{}'".format(operation))
 
-        box1 = App.ActiveDocument.addObject("Part::Box")
+        box1 = self.doc.addObject("Part::Box")
         box1.Length = 10
-        box2 = App.ActiveDocument.addObject("Part::Box")
-        App.ActiveDocument.recompute()
+        box2 = self.doc.addObject("Part::Box")
+        self.doc.recompute()
 
         obj = Draft.make_clone(box1)
         obj.MapMode = "ObjectXY"
         obj.AttachmentSupport = [(box2, ("",))]
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         box1.Length = 1
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         self.assertTrue(obj.Shape.BoundBox.XLength == 1, "'{}' failed".format(operation))
 
@@ -600,7 +596,7 @@ class DraftModification(unittest.TestCase):
         """Create a solid, and then a DraftView on a TechDraw page."""
         operation = "TechDraw DraftView (relies on Draft code)"
         _msg("  Test '{}'".format(operation))
-        prism = App.ActiveDocument.addObject("Part::Prism")
+        prism = self.doc.addObject("Part::Prism")
         prism.Polygon = 5
         # Rotate the prism 45 degrees around the Y axis
         prism.Placement.Rotation.Axis = Vector(0, 1, 0)
@@ -609,14 +605,14 @@ class DraftModification(unittest.TestCase):
         _msg("  n_sides={}".format(prism.Polygon))
         _msg("  placement={}".format(prism.Placement))
 
-        page = App.ActiveDocument.addObject("TechDraw::DrawPage")
+        page = self.doc.addObject("TechDraw::DrawPage")
         _msg("  page={}".format(page.TypeId))
-        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate")
+        template = self.doc.addObject("TechDraw::DrawSVGTemplate")
         template.Template = App.getResourceDir() \
                             + "Mod/TechDraw/Templates/A3_Landscape_blank.svg"
         page.Template = template
         _msg("  template={}".format(template.TypeId))
-        view = App.ActiveDocument.addObject("TechDraw::DrawViewDraft")
+        view = self.doc.addObject("TechDraw::DrawViewDraft")
         view.Source = prism
         view.Direction = App.Vector(0, 0, 1)
         page.addView(view)
@@ -633,7 +629,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
         rect = Draft.make_rectangle(length, width)
-        # App.ActiveDocument.recompute()
+        # self.doc.recompute()
 
         p1 = Vector(6, -2, 0)
         p2 = Vector(6, 2, 0)
@@ -680,12 +676,12 @@ class DraftModification(unittest.TestCase):
                           Part.Arc(ends[1], mids[1], ends[2]),
                           Part.Arc(ends[2], mids[2], ends[3]),
                           Part.Arc(ends[3], mids[3], ends[0])])
-        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj = self.doc.addObject("Part::Feature")
         obj.Shape = shp
         obj.Placement.Base = base
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         Draft.scale([obj], sca, cen, False)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         # check endpoints of arcs:
         newEnds = [Vector( 5.0,  5.5, 0.0),
@@ -724,12 +720,12 @@ class DraftModification(unittest.TestCase):
                           Part.LineSegment(pts[1], pts[2]),
                           Part.LineSegment(pts[2], pts[3]),
                           Part.LineSegment(pts[3], pts[0])])
-        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj = self.doc.addObject("Part::Feature")
         obj.Shape = shp
         obj.Placement.Base = base
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         Draft.scale([obj], sca, cen, False)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector(13.0,  5.5, 0.0),
@@ -753,9 +749,9 @@ class DraftModification(unittest.TestCase):
 
         obj = Draft.make_rectangle(len, hgt)
         obj.Placement.Base = base
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         Draft.scale([obj], sca, cen, False)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         newBase = Vector(5.0, 5.5, 0.0)
         newLen = 8.0
@@ -785,9 +781,9 @@ class DraftModification(unittest.TestCase):
 
         obj = Draft.make_bspline(pts, False)
         obj.Placement.Base = base
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         Draft.scale([obj], sca, cen, False)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector( 9.0, 14.5, 0.0),
@@ -811,9 +807,9 @@ class DraftModification(unittest.TestCase):
 
         obj = Draft.make_wire(pts, True)
         obj.Placement.Base = base
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         Draft.scale([obj], sca, cen, False)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector(13.0,  5.5, 0.0),
@@ -823,12 +819,5 @@ class DraftModification(unittest.TestCase):
         for i in range(4):
             self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
-
-    def tearDown(self):
-        """Finish the test.
-
-        This is executed after each test, so we close the document.
-        """
-        App.closeDocument(self.doc_name)
 
 ## @}

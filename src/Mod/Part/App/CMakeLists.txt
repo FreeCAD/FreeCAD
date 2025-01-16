@@ -213,6 +213,8 @@ SET(Features_SRCS
     CustomFeature.h
     BodyBase.h
     BodyBase.cpp
+    Datums.cpp
+    Datums.h
     DatumFeature.cpp
     DatumFeature.h
     AttachExtension.h
@@ -551,6 +553,8 @@ SET(Part_SRCS
     PreCompiled.h
     ProgressIndicator.cpp
     ProgressIndicator.h
+    Services.cpp
+    Services.h
     TopoShape.cpp
     TopoShape.h
     TopoShapeCache.cpp

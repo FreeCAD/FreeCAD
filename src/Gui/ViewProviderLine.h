@@ -27,6 +27,8 @@
 
 #include "ViewProviderDatum.h"
 
+class SoText2;
+
 namespace Gui
 {
 
@@ -38,6 +40,9 @@ public:
     ~ViewProviderLine() override;
 
     void attach ( App::DocumentObject * ) override;
+
+protected:
+    CoinPtr<SoText2> pLabel;
 };
 
 } //namespace Gui

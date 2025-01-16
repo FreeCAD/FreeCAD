@@ -37,9 +37,9 @@ import pivy.coin as coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftutils import gui_utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
 
@@ -124,20 +124,22 @@ class SubelementHighlight(gui_base_original.Modifier):
     def highlight_editable_objects(self):
         """Highlight editable Draft objects from the selection."""
         for obj in self.editable_objects:
+            vobj = obj.ViewObject
             self.original_view_settings[obj.Name] = {
-                'Visibility': obj.ViewObject.Visibility,
-                'PointSize': obj.ViewObject.PointSize,
-                'PointColor': obj.ViewObject.PointColor,
-                'LineColor': obj.ViewObject.LineColor}
-            obj.ViewObject.Visibility = True
-            obj.ViewObject.PointSize = 10
-            obj.ViewObject.PointColor = (1.0, 0.0, 0.0)
-            obj.ViewObject.LineColor = (1.0, 0.0, 0.0)
+                'Visibility': vobj.Visibility,
+                'PointSize': vobj.PointSize,
+                'PointColor': vobj.PointColor,
+                'LineColor': vobj.LineColor}
+            vobj.Visibility = True
+            vobj.PointSize = 10
+            vobj.PointColor = (1.0, 0.0, 0.0)
+            vobj.LineColor = (1.0, 0.0, 0.0)
             xray = coin.SoAnnotation()
-            if obj.ViewObject.RootNode.getNumChildren() > 2:
-                xray.addChild(obj.ViewObject.RootNode.getChild(2).getChild(0))
+            switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+            if switch is not None:
+                xray.addChild(switch.getChild(0))
                 xray.setName("xray")
-                obj.ViewObject.RootNode.addChild(xray)
+                vobj.RootNode.addChild(xray)
 
     def restore_editable_objects_graphics(self):
         """Restore the editable objects' appearance."""

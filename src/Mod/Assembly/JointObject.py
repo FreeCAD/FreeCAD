@@ -706,31 +706,10 @@ class Joint:
             part2Connected = assembly.isPartConnected(part2)
             joint.Activated = True
         else:
-            part1Connected = False
-            part2Connected = True
+            part1Connected = True
+            part2Connected = False
 
-        if not part2Connected:
-            if savePlc:
-                self.partMovedByPresolved = part2
-                self.presolveBackupPlc = part2.Placement
-
-            globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
-            jcsPlc2 = UtilsAssembly.getJcsPlcRelativeToPart(
-                assembly, joint.Placement2, joint.Reference2
-            )
-            if not sameDir:
-                jcsPlc2 = UtilsAssembly.flipPlacement(jcsPlc2)
-
-            # For link groups and sub-assemblies we have to take into account
-            # the parent placement (ie the linkgroup plc) as the linkgroup is not the moving part
-            # But instead of doing as follow, we rather enforce identity placement for linkgroups.
-            # parentPlc = UtilsAssembly.getParentPlacementIfNeeded(part2)
-            # part2.Placement = globalJcsPlc1 * jcsPlc2.inverse() * parentPlc.inverse()
-
-            part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
-            return True
-
-        elif not part1Connected:
+        if not part1Connected:
             if savePlc:
                 self.partMovedByPresolved = part1
                 self.presolveBackupPlc = part1.Placement
@@ -742,7 +721,28 @@ class Joint:
             if not sameDir:
                 jcsPlc1 = UtilsAssembly.flipPlacement(jcsPlc1)
 
+            # For link groups and sub-assemblies we have to take into account
+            # the parent placement (ie the linkgroup plc) as the linkgroup is not the moving part
+            # But instead of doing as follow, we rather enforce identity placement for linkgroups.
+            # parentPlc = UtilsAssembly.getParentPlacementIfNeeded(part2)
+            # part2.Placement = globalJcsPlc1 * jcsPlc2.inverse() * parentPlc.inverse()
+
             part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
+            return True
+
+        elif not part2Connected:
+            if savePlc:
+                self.partMovedByPresolved = part2
+                self.presolveBackupPlc = part2.Placement
+
+            globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
+            jcsPlc2 = UtilsAssembly.getJcsPlcRelativeToPart(
+                assembly, joint.Placement2, joint.Reference2
+            )
+            if not sameDir:
+                jcsPlc2 = UtilsAssembly.flipPlacement(jcsPlc2)
+
+            part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
             return True
         return False
 
@@ -956,18 +956,6 @@ class GroundedJoint:
 
         joint.ObjectToGround = obj_to_ground
 
-        joint.addProperty(
-            "App::PropertyPlacement",
-            "Placement",
-            "Ground",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is where the part is grounded.",
-            ),
-        )
-
-        joint.Placement = obj_to_ground.Placement
-
     def dumps(self):
         return None
 
@@ -999,7 +987,7 @@ class ViewProviderGroundedJoint:
         if groundedObj is None:
             return
 
-        self.scaleFactor = 1.5
+        self.scaleFactor = 3.0
 
         lockpadColorInt = Preferences.preferences().GetUnsigned("AssemblyConstraints", 0xCC333300)
         self.lockpadColor = coin.SoBaseColor()
@@ -1160,24 +1148,33 @@ class MakeJointSelGate:
             return False
 
         ref = [obj, [sub]]
-        selected_object = UtilsAssembly.getObject(ref)
+        sel_obj = UtilsAssembly.getObject(ref)
 
-        if not (
-            selected_object.isDerivedFrom("Part::Feature")
-            or selected_object.isDerivedFrom("App::Part")
+        if UtilsAssembly.isLink(sel_obj):
+            linked = sel_obj.getLinkedObject()
+            if linked == sel_obj:
+                return True  # We accept empty links
+            sel_obj = linked
+
+        if sel_obj.isDerivedFrom("Part::Feature") or sel_obj.isDerivedFrom("App::Part"):
+            return True
+
+        if sel_obj.isDerivedFrom("App::LocalCoordinateSystem") or sel_obj.isDerivedFrom(
+            "App::DatumElement"
         ):
-            if UtilsAssembly.isLink(selected_object):
-                linked = selected_object.getLinkedObject()
-                if linked == selected_object:
-                    # We accept empty links
-                    return True
+            datum = sel_obj
+            if datum.isDerivedFrom("App::DatumElement"):
+                parent = datum.getParent()
+                if parent.isDerivedFrom("App::LocalCoordinateSystem"):
+                    datum = parent
 
-                if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
-                    return False
-            else:
-                return False
+            if self.assembly.hasObject(datum) and hasattr(datum, "MapMode"):
+                # accept only datum that are not attached
+                return datum.MapMode == "Deactivated"
 
-        return True
+            return True
+
+        return False
 
 
 activeTask = None
@@ -1234,11 +1231,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jType = JointTypes[self.jForm.jointType.currentIndex()]
         self.jForm.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
-        self.jForm.reverseRotCheckbox.setChecked(self.jType == "Gears")
-        self.jForm.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
-
-        self.jForm.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
-
         if jointObj:
             Gui.Selection.clearSelection()
             self.creating = False
@@ -1264,8 +1256,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.createJointObject()
             self.visibilityBackup = False
 
-        self.adaptUi()
-
         self.jForm.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
         self.jForm.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.jForm.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
@@ -1276,6 +1266,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         bind = Gui.ExpressionBinding(self.jForm.rotationSpinbox).bind(
             self.joint, "Offset2.Rotation.Yaw"
         )
+
+        self.jForm.reverseRotCheckbox.setChecked(self.jType == "Gears")
+        self.jForm.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
+
+        self.jForm.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
+
         self.jForm.offset1Button.clicked.connect(self.onOffset1Clicked)
         self.jForm.offset2Button.clicked.connect(self.onOffset2Clicked)
         self.jForm.PushButtonReverse.clicked.connect(self.onReverseClicked)
@@ -1293,6 +1289,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         bind = Gui.ExpressionBinding(self.jForm.limitLenMaxSpinbox).bind(self.joint, "LengthMax")
         bind = Gui.ExpressionBinding(self.jForm.limitRotMinSpinbox).bind(self.joint, "AngleMin")
         bind = Gui.ExpressionBinding(self.jForm.limitRotMaxSpinbox).bind(self.joint, "AngleMax")
+
+        self.adaptUi()
 
         if self.creating:
             # This has to be after adaptUi so that properties default values are adapted

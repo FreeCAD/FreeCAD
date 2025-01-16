@@ -149,7 +149,7 @@ bool WriterOBJ::Save(std::ostream& out)
         else {
             out << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
         }
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
     // Export normals
     MeshFacetIterator clIter(_kernel), clEnd(_kernel);
@@ -163,7 +163,7 @@ bool WriterOBJ::Save(std::ostream& out)
         out << "vn " << pclFacet->GetNormal().x << " " << pclFacet->GetNormal().y << " "
             << pclFacet->GetNormal().z << '\n';
         ++clIter;
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     if (_groups.empty()) {
@@ -190,7 +190,7 @@ bool WriterOBJ::Save(std::ostream& out)
                 out << "f " << it->_aulPoints[0] + 1 << "//" << faceIdx << " "
                     << it->_aulPoints[1] + 1 << "//" << faceIdx << " " << it->_aulPoints[2] + 1
                     << "//" << faceIdx << '\n';
-                seq.next(true);  // allow to cancel
+                seq.next(true);  // allow one to cancel
                 faceIdx++;
             }
         }
@@ -201,7 +201,7 @@ bool WriterOBJ::Save(std::ostream& out)
                 out << "f " << it._aulPoints[0] + 1 << "//" << faceIdx << " "
                     << it._aulPoints[1] + 1 << "//" << faceIdx << " " << it._aulPoints[2] + 1
                     << "//" << faceIdx << '\n';
-                seq.next(true);  // allow to cancel
+                seq.next(true);  // allow one to cancel
                 faceIdx++;
             }
         }
@@ -233,7 +233,7 @@ bool WriterOBJ::Save(std::ostream& out)
                     out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " "
                         << f._aulPoints[1] + 1 << "//" << it + 1 << " " << f._aulPoints[2] + 1
                         << "//" << it + 1 << '\n';
-                    seq.next(true);  // allow to cancel
+                    seq.next(true);  // allow one to cancel
                 }
             }
         }
@@ -245,7 +245,7 @@ bool WriterOBJ::Save(std::ostream& out)
                     out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " "
                         << f._aulPoints[1] + 1 << "//" << it + 1 << " " << f._aulPoints[2] + 1
                         << "//" << it + 1 << '\n';
-                    seq.next(true);  // allow to cancel
+                    seq.next(true);  // allow one to cancel
                 }
             }
         }

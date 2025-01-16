@@ -121,7 +121,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
 
     if (activeView) {
         auto doc = activeView->getAppDocument();
-        bool singleBodyDocument = doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
+        bool singleBodyDocument = doc->countObjectsOfType<PartDesign::Body>() == 1;
         if (assertModern) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
