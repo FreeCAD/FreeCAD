@@ -1117,7 +1117,7 @@ protected: \
     virtual bool isActive(void)\
     {\
         Gui::MDIView* view = Gui::getMainWindow()->activeWindow();\
-        return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());\
+        return view && view->isDerivedFrom<Gui::View3DInventor>();\
     }\
 private:\
     X(const X&) = delete;\

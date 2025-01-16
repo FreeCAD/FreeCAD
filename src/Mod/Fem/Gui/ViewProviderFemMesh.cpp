@@ -379,7 +379,7 @@ std::vector<std::string> ViewProviderFemMesh::getDisplayModes() const
 
 void ViewProviderFemMesh::updateData(const App::Property* prop)
 {
-    if (prop->isDerivedFrom(Fem::PropertyFemMesh::getClassTypeId())) {
+    if (prop->isDerivedFrom<Fem::PropertyFemMesh>()) {
         ViewProviderFEMMeshBuilder builder;
         resetColorByNodeId();
         resetDisplacementByNodeId();

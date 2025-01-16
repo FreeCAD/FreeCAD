@@ -91,7 +91,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
         baseTopShape = baseFeature->Shape.getShape();
     else {
         auto feature = tools.back();
-        if(!feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+        if(!feature->isDerivedFrom<Part::Feature>())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean with anything but Part::Feature and its derivatives"));
 
         baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
@@ -120,7 +120,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
     Base::Placement  bodyPlacement = baseBody->globalPlacement().inverse();
     for (auto tool : tools)
     {
-        if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
+        if(!tool->isDerivedFrom<Part::Feature>())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean with anything but Part::Feature and its derivatives"));
 
         Part::TopoShape toolShape = static_cast<Part::Feature*>(tool)->Shape.getShape();

@@ -62,7 +62,7 @@ App::Origin* OriginGroupExtension::getOrigin() const
         err << "Can't find Origin for \"" << getExtendedObject()->getFullName() << "\"";
         throw Base::RuntimeError(err.str().c_str());
     }
-    else if (!originObj->isDerivedFrom(App::Origin::getClassTypeId())) {
+    else if (!originObj->isDerivedFrom<App::Origin>()) {
         std::stringstream err;
         err << "Bad object \"" << originObj->getFullName() << "\"("
             << originObj->getTypeId().getName() << ") linked to the Origin of \""
@@ -114,7 +114,7 @@ App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject
         return nullptr;
     }
 
-    bool isOriginFeature = obj->isDerivedFrom(App::DatumElement::getClassTypeId());
+    bool isOriginFeature = obj->isDerivedFrom<App::DatumElement>();
 
     auto list = obj->getInList();
     for (auto o : list) {
@@ -122,7 +122,7 @@ App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject
             return o;
         }
         else if (isOriginFeature
-                 && o->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
+                 && o->isDerivedFrom<App::LocalCoordinateSystem>()) {
             auto result = getGroupOfObject(o);
             if (result) {
                 return result;
@@ -170,7 +170,7 @@ void OriginGroupExtension::onExtendedSetupObject()
 
     App::DocumentObject* originObj = getLocalizedOrigin(doc);
 
-    assert(originObj && originObj->isDerivedFrom(App::Origin::getClassTypeId()));
+    assert(originObj && originObj->isDerivedFrom<App::Origin>());
     Origin.setValue(originObj);
 
     GeoFeatureGroupExtension::onExtendedSetupObject();

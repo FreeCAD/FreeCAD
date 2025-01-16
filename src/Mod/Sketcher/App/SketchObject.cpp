@@ -6841,7 +6841,7 @@ bool SketchObject::convertToNURBS(int GeoId)
     try {
         bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
 
-        if (geo1->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
+        if (geo1->isDerivedFrom<Part::GeomArcOfConic>()) {
             const auto* geoaoc = static_cast<const Part::GeomArcOfConic*>(geo1);
 
             if (geoaoc->isReversed())
@@ -10394,7 +10394,7 @@ void SketchObject::updateGeometryRefs() {
 
         legacyMap[key + Data::oldElementName(sub.c_str())] = i;
 
-        if (!obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+        if (!obj->isDerivedFrom<Part::Datum>()) {
             key += Data::newElementName(sub.c_str());
         }
         if (!originalRefs.empty() && originalRefs[i] != key) {
@@ -11534,7 +11534,7 @@ Data::IndexedName SketchObject::shapeTypeFromGeoId(int geoId, PointPos posId) co
 
     if (posId == PointPos::none) {
         auto geo = getGeometry(geoId);
-        if (geo && geo->isDerivedFrom(Part::GeomPoint::getClassTypeId())) {
+        if (geo && geo->isDerivedFrom<Part::GeomPoint>()) {
             posId = PointPos::start;
         }
     }

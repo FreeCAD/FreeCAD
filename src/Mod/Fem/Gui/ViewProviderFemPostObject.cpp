@@ -1036,7 +1036,7 @@ void ViewProviderFemPostObject::hide()
     for (auto it : ObjectsList) {
         if (it->isDerivedFrom<Fem::FemPostObject>()) {
             if (!firstVisiblePostObject && it->Visibility.getValue()
-                && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                && !it->isDerivedFrom<Fem::FemPostDataAtPointFilter>()) {
                 firstVisiblePostObject = it;
                 break;
             }

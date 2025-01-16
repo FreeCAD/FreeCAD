@@ -296,7 +296,7 @@ std::vector<DocumentObject*> GroupExtension::getObjectsOfType(const Base::Type& 
     std::vector<DocumentObject*> type;
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (auto it : grp) {
-        if (it->getTypeId().isDerivedFrom(typeId)) {
+        if (it->isDerivedFrom(typeId)) {
             type.push_back(it);
         }
     }
@@ -309,7 +309,7 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
     int type = 0;
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (auto it : grp) {
-        if (it->getTypeId().isDerivedFrom(typeId)) {
+        if (it->isDerivedFrom(typeId)) {
             type++;
         }
     }

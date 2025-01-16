@@ -72,14 +72,14 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
         ui->lineEditFromEnd->setReadOnly(true);
         ui->checkBoxHREF->setChecked(type == PropertySheet::BindingHiddenRef);
         assert(pStart && pEnd);
-        if (!pStart->hasComponent() && pStart->isDerivedFrom(StringExpression::getClassTypeId())) {
+        if (!pStart->hasComponent() && pStart->isDerivedFrom<StringExpression>()) {
             toStart = static_cast<StringExpression*>(pStart.get())->getText();
         }
         else {
             toStart = "=";
             toStart += pStart->toString();
         }
-        if (!pEnd->hasComponent() && pEnd->isDerivedFrom(StringExpression::getClassTypeId())) {
+        if (!pEnd->hasComponent() && pEnd->isDerivedFrom<StringExpression>()) {
             toEnd = static_cast<StringExpression*>(pEnd.get())->getText();
         }
         else {

@@ -168,7 +168,7 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
     //if this page has a QView for this obj, delete it.
     blockSceneSelection(true);
-    if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    if (obj.isDerivedFrom<TechDraw::DrawView>()) {
         (void)m_scene->removeQViewByName(obj.getNameInDocument());
     }
     blockSceneSelection(false);
@@ -657,7 +657,7 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<Gui::SelectionObject> selObjs = Gui::Selection().getSelectionEx(msg.pDocName);
             for (auto &so : selObjs) {
                 App::DocumentObject *docObj = so.getObject();
-                if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+                if (docObj->isDerivedFrom<TechDraw::DrawView>()) {
                     selectQGIView(docObj, true, so.getSubNames());
                 }
             }
@@ -665,7 +665,7 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
     else if (msg.Type == Gui::SelectionChanges::AddSelection || msg.Type == Gui::SelectionChanges::RmvSelection) {
         App::DocumentObject *docObj = msg.Object.getSubObject();
-        if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        if (docObj->isDerivedFrom<TechDraw::DrawView>()) {
             bool isSelected = msg.Type != Gui::SelectionChanges::RmvSelection;
             selectQGIView(docObj, isSelected, std::vector(1, std::string(msg.pSubName ? msg.pSubName : "")));
         }
@@ -991,7 +991,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
     std::vector<std::string> sceneNames;
 
     for (auto tn : treeSel) {
-        if (tn.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        if (tn.getObject()->isDerivedFrom<TechDraw::DrawView>()) {
             std::string s = tn.getObject()->getNameInDocument();
             treeNames.push_back(s);
             subCount += tn.getSubNames().size();

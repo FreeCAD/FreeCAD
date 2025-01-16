@@ -108,7 +108,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
     shape.setPlacement(placement);
 
     // Don't get the subShape from datum elements
-    if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Datum>()) {
         return shape.getShape();
     }
 

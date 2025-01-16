@@ -1192,7 +1192,7 @@ void NaviCubeDraggableCmd::activated(int iMsg)
 bool NaviCubeDraggableCmd::isActive()
 {
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         bool check = _pcAction->isChecked();
         auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
         bool mode = view->getViewer()->getNaviCube()->isDraggable();

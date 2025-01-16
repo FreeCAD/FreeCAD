@@ -94,8 +94,8 @@ public:
     {
         std::string subString(sSubName);
 
-        if (pObj->isDerivedFrom(Part::Plane::getClassTypeId()) || pObj->isDerivedFrom<App::Plane>()
-                || (strstr(pObj->getNameInDocument(), "Plane") && pObj->isDerivedFrom(Part::Datum::getClassTypeId()))) {
+        if (pObj->isDerivedFrom<Part::Plane>() || pObj->isDerivedFrom<App::Plane>()
+                || (strstr(pObj->getNameInDocument(), "Plane") && pObj->isDerivedFrom<Part::Datum>())) {
             return true;
             // reference is an app::link or a part::feature or some subobject
         } else if (pObj->isDerivedFrom<Part::Feature>() || pObj->isDerivedFrom<App::Link>()) {

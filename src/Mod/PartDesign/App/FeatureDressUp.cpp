@@ -86,7 +86,7 @@ Part::Feature *DressUp::getBaseObject(bool silent) const
     const char* err = nullptr;
     App::DocumentObject* base = Base.getValue();
     if (base) {
-        if(base->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if(base->isDerivedFrom<Part::Feature>()) {
             rv = static_cast<Part::Feature*>(base);
         } else {
             err = "Linked object is not a Part object";
@@ -314,7 +314,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                     if(!base)
                         FC_THROWM(Base::CADKernelError,
                                 "Cannot find additive or subtractive support for " << getFullName());
-                    if(!base->isDerivedFrom(DressUp::getClassTypeId()))
+                    if(!base->isDerivedFrom<DressUp>())
                         break;
                 }
             }

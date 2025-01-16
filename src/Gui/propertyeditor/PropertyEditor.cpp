@@ -643,7 +643,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
                 continue;
             }
             // Include document to get proper handling in PropertyView::slotDeleteDocument()
-            if (checkDocument && container->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            if (checkDocument && container->isDerivedFrom<App::DocumentObject>()) {
                 propOwners.insert(static_cast<App::DocumentObject*>(container)->getDocument());
             }
             propOwners.insert(container);
@@ -779,7 +779,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     if (props.size() == 1) {
         auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
         auto prop = *props.begin();
-        if (item->isBound() && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
+        if (item->isBound() && !prop->isDerivedFrom<App::PropertyExpressionEngine>()
             && !prop->isReadOnly() && !prop->testStatus(App::Property::Immutable)
             && !(prop->getType() & App::Prop_ReadOnly)) {
             contextIndex = propertyModel->buddy(contextIndex);

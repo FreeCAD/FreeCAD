@@ -77,7 +77,7 @@ void CmdApproxCurve::activated(int)
 {
     App::DocumentObjectT objT;
     auto obj = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom(Points::Feature::getClassTypeId()))) {
+    if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom<Points::Feature>())) {
         QMessageBox::warning(Gui::getMainWindow(),
                              qApp->translate("Reen_ApproxSurface", "Wrong selection"),
                              qApp->translate("Reen_ApproxSurface", "Please select a point cloud."));
@@ -113,8 +113,8 @@ void CmdApproxSurface::activated(int)
     std::vector<App::DocumentObject*> obj =
         Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
     if (obj.size() != 1
-        || !(obj.at(0)->isDerivedFrom(Points::Feature::getClassTypeId())
-             || obj.at(0)->isDerivedFrom(Mesh::Feature::getClassTypeId()))) {
+        || !(obj.at(0)->isDerivedFrom<Points::Feature>()
+             || obj.at(0)->isDerivedFrom<Mesh::Feature>())) {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("Reen_ApproxSurface", "Wrong selection"),

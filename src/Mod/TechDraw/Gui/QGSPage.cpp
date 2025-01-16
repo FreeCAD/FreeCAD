@@ -225,7 +225,7 @@ void QGSPage::updateTemplate(bool forceUpdate)
 
         if (forceUpdate
             || (templObj && templObj->isTouched()
-                && templObj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId()))) {
+                && templObj->isDerivedFrom<TechDraw::DrawTemplate>())) {
 
             QGITemplate* qItemTemplate = getTemplate();
 
@@ -269,10 +269,10 @@ void QGSPage::setPageTemplate(TechDraw::DrawTemplate* templateFeat)
     //    Base::Console().Message("QGSP::setPageTemplate()\n");
     removeTemplate();
 
-    if (templateFeat->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
+    if (templateFeat->isDerivedFrom<TechDraw::DrawParametricTemplate>()) {
         pageTemplate = new QGIDrawingTemplate(this);
     }
-    else if (templateFeat->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+    else if (templateFeat->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
         pageTemplate = new QGISVGTemplate(this);
     }
     pageTemplate->setTemplate(templateFeat);

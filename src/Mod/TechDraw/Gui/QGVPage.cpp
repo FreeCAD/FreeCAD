@@ -561,7 +561,7 @@ QColor QGVPage::getBackgroundColor()
 double QGVPage::getDevicePixelRatio() const
 {
     for (Gui::MDIView* view : m_vpPage->getDocument()->getMDIViews()) {
-        if (view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        if (view->isDerivedFrom<Gui::View3DInventor>()) {
             return static_cast<Gui::View3DInventor*>(view)->getViewer()->devicePixelRatio();
         }
     }

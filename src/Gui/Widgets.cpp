@@ -1603,7 +1603,7 @@ void ExpLineEdit::onChange() {
 
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
-        if(result->isDerivedFrom(App::StringExpression::getClassTypeId()))
+        if(result->isDerivedFrom<App::StringExpression>())
             setText(QString::fromUtf8(static_cast<App::StringExpression*>(
                             result.get())->getText().c_str()));
         else

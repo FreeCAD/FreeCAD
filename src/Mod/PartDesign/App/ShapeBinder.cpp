@@ -838,7 +838,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     for (auto& v : mats) {
         const char* name = cacheName(v.first);
         auto prop = getDynamicPropertyByName(name);
-        if (!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
+        if (!prop || !prop->isDerivedFrom<App::PropertyMatrix>()) {
             if (prop)
                 removeDynamicProperty(name);
             prop = addDynamicProperty("App::PropertyMatrix", name, "Cache", nullptr, 0, false, true);

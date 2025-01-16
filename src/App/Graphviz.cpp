@@ -301,7 +301,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 if (!sgraph) {
                     auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
                     if (group) {
-                        if (docObj->isDerivedFrom(App::DatumElement::getClassTypeId())) {
+                        if (docObj->isDerivedFrom<App::DatumElement>()) {
                             sgraph = GraphList[group->getExtensionByType<OriginGroupExtension>()
                                                    ->Origin.getValue()];
                         }
@@ -311,7 +311,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     }
                 }
                 if (!sgraph) {
-                    if (docObj->isDerivedFrom(DatumElement::getClassTypeId())) {
+                    if (docObj->isDerivedFrom<DatumElement>()) {
                         auto* lcs = static_cast<DatumElement*>(docObj)->getLCS();
                         if (lcs) {
                             sgraph = GraphList[lcs];
@@ -453,7 +453,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     // ignore groups inside other groups, these will be processed in one of the next
                     // recursive calls. App::Origin now has the GeoFeatureGroupExtension but it
                     // should not move its group symbol outside its parent
-                    if (!objectIt->isDerivedFrom(Origin::getClassTypeId())
+                    if (!objectIt->isDerivedFrom<Origin>()
                         && objectIt->hasExtension(
                             GeoFeatureGroupExtension::getExtensionClassTypeId())
                         && GeoFeatureGroupExtension::getGroupOfObject(objectIt) == nullptr) {
@@ -571,7 +571,7 @@ void Document::exportGraphviz(std::ostream& out) const
             // Add edges between document objects
             for (const auto& It : d->objectMap) {
 
-                if (omitGeoFeatureGroups && It.second->isDerivedFrom(Origin::getClassTypeId())) {
+                if (omitGeoFeatureGroups && It.second->isDerivedFrom<Origin>()) {
                     continue;
                 }
 

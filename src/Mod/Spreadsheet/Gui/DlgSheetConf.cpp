@@ -130,7 +130,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
         auto prop = path.getProperty(&pseudoType);
         if (pseudoType
             || (prop
-                && (!prop->isDerivedFrom(App::PropertyEnumeration::getClassTypeId())
+                && (!prop->isDerivedFrom<App::PropertyEnumeration>()
                     || !prop->testStatus(App::Property::PropDynamic)))) {
             FC_THROWM(Base::RuntimeError, "Invalid property referenced in: " << expr->toString());
         }
@@ -140,7 +140,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
     Cell* cell = sheet->getCell(from);
     if (cell && cell->getExpression()) {
         auto expr = cell->getExpression();
-        if (expr->isDerivedFrom(FunctionExpression::getClassTypeId())) {
+        if (expr->isDerivedFrom<FunctionExpression>()) {
             auto fexpr = Base::freecad_dynamic_cast<FunctionExpression>(cell->getExpression());
             if (fexpr
                 && (fexpr->getFunction() == FunctionExpression::HREF
@@ -184,7 +184,7 @@ void DlgSheetConf::accept()
             auto cell = sheet->getCell(*r);
             if (cell && cell->getExpression()) {
                 ExpressionPtr expr(cell->getExpression()->eval());
-                if (expr->isDerivedFrom(StringExpression::getClassTypeId())) {
+                if (expr->isDerivedFrom<StringExpression>()) {
                     continue;
                 }
             }

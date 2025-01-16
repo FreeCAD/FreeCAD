@@ -611,17 +611,17 @@ void PropertyItem::setPropertyValue(const std::string& value)
             continue;
         }
 
-        if (parent->isDerivedFrom(App::Document::getClassTypeId())) {
+        if (parent->isDerivedFrom<App::Document>()) {
             auto doc = static_cast<App::Document*>(parent);
             ss << "FreeCAD.getDocument('" << doc->getName() << "').";
         }
-        else if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        else if (parent->isDerivedFrom<App::DocumentObject>()) {
             auto obj = static_cast<App::DocumentObject*>(parent);
             App::Document* doc = obj->getDocument();
             ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('"
                << obj->getNameInDocument() << "').";
         }
-        else if (parent->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        else if (parent->isDerivedFrom<ViewProviderDocumentObject>()) {
             App::DocumentObject* obj =
                 static_cast<ViewProviderDocumentObject*>(parent)->getObject();
             App::Document* doc = obj->getDocument();

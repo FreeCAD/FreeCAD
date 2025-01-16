@@ -140,7 +140,7 @@ public:
             Document *pDoc = Application::Instance->getDocument(obj->getDocument());
             if(pDoc) {
                 ViewProvider *vp = pDoc->getViewProvider(obj);
-                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+                if(vp && vp->isDerivedFrom<ViewProviderDocumentObject>())
                     return static_cast<ViewProviderDocumentObject*>(vp);
             }
         }
@@ -1685,7 +1685,7 @@ void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     setDisplayMaskMode("Link");
     inherited::attach(pcObj);
     checkIcon();
-    if(pcObj->isDerivedFrom(App::LinkElement::getClassTypeId()))
+    if(pcObj->isDerivedFrom<App::LinkElement>())
         hide();
     linkView->setOwner(this);
 

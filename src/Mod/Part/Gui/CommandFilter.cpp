@@ -157,7 +157,7 @@ void PartCmdSelectFilter::languageChange()
 bool PartCmdSelectFilter::isActive()
 {
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());
+    return view && view->isDerivedFrom<Gui::View3DInventor>();
 }
 
 

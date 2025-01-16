@@ -103,7 +103,7 @@ void DrawSVGTemplate::onSettingDocument()
 void DrawSVGTemplate::slotCreatedObject(const App::DocumentObject& obj)
 {
     // Base::Console().Message("DSVGT::slotCreatedObject()\n");
-    if (!obj.isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+    if (!obj.isDerivedFrom<TechDraw::DrawPage>()) {
         // we don't care
         return;
     }
@@ -113,7 +113,7 @@ void DrawSVGTemplate::slotCreatedObject(const App::DocumentObject& obj)
 void DrawSVGTemplate::slotDeletedObject(const App::DocumentObject& obj)
 {
     // Base::Console().Message("DSVGT::slotDeletedObject()\n");
-    if (!obj.isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+    if (!obj.isDerivedFrom<TechDraw::DrawPage>()) {
         // we don't care
         return;
     }

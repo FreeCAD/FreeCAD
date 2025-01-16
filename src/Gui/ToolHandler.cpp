@@ -281,7 +281,7 @@ void ToolHandler::setWidgetCursor(QCursor cursor)
 Gui::View3DInventorViewer* ToolHandler::getViewer()
 {
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         return static_cast<Gui::View3DInventor*>(view)->getViewer();
     }
     return nullptr;

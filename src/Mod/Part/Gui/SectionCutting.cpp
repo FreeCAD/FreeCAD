@@ -54,11 +54,13 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
 #include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Part/App/FeaturePartCommon.h>
 #include <Mod/Part/App/FeaturePartCut.h>
 #include <Mod/Part/App/FeaturePartFuse.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PartFeatures.h>
 
 #include "SectionCutting.h"
@@ -855,18 +857,13 @@ bool SectionCut::findObjects(std::vector<App::DocumentObject*>& objects)
         }
         // get all shapes that are also Part::Features
         if (object->getPropertyByName("Shape") != nullptr
-            && object->getTypeId().isDerivedFrom(
-                Base::Type::fromName("Part::Feature"))) {
+            && object->isDerivedFrom<Part::Feature>()) {
             // sort out 2D objects, datums, App:Parts, compounds and objects that are
             // part of a PartDesign body
-            if (!object->getTypeId().isDerivedFrom(
-                    Base::Type::fromName("Part::Part2DObject"))
-                && !object->getTypeId().isDerivedFrom(
-                    Base::Type::fromName("Part::Datum"))
-                && !object->getTypeId().isDerivedFrom(
-                    Base::Type::fromName("PartDesign::Feature"))
-                && !object->getTypeId().isDerivedFrom(
-                    Base::Type::fromName("Part::Compound"))
+            if (!object->isDerivedFrom<Part::Part2DObject>()
+                && !object->isDerivedFrom<Part::Datum>()
+                && !object->isDerivedFrom(Base::Type::fromName("PartDesign::Feature"))
+                && !object->isDerivedFrom<Part::Compound>()
                 && object->getTypeId() != Base::Type::fromName("App::Part")) {
                 objects.push_back(object);
             }
@@ -875,7 +872,7 @@ bool SectionCut::findObjects(std::vector<App::DocumentObject*>& objects)
         if (auto pcLink = dynamic_cast<App::Link*>(object)) {
             auto linkedObject = doc->getObject(pcLink->LinkedObject.getObjectName());
             if (linkedObject != nullptr
-                && linkedObject->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature"))) {
+                && linkedObject->isDerivedFrom<Part::Feature>()) {
                 objects.push_back(object);
             }
         }
@@ -894,15 +891,11 @@ void SectionCut::filterObjects(std::vector<App::DocumentObject*>& objects)
         if (!object) {
             continue;
         }
-        if (object->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Boolean"))
-            || object->getTypeId().isDerivedFrom(
-                Base::Type::fromName("Part::MultiCommon"))
-            || object->getTypeId().isDerivedFrom(
-                Base::Type::fromName("Part::MultiFuse"))
-            || object->getTypeId().isDerivedFrom(
-                Base::Type::fromName("Part::Thickness"))
-            || object->getTypeId().isDerivedFrom(
-                Base::Type::fromName("Part::FilletBase"))) {
+        if (object->isDerivedFrom<Part::Boolean>()
+            || object->isDerivedFrom<Part::MultiCommon>()
+            || object->isDerivedFrom<Part::MultiFuse>()
+            || object->isDerivedFrom<Part::Thickness>()
+            || object->isDerivedFrom<Part::FilletBase>()) {
             // get possible links
             auto subObjectList = object->getOutList();
             // if there are links, delete them

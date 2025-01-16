@@ -108,7 +108,7 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
         return {};
     }
 
-    if ( getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
+    if ( getObject()->isDerivedFrom<TechDraw::DrawViewPart>() ) {
         // 2d geometry from DrawViewPart will be rotated and scaled
         return getGeometry2d();
     }
@@ -277,14 +277,14 @@ bool ReferenceEntry::isWholeObject() const
 bool ReferenceEntry::is3d() const
 {
     if (getObject() &&
-        getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
+        getObject()->isDerivedFrom<TechDraw::DrawViewPart>() &&
         !getSubName().empty()) {
         // this is a well formed 2d reference
         return false;
     }
 
     if (getObject() &&
-        getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
+        getObject()->isDerivedFrom<TechDraw::DrawViewPart>() &&
         getSubName().empty()) {
         // this is a broken 3d reference, so it should be treated as 3d
         return true;
@@ -302,7 +302,7 @@ bool ReferenceEntry::hasGeometry() const
         return false;
     }
 
-    if ( getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
+    if ( getObject()->isDerivedFrom<TechDraw::DrawViewPart>() ) {
         // 2d reference
         return hasGeometry2d();
     }

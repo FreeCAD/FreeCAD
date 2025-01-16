@@ -273,15 +273,15 @@ std::string DrawViewSpreadsheet::getSheetImage()
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
             if (prop && cell) {
-                if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+                if (prop->isDerivedFrom<App::PropertyQuantity>()) {
                     auto contentAsQuantity = static_cast<App::PropertyQuantity*>(prop)->getQuantityValue();
                     field << contentAsQuantity.getUserString();
-                } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
-                           prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                } else if (prop->isDerivedFrom<App::PropertyFloat>() ||
+                           prop->isDerivedFrom<App::PropertyInteger>()) {
                     std::string temp = cell->getFormattedQuantity();
                     DrawUtil::encodeXmlSpecialChars(temp);
                     field << temp;
-                } else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+                } else if (prop->isDerivedFrom<App::PropertyString>()) {
                     std::string temp = static_cast<App::PropertyString*>(prop)->getValue();
                     DrawUtil::encodeXmlSpecialChars(temp);
                     field << temp;

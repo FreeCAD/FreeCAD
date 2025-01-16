@@ -54,7 +54,7 @@ void ActivateBSplineHandler(Gui::Document* doc, DrawSketchHandler* handler)
     std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();

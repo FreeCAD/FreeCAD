@@ -368,9 +368,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
     for (std::size_t i = 0; i < n; i++) {
         TDF_Label label = FreeLabels.at(i);
         // hierarchical part does contain only part currently and not node I should add node
-        if (hierarchical_part.at(part_id.at(i))
-                ->getTypeId()
-                .isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (hierarchical_part.at(part_id.at(i))->isDerivedFrom<Part::Feature>()) {
             Part::Feature* part = static_cast<Part::Feature*>(hierarchical_part.at(part_id.at(i)));
             aShapeTool->SetShape(label, part->Shape.getValue());
             // Add color information

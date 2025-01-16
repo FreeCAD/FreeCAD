@@ -302,7 +302,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
 
         // get selected object
         auto docObj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (docObj && docObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (docObj && docObj->isDerivedFrom<Part::Feature>()) {
             selectedObj = static_cast<Part::Feature*>(docObj);
         }
 

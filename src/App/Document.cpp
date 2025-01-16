@@ -835,7 +835,7 @@ void Document::onChanged(const Property* prop)
 
 void Document::onBeforeChangeProperty(const TransactionalObject* Who, const Property* What)
 {
-    if (Who->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (Who->isDerivedFrom<App::DocumentObject>()) {
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
     }
     if (!d->rollback && !globalIsRelabeling) {
@@ -4338,7 +4338,7 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
 {
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
-        if (it->getTypeId().isDerivedFrom(typeId)) {
+        if (it->isDerivedFrom(typeId)) {
             Objects.push_back(it);
         }
     }
@@ -4376,7 +4376,7 @@ Document::findObjects(const Base::Type& typeId, const char* objname, const char*
     std::vector<DocumentObject*> Objects;
     DocumentObject* found = nullptr;
     for (auto it : d->objectArray) {
-        if (it->getTypeId().isDerivedFrom(typeId)) {
+        if (it->isDerivedFrom(typeId)) {
             found = it;
 
             if (!rx_name.empty() && !boost::regex_search(it->getNameInDocument(), what, rx_name)) {
@@ -4398,7 +4398,7 @@ Document::findObjects(const Base::Type& typeId, const char* objname, const char*
 int Document::countObjectsOfType(const Base::Type& typeId) const
 {
     return std::count_if(d->objectMap.begin(), d->objectMap.end(), [&](const auto& it) {
-        return it.second->getTypeId().isDerivedFrom(typeId);
+        return it.second->isDerivedFrom(typeId);
     });
 }
 

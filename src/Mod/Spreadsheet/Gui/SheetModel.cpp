@@ -286,7 +286,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyString>()) {
         /* String */
         const App::PropertyString* stringProp = static_cast<const App::PropertyString*>(prop);
 
@@ -321,7 +321,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyQuantity>()) {
         /* Number */
         const App::PropertyQuantity* floatProp = static_cast<const App::PropertyQuantity*>(prop);
 
@@ -386,13 +386,13 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())
-             || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyFloat>()
+             || prop->isDerivedFrom<App::PropertyInteger>()) {
         /* Number */
         double d {};
         long l {};
         bool isInteger = false;
-        if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        if (prop->isDerivedFrom<App::PropertyFloat>()) {
             d = static_cast<const App::PropertyFloat*>(prop)->getValue();
         }
         else {
@@ -454,7 +454,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyPythonObject>()) {
         auto pyProp = static_cast<const App::PropertyPythonObject*>(prop);
 
         switch (role) {

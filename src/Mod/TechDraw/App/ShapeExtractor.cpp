@@ -69,7 +69,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
 
     for (auto& l:links) {
         if (is2dObject(l)) {
-            if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (l->isDerivedFrom<Part::Feature>()) {
                 TopoDS_Shape temp = getLocatedShape(l);
                 // checkShape on 2d objs?
                 if (!temp.IsNull()) {
@@ -118,7 +118,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             }
 
             for (auto* inObj : l->getInList()) {
-                if (inObj->isDerivedFrom(App::Part::getClassTypeId())) {
+                if (inObj->isDerivedFrom<App::Part>()) {
                     // we replace obj by the assembly
                     obj = inObj;
                     break;

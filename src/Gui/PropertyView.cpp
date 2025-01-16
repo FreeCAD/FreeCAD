@@ -403,7 +403,7 @@ void PropertyView::onTimer()
             continue;
         }
 
-        if(vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if(vp->isDerivedFrom<ViewProviderDocumentObject>()) {
             auto cvp = static_cast<ViewProviderDocumentObject*>(vp);
             if(vpLast && cvp!=vpLast)
                 checkLink = false;

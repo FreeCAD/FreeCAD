@@ -2618,7 +2618,7 @@ float ViewProviderSketch::getScaleFactor() const
     assert(isInEditMode());
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
         float scale = camera->getViewVolume(camera->aspectRatio.getValue())
@@ -2825,7 +2825,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
     }
 
     Gui::MDIView* mdi = this->getActiveView();
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
         static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
     }
 }
@@ -2889,7 +2889,7 @@ void ViewProviderSketch::slotSolverUpdate()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
         Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-        if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
+        if (mdi->isDerivedFrom<Gui::View3DInventor>())
             draw(false, true);
 
         signalConstraintsChanged();
@@ -3943,7 +3943,7 @@ std::unique_ptr<SoRayPickAction> ViewProviderSketch::getRayPickAction() const
     assert(isInEditMode());
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
+    if (!(mdi && mdi->isDerivedFrom<Gui::View3DInventor>()))
         return nullptr;
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
 
@@ -4027,7 +4027,7 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
 
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
+    if (!(mdi && mdi->isDerivedFrom<Gui::View3DInventor>()))
         return 0;
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
