@@ -1272,7 +1272,7 @@ class _Stairs(ArchComponent.Component):
             if obj.LastSegment.Proxy.OutlineRailArcLeftAll: # need if?
                 outlineRailArcLeftAll.extend(obj.LastSegment.Proxy.OutlineRailArcLeftAll)
 
-            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow tolerance Part.LineSegment / edge.toShape() allow?
+            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow one tolerance Part.LineSegment / edge.toShape() allow?
                 # no need abs() after .Length right?
                 del outlineLeftAll[-1]
                 del outlineRailArcLeftAll[-1]

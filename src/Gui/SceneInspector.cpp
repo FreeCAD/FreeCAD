@@ -23,6 +23,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoCoordinate3.h>
 # include <QHeaderView>
 # include <QTextStream>
 #endif
@@ -45,12 +48,20 @@ SceneModel::SceneModel(QObject* parent)
 {
 }
 
+enum class Column: std::int8_t {
+    INVENTOR_TREE = 0,
+    NAME = 1,
+    MEMORY_ADDRESS = 2,
+    DATA = 3,
+    COUNT = 4,
+};
+
 SceneModel::~SceneModel() = default;
 
 int SceneModel::columnCount (const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
-    return 2;
+    return static_cast<int>(Column::COUNT);
 }
 
 Qt::ItemFlags SceneModel::flags (const QModelIndex & index) const
@@ -63,10 +74,19 @@ QVariant SceneModel::headerData (int section, Qt::Orientation orientation, int r
     if (orientation == Qt::Horizontal) {
         if (role != Qt::DisplayRole)
             return {};
-        if (section == 0)
+
+        switch ((Column)section) {
+        case Column::INVENTOR_TREE:
             return tr("Inventor Tree");
-        else if (section == 1)
+        case Column::NAME:
             return tr("Name");
+        case Column::MEMORY_ADDRESS:
+            return tr("Address");
+        case Column::DATA:
+            return tr("Data");
+        default:
+            assert(0 && "Not handled yet");
+        }
     }
 
     return {};
@@ -82,42 +102,135 @@ void SceneModel::setNode(SoNode* node)
     this->clear();
     this->setHeaderData(0, Qt::Horizontal, tr("Nodes"), Qt::DisplayRole);
 
-    this->insertColumns(0,2);
+    this->insertColumns(0, static_cast<int>(Column::COUNT));
     this->insertRows(0,1);
     setNode(this->index(0, 0), node);
 }
 
+static std::string_view formatSoSwitchValue(int32_t value)
+{
+    switch (value)
+    {
+    case SO_SWITCH_NONE:
+        return {"None"};
+    case SO_SWITCH_INHERIT:
+        return {"Inherit"};
+    case SO_SWITCH_ALL:
+        return {"All"};
+    default:
+        return {"Child"};
+    }
+}
+
+static std::string_view formatSoSeparatorCacheEnabled(int32_t value)
+{
+    switch (value)
+    {
+    case SoSeparator::OFF:
+        return {"Off"};
+    case SoSeparator::ON:
+        return {"On"};
+    case SoSeparator::AUTO:
+        return {"Auto"};
+    default:
+        throw Base::ValueError();
+    }
+}
+
+static std::string_view formatSoDrawStyleElement(int32_t value)
+{
+    switch (value)
+    {
+    case SoDrawStyleElement::FILLED:
+        return {"Filled"};
+    case SoDrawStyleElement::LINES:
+        return {"Lines"};
+    case SoDrawStyleElement::POINTS:
+        return {"Points"};
+    case SoDrawStyleElement::INVISIBLE:
+        return {"Invisible"};
+    default:
+        throw Base::ValueError();
+    }
+}
+
+static std::string_view formatSoPickStyleElement(int32_t value)
+{
+    switch (value)
+    {
+    case SoPickStyleElement::SHAPE:
+        return {"Shape"};
+    case SoPickStyleElement::BOUNDING_BOX:
+        return {"BoundingBox"};
+    case SoPickStyleElement::UNPICKABLE:
+        return {"Unpickable"};
+    case SoPickStyleElement::SHAPE_ON_TOP:
+        return {"ShapeOnTop"};
+    case SoPickStyleElement::BOUNDING_BOX_ON_TOP:
+        return {"BoundingBoxOnTop"};
+    case SoPickStyleElement::SHAPE_FRONTFACES:
+        return {"ShapeFrontFaces"};
+    default:
+        throw Base::ValueError();
+    }
+}
+
 void SceneModel::setNode(QModelIndex index, SoNode* node)
 {
-    this->setData(index, QVariant(QString::fromLatin1(QByteArray(node->getTypeId().getName()))));
-    if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
-        auto group = static_cast<SoGroup*>(node);
-        // insert SoGroup icon
-        this->insertColumns(0,2,index);
-        this->insertRows(0,group->getNumChildren(), index);
-        for (int i=0; i<group->getNumChildren();i++) {
-            SoNode* child = group->getChild(i);
-            setNode(this->index(i, 0, index), child);
+    this->setData(index.siblingAtColumn(static_cast<int>(Column::INVENTOR_TREE)),
+        QVariant(QString::fromLatin1(QByteArray(node->getTypeId().getName()))));
 
-            QHash<SoNode*, QString>::iterator it = nodeNames.find(child);
-            QString name;
-            QTextStream stream(&name);
-            stream << child << ", ";
-            if(child->isOfType(SoSwitch::getClassTypeId())) {
-                auto pcSwitch = static_cast<SoSwitch*>(child);
-                stream << pcSwitch->whichChild.getValue() << ", ";
-            } else if (child->isOfType(SoSeparator::getClassTypeId())) {
-                auto pcSeparator = static_cast<SoSeparator*>(child);
-                stream << pcSeparator->renderCaching.getValue() << ", ";
-            }
-            if (it != nodeNames.end())
-                stream << it.value();
-            else
-                stream << child->getName();
-            this->setData(this->index(i, 1, index), QVariant(name));
+    QHash<SoNode*, QString>::iterator it = nodeNames.find(node);
+    const QString name {
+        (it != nodeNames.end()) ? it.value()
+                                : QString::fromLatin1(QByteArray(node->getName()))
+    };
+    this->setData(index.siblingAtColumn(static_cast<int>(Column::NAME)), QVariant(name));
+
+    this->setData(index.siblingAtColumn(static_cast<int>(Column::MEMORY_ADDRESS)),
+        QVariant(QString::fromStdString(fmt::format("{}", (void*)node))));
+
+    QString data;
+    QTextStream stream(&data);
+    if(static_cast<bool>(node->isOfType(SoSwitch::getClassTypeId()))) {
+        auto pcSwitch = static_cast<SoSwitch*>(node);
+        auto value = pcSwitch->whichChild.getValue();
+        stream << fmt::format("Which: {} ({})", formatSoSwitchValue(value), value).c_str();
+    } else if (static_cast<bool>(node->isOfType(SoSeparator::getClassTypeId()))) {
+        auto pcSeparator = static_cast<SoSeparator*>(node);
+        auto value = pcSeparator->renderCaching.getValue();
+        stream << fmt::format("RenderCaching: {} ({})", formatSoSeparatorCacheEnabled(value), value).c_str();
+    } else if (static_cast<bool>(node->isOfType(SoDrawStyle::getClassTypeId()))) {
+        auto pcDrawStyle = static_cast<SoDrawStyle*>(node);
+        auto value = pcDrawStyle->style.getValue();
+        stream << fmt::format("Style: {} ({})", formatSoDrawStyleElement(value), value).c_str();
+    } else if (static_cast<bool>(node->isOfType(SoPickStyle::getClassTypeId()))) {
+        auto pcPickStyle = static_cast<SoPickStyle*>(node);
+        auto value = pcPickStyle->style.getValue();
+        stream << fmt::format("Style: {} ({})", formatSoPickStyleElement(value), value).c_str();
+    } else if (static_cast<bool>(node->isOfType(SoCoordinate3::getClassTypeId()))) {
+        auto pcCoords = static_cast<SoCoordinate3*>(node);
+        auto values = pcCoords->point.getValues(0);
+        if (values) {
+            float x { 0 };
+            float y { 0 };
+            float z { 0 };
+            values->getValue(x, y, z);
+            stream << fmt::format("XYZ: {}, {}, {}", x, y, z).c_str();
         }
     }
-    // insert icon
+
+    this->setData(index.siblingAtColumn((int)Column::DATA), QVariant(data));
+
+    if (static_cast<bool>(node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId()))) {
+        auto group = static_cast<SoGroup*>(node);
+        this->insertColumns(0, static_cast<int>(Column::COUNT), index);
+        this->insertRows(0, group->getNumChildren(), index);
+        for (int i=0; i < group->getNumChildren(); i++) {
+            SoNode* child = group->getChild(i);
+            setNode(this->index(i, 0, index), child);
+        }
+    }
 }
 
 void SceneModel::setNodeNames(const QHash<SoNode*, QString>& names)
@@ -169,7 +282,12 @@ void DlgInspector::setNode(SoNode* node)
     model->setNode(node);
 
     QHeaderView* header = ui->treeView->header();
-    header->setSectionResizeMode(0, QHeaderView::Stretch);
+    header->setSectionResizeMode(static_cast<int>(Column::INVENTOR_TREE), QHeaderView::Interactive);
+    header->resizeSection(static_cast<int>(Column::INVENTOR_TREE), 300);
+    header->setSectionResizeMode(static_cast<int>(Column::NAME), QHeaderView::Interactive);
+    header->resizeSection(static_cast<int>(Column::NAME), 200);
+    header->setSectionResizeMode(static_cast<int>(Column::MEMORY_ADDRESS), QHeaderView::Interactive);
+    header->setSectionResizeMode(static_cast<int>(Column::DATA), QHeaderView::Stretch);
     header->setSectionsMovable(false);
 }
 

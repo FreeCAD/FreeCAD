@@ -112,7 +112,7 @@ class BSpline(gui_lines.Line):
                 if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
-                    # DNC: allows to close the curve
+                    # DNC: allows one to close the curve
                     # by placing ends close to each other
                     # with tol = Draft tolerance
                     # old code has been to insensitive

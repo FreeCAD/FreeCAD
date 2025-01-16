@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="BaseClassPy"
+    Name="NavigationStylePy"
+    Twin="NavigationStyle"
+    TwinPointer="NavigationStyle"
+    Include="Gui/NavigationStyle.h"
+    Namespace="Gui"
+    FatherInclude="Base/BaseClassPy.h"
+    FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>This is the base class for navigation styles</UserDocu>
+    </Documentation>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

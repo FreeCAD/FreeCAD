@@ -188,7 +188,7 @@ void CmdPointsExport::activated(int iMsg)
 
 bool CmdPointsExport::isActive()
 {
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Points::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsTransform)
@@ -227,7 +227,7 @@ void CmdPointsTransform::activated(int iMsg)
 
 bool CmdPointsTransform::isActive()
 {
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Points::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsConvert)
@@ -315,7 +315,7 @@ void CmdPointsConvert::activated(int iMsg)
 
 bool CmdPointsConvert::isActive()
 {
-    return getSelection().countObjectsOfType(Base::Type::fromName("App::GeoFeature")) > 0;
+    return getSelection().countObjectsOfType<App::GeoFeature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsPolyCut)
@@ -363,7 +363,7 @@ void CmdPointsPolyCut::activated(int iMsg)
 bool CmdPointsPolyCut::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Points::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsMerge)
@@ -426,7 +426,7 @@ void CmdPointsMerge::activated(int iMsg)
 
 bool CmdPointsMerge::isActive()
 {
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 1;
+    return getSelection().countObjectsOfType<Points::Feature>() > 1;
 }
 
 DEF_STD_CMD_A(CmdPointsStructure)
@@ -537,7 +537,7 @@ void CmdPointsStructure::activated(int iMsg)
 
 bool CmdPointsStructure::isActive()
 {
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Points::Feature>() == 1;
 }
 
 void CreatePointsCommands()

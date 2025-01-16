@@ -510,10 +510,7 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
             if (!actsOnSelection) {
                 return true;
             }
-            else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId())
-                     > 0) {
-                return true;
-            }
+            return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
         }
     }
 
@@ -531,11 +528,7 @@ bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelecti
                 if (!actsOnSelection) {
                     return true;
                 }
-                else if (Gui::Selection().countObjectsOfType(
-                             Sketcher::SketchObject::getClassTypeId())
-                         > 0) {
-                    return true;
-                }
+                return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
             }
         }
     }

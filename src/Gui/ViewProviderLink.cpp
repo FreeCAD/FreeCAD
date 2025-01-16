@@ -1624,7 +1624,7 @@ static const char *_LinkElementIcon = "LinkElement";
 
 ViewProviderLink::ViewProviderLink()
     :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false)
-    ,useCenterballDragger(false),childVp(nullptr),overlayCacheKey(0)
+    ,childVp(nullptr),overlayCacheKey(0)
 {
     sPixmap = _LinkIcon;
 
@@ -1670,7 +1670,7 @@ ViewProviderLink::~ViewProviderLink()
 }
 
 bool ViewProviderLink::isSelectable() const {
-    return !pcDragger && Selectable.getValue();
+    return Selectable.getValue();
 }
 
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
@@ -1850,8 +1850,6 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
         if(!propLinkPlacement || propLinkPlacement == prop) {
-            const auto &pla = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-            ViewProviderGeometryObject::updateTransform(pla, pcTransform);
             const auto &v = ext->getScaleVector();
             if(canScale(v))
                 pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
@@ -2764,25 +2762,28 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     }
 
     static thread_local bool _pendingTransform;
-    static thread_local Base::Matrix4D  _editingTransform;
+    static thread_local Matrix4D _editingTransform;
 
     auto doc = Application::Instance->editDocument();
 
-    if(mode==ViewProvider::Transform) {
-        if(_pendingTransform && doc)
+    if (mode == ViewProvider::Transform) {
+        if (_pendingTransform && doc) {
             doc->setEditingTransform(_editingTransform);
+        }
 
-        if(!initDraggingPlacement())
+        if (!initDraggingPlacement()) {
             return nullptr;
-        if(useCenterballDragger)
-            pcDragger = CoinPtr<SoCenterballDragger>(new SoCenterballDragger);
-        else
-            pcDragger = CoinPtr<SoFCCSysDragger>(new SoFCCSysDragger);
-        updateDraggingPlacement(dragCtx->initialPlacement,true);
-        pcDragger->addStartCallback(dragStartCallback, this);
-        pcDragger->addFinishCallback(dragFinishCallback, this);
-        pcDragger->addMotionCallback(dragMotionCallback, this);
-        return inherited::startEditing(mode);
+        }
+
+        if (auto result = inherited::startEditing(mode)) {
+            csysDragger->addStartCallback(dragStartCallback, this);
+            csysDragger->addFinishCallback(dragFinishCallback, this);
+            csysDragger->addMotionCallback(dragMotionCallback, this);
+
+            setDraggerPlacement(dragCtx->initialPlacement);
+
+            return result;
+        }
     }
 
     if(!linkEdit()) {
@@ -2839,6 +2840,7 @@ bool ViewProviderLink::setEdit(int ModNum)
         Selection().clearSelection();
         return true;
     }
+
     return inherited::setEdit(ModNum);
 }
 
@@ -2849,125 +2851,21 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
         return;
     }
 
-    if (pcDragger && viewer)
-    {
-        auto rootPickStyle = new SoPickStyle();
-        rootPickStyle->style = SoPickStyle::UNPICKABLE;
-        static_cast<SoFCUnifiedSelection*>(
-                viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
-
-        if(useCenterballDragger) {
-            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-            auto group = new SoAnnotation;
-            auto pickStyle = new SoPickStyle;
-            pickStyle->setOverride(true);
-            group->addChild(pickStyle);
-            group->addChild(pcDragger);
-
-            // Because the dragger is not grouped with the actual geometry,
-            // we use an invisible cube sized by the bounding box obtained from
-            // initDraggingPlacement() to scale the centerball dragger properly
-
-            auto * ss = static_cast<SoSurroundScale*>(dragger->getPart("surroundScale", TRUE));
-            ss->numNodesUpToContainer = 3;
-            ss->numNodesUpToReset = 2;
-
-            auto *geoGroup = new SoGroup;
-            group->addChild(geoGroup);
-            auto *style = new SoDrawStyle;
-            style->style.setValue(SoDrawStyle::INVISIBLE);
-            style->setOverride(TRUE);
-            geoGroup->addChild(style);
-            auto *cube = new SoCube;
-            geoGroup->addChild(cube);
-            auto length = std::max(std::max(dragCtx->bbox.LengthX(),
-                        dragCtx->bbox.LengthY()), dragCtx->bbox.LengthZ());
-            cube->width = length;
-            cube->height = length;
-            cube->depth = length;
-
-            viewer->setupEditingRoot(group,&dragCtx->preTransform);
-        } else {
-            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            dragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
-            dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
-            viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
-
-            auto task = new TaskCSysDragger(this, dragger);
-            Gui::Control().showDialog(task);
-        }
-    }
+    ViewProviderDragger::setEditViewer(viewer, ModNum);
 }
 
 void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-    SoNode *child = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->getChild(0);
-    if (child && child->isOfType(SoPickStyle::getClassTypeId()))
-        static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->removeChild(child);
-    pcDragger.reset();
     dragCtx.reset();
-    Gui::Control().closeDialog();
+
+    inherited::unsetEditViewer(viewer);
 }
 
-Base::Placement ViewProviderLink::currentDraggingPlacement() const
-{
-    // if there isn't an active dragger return a default placement
-    if (!pcDragger)
-        return Base::Placement();
-
-    SbVec3f v;
-    SbRotation r;
-    if (useCenterballDragger) {
-        auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-        v = dragger->center.getValue();
-        r = dragger->rotation.getValue();
-    }
-    else {
-        auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-        v = dragger->translation.getValue();
-        r = dragger->rotation.getValue();
-    }
-
-    float q1,q2,q3,q4;
-    r.getValue(q1,q2,q3,q4);
-    return Base::Placement(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
-}
-
-void ViewProviderLink::enableCenterballDragger(bool enable) {
-    if(enable == useCenterballDragger)
-        return;
-    if(pcDragger)
-        LINK_THROW(Base::RuntimeError,"Cannot change dragger during dragging");
-    useCenterballDragger = enable;
-}
-
-void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool force) {
-    if(pcDragger && (force || currentDraggingPlacement()!=pla)) {
-        const auto &pos = pla.getPosition();
-        const auto &rot = pla.getRotation();
-        FC_LOG("updating dragger placement (" << pos.x << ", " << pos.y << ", " << pos.z << ')');
-        if(useCenterballDragger) {
-            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-            SbBool wasenabled = dragger->enableValueChangedCallbacks(FALSE);
-            SbMatrix matrix;
-            matrix = convert(pla.toMatrix());
-            dragger->center.setValue(SbVec3f(0,0,0));
-            dragger->setMotionMatrix(matrix);
-            if (wasenabled) {
-                dragger->enableValueChangedCallbacks(TRUE);
-                dragger->valueChanged();
-            }
-        }else{
-            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            dragger->translation.setValue(SbVec3f(pos.x,pos.y,pos.z));
-            dragger->rotation.setValue(rot[0],rot[1],rot[2],rot[3]);
-        }
-    }
-}
-
-bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
-    if(!pcDragger)
+bool ViewProviderLink::callDraggerProxy(const char* fname) {
+    if (!csysDragger) {
         return false;
+    }
+
     Base::PyGILStateLocker lock;
     try {
         auto* proxy = getPropertyByName("Proxy");
@@ -2986,48 +2884,32 @@ bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
         return true;
     }
 
-    if(update) {
-        auto ext = getLinkExtension();
-        if(ext) {
-            const auto &pla = currentDraggingPlacement();
-            auto prop = ext->getLinkPlacementProperty();
-            if(!prop)
-                prop = ext->getPlacementProperty();
-            if(prop) {
-                auto plaNew = pla * Base::Placement(dragCtx->mat);
-                if(prop->getValue()!=plaNew)
-                    prop->setValue(plaNew);
-            }
-            updateDraggingPlacement(pla);
-        }
-    }
     return false;
 }
 
 void ViewProviderLink::dragStartCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->dragCtx->initialPlacement = me->currentDraggingPlacement();
-    if(!me->callDraggerProxy("onDragStart",false)) {
-        me->dragCtx->cmdPending = true;
-        me->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Link Transform"));
-    }else
-        me->dragCtx->cmdPending = false;
+
+    me->dragCtx->initialPlacement = me->getDraggerPlacement();
+    me->callDraggerProxy("onDragStart");
 }
 
 void ViewProviderLink::dragFinishCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->callDraggerProxy("onDragEnd",true);
-    if(me->dragCtx->cmdPending) {
-        if(me->currentDraggingPlacement() == me->dragCtx->initialPlacement)
+    me->callDraggerProxy("onDragEnd");
+
+    if (me->dragCtx->cmdPending) {
+        if (me->getDraggerPlacement() == me->dragCtx->initialPlacement) {
             me->getDocument()->abortCommand();
-        else
+        } else {
             me->getDocument()->commitCommand();
+        }
     }
 }
 
 void ViewProviderLink::dragMotionCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->callDraggerProxy("onDragMotion",true);
+    me->callDraggerProxy("onDragMotion");
 }
 
 void ViewProviderLink::updateLinks(ViewProvider *vp) {

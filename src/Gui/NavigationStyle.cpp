@@ -39,9 +39,11 @@
 # include <QMenu>
 #endif
 
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 
 #include "NavigationStyle.h"
+#include "NavigationStylePy.h"
 #include "Application.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
@@ -178,7 +180,7 @@ const Base::Type& NavigationStyleEvent::style() const
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStyle,Base::BaseClass)
 
-NavigationStyle::NavigationStyle() : viewer(nullptr), mouseSelection(nullptr)
+NavigationStyle::NavigationStyle() : viewer(nullptr), mouseSelection(nullptr), pythonObject(nullptr)
 {
     this->rotationCenterMode = NavigationStyle::RotationCenterMode::ScenePointAtCursor
         | NavigationStyle::RotationCenterMode::FocalPointAtCursor;
@@ -189,6 +191,12 @@ NavigationStyle::~NavigationStyle()
 {
     finalize();
     delete this->animator;
+
+    if (pythonObject) {
+        Base::PyGILStateLocker lock;
+        Py_DECREF(pythonObject);
+        pythonObject = nullptr;
+    }
 }
 
 NavigationStyle& NavigationStyle::operator = (const NavigationStyle& ns)
@@ -1791,6 +1799,15 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     }
 
     contextMenu->popup(QCursor::pos());
+}
+
+PyObject* NavigationStyle::getPyObject()
+{
+    if (!pythonObject)
+        pythonObject = new NavigationStylePy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 // ----------------------------------------------------------------------------------

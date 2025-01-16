@@ -54,8 +54,8 @@ CmdRobotExportKukaCompact::CmdRobotExportKukaCompact()
 
 void CmdRobotExportKukaCompact::activated(int)
 {
-    unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
-    unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
+    unsigned int n1 = getSelection().countObjectsOfType<Robot::RobotObject>();
+    unsigned int n2 = getSelection().countObjectsOfType<Robot::TrajectoryObject>();
 
     if (n1 != 1 || n2 != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -129,8 +129,8 @@ CmdRobotExportKukaFull::CmdRobotExportKukaFull()
 
 void CmdRobotExportKukaFull::activated(int)
 {
-    unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
-    unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
+    unsigned int n1 = getSelection().countObjectsOfType<Robot::RobotObject>();
+    unsigned int n2 = getSelection().countObjectsOfType<Robot::TrajectoryObject>();
 
     if (n1 != 1 || n2 != 1) {
         QMessageBox::warning(Gui::getMainWindow(),

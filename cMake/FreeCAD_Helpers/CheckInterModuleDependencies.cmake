@@ -8,7 +8,7 @@ macro(CheckInterModuleDependencies)
         if(${dependent})
             foreach(prerequisite IN LISTS ARGN)
                 if(NOT ${prerequisite})
-                    message(STATUS "${dependent} requires ${prerequisite} to be ON, but it"
+                    message(SEND_ERROR "${dependent} requires ${prerequisite} to be ON, but it"
                                    " is \"${${prerequisite}}\"")
                     set(${dependent} OFF PARENT_SCOPE)
                     break()
