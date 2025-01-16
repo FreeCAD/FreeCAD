@@ -961,6 +961,8 @@ def _modifiers_filter_objects(objs, copy, scale=False):
             return True
         if obj.isDerivedFrom("App::Annotation"):
             return True
+        if obj.isDerivedFrom("Image::ImagePlane"):
+            return True
         return False
 
     result = []

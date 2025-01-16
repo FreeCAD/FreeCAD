@@ -148,6 +148,25 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
                 else:
                     newobj.Position = parent_place.inverse().multVec(pos)
 
+        elif obj.isDerivedFrom("Image::ImagePlane"):
+            if parent_place.isIdentity():
+                pla = obj.Placement
+            else:
+                pla = parent_place * obj.Placement
+            pla = App.Placement(_get_scaled_matrix(pla, scale, center))
+            scale = pla.Rotation.inverted().multVec(scale)
+            if copy:
+                newobj = make_copy.make_copy(obj)
+                newobj.Placement = pla
+            else:
+                newobj = obj
+                if parent_place.isIdentity():
+                    newobj.Placement = pla
+                else:
+                    newobj.Placement = parent_place.inverse() * pla
+            newobj.XSize = newobj.XSize * abs(scale.x)
+            newobj.YSize = newobj.YSize * abs(scale.y)
+
         elif clone:
             if not hasattr(obj, "Placement"):
                 continue
