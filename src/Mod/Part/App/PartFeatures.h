@@ -128,7 +128,7 @@ private:
     static const char* TransitionEnums[];
 };
 
-class Thickness : public Part::Feature
+class PartExport Thickness : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Thickness);
 
