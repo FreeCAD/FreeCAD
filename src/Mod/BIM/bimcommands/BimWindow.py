@@ -280,6 +280,37 @@ class Arch_Window:
             delta = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(delta.x,-delta.y,-delta.z))
         self.tracker.pos(point.add(delta))
 
+    def getLibraryPresetPath(self):
+        p = FreeCAD.ParamGet("User parameter:Plugins/parts_library").GetString("destination", "")
+        # librarypath should have only forward slashes already, but let's use replace() anyway just to be sure:
+        return p.replace("\\", "/") + "/Architectural Parts"
+
+    def scanLibraryPresets(self):
+        # because of the use of FreeCADGui.doCommand() backslashes in the
+        # paths in librarypresets need to be double escaped "\\\\", so let's
+        # use forward slashes instead...
+
+        presets = []
+        librarypath = self.getLibraryPresetPath()
+        presetdir = FreeCAD.getUserAppDataDir().replace("\\", "/") + "/Arch"
+        for path in [librarypath, presetdir]:
+            if not os.path.isdir(path):
+                continue
+            for wtype in ["Windows", "Doors"]:
+                wdir = path + "/" + wtype
+                if not os.path.isdir(wdir):
+                    continue
+                for subtype in os.listdir(wdir):
+                    subdir = wdir + "/" + subtype
+                    if not os.path.isdir(subdir):
+                        continue
+                for subfile in os.listdir(subdir):
+                    if (os.path.isfile(subdir + "/" + subfile) and subfile.lower().endswith(".fcstd")):
+                        p1 = wtype + " - " + subtype + " - " + subfile[:-6]
+                        p2 = subdir + "/" + subfile
+                        presets.append([p1, p2])
+        return presets
+
     def taskbox(self):
 
         "sets up a taskbox widget"
@@ -306,28 +337,7 @@ class Arch_Window:
         values.valueChanged.connect(self.setSill)
 
         # check for Parts library and Arch presets
-
-        # because of the use of FreeCADGui.doCommand() backslashes in the
-        # paths in librarypresets need to be double escaped "\\\\", so let's
-        # use forward slashes instead...
-        self.librarypresets = []
-        librarypath = FreeCAD.ParamGet("User parameter:Plugins/parts_library").GetString("destination", "")
-        # librarypath should have only forward slashes already, but let's use replace() anyway just to be sure:
-        librarypath = librarypath.replace("\\", "/") + "/Architectural Parts"
-        presetdir = FreeCAD.getUserAppDataDir().replace("\\", "/") + "/Arch"
-        for path in [librarypath, presetdir]:
-            if os.path.isdir(path):
-                for wtype in ["Windows", "Doors"]:
-                    wdir = path + "/" + wtype
-                    if os.path.isdir(wdir):
-                        for subtype in os.listdir(wdir):
-                            subdir = wdir + "/" + subtype
-                            if os.path.isdir(subdir):
-                                for subfile in os.listdir(subdir):
-                                    if (os.path.isfile(subdir + "/" + subfile)
-                                            and subfile.lower().endswith(".fcstd")):
-                                        self.librarypresets.append([wtype + " - " + subtype + " - " + subfile[:-6],
-                                                                    subdir + "/" + subfile])
+        self.librarypresets = self.scanLibraryPresets()
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset"))
@@ -418,71 +428,82 @@ class Arch_Window:
         prefix = "Door" if self.doormode and param in ("Width","Height") else "Window"
         params.set_param_arch(prefix+param,d)
 
-    def setPreset(self,i):
+    def loadThumbnailFromFCStd(self,path):
 
         from PySide import QtGui
+        try:
+            import tempfile
+            import zipfile
+        except Exception:
+            return None
+
+        zfile = zipfile.ZipFile(path)
+        files = zfile.namelist()
+        # check for meta-file if it's really a FreeCAD document
+        if files[0] == "Document.xml":
+            image="thumbnails/Thumbnail.png"
+            if not image in files:
+                return None
+
+            image = zfile.read(image)
+            thumbfile = tempfile.mkstemp(suffix='.png')[1]
+            thumb = open(thumbfile,"wb")
+            thumb.write(image)
+            thumb.close()
+            return QtGui.QPixmap(thumbfile)
+
+    def setPresetThumbnail(self, i):
+        from ArchWindowPresets import WindowPresets, getWindowPresetIcon
+
+        self.pic.hide()
+        self.im.show()
+
+        is_builtin_preset = i < len(WindowPresets)
+        if is_builtin_preset:
+            self.im.load(getWindowPresetIcon(i))
+        else:
+            # From Library
+            self.im.hide()
+            path = self.librarypresets[i - len(WindowPresets)][1]
+            is_fcstd_file = path.lower().endswith(".fcstd")
+            if is_fcstd_file:
+                qpixmap = self.loadThumbnailFromFCStd(path)
+                if qpixmap:
+                    self.pic.setPixmap(qpixmap)
+                    self.pic.show()
+        #for param in self.wparams:
+        #    getattr(self,"val"+param).setEnabled(True)
+
+    def savePresetToParams(self,i):
         from draftutils import params
-        from ArchWindowPresets import WindowPresets
-        self.Preset = i
         if self.doormode:
             params.set_param_arch("DoorPreset",i)
         else:
             params.set_param_arch("WindowPreset",i)
-        if i >= 0:
-            FreeCADGui.Snapper.setSelectMode(False)
-            self.tracker.length(self.Width)
-            self.tracker.height(self.Height)
-            self.tracker.width(self.W1)
-            self.tracker.on()
-            self.pic.hide()
-            self.im.show()
-            if i == 0:
-                self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i in [1,8]:
-                self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i in [2,4,7]:
-                self.im.load(":/ui/ParametersWindowDouble.svg")
-            elif i == 3:
-                self.im.load(":/ui/ParametersWindowStash.svg")
-            elif i == 5:
-                self.im.load(":/ui/ParametersDoorSimple.svg")
-            elif i == 6:
-                self.im.load(":/ui/ParametersDoorGlass.svg")
-            elif i == 9:
-                self.im.load(":/ui/ParametersOpening.svg")
-            else:
-                # From Library
-                self.im.hide()
-                path = self.librarypresets[i-len(WindowPresets)][1]
-                if path.lower().endswith(".fcstd"):
-                    try:
-                        import tempfile
-                        import zipfile
-                    except Exception:
-                        pass
-                    else:
-                        zfile = zipfile.ZipFile(path)
-                        files = zfile.namelist()
-                        # check for meta-file if it's really a FreeCAD document
-                        if files[0] == "Document.xml":
-                            image="thumbnails/Thumbnail.png"
-                            if image in files:
-                                image = zfile.read(image)
-                                thumbfile = tempfile.mkstemp(suffix='.png')[1]
-                                thumb = open(thumbfile,"wb")
-                                thumb.write(image)
-                                thumb.close()
-                                im = QtGui.QPixmap(thumbfile)
-                                self.pic.setPixmap(im)
-                                self.pic.show()
-            #for param in self.wparams:
-            #    getattr(self,"val"+param).setEnabled(True)
-        else:
+
+    def setPreset(self,i):
+        from ArchWindowPresets import WindowPresets
+
+        self.Preset = i
+        self.LibraryPreset = self.Preset - len(WindowPresets)
+
+        self.savePresetToParams(i)
+
+        is_valid_preset = i >= 0
+        if not is_valid_preset:
             FreeCADGui.Snapper.setSelectMode(True)
             self.tracker.off()
             self.im.hide()
             for param in self.wparams:
                 getattr(self,"val"+param).setEnabled(False)
+            return
 
+        FreeCADGui.Snapper.setSelectMode(False)
+        self.tracker.length(self.Width)
+        self.tracker.height(self.Height)
+        self.tracker.width(self.W1)
+        self.tracker.on()
+
+        self.setPresetThumbnail(i)
 
 FreeCADGui.addCommand('Arch_Window', Arch_Window())
