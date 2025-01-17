@@ -175,13 +175,34 @@ class Arch_Window:
         FreeCADGui.Snapper.getPoint(callback=self.onSnapperPoint,movecallback=self.onSnapperMove,extradlg=self.taskbox())
         #FreeCADGui.Snapper.setSelectMode(True)
 
+    def getLibraryPresetWindow(self):
+        import Draft
+        from draftutils.messages import _wrn
+
+        num_existing_objects = len(FreeCAD.ActiveDocument.Objects)
+        path = self.librarypresets[self.LibraryPreset][1]
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('" + path + "')")
+
+        for object in FreeCAD.ActiveDocument.Objects[num_existing_objects:]:
+            if not Draft.getType(object) == "Window":
+                continue
+
+            if Draft.getType(object.Base) == "Sketcher::SketchObject":
+                if not sketch_has_width_and_height_constraint(object.Base):
+                    _wrn(translate("Arch", "No Width and/or Height constraint in window sketch. Window not resized."))
+            else:
+                _wrn(translate("Arch", "Window not based on sketch. Window not aligned or resized."))
+
+            return object
+        else:
+            _wrn(translate("Arch", "No window found. Cannot continue."))
+            return None
+
     def onSnapperPoint(self,point=None,obj=None):
 
         "this function is called by the snapper when it has a snap point"
 
         import Draft
-        from draftutils import gui_utils
-        from draftutils.messages import _wrn
         from ArchWindowPresets import WindowPresets
         self.tracker.off()
         if point is None:
@@ -204,32 +225,18 @@ class Arch_Window:
 
         FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + ", " + str(point.y) + ", " + str(point.z) + ")")
 
-        if self.Preset >= len(WindowPresets):
-            # library object
-            col = FreeCAD.ActiveDocument.Objects
-            path = self.librarypresets[self.Preset - len(WindowPresets)][1]
-            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('" + path + "')")
-            # find the latest added window
-            nol = FreeCAD.ActiveDocument.Objects
-            for o in nol[len(col):]:
-                if Draft.getType(o) == "Window":
-                    if Draft.getType(o.Base) != "Sketcher::SketchObject":
-                        _wrn(translate("Arch", "Window not based on sketch. Window not aligned or resized."))
-                        self.Include = False
-                        break
-                    FreeCADGui.doCommand("win = FreeCAD.ActiveDocument.getObject('" + o.Name + "')")
-                    FreeCADGui.doCommand("win.Base.Placement = pl")
-                    FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
-                    FreeCADGui.doCommand("win.Width = " + str(self.Width))
-                    FreeCADGui.doCommand("win.Height = " + str(self.Height))
-                    FreeCADGui.doCommand("win.Base.recompute()")
-                    if not sketch_has_width_and_height_constraint(o.Base):
-                        _wrn(translate("Arch", "No Width and/or Height constraint in window sketch. Window not resized."))
-                    break
+        is_library_preset = self.LibraryPreset >= 0
+        if is_library_preset:
+            window = self.getLibraryPresetWindow()
+            if window:
+                FreeCADGui.doCommand("win = FreeCAD.ActiveDocument.getObject('" + window.Name + "')")
+                FreeCADGui.doCommand("win.Base.Placement = pl")
+                FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
+                FreeCADGui.doCommand("win.Width = " + str(self.Width))
+                FreeCADGui.doCommand("win.Height = " + str(self.Height))
+                FreeCADGui.doCommand("win.Base.recompute()")
             else:
-                _wrn(translate("Arch", "No window found. Cannot continue."))
                 self.Include = False
-
         else:
             # preset
             wp = ""
