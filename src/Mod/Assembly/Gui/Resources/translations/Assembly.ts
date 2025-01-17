@@ -98,7 +98,7 @@
     </message>
     <message>
         <location filename="../../../CommandCreateJoint.py" line="231"/>
-        <source>Create one of several different joints based on the selection.For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
+        <source>Create one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
