@@ -445,6 +445,8 @@ class SH3DImporter:
         """
         closest_space = None
         for (space_floor, space, space_face) in self.space_upper_faces:
+            if not space_face: #?!?
+                continue
             space_face_z = space_face.CenterOfMass.z
             projection = App.Vector(p.x, p.y, space_face_z)
             # Checks that:
@@ -890,7 +892,10 @@ class RoomHandler(BaseHandler):
         self.importer.fc_objects[space.id] = space
 
         upper_face = self._get_upper_face(slab.Shape.Faces)
-        self.importer.space_upper_faces.append((floor, space, upper_face))
+        if not upper_face:
+            _wrn(f"Couldn't find the upper face of slab {slab.Label} on level {floor.Label}!")
+        else:
+            self.importer.space_upper_faces.append((floor, space, upper_face))
 
         slab.Visibility = True
 
@@ -1439,7 +1444,7 @@ class WallHandler(BaseHandler):
         lowest_z = float('inf')
         bottom_edge = None
         for edge in face.Edges:
-            if edge.CenterOfMass.z < lowest_z:
+            if edge and edge.CenterOfMass and edge.CenterOfMass.z < lowest_z:
                 lowest_z = edge.CenterOfMass.z
                 bottom_edge = edge
 
