@@ -116,15 +116,11 @@ class Clone(DraftObject):
             sh = self.join(obj, shapes)
             m = App.Matrix()
             if hasattr(obj,"Scale") and not sh.isNull():
-                sx,sy,sz = obj.Scale
-                if not DraftVecUtils.equals(obj.Scale,App.Vector(1, 1, 1)):
+                if not DraftVecUtils.equals(obj.Scale, App.Vector(1, 1, 1)):
                     op = sh.Placement
                     sh.Placement = App.Placement()
                     m.scale(obj.Scale)
-                    if sx == sy == sz:
-                        sh.transformShape(m)
-                    else:
-                        sh = sh.transformGeometry(m)
+                    sh.transformShape(m, False, True)
                     sh.Placement = op
             obj.Shape = sh
 
