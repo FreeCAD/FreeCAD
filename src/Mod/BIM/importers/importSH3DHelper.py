@@ -1792,7 +1792,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         # In FC the reference is the "upper left" corner
         transform.move(-bb.Center)
         if model_rotation:
-            rij = [ float(x=v) for v in model_rotation.split() ]
+            rij = [ float(v) for v in model_rotation.split() ]
             rotation = App.Rotation(
                 App.Vector(rij[0], rij[1], rij[2]),
                 App.Vector(rij[3], rij[4], rij[5]),
