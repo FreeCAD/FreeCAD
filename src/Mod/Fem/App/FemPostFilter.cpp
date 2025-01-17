@@ -468,12 +468,9 @@ void FemPostClipFilter::onChanged(const Property* prop)
 {
     if (prop == &Function) {
 
-        if (Function.getValue()
-            && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
-            m_clipper->SetClipFunction(
-                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
-            m_extractor->SetImplicitFunction(
-                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
+        if (auto* value = Base::freecad_dynamic_cast<FemPostFunction>(Function.getValue())) {
+            m_clipper->SetClipFunction(value->getImplicitFunction());
+            m_extractor->SetImplicitFunction(value->getImplicitFunction());
         }
     }
     else if (prop == &InsideOut) {
@@ -922,10 +919,8 @@ FemPostCutFilter::~FemPostCutFilter() = default;
 void FemPostCutFilter::onChanged(const Property* prop)
 {
     if (prop == &Function) {
-        if (Function.getValue()
-            && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
-            m_cutter->SetCutFunction(
-                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
+        if (auto* value = Base::freecad_dynamic_cast<FemPostFunction>(Function.getValue())) {
+            m_cutter->SetCutFunction(value->getImplicitFunction());
         }
     }
 
