@@ -33,6 +33,16 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 ALLOWEDHOSTS = ["Wall","Structure","Roof"]
 
 
+def get_attachment_object(obj):
+    if not obj.AttachmentSupport:
+        return None
+    if isinstance(obj.AttachmentSupport,tuple):
+        return obj.AttachmentSupport[0]
+    elif isinstance(obj.AttachmentSupport,list):
+        return obj.AttachmentSupport[0][0]
+    else:
+        return obj.AttachmentSupport
+
 class Arch_Window:
 
     "the Arch Window command definition"
@@ -55,11 +65,15 @@ class Arch_Window:
 
     def Activated(self):
 
+        """
+        Executed when Arch Window is activated.
+
+        Creates a window from the object selected by the user. If no objects are
+        selected, enters an interactive mode to create a window using selected
+        points to create a base.
+        """
+
         from draftutils import params
-        import Draft
-        import WorkingPlane
-        import draftguitools.gui_trackers as DraftTrackers
-        self.sel = FreeCADGui.Selection.getSelection()
         self.W1 = params.get_param_arch("WindowW1")  # thickness of the fixed frame
         if self.doormode:
             self.Width = params.get_param_arch("DoorWidth")
@@ -76,54 +90,65 @@ class Arch_Window:
         self.wparams = ["Width","Height","H1","H2","H3","W1","W2","O1","O2"]
         self.wp = None
 
-        # autobuild mode
-        if FreeCADGui.Selection.getSelectionEx():
-            FreeCADGui.draftToolBar.offUi()
-            obj = self.sel[0]
-            if hasattr(obj,'Shape'):
-                if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
-                    FreeCADGui.Control.closeDialog()
-                    host = None
-                    if hasattr(obj,"AttachmentSupport"):
-                        if obj.AttachmentSupport:
-                            if isinstance(obj.AttachmentSupport,tuple):
-                                host = obj.AttachmentSupport[0]
-                            elif isinstance(obj.AttachmentSupport,list):
-                                host = obj.AttachmentSupport[0][0]
-                            else:
-                                host = obj.AttachmentSupport
-                            obj.AttachmentSupport = None # remove
-                    elif Draft.isClone(obj,"Window"):
-                        if obj.Objects[0].Inlist:
-                            host = obj.Objects[0].Inlist[0]
+        self.sel = FreeCADGui.Selection.getSelection()
 
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-                    FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                    if host and self.Include:
-                        FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
-                        siblings = host.Proxy.getSiblings(host)
-                        sibs = [host]
-                        for sibling in siblings:
-                            if not sibling in sibs:
-                                sibs.append(sibling)
-                                FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
-                    FreeCAD.ActiveDocument.commitTransaction()
-                    FreeCAD.ActiveDocument.recompute()
-                    return
+        if self.sel and self.handleSelectionMode():
+            return
 
-                # Try to detect an object to use as a window type - TODO we must make this safer
+        # Fallback to interactive mode
+        self.handleInteractiveMode()
 
-                elif obj.Shape.Solids and (Draft.getType(obj) not in ["Wall","Structure","Roof"]):
-                    # we consider the selected object as a type
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-                    FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                    FreeCAD.ActiveDocument.commitTransaction()
-                    FreeCAD.ActiveDocument.recompute()
-                    return
+    def handleSelectionMode(self):
+        import Draft
 
-        # interactive mode
+        FreeCADGui.draftToolBar.offUi()
+        obj = self.sel[0]
+        if not hasattr(obj,'Shape'):
+            return False
+
+        obj_only_has_wires = obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells)
+        if obj_only_has_wires:
+            FreeCADGui.Control.closeDialog()
+
+            host = None
+            if hasattr(obj,"AttachmentSupport"):
+                host = get_attachment_object(obj)
+            elif Draft.isClone(obj,"Window") and obj.Objects[0].Inlist:
+                host = obj.Objects[0].Inlist[0]
+
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+            if host and self.Include:
+                FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
+                siblings = host.Proxy.getSiblings(host)
+                sibs = [host]
+                for sibling in siblings:
+                    if not sibling in sibs:
+                        sibs.append(sibling)
+                        FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+            return True
+
+        # Try to detect an object to use as a window type - TODO we must make this safer
+
+        elif obj.Shape.Solids and (Draft.getType(obj) not in ALLOWEDHOSTS):
+
+            # we consider the selected object as a type
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+            return True
+
+        return False
+
+    def handleInteractiveMode(self):
+        import WorkingPlane
+        import draftguitools.gui_trackers as DraftTrackers
+
         self.wp = WorkingPlane.get_working_plane()
 
         self.tracker = DraftTrackers.boxTracker()
