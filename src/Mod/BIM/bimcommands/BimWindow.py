@@ -32,6 +32,20 @@ translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 ALLOWEDHOSTS = ["Wall","Structure","Roof"]
 
+def sketch_has_width_and_height_constraint(sketch):
+    width_found = False
+    height_found = False
+
+    for constr in sketch.Constraints:
+        if width_found and height_found:
+            break
+
+        if constr.Name == "Width":
+            width_found = True
+        elif constr.Name == "Height":
+            height_found = True
+
+    return (width_found and height_found)
 
 def get_attachment_object(obj):
     if not obj.AttachmentSupport:
@@ -156,27 +170,14 @@ class Arch_Window:
         self.tracker.width(self.W1)
         self.tracker.height(self.Height)
         self.tracker.on()
+
         FreeCAD.Console.PrintMessage(translate("Arch","Choose a face on an existing object or select a preset")+"\n")
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+        FreeCADGui.Snapper.getPoint(callback=self.onSnapperPoint,movecallback=self.onSnapperMove,extradlg=self.taskbox())
         #FreeCADGui.Snapper.setSelectMode(True)
 
-    def has_width_and_height_constraint(self, sketch):
-        width_found = False
-        height_found = False
+    def onSnapperPoint(self,point=None,obj=None):
 
-        for constr in sketch.Constraints:
-            if constr.Name == "Width":
-                width_found = True
-            elif constr.Name == "Height":
-                height_found = True
-            elif width_found and height_found:
-                break
-
-        return (width_found and height_found)
-
-    def getPoint(self,point=None,obj=None):
-
-        "this function is called by the snapper when it has a 3D point"
+        "this function is called by the snapper when it has a snap point"
 
         import Draft
         from draftutils import gui_utils
@@ -222,7 +223,7 @@ class Arch_Window:
                     FreeCADGui.doCommand("win.Width = " + str(self.Width))
                     FreeCADGui.doCommand("win.Height = " + str(self.Height))
                     FreeCADGui.doCommand("win.Base.recompute()")
-                    if not self.has_width_and_height_constraint(o.Base):
+                    if not sketch_has_width_and_height_constraint(o.Base):
                         _wrn(translate("Arch", "No Width and/or Height constraint in window sketch. Window not resized."))
                     break
             else:
@@ -254,7 +255,7 @@ class Arch_Window:
         self.tracker.finalize()
         return
 
-    def update(self,point,info):
+    def onSnapperMove(self,point,info):
 
         "this function is called by the Snapper when the mouse is moved"
 
