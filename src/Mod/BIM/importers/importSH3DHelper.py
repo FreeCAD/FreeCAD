@@ -1781,6 +1781,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         roll = float(elm.get('roll', 0.0))    # Y SH3D Axis
         angle = float(elm.get('angle', 0.0))  # Z SH3D Axis
         name = elm.get('name')
+        model_rotation = elm.get('modelRotation', None)
         mirrored = bool(elm.get('modelMirrored', "false") == "true")
 
         # The meshes are normalized, centered, facing up.
@@ -1790,12 +1791,20 @@ class FurnitureHandler(BaseFurnitureHandler):
         transform = App.Matrix()
         # In FC the reference is the "upper left" corner
         transform.move(-bb.Center)
+        if model_rotation:
+            rij = [ float(x=v) for v in model_rotation.split() ]
+            rotation = App.Rotation(
+                App.Vector(rij[0], rij[1], rij[2]),
+                App.Vector(rij[3], rij[4], rij[5]),
+                App.Vector(rij[6], rij[7], rij[8])
+                )
+            _msg(f"model_rotation is not yet implemented ...")
         transform.scale(width/bb.XLength, height/bb.YLength, depth/bb.ZLength)
         # NOTE: the model is facing up, thus y and z are inverted
         transform.rotateX(math.pi/2)
         transform.rotateX(-pitch)
         transform.rotateY(roll)
-        transform.rotateZ(-angle)
+        transform.rotateZ(ang_sh2fc(angle))
 
         mesh.transform(transform)
 
