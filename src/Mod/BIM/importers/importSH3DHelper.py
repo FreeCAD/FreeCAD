@@ -30,8 +30,8 @@ import Arch
 import Draft
 import DraftGeomUtils
 import DraftVecUtils
-import draftutils.gui_utils as gui_utils
 import Mesh
+import MeshPart
 import numpy
 import Part
 from draftutils.messages import _err, _log, _msg, _wrn
@@ -169,6 +169,7 @@ class SH3DImporter:
         self.default_floor = None
         self.floors = {}
         self.walls = []
+        self.space_upper_faces = []
 
     def import_sh3d_from_string(self, home:str):
         """Import the SH3D Home from a String.
@@ -247,6 +248,11 @@ class SH3DImporter:
         self._import_elements(home, 'wall')
 
         self._refresh()
+
+        if self.preferences["CREATE_GROUND_MESH"]:
+            self._create_ground_mesh(home)
+
+        self._refresh()
         if App.GuiUp and self.preferences["FIT_VIEW"]:
             Gui.SendMsgToActiveView("ViewFit")
 
@@ -282,7 +288,6 @@ class SH3DImporter:
 
         _msg(f"Successfully imported home '{home.get('name')}' ...")
 
-
     def _get_object_count(self, home):
         """Get an approximate count of object to be imported
         """
@@ -307,6 +312,9 @@ class SH3DImporter:
             'CREATE_IFC_PROJECT': get_param_arch("sh3dCreateIFCProject"),
             'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
+            'CREATE_GROUND_MESH': get_param_arch("sh3dCreateGroundMesh"),
+            'DEFAULT_GROUND_COLOR': color_fc2sh(get_param_arch("sh3dDefaultGroundColor")),
+            'DEFAULT_SKY_COLOR': color_fc2sh(get_param_arch("sh3dDefaultSkyColor")),
         }
 
     def _setup_handlers(self):
@@ -423,6 +431,34 @@ class SH3DImporter:
             return self.default_floor
         return self.floors.get(level_id, None)
 
+    def get_space(self, floor, p):
+        """Returns the Space this point belongs to.
+
+        An point belongs to a space if it is the closest space below that point
+
+        Args:
+            floor (level): the floor the point's parent belongs to.
+            p (Point): the point for which to determine the closest space.
+
+        Returns:
+            Space: the space the object belongs to or None
+        """
+        closest_space = None
+        for (space_floor, space, space_face) in self.space_upper_faces:
+            if not space_face: #?!?
+                continue
+            space_face_z = space_face.CenterOfMass.z
+            projection = App.Vector(p.x, p.y, space_face_z)
+            # Checks that:
+            #   - the point's projection is inside the face
+            #   - the point is above the face
+            #   - the point's parent and the face's are on the same level
+            # NOTE: If two rooms overlap on the same level, the result is
+            #   undefined...
+            if space_face.isInside(projection, 1, True) and space_face_z < p.z and space_floor.id == floor.id:
+                closest_space = space
+        return closest_space
+
     def add_wall(self, wall):
         self.walls.append(wall)
 
@@ -452,6 +488,8 @@ class SH3DImporter:
             self.site = self.fc_objects.get('Site')
         else:
             self.site = self._create_site()
+        self._set_site_properties(elm)
+
         if elm.get('name') in self.fc_objects:
             self.building = self.fc_objects.get(elm.get('name'))
         else:
@@ -513,6 +551,31 @@ class SH3DImporter:
 
         return floor
 
+    def _create_ground_mesh(self, elm):
+        bb = self.building.Shape.BoundBox
+        dx = bb.XLength/2
+        dy = bb.YLength/2
+        SO = App.Vector(bb.XMin-dx, bb.YMin-dy, 0)
+        NO = App.Vector(bb.XMin-dx, bb.YMax+dy, 0)
+        NE = App.Vector(bb.XMax+dx, bb.YMax+dy, 0)
+        SE = App.Vector(bb.XMax+dx, bb.YMin-dy, 0)
+        edge0 = Part.makeLine(SO, NO)
+        edge1 = Part.makeLine(NO, NE)
+        edge2 = Part.makeLine(NE, SE)
+        edge3 = Part.makeLine(SE, SO)
+        # ground = App.ActiveDocument.addObject("Part::Feature", "Ground")
+        ground_face = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
+
+        ground =  App.ActiveDocument.addObject("Mesh::Feature", "Ground")
+        ground.Mesh = MeshPart.meshFromShape(Shape=ground_face, LinearDeflection=0.1, AngularDeflection=0.523599, Relative=False)
+        ground.Label = "Ground"
+
+        set_color_and_transparency(ground, self.site.groundColor)
+        ground.ViewObject.Transparency = 50
+        # TODO: apply possible <texture> within the <environment> element
+
+        self.site.addObject(ground)
+
     def _import_elements(self, parent, tag, update_progress=True):
         """Generic function to import a specific element.
 
@@ -546,6 +609,74 @@ class SH3DImporter:
                 self.progress_bar.next()
             self.current_object_count = self.current_object_count + 1
         list(map(_process, enumerate(elements)))
+
+    def _set_site_properties(self, elm):
+        # All information in environment?, backgroundImage?, print?, compass
+        # are added to the site object. Some are furthermore added to the ground
+        environments = elm.findall('environment')
+        if len(environments) > 0:
+            environment = environments[0]
+            ground_color = environment.get('groundColor',self.preferences["DEFAULT_GROUND_COLOR"])
+            sky_color = environment.get('ceilingColor', self.preferences["DEFAULT_SKY_COLOR"])
+            lightColor = environment.get('lightColor', self.preferences["DEFAULT_SKY_COLOR"])
+            ceillingLightColor = environment.get('ceillingLightColor', self.preferences["DEFAULT_SKY_COLOR"])
+
+            self.set_property(self.site, "App::PropertyString", "groundColor", "", ground_color)
+            self.set_property(self.site, "App::PropertyBool", "backgroundImageVisibleOnGround3D", "", environment)
+            self.set_property(self.site, "App::PropertyString", "skyColor", "", sky_color)
+            self.set_property(self.site, "App::PropertyString", "lightColor", "", lightColor)
+            self.set_property(self.site, "App::PropertyFloat", "wallsAlpha", "", environment)
+            self.set_property(self.site, "App::PropertyBool", "allLevelsVisible", "", environment)
+            self.set_property(self.site, "App::PropertyBool", "observerCameraElevationAdjusted", "", environment)
+            self.set_property(self.site, "App::PropertyString", "ceillingLightColor", "", ceillingLightColor)
+            self.set_property(self.site, "App::PropertyEnumeration", "drawingMode", "", str(environment.get('drawingMode', 'FILL')), valid_values=["FILL", "OUTLINE", "FILL_AND_OUTLINE"])
+            self.set_property(self.site, "App::PropertyFloat", "subpartSizeUnderLight", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "photoWidth", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "photoHeight", "", environment)
+            self.set_property(self.site, "App::PropertyEnumeration", "photoAspectRatio", "", str(environment.get('photoAspectRatio', 'VIEW_3D_RATIO')), valid_values=["FREE_RATIO", "VIEW_3D_RATIO", "RATIO_4_3", "RATIO_3_2", "RATIO_16_9", "RATIO_2_1", "RATIO_24_10", "SQUARE_RATIO"])
+            self.set_property(self.site, "App::PropertyInteger", "photoQuality", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "videoWidth", "", environment)
+            self.set_property(self.site, "App::PropertyEnumeration", "videoAspectRatio", "", str(environment.get('videoAspectRatio', 'RATIO_4_3')), valid_values=["RATIO_4_3", "RATIO_16_9", "RATIO_24_10"])
+            self.set_property(self.site, "App::PropertyInteger", "photoQuality", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "videoQuality", "", environment)
+            self.set_property(self.site, "App::PropertyString", "videoSpeed", "", environment)
+            self.set_property(self.site, "App::PropertyInteger", "videoFrameRate", "", environment)
+        else:
+            _msg(f"No <environment> tag found in <{elm.tag}>")
+
+        bg_imgs = elm.findall('backgroundImage')
+        if len(bg_imgs) > 0:
+            bg_img = bg_imgs[0]
+            self.set_property(self.site, "App::PropertyString", "image", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistance", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistanceXStart", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistanceYStart", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistanceXEnd", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "scaleDistanceYEnd", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "xOrigin", "", bg_img)
+            self.set_property(self.site, "App::PropertyFloat", "yOrigin", "", bg_img)
+            self.set_property(self.site, "App::PropertyBool", "visible", "Whether the background image is visible", bg_img)
+        else:
+            _msg(f"No <backgroundImage> tag found in <{elm.tag}>")
+
+        compasses = elm.findall('compass')
+        if len(compasses) > 0:
+            compass = compasses[0]
+            self.set_property(self.site, "App::PropertyFloat", "x", "The compass's x", compass)
+            self.set_property(self.site, "App::PropertyFloat", "y", "The compass's y", compass)
+            self.set_property(self.site, "App::PropertyFloat", "diameter", "The compass's diameter in cm", compass)
+            self.set_property(self.site, "App::PropertyFloat", "northDirection", "The compass's angle to the north in degree", compass)
+            self.set_property(self.site, "App::PropertyFloat", "longitude", "The compass's longitude", compass)
+            self.set_property(self.site, "App::PropertyFloat", "latitude", "The compass's latitude", compass)
+            self.set_property(self.site, "App::PropertyString", "timeZone", "The compass's TimeZone", compass)
+            self.set_property(self.site, "App::PropertyBool", "visible", "Whether the compass is visible", compass)
+            self.site.Declination = ang_sh2fc(math.degrees(float(self.site.northDirection)))
+            self.site.Longitude = math.degrees(float(self.site.longitude))
+            self.site.Latitude = math.degrees(float(self.site.latitude))
+            self.site.EPWFile = '' # https://www.ladybug.tools/epwmap/ or https://climate.onebuilding.org
+        else:
+            _msg(f"No <compass> tag found in <{elm.tag}>")
+
 
 class BaseHandler:
     """The base class for all importers."""
@@ -595,6 +726,62 @@ class BaseHandler:
             level: The level
         """
         return self.importer.get_floor(level_id)
+
+    def get_space(self, floor, p):
+        """Returns the Space this point belongs to.
+
+        An point belongs to a space if it is the closest space below that point
+
+        Args:
+            floor (level): the floor the point's parent belongs to.
+            p (Point): the point for which to determine the closest space.
+
+        Returns:
+            Space: the space the object belongs to or None
+        """
+        return self.importer.get_space(floor, p)
+
+    def _get_upper_face(self, faces):
+        """Returns the upper face of a given list of faces
+
+        More specifically returns the face with the highest z.
+        It is used to figure out which space a furniture belongs to.
+
+        Args:
+            faces (list): The list of faces
+
+        Returns:
+            Face: the upper face
+        """
+        upper_face = None
+        com_max_z = -float('inf')
+        for face in faces:
+            com = face.CenterOfMass
+            if com.z > com_max_z:
+                upper_face = face
+                com_max_z = com.z
+        return upper_face
+
+    def _get_lower_face(self, faces):
+        """Returns the lower face of a given list of faces
+
+        More specifically returns the face with the lowest z.
+        It is used to figure out which space a furniture belongs to.
+
+        Args:
+            faces (list): The list of faces
+
+        Returns:
+            Face: the lower face
+        """
+        lower_face = None
+        com_min_z = float('inf')
+        for face in faces:
+            com = face.CenterOfMass
+            if com.z < com_min_z:
+                lower_face = face
+                com_min_z = com.z
+        return lower_face
 
 
 class LevelHandler(BaseHandler):
@@ -660,6 +847,8 @@ class RoomHandler(BaseHandler):
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <room> '{elm.get('id')}' ..."
 
+        # A Room is composed of a space with the slab as the base object
+
         points = []
         for point in elm.findall('point'):
             x = float(point.get('x'))
@@ -675,14 +864,42 @@ class RoomHandler(BaseHandler):
             line = Draft.make_wire(points, placement=App.Placement(), closed=True, face=True, support=None)
             slab = Arch.makeStructure(line, height=floor.floorThickness)
 
-        slab.Label = elm.get('name', 'Room')
+        slab.Label = elm.get('name', 'Room') + '-slab'
         slab.IfcType = "Slab"
-        slab.Normal = -Z_NORM
+        slab.Normal = Z_NORM
 
         color = elm.get('floorColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
         set_color_and_transparency(slab, color)
         self._set_properties(slab, elm)
-        floor.addObject(slab)
+
+        slab.recompute(True)
+
+        # No 1-to-1 correspondance between SH3D <room> and FC element.
+        # Creating a fake SH3D elemement in order to take advantage of the
+        # different lookup facilities. NOTE the suffix '-space' for both
+        # the sh_type and id...
+        space = None
+        if self.importer.preferences["MERGE"]:
+            space = self.get_fc_object(elm.get("id")+"-space", 'room-space')
+
+        if not space:
+            space = Arch.makeSpace(slab)
+            space.IfcType = "Space"
+            space.Label = elm.get('name', 'Room')
+            self._set_space_properties(space, elm)
+
+        self.importer.fc_objects[slab.id] = slab
+        self.importer.fc_objects[space.id] = space
+
+        upper_face = self._get_upper_face(slab.Shape.Faces)
+        if not upper_face:
+            _wrn(f"Couldn't find the upper face of slab {slab.Label} on level {floor.Label}!")
+        else:
+            self.importer.space_upper_faces.append((floor, space, upper_face))
+
+        slab.Visibility = True
+
+        floor.addObject(space)
 
     def _set_properties(self, obj, elm):
         floor_color = elm.get('floorColor',self.importer.preferences["DEFAULT_FLOOR_COLOR"])
@@ -704,6 +921,10 @@ class RoomHandler(BaseHandler):
         self.setp(obj, "App::PropertyString", "ceilingColor", "The room's ceiling color", ceiling_color)
         self.setp(obj, "App::PropertyFloat", "ceilingShininess", "The room's ceiling shininess", elm)
         self.setp(obj, "App::PropertyBool", "ceilingFlat", "", elm)
+
+    def _set_space_properties(self, obj, elm):
+        self.setp(obj, "App::PropertyString", "shType", "The element type", 'room-space')
+        self.setp(obj, "App::PropertyString", "id", "The slab's id", elm.get('id', str(uuid.uuid4()))+"-space")
 
 
 class WallHandler(BaseHandler):
@@ -754,7 +975,9 @@ class WallHandler(BaseHandler):
         if self.importer.preferences["IMPORT_FURNITURES"]:
             wall.recompute(True)
             for baseboard in elm.findall('baseboard'):
-                self._import_baseboard(floor, wall, baseboard)
+                space = self._import_baseboard(floor, wall, baseboard)
+                if space:
+                    space.Boundaries = space.Boundaries + [wall]
 
     def _get_sibling_wall(self, parent, wall, sibling_attribute_name):
         sibling_wall_id = wall.get(sibling_attribute_name, None)
@@ -830,6 +1053,9 @@ class WallHandler(BaseHandler):
         else:
             wall = Arch.makeWall(sweep)
 
+        # Keep track of base object. Used for baseboard import
+        self.importer.set_property(wall, "App::PropertyLinkList", "BaseObjects", "The different base objects whose sweep failed. Kept for compatibility reasons", [section_start, section_end, spine])
+        wall.Height = 0
         wall.Length = spine.Length
 
         return wall, base_object
@@ -911,6 +1137,10 @@ class WallHandler(BaseHandler):
         arc_extent = ang_sh2fc(elm.get('arcExtent', 0))
         height_start = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
         height_end = dim_sh2fc(elm.get('heightAtEnd', dim_fc2sh(height_start)))
+
+        # NOTE: the wall height is adjusted with the floor thickness
+        height_start = height_start + floor.floorThickness
+        height_end = height_end + floor.floorThickness
 
         start = coord_sh2fc(App.Vector(x_start, y_start, z))
         end = coord_sh2fc(App.Vector(x_end, y_end, z))
@@ -1147,19 +1377,27 @@ class WallHandler(BaseHandler):
         """
         return (b - a).cross(c - a).normalize()
 
-    def _ps(self, section):
+    def _ps(self, section, print_z: bool = False):
         # Pretty print a Section in a condensed way
-        v = section.Shape.Vertexes
-        return f"[{self._pv(v[0].Point)}, {self._pv(v[1].Point)}, {self._pv(v[2].Point)}, {self._pv(v[3].Point)}]"
+        if hasattr(section, 'Shape'):
+            v = section.Shape.Vertexes
+        else:
+            # a Part.Face
+            v = section.Vertexes
+        return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}, {self._pv(v[2].Point, print_z)}, {self._pv(v[3].Point, print_z)}]"
 
-    def _pe(self, edge):
+    def _pe(self, edge, print_z: bool = False):
         # Print an Edge in a condensed way
         v = edge.Vertexes
-        return f"[{self._pv(v[0].Point)}, {self._pv(v[1].Point)}]"
+        return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}]"
 
-    def _pv(self, vect):
+    def _pv(self, v, print_z: bool = False, ndigits: None = None):
         # Print an Vector in a condensed way
-        return f"({round(getattr(vect, 'X', getattr(vect,'x')))},{round(getattr(vect, 'Y', getattr(vect,'y')))})"
+        if hasattr(v,'X'):
+            return f"({round(getattr(v, 'X'), ndigits)},{round(getattr(v, 'Y'), ndigits)}{',' + str(round(getattr(v, 'Z'), ndigits)) if print_z else ''})"
+        elif hasattr(v,'x'):
+            return f"({round(getattr(v, 'x'), ndigits)},{round(getattr(v, 'y'), ndigits)}{',' + str(round(getattr(v, 'z'), ndigits)) if print_z else ''})"
+        raise ValueError(f"Expected a Point or Vector, got {type(v)}")
 
     def _set_wall_colors(self, wall, elm):
         """Set the `wall`'s color taken from `elm`.
@@ -1192,32 +1430,41 @@ class WallHandler(BaseHandler):
             Part::Extrusion: the newly created object
         """
         wall_width = float(wall.Width)
+
         baseboard_width = dim_sh2fc(elm.get('thickness'))
         baseboard_height = dim_sh2fc(elm.get('height'))
-        vertexes = wall.Shape.Vertexes
 
-        # The left side is defined as the face on the left hand side when going
-        # from (xStart,yStart) to (xEnd,yEnd). Assume the points are always
-        # created in the same order. We then have on the lefthand side the points
-        # 1 and 2, while on the righthand side we have the points 4 and 6
+        # This is brittle in case the wall is merged and the there are already
+        # some doors, windows, etc...
         side = elm.get('attribute')
-        if side == 'leftSideBaseboard':
-            p_start = vertexes[0].Point
-            p_end = vertexes[2].Point
-            p_normal = vertexes[4].Point
-        elif side == 'rightSideBaseboard':
-            p_start = vertexes[4].Point
-            p_end = vertexes[6].Point
-            p_normal = vertexes[0].Point
-        else:
-            raise ValueError(f"Invalid SweetHome3D file: invalid baseboard with 'attribute'={side}")
+        faces = wall.Base.Shape.Faces
+        face = faces[1] if side == 'leftSideBaseboard' else faces[3]
 
-        v_normal = p_normal - p_start
-        v_baseboard = v_normal * (baseboard_width/wall_width)
-        p0 = p_start
-        p1 = p_end
-        p2 = p_end - v_baseboard
-        p3 = p_start - v_baseboard
+        # Once I have the face, I get the lowest edge.
+        lowest_z = float('inf')
+        bottom_edge = None
+        for edge in face.Edges:
+            if edge and edge.CenterOfMass and edge.CenterOfMass.z < lowest_z:
+                lowest_z = edge.CenterOfMass.z
+                bottom_edge = edge
+
+        p_normal = face.normalAt(bottom_edge.CenterOfMass.x, bottom_edge.CenterOfMass.y)
+        p_normal.z = 0
+        offset_vector = p_normal.normalize().multiply(baseboard_width)
+        offset_bottom_edge = bottom_edge.translated(offset_vector)
+
+        if self.importer.preferences["DEBUG"]:
+            _log(f"Creating {side} for {wall.Label} from edge {self._pe(bottom_edge, True)} to {self._pe(offset_bottom_edge, True)} (normal={self._pv(p_normal, True, 4)})")
+
+        edge0 = bottom_edge.copy()
+        edge1 = Part.makeLine(bottom_edge.Vertexes[1].Point, offset_bottom_edge.Vertexes[1].Point)
+        edge2 = offset_bottom_edge
+        edge3 = Part.makeLine(offset_bottom_edge.Vertexes[0].Point, bottom_edge.Vertexes[0].Point)
+
+        # make sure all edges are coplanar...
+        ref_z = bottom_edge.CenterOfMass.z
+        for edge in [edge0, edge1, edge2, edge3]:
+            edge.Vertexes[0].Point.z = edge.Vertexes[1].Point.z = ref_z
 
         baseboard_id = f"{wall.id}-{side}"
         baseboard = None
@@ -1225,10 +1472,8 @@ class WallHandler(BaseHandler):
             baseboard = self.get_fc_object(baseboard_id, 'baseboard')
 
         if not baseboard:
-            # I first add a rectangle
-            base = Draft.makeRectangle([p0, p1, p2, p3], face=True, support=None)
-            base.Visibility = False
-            # and then I extrude
+            base = App.ActiveDocument.addObject("Part::Feature", "baseboard")
+            base.Shape = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
             baseboard = App.ActiveDocument.addObject('Part::Extrusion', f"{wall.Label} {side}")
             baseboard.Base = base
 
@@ -1253,7 +1498,17 @@ class WallHandler(BaseHandler):
             group = floor.newObject("App::DocumentObjectGroup", "Baseboards")
             self.setp(floor, "App::PropertyString", "BaseboardGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
 
-        floor.getObject(floor.BaseboardGroupName).addObject(baseboard)
+        baseboard.recompute(True)
+
+        space = self.get_space(floor, baseboard.Shape.BoundBox.Center)
+        if space:
+            space.Group = space.Group + [baseboard]
+        else:
+            _log(f"No space found to enclose {baseboard.Label}. Adding to generic group.")
+            floor.getObject(floor.BaseboardGroupName).addObject(baseboard)
+
+        # Returns the Space for the wall to be added to the space.Boundaries
+        return space
 
 
 class BaseFurnitureHandler(BaseHandler):
@@ -1307,7 +1562,6 @@ class BaseFurnitureHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "widthInPlan", "The object's width in the plan view", elm)
         self.setp(obj, "App::PropertyFloat", "depthInPlan", "The object's depth in the plan view", elm)
         self.setp(obj, "App::PropertyFloat", "heightInPlan", "The object's height in the plan view", elm)
-
 
     def _get_mesh(self, elm):
         model = elm.get('model')
@@ -1378,21 +1632,21 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
     def _create_door(self, floor, elm):
         # The window in SweetHome3D is defined with a width, depth, height.
         # Furthermore the (x.y.z) is the center point of the lower face of the
-        # window. In FC the placement is defined on the face of the whole that
-        # will contain the windows. The makes this calculation rather
-        # cumbersome.
+        # window. In FC the placement is defined on the face of the wall that
+        # contains the windows. The makes this calculation rather cumbersome.
         x_center = float(elm.get('x'))
         y_center = float(elm.get('y'))
         z_center = float(elm.get('elevation', 0))
-        z_center += dim_fc2sh(floor.Placement.Base.z)
 
         # This is the FC coordinate of the center point of the lower face of the
         # window. This then needs to be moved to the proper face on the wall and
         # offset properly with respect to the wall's face.
         center = coord_sh2fc(App.Vector(x_center, y_center, z_center))
+        center.z += floor.Placement.Base.z
+        center.z += floor.floorThickness
 
         wall_width = -DEFAULT_WALL_WIDTH
-        wall = self._get_wall(center)
+        wall = self._get_containing_wall(center)
         if wall:
             wall_width = wall.Width
         else:
@@ -1414,7 +1668,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         corner = center.add(center2corner)
         pl = App.Placement(
             corner,  # translation
-            App.Rotation(math.degrees(-angle), 0, 90),  # rotation
+            App.Rotation(math.degrees(ang_sh2fc(angle)), 0, 90),  # rotation
             ORIGIN  # rotation@coordinate
         )
 
@@ -1448,8 +1702,8 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             window.Hosts = [wall]
         return window
 
-    def _get_wall(self, point):
-        """Returns the wall that contains the given point.
+    def _get_containing_wall(self, point):
+        """Returns the wall containing `point`.
 
         Args:
             point (FreeCAD.Vector): the point to test for
@@ -1489,7 +1743,11 @@ class FurnitureHandler(BaseFurnitureHandler):
             feature = self.get_fc_object(furniture_id, 'pieceOfFurniture')
 
         if not feature:
-            feature = self._create_equipment(elm)
+            feature = self._create_equipment(floor, elm)
+
+        color = elm.get('color', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+        set_color_and_transparency(feature, color)
+
         self.setp(feature, "App::PropertyString", "shType", "The element type", 'pieceOfFurniture')
         self.set_furniture_common_properties(feature, elm)
         self.set_piece_of_furniture_common_properties(feature, elm)
@@ -1500,54 +1758,74 @@ class FurnitureHandler(BaseFurnitureHandler):
             group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
             self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures on this floor", group.Name)
 
-        floor.getObject(floor.FurnitureGroupName).addObject(feature)
+        if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
+            p = feature.Shape.BoundBox.Center
+        else:
+            p = feature.Mesh.BoundBox.Center
+
+        space = self.get_space(floor, p)
+        if space:
+            space.Group = space.Group + [feature]
+        else:
+            _log(f"No space found to enclose {feature.Label}. Adding to generic group.")
+            floor.getObject(floor.FurnitureGroupName).addObject(feature)
 
         # We add the object to the list of known object that can then
         # be referenced elsewhere in the SH3D model (i.e. lights).
         self.importer.fc_objects[feature.id] = feature
 
-    def _create_equipment(self, elm):
-
-        floor = self.get_floor(elm.get('level'))
-
+    def _create_equipment(self, floor, elm):
         width = dim_sh2fc(float(elm.get('width')))
         depth = dim_sh2fc(float(elm.get('depth')))
         height = dim_sh2fc(float(elm.get('height')))
         x = float(elm.get('x', 0))
         y = float(elm.get('y', 0))
         z = float(elm.get('elevation', 0.0))
-        angle = float(elm.get('angle', 0.0))
-        pitch = float(elm.get('pitch', 0.0))  # X Axis
-        roll = float(elm.get('roll', 0.0))  # Y Axis
+        height_in_plan = elm.get('heightInPlan', 0.0)
+        pitch = float(elm.get('pitch', 0.0))  # X SH3D Axis
+        roll = float(elm.get('roll', 0.0))    # Y SH3D Axis
+        angle = float(elm.get('angle', 0.0))  # Z SH3D Axis
         name = elm.get('name')
+        model_rotation = elm.get('modelRotation', None)
         mirrored = bool(elm.get('modelMirrored', "false") == "true")
 
-        # The meshes are normalized, facing up.
+        # The meshes are normalized, centered, facing up.
         # Center, Scale, X Rotation && Z Rotation (in FC axes), Move
         mesh = self._get_mesh(elm)
         bb = mesh.BoundBox
         transform = App.Matrix()
+        # In FC the reference is the "upper left" corner
         transform.move(-bb.Center)
-        # NOTE: the model is facing up, thus y and z are inverted
+        if model_rotation:
+            rij = [ float(v) for v in model_rotation.split() ]
+            rotation = App.Rotation(
+                App.Vector(rij[0], rij[1], rij[2]),
+                App.Vector(rij[3], rij[4], rij[5]),
+                App.Vector(rij[6], rij[7], rij[8])
+                )
+            _msg(f"model_rotation is not yet implemented ...")
         transform.scale(width/bb.XLength, height/bb.YLength, depth/bb.ZLength)
+        # NOTE: the model is facing up, thus y and z are inverted
         transform.rotateX(math.pi/2)
         transform.rotateX(-pitch)
         transform.rotateY(roll)
-        transform.rotateZ(-angle)
-        level_elevation = dim_fc2sh(floor.Placement.Base.z)
-        distance = App.Vector(x, y, level_elevation + z + (dim_fc2sh(height) / 2))
-        transform.move(coord_sh2fc(distance))
+        transform.rotateZ(ang_sh2fc(angle))
+
         mesh.transform(transform)
 
         if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
             shape = Part.Shape()
-            shape.makeShapeFromMesh(mesh.Topology, 0.100000)
+            shape.makeShapeFromMesh(mesh.Topology, 1)
             equipment = Arch.makeEquipment(name=name)
             equipment.Shape = shape
-            equipment.purgeTouched()
         else:
             equipment = App.ActiveDocument.addObject("Mesh::Feature", name)
             equipment.Mesh = mesh
+
+        equipment.Placement.Base = coord_sh2fc(App.Vector(x, y, z))
+        equipment.Placement.Base.z += floor.Placement.Base.z
+        equipment.Placement.Base.z += floor.floorThickness
+        equipment.Placement.Base.z += mesh.BoundBox.ZLength / 2
 
         return equipment
 
