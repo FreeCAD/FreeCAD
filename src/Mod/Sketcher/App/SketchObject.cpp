@@ -7116,24 +7116,31 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     return svals.size();
 }
 
-int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, bool defining, bool intersection)
+// clang-format on
+int SketchObject::addExternal(App::DocumentObject* Obj,
+                              const char* SubName,
+                              bool defining,
+                              bool intersection)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
     // so far only externals to the support of the sketch and datum features
-    if (!isExternalAllowed(Obj->getDocument(), Obj))
+    if (!isExternalAllowed(Obj->getDocument(), Obj)) {
         return -1;
+    }
 
     auto wholeShape = Part::Feature::getTopoShape(Obj);
-    auto shape = wholeShape.getSubTopoShape(SubName, /*silent*/true);
+    auto shape = wholeShape.getSubTopoShape(SubName, /*silent*/ true);
     TopAbs_ShapeEnum shapeType = TopAbs_SHAPE;
-    if (shape.shapeType(/*silent*/true) != TopAbs_FACE) {
-        if (shape.hasSubShape(TopAbs_FACE))
+    if (shape.shapeType(/*silent*/ true) != TopAbs_FACE) {
+        if (shape.hasSubShape(TopAbs_FACE)) {
             shapeType = TopAbs_FACE;
-        else if (shape.shapeType(/*silent*/true) != TopAbs_EDGE
-                && shape.hasSubShape(TopAbs_EDGE))
+        }
+        else if (shape.shapeType(/*silent*/ true) != TopAbs_EDGE
+                 && shape.hasSubShape(TopAbs_EDGE)) {
             shapeType = TopAbs_EDGE;
+        }
     }
 
     if (shapeType != TopAbs_SHAPE) {
@@ -7146,25 +7153,28 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
             Base::Placement Plm = Placement.getValue();
             Base::Vector3d Pos = Plm.getPosition();
             Base::Rotation Rot = Plm.getRotation();
-            Base::Vector3d dN(0,0,1);
-            Rot.multVec(dN,dN);
-            Base::Vector3d dX(1,0,0);
-            Rot.multVec(dX,dX);
-            gp_Ax3 sketchAx3(gp_Pnt(Pos.x,Pos.y,Pos.z),
-                            gp_Dir(dN.x,dN.y,dN.z),
-                            gp_Dir(dX.x,dX.y,dX.z));
+            Base::Vector3d dN(0, 0, 1);
+            Rot.multVec(dN, dN);
+            Base::Vector3d dX(1, 0, 0);
+            Rot.multVec(dX, dX);
+            gp_Ax3 sketchAx3(gp_Pnt(Pos.x, Pos.y, Pos.z),
+                             gp_Dir(dN.x, dN.y, dN.z),
+                             gp_Dir(dX.x, dX.y, dX.z));
             sketchPlane.SetPosition(sketchAx3);
         }
-        for (const auto &subShape : shape.getSubShapes(shapeType)) {
+        for (const auto& subShape : shape.getSubShapes(shapeType)) {
             int idx = wholeShape.findShape(subShape);
-            if (idx == 0)
+            if (idx == 0) {
                 continue;
+            }
             if (intersection) {
                 try {
                     FCBRepAlgoAPI_Section maker(subShape, sketchPlane);
-                    if (!maker.IsDone() || maker.Shape().IsNull())
+                    if (!maker.IsDone() || maker.Shape().IsNull()) {
                         continue;
-                } catch (Standard_Failure &) {
+                    }
+                }
+                catch (Standard_Failure&) {
                     continue;
                 }
             }
@@ -7172,8 +7182,9 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
             addExternal(Obj, element.c_str(), defining, intersection);
             element.resize(elementNameSize);
         }
-        if (ExternalGeometry.getSize() == geometryCount)
+        if (ExternalGeometry.getSize() == geometryCount) {
             return -1;
+        }
         return geometryCount;
     }
 
@@ -7197,17 +7208,18 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
 
     bool add = true;
     for (size_t i = 0; i < Objects.size(); ++i) {
-        if (Objects[i] == Obj && std::string(SubName) == SubElements[i]) {
-            if (Types[i] == (int)ExtType::Both
-                || (Types[i] == (int)ExtType::Projection && !intersection)
-                || (Types[i] == (int)ExtType::Intersection && intersection)) {
-                Base::Console().error("Link to %s already exists in this sketch.\n", SubName);
-                return -1;
-            }
-            // Case where projections are already there when adding intersections.
-            add = false;
-            Types[i] = (int)ExtType::Both;
+        if (!(Objects[i] == Obj && std::string(SubName) == SubElements[i])) {
+            continue;
         }
+        if (Types[i] == (int)ExtType::Both
+            || (Types[i] == (int)ExtType::Projection && !intersection)
+            || (Types[i] == (int)ExtType::Intersection && intersection)) {
+            Base::Console().error("Link to %s already exists in this sketch.\n", SubName);
+            return -1;
+        }
+        // Case where projections are already there when adding intersections.
+        add = false;
+        Types[i] = (int)ExtType::Both;
     }
     if (add) {
         // add the new ones
@@ -7222,7 +7234,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
     ExternalTypes.setValues(Types);
 
     try {
-        ExternalToAdd ext{ Obj, std::string(SubName), defining, intersection };
+        ExternalToAdd ext {Obj, std::string(SubName), defining, intersection};
         rebuildExternalGeometry(ext);
     }
     catch (const Base::Exception& e) {
@@ -7232,11 +7244,12 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
         return -1;
     }
 
-    acceptGeometry();// This may need to be refactored into onChanged for ExternalGeometry
+    acceptGeometry();  // This may need to be refactored into onChanged for ExternalGeometry
 
     solverNeedsUpdate = true;
     return ExternalGeometry.getValues().size() - 1;
 }
+// clang-format off
 
 int SketchObject::delExternal(int ExtGeoId)
 {
