@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="242"/>
       <source>Add a tool shape to the robot</source>
-      <translation>Добавить правило для робота</translation>
+      <translation>Добавить фигуру инструмента к роботу</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Create a new empty trajectory</source>
-      <translation>Создать новую пустую траекторию</translation>
+      <translation>Создать новую пустую траекторию движений робота</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="362"/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Создать траекторию из ребер</translation>
+      <translation>Создать траекторию движения робота из набора ребер</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Экспорт траектории в сжатую KRL-подпрограмму.</translation>
+      <translation>Экспортировать траекторию движений в сжатую KRL подпрограмму.</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="123"/>
       <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Экспортировать траекторию как полноправную KRL-подпрограмму.</translation>
+      <translation>Экспортировать траекторию движений в полную KRL подпрограмму.</translation>
     </message>
   </context>
   <context>

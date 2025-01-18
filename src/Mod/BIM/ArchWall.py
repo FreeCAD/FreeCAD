@@ -608,11 +608,8 @@ class _Wall(ArchComponent.Component):
                                     #print "modifying p2"
                                     obj.Base.End = p2
                                 elif Draft.getType(obj.Base) in ["Sketcher::SketchObject", "ArchSketch"]:
-                                    try:
-                                        obj.Base.recompute() # Fix for the 'GeoId index out range' error.
-                                        obj.Base.movePoint(0, 2, obj.Base.Placement.inverse().multVec(p2))
-                                    except Exception: # This 'GeoId index out range' error should no longer occur.
-                                        print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
+                                    # obj.Base.recompute() # Fix for the 'GeoId index out range' error. Not required in V1.1.
+                                    obj.Base.moveGeometry(0, 2, obj.Base.Placement.inverse().multVec(p2))
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
 

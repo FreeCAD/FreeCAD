@@ -1110,7 +1110,7 @@ bool PythonConsole::canInsertFromMimeData (const QMimeData * source) const
 }
 
 /**
- * Allow to paste plain text or urls of text files.
+ * Allow one to paste plain text or urls of text files.
  */
 void PythonConsole::insertFromMimeData (const QMimeData * source)
 {
@@ -1601,7 +1601,7 @@ bool ConsoleHistory::next()
 
 /**
  * prev switches the history pointer to the previous item.
- * The optional parameter prefix allows to search the history selectively for commands that start
+ * The optional parameter prefix allows one to search the history selectively for commands that start
  *   with a certain character sequence.
  * @param prefix - prefix string for searching backwards in history, empty string by default
  * @return true if the pointer was switched to an earlier item, false otherwise.

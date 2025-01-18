@@ -174,7 +174,7 @@ def getPreferences():
     if hasattr(ifcopenshell, "schema_identifier"):
         schema = ifcopenshell.schema_identifier
     else:
-        # v0.6 onwards allows to set our own schema
+        # v0.6 onwards allows one to set our own schema
         schema = PARAMS.GetString("DefaultIfcExportVersion", "IFC4")
     preferences["SCHEMA"] = schema
 
@@ -215,7 +215,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
     starttime = time.time()
 
-    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template
+    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template, curvestyles
 
     if preferences is None:
         preferences = getPreferences()
@@ -266,7 +266,7 @@ def export(exportList, filename, colors=None, preferences=None):
     if history:
         history = history[0]
     else:
-        # IFC4 allows to not write any history
+        # IFC4 allows one to not write any history
         history = None
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
@@ -1321,7 +1321,6 @@ def export(exportList, filename, colors=None, preferences=None):
 
     annos = {}
     if preferences['EXPORT_2D']:
-        global curvestyles
         curvestyles = {}
         if annotations and preferences['DEBUG']: print("exporting 2D objects...")
         for anno in annotations:

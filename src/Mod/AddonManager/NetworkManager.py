@@ -60,6 +60,7 @@ import itertools
 import tempfile
 import sys
 from typing import Dict, List, Optional
+from urllib.parse import urlparse
 
 try:
     import FreeCAD
@@ -217,20 +218,32 @@ if HAVE_QTNETWORK:
                 if proxy and proxy[0]:
                     self.QNAM.setProxy(proxy[0])  # This may still be QNetworkProxy.NoProxy
             elif userProxyCheck:
-                host, _, port_string = proxy_string.rpartition(":")
                 try:
-                    port = 0 if not port_string else int(port_string)
+                    parsed_url = urlparse(proxy_string)
+                    host = parsed_url.hostname
+                    port = parsed_url.port
+                    scheme = (
+                        "http" if parsed_url.scheme == "https" else parsed_url.scheme
+                    )  # There seems no https type: doc.qt.io/qt-6/qnetworkproxy.html#ProxyType-enum
                 except ValueError:
                     FreeCAD.Console.PrintError(
                         translate(
                             "AddonsInstaller",
-                            "Failed to convert the specified proxy port '{}' to a port number",
-                        ).format(port_string)
+                            "Failed to parse proxy URL '{}'",
+                        ).format(proxy_string)
                         + "\n"
                     )
-                    port = 0
-                # For now assume an HttpProxy, but eventually this should be a parameter
-                proxy = QtNetwork.QNetworkProxy(QtNetwork.QNetworkProxy.HttpProxy, host, port)
+                    return
+
+                FreeCAD.Console.PrintMessage(f"Using proxy {scheme}://{host}:{port} \n")
+                if scheme == "http":
+                    _scheme = QtNetwork.QNetworkProxy.HttpProxy
+                elif scheme == "socks5":
+                    _scheme = QtNetwork.QNetworkProxy.Socks5Proxy
+                else:
+                    FreeCAD.Console.PrintWarning(f"Unknown proxy scheme '{scheme}', using http. \n")
+                    _scheme = QtNetwork.QNetworkProxy.HttpProxy
+                proxy = QtNetwork.QNetworkProxy(_scheme, host, port)
                 self.QNAM.setProxy(proxy)
 
         def _setup_proxy_freecad(self):
@@ -602,6 +615,7 @@ if HAVE_QTNETWORK:
                     data = reply.readAll()
                     self.completed.emit(index, response_code, data)
             else:
+                FreeCAD.Console.PrintWarning(f"Request failed: {reply.error()} \n")
                 if index in self.monitored_connections:
                     self.progress_complete.emit(index, response_code, "")
                 else:

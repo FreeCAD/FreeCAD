@@ -119,6 +119,16 @@ The active object of the document. Deprecated, use ActiveObject.</UserDocu>
 The active view of the document. Deprecated, use ActiveView.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="createView">
+      <Documentation>
+      <UserDocu>createView(type) -> object or None
+
+Return a newly created view of a given type.
+
+type : str
+    Type name.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="mdiViewsOfType" Const="true">
       <Documentation>
       <UserDocu>mdiViewsOfType(type) -> list of MDIView

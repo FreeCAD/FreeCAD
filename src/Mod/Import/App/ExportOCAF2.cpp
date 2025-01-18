@@ -223,7 +223,7 @@ void ExportOCAF2::setupObject(TDF_Label label,
             // parent object internal name + '_i<index>'
             names.push_back(prefix + obj->getNameInDocument() + "_i" + name + ".");
         }
-        // Finally, the subname reference allows to use the label for naming
+        // Finally, the subname reference allows one to use the label for naming
         // with preceding '$'
         names.push_back(prefix + "$" + obj->Label.getValue() + ".");
     }

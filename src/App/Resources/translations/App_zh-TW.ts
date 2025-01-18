@@ -4,7 +4,7 @@
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="118"/>
+      <location filename="../../Link.cpp" line="130"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
       <translation>儲存最後的使用者對是否要將 CopyOnChange 設定套用至引用相同可配置物件的所有連結的選擇</translation>
@@ -19,42 +19,61 @@ that reference the same configurable object</source>
     </message>
   </context>
   <context>
-    <name>App::Origin</name>
+    <name>App::OriginGroupExtension</name>
     <message>
-      <location filename="../../Origin.cpp" line="142"/>
-      <source>X-axis</source>
-      <translation>X軸</translation>
-    </message>
-    <message>
-      <location filename="../../Origin.cpp" line="143"/>
-      <source>Y-axis</source>
-      <translation>Y軸</translation>
-    </message>
-    <message>
-      <location filename="../../Origin.cpp" line="144"/>
-      <source>Z-axis</source>
-      <translation>Z軸</translation>
-    </message>
-    <message>
-      <location filename="../../Origin.cpp" line="145"/>
-      <source>XY-plane</source>
-      <translation>XY平面</translation>
-    </message>
-    <message>
-      <location filename="../../Origin.cpp" line="146"/>
-      <source>XZ-plane</source>
-      <translation>XZ平面</translation>
-    </message>
-    <message>
-      <location filename="../../Origin.cpp" line="147"/>
-      <source>YZ-plane</source>
-      <translation>YZ平面</translation>
+      <location filename="../../OriginGroupExtension.cpp" line="162"/>
+      <source>Origin</source>
+      <translation>原點</translation>
     </message>
   </context>
   <context>
-    <name>App::OriginGroupExtension</name>
+    <name>Notifications</name>
     <message>
-      <location filename="../../OriginGroupExtension.cpp" line="134"/>
+      <location filename="../../Document.cpp" line="1163"/>
+      <source>
+It is recommended that the user right-click the root of the document and select Mark to recompute.
+The user should then click the Refresh button in the main toolbar.
+</source>
+      <translation type="unfinished">
+It is recommended that the user right-click the root of the document and select Mark to recompute.
+The user should then click the Refresh button in the main toolbar.
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>App::LocalCoordinateSystem</name>
+    <message>
+      <location filename="../../Datums.cpp" line="209"/>
+      <source>X-axis</source>
+      <translation type="unfinished">X-axis</translation>
+    </message>
+    <message>
+      <location filename="../../Datums.cpp" line="210"/>
+      <source>Y-axis</source>
+      <translation type="unfinished">Y-axis</translation>
+    </message>
+    <message>
+      <location filename="../../Datums.cpp" line="211"/>
+      <source>Z-axis</source>
+      <translation type="unfinished">Z-axis</translation>
+    </message>
+    <message>
+      <location filename="../../Datums.cpp" line="212"/>
+      <source>XY-plane</source>
+      <translation type="unfinished">XY-plane</translation>
+    </message>
+    <message>
+      <location filename="../../Datums.cpp" line="213"/>
+      <source>XZ-plane</source>
+      <translation type="unfinished">XZ-plane</translation>
+    </message>
+    <message>
+      <location filename="../../Datums.cpp" line="214"/>
+      <source>YZ-plane</source>
+      <translation type="unfinished">YZ-plane</translation>
+    </message>
+    <message>
+      <location filename="../../Datums.cpp" line="215"/>
       <source>Origin</source>
       <translation>原點</translation>
     </message>

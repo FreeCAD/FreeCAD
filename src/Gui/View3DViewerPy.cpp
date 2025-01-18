@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
+# include <string>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -31,6 +32,7 @@
 #include <Base/MatrixPy.h>
 
 #include "PythonWrapper.h"
+#include "NavigationStyle.h"
 #include "View3DViewerPy.h"
 #include "View3DInventorViewer.h"
 
@@ -96,6 +98,10 @@ void View3DInventorViewerPy::init_type()
         "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled.");
     add_varargs_method("grabFramebuffer", &View3DInventorViewerPy::grabFramebuffer,
         "grabFramebuffer() -> QImage: renders and returns a 32-bit RGB image of the framebuffer.");
+
+    add_varargs_method("setOverrideMode", &View3DInventorViewerPy::setOverrideMode,
+        "setOverrideMode(mode): sets the display override mode.");
+
     add_varargs_method("setEnabledNaviCube", &View3DInventorViewerPy::setEnabledNaviCube,
         "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.");
     add_varargs_method("isEnabledNaviCube", &View3DInventorViewerPy::isEnabledNaviCube,
@@ -103,6 +109,10 @@ void View3DInventorViewerPy::init_type()
     add_varargs_method("setNaviCubeCorner", &View3DInventorViewerPy::setNaviCubeCorner,
         "setNaviCubeCorner(int): sets the corner where to show the navi cube:\n"
         "0=top left, 1=top right, 2=bottom left, 3=bottom right");
+
+    add_varargs_method("getNavigationStyle",&View3DInventorViewerPy::getNavigationStyle,
+    "getNavigationStyle() -> NavigationStyle\n" "Returns the current viewer navigation style class.\n"
+    );
 }
 
 View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
@@ -576,6 +586,17 @@ Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
     return wrap.fromQImage(img.mirrored());
 }
 
+Py::Object View3DInventorViewerPy::setOverrideMode(const Py::Tuple& args)
+{
+    const char* mode;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &mode)) {
+        throw Py::Exception();
+    }
+
+    _viewer->setOverrideMode(std::string(mode));
+    return Py::None();
+}
+
 Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)
 {
     PyObject* m=Py_False;
@@ -601,5 +622,17 @@ Py::Object View3DInventorViewerPy::setNaviCubeCorner(const Py::Tuple& args)
     if (pos < 0 || pos > 3)
         throw Py::IndexError("Value out of range");
     _viewer->setNaviCubeCorner(pos);
+    return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::getNavigationStyle(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    NavigationStyle* navigationStyle = _viewer->navigationStyle();
+    if (navigationStyle) {
+        return Py::asObject(navigationStyle->getPyObject());
+    }
     return Py::None();
 }

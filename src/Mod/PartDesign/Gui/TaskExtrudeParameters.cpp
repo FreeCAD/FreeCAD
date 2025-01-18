@@ -925,7 +925,7 @@ void TaskExtrudeParameters::setDirectionMode(int index)
         extrude->UseCustomVector.setValue(false);
     }
 
-    // if we don't use custom direction, only allow to show its direction
+    // if we don't use custom direction, only allow one to show its direction
     if (index != DirectionModes::Custom) {
         ui->XDirectionEdit->setEnabled(false);
         ui->YDirectionEdit->setEnabled(false);

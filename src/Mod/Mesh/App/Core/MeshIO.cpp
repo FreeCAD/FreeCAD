@@ -1668,7 +1668,7 @@ bool MeshOutput::SaveBinarySTL(std::ostream& output) const
         output.write((const char*)&usAtt, sizeof(usAtt));
 
         ++clIter;
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     return true;
@@ -1739,14 +1739,14 @@ bool MeshOutput::SaveSMF(std::ostream& out) const
         }
 
         out << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     // facet indices
     for (const auto& it : rFacets) {
         out << "f " << it._aulPoints[0] + 1 << " " << it._aulPoints[1] + 1 << " "
             << it._aulPoints[2] + 1 << '\n';
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     return true;
@@ -1931,14 +1931,14 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
         else {
             out << pt.x << " " << pt.y << " " << pt.z << '\n';
         }
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     // facet indices (no texture and normal indices)
     for (const auto& it : rFacets) {
         out << "3 " << it._aulPoints[0] << " " << it._aulPoints[1] << " " << it._aulPoints[2]
             << '\n';
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     return true;
