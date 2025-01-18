@@ -190,7 +190,7 @@
     <text id="legal_owner_2_data_field" x="811" y="561.1" freecad:editable="legal_owner_2" style="font-size:3.5px;text-align:center;text-anchor:middle"> <tspan/></text>
     <text id="legal_owner_3_data_field" x="811" y="565.1" freecad:editable="legal_owner_3" style="font-size:3.5px;text-align:center;text-anchor:middle"> <tspan/></text>
     <text id="legal_owner_4_data_field" x="811" y="569.1" freecad:editable="legal_owner_4" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
-    <text id="identification_number_data_field" x="652" y="581.2" freecad:editable="identification_number"><tspan>DN</tspan></text>
+    <text id="identification_number_data_field" x="652" y="581.2" freecad:editable="drawing_number"><tspan>DN</tspan></text>
     <text id="revision_index_data_field" x="801" y="581.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
     <text id="date_of_issue_data_field" x="752" y="581.2" freecad:editable="date_of_issue" freecad:autofill="date"><tspan>YYYY-MM-DD</tspan></text>
     <text id="sheet_number_data_field" x="821" y="581.2" freecad:editable="sheet_number" freecad:autofill="sheet" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
