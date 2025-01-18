@@ -113,7 +113,6 @@
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
 #include "SolverGeometryExtension.h"
-
 #include "ExternalGeometryFacade.h"
 #include <Mod/Part/App/Datums.h>
 
@@ -2109,17 +2108,20 @@ int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
         return 0;
     auto flag = flags.front();
 
-    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+    // no need to check input data validity as this is an sketchobject managed operation.
+    Base::StateLocker lock(managedoperation, true);
 
     bool update = false;
     bool touched = false;
     auto geos = ExternalGeo.getValues();
-    std::set<int> idSet(geoIds.begin(),geoIds.end());
-    for(auto geoId : geoIds) {
-        if(geoId > GeoEnum::RefExt || -geoId-1>=ExternalGeo.getSize())
+    std::set<int> idSet(geoIds.begin(), geoIds.end());
+    for (auto geoId : geoIds) {
+        if (geoId > GeoEnum::RefExt || -geoId-1>=ExternalGeo.getSize()) {
             continue;
-        if(!idSet.count(geoId))
+        }
+        if (idSet.count(geoId) == 0) {
             continue;
+        }
         idSet.erase(geoId);
         const int idx = -geoId - 1;
         auto& geo = geos[idx];
@@ -2144,18 +2146,20 @@ int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
         geo = geo->clone();
         egf->setGeometry(geo);
         egf->setFlag(flag, value);
-        for (size_t i=1; i<flags.size(); ++i)
+        for (size_t i=1; i<flags.size(); ++i) {
             egf->setFlag(flags[i], value);
-        if (value || flag != ExternalGeometryExtension::Frozen)
-            update = true;
+        }
+        update = update || (value || flag != ExternalGeometryExtension::Frozen);
         touched = true;
     }
 
-    if(!touched)
+    if (!touched) {
         return -1;
+    }
     ExternalGeo.setValues(geos);
-    if (update)
+    if (update) {
         rebuildExternalGeometry();
+    }
     return 0;
 }
 
