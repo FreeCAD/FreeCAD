@@ -54,6 +54,8 @@ public:
     bool onDelete(const std::vector<std::string> &parms) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
+    void regroupSubViews();
+
 protected:
     bool setEdit(int ModNum) override;
 
