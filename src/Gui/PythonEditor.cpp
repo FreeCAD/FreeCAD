@@ -277,8 +277,9 @@ void PythonEditor::onExecuteInConsole()
         int pos = block.position();
         int off = block.length() - 1;
         if (pos >= selStart || pos + off >= selStart) {
-            if (pos + 1 > selEnd)
+            if (pos + 1 > selEnd) {
                 break;
+            }
 
             QString lineText = block.text();
             selectedCode.append(lineText + QLatin1String("\n"));
