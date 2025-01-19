@@ -16,9 +16,12 @@ set(TechDrawLIBS
     Measure
     Part
     Spreadsheet
-    Import
     PartDesign
 )
+
+if (BUILD_IMPORT)
+    list(APPEND TechDrawLIBS Import)
+endif ()
 
 include_directories(
     ${QtConcurrent_INCLUDE_DIRS}
