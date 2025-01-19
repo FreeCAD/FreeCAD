@@ -59,7 +59,7 @@ map<string, unsigned int> Type::typemap;
 vector<TypeData*> Type::typedata;
 set<string> Type::loadModuleSet;
 
-void* Type::createInstance()
+void* Type::createInstance() const
 {
     instantiationMethod method = typedata[index]->instMethod;
     return method ? (*method)() : nullptr;
