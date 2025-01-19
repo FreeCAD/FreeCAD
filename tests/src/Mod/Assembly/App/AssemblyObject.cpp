@@ -24,8 +24,7 @@ protected:
     {
         _docName = App::GetApplication().getUniqueDocumentName("test");
         auto _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        _assemblyObj =
-            static_cast<Assembly::AssemblyObject*>(_doc->addObject("Assembly::AssemblyObject"));
+        _assemblyObj = _doc->addObject<Assembly::AssemblyObject>();
         _jointGroupObj = static_cast<Assembly::JointGroup*>(
             _assemblyObj->addObject("Assembly::JointGroup", "jointGroupTest"));
     }

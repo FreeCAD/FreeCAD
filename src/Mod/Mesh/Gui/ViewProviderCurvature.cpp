@@ -480,8 +480,7 @@ public:
             }
         }
         if (!group) {
-            group = dynamic_cast<App::DocumentObjectGroup*>(
-                doc->addObject("App::DocumentObjectGroup", internalname.c_str()));
+            group = doc->addObject<App::DocumentObjectGroup>(internalname.c_str());
         }
 
         auto anno = dynamic_cast<App::AnnotationLabel*>(

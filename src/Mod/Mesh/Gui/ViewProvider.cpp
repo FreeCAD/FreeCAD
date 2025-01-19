@@ -975,7 +975,7 @@ public:
         Gui::Document* gui = mesh->getDocument();
         App::Document* doc = gui->getDocument();
 
-        auto cpy = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
+        auto cpy = doc->addObject<Mesh::Feature>();
         auto org = mesh->getObject<Mesh::Feature>();
         cpy->Label.setValue(org->Label.getValue());
         cpy->Mesh.setValue(org->Mesh.getValue());

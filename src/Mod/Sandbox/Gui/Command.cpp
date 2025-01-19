@@ -593,7 +593,7 @@ void CmdSandboxMeshLoader::activated(int)
 
     Base::Reference<Mesh::MeshObject> data = thread.getMesh();
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
+    Mesh::Feature* mesh = doc->addObject<Mesh::Feature>("Mesh");
     mesh->Mesh.setValuePtr((Mesh::MeshObject*)data);
     mesh->purgeTouched();
 }
@@ -650,7 +650,7 @@ void CmdSandboxMeshLoaderBoost::activated(int)
     fi.wait(); // wait for it to be finished
 
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
+    Mesh::Feature* mesh = doc->addObject<Mesh::Feature>("Mesh");
     mesh->Mesh.setValuePtr((Mesh::MeshObject*)fi.get());
     mesh->purgeTouched();
 }
@@ -704,7 +704,7 @@ void CmdSandboxMeshLoaderFuture::activated(int)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     for (QFuture< Base::Reference<Mesh::MeshObject> >::const_iterator it = future.begin(); it != future.end(); ++it) {
-        Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
+        Mesh::Feature* mesh = doc->addObject<Mesh::Feature>("Mesh");
         mesh->Mesh.setValuePtr((Mesh::MeshObject*)(*it));
         mesh->purgeTouched();
     }
@@ -1368,7 +1368,7 @@ void CmdMengerSponge::activated(int)
     kernel.RebuildNeighbours();
 
     App::Document* doc = App::GetApplication().newDocument();
-    Mesh::Feature* feature = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","MengerSponge"));
+    Mesh::Feature* feature = doc->addObject<Mesh::Feature>("MengerSponge");
     feature->Mesh.setValue(*mesh);
     feature->purgeTouched();
 }

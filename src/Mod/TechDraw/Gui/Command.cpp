@@ -124,15 +124,13 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
 
-        auto page = dynamic_cast<TechDraw::DrawPage *>
-                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        auto page = getDocument()->addObject<TechDraw::DrawPage>("Page");
         if (!page) {
             throw Base::TypeError("CmdTechDrawPageDefault - page not created");
         }
         page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
-                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        auto svgTemplate = getDocument()->addObject<TechDraw::DrawSVGTemplate>("Template");
         if (!svgTemplate) {
             throw Base::TypeError("CmdTechDrawPageDefault - template not created");
         }
@@ -195,15 +193,13 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
 
-        auto page = dynamic_cast<TechDraw::DrawPage *>
-                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        auto page = getDocument()->addObject<TechDraw::DrawPage>("Page");
         if (!page) {
             throw Base::TypeError("CmdTechDrawPageTemplate - page not created");
         }
         page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
-                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        auto svgTemplate = getDocument()->addObject<TechDraw::DrawSVGTemplate>("Template");
         if (!svgTemplate) {
             throw Base::TypeError("CmdTechDrawPageTemplate - template not created");
         }

@@ -655,7 +655,7 @@ bool Mesh2ShapeGmsh::loadOutput()
     stlIn.close();
     kernel.harmonizeNormals();
 
-    auto fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
+    auto fea = doc->addObject<Mesh::Feature>("Mesh");
     fea->Label.setValue(d->label);
     fea->Mesh.setValue(kernel.getKernel());
     stl.deleteFile();

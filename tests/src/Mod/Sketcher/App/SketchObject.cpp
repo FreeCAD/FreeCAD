@@ -12,6 +12,7 @@
 
 using namespace SketcherTestHelpers;
 
+
 TEST_F(SketchObjectTest, createSketchObject)  // NOLINT
 {
     // Arrange

@@ -165,8 +165,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
     }
     this->attachDocument(m_partDocument);
     m_partDocument->openTransaction("Project on surface");
-    m_projectionObject = dynamic_cast<Part::Feature*>(
-        m_partDocument->addObject("Part::Feature", "Projection Object"));
+    m_projectionObject = m_partDocument->addObject<Part::Feature>("Projection Object");
     if (!m_projectionObject) {
         throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
     }

@@ -123,8 +123,7 @@ private:
         Base::FileInfo file(EncodedName.c_str());
         // create new document and add Import feature
         App::Document* pcDoc = App::GetApplication().newDocument();
-        FemMeshObject* pcFeature = static_cast<FemMeshObject*>(
-            pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
+        FemMeshObject* pcFeature = pcDoc->addObject<FemMeshObject>(file.fileNamePure().c_str());
         pcFeature->Label.setValue(file.fileNamePure().c_str());
         pcFeature->FemMesh.setValuePtr(mesh.release());
         pcFeature->purgeTouched();
@@ -160,8 +159,7 @@ private:
             std::unique_ptr<FemMesh> mesh(new FemMesh);
             mesh->read(EncodedName.c_str());
 
-            FemMeshObject* pcFeature = static_cast<FemMeshObject*>(
-                pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
+            FemMeshObject* pcFeature = pcDoc->addObject<FemMeshObject>(file.fileNamePure().c_str());
             pcFeature->Label.setValue(file.fileNamePure().c_str());
             pcFeature->FemMesh.setValuePtr(mesh.release());
             pcFeature->purgeTouched();
@@ -321,8 +319,7 @@ private:
         }
 
         FemMeshPy* pShape = static_cast<FemMeshPy*>(pcObj);
-        Fem::FemMeshObject* pcFeature =
-            static_cast<Fem::FemMeshObject*>(pcDoc->addObject("Fem::FemMeshObject", name));
+        Fem::FemMeshObject* pcFeature = pcDoc->addObject<Fem::FemMeshObject>(name);
         // copy the data
         pcFeature->FemMesh.setValue(*(pShape->getFemMeshPtr()));
         pcDoc->recompute();

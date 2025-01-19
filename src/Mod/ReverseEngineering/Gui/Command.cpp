@@ -576,13 +576,11 @@ void CmdMeshBoundary::activated(int)
         }
 
         if (!shape.IsNull()) {
-            Part::Feature* shapeFea =
-                static_cast<Part::Feature*>(document->addObject("Part::Feature", "Face from mesh"));
+            Part::Feature* shapeFea = document->addObject<Part::Feature>("Face from mesh");
             shapeFea->Shape.setValue(shape);
         }
         else {
-            Part::Feature* shapeFea =
-                static_cast<Part::Feature*>(document->addObject("Part::Feature", "Wire from mesh"));
+            Part::Feature* shapeFea = document->addObject<Part::Feature>("Wire from mesh");
             shapeFea->Shape.setValue(compound);
         }
     }

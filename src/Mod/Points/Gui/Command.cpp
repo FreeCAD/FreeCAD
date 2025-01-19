@@ -386,8 +386,7 @@ void CmdPointsMerge::activated(int iMsg)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     doc->openTransaction("Merge point clouds");
-    Points::Feature* pts =
-        static_cast<Points::Feature*>(doc->addObject("Points::Feature", "Merged Points"));
+    Points::Feature* pts = doc->addObject<Points::Feature>("Merged Points");
     Points::PointKernel* kernel = pts->Points.startEditing();
 
     std::vector<App::DocumentObject*> docObj =
@@ -455,8 +454,7 @@ void CmdPointsStructure::activated(int iMsg)
     for (auto it : docObj) {
         std::string name = it->Label.getValue();
         name += " (Structured)";
-        Points::Structured* output =
-            static_cast<Points::Structured*>(doc->addObject("Points::Structured", name.c_str()));
+        Points::Structured* output = doc->addObject<Points::Structured>(name.c_str());
         output->Label.setValue(name);
 
         // Already sorted, so just make a copy
