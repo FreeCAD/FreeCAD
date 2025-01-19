@@ -63,7 +63,7 @@
 
 #include <Base/Console.h>
 
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoTouchEvents.h"
 #include "View3DInventorViewer.h"
 

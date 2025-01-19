@@ -65,7 +65,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCDB.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCVectorizeSVGAction.h"

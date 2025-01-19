@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
 #endif
 
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
 
 
@@ -34,33 +35,33 @@ using namespace Gui;
 
 // ----------------------------------------------------------------------------------
 
-/* TRANSLATOR Gui::RevitNavigationStyle */
+/* TRANSLATOR Gui::BlenderNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::RevitNavigationStyle, Gui::UserNavigationStyle)
+TYPESYSTEM_SOURCE(Gui::BlenderNavigationStyle, Gui::UserNavigationStyle)
 
-RevitNavigationStyle::RevitNavigationStyle() : lockButton1(false)
+BlenderNavigationStyle::BlenderNavigationStyle() : lockButton1(false)
 {
 }
 
-RevitNavigationStyle::~RevitNavigationStyle() = default;
+BlenderNavigationStyle::~BlenderNavigationStyle() = default;
 
-const char* RevitNavigationStyle::mouseButtons(ViewerMode mode)
+const char* BlenderNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
         return QT_TR_NOOP("Press left mouse button");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press middle mouse button");
-    case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press SHIFT and middle mouse button");
+    case NavigationStyle::DRAGGING:
+        return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button");
+        return QT_TR_NOOP("Scroll mouse wheel");
     default:
         return "No description";
     }
 }
 
-SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
+SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
@@ -109,7 +110,7 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mouse Button / Spaceball Button handling
     if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const auto event = (const SoMouseButtonEvent *) ev;
+        const auto * const event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -193,7 +194,7 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
-        const auto event = (const SoLocation2Event *) ev;
+        const auto * const event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
@@ -213,7 +214,7 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const auto event = static_cast<const SoMotion3Event *>(ev);
+        const auto * const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -257,10 +258,12 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
         break;
     case BUTTON1DOWN|BUTTON2DOWN:
-    case BUTTON3DOWN:
         newmode = NavigationStyle::PANNING;
         break;
     case SHIFTDOWN|BUTTON3DOWN:
+        newmode = NavigationStyle::PANNING;
+        break;
+    case BUTTON3DOWN:
         if (newmode != NavigationStyle::DRAGGING) {
             saveCursorPosition(ev);
         }
@@ -273,9 +276,9 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     default:
         // Reset mode to IDLE when button 3 is released
-        // This stops the DRAGGING when button 3 is released but SHIFT is still pressed
+        // This stops the PANNING when button 3 is released but SHIFT is still pressed
         // This stops the ZOOMING when button 3 is released but CTRL is still pressed
-        if ((curmode == NavigationStyle::DRAGGING || curmode == NavigationStyle::ZOOMING)
+        if ((curmode == NavigationStyle::PANNING || curmode == NavigationStyle::ZOOMING)
             && !this->button3down) {
             newmode = NavigationStyle::IDLE;
         }
@@ -304,5 +307,6 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
     // hierarchy.
     if (!processed)
         processed = inherited::processSoEvent(ev);
+
     return processed;
 }
