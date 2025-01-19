@@ -1452,9 +1452,12 @@ QComboBox {
 QComboBox:editable {
   background-color: #252525;
 }
+
 QComboBox QAbstractItemView {
-  border: 1px solid #020202;
-  border-radius: 2px;
+  border: 2px solid #020202;
+  border-left: 4px solid qlineargradient(x1:1, y0:0, x2:0, y1:0, stop:0 #252525,stop:0.5 #252525 stop:1 #020202);
+  border-right: 4px solid qlineargradient(x1:0, y0:0, x2:1, y1:0, stop:0 #252525,stop:0.5 #252525, stop:1 #020202);
+  /* border-radius: 2px; */
   background-color: #252525;
   selection-background-color: @ThemeAccentColor1;
 }
@@ -1553,7 +1556,6 @@ QComboBox::down-arrow {
 QComboBox::down-arrow:on, QComboBox::down-arrow:hover, QComboBox::down-arrow:focus {
   image: url(qss:images_classic/arrow-down-white.png);
 }
-
 
 /*==================================================================================================
 Tasks panel (custom FreeCAD class)
@@ -2435,6 +2437,7 @@ QTableView::item {
     color: white;
 }
 
+
 /* QHeaderView ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
@@ -2880,3 +2883,4 @@ QTreeView::item:!selected:hover#groupsTreeView {
   background-color: @ThemeAccentColor1;
   margin-left:-8px;
 } */
+

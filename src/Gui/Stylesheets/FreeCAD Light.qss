@@ -1450,8 +1450,11 @@ QComboBox {
 QComboBox:editable {
   background-color: #fdfdfd;
 }
+
 QComboBox QAbstractItemView {
-  border: 1px solid #ababab;
+  border: 2px solid #ababab;
+  border-left: 4px solid qlineargradient(x1:1, y0:0, x2:0, y1:0, stop:0 #fdfdfd,stop:0.6 #fdfdfd stop:1 #ababab);
+  border-right: 4px solid qlineargradient(x1:0, y0:0, x2:1, y1:0, stop:0 #fdfdfd,stop:0.6 #fdfdfd, stop:1 #ababab);
   border-radius: 2px;
   background-color: #fdfdfd;
   selection-background-color: @ThemeAccentColor1;
