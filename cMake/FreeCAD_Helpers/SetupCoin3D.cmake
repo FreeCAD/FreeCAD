@@ -6,16 +6,19 @@ macro(SetupCoin3D)
         find_library(COIN3D_LIBRARIES Coin)
     endif ()
 
-    # Try MODULE mode
-    find_package(Coin3D)
-    if (NOT COIN3D_FOUND)
-        # Try CONFIG mode
-        find_package(Coin CONFIG REQUIRED)
-        if (Coin_FOUND)
-            set(COIN3D_INCLUDE_DIRS ${Coin_INCLUDE_DIR})
-            set(COIN3D_LIBRARIES ${Coin_LIBRARIES})
+    # Try CONFIG mode
+    find_package(Coin CONFIG)
+    if (Coin_FOUND)
+        set(COIN3D_INCLUDE_DIRS ${Coin_INCLUDE_DIR})
+        set(COIN3D_LIBRARIES ${Coin_LIBRARIES})
+        set(COIN3D_LIB_DIRS ${Coin_LIB_DIR})
+    else ()
+        # Try MODULE mode (FindCoin3D.cmake, included by CMake)
+        find_package(Coin3D)
+        if (NOT COIN3D_FOUND)
+            message(FATAL_ERROR "Could not find Coin3D")
         endif ()
-    ENDIF ()
+    endif ()
 
     IF (NOT COIN3D_VERSION)
         file(READ "${COIN3D_INCLUDE_DIRS}/Inventor/C/basic.h" _coin3d_basic_h)

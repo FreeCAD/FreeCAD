@@ -58,7 +58,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
-    ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
@@ -74,7 +73,6 @@ endif(MSVC)
 if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
-         ${COIN3D_LIBRARIES}
          ${OPENGL_gl_LIBRARY}
     )
 
@@ -87,12 +85,19 @@ if(MSVC)
 else(MSVC)
     set(FreeCADGui_LIBS
         FreeCADApp
-        ${COIN3D_LIBRARIES}
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
         ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
+
+if (TARGET Coin::Coin)
+    list(APPEND FreeCADGui_LIBS Coin::Coin)
+else()
+    include_directories(${COIN3D_INCLUDE_DIRS})
+    link_directories(${COIN3D_LIB_DIRS})
+    list(APPEND FreeCADGui_LIBS ${COIN3D_LIBRARIES})
+endif()
 
 if (WIN32)
     if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
@@ -254,6 +259,7 @@ generate_from_xml(LinkViewPy)
 generate_from_xml(ViewProviderLinkPy)
 generate_from_xml(AxisOriginPy)
 generate_from_xml(CommandPy)
+generate_from_xml(NavigationStylePy)
 
 generate_from_py(FreeCADGuiInit GuiInitScript.h)
 
@@ -887,6 +893,7 @@ SET(View3D_CPP_SRCS
     Multisample.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
+    NavigationStylePyImp.cpp
     InventorNavigationStyle.cpp
     CADNavigationStyle.cpp
     RevitNavigationStyle.cpp
@@ -920,6 +927,7 @@ SET(View3D_SRCS
     Multisample.h
     MouseSelection.h
     NavigationStyle.h
+    NavigationStylePy.xml
     GestureNavigationStyle.h
     SplitView3DInventor.h
     View.h

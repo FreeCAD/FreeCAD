@@ -21,6 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+
 #include "Services.h"
 
 AttacherSubObjectPlacement::AttacherSubObjectPlacement()

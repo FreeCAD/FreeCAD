@@ -4,44 +4,44 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="73"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="75"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
       <translation>Der Mittelpunkt des Wendelanfangs; abgeleitet von der Referenzachse.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="75"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="77"/>
       <source>The helix' direction; derived from the reference axis.</source>
       <translation>Die Richtung der Wendel, abgeleitet von der Referenzachse.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="77"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="79"/>
       <source>The reference axis of the helix.</source>
       <translation>Die Referenzachse der Wendel.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="79"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="81"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
       <translation>Der Wendel-Eingabemodus legt fest, welche Eigenschaften vom Benutzer gesetzt werden.
 Abhängige Eigenschaften werden dann berechnet.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="83"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="85"/>
       <source>The axial distance between two turns.</source>
       <translation>Der axiale Abstand zwischen zwei Windungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="85"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="87"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
       <translation>Die Höhe des Wendelpfades ohne Berücksichtigung der Höhe des Profils.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="87"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="89"/>
       <source>The number of turns in the helix.</source>
       <translation>Die Anzahl der Windungen der Wendel.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="90"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="92"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
@@ -50,34 +50,39 @@ Werte außer Null wandeln die Wendel in eine konische Spirale.
 Positive Werte lassen den Radius wachsen, negative lassen ihn schrumpfen.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="95"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
       <translation>Die Aufweitung des Wendelradius pro Windung.
 Werte außer Null wandeln die Wendel in eine konische Spirale.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="98"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="100"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
       <translation>Legt die Drehrichtung nach links fest,
  d.h. gegen den Uhrzeigersinn, wenn man sich entlang der Achse bewegt.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="101"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="103"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
       <translation>Bestimmt, ob die Wendel in die entgegengesetzte Richtung der Achse zeigt.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="103"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="105"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
       <translation>Wenn gesetzt, wird das Ergebnis die gemeinsame Geometrie (Schnittmenge) des Profils und des bereits existierenden Körpers sein.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="105"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="107"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
       <translation>Wenn falsch, schlägt das Werkzeug einen Anfangswert für die Ganghöhe (Steigung) vor, der auf dem Profil-Begrenzungsrahmen basiert, damit eine Selbstdurchdringung vermieden wird.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="110"/>
+      <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
+      <translation type="unfinished">Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
@@ -297,7 +302,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="609"/>
       <source>Duplicate selected &amp;object</source>
-      <translation>Ausgewähltes Objekt duplizieren</translation>
+      <translation type="unfinished">Duplicate selected &amp;object</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
@@ -572,7 +577,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1126"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>Vertiefung  mit skizziertem Querschnitt erzeugen</translation>
+      <translation>Erstellt eine Vertiefung mit der ausgewählten Skizze</translation>
     </message>
   </context>
   <context>
@@ -603,7 +608,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2110"/>
       <source>PolarPattern</source>
-      <translation>Polares Muster</translation>
+      <translation>Radiales Muster</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2111"/>
@@ -952,7 +957,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="348"/>
       <source>PolarPattern</source>
-      <translation>Polares Muster</translation>
+      <translation>Radiales Muster</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="385"/>
@@ -1073,7 +1078,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear:</source>
-      <translation>Außenrad:</translation>
+      <translation>Außenverzahnung:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="179"/>
@@ -1564,7 +1569,7 @@ erneut klicken um die Auswahl zu beenden</translation>
       <translation>Winkel</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="332"/>
+      <location filename="../../TaskChamferParameters.cpp" line="327"/>
       <source>Empty chamfer created !
 </source>
       <translation>Leere Fase erzeugt !
@@ -1660,7 +1665,7 @@ erneut klicken um die Auswahl zu beenden</translation>
       <translation>Entformungsrichtung umkehren</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="292"/>
+      <location filename="../../TaskDraftParameters.cpp" line="287"/>
       <source>Empty draft created !
 </source>
       <translation>Leerer Entwurf erstellt !
@@ -1698,13 +1703,13 @@ erneut klicken um die Auswahl zu beenden</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1218"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1217"/>
       <source>No face selected</source>
       <translation>Keine Fläche ausgewählt</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="160"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1053"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1052"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
@@ -1714,48 +1719,48 @@ erneut klicken um die Auswahl zu beenden</translation>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="268"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="267"/>
       <source>Preview</source>
       <translation>Vorschau</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="272"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="271"/>
       <source>Select faces</source>
       <translation>Flächen auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="496"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="495"/>
       <source>No shape selected</source>
       <translation>Keine Form gewählt</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="604"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="603"/>
       <source>Sketch normal</source>
       <translation>Skizzennormale</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="607"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="606"/>
       <source>Face normal</source>
       <translation>Flächennormale</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="611"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="610"/>
       <source>Select reference...</source>
       <translation>Referenz auswählen...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="615"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="620"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="614"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="619"/>
       <source>Custom direction</source>
       <translation>Benutzerdefinierte Richtung</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1005"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1004"/>
       <source>Click on a shape in the model</source>
       <translation>Auf eine Form im Modell klicken</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1213"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1212"/>
       <source>Click on a face in the model</source>
       <translation>Auf eine Fläche im Modell klicken</translation>
     </message>
@@ -1880,7 +1885,7 @@ erneut klicken um die Auswahl zu beenden</translation>
       <translation>Alle Kanten verwenden</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="198"/>
+      <location filename="../../TaskFilletParameters.cpp" line="193"/>
       <source>Empty fillet created!</source>
       <translation>Leere Abrundung erstellt!</translation>
     </message>
@@ -2091,6 +2096,26 @@ erneut klicken um die Auswahl zu beenden</translation>
       <location filename="../../TaskHoleParameters.cpp" line="68"/>
       <source>UTS extra fine profile</source>
       <translation>UTS extra Feinprofil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="69"/>
+      <source>ANSI pipe profile</source>
+      <translation type="unfinished">ANSI pipe profile</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <source>BSP pipe profile</source>
+      <translation type="unfinished">BSP pipe profile</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="71"/>
+      <source>BSW whitworth profile</source>
+      <translation type="unfinished">BSW whitworth profile</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="72"/>
+      <source>BSF whitworth fine profile</source>
+      <translation type="unfinished">BSF whitworth fine profile</translation>
     </message>
   </context>
   <context>
@@ -2801,9 +2826,9 @@ entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="174"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="188"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Winkel</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="42"/>
@@ -2812,19 +2837,19 @@ entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="235"/>
       <source>Base X axis</source>
       <translation>Basis-X-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="236"/>
       <source>Base Y axis</source>
       <translation>Basis Y-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="221"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="237"/>
       <source>Base Z axis</source>
       <translation>Basis-Z-Achse</translation>
     </message>
@@ -2840,7 +2865,7 @@ entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="228"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="244"/>
       <source>Select reference...</source>
       <translation>Referenz auswählen...</translation>
     </message>
@@ -2866,8 +2891,8 @@ entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="447"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="152"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
@@ -2877,37 +2902,32 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Ansicht aktualisieren</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.h" line="52"/>
-      <source>Revolution parameters</source>
-      <translation>Drehteil-Parameter</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="176"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="190"/>
       <source>To last</source>
       <translation>Bis letzte Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="179"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="193"/>
       <source>Through all</source>
       <translation>Durch alles</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
       <source>To first</source>
       <translation>Bis zur dichtesten Objektbegrenzung</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="196"/>
       <source>Up to face</source>
       <translation>Bis zu Oberfläche</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="183"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
       <source>Two dimensions</source>
       <translation>Zwei Längen</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="433"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="454"/>
       <source>No face selected</source>
       <translation>Keine Fläche ausgewählt</translation>
     </message>
@@ -3015,7 +3035,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="110"/>
       <source>Arc</source>
-      <translation>Kreisbogen</translation>
+      <translation>Verrunden</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="115"/>
@@ -3029,7 +3049,7 @@ erneut klicken um die Auswahl zu beenden</translation>
       <translation>Dicke nach innen auftragen</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="265"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="260"/>
       <source>Empty thickness created !
 </source>
       <translation>Leere Wandstärke erzeugt !
@@ -3150,22 +3170,22 @@ erneut klicken um die Auswahl zu beenden</translation>
   <context>
     <name>PartDesignGui::ViewProviderDatum</name>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="115"/>
+      <location filename="../../ViewProviderDatum.cpp" line="114"/>
       <source>Datum Plane parameters</source>
       <translation>Parameter der Bezugsebene</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="120"/>
+      <location filename="../../ViewProviderDatum.cpp" line="119"/>
       <source>Datum Line parameters</source>
       <translation>Parameter der Bezugslinie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="125"/>
+      <location filename="../../ViewProviderDatum.cpp" line="124"/>
       <source>Datum Point parameters</source>
       <translation>Parameter des Bezugspunktes</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="130"/>
+      <location filename="../../ViewProviderDatum.cpp" line="129"/>
       <source>Local Coordinate System parameters</source>
       <translation>Parameter des lokalen Koordinatensystems</translation>
     </message>
@@ -3432,7 +3452,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="77"/>
-      <location filename="../../ViewProviderDatum.cpp" line="250"/>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="96"/>
@@ -3444,7 +3464,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="251"/>
+      <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../SketchWorkflow.cpp" line="593"/>
       <location filename="../../ViewProvider.cpp" line="97"/>
@@ -3707,18 +3727,18 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="445"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="205"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="221"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikale Skizzenachse</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="446"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="206"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontale Skizzenachse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <source>Construction line %1</source>
       <translation>Konstruktionslinie %1</translation>
     </message>
@@ -3728,7 +3748,7 @@ This may lead to unexpected results.</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="138"/>
+      <location filename="../../Utils.cpp" line="140"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3737,33 +3757,33 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Wenn ein älteres Dokument mit PartDesign-Objekten ohne Körper vorliegt, wird die PartDesign-Funktion Migrieren verwendet, um sie in einen Körper abzulegen.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="186"/>
+      <location filename="../../Utils.cpp" line="188"/>
       <source>Active Body Required</source>
       <translation>Aktiver Körper erforderlich</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="189"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Um ein neues PartDesign-Objekt zu erstellen, muss ein aktiver Körper in diesem Dokument vorhanden sein.
 Bitte einen Körker aktivieren (Doppelklick) oder einen neuen Körper erstellen.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="222"/>
+      <location filename="../../Utils.cpp" line="224"/>
       <source>Feature is not in a body</source>
       <translation>Objekt ist nicht Teil eines Körpers</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="225"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Um diese Funktion verwenden zu können, muss es Teil eines Körpers im Dokument sein.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="255"/>
+      <location filename="../../Utils.cpp" line="257"/>
       <source>Feature is not in a part</source>
       <translation>Objekt ist nicht Teil einer Baugruppe</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="258"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Um diese Funktion verwenden zu können, muss es Teil einer Baugruppe im Dokument sein.</translation>
     </message>
@@ -3786,30 +3806,30 @@ Bitte einen Körker aktivieren (Doppelklick) oder einen neuen Körper erstellen.
       <translation>Boolesche Verknüpfung bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="114"/>
-      <location filename="../../ViewProviderDatum.cpp" line="208"/>
+      <location filename="../../ViewProviderDatum.cpp" line="113"/>
+      <location filename="../../ViewProviderDatum.cpp" line="207"/>
       <source>Plane</source>
       <translation>Ebene</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="119"/>
-      <location filename="../../ViewProviderDatum.cpp" line="204"/>
+      <location filename="../../ViewProviderDatum.cpp" line="118"/>
+      <location filename="../../ViewProviderDatum.cpp" line="203"/>
       <source>Line</source>
       <translation>Linie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="124"/>
-      <location filename="../../ViewProviderDatum.cpp" line="212"/>
+      <location filename="../../ViewProviderDatum.cpp" line="123"/>
+      <location filename="../../ViewProviderDatum.cpp" line="211"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="129"/>
+      <location filename="../../ViewProviderDatum.cpp" line="128"/>
       <source>Coordinate System</source>
       <translation>Koordinatensystem</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="229"/>
+      <location filename="../../ViewProviderDatum.cpp" line="228"/>
       <source>Edit datum</source>
       <translation>Bezug bearbeiten</translation>
     </message>
@@ -4215,7 +4235,7 @@ Achtung, die Berechnung kann einige Zeit dauern!</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="90"/>
       <source>Clearance</source>
-      <translation>Spiel</translation>
+      <translation>Art der Durchgangsbohrung</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="470"/>
@@ -4256,25 +4276,25 @@ Achtung, die Berechnung kann einige Zeit dauern!</translation>
       <location filename="../../TaskHoleParameters.ui" line="103"/>
       <source>Hole clearance
 Only available for holes without thread</source>
-      <translation>Bohrungsspiel
-Nur für Bohrungen ohne Gewinde verfügbar</translation>
+      <translation>Ausführungsart des Durchmessers von Durchgangsbohrungen
+Steht nur für Durchgangsbohrungen (Bohrungen ohne Gewinde) zur Verfügung</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
-      <location filename="../../TaskHoleParameters.cpp" line="660"/>
+      <location filename="../../TaskHoleParameters.cpp" line="666"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="113"/>
-      <location filename="../../TaskHoleParameters.cpp" line="663"/>
-      <location filename="../../TaskHoleParameters.cpp" line="680"/>
+      <location filename="../../TaskHoleParameters.cpp" line="669"/>
+      <location filename="../../TaskHoleParameters.cpp" line="686"/>
       <source>Close</source>
       <translation>Eng</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
-      <location filename="../../TaskHoleParameters.cpp" line="666"/>
+      <location filename="../../TaskHoleParameters.cpp" line="672"/>
       <source>Wide</source>
       <translation>Weit</translation>
     </message>
@@ -4291,7 +4311,7 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="692"/>
       <source>Drill Point</source>
-      <translation>Bohrpunkt</translation>
+      <translation>Bohrerspitze</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="134"/>
@@ -4315,7 +4335,7 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
       <location filename="../../TaskHoleParameters.ui" line="185"/>
       <location filename="../../TaskHoleParameters.ui" line="355"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Sackloch</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="190"/>
@@ -4357,7 +4377,7 @@ Schraubenkopfes unter der Oberfläche</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="530"/>
       <source>Hole Cut Type</source>
-      <translation>Lochschnitt Typ</translation>
+      <translation>Art der Senkung</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="633"/>
@@ -4412,12 +4432,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Umgekehrt</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="677"/>
+      <location filename="../../TaskHoleParameters.cpp" line="683"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="683"/>
+      <location filename="../../TaskHoleParameters.cpp" line="689"/>
       <source>Loose</source>
       <translation>Ungebunden</translation>
     </message>
@@ -4690,12 +4710,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="401"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Das verknüpfte Objekt ist kein PartDesign-Formelement</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="408"/>
+      <location filename="../../../App/Body.cpp" line="410"/>
       <source>Tip shape is empty</source>
       <translation>Form der "Spitze" ist leer</translation>
     </message>
@@ -4715,100 +4735,100 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Das BaseFeature enthält eine leere Form</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="82"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="81"/>
       <source>Cannot do boolean cut without BaseFeature</source>
       <translation>Eine boolesche Differenz (Beschnitt) ohne BaseFeature ist nicht möglich</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="96"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="125"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="95"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="124"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
       <translation>Boolesche Verknüpfungen können nur mit Part::Feature-Objekten und ihren Derivaten durchgeführt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="103"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="102"/>
       <source>Cannot do boolean operation with invalid base shape</source>
       <translation>Boolesche Verknüpfungen können nicht mit ungültigem base shape durchgeführt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="109"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="108"/>
       <source>Cannot do boolean on feature which is not in a body</source>
       <translation>Eine boolesche Verknüpfung kann nicht an einem Formelement ausgeführt werden, das sich nicht in einem Körper befindet</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="135"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="134"/>
       <source>Base shape is null</source>
       <translation>Grundform ist NULL</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="116"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="115"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="137"/>
       <source>Tool shape is null</source>
       <translation>Werkzeugform ist NULL</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="154"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="153"/>
       <source>Unsupported boolean operation</source>
       <translation>Nicht unterstützte boolesche Verknüpfung</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="782"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="397"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="417"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="258"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="801"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="405"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="427"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="264"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Resulting shape is not a solid</source>
       <translation>Die resultierende Form ist kein Festkörper</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="786"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="797"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="401"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="421"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="809"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="823"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="832"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="180"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="409"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="431"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="117"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="263"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1956"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="193"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="166"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="271"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2218"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="201"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Das Ergebnis enthält mehrere Festkörper: Dies wird derzeit leider nicht unterstützt.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="153"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="159"/>
       <source>Failed to create chamfer</source>
       <translation>Fase konnte nicht erstellt werden</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureDraft.cpp" line="319"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="98"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="104"/>
       <source>Resulting shape is null</source>
       <translation>Die resultierende Form ist leer</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="176"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="185"/>
       <source>Resulting shape is invalid</source>
       <translation>Die resultierende Form ist ungültig</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="124"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="130"/>
       <source>No edges specified</source>
       <translation>Keine Kanten spezifiziert</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="240"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="249"/>
       <source>Size must be greater than zero</source>
       <translation>Abstand muss größer als Null sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="249"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="258"/>
       <source>Size2 must be greater than zero</source>
       <translation>Abstand2 muss größer als Null sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="254"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="263"/>
       <source>Angle must be greater than 0 and less than 180</source>
       <translation>Der Winkel muss größer als 0° und kleiner als 180° sein</translation>
     </message>
@@ -4818,28 +4838,28 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Abschrägung konnte nicht erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="81"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="87"/>
       <source>Fillet not possible on selected shapes</source>
       <translation>Abrundung an ausgewählten Formen nicht möglich</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="88"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="94"/>
       <source>Fillet radius must be greater than zero</source>
       <translation>Verrundungsradius muss größer als Null sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="87"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="93"/>
       <source>Angle of groove too large</source>
       <translation>Winkel der Nut zu groß</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="91"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="97"/>
       <source>Angle of groove too small</source>
       <translation>Winkel der Nut zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1673"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="110"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1934"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="116"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4849,516 +4869,516 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
 - Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="488"/>
       <source>Length too small</source>
       <translation>Länge zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="484"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="495"/>
       <source>Second length too small</source>
       <translation>Zweite Länge zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="529"/>
       <source>Failed to obtain profile shape</source>
       <translation>Profilform konnte nicht ermittelt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="570"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="581"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Erstellen fehlgeschlagen, weil die Richtung senkrecht auf dem Normalvektor der Skizze steht</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="628"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="639"/>
       <source>Extrude: Can only offset one face</source>
       <translation>Aufpolstern: kann nur eine Fläche versetzen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="589"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="127"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="600"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="133"/>
       <source>Creating a face from sketch failed</source>
       <translation>Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="668"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <source>Up to face: Could not get SubShape!</source>
       <translation>Bis zu Oberfläche: Konnte kein SubShape ermitteln!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="696"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
       <source>Unable to reach the selected shape, please select faces</source>
       <translation>Die ausgewählte Form konnte nicht erreicht werden, bitte Flächen auswählen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="723"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="740"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation>Größe des Schrägungswinkels ist größer oder gleich 90 Grad</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="734"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="751"/>
       <source>Padding with draft angle failed</source>
       <translation>Aufpolsterung mit Schrägungswinkel fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="149"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="155"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Die Drehachse schneidet die Skizze</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="227"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="157"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="238"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="163"/>
       <source>Could not revolve the sketch!</source>
       <translation>Konnte die Skizze nicht drehen!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="239"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="201"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="250"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="209"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Konnte keine Fläche aus der Skizze erstellen.
 Skizzenobjekte dürfen einander nicht schneiden.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="128"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="140"/>
       <source>Error: Pitch too small!</source>
       <translation>Fehler: Die Steigung ist zu gering!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="130"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="144"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="142"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="156"/>
       <source>Error: height too small!</source>
       <translation>Fehler: Höhe zu klein!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="136"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="148"/>
       <source>Error: pitch too small!</source>
       <translation>Fehler: Die Steigung ist zu gering!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="138"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="146"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="152"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="150"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="158"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="164"/>
       <source>Error: turns too small!</source>
       <translation>Fehler: Die Anzahl der Windungen ist zu klein!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="156"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="168"/>
       <source>Error: either height or growth must not be zero!</source>
       <translation>Fehler: Entweder die Höhe oder die Zuwachsrate darf nicht Null sein!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="170"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="182"/>
       <source>Error: unsupported mode</source>
       <translation>Fehler: nicht unterstützter Modus</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="182"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="194"/>
       <source>Error: No valid sketch or face</source>
       <translation>Fehler: Keine gültige Skizze oder Fläche</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="191"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="203"/>
       <source>Error: Face must be planar</source>
       <translation>Fehler: Fläche muss eben sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2196"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="268"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="298"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2516"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="295"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="327"/>
       <source>Error: Result is not a solid</source>
       <translation>Fehler: Ergebnis ist kein Festkörper</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="246"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="271"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Fehler: Es gibt nichts zum Abziehen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="250"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="272"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="301"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="275"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="299"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="330"/>
       <source>Error: Result has multiple solids</source>
       <translation>Fehler: Ergebnis besteht aus mehreren Festkörpern</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="261"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="288"/>
       <source>Error: Adding the helix failed</source>
       <translation>Fehler: Konnte Wendel nicht hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="285"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Fehler: Überschneidung mit der Helix ist leider fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="292"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="321"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Fehler: Konnte Wendel nicht abziehen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="313"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="344"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Fehler: Konnte keine Fläche aus Skizze erzeugen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1691"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1952"/>
       <source>Hole error: Creating a face from sketch failed</source>
       <translation>Fehler bei Bohrung: Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1716"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1977"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Bohrungsfehler: Nicht unterstützte Längenangabe</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1719"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1980"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Lochfehler: Ungültige Lochtiefe</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1742"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2003"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Bohrungsfehler: Ungültiger Kegelwinkel</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1763"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2024"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Lochfehler: Lochdurchmesser zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1767"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2028"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Bohrungsfehler: Die Senkungstiefe muss kleiner als die Bohrungstiefe sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1771"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2032"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Bohrungsfehler: Die Senkungstiefe muss größer oder gleich null sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1793"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Lochfehler: Ungültige Senkung</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1826"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2087"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Lochfehler: Ungültiger Spitzenwinkel</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1836"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2097"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Fehler bei Bohrung: Ungültiger Bohrpunkt</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1870"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2131"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Fehler bei Bohrung: Konnte die Skizze nicht drehen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1874"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2135"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Bohrungsfehler: Die resultierende Form ist leer</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1884"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <source>Error: Adding the thread failed</source>
       <translation>Fehler: Konnte das Gewinde nicht hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1935"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1940"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2201"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Boolesche Verknüpfung an Profilkante fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1946"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2207"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Boolesche Verknüpfung erzeugte einen Nicht-Festkörper an der Profilkante</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="160"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <source>Boolean operation failed</source>
       <translation>Boolesche Verknüpfung fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1966"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2228"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Es konnte keine Fläche aus der Skizze erstellt werden.
 Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in der Skizze erlaubt. Mehrere Flächen oder sich überschneidende Skizzenobjekte können nicht auf ein Mal bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2076"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2338"/>
       <source>Thread type out of range</source>
       <translation>Gewindetyp außerhalb des Bereichs</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2079"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2341"/>
       <source>Thread size out of range</source>
       <translation>Gewindegröße außerhalb des Bereichs</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2171"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2491"/>
       <source>Error: Thread could not be built</source>
       <translation>Fehler: Gewinde konnte nicht gebaut werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="141"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="147"/>
       <source>Loft: At least one section is needed</source>
       <translation>Fehler bei Ausformung: Mindestens ein Abschnitt wird benötigt</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="275"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="283"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Ausformung: Ein schwerwiegender Fehler ist beim Erstellen der Ausformung aufgetreten</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="178"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation>Ausormung: Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="211"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="217"/>
       <source>Loft: Failed to create shell</source>
       <translation>Ausformung: Fehler beim Erstellen des Hüllkörpers</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="816"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="844"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Konnte keine Fläche aus der Skizze erstellen.
 Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind nicht erlaubt.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="176"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="182"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>Fehler bei Rohr: Konnte keine Profilform generieren</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="181"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="187"/>
       <source>No spine linked</source>
       <translation>Keine Leitkurve verknüpft</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="194"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="200"/>
       <source>No auxiliary spine linked.</source>
       <translation>Keine Hilfs-Leitkurve verknüpft.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="215"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="221"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>Fehler bei Rohr: Nur ein einzelner Punkt wird benötigt, wenn eine Skizze mit isolierten Punkten für den Querschnitt verwendet wird</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="221"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="227"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>Fehler bei Rohr: Mindestens ein Querschnitt wird benötigt, wenn ein einzelner Punkt für das Profil verwendet wird</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="235"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="241"/>
       <source>Pipe: All sections need to be part features</source>
       <translation>Fehler bei Rohr: Alle Querschnitte müssen zu einem Teil gehören</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="241"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="247"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>Fehler bei Rohr: Konnte für einen Querschnitt keine Form generieren</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="250"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="256"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>Fehler bei Rohr: Nur das Profil und der letzte Querschnitt können Scheitelpunkte sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="259"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="265"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>Werden mehrere Querschnitte verwendet, müssen alle die gleiche Anzahl innerer Linienzüge besitzen wie der Basisquerschnitt</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="286"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="292"/>
       <source>Path must not be a null shape</source>
       <translation>Der Pfad darf keine leere Form sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="321"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="327"/>
       <source>Pipe could not be built</source>
       <translation>Rohr konnte nicht erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="366"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="372"/>
       <source>Result is not a solid</source>
       <translation>Das Ergebnis ist kein Festkörper</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="381"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="387"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>Rohr: Es gibt nichts, von dem etwas abgezogen werden kann</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="392"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <source>Adding the pipe failed</source>
       <translation>Das Rohr konnte nicht hinzugefügt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="412"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="422"/>
       <source>Subtracting the pipe failed</source>
       <translation>Das Rohr konnte nicht abgezogen werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="436"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="448"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Ein schwerwiegender Fehler ist beim Erstellen des Rohrs aufgetreten</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="559"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <source>Invalid element in spine.</source>
       <translation>Die Leitkurve enthält ein ungültiges Element.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="562"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="574"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>Ein Element der Leitkurve ist weder eine Kante noch ein Draht.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="575"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="587"/>
       <source>Spine is not connected.</source>
       <translation>Die Leitkurve ist nicht verbunden.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="579"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="591"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>Die Leitkurve ist weder eine Kante noch ein Draht.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="583"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="595"/>
       <source>Invalid spine.</source>
       <translation>Ungültige Leitkurve.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="95"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="101"/>
       <source>Cannot subtract primitive feature without base feature</source>
       <translation>Das Grundkörper-Formelement kann ohne Basis-Formelement nicht abgezogen werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="247"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="113"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="253"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="119"/>
       <source>Unknown operation type</source>
       <translation>Unbekannte Vorgangsart</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="253"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="120"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="259"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
       <source>Failed to perform boolean operation</source>
       <translation>Boolesche Verknüpfung konnte nicht ausgeführt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="206"/>
       <source>Length of box too small</source>
       <translation>Die Länge des Quaders ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="208"/>
       <source>Width of box too small</source>
       <translation>Die Breite des Quaders ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="201"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="210"/>
       <source>Height of box too small</source>
       <translation>Die Höhe des Quaders ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="256"/>
       <source>Radius of cylinder too small</source>
       <translation>Der Radius des Zylinders ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="249"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="258"/>
       <source>Height of cylinder too small</source>
       <translation>Die Höhe des Zylinders ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="251"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="260"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Der Drehwinkel des Zylinders ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="304"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="313"/>
       <source>Radius of sphere too small</source>
       <translation>Der Radius der Kugel ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="355"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="362"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="364"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Der Radius des Kegels darf nicht negativ sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="357"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="366"/>
       <source>Height of cone too small</source>
       <translation>Die Höhe des Kegels ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="420"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="422"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="429"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="431"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Der Radius des Ellipsoids ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="504"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="506"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="513"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="515"/>
       <source>Radius of torus too small</source>
       <translation>Der Radius des Torus ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="578"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Das Vieleck des Prismas ist ungültig; es muss 3 oder mehr Seiten haben</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="580"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Umkreis des Polygons des Prismas ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="573"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="582"/>
       <source>Height of prism is too small</source>
       <translation>Die Höhe des Prismas ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="663"/>
       <source>delta x of wedge too small</source>
       <translation>Das delta x des Keils ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="666"/>
       <source>delta y of wedge too small</source>
       <translation>Das delta x des Keils ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="660"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="669"/>
       <source>delta z of wedge too small</source>
       <translation>Das delta z des Keils ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="663"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="672"/>
       <source>delta z2 of wedge is negative</source>
       <translation>Das delta z2 des Keils ist negativ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="666"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="675"/>
       <source>delta x2 of wedge is negative</source>
       <translation>Das delta x2 des Keils ist negativ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="88"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="94"/>
       <source>Angle of revolution too large</source>
       <translation>Drehwinkel ist zu groß</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="94"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="100"/>
       <source>Angle of revolution too small</source>
       <translation>Drehwinkel ist zu klein</translation>
     </message>
@@ -5368,37 +5388,37 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
       <translation>Referenzachse ist ungültig</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="794"/>
       <source>Fusion with base feature failed</source>
       <translation>Vereinigung mit Basis-Formelement ist fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="108"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>Das mit dem Transformations-Formelement verknüpfte (Linked-) Objekt ist kein Part-Objekt</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="117"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="113"/>
       <source>No originals linked to the transformed feature.</source>
       <translation>Es sind keine Originale mit dem transformierten Formelement verknüpft.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="277"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="273"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Ungültige Stützform kann nicht transformiert werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="323"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="319"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Die Form des hinzuzufügenden/abzuziehenden Formelements ist leer</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="315"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="311"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Es können nur additive und subtraktive Formelemente transformiert werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureThickness.cpp" line="101"/>
+      <location filename="../../../App/FeatureThickness.cpp" line="107"/>
       <source>Invalid face reference</source>
       <translation>Ungültige Flächenreferenz</translation>
     </message>
@@ -5406,7 +5426,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
   <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-      <location filename="../../ViewProviderBody.cpp" line="137"/>
+      <location filename="../../ViewProviderBody.cpp" line="121"/>
       <source>Active body</source>
       <translation>Aktiver Körper</translation>
     </message>
@@ -5440,7 +5460,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="701"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="715"/>
       <source>Revolution parameters</source>
       <translation>Drehteil-Parameter</translation>
     </message>
@@ -5448,9 +5468,9 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="708"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="722"/>
       <source>Groove parameters</source>
-      <translation type="unfinished">Groove parameters</translation>
+      <translation>Parameter der Nut</translation>
     </message>
   </context>
 </TS>

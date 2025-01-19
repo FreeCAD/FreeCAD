@@ -4,17 +4,17 @@
   <context>
     <name>CmdFemConstraintBearing</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Bearing constraint</source>
       <translation>Vazba ložiska</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Creates a bearing constraint</source>
       <translation>Vytvoří vazbu ložiska</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdFemConstraintContact</name>
     <message>
-      <location filename="../../Command.cpp" line="290"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="291"/>
+      <location filename="../../Command.cpp" line="292"/>
       <source>Contact constraint</source>
       <translation>Kontaktní vazba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="292"/>
+      <location filename="../../Command.cpp" line="293"/>
       <source>Creates a contact constraint between faces</source>
       <translation>Vytvoří kontaktní vazbu mezi plochami</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdFemConstraintDisplacement</name>
     <message>
-      <location filename="../../Command.cpp" line="356"/>
+      <location filename="../../Command.cpp" line="357"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="357"/>
+      <location filename="../../Command.cpp" line="358"/>
       <source>Displacement boundary condition</source>
       <translation>Okrajová podmínka posunutí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="359"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
       <translation>Vytvoří okrajovou podmínku posunutí pro geometrickou entitu</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdFemConstraintFixed</name>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="408"/>
       <source>Fixed boundary condition</source>
       <translation>Okrajová podmínka vetknutí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
       <translation>Vytvoří okrajovou podmínku vetknutí pro geometrickou entitu</translation>
     </message>
@@ -76,35 +76,35 @@
   <context>
     <name>CmdFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="509"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Fluid boundary condition</source>
-      <translation>Mezní stav kapaliny</translation>
+      <translation>Okrajová podmínka tekutiny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="512"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation>Vytvořte okrajovou podmínku tekutiny na entitě plochy pro výpočetní dynamiku tekutin</translation>
+      <translation>Vytvořit okrajovou podmínku tekutiny na prvku plochy pro výpočet dynamiky tekutin (CFD)</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintForce</name>
     <message>
-      <location filename="../../Command.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="561"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="561"/>
+      <location filename="../../Command.cpp" line="562"/>
       <source>Force load</source>
       <translation>Zatížení silou</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="563"/>
       <source>Creates a force load applied to a geometric entity</source>
       <translation>Vytvoří silové zatížení působící na geometrickou entitu</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdFemConstraintGear</name>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="618"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="619"/>
       <source>Gear constraint</source>
       <translation>Vazba ozubeného kola</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="620"/>
       <source>Creates a gear constraint</source>
       <translation>Vytvoří vazbu ozubeného kola</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdFemConstraintHeatflux</name>
     <message>
-      <location filename="../../Command.cpp" line="665"/>
+      <location filename="../../Command.cpp" line="666"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="666"/>
+      <location filename="../../Command.cpp" line="667"/>
       <source>Heat flux load</source>
       <translation>Zatížení tepelným tokem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="667"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>Creates a heat flux load acting on a face</source>
       <translation>Vytvoří zatížení tepelným tokem působící na plochu</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="726"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="727"/>
       <source>Initial temperature</source>
       <translation>Počáteční teplota</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="727"/>
+      <location filename="../../Command.cpp" line="728"/>
       <source>Creates an initial temperature acting on a body</source>
       <translation>Vytvoří počáteční teplotu působící na těleso</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../Command.cpp" line="776"/>
+      <location filename="../../Command.cpp" line="777"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="777"/>
+      <location filename="../../Command.cpp" line="778"/>
       <source>Plane multi-point constraint</source>
       <translation>Rovinná multibodová vazba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="778"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>Creates a plane multi-point constraint for a face</source>
       <translation>Vytvoří rovinnou multibodovou vazbu pro plochu</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-      <location filename="../../Command.cpp" line="827"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="829"/>
       <source>Pressure load</source>
       <translation>Zatížení tlakem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="830"/>
       <source>Creates a pressure load acting on a face</source>
       <translation>Vytvoří tlakové zatížení působící na plochu</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-      <location filename="../../Command.cpp" line="938"/>
+      <location filename="../../Command.cpp" line="939"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="939"/>
+      <location filename="../../Command.cpp" line="940"/>
       <source>Pulley constraint</source>
       <translation>Vazba kladky</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="941"/>
       <source>Creates a pulley constraint</source>
       <translation>Vytvoří vazbu kladky</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdFemConstraintSpring</name>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Spring</source>
       <translation>Pružina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Creates a spring acting on a face</source>
       <translation>Vytvoří pružinu působící na plochu</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdFemConstraintTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="991"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="992"/>
+      <location filename="../../Command.cpp" line="993"/>
       <source>Temperature boundary condition</source>
       <translation>Okrajová podmínka teploty</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="993"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
       <translation>Vytvoří zatížení teplotou/koncentrovaným tepelným tokem působící na plochu</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdFemConstraintTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="1042"/>
+      <location filename="../../Command.cpp" line="1043"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1043"/>
+      <location filename="../../Command.cpp" line="1044"/>
       <source>Local coordinate system</source>
       <translation>Lokální souřadnicový systém</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1044"/>
+      <location filename="../../Command.cpp" line="1045"/>
       <source>Create a local coordinate system on a face</source>
       <translation>Vytvořit lokální souřadnicový systém na ploše</translation>
     </message>
@@ -274,32 +274,32 @@
   <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1189"/>
+      <location filename="../../Command.cpp" line="1190"/>
       <source>Nodes set</source>
       <translation>Sada uzlů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1190"/>
+      <location filename="../../Command.cpp" line="1191"/>
       <source>Creates a FEM mesh nodes set</source>
-      <translation>Vytvoří sadu uzlů sítě FEM</translation>
+      <translation>Vytvoří množinu uzlů MKP sítě</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1226"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
       <translation>Vyberte prosím samostatnou MKP síť nebo množinu uzlů.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Select a single FEM Mesh, please.</source>
       <translation>Vyberte prosím jednu MKP síť.</translation>
     </message>
@@ -307,82 +307,82 @@
   <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="1130"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1131"/>
       <source>Node set by poly</source>
-      <translation>Uzel nastavený pomocí poly</translation>
+      <translation>Množina uzlů polygonem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1131"/>
-      <location filename="../../Command.cpp" line="1133"/>
+      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1134"/>
       <source>Create node set by Poly</source>
-      <translation>Vytvoř množinu uzlů pomocí Poly</translation>
+      <translation>Vytvořit množinu uzlů pomocí polygonu</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2665"/>
       <source>Apply changes to pipeline</source>
-      <translation>Použít změny na potrubí</translation>
+      <translation>Aplikovat změny na objekt pipeline</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2665"/>
+      <location filename="../../Command.cpp" line="2666"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation>Aplikujte změny parametrů přímo a ne pouze při přepočtu...</translation>
+      <translation>Aplikovat změny parametrů přímo a ne pouze při přepočtu...</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2009"/>
+      <location filename="../../Command.cpp" line="2010"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2010"/>
+      <location filename="../../Command.cpp" line="2011"/>
       <source>Region clip filter</source>
-      <translation>Filtr krajního klipu</translation>
+      <translation>Výřezový filtr oblasti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2012"/>
+      <location filename="../../Command.cpp" line="2013"/>
       <source>Define/create a clip filter which uses functions to define the clipped region</source>
-      <translation>Definujte/vytvořte klipový filtr, který používá funkce k definování oříznuté oblasti</translation>
+      <translation>Definujte/vytvořte výřezový filtr za použití funkcí, pro definici oblasti výřezu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2565"/>
+      <location filename="../../Command.cpp" line="2566"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2566"/>
+      <location filename="../../Command.cpp" line="2567"/>
       <source>Select a pipeline, please.</source>
-      <translation>Vyberte potrubí, prosím.</translation>
+      <translation>Vyberte objekt pipeline, prosím.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2062"/>
+      <location filename="../../Command.cpp" line="2063"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2063"/>
+      <location filename="../../Command.cpp" line="2064"/>
       <source>Function cut filter</source>
-      <translation>Funkce cut filtr</translation>
+      <translation>Filtr oříznutí funkcí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2064"/>
+      <location filename="../../Command.cpp" line="2065"/>
       <source>Cut the data along an implicit function</source>
       <translation>Ořízněte data podél implicitní funkce</translation>
     </message>
@@ -390,73 +390,73 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2114"/>
+      <location filename="../../Command.cpp" line="2115"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2115"/>
+      <location filename="../../Command.cpp" line="2116"/>
       <source>Line clip filter</source>
-      <translation>Linkový klipový filtr</translation>
+      <translation>Výřezový filtr přímkou</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2116"/>
+      <location filename="../../Command.cpp" line="2117"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation>Definujte/vytvořte klipový filtr, který ořízne pole podél čáry</translation>
+      <translation>Definujte/vytvořte výřezový filtr, který vyřízne pole podél přímky</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2163"/>
+      <location filename="../../Command.cpp" line="2164"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2164"/>
+      <location filename="../../Command.cpp" line="2165"/>
       <source>Data at point clip filter</source>
-      <translation>Filtr dat v bodě klipu</translation>
+      <translation>Filtr dat v bodovém výřezu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2165"/>
+      <location filename="../../Command.cpp" line="2166"/>
       <source>Define/create a clip filter which clips a field data at point</source>
-      <translation>Definujte/vytvořte klipový filtr, který ořízne data pole v bodě</translation>
+      <translation>Definujte/vytvořte výřezový filtr, který vyřízne data pole v bodě</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2436"/>
+      <location filename="../../Command.cpp" line="2437"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2437"/>
+      <location filename="../../Command.cpp" line="2438"/>
       <source>Filter functions</source>
       <translation>Funkce filtru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2438"/>
+      <location filename="../../Command.cpp" line="2439"/>
       <source>Functions for use in postprocessing filter...</source>
-      <translation>Funkce pro použití ve filtru postprocessingu...</translation>
+      <translation>Funkce použitelné ve filtru postprocessingu...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2617"/>
+      <location filename="../../Command.cpp" line="2618"/>
       <source>Plane</source>
       <translation>Rovina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2625"/>
       <source>Sphere</source>
       <translation>Koule</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2631"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Cylinder</source>
       <translation>Válec</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2638"/>
+      <location filename="../../Command.cpp" line="2639"/>
       <source>Box</source>
       <translation>Kvádr</translation>
     </message>
@@ -464,93 +464,93 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1908"/>
+      <location filename="../../Command.cpp" line="1909"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>Tloušťka [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1912"/>
+      <location filename="../../Command.cpp" line="1913"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>Napětí [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1916"/>
+      <location filename="../../Command.cpp" line="1917"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>Linearizovaná napětí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1920"/>
+      <location filename="../../Command.cpp" line="1921"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
-      <translation>Membranová</translation>
+      <translation>Membránové napětí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1924"/>
+      <location filename="../../Command.cpp" line="1925"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
-      <translation>Membrána a ohýbání</translation>
+      <translation>Membránové a ohybové napětí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1929"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Celkem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2213"/>
+      <location filename="../../Command.cpp" line="2214"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2214"/>
+      <location filename="../../Command.cpp" line="2215"/>
       <source>Stress linearization plot</source>
       <translation>Graf linearizace napětí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2215"/>
+      <location filename="../../Command.cpp" line="2216"/>
       <source>Define/create stress linearization plots</source>
       <translation>Definujte/vytvářejte grafy linearizace napětí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
-      <location filename="../../Command.cpp" line="2261"/>
+      <location filename="../../Command.cpp" line="2253"/>
+      <location filename="../../Command.cpp" line="2262"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
-      <location filename="../../Command.cpp" line="2262"/>
+      <location filename="../../Command.cpp" line="2254"/>
+      <location filename="../../Command.cpp" line="2263"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation>Vyberte filtr Clip, který ořízne pole STRES podél čáry, prosím.</translation>
+      <translation>Vyberte výřezový filtr, který vyřízne pole NAPĚTÍ podél přímky, prosím.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2704"/>
+      <location filename="../../Command.cpp" line="2705"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2705"/>
-      <source>Post pipeline from result</source>
-      <translation>Odeslat kanál z výsledku</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2706"/>
-      <source>Creates a post processing pipeline from a result object</source>
-      <translation>Vytvoří kanál po zpracování z výsledného objektu</translation>
+      <source>Post pipeline from result</source>
+      <translation>Vytvořit objekt pipeline z výsledků</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2784"/>
+      <location filename="../../Command.cpp" line="2707"/>
+      <source>Creates a post processing pipeline from a result object</source>
+      <translation>Vytvoří postprocesový objekt pipeline z objektu výsledků</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2785"/>
       <source>Wrong selection type</source>
       <translation>Špatný typ výběru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2785"/>
+      <location filename="../../Command.cpp" line="2786"/>
       <source>Select a result object, please.</source>
       <translation>Vyberte prosím výsledný objekt.</translation>
     </message>
@@ -558,161 +558,161 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2288"/>
+      <location filename="../../Command.cpp" line="2289"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2289"/>
+      <location filename="../../Command.cpp" line="2290"/>
       <source>Scalar clip filter</source>
-      <translation>Skalární klipový filtr</translation>
+      <translation>Skalární výřezový filtr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2291"/>
+      <location filename="../../Command.cpp" line="2292"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
-      <translation>Definujte/vytvořte klipový filtr, který ořízne pole se skalární hodnotou</translation>
+      <translation>Definujte/vytvořte výřezový filtr, který vyřízne pole skalární hodnotou</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2338"/>
+      <location filename="../../Command.cpp" line="2339"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2339"/>
+      <location filename="../../Command.cpp" line="2340"/>
       <source>Warp filter</source>
       <translation>Filtr pokřivení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2340"/>
+      <location filename="../../Command.cpp" line="2341"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
-      <translation>Pokřivení geometrie podél vektorového pole o určitý faktor</translation>
+      <translation>Pokřivení geometrie podél vektorového pole v určeném měřítku</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="528"/>
       <source>Create fluid boundary condition</source>
-      <translation>Vytvořte hraniční podmínku tekutiny</translation>
+      <translation>Vytvořit okrajovou podmínku tekutiny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="261"/>
       <source>Make bearing constraint</source>
       <translation>Vytvořit vazbu ložiska</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Make contact constraint on a face</source>
       <translation>Vytvořit kontaktní vazbu na ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>Make displacement boundary condition on face</source>
-      <translation>Vyžvořit okrajovou podmínku posunutí na ploše</translation>
+      <translation>Vytvořit okrajovou podmínku posunutí na ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="424"/>
+      <location filename="../../Command.cpp" line="425"/>
       <source>Make fixed boundary condition for geometry</source>
       <translation>Vytvořit okrajovou podmínku vetknutí na geometrii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="474"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Make rigid body constraint</source>
       <translation>Vytvořit vazbu tuhého tělesa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="578"/>
+      <location filename="../../Command.cpp" line="579"/>
       <source>Make force load on geometry</source>
       <translation>Vytvořit zatížení silou na geometrii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="634"/>
+      <location filename="../../Command.cpp" line="635"/>
       <source>Make gear constraint</source>
       <translation>Vytvořit vazbu ozubeného kola</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
+      <location filename="../../Command.cpp" line="684"/>
       <source>Make heat flux load on face</source>
       <translation>Vytvořit zatížení tepelným tokem na ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="743"/>
+      <location filename="../../Command.cpp" line="744"/>
       <source>Make initial temperature condition on body</source>
       <translation>Vytvořit podmínku počáteční teploty na tělese</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="795"/>
       <source>Make plane multi-point constraint on face</source>
-      <translation>Vytvořit roviinou multibodovou podmínku na ploše</translation>
+      <translation>Vytvořit rovinnou multibodovou podmínku na ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
+      <location filename="../../Command.cpp" line="846"/>
       <source>Make pressure load on face</source>
       <translation>Vytvořit zatížení tlakem na ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="901"/>
+      <location filename="../../Command.cpp" line="902"/>
       <source>Make spring on face</source>
       <translation>Vytvořit pružinu na ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>Make pulley constraint</source>
-      <translation>Vtvořit vazbu kladky</translation>
+      <translation>Vytvořit vazbu kladky</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1009"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>Make temperature boundary condition on face</source>
-      <translation>Vyžvořit okrajovou podmínku teploty na ploše</translation>
+      <translation>Vytvořit okrajovou podmínku teploty na ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>Make local coordinate system on face</source>
-      <translation>Udělat lokální souřadnicový systém na ploše</translation>
+      <translation>Vytvořit lokální souřadnicový systém na ploše</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1110"/>
-      <location filename="../../Command.cpp" line="1261"/>
+      <location filename="../../Command.cpp" line="1111"/>
+      <location filename="../../Command.cpp" line="1262"/>
       <source>Place robot</source>
-      <translation>Umístěte robota</translation>
+      <translation>Umístit robota</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <source>Edit nodes set</source>
-      <translation>Upravit sadu uzlů</translation>
+      <translation>Upravit množinu uzlů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1213"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Create nodes set</source>
-      <translation>Vytvořte sadu uzlů</translation>
+      <translation>Vytvořit množinu uzlů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1352"/>
+      <location filename="../../Command.cpp" line="1353"/>
       <source>Edit Elements set</source>
-      <translation>Upravit sadu elementů</translation>
+      <translation>Upravit množinu elementů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1364"/>
       <source>Create Elements set</source>
-      <translation>Vytvořit sadu elementů</translation>
+      <translation>Vytvořit množinu elementů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1851"/>
       <source>Create filter</source>
       <translation>Vytvořit filtr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2470"/>
+      <location filename="../../Command.cpp" line="2471"/>
       <source>Create function</source>
       <translation>Vytvořit funkci</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2756"/>
+      <location filename="../../Command.cpp" line="2757"/>
       <source>Create pipeline from result</source>
-      <translation>Vytvořte potrubí z výsledku</translation>
+      <translation>Vytvořit objekt pipeline z výsledku</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="295"/>
@@ -732,7 +732,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Please choose values for the different groups.</source>
-      <translation>Byly zjištěny skupiny sítě. Vyberte prosím hodnoty pro různé skupiny.</translation>
+      <translation>Byly zjištěny skupiny sítí. Vyberte prosím hodnoty pro různé skupiny.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -742,7 +742,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="67"/>
       <source>Label</source>
-      <translation>Štítek</translation>
+      <translation>Popisek</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="72"/>
@@ -752,12 +752,12 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="77"/>
       <source>Not Marked</source>
-      <translation>Neoznačeno</translation>
+      <translation>Neoznačené</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="82"/>
       <source>Marked</source>
-      <translation>Výrazný</translation>
+      <translation>Označené</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
@@ -790,29 +790,29 @@
       <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
       <source>Insert component's
  initial temperature:</source>
-      <translation>Vložte součástky
- počáteční teplota:</translation>
+      <translation>Vložte počáteční
+teplotu komponentu:</translation>
     </message>
   </context>
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2619"/>
+      <location filename="../../Command.cpp" line="2620"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Vytvořte rovinnou funkci definovanou jejím počátkem a normálou</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
+      <location filename="../../Command.cpp" line="2627"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Vytvořte funkci koule definovanou jejím středem a poloměrem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2632"/>
+      <location filename="../../Command.cpp" line="2633"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Vytvořte funkci válce definovanou svým středem, osou a poloměrem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2639"/>
+      <location filename="../../Command.cpp" line="2640"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>Vytvořte krabicovou funkci definovanou svým středem, délkou, šířkou a výškou</translation>
     </message>
@@ -828,17 +828,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="40"/>
       <source>CalculiX binary</source>
-      <translation>Binární CalculiX</translation>
+      <translation>Binární soubor CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="47"/>
       <source>Search in known binary directories</source>
-      <translation>Vyhledávání ve známých binárních adresářích</translation>
+      <translation>Vyhledat ve známých adresářích binárních souborů</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
       <source>ccx binary path</source>
-      <translation>ccx binární cesta</translation>
+      <translation>cesta k bin. souboru "ccx"</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
@@ -863,12 +863,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="171"/>
       <source>Input file splitting</source>
-      <translation>Rozdělení vstupních souborů</translation>
+      <translation>Rozdělování vstupních souborů</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="181"/>
       <source>Split writing of  *.inp</source>
-      <translation>Dělené psaní *.inp</translation>
+      <translation>Rozdělený zápis *.inp</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="202"/>
@@ -898,7 +898,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="251"/>
       <source>Thermomech</source>
-      <translation>Teplota</translation>
+      <translation>Termo-mechanická</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="260"/>
@@ -918,7 +918,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use</source>
-      <translation>Počet CPU k použití</translation>
+      <translation>Počet využitelných CPU</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="304"/>
+      <source>Number of threads used for analysis</source>
+      <translation type="unfinished">Number of threads used for analysis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
@@ -941,6 +946,11 @@
       <translation>Pardiso</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <source>SPOOLES equation solver</source>
+      <translation type="unfinished">SPOOLES equation solver</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Iterativní škálování</translation>
@@ -953,12 +963,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="383"/>
       <source>Use non-linear geometry</source>
-      <translation>Použét nelineární geometrii</translation>
+      <translation>Použít nelineární geometrii</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="399"/>
       <source>Time incrementation control parameter</source>
-      <translation>Parametr řízení přírůstku času</translation>
+      <translation>Parametr ovládající přírůstek času</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="406"/>
@@ -968,7 +978,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="454"/>
       <source>Time Initial Step</source>
-      <translation>Čas Počáteční krok</translation>
+      <translation>Čas v počátečním kroku</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="502"/>
@@ -981,7 +991,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="509"/>
       <source>Time End</source>
-      <translation>Čas Konec</translation>
+      <translation>Koncový čas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="665"/>
@@ -991,12 +1001,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="686"/>
       <source>Thermo mechanical defaults</source>
-      <translation>Tepelně mechanické výchozí hodnoty</translation>
+      <translation>Výchozí hodnoty pro termo-mechaniku</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="694"/>
       <source>Analysis type (transient or steady state)</source>
-      <translation>Typ analýzy (přechodný nebo ustálený stav)</translation>
+      <translation>Typ analýzy (přechodný jev či ustálený stav)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="701"/>
@@ -1007,11 +1017,6 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
       <source>Maximum number of iterations</source>
       <translation>Maximální počet iterací</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-      <source>Spooles equation solver</source>
-      <translation>Řešič rovnic Spooles</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
@@ -1060,12 +1065,12 @@
       <translation>Dolní limit frekvence</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="149"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="151"/>
       <source>File does not exist</source>
       <translation>Soubor neexistuje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="150"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="152"/>
       <source>The specified executable
 '%1'
  does not exist!
@@ -1086,7 +1091,7 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
       <source>Elmer binaries</source>
-      <translation>Elmer binární soubory</translation>
+      <translation>Binární soubor Elmer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="38"/>
@@ -1097,12 +1102,12 @@ Zadejte prosím jiný soubor.</translation>
       <location filename="../../DlgSettingsFemElmer.ui" line="85"/>
       <location filename="../../DlgSettingsFemElmer.ui" line="148"/>
       <source>Search in known binary directories</source>
-      <translation>Vyhledávání ve známých binárních adresářích</translation>
+      <translation>Vyhledat ve známých adresářích binárních souborů</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="173"/>
       <source>ElmerGrid binary path</source>
-      <translation>Binární cesta ElmerGrid</translation>
+      <translation>Cesta k bin. souboru ElmerGrid</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
@@ -1113,13 +1118,38 @@ Zadejte prosím jiný soubor.</translation>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
       <source>The mesh volume regions processed by each CPU core
 will be merged to make the volume boundaries invisible.</source>
-      <translation>Oblasti objemu sítě zpracované každým jádrem CPU
+      <translation>Oblasti objemu sítě zpracované jednotlivými jádry CPU
 budou sloučeny, aby byly hranice objemu neviditelné.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="272"/>
       <source>Filter results</source>
       <translation>Filtrovat výsledky</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="291"/>
+      <source>Results</source>
+      <translation>Výsledky</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
+      <source>Save result in binary format</source>
+      <translation type="unfinished">Save result in binary format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="300"/>
+      <source>Use binary format</source>
+      <translation type="unfinished">Use binary format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
+      <source>Save the index of geometric entities</source>
+      <translation type="unfinished">Save the index of geometric entities</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="319"/>
+      <source>Save geometry IDs</source>
+      <translation type="unfinished">Save geometry IDs</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
@@ -1134,12 +1164,12 @@ budou sloučeny, aby byly hranice objemu neviditelné.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
       <source>ElmerSolver binary path</source>
-      <translation>Binární cesta ElmerSolver</translation>
+      <translation>Cesta k bin. souboru ElmerSolver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ponechte prázdné, chcete-li použít výchozí binární soubor Elmer elmer&lt;/p&gt;&lt;p&gt; &lt;span style=" font-weight:600;"&gt;Poznámka:&lt;/span&gt; Chcete-li použít vícevláknové zpracování, musíte zde zadat&lt;br&gt; spustitelná varianta s příponou &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ponechte prázdné, chcete-li použít výchozí binární soubor elmer&lt;/p&gt;&lt;p&gt; &lt;span style=" font-weight:600;"&gt;Poznámka:&lt;/span&gt; Chcete-li použít vícevláknové zpracování, musíte zde zadat&lt;br&gt; spustitelnou variantu s příponou &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
@@ -1159,15 +1189,15 @@ budou sloučeny, aby byly hranice objemu neviditelné.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="227"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Poznámka:&lt;/span&gt; Doporučuje se použít sudý počet jader, aby bylo možné využít symetrie sítě. (Použití 8 jader může být rychlejší než 9 jader.)&lt;br/&gt; &lt;span style=" font-weight:600;"&gt;Poznámka:&lt;/span&gt; V extrémních případech nemusí ElmerSolver konvergovat, pokud je číslo jádra příliš vysoké.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Poznámka:&lt;/span&gt; Doporučuje se použít sudý počet jader, aby bylo možné využít symetrií sítě. (Použití 8 jader může být rychlejší než 9 jader.)&lt;br/&gt; &lt;span style=" font-weight:600;"&gt;Poznámka:&lt;/span&gt; V extrémních případech nemusí ElmerSolver konvergovat, pokud je počet jader příliš vysoký.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="108"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="112"/>
       <source>File does not exist</source>
       <translation>Soubor neexistuje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="109"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="113"/>
       <source>The specified executable
 '%1'
  does not exist!
@@ -1178,20 +1208,20 @@ Specify another file please.</source>
 Zadejte prosím jiný soubor.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="127"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="138"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="142"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
       <translation>FEM Elmer: Není vhodný pro multithreading</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="128"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
       <translation>Nesprávné nastavení Elmer: Používáte více než jedno jádro CPU.
 Proto je vyžadován spustitelný soubor s příponou '_mpi.exe'.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="139"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="143"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
       <translation>Nesprávné nastavení Elmer: Používáte více než jedno jádro CPU.
@@ -1213,7 +1243,7 @@ Proto je vyžadován spustitelný soubor s příponou '_mpi'.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="28"/>
       <source>Which mesh elements to export</source>
-      <translation>Které prvky sítě exportovat</translation>
+      <translation>Které prvky sítě se mají exportovat</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="35"/>
@@ -1227,15 +1257,15 @@ not belonging to faces and faces not belonging to volumes.</source>
       <translation>Vše: Budou exportovány všechny prvky.
 
 Nejvyšší: Budou exportovány pouze nejvyšší prvky. To znamená
-for znamená objemy pro objemovou síť a plochy pro skořepinovou síť.
+objemy pro objemovou síť a plochy pro skořepinovou síť.
 
 MKP: Exportují se pouze prvky MKP. To znamená pouze hrany
-nepatřící do tváří a tváře nepatřící do svazků.</translation>
+nenáležící k plochám a plochy nenáležící k objemům.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="47"/>
       <source>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation>parametr prvku: Všechny: všechny prvky, nejvyšší: pouze nejvyšší prvky, FEM: Pouze prvky MKP (pouze hrany nepatřící plochám a plochy nepatřící objemům)</translation>
+      <translation>parametr prvku: Vše: všechny prvky, Nejvyšší: pouze nejvyšší prvky, MKP: Pouze prvky MKP (pouze hrany nenáležící plochám a plochy nenáležící objemům)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="57"/>
@@ -1294,7 +1324,7 @@ nebo materiál, v případě rozdílných materiálů.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
       <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
-      <translation>Ponechat aplikaci spravovat (vytvářet, mazat) pracovní adresáře pro všechny řešiče. Použít dočasné adresáře.</translation>
+      <translation>Nechat aplikaci spravovat (vytvářet, mazat) pracovní adresáře pro všechny řešiče. Použít dočasné adresáře.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1391,8 +1421,7 @@ v zobrazení modelu skryté</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Výchozí řešič přidaný, při
-přidání kontejneru analýzy</translation>
+      <translation>Výchozí řešič, vložený do kontejneru analýzy při jeho vytváření</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="414"/>
@@ -1410,30 +1439,55 @@ přidání kontejneru analýzy</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
       <source>Gmsh binary</source>
-      <translation>Gmsh binární</translation>
+      <translation>Binární soubor Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="40"/>
       <source>Search in known binary directories</source>
-      <translation>Vyhledávání ve známých binárních adresářích</translation>
+      <translation>Vyhledat ve známých adresářích binárních souborů</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="65"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="71"/>
       <source>Gmsh binary path</source>
-      <translation>Gmsh binární cesta</translation>
+      <translation>Cesta k bin. souboru Gmsh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="105"/>
       <source>Leave blank to use default Gmsh binary file</source>
       <translation>Ponechte prázdné pro použití výchozího binárního souboru Gmsh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="123"/>
+      <source>Options</source>
+      <translation>Možnosti</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="131"/>
+      <source>Log verbosity</source>
+      <translation type="unfinished">Log verbosity</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
+      <source>Level of verbosity printed on the task panel</source>
+      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
+      <source>Number of threads</source>
+      <translation type="unfinished">Number of threads</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="167"/>
+      <source>Number of threads used for meshing</source>
+      <translation type="unfinished">Number of threads used for meshing</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>File does not exist</source>
       <translation>Soubor neexistuje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
       <source>The specified executable
 '%1'
  does not exist!
@@ -1473,15 +1527,15 @@ FreeCAD result object: The imported data will be converted into a
 FreeCAD FEM Result object. Note: this setting needs the exact result
 component names and thus it only works properly with VTK files
 exported from FreeCAD.</source>
-      <translation>Výsledný objekt VTK: Bude importován výsledný objekt FreeCAD FEM VTK
-(rovná se objektu, který byl exportován).
+      <translation>VTK objekt výsledku: Bude importován VTK objekt FreeCAD MKP výsledku
+(rovný objektu, který byl exportován).
 
-Objekt sítě FEM: Výsledky v souboru VTK budou vynechány, pouze
-data sítě budou importována a bude vytvořen objekt sítě FreeCAD FEM.
+Objekt sítě MKP: Výsledky nebudou v souboru VTK zahrnuty, pouze
+budou importována data sítě a bude vytvořen objekt FreeCAD MKP sítě.
 
-Výsledný objekt FreeCAD: Importovaná data budou převedena na a
-FreeCAD FEM Výsledný objekt. Poznámka: toto nastavení vyžaduje přesný výsledek
-názvy komponent, a proto správně funguje pouze se soubory VTK
+FreeCAD objekt výsledku: Importovaná data budou převedena na
+objekt FreeCAD MKP výsledku. Poznámka: toto nastavení vyžaduje přesný
+název komponentu výsledku, a proto správně funguje pouze s VTK soubory
 exportované z FreeCADu.</translation>
     </message>
     <message>
@@ -1492,17 +1546,32 @@ exportované z FreeCADu.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="66"/>
       <source>VTK result object</source>
-      <translation>Objekt výsledku VTK</translation>
+      <translation>VTK objekt výsledku</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="71"/>
       <source>FEM mesh object</source>
-      <translation>MKP objekt sítě</translation>
+      <translation>Objekt sítě MKP</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
       <source>FreeCAD result object</source>
-      <translation>Objekt výsledku FreeCAD</translation>
+      <translation>FreeCAD objekt výsledku</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtk.ui" line="89"/>
+      <source>Export</source>
+      <translation>Export</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
+      <source>Mesh elements to export</source>
+      <translation type="unfinished">Mesh elements to export</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtk.ui" line="102"/>
+      <source>Mesh element level to export</source>
+      <translation type="unfinished">Mesh element level to export</translation>
     </message>
   </context>
   <context>
@@ -1515,17 +1584,17 @@ exportované z FreeCADu.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="29"/>
       <source>Mystran binary</source>
-      <translation>Binární Mystran</translation>
+      <translation>Binární soubor Mystran</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="40"/>
       <source>Search in known binary directories</source>
-      <translation>Vyhledávání ve známých binárních adresářích</translation>
+      <translation>Vyhledat ve známých adresářích binárních souborů</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="65"/>
       <source>Mystran binary path</source>
-      <translation>Mystranská binární cesta</translation>
+      <translation>Cesta k bin. souboru Mystran</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="99"/>
@@ -1569,22 +1638,22 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="29"/>
       <source>Z88 binary</source>
-      <translation>Binární Z88</translation>
+      <translation>Binární soubor Z88</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="46"/>
       <source>Search in known binary directories</source>
-      <translation>Vyhledávání ve známých binárních adresářích</translation>
+      <translation>Vyhledat ve známých adresářích binárních souborů</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="77"/>
       <source>z88r binary path</source>
-      <translation>binární cesta z88r</translation>
+      <translation>Cesta k bin. souboru z88r</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
       <source>Leave blank to use default Z88, z88r binary file</source>
-      <translation>Chcete-li použít výchozí binární soubor Z88 z88r, ponechte prázdné</translation>
+      <translation>Chcete-li použít výchozí binární soubor pro Z88 (z88r), ponechte prázdné</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1604,12 +1673,12 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="178"/>
       <source>Iteration solver with SOR preconditioning (-sorcg)</source>
-      <translation>Iterační řešič s předběžnou úpravou SOR (-sorcg)</translation>
+      <translation>Iterační řešič se SOR předzpracováním (-sorcg)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="183"/>
       <source>Iteration solver with SIC preconditioning (-siccg)</source>
-      <translation>Iterační řešič s předběžnou úpravou SIC (-siccg)</translation>
+      <translation>Iterační řešič se SIC předzpracováním (-siccg)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="188"/>
@@ -1619,7 +1688,7 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="196"/>
       <source>Max places in stiffness matrix</source>
-      <translation>Max míst v matici tuhosti</translation>
+      <translation>Max. počet bodů v matici tuhosti</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="209"/>
@@ -1627,15 +1696,13 @@ Zadejte prosím jiný soubor.</translation>
 You might need to increase this when using the
 Cholesky solver and you get the error message
 that "MAXGS" needs to be increased.</source>
-      <translation>Maximální místa v matici tuhostí.
-Možná budete muset toto zvýšit při použití
-Choleského řešiče a dostanete chybovou zprávu
-že „MAXGS“ je třeba zvýšit.</translation>
+      <translation>Maximální počet bodů v matici tuhosti.
+Pokud při použití Choleského řešiče obdržíte chybovou zprávu, že "MAXGS" je potřeba zvýšit, navyšte tuto hodnotu.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="240"/>
       <source>Max places in coincidence vector</source>
-      <translation>Maximální počet míst v koincidenčním vektoru</translation>
+      <translation>Max. počet bodů v koincidenčním vektoru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="253"/>
@@ -1646,13 +1713,11 @@ Choleského řešiče a dostanete chybovou zprávu
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation>Maximální místa ve vektoru koincidence.
+      <translation>Maximální počet bodů v koincidenčním vektoru.
 (počet uzlů na prvek krát
  počet konečných prvků)
 
-Mmůžete potřebovat zvýšit tuto hodnotu při použití
-iterativního řešiče, když se zobrazí chybová zpráva,
-že je třeba zvýšit „MAXKOI“.</translation>
+Pokud při použití iterativního řešiče obdržíte chybovou zprávu, že "MAXKOI" je potřeba zvýšit, navyšte tuto hodnotu.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="107"/>
@@ -1720,7 +1785,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="376"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="372"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1728,7 +1793,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="553"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="548"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1744,7 +1809,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1092"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1090"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1752,7 +1817,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="462"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="457"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1760,7 +1825,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="333"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1768,7 +1833,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="530"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="515"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1784,7 +1849,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="312"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="308"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1792,7 +1857,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="223"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="218"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1800,7 +1865,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="317"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1816,7 +1881,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="604"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="594"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1837,7 +1902,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="333"/>
+      <location filename="../../TaskPostBoxes.cpp" line="334"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -1866,44 +1931,44 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="184"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="202"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="217"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="169"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="200"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="172"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="170"/>
       <source>Please use only a single reference for bearing constraint</source>
       <translation>Prosím použijte pouze jednu referenci pro vazbu ložiska</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Only faces can be picked</source>
-      <translation>Mohou být vybrány jen stěny</translation>
+      <translation>Mohou být vybrány jen plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="183"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Mohou být vybrány pouze válcové plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="201"/>
       <source>Only planar faces can be picked</source>
-      <translation>Mohou být vybrány pouze rovinné stěny</translation>
+      <translation>Mohou být vybrány pouze rovinné plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="211"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="209"/>
       <source>Only linear edges can be picked</source>
       <translation>Mohou být vybrány pouze lineární hrany</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="218"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="216"/>
       <source>Only faces and edges can be picked</source>
-      <translation>Mohou být vybrány pouze stěny a hrany</translation>
+      <translation>Mohou být vybrány pouze plochy a hrany</translation>
     </message>
   </context>
   <context>
@@ -1915,74 +1980,74 @@ Zadejte prosím jiný soubor.</translation>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="193"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="204"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="216"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="224"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="325"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="336"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="355"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="363"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="399"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="409"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="192"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="222"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="266"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="275"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="322"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="328"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="333"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="344"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="359"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="404"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="132"/>
       <source>Only one face in object! - moved to master face</source>
-      <translation>Pouze jedna tvář v objektu! - přesunuto na hlavní tvář</translation>
+      <translation>Pouze jedna plocha v objektu! - převzata jako hlavní plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="194"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="326"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="323"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Pouze jedna hlavní plocha a jedna podřízená plocha pro vazbu kontaktu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="266"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="328"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="225"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="204"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="223"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Pouze jedna podřízená plocha pro vazbu kontaktu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="216"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="409"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="275"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="344"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="404"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="363"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="359"/>
       <source>Only faces can be picked</source>
-      <translation>Mohou být vybrány jen stěny</translation>
+      <translation>Mohou být vybrány jen plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="337"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="334"/>
       <source>Only one master for a contact constraint!</source>
-      <translation>Pouze jeden hlavní pro omezení kontaktu!</translation>
+      <translation>Pouze jeden master pro vazbu kontaktu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="352"/>
       <source>Only one master face for a contact constraint!</source>
-      <translation>Pouze jedna hlavní plocha pro omezení kontaktu!</translation>
+      <translation>Pouze jedna hlavní plocha pro vazbu kontaktu!</translation>
     </message>
   </context>
   <context>
@@ -2017,28 +2082,28 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskFemConstraintFixed</name>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="121"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="160"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="183"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="119"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="158"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="181"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="190"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="183"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="181"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="121"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="119"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="190"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="158"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="156"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Je povolen pouze jeden typ výběru (vrchol, plocha nebo hrana) na jeden prvek analýzy!</translation>
     </message>
@@ -2053,7 +2118,7 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="332"/>
       <source>Turbulence</source>
-      <translation>Turbulence</translation>
+      <translation>Turbulentní</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="333"/>
@@ -2063,111 +2128,111 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="335"/>
       <source>select boundary type, faces and set value</source>
-      <translation>vyberte typ ohraničení, plochy a nastavte hodnotu</translation>
+      <translation>vyberte druh rozhraní, ohraničující plochy a nastavte hodnotu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="507"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="506"/>
       <source>Intensity [0~1]</source>
       <translation>Intenzita [0~1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="509"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="508"/>
       <source>Dissipation Rate [m2/s3]</source>
-      <translation>Rychlost rozptylu [m2/s3]</translation>
+      <translation>Míra rozptylu [m2/s3]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="511"/>
       <source>Length Scale [m]</source>
       <translation>Měřítko délky [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="514"/>
       <source>Viscosity Ratio [1]</source>
       <translation>Viskozitní poměr [1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="518"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="517"/>
       <source>Hydraulic Diameter [m]</source>
       <translation>Hydraulický průměr [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="547"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="552"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="545"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="550"/>
       <source>Gradient [K/m]</source>
       <translation>Přechod [K/m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="554"/>
       <source>Flux [W/m2]</source>
       <translation>Tok [W/m2]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="633"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="631"/>
       <source>Empty selection</source>
       <translation>Prázdný výběr</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="633"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="631"/>
       <source>Select an edge or a face, please.</source>
       <translation>Vyberte hranu nebo plochu, prosím.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="654"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="670"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="678"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="685"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="643"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="652"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="668"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="676"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="683"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="646"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="644"/>
       <source>Selected object is not a part object!</source>
-      <translation>Vybraný objekt není dílčí objekt!</translation>
+      <translation>Vybraný objekt není objekt součásti!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="653"/>
       <source>Only one planar face or edge can be selected!</source>
       <translation>Lze vybrat pouze jednu rovinnou plochu nebo hranu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="671"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="669"/>
       <source>Only planar faces can be picked for 3D</source>
       <translation>Pro 3D lze vybrat pouze rovinné plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="679"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="677"/>
       <source>Only planar edges can be picked for 2D</source>
       <translation>Pro 2D lze vybrat pouze rovinné hrany</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="686"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="684"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
       <translation>Lze vybrat pouze plochy pro 3D díl nebo hrany pro 2D</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="821"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="831"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="870"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="893"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="903"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="819"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="829"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="891"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="901"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="821"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="893"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="819"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="891"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="831"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="903"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="829"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="901"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="866"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Je povolen pouze jeden typ výběru (vrchol, plocha nebo hrana) na jeden prvek analýzy!</translation>
     </message>
@@ -2175,39 +2240,39 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="127"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="209"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="174"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="206"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="127"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="199"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="197"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="209"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="206"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="174"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="172"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Je povolen pouze jeden typ výběru (vrchol, plocha nebo hrana) na jeden prvek analýzy!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="333"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="314"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="329"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="314"/>
       <source>Select an edge or a face, please.</source>
       <translation>Vyberte hranu nebo plochu, prosím.</translation>
     </message>
@@ -2215,55 +2280,55 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="151"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="159"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="149"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="157"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="164"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="152"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="150"/>
       <source>Only planar faces can be picked</source>
-      <translation>Mohou být vybrány pouze rovinné stěny</translation>
+      <translation>Mohou být vybrány pouze rovinné plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="158"/>
       <source>Only linear edges can be picked</source>
       <translation>Mohou být vybrány pouze lineární hrany</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="167"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <source>Only faces and edges can be picked</source>
-      <translation>Mohou být vybrány pouze stěny a hrany</translation>
+      <translation>Mohou být vybrány pouze plochy a hrany</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="265"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="275"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="330"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="257"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="266"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="276"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="331"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="351"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="265"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="330"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="257"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="321"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="275"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="266"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="331"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="286"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="352"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="342"/>
       <source>Selection must only consist of faces!</source>
       <translation>Výběr se smí obsahovat pouze plochy!</translation>
     </message>
@@ -2303,52 +2368,52 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="161"/>
       <source>Only faces can be picked</source>
-      <translation>Mohou být vybrány jen stěny</translation>
+      <translation>Mohou být vybrány jen plochy</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="170"/>
       <source>Only planar faces can be picked</source>
-      <translation>Mohou být vybrány pouze rovinné stěny</translation>
+      <translation>Mohou být vybrány pouze rovinné plochy</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="143"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="152"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="188"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="140"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="149"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="188"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="185"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="143"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="140"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="152"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="149"/>
       <source>Only faces can be picked</source>
-      <translation>Mohou být vybrány jen stěny</translation>
+      <translation>Mohou být vybrány jen plochy</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="94"/>
       <source>Pulley diameter</source>
       <translation>Průměr kladky</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="96"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
       <source>Torque [Nm]</source>
       <translation>Točivý moment [Nm]</translation>
     </message>
@@ -2356,30 +2421,30 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="186"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="129"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="138"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="183"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="192"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="186"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="129"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="183"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="138"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="192"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="147"/>
       <source>Only faces can be picked</source>
-      <translation>Mohou být vybrány jen stěny</translation>
+      <translation>Mohou být vybrány jen plochy</translation>
     </message>
   </context>
   <context>
@@ -2408,64 +2473,64 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="200"/>
       <source>Analysis feature update error</source>
       <translation>Chyba aktualizace prvku analýzy</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="201"/>
       <source>The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</source>
       <translation>Transformovatelné tváře se změnily. Přidejte pouze transformovatelné plochy a odeberte netransformovatelné plochy!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="301"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="293"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="299"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="307"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="315"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="337"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="345"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="355"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="396"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="328"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="336"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="346"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="387"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="419"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="428"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="438"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="301"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="428"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="293"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="419"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="300"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="308"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
       <source>Only one face for rectangular local coordinate system!</source>
       <translation>Pouze jednu plochu pro pravoúhlý lokální souřadnicový systém!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="338"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="329"/>
       <source>Only one face for local coordinate system!</source>
       <translation>Pouze jednu plochu pro lokální souřadnicový systém!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="397"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="388"/>
       <source>Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</source>
       <translation>Lze vybrat pouze transformovatelné plochy! Nejprve použijte okrajovou podmínku posunutí na povrch, poté aplikujte lokální soustavu souřadnic na povrch</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="438"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="428"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="345"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="336"/>
       <source>Only faces can be picked</source>
-      <translation>Mohou být vybrány jen stěny</translation>
+      <translation>Mohou být vybrány jen plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="356"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="347"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Mohou být vybrány pouze válcové plochy</translation>
     </message>
@@ -2481,7 +2546,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1272"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1266"/>
       <source>Clip region, choose implicit function</source>
       <translation>Clip region, zvolte implicitní funkci</translation>
     </message>
@@ -2489,7 +2554,7 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1566"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1585"/>
       <source>Function cut, choose implicit function</source>
       <translation>Funkce cut, zvolte implicitní funkci</translation>
     </message>
@@ -2497,12 +2562,12 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="486"/>
+      <location filename="../../TaskPostBoxes.cpp" line="487"/>
       <source>Data along a line options</source>
       <translation>Možnosti dat podél čáry</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="882"/>
+      <location filename="../../TaskPostBoxes.cpp" line="880"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Délka</translation>
@@ -2511,28 +2576,28 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="911"/>
+      <location filename="../../TaskPostBoxes.cpp" line="909"/>
       <source>Data at point options</source>
       <translation>Možnosti dat v bodě</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1244"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1238"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
-      <translation>%1 zavináč (%2; %3; %4) je: %5 %6</translation>
+      <translation>%1 v (%2; %3; %4) je: %5 %6</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="371"/>
+      <location filename="../../TaskPostBoxes.cpp" line="372"/>
       <source>Result display options</source>
-      <translation>Možnosti zobrazení výsledků</translation>
+      <translation>Možnosti zobrazení výsledku</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="457"/>
+      <location filename="../../TaskPostBoxes.cpp" line="458"/>
       <source>Implicit function</source>
       <translation>Implicitní funkce</translation>
     </message>
@@ -2540,15 +2605,15 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1709"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1728"/>
       <source>Scalar clip options</source>
-      <translation>Možnosti skalárního klipu</translation>
+      <translation>Možnosti skalárního výřezu</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1839"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1853"/>
       <source>Warp options</source>
       <translation>Možnosti pokřivení</translation>
     </message>
@@ -2588,157 +2653,84 @@ Zadejte prosím jiný soubor.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
-      <translation>Materiál FEM</translation>
+      <translation>Materiál pro MKP</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
-      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Materiál</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="34"/>
-      <source>Category</source>
-      <translation>Kategorie</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="48"/>
-      <source>Material card</source>
-      <translation>Karta materiálu</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="56"/>
-      <source>choose...</source>
-      <translation>vyber...</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="64"/>
-      <source>Material name</source>
-      <translation>Název materiálu</translation>
-    </message>
-    <message>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
-      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Textový popisek</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="80"/>
-      <source>Material Description</source>
-      <translation>Popis materiálu</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="99"/>
-      <source>Editing material</source>
-      <translation>Úprava materiálu</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="107"/>
-      <source>Use FreeCAD material editor</source>
-      <translation>Použít editor materiálů FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="123"/>
+      <location filename="../ui/Material.ui" line="394"/>
       <source>Use this task panel</source>
       <translation>Použít tento panel</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="144"/>
+      <location filename="../ui/Material.ui" line="29"/>
       <source>Basic Properties</source>
       <translation>Základní vlastnosti</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="155"/>
-      <source>Density</source>
-      <translation>Hustota</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="177"/>
-      <source>0 kg/m^3</source>
-      <translation>0 kg/m^3</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="213"/>
+      <location filename="../ui/Material.ui" line="91"/>
       <source>Mechanical Properties</source>
       <translation>Mechanické vlastnosti</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="224"/>
+      <location filename="../ui/Material.ui" line="102"/>
       <source>Young's Modulus:</source>
       <translation>Youngův modul:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="246"/>
-      <source>0 Pa</source>
-      <translation>0 Pa</translation>
+      <location filename="../ui/Material.ui" line="40"/>
+      <source>Density:</source>
+      <translation type="unfinished">Density:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="271"/>
+      <location filename="../ui/Material.ui" line="142"/>
       <source>Poisson Ratio:</source>
       <translation>Poissonovo číslo:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="323"/>
+      <location filename="../ui/Material.ui" line="190"/>
       <source>Fluidic Properties</source>
-      <translation>Fluidní vlastnosti</translation>
+      <translation>Vlastnosti tekutin</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="334"/>
+      <location filename="../ui/Material.ui" line="201"/>
       <source>Kinematic viscosity:</source>
       <translation>Kinematická viskozita:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="356"/>
-      <source>0 m^2/s</source>
-      <translation>0 m^2/s</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="392"/>
+      <location filename="../ui/Material.ui" line="252"/>
       <source>Thermal Properties</source>
       <translation>Tepelné vlastnosti</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="497"/>
+      <location filename="../ui/Material.ui" line="343"/>
       <source>Specific Heat Capacity:</source>
       <translation>Měrná tepelná kapacita:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="403"/>
+      <location filename="../ui/Material.ui" line="263"/>
       <source>Thermal Conductivity:</source>
       <translation>Tepelná vodivost:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="425"/>
-      <source>0 W/m/K</source>
-      <translation>0 W/m/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="450"/>
+      <location filename="../ui/Material.ui" line="303"/>
       <source>Expansion Coefficient:</source>
-      <translation>Koeficient expanze:</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="472"/>
-      <location filename="../ui/Material.ui" line="566"/>
-      <source>0 m/m/K</source>
-      <translation>0 m/m/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="519"/>
-      <source>0 J/kg/K</source>
-      <translation>0 J/kg/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="544"/>
-      <source>Vol Expansion Coeff</source>
-      <translation>Rozšiřovací Coeff</translation>
+      <translation>Koeficient roztažnosti:</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
       <source>Matrix Material</source>
-      <translation>Materiál matrice</translation>
+      <translation>Matriční materiál</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="45"/>
@@ -2762,7 +2754,7 @@ Zadejte prosím jiný soubor.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="67"/>
       <location filename="../ui/MaterialReinforcement.ui" line="140"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="83"/>
@@ -2781,12 +2773,12 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
-      <translation>Parametr sekce kapaliny</translation>
+      <translation>Parametr průřezu tekutiny</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
       <source>Liquid Section Parameter</source>
-      <translation>Parametr kapalné sekce</translation>
+      <translation>Parametr průřezu kapaliny</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
@@ -2819,17 +2811,17 @@ Zadejte prosím jiný soubor.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
       <location filename="../ui/ElementFluid1D.ui" line="180"/>
       <source>Initial Area</source>
-      <translation>Počáteční oblast</translation>
+      <translation>Počáteční plocha</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
       <source>Enlarged Area</source>
-      <translation>Zvětšená oblast</translation>
+      <translation>Rozšířená plocha</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted Area</source>
-      <translation>Smluvní oblast</translation>
+      <translation>Zúžená plocha</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -2888,17 +2880,17 @@ Zadejte prosím jiný soubor.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="561"/>
       <location filename="../ui/ElementFluid1D.ui" line="717"/>
       <source>Pipe Area</source>
-      <translation>Oblast potrubí</translation>
+      <translation>Plocha potrubí</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
       <source>Entrance Area</source>
-      <translation>Vstupní prostor</translation>
+      <translation>Plocha vstupu</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="436"/>
       <source>Diaphragm Area</source>
-      <translation>Oblast bránice</translation>
+      <translation>Plocha membrány/přepážky</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
@@ -2918,7 +2910,7 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="582"/>
       <source>Gate valve closing coefficient</source>
-      <translation>Koeficient uzavření šoupátka</translation>
+      <translation>Koeficient uzavírání klapkového ventilu</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
@@ -2943,12 +2935,12 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas Section Parameter</source>
-      <translation>Parametr sekce plynu</translation>
+      <translation>Parametr průřezu plynu</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open Channel Section Parameter</source>
-      <translation>Otevřete parametr sekce kanálu</translation>
+      <translation>Parametr průřezu shora otevřeného kanálu</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
@@ -2975,7 +2967,7 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif parameter</source>
-      <translation>Parametr Centrif</translation>
+      <translation>Parametr odstředivosti</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
@@ -3067,7 +3059,7 @@ Zadejte prosím jiný soubor.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="88"/>
       <source>To define a vector field</source>
-      <translation>Chcete-li definovat vektorové pole</translation>
+      <translation>Definovat vektorové pole</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="91"/>
@@ -3084,17 +3076,17 @@ s harmonickou/oscilační hnací silou</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="531"/>
       <source>Whether the boundary condition defines a constant potential</source>
-      <translation>Zda okrajová podmínka definuje konstantní potenciál</translation>
+      <translation>Zda tato okrajová podmínka definuje konstantní potenciál</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="544"/>
       <source>Whether the boundary condition defines a farfield potential</source>
-      <translation>Zda okrajová podmínka definuje potenciál vzdáleného pole</translation>
+      <translation>Zda tato okrajová podmínka definuje potenciál vzdáleného pole</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="554"/>
       <source>Whether the boundary condition is for the electric force</source>
-      <translation>Zda je okrajová podmínka pro elektrickou sílu</translation>
+      <translation>Zda je tato okrajová podmínka pro elektrickou sílu</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="566"/>
@@ -3107,7 +3099,7 @@ s harmonickou/oscilační hnací silou</translation>
       <location filename="../ui/Magnetization.ui" line="30"/>
       <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
-      <translation>Skutečnost</translation>
+      <translation>Reálná</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
@@ -3142,14 +3134,14 @@ s harmonickou/oscilační hnací silou</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Reálná část složky x potenciálu
+      <translation>Reálná část potenciálu, x-složka
 Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginární část složky x potenciálu
+      <translation>Imaginární část potenciálu, x-složka
 Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     </message>
     <message>
@@ -3163,14 +3155,14 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Reálná část složky y potenciálu
+      <translation>Reálná část potenciálu, y-složka
 Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginární část složky y potenciálu
+      <translation>Imaginární část potenciálu, y-složka
 Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     </message>
     <message>
@@ -3184,20 +3176,20 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Reálná část složky Z potenciálu
+      <translation>Reálná část potenciálu, z-složka
 Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginární část složky Z potenciálu
+      <translation>Imaginární část potenciálu, z-složka
 Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="534"/>
       <source>Potential Constant</source>
-      <translation>Potenciální konstanta</translation>
+      <translation>Konstanta potenciálu</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="547"/>
@@ -3207,12 +3199,12 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="557"/>
       <source>Calculate Electric Force</source>
-      <translation>Vypočítejte elektrickou sílu</translation>
+      <translation>Vypočítat elektrickou sílu</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="602"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation>Čítač tělesa (nebo plochy) s kapacitou</translation>
+      <translation>Čítač těles (nebo ploch) s definovanou kapacitou</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
@@ -3226,40 +3218,72 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
       <translation>Parametr průřezu</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="71"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="41"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="311"/>
       <source>Width:</source>
       <translation>Šířka:</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="97"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="67"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="279"/>
       <source>Height:</source>
       <translation>Výška:</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="149"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="104"/>
       <source>Diameter:</source>
       <translation>Průměr:</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="186"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter:</source>
       <translation>Vnější průměr:</translation>
     </message>
     <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="204"/>
+      <source>Axis1 Length:</source>
+      <translation type="unfinished">Axis1 Length:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="236"/>
+      <source>Axis2 Length:</source>
+      <translation type="unfinished">Axis2 Length:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="343"/>
+      <source>T1 Thickness:</source>
+      <translation type="unfinished">T1 Thickness:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="375"/>
+      <source>T2 Thickness:</source>
+      <translation type="unfinished">T2 Thickness:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="407"/>
+      <source>T3 Thickness:</source>
+      <translation type="unfinished">T3 Thickness:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="439"/>
+      <source>T4 Thickness:</source>
+      <translation type="unfinished">T4 Thickness:</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="212"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness:</source>
       <translation>Tloušťka:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
-      <translation>Parametr tloušťky pláště</translation>
+      <translation>Parametr tloušťky skořepiny</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
       <source>Beam section rotation</source>
-      <translation>Rotace sekce nosníku</translation>
+      <translation>Rotace průřezu nosníku</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
@@ -3317,7 +3341,7 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="77"/>
       <source>Growth ratio</source>
-      <translation>Poměr růstu</translation>
+      <translation>Poměr nárůstu</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
@@ -3332,12 +3356,12 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="47"/>
       <source>Label</source>
-      <translation>Štítek</translation>
+      <translation>Popisek</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
@@ -3353,11 +3377,11 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
       <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="78"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="104"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="156"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="193"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="219"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="48"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="74"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="111"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="148"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="174"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3377,8 +3401,8 @@ Poznámka: nemá žádný účinek, pokud bylo vybráno těleso</translation>
 Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
-      <translation>Reálná část části x potenciálu
-Poznámka: Pokud byla vybrána plocha, bude to tato hodnota
+      <translation>Reálná část potenciálu, x-složka
+Poznámka: Pokud byla vybrána plocha, bude tato hodnota
           ve směru normály plochy
           nastavení pro y a z bude ignorováno</translation>
     </message>
@@ -3388,18 +3412,18 @@ Poznámka: Pokud byla vybrána plocha, bude to tato hodnota
 Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
-      <translation>Imaginární část složky x potenciálu
-Poznámka: Pokud byla vybrána tvář, bude to tato hodnota
-          v normálním směru obličeje
-          nastavení pro yaz bude ignorováno</translation>
+      <translation>Imaginární část potenciálu, x-složka
+Poznámka: Pokud byla vybrána plocha, bude tato hodnota
+          ve směru normály plochy
+          nastavení pro y a z bude ignorováno</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="170"/>
       <source>Real part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation>Reálná část složky y potenciálu
-Poznámka: pro 2D je možné pouze nastavení pro x,
+      <translation>Reálná část potenciálu, y-složka
+Poznámka: pro 2D je možné pouze nastavení složky x,
           nastavení pro y bude ignorováno</translation>
     </message>
     <message>
@@ -3407,8 +3431,8 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
       <source>Imaginary part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation>Imaginární část složky y potenciálu
-Poznámka: pro 2D je možné pouze nastavení pro x,
+      <translation>Imaginární část potenciálu, y-složka
+Poznámka: pro 2D je možné pouze nastavení složky x,
           nastavení pro y bude ignorováno</translation>
     </message>
     <message>
@@ -3419,39 +3443,39 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
       <source>Real part of potential x-component</source>
-      <translation>Reálná část složy x potenciálu</translation>
+      <translation>Reálná část potenciálu, x-složka</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="110"/>
       <source>Imaginary part of potential x-component</source>
-      <translation>Imaginární část složky x potenciálu</translation>
+      <translation>Imaginární část potenciálu, x-složka</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="164"/>
       <source>Real part of potential y-component</source>
-      <translation>Reálná část složky y potenciálu</translation>
+      <translation>Reálná část potenciálu, y-složka</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="208"/>
       <source>Imaginary part of potential y-component</source>
-      <translation>Imaginární část složky y potenciálu</translation>
+      <translation>Imaginární část potenciálu, y-složka</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="262"/>
       <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
-      <translation>Reálná část složky Z potenciálu</translation>
+      <translation>Reálná část potenciálu, z-složka</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="306"/>
       <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
-      <translation>Imaginární část složky Z potenciálu</translation>
+      <translation>Imaginární část potenciálu, z-složka</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
       <source>Normal to boundary</source>
-      <translation>Normální k hranici</translation>
+      <translation>Normála k okraji</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
@@ -3479,45 +3503,51 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation>Síť MKP od Gmsh</translation>
+      <translation>Síť MKP pomocí Gmsh</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
-      <source>FEM Mesh Parameters</source>
-      <translation>Parametry MKP sítě</translation>
+      <source>Mesh Parameters</source>
+      <translation>Parametry sítě</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
-      <source>Element dimension:</source>
-      <translation>Rozměr prvku:</translation>
+      <source>Element Dimension:</source>
+      <translation type="unfinished">Element Dimension:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
-      <source>Max element size (0.0 = Auto):</source>
-      <translation>Maximální velikost prvku (0.0 = Auto):</translation>
+      <source>Maximum Size:</source>
+      <translation type="unfinished">Maximum Size:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="82"/>
-      <source>Min element size (0.0 = Auto):</source>
-      <translation>Minimální velikost prvku (0.0 = Auto):</translation>
+      <location filename="../ui/MeshGmsh.ui" line="57"/>
+      <location filename="../ui/MeshGmsh.ui" line="95"/>
+      <source>Use 0.0 to set size automatically</source>
+      <translation type="unfinished">Use 0.0 to set size automatically</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="120"/>
-      <source>Element order:</source>
-      <translation>Pořadí prvků:</translation>
+      <location filename="../ui/MeshGmsh.ui" line="85"/>
+      <source>Minimum Size:</source>
+      <translation type="unfinished">Minimum Size:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="138"/>
+      <location filename="../ui/MeshGmsh.ui" line="126"/>
+      <source>Element Order:</source>
+      <translation type="unfinished">Element Order:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="144"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="163"/>
+      <location filename="../ui/MeshGmsh.ui" line="172"/>
       <source>Time:</source>
       <translation>Čas:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="189"/>
+      <location filename="../ui/MeshGmsh.ui" line="198"/>
       <source>Gmsh version</source>
       <translation>Gmsh verze</translation>
     </message>
@@ -3556,20 +3586,20 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="77"/>
       <source>No active Analysis</source>
       <translation>Žádná aktivní analýza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="77"/>
+      <location filename="../../Command.cpp" line="78"/>
       <source>You need to create or activate a Analysis</source>
-      <translation>Musíš vytvořit nebo aktivovat analýzu</translation>
+      <translation>Musíte vytvořit nebo aktivovat analýzu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="966"/>
       <source>A dialog is already open in the task panel</source>
-      <translation>Dialog je opravdu otevřen v panelu úloh</translation>
+      <translation>Dialog je již otevřen v panelu úloh</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
@@ -3599,9 +3629,9 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
       <translation>Import-Export</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="313"/>
+      <location filename="../../TaskPostBoxes.cpp" line="314"/>
       <source>Edit post processing object</source>
-      <translation>Upravit objekt následného zpracování</translation>
+      <translation>Upravit objekt postprocesingu</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
@@ -3669,7 +3699,7 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/ResultShow.ui" line="50"/>
       <source>Displacement Magnitude</source>
-      <translation>Velikost výtlaku</translation>
+      <translation>Abs. velikost posunu</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="57"/>
@@ -3679,7 +3709,7 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/ResultShow.ui" line="70"/>
       <source>Displacement X</source>
-      <translation>Výtlak X</translation>
+      <translation>Posun v X</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="77"/>
@@ -3689,7 +3719,7 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/ResultShow.ui" line="90"/>
       <source>Displacement Y</source>
-      <translation>Výtlak Y</translation>
+      <translation>Posun v Y</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="97"/>
@@ -3699,7 +3729,7 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/ResultShow.ui" line="110"/>
       <source>Displacement Z</source>
-      <translation>Výtlak Z</translation>
+      <translation>Posun v Z</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="117"/>
@@ -3709,7 +3739,7 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/ResultShow.ui" line="130"/>
       <source>Equivalent Plastic Strain</source>
-      <translation>Ekvivalentní plastový kmen</translation>
+      <translation>Ekvivalentní plastické namáhání</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="137"/>
@@ -3759,7 +3789,7 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/ResultShow.ui" line="294"/>
       <source>Slider max:</source>
-      <translation>Maximální rozestup:</translation>
+      <translation>Max. posun:</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="325"/>
@@ -3790,12 +3820,12 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="359"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
-      <translation>P1 - P3 # Max - Min Hlavní napětí</translation>
+      <translation>P1 - P3 # Max. - Min. hlavní napětí</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
       <source>Hints user defined equations</source>
-      <translation>Tipuje uživatelem definované rovnice</translation>
+      <translation>Tipy k uživatelem definovaným rovnicím</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="20"/>
@@ -3820,12 +3850,12 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="118"/>
       <source>network pressure: NP</source>
-      <translation>tlak v síti: NP</translation>
+      <translation>síťový tlak: NP</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="128"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation>kmen: exx, eyy, ezz, exy, exz, eyz</translation>
+      <translation>deformace: exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="138"/>
@@ -3855,17 +3885,17 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
       <source>med princ. stress vector: s2x, s2y, s2z</source>
-      <translation>med hlavní vektor napětí: s2x, s2y, s2z</translation>
+      <translation>vektor střed. hodn. hlavního napětí: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
       <source>med principal stress: P2</source>
-      <translation>střední hlavní napětí: P2</translation>
+      <translation>střed. hodn. hlavního napětí: P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
       <source>min princ. stress vector: s1x, s1y, s1z</source>
-      <translation>min hlavní vektor napětí: s1x, s1y, s1z</translation>
+      <translation>vektor min. hodn. hlavního napětí: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
@@ -3875,7 +3905,7 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
       <source>reinforcement ratio: rx, ry, rz</source>
-      <translation>poměr zesílení: rx, ry, rz</translation>
+      <translation>poměr výztuží: rx, ry, rz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="248"/>
@@ -3885,7 +3915,7 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="168"/>
       <source>equivalent plastic strain: Peeq</source>
-      <translation>ekvivalentní plastické napětí: Peeq</translation>
+      <translation>ekvivalentní plastické namáhání: Peeq</translation>
     </message>
   </context>
   <context>
@@ -3918,7 +3948,7 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="84"/>
       <source>Thermo mechanical</source>
-      <translation>Termomechanické</translation>
+      <translation>Termomechanická</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="91"/>
@@ -4045,7 +4075,7 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjacent nodes</source>
-      <translation>Sbírejte sousední uzly</translation>
+      <translation>Zahrnout přilehlé uzly</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
@@ -4296,7 +4326,7 @@ generované prouděním
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="212"/>
       <source>Surface force by flow</source>
-      <translation>Povrchová síla prouděním</translation>
+      <translation>Povrch. síla řešená prouděním</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="232"/>
@@ -4408,8 +4438,7 @@ generované prouděním
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Směr hrany nebo směr
-jako směr je použit normální vektor plochy</translation>
+      <translation>Směr je dán orientací hrany nebo normálového vektoru k ploše</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="298"/>
@@ -4493,8 +4522,7 @@ jako směr je použit normální vektor plochy</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Směr hrany nebo směr
-jako směr je použit normální vektor plochy</translation>
+      <translation>Směr je dán orientací hrany nebo normálového vektoru k ploše</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
@@ -4673,8 +4701,8 @@ jako směr je použit normální vektor plochy</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation>Jaká by měla být tuhost
-používá se pro řešič Elmer</translation>
+      <translation>Jaký typ tuhosti by měl být
+použit pro řešič Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -4725,7 +4753,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="32"/>
       <source>Cylindrical transform</source>
-      <translation>Cylindrická transformace</translation>
+      <translation>Válcová transformace</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
@@ -4860,7 +4888,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="292"/>
       <source>Create Plot</source>
-      <translation>Vytvořte spiknutí</translation>
+      <translation>Vytvořit graf</translation>
     </message>
   </context>
   <context>
@@ -4950,7 +4978,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="130"/>
       <source>Magnitute</source>
-      <translation>Hořčík</translation>
+      <translation>Abs. hodnota</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="135"/>
@@ -5079,12 +5107,12 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
       <source>VeryCoarse</source>
-      <translation>Velmi hrubé</translation>
+      <translation>Velmi hrubá</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="87"/>
       <source>Coarse</source>
-      <translation>Hrubé</translation>
+      <translation>Hrubá</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="92"/>
@@ -5094,17 +5122,17 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Fine</source>
-      <translation>Jemný</translation>
+      <translation>Jemná</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="102"/>
       <source>VeryFine</source>
-      <translation>Velmi jemný</translation>
+      <translation>Velmi jemná</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="107"/>
       <source>UserDefined</source>
-      <translation>Volitelný</translation>
+      <translation>Volitelná</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="115"/>
@@ -5182,7 +5210,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Element Geometry</source>
-      <translation>&amp;Geometrie prvků</translation>
+      <translation>&amp;Geometrie prvku</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -5302,7 +5330,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../Workbench.cpp" line="76"/>
       <source>&amp;Filter functions</source>
-      <translation>&amp;Filtrovat funkce</translation>
+      <translation>&amp;Funkce filtru</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
@@ -5313,22 +5341,22 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1803"/>
+      <location filename="../../Command.cpp" line="1804"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>Chyba: Filtr lze použít pouze na jeden objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1805"/>
-      <location filename="../../Command.cpp" line="1816"/>
-      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="1806"/>
+      <location filename="../../Command.cpp" line="1817"/>
+      <location filename="../../Command.cpp" line="1846"/>
       <source>The filter could not be set up.</source>
       <translation>Filtr nelze nastavit.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1815"/>
-      <location filename="../../Command.cpp" line="1844"/>
+      <location filename="../../Command.cpp" line="1816"/>
+      <location filename="../../Command.cpp" line="1845"/>
       <source>Error: no post processing object selected.</source>
-      <translation>Chyba: nebyl vybrán žádný objekt následného zpracování.</translation>
+      <translation>Chyba: nebyl vybrán žádný objekt postprocesingu.</translation>
     </message>
   </context>
   <context>
@@ -5596,7 +5624,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="649"/>
       <source>FEM mesh to mesh</source>
-      <translation>MKP síť na síť</translation>
+      <translation>Převod MKP sítě na síť</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="652"/>
@@ -5622,12 +5650,12 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="704"/>
       <source>Clear FEM mesh</source>
-      <translation>Čirá síť FEM</translation>
+      <translation>Čistě MKP síť</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Clears the Mesh of a FEM mesh object</source>
-      <translation>Vymaže síť v objektu MKP sítě</translation>
+      <translation>Vymaže běžnou síť v objektu MKP sítě</translation>
     </message>
   </context>
   <context>
@@ -5635,7 +5663,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="724"/>
       <source>Display FEM mesh info</source>
-      <translation>Zobrazit informace o síti FEM</translation>
+      <translation>Zobrazit informace o síti MKP</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="725"/>
@@ -5750,12 +5778,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1089"/>
+      <location filename="../../../femcommands/commands.py" line="1115"/>
       <source>Solver Mystran</source>
       <translation>Řešič Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1091"/>
+      <location filename="../../../femcommands/commands.py" line="1117"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Vytvoří MKP řešič Mystran</translation>
     </message>
@@ -5763,12 +5791,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1101"/>
+      <location filename="../../../femcommands/commands.py" line="1127"/>
       <source>Run solver calculations</source>
       <translation>Spustit výpočty řešiče</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1105"/>
+      <location filename="../../../femcommands/commands.py" line="1131"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Spustí výpočty pro vybraný řešič</translation>
     </message>
@@ -5776,12 +5804,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1121"/>
+      <location filename="../../../femcommands/commands.py" line="1147"/>
       <source>Solver Z88</source>
       <translation>Řešič Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1123"/>
+      <location filename="../../../femcommands/commands.py" line="1149"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Vytvoří MKP řešič Z88</translation>
     </message>
@@ -5802,7 +5830,7 @@ používá se pro řešič Elmer</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="223"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="299"/>
       <source>Write</source>
-      <translation>Napsat</translation>
+      <translation>Zapsat</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="224"/>
@@ -5858,7 +5886,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="130"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation>Vyberte Faces/Edges/Vertexy</translation>
+      <translation>Vyberte plochy/hrany/vrcholy</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
@@ -5871,12 +5899,12 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="146"/>
       <source>Select Solids</source>
-      <translation>Vyberte Solids</translation>
+      <translation>Vyberte tělesa</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Vyberte prvky části tělesa, které mají být přidány do seznamu. Chcete-li přidat těleso, klikněte na "Přidat".</translation>
+      <translation>Vyberte prvky tělesa, které mají být přidány do seznamu. Chcete-li přidat těleso, klikněte na "Přidat".</translation>
     </message>
   </context>
   <context>
@@ -5917,22 +5945,22 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="273"/>
       <source>Displacement Magnitude</source>
-      <translation>Velikost výtlaku</translation>
+      <translation>Abs. velikost posunu</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="282"/>
       <source>Displacement X</source>
-      <translation>Výtlak X</translation>
+      <translation>Posun v X</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="290"/>
       <source>Displacement Y</source>
-      <translation>Výtlak Y</translation>
+      <translation>Posun v Y</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="298"/>
       <source>Displacement Z</source>
-      <translation>Výtlak Z</translation>
+      <translation>Posun v Z</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="307"/>
@@ -5972,7 +6000,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="379"/>
       <source>Equivalent Plastic Strain</source>
-      <translation>Ekvivalentní plastový kmen</translation>
+      <translation>Ekvivalentní plastické namáhání</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="398"/>
@@ -5999,7 +6027,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="668"/>
       <source>Empty result mesh</source>
-      <translation>Prázdná síť výsledků</translation>
+      <translation>Prázdná výsledná síť</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="681"/>
@@ -6024,13 +6052,13 @@ Nejprve prosím vyberte typ výsledku.</translation>
   <context>
     <name>CmdFemCompEmConstraints</name>
     <message>
-      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1400"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1400"/>
       <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1402"/>
       <source>Electromagnetic boundary conditions</source>
       <translation>Elektromagnetické okrajové podmínky</translation>
     </message>
@@ -6061,56 +6089,71 @@ Nejprve prosím vyberte typ výsledku.</translation>
       <translation>Pole:</translation>
     </message>
     <message>
-      <location filename="../../TaskPostContours.ui" line="79"/>
-      <source>Contour lines will not be colored</source>
-      <translation>Vrstevnice nebudou zabarveny</translation>
+      <location filename="../../TaskPostContours.ui" line="77"/>
+      <source>Enable Laplacian smoothing</source>
+      <translation type="unfinished">Enable Laplacian smoothing</translation>
     </message>
     <message>
-      <location filename="../../TaskPostContours.ui" line="82"/>
-      <source>No color</source>
-      <translation>Bez barvy</translation>
+      <location filename="../../TaskPostContours.ui" line="80"/>
+      <source>Smoothing</source>
+      <translation>Vyhlazování</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="97"/>
+      <source>Factor to control vertex displacement</source>
+      <translation type="unfinished">Factor to control vertex displacement</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="113"/>
+      <source>Contour lines will not be colored</source>
+      <translation>Obrysy nebudou zabarveny</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="116"/>
+      <source>No Color</source>
+      <translation type="unfinished">No Color</translation>
     </message>
   </context>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1523"/>
+      <location filename="../../Command.cpp" line="1524"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1524"/>
+      <location filename="../../Command.cpp" line="1525"/>
       <source>Electromagnetic equations</source>
       <translation>Elektromagnetické rovnice</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1526"/>
       <source>Electromagnetic equations for the Elmer solver</source>
-      <translation>Elektromagnetické rovnice pro Elmerův řešič</translation>
+      <translation>Elektromagnetické rovnice pro řešič Elmer</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="2388"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2388"/>
+      <location filename="../../Command.cpp" line="2389"/>
       <source>Contours filter</source>
       <translation>Filtr obrysů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2389"/>
+      <location filename="../../Command.cpp" line="2390"/>
       <source>Define/create a contours filter which displays iso contours</source>
-      <translation>Definujte/vytvořte filtr obrysů, který zobrazuje izo obrysy</translation>
+      <translation>Definujte/vytvořte filtr obrysů, který zobrazuje iso obrysy</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1438"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1430"/>
       <source>Contours filter options</source>
       <translation>Možnosti filtrování kontur</translation>
     </message>
@@ -6120,7 +6163,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="393"/>
       <source>Deformation equation</source>
-      <translation>Deformační rovnice</translation>
+      <translation>Rovnice deformace</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
@@ -6205,19 +6248,19 @@ Nejprve prosím vyberte typ výsledku.</translation>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1676"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1676"/>
+      <location filename="../../Command.cpp" line="1677"/>
       <source>Mechanical equations</source>
       <translation>Mechanické rovnice</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1677"/>
+      <location filename="../../Command.cpp" line="1678"/>
       <source>Mechanical equations for the Elmer solver</source>
-      <translation>Mechanické rovnice pro Elmerův řešič</translation>
+      <translation>Mechanické rovnice pro řešič Elmer</translation>
     </message>
   </context>
   <context>
@@ -6225,12 +6268,12 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1034"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation>Solver CalculiX (nový framework)</translation>
+      <translation>Řešič CalculiX (nový framework)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1039"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation>Vytvoří MKP řešič CalculiX nový framework (méně výsledné zpracování chyb)</translation>
+      <translation>Vytvoří MKP řešič CalculiX nový framework (omezené zpracovávání chybného výsledku)</translation>
     </message>
   </context>
   <context>
@@ -6264,12 +6307,12 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="216"/>
       <source>Current density boundary condition</source>
-      <translation>Okrajová podmínka hustoty proudu</translation>
+      <translation>Okrajová podmínka proudové hustoty</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="220"/>
       <source>Creates a current density boundary condition</source>
-      <translation>Vytvoří okrajovou podmínku hustoty proudu</translation>
+      <translation>Vytvoří okrajovou podmínku proudové hustoty</translation>
     </message>
   </context>
   <context>
@@ -6316,7 +6359,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Initial pressure condition</source>
-      <translation>Podmínka počátečního tlaku</translation>
+      <translation>Počáteční podmínka tlaku</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="283"/>
@@ -6488,17 +6531,17 @@ Nejprve prosím vyberte typ výsledku.</translation>
   <context>
     <name>CmdFemConstraintRigidBody</name>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="457"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Rigid body constraint</source>
       <translation>Vazba tuhého tělesa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
       <translation>Vytvoří vazbu tuhého tělesa pro geometrickou entitu</translation>
     </message>
@@ -6507,35 +6550,35 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <name>FemGui::TaskFemConstraintRigidBody</name>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="273"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="284"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="324"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="347"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="358"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="283"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="323"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="346"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="356"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="273"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="347"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="346"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="284"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="358"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="283"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="356"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="321"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
-      <translation>Je povolen pouze jeden typ výběru (vrchol, plocha nebo hrana) na omezení!</translation>
+      <translation>Je povolen pouze jeden typ výběru (vrchol, plocha nebo hrana) na vazbu!</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="743"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="741"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -6585,7 +6628,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
       <location filename="../../TaskCreateElementSet.cpp" line="241"/>
       <location filename="../../TaskCreateElementSet.cpp" line="472"/>
       <location filename="../../TaskCreateElementSet.cpp" line="563"/>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
@@ -6617,17 +6660,17 @@ Nejprve prosím vyberte typ výsledku.</translation>
       <translation>Všechny elementy byly smazány - žádná síť nebyla vytvořena.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
-      <source>Erase Elements</source>
-      <translation>Vymazat elementy</translation>
+      <location filename="../../Command.cpp" line="1338"/>
+      <source>Erase elements</source>
+      <translation type="unfinished">Erase elements</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1339"/>
       <source>Creates a FEM mesh elements set</source>
       <translation>Vytvoří sadu uzlů MKP sítě</translation>
     </message>
@@ -6643,18 +6686,18 @@ Nejprve prosím vyberte typ výsledku.</translation>
   <context>
     <name>CmdFemDefineElementsSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1282"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>Element set by poly</source>
       <translation>Sada elementů pomocí polygonu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
-      <location filename="../../Command.cpp" line="1285"/>
+      <location filename="../../Command.cpp" line="1284"/>
+      <location filename="../../Command.cpp" line="1286"/>
       <source>Create Element set by Poly</source>
       <translation>Vytvořit sadu uzlů pomocí polygonu</translation>
     </message>
@@ -6664,7 +6707,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation>MKP síť od Netgenu</translation>
+      <translation>MKP síť pomocí Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
@@ -6678,18 +6721,18 @@ Nejprve prosím vyberte typ výsledku.</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
-      <source>Maximal Size:</source>
-      <translation>Maximální velikost:</translation>
+      <source>Maximum Size:</source>
+      <translation type="unfinished">Maximum Size:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
-      <source>Minimal Size:</source>
-      <translation>Minimální velikost:</translation>
+      <source>Minimum Size:</source>
+      <translation type="unfinished">Minimum Size:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="117"/>
       <source>Second Order</source>
-      <translation>Druhé pořadí</translation>
+      <translation>Druhý stupeň</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="124"/>
@@ -6712,18 +6755,18 @@ Nejprve prosím vyberte typ výsledku.</translation>
       <translation>Netgen</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="217"/>
+      <location filename="../ui/MeshNetgen.ui" line="220"/>
       <source>Time:</source>
       <translation>Čas:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="243"/>
+      <location filename="../ui/MeshNetgen.ui" line="246"/>
       <source>Netgen version</source>
       <translation>Verze Netgen</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgSettingsNetgen</name>
+    <name>FemGui::DlgSettingsNetgen</name>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="14"/>
       <location filename="../ui/DlgSettingsNetgen.ui" line="20"/>
@@ -6739,6 +6782,31 @@ Nejprve prosím vyberte typ výsledku.</translation>
       <location filename="../ui/DlgSettingsNetgen.ui" line="35"/>
       <source>Legacy Netgen</source>
       <translation>Původní Netgen</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="51"/>
+      <source>Options</source>
+      <translation>Možnosti</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="59"/>
+      <source>Log verbosity</source>
+      <translation type="unfinished">Log verbosity</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
+      <source>Level of verbosity printed on the task panel</source>
+      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
+      <source>Number of threads</source>
+      <translation type="unfinished">Number of threads</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="95"/>
+      <source>Number of threads used for meshing</source>
+      <translation type="unfinished">Number of threads used for meshing</translation>
     </message>
   </context>
 </TS>

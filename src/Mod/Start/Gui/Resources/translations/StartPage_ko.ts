@@ -11,17 +11,17 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="96"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>%1에 오신 것을 환영합니다.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>To get started, set your basic configuration options below.</source>
-      <translation type="unfinished">To get started, set your basic configuration options below.</translation>
+      <translation>시작하기 위해, 아래의 기본 구성 옵션을 설정하세요.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in Preferences.</translation>
+      <translation>설정하신 옵션들 (이외 더 많은 추가 옵션) 은 나중에 환경설정에서 변경하실 수 있습니다.</translation>
     </message>
   </context>
   <context>
@@ -34,26 +34,30 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
-      <translation>단위계</translation>
+      <translation>단위 계</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
-      <translation type="unfinished">Navigation Style</translation>
+      <translation>탐색 스타일</translation>
     </message>
   </context>
   <context>
     <name>CmdStart</name>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
-      <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
       <translation>시작</translation>
     </message>
     <message>
+      <location filename="../../Manipulator.cpp" line="48"/>
+      <source>&amp;Start Page</source>
+      <translation type="unfinished">&amp;Start Page</translation>
+    </message>
+    <message>
       <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start in an MDI view</source>
-      <translation type="unfinished">Displays the Start in an MDI view</translation>
+      <source>Displays the Start Page</source>
+      <translation type="unfinished">Displays the Start Page</translation>
     </message>
   </context>
   <context>
@@ -66,7 +70,7 @@
     <message>
       <location filename="../../StartView.cpp" line="290"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation>새로운 빈 프리캐드 파일을 생성하세요</translation>
+      <translation>새로운 빈 FreeCAD 파일을 생성하세요</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="293"/>
@@ -76,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="294"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>CAD 파일 또는 3D 모형 파일 열기</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="297"/>
@@ -86,27 +90,27 @@
     <message>
       <location filename="../../StartView.cpp" line="298"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>부품설계 작업대에서 부품 만들기</translation>
+      <translation>부품 설계 작업대에서 부품 만들기</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="301"/>
       <source>Assembly</source>
-      <translation>조립</translation>
+      <translation>어셈블리</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="302"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>조립품 프로젝트 생성</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="305"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>2D 도면</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="306"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation type="unfinished">Create a 2D Draft with the Draft workbench</translation>
+      <translation>작업대를 사용하여 2D 도면 생성</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="309"/>
@@ -116,7 +120,7 @@
     <message>
       <location filename="../../StartView.cpp" line="310"/>
       <source>Create an architectural project</source>
-      <translation type="unfinished">Create an architectural project</translation>
+      <translation>건축 프로젝트 생성</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="525"/>
@@ -126,7 +130,7 @@
     <message>
       <location filename="../../StartView.cpp" line="526"/>
       <source>Examples</source>
-      <translation>예제</translation>
+      <translation>예시</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="527"/>
@@ -136,12 +140,12 @@
     <message>
       <location filename="../../StartView.cpp" line="530"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>초기 설정 열기</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="532"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Don't show this Start page again (start with blank screen)</translation>
+      <translation>이 시작 페이지를 다시 표시하지 않기 (빈 화면으로 시작)</translation>
     </message>
   </context>
   <context>
@@ -157,45 +161,45 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="113"/>
       <source>FreeCAD Classic</source>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>FreeCAD 기본 테마</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
       <source>FreeCAD Dark</source>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>FreeCAD 어두운 테마</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Light</source>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD 밝은 테마</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="238"/>
       <source>Theme</source>
-      <translation type="unfinished">Theme</translation>
+      <translation>테마</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>더 많은 테마를 찾고 싶다면, &lt;a href="freecad:Std_AddonMgr"&gt;관리자&lt;/a&gt;를 사용하여 추가 테마를 설치할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>FreeCAD 어두운 테마</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD 밝은 테마</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>FreeCAD 기본 테마</translation>
     </message>
   </context>
 </TS>

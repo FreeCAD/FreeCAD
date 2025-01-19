@@ -217,7 +217,7 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
     }
 }
 
-void ViewProviderDragger::unsetEditViewer(Gui::View3DInventorViewer* viewer)
+void ViewProviderDragger::unsetEditViewer([[maybe_unused]] Gui::View3DInventorViewer* viewer)
 {}
 
 void ViewProviderDragger::dragStartCallback(void* data, [[maybe_unused]] SoDragger* d)
@@ -229,7 +229,7 @@ void ViewProviderDragger::dragStartCallback(void* data, [[maybe_unused]] SoDragg
     vp->csysDragger->clearIncrementCounts();
 }
 
-void ViewProviderDragger::dragFinishCallback(void* data, SoDragger* d)
+void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDragger* d)
 {
     // This is called when a manipulator has done manipulating
     auto vp = static_cast<ViewProviderDragger*>(data);
@@ -240,7 +240,7 @@ void ViewProviderDragger::dragFinishCallback(void* data, SoDragger* d)
     vp->updatePlacementFromDragger();
 }
 
-void ViewProviderDragger::dragMotionCallback(void* data, SoDragger* d)
+void ViewProviderDragger::dragMotionCallback(void* data, [[maybe_unused]] SoDragger* d)
 {
     auto vp = static_cast<ViewProviderDragger*>(data);
 

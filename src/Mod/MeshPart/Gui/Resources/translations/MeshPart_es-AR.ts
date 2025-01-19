@@ -580,7 +580,7 @@ Selecciona una forma diferente, por favor.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation>Desenvolver malla</translation>
+      <translation>Desplegar malla</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Selecciona una forma diferente, por favor.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation>Desenvolver cara</translation>
+      <translation>Desplegar cara</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

@@ -108,7 +108,7 @@ jobs:
 
     - uses: prefix-dev/setup-pixi@v0.8.1
       with:
-        pixi-version: v0.39.4
+        pixi-version: v0.40.0
         cache: false
 
     - name: Restore Compiler Cache

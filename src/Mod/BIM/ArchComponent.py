@@ -986,7 +986,6 @@ class Component(ArchIFC.IfcProduct):
             return
 
         import Part
-        import TechDraw
         import DraftGeomUtils
 
         fmax = params.get_param_arch("MaxComputeAreas")
@@ -1022,6 +1021,7 @@ class Component(ArchIFC.IfcProduct):
             pset = []
             for f in fset:
                 try:
+                    import TechDraw
                     pf = Part.Face(DraftGeomUtils.findWires(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
                 except Part.OCCError:
                     # error in computing the areas. Better set them to zero than show a wrong value

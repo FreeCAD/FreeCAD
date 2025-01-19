@@ -421,6 +421,7 @@ void StdCmdExport::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     static QString lastExportFullPath = QString();
+    static App::DocumentObject* lastExportedObject = nullptr;
     static bool lastExportUsedGeneratedFilename = true;
     static QString lastExportFilterUsed = QString();
     static Document* lastActiveDocument;
@@ -454,12 +455,14 @@ void StdCmdExport::activated(int iMsg)
     //     * If the user accepted the default filename last time, regenerate a new
     //       default, potentially updating the object label.
     //     * If not, default to their previously-set export filename.
+    // * If this is an export of a different object than last time
     QString defaultFilename = lastExportFullPath;
 
     bool filenameWasGenerated = false;
     bool didActiveDocumentChange = lastActiveDocument != getActiveGuiDocument();
-    // We want to generate a new default name in three cases:
-    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename || didActiveDocumentChange) {
+    bool didExportedObjectChange = lastExportedObject != selection.front();
+    // We want to generate a new default name in four cases:
+    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename || didActiveDocumentChange || didExportedObjectChange) {
         // First, get the name and path of the current .FCStd file, if there is one:
         QString docFilename = QString::fromUtf8(
             App::GetApplication().getActiveDocument()->getFileName());
@@ -478,7 +481,7 @@ void StdCmdExport::activated(int iMsg)
             defaultExportPath = Gui::FileDialog::getWorkingDirectory();
         }
 
-        if (lastExportUsedGeneratedFilename   || didActiveDocumentChange) {  /*<- static, true on first call*/
+        if (lastExportUsedGeneratedFilename || didActiveDocumentChange || didExportedObjectChange) {  /*<- static, true on first call*/
             defaultFilename = defaultExportPath + QLatin1Char('/') + createDefaultExportBasename();
 
             // Append the last extension used, if there is one.
@@ -515,8 +518,10 @@ void StdCmdExport::activated(int iMsg)
             lastExportUsedGeneratedFilename = true;
         else
             lastExportUsedGeneratedFilename = false;
+            
         lastExportFullPath = fileName;
         lastActiveDocument = getActiveGuiDocument();
+        lastExportedObject = selection.front();
     }
 }
 
@@ -1698,7 +1703,7 @@ bool StdCmdAlignment::isActive()
 {
     if (ManualAlignment::hasInstance())
         return false;
-    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 2;
+    return Gui::Selection().countObjectsOfType<App::GeoFeature>() == 2;
 }
 
 //===========================================================================

@@ -194,7 +194,7 @@ TopoDS_Shape ShapeFinder::transformShape(TopoDS_Shape& inShape,
         return {};
     }
 
-    tshape.transformGeometry(scaler);
+    tshape.transformShape(scaler, true, true);
     tshape.setPlacement(placement);
 
     return tshape.getShape();
