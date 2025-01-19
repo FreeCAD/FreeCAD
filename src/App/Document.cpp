@@ -60,7 +60,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #ifndef _PreComp_
 #include <bitset>
 #include <stack>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #endif
 
 #include <boost/algorithm/string.hpp>
@@ -131,7 +131,7 @@ using namespace zipios;
 #define FC_LOGFEATUREUPDATE
 #endif
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace App
 {

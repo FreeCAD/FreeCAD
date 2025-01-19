@@ -25,7 +25,7 @@
 #ifndef BASE_FILEINFO_H
 #define BASE_FILEINFO_H
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <string>
 #include <vector>
 #include <Base/TimeInfo.h>
@@ -158,9 +158,9 @@ public:
     /// Get the path to the dir which is considered to temp files
     static const std::string& getTempPath();
     /// Convert from filesystem path to string
-    static std::string pathToString(const boost::filesystem::path& path);
+    static std::string pathToString(const std::filesystem::path& path);
     /// Convert from string to filesystem path
-    static boost::filesystem::path stringToPath(const std::string& str);
+    static std::filesystem::path stringToPath(const std::string& str);
     //@}
 
 private:

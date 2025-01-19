@@ -33,7 +33,7 @@
 
 
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 /* TRANSLATOR Gui::Dialog::DlgPreferencePackManagementImp */
 
