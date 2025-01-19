@@ -310,7 +310,7 @@ void paintSelection()
 }
 
 // ---------------------------------------
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 
 DrawingPlane::DrawingPlane()
 {

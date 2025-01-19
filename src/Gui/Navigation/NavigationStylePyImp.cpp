@@ -22,8 +22,8 @@
 #include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of NavigationStylePy.xml)
-#include "NavigationStylePy.h"
-#include "NavigationStylePy.cpp"
+#include "Navigation/NavigationStylePy.h"
+#include "Navigation/NavigationStylePy.cpp"
 
 
 using namespace Gui;

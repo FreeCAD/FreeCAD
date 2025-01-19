@@ -61,7 +61,7 @@
 #include "GraphvizView.h"
 #include "ManualAlignment.h"
 #include "MergeDocuments.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "Placement.h"
 #include "Transform.h"
 #include "View3DInventor.h"

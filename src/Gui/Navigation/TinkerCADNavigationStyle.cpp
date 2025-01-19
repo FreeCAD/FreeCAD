@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
 #endif
 
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
 
 
@@ -35,33 +34,31 @@ using namespace Gui;
 
 // ----------------------------------------------------------------------------------
 
-/* TRANSLATOR Gui::BlenderNavigationStyle */
+/* TRANSLATOR Gui::TinkerCADNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::BlenderNavigationStyle, Gui::UserNavigationStyle)
+TYPESYSTEM_SOURCE(Gui::TinkerCADNavigationStyle, Gui::UserNavigationStyle)
 
-BlenderNavigationStyle::BlenderNavigationStyle() : lockButton1(false)
-{
-}
+TinkerCADNavigationStyle::TinkerCADNavigationStyle() = default;
 
-BlenderNavigationStyle::~BlenderNavigationStyle() = default;
+TinkerCADNavigationStyle::~TinkerCADNavigationStyle() = default;
 
-const char* BlenderNavigationStyle::mouseButtons(ViewerMode mode)
+const char* TinkerCADNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
         return QT_TR_NOOP("Press left mouse button");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press SHIFT and middle mouse button");
-    case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press middle mouse button");
+    case NavigationStyle::DRAGGING:
+        return QT_TR_NOOP("Press right mouse button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll mouse wheel");
+        return QT_TR_NOOP("Scroll middle mouse button");
     default:
         return "No description";
     }
 }
 
-SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
+SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
@@ -69,7 +66,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
     if (this->isSeekMode()) {
         return inherited::processSoEvent(ev);
     }
-    // Switch off viewing mode (Bug #0000911)
+    // Switch off viewing mode
     if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
 
@@ -110,31 +107,19 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mouse Button / Spaceball Button handling
     if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const auto * const event = (const SoMouseButtonEvent *) ev;
+        const auto event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
-        //SoDebugError::postInfo("processSoEvent", "button = %d", button);
         switch (button) {
         case SoMouseButtonEvent::BUTTON1:
-            this->lockrecenter = true;
             this->button1down = press;
-            if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
+            if (press && (curmode == NavigationStyle::SEEK_WAIT_MODE)) {
                 newmode = NavigationStyle::SEEK_MODE;
                 this->seekToPoint(pos); // implicitly calls interactiveCountInc()
                 processed = true;
             }
-            else if (press && (this->currentmode == NavigationStyle::PANNING ||
-                               this->currentmode == NavigationStyle::ZOOMING)) {
-                newmode = NavigationStyle::DRAGGING;
-                saveCursorPosition(ev);
-                this->centerTime = ev->getTime();
-                processed = true;
-            }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                processed = true;
-            }
-            else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
+            else if (viewer->isEditing() && (curmode == NavigationStyle::SPINNING)) {
                 processed = true;
             }
             else {
@@ -144,47 +129,46 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         case SoMouseButtonEvent::BUTTON2:
             // If we are in edit mode then simply ignore the RMB events
             // to pass the event to the base class.
-            this->lockrecenter = true;
+            this->button2down = press;
+            if (press) {
+                mouseDownConsumedEvent = *event;
+                mouseDownConsumedEvent.setTime(ev->getTime());
+            }
 
-            // Don't show the context menu after dragging, panning or zooming
-            if (!press && (hasDragged || hasPanned || hasZoomed)) {
-                processed = true;
-            }
-            else if (!press && !viewer->isEditing()) {
-                if (this->currentmode != NavigationStyle::ZOOMING &&
-                    this->currentmode != NavigationStyle::PANNING &&
-                    this->currentmode != NavigationStyle::DRAGGING) {
-                    if (this->isPopupMenuEnabled()) {
-                        this->openPopupMenu(event->getPosition());
-                    }
-                }
-            }
-            // Alternative way of rotating & zooming
-            if (press && (this->currentmode == NavigationStyle::PANNING ||
-                          this->currentmode == NavigationStyle::ZOOMING)) {
-                newmode = NavigationStyle::DRAGGING;
+            // About to start rotating
+            if (press && (curmode == NavigationStyle::IDLE)) {
+                // Use this variable to spot move events
                 saveCursorPosition(ev);
                 this->centerTime = ev->getTime();
                 processed = true;
             }
-            this->button2down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON3:
-            if (press) {
-                this->centerTime = ev->getTime();
-                setupPanningPlane(getCamera());
-                this->lockrecenter = false;
+            // Don't show the context menu after dragging, panning or zooming
+            else if (!press && (hasDragged || hasPanned || hasZoomed)) {
+                processed = true;
             }
-            else {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                // is it just a middle click?
-                if (tmp.getValue() < dci && !this->lockrecenter) {
-                    lookAtPoint(pos);
+            else if (!press) {
+                newmode = NavigationStyle::IDLE;
+                if (!viewer->isEditing()) {
+                    if (this->currentmode != NavigationStyle::ZOOMING &&
+                        this->currentmode != NavigationStyle::PANNING) {
+                        if (this->isPopupMenuEnabled()) {
+                            this->openPopupMenu(event->getPosition());
+                        }
+                    }
                     processed = true;
                 }
             }
+            break;
+        case SoMouseButtonEvent::BUTTON3:
             this->button3down = press;
+            if (press) {
+                this->centerTime = ev->getTime();
+                setupPanningPlane(getCamera());
+            }
+            else if (curmode == NavigationStyle::PANNING) {
+                newmode = NavigationStyle::IDLE;
+                processed = true;
+            }
             break;
         default:
             break;
@@ -193,18 +177,13 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
-        this->lockrecenter = true;
-        const auto * const event = (const SoLocation2Event *) ev;
-        if (this->currentmode == NavigationStyle::ZOOMING) {
-            this->zoomByCursor(posn, prevnormalized);
-            processed = true;
-        }
-        else if (this->currentmode == NavigationStyle::PANNING) {
+        const auto event = (const SoLocation2Event *) ev;
+        if (curmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
             panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
             processed = true;
         }
-        else if (this->currentmode == NavigationStyle::DRAGGING) {
+        else if (curmode == NavigationStyle::DRAGGING) {
             this->addToLog(event->getPosition(), event->getTime());
             this->spin(posn);
             moveCursorPosition();
@@ -214,7 +193,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const auto * const event = static_cast<const SoMotion3Event *>(ev);
+        const auto event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -238,58 +217,25 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
     case 0:
         if (curmode == NavigationStyle::SPINNING) { break; }
         newmode = NavigationStyle::IDLE;
-        // The left mouse button has been released right now
-        if (this->lockButton1) {
-            this->lockButton1 = false;
-            if (curmode != NavigationStyle::SELECTION) {
-                processed = true;
-            }
-        }
         break;
     case BUTTON1DOWN:
-    case CTRLDOWN|BUTTON1DOWN:
-        // make sure not to change the selection when stopping spinning
-        if (curmode == NavigationStyle::SPINNING
-            || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
-            newmode = NavigationStyle::IDLE;
-        }
-        else {
-            newmode = NavigationStyle::SELECTION;
-        }
+        newmode = NavigationStyle::SELECTION;
         break;
-    case BUTTON1DOWN|BUTTON2DOWN:
-        newmode = NavigationStyle::PANNING;
-        break;
-    case SHIFTDOWN|BUTTON3DOWN:
-        newmode = NavigationStyle::PANNING;
-        break;
-    case BUTTON3DOWN:
+    case BUTTON2DOWN:
         if (newmode != NavigationStyle::DRAGGING) {
             saveCursorPosition(ev);
         }
         newmode = NavigationStyle::DRAGGING;
         break;
-    case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
-    case CTRLDOWN|BUTTON3DOWN:
-        newmode = NavigationStyle::ZOOMING;
+    case BUTTON3DOWN:
+        newmode = NavigationStyle::PANNING;
         break;
-
     default:
-        // Reset mode to IDLE when button 3 is released
-        // This stops the PANNING when button 3 is released but SHIFT is still pressed
-        // This stops the ZOOMING when button 3 is released but CTRL is still pressed
-        if ((curmode == NavigationStyle::PANNING || curmode == NavigationStyle::ZOOMING)
-            && !this->button3down) {
-            newmode = NavigationStyle::IDLE;
-        }
         break;
     }
 
-    // If the selection button is pressed together with another button
-    // and the other button is released, don't switch to selection mode.
     // Process when selection button is pressed together with other buttons that could trigger different actions.
     if (this->button1down && (this->button2down || this->button3down)) {
-        this->lockButton1 = true;
         processed = true;
     }
 
@@ -307,6 +253,5 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
     // hierarchy.
     if (!processed)
         processed = inherited::processSoEvent(ev);
-
     return processed;
 }
