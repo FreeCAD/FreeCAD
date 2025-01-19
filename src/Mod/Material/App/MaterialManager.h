@@ -24,7 +24,7 @@
 
 #include <memory>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <Mod/Material/MaterialGlobal.h>
 
@@ -34,7 +34,7 @@
 #include "MaterialLibrary.h"
 #include "MaterialFilter.h"
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 class QMutex;
 

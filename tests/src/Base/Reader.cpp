@@ -9,11 +9,29 @@
 #include "Base/Exception.h"
 #include "Base/Reader.h"
 #include <array>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <fstream>
+#include <random>
+#include <string>
 #include <xercesc/util/PlatformUtils.hpp>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
+
+static std::string random_string(size_t length)
+{
+    const std::string digits = "0123456789";
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, digits.size() - 1);
+
+    std::string result;
+    for (size_t i = 0; i < length; ++i) {
+        result += digits[dis(gen)];
+    }
+
+    return result;
+}
 
 class ReaderXML
 {
@@ -21,7 +39,8 @@ public:
     ReaderXML()
     {
         _tempDir = fs::temp_directory_path();
-        fs::path filename = fs::unique_path("unit_test_Reader-%%%%.xml");
+        fs::path filename =
+            std::string("unit_test_Reader-") + random_string(4) + std::string(".xml");
         _tempFile = _tempDir / filename;
     }
     ~ReaderXML()
