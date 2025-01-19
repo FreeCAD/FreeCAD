@@ -82,6 +82,10 @@ macro(CompilerChecksAndSetups)
                 endif()
             endif()
         endif(BUILD_DYNAMIC_LINK_PYTHON)
+
+        if(BUILD_USE_LIBCXX)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+        endif()
     endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
     if(CMAKE_COMPILER_IS_CLANGXX)
