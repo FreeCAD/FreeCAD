@@ -6761,14 +6761,15 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
         }
     }
 
-    for (auto& [kGeoId, numConstr] : knotGeoIdsAndConstraints) {
+    for (auto [kGeoId, numConstr] : knotGeoIdsAndConstraints) {
         if (kGeoId == GeoEnum::GeoUndef) {
             continue;
         }
 
         // look for a point at geoid index
-        numConstr = std::count_if(vals.begin(), vals.end(), [&kGeoId](const auto& constr) {
-            return constr->involvesGeoId(kGeoId);
+        int geoIndex = kGeoId;
+        numConstr = std::count_if(vals.begin(), vals.end(), [geoIndex](const auto& constr) {
+            return constr->involvesGeoId(geoIndex);
         });
 
         if (numConstr < 2) { // IA
