@@ -567,7 +567,7 @@ private:
 
             PartDesignGui::setEdit(sketch, partDesignBody);
         };
-        auto onReject = [partDesignBody, sketch]() {
+        auto onReject = [partDesignBody]() {
             SketchRequestSelection::resetOriginVisibility(partDesignBody);
         };
 
