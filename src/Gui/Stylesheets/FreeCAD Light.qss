@@ -1994,7 +1994,7 @@ QTabBar[style="text-only"]::tab:left {
 
 QTabBar::close-button, QDockWidget QTabBar::close-button {
   border: 0;
-  margin: 3px;
+  margin: 4px;
   padding: 0px;
   image: url(qss:images_classic/close-lightgray.png);
 }
@@ -2020,122 +2020,133 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
   margin-left: 0px;
   margin-right: 0px;
   min-width: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #dddddd, stop:0.6 #e2e2e2, stop:1 #cccccc);
+  background-color: #e2e2e2;
   margin-top: 3px;
-  border-top: 1px solid #ababab; /* selection color */
+  border-top: 1px solid #ababab;
   border-bottom: 1px solid #ababab;
   border-left: 1px solid #ababab;
   border-right: 1px solid #ababab;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f0f0f0, stop:0.6 #fdfdfd stop:1 #f0f0f0);
+  background-color: #f8f8f8;
   color: black;
-  border-top: 1px solid #ababab; /* selection color */
-  border-bottom: 1px solid #f0f0f0;
+  border-top: 1px solid #ababab;
+  border-bottom: 1px solid #f8f8f8;
   border-left: 1px solid #ababab;
   border-right: 1px solid #ababab;
   margin-top: 0px;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 QTabBar::tab:top:!selected:hover, QDockWidget QTabBar::tab:top:!selected:hover {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f0f0f0, stop:1 #d8d8d8);
-  margin-top: 0px;
+  background-color: #f8f8f8;
 }
 
 QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
   color: #646464;
   min-width: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #dddddd, stop:0.6 #e2e2e2, stop:1 #cccccc);
+  background-color: #e2e2e2;
   margin-bottom: 3px;
-  border-bottom: 1px solid #ababab; /* selection color */
+  border-bottom: 1px solid #ababab;
   border-top: 1px solid #ababab;
   border-left: 1px solid #ababab;
   border-right: 1px solid #ababab;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f0f0f0, stop:0.6 #fdfdfd stop:1 #f0f0f0);
+  background-color: #f8f8f8;
   color: black;
-  border-bottom: 1px solid #ababab; /* selection color */
-  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #ababab;
+  border-top: 1px solid #f8f8f8;
   border-left: 1px solid #ababab;
   border-right: 1px solid #ababab;
   margin-bottom: 0px;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 QTabBar::tab:bottom:!selected:hover, QDockWidget QTabBar::tab:bottom:!selected:hover {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #d8d8d8, stop:1 #f0f0f0);
-  margin-bottom: 0px;
+  background-color: #f8f8f8;
+  color: black;
+  border-bottom: 1px solid #ababab;
+  border-top: 1px solid #ababab;
+  border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
 }
 
 QTabBar::tab:left, QDockWidget QTabBar::tab:left {
   color: #646464;
   min-height: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #dddddd, stop:0.6 #e2e2e2, stop:1 #cccccc);
+  background-color: #e2e2e2;
   margin-left: 3px;
-  border-bottom: 1px solid #ababab; /* selection color */
+  border-bottom: 1px solid #ababab;
   border-right: 1px solid #ababab;
   border-left: 1px solid #ababab;
   border-top: 1px solid #ababab;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
 
 QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f0f0f0, stop:0.6 #fdfdfd stop:1 #f0f0f0);
+  background-color: #f8f8f8;
   color: black;
-  border-bottom: 1px solid #ababab; /* selection color */
+  border-bottom: 1px solid #ababab;
   border-right: 1px solid #f0f0f0;
   border-left: 1px solid #ababab;
   border-top: 1px solid #ababab;
   margin-left: 0px;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
 
 QTabBar::tab:left:!selected:hover, QDockWidget QTabBar::tab:left:!selected:hover {
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #d8d8d8, stop:1 #f0f0f0);
-  margin-left: 0px;
+  background-color: #f8f8f8;
+  color: black;
+  border-bottom: 1px solid #ababab;
+  border-top: 1px solid #ababab;
+  border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
 }
 
 QTabBar::tab:right, QDockWidget QTabBar::tab:right {
   color: black;
   min-height: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #dddddd, stop:0.6 #e2e2e2, stop:1 #cccccc);
+  background-color: #e2e2e2;
   margin-right: 3px;
-  border-bottom: 1px solid #ababab; /* selection color */
+  border-bottom: 1px solid #ababab;
   border-left: 1px solid #ababab;
   border-right: 1px solid #ababab;
   border-top: 1px solid #ababab;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f0f0f0, stop:0.6 #fdfdfd stop:1 #f0f0f0);
+  background-color: #f8f8f8;
   color: black;
-  border-bottom: 1px solid #ababab; /* selection color */
+  border-bottom: 1px solid #ababab;
   border-left: 1px solid #f0f0f0;
   border-left: 1px solid #ababab;
   border-top: 1px solid #ababab;
   margin-right: 0px;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 QTabBar::tab:right:!selected:hover, QDockWidget QTabBar::tab:right:!selected:hover {
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f0f0f0, stop:1 #d8d8d8);
-  margin-right: 0px;
-}
+  background-color: #f8f8f8;
+  color: black;
+  border-bottom: 1px solid #ababab;
+  border-top: 1px solid #ababab;
+  border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
+  }
 
 QTabBar QToolButton, QDockWidget QTabBar QToolButton {
   /* Fixes #136 */
