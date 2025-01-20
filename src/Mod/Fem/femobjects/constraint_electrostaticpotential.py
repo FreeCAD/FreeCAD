@@ -32,6 +32,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief constraint electrostatic potential object
 
+from FreeCAD import Base
+
 from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
@@ -70,10 +72,28 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
         )
         prop.append(
             _PropHelper(
+                type="App::PropertyElectricPotential",
+                name="AV_re",
+                group="Electromagnetic Potential",
+                doc="Real part of scalar potential",
+                value="0 V",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyElectricPotential",
+                name="AV_im",
+                group="Electromagnetic Potential",
+                doc="Imaginary part of scalar potential",
+                value="0 V",
+            )
+        )
+        prop.append(
+            _PropHelper(
                 type="App::PropertyElectromagneticPotential",
                 name="AV_re_1",
-                group="Vector Potential",
-                doc="Real part of potential x-component",
+                group="Electromagnetic Potential",
+                doc="Real part of vector potential x-component",
                 value="0 Wb/m",
             )
         )
@@ -81,8 +101,8 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyElectromagneticPotential",
                 name="AV_re_2",
-                group="Vector Potential",
-                doc="Real part of potential y-component",
+                group="Electromagnetic Potential",
+                doc="Real part of vector potential y-component",
                 value="0 Wb/m",
             )
         )
@@ -90,8 +110,8 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyElectromagneticPotential",
                 name="AV_re_3",
-                group="Vector Potential",
-                doc="Real part of potential z-component",
+                group="Electromagnetic Potential",
+                doc="Real part of vector potential z-component",
                 value="0 Wb/m",
             )
         )
@@ -99,8 +119,8 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyElectromagneticPotential",
                 name="AV_im_1",
-                group="Vector Potential",
-                doc="Imaginary part of potential x-component",
+                group="Electromagnetic Potential",
+                doc="Imaginary part of vector potential x-component",
                 value="0 Wb/m",
             )
         )
@@ -108,8 +128,8 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyElectromagneticPotential",
                 name="AV_im_2",
-                group="Vector Potential",
-                doc="Imaginary part of potential y-component",
+                group="Electromagnetic Potential",
+                doc="Imaginary part of vector potential y-component",
                 value="0 Wb/m",
             )
         )
@@ -117,8 +137,8 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyElectromagneticPotential",
                 name="AV_im_3",
-                group="Vector Potential",
-                doc="Imaginary part of potential z-component",
+                group="Electromagnetic Potential",
+                doc="Imaginary part of vector potential z-component",
                 value="0 Wb/m",
             )
         )
@@ -142,18 +162,9 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyElectricPotential",
-                name="AV_im",
-                group="Parameter",
-                doc="Imaginary part of scalar potential",
-                value="0 V",
-            )
-        )
-        prop.append(
-            _PropHelper(
                 type="App::PropertyBool",
                 name="AV_re_1_Disabled",
-                group="Vector Potential",
+                group="Electromagnetic Potential",
                 doc="",
                 value=True,
             )
@@ -162,7 +173,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyBool",
                 name="AV_re_2_Disabled",
-                group="Vector Potential",
+                group="Electromagnetic Potential",
                 doc="",
                 value=True,
             )
@@ -171,7 +182,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyBool",
                 name="AV_re_3_Disabled",
-                group="Vector Potential",
+                group="Electromagnetic Potential",
                 doc="",
                 value=True,
             )
@@ -180,7 +191,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyBool",
                 name="AV_im_1_Disabled",
-                group="Vector Potential",
+                group="Electromagnetic Potential",
                 doc="",
                 value=True,
             )
@@ -189,7 +200,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyBool",
                 name="AV_im_2_Disabled",
-                group="Vector Potential",
+                group="Electromagnetic Potential",
                 doc="",
                 value=True,
             )
@@ -198,7 +209,16 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyBool",
                 name="AV_im_3_Disabled",
-                group="Vector Potential",
+                group="Electromagnetic Potential",
+                doc="",
+                value=True,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="AV_re_Disabled",
+                group="Electromagnetic Potential",
                 doc="",
                 value=True,
             )
@@ -207,7 +227,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             _PropHelper(
                 type="App::PropertyBool",
                 name="AV_im_Disabled",
-                group="Vector Potential",
+                group="Electromagnetic Potential",
                 doc="",
                 value=True,
             )

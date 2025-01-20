@@ -31,6 +31,7 @@ __url__ = "https://www.freecad.org"
 from FreeCAD import Console
 from FreeCAD import Units
 
+from femtools import femutils
 from .. import sifio
 from .. import writer as general_writer
 
@@ -289,29 +290,27 @@ class MgDynwriter:
                     currentDensity = float(obj.CurrentDensity_im_1.getValueAs("A/m^2"))
                     self.write.boundary(name, "Current Density Im 1", round(currentDensity, 6))
 
-        if hasattr(obj, "PotentialEnabled"):
-            # check for PotentialEnabled not Potential since PotentialEnabled was
-            # added later and only with this the vectorial properties are available
-            if obj.PotentialEnabled:
-                potential = float(obj.Potential.getValueAs("V"))
+        if femutils.is_derived_from(obj, "Fem::ConstraintElectrostaticPotential"):
+            if not obj.AV_re_Disabled:
+                potential = obj.AV_re.getValueAs("V").Value
                 if equation.IsHarmonic:
                     self.write.boundary(name, "AV re", round(potential, 6))
                 else:
                     self.write.boundary(name, "AV", round(potential, 6))
             if not obj.AV_re_1_Disabled:
-                potential = float(obj.AV_re_1.getValueAs("V"))
+                potential = obj.AV_re_1.getValueAs("Wb/m").Value
                 if equation.IsHarmonic:
                     self.write.boundary(name, "AV re {e} 1", round(potential, 6))
                 else:
                     self.write.boundary(name, "AV {e} 1", round(potential, 6))
             if not obj.AV_re_2_Disabled:
-                potential = float(obj.AV_re_2.getValueAs("V"))
+                potential = obj.AV_re_2.getValueAs("Wb/m").Value
                 if equation.IsHarmonic:
                     self.write.boundary(name, "AV re {e} 2", round(potential, 6))
                 else:
                     self.write.boundary(name, "AV {e} 2", round(potential, 6))
             if not obj.AV_re_3_Disabled:
-                potential = float(obj.AV_re_3.getValueAs("V"))
+                potential = obj.AV_re_3.getValueAs("Wb/m").Value
                 if equation.IsHarmonic:
                     self.write.boundary(name, "AV re {e} 3", round(potential, 6))
                 else:
@@ -319,16 +318,16 @@ class MgDynwriter:
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
                 if not obj.AV_im_Disabled:
-                    potential = float(obj.AV_im.getValueAs("V"))
+                    potential = obj.AV_im.getValueAs("V").Value
                     self.write.boundary(name, "AV im", round(potential, 6))
                 if not obj.AV_im_1_Disabled:
-                    potential = float(obj.AV_im_1.getValueAs("V"))
+                    potential = obj.AV_im_1.getValueAs("Wb/m").Value
                     self.write.boundary(name, "AV im {e} 1", round(potential, 6))
                 if not obj.AV_im_2_Disabled:
-                    potential = float(obj.AV_im_2.getValueAs("V"))
+                    potential = obj.AV_im_2.getValueAs("Wb/m").Value
                     self.write.boundary(name, "AV im {e} 2", round(potential, 6))
                 if not obj.AV_im_3_Disabled:
-                    potential = float(obj.AV_im_3.getValueAs("V"))
+                    potential = obj.AV_im_3.getValueAs("Wb/m").Value
                     self.write.boundary(name, "AV im {e} 3", round(potential, 6))
 
     def handleMagnetodynamicBndConditions(self, equation):

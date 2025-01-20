@@ -70,23 +70,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self._partVisible = None
         self._meshVisible = None
 
-        # start with vector inputs hidden if no vector is set
-        if (
-            self.obj.AV_re_1_Disabled
-            and self.obj.AV_re_2_Disabled
-            and self.obj.AV_re_3_Disabled
-            and self.obj.AV_im_Disabled
-            and self.obj.AV_im_1_Disabled
-            and self.obj.AV_im_2_Disabled
-            and self.obj.AV_im_3_Disabled
-        ):
-            self._vectorField_visibility(False)
-            self.parameter_widget.vectorFieldBox.setChecked(False)
-
         QtCore.QObject.connect(
-            self.parameter_widget.vectorFieldBox,
+            self.parameter_widget.ckb_electromagnetic,
             QtCore.SIGNAL("toggled(bool)"),
-            self._vectorField_visibility,
+            self.electromagnetic_enabled_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.cb_boundary_condition,
@@ -107,6 +94,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.parameter_widget.ckb_av_re,
             QtCore.SIGNAL("toggled(bool)"),
             self.av_re_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_re,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_re_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.ckb_av_re_1,
@@ -199,20 +191,12 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.electric_infinity_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.ckb_electric_forcecalculation,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.electric_forcecalculation_changed,
-        )
-        QtCore.QObject.connect(
             self.parameter_widget.qsb_surface_charge_density,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.surface_charge_density_changed,
         )
 
         self.init_parameter_widget()
-
-    def _vectorField_visibility(self, visible):
-        self.parameter_widget.vectorFieldGB.setVisible(visible)
 
     def open(self):
         if self._mesh is not None and self._part is not None:
@@ -249,6 +233,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.potential = self.obj.Potential
         self.potential_enabled = self.obj.PotentialEnabled
 
+        self.av_re = self.obj.AV_re
         self.av_re_1 = self.obj.AV_re_1
         self.av_re_2 = self.obj.AV_re_2
         self.av_re_3 = self.obj.AV_re_3
@@ -257,11 +242,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.av_im_2 = self.obj.AV_im_2
         self.av_im_3 = self.obj.AV_im_3
 
-        self.av_re_enabled = not self.obj.PotentialEnabled
+        self.av_re_enabled = not self.obj.AV_re_Disabled
+        self.av_im_enabled = not self.obj.AV_im_Disabled
         self.av_re_1_enabled = not self.obj.AV_re_1_Disabled
         self.av_re_2_enabled = not self.obj.AV_re_2_Disabled
         self.av_re_3_enabled = not self.obj.AV_re_3_Disabled
-        self.av_im_enabled = not self.obj.AV_im_Disabled
         self.av_im_1_enabled = not self.obj.AV_im_1_Disabled
         self.av_im_2_enabled = not self.obj.AV_im_2_Disabled
         self.av_im_3_enabled = not self.obj.AV_im_3_Disabled
@@ -269,16 +254,15 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.boundary_condition = self.obj.BoundaryCondition
         self.potential_constant = self.obj.PotentialConstant
         self.electric_infinity = self.obj.ElectricInfinity
-        self.electric_forcecalculation = self.obj.ElectricForcecalculation
         self.capacitance_body_enabled = self.obj.CapacitanceBodyEnabled
         self.capacitance_body = self.obj.CapacitanceBody
-
         self.surface_charge_density = self.obj.SurfaceChargeDensity
 
     def _set_params(self):
         self.obj.Potential = self.potential
         self.obj.PotentialEnabled = self.potential_enabled
 
+        self.obj.AV_re = self.av_re
         self.obj.AV_re_1 = self.av_re_1
         self.obj.AV_re_2 = self.av_re_2
         self.obj.AV_re_3 = self.av_re_3
@@ -287,10 +271,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.AV_im_2 = self.av_im_2
         self.obj.AV_im_3 = self.av_im_3
 
+        self.obj.AV_re_Disabled = not self.av_re_enabled
+        self.obj.AV_im_Disabled = not self.av_im_enabled
         self.obj.AV_re_1_Disabled = not self.av_re_1_enabled
         self.obj.AV_re_2_Disabled = not self.av_re_2_enabled
         self.obj.AV_re_3_Disabled = not self.av_re_3_enabled
-        self.obj.AV_im_Disabled = not self.av_im_enabled
         self.obj.AV_im_1_Disabled = not self.av_im_1_enabled
         self.obj.AV_im_2_Disabled = not self.av_im_2_enabled
         self.obj.AV_im_3_Disabled = not self.av_im_3_enabled
@@ -298,7 +283,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.BoundaryCondition = self.boundary_condition
         self.obj.PotentialConstant = self.potential_constant
         self.obj.ElectricInfinity = self.electric_infinity
-        self.obj.ElectricForcecalculation = self.electric_forcecalculation
         self.obj.CapacitanceBodyEnabled = self.capacitance_body_enabled
         self.obj.CapacitanceBody = self.capacitance_body
 
@@ -313,11 +297,15 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         )
         self.parameter_widget.ckb_potential.setChecked(self.potential_enabled)
 
-        # the vector potentials
-        self.parameter_widget.qsb_av_re.setProperty("value", self.potential)
+        # scalar potential
+        self.parameter_widget.qsb_av_re.setProperty("value", self.av_re)
         self.parameter_widget.qsb_av_re.setEnabled(self.av_re_enabled)
-        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re).bind(self.obj, "Potential")
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re).bind(self.obj, "AV_re")
+        self.parameter_widget.qsb_av_im.setProperty("value", self.av_im)
+        self.parameter_widget.qsb_av_im.setEnabled(self.av_im_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im).bind(self.obj, "AV_im")
 
+        # vector potential
         self.parameter_widget.qsb_av_re_1.setProperty("value", self.av_re_1)
         self.parameter_widget.qsb_av_re_1.setEnabled(self.av_re_1_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re_1).bind(self.obj, "AV_re_1")
@@ -327,9 +315,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.parameter_widget.qsb_av_re_3.setProperty("value", self.av_re_3)
         self.parameter_widget.qsb_av_re_3.setEnabled(self.av_re_3_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re_3).bind(self.obj, "AV_re_3")
-        self.parameter_widget.qsb_av_im.setProperty("value", self.av_im)
-        self.parameter_widget.qsb_av_im.setEnabled(self.av_im_enabled)
-        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im).bind(self.obj, "AV_im")
+
         self.parameter_widget.qsb_av_im_1.setProperty("value", self.av_im_1)
         self.parameter_widget.qsb_av_im_1.setEnabled(self.av_im_1_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im_1).bind(self.obj, "AV_im_1")
@@ -340,6 +326,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.parameter_widget.qsb_av_im_3.setEnabled(self.av_im_3_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im_3).bind(self.obj, "AV_im_3")
 
+        self.parameter_widget.ckb_av_re.setChecked(self.av_re_enabled)
         self.parameter_widget.ckb_av_re_1.setChecked(self.av_re_1_enabled)
         self.parameter_widget.ckb_av_re_2.setChecked(self.av_re_2_enabled)
         self.parameter_widget.ckb_av_re_3.setChecked(self.av_re_3_enabled)
@@ -352,12 +339,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         self.parameter_widget.ckb_electric_infinity.setChecked(self.electric_infinity)
 
-        self.parameter_widget.ckb_electric_forcecalculation.setChecked(
-            self.electric_forcecalculation
-        )
-
         self.parameter_widget.ckb_capacitance_body.setChecked(self.capacitance_body_enabled)
-        self.parameter_widget.spb_capacitance_body.setValue(self.capacitance_body)
+        self.parameter_widget.spb_capacitance_body.setProperty("value", self.capacitance_body)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.spb_capacitance_body).bind(
+            self.obj, "CapacitanceBody"
+        )
 
         self.parameter_widget.qsb_surface_charge_density.setProperty(
             "value", self.surface_charge_density
@@ -367,10 +353,22 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         )
 
         self.bc_enum = self.obj.getEnumerationsOfProperty("BoundaryCondition")
-        self.parameter_widget.cb_boundary_condition.addItems(self.bc_enum)
         index = self.bc_enum.index(self.boundary_condition)
+        self.parameter_widget.cb_boundary_condition.addItems(self.bc_enum)
         self.parameter_widget.cb_boundary_condition.setCurrentIndex(index)
-        self.boundary_condition_changed(index)
+
+        # start with electromagnetic inputs hidden if no field is set
+        if not (
+            self.av_re_enabled
+            or self.av_im_enabled
+            or self.av_re_1_enabled
+            or self.av_re_2_enabled
+            or self.av_re_3_enabled
+            or self.av_im_1_enabled
+            or self.av_im_2_enabled
+            or self.av_im_3_enabled
+        ):
+            self.parameter_widget.ckb_electromagnetic.setChecked(False)
 
     def potential_changed(self, value):
         self.potential = value
@@ -378,6 +376,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def potential_enabled_changed(self, value):
         self.potential_enabled = value
         self.parameter_widget.qsb_potential.setEnabled(value)
+
+    def electromagnetic_enabled_changed(self, value):
+        self.parameter_widget.gb_electromagnetic.setVisible(value)
 
     def av_re_enabled_changed(self, value):
         self.av_re_enabled = value
@@ -411,6 +412,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.av_im_3_enabled = value
         self.parameter_widget.qsb_av_im_3.setEnabled(value)
 
+    def av_re_changed(self, value):
+        self.av_re = value
+
     def av_re_1_changed(self, value):
         self.av_re_1 = value
 
@@ -438,9 +442,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def electric_infinity_changed(self, value):
         self.electric_infinity = value
 
-    def electric_forcecalculation_changed(self, value):
-        self.electric_forcecalculation = value
-
     def capacitance_body_enabled_changed(self, value):
         self.capacitance_body_enabled = value
         self.parameter_widget.spb_capacitance_body.setEnabled(value)
@@ -460,53 +461,3 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         elif self.boundary_condition == "Neumann":
             self.parameter_widget.gb_neumann.setEnabled(True)
             self.parameter_widget.gb_dirichlet.setEnabled(False)
-
-    def _applyPotentialChanges(self, enabledBox, potentialQSB):
-        enabled = enabledBox.isChecked()
-        potential = None
-        try:
-            potential = potentialQSB.property("value")
-        except ValueError:
-            FreeCAD.Console.PrintMessage(
-                "Wrong input. Not recognised input: '{}' "
-                "Potential has not been set.\n".format(potentialQSB.text())
-            )
-            potential = "0.0 mm^2*kg/(s^3*A)"
-        return enabled, potential
-
-    def _applyWidgetChanges(self):
-        # apply the voltages and their enabled state
-        self.obj.AV_re_1_Disabled, self.obj.AV_re_1 = self._applyPotentialChanges(
-            self.parameter_widget.reXunspecBox, self.parameter_widget.realXQSB
-        )
-        self.obj.AV_re_2_Disabled, self.obj.AV_re_2 = self._applyPotentialChanges(
-            self.parameter_widget.reYunspecBox, self.parameter_widget.realYQSB
-        )
-        self.obj.AV_re_3_Disabled, self.obj.AV_re_3 = self._applyPotentialChanges(
-            self.parameter_widget.reZunspecBox, self.parameter_widget.realZQSB
-        )
-        self.obj.AV_im_Disabled, self.obj.AV_im = self._applyPotentialChanges(
-            self.parameter_widget.imScalarunspecBox, self.parameter_widget.imagScalarQSB
-        )
-        self.obj.AV_im_1_Disabled, self.obj.AV_im_1 = self._applyPotentialChanges(
-            self.parameter_widget.imXunspecBox, self.parameter_widget.imagXQSB
-        )
-        self.obj.AV_im_2_Disabled, self.obj.AV_im_2 = self._applyPotentialChanges(
-            self.parameter_widget.imYunspecBox, self.parameter_widget.imagYQSB
-        )
-        self.obj.AV_im_3_Disabled, self.obj.AV_im_3 = self._applyPotentialChanges(
-            self.parameter_widget.imZunspecBox, self.parameter_widget.imagZQSB
-        )
-        # because this is an enable the others are disabled, reverse
-        self.obj.PotentialEnabled = not self.obj.PotentialEnabled
-
-        self.obj.PotentialConstant = self.parameter_widget.potentialConstantBox.isChecked()
-
-        self.obj.ElectricInfinity = self.parameter_widget.electricInfinityBox.isChecked()
-
-        calc_is_checked = self.parameter_widget.electricForcecalculationBox.isChecked()
-        self.obj.ElectricForcecalculation = calc_is_checked  # two lines because max line length
-
-        self.obj.SurfaceChargeDensity = self.parameter_widget.surfacechargedensityQSB.property(
-            "value"
-        )

@@ -14,12 +14,12 @@
    <string>Analysis feature properties</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+   <item row="0" column="0">
     <widget class="QGroupBox" name="gb_boundary_condition">
      <property name="title">
       <string></string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
+     <layout class="QFormLayout" name="gridLayout_4">
       <item row="0" column="0">
        <widget class="QLabel" name="lbl_boundary_condition">
         <property name="text">
@@ -41,9 +41,9 @@
      <property name="checkable">
       <bool>false</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout_6">
-      <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QFormLayout" name="gridLayout">
         <item row="0" column="0">
          <widget class="QCheckBox" name="ckb_potential">
           <property name="text">
@@ -75,8 +75,8 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="vectorFieldBox">
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="ckb_electromagnetic">
         <property name="toolTip">
          <string>To define scalar potential and magnetic vector potential</string>
         </property>
@@ -88,8 +88,11 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QGroupBox" name="vectorFieldGB">
+      <item row="4" column="0">
+       <widget class="QGroupBox" name="gb_electromagnetic">
+        <property name="title">
+         <string></string>
+        </property>
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -100,10 +103,7 @@ with a harmonic/oscillating driving force</string>
         <property name="checkable">
          <bool>false</bool>
         </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_3">
+        <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,255,0,255">
          <item row="0" column="2">
           <widget class="QLabel" name="labelReal">
            <property name="enabled">
@@ -136,9 +136,6 @@ with a harmonic/oscillating driving force</string>
          </item>
          <item row="1" column="1">
           <widget class="QCheckBox" name="ckb_av_re">
-           <property name="toolTip">
-            <string>unspecified</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -147,13 +144,10 @@ with a harmonic/oscillating driving force</string>
          <item row="1" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_re">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Potential as specified above</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
+            <string>Real part of scalar potential</string>
            </property>
            <property name="keyboardTracking">
             <bool>true</bool>
@@ -171,9 +165,6 @@ with a harmonic/oscillating driving force</string>
          </item>
          <item row="1" column="3">
           <widget class="QCheckBox" name="ckb_av_im">
-           <property name="toolTip">
-            <string>unspecified</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -213,9 +204,6 @@ with a harmonic/oscillating driving force</string>
          </item>
          <item row="2" column="1">
           <widget class="QCheckBox" name="ckb_av_re_1">
-           <property name="toolTip">
-            <string>unspecified</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -246,9 +234,6 @@ Note: has no effect if a solid was selected</string>
          </item>
          <item row="2" column="3">
           <widget class="QCheckBox" name="ckb_av_im_1">
-           <property name="toolTip">
-            <string>unspecified</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -289,9 +274,6 @@ Note: has no effect if a solid was selected</string>
          </item>
          <item row="3" column="1">
           <widget class="QCheckBox" name="ckb_av_re_2">
-           <property name="toolTip">
-            <string>unspecified</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -322,9 +304,6 @@ Note: has no effect if a solid was selected</string>
          </item>
          <item row="3" column="3">
           <widget class="QCheckBox" name="ckb_av_im_2">
-           <property name="toolTip">
-            <string>unspecified</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -365,9 +344,6 @@ Note: has no effect if a solid was selected</string>
          </item>
          <item row="4" column="1">
           <widget class="QCheckBox" name="ckb_av_re_3">
-           <property name="toolTip">
-            <string>unspecified</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -398,9 +374,6 @@ Note: has no effect if a solid was selected</string>
          </item>
          <item row="4" column="3">
           <widget class="QCheckBox" name="ckb_av_im_3">
-           <property name="toolTip">
-            <string>unspecified</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -432,64 +405,28 @@ Note: has no effect if a solid was selected</string>
         </layout>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="ckb_electric_infinity">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="toolTip">
-         <string>Whether the boundary condition defines a farfield potential</string>
-        </property>
-        <property name="text">
-         <string>Farfield / Electric infinity</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QCheckBox" name="ckb_potential_constant">
-        <property name="toolTip">
-         <string>Whether the boundary condition defines a constant potential</string>
-        </property>
-        <property name="text">
-         <string>Potential Constant</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QCheckBox" name="ckb_electric_forcecalculation">
-        <property name="toolTip">
-         <string>Whether the boundary condition is for the electric force</string>
-        </property>
-        <property name="text">
-         <string>Calculate Electric Force</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="ckb_capacitance_body">
-          <property name="text">
-           <string>Capacitance Body:</string>
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="ckb_electric_infinity">
+          <property name="enabled">
+           <bool>true</bool>
           </property>
           <property name="toolTip">
-           <string>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</string>
+           <string>Whether the boundary condition defines a farfield potential</string>
+          </property>
+          <property name="text">
+           <string>Electric Infinity</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="spb_capacitance_body">
+        <item row="3" column="1">
+         <widget class="QCheckBox" name="ckb_potential_constant">
           <property name="toolTip">
-           <string>Counter of the body (or face) with a capacitance</string>
+           <string>Whether the boundary condition defines a constant potential</string>
           </property>
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>1</number>
+          <property name="text">
+           <string>Potential Constant</string>
           </property>
          </widget>
         </item>
@@ -503,7 +440,7 @@ Note: has no effect if a solid was selected</string>
      <property name="title">
       <string>Neumann</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_8">
+     <layout class="QFormLayout" name="gridLayout_8">
       <item row="0" column="0">
        <widget class="QLabel" name="surfacechargedensityLbl">
         <property name="text">
@@ -524,6 +461,41 @@ Note: has no effect if a solid was selected</string>
      </layout>
     </widget>
    </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="gb_boundary_condition">
+     <property name="title">
+      <string>Capacitance</string>
+     </property>
+     <layout class="QFormLayout" name="gridLayout">
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="ckb_capacitance_body">
+        <property name="text">
+         <string>Capacitance Body:</string>
+        </property>
+        <property name="toolTip">
+         <string>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::IntSpinBox" name="spb_capacitance_body">
+        <property name="toolTip">
+         <string>Counter of the body (or face) with a capacitance</string>
+        </property>
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -532,9 +504,11 @@ Note: has no effect if a solid was selected</string>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::IntSpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
- <buttongroups>
-  <buttongroup name="BCtypeBG"/>
- </buttongroups>
 </ui>
