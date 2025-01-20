@@ -69,6 +69,7 @@ public:
     int type() const override { return Type;}
 
     QRectF boundingRect() const override;
+    QRectF tightBoundingRect() const;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,

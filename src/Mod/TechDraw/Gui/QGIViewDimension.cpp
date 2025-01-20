@@ -354,18 +354,29 @@ QRectF QGIDatumLabel::boundingRect() const
     return childrenBoundingRect();
 }
 
+QRectF QGIDatumLabel::tightBoundingRect() const
+{
+    QRectF totalRect;
+    for (QGraphicsItem* item : m_textItems->childItems()) {
+        auto* customText = dynamic_cast<QGCustomText*>(item);
+        if (customText && !customText->toPlainText().isEmpty()) {
+            QRectF itemRect = customText->alignmentRect();
+            QPointF pos = customText->pos();
+            itemRect.translate(pos.x(), pos.y());
+            totalRect = totalRect.isNull() ? itemRect : totalRect.united(itemRect);
+        }
+    }
+    int fontSize = m_dimText->font().pixelSize();
+    int paddingLeft = fontSize * 0.2;
+    int paddingTop = fontSize * 0.1;
+    int paddingRight = fontSize * 0.2;
+    int paddingBottom = fontSize * 0.1;
+    return totalRect.adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom);
+}
+
 void QGIDatumLabel::updateFrameRect() {
     prepareGeometryChange();
-    int fontSize = m_dimText->font().pixelSize();
-    int paddingLeft = fontSize * 0.3;
-    int paddingTop = fontSize * 0.1;
-    int paddingRight = fontSize * 0.3;
-    int paddingBottom = fontSize * 0.125;
-    // Why top and bottom padding different?
-    // Because the m_dimText bouding box isn't relative to X height :(
-    // And we want padding to be relative to X height
-    // TODO: make QGCustomLabel::boundingBoxXHeight
-    m_frame->setRect(m_textItems->childrenBoundingRect().adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom)); // Update bouding rect
+    m_frame->setRect(tightBoundingRect());
 }
 
 void QGIDatumLabel::setLineWidth(double lineWidth)
@@ -466,7 +477,7 @@ void QGIDatumLabel::setFont(QFont font)
     QFont tFont(font);
     double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
-    tFont.setPixelSize((int)(fontSize * tolAdj));
+    tFont.setPixelSize(std::max(1, (int)(fontSize * tolAdj)));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
     updateFrameRect();

@@ -178,7 +178,7 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     myOption.state &= ~QStyle::State_Selected;
 
 //    painter->setPen(Qt::green);
-//    painter->drawRect(boundingRect());          //good for debugging
+//    painter->drawRect(alignmentRect());          //good for debugging
 
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
