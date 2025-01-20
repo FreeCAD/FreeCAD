@@ -1766,6 +1766,8 @@ void MainWindow::loadWindowSettings()
 
     statusBar()->setVisible(showStatusBar);
 
+    setAttribute(Qt::WA_AlwaysShowToolTips);
+
     ToolBarManager::getInstance()->restoreState();
     std::clog << "Toolbars restored" << std::endl;
 
