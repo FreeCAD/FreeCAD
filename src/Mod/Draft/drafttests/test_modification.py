@@ -680,7 +680,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj.Shape = shp
         obj.Placement.Base = base
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         self.doc.recompute()
 
         # check endpoints of arcs:
@@ -724,7 +724,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj.Shape = shp
         obj.Placement.Base = base
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         self.doc.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),
@@ -750,7 +750,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = Draft.make_rectangle(len, hgt)
         obj.Placement.Base = base
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         self.doc.recompute()
 
         newBase = Vector(5.0, 5.5, 0.0)
@@ -782,14 +782,15 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = Draft.make_bspline(pts, False)
         obj.Placement.Base = base
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         self.doc.recompute()
+        pla = obj.Placement
 
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector( 9.0, 14.5, 0.0),
                   Vector(13.0,  5.5, 0.0)]
         for i in range(3):
-            self.assertTrue(obj.Points[i].add(base).isEqual(newPts[i], 1e-6),
+            self.assertTrue(pla.multVec(obj.Points[i]).isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def test_scale_wire(self):
@@ -808,7 +809,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = Draft.make_wire(pts, True)
         obj.Placement.Base = base
         self.doc.recompute()
-        Draft.scale([obj], sca, cen, False)
+        obj = Draft.scale(obj, sca, cen, False)
         self.doc.recompute()
 
         newPts = [Vector( 5.0,  5.5, 0.0),

@@ -33,31 +33,35 @@ import FreeCAD as App
 import DraftVecUtils
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
+from draftutils.messages import _wrn
+from draftutils.translate import translate
 
 
 class Clone(DraftObject):
     """The Clone object"""
 
-    def __init__(self,obj):
+    def __init__(self, obj):
+        self.set_properties(obj)
         super().__init__(obj, "Clone")
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The objects included in this clone")
-        obj.addProperty("App::PropertyLinkListGlobal", "Objects",
-                        "Draft", _tip)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The scale factor of this clone")
-        obj.addProperty("App::PropertyVector", "Scale",
-                        "Draft", _tip)
-
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "If Clones includes several objects,\n"
-                "set True for fusion or False for compound")
-        obj.addProperty("App::PropertyBool", "Fuse",
-                        "Draft", _tip)
-
-        obj.Scale = App.Vector(1,1,1)
+    def set_properties(self, obj):
+        pl = obj.PropertiesList
+        if not "Objects" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The objects included in this clone")
+            obj.addProperty("App::PropertyLinkListGlobal", "Objects", "Draft", _tip)
+        if not "Scale" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The scale factor of this clone")
+            obj.addProperty("App::PropertyVector", "Scale", "Draft", _tip)
+            obj.Scale = App.Vector(1, 1, 1)
+        if not "Fuse" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "If Clones includes several objects,\n"
+                                     "set True for fusion or False for compound")
+            obj.addProperty("App::PropertyBool", "Fuse", "Draft", _tip)
+        if not "ForceCompound" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Always create a compound")
+            obj.addProperty("App::PropertyBool", "ForceCompound", "Draft", _tip)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -65,9 +69,14 @@ class Clone(DraftObject):
         gui_utils.restore_view_object(
             obj, vp_module="view_clone", vp_class="ViewProviderClone", format_ref=ref
         )
+        if hasattr(obj, "ForceCompound"):
+            return
+        self.set_properties(obj)
+        _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added 'ForceCompound' property"))
 
-    def join(self,obj,shapes):
-        fuse = getattr(obj, 'Fuse', False)
+    def join(self, obj, shapes):
+        fuse = getattr(obj, "Fuse", False)
+        force_compound = getattr(obj, "ForceCompound", False)
         if fuse:
             tmps = []
             for s in shapes:
@@ -79,9 +88,12 @@ class Clone(DraftObject):
                     for s in shapes:
                         tmps += s.Edges
             shapes = tmps
-        if len(shapes) == 1:
-            return shapes[0]
         import Part
+        if len(shapes) == 1:
+            if force_compound:
+                return Part.makeCompound([shapes[0]])
+            else:
+                return shapes[0]
         if fuse:
             try:
                 sh = shapes[0].multiFuse(shapes[1:])
@@ -89,7 +101,10 @@ class Clone(DraftObject):
             except Exception:
                 pass
             else:
-                return sh
+                if force_compound:
+                    return Part.makeCompound([sh])
+                else:
+                    return sh
         return Part.makeCompound(shapes)
 
     def execute(self,obj):
