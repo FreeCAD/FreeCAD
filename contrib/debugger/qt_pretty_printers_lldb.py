@@ -28,7 +28,7 @@
              "program": "${workspaceFolder}/build/bin/FreeCAD",
              "args": [],
              "cwd": "${workspaceFolder}/build/",
-             "preLaunchTask": "CMake: build",      
+             "preLaunchTask": "CMake: build",
              "preRunCommands": [
                  "command script import ${workspaceFolder}/contrib/debugger/qt_pretty_printers_lldb.py"
              ]
