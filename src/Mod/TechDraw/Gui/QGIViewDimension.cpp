@@ -354,18 +354,29 @@ QRectF QGIDatumLabel::boundingRect() const
     return childrenBoundingRect();
 }
 
+QRectF QGIDatumLabel::tightBoundingRect() const
+{
+    QRectF totalRect;
+    for (QGraphicsItem* item : m_textItems->childItems()) {
+        auto* customText = dynamic_cast<QGCustomText*>(item);
+        if (customText && !customText->toPlainText().isEmpty()) {
+            QRectF itemRect = customText->alignmentRect();
+            QPointF pos = customText->pos();
+            itemRect.translate(pos.x(), pos.y());
+            totalRect = totalRect.isNull() ? itemRect : totalRect.united(itemRect);
+        }
+    }
+    int fontSize = m_dimText->font().pixelSize();
+    int paddingLeft = fontSize * 0.2;
+    int paddingTop = fontSize * 0.1;
+    int paddingRight = fontSize * 0.2;
+    int paddingBottom = fontSize * 0.1;
+    return totalRect.adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom);
+}
+
 void QGIDatumLabel::updateFrameRect() {
     prepareGeometryChange();
-    int fontSize = m_dimText->font().pixelSize();
-    int paddingLeft = fontSize * 0.3;
-    int paddingTop = fontSize * 0.1;
-    int paddingRight = fontSize * 0.3;
-    int paddingBottom = fontSize * 0.125;
-    // Why top and bottom padding different?
-    // Because the m_dimText bounding box isn't relative to X height :(
-    // And we want padding to be relative to X height
-    // TODO: make QGCustomLabel::boundingBoxXHeight
-    m_frame->setRect(m_textItems->childrenBoundingRect().adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom)); // Update bounding rect
+    m_frame->setRect(tightBoundingRect());
 }
 
 void QGIDatumLabel::setLineWidth(double lineWidth)
@@ -420,9 +431,7 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
 
     QRectF labelBox = m_dimText->alignmentRect();
     double right = labelBox.right();
-    double top = labelBox.top();
-    double bottom = labelBox.bottom();
-    double middle = (top + bottom) / 2.0;
+    double middle = labelBox.center().y();
 
     //set unit position
     QRectF unitBox = m_unitText->alignmentRect();
@@ -437,10 +446,9 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
 
     // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
     QPointF tol_adj = m_tolTextOver->tightBoundingAdjust();
-    m_tolTextOver->justifyLeftAt(tolLeft + tol_adj.x(), middle - tol_adj.y(), false);
+    m_tolTextOver->justifyLeftAt(tolLeft + tol_adj.x(), middle + tol_adj.y()/2.0, false);
     tol_adj = m_tolTextUnder->tightBoundingAdjust();
-    m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() - tol_adj.y(),
-                                   false);
+    m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() + tol_adj.y()/2.0, false);
 }
 
 void QGIDatumLabel::setLabelCenter()
@@ -453,7 +461,7 @@ void QGIDatumLabel::setLabelCenter()
 
 Base::Vector2d QGIDatumLabel::getPosToCenterVec()
 {
-    QPointF center = boundingRect().center();
+    QPointF center = tightBoundingRect().center();
 
     return Base::Vector2d(center.x(), center.y());
 }
@@ -2350,7 +2358,7 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
                                     ViewProviderDimension* viewProvider) const
 {
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
 
     pointPair linePoints = dimension->getLinearPoints();
     const char* dimensionType = dimension->Type.getValueAsString();
@@ -2387,7 +2395,7 @@ void QGIViewDimension::drawRadius(TechDraw::DrawViewDimension* dimension,
                                   ViewProviderDimension* viewProvider) const
 {
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     arcPoints curvePoints = dimension->getArcPoints();
 
     double endAngle;
@@ -2418,7 +2426,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
                                     ViewProviderDimension* viewProvider) const
 {
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     Base::Vector2d labelCenter(labelRectangle.GetCenter());
 
     arcPoints curvePoints = dimension->getArcPoints();
@@ -2585,7 +2593,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     QPainterPath anglePath;
 
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     Base::Vector2d labelCenter(labelRectangle.GetCenter());
     double labelAngle = 0.0;
 
@@ -2775,7 +2783,7 @@ void QGIViewDimension::drawArea(TechDraw::DrawViewDimension* dimension,
     ViewProviderDimension* viewProvider) const
 {
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     areaPoint areaPoint = dimension->getAreaPoint();
 
     drawAreaExecutive(
