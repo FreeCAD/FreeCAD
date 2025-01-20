@@ -1,6 +1,6 @@
 [project]
 name = "FreeCAD"
-version = "0.22.0"
+version = "1.0.0"
 description = "pixi instructions for FreeCAD"
 authors = ["looooo <sppedflyer@gmail.com>"]
 channels = ["conda-forge"]
