@@ -6767,8 +6767,9 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
         }
 
         // look for a point at geoid index
-        numConstr = std::count_if(vals.begin(), vals.end(), [&kGeoId](const auto& constr) {
-            return constr->involvesGeoId(kGeoId);
+        auto tempGeoID = kGeoId;  // C++17 and earlier do not support captured structured bindings
+        numConstr = std::count_if(vals.begin(), vals.end(), [&tempGeoID](const auto& constr) {
+            return constr->involvesGeoId(tempGeoID);
         });
 
         if (numConstr < 2) { // IA
