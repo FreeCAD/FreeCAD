@@ -700,17 +700,21 @@ class ghostTracker(Tracker):
     You can pass it an object or a list of objects, or a shape.
     """
 
-    def __init__(self, sel, dotted=False, scolor=None, swidth=None, mirror=False):
+    def __init__(self, sel, dotted=False, scolor=None, swidth=None, mirror=False, parent_places=None):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0, 0, 0])
         self.children = [self.trans]
-        rootsep = coin.SoSeparator()
+        self.rootsep = coin.SoSeparator()
         if not isinstance(sel, list):
             sel = [sel]
-        for obj in sel:
+        for idx, obj in enumerate(sel):
+            if parent_places is not None:
+                parent_place = parent_places[idx]
+            else:
+                parent_place = None
             import Part
             if not isinstance(obj, Part.Vertex):
-                rootsep.addChild(self.getNode(obj))
+                self.rootsep.addChild(self.getNode(obj, parent_place))
             else:
                 self.coords = coin.SoCoordinate3()
                 self.coords.point.setValue((obj.X, obj.Y, obj.Z))
@@ -721,10 +725,13 @@ class ghostTracker(Tracker):
                 selnode.addChild(self.coords)
                 selnode.addChild(self.marker)
                 node.addChild(selnode)
-                rootsep.addChild(node)
+                self.rootsep.addChild(node)
         if mirror is True:
-            self._flip(rootsep)
-        self.children.append(rootsep)
+            self._do_flip(self.rootsep)
+            self.flipped = True
+        else:
+            self.flipped = False
+        self.children.append(self.rootsep)
         super().__init__(dotted, scolor, swidth,
                          children=self.children, name="ghostTracker")
         self.setColor(scolor)
@@ -760,26 +767,32 @@ class ghostTracker(Tracker):
         """Scale the ghost by the given factor."""
         self.trans.scaleFactor.setValue([delta.x, delta.y, delta.z])
 
-    def getNode(self, obj):
+    def getNode(self, obj, parent_place=None):
         """Return a coin node representing the given object."""
         import Part
         if isinstance(obj, Part.Shape):
             return self.getNodeLight(obj)
-        elif obj.isDerivedFrom("Part::Feature"):
-            return self.getNodeFull(obj)
         else:
-            return self.getNodeFull(obj)
+            return self.getNodeFull(obj, parent_place)
 
-    def getNodeFull(self, obj):
+    def getNodeFull(self, obj, parent_place=None):
         """Get a coin node which is a copy of the current representation."""
         sep = coin.SoSeparator()
         try:
             sep.addChild(obj.ViewObject.RootNode.copy())
             # add Part container offset
-            if hasattr(obj, "getGlobalPlacement") and obj.Placement != obj.getGlobalPlacement():
+            if parent_place is not None:
+                if hasattr(obj, "Placement"):
+                    gpl = parent_place * obj.Placement
+                else:
+                    gpl = parent_place
+            elif hasattr(obj, "getGlobalPlacement"):
+                gpl = obj.getGlobalPlacement()
+            else:
+                gpl = None
+            if gpl is not None:
                 transform = gui_utils.find_coin_node(sep.getChild(0), coin.SoTransform)
                 if transform is not None:
-                    gpl = obj.getGlobalPlacement()
                     transform.translation.setValue(tuple(gpl.Base))
                     transform.rotation.setValue(gpl.Rotation.Q)
         except Exception:
@@ -826,7 +839,17 @@ class ghostTracker(Tracker):
                           matrix.A41, matrix.A42, matrix.A43, matrix.A44)
         self.trans.setMatrix(m)
 
-    def _flip(self, root):
+    def flip_normals(self, flip):
+        if flip:
+            if not self.flipped:
+                self._do_flip(self.rootsep)
+                self.flipped = True
+        else:
+            if self.flipped:
+                self._do_flip(self.rootsep)
+                self.flipped = False
+
+    def _do_flip(self, root):
         """Flip the normals of the coin faces."""
         # Code by wmayer:
         # https://forum.freecad.org/viewtopic.php?p=702640#p702640

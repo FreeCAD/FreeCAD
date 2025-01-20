@@ -46,9 +46,11 @@ DlgPreferencePackManagementImp::DlgPreferencePackManagementImp(QWidget* parent)
 {
     ui->setupUi(this);
     connect(ui->pushButtonOpenAddonManager, &QPushButton::clicked, this, &DlgPreferencePackManagementImp::showAddonManager);
+    connect(this, &DlgPreferencePackManagementImp::packVisibilityChanged, this, &DlgPreferencePackManagementImp::updateTree);
+    updateTree();
 }
 
-void DlgPreferencePackManagementImp::showEvent(QShowEvent* event)
+void DlgPreferencePackManagementImp::updateTree()
 {
     // Separate out user-saved packs from installed packs: we can remove individual user-saved packs,
     // but can only disable individual installed packs (though we can completely uninstall the pack's
@@ -97,8 +99,6 @@ void DlgPreferencePackManagementImp::showEvent(QShowEvent* event)
     for (const auto& installedPack : installedPacks) {
         addTreeNode(installedPack.first, installedPack.second, TreeWidgetType::ADDON);
     }
-
-    QDialog::showEvent(event);
 }
 
 void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const std::vector<std::string> &contents, TreeWidgetType twt)
@@ -159,7 +159,6 @@ void DlgPreferencePackManagementImp::deleteUserPack(const std::string& name)
         QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
     if (result == QMessageBox::Yes) {
         Application::Instance->prefPackManager()->deleteUserPack(name);
-        showEvent(nullptr);
         Q_EMIT packVisibilityChanged();
     }
 }
@@ -167,14 +166,12 @@ void DlgPreferencePackManagementImp::deleteUserPack(const std::string& name)
 void DlgPreferencePackManagementImp::hideBuiltInPack(const std::string& prefPackName)
 {
     Application::Instance->prefPackManager()->toggleVisibility("##BUILT_IN##", prefPackName);
-    showEvent(nullptr);
     Q_EMIT packVisibilityChanged();
 }
 
 void DlgPreferencePackManagementImp::hideInstalledPack(const std::string& addonName, const std::string& prefPackName)
 {
     Application::Instance->prefPackManager()->toggleVisibility(addonName, prefPackName);
-    showEvent(nullptr);
     Q_EMIT packVisibilityChanged();
 }
 

@@ -174,7 +174,7 @@ void TaskHelixParameters::showCoordinateAxes()
             ViewProviderCoordinateSystem* vpOrigin;
             vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, false);
+            vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
         catch (const Base::Exception& ex) {
             ex.ReportException();

@@ -81,7 +81,7 @@ jobs:
         fi
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Add GCC Problem Matcher
       if: runner.os == 'Linux'

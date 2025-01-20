@@ -35,6 +35,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
+from draftutils import gui_utils
 from draftutils import params
 from draftutils.translate import translate
 from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
@@ -74,7 +75,6 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         self.Object = vobj.Object
 
         # Main attributes of the Coin scenegraph
-        self.trans = coin.SoTransform()
         self.mattext = coin.SoMaterial()
         self.font = coin.SoFont()
         self.text_wld = coin.SoAsciiText() # World orientation. Can be oriented in 3D space.
@@ -90,14 +90,12 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         self.text_scr.justification = coin.SoText2.LEFT
 
         self.node_wld = coin.SoGroup()
-        self.node_wld.addChild(self.trans)
         self.node_wld.addChild(self.mattext)
         self.node_wld.addChild(textdrawstyle)
         self.node_wld.addChild(self.font)
         self.node_wld.addChild(self.text_wld)
 
         self.node_scr = coin.SoGroup()
-        self.node_scr.addChild(self.trans)
         self.node_scr.addChild(self.mattext)
         self.node_scr.addChild(textdrawstyle)
         self.node_scr.addChild(self.font)
@@ -122,8 +120,10 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             self.text_scr.string.setValues(_list)
 
         elif prop == "Placement":
-            self.trans.translation.setValue(obj.Placement.Base)
-            self.trans.rotation.setValue(obj.Placement.Rotation.Q)
+            transform = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoTransform)
+            if transform:
+                transform.translation.setValue(obj.Placement.Base)
+                transform.rotation.setValue(obj.Placement.Rotation.Q)
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""

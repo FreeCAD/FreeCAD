@@ -100,7 +100,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     // show the parts coordinate system axis for selection
     try {
         if (auto vpOrigin = getOriginView()) {
-            vpOrigin->setTemporaryVisibility(true, false);
+            vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
     }
     catch (const Base::Exception &ex) {

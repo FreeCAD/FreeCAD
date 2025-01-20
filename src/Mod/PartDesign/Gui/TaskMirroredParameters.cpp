@@ -92,7 +92,7 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
             App::Origin* origin = body->getOrigin();
             auto vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(false, true);
+            vpOrigin->setTemporaryVisibility(Gui::DatumElement::Planes);
         }
         catch (const Base::Exception& ex) {
             Base::Console().Error("%s\n", ex.what());

@@ -34,6 +34,7 @@ import DraftVecUtils
 def join_wires(wires, joinAttempts = 0):
     """join_wires(objects): merges a set of wires where possible, if any of those
     wires have a coincident start and end point"""
+    wires = list(wires)
     if joinAttempts > len(wires):
         return
     joinAttempts += 1
@@ -45,6 +46,7 @@ def join_wires(wires, joinAttempts = 0):
                 wires.pop(wire2Index)
                 break
     join_wires(wires, joinAttempts)
+    return wires
 
 
 joinWires = join_wires

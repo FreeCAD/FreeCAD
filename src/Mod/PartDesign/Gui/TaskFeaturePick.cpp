@@ -110,14 +110,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     }
 
-    enum
-    {
-        axisBit = 0,
-        planeBit = 1
-    };
-
     // NOTE: generally there shouldn't be more then one origin
-    std::map<App::Origin*, std::bitset<2>> originVisStatus;
+    std::map<App::Origin*, Gui::DatumElements> originVisStatus;
 
     auto statusIt = status.cbegin();
     auto objIt = objects.begin();
@@ -144,10 +138,10 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
             App::Origin* origin = dynamic_cast<App::Origin*>(datum->getLCS());
             if (origin) {
                 if ((*objIt)->isDerivedFrom(App::Plane::getClassTypeId())) {
-                    originVisStatus[origin].set(planeBit, true);
+                    originVisStatus[origin].setFlag(Gui::DatumElement::Planes, true);
                 }
                 else if ((*objIt)->isDerivedFrom(App::Line::getClassTypeId())) {
-                    originVisStatus[origin].set(axisBit, true);
+                    originVisStatus[origin].setFlag(Gui::DatumElement::Axes, true);
                 }
             }
         }
@@ -160,8 +154,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         Gui::ViewProviderCoordinateSystem* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
-            vpo->setTemporaryVisibility(originVisStatus[origin][axisBit],
-                                        originVisStatus[origin][planeBit]);
+            vpo->setTemporaryVisibility(originVisStatus[origin]);
             vpo->setTemporaryScale(4.0);  // NOLINT
             vpo->setPlaneLabelVisibility(true);
             origins.push_back(vpo);

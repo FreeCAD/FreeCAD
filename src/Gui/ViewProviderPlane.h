@@ -43,9 +43,9 @@ public:
 
     void attach (App::DocumentObject*) override;
 
-    unsigned long getColor(std::string& role);
-    std::string getRole();
-    std::string getLabelText(std::string& role);
+    unsigned long getColor(const std::string& role) const;
+    std::string getRole() const;
+    std::string getLabelText(const std::string& role) const;
     void setLabelVisibility(bool val);
 
 private:
