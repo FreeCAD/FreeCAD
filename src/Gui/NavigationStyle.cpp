@@ -954,7 +954,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
  * \param curpos  current normalized position or mouse pointer
  * \param prevpos  previous normalized position of mouse pointer
  */
-void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos)
+void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
 {
     assert(this->spinprojector);
 
