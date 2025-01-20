@@ -61,15 +61,15 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     QMetaObject::connectSlotsByName(this);
 
     ui->ThreadType->addItem(tr("None"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("ISO metric regular profile"), QByteArray("ISO"));
-    ui->ThreadType->addItem(tr("ISO metric fine profile"), QByteArray("ISO"));
-    ui->ThreadType->addItem(tr("UTS coarse profile"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("UTS fine profile"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("UTS extra fine profile"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("ANSI pipe profile"), QByteArray("NPT"));
-    ui->ThreadType->addItem(tr("BSP pipe profile"), QByteArray("BSP"));
-    ui->ThreadType->addItem(tr("BSW whitworth profile"), QByteArray("BSW"));
-    ui->ThreadType->addItem(tr("BSF whitworth fine profile"), QByteArray("BSF"));
+    ui->ThreadType->addItem(tr("ISO metric regular"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("ISO metric fine"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("UTS coarse"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("UTS fine"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("UTS extra fine"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("ANSI pipes"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("ISO/BSP pipes"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("BS"));
+    ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("BS"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
@@ -129,10 +129,12 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->HoleCutDiameter->setHidden(isNotCut);
     ui->HoleCutDepth->setHidden(isNotCut);
     ui->HoleCutCountersinkAngle->setHidden(isNotCut);
-    ui->HoleCutCustomValues->setHidden(isNotCut);
 
     ui->HoleCutCustomValues->setChecked(pcHole->HoleCutCustomValues.getValue());
-    ui->HoleCutCustomValues->setDisabled(pcHole->HoleCutCustomValues.isReadOnly());
+    ui->HoleCutCustomValues->setHidden(
+        pcHole->HoleCutType.getValue() < 5
+        || pcHole->HoleCutCustomValues.isReadOnly()
+    );
     // HoleCutDiameter must not be smaller or equal than the Diameter
     ui->HoleCutDiameter->setMinimum(pcHole->Diameter.getValue() + 0.1);
     ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
@@ -154,11 +156,9 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     bool isFlatDrill = pcHole->DrillPoint.getValue() == 0L;
     bool depthIsDimension = std::string(pcHole->DepthType.getValueAsString()) == "Dimension";
-    ui->DrillGroupBox->setVisible(depthIsDimension);
-    ui->drillPointFlat->setChecked(isFlatDrill);
-    ui->drillPointAngled->setChecked(!isFlatDrill);
-    ui->DrillPointAngle->setEnabled(!isFlatDrill);
-    ui->DrillForDepth->setVisible(!isFlatDrill);
+    ui->DrillPointAngled->setChecked(!isFlatDrill && depthIsDimension);
+    ui->DrillPointAngle->setEnabled(!isFlatDrill  && depthIsDimension);
+    ui->DrillForDepth->setEnabled(!isFlatDrill && depthIsDimension);
 
     ui->Tapered->setChecked(pcHole->Tapered.getValue());
     // Angle is only enabled (sensible) if tapered
@@ -184,11 +184,14 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->UpdateView->setChecked(false);
     ui->UpdateView->setVisible(isThreaded && isModeled);
 
-    ui->Depth->setEnabled(std::string(pcHole->DepthType.getValueAsString()) == "Dimension");
+    ui->Depth->setEnabled(depthIsDimension);
     ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
-    ui->ThreadDepth->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
-                                && std::string(pcHole->ThreadDepthType.getValueAsString())
-                                    == "Dimension");
+
+    ui->ThreadDepthDimensionWidget->setVisible(
+        std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
+    );
+
+    setCutPixmap();
 
     // clang-format off
     connect(ui->Threaded, &QCheckBox::clicked,
@@ -221,9 +224,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::depthChanged);
     connect(ui->Depth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskHoleParameters::depthValueChanged);
-    connect(ui->drillPointFlat, &QRadioButton::clicked,
-            this, &TaskHoleParameters::drillPointChanged);
-    connect(ui->drillPointAngled, &QRadioButton::clicked,
+    connect(ui->DrillPointAngled, &QCheckBox::toggled,
             this, &TaskHoleParameters::drillPointChanged);
     connect(ui->DrillPointAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskHoleParameters::drillPointAngledValueChanged);
@@ -306,7 +307,7 @@ void TaskHoleParameters::modelThreadChanged()
     ui->CustomThreadClearance->setEnabled(ui->UseCustomThreadClearance->isChecked());
 
     ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
-    ui->ThreadDepth->setEnabled(
+    ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
 
@@ -323,7 +324,7 @@ void TaskHoleParameters::threadDepthTypeChanged(int index)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->ThreadDepthType.setValue(index);
-        ui->ThreadDepth->setEnabled(index == 1);
+        ui->ThreadDepthDimensionWidget->setVisible(index == 1);
         ui->ThreadDepth->setValue(hole->ThreadDepth.getValue());
         recomputeFeature();
     }
@@ -333,6 +334,7 @@ void TaskHoleParameters::threadDepthChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->ThreadDepth.setValue(value);
+        setCutPixmap();
         recomputeFeature();
     }
 }
@@ -388,7 +390,7 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     recomputeFeature();
 
     // apply the result to the widgets
-    ui->HoleCutCustomValues->setDisabled(hole->HoleCutCustomValues.isReadOnly());
+    ui->HoleCutCustomValues->setHidden(hole->HoleCutCustomValues.isReadOnly());
     ui->HoleCutCustomValues->setChecked(hole->HoleCutCustomValues.getValue());
 
     // HoleCutCustomValues is only enabled for screw definitions
@@ -403,21 +405,23 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     ui->HoleCutDiameter->setHidden(isNotCut);
     ui->HoleCutDepth->setHidden(isNotCut);
     ui->HoleCutCountersinkAngle->setHidden(isNotCut);
-    ui->HoleCutCustomValues->setHidden(isNotCut);
 
     if (HoleCutTypeString == "None" || HoleCutTypeString == "Counterbore"
         || HoleCutTypeString == "Countersink" || HoleCutTypeString == "Counterdrill") {
-        ui->HoleCutCustomValues->setEnabled(false);
+        ui->HoleCutCustomValues->setVisible(false);
         if (HoleCutTypeString == "None") {
             ui->HoleCutDiameter->setEnabled(false);
             ui->HoleCutDepth->setEnabled(false);
-            ui->HoleCutCountersinkAngle->setEnabled(false);
+            ui->labelHoleCutCountersinkAngle->setVisible(false);
+            ui->HoleCutCountersinkAngle->setVisible(false);
         }
         if (HoleCutTypeString == "Counterbore") {
-            ui->HoleCutCountersinkAngle->setEnabled(false);
+            ui->labelHoleCutCountersinkAngle->setVisible(false);
+            ui->HoleCutCountersinkAngle->setVisible(false);
         }
         if (HoleCutTypeString == "Countersink") {
-            ui->HoleCutCountersinkAngle->setEnabled(true);
+            ui->labelHoleCutCountersinkAngle->setVisible(true);
+            ui->HoleCutCountersinkAngle->setVisible(true);
         }
     }
     else {  // screw definition
@@ -427,14 +431,86 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
             ui->HoleCutDiameter->setEnabled(true);
             ui->HoleCutDepth->setEnabled(true);
             if (!hole->HoleCutCountersinkAngle.isReadOnly()) {
+                ui->HoleCutCountersinkAngle->setVisible(true);
+                ui->labelHoleCutCountersinkAngle->setVisible(true);
                 ui->HoleCutCountersinkAngle->setEnabled(true);
             }
         }
         else {
-            ui->HoleCutCustomValues->setEnabled(true);
+            ui->HoleCutCustomValues->setVisible(true);
             ui->HoleCutDiameter->setEnabled(false);
             ui->HoleCutDepth->setEnabled(false);
             ui->HoleCutCountersinkAngle->setEnabled(false);
+            ui->labelHoleCutCountersinkAngle->setVisible(true);
+            ui->HoleCutCountersinkAngle->setVisible(true);
+        }
+    }
+    setCutPixmap();
+}
+
+void TaskHoleParameters::setCutPixmap()
+{
+    auto hole = getObject<PartDesign::Hole>();
+    const std::string holeCutTypeString = hole->HoleCutType.getValueAsString();
+    const std::string threadTypeString = hole->ThreadType.getValueAsString();
+    bool isAngled = (
+        std::string(hole->DepthType.getValueAsString()) == "Dimension"
+        && ui->DrillPointAngled->isChecked()
+    );
+    bool isCountersink = (
+        holeCutTypeString == "Countersink"
+        || hole->isDynamicCountersink(threadTypeString, holeCutTypeString)
+    );
+    bool isCounterbore = (
+        holeCutTypeString == "Counterbore"
+        || hole->isDynamicCounterbore(threadTypeString, holeCutTypeString)
+    );
+    bool isCounterdrill = (
+        holeCutTypeString == "Counterdrill"
+    );
+
+    if (isCounterbore) {
+        if (isAngled) {
+            ui->cutDiagram->setPixmap(
+                QPixmap(QString::fromUtf8(":/images/hole_counterbore_angled.svg"))
+            );
+        } else {
+            ui->cutDiagram->setPixmap(
+                QPixmap(QString::fromUtf8(":/images/hole_counterbore_flat.svg"))
+            );
+        }
+    }
+    else if (isCountersink) {
+        if (isAngled) {
+            ui->cutDiagram->setPixmap(
+                QPixmap(QString::fromUtf8(":/images/hole_countersink_angled.svg"))
+            );
+        } else {
+            ui->cutDiagram->setPixmap(
+                QPixmap(QString::fromUtf8(":/images/hole_countersink_flat.svg"))
+            );
+        }
+    }
+    else if (isCounterdrill) {
+        if (isAngled) {
+            ui->cutDiagram->setPixmap(
+                QPixmap(QString::fromUtf8(":/images/hole_counterdrill_angled.svg"))
+            );
+        } else {
+            ui->cutDiagram->setPixmap(
+                QPixmap(QString::fromUtf8(":/images/hole_counterdrill_flat.svg"))
+            );
+        }
+    }
+    else {
+        if (isAngled) {
+            ui->cutDiagram->setPixmap(
+                QPixmap(QString::fromUtf8(":/images/hole_none_angled.svg"))
+            );
+        } else {
+            ui->cutDiagram->setPixmap(
+                QPixmap(QString::fromUtf8(":/images/hole_none_flat.svg"))
+            );
         }
     }
 }
@@ -514,17 +590,16 @@ void TaskHoleParameters::depthChanged(int index)
     if (!hole) {
         return;
     }
-
     hole->DepthType.setValue(index);
-
+    recomputeFeature();
+    // enabling must be handled after recompute
     bool DepthisDimension = (
         std::string(hole->DepthType.getValueAsString()) == "Dimension"
     );
-
-    ui->DrillGroupBox->setVisible(DepthisDimension);
-    recomputeFeature();
-    // enabling must be handled after recompute
-    ui->ThreadDepth->setEnabled(DepthisDimension);
+    ui->DrillPointAngled->setEnabled(DepthisDimension);
+    ui->DrillPointAngle->setEnabled(DepthisDimension);
+    ui->DrillForDepth->setEnabled(DepthisDimension);
+    setCutPixmap();
 }
 
 void TaskHoleParameters::depthValueChanged(double value)
@@ -538,17 +613,11 @@ void TaskHoleParameters::depthValueChanged(double value)
 void TaskHoleParameters::drillPointChanged()
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
-        if (sender() == ui->drillPointFlat) {
-            hole->DrillPoint.setValue(0L);
-            ui->DrillForDepth->setVisible(false);
-        }
-        else if (sender() == ui->drillPointAngled) {
-            hole->DrillPoint.setValue(1L);
-            ui->DrillForDepth->setVisible(true);
-        }
-        else {
-            assert(0);
-        }
+        bool angled = ui->DrillPointAngled->isChecked();
+        hole->DrillPoint.setValue(angled);
+        ui->DrillPointAngle->setEnabled(angled);
+        ui->DrillForDepth->setEnabled(angled);
+        setCutPixmap();
         recomputeFeature();
     }
 }
@@ -932,21 +1001,14 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->Depth->setDisabled(ro);
     }
     else if (&Prop == &hole->DrillPoint) {
-        ui->drillPointFlat->setEnabled(true);
-        ui->drillPointAngled->setEnabled(true);
         std::string drillPoint(hole->DrillPoint.getValueAsString());
-        if (drillPoint == "Flat" && !ui->drillPointFlat->isChecked()) {
-            ui->drillPointFlat->blockSignals(true);
-            ui->drillPointFlat->setChecked(true);
-            ui->drillPointFlat->blockSignals(false);
+        ui->DrillPointAngled->setEnabled(true);
+        if (ui->DrillPointAngled->isChecked() ^ (drillPoint == "Angled")) {
+            ui->DrillPointAngled->blockSignals(true);
+            ui->DrillPointAngled->setChecked(drillPoint == "Angled");
+            ui->DrillPointAngled->blockSignals(false);
         }
-        if (drillPoint == "Angled" && !ui->drillPointAngled->isChecked()) {
-            ui->drillPointAngled->blockSignals(true);
-            ui->drillPointAngled->setChecked(true);
-            ui->drillPointAngled->blockSignals(false);
-        }
-        ui->drillPointFlat->setDisabled(ro);
-        ui->drillPointAngled->setDisabled(ro);
+        ui->DrillPointAngled->setDisabled(ro);
     }
     else if (&Prop == &hole->DrillPointAngle) {
         ui->DrillPointAngle->setEnabled(true);
@@ -1131,14 +1193,11 @@ Base::Quantity TaskHoleParameters::getDepth() const
 
 long TaskHoleParameters::getDrillPoint() const
 {
-    if (ui->drillPointFlat->isChecked()) {
-        return 0;
-    }
-    if (ui->drillPointAngled->isChecked()) {
+    
+    if (ui->DrillPointAngled->isChecked()) {
         return 1;
     }
-    assert(0);
-    return -1;  // to avoid a compiler warning
+    return 0;
 }
 
 Base::Quantity TaskHoleParameters::getDrillPointAngle() const

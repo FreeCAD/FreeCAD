@@ -108,6 +108,7 @@ private Q_SLOTS:
     void updateViewChanged(bool isChecked);
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
+    void setCutPixmap();
 
 private:
     class Observer : public App::DocumentObserver {
