@@ -543,7 +543,7 @@ private:
         auto* vpo = dynamic_cast<Gui::ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
-            vpo->setTemporaryVisibility(true, true);
+            vpo->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
             vpo->setTemporaryScale(3.0);  // NOLINT
             vpo->setPlaneLabelVisibility(true);
         }
@@ -806,5 +806,3 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     }
     return std::make_tuple(FaceFilter, PlaneFilter);
 }
-
-
