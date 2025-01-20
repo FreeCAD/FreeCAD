@@ -63,6 +63,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
     ${3DCONNEXION_INCLUDE_DIR}
 )
 
