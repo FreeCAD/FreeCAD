@@ -516,7 +516,6 @@ public:
             SbVec2s pos = ev.inventor_event->getPosition();
             auto &ns = this->outermost_context().ns;
             ns.spin_simplified(
-                        ns.viewer->getSoRenderManager()->getCamera(),
                         ns.normalizePixelPos(pos), ns.normalizePixelPos(this->base_pos));
             this->base_pos = pos;
         }
