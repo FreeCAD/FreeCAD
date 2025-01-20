@@ -70,6 +70,7 @@ function(setup_qt_test)
         target_include_directories(${_testname}_Tests_run PUBLIC
             ${Python3_INCLUDE_DIRS}
             ${XercesC_INCLUDE_DIRS}
+            ${ZIPIOS_INCLUDES}
             ${QtGui_INCLUDE_DIRS}
             ${QtWidgets_INCLUDE_DIRS}
             ${QtTest_INCLUDE_DIRS}
@@ -135,6 +136,7 @@ add_subdirectory(src)
 target_include_directories(Tests_run PUBLIC
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
 )
 target_link_libraries(Tests_run
     gtest_main
