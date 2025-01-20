@@ -166,6 +166,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->TaperedAngle->setMinimum(pcHole->TaperedAngle.getMinimum());
     ui->TaperedAngle->setMaximum(pcHole->TaperedAngle.getMaximum());
     ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
+    ui->SelfFormingThreads->setChecked(pcHole->SelfFormingThreads.getValue());
     ui->Reversed->setChecked(pcHole->Reversed.getValue());
 
     bool isThreaded = ui->Threaded->isChecked();
@@ -235,6 +236,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::reversedChanged);
     connect(ui->TaperedAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskHoleParameters::taperedAngleChanged);
+    connect(ui->SelfFormingThreads, &QCheckBox::clicked,
+            this, &TaskHoleParameters::selfFormingThreadsChanged);
     connect(ui->ModelThread, &QCheckBox::clicked,
             this, &TaskHoleParameters::modelThreadChanged);
     connect(ui->UpdateView, &QCheckBox::toggled,
@@ -574,6 +577,14 @@ void TaskHoleParameters::taperedChanged()
     ui->TaperedAngle->setEnabled(ui->Tapered->isChecked());
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->Tapered.setValue(ui->Tapered->isChecked());
+        recomputeFeature();
+    }
+}
+
+void TaskHoleParameters::selfFormingThreadsChanged() 
+{
+    if (auto hole = getObject<PartDesign::Hole>()) {
+        hole->SelfFormingThreads.setValue(ui->SelfFormingThreads->isChecked());
         recomputeFeature();
     }
 }
@@ -1161,6 +1172,11 @@ Base::Quantity TaskHoleParameters::getTaperedAngle() const
     return ui->TaperedAngle->value();
 }
 
+bool TaskHoleParameters::getSelfFormingThreads() const
+{
+    return ui->SelfFormingThreads->isChecked();
+}
+
 bool TaskHoleParameters::getUseCustomThreadClearance() const
 {
     return ui->UseCustomThreadClearance->isChecked();
@@ -1251,6 +1267,9 @@ void TaskHoleParameters::apply()
     }
     if (!hole->Tapered.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "Tapered = " << getTapered());
+    }
+    if (!hole->SelfFormingThreads.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "SelfFormingThreads = " << getSelfFormingThreads());
     }
 
     isApplying = false;

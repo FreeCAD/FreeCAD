@@ -74,6 +74,7 @@ public:
     bool   getDrillForDepth() const;
     bool   getTapered() const;
     Base::Quantity getTaperedAngle() const;
+    bool getSelfFormingThreads() const;
     bool getUseCustomThreadClearance() const;
     double getCustomThreadClearance() const;
     bool getModelThread() const;
@@ -101,6 +102,7 @@ private Q_SLOTS:
     void drillForDepthChanged();
     void taperedChanged();
     void taperedAngleChanged(double value);
+    void selfFormingThreadsChanged();
     void reversedChanged();
     void modelThreadChanged();
     void useCustomThreadClearanceChanged();

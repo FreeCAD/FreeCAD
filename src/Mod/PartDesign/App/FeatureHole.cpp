@@ -44,6 +44,7 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopExp.hxx>
+# include <App/Document.h> // for debugging only.  To be removed.
 #endif
 
 #include <App/Application.h>
@@ -880,6 +881,8 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(TaperedAngle, (90.0), "Hole", App::Prop_None, "Tapered angle");
     TaperedAngle.setConstraints(&floatAngle);
+
+    ADD_PROPERTY_TYPE(SelfFormingThreads, (false), "Hole", App::Prop_None, "Self-Forming Threads");
 
     ADD_PROPERTY_TYPE(ThreadDepthType, (0L), "Hole", App::Prop_None, "Thread depth type");
     ThreadDepthType.setEnums(ThreadDepthTypeEnums);
@@ -1868,6 +1871,7 @@ short Hole::mustExecute() const
         DrillPointAngle.isTouched() ||
         Tapered.isTouched() ||
         TaperedAngle.isTouched() ||
+        SelfFormingThreads.isTouched() ||
         ModelThread.isTouched() ||
         UseCustomThreadClearance.isTouched() ||
         CustomThreadClearance.isTouched() ||
@@ -1903,6 +1907,7 @@ void Hole::updateProps()
     onChanged(&DrillPointAngle);
     onChanged(&Tapered);
     onChanged(&TaperedAngle);
+    onChanged(&SelfFormingThreads);
     onChanged(&ModelThread);
     onChanged(&UseCustomThreadClearance);
     onChanged(&CustomThreadClearance);
@@ -2147,6 +2152,219 @@ App::DocumentObjectExecReturn* Hole::execute()
             // we reuse the name protoHole (only now it is threaded)
             protoHole = mkFuse.Shape();
         }
+
+        // Add Self-Forming Threads
+        if (SelfFormingThreads.getValue()) {
+            double numberOfThreaders = 3; // number of self threaders to create
+            double boreHoleMargin = 0.15;  // how much wider we'll bore out the hole
+            double selfThreaderHeight = 0.4;  // how deep into the hole bore do the self threaders protrude
+            double edgeCutToolMargin = 5.0; // how much wider the edge cut tool is than the base cyclinder when creating our shape
+            double taperLength = 3.0; // how long the threaders are tapered
+            double boreHoleRadius = (Diameter.getValue() + boreHoleMargin) / 2.0; // the radius of our hole
+            double edgeCutToolRadius = boreHoleRadius + edgeCutToolMargin; // the radius of our edge cut tool
+            bool selfThreadingDebug = false; // enable debug visualizations.  To be removed.
+
+            // for debugging only.  To be removed.
+            App::Document* document = App::GetApplication().getActiveDocument();
+            if (!document) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not get active document for debugging."));
+            }            
+
+            // we will create a base cyclinder, then an edge cut tool
+            // we will move the edge cut tool around the perimeter the hole and cut 
+            // it from the initial cyclinder resulting in our final tool
+
+            // our points when drawing the wire for our initial cyclinder
+            gp_Pnt firstPoint(0, 0, 0);
+            gp_Pnt lastPoint(0, 0, 0);
+
+            // our wire
+            BRepBuilderAPI_MakeWire mkWireBaseCylinder;
+
+            // from our origin to our first point
+            gp_Pnt newPoint = toPnt(boreHoleRadius * xDir);
+            mkWireBaseCylinder.Add(BRepBuilderAPI_MakeEdge(firstPoint, newPoint));
+            lastPoint = newPoint;
+            
+            // to our next point
+            newPoint = toPnt(boreHoleRadius * xDir + -length * zDir);
+            mkWireBaseCylinder.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+            lastPoint = newPoint;
+
+            // to our next point
+            newPoint = toPnt(-length * zDir);
+            mkWireBaseCylinder.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+            lastPoint = newPoint;
+
+            // back to the origin to close our wire
+            mkWireBaseCylinder.Add(BRepBuilderAPI_MakeEdge(lastPoint, firstPoint));
+
+            // final cylinder wire
+            TopoDS_Wire wire = mkWireBaseCylinder.Wire();
+
+            // for debugging only.  To be removed.
+            if (selfThreadingDebug) {
+                // Create a new Part::Feature to visualize the wire
+                Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "InitialCylinderWire"));
+                feature->Shape.setValue(wire);
+                feature->Visibility.setValue(false);
+            }            
+
+            // create our face from the wire
+            TopoDS_Face face = BRepBuilderAPI_MakeFace(wire);
+
+            // revolve to create our cylinder
+            double angle = Base::toRadians<double>(360.0);
+            BRepPrimAPI_MakeRevol RevolMaker(face, gp_Ax1(firstPoint, zDir), angle);
+            if (!RevolMaker.IsDone())
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Could not revolve sketch"));
+
+            // our initial cyclinder
+            TopoDS_Shape initialCyclinder = RevolMaker.Shape();
+            if (protoHole.IsNull())
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Resulting shape is empty"));
+
+            // for debugging only.  To be removed.
+            if (selfThreadingDebug) {
+                Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "InitialCylinder"));
+                feature->Shape.setValue(initialCyclinder);
+                feature->Visibility.setValue(false);
+            }
+
+            // now create our edge cut tool to make our tapered edge cuts from 
+            // the initial cyclinder
+            BRepBuilderAPI_MakeWire mkWireEdgeCutTool;                    
+            
+            // reset our first point to the origin
+            firstPoint.SetCoord(0,0,0);
+
+            // extend out to the edge minus the height of our self threader
+            // to create a taper
+            newPoint = toPnt((edgeCutToolRadius - selfThreaderHeight) * xDir);
+            mkWireEdgeCutTool.Add(BRepBuilderAPI_MakeEdge(firstPoint, newPoint));
+            lastPoint = newPoint;            	
+
+            // to our next point           
+            newPoint = toPnt(edgeCutToolRadius * xDir + -(taperLength) * zDir); // 2mm long taper
+            mkWireEdgeCutTool.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+            lastPoint = newPoint;
+            lengthCounter = 0.0;	
+            
+            // to our next point
+            newPoint = toPnt(edgeCutToolRadius * xDir + -length * zDir);
+            mkWireEdgeCutTool.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+            lastPoint = newPoint;
+
+            // to our next point
+            newPoint = toPnt(-length * zDir);
+            mkWireEdgeCutTool.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+            lastPoint = newPoint;
+
+            // and back to the origin to close our wire
+            mkWireEdgeCutTool.Add(BRepBuilderAPI_MakeEdge(lastPoint, firstPoint));
+            
+            // final edge cut tool wire
+            wire = mkWireEdgeCutTool.Wire();
+
+            // for debugging only.  To be removed.
+            if (selfThreadingDebug) {
+                Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "EdgeCutToolWire"));
+                feature->Shape.setValue(wire);
+                feature->Visibility.setValue(false);
+            }
+
+            // create our face from the wire
+            face = BRepBuilderAPI_MakeFace(wire);
+
+            // revolve to create our tapered edge cut cylinder
+            angle = Base::toRadians<double>(360.0);
+            BRepPrimAPI_MakeRevol RevolMakerTaper(face, gp_Ax1(firstPoint, zDir), angle);
+            if (!RevolMaker.IsDone())
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Could not revolve sketch"));
+
+            // our edge cut tool
+            TopoDS_Shape edgeCutTool = RevolMakerTaper.Shape();
+            if (edgeCutTool.IsNull())
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Resulting shape is empty"));
+
+            // for debugging only.  To be removed.
+            if (selfThreadingDebug) {
+                Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "EdgeCutTool"));
+                feature->Shape.setValue(edgeCutTool);
+                feature->Visibility.setValue(false);
+            }                            
+
+            // for debugging only.  To be removed.
+            if (selfThreadingDebug) {                
+                // Debug: Visualize xDir
+                gp_Pnt xDirEnd = gp_Pnt(xDir.X(), xDir.Y(), xDir.Z());
+                TopoDS_Edge xDirEdge = BRepBuilderAPI_MakeEdge(gp_Pnt(0, 0, 0), xDirEnd).Edge();
+                Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "xDir"));
+                feature->Shape.setValue(xDirEdge);
+                feature->Visibility.setValue(false);
+
+                // Debug: Visualize zDir
+                gp_Pnt zDirEnd = gp_Pnt(zDir.X(), zDir.Y(), zDir.Z());
+                TopoDS_Edge zDirEdge = BRepBuilderAPI_MakeEdge(gp_Pnt(0, 0, 0), zDirEnd).Edge();
+                feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "zDir"));
+                feature->Shape.setValue(zDirEdge);
+                feature->Visibility.setValue(false);
+            }                  
+            
+            // cut our threaders into our initial cylinder
+            for (int i = 0; i < numberOfThreaders; ++i) {
+                // what angle to place our cut
+                double angle = (2 * M_PI / numberOfThreaders) * i;
+
+                // calculate the radius to determine overlap between edge cut tool and initial cylinder
+                double adjustedRadius = (edgeCutToolRadius*2) - selfThreaderHeight - (edgeCutToolRadius-boreHoleRadius); 
+
+                // Calculate the position of the edge cut tool along the circumference of the initial cylinder
+                double xOffset = adjustedRadius * cos(angle);
+                double yOffset = adjustedRadius * sin(angle);
+
+                // create a translation to move our edge cut tool  
+                gp_Trsf translation; 
+                 
+                // Use xDir and yDir (perpendicular to xDir and zDir) to define the local coordinate system
+                gp_Vec yDir = zDir.Crossed(xDir); // yDir is perpendicular to both xDir and zDir
+                gp_Vec translationVec = xOffset * xDir + yOffset * yDir;
+
+                // Set the translation vector
+                translation.SetTranslation(translationVec);
+
+                // perform our transformation on our edge cut tool
+                TopoDS_Shape translatedTool = BRepBuilderAPI_Transform(edgeCutTool, translation).Shape();
+                
+                // for debugging only.  To be removed.
+                if (selfThreadingDebug) {     
+                    std::string toolName = "Tool_" + std::to_string(i); // Create the name "Tool_#"
+                    Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", toolName.c_str()));
+                    feature->Shape.setValue(translatedTool);
+                    feature->Visibility.setValue(false);
+                }
+
+                // cut the edge cut tool from our initial cylinder
+                BRepAlgoAPI_Cut cutMaker(initialCyclinder, translatedTool);
+                if (!cutMaker.IsDone()) {
+                    throw std::runtime_error("Cut operation failed");
+                }
+
+                // set our initial cylinder to the newly cut shape
+                initialCyclinder = cutMaker.Shape();
+            }
+
+            // for debugging only.  To be removed.
+            if (selfThreadingDebug) { 
+                Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "FinalTool"));
+                feature->Shape.setValue(initialCyclinder);
+                feature->Visibility.setValue(false);
+            }
+
+            // our finalized cutting tool is now the hole prototype
+            protoHole = initialCyclinder;
+        }
+        
         std::vector<TopoShape> holes;
         auto compound = findHoles(holes, profileshape, protoHole);
 

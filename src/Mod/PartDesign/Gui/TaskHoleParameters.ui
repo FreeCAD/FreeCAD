@@ -86,6 +86,22 @@ over 90: larger hole radius at the bottom</string>
        </property>
       </widget>
      </item>
+     <item row="6" column="0">
+      <widget class="QCheckBox" name="SelfFormingThreads">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Adds self-forming fastener threads for holes in plastic</string>
+       </property>
+       <property name="text">
+        <string>Self-Forming Threads</string>
+       </property>
+      </widget>
+     </item>     
      <item row="4" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
