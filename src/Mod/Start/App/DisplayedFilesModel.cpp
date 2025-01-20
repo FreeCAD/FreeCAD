@@ -188,6 +188,39 @@ QByteArray loadFCStdThumbnail(const std::string& pathToFCStdFile)
     return {};
 }
 
+/// Attempt to generate a thumbnail image from a file using f3d or load from cache
+/// \returns The image bytes, or an empty QByteArray (if thumbnail generation fails)
+QByteArray getF3dThumbnail(const std::string& pathToFile)
+{
+    QString thumbnailPath = getUniquePNG(pathToFile);
+    if (!useCachedPNG(thumbnailPath.toStdString(), pathToFile)) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Start");
+        auto f3d = QString::fromUtf8(hGrp->GetASCII("f3d", "f3d").c_str());
+        const int resolution = 128;
+        QStringList args;
+        args << QLatin1String("--config=thumbnail") << QLatin1String("--load-plugins=occt")
+             << QLatin1String("--verbose=quiet") << QLatin1String("--output=") + thumbnailPath
+             << QLatin1String("--resolution=") + QString::number(resolution) + QLatin1String(",")
+                + QString::number(resolution)
+             << QString::fromStdString(pathToFile);
+
+        QProcess process;
+        process.start(f3d, args);
+        process.waitForFinished();
+        if (process.exitCode() != 0) {
+            return {};
+        }
+    }
+
+    QFile thumbnailFile(thumbnailPath);
+    if (thumbnailFile.exists()) {
+        thumbnailFile.open(QIODevice::OpenModeFlag::ReadOnly);
+        return thumbnailFile.readAll();
+    }
+    return {};
+}
+
 FileStats getFileInfo(const std::string& path)
 {
     FileStats result;
@@ -297,31 +330,9 @@ void DisplayedFilesModel::addFile(const QString& filePath)
         }
     }
     else {
-        // If it is not a FreeCAD file, generate thumbnail using F3D
-        QString thumbnailPath = getUniquePNG(filePath.toStdString());
-
-        auto f3d = QString::fromLatin1("f3d");
-        QStringList args;
-        args << QLatin1String("--config=thumbnail") << QLatin1String("--load-plugins=occt")
-             << QLatin1String("--verbose=quiet") << QLatin1String("--output=") + thumbnailPath
-             << QLatin1String("--resolution=") + QString::number(128) + QLatin1String(",")
-                + QString::number(128)
-             << filePath;
-
-        // Run the f3d command to generate the thumbnail
-        QProcess process;
-        process.start(f3d, args);
-        process.waitForFinished();
-        int result = process.exitCode();
-
-        // Check if the thumbnail was generated successfully and exists
-        if (result == 0 && QFile::exists(thumbnailPath)) {
-            QFile thumbnailFile(thumbnailPath);
-            if (thumbnailFile.open(QIODevice::ReadOnly)) {
-                QByteArray thumbnailData = thumbnailFile.readAll();
-                thumbnailFile.close();
-                _imageCache.insert(filePath, thumbnailData);
-            }
+        auto thumbnail = getF3dThumbnail(filePath.toStdString());
+        if (!thumbnail.isEmpty()) {
+            _imageCache.insert(filePath, thumbnail);
         }
     }
 }
