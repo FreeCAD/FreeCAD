@@ -103,7 +103,7 @@ struct DrawingParameters
     //@{
     static SbColor InformationColor;                       // Information Overlay Color
     static SbColor CreateCurveColor;                       // Color for Edit Curves during creation
-    static SbColor CrossColorH;                            // Color for the Horizontal Axis   
+    static SbColor CrossColorH;                            // Color for the Horizontal Axis
     static SbColor CrossColorV;                            // Color for the Vertical Axis
     static SbColor InvalidSketchColor;                     // Color for rendering an invalid sketch
     static SbColor FullyConstrainedColor;                  // Color for a fully constrained sketch
@@ -150,7 +150,8 @@ struct DrawingParameters
     unsigned int ExternalPattern = 0b1111110011111100;      // pattern of external edges
     //@}
 
-    DrawingParameters() {
+    DrawingParameters()
+    {
         unsigned long colorLong;
         App::Color color;
 

@@ -53,16 +53,17 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId,
                                                  : SubLayer::Normal);
 }
 
-SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);       // #00FF00 -> (  0,255,  0)
-SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);       // ##7f7f7f -> (127,127,127)
+SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
+SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (127,127,127)
 
-namespace {  // Anonymous namespace to avoid making those variables global
-    unsigned long HColorLong = Gui::ViewParams::instance()->getAxisXColor();
-    App::Color Hcolor = App::Color(static_cast<uint32_t>(HColorLong));
-    
-    unsigned long VColorLong = Gui::ViewParams::instance()->getAxisYColor();
-    App::Color Vcolor = App::Color(static_cast<uint32_t>(VColorLong));
-}
+namespace
+{  // Anonymous namespace to avoid making those variables global
+unsigned long HColorLong = Gui::ViewParams::instance()->getAxisXColor();
+App::Color Hcolor = App::Color(static_cast<uint32_t>(HColorLong));
+
+unsigned long VColorLong = Gui::ViewParams::instance()->getAxisYColor();
+App::Color Vcolor = App::Color(static_cast<uint32_t>(VColorLong));
+}  // namespace
 SbColor DrawingParameters::CrossColorH(Hcolor.r, Hcolor.g, Hcolor.b);
 SbColor DrawingParameters::CrossColorV(Vcolor.r, Vcolor.g, Vcolor.b);
 
