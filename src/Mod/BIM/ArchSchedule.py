@@ -88,26 +88,32 @@ class _ArchSchedule:
         self.setProperties(obj)
         if hasattr(obj, "Result"):
             self.update_properties_0v21(obj)
+        if hasattr(obj, "Description"):
+            self.update_properties_1v1(obj)
 
     def update_properties_0v21(self,obj):
+        from draftutils.messages import _wrn
         sp = obj.Result
         if sp is not None:
             self.setSchedulePropertySpreadsheet(sp, obj)
         obj.removeProperty("Result")
-        from draftutils.messages import _wrn
-        if "Description" in obj.PropertiesList:
-            if obj.getTypeOfProperty("Description") == "App::PropertyStringList":
-                obj.Operation = obj.Description
-                obj.removeProperty("Description")
-                _wrn("v0.21, " + sp.Label + ", " + translate("Arch", "renamed property 'Description' to 'Operation'"))
         _wrn("v0.21, " + obj.Label + ", " + translate("Arch", "removed property 'Result', and added property 'AutoUpdate'"))
         if sp is not None:
             _wrn("v0.21, " + sp.Label + ", " + translate("Arch", "added property 'Schedule'"))
 
+    def update_properties_1v1(self,obj):
+        from draftutils.messages import _wrn
+        if obj.getTypeIdOfProperty("Description") == "App::PropertyStringList":
+            obj.Operation = obj.Description
+            obj.removeProperty("Description")
+            _wrn("v1.1, " + obj.Label + ", " + translate("Arch", "renamed property 'Description' to 'Operation'"))
+        for prop in ("Operation", "Value", "Unit", "Objects", "Filter", "CreateSpreadsheet", "DetailedResults"):
+            obj.setGroupOfProperty(prop,"Schedule")
+
     def setProperties(self,obj):
 
         if not "Operation" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Operation",       "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"))
+            obj.addProperty("App::PropertyStringList","Operation",         "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"))
         if not "Value" in obj.PropertiesList:
             obj.addProperty("App::PropertyStringList","Value",             "Schedule",QT_TRANSLATE_NOOP("App::Property","The values column"))
         if not "Unit" in obj.PropertiesList:
