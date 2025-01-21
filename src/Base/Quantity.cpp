@@ -26,14 +26,16 @@
 #include <cmath>
 #include <limits>
 #include <numbers>
+#include <string>
 #endif
 
 #include <fmt/format.h>
-#include <Base/Tools.h>
 
 #include "Exception.h"
 #include "Quantity.h"
+#include "Tools.h"
 #include "UnitsApi.h"
+#include "UnitsSchema.h"
 
 /** \defgroup Units Units system
     \ingroup BASE
@@ -50,7 +52,9 @@
 #pragma warning(disable : 4335)  // disable MAC file format warning on VC
 #endif
 
-using namespace Base;
+using Base::Quantity;
+using Base::QuantityFormat;
+using Base::UnitsSchema;
 
 // ====== Static attributes =========================
 // NOLINTNEXTLINE
@@ -237,6 +241,13 @@ Quantity Quantity::operator-() const
     return Quantity(-(this->myValue), this->myUnit);
 }
 
+std::string Quantity::getUserString() const
+{
+    double dummy1 {};  // to satisfy GCC
+    std::string dummy2 {};
+    return getUserString(dummy1, dummy2);
+}
+
 std::string Quantity::getUserString(double& factor, std::string& unitString) const
 {
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
@@ -250,15 +261,12 @@ Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitSt
 
 std::string Quantity::getSafeUserString() const
 {
-    auto ret = getUserString();
-    if (this->myValue) {
-        auto feedbackQty = parse(ret);
-        auto feedbackVal = feedbackQty.getValue();
-        if (feedbackVal == 0) {
-            ret = fmt::format("{} {}", this->myValue, this->getUnit().getString());
-        }
+    auto userStr = getUserString();
+    if (myValue != 0.0 && parse(userStr).getValue() == 0) {
+        userStr = fmt::format("{} {}", myValue, getUnit().getString());
     }
-    return Base::Tools::escapeQuotesFromString(ret);
+
+    return Tools::escapeQuotesFromString(userStr);
 }
 
 /// true if it has a number without a unit
