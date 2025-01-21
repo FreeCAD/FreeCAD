@@ -91,9 +91,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.potential_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.ckb_av_re,
+            self.parameter_widget.ckb_av,
             QtCore.SIGNAL("toggled(bool)"),
-            self.av_re_enabled_changed,
+            self.av_enabled_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.qsb_av_re,
@@ -101,9 +101,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.av_re_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.ckb_av_re_1,
+            self.parameter_widget.ckb_av_1,
             QtCore.SIGNAL("toggled(bool)"),
-            self.av_re_1_enabled_changed,
+            self.av_1_enabled_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.qsb_av_re_1,
@@ -111,9 +111,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.av_re_1_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.ckb_av_re_2,
+            self.parameter_widget.ckb_av_2,
             QtCore.SIGNAL("toggled(bool)"),
-            self.av_re_2_enabled_changed,
+            self.av_2_enabled_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.qsb_av_re_2,
@@ -121,9 +121,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.av_re_2_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.ckb_av_re_3,
+            self.parameter_widget.ckb_av_3,
             QtCore.SIGNAL("toggled(bool)"),
-            self.av_re_3_enabled_changed,
+            self.av_3_enabled_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.qsb_av_re_3,
@@ -131,19 +131,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.av_re_3_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.ckb_av_im,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.av_im_enabled_changed,
-        )
-        QtCore.QObject.connect(
             self.parameter_widget.qsb_av_im,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.av_im_changed,
-        )
-        QtCore.QObject.connect(
-            self.parameter_widget.ckb_av_im_1,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.av_im_1_enabled_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.qsb_av_im_1,
@@ -151,19 +141,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.av_im_1_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.ckb_av_im_2,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.av_im_2_enabled_changed,
-        )
-        QtCore.QObject.connect(
             self.parameter_widget.qsb_av_im_2,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.av_im_2_changed,
-        )
-        QtCore.QObject.connect(
-            self.parameter_widget.ckb_av_im_3,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.av_im_3_enabled_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.qsb_av_im_3,
@@ -242,14 +222,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.av_im_2 = self.obj.AV_im_2
         self.av_im_3 = self.obj.AV_im_3
 
-        self.av_re_enabled = not self.obj.AV_re_Disabled
-        self.av_im_enabled = not self.obj.AV_im_Disabled
-        self.av_re_1_enabled = not self.obj.AV_re_1_Disabled
-        self.av_re_2_enabled = not self.obj.AV_re_2_Disabled
-        self.av_re_3_enabled = not self.obj.AV_re_3_Disabled
-        self.av_im_1_enabled = not self.obj.AV_im_1_Disabled
-        self.av_im_2_enabled = not self.obj.AV_im_2_Disabled
-        self.av_im_3_enabled = not self.obj.AV_im_3_Disabled
+        self.av_enabled = self.obj.EnableAV
+        self.av_1_enabled = self.obj.EnableAV_1
+        self.av_2_enabled = self.obj.EnableAV_2
+        self.av_3_enabled = self.obj.EnableAV_3
 
         self.boundary_condition = self.obj.BoundaryCondition
         self.potential_constant = self.obj.PotentialConstant
@@ -271,14 +247,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.AV_im_2 = self.av_im_2
         self.obj.AV_im_3 = self.av_im_3
 
-        self.obj.AV_re_Disabled = not self.av_re_enabled
-        self.obj.AV_im_Disabled = not self.av_im_enabled
-        self.obj.AV_re_1_Disabled = not self.av_re_1_enabled
-        self.obj.AV_re_2_Disabled = not self.av_re_2_enabled
-        self.obj.AV_re_3_Disabled = not self.av_re_3_enabled
-        self.obj.AV_im_1_Disabled = not self.av_im_1_enabled
-        self.obj.AV_im_2_Disabled = not self.av_im_2_enabled
-        self.obj.AV_im_3_Disabled = not self.av_im_3_enabled
+        self.obj.EnableAV = self.av_enabled
+        self.obj.EnableAV_1 = self.av_1_enabled
+        self.obj.EnableAV_2 = self.av_2_enabled
+        self.obj.EnableAV_3 = self.av_3_enabled
 
         self.obj.BoundaryCondition = self.boundary_condition
         self.obj.PotentialConstant = self.potential_constant
@@ -299,41 +271,37 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         # scalar potential
         self.parameter_widget.qsb_av_re.setProperty("value", self.av_re)
-        self.parameter_widget.qsb_av_re.setEnabled(self.av_re_enabled)
+        self.parameter_widget.qsb_av_re.setEnabled(self.av_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re).bind(self.obj, "AV_re")
         self.parameter_widget.qsb_av_im.setProperty("value", self.av_im)
-        self.parameter_widget.qsb_av_im.setEnabled(self.av_im_enabled)
+        self.parameter_widget.qsb_av_im.setEnabled(self.av_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im).bind(self.obj, "AV_im")
 
         # vector potential
         self.parameter_widget.qsb_av_re_1.setProperty("value", self.av_re_1)
-        self.parameter_widget.qsb_av_re_1.setEnabled(self.av_re_1_enabled)
+        self.parameter_widget.qsb_av_re_1.setEnabled(self.av_1_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re_1).bind(self.obj, "AV_re_1")
         self.parameter_widget.qsb_av_re_2.setProperty("value", self.av_re_2)
-        self.parameter_widget.qsb_av_re_2.setEnabled(self.av_re_2_enabled)
+        self.parameter_widget.qsb_av_re_2.setEnabled(self.av_2_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re_2).bind(self.obj, "AV_re_2")
         self.parameter_widget.qsb_av_re_3.setProperty("value", self.av_re_3)
-        self.parameter_widget.qsb_av_re_3.setEnabled(self.av_re_3_enabled)
+        self.parameter_widget.qsb_av_re_3.setEnabled(self.av_3_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re_3).bind(self.obj, "AV_re_3")
 
         self.parameter_widget.qsb_av_im_1.setProperty("value", self.av_im_1)
-        self.parameter_widget.qsb_av_im_1.setEnabled(self.av_im_1_enabled)
+        self.parameter_widget.qsb_av_im_1.setEnabled(self.av_1_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im_1).bind(self.obj, "AV_im_1")
         self.parameter_widget.qsb_av_im_2.setProperty("value", self.av_im_2)
-        self.parameter_widget.qsb_av_im_2.setEnabled(self.av_im_2_enabled)
+        self.parameter_widget.qsb_av_im_2.setEnabled(self.av_2_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im_2).bind(self.obj, "AV_im_2")
         self.parameter_widget.qsb_av_im_3.setProperty("value", self.av_im_3)
-        self.parameter_widget.qsb_av_im_3.setEnabled(self.av_im_3_enabled)
+        self.parameter_widget.qsb_av_im_3.setEnabled(self.av_3_enabled)
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im_3).bind(self.obj, "AV_im_3")
 
-        self.parameter_widget.ckb_av_re.setChecked(self.av_re_enabled)
-        self.parameter_widget.ckb_av_re_1.setChecked(self.av_re_1_enabled)
-        self.parameter_widget.ckb_av_re_2.setChecked(self.av_re_2_enabled)
-        self.parameter_widget.ckb_av_re_3.setChecked(self.av_re_3_enabled)
-        self.parameter_widget.ckb_av_im.setChecked(self.av_im_enabled)
-        self.parameter_widget.ckb_av_im_1.setChecked(self.av_im_1_enabled)
-        self.parameter_widget.ckb_av_im_2.setChecked(self.av_im_2_enabled)
-        self.parameter_widget.ckb_av_im_3.setChecked(self.av_im_3_enabled)
+        self.parameter_widget.ckb_av.setChecked(self.av_enabled)
+        self.parameter_widget.ckb_av_1.setChecked(self.av_1_enabled)
+        self.parameter_widget.ckb_av_2.setChecked(self.av_2_enabled)
+        self.parameter_widget.ckb_av_3.setChecked(self.av_3_enabled)
 
         self.parameter_widget.ckb_potential_constant.setChecked(self.potential_constant)
 
@@ -358,16 +326,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.parameter_widget.cb_boundary_condition.setCurrentIndex(index)
 
         # start with electromagnetic inputs hidden if no field is set
-        if not (
-            self.av_re_enabled
-            or self.av_im_enabled
-            or self.av_re_1_enabled
-            or self.av_re_2_enabled
-            or self.av_re_3_enabled
-            or self.av_im_1_enabled
-            or self.av_im_2_enabled
-            or self.av_im_3_enabled
-        ):
+        if not (self.av_enabled or self.av_1_enabled or self.av_2_enabled or self.av_3_enabled):
             self.parameter_widget.ckb_electromagnetic.setChecked(False)
 
     def potential_changed(self, value):
@@ -380,36 +339,24 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def electromagnetic_enabled_changed(self, value):
         self.parameter_widget.gb_electromagnetic.setVisible(value)
 
-    def av_re_enabled_changed(self, value):
-        self.av_re_enabled = value
+    def av_enabled_changed(self, value):
+        self.av_enabled = value
         self.parameter_widget.qsb_av_re.setEnabled(value)
-
-    def av_re_1_enabled_changed(self, value):
-        self.av_re_1_enabled = value
-        self.parameter_widget.qsb_av_re_1.setEnabled(value)
-
-    def av_re_2_enabled_changed(self, value):
-        self.av_re_2_enabled = value
-        self.parameter_widget.qsb_av_re_2.setEnabled(value)
-
-    def av_re_3_enabled_changed(self, value):
-        self.av_re_3_enabled = value
-        self.parameter_widget.qsb_av_re_3.setEnabled(value)
-
-    def av_im_enabled_changed(self, value):
-        self.av_im_enabled = value
         self.parameter_widget.qsb_av_im.setEnabled(value)
 
-    def av_im_1_enabled_changed(self, value):
-        self.av_im_1_enabled = value
+    def av_1_enabled_changed(self, value):
+        self.av_1_enabled = value
+        self.parameter_widget.qsb_av_re_1.setEnabled(value)
         self.parameter_widget.qsb_av_im_1.setEnabled(value)
 
-    def av_im_2_enabled_changed(self, value):
-        self.av_im_2_enabled = value
+    def av_2_enabled_changed(self, value):
+        self.av_2_enabled = value
+        self.parameter_widget.qsb_av_re_2.setEnabled(value)
         self.parameter_widget.qsb_av_im_2.setEnabled(value)
 
-    def av_im_3_enabled_changed(self, value):
-        self.av_im_3_enabled = value
+    def av_3_enabled_changed(self, value):
+        self.av_3_enabled = value
+        self.parameter_widget.qsb_av_re_3.setEnabled(value)
         self.parameter_widget.qsb_av_im_3.setEnabled(value)
 
     def av_re_changed(self, value):

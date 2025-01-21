@@ -163,73 +163,37 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="AV_re_1_Disabled",
+                name="EnableAV",
                 group="Electromagnetic Potential",
-                doc="",
-                value=True,
+                doc="Enable scalar potential boundary condition",
+                value=False,
             )
         )
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="AV_re_2_Disabled",
+                name="EnableAV_1",
                 group="Electromagnetic Potential",
-                doc="",
-                value=True,
+                doc="Enable vector potential x-component boundary condition",
+                value=False,
             )
         )
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="AV_re_3_Disabled",
+                name="EnableAV_2",
                 group="Electromagnetic Potential",
-                doc="",
-                value=True,
+                doc="Enable vector potential y-component boundary condition",
+                value=False,
             )
         )
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="AV_im_1_Disabled",
+                name="EnableAV_3",
                 group="Electromagnetic Potential",
-                doc="",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="AV_im_2_Disabled",
-                group="Electromagnetic Potential",
-                doc="",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="AV_im_3_Disabled",
-                group="Electromagnetic Potential",
-                doc="",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="AV_re_Disabled",
-                group="Electromagnetic Potential",
-                doc="",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="AV_im_Disabled",
-                group="Electromagnetic Potential",
-                doc="",
-                value=True,
+                doc="Enable vector potential z-component boundary condition",
+                value=False,
             )
         )
         prop.append(
@@ -303,3 +267,35 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                     old_type="App::PropertyElectricPotential",
                     convert_old_value=lambda x: "{} Wb/m".format(x.getValueAs("V").Value),
                 )
+
+        # enable electromagnetic properties from old properties
+        try:
+            obj.EnableAV_1 = not obj.getPropertyByName(
+                "AV_re_1_Disabled"
+            ) or not obj.getPropertyByName("AV_im_1_Disabled")
+            obj.EnableAV_2 = not obj.getPropertyByName(
+                "AV_re_2_Disabled"
+            ) or not obj.getPropertyByName("AV_im_2_Disabled")
+            obj.EnableAV_3 = not obj.getPropertyByName(
+                "AV_re_3_Disabled"
+            ) or not obj.getPropertyByName("AV_im_3_Disabled")
+            obj.EnableAV = not obj.getPropertyByName("AV_im_Disabled")
+
+            # remove old properties
+            obj.setPropertyStatus("AV_re_1_Disabled", "-LockDynamic")
+            obj.removeProperty("AV_re_1_Disabled")
+            obj.setPropertyStatus("AV_re_2_Disabled", "-LockDynamic")
+            obj.removeProperty("AV_re_2_Disabled")
+            obj.setPropertyStatus("AV_re_3_Disabled", "-LockDynamic")
+            obj.removeProperty("AV_re_3_Disabled")
+            obj.setPropertyStatus("AV_im_1_Disabled", "-LockDynamic")
+            obj.removeProperty("AV_im_1_Disabled")
+            obj.setPropertyStatus("AV_im_2_Disabled", "-LockDynamic")
+            obj.removeProperty("AV_im_2_Disabled")
+            obj.setPropertyStatus("AV_im_3_Disabled", "-LockDynamic")
+            obj.removeProperty("AV_im_3_Disabled")
+            obj.setPropertyStatus("AV_im_Disabled", "-LockDynamic")
+            obj.removeProperty("AV_im_Disabled")
+
+        except Base.PropertyError:
+            pass

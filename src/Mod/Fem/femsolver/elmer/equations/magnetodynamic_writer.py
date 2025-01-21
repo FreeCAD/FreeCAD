@@ -208,16 +208,13 @@ class MgDynwriter:
                     magnetization = float(obj.Magnetization_im_3.getValueAs("A/m"))
                     self.write.bodyForce(name, "Magnetization Im 3", magnetization)
 
-        if hasattr(obj, "PotentialEnabled"):
-            # check for PotentialEnabled not Potential since PotentialEnabled was
-            # added later and only with this the imaginary property is available
+        if femutils.is_derived_from(obj, "Fem::ConstraintElectrostaticPotential"):
             if obj.PotentialEnabled:
                 # output only if potential is enabled and needed
                 potential = float(obj.Potential.getValueAs("V"))
                 self.write.bodyForce(name, "Electric Potential", round(potential, 6))
-            # imaginary is only needed for harmonic equation
-            if equation.IsHarmonic:
-                if not obj.AV_im_Disabled:
+                # imaginary is only needed for harmonic equation
+                if equation.IsHarmonic:
                     potential = float(obj.AV_im.getValueAs("V"))
                     self.write.bodyForce(name, "Electric Potential Im", round(potential, 6))
 
@@ -291,44 +288,38 @@ class MgDynwriter:
                     self.write.boundary(name, "Current Density Im 1", round(currentDensity, 6))
 
         if femutils.is_derived_from(obj, "Fem::ConstraintElectrostaticPotential"):
-            if not obj.AV_re_Disabled:
+            if obj.EnableAV:
                 potential = obj.AV_re.getValueAs("V").Value
                 if equation.IsHarmonic:
                     self.write.boundary(name, "AV re", round(potential, 6))
+                    potential = obj.AV_im.getValueAs("V").Value
+                    self.write.boundary(name, "AV im", round(potential, 6))
                 else:
                     self.write.boundary(name, "AV", round(potential, 6))
-            if not obj.AV_re_1_Disabled:
+            if obj.EnableAV_1:
                 potential = obj.AV_re_1.getValueAs("Wb/m").Value
                 if equation.IsHarmonic:
                     self.write.boundary(name, "AV re {e} 1", round(potential, 6))
+                    potential = obj.AV_im_1.getValueAs("Wb/m").Value
+                    self.write.boundary(name, "AV im {e} 1", round(potential, 6))
                 else:
                     self.write.boundary(name, "AV {e} 1", round(potential, 6))
-            if not obj.AV_re_2_Disabled:
+            if obj.EnableAV_2:
                 potential = obj.AV_re_2.getValueAs("Wb/m").Value
                 if equation.IsHarmonic:
                     self.write.boundary(name, "AV re {e} 2", round(potential, 6))
+                    potential = obj.AV_im_2.getValueAs("Wb/m").Value
+                    self.write.boundary(name, "AV im {e} 2", round(potential, 6))
                 else:
                     self.write.boundary(name, "AV {e} 2", round(potential, 6))
-            if not obj.AV_re_3_Disabled:
+            if obj.EnableAV_3:
                 potential = obj.AV_re_3.getValueAs("Wb/m").Value
                 if equation.IsHarmonic:
                     self.write.boundary(name, "AV re {e} 3", round(potential, 6))
-                else:
-                    self.write.boundary(name, "AV {e} 3", round(potential, 6))
-            # imaginaries are only needed for harmonic equation
-            if equation.IsHarmonic:
-                if not obj.AV_im_Disabled:
-                    potential = obj.AV_im.getValueAs("V").Value
-                    self.write.boundary(name, "AV im", round(potential, 6))
-                if not obj.AV_im_1_Disabled:
-                    potential = obj.AV_im_1.getValueAs("Wb/m").Value
-                    self.write.boundary(name, "AV im {e} 1", round(potential, 6))
-                if not obj.AV_im_2_Disabled:
-                    potential = obj.AV_im_2.getValueAs("Wb/m").Value
-                    self.write.boundary(name, "AV im {e} 2", round(potential, 6))
-                if not obj.AV_im_3_Disabled:
                     potential = obj.AV_im_3.getValueAs("Wb/m").Value
                     self.write.boundary(name, "AV im {e} 3", round(potential, 6))
+                else:
+                    self.write.boundary(name, "AV {e} 3", round(potential, 6))
 
     def handleMagnetodynamicBndConditions(self, equation):
         # the current density can either be a body force or a boundary constraint

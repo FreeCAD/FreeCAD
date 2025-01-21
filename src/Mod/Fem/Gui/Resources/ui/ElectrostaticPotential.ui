@@ -103,7 +103,7 @@ with a harmonic/oscillating driving force</string>
         <property name="checkable">
          <bool>false</bool>
         </property>
-        <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,255,0,255">
+        <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,255,255">
          <item row="0" column="2">
           <widget class="QLabel" name="labelReal">
            <property name="enabled">
@@ -114,7 +114,7 @@ with a harmonic/oscillating driving force</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
+         <item row="0" column="3">
           <widget class="QLabel" name="labelImaginary">
            <property name="enabled">
             <bool>true</bool>
@@ -135,7 +135,7 @@ with a harmonic/oscillating driving force</string>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QCheckBox" name="ckb_av_re">
+          <widget class="QCheckBox" name="ckb_av">
            <property name="text">
             <string/>
            </property>
@@ -164,13 +164,6 @@ with a harmonic/oscillating driving force</string>
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QCheckBox" name="ckb_av_im">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="4">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_im">
            <property name="enabled">
             <bool>true</bool>
@@ -203,7 +196,7 @@ with a harmonic/oscillating driving force</string>
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QCheckBox" name="ckb_av_re_1">
+          <widget class="QCheckBox" name="ckb_av_1">
            <property name="text">
             <string/>
            </property>
@@ -215,7 +208,7 @@ with a harmonic/oscillating driving force</string>
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Real part of potential x-component
+            <string>Real part of vector potential x-component
 Note: has no effect if a solid was selected</string>
            </property>
            <property name="keyboardTracking">
@@ -233,19 +226,12 @@ Note: has no effect if a solid was selected</string>
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QCheckBox" name="ckb_av_im_1">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="4">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_im_1">
            <property name="enabled">
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Imaginary part of potential x-component
+            <string>Imaginary part of vector potential x-component
 Note: has no effect if a solid was selected</string>
            </property>
            <property name="keyboardTracking">
@@ -273,7 +259,7 @@ Note: has no effect if a solid was selected</string>
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QCheckBox" name="ckb_av_re_2">
+          <widget class="QCheckBox" name="ckb_av_2">
            <property name="text">
             <string/>
            </property>
@@ -285,7 +271,7 @@ Note: has no effect if a solid was selected</string>
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Real part of potential y-component
+            <string>Real part of vector potential y-component
 Note: has no effect if a solid was selected</string>
            </property>
            <property name="keyboardTracking">
@@ -303,19 +289,12 @@ Note: has no effect if a solid was selected</string>
           </widget>
          </item>
          <item row="3" column="3">
-          <widget class="QCheckBox" name="ckb_av_im_2">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="4">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_im_2">
            <property name="enabled">
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Imaginary part of potential y-component
+            <string>Imaginary part of vector potential y-component
 Note: has no effect if a solid was selected</string>
            </property>
            <property name="keyboardTracking">
@@ -343,7 +322,7 @@ Note: has no effect if a solid was selected</string>
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QCheckBox" name="ckb_av_re_3">
+          <widget class="QCheckBox" name="ckb_av_3">
            <property name="text">
             <string/>
            </property>
@@ -355,7 +334,7 @@ Note: has no effect if a solid was selected</string>
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Real part of potential z-component
+            <string>Real part of vector potential z-component
 Note: has no effect if a solid was selected</string>
            </property>
            <property name="keyboardTracking">
@@ -373,19 +352,12 @@ Note: has no effect if a solid was selected</string>
           </widget>
          </item>
          <item row="4" column="3">
-          <widget class="QCheckBox" name="ckb_av_im_3">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="4">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_im_3">
            <property name="enabled">
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Imaginary part of potential z-component
+            <string>Imaginary part of vector potential z-component
 Note: has no effect if a solid was selected</string>
            </property>
            <property name="keyboardTracking">
