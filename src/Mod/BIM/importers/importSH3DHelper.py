@@ -251,7 +251,6 @@ class SH3DImporter:
             if self.preferences["DEBUG"]: _log("No level defined. Using default level ...")
             self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
 
-
         # Importing <room> elements ...
         self._import_elements(home, 'room')
 
@@ -272,6 +271,17 @@ class SH3DImporter:
             self._import_elements(home, 'doorOrWindow')
             for furniture_group in home.findall('furnitureGroup'):
                 self._import_elements(furniture_group, 'doorOrWindow', False)
+            self._refresh()
+            group = App.ActiveDocument.Facebinders
+            for element in group.Group:
+                faces = []
+                new_sel_subshapes = []
+                for (sel_object, sel_subshapes) in element.Faces:
+                    for sel_subshape in sel_subshapes:
+                        sel_subshape = sel_subshape[1:] if sel_subshape.startswith('?') else sel_subshape
+                        new_sel_subshapes.append(sel_subshape)
+                    faces.append((sel_object, new_sel_subshapes))
+                element.Faces = faces
             self._refresh()
 
         # Importing <pieceOfFurniture> && <furnitureGroup> elements ...
