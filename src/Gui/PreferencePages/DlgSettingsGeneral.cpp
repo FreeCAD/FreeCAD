@@ -124,16 +124,9 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
     }
 
     // Enable/disable the fractional inch option depending on system
-    if (UnitsApi::getSchema() == UnitSystem::ImperialBuilding)
-    {
-        ui->comboBox_FracInch->setVisible(true);
-        ui->fractionalInchLabel->setVisible(true);
-    }
-    else
-    {
-        ui->comboBox_FracInch->setVisible(false);
-        ui->fractionalInchLabel->setVisible(false);
-    }
+    const auto visible = (UnitsApi::getSchema() == UnitSystem::ImperialBuilding);
+    ui->comboBox_FracInch->setVisible(visible);
+    ui->fractionalInchLabel->setVisible(visible);
 }
 
 /**
@@ -774,16 +767,9 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(int index)
         return; // happens when clearing the combo box in retranslateUi()
 
     // Enable/disable the fractional inch option depending on system
-    if (static_cast<UnitSystem>(index) == UnitSystem::ImperialBuilding)
-    {
-        ui->comboBox_FracInch->setVisible(true);
-        ui->fractionalInchLabel->setVisible(true);
-    }
-    else
-    {
-        ui->comboBox_FracInch->setVisible(false);
-        ui->fractionalInchLabel->setVisible(false);
-    }
+    const auto visible = (static_cast<UnitSystem>(index) == UnitSystem::ImperialBuilding);
+    ui->comboBox_FracInch->setVisible(visible);
+    ui->fractionalInchLabel->setVisible(visible);
 }
 
 void DlgSettingsGeneral::onThemeChanged(int index) {
