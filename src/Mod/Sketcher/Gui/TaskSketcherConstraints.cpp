@@ -1371,8 +1371,10 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
-                                ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
+                                if (ui->listWidgetConstraints->model()) {
+                                    QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
+                                    ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
+                                }
                                 break;
                             }
                         }
