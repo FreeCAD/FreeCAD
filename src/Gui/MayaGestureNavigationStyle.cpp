@@ -540,8 +540,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 } else {//one mouse button - normal spinning
                     //this will also handle the single-finger drag (there's no gesture used, pseudomouse is enough)
                     //this->addToLog(event->getPosition(), event->getTime());
-                    this->spin_simplified(viewer->getSoRenderManager()->getCamera(),
-                                          posn, prevnormalized);
+                    this->spin_simplified(posn, prevnormalized);
                     processed = true;
                 }
             }
