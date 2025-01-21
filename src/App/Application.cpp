@@ -2795,12 +2795,10 @@ void Application::initApplication()
     // set up Unit system default
     const ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
-    Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(hGrp->GetInt("UserSchema", 0)));
-    Base::UnitsApi::setDecimals(static_cast<int>(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals())));
-
-    // In case we are using fractional inches, get user setting for min unit
-    const int denom = static_cast<int>(hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
-    Base::QuantityFormat::setDefaultDenominator(denom);
+    Base::UnitsApi::setSchema(hGrp->GetInt("UserSchema", Base::UnitsApi::getDefSchemaNum()));
+    Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    Base::QuantityFormat::setDefaultDenominator(
+        hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
 
 #if defined (_DEBUG)
     Base::Console().Log("Application is built with debug information\n");
