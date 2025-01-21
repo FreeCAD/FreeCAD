@@ -534,7 +534,7 @@ class DraftToolBar:
         self.zValue.setToolTip(translate("draft", "Z coordinate of point"))
         self.pointButton.setText(translate("draft", "Enter point"))
         self.pointButton.setToolTip(translate(
-            "draft","Enter point with given coordinates"))
+            "draft","Enter a point with given coordinates"))
         self.labellength.setText(translate("draft", "Length"))
         self.labelangle.setText(translate("draft", "Angle"))
         self.lengthValue.setToolTip(translate("draft", "Length of current segment"))
