@@ -101,7 +101,7 @@ class ViewProviderLayer:
                              "LineColor",
                              "Layer",
                              _tip)
-            vobj.LineColor = params.get_param_view("DefaultShapeLineColor") & 0xFFFFFF00
+            vobj.LineColor = params.get_param_view("DefaultShapeLineColor") | 0x000000FF
 
         if "ShapeColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -112,7 +112,7 @@ class ViewProviderLayer:
                              "Layer",
                              _tip,
                              4)  # Hidden
-            vobj.ShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
+            vobj.ShapeColor = params.get_param_view("DefaultShapeColor") | 0x000000FF
 
         if "ShapeAppearance" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -123,7 +123,7 @@ class ViewProviderLayer:
                              "Layer",
                              _tip)
             material = App.Material()
-            material.DiffuseColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
+            material.DiffuseColor = params.get_param_view("DefaultShapeColor") | 0x000000FF
             vobj.ShapeAppearance = (material, )
 
         if "LineWidth" not in properties:

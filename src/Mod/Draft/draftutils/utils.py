@@ -72,13 +72,13 @@ def get_default_annotation_style():
         "ExtOvershoot":    ("float", params.get_param("extovershoot")),
         "FontName":        ("font",  params.get_param("textfont")),
         "FontSize":        ("float", params.get_param("textheight")),
-        "LineColor":       ("color", params.get_param("DefaultAnnoLineColor")),
+        "LineColor":       ("color", params.get_param("DefaultAnnoLineColor") | 0x000000FF),
         "LineSpacing":     ("float", params.get_param("LineSpacing")),
         "LineWidth":       ("int",   params.get_param("DefaultAnnoLineWidth")),
         "ScaleMultiplier": ("float", params.get_param("DefaultAnnoScaleMultiplier")),
         "ShowLine":        ("bool",  params.get_param("DimShowLine")),
         "ShowUnit":        ("bool",  params.get_param("showUnit")),
-        "TextColor":       ("color", params.get_param("DefaultTextColor")),
+        "TextColor":       ("color", params.get_param("DefaultTextColor") | 0x000000FF),
         "TextSpacing":     ("float", params.get_param("dimspacing")),
         "UnitOverride":    ("str",   params.get_param("overrideUnit"))
     }
@@ -91,9 +91,9 @@ def get_default_shape_style():
     return {
         "DisplayMode":     ("index",    display_mode_index, DISPLAY_MODES[display_mode_index]),
         "DrawStyle":       ("index",    draw_style_index, DRAW_STYLES[draw_style_index]),
-        "LineColor":       ("color",    params.get_param_view("DefaultShapeLineColor")),
+        "LineColor":       ("color",    params.get_param_view("DefaultShapeLineColor") | 0x000000FF),
         "LineWidth":       ("int",      params.get_param_view("DefaultShapeLineWidth")),
-        "PointColor":      ("color",    params.get_param_view("DefaultShapeVertexColor")),
+        "PointColor":      ("color",    params.get_param_view("DefaultShapeVertexColor") | 0x000000FF),
         "PointSize":       ("int",      params.get_param_view("DefaultShapePointSize")),
         "ShapeAppearance": ("material", (get_view_material(), ))
     }
@@ -102,11 +102,11 @@ def get_default_shape_style():
 def get_view_material():
     """Return a ShapeAppearance material with properties based on the preferences."""
     material = App.Material()
-    material.AmbientColor  = params.get_param_view("DefaultAmbientColor") & 0xFFFFFF00
-    material.DiffuseColor  = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
-    material.EmissiveColor = params.get_param_view("DefaultEmissiveColor") & 0xFFFFFF00
+    material.AmbientColor  = params.get_param_view("DefaultAmbientColor") | 0x000000FF
+    material.DiffuseColor  = params.get_param_view("DefaultShapeColor") | 0x000000FF
+    material.EmissiveColor = params.get_param_view("DefaultEmissiveColor") | 0x000000FF
     material.Shininess     = params.get_param_view("DefaultShapeShininess") / 100
-    material.SpecularColor = params.get_param_view("DefaultSpecularColor") & 0xFFFFFF00
+    material.SpecularColor = params.get_param_view("DefaultSpecularColor") | 0x000000FF
     material.Transparency  = params.get_param_view("DefaultShapeTransparency") / 100
     return material
 
@@ -834,8 +834,11 @@ getrgb = get_rgb
 def argb_to_rgba(color):
     """Change byte order of a 4 byte color int from ARGB (Qt) to RGBA (FreeCAD).
 
-    Alpha in both integers is always 255.
-    Alpha in color properties, although ignored, is always zero however.
+    Alpha in both integers should always be 255.
+
+    Alpha in color properties is not used in the 3D view, but is shown in the
+    color swatches in the Property editor. It therefore better to ensure alpha
+    is 255 (version 1.1 dev cycle).
 
     Usage:
 
@@ -846,14 +849,11 @@ def argb_to_rgba(color):
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
             .SetUnsigned("DefaultShapeColor", fc_int)
 
-        obj.ViewObject.ShapeColor = fc_int & 0xFFFFFF00
+        obj.ViewObject.ShapeColor = fc_int | 0x000000FF
 
     Related:
 
-        getRgbF() returns an RGBA tuple. 4 floats in the range 0.0 - 1.0. Alpha is always 1.
-        Alpha should be set to zero or removed before using the tuple to change a color property:
-
-        obj.ViewObject.ShapeColor = self.form.ShapeColor.property("color").getRgbF()[:3]
+        getRgbF() returns an RGBA tuple. 4 floats in the range 0.0 - 1.0. Alpha is always 1.0.
     """
     return ((color & 0xFFFFFF) << 8) + ((color & 0xFF000000) >> 24)
 
