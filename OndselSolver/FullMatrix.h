@@ -698,7 +698,7 @@ namespace MbD {
 				the1x = std::atan2(this->at(2)->at(0), sthe2z * this->at(2)->at(2));
 			}
 			the0z = std::atan2(this->at(0)->at(2), this->at(1)->at(2));
-			auto aaaa = std::atan2(this->at(0)->at(2), -this->at(1)->at(2));	//Check missing minus is needed above. Smalltalk has missing minus too.
+			[[maybe_unused]] auto aaaa = std::atan2(this->at(0)->at(2), -this->at(1)->at(2));	//Check missing minus is needed above. Smalltalk has missing minus too.
 			assert(Numeric::equaltol(the0z, aaaa, 1.0e-9));
 		}
 		answer->atiput(0, the0z);

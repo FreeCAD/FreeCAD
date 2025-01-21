@@ -180,7 +180,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void FullVector<T>::conditionSelfWithTol(double tol)
+	inline void FullVector<T>::conditionSelfWithTol([[maybe_unused]] double tol)
 	{
 		assert(false && tol != tol);   // clang++ flips out with warnings if you don't use 'tol'
                                        // but suppressing that warning breaks Visual Studio.

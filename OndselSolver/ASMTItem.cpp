@@ -191,7 +191,7 @@ void MbD::ASMTItem::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
 	assert(false);
 }
 
-void MbD::ASMTItem::updateForFrame(size_t index)
+void MbD::ASMTItem::updateForFrame([[maybe_unused]] size_t index)
 {
     assert(false);
 }

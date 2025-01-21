@@ -378,8 +378,8 @@ std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::assemblyFromFile(const std::str
     }
     auto assembly = ASMTAssembly::With();
     auto str = assembly->popOffTop(lines);
-    bool bool1 = str == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
-    bool bool2 = str == "OndselSolver";
+    [[maybe_unused]] bool bool1 = str == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
+    [[maybe_unused]] bool bool2 = str == "OndselSolver";
     assert(bool1 || bool2);
     assert(assembly->readStringOffTop(lines) == "Assembly");
     assembly->setFilename(fileName);
