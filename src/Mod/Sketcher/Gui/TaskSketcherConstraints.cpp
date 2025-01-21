@@ -1371,7 +1371,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                if (ui->listWidgetConstraints->model()) {
+                                if (select && ui->listWidgetConstraints->model()) { // scrollTo only on select, not de-select
                                     QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
                                     ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
                                 }
