@@ -1,16 +1,18 @@
 #include <gtest/gtest.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
-#include <Base/UnitsApi.h>
-#include <Base/UnitsSchemaImperial1.h>
 #include <QLocale>
-#include <boost/core/ignore_unused.hpp>
 
-// NOLINTBEGIN
+using Base::ParserError;
+using Base::Quantity;
+using Base::Unit;
+using Base::UnitsMismatchError;
+
+
 TEST(BaseQuantity, TestValid)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Length};
-    Base::Quantity q2 {1.0, Base::Unit::Area};
+    const Quantity q1 {1.0, Unit::Length};
+    Quantity q2 {1.0, Unit::Area};
     q2.setInvalid();
 
     EXPECT_EQ(q1.isValid(), true);
@@ -19,77 +21,87 @@ TEST(BaseQuantity, TestValid)
 
 TEST(BaseQuantity, TestParse)
 {
-    Base::Quantity q1 = Base::Quantity::parse("1,234 kg");
-
-    EXPECT_EQ(q1, Base::Quantity(1.2340, Base::Unit::Mass));
-    EXPECT_THROW(boost::ignore_unused(Base::Quantity::parse("1,234,500.12 kg")), Base::ParserError);
+    const Quantity q1 = Quantity::parse("1,234 kg");
+    constexpr auto val {1.2340};
+    EXPECT_EQ(q1, Quantity(val, Unit::Mass));
+    EXPECT_THROW(auto rew [[maybe_unused]] = Quantity::parse("1,234,500.12 kg"), ParserError);
 }
 
 TEST(BaseQuantity, TestDim)
 {
-    Base::Quantity q1 {0, Base::Unit::Area};
+    const Quantity q1 {0, Unit::Area};
 
     EXPECT_EQ(q1.isQuantity(), true);
 }
 
 TEST(BaseQuantity, TestNoDim)
 {
-    Base::Quantity q1 {};
+    const Quantity q1 {};
 
-    EXPECT_EQ(q1.pow(2), Base::Quantity {0});
+    EXPECT_EQ(q1.pow(2), Quantity {0});
     EXPECT_EQ(q1.isDimensionless(), true);
 }
 
 TEST(BaseQuantity, TestPowEQ1)
 {
-    Base::Quantity q1 {2, Base::Unit::Area};
-    EXPECT_EQ(q1.pow(1), Base::Quantity(2, Base::Unit::Area));
+    const Quantity q1 {2, Unit::Area};
+    const auto expect = Quantity {2, Unit::Area};
+    EXPECT_EQ(q1.pow(1), expect);
 }
 
 TEST(BaseQuantity, TestPowEQ0)
 {
-    Base::Quantity q1 {2, Base::Unit::Area};
-    EXPECT_EQ(q1.pow(0), Base::Quantity {1});
+    const Quantity q1 {2, Unit::Area};
+    EXPECT_EQ(q1.pow(0), Quantity {1});
 }
 
 TEST(BaseQuantity, TestPowGT1)
 {
-    Base::Quantity q1 {2, Base::Unit::Length};
-    EXPECT_EQ(q1.pow(2), Base::Quantity(4, Base::Unit::Area));
+    constexpr auto v2 {2};
+    constexpr auto v4 {4};
+    const Quantity q1 {v2, Unit::Length};
+    EXPECT_EQ(q1.pow(v2), Quantity(v4, Unit::Area));
 }
 
 TEST(BaseQuantity, TestPowLT1)
 {
-    Base::Quantity q1 {8, Base::Unit::Volume};
-    EXPECT_EQ(q1.pow(1.0 / 3.0), Base::Quantity(2, Base::Unit::Length));
+    constexpr auto v8 {8};
+    constexpr auto v2 {2};
+    constexpr auto v3 {3.0};
+    const Quantity q1 {v8, Unit::Volume};
+    EXPECT_EQ(q1.pow(1.0 / v3), Quantity(v2, Unit::Length));
 }
 
 TEST(BaseQuantity, TestPow3DIV2)
 {
-    Base::Quantity unit {8, Base::Unit::Volume};
-    EXPECT_THROW(unit.pow(3.0 / 2.0), Base::UnitsMismatchError);
+    constexpr auto v2 {2.0};
+    constexpr auto v3 {3.0};
+    constexpr auto v8 {8};
+    const Quantity unit {v8, Unit::Volume};
+    EXPECT_THROW(unit.pow(v3 / v2), UnitsMismatchError);
 }
 
 TEST(BaseQuantity, TestString)
 {
-    Base::Quantity q1 {2, "kg*m/s^2"};
-    EXPECT_EQ(q1.getUnit(), Base::Unit::Force);
+    constexpr auto v2 {2};
+    const Quantity q1 {v2, "kg*m/s^2"};
+    EXPECT_EQ(q1.getUnit(), Unit::Force);
 
-    Base::Quantity q2 {2, "kg*m^2/s^2"};
-    EXPECT_EQ(q2.getUnit(), Base::Unit::Work);
+    const Quantity q2 {v2, "kg*m^2/s^2"};
+    EXPECT_EQ(q2.getUnit(), Unit::Work);
 }
 
 TEST(BaseQuantity, TestCopy)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Length};
+    const Quantity q1 {1.0, Unit::Length};
 
-    EXPECT_EQ(Base::Quantity {q1}, q1);
+    EXPECT_EQ(Quantity {q1}, q1);
 }
 
 TEST(BaseQuantity, TestEqual)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Force};
-    Base::Quantity q2 {1.0, "kg*mm/s^2"};
+    const Quantity q1 {1.0, Unit::Force};
+    const Quantity q2 {1.0, "kg*mm/s^2"};
 
     EXPECT_EQ(q1 == q1, true);
     EXPECT_EQ(q1 == q2, true);
@@ -97,9 +109,10 @@ TEST(BaseQuantity, TestEqual)
 
 TEST(BaseQuantity, TestNotEqual)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Force};
-    Base::Quantity q2 {2.0, "kg*m/s^2"};
-    Base::Quantity q3 {1.0, Base::Unit::Work};
+    constexpr auto v2 {2.0};
+    const Quantity q1 {1.0, Unit::Force};
+    const Quantity q2 {v2, "kg*m/s^2"};
+    const Quantity q3 {1.0, Unit::Work};
 
     EXPECT_EQ(q1 != q2, true);
     EXPECT_EQ(q1 != q3, true);
@@ -107,73 +120,77 @@ TEST(BaseQuantity, TestNotEqual)
 
 TEST(BaseQuantity, TestLessOrGreater)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Force};
-    Base::Quantity q2 {2.0, "kg*m/s^2"};
-    Base::Quantity q3 {2.0, Base::Unit::Work};
+    constexpr auto v2 {2.0};
+    Quantity q1 {1.0, Unit::Force};
+    Quantity q2 {v2, "kg*m/s^2"};
+    Quantity q3 {v2, Unit::Work};
 
     EXPECT_EQ(q1 < q2, true);
     EXPECT_EQ(q1 > q2, false);
     EXPECT_EQ(q1 <= q1, true);
     EXPECT_EQ(q1 >= q1, true);
-    EXPECT_THROW(boost::ignore_unused(q1 < q3), Base::UnitsMismatchError);
-    EXPECT_THROW(boost::ignore_unused(q1 > q3), Base::UnitsMismatchError);
-    EXPECT_THROW(boost::ignore_unused(q1 <= q3), Base::UnitsMismatchError);
-    EXPECT_THROW(boost::ignore_unused(q1 >= q3), Base::UnitsMismatchError);
+    EXPECT_THROW(auto res [[maybe_unused]] = (q1 < q3), UnitsMismatchError);
+    EXPECT_THROW(auto res [[maybe_unused]] = (q1 > q3), UnitsMismatchError);
+    EXPECT_THROW(auto res [[maybe_unused]] = (q1 <= q3), UnitsMismatchError);
+    EXPECT_THROW(auto res [[maybe_unused]] = (q1 >= q3), UnitsMismatchError);
 }
 
 TEST(BaseQuantity, TestAdd)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Length};
-    Base::Quantity q2 {1.0, Base::Unit::Area};
-    EXPECT_THROW(q1 + q2, Base::UnitsMismatchError);
-    EXPECT_THROW(q1 += q2, Base::UnitsMismatchError);
-    EXPECT_EQ(q1 + q1, Base::Quantity(2, Base::Unit::Length));
-    EXPECT_EQ(q1 += q1, Base::Quantity(2, Base::Unit::Length));
+    Quantity q1 {1.0, Unit::Length};
+    Quantity q2 {1.0, Unit::Area};
+    EXPECT_THROW(q1 + q2, UnitsMismatchError);
+    EXPECT_THROW(q1 += q2, UnitsMismatchError);
+    EXPECT_EQ(q1 + q1, Quantity(2, Unit::Length));
+    EXPECT_EQ(q1 += q1, Quantity(2, Unit::Length));
 }
 
 TEST(BaseQuantity, TestSub)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Length};
-    Base::Quantity q2 {1.0, Base::Unit::Area};
-    EXPECT_THROW(q1 - q2, Base::UnitsMismatchError);
-    EXPECT_THROW(q1 -= q2, Base::UnitsMismatchError);
-    EXPECT_EQ(q1 - q1, Base::Quantity(0, Base::Unit::Length));
-    EXPECT_EQ(q1 -= q1, Base::Quantity(0, Base::Unit::Length));
+    Quantity q1 {1.0, Unit::Length};
+    Quantity q2 {1.0, Unit::Area};
+    EXPECT_THROW(q1 - q2, UnitsMismatchError);
+    EXPECT_THROW(q1 -= q2, UnitsMismatchError);
+    EXPECT_EQ(q1 - q1, Quantity(0, Unit::Length));
+    EXPECT_EQ(q1 -= q1, Quantity(0, Unit::Length));
 }
 
 TEST(BaseQuantity, TestNeg)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Length};
-    EXPECT_EQ(-q1, Base::Quantity(-1.0, Base::Unit::Length));
+    const Quantity q1 {1.0, Unit::Length};
+    EXPECT_EQ(-q1, Quantity(-1.0, Unit::Length));
 }
 
 TEST(BaseQuantity, TestMult)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Length};
-    Base::Quantity q2 {1.0, Base::Unit::Area};
-    EXPECT_EQ(q1 * q2, Base::Quantity(1.0, Base::Unit::Volume));
-    EXPECT_EQ(q1 * 2.0, Base::Quantity(2.0, Base::Unit::Length));
+    const Quantity q1 {1.0, Unit::Length};
+    const Quantity q2 {1.0, Unit::Area};
+    EXPECT_EQ(q1 * q2, Quantity(1.0, Unit::Volume));
+    EXPECT_EQ(q1 * 2.0, Quantity(2.0, Unit::Length));
 }
 
 TEST(BaseQuantity, TestDiv)
 {
-    Base::Quantity q1 {1.0, Base::Unit::Length};
-    Base::Quantity q2 {1.0, Base::Unit::Area};
-    EXPECT_EQ(q1 / q2, Base::Quantity(1.0, Base::Unit::InverseLength));
-    EXPECT_EQ(q1 / 2.0, Base::Quantity(0.5, Base::Unit::Length));
+    const Quantity q1 {1.0, Unit::Length};
+    const Quantity q2 {1.0, Unit::Area};
+    EXPECT_EQ(q1 / q2, Quantity(1.0, Unit::InverseLength));
+    EXPECT_EQ(q1 / 2.0, Quantity(0.5, Unit::Length));
 }
 
 TEST(BaseQuantity, TestPow)
 {
-    Base::Quantity q1 {2.0, Base::Unit::Length};
-    Base::Quantity q2 {2.0, Base::Unit::Area};
-    Base::Quantity q3 {0.0};
-    EXPECT_EQ(q1.pow(q3), Base::Quantity {1});
-    EXPECT_EQ(q1.pow(2.0), Base::Quantity(4, Base::Unit::Area));
-    EXPECT_THROW(q1.pow(q2), Base::UnitsMismatchError);
+    constexpr auto v2 {2.0};
+    constexpr auto v4 {4};
+
+    Quantity q1 {v2, Unit::Length};
+    Quantity q2 {v2, Unit::Area};
+    Quantity q3 {0.0};
+    EXPECT_EQ(q1.pow(q3), Quantity {1});
+    EXPECT_EQ(q1.pow(v2), Quantity(v4, Unit::Area));
+    EXPECT_THROW(q1.pow(q2), UnitsMismatchError);
 }
 
-class Quantity: public ::testing::Test
+class BaseQuantityLoc: public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -185,60 +202,77 @@ protected:
     {}
 };
 
-TEST_F(Quantity, TestSchemeImperialTwo)
+TEST_F(BaseQuantityLoc, psi_parse_spaced)
 {
-    Base::Quantity quantity {1.0, Base::Unit::Length};
-
-    double factor {};
-    std::string unitString;
-    auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
-    std::string result = scheme->schemaTranslate(quantity, factor, unitString);
-    EXPECT_EQ(result, "0.04 in");
+    const auto qParsed = Quantity::parse("1 psi");
+    EXPECT_EQ(qParsed.getValue(), 6.8947448254939996);
 }
 
-TEST_F(Quantity, TestSchemeImperialOne)
+TEST_F(BaseQuantityLoc, psi_parse_no_space)
 {
-    Base::Quantity quantity {1.0, Base::Unit::Length};
-
-    Base::QuantityFormat format = quantity.getFormat();
-    format.precision = 1;
-    quantity.setFormat(format);
-
-    double factor {};
-    std::string unitString;
-    auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
-    std::string result = scheme->schemaTranslate(quantity, factor, unitString);
-
-    EXPECT_EQ(result, "0.0 in");
+    const auto qParsed = Quantity::parse("1psi");
+    EXPECT_EQ(qParsed.getValue(), 6.8947448254939996);
 }
 
-TEST_F(Quantity, TestSafeUserString)
+TEST_F(BaseQuantityLoc, psi_parse_user_str)
 {
-    Base::UnitsApi::setSchema(Base::UnitSystem::ImperialDecimal);
-
-    Base::Quantity quantity {1.0, Base::Unit::Length};
-    Base::QuantityFormat format = quantity.getFormat();
-    format.precision = 1;
-    quantity.setFormat(format);
-
-    std::string result = quantity.getSafeUserString();
-
-    EXPECT_EQ(result, "1 mm");
-
-    Base::UnitsApi::setSchema(Base::UnitSystem::Imperial1);
-
-    quantity = Base::Quantity {304.8, Base::Unit::Length};
-    quantity.setFormat(format);
-
-    result = quantity.getSafeUserString();
-
-    EXPECT_EQ(result, "1.0 \\'");
-
-    quantity = Base::Quantity {25.4, Base::Unit::Length};
-    quantity.setFormat(format);
-
-    result = quantity.getSafeUserString();
-
-    EXPECT_EQ(result, "1.0 \\\"");
+    const auto qParsed = Quantity::parse("1 psi");
+    EXPECT_EQ(qParsed.getUserString(), "6894.74 Pa");
 }
-// NOLINTEND
+
+TEST_F(BaseQuantityLoc, psi_parse_safe_user_str)
+{
+    const auto qParsed = Quantity::parse("1 psi");
+    EXPECT_EQ(qParsed.getSafeUserString(), "6894.74 Pa");
+}
+
+TEST_F(BaseQuantityLoc, psi_parse_unit_type)
+{
+    const auto qParsed = Quantity::parse("1 psi");
+    EXPECT_EQ(qParsed.getUnit().getTypeString(), "Pressure");
+}
+
+TEST_F(BaseQuantityLoc, psi_to_Pa)
+{
+    const auto result = Quantity::parse("1 psi").getValueAs(Quantity::Pascal);
+    const auto expect = 6894.7448254939991;
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(BaseQuantityLoc, psi_to_KPa)
+{
+    const auto result = Quantity::parse("1 psi").getValueAs(Quantity::KiloPascal);
+    const auto expect = 6.8947448254939996;
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(BaseQuantityLoc, psi_to_MPa)
+{
+    const auto result = Quantity::parse("1 psi").getValueAs(Quantity::MegaPascal);
+    const auto expect = 0.0068947448254939999;
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(BaseQuantityLoc, voltage_unit)
+{
+    const auto qq = Quantity::parse("1e20 V");
+
+    EXPECT_EQ(qq.getUnit(), Unit::ElectricPotential);
+}
+
+TEST_F(BaseQuantityLoc, voltage_val)
+{
+    const auto qq = Quantity::parse("1e20 V");
+
+    EXPECT_EQ(qq.getValue(), 1e+26);
+}
+
+TEST_F(BaseQuantityLoc, voltage_val_smaller)
+{
+    const auto qq = Quantity::parse("1e3 V");
+
+    EXPECT_EQ(qq.getValue(), 1e+9);
+}

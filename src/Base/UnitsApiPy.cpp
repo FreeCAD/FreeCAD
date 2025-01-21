@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 #include <memory>
 #endif
@@ -39,10 +37,9 @@ using namespace Base;
 //**************************************************************************
 // Python stuff of UnitsApi
 
-// UnitsApi Methods
 PyMethodDef UnitsApi::Methods[] = {
     {"parseQuantity",
-     UnitsApi::sParseQuantity,
+     sParseQuantity,
      METH_VARARGS,
      "parseQuantity(string) -> Base.Quantity()\n\n"
      "calculate a mathematical expression with units to a quantity object. \n"
@@ -51,27 +48,27 @@ PyMethodDef UnitsApi::Methods[] = {
      "or for more complex espressions:\n"
      "parseQuantity('sin(pi)/50.0 m/s^2')\n"},
     {"listSchemas",
-     UnitsApi::sListSchemas,
+     sListSchemas,
      METH_VARARGS,
      "listSchemas() -> a tuple of schemas\n\n"
      "listSchemas(int) -> description of the given schema\n\n"},
     {"getSchema",
-     UnitsApi::sGetSchema,
+     sGetSchema,
      METH_VARARGS,
      "getSchema() -> int\n\n"
      "The int is the position of the tuple returned by listSchemas"},
     {"setSchema",
-     UnitsApi::sSetSchema,
+     sSetSchema,
      METH_VARARGS,
      "setSchema(int) -> None\n\n"
      "Sets the current schema to the given number, if possible"},
     {"schemaTranslate",
-     UnitsApi::sSchemaTranslate,
+     sSchemaTranslate,
      METH_VARARGS,
      "schemaTranslate(Quantity, int) -> tuple\n\n"
      "Translate a quantity to a given schema"},
     {"toNumber",
-     UnitsApi::sToNumber,
+     sToNumber,
      METH_VARARGS,
      "toNumber(Quantity or float, [format='g', decimals=-1]) -> str\n\n"
      "Convert a quantity or float to a string"},
@@ -86,30 +83,32 @@ PyObject* UnitsApi::sParseQuantity(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    Quantity rtn;
-    std::string str(pstr);
+    const std::string str {pstr};
     PyMem_Free(pstr);
     try {
-        rtn = Quantity::parse(str);
+        return new QuantityPy(new Quantity(Quantity::parse(str)));
     }
-    catch (const Base::ParserError&) {
-        PyErr_Format(PyExc_ValueError, "invalid unit expression \n");
+    catch (const ParserError&) {
+        PyErr_Format(PyExc_ValueError,
+                     "invalid unit expression: '%s'\n",
+                     std::string {pstr}.c_str());
         return nullptr;
     }
-
-    return new QuantityPy(new Quantity(rtn));
 }
 
 PyObject* UnitsApi::sListSchemas(PyObject* /*self*/, PyObject* args)
 {
+    auto names = UnitsApi::getNames();
+    const int num = static_cast<int>(names.size());
+
     if (PyArg_ParseTuple(args, "")) {
-        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
-        Py::Tuple tuple(num);
-        for (int i = 0; i < num; i++) {
-            const auto description {
-                UnitsApi::getDescription(static_cast<UnitSystem>(i)).toStdString()};
-            tuple.setItem(i, Py::String(description.c_str()));
-        }
+        Py::Tuple tuple {num};
+
+        auto addItem = [&, i {0}](const std::string& name) mutable {
+            tuple.setItem(i++, Py::String {name.c_str()});
+        };
+
+        std::for_each(names.begin(), names.end(), addItem);
 
         return Py::new_reference_to(tuple);
     }
@@ -117,14 +116,12 @@ PyObject* UnitsApi::sListSchemas(PyObject* /*self*/, PyObject* args)
     PyErr_Clear();
     int index {};
     if (PyArg_ParseTuple(args, "i", &index)) {
-        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         if (index < 0 || index >= num) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
             return nullptr;
         }
 
-        const auto description {
-            UnitsApi::getDescription(static_cast<UnitSystem>(index)).toStdString()};
+        const auto description = schemas->descriptions().at(index);
         return Py_BuildValue("s", description.c_str());
     }
 
@@ -138,20 +135,21 @@ PyObject* UnitsApi::sGetSchema(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    return Py_BuildValue("i", static_cast<int>(currentSystem));
+    return Py_BuildValue("i", count());
 }
 
 PyObject* UnitsApi::sSetSchema(PyObject* /*self*/, PyObject* args)
 {
     PyErr_Clear();
     int index {};
-    if (PyArg_ParseTuple(args, "i", &index)) {
-        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
-        if (index < 0 || index >= num) {
+    if (PyArg_ParseTuple(args, "i", &index) != 0) {
+
+        if (index < 0 || index >= static_cast<int>(count())) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
             return nullptr;
         }
-        setSchema(static_cast<UnitSystem>(index));
+
+        schemas->select(index);
     }
     Py_Return;
 }
@@ -160,27 +158,26 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
 {
     PyObject* py {};
     int index {};
-    if (!PyArg_ParseTuple(args, "O!i", &(QuantityPy::Type), &py, &index)) {
+    if (!PyArg_ParseTuple(args, "O!i", &QuantityPy::Type, &py, &index)) {
         return nullptr;
     }
 
-    Quantity quant;
-    quant = *static_cast<Base::QuantityPy*>(py)->getQuantityPtr();
-
-    std::unique_ptr<UnitsSchema> schema(createSchema(static_cast<UnitSystem>(index)));
-    if (!schema) {
-        PyErr_SetString(PyExc_ValueError, "invalid schema value");
+    if (index < 0 || index >= static_cast<int>(count())) {
+        PyErr_SetString(PyExc_ValueError,
+                        std::string {"invalid schema index:" + std::to_string(index)}.c_str());
         return nullptr;
     }
+
+    const Quantity quant {*static_cast<QuantityPy*>(py)->getQuantityPtr()};
 
     double factor {};
-    std::string uus;
-    std::string uss = schema->schemaTranslate(quant, factor, uus);
+    std::string unitStr;
+    const std::string unitStrLocalised = schemaTranslate(quant, factor, unitStr);
 
-    Py::Tuple res(3);
-    res[0] = Py::String(uss, "utf-8");
-    res[1] = Py::Float(factor);
-    res[2] = Py::String(uus, "utf-8");
+    Py::Tuple res {3};
+    res[0] = Py::String {unitStrLocalised, "utf-8"};
+    res[1] = Py::Float {factor};
+    res[2] = Py::String {unitStr, "utf-8"};
 
     return Py::new_reference_to(res);
 }

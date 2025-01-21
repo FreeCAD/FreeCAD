@@ -841,7 +841,7 @@ QString getPreselectionInfo(const char* documentName,
 {
     auto pts = schemaTranslatePoint(x, y, z, precision);
 
-    int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
+    int numberDecimals = std::min(6, static_cast<int>(Base::UnitsApi::getDecimals()));
 
     QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
         .arg(QString::fromUtf8(documentName))
