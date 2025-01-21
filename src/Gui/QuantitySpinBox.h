@@ -24,7 +24,6 @@
 #ifndef GUI_QUANTITYSPINBOX_H
 #define GUI_QUANTITYSPINBOX_H
 
-#include <Base/UnitsSchema.h>
 #include <Gui/MetaTypes.h>
 #include <Gui/SpinBox.h>
 
@@ -99,7 +98,7 @@ public:
 
     /// Sets a specific unit schema to handle quantities.
     /// The system-wide schema won't be used any more.
-    void setSchema(const Base::UnitSystem& s);
+    void setSchema(int s);
 
     /// Clears the schemaand again use the system-wide schema.
     void clearSchema();

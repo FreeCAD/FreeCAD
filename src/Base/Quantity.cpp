@@ -26,6 +26,8 @@
 #include <cmath>
 #include <array>
 #endif
+#include <limits>
+#include <string>
 
 #include <fmt/format.h>
 #include <Base/Tools.h>
@@ -33,6 +35,8 @@
 #include "Exception.h"
 #include "Quantity.h"
 #include "UnitsApi.h"
+#include "App/Application.h"
+#include "Base/UnitsSchema.h"
 
 /** \defgroup Units Units system
     \ingroup BASE
@@ -49,7 +53,9 @@
 #pragma warning(disable : 4335)  // disable MAC file format warning on VC
 #endif
 
-using namespace Base;
+using Base::Quantity;
+using Base::QuantityFormat;
+using Base::UnitsSchema;
 
 // ====== Static attributes =========================
 // NOLINTNEXTLINE
@@ -59,7 +65,7 @@ int QuantityFormat::defaultDenominator = 8;  // for 1/8"
 QuantityFormat::QuantityFormat()
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(Fixed)
-    , precision(UnitsApi::getDecimals())
+    , precision(static_cast<int>(UnitsApi::getDecimals()))
     , denominator(defaultDenominator)
 {}
 
@@ -236,6 +242,13 @@ Quantity Quantity::operator-() const
     return Quantity(-(this->myValue), this->myUnit);
 }
 
+std::string Quantity::getUserString() const
+{  // to satisfy GCC
+    double dummy1 {};
+    std::string dummy2 {};
+    return getUserString(dummy1, dummy2);
+}
+
 std::string Quantity::getUserString(double& factor, std::string& unitString) const
 {
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
@@ -244,20 +257,17 @@ std::string Quantity::getUserString(double& factor, std::string& unitString) con
 std::string
 Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
 {
-    return schema->schemaTranslate(*this, factor, unitString);
+    return schema->translate(*this, factor, unitString);
 }
 
 std::string Quantity::getSafeUserString() const
 {
-    auto ret = getUserString();
-    if (this->myValue) {
-        auto feedbackQty = parse(ret);
-        auto feedbackVal = feedbackQty.getValue();
-        if (feedbackVal == 0) {
-            ret = fmt::format("{} {}", this->myValue, this->getUnit().getString());
-        }
+    auto userStr = getUserString();
+    if (myValue != 0.0 && parse(userStr).getValue() == 0) {
+        userStr = fmt::format("{}{}", myValue, getUnit().getString());
     }
-    return Base::Tools::escapeQuotesFromString(ret);
+
+    return Tools::escapeQuotesFromString(userStr);
 }
 
 /// true if it has a number without a unit

@@ -97,8 +97,8 @@ class UnitBasicCases(unittest.TestCase):
         self.assertTrue(qu1 / qu2, 1)
 
     def testSchemes(self):
-        schemes = FreeCAD.Units.listSchemas()
-        num = len(schemes)
+        schemas = FreeCAD.Units.listSchemas()
+        num = len(schemas)
 
         psi = FreeCAD.Units.parseQuantity("1psi")
         for i in range(num):
@@ -108,7 +108,7 @@ class UnitBasicCases(unittest.TestCase):
                 1,
                 v.Value,
                 msg='Failed with "{0}" scheme: {1} != 1 (delta: {2})'.format(
-                    schemes[i], v.Value, self.delta
+                    schemas[i], v.Value, self.delta
                 ),
                 delta=self.delta,
             )
@@ -121,7 +121,7 @@ class UnitBasicCases(unittest.TestCase):
                 1,
                 v.Value,
                 msg='Failed with "{0}" scheme: {1} != 1 (delta: {2})'.format(
-                    schemes[i], v.Value, self.delta
+                    schemas[i], v.Value, self.delta
                 ),
                 delta=self.delta,
             )
@@ -135,7 +135,7 @@ class UnitBasicCases(unittest.TestCase):
                 1,
                 v.Value,
                 msg='Failed with "{0}" scheme: {1} != 1 (delta: {2})'.format(
-                    schemes[i], v.Value, self.delta
+                    schemas[i], v.Value, self.delta
                 ),
                 delta=self.delta,
             )
