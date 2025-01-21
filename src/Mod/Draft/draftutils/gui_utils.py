@@ -462,8 +462,6 @@ def apply_current_style(objs):
                 if style[prop][0] == "index":
                     if style[prop][2] in vobj.getEnumerationsOfProperty(prop):
                         setattr(vobj, prop, style[prop][2])
-                elif style[prop][0] == "color":
-                    setattr(vobj, prop, style[prop][1] & 0xFFFFFF00)
                 else:
                     setattr(vobj, prop, style[prop][1])
 
@@ -565,7 +563,7 @@ def format_object(target, origin=None):
                 obrep.DisplayMode = dm
     if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
-        col = params.get_param("constructioncolor") & 0xFFFFFF00
+        col = params.get_param("constructioncolor") | 0x000000FF
         grp = doc.getObject("Draft_Construction")
         if not grp:
             grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")

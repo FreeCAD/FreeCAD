@@ -136,7 +136,7 @@ class ViewProviderDraftAnnotation(object):
                              "TextColor",
                              "Text",
                              _tip)
-            vobj.TextColor = params.get_param("DefaultTextColor") & 0xFFFFFF00
+            vobj.TextColor = params.get_param("DefaultTextColor") | 0x000000FF
 
     def set_units_properties(self, vobj, properties):
         return
@@ -157,7 +157,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineColor",
                              "Graphics",
                              _tip)
-            vobj.LineColor = params.get_param("DefaultAnnoLineColor") & 0xFFFFFF00
+            vobj.LineColor = params.get_param("DefaultAnnoLineColor") | 0x000000FF
 
     def dumps(self):
         """Return a tuple of objects to save or None."""
@@ -215,7 +215,7 @@ class ViewProviderDraftAnnotation(object):
                             value = style[visprop]
                             try:
                                 if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
-                                    value = value & 0xFFFFFF00
+                                    value = value | 0x000000FF
                                 setattr(vobj, visprop, value)
                             except:
                                 pass
