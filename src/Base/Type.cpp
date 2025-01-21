@@ -90,30 +90,33 @@ void* Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 void Type::importModule(const char* TypeName)
 {
     // cut out the module name
-    string Mod = getModuleName(TypeName);
+    const string mod = getModuleName(TypeName);
+
     // ignore base modules
-    if (Mod != "App" && Mod != "Gui" && Mod != "Base") {
-        // remember already loaded modules
-        set<string>::const_iterator pos = loadModuleSet.find(Mod);
-        if (pos == loadModuleSet.end()) {
-            Interpreter().loadModule(Mod.c_str());
-#ifdef FC_LOGLOADMODULE
-            Console().Log("Act: Module %s loaded through class %s \n", Mod.c_str(), TypeName);
-#endif
-            loadModuleSet.insert(Mod);
-        }
+    if (mod == "App" || mod == "Gui" || mod == "Base") {
+        return;
     }
+
+    // remember already loaded modules
+    const auto pos = loadModuleSet.find(mod);
+    if (pos != loadModuleSet.end()) {
+        return;
+    }
+
+    // lets load the module
+    Interpreter().loadModule(mod.c_str());
+#ifdef FC_LOGLOADMODULE
+    Console().Log("Act: Module %s loaded through class %s \n", Mod.c_str(), TypeName);
+#endif
+    loadModuleSet.insert(mod);
 }
 
 string Type::getModuleName(const char* ClassName)
 {
-    string temp(ClassName);
-    std::string::size_type pos = temp.find_first_of("::");
+    string_view classNameView(ClassName);
+    auto pos = classNameView.find("::");
 
-    if (pos != std::string::npos) {
-        return {temp, 0, pos};
-    }
-    return {};
+    return pos != string_view::npos ? string(classNameView.substr(0, pos)) : string();
 }
 
 Type Type::badType()
