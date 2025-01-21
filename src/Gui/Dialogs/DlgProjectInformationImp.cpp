@@ -83,11 +83,12 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc,
     ui->lineEditCompany->setText(QString::fromUtf8(doc->Company.getValue()));
 
     // Load comboBox with unit systems
-    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-    for (int i = 0; i < num; i++) {
-        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
-        ui->comboBox_unitSystem->addItem(item, i);
-    }
+    auto addDesc = [&, index {0}](const std::string& item) mutable {
+        ui->comboBox_unitSystem->addItem(QString::fromStdString(item), index++);
+    };
+    const auto descriptions = Base::UnitsApi::getDescriptions();
+    std::for_each(descriptions.begin(), descriptions.end(), addDesc);
+
     ui->comboBox_unitSystem->setCurrentIndex(doc->UnitSystem.getValue());
 
     // load comboBox with license names
