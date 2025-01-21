@@ -221,6 +221,7 @@ class DraftToolBar:
         mw.addToolBar(self.tray)
         self.tray.setParent(mw)
         self.tray.hide()
+        self.display_point_active = False  # prevent cyclic processing of point values
 
 #---------------------------------------------------------------------------
 # General UI setup
@@ -966,11 +967,13 @@ class DraftToolBar:
             params.set_param("RelativeMode", bool(val))
             self.relativeMode = bool(val)
         self.checkLocal()
+        self.updateSnapper()
 
     def setGlobal(self, val):
         params.set_param("GlobalMode", bool(val))
         self.globalMode = bool(val)
         self.checkLocal()
+        self.updateSnapper()
 
     def setFill(self, val):
         params.set_param("fillmode", bool(val))
@@ -1019,7 +1022,6 @@ class DraftToolBar:
         if self.sourceCmd or self.pointcallback:
             if (self.labelRadius.isVisible()):
                 try:
-                    #rad=float(self.radiusValue.text())
                     rad = self.radius
                 except (ValueError, AttributeError):
                     print("debug: DraftGui.validatePoint: AttributeError")
@@ -1027,11 +1029,8 @@ class DraftToolBar:
                     self.sourceCmd.numericRadius(rad)
             elif (self.labelx.isVisible()):
                 try:
-                    #numx=float(self.xValue.text())
                     numx = self.x
-                    #numy=float(self.yValue.text())
                     numy = self.y
-                    #numz=float(self.zValue.text())
                     numz = self.z
                 except (ValueError, AttributeError):
                     print("debug: DraftGui.validatePoint: AttributeError")
@@ -1199,25 +1198,24 @@ class DraftToolBar:
             widget.setProperty("text",v)
             widget.setFocus()
             widget.selectAll()
-        self.updateSnapper()
 
     def updateSnapper(self):
         """updates the snapper track line if applicable"""
-        if hasattr(FreeCADGui,"Snapper"):
-            if FreeCADGui.Snapper.trackLine:
-                if FreeCADGui.Snapper.trackLine.Visible:
-                    last = FreeCAD.Vector(0,0,0)
-                    if not self.xValue.isVisible():
-                        return
-                    if self.isRelative.isChecked():
-                        if self.sourceCmd:
-                            if hasattr(self.sourceCmd,"node"):
-                                if self.sourceCmd.node:
-                                    last = self.sourceCmd.node[-1]
-                    plane = WorkingPlane.get_working_plane(update=False)
-                    delta = plane.get_global_coords(
-                        FreeCAD.Vector(self.x,self.y,self.z))
-                    FreeCADGui.Snapper.trackLine.p2(last.add(delta))
+        if not self.xValue.isVisible():
+            return
+        if hasattr(FreeCADGui,"Snapper") \
+                and FreeCADGui.Snapper.trackLine \
+                and FreeCADGui.Snapper.trackLine.Visible:
+            # code below matches portion of validatePoint
+            delta = FreeCAD.Vector(self.x, self.y, self.z)
+            plane = WorkingPlane.get_working_plane(update=False)
+            ref_vec = FreeCAD.Vector(0, 0, 0)
+            if plane and not self.globalMode:
+                delta = plane.get_global_coords(delta, as_vector=True)
+                ref_vec = plane.get_global_coords(ref_vec)
+            if self.relativeMode and self.sourceCmd.node:
+                ref_vec = self.sourceCmd.node[-1]
+            FreeCADGui.Snapper.trackLine.p2(delta + ref_vec)
 
     def setMouseMode(self, mode=True):
         """Sets self.mouse True (default) or False and sets a timer
@@ -1254,6 +1252,8 @@ class DraftToolBar:
         """this function displays the passed coords in the x, y, and z widgets"""
         if not self.isTaskOn:
             return
+
+        self.display_point_active = True  # prevent cyclic processing of point values
 
         if not plane:
             plane = WorkingPlane.get_working_plane(update=False)
@@ -1339,6 +1339,7 @@ class DraftToolBar:
             self.angleValue.setEnabled(True)
             self.setFocus()
 
+        self.display_point_active = False
 
     def getDefaultColor(self, typ, rgb=False):
         """gets color from the preferences or toolbar"""
@@ -1526,38 +1527,57 @@ class DraftToolBar:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.mask = val
 
-    def changeXValue(self,d):
-        self.x = d
+    def changeXValue(self, d):
+        if self.display_point_active:
+            return
         if not self.xValue.hasFocus():
-            return None
+            return
+        self.x = d
         self.update_spherical_coords()
+        self.updateSnapper()
 
-    def changeYValue(self,d):
-        self.y = d
+    def changeYValue(self, d):
+        if self.display_point_active:
+            return
         if not self.yValue.hasFocus():
-            return None
+            return
+        self.y = d
         self.update_spherical_coords()
+        self.updateSnapper()
 
-    def changeZValue(self,d):
-        self.z = d
+    def changeZValue(self, d):
+        if self.display_point_active:
+            return
         if not self.zValue.hasFocus():
-            return None
+            return
+        self.z = d
         self.update_spherical_coords()
+        self.updateSnapper()
 
-    def changeRadiusValue(self,d):
+    def changeRadiusValue(self, d):
+        if self.display_point_active:
+            return
+        if not self.radiusValue.hasFocus():
+            return
         self.radius = d
 
-    def changeLengthValue(self,d):
-        self.lvalue = d
+    def changeLengthValue(self, d):
+        if self.display_point_active:
+            return
         if not self.lengthValue.hasFocus():
-            return None
+            return
+        self.lvalue = d
         self.update_cartesian_coords()
+        self.updateSnapper()
 
-    def changeAngleValue(self,d):
-        self.avalue = d
+    def changeAngleValue(self, d):
+        if self.display_point_active:
+            return
         if not self.angleValue.hasFocus():
-            return None
+            return
+        self.avalue = d
         self.update_cartesian_coords()
+        self.updateSnapper()
         if self.angleLock.isChecked():
             if not self.globalMode:
                 plane = WorkingPlane.get_working_plane(update=False)
