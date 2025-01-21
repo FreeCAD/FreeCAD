@@ -66,6 +66,14 @@ except :
 FACTOR = 10
 DEFAULT_WALL_WIDTH = 100
 TOLERANCE = float(.1)
+DEFAULT_MATERIAL = App.Material(
+    DiffuseColor=(1.00,0.00,0.00),
+    AmbientColor=(0.33,0.33,0.33),
+    SpecularColor=(0.53,0.53,0.53),
+    EmissiveColor=(0.00,0.00,0.00),
+    Shininess=(0.90),
+    Transparency=(0.00)
+    )
 
 ORIGIN = App.Vector(0, 0, 0)
 X_NORM = App.Vector(1, 0, 0)
@@ -467,6 +475,9 @@ class SH3DImporter:
 
     def add_wall(self, wall):
         self.walls.append(wall)
+
+    def get_walls(self):
+        return self.walls
 
     def _create_groups(self):
         """Create FreeCAD Group for the different imported elements
@@ -968,7 +979,6 @@ class WallHandler(BaseHandler):
                 _log(f"No wall created for {elm.get('id')}. Skipping!")
                 return
 
-
         wall.IfcType = "Wall"
         wall.Label = f"wall{i}"
         self._set_properties(wall, elm)
@@ -989,7 +999,6 @@ class WallHandler(BaseHandler):
             base_object.Label = base_object.Label + "-" + wall.Label
 
         self.importer.add_wall(wall)
-
 
     def _get_sibling_wall(self, parent, wall, sibling_attribute_name):
         sibling_wall_id = wall.get(sibling_attribute_name, None)
@@ -1427,7 +1436,7 @@ class WallHandler(BaseHandler):
         top_color = elm.get('topColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
         set_color_and_transparency(wall, top_color)
 
-        left_facebinder = self._make_facebinder(wall, "Face2")
+        left_facebinder = Draft.make_facebinder(( wall, ("Face2", ) ))
         left_facebinder.Extrusion = 1
         left_facebinder.Label = wall.Label + "-fb-left"
         left_side_color = elm.get('leftSideColor', top_color)
@@ -1436,7 +1445,7 @@ class WallHandler(BaseHandler):
         set_shininess(left_facebinder, left_side_shininess)
         floor.getObject(floor.FacebinderGroupName).addObject(left_facebinder)
 
-        right_facebinder = self._make_facebinder(wall, "Face4")
+        right_facebinder = Draft.make_facebinder(( wall, ("Face4", ) ))
         right_facebinder.Extrusion = 1
         right_facebinder.Label = wall.Label + "-fb-right"
         right_side_color = elm.get('rightSideColor', top_color)
@@ -1444,26 +1453,6 @@ class WallHandler(BaseHandler):
         right_side_shininess = elm.get('rightSideShininess', 0)
         set_shininess(right_facebinder, right_side_shininess)
         floor.getObject(floor.FacebinderGroupName).addObject(right_facebinder)
-
-    def _make_facebinder(self, wall, face_name):
-        """Create a facebinder. Copy of Draft.make_facebinder.
-
-        Args:
-            wall (Arch::Wall): the wall to paint
-            face_name (str): the name of the face to create the facebinder for
-
-        Returns:
-            Facebinder: the newly created facebinder
-        """
-        fb = App.ActiveDocument.addObject("Part::FeaturePython", "Facebinder")
-        Facebinder(fb)
-        if App.GuiUp:
-            ViewProviderFacebinder(fb.ViewObject)
-
-        fb.Sew = False
-        fb.Faces = [(wall, (face_name,))]
-        fb.Proxy.execute(fb)
-        return fb
 
     def _import_baseboard(self, floor, wall, elm):
         """Creates and returns a Part::Extrusion from the imported_baseboard object
@@ -1731,13 +1720,13 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             (windowtype, ifc_type) = ('Simple door', 'Door')
 
         # See the https://wiki.freecad.org/Arch_Window for details about these values
-        h1 = 10
-        h2 = 10
-        h3 = 0
-        w1 = float(wall_width) + 2.0 # make sure the door takes the whole wall (facebinder+baseboard)
-        w2 = 10
-        o1 = 0
-        o2 = w1 / 2
+        h1 = 50
+        h2 = 50
+        h3 = 50
+        o1 = 40
+        w1 = float(wall_width)-o1 # make sure the door takes the whole wall (facebinder+baseboard)
+        w2 = 40
+        o2 = (w1-w2) / 2
         window = Arch.makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, pl)
         window.IfcType = ifc_type
 
@@ -1764,7 +1753,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             list(Arch::Wall): the wall(s) containing the given solid
         """
         host_walls = []
-        for wall in self.importer.walls:
+        for wall in self.importer.get_walls():
             if solid.common(wall.Shape).Volume > 0:
                 host_walls.append(wall)
         return host_walls
