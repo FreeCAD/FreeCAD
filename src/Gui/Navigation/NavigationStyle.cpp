@@ -319,10 +319,10 @@ NavigationStyle::~NavigationStyle()
     finalize();
     delete this->animator;
 
-    if (pythonObject) {
+    if (!pythonObject.is(nullptr)) {
         Base::PyGILStateLocker lock;
-        Py_DECREF(pythonObject);
-        pythonObject = nullptr;
+        Base::PyObjectBase* obj = static_cast<Base::PyObjectBase*>(pythonObject.ptr());
+        obj->setInvalid();
     }
 }
 
@@ -1914,11 +1914,11 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
 PyObject* NavigationStyle::getPyObject()
 {
-    if (!pythonObject)
-        pythonObject = new NavigationStylePy(this);
-
-    Py_INCREF(pythonObject);
-    return pythonObject;
+    if (pythonObject.is(nullptr)) {
+        // ref counter is set to 1
+        pythonObject = Py::asObject(new NavigationStylePy(this));
+    }
+    return Py::new_reference_to(pythonObject);
 }
 
 // ----------------------------------------------------------------------------------
