@@ -385,7 +385,7 @@ void Command::setupCheckable(int iMsg) {
         action->setChecked(checked);
         action->blockSignals(blocked);
         if(action!=_pcAction->action())
-            _pcAction->setChecked(checked,true);
+            _pcAction->setBlockedChecked(checked);
     }
 
 }
@@ -1637,7 +1637,7 @@ Action * PythonGroupCommand::createAction()
                     qtAction->blockSignals(false);
                 }else if(qtAction->isCheckable()){
                     pcAction->setCheckable(true);
-                    pcAction->setChecked(qtAction->isChecked(),true);
+                    pcAction->setBlockedChecked(qtAction->isChecked());
                 }
             }
         }
