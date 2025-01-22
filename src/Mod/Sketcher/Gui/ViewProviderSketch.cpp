@@ -3546,13 +3546,18 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }
 
-    // Stretch the axes to cover the whole viewport.
-    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
-    if (view) {
-        Base::Placement plc = getEditingPlacement();
-        const Base::BoundBox2d vpBBox = view->getViewer()
-                ->getViewportOnXYPlaneOfPlacement(plc);
-        editCoinManager->updateAxesLength(vpBBox);
+    ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+    if (!hGrpskg->GetBool("UseLegacyAxes", false)) {
+        // Stretch the axes to cover the whole viewport.
+        Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
+        if (view) {
+            Base::Placement plc = getEditingPlacement();
+            const Base::BoundBox2d vpBBox = view->getViewer()
+                    ->getViewportOnXYPlaneOfPlacement(plc);
+            editCoinManager->updateAxesLength(vpBBox);
+        }
     }
 
     drawGrid(true);

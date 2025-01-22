@@ -808,6 +808,13 @@ void EditModeCoinManager::processGeometryConstraintsInformationOverlay(
 
     processGeometryInformationOverlay(geolistfacade);
 
+    ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+    if (hGrpskg->GetBool("UseLegacyAxes", false)) {
+        updateLegacyAxesLength();
+    }
+
     pEditModeConstraintCoinManager->processConstraints(geolistfacade);
 }
 
@@ -862,6 +869,24 @@ void EditModeCoinManager::updateAxesLength(const Base::BoundBox2d& bb)
                                                                  SbVec3f(0.0f, bb.MinY, zCrossH));
     editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(3,
                                                                  SbVec3f(0.0f, bb.MaxY, zCrossH));
+}
+
+void EditModeCoinManager::updateLegacyAxesLength()
+{
+    auto zCrossH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
+        * drawingParameters.zCross;
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
+        0,
+        SbVec3f(-analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
+        1,
+        SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
+        2,
+        SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
+        3,
+        SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, zCrossH));
 }
 
 void EditModeCoinManager::updateColor()
