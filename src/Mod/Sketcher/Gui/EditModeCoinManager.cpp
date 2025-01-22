@@ -811,7 +811,8 @@ void EditModeCoinManager::processGeometryConstraintsInformationOverlay(
     ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
 
-    if (hGrpskg->GetBool("UseLegacyAxes", false)) {
+    if (hGrpskg->GetBool("UseFiniteAxes", false)) {
+        // Workaround for https://github.com/FreeCAD/FreeCAD/issues/19191
         updateLegacyAxesLength();
     }
 
