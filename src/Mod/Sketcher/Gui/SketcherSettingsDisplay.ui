@@ -126,15 +126,15 @@ Defaults to: %N = %V
        </widget>
       </item>
       <item row="10" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxUseLegacyAxes">
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseFiniteAxes">
         <property name="toolTip">
          <string>If checked, reverts to the legacy method for setting the size of the axes.</string>
         </property>
         <property name="text">
-         <string>Use Legacy Axes (non-infinite length)</string>
+         <string>Use finite length axes</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>UseLegacyAxes</cstring>
+         <cstring>UseFiniteAxes</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher</cstring>
