@@ -3549,7 +3549,8 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
     ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
 
-    if (!hGrpskg->GetBool("UseLegacyAxes", false)) {
+    if (!hGrpskg->GetBool("UseFiniteAxes", false)) {
+        // Workaround for https://github.com/FreeCAD/FreeCAD/issues/19191
         // Stretch the axes to cover the whole viewport.
         Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
         if (view) {
@@ -3559,7 +3560,6 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
             editCoinManager->updateAxesLength(vpBBox);
         }
     }
-
     drawGrid(true);
 }
 
