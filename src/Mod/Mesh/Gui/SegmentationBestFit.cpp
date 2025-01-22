@@ -513,8 +513,7 @@ void SegmentationBestFit::accept()
         const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
         for (const auto& jt : data) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(jt);
-            Mesh::Feature* feaSegm =
-                static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            auto* feaSegm = group->addObject<Mesh::Feature>("Segment");
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();

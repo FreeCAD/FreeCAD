@@ -483,8 +483,7 @@ public:
             group = doc->addObject<App::DocumentObjectGroup>(internalname.c_str());
         }
 
-        auto anno = dynamic_cast<App::AnnotationLabel*>(
-            group->addObject("App::AnnotationLabel", internalname.c_str()));
+        auto anno = group->addObject<App::AnnotationLabel>(internalname.c_str());
         QStringList lines = s.split(QLatin1String("\n"));
         std::vector<std::string> text;
         for (const auto& line : lines) {
