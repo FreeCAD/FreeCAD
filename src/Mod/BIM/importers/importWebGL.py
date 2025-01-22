@@ -369,7 +369,8 @@ def getHTMLTemplate():
                         data: obj,
                         faces: faces,
                         wires: wires,
-                        wirematerial: wirematerial
+                        wirematerial: wirematerial,
+                        gui_link: null
                     });
                 }
 
@@ -418,7 +419,9 @@ def getHTMLTemplate():
                         if (guiparams.wiretype == 'None') {
                             m.visible = false;
                         } else {
-                            m.visible = true;
+                            if ((obj.faces.length == 0) | scene.getObjectByName(obj.faces[0]).material.visible){
+                                m.visible = true;
+                            }
                         }
                         m.linewidth = guiparams.wirewidth;
                         m.color = new THREE.Color(guiparams.wirecolor);
@@ -486,10 +489,12 @@ def getHTMLTemplate():
                     // Ignore objects with no vertices
                     if (obj.data.verts.length > 0) {
                         const guiObjData = {
-                            obj: obj, color: obj.data.color, opacity: obj.data.opacity };
+                            obj: obj, color: obj.data.color, opacity: obj.data.opacity, show: true };
                         const guiObject = guiObjects.addFolder(obj.data.name);
                         guiObject.addColor(guiObjData, 'color').name('Color').onChange(GUIObjectChange);
                         guiObject.add(guiObjData, 'opacity').min(0.0).max(1.0).step(0.05).name('Opacity').onChange(GUIObjectChange);
+                        guiObject.add(guiObjData, 'show').onChange(GUIObjectChange).listen();
+                        obj.gui_link = guiObjData
                     }
                 }
 
@@ -503,14 +508,22 @@ def getHTMLTemplate():
                             m.opacity = v;
                             m.transparent = (v != 1.0);
                         }
+                        if (this.property == 'show') {
+                            m.visible = v
+                        }
                     }
                     if (this.property == 'opacity') {
                         const m = this.object.obj.wirematerial;
                         m.opacity = v;
                         m.transparent = (v != 1.0);
                     }
+                    if (this.property == 'show') {
+                        const m = this.object.obj.wirematerial;
+                        m.visible = v
+                    }
                     requestRender();
                 }
+
 
                 // Make simple orientation arrows and box - REF: http://jsfiddle.net/b97zd1a3/16/
                 const arrowCanvas = document.querySelector('#arrowCanvas');
@@ -588,6 +601,7 @@ def getHTMLTemplate():
                 persControls.addEventListener('change', requestRender);
                 orthControls.addEventListener('change', requestRender);
                 renderer.domElement.addEventListener('mousemove', onMouseMove);
+                renderer.domElement.addEventListener('dblclick', onMouseDblClick);
                 window.addEventListener('resize', onMainCanvasResize, false);
 
                 onMainCanvasResize();
@@ -621,7 +635,45 @@ def getHTMLTemplate():
                     requestRender();
                 }
 
-                // XXX use mouse click to toggle the gui for the selected object?
+                // Use mouse double click to toggle the gui for the selected object
+                function onMouseDblClick(e){
+                    let c = false;
+                    if (cameraType == 'Orthographic') {
+                        c = orthCamera;
+                    }
+                    if (cameraType == 'Perspective') {
+                        c = persCamera;
+                    }
+                    if (!c) {
+                        return;
+                    }
+
+                    const raycaster = new THREE.Raycaster();
+                    raycaster.setFromCamera(new THREE.Vector2(
+                        (e.clientX / canvas.clientWidth) * 2 - 1,
+                        -(e.clientY / canvas.clientHeight) * 2 + 1),
+                                            c);
+                    const intersects = raycaster.intersectObjects(raycasterObj);
+
+                    for (const i of intersects) {
+                        const m = i.object;
+                        if (!m.material.visible){continue};
+                        for (const obj of objects) {
+                            for (const face_uuid of obj.faces) {
+                                if (face_uuid == m.uuid) {
+                                    obj.gui_link.show = false
+                                    obj.wirematerial.visible = false
+                                    for (const face of obj.faces) {
+                                        scene.getObjectByName(face).material.visible = false
+                                    }
+                                    requestRender();
+                                    return
+                                }
+                            }
+                        }
+                    }
+                }
+
 
                 function onMouseMove(e)  {
                     let c = false;
@@ -645,7 +697,7 @@ def getHTMLTemplate():
                     let chosen = '';
                     for (const i of intersects) {
                         const m = i.object.material;
-                        if (m.opacity > 0) {
+                        if ((m.opacity > 0) & m.visible) {
                             if (m.emissive.getHex() == 0x000000) {
                                 m.emissive.setHex( 0x777777 );
                                 m.needsUpdate = true;
