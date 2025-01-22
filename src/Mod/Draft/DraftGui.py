@@ -1249,51 +1249,40 @@ class DraftToolBar:
         self.sourceCmd.createObject()
 
     def displayPoint(self, point=None, last=None, plane=None, mask=None):
-        """this function displays the passed coords in the x, y, and z widgets"""
+        """Displays point values in the widgets and updates self."""
         if not self.isTaskOn:
             return
 
         self.display_point_active = True  # prevent cyclic processing of point values
 
-        if not plane:
-            plane = WorkingPlane.get_working_plane(update=False)
-        # get coords to display
-        if not last:
-            if self.globalMode:
-                last = FreeCAD.Vector(0,0,0)
-            else:
-                last = plane.position
-        dp = None
         if point:
-            dp = point
-            if self.relativeMode: # and (last is not None):
+            if not plane:
+                plane = WorkingPlane.get_working_plane(update=False)
+            if not last:
                 if self.globalMode:
-                    dp = point - last
+                    last = FreeCAD.Vector(0,0,0)
                 else:
-                    dp = plane.get_local_coords(point - last, as_vector=True)
-            else:
-                if self.globalMode:
-                    dp = point
-                else:
-                    dp = plane.get_local_coords(point)
-        # set widgets
-        if dp:
-            if self.mask in ['y','z']:
-                self.xValue.setText(display_external(dp.x,None,'Length'))
-            else:
-                self.xValue.setText(display_external(dp.x,None,'Length'))
-            if self.mask in ['x','z']:
-                self.yValue.setText(display_external(dp.y,None,'Length'))
-            else:
-                self.yValue.setText(display_external(dp.y,None,'Length'))
-            if self.mask in ['x','y']:
-                self.zValue.setText(display_external(dp.z,None,'Length'))
-            else:
-                self.zValue.setText(display_external(dp.z,None,'Length'))
+                    last = plane.position
 
-        # set length and angle
-        if last and dp and plane:
-            length, theta, phi = DraftVecUtils.get_spherical_coords(*dp)
+            if self.relativeMode:
+                if self.globalMode:
+                    delta = point - last
+                else:
+                    delta = plane.get_local_coords(point - last, as_vector=True)
+            else:
+                if self.globalMode:
+                    delta = point
+                else:
+                    delta = plane.get_local_coords(point)
+
+            self.x = delta.x
+            self.y = delta.y
+            self.z = delta.z
+            self.xValue.setText(display_external(delta.x,None,'Length'))
+            self.yValue.setText(display_external(delta.y,None,'Length'))
+            self.zValue.setText(display_external(delta.z,None,'Length'))
+
+            length, theta, phi = DraftVecUtils.get_spherical_coords(*delta)
             theta = math.degrees(theta)
             phi = math.degrees(phi)
             self.lengthValue.setText(display_external(length,None,'Length'))
@@ -1312,24 +1301,18 @@ class DraftToolBar:
             self.xValue.setEnabled(True)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(False)
-            self.yValue.setText("0")
-            self.zValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus()
         elif (mask == "y") or (self.mask == "y"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(True)
             self.zValue.setEnabled(False)
-            self.xValue.setText("0")
-            self.zValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus("y")
         elif (mask == "z") or (self.mask == "z"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(True)
-            self.xValue.setText("0")
-            self.yValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus("z")
         else:
