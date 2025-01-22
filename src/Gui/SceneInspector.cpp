@@ -30,6 +30,8 @@
 # include <QTextStream>
 #endif
 
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+
 #include "SceneInspector.h"
 #include "ui_SceneInspector.h"
 #include "Application.h"
@@ -37,6 +39,9 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
+#include "MainWindow.h"
+
+#include <limits>
 
 
 using namespace Gui::Dialog;
@@ -53,7 +58,10 @@ enum class Column: std::int8_t {
     NAME = 1,
     MEMORY_ADDRESS = 2,
     DATA = 3,
-    COUNT = 4,
+    RENDER_CACHING = 4,
+    BOUNDING_BOX_CACHING = 5,
+    BOUNDING_BOX = 6,
+    COUNT = 7,
 };
 
 SceneModel::~SceneModel() = default;
@@ -84,6 +92,12 @@ QVariant SceneModel::headerData (int section, Qt::Orientation orientation, int r
             return tr("Address");
         case Column::DATA:
             return tr("Data");
+        case Column::RENDER_CACHING:
+            return tr("Render Cache");
+        case Column::BOUNDING_BOX_CACHING:
+            return tr("Bounds Cache");
+        case Column::BOUNDING_BOX:
+            return tr("Bounds");
         default:
             assert(0 && "Not handled yet");
         }
@@ -175,6 +189,37 @@ static std::string_view formatSoPickStyleElement(int32_t value)
     }
 }
 
+static inline bool isAtFloatValueLimit(float v)
+{
+    return v == std::numeric_limits<float>::lowest() || v == std::numeric_limits<float>::max();
+}
+
+static bool isInfinite(const SbVec3f& vec)
+{
+    float x, y, z; //NOLINT
+    vec.getValue(x, y, z);
+    return isAtFloatValueLimit(x) && isAtFloatValueLimit(y) && isAtFloatValueLimit(z);
+}
+
+static std::string formatSbXfBox3f(const SbXfBox3f& box)
+{
+    SbVec3f minpoint;
+    SbVec3f maxpoint;
+    box.getBounds(minpoint, maxpoint);
+
+    if (isInfinite(minpoint) && isInfinite(maxpoint)) {
+        return {"Infinite"};
+    }
+
+    float minx, miny, minz; //NOLINT
+    minpoint.getValue(minx, miny, minz);
+
+    float maxx, maxy, maxz; //NOLINT
+    maxpoint.getValue(maxx, maxy, maxz);
+
+    return fmt::format("Min: ({:.3},{:.3},{:.3}), Max: ({:.3},{:.3},{:.3})", minx, miny, minz, maxx, maxy, maxz);
+}
+
 void SceneModel::setNode(QModelIndex index, SoNode* node)
 {
     this->setData(index.siblingAtColumn(static_cast<int>(Column::INVENTOR_TREE)),
@@ -190,6 +235,9 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
     this->setData(index.siblingAtColumn(static_cast<int>(Column::MEMORY_ADDRESS)),
         QVariant(QString::fromStdString(fmt::format("{}", (void*)node))));
 
+    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto vp = view->getViewer()->getSoRenderManager()->getViewportRegion();
+
     QString data;
     QTextStream stream(&data);
     if(static_cast<bool>(node->isOfType(SoSwitch::getClassTypeId()))) {
@@ -198,8 +246,19 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
         stream << fmt::format("Which: {} ({})", formatSoSwitchValue(value), value).c_str();
     } else if (static_cast<bool>(node->isOfType(SoSeparator::getClassTypeId()))) {
         auto pcSeparator = static_cast<SoSeparator*>(node);
-        auto value = pcSeparator->renderCaching.getValue();
-        stream << fmt::format("RenderCaching: {} ({})", formatSoSeparatorCacheEnabled(value), value).c_str();
+
+        auto renderCaching = pcSeparator->renderCaching.getValue();
+        this->setData(index.siblingAtColumn(static_cast<int>(Column::RENDER_CACHING)),
+            QVariant(QString::fromStdString(std::string{formatSoSeparatorCacheEnabled(renderCaching)})));
+
+        auto boundingBoxCaching = pcSeparator->boundingBoxCaching.getValue();
+        this->setData(index.siblingAtColumn(static_cast<int>(Column::BOUNDING_BOX_CACHING)),
+            QVariant(QString::fromStdString(std::string{formatSoSeparatorCacheEnabled(boundingBoxCaching)})));
+
+        SoGetBoundingBoxAction getBBox(vp);
+        getBBox.apply(pcSeparator);
+        this->setData(index.siblingAtColumn(static_cast<int>(Column::BOUNDING_BOX)),
+            QVariant(QString::fromStdString(formatSbXfBox3f(getBBox.getXfBoundingBox()))));
     } else if (static_cast<bool>(node->isOfType(SoDrawStyle::getClassTypeId()))) {
         auto pcDrawStyle = static_cast<SoDrawStyle*>(node);
         auto value = pcDrawStyle->style.getValue();
@@ -287,7 +346,10 @@ void DlgInspector::setNode(SoNode* node)
     header->setSectionResizeMode(static_cast<int>(Column::NAME), QHeaderView::Interactive);
     header->resizeSection(static_cast<int>(Column::NAME), 200);
     header->setSectionResizeMode(static_cast<int>(Column::MEMORY_ADDRESS), QHeaderView::Interactive);
-    header->setSectionResizeMode(static_cast<int>(Column::DATA), QHeaderView::Stretch);
+    header->resizeSection(static_cast<int>(Column::MEMORY_ADDRESS), 140);
+    header->setSectionResizeMode(static_cast<int>(Column::DATA), QHeaderView::Interactive);
+    header->resizeSection(static_cast<int>(Column::DATA), 200);
+
     header->setSectionsMovable(false);
 }
 
