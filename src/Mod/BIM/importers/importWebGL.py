@@ -70,6 +70,7 @@ import numpy as np
 disableCompression = False  # Compress object data before sending to JS
 base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&()*+-:;/=>?@[]^_,.{|}~`"  # safe str chars for js in all cases
 baseFloat = ",.-0123456789"
+threejs_version = "0.172.0"
 
 
 def getHTMLTemplate():
@@ -110,23 +111,31 @@ def getHTMLTemplate():
                 select { width: 170px; }
             </style>
         </head>
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://cdn.jsdelivr.net/npm/three@$threejs_version/build/three.module.js",
+                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@$threejs_version/examples/jsm/"
+                }
+            }
+        </script>
         <body>
             <canvas id="mainCanvas"></canvas>
             <canvas id="arrowCanvas"></canvas>
             <script type="module">
                 // Direct from mrdoob: https://www.jsdelivr.com/package/npm/three
-                import * as THREE from            'https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.module.js';
-                import { OrbitControls } from     'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/controls/OrbitControls.js';
-                import { GUI } from               'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/libs/dat.gui.module.js';
-                import { Line2 } from             'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/lines/Line2.js';
-                import { LineMaterial } from      'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/lines/LineMaterial.js';
-                import { LineGeometry } from      'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/lines/LineGeometry.js';
-                import { EdgeSplitModifier } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/modifiers/EdgeSplitModifier.js';
+                import * as THREE from 'three'
+                import { OrbitControls } from     'three/addons/controls/OrbitControls.js';
+                import { GUI } from               'three/addons/libs/lil-gui.module.min.js';
+                import { Line2 } from             'three/addons/lines/Line2.js';
+                import { LineMaterial } from      'three/addons/lines/LineMaterial.js';
+                import { LineGeometry } from      'three/addons/lines/LineGeometry.js';
+                import { EdgeSplitModifier } from 'three/addons/modifiers/EdgeSplitModifier.js';
 
                 const data = $data;
 
                 // Z is up for FreeCAD
-                THREE.Object3D.DefaultUp = new THREE.Vector3(0, 0, 1);
+                THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0, 0, 1);
 
                 const defaultWireColor = new THREE.Color('rgb(0,0,0)');
                 const defaultWireLineWidth = 2; // in pixels
@@ -289,7 +298,6 @@ def getHTMLTemplate():
                         color: color,
                         side: THREE.DoubleSide,
                         vertexColors: false,
-                        flatShading: false,
                         opacity: opacity,
                         transparent: opacity != 1.0,
                         fog: false
@@ -366,7 +374,11 @@ def getHTMLTemplate():
                 }
 
                 // ---- GUI Init ----
-                const gui = new GUI({ width: 300 });
+                const gui = new GUI({ width: 300, closeFolders: true });
+                const addFolder = GUI.prototype.addFolder;
+                GUI.prototype.addFolder = function(...args) {
+                    return addFolder.call(this, ...args).close();
+                }
                 const guiparams = {
                     wiretype: 'Normal',
                     wirewidth: defaultWireLineWidth,
@@ -526,8 +538,7 @@ def getHTMLTemplate():
                     new THREE.Vector3(0, 0, 1), arrowPos, 60, 0x20207F, 20, 10));
                 arrowScene.add(new THREE.Mesh(
                     new THREE.BoxGeometry(40, 40, 40),
-                    new THREE.MeshLambertMaterial(
-                        { color: 0xaaaaaa, flatShading: false })
+                    new THREE.MeshLambertMaterial({ color: 0xaaaaaa })
                 ));
                 arrowScene.add(new THREE.HemisphereLight(0xC7E8FF, 0xFFE3B3, 1.2));
 
@@ -833,10 +844,10 @@ def export(
     data["baseFloat"] = baseFloat
 
     html = html.replace("$data", json.dumps(data, separators=(",", ":")))  # Shape Data
+    html = html.replace("$threejs_version", threejs_version)
 
-    outfile = pyopen(filename, "w")
-    outfile.write(html)
-    outfile.close()
+    with pyopen(filename, "w", encoding="utf-8") as outfile:
+        outfile.write(html)
     FreeCAD.Console.PrintMessage(translate("Arch", "Successfully written") + f" {filename}\n")
 
 
