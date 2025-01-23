@@ -111,7 +111,7 @@ class PackageDetailsView(QtWidgets.QWidget):
         self.location_label = QtWidgets.QLabel(self)
         self.url_label = QtWidgets.QLabel(self)
         self.url_label.setOpenExternalLinks(True)
-        self.location_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        self.location_label.setOpenExternalLinks(True)
         self.vertical_layout.addWidget(self.button_bar)
         self.vertical_layout.addWidget(self.message_label)
         self.vertical_layout.addWidget(self.location_label)
@@ -121,10 +121,16 @@ class PackageDetailsView(QtWidgets.QWidget):
 
     def set_location(self, location: Optional[str]):
         if location is not None:
+            location_path = os.path.normpath(location)
             text = (
                 translate("AddonsInstaller", "Installation location")
                 + ": "
-                + os.path.normpath(location)
+                + location_path
+                + ' <a href="file://'
+                + location_path
+                + '">  [ '
+                + translate("AddonsInstaller", "open")
+                + " ]</a>"
             )
             self.location_label.setText(text)
             self.location_label.show()
