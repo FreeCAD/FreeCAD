@@ -64,6 +64,10 @@ class BIM_Classification:
         # load the form and set the tree model up
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogClassification.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Classification.svg"))
+        self.form.groupMode.setItemIcon(0, QtGui.QIcon(":/icons/Arch_SectionPlane_Tree.svg")) # Alphabetical
+        self.form.groupMode.setItemIcon(1, QtGui.QIcon(":/icons/IFC.svg")) # Type
+        self.form.groupMode.setItemIcon(2, QtGui.QIcon(":/icons/Arch_Material.svg")) # Material
+        self.form.groupMode.setItemIcon(3, QtGui.QIcon(":/icons/Document.svg")) # Model structure
 
         # restore saved values
         self.form.onlyVisible.setChecked(PARAMS.GetInt("BimClassificationVisibleState", 0))
