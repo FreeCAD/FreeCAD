@@ -303,7 +303,7 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert View");
     sToolTipText = QT_TR_NOOP("Insert a View in current page.\n"
-        "Selected objects, spreadsheets or Arch WB section planes will be added.\n"
+        "Selected objects, spreadsheets or BIM section planes will be added.\n"
         "Without a selection, a file browser lets you select a SVG or image file.");
     sWhatsThis = "TechDraw_View";
     sStatusTip = sToolTipText;
@@ -360,12 +360,12 @@ void CmdTechDrawView::activated(int iMsg)
             continue;
         }
         else if (DrawGuiUtil::isArchSection(obj)) {
-            std::string FeatName = getUniqueObjectName("ArchView");
+            std::string FeatName = getUniqueObjectName("BIM view");
             std::string SourceName = obj->getNameInDocument();
-            openCommand(QT_TRANSLATE_NOOP("Command", "Create BIM View"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create BIM view"));
             doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
                 FeatName.c_str());
-            doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'ArchView', '%s')",
+            doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'BIM view', '%s')",
                 FeatName.c_str(), FeatName.c_str());
             doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
                 SourceName.c_str());
@@ -1661,7 +1661,7 @@ CmdTechDrawArchView::CmdTechDrawArchView() : Command("TechDraw_ArchView")
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert BIM Workbench Object");
-    sToolTipText = QT_TR_NOOP("Insert a View of a Section Plane from BIM Workbench");
+    sToolTipText = QT_TR_NOOP("Insert a View of a BIM Workbench section plane");
     sWhatsThis = "TechDraw_NewArch";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ArchView";
@@ -1688,13 +1688,13 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
     if (archCount > 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Please select only 1 BIM Section."));
+                             QObject::tr("Please select only 1 BIM section plane."));
         return;
     }
 
     if (!archObject) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No BIM Sections in selection."));
+                             QObject::tr("No BIM section plane in selection."));
         return;
     }
 
@@ -1704,12 +1704,12 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
     std::string PageName = page->getNameInDocument();
 
-    std::string FeatName = getUniqueObjectName("ArchView");
+    std::string FeatName = getUniqueObjectName("BIM view");
     std::string SourceName = archObject->getNameInDocument();
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create ArchView"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create BIM view"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
               FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'ArchView', '%s')",
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'BIM view', '%s')",
               FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
               SourceName.c_str());
@@ -2058,5 +2058,3 @@ std::pair<App::DocumentObject*, std::string> faceFromSelection()
 
     return { nullptr, "" };
 }
-
-
