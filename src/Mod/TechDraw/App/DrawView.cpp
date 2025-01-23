@@ -65,7 +65,7 @@ using DU = DrawUtil;
     QT_TRANSLATE_NOOP("DrawViewAnnotation", "Annotation");
     QT_TRANSLATE_NOOP("DrawViewImage", "Image");
     QT_TRANSLATE_NOOP("DrawViewSymbol", "Symbol");
-    QT_TRANSLATE_NOOP("DrawViewArch", "Arch");
+    QT_TRANSLATE_NOOP("DrawViewArch", "BIM");
     QT_TRANSLATE_NOOP("DrawViewDraft", "Draft");
     QT_TRANSLATE_NOOP("DrawLeaderLine", "LeaderLine");
     QT_TRANSLATE_NOOP("DrawViewBalloon", "Balloon");
