@@ -122,14 +122,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     }
     ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
 
-    bool isNotCut = pcHole->HoleCutType.getValue() == 0L;
-    ui->labelHoleCutDiameter->setHidden(isNotCut);
-    ui->labelHoleCutDepth->setHidden(isNotCut);
-    ui->labelHoleCutCountersinkAngle->setHidden(isNotCut);
-    ui->HoleCutDiameter->setHidden(isNotCut);
-    ui->HoleCutDepth->setHidden(isNotCut);
-    ui->HoleCutCountersinkAngle->setHidden(isNotCut);
-
     ui->HoleCutCustomValues->setChecked(pcHole->HoleCutCustomValues.getValue());
     ui->HoleCutCustomValues->setHidden(
         pcHole->HoleCutType.getValue() < 5
@@ -191,7 +183,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
 
-    setCutPixmap();
+    setCutDiagram();
 
     // clang-format off
     connect(ui->Threaded, &QCheckBox::clicked,
@@ -334,7 +326,7 @@ void TaskHoleParameters::threadDepthChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->ThreadDepth.setValue(value);
-        setCutPixmap();
+        setCutDiagram();
         recomputeFeature();
     }
 }
@@ -398,57 +390,28 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     // the type is a countersink and thus if HoleCutCountersinkAngle can be enabled
     std::string HoleCutTypeString = hole->HoleCutType.getValueAsString();
 
-    bool isNotCut = HoleCutTypeString == "None";
-    ui->labelHoleCutDiameter->setHidden(isNotCut);
-    ui->labelHoleCutDepth->setHidden(isNotCut);
-    ui->labelHoleCutCountersinkAngle->setHidden(isNotCut);
-    ui->HoleCutDiameter->setHidden(isNotCut);
-    ui->HoleCutDepth->setHidden(isNotCut);
-    ui->HoleCutCountersinkAngle->setHidden(isNotCut);
-
-    if (HoleCutTypeString == "None" || HoleCutTypeString == "Counterbore"
-        || HoleCutTypeString == "Countersink" || HoleCutTypeString == "Counterdrill") {
+    if (
+        HoleCutTypeString == "None"
+        || HoleCutTypeString == "Counterbore"
+        || HoleCutTypeString == "Countersink"
+        || HoleCutTypeString == "Counterdrill"
+    ) {
         ui->HoleCutCustomValues->setVisible(false);
-        if (HoleCutTypeString == "None") {
-            ui->HoleCutDiameter->setEnabled(false);
-            ui->HoleCutDepth->setEnabled(false);
-            ui->labelHoleCutCountersinkAngle->setVisible(false);
-            ui->HoleCutCountersinkAngle->setVisible(false);
-        }
-        if (HoleCutTypeString == "Counterbore") {
-            ui->labelHoleCutCountersinkAngle->setVisible(false);
-            ui->HoleCutCountersinkAngle->setVisible(false);
-        }
-        if (HoleCutTypeString == "Countersink") {
-            ui->labelHoleCutCountersinkAngle->setVisible(true);
-            ui->HoleCutCountersinkAngle->setVisible(true);
-        }
     }
     else {  // screw definition
         // we can have the case that we have no normed values
         // in this case HoleCutCustomValues is read-only AND true
-        if (ui->HoleCutCustomValues->isChecked()) {
-            ui->HoleCutDiameter->setEnabled(true);
-            ui->HoleCutDepth->setEnabled(true);
-            if (!hole->HoleCutCountersinkAngle.isReadOnly()) {
-                ui->HoleCutCountersinkAngle->setVisible(true);
-                ui->labelHoleCutCountersinkAngle->setVisible(true);
-                ui->HoleCutCountersinkAngle->setEnabled(true);
-            }
-        }
-        else {
-            ui->HoleCutCustomValues->setVisible(true);
-            ui->HoleCutDiameter->setEnabled(false);
-            ui->HoleCutDepth->setEnabled(false);
-            ui->HoleCutCountersinkAngle->setEnabled(false);
-            ui->labelHoleCutCountersinkAngle->setVisible(true);
-            ui->HoleCutCountersinkAngle->setVisible(true);
-        }
+        bool isCustom = ui->HoleCutCustomValues->isChecked();
+        ui->HoleCutDiameter->setEnabled(isCustom);
+        ui->HoleCutDepth->setEnabled(isCustom);
+        ui->HoleCutCountersinkAngle->setEnabled(
+            isCustom && !hole->HoleCutCountersinkAngle.isReadOnly()
+        );
     }
-    setCutPixmap();
+    setCutDiagram();
 }
 
-void TaskHoleParameters::setCutPixmap()
+void TaskHoleParameters::setCutDiagram()
 {
     auto hole = getObject<PartDesign::Hole>();
     const std::string holeCutTypeString = hole->HoleCutType.getValueAsString();
@@ -465,54 +428,46 @@ void TaskHoleParameters::setCutPixmap()
         holeCutTypeString == "Counterbore"
         || hole->isDynamicCounterbore(threadTypeString, holeCutTypeString)
     );
-    bool isCounterdrill = (
-        holeCutTypeString == "Counterdrill"
-    );
+    bool isCounterdrill = (holeCutTypeString == "Counterdrill");
+    bool includeAngle = hole->DrillForDepth.getValue();
+    bool isNotCut = holeCutTypeString == "None";
 
+    ui->labelHoleCutDiameter->setHidden(isNotCut);
+    ui->labelHoleCutDepth->setHidden(isNotCut);
+    ui->HoleCutDiameter->setHidden(isNotCut);
+    ui->HoleCutDepth->setHidden(isNotCut);
+
+    std::string baseFileName;
     if (isCounterbore) {
-        if (isAngled) {
-            ui->cutDiagram->setPixmap(
-                QPixmap(QString::fromUtf8(":/images/hole_counterbore_angled.svg"))
-            );
-        } else {
-            ui->cutDiagram->setPixmap(
-                QPixmap(QString::fromUtf8(":/images/hole_counterbore_flat.svg"))
-            );
-        }
+        baseFileName = "hole_counterbore";
+        ui->HoleCutCountersinkAngle->setVisible(false);
+        ui->labelHoleCutCountersinkAngle->setVisible(false);
     }
     else if (isCountersink) {
-        if (isAngled) {
-            ui->cutDiagram->setPixmap(
-                QPixmap(QString::fromUtf8(":/images/hole_countersink_angled.svg"))
-            );
-        } else {
-            ui->cutDiagram->setPixmap(
-                QPixmap(QString::fromUtf8(":/images/hole_countersink_flat.svg"))
-            );
-        }
+        baseFileName = "hole_countersink";
+        ui->HoleCutCountersinkAngle->setVisible(true);
+        ui->labelHoleCutCountersinkAngle->setVisible(true);
     }
     else if (isCounterdrill) {
-        if (isAngled) {
-            ui->cutDiagram->setPixmap(
-                QPixmap(QString::fromUtf8(":/images/hole_counterdrill_angled.svg"))
-            );
-        } else {
-            ui->cutDiagram->setPixmap(
-                QPixmap(QString::fromUtf8(":/images/hole_counterdrill_flat.svg"))
-            );
-        }
+        baseFileName = "hole_counterdrill";
+        ui->HoleCutCountersinkAngle->setVisible(true);
+        ui->labelHoleCutCountersinkAngle->setVisible(true);
     }
     else {
-        if (isAngled) {
-            ui->cutDiagram->setPixmap(
-                QPixmap(QString::fromUtf8(":/images/hole_none_angled.svg"))
-            );
-        } else {
-            ui->cutDiagram->setPixmap(
-                QPixmap(QString::fromUtf8(":/images/hole_none_flat.svg"))
-            );
-        }
+        baseFileName = "hole_none";
+        ui->HoleCutCountersinkAngle->setVisible(false);
+        ui->labelHoleCutCountersinkAngle->setVisible(false);
     }
+
+    if (isAngled) {
+        baseFileName += includeAngle ? "_angled_included" : "_angled";
+    } else {
+        baseFileName += "_flat";
+    }
+
+    ui->cutDiagram->setPixmap(
+        QPixmap(QString::fromUtf8((":images/" + baseFileName + ".svg").c_str()))
+    );
 }
 
 void TaskHoleParameters::holeCutCustomValuesChanged()
@@ -599,7 +554,7 @@ void TaskHoleParameters::depthChanged(int index)
     ui->DrillPointAngled->setEnabled(DepthisDimension);
     ui->DrillPointAngle->setEnabled(DepthisDimension);
     ui->DrillForDepth->setEnabled(DepthisDimension);
-    setCutPixmap();
+    setCutDiagram();
 }
 
 void TaskHoleParameters::depthValueChanged(double value)
@@ -617,7 +572,7 @@ void TaskHoleParameters::drillPointChanged()
         hole->DrillPoint.setValue(angled);
         ui->DrillPointAngle->setEnabled(angled);
         ui->DrillForDepth->setEnabled(angled);
-        setCutPixmap();
+        setCutDiagram();
         recomputeFeature();
     }
 }
@@ -636,6 +591,7 @@ void TaskHoleParameters::drillForDepthChanged()
         hole->DrillForDepth.setValue(ui->DrillForDepth->isChecked());
         recomputeFeature();
     }
+    setCutDiagram();
 }
 
 void TaskHoleParameters::taperedChanged()
