@@ -728,16 +728,31 @@ void TaskTransformDialog::open()
 
     Gui::TaskView::TaskDialog::open();
 
-    Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Transform"));
+    openCommand();
+}
+
+void TaskTransformDialog::openCommand()
+{
+    if (auto document = vp->getDocument()) {
+        if (!document->hasPendingCommand()) {
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
+        }
+    }
+}
+
+void TaskTransformDialog::onUndo()
+{
+    openCommand();
+}
+
+void TaskTransformDialog::onRedo()
+{
+    openCommand();
 }
 
 bool TaskTransformDialog::accept()
 {
-    if (auto documentObject = vp->getObject()) {
-        Gui::Document* document =
-            Gui::Application::Instance->getDocument(documentObject->getDocument());
-        assert(document);
+    if (auto document = vp->getDocument()) {
         document->commitCommand();
         document->resetEdit();
         document->getDocument()->recompute();
@@ -748,10 +763,7 @@ bool TaskTransformDialog::accept()
 
 bool TaskTransformDialog::reject()
 {
-    if (auto documentObject = vp->getObject()) {
-        Gui::Document* document =
-            Gui::Application::Instance->getDocument(documentObject->getDocument());
-        assert(document);
+    if (auto document = vp->getDocument()) {
         document->abortCommand();
         document->resetEdit();
         document->getDocument()->recompute();
