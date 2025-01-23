@@ -224,7 +224,13 @@ def getHTMLTemplate():
                         obj.facesToFacets = obj.facesToFacets.map(x => baseDecode(x));
                     }
                 }
-
+                else {
+                    for (const obj of data.objects) {
+                        obj.verts = obj.verts.map(x => parseFloat(x));
+                        obj.wires = obj.wires.map(w => w.map(x => parseFloat(x)))
+                        obj.facesToFacets = obj.facesToFacets.map(w => w.map(x => parseFloat(x)));
+                    }
+                }
                 // Get bounds for global clipping
                 const globalMaxMin = [{min: null, max: null},
                                       {min: null, max: null},
