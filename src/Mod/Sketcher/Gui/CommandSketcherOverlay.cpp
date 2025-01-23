@@ -83,7 +83,7 @@ void CmdSketcherBSplineDegree::activated(int iMsg)
 
 bool CmdSketcherBSplineDegree::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), DOES_NOT_ACT_ON_SELECTION);
 }
 
 // Show/Hide B-spline polygon
@@ -113,7 +113,7 @@ void CmdSketcherBSplinePolygon::activated(int iMsg)
 
 bool CmdSketcherBSplinePolygon::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), DOES_NOT_ACT_ON_SELECTION);
 }
 
 // Show/Hide B-spline comb
@@ -143,7 +143,7 @@ void CmdSketcherBSplineComb::activated(int iMsg)
 
 bool CmdSketcherBSplineComb::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), DOES_NOT_ACT_ON_SELECTION);
 }
 
 //
@@ -173,7 +173,7 @@ void CmdSketcherBSplineKnotMultiplicity::activated(int iMsg)
 
 bool CmdSketcherBSplineKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), DOES_NOT_ACT_ON_SELECTION);
 }
 
 //
@@ -203,7 +203,7 @@ void CmdSketcherBSplinePoleWeight::activated(int iMsg)
 
 bool CmdSketcherBSplinePoleWeight::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), DOES_NOT_ACT_ON_SELECTION);
 }
 
 // Composite drop down menu for show/hide BSpline information layer
@@ -349,7 +349,7 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*
 
 bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), DOES_NOT_ACT_ON_SELECTION);
 }
 
 //

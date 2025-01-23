@@ -498,8 +498,26 @@ bool SketcherGui::isSketchInEdit(Gui::Document* doc)
     return false;
 }
 
-bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
+bool SketcherGui::isCommandActive(Gui::Document* doc, int actsOn)
 {
+    static bool selectionHasGeo = false;
+    static bool selectionHasBSpline = false;
+    static bool selectionHasOnlyBsplines = true;
+    static bool selectionHasOnlyElipses = true;
+    static bool selectionHasOnlyPoints = true;
+    static bool selectionHasConstraint = false;
+
+    static auto last_time = std::chrono::steady_clock::now();
+    auto current_time = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed_seconds = current_time - last_time;
+
+    Base::Console().Log("actsOn: %d\n", actsOn);
+
+
+    // binary form
+    std::bitset<8> b(actsOn);
+    Base::Console().Log("actsOn: %s\n", b.to_string().c_str());
+
     if (isSketchInEdit(doc)) {
         auto mode =
             static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode();
@@ -507,31 +525,83 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
         if (mode == ViewProviderSketch::STATUS_NONE
             || mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
 
-            if (!actsOnSelection) {
+            if (actsOn == DOES_NOT_ACT_ON_SELECTION) {
                 return true;
             }
-            return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
-        }
-    }
+            if (elapsed_seconds.count() < 0.1) {
+                return false;
+            }
 
-    return false;
-}
+            last_time = current_time;
 
-bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection)
-{
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
-                == ViewProviderSketch::STATUS_NONE) {
-                if (!actsOnSelection) {
-                    return true;
+            selectionHasGeo = false;
+            selectionHasBSpline = false;
+            selectionHasOnlyBsplines = true;
+            selectionHasOnlyElipses = true;
+            selectionHasOnlyPoints = true;
+            selectionHasConstraint = false;
+
+            std::vector<Gui::SelectionObject> selection;
+            selection =
+                Gui::Selection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+            if (selection.empty()) {
+                return false;
+            }
+
+            auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+            const std::vector<std::string>& subNames = selection[0].getSubNames();
+            if (!subNames.empty()) {
+
+                for (auto& name : subNames) {
+                    if (name.size() > 4 && name.substr(0, 4) == "Edge") {
+                        selectionHasGeo = true;
+                        selectionHasOnlyPoints = false;
+                        int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
+                        if (isBSplineCurve(*Obj->getGeometry(geoId))) {
+                            selectionHasBSpline = true;
+                            selectionHasOnlyElipses = false;
+                        }
+                        else if (isArcOfEllipse(*Obj->getGeometry(geoId))
+                                    || isEllipse(*Obj->getGeometry(geoId))) {
+                            selectionHasOnlyBsplines = false;
+                        }
+                        else {
+                            selectionHasOnlyElipses = false;
+                            selectionHasOnlyBsplines = false;
+                        }
+                    }
+                    else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
+                        selectionHasGeo = true;
+                        selectionHasOnlyBsplines = false;
+                        selectionHasOnlyElipses = false;
+                        selectionHasOnlyPoints = false;
+                    }
+                    else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
+                        int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
+                        int geoId;
+                        Sketcher::PointPos PosId;
+                        selectionHasOnlyElipses = false;
+                        selectionHasOnlyBsplines = false;
+                        Obj->getGeoVertexIndex(VtId, geoId, PosId);
+                        selectionHasGeo = true;
+                    }
+                    else if (name.size() > 10 && name.substr(0, 10) == "Constraint") {
+                        selectionHasConstraint = true;
+                    }
                 }
-                return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
+            }
+            
+            // example actsOn
+            return !(actsOn & NEEDS_GEOMETRY && !selectionHasGeo)
+                && !(actsOn & NEEDS_BSPLINE && !selectionHasBSpline)
+                && !(actsOn & NEEDS_NOT_ONLY_BSPLINE && selectionHasOnlyBsplines)
+                && !(actsOn & NEEDS_NOT_ONLY_ELLIPSE && selectionHasOnlyElipses)
+                && !(actsOn & NEEDS_NOT_ONLY_POINT && selectionHasOnlyPoints)
+                && !(actsOn & NEEDS_CONSTRAINT && !selectionHasConstraint);
             }
         }
-    }
+
     return false;
 }
 

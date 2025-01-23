@@ -177,14 +177,24 @@ void GetCirclesMinimalDistance(const Part::Geometry* geom1,
 
 void ActivateHandler(Gui::Document* doc, std::unique_ptr<DrawSketchHandler> handler);
 
-/// Returns if a sketch is in edit mode
+// Returns if a sketch is in edit mode
 bool isSketchInEdit(Gui::Document* doc);
+enum ACTS_ON_SELECTION_TYPE
+{
+    DOES_NOT_ACT_ON_SELECTION = 0x00,
+    ACTS_ON_SELECTION = 0x01,
+    NEEDS_GEOMETRY = 0x04,
+    NEEDS_BSPLINE = 0x08,
+    NEEDS_NOT_ONLY_BSPLINE = 0x10,
+    NEEDS_NOT_ONLY_ELLIPSE = 0x20,
+    NEEDS_NOT_ONLY_POINT = 0x40,
+    NEEDS_CONSTRAINT = 0x80
+};
 
-/// Returns whether an edit mode command should be activated or not. It is only activated if the
-/// sketcher is no special state or a sketchHandler is active.
-bool isCommandActive(Gui::Document* doc, bool actsOnSelection = false);
+// Returns whether an edit mode command should be activated or not. It is only activated if the
+// sketcher is no special state or a sketchHandler is active.
+bool isCommandActive(Gui::Document* doc, int actsOn = DOES_NOT_ACT_ON_SELECTION);
 
-bool isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection);
 
 SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc);
 

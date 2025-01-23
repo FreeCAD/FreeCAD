@@ -63,10 +63,10 @@ void ActivateBSplineHandler(Gui::Document* doc, DrawSketchHandler* handler)
     }
 }
 
-/// For a knot given by (GeoId, PosId) finds the B-Spline and the knot's
-/// index within it (by OCC numbering).
-/// Returns true if the entities are found, false otherwise.
-/// If returns false, `splineGeoId` and `knotIndexOCC` have garbage values.
+// For a knot given by (GeoId, PosId) finds the B-Spline and the knot's
+// index within it (by OCC numbering).
+// Returns true if the entities are found, false otherwise.
+// If returns false, `splineGeoId` and `knotIndexOCC` have garbage values.
 bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
                              int knotGeoId,
                              Sketcher::PointPos knotPosId,
@@ -177,7 +177,7 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
 
 bool CmdSketcherConvertToNURBS::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), NEEDS_GEOMETRY | NEEDS_NOT_ONLY_BSPLINE);
 }
 
 // Increase degree of the spline
@@ -253,7 +253,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
 
 bool CmdSketcherIncreaseDegree::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), NEEDS_BSPLINE);
 }
 
 
@@ -336,7 +336,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
 
 bool CmdSketcherDecreaseDegree::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), NEEDS_BSPLINE);
 }
 
 
@@ -485,7 +485,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
 bool CmdSketcherIncreaseKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), NEEDS_BSPLINE);
 }
 
 DEF_STD_CMD_A(CmdSketcherDecreaseKnotMultiplicity)
@@ -621,7 +621,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 
 bool CmdSketcherDecreaseKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), NEEDS_BSPLINE);
 }
 
 
@@ -723,7 +723,7 @@ void CmdSketcherCompModifyKnotMultiplicity::updateAction(int /*mode*/)
 
 bool CmdSketcherCompModifyKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), NEEDS_BSPLINE);
 }
 
 class DrawSketchHandlerBSplineInsertKnot: public DrawSketchHandler
@@ -945,7 +945,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
 
 bool CmdSketcherInsertKnot::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), NEEDS_BSPLINE);
 }
 
 DEF_STD_CMD_A(CmdSketcherJoinCurves)
@@ -1101,7 +1101,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
 
 bool CmdSketcherJoinCurves::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), NEEDS_BSPLINE);
 }
 
 void CreateSketcherCommandsBSpline()
