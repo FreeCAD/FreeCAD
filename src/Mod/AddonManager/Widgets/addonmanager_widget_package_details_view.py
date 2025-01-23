@@ -123,14 +123,8 @@ class PackageDetailsView(QtWidgets.QWidget):
         if location is not None:
             location_path = os.path.normpath(location)
             text = (
-                translate("AddonsInstaller", "Installation location")
-                + ": "
-                + location_path
-                + ' <a href="file://'
-                + location_path
-                + '">  [ '
-                + translate("AddonsInstaller", "open")
-                + " ]</a>"
+                f"{translate('AddonsInstaller', 'Installation location')}: "
+                f'<a href="file://{location_path}">{location_path}</a>'
             )
             self.location_label.setText(text)
             self.location_label.show()
