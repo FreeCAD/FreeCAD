@@ -481,6 +481,8 @@ class _Wall(ArchComponent.Component):
                             for e in self.connectEdges:
                                 l += e.Length
                             l = l / 2
+                            if self.layersNum:
+                                l = l / self.layersNum
                             if obj.Length.Value != l:
                                 obj.Length = l
                                 self.oldLength = None # delete the stored value to prevent triggering base change below
@@ -901,6 +903,9 @@ class _Wall(ArchComponent.Component):
                     if self.basewires:
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
+                            self.layersNum = len(layers)
+                        else:
+                            self.layersNum = 0
                         layeroffset = 0
                         baseface = None
 
