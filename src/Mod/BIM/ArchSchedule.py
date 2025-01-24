@@ -600,16 +600,15 @@ class _ArchSchedule:
 
         import Draft
 
-        try:
-            # TODO: an element can have multiple array parents
-            parent = obj.InList[0]
-        except IndexError:
-            parent = None
+        elementCount = 0
 
-        if parent:
-            if Draft.getType(parent) == "Array":
-                return parent.Count
-        return 0
+        # The given object can belong to multiple arrays
+        # o is a potential parent array of the given object
+        for o in obj.InList:
+            if Draft.getType(o) == "Array":
+                elementCount += o.Count
+
+        return elementCount
 
     def expandArrays(self, objs):
         """Expands array elements in the given list of objects"""
