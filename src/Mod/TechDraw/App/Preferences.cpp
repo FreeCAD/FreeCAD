@@ -682,3 +682,11 @@ bool Preferences::useLegacySvgScaling()
 {
     return getPreferenceGroup("General")->GetBool("LegacySvgScaling", false);
 }
+
+
+bool Preferences::showUnits()
+{
+    return Preferences::getPreferenceGroup("Dimensions")->GetBool("ShowUnits", false);
+}
+
+

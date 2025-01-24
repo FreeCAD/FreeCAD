@@ -231,6 +231,8 @@ DrawViewDimension::DrawViewDimension()
                       "If true, area dimensions return the area of the face minus the areas of any enclosed faces. \
                        If false, the area of the face's outer boundary is returned.");
 
+    ADD_PROPERTY_TYPE(ShowUnits, (Preferences::showUnits()), "Format", App::Prop_None,
+                                          "Show or hide the units.");
     measurement = new Measure::Measurement();
     // TODO: should have better initial datumLabel position than (0, 0) in the DVP?? something
     // closer to the object being measured?
@@ -2076,7 +2078,7 @@ bool DrawViewDimension::hasOverUnderTolerance() const
 
 bool DrawViewDimension::showUnits() const
 {
-    return Preferences::getPreferenceGroup("Dimensions")->GetBool("ShowUnits", false);
+    return ShowUnits.getValue();
 }
 
 bool DrawViewDimension::useDecimals() const
