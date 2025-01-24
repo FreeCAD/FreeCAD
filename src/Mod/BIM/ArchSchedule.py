@@ -254,7 +254,7 @@ class _ArchSchedule:
             ifcfile = None
             elts = None
             if val:
-                import Draft
+                import Draft,Arch
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
@@ -271,7 +271,10 @@ class _ArchSchedule:
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
                         objs = objs[0].Group
                 objs = Draft.get_group_contents(objs)
-                objs = self.pruneAndExpand(objs)
+                objs = self.expandArrays(objs)
+                # Remove included objects (e.g. walls that are part of another wall,
+                # base geometry, etc)
+                objs = Arch.pruneIncluded(objs, strict=True, silent=True)
                 # Remove all schedules and spreadsheets:
                 objs = [o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]]
 
@@ -597,42 +600,35 @@ class _ArchSchedule:
 
         import Draft
 
-        if len(obj.InList) == 1:
+        try:
+            # TODO: an element can have multiple array parents
             parent = obj.InList[0]
+        except IndexError:
+            parent = None
+
+        if parent:
             if Draft.getType(parent) == "Array":
                 return parent.Count
         return 0
 
-    def pruneAndExpand(self, objs):
-        """
-        Remove all non-BIM objects from a list of Arch objects, and
-        expand the arrays within.
+    def expandArrays(self, objs):
+        """Expands array elements in the given list of objects"""
 
-        The criteria for removing an object is whether they have an
-        IFC Class (keep) or not (remove).
-        """
-
-        # An alternative could be to use Arch.pruneIncluded(), but that
-        # removes an array's base element
-
-        import Arch
-        prunedobjs = []
+        expandedobjs = []
 
         for obj in objs:
             ifcClass = self.getIfcClass(obj)
+            # This filters out the array object itself, which has no IFC class,
+            # but leaves the array elements, which do have an IFC class.
             if ifcClass:
-                prunedobjs.append(obj)
-                # support for arrays
+                expandedobjs.append(obj)
+                # If the object is in an array, add it and the rest of its elements
+                # to the list.
                 array = self.getArray(obj)
-                for i in range(array):
-                    if i > 0: # the first item already went above
-                        prunedobjs.append(obj)
+                for i in range(1, array): # The first element (0) was already added
+                    expandedobjs.append(obj)
 
-        # Remove included objects (e.g. walls that are part of another wall,
-        # base geometry, etc)
-        prunedobjs = Arch.pruneIncluded(prunedobjs, strict=True, silent=True)
-
-        return prunedobjs
+        return expandedobjs
 
 class _ViewProviderArchSchedule:
 
