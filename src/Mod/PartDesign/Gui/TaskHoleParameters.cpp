@@ -465,8 +465,8 @@ void TaskHoleParameters::setCutDiagram()
         baseFileName += "_flat";
     }
 
-    ui->cutDiagram->setPixmap(
-        QPixmap(QString::fromUtf8((":images/" + baseFileName + ".svg").c_str()))
+    ui->cutDiagram->setSvg(
+        QString::fromUtf8((":images/" + baseFileName + ".svg").c_str())
     );
 }
 

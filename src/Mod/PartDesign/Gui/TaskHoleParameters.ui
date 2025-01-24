@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>391</width>
-    <height>897</height>
+    <width>366</width>
+    <height>844</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -239,7 +239,7 @@ the screw's top below the surface</string>
           </layout>
          </item>
          <item>
-          <widget class="QGroupBox" name="DrillGroupBox">
+          <widget class="QFrame" name="DrillFrame">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -248,9 +248,6 @@ the screw's top below the surface</string>
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
-           </property>
-           <property name="title">
-            <string/>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_5">
             <property name="spacing">
@@ -323,27 +320,24 @@ account for the depth of blind holes</string>
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="cutDiagram">
+        <widget class="FontScaledSVG" name="cutDiagram" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
          <property name="baseSize">
           <size>
            <width>0</width>
            <height>0</height>
           </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap resource="Resources/PartDesign.qrc">:/images/hole_counterdrill_angled.svg</pixmap>
-         </property>
-         <property name="scaledContents">
-          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -358,22 +352,6 @@ account for the depth of blind holes</string>
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
-          <spacer name="verticalSpacerTop">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>8</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
@@ -496,22 +474,6 @@ account for the depth of blind holes</string>
             </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <spacer name="verticalSpacerBottom">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>17</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
@@ -1095,6 +1057,12 @@ Note that the calculation can take some time</string>
    <class>ElideCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/ElideCheckBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>FontScaledSVG</class>
+   <extends>QWidget</extends>
+   <header>Gui/FontScaledSVG.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

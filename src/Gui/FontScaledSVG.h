@@ -20,30 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-// This custom widget adds the missing ellipsize functionality in QT5
+// This custom widget scales an svg according to fonts
 
-#ifndef ELIDELABEL_H
-#define ELIDELABEL_H
+#ifndef FONTSCALEDSVG_H
+#define FONTSCALEDSVG_H
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QLabel>
+#include <QWidget>
+#include <QSvgRenderer>
 #include <QPainter>
 #include <QFontMetrics>
 #endif
 
-
-class GuiExport ElideLabel : public QLabel {
+class GuiExport FontScaledSVG : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ElideLabel(QWidget *parent = nullptr);
-    ~ElideLabel() override = default;
+    explicit FontScaledSVG(QWidget *parent = nullptr);
+    void setSvg(const QString &svgPath);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
-    QSize sizeHint() const override;
-    QSize minimumSizeHint() const override;
+    void resizeEvent(QResizeEvent *event) override;
+
+private:
+    QSvgRenderer *m_svgRenderer;
+
+    void updateScaledSize();
 };
 
-#endif // ELIDELABEL_H
+#endif // FONTSCALEDSVG_H

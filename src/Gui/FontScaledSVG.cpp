@@ -20,30 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-// This custom widget adds the missing ellipsize functionality in QT5
+// This custom widget scales an svg according to fonts
 
-#ifndef ELIDELABEL_H
-#define ELIDELABEL_H
+#include "FontScaledSVG.h"
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QLabel>
-#include <QPainter>
-#include <QFontMetrics>
-#endif
+FontScaledSVG::FontScaledSVG(QWidget *parent)
+    : QWidget(parent), m_svgRenderer(new QSvgRenderer(this)) {
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+}
 
+void FontScaledSVG::setSvg(const QString &svgPath) {
+    if (m_svgRenderer->load(svgPath)) {
+        updateScaledSize();
+        update();
+    }
+}
 
-class GuiExport ElideLabel : public QLabel {
-    Q_OBJECT
+void FontScaledSVG::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event);
+    QPainter painter(this);
 
-public:
-    explicit ElideLabel(QWidget *parent = nullptr);
-    ~ElideLabel() override = default;
+    if (m_svgRenderer->isValid()) {
+        QRect targetRect(0, 0, width(), height());
+        m_svgRenderer->render(&painter, targetRect);
+    }
+}
 
-protected:
-    void paintEvent(QPaintEvent *event) override;
-    QSize sizeHint() const override;
-    QSize minimumSizeHint() const override;
-};
+void FontScaledSVG::resizeEvent(QResizeEvent *event) {
+    Q_UNUSED(event);
+    updateScaledSize();
+}
 
-#endif // ELIDELABEL_H
+void FontScaledSVG::updateScaledSize() {
+    QSize baseSize = m_svgRenderer->defaultSize();
+
+    QFontMetrics metrics(font());
+    qreal spacing = metrics.lineSpacing();
+    int baseFactor = 18;
+    qreal scalingFactor = spacing / baseFactor;
+
+    QSize targetSize = baseSize * scalingFactor;
+    setFixedSize(targetSize);
+}
+

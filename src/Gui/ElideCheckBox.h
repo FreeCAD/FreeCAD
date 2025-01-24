@@ -34,7 +34,7 @@
 #endif
 
 
-class ElideCheckBox : public QCheckBox {
+class GuiExport ElideCheckBox : public QCheckBox {
     Q_OBJECT
 
 public:
