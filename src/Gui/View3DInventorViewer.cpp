@@ -1142,7 +1142,12 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
 
     overrideMode = mode;
 
-    auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
+    auto document = getDocument();
+    if (!document) {
+        return;
+    }
+
+    auto views = document->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
     if (mode == "No Shading") {
         this->shading = false;
         std::string flatLines = "Flat Lines";
