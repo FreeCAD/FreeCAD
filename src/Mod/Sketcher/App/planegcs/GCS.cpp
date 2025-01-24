@@ -5751,12 +5751,12 @@ void System::identifyConflictingRedundantConstraints(
         std::vector<std::vector<Constraint*>> conflictGroupsOrig = conflictGroups;
         conflictGroups.clear();
         for (int i = conflictGroupsOrig.size() - 1; i >= 0; i--) {
-            auto iterRedundantEntry = std::find_if(conflictGroups[i].begin(),
-                                                   conflictGroups[i].end(),
+            auto iterRedundantEntry = std::find_if(conflictGroupsOrig[i].begin(),
+                                                   conflictGroupsOrig[i].end(),
                                                    [this](const auto item) {
                                                        return (this->redundant.count(item) > 0);
                                                    });
-            bool hasRedundant = (iterRedundantEntry != conflictGroups[i].end());
+            bool hasRedundant = (iterRedundantEntry != conflictGroupsOrig[i].end());
             if (!hasRedundant) {
                 conflictGroups.push_back(conflictGroupsOrig[i]);
                 continue;
