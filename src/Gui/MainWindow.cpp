@@ -114,7 +114,7 @@
 #include "SpaceballEvent.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "DlgObjectSelection.h"
+#include "Dialogs/DlgObjectSelection.h"
 #include <App/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)

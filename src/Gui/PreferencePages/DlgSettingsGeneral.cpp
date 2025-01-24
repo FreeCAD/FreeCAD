@@ -45,10 +45,10 @@
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/DlgCreateNewPreferencePackImp.h>
-#include <Gui/DlgPreferencesImp.h>
-#include <Gui/DlgPreferencePackManagementImp.h>
-#include <Gui/DlgRevertToBackupConfigImp.h>
+#include <Gui/Dialogs/DlgCreateNewPreferencePackImp.h>
+#include <Gui/Dialogs/DlgPreferencesImp.h>
+#include <Gui/Dialogs/DlgPreferencePackManagementImp.h>
+#include <Gui/Dialogs/DlgRevertToBackupConfigImp.h>
 #include <Gui/MainWindow.h>
 #include <Gui/OverlayManager.h>
 #include <Gui/ParamHandler.h>

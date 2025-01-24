@@ -37,7 +37,7 @@
 #include "StartupProcess.h"
 #include "Application.h"
 #include "AutoSaver.h"
-#include "DlgCheckableMessageBox.h"
+#include "Dialogs/DlgCheckableMessageBox.h"
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "MainWindow.h"

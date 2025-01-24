@@ -38,7 +38,7 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "MainWindow.h"
 #include "WorkbenchSelector.h"
 #include "ToolBarAreaWidget.h"

@@ -48,6 +48,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
+    ${CMAKE_CURRENT_SOURCE_DIR}/PreferencePages
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
@@ -354,37 +355,37 @@ set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURR
 set_property(SOURCE GraphvizView.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp)
 
 SET(Gui_UIC_SRCS
-    AboutApplication.ui
+    Dialogs/AboutApplication.ui
     Clipping.ui
     DemoMode.ui
-    DlgActions.ui
-    DlgActivateWindow.ui
-    DlgUnitsCalculator.ui
-    DlgAuthorization.ui
-    DlgChooseIcon.ui
-    DlgCreateNewPreferencePack.ui
-    DlgInputDialog.ui
-    DlgKeyboard.ui
-    DlgMacroExecute.ui
-    DlgRunExternal.ui
-    DlgMacroRecord.ui
-    DlgMaterialProperties.ui
-    DlgOnlineHelp.ui
-    DlgParameter.ui
-    DlgParameterFind.ui
-    DlgPreferencePackManagement.ui
-    DlgPreferences.ui
-    DlgProjectInformation.ui
-    DlgProjectUtility.ui
-    DlgPropertyLink.ui
-    DlgRevertToBackupConfig.ui
+    Dialogs/DlgActions.ui
+    Dialogs/DlgActivateWindow.ui
+    Dialogs/DlgUnitsCalculator.ui
+    Dialogs/DlgAuthorization.ui
+    Dialogs/DlgChooseIcon.ui
+    Dialogs/DlgCreateNewPreferencePack.ui
+    Dialogs/DlgInputDialog.ui
+    Dialogs/DlgKeyboard.ui
+    Dialogs/DlgMacroExecute.ui
+    Dialogs/DlgRunExternal.ui
+    Dialogs/DlgMacroRecord.ui
+    Dialogs/DlgMaterialProperties.ui
+    Dialogs/DlgOnlineHelp.ui
+    Dialogs/DlgParameter.ui
+    Dialogs/DlgParameterFind.ui
+    Dialogs/DlgPreferencePackManagement.ui
+    Dialogs/DlgPreferences.ui
+    Dialogs/DlgProjectInformation.ui
+    Dialogs/DlgProjectUtility.ui
+    Dialogs/DlgPropertyLink.ui
+    Dialogs/DlgRevertToBackupConfig.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
-    DlgSettingsColorGradient.ui
+    Dialogs/DlgSettingsColorGradient.ui
     PreferencePages/DlgSettingsDocument.ui
     PreferencePages/DlgSettingsEditor.ui
     PreferencePages/DlgSettingsGeneral.ui
-    DlgSettingsImage.ui
+    Dialogs/DlgSettingsImage.ui
     PreferencePages/DlgSettingsLightSources.ui
     PreferencePages/DlgSettingsMacro.ui
     PreferencePages/DlgSettingsNavigation.ui
@@ -395,15 +396,15 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
-    DlgCheckableMessageBox.ui
-    DlgToolbars.ui
-    DlgTreeWidget.ui
-    DlgLocationAngle.ui
-    DlgLocationPos.ui
+    Dialogs/DlgCheckableMessageBox.ui
+    Dialogs/DlgToolbars.ui
+    Dialogs/DlgTreeWidget.ui
+    Dialogs/DlgLocationAngle.ui
+    Dialogs/DlgLocationPos.ui
     DocumentRecovery.ui
     DownloadManager.ui
     DownloadItem.ui
-    DlgExpressionInput.ui
+    Dialogs/DlgExpressionInput.ui
     MouseButtons.ui
     SceneInspector.ui
     InputVector.ui
@@ -415,14 +416,14 @@ SET(Gui_UIC_SRCS
     TaskView/TaskImage.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
-    DlgObjectSelection.ui
-    DlgAddProperty.ui
-    DlgAddPropertyVarSet.ui
+    Dialogs/DlgObjectSelection.ui
+    Dialogs/DlgAddProperty.ui
+    Dialogs/DlgAddPropertyVarSet.ui
     VectorListEditor.ui
 )
 
 if(FREECAD_USE_3DCONNEXION_LEGACY)
-    list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
+    list(APPEND Gui_UIC_SRCS Dialogs/DlgCustomizeSpNavSettings.ui)
 endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
@@ -475,28 +476,28 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
-    DlgAbout.cpp
-    DlgActivateWindowImp.cpp
-    DlgCreateNewPreferencePackImp.cpp
-    DlgUnitsCalculatorImp.cpp
-    DlgInputDialogImp.cpp
-    DlgMacroExecuteImp.cpp
-    DlgRunExternal.cpp
-    DlgEditFileIncludePropertyExternal.cpp
-    DlgMacroRecordImp.cpp
-    DlgMaterialPropertiesImp.cpp
-    DlgParameterImp.cpp
-    DlgParameterFind.cpp
-    DlgPreferencePackManagementImp.cpp
-    DlgProjectInformationImp.cpp
-    DlgProjectUtility.cpp
-    DlgPropertyLink.cpp
-    DlgRevertToBackupConfigImp.cpp
-    DlgExpressionInput.cpp
+    Dialogs/DlgAbout.cpp
+    Dialogs/DlgActivateWindowImp.cpp
+    Dialogs/DlgCreateNewPreferencePackImp.cpp
+    Dialogs/DlgUnitsCalculatorImp.cpp
+    Dialogs/DlgInputDialogImp.cpp
+    Dialogs/DlgMacroExecuteImp.cpp
+    Dialogs/DlgRunExternal.cpp
+    Dialogs/DlgEditFileIncludePropertyExternal.cpp
+    Dialogs/DlgMacroRecordImp.cpp
+    Dialogs/DlgMaterialPropertiesImp.cpp
+    Dialogs/DlgParameterImp.cpp
+    Dialogs/DlgParameterFind.cpp
+    Dialogs/DlgPreferencePackManagementImp.cpp
+    Dialogs/DlgProjectInformationImp.cpp
+    Dialogs/DlgProjectUtility.cpp
+    Dialogs/DlgPropertyLink.cpp
+    Dialogs/DlgRevertToBackupConfigImp.cpp
+    Dialogs/DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
-    DlgCheckableMessageBox.cpp
+    Dialogs/DlgCheckableMessageBox.cpp
     TaskCSysDragger.cpp
-    DlgUndoRedo.cpp
+    Dialogs/DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
     PropertyPage.cpp
@@ -507,37 +508,37 @@ SET(Dialog_CPP_SRCS
     DownloadManager.cpp
     DocumentRecovery.cpp
     TaskElementColors.cpp
-    DlgObjectSelection.cpp
-    DlgAddProperty.cpp
-    DlgAddPropertyVarSet.cpp
+    Dialogs/DlgObjectSelection.cpp
+    Dialogs/DlgAddProperty.cpp
+    Dialogs/DlgAddPropertyVarSet.cpp
     VectorListEditor.cpp
 )
 
 SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
-    DlgAbout.h
-    DlgActivateWindowImp.h
-    DlgCreateNewPreferencePackImp.h
-    DlgUnitsCalculatorImp.h
-    DlgInputDialogImp.h
-    DlgMacroExecuteImp.h
-    DlgRunExternal.h
-    DlgEditFileIncludePropertyExternal.h
-    DlgMacroRecordImp.h
-    DlgMaterialPropertiesImp.h
-    DlgParameterImp.h
-    DlgParameterFind.h
-    DlgPreferencePackManagementImp.h
-    DlgProjectInformationImp.h
-    DlgProjectUtility.h
-    DlgPropertyLink.h
-    DlgRevertToBackupConfigImp.h
-    DlgCheckableMessageBox.h
-    DlgExpressionInput.h
+    Dialogs/DlgAbout.h
+    Dialogs/DlgActivateWindowImp.h
+    Dialogs/DlgCreateNewPreferencePackImp.h
+    Dialogs/DlgUnitsCalculatorImp.h
+    Dialogs/DlgInputDialogImp.h
+    Dialogs/DlgMacroExecuteImp.h
+    Dialogs/DlgRunExternal.h
+    Dialogs/DlgEditFileIncludePropertyExternal.h
+    Dialogs/DlgMacroRecordImp.h
+    Dialogs/DlgMaterialPropertiesImp.h
+    Dialogs/DlgParameterImp.h
+    Dialogs/DlgParameterFind.h
+    Dialogs/DlgPreferencePackManagementImp.h
+    Dialogs/DlgProjectInformationImp.h
+    Dialogs/DlgProjectUtility.h
+    Dialogs/DlgPropertyLink.h
+    Dialogs/DlgRevertToBackupConfigImp.h
+    Dialogs/DlgCheckableMessageBox.h
+    Dialogs/DlgExpressionInput.h
     TaskDlgRelocation.h
     TaskCSysDragger.h
-    DlgUndoRedo.h
+    Dialogs/DlgUndoRedo.h
     InputVector.h
     Placement.h
     PropertyPage.h
@@ -548,40 +549,40 @@ SET(Dialog_HPP_SRCS
     DownloadManager.h
     DocumentRecovery.h
     TaskElementColors.h
-    DlgObjectSelection.h
-    DlgAddProperty.h
-    DlgAddPropertyVarSet.h
+    Dialogs/DlgObjectSelection.h
+    Dialogs/DlgAddProperty.h
+    Dialogs/DlgAddPropertyVarSet.h
     VectorListEditor.h
 )
 
 SET(Dialog_SRCS
     ${Dialog_CPP_SRCS}
     ${Dialog_HPP_SRCS}
-    AboutApplication.ui
+    Dialogs/AboutApplication.ui
     Clipping.ui
     DemoMode.ui
-    DlgActivateWindow.ui
-    DlgUnitsCalculator.ui
-    DlgAuthorization.ui
-    DlgInputDialog.ui
-    DlgAddProperty.ui
-    DlgLocationAngle.ui
-    DlgLocationPos.ui
-    DlgMacroExecute.ui
-    DlgRunExternal.ui
-    DlgMacroRecord.ui
-    DlgMaterialProperties.ui
-    DlgParameter.ui
-    DlgParameterFind.ui
-    DlgPreferencePackManagement.ui
-    DlgProjectInformation.ui
-    DlgProjectUtility.ui
-    DlgPropertyLink.ui
-    DlgRevertToBackupConfig.ui
-    DlgCheckableMessageBox.ui
-    DlgTreeWidget.ui
-    DlgExpressionInput.ui
-    DlgCreateNewPreferencePack.ui
+    Dialogs/DlgActivateWindow.ui
+    Dialogs/DlgUnitsCalculator.ui
+    Dialogs/DlgAuthorization.ui
+    Dialogs/DlgInputDialog.ui
+    Dialogs/DlgAddProperty.ui
+    Dialogs/DlgLocationAngle.ui
+    Dialogs/DlgLocationPos.ui
+    Dialogs/DlgMacroExecute.ui
+    Dialogs/DlgRunExternal.ui
+    Dialogs/DlgMacroRecord.ui
+    Dialogs/DlgMaterialProperties.ui
+    Dialogs/DlgParameter.ui
+    Dialogs/DlgParameterFind.ui
+    Dialogs/DlgPreferencePackManagement.ui
+    Dialogs/DlgProjectInformation.ui
+    Dialogs/DlgProjectUtility.ui
+    Dialogs/DlgPropertyLink.ui
+    Dialogs/DlgRevertToBackupConfig.ui
+    Dialogs/DlgCheckableMessageBox.ui
+    Dialogs/DlgTreeWidget.ui
+    Dialogs/DlgExpressionInput.ui
+    Dialogs/DlgCreateNewPreferencePack.ui
     DownloadManager.ui
     DownloadItem.ui
     DocumentRecovery.ui
@@ -591,58 +592,58 @@ SET(Dialog_SRCS
     SceneInspector.ui
     TextureMapping.ui
     TaskElementColors.ui
-    DlgObjectSelection.ui
+    Dialogs/DlgObjectSelection.ui
     VectorListEditor.ui
 )
 SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 
 # The customize dialog sources
 SET(Dialog_Customize_CPP_SRCS
-    DlgActionsImp.cpp
-    DlgCustomizeImp.cpp
-    DlgKeyboardImp.cpp
-    DlgToolbarsImp.cpp
-    ListWidgetDragBugFix.cpp
+    Dialogs/DlgActionsImp.cpp
+    Dialogs/DlgCustomizeImp.cpp
+    Dialogs/DlgKeyboardImp.cpp
+    Dialogs/DlgToolbarsImp.cpp
+    PreferencePages/ListWidgetDragBugFix.cpp
 )
 SET(Dialog_Customize_HPP_SRCS
-    DlgActionsImp.h
-    DlgCustomizeImp.h
-    DlgKeyboardImp.h
-    DlgToolbarsImp.h
-    ListWidgetDragBugFix.h
+    Dialogs/DlgActionsImp.h
+    Dialogs/DlgCustomizeImp.h
+    Dialogs/DlgKeyboardImp.h
+    Dialogs/DlgToolbarsImp.h
+    PreferencePages/ListWidgetDragBugFix.h
 )
 
 if(FREECAD_USE_3DCONNEXION_LEGACY)
-    list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
-    list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
+    list(APPEND Dialog_Customize_CPP_SRCS Dialogs/DlgCustomizeSpaceball.cpp Dialogs/DlgCustomizeSpNavSettings.cpp)
+    list(APPEND Dialog_Customize_HPP_SRCS Dialogs/DlgCustomizeSpaceball.h Dialogs/DlgCustomizeSpNavSettings.h)
 endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
     ${Dialog_Customize_HPP_SRCS}
-    DlgActions.ui
-    DlgChooseIcon.ui
-    DlgKeyboard.ui
-    DlgToolbars.ui
+    Dialogs/DlgActions.ui
+    Dialogs/DlgChooseIcon.ui
+    Dialogs/DlgKeyboard.ui
+    Dialogs/DlgToolbars.ui
 )
 
 if(FREECAD_USE_3DCONNEXION_LEGACY)
-    list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
+    list(APPEND Dialog_Customize_SRCS  Dialogs/DlgCustomizeSpNavSettings.ui)
 endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources
 SET(Dialog_Settings_CPP_SRCS
-    DlgOnlineHelpImp.cpp
-    DlgPreferencesImp.cpp
+    Dialogs/DlgOnlineHelpImp.cpp
+    Dialogs/DlgPreferencesImp.cpp
     PreferencePages/DlgSettings3DViewImp.cpp
     PreferencePages/DlgSettingsCacheDirectory.cpp
-    DlgSettingsColorGradientImp.cpp
+    Dialogs/DlgSettingsColorGradientImp.cpp
     PreferencePages/DlgSettingsDocumentImp.cpp
     PreferencePages/DlgSettingsEditor.cpp
     PreferencePages/DlgSettingsGeneral.cpp
-    DlgSettingsImageImp.cpp
+    Dialogs/DlgSettingsImageImp.cpp
     PreferencePages/DlgSettingsLightSources.cpp
     PreferencePages/DlgSettingsMacroImp.cpp
     PreferencePages/DlgSettingsNavigation.cpp
@@ -656,15 +657,15 @@ SET(Dialog_Settings_CPP_SRCS
     PreferencePages/DlgSettingsAdvanced.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
-    DlgOnlineHelpImp.h
-    DlgPreferencesImp.h
+    Dialogs/DlgOnlineHelpImp.h
+    Dialogs/DlgPreferencesImp.h
     PreferencePages/DlgSettings3DViewImp.h
     PreferencePages/DlgSettingsCacheDirectory.h
-    DlgSettingsColorGradientImp.h
+    Dialogs/DlgSettingsColorGradientImp.h
     PreferencePages/DlgSettingsDocumentImp.h
     PreferencePages/DlgSettingsEditor.h
     PreferencePages/DlgSettingsGeneral.h
-    DlgSettingsImageImp.h
+    Dialogs/DlgSettingsImageImp.h
     PreferencePages/DlgSettingsLightSources.h
     PreferencePages/DlgSettingsMacroImp.h
     PreferencePages/DlgSettingsNavigation.h
@@ -680,15 +681,15 @@ SET(Dialog_Settings_HPP_SRCS
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
     ${Dialog_Settings_HPP_SRCS}
-    DlgOnlineHelp.ui
-    DlgPreferences.ui
+    Dialogs/DlgOnlineHelp.ui
+    Dialogs/DlgPreferences.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
-    DlgSettingsColorGradient.ui
+    Dialogs/DlgSettingsColorGradient.ui
     PreferencePages/DlgSettingsDocument.ui
     PreferencePages/DlgSettingsEditor.ui
     PreferencePages/DlgSettingsGeneral.ui
-    DlgSettingsImage.ui
+    Dialogs/DlgSettingsImage.ui
     PreferencePages/DlgSettingsLightSources.ui
     PreferencePages/DlgSettingsMacro.ui
     PreferencePages/DlgSettingsNavigation.ui

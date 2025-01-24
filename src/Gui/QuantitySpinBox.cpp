@@ -48,7 +48,7 @@
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
 #include "Command.h"
-#include "DlgExpressionInput.h"
+#include "Dialogs/DlgExpressionInput.h"
 #include "Tools.h"
 
 

@@ -50,11 +50,11 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "DlgExpressionInput.h"
+#include "Dialogs/DlgExpressionInput.h"
 #include "PrefWidgets.h"
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
-#include "ui_DlgTreeWidget.h"
+#include "Dialogs/ui_DlgTreeWidget.h"
 
 using namespace Gui;
 using namespace App;

@@ -31,7 +31,7 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/DlgPreferencesImp.h>
+#include <Gui/Dialogs/DlgPreferencesImp.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
