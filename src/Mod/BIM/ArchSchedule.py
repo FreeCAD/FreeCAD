@@ -254,7 +254,7 @@ class _ArchSchedule:
             ifcfile = None
             elts = None
             if val:
-                import Draft,Arch
+                import Draft
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
@@ -615,6 +615,7 @@ class _ArchSchedule:
         # An alternative could be to use Arch.pruneIncluded(), but that
         # removes an array's base element
 
+        import Arch
         prunedobjs = []
 
         for obj in objs:
@@ -626,6 +627,10 @@ class _ArchSchedule:
                 for i in range(array):
                     if i > 0: # the first item already went above
                         prunedobjs.append(obj)
+
+        # Remove included objects (e.g. walls that are part of another wall,
+        # base geometry, etc)
+        prunedobjs = Arch.pruneIncluded(prunedobjs, strict=True, silent=True)
 
         return prunedobjs
 
