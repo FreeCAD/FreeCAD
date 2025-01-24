@@ -116,6 +116,8 @@ def setStatusIcons(show=True):
         if show:
             if statuswidget:
                 statuswidget.show()
+                if hasattr(statuswidget, "propertybuttons"):
+                    statuswidget.propertybuttons.show()
             else:
                 statuswidget = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
                 statuswidget.setObjectName("BIMStatusWidget")
@@ -221,3 +223,5 @@ def setStatusIcons(show=True):
             if statuswidget:
                 statuswidget.hide()
                 statuswidget.toggleViewAction().setVisible(False)
+                if hasattr(statuswidget, "propertybuttons"):
+                    statuswidget.propertybuttons.hide()

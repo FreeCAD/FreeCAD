@@ -104,8 +104,7 @@ Main window
 ==================================================================================================*/
 QMainWindow,
 QDialog,
-QDockWidget,
-QToolBar  {
+QDockWidget {
     background-color: #f0f0f0; /* main background color */
 }
 
@@ -886,6 +885,12 @@ QToolBar {
   /* font-weight: bold; */
 }
 
+/* fix background color for toolbars that are the on menubar. */
+QToolBar:only-one {
+  background-color: transparent;
+  /* margin-top: -3px; */
+}
+
 QToolBar:horizontal {
   border-bottom: 1px solid #ababab;
   padding-top: 3px;
@@ -1633,11 +1638,16 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   color: black;
   text-align: center;
   background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #f0f0f0, stop:1 #fdfdfd);
-  border: 0px solid #adadad;
+  border: 1px solid #adadad;
   padding: 1px 1px; /* different than regular QPushButton */
   margin: 0px; /* different than regular QPushButton */
   min-height: 16px; /* same as QTabBar QPushButton min-width */
   border-radius: 3px;
+}
+
+QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #fefefe, stop:1 #f8f8f8);
+  border: 1px solid @ThemeAccentColor2;
 }
 
 /* QToolButtons with a menu found in Sketcher task panel*/
@@ -1870,7 +1880,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtabwidget-and-qtabb
 --------------------------------------------------------------------------- */
 QTabBar, QDockWidget QTabBar {
   qproperty-drawBase: 0;
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   /* left: 5px; move to the right by 5px - removed for fix */
 }
 
@@ -2358,28 +2368,28 @@ QColumnView::item:!selected:hover {
   background-color: @ThemeAccentColor1;
 }
 
-QTableCornerButton::section {
-  background-color: #d8d8d8;
-  border: 1px transparent #ababab;
-  border-radius: 0px;
-}
-
 QTableView::item {
     color: black;
 }
-QTableView {
-  /*qproperty-AliasedCellBackgroundColor: #f700ff;*/
-  /*qproperty-aliasBgColor: #f700ff;*/
-}
-
 /* QHeaderView ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
 
 --------------------------------------------------------------------------- */
+
+QTableCornerButton::section {
+  background-color: #f0f0f0;
+  border-radius: 0px; /*if you remove this line it breaks it*/
+  border-bottom: 1px solid #ababab;
+  border-right: 1px solid #ababab;
+  border-top: 0px solid #ababab;
+  border-left: 0px solid #ababab;
+}
+
 QHeaderView {
   background-color: transparent;
   /* text-align: bottom; */
+  margin: -1px; /* fix for misalignement*/
 }
 
 QHeaderView:disabled {
@@ -2390,17 +2400,14 @@ QHeaderView:disabled {
 QHeaderView::section {
   background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #f0f0f0, stop:1 #fdfdfd);
   color: black;
-  border-bottom: 1px solid #ababab;
-  border-right: 1px solid #ababab;
-  border-top: 1px solid #ababab;
-  border-left: 1px solid transparent;
+  padding: 4px;
 }
 
 QHeaderView::section::horizontal {
-  /* padding-top: 1px;
-  padding-bottom: 1px;
-  padding-left: 5px;
-  padding-right: 0px; */
+  border-bottom: 2px solid #ababab;
+  border-right: 0px solid transparent;
+  border-top: 2px solid #ababab;
+  border-left: 1px solid #ababab;
 }
 
 QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-one {
@@ -2412,11 +2419,16 @@ QHeaderView::section::horizontal:disabled {
 }
 
 QHeaderView::section::vertical {
+  border-bottom: 0px solid transparent;
+  border-right: 1px solid #ababab;
   border-top: 1px solid #ababab;
+  border-left: 1px solid #ababab;
+  margin-left: 1px;
+  margin-right: 1px;
 }
 
 QHeaderView::section::vertical::first, QHeaderView::section::vertical::only-one {
-  border-top: 2px solid #ababab;
+  /* border-top: 2px solid #ababab; */
 }
 
 QHeaderView::section::vertical:disabled {

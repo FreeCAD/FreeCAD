@@ -254,6 +254,29 @@ PyObject* DocumentPy::activeView(PyObject *args)
     PY_CATCH;
 }
 
+PyObject* DocumentPy::createView(PyObject *args)
+{
+    char* sType;
+    if (!PyArg_ParseTuple(args, "s", &sType))
+        return nullptr;
+
+    Base::Type type = Base::Type::fromName(sType);
+    if (type.isBad()) {
+        PyErr_Format(PyExc_TypeError, "'%s' is not a valid type", sType);
+        return nullptr;
+    }
+
+    PY_TRY {
+        Gui::MDIView* pcView = getDocumentPtr()->createView(type);
+        if (pcView) {
+            return pcView->getPyObject();
+        } else {
+            Py_Return;
+        }
+    }
+    PY_CATCH;
+}
+
 PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
 {
     char* sType;

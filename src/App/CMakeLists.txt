@@ -167,7 +167,7 @@ SET(Document_CPP_SRCS
     InventorObject.cpp
     Placement.cpp
     ProjectFile.cpp
-    OriginFeature.cpp
+    Datums.cpp
     Range.cpp
     Transactions.cpp
     TransactionalObject.cpp
@@ -213,7 +213,7 @@ SET(Document_HPP_SRCS
     InventorObject.h
     Placement.h
     ProjectFile.h
-    OriginFeature.h
+    Datums.h
     Range.h
     Transactions.h
     TransactionalObject.h
@@ -288,6 +288,8 @@ SET(FreeCADApp_CPP_SRCS
     Metadata.cpp
     MetadataPyImp.cpp
     ElementNamingUtils.cpp
+    SafeMode.cpp
+    Services.cpp
     StringHasher.cpp
     StringHasherPyImp.cpp
     StringIDPyImp.cpp
@@ -312,6 +314,7 @@ SET(FreeCADApp_HPP_SRCS
     MeasureManager.h
     Metadata.h
     ElementNamingUtils.h
+    Services.h
     StringHasher.h
 )
 

@@ -59,6 +59,7 @@
 #include "FemSettings.h"
 
 #ifdef FC_USE_VTK
+#include <Mod/Fem/App/FemPostFilter.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 #include <Mod/Fem/Gui/ViewProviderFemPostObject.h>
 #endif
@@ -222,8 +223,7 @@ bool CmdFemAddPart::isActive(void)
 {
     if (Gui::Control().activeDialog())
         return false;
-    Base::Type type = Base::Type::fromName("Part::Feature");
-    return Gui::Selection().countObjectsOfType(type) > 0;
+    return Gui::Selection().countObjectsOfType<Part::Feature>(type) > 0;
 }
 */
 
@@ -1164,7 +1164,7 @@ void CmdFemDefineNodesSet::activated(int)
 bool CmdFemDefineNodesSet::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Fem::FemMeshObject::getClassTypeId()) != 1) {
+    if (getSelection().countObjectsOfType<Fem::FemMeshObject>() != 1) {
         return false;
     }
 
@@ -1313,7 +1313,7 @@ void CmdFemDefineElementsSet::activated(int)
 bool CmdFemDefineElementsSet::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Fem::FemMeshObject::getClassTypeId()) != 1) {
+    if (getSelection().countObjectsOfType<Fem::FemMeshObject>() != 1) {
         return false;
     }
 
@@ -1334,7 +1334,7 @@ CmdFemCreateElementsSet::CmdFemCreateElementsSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Erase Elements");
+    sMenuText = QT_TR_NOOP("Erase elements");
     sToolTipText = QT_TR_NOOP("Creates a FEM mesh elements set");
     sWhatsThis = "FEM_CreateElementsSet";
     sStatusTip = sToolTipText;
@@ -2027,25 +2027,25 @@ bool CmdFemPostClipFilter::isActive()
         return false;
     }
     // only activate if a result is either a post pipeline or a possible filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
+    if (getSelection().countObjectsOfType<Fem::FemPostPipeline>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostDataAlongLineFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostScalarClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostContoursFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostCutFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostWarpVectorFilter>() == 1) {
         return true;
     }
     return false;
@@ -2079,25 +2079,25 @@ bool CmdFemPostCutFilter::isActive()
         return false;
     }
     // only activate if a result is either a post pipeline or a possible filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
+    if (getSelection().countObjectsOfType<Fem::FemPostPipeline>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostContoursFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostCutFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostScalarClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostDataAlongLineFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostWarpVectorFilter>() == 1) {
         return true;
     }
     return false;
@@ -2131,22 +2131,22 @@ bool CmdFemPostDataAlongLineFilter::isActive()
         return false;
     }
     // only activate if a result is either a post pipeline or a possible filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
+    if (getSelection().countObjectsOfType<Fem::FemPostPipeline>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostContoursFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostCutFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostScalarClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostWarpVectorFilter>() == 1) {
         return true;
     }
     return false;
@@ -2181,22 +2181,22 @@ bool CmdFemPostDataAtPointFilter::isActive()
         return false;
     }
     // only activate if a result is either a post pipeline or a possible filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
+    if (getSelection().countObjectsOfType<Fem::FemPostPipeline>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostCutFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostDataAlongLineFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostScalarClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostWarpVectorFilter>() == 1) {
         return true;
     }
     return false;
@@ -2306,22 +2306,22 @@ bool CmdFemPostScalarClipFilter::isActive()
         return false;
     }
     // only activate if a result is either a post pipeline or a possible other filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
+    if (getSelection().countObjectsOfType<Fem::FemPostPipeline>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostContoursFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostCutFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostDataAlongLineFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostWarpVectorFilter>() == 1) {
         return true;
     }
     return false;
@@ -2355,22 +2355,22 @@ bool CmdFemPostWarpVectorFilter::isActive()
         return false;
     }
     // only activate if a result is either a post pipeline or a possible other filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
+    if (getSelection().countObjectsOfType<Fem::FemPostPipeline>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostCutFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostContoursFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostDataAlongLineFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostScalarClipFilter>() == 1) {
         return true;
     }
     return false;
@@ -2404,22 +2404,22 @@ bool CmdFemPostContoursFilter::isActive()
         return false;
     }
     // only activate if a result is either a post pipeline or a possible other filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
+    if (getSelection().countObjectsOfType<Fem::FemPostPipeline>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostCutFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostDataAlongLineFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostScalarClipFilter>() == 1) {
         return true;
     }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
+    else if (getSelection().countObjectsOfType<Fem::FemPostWarpVectorFilter>() == 1) {
         return true;
     }
     return false;

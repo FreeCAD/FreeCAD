@@ -23,15 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <Standard_Failure.hxx>
 #endif
 
-#include <App/Application.h>
 #include <App/DocumentObject.h>
-#include <Base/Parameter.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
@@ -43,6 +41,8 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true);
 using namespace PartDesign;
 
 namespace PartDesign {
+
+extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 

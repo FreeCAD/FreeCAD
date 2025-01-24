@@ -77,7 +77,7 @@ StdCmdRandomColor::StdCmdRandomColor()
   :Command("Std_RandomColor")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Random color");
+    sMenuText     = QT_TR_NOOP("Random &color");
     sToolTipText  = QT_TR_NOOP("Set each selected object to a randomly-selected color");
     sWhatsThis    = "Std_RandomColor";
     sStatusTip    = QT_TR_NOOP("Set each selected object to a randomly-selected color");
@@ -172,22 +172,27 @@ StdCmdToggleFreeze::StdCmdToggleFreeze()
 void StdCmdToggleFreeze::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    getActiveGuiDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle freeze"));
 
     std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
 
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle freeze"));
     for (Gui::SelectionSingleton::SelObj& sel : sels) {
         App::DocumentObject* obj = sel.pObject;
         if (!obj)
             continue;
 
-        if (obj->isFreezed())
+        if (obj->isFreezed()){
             obj->unfreeze();
-        else
+            for (auto child : obj->getInListRecursive())
+                child->unfreeze();
+        } else {
             obj->freeze();
-    }
+            for (auto parent : obj->getOutListRecursive())
+                parent->freeze();
+        }
 
-    getActiveGuiDocument()->commitCommand();
+    }
+    Command::commitCommand();
 }
 
 bool StdCmdToggleFreeze::isActive()

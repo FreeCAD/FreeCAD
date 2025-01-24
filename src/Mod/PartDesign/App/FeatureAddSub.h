@@ -40,6 +40,11 @@ public:
         Subtractive
     };
 
+    enum class RefineErrorPolicy {
+        Raise = 0,
+        Warn
+    };
+
     FeatureAddSub();
 
     Type getAddSubType();
@@ -50,9 +55,9 @@ public:
 
     Part::PropertyPartShape   AddSubShape;
 
+
 protected:
     Type addSubType{Additive};
-
 };
 
 using FeatureAddSubPython = App::FeaturePythonT<FeatureAddSub>;

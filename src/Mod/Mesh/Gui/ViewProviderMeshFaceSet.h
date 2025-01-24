@@ -55,11 +55,11 @@ public:
     ViewProviderMeshFaceSet();
     ~ViewProviderMeshFaceSet() override;
 
-    void attach(App::DocumentObject* pcFeat) override;
-    void updateData(const App::Property*) override;
+    void attach(App::DocumentObject* obj) override;
+    void updateData(const App::Property* prop) override;
 
 protected:
-    void showOpenEdges(bool) override;
+    void showOpenEdges(bool show) override;
     SoShape* getShapeNode() const override;
     SoNode* getCoordNode() const override;
 

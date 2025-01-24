@@ -37,7 +37,7 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryCompound, RobotGui::ViewProvider
 // bool ViewProviderTrajectoryCompound::doubleClicked(void)
 //{
 //     Gui::TaskView::TaskDialog* dlg = new
-//     TaskDlgTrajectoryCompound(dynamic_cast<Robot::TrajectoryCompound *>(getObject()));
+//     TaskDlgTrajectoryCompound(getObject<Robot::TrajectoryCompound >());
 //     Gui::Control().showDialog(dlg);
 //     return true;
 // }
@@ -46,7 +46,7 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryCompound, RobotGui::ViewProvider
 bool ViewProviderTrajectoryCompound::setEdit(int)
 {
     Gui::TaskView::TaskDialog* dlg =
-        new TaskDlgTrajectoryCompound(dynamic_cast<Robot::TrajectoryCompound*>(getObject()));
+        new TaskDlgTrajectoryCompound(getObject<Robot::TrajectoryCompound>());
     Gui::Control().showDialog(dlg);
     return true;
 }
@@ -59,5 +59,5 @@ void ViewProviderTrajectoryCompound::unsetEdit(int)
 
 std::vector<App::DocumentObject*> ViewProviderTrajectoryCompound::claimChildren() const
 {
-    return static_cast<Robot::TrajectoryCompound*>(getObject())->Source.getValues();
+    return getObject<Robot::TrajectoryCompound>()->Source.getValues();
 }

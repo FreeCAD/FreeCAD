@@ -50,8 +50,7 @@ PropertyConstraintListItem::~PropertyConstraintListItem()
 QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
 {
     const QList<Base::Quantity>& value = prop.value<QList<Base::Quantity>>();
-    QString str;
-    QTextStream out(&str);
+    std::stringstream out;
     out << "[";
     for (QList<Base::Quantity>::const_iterator it = value.begin(); it != value.end(); ++it) {
         if (it != value.begin()) {
@@ -60,7 +59,7 @@ QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
         out << it->getUserString();
     }
     out << "]";
-    return QVariant(str);
+    return QVariant(QString::fromStdString(out.str()));
 }
 
 void PropertyConstraintListItem::initialize()

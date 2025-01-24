@@ -724,7 +724,7 @@
     <message>
       <location filename="../../Command.cpp" line="1816"/>
       <source>Mesh scale</source>
-      <translation type="unfinished">Mesh scale</translation>
+      <translation>Škálovat síť</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="156"/>
@@ -785,7 +785,7 @@
       <location filename="../../ViewProvider.cpp" line="963"/>
       <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
-      <translation>Řezat</translation>
+      <translation>Oříznout</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="973"/>

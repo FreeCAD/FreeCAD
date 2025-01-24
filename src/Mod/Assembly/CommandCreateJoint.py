@@ -47,11 +47,7 @@ def noOtherTaskActive():
 
 
 def isCreateJointActive():
-    return (
-        UtilsAssembly.isAssemblyGrounded()
-        and UtilsAssembly.assembly_has_at_least_n_parts(2)
-        and noOtherTaskActive()
-    )
+    return UtilsAssembly.assembly_has_at_least_n_parts(1) and noOtherTaskActive()
 
 
 def activateJoint(index):
@@ -229,7 +225,7 @@ class CommandCreateJointDistance:
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointDistance",
-                "Create one of several different joints based on the selection."
+                "Create one of several different joints based on the selection. "
                 "For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.",
             )
             + "</p>",

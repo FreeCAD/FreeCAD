@@ -244,7 +244,7 @@ std::vector<float> PropertyCurvatureList::getCurvature(int mode) const
     // Mean curvature
     if (mode == MeanCurvature) {
         for (const auto& it : fCurvInfo) {
-            fValues.push_back(0.5f * (it.fMaxCurvature + it.fMinCurvature));
+            fValues.push_back(0.5F * (it.fMaxCurvature + it.fMinCurvature));
         }
     }
     // Gaussian curvature
@@ -861,7 +861,7 @@ void PropertyMeshKernel::setPyObject(PyObject* value)
 {
     if (PyObject_TypeCheck(value, &(MeshPy::Type))) {
         MeshPy* mesh = static_cast<MeshPy*>(value);
-        // Do not allow to reassign the same instance
+        // Do not allow one to reassign the same instance
         if (&(*this->_meshObject) != mesh->getMeshObjectPtr()) {
             // Note: Copy the content, do NOT reference the same mesh object
             setValue(*(mesh->getMeshObjectPtr()));

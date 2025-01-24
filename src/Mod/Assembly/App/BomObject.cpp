@@ -228,7 +228,7 @@ void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string
     size_t col = 0;
     for (auto& columnName : columnsNames.getValues()) {
         if (columnName == "Index") {
-            setCell(App::CellAddress(row, col), index.c_str());
+            setCell(App::CellAddress(row, col), (std::string("'") + index).c_str());
         }
         else if (columnName == "Name") {
             setCell(App::CellAddress(row, col), obj->Label.getValue());

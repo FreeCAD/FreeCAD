@@ -24,9 +24,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
@@ -34,6 +34,7 @@
 # include <BRepOffsetAPI_MakePipe.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
@@ -61,6 +62,7 @@ PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
 // we purposely use not FLT_MAX because this would not be computable
 const App::PropertyFloatConstraint::Constraints Helix::floatTurns = { Precision::Confusion(), INT_MAX, 1.0 };
+const App::PropertyFloatConstraint::Constraints Helix::floatTolerance = { 0.1, INT_MAX, 1.0 };
 const App::PropertyAngle::Constraints Helix::floatAngle = { -89.0, 89.0, 1.0 };
 
 Helix::Helix()
@@ -104,6 +106,9 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(HasBeenEdited, (false), group, App::Prop_Hidden,
         QT_TRANSLATE_NOOP("App::Property", "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
             "so that self intersection is avoided."));
+    ADD_PROPERTY_TYPE(Tolerance, (0.1), group, App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part."));
+    Tolerance.setConstraints(&floatTolerance);
 
     setReadWriteStatusForMode(initialMode);
 }
@@ -121,6 +126,13 @@ short Helix::mustExecute() const
 
 App::DocumentObjectExecReturn* Helix::execute()
 {
+
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape, RefineErrorPolicy::Warn);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     // Validate and normalize parameters
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
     if (mode == HelixMode::pitch_height_angle) {
@@ -229,6 +241,17 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         TopoDS_Shape face = sketchshape;
         face.Move(invObjLoc);
+
+        Bnd_Box bounds;
+        BRepBndLib::Add(path, bounds);
+        double size=sqrt(bounds.SquareExtent());
+        ShapeFix_ShapeTolerance fix;
+        fix.LimitTolerance(path, Precision::Confusion() * 1e-6 * size ); // needed to produce valid Pipe for very big parts
+        // We introduce final part tolerance with the second call to LimitTolerance below, however
+        // OCCT has a bug where the side-walls of the Pipe disappear with very large (km range) pieces
+        // increasing a tiny bit of extra tolerance to the path fixes this. This will in any case
+        // be less than the tolerance lower limit below, but sufficient to avoid the bug
+
         BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
         result = mkPS.Shape();
 
@@ -237,6 +260,8 @@ App::DocumentObjectExecReturn* Helix::execute()
         if (SC.State() == TopAbs_IN) {
             result.Reverse();
         }
+
+        fix.LimitTolerance(result, Precision::Confusion() * size * Tolerance.getValue() ); // significant precision reduction due to helical approximation - needed to allow fusion to succeed
 
         AddSubShape.setValue(result);
 
@@ -250,13 +275,15 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
+                // store shape before refinement
+            this->rawShape = result;
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
 
         if (getAddSubType() == FeatureAddSub::Additive) {
 
-            BRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
+            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
             if (!mkFuse.IsDone()){
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
             }
@@ -272,7 +299,9 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
-            boolOp = refineShapeIfActive(boolOp);
+            // store shape before refinement
+            this->rawShape = boolOp;
+            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
@@ -280,14 +309,14 @@ App::DocumentObjectExecReturn* Helix::execute()
             TopoShape boolOp;
 
             if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
-                BRepAlgoAPI_Common mkCom(result, base.getShape());
+                FCBRepAlgoAPI_Common mkCom(result, base.getShape());
                 if (!mkCom.IsDone())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed"));
                 boolOp = this->getSolid(mkCom.Shape());
 
             }
             else {
-                BRepAlgoAPI_Cut mkCut(base.getShape(), result);
+                FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
                 if (!mkCut.IsDone())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed"));
                 boolOp = this->getSolid(mkCut.Shape());
@@ -301,7 +330,9 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
-            boolOp = refineShapeIfActive(boolOp);
+            // store shape before refinement
+            this->rawShape = boolOp;
+            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
 
@@ -377,8 +408,7 @@ TopoDS_Shape Helix::generateHelixPath(double breakAtTurn)
     bool turned = axisOffset < 0;
     // since the factor does not only change the radius but also the path position, we must shift its offset back
     // using the square of the factor
-    double noAngle = angle == 0. ? 1. : 0.; // alternative to the legacy use of an auxiliary path
-    double startOffset = 10000.0 * std::fabs(noAngle * (profileCenter * axisVector) - baseVector * axisVector);
+    double startOffset = 10000.0 * std::fabs((angle <= 0. ? 1. : 0.) * (profileCenter * axisVector) - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane

@@ -99,7 +99,6 @@ public:
 
     PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
-
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
 
     void setTabText(std::string tabText);
@@ -157,9 +156,6 @@ private:
     ViewProviderPage* m_vpPage;
 
     QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
-
-    void getPaperAttributes();
-    PagePrinter* m_pagePrinter;
 
 };
 

@@ -186,10 +186,9 @@ void TaskExtrudeParameters::setupDialog()
 
     ui->listWidgetReferences->addAction(unselectShapeFaceAction);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    ui->checkBoxAllFaces->setChecked(ui->listWidgetReferences->count() == 0);
 
     connectSlots();
-
-    ui->checkBoxAllFaces->setChecked(ui->listWidgetReferences->count() == 0);
 
     this->propReferenceAxis = &(extrude->ReferenceAxis);
 
@@ -397,8 +396,10 @@ void TaskExtrudeParameters::selectedShapeFace(const Gui::SelectionChanges& msg)
     }
 
     auto base = static_cast<Part::Feature*>(extrude->UpToShape.getValue());
-
-    if (strcmp(msg.pObjectName, base->getNameInDocument()) != 0) {
+    if (!base){
+        base = static_cast<Part::Feature*>(extrude);
+    }
+    else if (strcmp(msg.pObjectName, base->getNameInDocument()) != 0) {
         return;
     }
 
@@ -924,7 +925,7 @@ void TaskExtrudeParameters::setDirectionMode(int index)
         extrude->UseCustomVector.setValue(false);
     }
 
-    // if we don't use custom direction, only allow to show its direction
+    // if we don't use custom direction, only allow one to show its direction
     if (index != DirectionModes::Custom) {
         ui->XDirectionEdit->setEnabled(false);
         ui->YDirectionEdit->setEnabled(false);

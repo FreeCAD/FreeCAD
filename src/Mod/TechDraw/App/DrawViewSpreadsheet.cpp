@@ -63,6 +63,9 @@ DrawViewSpreadsheet::DrawViewSpreadsheet()
     ADD_PROPERTY_TYPE(TextSize, (12.0), vgroup, App::Prop_None, "The size of the text");
     ADD_PROPERTY_TYPE(LineWidth, (0.35), vgroup, App::Prop_None, "The thickness of the cell lines");
 
+    ADD_PROPERTY_TYPE(Owner, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
+                      "Feature to which this sheet is attached");
+
     EditableTexts.setStatus(App::Property::Hidden, true);
 
 }
@@ -272,8 +275,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
             if (prop && cell) {
                 if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
                     auto contentAsQuantity = static_cast<App::PropertyQuantity*>(prop)->getQuantityValue();
-                    auto ustring = contentAsQuantity.getUserString();
-                    field << Base::Tools::toStdString(ustring);
+                    field << contentAsQuantity.getUserString();
                 } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
                            prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
                     std::string temp = cell->getFormattedQuantity();

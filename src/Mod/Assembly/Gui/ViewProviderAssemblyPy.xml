@@ -14,6 +14,15 @@
             <UserDocu>This is the ViewProviderAssembly class</UserDocu>
         </Documentation>
 
+        <Methode Name="isInEditMode">
+          <Documentation>
+            <UserDocu>
+              Return true if the assembly object is currently in edit mode.
+
+              isInEditMode() -> bool
+            </UserDocu>
+          </Documentation>
+        </Methode>
         <Methode Name="getDragger">
           <Documentation>
             <UserDocu>

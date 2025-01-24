@@ -212,6 +212,7 @@ class _Space(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
         obj.IfcType = "Space"
+        obj.CompositionType = "ELEMENT"
 
     def setProperties(self,obj):
 
@@ -261,6 +262,11 @@ class _Space(ArchComponent.Component):
 
         if self.clone(obj):
             return
+
+        # Space can do without Base.  Base validity is tested in getShape() code below.
+        # Remarked out ensureBase() below
+        #if not self.ensureBase(obj):
+        #    return
         self.getShape(obj)
 
     def onChanged(self,obj,prop):
@@ -321,11 +327,11 @@ class _Space(ArchComponent.Component):
         #print("starting compute")
 
         # 1: if we have a base shape, we use it
-        if obj.Base:
-            if hasattr(obj.Base,'Shape'):
-                if obj.Base.Shape.Solids:
-                    shape = obj.Base.Shape.copy()
-                    shape = shape.removeSplitter()
+        # Check if there is obj.Base and its validity to proceed
+        if self.ensureBase(obj):
+            if obj.Base.Shape.Solids:
+                shape = obj.Base.Shape.copy()
+                shape = shape.removeSplitter()
 
         # 2: if not, add all bounding boxes of considered objects and build a first shape
         if shape:

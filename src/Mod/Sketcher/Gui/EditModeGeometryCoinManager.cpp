@@ -402,6 +402,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                     ViewProviderSketchCoinAttorney::isCurveSelected(viewProvider, GeoId);
                 bool preselected = (preselectcurve == GeoId);
                 bool constrainedElement = isFullyConstraintElement(GeoId);
+                bool isExternal = GeoId < -1;
 
                 if (selected || preselected) {
                     color[i] = selected ? (preselected ? drawingParameters.PreselectSelectedColor
@@ -414,7 +415,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                             SbVec3f(x, y, viewOrientationFactor * drawingParameters.zHighLine);
                     }
                 }
-                else if (geometryLayerParameters.isExternalSubLayer(t)) {
+                else if (isExternal) {
                     auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
                     auto egf = ExternalGeometryFacade::getFacade(geom->clone());
                     auto ref = egf->getRef();

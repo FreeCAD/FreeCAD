@@ -367,6 +367,7 @@ SET(FemGuiIcon_SVG
 SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
+    Resources/symbols/ConstraintElectrostaticPotential.iv
     Resources/symbols/ConstraintFixed.iv
     Resources/symbols/ConstraintForce.iv
     Resources/symbols/ConstraintHeatFlux.iv
@@ -400,6 +401,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
     Resources/ui/CurrentDensity.ui
+    Resources/ui/DlgSettingsNetgen.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui

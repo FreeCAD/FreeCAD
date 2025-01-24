@@ -39,4 +39,4 @@ class VPMeshGroup(view_base_femmeshelement.VPBaseFemMeshElement):
     """
 
     def setEdit(self, vobj, mode=0):
-        super().setEdit(vobj, mode, task_mesh_group._TaskPanel)
+        return super().setEdit(vobj, mode, task_mesh_group._TaskPanel)

@@ -26,7 +26,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 1. FreeCAD uses the git distributed revision control system.
 2. Source code for the main application and related subprojects is hosted on github.com in the FreeCAD organization.
 3. Problems are discrete, well-defined limitations or bugs.
-4. FreeCAD uses GitHub's issue-tracking system to track problems and contributions. For help requests and general discussions, use the project forum. 
+4. FreeCAD uses GitHub's issue-tracking system to track problems and contributions. For help requests and general discussions, use the project forum.
 5. Contributions are sets of code changes that resolve a single problem.
 6. FreeCAD uses the Pull Request workflow for evaluating and accepting contributions.
 
@@ -47,7 +47,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 ## 5. Contribution Requirements
 
 1. Contributions are submitted in the form of Pull Requests (PR).
-2. Maintainers and Contributors MUST have a GitHub account and SHOULD use their real names or a well-known alias. 
+2. Maintainers and Contributors MUST have a GitHub account and SHOULD use their real names or a well-known alias.
 3. If the GitHub username differs from the username on the FreeCAD Forum, effort SHOULD be taken to avoid confusion.
 4. A PR SHOULD be a minimal and accurate answer to exactly one identified and agreed-on problem.
 5. A PR SHOULD refrain from adding additional dependencies to the FreeCAD project unless no other option is available.
@@ -55,9 +55,10 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 7. If a PR contains multiple commits, each commit MUST compile cleanly when merged with all previous commits of the same PR. Each commit SHOULD add value to the history of the project. Checkpoint commits SHOULD be squashed.
 8. A PR SHALL NOT include non-trivial code from other projects unless the Contributor is the original author of that code.
 9. A PR MUST compile cleanly and pass project self-tests on all target platforms.
-10. Each commit message in a PR MUST succinctly explain what the commit achieves. The commit message SHALL follow the suggestions in the `git commit --help` documentation, section DISCUSSION.
-11. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consists of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed. If a PR changes the user interface (UI), the body of the text MUST include a presentation of these UI changes, preferably with screenshots of the previous and revised state.
-12. A “Valid PR” is one which satisfies the above requirements.
+10. Changes that break python API used by extensions SHALL be avoided. If it is not possible to avoid breaking changes, the amount of them MUST be minimized and PR MUST clearly describe all breaking changes with clear description on how to replace no longer working solution with newer one. Contributor SHOULD search for addons that will be broken and list them in the PR.
+11. Each commit message in a PR MUST succinctly explain what the commit achieves. The commit message SHALL follow the suggestions in the `git commit --help` documentation, section DISCUSSION.
+12. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consists of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed. If a PR changes the user interface (UI), the body of the text MUST include a presentation of these UI changes, preferably with screenshots of the previous and revised state.
+13. A “Valid PR” is one which satisfies the above requirements.
 
 ## 6. Process
 

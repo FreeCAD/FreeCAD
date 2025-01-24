@@ -129,13 +129,13 @@ public:
             if (value.isValid())
                 return value;
             else
-                return Base::Tools::fromStdString(
+                return QString::fromStdString(
                     Sketcher::PropertyConstraintList::getConstraintName(constraint->Name,
                                                                         ConstraintNbr));
         }
         else if (role == Qt::DisplayRole) {
             QString name =
-                Base::Tools::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
+                QString::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
                     constraint->Name, ConstraintNbr));
 
             switch (constraint->Type) {
@@ -158,7 +158,8 @@ public:
                 case Sketcher::Diameter:
                 case Sketcher::Angle:
                     name = QString::fromLatin1("%1 (%2)").arg(
-                        name, constraint->getPresentationValue().getUserString());
+                        name,
+                        QString::fromStdString(constraint->getPresentationValue().getUserString()));
                     break;
                 case Sketcher::SnellsLaw: {
                     double v = constraint->getPresentationValue().getValue();
@@ -342,7 +343,7 @@ public:
             App::PropertyExpressionEngine::ExpressionInfo expr_info = sketch->getExpression(path);
 
             if (expr_info.expression)
-                return Base::Tools::fromStdString(expr_info.expression->toString());
+                return QString::fromStdString(expr_info.expression->toString());
             else
                 return QVariant();
         }
@@ -814,6 +815,7 @@ FilterValueBitset ConstraintFilterList::getMultiFilter()
 
 TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_CreateLineAngleLength"), tr("Constraints"), true, nullptr)
+    , specialFilterMode{SpecialFilterType::None}
     , sketchView(sketchView)
     , inEditMode(false)
     , ui(new Ui_TaskSketcherConstraints)
@@ -1209,7 +1211,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     const Sketcher::Constraint* v = vals[it->ConstraintNbr];
     const std::string currConstraintName = v->Name;
 
-    const std::string basename = Base::Tools::toStdString(it->data(Qt::EditRole).toString());
+    const std::string basename = it->data(Qt::EditRole).toString().toStdString();
 
     std::string newName(
         Sketcher::PropertyConstraintList::getConstraintName(basename, it->ConstraintNbr));
@@ -1369,6 +1371,10 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
+                                if (select && ui->listWidgetConstraints->model()) { // scrollTo only on select, not de-select
+                                    QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
+                                    ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
+                                }
                                 break;
                             }
                         }
@@ -1709,7 +1715,7 @@ void TaskSketcherConstraints::slotConstraintsChanged()
         QAbstractItemModel* model = ui->listWidgetConstraints->model();
         auto tmpBlock = model->blockSignals(true);
         it->setHidden(!visible);
-        it->setData(Qt::EditRole, Base::Tools::fromStdString(constraint->Name));
+        it->setData(Qt::EditRole, QString::fromStdString(constraint->Name));
         model->blockSignals(tmpBlock);
     }
 }

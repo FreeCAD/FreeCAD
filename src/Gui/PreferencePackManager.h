@@ -176,7 +176,7 @@ namespace Gui {
          *
          * If the named preferencePack does not exist, this creates it on disk. If it does exist, this overwrites the original.
          */
-        void save(const std::string& name, const std::vector<TemplateFile>& templates);
+        void save(const std::string& name, const std::string& directory, const std::vector<TemplateFile>& templates);
 
 
         std::vector<TemplateFile> templateFiles(bool rescan = false);
@@ -190,6 +190,26 @@ namespace Gui {
          * Import an existing config file as a preference pack with a given name.
          */
         void importConfig(const std::string &packName, const boost::filesystem::path &path);
+
+        /**
+         * Get a list of all mod directories.
+         */
+        std::vector<boost::filesystem::path> modPaths() const;
+
+        /**
+         * Get the path to the saved preference packs.
+         */
+        boost::filesystem::path getSavedPreferencePacksPath() const;
+
+        /**
+         * Get the path to the preference packs of the resource directory.
+         */
+        boost::filesystem::path getResourcePreferencePacksPath() const;
+
+        /**
+         * Collect all preference packs of a directory.
+         */
+        std::vector<std::string> getPacksFromDirectory(const boost::filesystem::path& path) const;
 
     private:
 

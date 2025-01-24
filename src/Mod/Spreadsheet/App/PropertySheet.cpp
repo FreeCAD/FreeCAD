@@ -127,39 +127,49 @@ const Cell* PropertySheet::getValueFromAlias(const std::string& alias) const
     }
 }
 
+bool PropertySheet::isValidCellAddressName(const std::string& candidate)
+{
+    /* Check if it matches a cell reference */
+    static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
+    boost::cmatch cm;
+
+    if (boost::regex_match(candidate.c_str(), cm, e)) {
+        const boost::sub_match<const char*> colstr = cm[1];
+        const boost::sub_match<const char*> rowstr = cm[2];
+
+        if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str())) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool PropertySheet::isValidAlias(const std::string& candidate)
 {
+    /* Ensure it only contains allowed characters */
     static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
     boost::cmatch cm;
+    if (!boost::regex_match(candidate.c_str(), cm, gen)) {
+        return false;
+    }
 
     /* Check if it is used before */
     if (getValueFromAlias(candidate)) {
         return false;
     }
 
-    /* Check to make sure it doesn't clash with a predefined unit */
-    if (ExpressionParser::isTokenAUnit(candidate)) {
+    /* Check if it would be a valid cell address name, e.g. "A2" or "C3" */
+    if (isValidCellAddressName(candidate)) {
         return false;
     }
 
-    /* Check to make sure it doesn't match a cell reference */
-    if (boost::regex_match(candidate.c_str(), cm, gen)) {
-        static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
-
-        if (boost::regex_match(candidate.c_str(), cm, e)) {
-            const boost::sub_match<const char*> colstr = cm[1];
-            const boost::sub_match<const char*> rowstr = cm[2];
-
-            // A valid cell address?
-            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str())) {
-                return false;
-            }
-        }
-        return true;
-    }
-    else {
+    /* Check to make sure it doesn't clash with a reserved name */
+    if (ExpressionParser::isTokenAUnit(candidate)
+        || ExpressionParser::isTokenAConstant(candidate)) {
         return false;
     }
+
+    return true;
 }
 
 namespace

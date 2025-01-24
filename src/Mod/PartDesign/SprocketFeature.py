@@ -332,7 +332,3 @@ class SprocketTaskPanel:
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
-
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('PartDesign_Sprocket', CommandSprocket())

@@ -53,6 +53,16 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
 
         prop.append(
             _PropHelper(
+                type="App::PropertyLinkList",
+                name="MeshRegionList",
+                group="Base",
+                doc="Refinements of the mesh",
+                value=[],
+            )
+        )
+        # mesh parameters
+        prop.append(
+            _PropHelper(
                 type="App::PropertyString",
                 name="Optimize3d",
                 group="Mesh Parameters",
@@ -67,20 +77,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyEnumeration",
-                name="Fineness",
-                group="Mesh Parameters",
-                doc="Fineness",
-                value=["VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined"],
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="OptimizationSteps3d",
                 group="Mesh Parameters",
                 doc="Number of 3d optimization steps",
-                value=3,
+                value={"value": 3, "min": 0},
             )
         )
         prop.append(
@@ -97,11 +98,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="OptimizationSteps2d",
                 group="Mesh Parameters",
                 doc="Number of 2d optimization steps",
-                value=3,
+                value={"value": 3, "min": 0},
             )
         )
         prop.append(
@@ -133,20 +134,20 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="Safety",
                 group="Mesh Parameters",
                 doc="Radius of local environment (times h)",
-                value=5.0,
+                value={"value": 5.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="RelinnerSafety",
                 group="Mesh Parameters",
                 doc="Radius of active environment (times h)",
-                value=3.0,
+                value={"value": 3.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
@@ -169,11 +170,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="GrowthRate",
                 group="Mesh Parameters",
                 doc="Grading for local h",
-                value=0.3,
+                value={"value": 0.3, "min": 0, "step": 0.1},
             )
         )
         prop.append(
@@ -214,11 +215,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="CloseEdgeFactor",
                 group="Mesh Parameters",
                 doc="Factor to restrict meshing based on close edges",
-                value=2.0,
+                value={"value": 2.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
@@ -259,92 +260,103 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="CurvatureSafety",
                 group="Mesh Parameters",
                 doc="Safety factor for curvatures (elements per radius)",
-                value=2.0,
+                value={"value": 2.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="SegmentsPerEdge",
                 group="Mesh Parameters",
                 doc="Minimal number of segments per edge",
-                value=2.0,
+                value={"value": 2.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="ElementSizeWeight",
                 group="Mesh Parameters",
-                doc="Weight of element size respect to  element shape",
-                value=0.2,
+                doc="Weight of element size respect to element shape",
+                value={"value": 0.2, "min": 0, "step": 0.1},
             )
         )
+
+        # Netgen meshing steps
+        meshing_step = [
+            "AnalyzeGeometry",
+            "MeshEdges",
+            "MeshSurface",
+            "OptimizeSurface",
+            "MeshVolume",
+            "OptimizeVolume",
+        ]
+
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyEnumeration",
                 name="StartStep",
                 group="Mesh Parameters",
-                doc="Start at step",
-                value=0,
+                doc="First step",
+                value=meshing_step,
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyEnumeration",
                 name="EndStep",
                 group="Mesh Parameters",
-                doc="EndStep",
-                value=6,
+                doc="Last step",
+                value=meshing_step,
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="GiveUpTolerance2d",
                 group="Mesh Parameters",
                 doc="Give up quality class, 2d meshing",
-                value=200,
+                value={"value": 200, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="GiveUpTolerance",
                 group="Mesh Parameters",
                 doc="Give up quality class, 3d meshing",
-                value=10,
+                value={"value": 10, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="GiveUpToleranceOpenQuads",
                 group="Mesh Parameters",
-                doc="Give up quality class, for closing open quads, greather than 100 for free pyramids",
-                value=15,
+                doc="Give up quality class, for closing open quads, greater than 100 for free pyramids",
+                value={"value": 15, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="MaxOuterSteps",
                 group="Mesh Parameters",
                 doc="Maximal outer steps",
-                value=10,
+                value={"value": 10, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="StarShapeClass",
                 group="Mesh Parameters",
                 doc="Class starting star-shape filling",
-                value=5,
+                value={"value": 5, "min": 0},
             )
         )
         prop.append(
@@ -358,20 +370,20 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="Sloppy",
                 group="Mesh Parameters",
                 doc="Quality tolerances are handled less careful",
-                value=10,
+                value={"value": 10, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="BadElementLimit",
                 group="Mesh Parameters",
                 doc="Limit for max element angle (150-180)",
-                value=175,
+                value={"value": 175, "min": 0},
             )
         )
         prop.append(
@@ -403,11 +415,20 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyBool",
+                name="SecondOrderLinear",
+                group="Mesh Parameters",
+                doc="Second order nodes are created by linear interpolation",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyIntegerConstraint",
                 name="ElementOrder",
                 group="Mesh Parameters",
                 doc="High order element curvature",
-                value=False,
+                value={"value": 1, "min": 1},
             )
         )
         prop.append(
@@ -466,15 +487,6 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
-                name="Threads",
-                group="Mesh Parameters",
-                doc="Number of threads for parallel meshing",
-                value=4,
-            )
-        )
-        prop.append(
-            _PropHelper(
                 type="App::PropertyBool",
                 name="HealShape",
                 group="Mesh Parameters",
@@ -482,5 +494,97 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 value=False,
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Fineness",
+                group="Mesh Parameters",
+                doc="Mesh granularity.\n"
+                + "If differs from UserDefined, uses specific values\n"
+                + "for CurvatureSafety, SegmentsPerEdge, GrowthRate,\n"
+                + "CloseEdgeFactor and OptimizationSteps3d",
+                value=["VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined"],
+            )
+        )
 
         return prop
+
+    def onChanged(self, obj, prop):
+        if prop == "Fineness":
+            if obj.Fineness != "UserDefined":
+                p = self.get_predef_fineness_params(obj.Fineness)
+                obj.CurvatureSafety = p["curvaturesafety"]
+                obj.SegmentsPerEdge = p["segmentsperedge"]
+                obj.GrowthRate = p["grading"]
+                obj.CloseEdgeFactor = p["closeedgefac"]
+                obj.OptimizationSteps3d = p["optsteps3d"]
+
+                obj.setPropertyStatus("CurvatureSafety", "ReadOnly")
+                obj.setPropertyStatus("SegmentsPerEdge", "ReadOnly")
+                obj.setPropertyStatus("GrowthRate", "ReadOnly")
+                obj.setPropertyStatus("CloseEdgeFactor", "ReadOnly")
+                obj.setPropertyStatus("OptimizationSteps3d", "ReadOnly")
+            else:
+                obj.setPropertyStatus("CurvatureSafety", "-ReadOnly")
+                obj.setPropertyStatus("SegmentsPerEdge", "-ReadOnly")
+                obj.setPropertyStatus("GrowthRate", "-ReadOnly")
+                obj.setPropertyStatus("CloseEdgeFactor", "-ReadOnly")
+                obj.setPropertyStatus("OptimizationSteps3d", "-ReadOnly")
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
+
+            # for StartStep and EndStep set enumeration index from old integer value
+            if prop.name == "StartStep" or prop.name == "EndStep":
+                prop.handle_change_type(
+                    obj, "App::PropertyInteger", lambda x: 0 if x <= 1 else 5 if x >= 6 else x - 1
+                )
+                # update enum values
+                setattr(obj, prop.name, prop.value)
+
+    def get_predef_fineness_params(self, fineness):
+        # set specific parameters by fineness
+        params = {}
+        if fineness == "VeryCoarse":
+            params["curvaturesafety"] = 1
+            params["segmentsperedge"] = 0.3
+            params["grading"] = 0.7
+            params["closeedgefac"] = 0.5
+            params["optsteps3d"] = 5
+        elif fineness == "Coarse":
+            params["curvaturesafety"] = 1.5
+            params["segmentsperedge"] = 0.5
+            params["grading"] = 0.5
+            params["closeedgefac"] = 1
+            params["optsteps3d"] = 5
+        elif fineness == "Moderate":
+            params["curvaturesafety"] = 2
+            params["segmentsperedge"] = 1
+            params["grading"] = 0.3
+            params["closeedgefac"] = 2
+            params["optsteps3d"] = 5
+        elif fineness == "Fine":
+            params["curvaturesafety"] = 3
+            params["segmentsperedge"] = 2
+            params["grading"] = 0.2
+            params["closeedgefac"] = 3.5
+            params["optsteps3d"] = 5
+        elif fineness == "VeryFine":
+            params["curvaturesafety"] = 5
+            params["segmentsperedge"] = 3
+            params["grading"] = 0.1
+            params["closeedgefac"] = 5
+            params["optsteps3d"] = 5
+        elif fineness == "UserDefined":
+            params["curvaturesafety"] = 2
+            params["segmentsperedge"] = 2
+            params["grading"] = 0.3
+            params["closeedgefac"] = 2
+            params["optsteps3d"] = 3
+
+        return params

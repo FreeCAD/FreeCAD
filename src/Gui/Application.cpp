@@ -42,6 +42,7 @@
 #endif
 
 #include <QLoggingCategory>
+#include <fmt/format.h>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -59,6 +60,7 @@
 #include <Quarter/Quarter.h>
 
 #include "Application.h"
+#include "ApplicationPy.h"
 #include "AxisOriginPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -114,11 +116,12 @@
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderMaterialObject.h"
-#include "ViewProviderOrigin.h"
-#include "ViewProviderOriginFeature.h"
+#include "ViewProviderCoordinateSystem.h"
+#include "ViewProviderDatum.h"
 #include "ViewProviderOriginGroup.h"
 #include "ViewProviderPlacement.h"
 #include "ViewProviderPlane.h"
+#include "ViewProviderPoint.h"
 #include "ViewProviderPart.h"
 #include "ViewProviderFeaturePython.h"
 #include "ViewProviderTextDocument.h"
@@ -434,7 +437,7 @@ Application::Application(bool GUIenabled)
                                                              "FreeCADGui",
                                                              FreeCADGui_doc,
                                                              -1,
-                                                             Application::Methods,
+                                                             ApplicationPy::Methods,
                                                              nullptr,
                                                              nullptr,
                                                              nullptr,
@@ -445,9 +448,16 @@ Application::Application(bool GUIenabled)
         }
         else {
             // extend the method list
-            PyModule_AddFunctions(module, Application::Methods);
+            PyModule_AddFunctions(module, ApplicationPy::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
+        Py::Module(module).setAttr(std::string("HasQtBug_129596"),
+#ifdef HAS_QTBUG_129596
+            Py::True()
+#else
+            Py::False()
+#endif
+        );
 
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(), module, "UiLoader");
@@ -551,8 +561,15 @@ Application::Application(bool GUIenabled)
     _pcWorkbenchDictionary = PyDict_New();
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    // Instantiate the 3Dconnexion controller
-    pNavlibInterface = new NavlibInterface();
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        // Instantiate the 3Dconnexion controller
+        pNavlibInterface = new NavlibInterface();
+    }
+    else {
+        pNavlibInterface = nullptr;
+    }
 #endif
 
     if (GUIenabled) {
@@ -637,21 +654,10 @@ void Application::open(const char* FileName, const char* Module)
                 }
             }
             else {
-                // Load using provided python module
-                {
-                    Base::PyGILStateLocker locker;
-                    Py::Module moduleIo(PyImport_ImportModule("freecad.module_io"));
-                    const auto dictS = moduleIo.getDict().keys().as_string();
-                    if (!moduleIo.isNull() && moduleIo.hasAttr("OpenInsertObject"))
-                    {
-                        const Py::TupleN args(
-                            Py::Module(PyImport_ImportModule(Module)),
-                            Py::String(unicodepath),
-                            Py::String("open")
-                        );
-                        moduleIo.callMemberFunction("OpenInsertObject", args);
-                    }
-                }
+                std::string code = fmt::format("from freecad import module_io\n"
+                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\")\n",
+                                               Module, unicodepath, "open");
+                Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // ViewFit
                 if (sendHasMsgToActiveView("ViewFit")) {
@@ -690,7 +696,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
-    string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    string unicodepath = File.filePath().c_str();
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module) {
@@ -716,22 +722,10 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                // Load using provided python module
-                {
-                    Base::PyGILStateLocker locker;
-                    Py::Module moduleIo(PyImport_ImportModule("freecad.module_io"));
-                    const auto dictS = moduleIo.getDict().keys().as_string();
-                    if (!moduleIo.isNull() && moduleIo.hasAttr("OpenInsertObject"))
-                    {
-                        const Py::TupleN args(
-                            Py::Module(PyImport_ImportModule(Module)),
-                            Py::String(unicodepath),
-                            Py::String("insert"),
-                            Py::String(DocName)
-                        );
-                        moduleIo.callMemberFunction("OpenInsertObject", args);
-                    }
-                }
+                std::string code = fmt::format("from freecad import module_io\n"
+                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
+                                               Module, unicodepath, "insert", DocName);
+                Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // Commit the transaction
                 if (doc && !pendingCommand) {
@@ -1042,7 +1036,7 @@ void Application::slotActiveDocument(const App::Document& Doc)
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Units");
-        if (Doc.FileName.getValue()[0] != '\0' && !hGrp->GetBool("IgnoreProjectSchema")) {
+        if (!hGrp->GetBool("IgnoreProjectSchema")) {
             int userSchema = Doc.UnitSystem.getValue();
             Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
             getMainWindow()->setUserSchema(userSchema);
@@ -1426,6 +1420,11 @@ void Application::viewActivated(MDIView* pcView)
     }
 }
 
+/// Gets called if a view gets closed
+void Application::viewClosed(MDIView* pcView)
+{
+    signalCloseView(pcView);
+}
 
 void Application::updateActive()
 {
@@ -1923,8 +1922,11 @@ void setCategoryFilterRules()
     QTextStream stream(&filter);
     stream << "qt.qpa.xcb.warning=false\n";
     stream << "qt.qpa.mime.warning=false\n";
+    stream << "qt.qpa.wayland.warning=false\n";
+    stream << "qt.qpa.wayland.*.warning=false\n";
     stream << "qt.svg.warning=false\n";
     stream << "qt.xkb.compose.warning=false\n";
+    stream << "kf.*.warning=false\n";
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
@@ -2075,14 +2077,15 @@ void Application::initTypes()
     Gui::ViewProviderGeometryPython             ::init();
     Gui::ViewProviderPlacement                  ::init();
     Gui::ViewProviderPlacementPython            ::init();
-    Gui::ViewProviderOriginFeature              ::init();
+    Gui::ViewProviderDatum                      ::init();
     Gui::ViewProviderPlane                      ::init();
+    Gui::ViewProviderPoint                      ::init();
     Gui::ViewProviderLine                       ::init();
     Gui::ViewProviderGeoFeatureGroup            ::init();
     Gui::ViewProviderGeoFeatureGroupPython      ::init();
     Gui::ViewProviderOriginGroup                ::init();
     Gui::ViewProviderPart                       ::init();
-    Gui::ViewProviderOrigin                     ::init();
+    Gui::ViewProviderCoordinateSystem           ::init();
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
@@ -2179,46 +2182,51 @@ void setAppNameAndIcon()
 
 void tryRunEventLoop(GUISingleApplication& mainApp)
 {
-    std::stringstream s;
-    s << App::Application::getUserCachePath() << App::Application::getExecutableName() << "_"
-      << QCoreApplication::applicationPid() << ".lock";
+    std::stringstream out;
+    out << App::Application::getUserCachePath()
+        << App::Application::getExecutableName()
+        << "_"
+        << App::Application::applicationPid()
+        << ".lock";
+
     // open a lock file with the PID
-    Base::FileInfo fi(s.str());
+    Base::FileInfo fi(out.str());
     Base::ofstream lock(fi);
 
     // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
-    std::string filename = s.str();
+    std::string filename = out.str();
 #else
     std::wstring filename = fi.toStdWString();
 #endif
-    std::unique_ptr<boost::interprocess::file_lock> flock;
     try {
-        flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
-        flock->lock();
+        boost::interprocess::file_lock flock(filename.c_str());
+        if (flock.try_lock()) {
+            Base::Console().Log("Init: Executing event loop...\n");
+            QApplication::exec();
+
+            // Qt can't handle exceptions thrown from event handlers, so we need
+            // to manually rethrow SystemExitExceptions.
+            if (mainApp.caughtException) {
+                throw Base::SystemExitException(*mainApp.caughtException.get());
+            }
+
+            // close the lock file, in case of a crash we can see the existing lock file
+            // on the next restart and try to repair the documents, if needed.
+            flock.unlock();
+            lock.close();
+            fi.deleteFile();
+        }
+        else {
+            Base::Console().Warning("Failed to create a file lock for the IPC.\n"
+                                    "The application will be terminated\n");
+        }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
         Base::Console().Warning("Failed to create a file lock for the IPC: %s\n",
                                 msg.toUtf8().constData());
     }
-
-    Base::Console().Log("Init: Executing event loop...\n");
-    QApplication::exec();
-
-    // Qt can't handle exceptions thrown from event handlers, so we need
-    // to manually rethrow SystemExitExceptions.
-    if (mainApp.caughtException) {
-        throw Base::SystemExitException(*mainApp.caughtException.get());
-    }
-
-    // close the lock file, in case of a crash we can see the existing lock file
-    // on the next restart and try to repair the documents, if needed.
-    if (flock) {
-        flock->unlock();
-    }
-    lock.close();
-    fi.deleteFile();
 }
 
 void runEventLoop(GUISingleApplication& mainApp)
@@ -2252,11 +2260,8 @@ void Application::runApplication()
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
 
-    // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
-    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
-    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
@@ -2278,6 +2283,10 @@ void Application::runApplication()
     MainWindow mw;
     mw.setProperty("QuitOnClosed", true);
 
+    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
+    // Needs to be set after app is created to override platform defaults (qt commit a2aa1f81a81)
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
+
 #ifdef FC_DEBUG  // redirect Coin messages to FreeCAD
     SoDebugError::setHandlerCallback(messageHandlerCoin, 0);
 #endif
@@ -2298,12 +2307,22 @@ void Application::runApplication()
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    Instance->pNavlibInterface->enableNavigation();
+    if (Instance->pNavlibInterface) {
+        Instance->pNavlibInterface->enableNavigation();
+    }
 #endif
 
     runEventLoop(mainApp);
 
     Base::Console().Log("Finish: Event loop left\n");
+}
+
+bool Application::hiddenMainWindow()
+{
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    auto it = cfg.find("StartHidden");
+
+    return it != cfg.end();
 }
 
 bool Application::testStatus(Status pos) const

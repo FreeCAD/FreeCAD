@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cstdlib>
+#include <cstdlib>
 #endif
 
 #include <Base/Exception.h>
@@ -36,66 +36,66 @@ using namespace App;
 
 ColorModelPack ColorModelPack::createRedGreenBlue()
 {
-    ColorModelPack pack{ColorModelBlueGreenRed(),
-                        ColorModelGreenYellowRed(),
-                        ColorModelBlueCyanGreen(),
-                        "Red-Yellow-Green-Cyan-Blue"};
+    ColorModelPack pack {ColorModelBlueGreenRed(),
+                         ColorModelGreenYellowRed(),
+                         ColorModelBlueCyanGreen(),
+                         "Red-Yellow-Green-Cyan-Blue"};
     return pack;
 }
 
 ColorModelPack ColorModelPack::createBlueGreenRed()
 {
-    ColorModelPack pack{ColorModelRedGreenBlue(),
-                        ColorModelGreenCyanBlue(),
-                        ColorModelRedYellowGreen(),
-                        "Blue-Cyan-Green-Yellow-Red"};
+    ColorModelPack pack {ColorModelRedGreenBlue(),
+                         ColorModelGreenCyanBlue(),
+                         ColorModelRedYellowGreen(),
+                         "Blue-Cyan-Green-Yellow-Red"};
     return pack;
 }
 
 ColorModelPack ColorModelPack::createWhiteBlack()
 {
-    ColorModelPack pack{ColorModelBlackWhite(),
-                        ColorModelGrayWhite(),
-                        ColorModelBlackGray(),
-                        "White-Black"};
+    ColorModelPack pack {ColorModelBlackWhite(),
+                         ColorModelGrayWhite(),
+                         ColorModelBlackGray(),
+                         "White-Black"};
     return pack;
 }
 
 ColorModelPack ColorModelPack::createBlackWhite()
 {
-    ColorModelPack pack{ColorModelWhiteBlack(),
-                        ColorModelGrayBlack(),
-                        ColorModelWhiteGray(),
-                        "Black-White"};
+    ColorModelPack pack {ColorModelWhiteBlack(),
+                         ColorModelGrayBlack(),
+                         ColorModelWhiteGray(),
+                         "Black-White"};
     return pack;
 }
 
 ColorModelPack ColorModelPack::createRedWhiteBlue()
 {
-    ColorModelPack pack{ColorModelBlueWhiteRed(),
-                        ColorModelWhiteRed(),
-                        ColorModelBlueWhite(),
-                        "Red-White-Blue"};
+    ColorModelPack pack {ColorModelBlueWhiteRed(),
+                         ColorModelWhiteRed(),
+                         ColorModelBlueWhite(),
+                         "Red-White-Blue"};
     return pack;
 }
 
-ColorField::ColorField ()
+ColorField::ColorField()
 {
     set(ColorModelBlueGreenRed(), -1.0f, 1.0f, 13);
 }
 
-ColorField::ColorField (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt)
+ColorField::ColorField(const ColorModel& rclModel, float fMin, float fMax, std::size_t usCt)
 {
     set(rclModel, fMin, fMax, usCt);
 }
 
-ColorField& ColorField::operator = (const ColorField &rclCF)
+ColorField& ColorField::operator=(const ColorField& rclCF)
 {
     colorField = rclCF.colorField;
     return *this;
 }
 
-void ColorField::set (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt)
+void ColorField::set(const ColorModel& rclModel, float fMin, float fMax, std::size_t usCt)
 {
     auto bounds = std::minmax(fMin, fMax);
     if (bounds.second <= bounds.first) {
@@ -109,34 +109,37 @@ void ColorField::set (const ColorModel &rclModel, float fMin, float fMax, std::s
     rebuild();
 }
 
-void ColorField::setColorModel (const ColorModel &rclModel)
+void ColorField::setColorModel(const ColorModel& rclModel)
 {
     colorModel = rclModel;
     rebuild();
 }
 
-void ColorField::rebuild ()
+void ColorField::rebuild()
 {
     colorField.resize(ctColors);
 
-    std::size_t usStep = std::min<std::size_t>(ctColors / (colorModel.getCountColors() - 1), ctColors - 1);
+    std::size_t usStep =
+        std::min<std::size_t>(ctColors / (colorModel.getCountColors() - 1), ctColors - 1);
     std::size_t usInd1 = 0;
     std::size_t usInd2 = usStep;
     for (std::size_t i = 0; i < (colorModel.getCountColors() - 1); i++) {
-        interpolate(colorModel.colors[i], usInd1, colorModel.colors[i+1], usInd2);
+        interpolate(colorModel.colors[i], usInd1, colorModel.colors[i + 1], usInd2);
         usInd1 = usInd2;
-        if ((i + 1) == (colorModel.getCountColors() - 2))
+        if ((i + 1) == (colorModel.getCountColors() - 2)) {
             usInd2 = ctColors - 1;
-        else
+        }
+        else {
             usInd2 += usStep;
+        }
     }
 
-    fAscent   = float(ctColors) / (fMax - fMin);
+    fAscent = float(ctColors) / (fMax - fMin);
     fConstant = -fAscent * fMin;
 }
 
 // fuellt das Array von Farbe 1, Index 1 bis Farbe 2, Index 2
-void ColorField::interpolate (Color clCol1, std::size_t usInd1, Color clCol2, std::size_t usInd2)
+void ColorField::interpolate(Color clCol1, std::size_t usInd1, Color clCol2, std::size_t usInd2)
 {
     float fStep = 1.0f, fLen = float(usInd2 - usInd1);
 
@@ -161,28 +164,37 @@ ColorGradientProfile::ColorGradientProfile() = default;
 
 bool ColorGradientProfile::isEqual(const ColorGradientProfile& cg) const
 {
-    if (tStyle != cg.tStyle)
+    if (tStyle != cg.tStyle) {
         return false;
-    if (fMin != cg.fMin)
+    }
+    if (fMin != cg.fMin) {
         return false;
-    if (fMax != cg.fMax)
+    }
+    if (fMax != cg.fMax) {
         return false;
-    if (!visibility.isEqual(cg.visibility))
+    }
+    if (!visibility.isEqual(cg.visibility)) {
         return false;
-    if (tColorModel != cg.tColorModel)
+    }
+    if (tColorModel != cg.tColorModel) {
         return false;
+    }
     return true;
 }
 
 
-ColorGradient::ColorGradient ()
+ColorGradient::ColorGradient()
 {
     createStandardPacks();
     setColorModel();
     set(-1.0f, 1.0f, 13, ColorBarStyle::ZERO_BASED, Visibility::Default);
 }
 
-ColorGradient::ColorGradient (float fMin, float fMax, std::size_t usCtColors, ColorBarStyle tS, VisibilityFlags flags)
+ColorGradient::ColorGradient(float fMin,
+                             float fMax,
+                             std::size_t usCtColors,
+                             ColorBarStyle tS,
+                             VisibilityFlags flags)
 {
     createStandardPacks();
     setColorModel();
@@ -202,8 +214,9 @@ std::vector<std::string> ColorGradient::getColorModelNames() const
 {
     std::vector<std::string> names;
     names.reserve(modelPacks.size());
-    for (const auto& it : modelPacks)
+    for (const auto& it : modelPacks) {
         names.push_back(it.description);
+    }
     return names;
 }
 
@@ -214,7 +227,11 @@ void ColorGradient::setProfile(const ColorGradientProfile& pro)
     rebuild();
 }
 
-void ColorGradient::set (float fMin, float fMax, std::size_t usCt, ColorBarStyle tS, VisibilityFlags flags)
+void ColorGradient::set(float fMin,
+                        float fMax,
+                        std::size_t usCt,
+                        ColorBarStyle tS,
+                        VisibilityFlags flags)
 {
     auto bounds = std::minmax(fMin, fMax);
     if (bounds.second <= bounds.first) {
@@ -229,74 +246,79 @@ void ColorGradient::set (float fMin, float fMax, std::size_t usCt, ColorBarStyle
     rebuild();
 }
 
-void ColorGradient::rebuild ()
+void ColorGradient::rebuild()
 {
-    switch (profile.tStyle)
-    {
-    case ColorBarStyle::FLOW:
-        {
-            colorField1.set(currentModelPack.totalModel, profile.fMin, profile.fMax, profile.ctColors);
+    switch (profile.tStyle) {
+        case ColorBarStyle::FLOW: {
+            colorField1.set(currentModelPack.totalModel,
+                            profile.fMin,
+                            profile.fMax,
+                            profile.ctColors);
             break;
         }
-    case ColorBarStyle::ZERO_BASED:
-        {
-            if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f))
-            {
-                colorField1.set(currentModelPack.bottomModel, profile.fMin, 0.0f, profile.ctColors / 2);
-                colorField2.set(currentModelPack.topModel, 0.0f, profile.fMax, profile.ctColors / 2);
+        case ColorBarStyle::ZERO_BASED: {
+            if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
+                colorField1.set(currentModelPack.bottomModel,
+                                profile.fMin,
+                                0.0f,
+                                profile.ctColors / 2);
+                colorField2.set(currentModelPack.topModel,
+                                0.0f,
+                                profile.fMax,
+                                profile.ctColors / 2);
             }
-            else if (profile.fMin >= 0.0f)
+            else if (profile.fMin >= 0.0f) {
                 colorField1.set(currentModelPack.topModel, 0.0f, profile.fMax, profile.ctColors);
-            else
+            }
+            else {
                 colorField1.set(currentModelPack.bottomModel, profile.fMin, 0.0f, profile.ctColors);
+            }
             break;
         }
     }
 }
 
-std::size_t ColorGradient::getMinColors () const
+std::size_t ColorGradient::getMinColors() const
 {
-    switch (profile.tStyle)
-    {
-    case ColorBarStyle::FLOW:
-        return colorField1.getMinColors();
-    case ColorBarStyle::ZERO_BASED:
-        {
-            if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f))
+    switch (profile.tStyle) {
+        case ColorBarStyle::FLOW:
+            return colorField1.getMinColors();
+        case ColorBarStyle::ZERO_BASED: {
+            if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
                 return colorField1.getMinColors() + colorField2.getMinColors();
-            else
+            }
+            else {
                 return colorField1.getMinColors();
+            }
         }
     }
     return 2;
 }
 
-void ColorGradient::setColorModel (std::size_t tModel)
+void ColorGradient::setColorModel(std::size_t tModel)
 {
     profile.tColorModel = tModel;
     setColorModel();
     rebuild();
 }
 
-void ColorGradient::setColorModel ()
+void ColorGradient::setColorModel()
 {
-    if (profile.tColorModel < modelPacks.size())
+    if (profile.tColorModel < modelPacks.size()) {
         currentModelPack = modelPacks[profile.tColorModel];
+    }
 
-    switch (profile.tStyle)
-    {
-    case ColorBarStyle::FLOW:
-    {
-        colorField1.setColorModel(currentModelPack.totalModel);
-        colorField2.setColorModel(currentModelPack.bottomModel);
-        break;
-    }
-    case ColorBarStyle::ZERO_BASED:
-    {
-        colorField1.setColorModel(currentModelPack.topModel);
-        colorField2.setColorModel(currentModelPack.bottomModel);
-        break;
-    }
+    switch (profile.tStyle) {
+        case ColorBarStyle::FLOW: {
+            colorField1.setColorModel(currentModelPack.totalModel);
+            colorField2.setColorModel(currentModelPack.bottomModel);
+            break;
+        }
+        case ColorBarStyle::ZERO_BASED: {
+            colorField1.setColorModel(currentModelPack.topModel);
+            colorField2.setColorModel(currentModelPack.bottomModel);
+            break;
+        }
     }
 }
 
@@ -317,60 +339,65 @@ ColorLegend::ColorLegend()
     values.push_back(1.0f);
 }
 
-bool ColorLegend::operator == (const ColorLegend &rclCL) const
+bool ColorLegend::operator==(const ColorLegend& rclCL) const
 {
-  return (colorFields.size() == rclCL.colorFields.size())                                 &&
-         (names.size() == rclCL.names.size())                                             &&
-         (values.size() == rclCL.values.size())                                           &&
-          std::equal(colorFields.begin(), colorFields.end(), rclCL.colorFields.begin())   &&
-          std::equal(names.begin(), names.end(), rclCL.names.begin())                     &&
-          std::equal(values.begin(), values.end(), rclCL.values.begin())                  &&
-          outsideGrayed == rclCL.outsideGrayed;
+    return (colorFields.size() == rclCL.colorFields.size()) && (names.size() == rclCL.names.size())
+        && (values.size() == rclCL.values.size())
+        && std::equal(colorFields.begin(), colorFields.end(), rclCL.colorFields.begin())
+        && std::equal(names.begin(), names.end(), rclCL.names.begin())
+        && std::equal(values.begin(), values.end(), rclCL.values.begin())
+        && outsideGrayed == rclCL.outsideGrayed;
 }
 
-float ColorLegend::getValue (std::size_t ulPos) const
+float ColorLegend::getValue(std::size_t ulPos) const
 {
-    if (ulPos < values.size())
+    if (ulPos < values.size()) {
         return values[ulPos];
-    else
+    }
+    else {
         return 0.0f;
+    }
 }
 
-bool ColorLegend::setValue (std::size_t ulPos, float fVal)
+bool ColorLegend::setValue(std::size_t ulPos, float fVal)
 {
-    if (ulPos < values.size())
-    {
+    if (ulPos < values.size()) {
         values[ulPos] = fVal;
         return true;
     }
-    else
+    else {
         return false;
+    }
 }
 
-Color ColorLegend::getColor (std::size_t ulPos) const
+Color ColorLegend::getColor(std::size_t ulPos) const
 {
-    if (ulPos < colorFields.size())
+    if (ulPos < colorFields.size()) {
         return colorFields[ulPos];
-    else
+    }
+    else {
         return Color();
+    }
 }
 
 // color as: 0x00rrggbb
-uint32_t ColorLegend::getPackedColor (std::size_t ulPos) const
+uint32_t ColorLegend::getPackedColor(std::size_t ulPos) const
 {
     Color clRGB = getColor(ulPos);
     return clRGB.getPackedValue();
 }
 
-std::string ColorLegend::getText (std::size_t ulPos) const
+std::string ColorLegend::getText(std::size_t ulPos) const
 {
-    if (ulPos < names.size())
+    if (ulPos < names.size()) {
         return names[ulPos];
-    else
+    }
+    else {
         return "";
+    }
 }
 
-std::size_t ColorLegend::addMin (const std::string &rclName)
+std::size_t ColorLegend::addMin(const std::string& rclName)
 {
     names.push_front(rclName);
     values.push_front(values.front() - 1.0f);
@@ -385,7 +412,7 @@ std::size_t ColorLegend::addMin (const std::string &rclName)
     return colorFields.size() - 1;
 }
 
-std::size_t ColorLegend::addMax (const std::string &rclName)
+std::size_t ColorLegend::addMax(const std::string& rclName)
 {
     names.push_back(rclName);
     values.push_back(values.back() + 1.0f);
@@ -400,7 +427,7 @@ std::size_t ColorLegend::addMax (const std::string &rclName)
     return colorFields.size() - 1;
 }
 
-bool ColorLegend::remove (std::size_t ulPos)
+bool ColorLegend::remove(std::size_t ulPos)
 {
     if (ulPos < colorFields.size()) {
         colorFields.erase(colorFields.begin() + ulPos);
@@ -413,7 +440,7 @@ bool ColorLegend::remove (std::size_t ulPos)
     return false;
 }
 
-void ColorLegend::removeFirst ()
+void ColorLegend::removeFirst()
 {
     if (!colorFields.empty()) {
         colorFields.erase(colorFields.begin());
@@ -422,33 +449,36 @@ void ColorLegend::removeFirst ()
     }
 }
 
-void ColorLegend::removeLast ()
+void ColorLegend::removeLast()
 {
     if (!colorFields.empty()) {
-        colorFields.erase(colorFields.end()-1);
-        names.erase(names.end()-1);
-        values.erase(values.end()-1);
+        colorFields.erase(colorFields.end() - 1);
+        names.erase(names.end() - 1);
+        values.erase(values.end() - 1);
     }
 }
 
-void ColorLegend::resize (std::size_t ulCt)
+void ColorLegend::resize(std::size_t ulCt)
 {
-    if ((ulCt < 2) || (ulCt == colorFields.size()))
+    if ((ulCt < 2) || (ulCt == colorFields.size())) {
         return;
+    }
 
     if (ulCt > colorFields.size()) {
         int k = ulCt - colorFields.size();
-        for (int i = 0; i < k; i++)
+        for (int i = 0; i < k; i++) {
             addMin("new");
+        }
     }
     else {
         int k = colorFields.size() - ulCt;
-        for (int i = 0; i < k; i++)
+        for (int i = 0; i < k; i++) {
             removeLast();
+        }
     }
 }
 
-bool ColorLegend::setColor (std::size_t ulPos, float ucRed, float ucGreen, float ucBlue)
+bool ColorLegend::setColor(std::size_t ulPos, float ucRed, float ucGreen, float ucBlue)
 {
     if (ulPos < names.size()) {
         colorFields[ulPos] = Color(ucRed, ucGreen, ucBlue);
@@ -459,15 +489,15 @@ bool ColorLegend::setColor (std::size_t ulPos, float ucRed, float ucGreen, float
 }
 
 // color as 0x00rrggbb
-bool ColorLegend::setColor (std::size_t ulPos, unsigned long ulColor)
+bool ColorLegend::setColor(std::size_t ulPos, unsigned long ulColor)
 {
-    unsigned char ucRed   = (unsigned char)((ulColor & 0x00ff0000) >> 16);
+    unsigned char ucRed = (unsigned char)((ulColor & 0x00ff0000) >> 16);
     unsigned char ucGreen = (unsigned char)((ulColor & 0x0000ff00) >> 8);
-    unsigned char ucBlue  = (unsigned char)(ulColor & 0x000000ff);
+    unsigned char ucBlue = (unsigned char)(ulColor & 0x000000ff);
     return setColor(ulPos, ucRed, ucGreen, ucBlue);
 }
 
-bool ColorLegend::setText (std::size_t ulPos, const std::string &rclName)
+bool ColorLegend::setText(std::size_t ulPos, const std::string& rclName)
 {
     if (ulPos < names.size()) {
         names[ulPos] = rclName;

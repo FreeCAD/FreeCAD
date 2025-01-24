@@ -11,7 +11,7 @@
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="20"/>
       <source>Source</source>
-      <translation>출처</translation>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -177,7 +177,7 @@ Markdown version above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="425"/>
+      <location filename="../../Help.py" line="432"/>
       <source>General</source>
       <translation>일반</translation>
     </message>

@@ -33,7 +33,7 @@
 
 #include <App/Document.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -68,7 +68,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     }
 
     // Enable selection from origin of current part/
-    if (pObj->isDerivedFrom<App::OriginFeature>()) {
+    if (pObj->isDerivedFrom<App::DatumElement>()) {
         return allowOrigin(body, originGroup, pObj);
     }
 
@@ -148,12 +148,12 @@ bool ReferenceSelection::allowOrigin(PartDesign::Body *body, App::OriginGroupExt
     if (fits) { // check that it actually belongs to the chosen body or part
         try { // here are some throwers
             if (body) {
-                if (body->getOrigin ()->hasObject (pObj) ) {
+                if (body->hasObject(pObj, true) ) {
                     return true;
                 }
             }
             else if (originGroup ) {
-                if (originGroup->getOrigin()->hasObject(pObj)) {
+                if (originGroup->hasObject(pObj, true)) {
                     return true;
                 }
             }
@@ -301,7 +301,7 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     //of course only if thisObj is in a body, as otherwise the old workflow would not
     //be supported
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
-    bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
+    bool originfeature = selObj->isDerivedFrom(App::DatumElement::getClassTypeId());
     if (!originfeature && body) {
         PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
         if (!selBody || body != selBody) {

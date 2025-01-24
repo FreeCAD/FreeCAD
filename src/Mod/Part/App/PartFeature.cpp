@@ -26,11 +26,12 @@
 # include <sstream>
 # include <Bnd_Box.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
@@ -63,11 +64,12 @@
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/ElementNamingUtils.h>
 #include <App/Placement.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Mod/Material/App/MaterialManager.h>
 
 #include "Geometry.h"
@@ -75,7 +77,7 @@
 #include "PartFeaturePy.h"
 #include "PartPyCXX.h"
 #include "TopoShapePy.h"
-#include "Base/Tools.h"
+#include "Tools.h"
 
 using namespace Part;
 namespace sp = std::placeholders;
@@ -89,7 +91,6 @@ Feature::Feature()
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
     auto mat = Materials::MaterialManager::defaultMaterial();
-    // ADD_PROPERTY_TYPE(ShapeMaterial, (mat), osgroup, App::Prop_None, "Shape material");
     ADD_PROPERTY(ShapeMaterial, (*mat));
 }
 
@@ -126,6 +127,26 @@ PyObject *Feature::getPyObject()
         PythonObject = Py::Object(new PartFeaturePy(this),true);
     }
     return Py::new_reference_to(PythonObject);
+}
+
+void Feature::copyMaterial(Feature* feature)
+{
+    auto mat = Materials::MaterialManager::defaultMaterial();
+    if (feature) {
+        if (ShapeMaterial.getValue().getUUID() != feature->ShapeMaterial.getValue().getUUID()) {
+            if (ShapeMaterial.getValue().getUUID() == mat->getUUID()) {
+                ShapeMaterial.setValue(feature->ShapeMaterial.getValue());
+            }
+        }
+    }
+}
+
+void Feature::copyMaterial(App::DocumentObject* link)
+{
+    auto feature = dynamic_cast<Part::Feature*>(link);
+    if (feature) {
+        copyMaterial(feature);
+    }
 }
 
 /**
@@ -207,7 +228,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                     if (!name) {
                         continue;
                     }
-                    indices.emplace_back(name.size(),
+                    indices.emplace_back(names.size(),
                                          shape.findAncestors(ss.getShape(), res.first));
                     names.push_back(name);
                     if (indices.back().second.size() == 1 && ++count >= MinLowerTopoNames) {
@@ -313,9 +334,21 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                 auto names =
                     shape.decodeElementComboName(idxName, mapped.name, idxName.getType(), &postfix);
                 std::vector<int> ancestors;
-                // TODO:  if names.empty() then the existing heuristic has failed to find anything
-                //   and we're going to flag this element as missing.  This is the place to add
-                //   heuristics as we develop them.
+                if ( names.empty() ) {
+                    // Naming based heuristic has failed to find the element.  Let's see if we can
+                    // find it by matching either planes for faces or lines for edges.
+                    auto searchShape = this->Shape.getShape();
+                    // If we're still out at a Shell, Solid, CompSolid, or Compound drill in
+                    while (!searchShape.getShape().IsNull() && searchShape.getShape().ShapeType() < TopAbs_FACE ) {
+                        auto shapes = searchShape.getSubTopoShapes();
+                        if ( shapes.empty() ) // No more subshapes, so don't continue
+                            break;
+                        searchShape = shapes.front();   // After the break, so we stopped at innermost container
+                    }
+                    auto newMapped = TopoShape::chooseMatchingSubShapeByPlaneOrLine(shape, searchShape);
+                    if ( ! newMapped.name.empty() )
+                        mapped = newMapped;
+                }
                 for (auto& name : names) {
                     auto index = shape.getIndexedName(name);
                     if (!index) {
@@ -841,7 +874,12 @@ App::Material Feature::getMaterialAppearance() const
 
 void Feature::setMaterialAppearance(const App::Material& material)
 {
-    ShapeMaterial.setValue(material);
+    try {
+        ShapeMaterial.setValue(material);
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 // Toponaming project March 2024:  This method should be going away when we get to the python layer.
@@ -954,7 +992,9 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
             if (linked->isDerivedFrom(App::Line::getClassTypeId())) {
                 static TopoDS_Shape _shape;
                 if (_shape.IsNull()) {
-                    BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), gp_Dir(1, 0, 0)));
+                    auto line = static_cast<App::Line*>(linked);
+                    Base::Vector3d dir = line->getBaseDirection();
+                    BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), Base::convertTo<gp_Dir>(dir)));
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
                 }
@@ -963,9 +1003,19 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
             else if (linked->isDerivedFrom(App::Plane::getClassTypeId())) {
                 static TopoDS_Shape _shape;
                 if (_shape.IsNull()) {
-                    BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
+                    auto plane = static_cast<App::Plane*>(linked);
+                    Base::Vector3d dir = plane->getBaseDirection();
+                    BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0, 0, 0), Base::convertTo<gp_Dir>(dir)));
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
+                }
+                shape = TopoShape(tag, hasher, _shape);
+            }
+            else if (linked->isDerivedFrom(App::Point::getClassTypeId())) {
+                static TopoDS_Shape _shape;
+                if (_shape.IsNull()) {
+                    BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));
+                    _shape = builder.Shape();
                 }
                 shape = TopoShape(tag, hasher, _shape);
             }
@@ -1004,6 +1054,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                     shape = TopoShape(tag, hasher, _shape);
                 }
             }
+
             if (!shape.isNull()) {
                 shape.transformShape(mat * linkMat, false, true);
                 return shape;
@@ -1457,7 +1508,6 @@ void Feature::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
-
 const std::vector<std::string>& Feature::searchElementCache(const std::string& element,
                                                             Data::SearchOptions options,
                                                             double tol,
@@ -1709,6 +1759,16 @@ short FilletBase::mustExecute() const
     return 0;
 }
 
+App::DocumentObjectExecReturn* FilletBase::execute()
+{
+    App::DocumentObject* link = this->Base.getValue();
+    if (!link) {
+        return new App::DocumentObjectExecReturn("No object linked");
+    }
+    copyMaterial(link);
+    return Part::Feature::execute();
+}
+
 void FilletBase::onChanged(const App::Property *prop) {
     if(getDocument() && !getDocument()->testStatus(App::Document::Restoring)) {
         if(prop == &Edges || prop == &Base) {
@@ -1891,7 +1951,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
 
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect
-        BRepAlgoAPI_Fuse mkFuse(first, second);
+        FCBRepAlgoAPI_Fuse mkFuse(first, second);
         if (!mkFuse.IsDone())
             return false;
         if (mkFuse.Shape().IsNull())
@@ -1909,7 +1969,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
         }
     } else {
         // If both shapes have common material, then they intersect
-        BRepAlgoAPI_Common mkCommon(first, second);
+        FCBRepAlgoAPI_Common mkCommon(first, second);
         if (!mkCommon.IsDone())
             return false;
         if (mkCommon.Shape().IsNull())

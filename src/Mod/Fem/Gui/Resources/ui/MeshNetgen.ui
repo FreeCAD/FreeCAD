@@ -44,7 +44,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
-           <string>Maximal Size:</string>
+           <string>Maximum Size:</string>
           </property>
          </widget>
         </item>
@@ -55,12 +55,6 @@
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -85,7 +79,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="l_min">
           <property name="text">
-           <string>Minimal Size:</string>
+           <string>Minimum Size:</string>
           </property>
          </widget>
         </item>
@@ -96,12 +90,6 @@
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -138,7 +126,7 @@
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QDoubleSpinBox" name="dsb_growth_rate">
+         <widget class="Gui::DoubleSpinBox" name="dsb_growth_rate">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -161,7 +149,7 @@
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="QDoubleSpinBox" name="dsb_curvature_safety">
+         <widget class="Gui::DoubleSpinBox" name="dsb_curvature_safety">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -178,7 +166,7 @@
          </widget>
         </item>
         <item row="5" column="1">
-         <widget class="QDoubleSpinBox" name="dsb_seg_per_edge">
+         <widget class="Gui::DoubleSpinBox" name="dsb_seg_per_edge">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -215,6 +203,9 @@
            <widget class="QTextEdit" name="te_output">
             <property name="lineWrapMode">
              <enum>QTextEdit::NoWrap</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -270,6 +261,11 @@
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/SpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

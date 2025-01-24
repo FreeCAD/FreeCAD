@@ -125,6 +125,9 @@ If 'Grid Auto Spacing' is enabled, will be used as base value.</string>
          <string>While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
 The grid spacing change if it becomes smaller than this number of pixel.</string>
         </property>
+        <property name="suffix">
+         <string notr="true"> px</string>
+        </property>
         <property name="minimum">
          <number>3</number>
         </property>

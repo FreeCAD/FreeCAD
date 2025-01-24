@@ -140,7 +140,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(ShowAllEdges ,(false),dgroup, App::Prop_None, "Temporarily show invisible lines");
 
     // Faces related properties
-    ADD_PROPERTY_TYPE(FaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFF)),
+    ADD_PROPERTY_TYPE(FaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFFFF)),
                       fgroup, App::Prop_None, "Set color of faces");
     ADD_PROPERTY_TYPE(FaceTransparency, (Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? 100 : 0),
                       fgroup, App::Prop_None, "Set transparency of faces");
@@ -299,7 +299,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
                                         dvd->getNameInDocument());
     }
     else {
-        auto* view = dynamic_cast<TechDraw::DrawView*>(getObject());
+        auto* view = getObject<TechDraw::DrawView>();
         Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
     }
 

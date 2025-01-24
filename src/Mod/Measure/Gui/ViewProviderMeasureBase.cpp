@@ -101,7 +101,12 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
 
     pGlobalSeparator = new SoSeparator();
     pGlobalSeparator->ref();
-    getRoot()->insertChild(pGlobalSeparator, 0);
+
+    // Connect visibility of delta measurements to the ModeSwitch
+    auto visibilitySwitch = new SoSwitch();
+    getRoot()->insertChild(visibilitySwitch, 0);
+    visibilitySwitch->addChild(pGlobalSeparator);
+    visibilitySwitch->whichChild.connectFrom(&pcModeSwitch->whichChild);
 
     // setupAnnoSceneGraph() - sets up the annotation scene graph
     pLabel = new Gui::SoFrameLabel();
@@ -258,7 +263,7 @@ void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 {
-    pLabel->string.setValue(value.getUserString().toUtf8().constData());
+    pLabel->string.setValue(value.getUserString().c_str());
 }
 
 void ViewProviderMeasureBase::setLabelValue(const QString& value)

@@ -41,11 +41,11 @@
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepAlgoAPI_BooleanOperation.hxx>
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepAlgoAPI_Section.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_FindPlane.hxx>
 #include <BRepBuilderAPI_GTransform.hxx>
@@ -3119,6 +3119,9 @@ TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
     return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::returnShape);
 }
 
+namespace
+{
+
 
 struct EdgePoints
 {
@@ -3144,6 +3147,8 @@ struct EdgePoints
         }
     }
 };
+
+}
 
 TopoShape TopoShape::reverseEdge(const TopoShape& edge)
 {
@@ -3422,6 +3427,7 @@ TopoShape::makeElementCopy(const TopoShape& shape, const char* op, bool copyGeom
 
     TopoShape tmp(shape);
     tmp.setShape(BRepBuilderAPI_Copy(shape.getShape(), copyGeom, copyMesh).Shape(), false);
+    tmp.setTransform(shape.getTransform());
     if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
         initCache();
@@ -4055,15 +4061,13 @@ TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shap
         if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
         }
-        if (tol > 0.0) {
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shape = shape.makeElementCopy();
-        }
         GFAArguments.Append(shape.getShape());
     }
     mkGFA.SetArguments(GFAArguments);
     if (tol > 0.0) {
         mkGFA.SetFuzzyValue(tol);
+    } else if (tol < 0.0) {
+        FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
     mkGFA.Build();
@@ -4157,7 +4161,15 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
                   "Need at least two vertices, edges or wires to create loft face");
     }
 
+    int i=0;
+    Base::Vector3d center1,center2;
     for (auto& sh : profiles) {
+        if (i>0) {
+            if (sh.getCenterOfGravity(center1) && profiles[i-1].getCenterOfGravity(center2) && center1.IsEqual(center2,Precision::Confusion())) {
+                FC_THROWM(Base::CADKernelError,
+                          "Segments of a Loft/Pad do not have sufficient separation");
+            }
+        }
         const auto& shape = sh.getShape();
         if (shape.ShapeType() == TopAbs_VERTEX) {
             aGenerator.AddVertex(TopoDS::Vertex(shape));
@@ -4165,6 +4177,7 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
         else {
             aGenerator.AddWire(TopoDS::Wire(shape));
         }
+        i++;
     }
     // close loft by duplicating initial profile as last profile.  not perfect.
     if (isClosed == IsClosed::closed) {
@@ -4617,7 +4630,7 @@ public:
             if (it.Key().IsNull()) {
                 continue;
             }
-            mapper.populate(MappingStatus::Generated, it.Key(), it.Value());
+            mapper.populate(MappingStatus::Modified, it.Key(), it.Value());
         }
     }
 };
@@ -5657,7 +5670,7 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         }
     }
 
-    if (tolerance > 0.0 && _shapes.empty()) {
+    if (tolerance != 0.0 && _shapes.empty()) {
         _shapes = shapes;
     }
 
@@ -5677,16 +5690,16 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
 
     std::unique_ptr<BRepAlgoAPI_BooleanOperation> mk;
     if (strcmp(maker, Part::OpCodes::Fuse) == 0) {
-        mk.reset(new BRepAlgoAPI_Fuse);
+        mk.reset(new FCBRepAlgoAPI_Fuse);
     }
     else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
-        mk.reset(new BRepAlgoAPI_Cut);
+        mk.reset(new FCBRepAlgoAPI_Cut);
     }
     else if (strcmp(maker, Part::OpCodes::Common) == 0) {
-        mk.reset(new BRepAlgoAPI_Common);
+        mk.reset(new FCBRepAlgoAPI_Common);
     }
     else if (strcmp(maker, Part::OpCodes::Section) == 0) {
-        mk.reset(new BRepAlgoAPI_Section);
+        mk.reset(new FCBRepAlgoAPI_Section);
         buildShell = false;
     }
     else {
@@ -5702,12 +5715,6 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         }
         if (++i == 0) {
             shapeArguments.Append(shape.getShape());
-        }
-        else if (tolerance > 0.0) {
-            auto& s = _shapes[i];
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            s.setShape(BRepBuilderAPI_Copy(s.getShape()).Shape(), false);
-            shapeTools.Append(s.getShape());
         }
         else {
             shapeTools.Append(shape.getShape());
@@ -5730,6 +5737,8 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     mk->SetTools(shapeTools);
     if (tolerance > 0.0) {
         mk->SetFuzzyValue(tolerance);
+    } else if (tolerance < 0.0) {
+        FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
     mk->Build();
     makeElementShape(*mk, inputs, op);
@@ -5814,6 +5823,38 @@ bool TopoShape::getRelatedElementsCached(const Data::MappedName& name,
     }
     names = it->second;
     return true;
+}
+
+Data::MappedElement TopoShape::chooseMatchingSubShapeByPlaneOrLine(const TopoShape& shapeToFind, const TopoShape& shapeToLookIn)
+{
+    Data::MappedElement result;
+    // See if we have a Face.  If so, try to match using a plane.
+    auto targetShape = shapeToFind.getSubTopoShape("Face", true);
+    if ( ! targetShape.isNull() ) {
+        int index = 0;
+        for ( const auto& searchFace : shapeToLookIn.getSubTopoShapes(TopAbs_FACE)) {
+            index++;    // We have to generate the element index.
+            if ( targetShape.isCoplanar(searchFace) ) {
+                if ( ! result.name.empty() )
+                    return {};  // Found more than one, invalidate our guess.  Future: return all matches to the UI?
+                result = shapeToLookIn.getElementName(("Face"+std::to_string(index)).c_str());
+            }
+        }
+    }
+    // Alternatively, try to locate an Edge, and try to match.  Currently by exact equivalence; later can improve.
+    targetShape = shapeToFind.getSubTopoShape("Edge", true);
+    if ( ! targetShape.isNull() ) { // Try to match edges
+        int index = 0;
+        for ( const auto& searchEdge : shapeToLookIn.getSubTopoShapes(TopAbs_EDGE)) {
+            index++;
+            if ( targetShape.isSame(searchEdge) ) { // TODO: Test for edges that are collinear as really what we want
+                if ( ! result.name.empty() )
+                    return {}; // Found more than one
+                result = shapeToLookIn.getElementName(("Edge"+std::to_string(index)).c_str());
+            }
+        }
+    }
+    return result;
 }
 
 }  // namespace Part

@@ -51,7 +51,7 @@ void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver
 
 std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren() const
 {
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
+    PartDesign::MultiTransform* pcMultiTransform = getObject<PartDesign::MultiTransform>();
     if (!pcMultiTransform)
         return {}; // TODO: Show error?
 
@@ -61,7 +61,7 @@ std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren() co
 
 bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) {
     // Delete the transformation features
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
+    PartDesign::MultiTransform* pcMultiTransform = getObject<PartDesign::MultiTransform>();
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     // if the multitransform object was deleted the transformed features must be deleted, too

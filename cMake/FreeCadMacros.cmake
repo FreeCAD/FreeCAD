@@ -9,12 +9,18 @@ MACRO (fc_copy_sources target_name outpath)
 	else()
 		set(fc_details "")
 	endif()
+	if(INSTALL_PREFER_SYMLINKS)
+		set(copy_command create_symlink)
+	else()
+		set(copy_command copy)
+	endif()
+
 	foreach(it ${ARGN})
 		get_filename_component(infile ${it} ABSOLUTE)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
 		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
+			COMMAND   "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
 			OUTPUT   "${outfile}"
 			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
 			MAIN_DEPENDENCY "${infile}"

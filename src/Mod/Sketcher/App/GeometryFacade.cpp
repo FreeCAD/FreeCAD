@@ -55,7 +55,8 @@ GeometryFacade::~GeometryFacade()
     }
 }
 
-std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry* geometry, bool owner)
+std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* geometry,
+                                                          bool owner)
 {
     if (geometry) {
         return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry, owner));
@@ -65,18 +66,6 @@ std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry* geomet
     }
     // make_unique has no access to private constructor
     // return std::make_unique<GeometryFacade>(geometry);
-}
-
-std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* geometry)
-{
-    if (geometry) {
-        return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
-    }
-    else {
-        return std::unique_ptr<const GeometryFacade>(nullptr);
-    }
-    // make_unique has no access to private constructor
-    // return std::make_unique<const GeometryFacade>(geometry);
 }
 
 void GeometryFacade::setGeometry(Part::Geometry* geometry)
@@ -152,10 +141,10 @@ int GeometryFacade::getId(const Part::Geometry* geometry)
     return gf->getId();
 }
 
-void GeometryFacade::setId(Part::Geometry* geometry, int id)
+void GeometryFacade::setId(const Part::Geometry* geometry, int id)
 {
     auto gf = GeometryFacade::getFacade(geometry);
-    return gf->setId(id);
+    gf->setId(id);
 }
 
 bool GeometryFacade::getConstruction(const Part::Geometry* geometry)
@@ -171,7 +160,7 @@ void GeometryFacade::setConstruction(Part::Geometry* geometry, bool construction
     throwOnNullPtr(geometry);
 
     auto gf = GeometryFacade::getFacade(geometry);
-    return gf->setConstruction(construction);
+    gf->setConstruction(construction);
 }
 
 bool GeometryFacade::isInternalType(const Part::Geometry* geometry, InternalType::InternalType type)

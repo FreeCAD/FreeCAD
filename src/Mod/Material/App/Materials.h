@@ -140,11 +140,6 @@ public:
         return !operator==(other);
     }
 
-    // void save(QTextStream& stream);
-
-    // Define precision for displaying floating point values
-    static int const PRECISION;
-
 protected:
     void setType(const QString& type);
     // void setType(MaterialValue::ValueType type) { _valueType = type; }
@@ -335,6 +330,8 @@ public:
     bool hasNonLegacyProperty(const QString& name) const;
     bool hasLegacyProperty(const QString& name) const;
     bool hasLegacyProperties() const;
+    bool hasPhysicalProperties() const;
+    bool hasAppearanceProperties() const;
 
     // Test if the model is defined, and if values are provided for all properties
     bool hasModel(const QString& uuid) const;

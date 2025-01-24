@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QApplication>
 #include <QDomDocument>
 #include <QFile>
 #include <QGraphicsSceneEvent>
@@ -110,53 +111,70 @@ QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
 
 void QGSPage::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    constexpr int QGITemplateType{QGraphicsItem::UserType + 150};
-    constexpr int QGIDrawingTemplateType{QGraphicsItem::UserType + 151};
-    constexpr int QGISVGTemplateType{QGraphicsItem::UserType + 153};
-    // type 13 is the itemUnderMouse on a page outside of any views. It is not
-    // the template or background or foreground.  QGraphicsItem type = 13 is not
-    // documented and not found in QGraphicsItem.h.
-    constexpr int MysteryType{13};
-
     Qt::KeyboardModifiers originalModifiers = event->modifiers();
     auto itemUnderMouse = itemAt(event->scenePos().x(), event->scenePos().y(), QTransform());
 
     if (!itemUnderMouse ||
-        itemUnderMouse->type() == QGITemplateType ||
-        itemUnderMouse->type() == QGIDrawingTemplateType ||
-        itemUnderMouse->type() == QGISVGTemplateType ||
-        itemUnderMouse->type() == MysteryType) {
-        // click without item clears selection
+        itemClearsSelection(itemUnderMouse->type()) ) {
         Gui::Selection().clearSelection();
         QGraphicsScene::mousePressEvent(event);
         return;
     }
 
-    if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
-        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    if (event->button() == Qt::LeftButton &&
+        PreferencesGui::multiSelection() &&
+        (cleanModifierList(QApplication::keyboardModifiers()) == Preferences::multiselectModifiers()) ) {
+        event->setModifiers(originalModifiers | Preferences::multiselectModifiers());
     }
 
     QGraphicsScene::mousePressEvent(event);
 }
 
-void QGSPage::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+
+//! returns true if clicking on the item should clear the selection
+bool QGSPage::itemClearsSelection(int itemTypeIn)
 {
-    Qt::KeyboardModifiers originalModifiers = event->modifiers();
-    if ((event->button() == Qt::LeftButton) && PreferencesGui::multiSelection()) {
-        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    // type 13 is the itemUnderMouse on a page outside of any views. It is not
+    // the template or background or foreground.  QGraphicsItem type = 13 is not
+    // documented and not found in QGraphicsItem.h.
+    const std::vector<int> ClearingTypes { 13,                        // MysteryType
+                                     QGraphicsItem::UserType + 150,   // QGITemplateType
+                                     QGraphicsItem::UserType + 151,   // QGIDrawingTemplateType
+                                     QGraphicsItem::UserType + 153 }; // QGISVGTemplateType
+
+    for (auto& type : ClearingTypes) {
+        if (itemTypeIn == type) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+//! return only the modifiers that are relevant to snapping/balloon drag.
+//! this is a substitute for !modifiers (ie no modifiers in use) since keypad or group modifiers
+//! (which don't apply to snapping/dragging) would give a misleading result.
+Qt::KeyboardModifiers QGSPage::cleanModifierList(Qt::KeyboardModifiers mods)
+{
+    if (!mods) {
+        return mods;
     }
 
-    QGraphicsScene::mouseReleaseEvent(event);
+    // remove misleading modifiers if present
+    auto newMods = mods;
+    if (newMods & Qt::KeypadModifier) {
+        newMods = newMods & ~Qt::KeypadModifier;
+    }
+    if (newMods & Qt::GroupSwitchModifier) {
+        newMods = newMods & ~Qt::GroupSwitchModifier;
+    }
 
-    // what does this do?  the event has already been propagated so this will have
-    // no effect?
-    event->setModifiers(originalModifiers);
+    return newMods;
 }
 
 
 void QGSPage::addChildrenToPage()
 {
-    //    Base::Console().Message("QGSP::addChildrenToPage()\n");
     // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
     // if docobj is a featureviewcollection (ex orthogroup), add its child views. if there are ever children that have children,
     // we'll have to make this recursive. -WF
@@ -169,11 +187,11 @@ void QGSPage::addChildrenToPage()
             }
         }
     }
-    //when restoring, it is possible for a Dimension to be loaded before the ViewPart it applies to
-    //therefore we need to make sure parentage of the graphics representation is set properly. bit of a kludge.
-    setDimensionGroups();
-    setBalloonGroups();
-    setLeaderParentage();
+    // when restoring, it is possible for an item (ex a Dimension) to be loaded before the ViewPart
+    // it applies to therefore we need to make sure parentage of the graphics representation is set
+    // properly. bit of a kludge.
+    //
+    setViewParents();
 
     App::DocumentObject* obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(obj));
@@ -310,6 +328,8 @@ int QGSPage::addQView(QGIView* view)
         }
 
         view->updateView(true);
+    } else {
+        Base::Console().Message("QGSP::addQView - qview already exists\n");
     }
     return 0;
 }
@@ -397,7 +417,7 @@ bool QGSPage::attachView(App::DocumentObject* obj)
         qview = addViewBalloon(static_cast<TechDraw::DrawViewBalloon*>(obj));
     }
     else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
-        qview = addDrawViewAnnotation(static_cast<TechDraw::DrawViewAnnotation*>(obj));
+        qview = addAnnotation(static_cast<TechDraw::DrawViewAnnotation*>(obj));
     }
     else if (typeId.isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId())) {
         qview = addDrawViewSymbol(static_cast<TechDraw::DrawViewSymbol*>(obj));
@@ -428,37 +448,85 @@ bool QGSPage::attachView(App::DocumentObject* obj)
     return (qview != nullptr);
 }
 
+
+void QGSPage::addItemToScene(QGIView* item)
+{
+    addItem(item);
+
+    // Does item belong to a parent?
+    QGIView* parent = nullptr;
+    parent = findParent(item);
+
+    if (parent) {
+        addItemToParent(item, parent);
+    }
+}
+
+//! adds item to parent's group with position adjustments if required.
+void QGSPage::addItemToParent(QGIView* item, QGIView* parent)
+{
+    // not every view uses the same remapping?? spreadsheets, image, RTA, anno?
+    // anything that was originally designed to have its position
+    // defined relative to the Page should not use the dimension/balloon mapping.
+    assert(item);
+    assert(parent);
+    // TODO: make custom user types retrievable by name (see QGIUserTypes.h)
+    constexpr int QGIVDimensionType {QGraphicsItem::UserType + 106};
+    constexpr int QGIVBalloonType {QGraphicsItem::UserType + 140};
+    constexpr int QGIWeldSymbolType {QGraphicsItem::UserType + 340};
+    // constexpr int QGIViewAnnotationType {QGraphicsItem::UserType + 120};
+
+    if (item->type() == QGIWeldSymbolType) {
+        // don't touch these
+        return;
+    }
+
+    // original parenting logic here
+    QPointF posRef(0., 0.);
+    if (item->type() == QGIVDimensionType || item->type() == QGIVBalloonType) {
+        QPointF mapPos = item->mapToItem(parent, posRef);
+        item->moveBy(-mapPos.x(), -mapPos.y());
+        parent->addToGroup(item);
+        return;
+    }
+
+    // positioning logic for objects (leader/rta/etc) that normally draw relative to the page goes
+    // here
+    //
+    QPointF itemPosition {item->getViewObject()->X.getValue(),  // millimetres on page
+                          -item->getViewObject()->Y.getValue()};
+    parent->addToGroup(item);
+    item->setPos(Rez::guiX(itemPosition));
+
+    item->setZValue(ZVALUE::DIMENSION);
+}
+
 QGIView* QGSPage::addViewPart(TechDraw::DrawViewPart* partFeat)
 {
-    // Base::Console().Message("QGSP::addViewPart(%s)\n", partFeat->Label.getValue());
     auto viewPart(new QGIViewPart);
-
+    addItem(viewPart);
     viewPart->setViewPartFeature(partFeat);
-
-    addQView(viewPart);
     // we need to install an event filter for any views derived from DrawViewPart
     viewPart->installSceneEventFilter(viewPart);
+
     return viewPart;
 }
 
 QGIView* QGSPage::addViewSection(DrawViewSection* sectionFeat)
 {
     auto viewSection(new QGIViewSection);
-
+    addItem(viewSection);
     viewSection->setViewPartFeature(sectionFeat);
-
-    addQView(viewSection);
     viewSection->installSceneEventFilter(viewSection);
+
     return viewSection;
 }
 
 QGIView* QGSPage::addProjectionGroup(TechDraw::DrawProjGroup* projGroupFeat)
 {
-    // Base::Console().Message("QGSP::addprojectionGroup(%s)\n", projGroupFeat->Label.getValue());
     auto qview(new QGIProjGroup);
-
+    addItem(qview);
     qview->setViewFeature(projGroupFeat);
-    addQView(qview);
     qview->installSceneEventFilter(qview);
 
     return qview;
@@ -467,85 +535,72 @@ QGIView* QGSPage::addProjectionGroup(TechDraw::DrawProjGroup* projGroupFeat)
 QGIView* QGSPage::addDrawView(TechDraw::DrawView* view)
 {
     auto qview(new QGIView);
-
+    addItem(qview);
     qview->setViewFeature(view);
-    addQView(qview);
     return qview;
 }
 
 QGIView* QGSPage::addDrawViewCollection(TechDraw::DrawViewCollection* collectionFeat)
 {
     auto qview(new QGIViewCollection);
-
+    addItem(qview);
     qview->setViewFeature(collectionFeat);
-    addQView(qview);
+
     return qview;
 }
 
-QGIView* QGSPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation* annoFeat)
+QGIView* QGSPage::addAnnotation(TechDraw::DrawViewAnnotation* annoFeat)
 {
-    auto qview(new QGIViewAnnotation);
+    auto annoView{new QGIViewAnnotation};
+    annoView->setViewFeature(annoFeat);
+    annoView->setZValue(ZVALUE::ANNOTATION);
+    addItemToScene(annoView);
 
-    qview->setViewAnnoFeature(annoFeat);
-
-    addQView(qview);
-    return qview;
+    return annoView;
 }
 
 QGIView* QGSPage::addDrawViewSymbol(TechDraw::DrawViewSymbol* symbolFeat)
 {
     QGIViewSymbol *symbolView = new QGIViewSymbol;
     symbolView->setViewFeature(symbolFeat);
+    addItemToScene(symbolView);
 
-    addQView(symbolView);
     return symbolView;
 }
 
 QGIView* QGSPage::addDrawViewClip(TechDraw::DrawViewClip* view)
 {
     auto qview(new QGIViewClip);
-
-    qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
     qview->setViewFeature(view);
+    addItemToScene(qview);
+    qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
 
-    addQView(qview);
     return qview;
 }
 
 QGIView* QGSPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet* sheetFeat)
 {
     auto qview(new QGIViewSpreadsheet);
-
     qview->setViewFeature(sheetFeat);
+    addItemToScene(qview);
 
-    addQView(qview);
     return qview;
 }
 
 QGIView* QGSPage::addDrawViewImage(TechDraw::DrawViewImage* imageFeat)
 {
     auto qview(new QGIViewImage);
-
     qview->setViewFeature(imageFeat);
+    addItemToScene(qview);
 
-    addQView(qview);
     return qview;
 }
 
 QGIView* QGSPage::addViewBalloon(TechDraw::DrawViewBalloon* balloonFeat)
 {
     auto vBalloon(new QGIViewBalloon);
-
-    addItem(vBalloon);
-
     vBalloon->setViewPartFeature(balloonFeat);
-
-    QGIView* parent = nullptr;
-    parent = findParent(vBalloon);
-
-    if (parent) {
-        addBalloonToParent(vBalloon, parent);
-    }
+    addItemToScene(vBalloon);
 
     return vBalloon;
 }
@@ -612,18 +667,8 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
 QGIView* QGSPage::addViewDimension(TechDraw::DrawViewDimension* dimFeat)
 {
     auto dimGroup(new QGIViewDimension);
-
-    addItem(dimGroup);
-
     dimGroup->setViewPartFeature(dimFeat);
-
-    // Find if it belongs to a parent
-    QGIView* parent = nullptr;
-    parent = findParent(dimGroup);
-
-    if (parent) {
-        addDimToParent(dimGroup, parent);
-    }
+    addItemToScene(dimGroup);
 
     return dimGroup;
 }
@@ -643,16 +688,9 @@ void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 QGIView* QGSPage::addViewLeader(TechDraw::DrawLeaderLine* leaderFeat)
 {
     QGILeaderLine *leaderItem = new QGILeaderLine;
-    addItem(leaderItem);
     leaderItem->setViewFeature(leaderFeat);
+    addItemToScene(leaderItem);
 
-    // Find if it belongs to a parent
-    QGIView* parent = nullptr;
-    parent = findParent(leaderItem);
-
-    if (parent) {
-        addLeaderToParent(leaderItem, parent);
-    }
     return leaderItem;
 }
 
@@ -674,67 +712,67 @@ void QGSPage::addLeaderToParent(QGILeaderLine* leader, QGIView* parent)
 
 QGIView* QGSPage::addRichAnno(TechDraw::DrawRichAnno* richFeat)
 {
-    QGIRichAnno *richView = new QGIRichAnno;
+    auto richView = new QGIRichAnno;
     richView->setViewFeature(richFeat);
+    addItemToScene(richView);
 
-    addQView(richView);
+    // Find if it belongs to a parent
+    QGIView* parent = nullptr;
+    parent = findParent(richView);
+
+    if (parent) {
+        addRichAnnoToParent(richView, parent);
+    }
+
     return richView;
 }
 
+
+void QGSPage::addRichAnnoToParent(QGIRichAnno* anno, QGIView* parent)
+{
+    assert(anno);
+    assert(parent);//blow up if we don't have Anno or Parent
+    QPointF posRef(0., 0.);
+    QPointF parentOrigin = anno->mapToItem(parent, posRef);
+    // this is not right for a DPGI?  Needs the usual calculation??
+    QPointF annoPositionInParent{ anno->getViewObject()->X.getValue(),
+                                    anno->getViewObject()->Y.getValue()};
+    QPointF moveToPosition = parentOrigin + annoPositionInParent;
+    anno->moveBy(-moveToPosition.x(), -moveToPosition.y());
+    parent->addToGroup(anno);
+    anno->setZValue(ZVALUE::DIMENSION);
+}
+
+// ?? why does this not get parented to its leader here??
+// the taskdialog sets the Leader property in the weld feature.
+// the weld symbol draws itself based on the leader's geometry, but is not added to the leader's
+// group(?why?)
 QGIView* QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat)
 {
     QGIWeldSymbol *weldView = new QGIWeldSymbol;
     weldView->setViewFeature(weldFeat);
+    addItem(weldView);
 
-    addQView(weldView);
     return weldView;
 }
 
-void QGSPage::setDimensionGroups()
+
+//! ensure that all QGIViews are parented correctly in the scene
+void QGSPage::setViewParents()
 {
     const std::vector<QGIView*>& allItems = getViews();
-    int dimItemType = QGraphicsItem::UserType + 106;
 
     for (auto& item : allItems) {
-        if (item->type() == dimItemType && !item->group()) {
-            QGIView* parent = findParent(item);
-            if (parent) {
-                QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>(item);
-                addDimToParent(dim, parent);
-            }
+        if (item->group()) {
+            // this item already has a parent in the scene.  probably should check if it is the
+            // correct parent
+            continue;
         }
-    }
-}
 
-void QGSPage::setBalloonGroups()
-{
-    const std::vector<QGIView*>& allItems = getViews();
-    int balloonItemType = QGraphicsItem::UserType + 140;
-
-    for (auto& item : allItems) {
-        if (item->type() == balloonItemType && !item->group()) {
-            QGIView* parent = findParent(item);
-            if (parent) {
-                QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>(item);
-                addBalloonToParent(balloon, parent);
-            }
-        }
-    }
-}
-
-//! ensure that all Leader QGItems are parented correctly
-void QGSPage::setLeaderParentage()
-{
-    const std::vector<QGIView*>& allItems = getViews();
-    int LeaderItemType = QGraphicsItem::UserType + 232;
-
-    for (auto& item : allItems) {
-        if (item->type() == LeaderItemType && !item->group()) {
-            QGIView* parent = findParent(item);
-            if (parent) {
-                QGILeaderLine* leader = dynamic_cast<QGILeaderLine*>(item);
-                addLeaderToParent(leader, parent);
-            }
+        QGIView* parent = findParent(item);
+        if (parent) {
+            // item has a parent, so make sure it belongs to parent's group
+            addItemToParent(item, parent);
         }
     }
 }
@@ -773,7 +811,6 @@ QGIView* QGSPage::getQGIVByName(std::string name) const
 //find the parent of a QGIV based on the corresponding feature's parentage
 QGIView* QGSPage::findParent(QGIView* view) const
 {
-    //    Base::Console().Message("QGSP::findParent(%s)\n", view->getViewName());
     const std::vector<QGIView*> qviews = getViews();
     TechDraw::DrawView* myFeat = view->getViewObject();
 

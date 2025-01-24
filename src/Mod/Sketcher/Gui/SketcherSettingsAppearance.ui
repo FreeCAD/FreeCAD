@@ -268,7 +268,10 @@
          <string>Width of normal edges.</string>
         </property>
         <property name="unit" stdset="0">
-         <string notr="true">mm</string>
+         <string notr="true">px</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> px</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -362,7 +365,10 @@
          <string>Width of construction edges.</string>
         </property>
         <property name="unit" stdset="0">
-         <string notr="true">mm</string>
+         <string notr="true">px</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> px</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -456,7 +462,10 @@
          <string>Width of internal aligned edges.</string>
         </property>
         <property name="unit" stdset="0">
-         <string notr="true">mm</string>
+         <string notr="true">px</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> px</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -524,7 +533,10 @@
          <string>Width of external edges.</string>
         </property>
         <property name="unit" stdset="0">
-         <string notr="true">mm</string>
+         <string notr="true">px</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> px</string>
         </property>
         <property name="minimum">
          <number>1</number>

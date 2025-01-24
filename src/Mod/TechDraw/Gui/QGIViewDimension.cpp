@@ -362,10 +362,10 @@ void QGIDatumLabel::updateFrameRect() {
     int paddingRight = fontSize * 0.3;
     int paddingBottom = fontSize * 0.125;
     // Why top and bottom padding different?
-    // Because the m_dimText bouding box isn't relative to X height :(
+    // Because the m_dimText bounding box isn't relative to X height :(
     // And we want padding to be relative to X height
     // TODO: make QGCustomLabel::boundingBoxXHeight
-    m_frame->setRect(m_textItems->childrenBoundingRect().adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom)); // Update bouding rect
+    m_frame->setRect(m_textItems->childrenBoundingRect().adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom)); // Update bounding rect
 }
 
 void QGIDatumLabel::setLineWidth(double lineWidth)
@@ -418,21 +418,21 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
         m_unitText->setPlainText(QString());
     }
 
-    QRectF labelBox = m_dimText->boundingRect();
+    QRectF labelBox = m_dimText->alignmentRect();
     double right = labelBox.right();
     double top = labelBox.top();
     double bottom = labelBox.bottom();
     double middle = (top + bottom) / 2.0;
 
     //set unit position
-    QRectF unitBox = m_unitText->boundingRect();
+    QRectF unitBox = m_unitText->alignmentRect();
     double unitWidth = unitBox.width();
     double unitRight = right + unitWidth;
     // Set the m_unitText font *baseline* at same height as the m_dimText font baseline
     m_unitText->setPos(right, 0.0);
 
     //set tolerance position
-    QRectF overBox = m_tolTextOver->boundingRect();
+    QRectF overBox = m_tolTextOver->alignmentRect();
     double tolLeft  = unitRight;
 
     // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
@@ -466,7 +466,7 @@ void QGIDatumLabel::setFont(QFont font)
     QFont tFont(font);
     double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
-    tFont.setPixelSize((int)(fontSize * tolAdj));
+    tFont.setPixelSize(std::max(1, (int)(fontSize * tolAdj)));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
     updateFrameRect();
@@ -671,11 +671,12 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
                                  //above this Dimension's parent view.   need Layers?
     hideFrame();
 
-    m_refFlag = new QGCustomSvg();
-    m_refFlag->setParentItem(this);
-    m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
-    m_refFlag->setZValue(ZVALUE::LOCK);
-    m_refFlag->hide();
+    // needs phase 2 of autocorrect to be useful
+    // m_refFlag = new QGCustomSvg();
+    // m_refFlag->setParentItem(this);
+    // m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
+    // m_refFlag->setZValue(ZVALUE::LOCK);
+    // m_refFlag->hide();
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant& value)
@@ -812,12 +813,13 @@ void QGIViewDimension::updateView(bool update)
         updateDim();
     }
 
-    if (dim->hasGoodReferences()) {
-        m_refFlag->hide();
-    } else {
-        m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
-        m_refFlag->show();
-    }
+    // needs Phase 2 of autocorrect to be useful
+    // if (dim->hasGoodReferences()) {
+    //     m_refFlag->hide();
+    // } else {
+    //     m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
+    //     m_refFlag->show();
+    // }
 
     draw();
 }

@@ -168,7 +168,7 @@ void CallTipsList::validateCursor()
             hide();
         }
         else if (!word.isEmpty()){
-            // If the word is empty we should not allow to do a search,
+            // If the word is empty we should not allow one to do a search,
             // otherwise we may select the next item which is not okay in this
             // context. This might happen if e.g. Shift is pressed.
             keyboardSearch(word);
@@ -204,7 +204,11 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         return tips;
 
     try {
+        PyErr_Clear();
         Py::Module module("__main__");
+        if (module.ptr() == nullptr) {
+            return tips;
+        }
         Py::Dict dict = module.getDict();
 
         // this is used to filter out input of the form "1."

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>340</width>
-    <height>485</height>
+    <width>322</width>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,6 +67,16 @@
       <column>
        <property name="text">
         <string>Level</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QTreeWidget" name="viewtree">
+      <attribute name="headerVisible">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>2D Views</string>
        </property>
       </column>
      </widget>

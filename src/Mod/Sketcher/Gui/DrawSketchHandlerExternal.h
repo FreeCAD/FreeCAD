@@ -23,7 +23,7 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
 #define SKETCHERGUI_DrawSketchHandlerExternal_H
 
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
 
 #include <Gui/Notifications.h>
@@ -116,7 +116,10 @@ public:
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerExternal() = default;
+    DrawSketchHandlerExternal(bool alwaysReference, bool intersection)
+        : alwaysReference {alwaysReference}
+        , intersection {intersection}
+    {}
     ~DrawSketchHandlerExternal() override
     {
         Gui::Selection().rmvSelectionGate();
@@ -163,9 +166,13 @@ public:
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addExternal(\"%s\",\"%s\")",
+                                          "addExternal(\"%s\",\"%s\", %s, %s)",
                                           msg.pObjectName,
-                                          msg.pSubName);
+                                          msg.pSubName,
+                                          alwaysReference || isConstructionMode() ? "False"
+                                                                                  : "True",
+                                          intersection ? "True" : "False");
+
                     Gui::Command::commitCommand();
 
                     // adding external geometry does not require a solve() per se (the DoF is the
@@ -173,8 +180,7 @@ public:
                     // because we only redraw a changed Sketch if the solver geometry amount is the
                     // same as the SkethObject geometry amount (as this avoids other issues). This
                     // solver is a very low cost one anyway (there is actually nothing to solve).
-                    tryAutoRecomputeIfNotSolve(
-                        static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                    tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                     Gui::Selection().clearSelection();
                     /* this is ok not to call to purgeHandler
@@ -212,6 +218,10 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
+        if (intersection) {
+            return QString::fromLatin1("Sketcher_Pointer_External_Intersection");
+        }
+
         return QString::fromLatin1("Sketcher_Pointer_External");
     }
 
@@ -220,6 +230,9 @@ private:
         Q_UNUSED(sketchgui);
         setAxisPickStyle(true);
     }
+
+    bool alwaysReference;
+    bool intersection;
 };
 
 

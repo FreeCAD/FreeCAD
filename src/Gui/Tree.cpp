@@ -540,6 +540,32 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     }
 }
 
+class DynamicQLineEdit : public ExpLineEdit
+{
+public:
+    DynamicQLineEdit(QWidget *parent = nullptr) : ExpLineEdit(parent) {}
+
+    QSize sizeHint() const override
+    {
+        QSize size = QLineEdit::sizeHint(); 
+        QFontMetrics fm(font());
+        int availableWidth = parentWidget()->width() - geometry().x(); // Calculate available width
+        int margin = 2 * (style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1)
+                    + 2 * style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing)
+                    + TreeParams::getItemBackgroundPadding();
+        size.setWidth(std::min(fm.horizontalAdvance(text()) + margin , availableWidth));
+        return size;
+    }
+
+    // resize on key presses
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        ExpLineEdit::keyPressEvent(event);
+        setMinimumWidth(sizeHint().width());
+    }
+
+};
+
 QWidget* TreeWidgetItemDelegate::createEditor(
         QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
@@ -555,15 +581,15 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     App::GetApplication().setActiveTransaction(str.str().c_str());
     FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
 
-    QLineEdit *editor;
+    DynamicQLineEdit *editor;
     if(TreeParams::getLabelExpression()) {
-        ExpLineEdit *le = new ExpLineEdit(parent);
+        DynamicQLineEdit *le = new DynamicQLineEdit(parent);
         le->setAutoApply(true);
         le->setFrame(false);
         le->bind(App::ObjectIdentifier(prop));
         editor = le;
     } else {
-        editor = new QLineEdit(parent);
+        editor = new DynamicQLineEdit(parent);
     }
     editor->setReadOnly(prop.isReadOnly());
     return editor;
@@ -594,7 +620,6 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
-    this->setDragDropMode(QTreeWidget::InternalMove);
     this->setColumnCount(3);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -722,6 +747,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     setColumnHidden(1, TreeParams::getHideColumn());
     setColumnHidden(2, TreeParams::getHideInternalNames());
     header()->setVisible(!TreeParams::getHideColumn() || !TreeParams::getHideInternalNames());
+    TreeParams::onFontSizeChanged();
 }
 
 TreeWidget::~TreeWidget()
@@ -1656,22 +1682,7 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
             return;
         }
     }
-    else if (event->key() == Qt::Key_Left) {
-        auto index = currentIndex();
-        if (index.column() == 1) {
-            setCurrentIndex(model()->index(index.row(), 0, index.parent()));
-            event->accept();
-            return;
-        }
-    }
-    else if (event->key() == Qt::Key_Right) {
-        auto index = currentIndex();
-        if (index.column() == 0) {
-            setCurrentIndex(model()->index(index.row(), 1, index.parent()));
-            event->accept();
-            return;
-        }
-    }
+
     QTreeWidget::keyPressEvent(event);
 }
 
@@ -1724,6 +1735,10 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     visible = obj->Visibility.getValue();
                     obj->Visibility.setValue(!visible);
                 }
+
+                // to prevent selection of the item via QTreeWidget::mousePressEvent
+                event->accept();
+                return;
             }
         }
     }
@@ -2982,8 +2997,12 @@ void TreeWidget::onUpdateStatus()
 
     std::vector<App::DocumentObject*> errors;
 
+    // Use a local copy in case of nested calls
+    auto localNewObjects = NewObjects;
+    NewObjects.clear();
+
     // Checking for new objects
-    for (auto& v : NewObjects) {
+    for (auto& v : localNewObjects) {
         auto doc = App::GetApplication().getDocument(v.first.c_str());
         if (!doc)
             continue;
@@ -3006,10 +3025,13 @@ void TreeWidget::onUpdateStatus()
                 docItem->createNewItem(*vpd);
         }
     }
-    NewObjects.clear();
+
+    // Use a local copy in case of nested calls
+    auto localChangedObjects = ChangedObjects;
+    ChangedObjects.clear();
 
     // Update children of changed objects
-    for (auto& v : ChangedObjects) {
+    for (auto& v : localChangedObjects) {
         auto obj = v.first;
 
         auto iter = ObjectTable.find(obj);
@@ -3035,7 +3057,6 @@ void TreeWidget::onUpdateStatus()
 
         updateChildren(iter->first, iter->second, v.second.test(CS_Output), false);
     }
-    ChangedObjects.clear();
 
     FC_LOG("update item status");
     TimingInit();
@@ -5417,9 +5438,10 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
         if (currentStatus & Status::External) {
             static QPixmap pxExternal;
+            int px = 12 * getMainWindow()->devicePixelRatioF();
             if (pxExternal.isNull()) {
                 pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay",
-                                                              QSize(24, 24));
+                                                              QSize(px, px));
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);

@@ -324,7 +324,9 @@ class TestInvoluteGear(unittest.TestCase):
         return distance < Precision.intersection()
 
     def assertSolid(self, shape, msg=None):
-        self.assertEqual(shape.ShapeType, 'Solid', msg=msg)
+        # we don't check shape.ShapeType for 'Solid' as with body.AllowCompound==True
+        # we get, also in the good case, our solid wrapped in a compound.
+        self.assertEqual(len(shape.Solids), 1, msg=msg)
 
 
 def inv(a):

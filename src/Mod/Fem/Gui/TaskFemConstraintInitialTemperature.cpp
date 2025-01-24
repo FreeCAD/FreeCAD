@@ -56,7 +56,7 @@ TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(
 
     // Get the feature data
     Fem::ConstraintInitialTemperature* pcConstraint =
-        static_cast<Fem::ConstraintInitialTemperature*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintInitialTemperature>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -70,7 +70,7 @@ TaskFemConstraintInitialTemperature::~TaskFemConstraintInitialTemperature() = de
 
 std::string TaskFemConstraintInitialTemperature::get_temperature() const
 {
-    return ui->if_temperature->value().getSafeUserString().toStdString();
+    return ui->if_temperature->value().getSafeUserString();
 }
 
 void TaskFemConstraintInitialTemperature::changeEvent(QEvent*)

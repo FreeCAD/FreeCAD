@@ -319,6 +319,10 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoNode", obj, &ptr, 0);
+        if (!ptr) {
+            PyErr_SetString(PyExc_RuntimeError, "Conversion of coin.SoNode failed");
+            return nullptr;
+        }
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -556,7 +560,7 @@ PyObject *ViewProviderPy::getBoundingBox(PyObject *args) {
     PY_TRY {
         View3DInventor *view = nullptr;
         if(pyView)
-            view = static_cast<View3DInventorPy*>(pyView)->getView3DIventorPtr();
+            view = static_cast<View3DInventorPy*>(pyView)->getView3DInventorPtr();
         auto bbox = getViewProviderPtr()->getBoundingBox(subname, Base::asBoolean(transform), view);
         return new Base::BoundBoxPy(new Base::BoundBox3d(bbox));
     }

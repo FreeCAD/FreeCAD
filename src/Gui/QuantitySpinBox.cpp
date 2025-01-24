@@ -120,7 +120,7 @@ public:
                 result = quantity;
 
                 // Now translate the quantity into its string representation using the user-defined unit system
-                input = Base::UnitsApi::schemaTranslate(result);
+                input = QString::fromStdString(Base::UnitsApi::schemaTranslate(result));
             }
         }
 
@@ -405,10 +405,18 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
     resizeWidget();
 }
 
-void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
+void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text()))
+    const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
+
+    if (isEnter && !isNormalized()) {
+        normalize();
+        return;
+    }
+
+    if (!handleKeyEvent(event->text())) {
         QAbstractSpinBox::keyPressEvent(event);
+    }
 }
 
 void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
@@ -441,7 +449,7 @@ void QuantitySpinBox::updateEdit(const QString& text)
 
     edit->setText(text);
 
-    cursor = qBound(0, cursor, edit->displayText().size() - d->unitStr.size());
+    cursor = qBound(0, cursor, qMax(0, edit->displayText().size() - d->unitStr.size()));
     if (selsize > 0) {
         edit->setSelection(0, cursor);
     }
@@ -475,6 +483,24 @@ double QuantitySpinBox::rawValue() const
 {
     Q_D(const QuantitySpinBox);
     return d->quantity.getValue();
+}
+
+void QuantitySpinBox::normalize()
+{
+    // this does not really change the value, only the representation
+    QSignalBlocker blocker(this);
+
+    Q_D(const QuantitySpinBox);
+    return setValue(d->quantity);
+}
+
+bool QuantitySpinBox::isNormalized()
+{
+    static const QRegularExpression operators(QStringLiteral("[+\\-/*]"),
+                                              QRegularExpression::CaseInsensitiveOption);
+
+    Q_D(const QuantitySpinBox);
+    return !d->validStr.contains(operators);
 }
 
 void QuantitySpinBox::setValue(const Base::Quantity& value)
@@ -608,7 +634,7 @@ void QuantitySpinBox::setUnit(const Base::Unit &unit)
 void QuantitySpinBox::setUnitText(const QString& str)
 {
     try {
-        Base::Quantity quant = Base::Quantity::parse(str);
+        Base::Quantity quant = Base::Quantity::parse(str.toStdString());
         setUnit(quant.getUnit());
     }
     catch (const Base::ParserError&) {
@@ -712,25 +738,26 @@ void QuantitySpinBox::clearSchema()
 QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     Q_D(const QuantitySpinBox);
-    if (d->scheme) {
-        return val.getUserString(d->scheme.get(), factor, unitString);
-    }
-    else {
-        return val.getUserString(factor, unitString);
-    }
+    std::string unitStr;
+    std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
+                                : val.getUserString(factor, unitStr);
+    unitString = QString::fromStdString(unitStr);
+    return QString::fromStdString(str);
 }
 
 QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 {
     Q_D(const QuantitySpinBox);
+    std::string str;
     if (d->scheme) {
         double factor;
-        QString unitString;
-        return val.getUserString(d->scheme.get(), factor, unitString);
+        std::string unitString;
+        str = val.getUserString(d->scheme.get(), factor, unitString);
     }
     else {
-        return val.getUserString();
+        str = val.getUserString();
     }
+    return QString::fromStdString(str);
 }
 
 void QuantitySpinBox::setExpression(std::shared_ptr<Expression> expr)
@@ -767,7 +794,7 @@ void QuantitySpinBox::stepBy(int steps)
     else if (val < d->minimum)
         val = d->minimum;
 
-    Quantity quant(val, d->unitStr);
+    Quantity quant(val, d->unitStr.toStdString());
     updateText(quant);
     updateFromCache(true);
     update();
@@ -792,41 +819,22 @@ QSize QuantitySpinBox::sizeForText(const QString& txt) const
 
 QSize QuantitySpinBox::sizeHint() const
 {
-    Q_D(const QuantitySpinBox);
-    ensurePolished();
-
-    const QFontMetrics fm(fontMetrics());
-    int h = lineEdit()->sizeHint().height();
-    int w = 0;
-
-    QString s;
-    QString fixedContent = QLatin1String(" ");
-
-    Base::Quantity q(d->quantity);
-    q.setValue(d->maximum);
-    s = textFromValue(q);
-    s.truncate(18);
-    s += fixedContent;
-    w = qMax(w, QtTools::horizontalAdvance(fm, s));
-
-    w += 2; // cursor blinking space
-    w += iconHeight;
-
-    QStyleOptionSpinBox opt;
-    initStyleOption(&opt);
-    QSize hint(w, h);
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
-    return size;
+    return sizeHintCalculator(lineEdit()->sizeHint().height());
 }
 
 QSize QuantitySpinBox::minimumSizeHint() const
+{
+    return sizeHintCalculator(lineEdit()->minimumSizeHint().height());
+}
+
+QSize QuantitySpinBox::sizeHintCalculator(int h) const
 {
     Q_D(const QuantitySpinBox);
     ensurePolished();
 
     const QFontMetrics fm(fontMetrics());
-    int h = lineEdit()->minimumSizeHint().height();
     int w = 0;
+    constexpr int maxStrLen = 12;
 
     QString s;
     QString fixedContent = QLatin1String(" ");
@@ -834,7 +842,7 @@ QSize QuantitySpinBox::minimumSizeHint() const
     Base::Quantity q(d->quantity);
     q.setValue(d->maximum);
     s = textFromValue(q);
-    s.truncate(18);
+    s.truncate(maxStrLen);
     s += fixedContent;
     w = qMax(w, QtTools::horizontalAdvance(fm, s));
 
@@ -902,6 +910,7 @@ void QuantitySpinBox::focusInEvent(QFocusEvent * event)
 void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
 {
     validateInput();
+    normalize();
 
     QToolTip::hideText();
     QAbstractSpinBox::focusOutEvent(event);
@@ -928,9 +937,7 @@ void QuantitySpinBox::selectNumber()
 
 QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const
 {
-    double factor;
-    QString unitStr;
-    QString str = getUserString(value, factor, unitStr);
+    QString str = getUserString(value);
     if (qAbs(value.getValue()) >= 1000.0) {
         str.remove(locale().groupSeparator());
     }

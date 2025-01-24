@@ -27,15 +27,17 @@ __url__ = "https://www.freecad.org"
 
 import numpy as np
 import shutil
-import subprocess
 import sys
 import tempfile
+from PySide.QtCore import QProcess, QThread
 
 import FreeCAD
 import Fem
+from freecad import utils
 
 try:
-    from netgen import occ, config as ng_config
+    from netgen import occ, meshing, config as ng_config
+    import pyngcore as ngcore
 except ModuleNotFoundError:
     FreeCAD.Console.PrintError("To use FemMesh Netgen objects, install the Netgen Python bindings")
 
@@ -64,6 +66,15 @@ class NetgenTools:
         15: [0, 1, 2, 3, 4, 5, 6, 8, 7, 12, 14, 13, 9, 10, 11, 15, 16, 17, 18, 19],  # penta15
     }
 
+    meshing_step = {
+        "AnalyzeGeometry": 1,  # MESHCONST_ANALYSE
+        "MeshEdges": 2,  # MESHCONST_MESHEDGES
+        "MeshSurface": 3,  # MESHCONST_MESHSURFACE
+        "OptimizeSurface": 4,  # MESHCONST_OPTSURFACE
+        "MeshVolume": 5,  # MESHCONST_MESHVOLUME
+        "OptimizeVolume": 6,  # MESHCONST_OPTVOLUME
+    }
+
     name = "Netgen"
 
     def __init__(self, obj):
@@ -71,6 +82,9 @@ class NetgenTools:
         self.fem_mesh = None
         self.process = None
         self.tmpdir = ""
+        self.process = QProcess()
+        self.mesh_params = {}
+        self.param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
 
     def write_geom(self):
         if not self.tmpdir:
@@ -83,123 +97,152 @@ class NetgenTools:
         geom_trans.Placement = global_pla
         self.brep_file = self.tmpdir + "/shape.brep"
         self.result_file = self.tmpdir + "/result.npy"
+        self.script_file = self.tmpdir + "/code.py"
         geom_trans.exportBrep(self.brep_file)
 
-    code = """
-from femmesh.netgentools import NetgenTools
-
-NetgenTools.run_netgen(**{params})
-"""
-
-    def compute(self):
+    def prepare(self):
         self.write_geom()
-        mesh_params = {
+        self.mesh_params = {
             "brep_file": self.brep_file,
-            "threads": self.obj.Threads,
+            "threads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "heal": self.obj.HealShape,
-            "fineness": self.obj.Fineness,
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
+            "second_order_linear": self.obj.SecondOrderLinear,
             "result_file": self.result_file,
+            "mesh_region": self.get_mesh_region(),
+            "verbosity": self.param_grp.GetInt("LogVerbosity", 2),
         }
 
-        code_str = self.code.format(params=mesh_params)
+        with open(self.script_file, "w") as file:
+            file.write(
+                self.code.format(
+                    kwds=self.mesh_params,
+                    order_face=NetgenTools.order_face,
+                    order_volume=NetgenTools.order_volume,
+                )
+            )
 
-        cmd_list = [
-            sys.executable,
-            "-c",
-            code_str,
-        ]
-        self.process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = self.process.communicate()
-        if self.process.returncode != 0:
-            raise RuntimeError(err.decode("utf-8"))
+    def compute(self):
+        self.process.start(utils.get_python_exe(), [self.script_file])
 
-        return True
+        return self.process
 
-    @staticmethod
-    def run_netgen(brep_file, threads, heal, fineness, params, second_order, result_file):
-        import pyngcore as ngcore
-        from netgen import meshing
+    code = """
+from netgen import occ, meshing
+import pyngcore as ngcore
+import numpy as np
 
-        geom = occ.OCCGeometry(brep_file)
-        ngcore.SetNumThreads(threads)
+order_face = {order_face}
+order_volume = {order_volume}
 
-        if fineness == "UserDefined":
-            mp = meshing.MeshingParameters(**params)
-        elif fineness == "VeryCoarse":
-            mp = meshing.meshsize.very_coarse
-        elif fineness == "Coarse":
-            mp = meshing.meshsize.coarse
-        elif fineness == "Moderate":
-            mp = meshing.meshsize.moderate
-        elif fineness == "Fine":
-            mp = meshing.meshsize.fine
-        elif fineness == "VeryFine":
-            mp = meshing.meshsize.very_fine
+def run_netgen(
+    brep_file,
+    threads,
+    heal,
+    params,
+    second_order,
+    second_order_linear,
+    result_file,
+    mesh_region,
+    verbosity,
+):
+    geom = occ.OCCGeometry(brep_file)
+    ngcore.SetNumThreads(threads)
 
-        with ngcore.TaskManager():
-            if heal:
-                geom.Heal()
-            mesh = geom.GenerateMesh(mp=mp)
+    shape = geom.shape
+    for items, l in mesh_region:
+        for t, n in items:
+            if t == "Vertex":
+                shape.vertices.vertices[n - 1].maxh = l
+            elif t == "Edge":
+                shape.edges.edges[n - 1].maxh = l
+            elif t == "Face":
+                shape.faces.faces[n - 1].maxh = l
+            elif t == "Solid":
+                shape.solids.solids[n - 1].maxh = l
 
-        if second_order:
-            mesh.SecondOrder()
+    with ngcore.TaskManager():
+        meshing.SetMessageImportance(verbosity)
+        geom = occ.OCCGeometry(shape)
+        if heal:
+            geom.Heal()
+        mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
 
-        coords = mesh.Coordinates()
+    result = {{
+        "coords": [],
+        "Edges": [[], []],
+        "Faces": [[], []],
+        "Volumes": [[], []],
+    }}
+    groups = {{"Edges": [], "Faces": [], "Solids": []}}
 
-        edges = mesh.Elements1D().NumPy()
-        faces = mesh.Elements2D().NumPy()
-        volumes = mesh.Elements3D().NumPy()
-
-        nod_edges = edges["nodes"]
-        nod_faces = faces["nodes"]
-        nod_volumes = volumes["nodes"]
-
-        np_edges = (nod_edges != 0).sum(axis=1).tolist()
-        np_faces = faces["np"].tolist()
-        np_volumes = volumes["np"].tolist()
-
-        # set smesh node order
-        for i in range(faces.size):
-            nod_faces[i] = nod_faces[i][NetgenTools.order_face[np_faces[i]]]
-
-        for i in range(volumes.size):
-            nod_volumes[i] = nod_volumes[i][NetgenTools.order_volume[np_volumes[i]]]
-
-        flat_edges = nod_edges[nod_edges != 0].tolist()
-        flat_faces = nod_faces[nod_faces != 0].tolist()
-        flat_volumes = nod_volumes[nod_volumes != 0].tolist()
-
-        result = {
-            "coords": coords,
-            "Edges": [flat_edges, np_edges],
-            "Faces": [flat_faces, np_faces],
-            "Volumes": [flat_volumes, np_volumes],
-        }
-
-        # create groups
-        nb_edges = edges.size
-        nb_faces = faces.size
-        nb_volumes = volumes.size
-
-        idx_edges = edges["index"]
-        idx_faces = faces["index"]
-        idx_volumes = volumes["index"]
-
-        groups = {"Edges": [], "Faces": [], "Solids": []}
-        for i in np.unique(idx_edges):
-            edge_i = (np.nonzero(idx_edges == i)[0] + 1).tolist()
-            groups["Edges"].append([i, edge_i])
-        for i in np.unique(idx_faces):
-            face_i = (np.nonzero(idx_faces == i)[0] + nb_edges + 1).tolist()
-            groups["Faces"].append([i, face_i])
-
-        for i in np.unique(idx_volumes):
-            volume_i = (np.nonzero(idx_volumes == i)[0] + nb_edges + nb_faces + 1).tolist()
-            groups["Solids"].append([i, volume_i])
-
+    # save empty data if last step is geometry analysis
+    if params["perfstepsend"] == 1:
         np.save(result_file, [result, groups])
+        return None
+
+    if second_order:
+        if second_order_linear:
+            mesh.SetGeometry(None)
+        mesh.SecondOrder()
+
+    coords = mesh.Coordinates()
+
+    edges = mesh.Elements1D().NumPy()
+    faces = mesh.Elements2D().NumPy()
+    volumes = mesh.Elements3D().NumPy()
+
+    nod_edges = edges["nodes"]
+    nod_faces = faces["nodes"]
+    nod_volumes = volumes["nodes"]
+
+    np_edges = (nod_edges != 0).sum(axis=1).tolist()
+    np_faces = faces["np"].tolist()
+    np_volumes = volumes["np"].tolist()
+
+    # set smesh node order
+    for i in range(faces.size):
+        nod_faces[i] = nod_faces[i][order_face[np_faces[i]]]
+
+    for i in range(volumes.size):
+        nod_volumes[i] = nod_volumes[i][order_volume[np_volumes[i]]]
+
+    flat_edges = nod_edges[nod_edges != 0].tolist()
+    flat_faces = nod_faces[nod_faces != 0].tolist()
+    flat_volumes = nod_volumes[nod_volumes != 0].tolist()
+
+    result = {{
+        "coords": coords,
+        "Edges": [flat_edges, np_edges],
+        "Faces": [flat_faces, np_faces],
+        "Volumes": [flat_volumes, np_volumes],
+    }}
+
+    # create groups
+    nb_edges = edges.size
+    nb_faces = faces.size
+    nb_volumes = volumes.size
+
+    idx_edges = edges["index"]
+    idx_faces = faces["index"]
+    idx_volumes = volumes["index"]
+
+    for i in np.unique(idx_edges):
+        edge_i = (np.nonzero(idx_edges == i)[0] + 1).tolist()
+        groups["Edges"].append([i, edge_i])
+    for i in np.unique(idx_faces):
+        face_i = (np.nonzero(idx_faces == i)[0] + nb_edges + 1).tolist()
+        groups["Faces"].append([i, face_i])
+
+    for i in np.unique(idx_volumes):
+        volume_i = (np.nonzero(idx_volumes == i)[0] + nb_edges + nb_faces + 1).tolist()
+        groups["Solids"].append([i, volume_i])
+
+    np.save(result_file, [result, groups])
+
+run_netgen(**{kwds})
+    """
 
     def fem_mesh_from_result(self):
         fem_mesh = Fem.FemMesh()
@@ -256,8 +299,8 @@ NetgenTools.run_netgen(**{params})
             "segmentsperedge": self.obj.SegmentsPerEdge,
             "elsizeweight": self.obj.ElementSizeWeight,
             "parthread": self.obj.ParallelMeshing,
-            "perfstepsstart": self.obj.StartStep,
-            "perfstepsend": self.obj.EndStep,
+            "perfstepsstart": NetgenTools.meshing_step[self.obj.StartStep],
+            "perfstepsend": NetgenTools.meshing_step[self.obj.EndStep],
             "giveuptol2d": self.obj.GiveUpTolerance2d,
             "giveuptol": self.obj.GiveUpTolerance,
             "giveuptolopenquads": self.obj.GiveUpToleranceOpenQuads,
@@ -276,11 +319,65 @@ NetgenTools.run_netgen(**{params})
             "inverttrigs": self.obj.InvertTrigs,
             "autozrefine": self.obj.AutoZRefine,
             "parallel_meshing": self.obj.ParallelMeshing,
-            "nthreads": self.obj.Threads,
+            "nthreads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "closeedgefac": self.obj.CloseEdgeFactor,
         }
 
+        # set specific parameters by fineness
+        if self.obj.Fineness == "VeryCoarse":
+            params["curvaturesafety"] = 1
+            params["segmentsperedge"] = 0.3
+            params["grading"] = 0.7
+            params["closeedgefac"] = 0.5
+            params["optsteps3d"] = 5
+
+        elif self.obj.Fineness == "Coarse":
+            params["curvaturesafety"] = 1.5
+            params["segmentsperedge"] = 0.5
+            params["grading"] = 0.5
+            params["closeedgefac"] = 1
+            params["optsteps3d"] = 5
+
+        elif self.obj.Fineness == "Moderate":
+            params["curvaturesafety"] = 2
+            params["segmentsperedge"] = 1
+            params["grading"] = 0.3
+            params["closeedgefac"] = 2
+            params["optsteps3d"] = 5
+
+        elif self.obj.Fineness == "Fine":
+            params["curvaturesafety"] = 3
+            params["segmentsperedge"] = 2
+            params["grading"] = 0.2
+            params["closeedgefac"] = 3.5
+            params["optsteps3d"] = 5
+
+        elif self.obj.Fineness == "VeryFine":
+            params["curvaturesafety"] = 5
+            params["segmentsperedge"] = 3
+            params["grading"] = 0.1
+            params["closeedgefac"] = 5
+            params["optsteps3d"] = 5
+
         return params
+
+    def get_mesh_region(self):
+        from Part import Shape as PartShape
+
+        result = []
+        for reg in self.obj.MeshRegionList:
+            if reg.Suppressed:
+                continue
+            for s, sub_list in reg.References:
+                if s.isDerivedFrom("App::GeoFeature") and isinstance(
+                    s.getPropertyOfGeometry(), PartShape
+                ):
+                    geom = s.getPropertyOfGeometry()
+                    sub_obj = [s.getSubObject(_) for _ in sub_list]
+                    sub_sh = geom.findSubShape(sub_obj)
+                    l = reg.CharacteristicLength.getValueAs("mm").Value
+                    result.append((sub_sh, l))
+        return result
 
     @staticmethod
     def version():

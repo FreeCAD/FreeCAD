@@ -36,6 +36,7 @@ of the objects or the 3D view.
 
 ## \addtogroup draftutils
 # @{
+import importlib
 import math
 import os
 
@@ -131,7 +132,7 @@ def autogroup(obj):
     if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
-            import ifc_tools
+            from nativeifc import ifc_tools
             parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
             if parent != active_group:
                 ifc_tools.aggregate(obj, parent)
@@ -404,7 +405,7 @@ def get_diffuse_color(objs):
                 return obj.ViewObject.DiffuseColor
             else:
                 col = obj.ViewObject.ShapeColor
-                col = (col[0], col[1], col[2], obj.ViewObject.Transparency / 100.0)
+                col = (col[0], col[1], col[2], 1.0 - obj.ViewObject.Transparency / 100.0)
                 return [col] * len(obj.Shape.Faces)
         elif obj.hasExtension("App::GeoFeatureGroupExtension"):
             cols = []
@@ -461,10 +462,41 @@ def apply_current_style(objs):
                 if style[prop][0] == "index":
                     if style[prop][2] in vobj.getEnumerationsOfProperty(prop):
                         setattr(vobj, prop, style[prop][2])
-                elif style[prop][0] == "color":
-                    setattr(vobj, prop, style[prop][1] & 0xFFFFFF00)
                 else:
                     setattr(vobj, prop, style[prop][1])
+
+
+def restore_view_object(obj, vp_module, vp_class, format=True, format_ref=None):
+    """Restore the ViewObject if the object was saved without the GUI.
+
+    Parameters
+    ----------
+    obj: App::DocumentObject
+        Object whose ViewObject needs to be restored.
+
+    vp_module: string
+        View provider module. Must be in the draftviewproviders directory.
+
+    vp_class: string
+        View provider class.
+
+    format: bool, optional
+        Defaults to `True`.
+        If `True` the `format_object` function is called to update the
+        properties of the ViewObject.
+
+    format_ref: App::DocumentObject, optional
+        Defaults to `None`.
+        Reference object to copy ViewObject properties from.
+    """
+    if not getattr(obj, "ViewObject", None):
+        return
+    vobj = obj.ViewObject
+    if not getattr(vobj, "Proxy", None):
+        vp_module = importlib.import_module("draftviewproviders." + vp_module)
+        getattr(vp_module, vp_class)(vobj)
+        if format:
+            format_object(obj, format_ref)
 
 
 def format_object(target, origin=None):
@@ -531,7 +563,7 @@ def format_object(target, origin=None):
                 obrep.DisplayMode = dm
     if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
-        col = params.get_param("constructioncolor") & 0xFFFFFF00
+        col = params.get_param("constructioncolor") | 0x000000FF
         grp = doc.getObject("Draft_Construction")
         if not grp:
             grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
@@ -641,10 +673,12 @@ def select(objs=None, gui=App.GuiUp):
 
     Parameters
     ----------
-    objs: list of App::DocumentObject, optional
+    objs: list of App::DocumentObjects or tuples, or a single object or tuple, optional
         It defaults to `None`.
-        Any type of scripted object.
-        It may be a list of objects or a single object.
+        Format for tuples:
+        `(doc.Name or "", sel.Object.Name, sel.SubElementName or "")`
+        For example (Box nested in Part):
+        `("", "Part", "Box.Edge1")`
 
     gui: bool, optional
         It defaults to the value of `App.GuiUp`, which is `True`
@@ -655,12 +689,21 @@ def select(objs=None, gui=App.GuiUp):
     """
     if gui:
         Gui.Selection.clearSelection()
-        if objs:
+        if objs is not None:
             if not isinstance(objs, list):
                 objs = [objs]
             for obj in objs:
-                if obj:
-                    Gui.Selection.addSelection(obj)
+                if not obj:
+                    continue
+                if isinstance(obj, tuple):
+                    Gui.Selection.addSelection(*obj)
+                    continue
+                try:
+                    if not obj.isAttachedToDocument():
+                        continue
+                except:
+                    continue
+                Gui.Selection.addSelection(obj)
 
 
 def load_texture(filename, size=None, gui=App.GuiUp):
@@ -862,10 +905,26 @@ def get_bbox(obj, debug=False):
     return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
 
 
+# Code by Yorik van Havre.
+def find_coin_node(parent, nodetype):
+    for i in range(parent.getNumChildren()):
+        if isinstance(parent.getChild(i), nodetype):
+            return parent.getChild(i)
+    return None
+
+
 # Code by Chris Hennes (chennes).
 # See https://forum.freecadweb.org/viewtopic.php?p=656362#p656362.
 # Used to fix https://github.com/FreeCAD/FreeCAD/issues/10469.
 def end_all_events():
+    view = get_3d_view()
+    if view is None:
+        return
+    if view.getNavigationType() in (
+            "Gui::GestureNavigationStyle", "Gui::MayaGestureNavigationStyle"
+    ):
+        return
+
     class DelayEnder:
         def __init__(self):
             self.delay_is_done = False

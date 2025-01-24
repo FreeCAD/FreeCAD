@@ -39,15 +39,17 @@
 # include <QMenu>
 #endif
 
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 
 #include "NavigationStyle.h"
+#include "NavigationStylePy.h"
 #include "Application.h"
+#include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
 #include "NavigationAnimator.h"
 #include "NavigationAnimation.h"
-#include "SoMouseWheelEvent.h"
 #include "View3DInventorViewer.h"
 
 using namespace Gui;
@@ -61,6 +63,8 @@ public:
         Trackball,
         FreeTurntable
     };
+
+    static constexpr float defaultSphereRadius = 0.8F;
 
     FCSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = true)
         : SbSphereSheetProjector(sph, orienttoeye)
@@ -176,7 +180,7 @@ const Base::Type& NavigationStyleEvent::style() const
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStyle,Base::BaseClass)
 
-NavigationStyle::NavigationStyle() : viewer(nullptr), mouseSelection(nullptr)
+NavigationStyle::NavigationStyle() : viewer(nullptr), mouseSelection(nullptr), pythonObject(nullptr)
 {
     this->rotationCenterMode = NavigationStyle::RotationCenterMode::ScenePointAtCursor
         | NavigationStyle::RotationCenterMode::FocalPointAtCursor;
@@ -187,6 +191,12 @@ NavigationStyle::~NavigationStyle()
 {
     finalize();
     delete this->animator;
+
+    if (pythonObject) {
+        Base::PyGILStateLocker lock;
+        Py_DECREF(pythonObject);
+        pythonObject = nullptr;
+    }
 }
 
 NavigationStyle& NavigationStyle::operator = (const NavigationStyle& ns)
@@ -217,11 +227,12 @@ void NavigationStyle::initialize()
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
+    this->rotationCenterIsScenePointAtCursor = false;
 
     // FIXME: use a smaller sphere than the default one to have a larger
     // area close to the borders that gives us "z-axis rotation"?
     // 19990425 mortene.
-    this->spinprojector = new FCSphereSheetProjector(SbSphere(SbVec3f(0, 0, 0), 0.8f));
+    this->spinprojector = new FCSphereSheetProjector(SbSphere(SbVec3f(0, 0, 0), FCSphereSheetProjector::defaultSphereRadius));
     SbViewVolume volume;
     volume.ortho(-1, 1, -1, 1, -1, 1);
     this->spinprojector->setViewVolume(volume);
@@ -849,7 +860,7 @@ SbVec3f NavigationStyle::getFocalPoint() const
     return focal;
 }
 
-/** Uses the sphere sheet projector to map the mouseposition onto
+/** Uses the sphere sheet projector to map the mouse position onto
  * a 3D point and find a rotation from this and the last calculated point.
  */
 void NavigationStyle::spin(const SbVec2f & pointerpos)
@@ -864,13 +875,24 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     lastpos[0] = float(this->log.position[1][0]) / float(std::max((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(std::max((int)(glsize[1]-1), 1));
 
-    if (this->rotationCenterMode && this->rotationCenterFound) {
-        SbVec3f hitpoint = this->rotationCenter;
+    float sensitivity = getSensitivity();
 
-        // set to the given position
-        SbVec3f direction;
-        viewer->getSoRenderManager()->getCamera()->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-        viewer->getSoRenderManager()->getCamera()->position = hitpoint - viewer->getSoRenderManager()->getCamera()->focalDistance.getValue() * direction;
+    // Adjust the spin projector sphere to the screen position of the rotation center when the mouse intersects an object
+    if (getOrbitStyle() == Trackball && rotationCenterMode & RotationCenterMode::ScenePointAtCursor && rotationCenterFound && rotationCenterIsScenePointAtCursor) {
+        const auto pointOnScreen = viewer->getPointOnViewport(rotationCenter);
+        const auto sphereCenter = 2 * normalizePixelPos(pointOnScreen) - SbVec2f {1, 1};
+
+        float x, y;
+        sphereCenter.getValue(x, y);
+
+        const float sphereScale = 1 + sphereCenter.length();
+        const float radius = FCSphereSheetProjector::defaultSphereRadius * sphereScale;
+        sensitivity *= sphereScale;
+
+        spinprojector->setSphere(SbSphere {SbVec3f {x, y, 0}, radius});
+    }
+    else {
+        spinprojector->setSphere(SbSphere {SbVec3f {0, 0, 0}, FCSphereSheetProjector::defaultSphereRadius});
     }
 
     // 0000333: Turntable camera rotation
@@ -881,7 +903,6 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     this->spinprojector->project(lastpos);
     SbRotation r;
     this->spinprojector->projectAndGetRotation(pointerpos, r);
-    float sensitivity = getSensitivity();
     if (sensitivity > 1.0f) {
         SbVec3f axis;
         float radians{};
@@ -890,16 +911,12 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
         r.setValue(axis, radians);
     }
     r.invert();
-    this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
 
     if (this->rotationCenterMode && this->rotationCenterFound) {
-        float ratio = vp.getViewportAspectRatio();
-        SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(vp.getViewportAspectRatio());
-        SbPlane panplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
-        SbVec2f posn;
-        posn[0] = float(this->localPos[0]) / float(std::max((int)(glsize[0]-1), 1));
-        posn[1] = float(this->localPos[1]) / float(std::max((int)(glsize[1]-1), 1));
-        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, posn, SbVec2f(0.5,0.5));
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, rotationCenter);
+    }
+    else {
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
     }
 
     // Calculate an average angle magnitude value to make the transition
@@ -937,18 +954,9 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
  * \param curpos  current normalized position or mouse pointer
  * \param prevpos  previous normalized position of mouse pointer
  */
-void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos)
+void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
 {
     assert(this->spinprojector);
-
-    if (this->rotationCenterMode && this->rotationCenterFound) {
-        SbVec3f hitpoint = this->rotationCenter;
-
-        // set to the given position
-        SbVec3f direction;
-        viewer->getSoRenderManager()->getCamera()->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-        viewer->getSoRenderManager()->getCamera()->position = hitpoint - viewer->getSoRenderManager()->getCamera()->focalDistance.getValue() * direction;
-    }
 
     // 0000333: Turntable camera rotation
     SbMatrix mat;
@@ -967,19 +975,12 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
         r.setValue(axis, radians);
     }
     r.invert();
-    this->reorientCamera(cam, r);
 
     if (this->rotationCenterMode && this->rotationCenterFound) {
-        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-        SbVec2s glsize(vp.getViewportSizePixels());
-
-        float ratio = vp.getViewportAspectRatio();
-        SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(vp.getViewportAspectRatio());
-        SbPlane panplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
-        SbVec2f posn;
-        posn[0] = float(this->localPos[0]) / float(std::max((int)(glsize[0]-1), 1));
-        posn[1] = float(this->localPos[1]) / float(std::max((int)(glsize[1]-1), 1));
-        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, posn, SbVec2f(0.5,0.5));
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, rotationCenter);
+    }
+    else {
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
     }
 
     hasDragged = true;
@@ -1019,6 +1020,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
 {
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
+    rotationCenterIsScenePointAtCursor = false;
 
     // mode is WindowCenter
     if (!this->rotationCenterMode) {
@@ -1037,6 +1039,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         SoPickedPoint * picked = rpaction.getPickedPoint();
         if (picked) {
             setRotationCenter(picked->getPoint());
+            rotationCenterIsScenePointAtCursor = true;
             return;
         }
     }
@@ -1767,6 +1770,15 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     }
 
     contextMenu->popup(QCursor::pos());
+}
+
+PyObject* NavigationStyle::getPyObject()
+{
+    if (!pythonObject)
+        pythonObject = new NavigationStylePy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 // ----------------------------------------------------------------------------------

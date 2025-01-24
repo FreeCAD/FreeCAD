@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="BaseClassPy" 
-        Name="StringHasherPy" 
-        Twin="StringHasher" 
-        TwinPointer="StringHasher" 
-        Include="App/StringHasher.h" 
-        FatherInclude="Base/BaseClassPy.h" 
-        Namespace="App" 
+    <PythonExport
+        Father="BaseClassPy"
+        Name="StringHasherPy"
+        Twin="StringHasher"
+        TwinPointer="StringHasher"
+        Include="App/StringHasher.h"
+        FatherInclude="Base/BaseClassPy.h"
+        Namespace="App"
         FatherNamespace="Base"
         Constructor="true"
         Reference="true">
@@ -25,7 +25,7 @@ If the input is text, return a StringID object that is unique within this hasher
 StringID object is reference counted. The hasher may only save hash ID's that are used.
 
 If the input is an integer, then the hasher will try to find the StringID object stored
-with the same integer value. 
+with the same integer value.
 
 base64: indicate if the input 'txt' is base64 encoded binary data
                 </UserDocu>
@@ -68,4 +68,3 @@ base64: indicate if the input 'txt' is base64 encoded binary data
         </Attribute>
     </PythonExport>
 </GenerateModel>
-

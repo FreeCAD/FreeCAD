@@ -31,6 +31,8 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
 
@@ -63,26 +65,26 @@ class Layer:
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
-        # Group property type was changed last in the v1.0 dev cycle:
-        if obj.getTypeIdOfProperty("Group") == "App::PropertyLinkListHidden":
-            return
+        # Group property type changed in v1.0:
+        if obj.getTypeIdOfProperty("Group") != "App::PropertyLinkListHidden":
+            grp = obj.Group  # Type: "App::PropertyLinkList".
+            group_removed = obj.removeProperty("Group")  # Not possible for VisGroups (< v0.19)
+            self.set_properties(obj)
+            if group_removed:
+                obj.Group = grp
+                _wrn("v1.0, " + obj.Label + ", " + translate("draft", "changed 'Group' property type"))
 
-        grp = obj.Group  # Type: "App::PropertyLinkList".
-        group_removed = obj.removeProperty("Group")  # Not possible for VisGroups (< v0.19)
-        self.set_properties(obj)
-        if group_removed:
-            obj.Group = grp
-            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "changed 'Group' property type"))
+        gui_utils.restore_view_object(
+            obj, vp_module="view_layer", vp_class="ViewProviderLayer", format=False
+        )
 
-        if not hasattr(obj, "ViewObject"):
+        if not getattr(obj, "ViewObject", None):
             return
         vobj = obj.ViewObject
-        if not vobj:
-            return
 
         if self.Type == "VisGroup":  # Type prior to v0.19.
             self.Type = "Layer"
-            # It is not possible to change the property group of vobj.Group.
+            # It is not possible to change the property group of obj.Group.
             for prop in ("DrawStyle", "LineColor", "LineWidth", "ShapeColor", "Transparency"):
                 vobj.setGroupOfProperty(prop, "Layer")
 
@@ -134,6 +136,11 @@ class LayerContainer:
         self.Type = "LayerContainer"
         obj.Proxy = self
 
+    def onDocumentRestored(self, obj):
+        gui_utils.restore_view_object(
+            obj, vp_module="view_layer", vp_class="ViewProviderLayerContainer", format=False
+        )
+
     def execute(self, obj):
         """Execute when the object is created or recomputed.
 
@@ -153,5 +160,22 @@ class LayerContainer:
         """Set the internal properties from the restored state."""
         if state:
             self.Type = state
+
+
+# Similar function as in view_layer.py
+def get_layer(obj):
+    """Get the layer the object belongs to."""
+    finds = obj.Document.findObjects(Name="LayerContainer")
+    if not finds:
+        return None
+    # First look in the LayerContainer:
+    for layer in finds[0].Group:
+        if utils.get_type(layer) == "Layer" and obj in layer.Group:
+            return layer
+    # If not found, look through all App::FeaturePython objects (not just layers):
+    for find in obj.Document.findObjects(Type="App::FeaturePython"):
+        if utils.get_type(find) == "Layer" and obj in find.Group:
+            return find
+    return None
 
 ## @}

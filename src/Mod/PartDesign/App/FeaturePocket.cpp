@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <gp_Dir.hxx>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
@@ -64,7 +64,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(TaperAngle2, (0.0), "Pocket", App::Prop_None, "Taper angle for 2nd direction");
     TaperAngle2.setConstraints(&floatAngle);
 
-    // Remove the constraints and keep the type to allow to accept negative values
+    // Remove the constraints and keep the type to allow one to accept negative values
     // https://forum.freecad.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
 }
