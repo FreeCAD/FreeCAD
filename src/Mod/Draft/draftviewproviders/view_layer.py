@@ -29,9 +29,9 @@
 
 ## \addtogroup draftviewproviders
 # @{
-import pivy.coin as coin
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
+from pivy import coin
+from PySide import QtCore
+from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -247,8 +247,8 @@ class ViewProviderLayer:
             return True
 
         def _prop_is_same(prop1, prop2):
-            if type(prop1) == tuple:
-                if type(prop1[0]) == App.Material:
+            if isinstance(prop1, tuple):
+                if isinstance(prop1[0], App.Material):
                     # We do not check the length of the ShapeAppearance
                     return _app_material_is_same(prop1[0], prop2[0])
                 return _color_is_same(prop1, prop2)
@@ -260,14 +260,15 @@ class ViewProviderLayer:
         # If the override properties are not set return without change
         if prop == "LineColor" and not vobj.OverrideLineColorChildren:
             return
-        elif prop == "ShapeAppearance" and not vobj.OverrideShapeAppearanceChildren:
+        if prop == "ShapeAppearance" and not vobj.OverrideShapeAppearanceChildren:
             return
 
         for target_obj in (targets if targets is not None else vobj.Object.Group):
             target_vobj = target_obj.ViewObject
 
             if hasattr(target_vobj, prop):
-                if old_prop is None or _prop_is_same(getattr(target_vobj, prop), old_prop):
+                if old_prop is None \
+                        or _prop_is_same(getattr(target_vobj, prop), old_prop):
                     setattr(target_vobj, prop, getattr(vobj, prop))
 
             # Use the line color for the point color and text color,
@@ -276,7 +277,8 @@ class ViewProviderLayer:
             if prop in dic:
                 for target_prop in dic[prop]:
                     if hasattr(target_vobj, target_prop):
-                        if old_prop is None or _prop_is_same(getattr(target_vobj, target_prop), old_prop):
+                        if old_prop is None \
+                                or _prop_is_same(getattr(target_vobj, target_prop), old_prop):
                             setattr(target_vobj, target_prop, getattr(vobj, prop))
 
     def onBeforeChange(self, vobj, prop):
