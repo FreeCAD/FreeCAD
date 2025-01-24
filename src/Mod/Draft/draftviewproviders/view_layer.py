@@ -527,7 +527,7 @@ class ViewProviderLayerContainer:
 
     def getIcon(self):
         """Return the path to the icon used by the viewprovider."""
-        return ":/icons/Draft_Layer.svg"
+        return ":/icons/Draft_Layers.svg"
 
     def attach(self, vobj):
         """Set up the scene sub-graph of the viewprovider."""
@@ -535,7 +535,7 @@ class ViewProviderLayerContainer:
 
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
-        action_merge = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),
+        action_merge = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layers.svg"),
                                      translate("draft", "Merge layer duplicates"),
                                      menu)
         action_merge.triggered.connect(self.merge_by_name)
