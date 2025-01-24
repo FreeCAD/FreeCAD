@@ -50,7 +50,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
-#include "DlgUndoRedo.h"
+#include "Dialogs/DlgUndoRedo.h"
 #include "Document.h"
 #include "frameobject.h"
 #include "Macro.h"

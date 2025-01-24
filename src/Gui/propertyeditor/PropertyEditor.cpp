@@ -39,7 +39,7 @@
 #include <Base/Tools.h>
 
 #include "PropertyEditor.h"
-#include "DlgAddProperty.h"
+#include "Dialogs/DlgAddProperty.h"
 #include "MainWindow.h"
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
