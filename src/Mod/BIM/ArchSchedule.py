@@ -271,7 +271,7 @@ class _ArchSchedule:
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
                         objs = objs[0].Group
                 objs = Draft.get_group_contents(objs)
-                objs = Arch.pruneIncluded(objs,strict=True,silent=True)
+                objs = self.pruneAndExpand(objs)
                 # Remove all schedules and spreadsheets:
                 objs = [o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]]
 
@@ -580,6 +580,54 @@ class _ArchSchedule:
         if state:
             self.Type = state
 
+    def getIfcClass(self, obj):
+        """gets the IFC class of this object"""
+
+        if hasattr(obj, "IfcType"):
+            return obj.IfcType
+        elif hasattr(obj, "IfcRole"):
+            return obj.IfcRole
+        elif hasattr(obj, "IfcClass"):
+            return obj.IfcClass
+        else:
+            return None
+
+    def getArray(self, obj):
+        "returns a count number if this object needs to be duplicated"
+
+        import Draft
+
+        if len(obj.InList) == 1:
+            parent = obj.InList[0]
+            if Draft.getType(parent) == "Array":
+                return parent.Count
+        return 0
+
+    def pruneAndExpand(self, objs):
+        """
+        Remove all non-BIM objects from a list of Arch objects, and
+        expand the arrays within.
+
+        The criteria for removing an object is whether they have an
+        IFC Class (keep) or not (remove).
+        """
+
+        # An alternative could be to use Arch.pruneIncluded(), but that
+        # removes an array's base element
+
+        prunedobjs = []
+
+        for obj in objs:
+            ifcClass = self.getIfcClass(obj)
+            if ifcClass:
+                prunedobjs.append(obj)
+                # support for arrays
+                array = self.getArray(obj)
+                for i in range(array):
+                    if i > 0: # the first item already went above
+                        prunedobjs.append(obj)
+
+        return prunedobjs
 
 class _ViewProviderArchSchedule:
 
