@@ -106,7 +106,7 @@
            <item>
             <widget class="Gui::QuantitySpinBox" name="qsb_film_coef">
              <property name="unit" stdset="0">
-              <string>W/m^2/K</string>
+              <string notr="true">W/m^2/K</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -133,7 +133,7 @@
            <item>
             <widget class="Gui::QuantitySpinBox" name="qsb_ambienttemp_conv">
              <property name="unit" stdset="0">
-              <string>K</string>
+              <string notr="true">K</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -195,7 +195,7 @@
            <item>
             <widget class="Gui::QuantitySpinBox" name="qsb_ambienttemp_rad">
              <property name="unit" stdset="0">
-              <string>K</string>
+              <string notr="true">K</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -231,7 +231,7 @@
          <item>
           <widget class="Gui::QuantitySpinBox" name="qsb_heat_flux">
            <property name="unit" stdset="0">
-            <string>W/m^2</string>
+            <string notr="true">W/m^2</string>
            </property>
              <property name="alignment">
               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>

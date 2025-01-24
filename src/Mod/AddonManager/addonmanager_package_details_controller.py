@@ -114,7 +114,11 @@ class PackageDetailsController(QtCore.QObject):
             elif repo.macro:
                 update_info.version = repo.macro.version
             self.ui.set_update_available(update_info)
-            self.ui.set_location(os.path.join(self.addon.mod_directory, self.addon.name))
+            self.ui.set_location(
+                self.addon.macro_directory
+                if repo.repo_type == Addon.Kind.MACRO
+                else os.path.join(self.addon.mod_directory, self.addon.name)
+            )
             self.ui.set_disabled(self.addon.is_disabled())
         self.ui.allow_running(repo.repo_type == Addon.Kind.MACRO)
         self.ui.allow_disabling(repo.repo_type != Addon.Kind.MACRO)
@@ -125,7 +129,7 @@ class PackageDetailsController(QtCore.QObject):
         if repo.status() == Addon.Status.UNCHECKED:
             self.ui.button_bar.check_for_update.show()
             self.ui.button_bar.check_for_update.setText(
-                translate("AddonsInstaller", "Check for " "update")
+                translate("AddonsInstaller", "Check for update")
             )
             self.ui.button_bar.check_for_update.setEnabled(True)
             if not self.update_check_thread:

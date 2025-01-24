@@ -109,9 +109,11 @@ long NavlibInterface::SetPivotVisible(bool visible)
     return 0;
 }
 
+extern template SoCamera* NavlibInterface::getCamera<SoCamera*>() const;
+
 long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
 {
-    if (is2DView())
+    if (is2DView() || !is3DView())
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     const Gui::View3DInventorViewer* const inventorViewer = currentView.pView3d->getViewer();

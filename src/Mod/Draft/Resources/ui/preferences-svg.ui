@@ -206,7 +206,7 @@ In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</string>
           </property>
           <property name="suffix">
-           <string>mm</string>
+           <string notr="true"> mm</string>
           </property>
           <property name="maximum">
            <double>9999.989999999999782</double>
