@@ -40,11 +40,6 @@ public:
         Subtractive
     };
 
-    enum class RefineErrorPolicy {
-        Raise = 0,
-        Warn
-    };
-
     FeatureAddSub();
 
     Type getAddSubType();

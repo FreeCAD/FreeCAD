@@ -35,12 +35,22 @@ class PartDesignExport FeatureRefine : public PartDesign::Feature
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureRefine);
 
 public:
+
+    enum class RefineErrorPolicy {
+        Raise = 0,
+        Warn
+    };
+
     FeatureRefine();
 
     App::PropertyBool Refine;
 
 protected:
-    TopoShape refineShapeIfActive(const TopoShape&) const;
+    //store the shape before refinement
+    TopoShape rawShape;
+
+    bool onlyHasToRefine() const;
+    TopoShape refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError = RefineErrorPolicy::Raise) const;
 };
 
 using FeatureRefinePython = App::FeaturePythonT<FeatureRefine>;

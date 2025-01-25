@@ -50,12 +50,40 @@ FeatureRefine::FeatureRefine()
     this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
-TopoShape FeatureRefine::refineShapeIfActive(const TopoShape& oldShape) const
+bool FeatureRefine::onlyHasToRefine() const
+{
+    if( ! Refine.isTouched()){
+        return false;
+    }
+    if (rawShape.isNull()){
+        return false;
+    }
+    std::vector<App::Property*> propList;
+    getPropertyList(propList);
+    for (auto prop : propList){
+        if (prop != &Refine
+            /*&& prop != &SuppressedShape*/
+            && prop->isTouched()){
+            return false;
+        }
+    }
+    return true;
+}
+
+TopoShape FeatureRefine::refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError) const
 {
     if (this->Refine.getValue()) {
         TopoShape shape(oldShape);
-        // Potentially also "fixShape" to repair it ( as a workaround to OCCT bugs? )
-        return shape.makeElementRefine();
+        try {
+            return shape.makeElementRefine();
+        }
+        catch (Standard_Failure& err) {
+            if(onError == RefineErrorPolicy::Warn){
+                Base::Console().Warning((std::string("Refine failed: ") + err.GetMessageString()).c_str());
+            } else {
+                throw;
+            }
+        }
     }
     return oldShape;
 }
