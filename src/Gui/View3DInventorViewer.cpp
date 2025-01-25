@@ -130,6 +130,8 @@
 #include "Navigation/NavigationAnimation.h"
 #include "Utilities.h"
 
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/So3DAnnotation.h>
 
 
@@ -435,11 +437,24 @@ void View3DInventorViewer::init()
 
     // setup light sources
     SoDirectionalLight* hl = this->getHeadlight();
+
+    environment = new SoEnvironment();
+    environment->ref();
+    environment->setName("environment");
+
     backlight = new SoDirectionalLight();
     backlight->ref();
     backlight->setName("backlight");
     backlight->direction.setValue(-hl->direction.getValue());
     backlight->on.setValue(false); // by default off
+
+    fillLight = new SoDirectionalLight();
+    fillLight->ref();
+    fillLight->setName("filllight");
+    fillLight->direction.setValue(-0.60, -0.35, -0.79);
+    fillLight->intensity.setValue(0.6);
+    fillLight->color.setValue(0.95, 0.95, 1.0);
+    fillLight->on.setValue(false); // by default off
 
     // Set up background scenegraph with image in it.
     backgroundroot = new SoSeparator;
@@ -470,9 +485,19 @@ void View3DInventorViewer::init()
     cam->farDistance = 10;
     // NOLINTEND
 
+    lightRotation = new SoRotation;
+    lightRotation->ref();
+    lightRotation->rotation.connectFrom(&cam->orientation);
+
     this->foregroundroot->addChild(cam);
     this->foregroundroot->addChild(lm);
     this->foregroundroot->addChild(bc);
+
+    auto threePointLightingSeparator = new SoTransformSeparator;
+    threePointLightingSeparator->addChild(lightRotation);
+    threePointLightingSeparator->addChild(this->fillLight);
+
+    this->foregroundroot->addChild(cam);
 
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
@@ -482,6 +507,8 @@ void View3DInventorViewer::init()
 
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
+    pcViewProviderRoot->addChild(threePointLightingSeparator);
+    pcViewProviderRoot->addChild(environment);
 
     // increase refcount before passing it to setScenegraph(), to avoid
     // premature destruction
@@ -633,6 +660,10 @@ View3DInventorViewer::~View3DInventorViewer()
     this->objectGroup = nullptr;
     this->backlight->unref();
     this->backlight = nullptr;
+    this->fillLight->unref();
+    this->fillLight = nullptr;
+    this->environment->unref();
+    this->environment = nullptr;
 
     inventorSelection.reset(nullptr);
 
@@ -1543,6 +1574,25 @@ void View3DInventorViewer::setBacklightEnabled(bool on)
 bool View3DInventorViewer::isBacklightEnabled() const
 {
     return this->backlight->on.getValue();
+}
+
+SoDirectionalLight* View3DInventorViewer::getFillLight() const
+{
+    return this->fillLight;
+}
+
+void View3DInventorViewer::setFillLightEnabled(bool on)
+{
+    this->fillLight->on = on;
+}
+
+bool View3DInventorViewer::isFillLightEnabled() const
+{
+    return this->fillLight->on.getValue();
+}
+SoEnvironment* View3DInventorViewer::getEnvironment() const
+{
+    return this->environment;
 }
 
 void View3DInventorViewer::setSceneGraph(SoNode* root)
@@ -3175,18 +3225,22 @@ void View3DInventorViewer::setCameraType(SoType type)
 {
     inherited::setCameraType(type);
 
+    SoCamera* cam = this->getSoRenderManager()->getCamera();
+
+    if (!cam) {
+        return;
+    }
+
     if (type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
         // When doing a viewAll() for an orthographic camera and switching
         // to perspective the scene looks completely strange because of the
         // heightAngle. Setting it to 45 deg also causes an issue with a too
         // close camera but we don't have this other ugly effect.
-        SoCamera* cam = this->getSoRenderManager()->getCamera();
-        if (!cam) {
-            return;
-        }
 
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);  // NOLINT
     }
+
+    lightRotation->rotation.connectFrom(&cam->orientation);
 }
 
 void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)

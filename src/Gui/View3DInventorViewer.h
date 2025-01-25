@@ -46,6 +46,9 @@
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
 
+#include <Inventor/nodes/SoEnvironment.h>
+#include <Inventor/nodes/SoRotation.h>
+
 
 class SoTranslation;
 class SoTransform;
@@ -146,6 +149,13 @@ public:
     SoDirectionalLight* getBacklight() const;
     void setBacklightEnabled(bool on);
     bool isBacklightEnabled() const;
+
+    SoDirectionalLight* getFillLight() const;
+    void setFillLightEnabled(bool on);
+    bool isFillLightEnabled() const;
+
+    SoEnvironment* getEnvironment() const;
+
     void setSceneGraph (SoNode *root) override;
     bool searchNode(SoNode*) const;
 
@@ -496,7 +506,12 @@ private:
     SoFCBackgroundGradient *pcBackGround;
     SoSeparator * backgroundroot;
     SoSeparator * foregroundroot;
+
     SoDirectionalLight* backlight;
+    SoDirectionalLight* fillLight;
+    SoEnvironment* environment;
+
+    SoRotation* lightRotation;
 
     // Scene graph root
     SoSeparator * pcViewProviderRoot;
