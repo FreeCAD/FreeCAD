@@ -34,13 +34,13 @@
 #include <App/Document.h>
 #include <Base/Interpreter.h>
 
-#include "Dialogs/DlgMacroExecuteImp.h"
+#include "DlgMacroExecuteImp.h"
 #include "ui_DlgMacroExecute.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "Dialogs/DlgCustomizeImp.h"
-#include "Dialogs/DlgToolbarsImp.h"
+#include "DlgCustomizeImp.h"
+#include "DlgToolbarsImp.h"
 #include "Document.h"
 #include "EditorView.h"
 #include "Macro.h"
