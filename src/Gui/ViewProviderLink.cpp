@@ -74,7 +74,7 @@
 
 #include "ActionFunction.h"
 #include "Command.h"
-#include "DlgObjectSelection.h"
+#include "Dialogs/DlgObjectSelection.h"
 
 FC_LOG_LEVEL_INIT("App::Link", true, true)
 

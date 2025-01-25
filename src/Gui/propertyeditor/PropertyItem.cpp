@@ -53,7 +53,7 @@
 #include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/DlgPropertyLink.h>
+#include <Gui/Dialogs/DlgPropertyLink.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Placement.h>

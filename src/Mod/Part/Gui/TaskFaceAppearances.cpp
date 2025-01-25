@@ -46,7 +46,7 @@
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
-#include <Gui/DlgMaterialPropertiesImp.h>
+#include <Gui/Dialogs/DlgMaterialPropertiesImp.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>

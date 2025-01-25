@@ -61,7 +61,7 @@
 #include "Control.h"
 #include "Clipping.h"
 #include "DemoMode.h"
-#include "DlgSettingsImageImp.h"
+#include "Dialogs/DlgSettingsImageImp.h"
 #include "Document.h"
 #include "FileDialog.h"
 #include "ImageView.h"

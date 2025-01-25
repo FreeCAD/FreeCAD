@@ -27,8 +27,8 @@
 #include <vector>
 
 #include <Base/Factory.h>
-#include "DlgCustomizeImp.h"
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgCustomizeImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "PropertyPage.h"
 #include <CXX/Extensions.hxx>
 
