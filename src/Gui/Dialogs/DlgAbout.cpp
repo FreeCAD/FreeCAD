@@ -45,6 +45,7 @@
 #include <App/Application.h>
 #include <App/Metadata.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <CXX/WrapPython.h>
 
 #include <boost/filesystem.hpp>
@@ -647,11 +648,27 @@ void AboutDialog::copyToClipboard()
     if (it != config.end()) {
         str << "Hash: " << QString::fromStdString(it->second) << '\n';
     }
+
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
     str << "Coin " << COIN_VERSION << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
+
+    std::stringstream cmd;
+    cmd << "import ifcopenshell\n";
+    cmd << "version = ifcopenshell.version";
+    PyObject * ifcopenshellVer = Base::Interpreter().getValue(cmd.str().c_str(), "version");
+    if (ifcopenshellVer) {
+        const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
+
+        if (ifcopenshellVerAsStr) {
+            str << "IfcOpenShell: " << ifcopenshellVerAsStr << ", "; // << '\n';
+            Py_DECREF(ifcopenshellVerAsStr);
+        }
+        Py_DECREF(ifcopenshellVer);
+    }
+
 #if defined(HAVE_OCC_VERSION)
     str << "OCC " << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE
 #ifdef OCC_VERSION_DEVELOPMENT
