@@ -657,12 +657,20 @@ void AboutDialog::copyToClipboard()
     std::stringstream cmd;
     cmd << "import ifcopenshell\n";
     cmd << "version = ifcopenshell.version";
-    PyObject * ifcopenshellVer = Base::Interpreter().getValue(cmd.str().c_str(), "version");
+    PyObject * ifcopenshellVer = nullptr;
+
+    try {
+        ifcopenshellVer = Base::Interpreter().getValue(cmd.str().c_str(), "version");
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Warning("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
+    }
+
     if (ifcopenshellVer) {
         const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
 
         if (ifcopenshellVerAsStr) {
-            str << "IfcOpenShell: " << ifcopenshellVerAsStr << ", "; // << '\n';
+            str << "IfcOpenShell: " << ifcopenshellVerAsStr << ", ";
             Py_DECREF(ifcopenshellVerAsStr);
         }
         Py_DECREF(ifcopenshellVer);
