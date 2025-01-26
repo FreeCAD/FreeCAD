@@ -146,6 +146,7 @@ public:
         sToolTipText = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
         sWhatsThis = "Sketcher_CompLine";
         sStatusTip = sToolTipText;
+        sAccel = "G, M";
         eType = ForEdit;
 
         setCheckable(false);
@@ -266,6 +267,7 @@ public:
         sToolTipText = QT_TR_NOOP("Create an arc in the sketch");
         sWhatsThis = "Sketcher_CompCreateArc";
         sStatusTip = sToolTipText;
+        sAccel = "G, A";
         eType = ForEdit;
 
         setCheckable(false);
@@ -491,6 +493,7 @@ public:
         sToolTipText = QT_TR_NOOP("Create a conic in the sketch");
         sWhatsThis = "Sketcher_CompCreateConic";
         sStatusTip = sToolTipText;
+        sAccel = "G, C";
         eType = ForEdit;
 
         setCheckable(false);
@@ -694,6 +697,7 @@ public:
         sToolTipText = QT_TR_NOOP("Creates a rectangle in the sketch");
         sWhatsThis = "Sketcher_CompCreateRectangles";
         sStatusTip = sToolTipText;
+        sAccel = "G, R";
         eType = ForEdit;
 
         setCheckable(false);
@@ -857,6 +861,7 @@ public:
         sToolTipText = QT_TR_NOOP("Create a regular polygon in the sketcher");
         sWhatsThis = "Sketcher_CompCreateRegularPolygon";
         sStatusTip = sToolTipText;
+        sAccel = "G, P, 3";
         eType = ForEdit;
 
         setCheckable(false);
@@ -1155,6 +1160,7 @@ public:
         sToolTipText = QT_TR_NOOP("Slot tools.");
         sWhatsThis = "Sketcher_CompSlot";
         sStatusTip = sToolTipText;
+        sAccel = "G, S";
         eType = ForEdit;
 
         setCheckable(false);
@@ -1274,6 +1280,7 @@ public:
         sToolTipText = QT_TR_NOOP("Create a B-spline in the sketch");
         sWhatsThis = "Sketcher_CompCreateBSpline";
         sStatusTip = sToolTipText;
+        sAccel = "G, B, B";
         eType = ForEdit;
 
         setCheckable(false);
@@ -1488,6 +1495,7 @@ public:
         sToolTipText = QT_TR_NOOP("Create a fillet or chamfer between two lines");
         sWhatsThis = "Sketcher_CompCreateFillets";
         sStatusTip = sToolTipText;
+        sAccel = "G, F, F";
         eType = ForEdit;
 
         setCheckable(false);
@@ -1585,6 +1593,7 @@ public:
         sToolTipText = QT_TR_NOOP("Curve Edition tools.");
         sWhatsThis = "Sketcher_CompCurveEdition";
         sStatusTip = sToolTipText;
+        sAccel = "G, T";
         eType = ForEdit;
 
         setCheckable(false);
@@ -1709,6 +1718,7 @@ public:
         sToolTipText = QT_TR_NOOP("Create external edges linked to external geometries.");
         sWhatsThis = "Sketcher_CompExternal";
         sStatusTip = sToolTipText;
+        sAccel = "G, X";
         eType = ForEdit;
 
         setCheckable(false);
