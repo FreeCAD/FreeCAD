@@ -190,7 +190,7 @@ App::DocumentObjectExecReturn *Loft::execute()
             std::vector<TopoShape> backwires;
             for(auto& sectionWires : wiresections)
                 backwires.push_back(sectionWires.back());
-            back = TopoShape(0).makeElementFace(backwires);
+            back = TopoShape(0).makeElementFace(backwires, nullptr, "Part::FaceMakerCheese");
         }
 
         if (!front.isNull() || !back.isNull()) {
