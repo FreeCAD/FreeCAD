@@ -648,7 +648,6 @@ void AboutDialog::copyToClipboard()
     if (it != config.end()) {
         str << "Hash: " << QString::fromStdString(it->second) << '\n';
     }
-
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
