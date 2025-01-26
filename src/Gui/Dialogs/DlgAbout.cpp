@@ -654,13 +654,12 @@ void AboutDialog::copyToClipboard()
     str << "Coin " << COIN_VERSION << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
 
-    std::stringstream cmd;
-    cmd << "import ifcopenshell\n";
-    cmd << "version = ifcopenshell.version";
+    const char* cmd = "import ifcopenshell\n"
+                      "version = ifcopenshell.version";
     PyObject * ifcopenshellVer = nullptr;
 
     try {
-        ifcopenshellVer = Base::Interpreter().getValue(cmd.str().c_str(), "version");
+        ifcopenshellVer = Base::Interpreter().getValue(cmd, "version");
     }
     catch (const Base::Exception& e) {
         Base::Console().Warning("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
