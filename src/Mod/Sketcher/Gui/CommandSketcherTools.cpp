@@ -928,7 +928,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), NEEDS_CONSTRAINT); 
+    return isCommandActive(getActiveGuiDocument(), NEEDS_CONSTRAINT);
 }
 
 // ================================================================================

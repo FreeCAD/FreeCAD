@@ -563,7 +563,7 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, int actsOn)
                             selectionHasOnlyElipses = false;
                         }
                         else if (isArcOfEllipse(*Obj->getGeometry(geoId))
-                                    || isEllipse(*Obj->getGeometry(geoId))) {
+                                 || isEllipse(*Obj->getGeometry(geoId))) {
                             selectionHasOnlyBsplines = false;
                         }
                         else {
@@ -591,7 +591,7 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, int actsOn)
                     }
                 }
             }
-            
+
             // example actsOn
             return !(actsOn & NEEDS_GEOMETRY && !selectionHasGeo)
                 && !(actsOn & NEEDS_BSPLINE && !selectionHasBSpline)
@@ -599,8 +599,8 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, int actsOn)
                 && !(actsOn & NEEDS_NOT_ONLY_ELLIPSE && selectionHasOnlyElipses)
                 && !(actsOn & NEEDS_NOT_ONLY_POINT && selectionHasOnlyPoints)
                 && !(actsOn & NEEDS_CONSTRAINT && !selectionHasConstraint);
-            }
         }
+    }
 
     return false;
 }
