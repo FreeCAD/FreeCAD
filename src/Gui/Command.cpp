@@ -1121,6 +1121,8 @@ void GroupCommand::setup(Action *pcAction) {
     int idx = pcAction->property("defaultAction").toInt();
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
+        QString shortcut = cmd->getShortcut();
+        pcAction->setShortcut(shortcut);
         pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
         QIcon icon;
         if (auto childAction = cmd->getAction())
