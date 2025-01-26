@@ -670,7 +670,7 @@ void AboutDialog::copyToClipboard()
         const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
 
         if (ifcopenshellVerAsStr) {
-            str << "IfcOpenShell: " << ifcopenshellVerAsStr << ", ";
+            str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
             Py_DECREF(ifcopenshellVerAsStr);
         }
         Py_DECREF(ifcopenshellVer);
