@@ -198,7 +198,7 @@ def construct_git_url(repo, filename):
     """Returns a direct download link to a file in an online Git repo"""
 
     parsed_url = urlparse(repo.url)
-    repo_url = repo.url.rstrip(".git")
+    repo_url = repo.url[:-4] if repo.url.endswith(".git") else repo.url
     if parsed_url.netloc == "github.com":
         return f"{repo_url}/raw/{repo.branch}/{filename}"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
