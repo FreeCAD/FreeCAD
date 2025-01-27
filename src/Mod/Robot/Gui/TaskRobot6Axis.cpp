@@ -28,7 +28,7 @@
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Placement.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include "TaskRobot6Axis.h"
 #include "ui_TaskRobot6Axis.h"

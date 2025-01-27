@@ -40,7 +40,7 @@
 #include <Base/Placement.h>
 
 #include "Namespace.h"
-#include "Selection.h"
+#include "Selection/Selection.h"
 
 #include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"

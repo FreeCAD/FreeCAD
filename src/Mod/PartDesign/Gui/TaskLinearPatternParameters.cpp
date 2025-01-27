@@ -33,7 +33,7 @@
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>

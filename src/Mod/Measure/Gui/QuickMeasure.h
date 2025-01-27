@@ -28,7 +28,7 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 class QTimer;
 

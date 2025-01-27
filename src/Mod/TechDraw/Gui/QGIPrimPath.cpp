@@ -32,7 +32,7 @@
 
 #include <App/Application.h>
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
 

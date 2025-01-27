@@ -62,7 +62,7 @@
 using namespace Part;
 
 
-// From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/SelectionSummary.cpp
+// From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/Selection/SelectionSummary.cpp
 
 // Should work with edges and wires
 static float getLength(TopoDS_Shape& wire){

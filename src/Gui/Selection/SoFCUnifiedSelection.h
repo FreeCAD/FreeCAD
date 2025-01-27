@@ -34,7 +34,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 
 #include "SoFCSelectionContext.h"
-#include "View3DInventorViewer.h"
+#include "../View3DInventorViewer.h"
 
 
 class SoFullPath;

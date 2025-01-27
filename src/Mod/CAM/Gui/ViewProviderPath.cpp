@@ -46,7 +46,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Inventor/SoAxisCrossKit.h>
 #include <Gui/Inventor/SoFCBoundingBox.h>
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Mod/CAM/App/FeaturePath.h>
 #include <Mod/CAM/App/PathSegmentWalker.h>
 

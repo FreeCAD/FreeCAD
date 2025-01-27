@@ -27,6 +27,12 @@ class TemplateClassPyExport(template.ModelTemplate):
             return s
 
         print("TemplateClassPyExport", path + exportName)
+
+        # Create the subdir it necessary
+        subpath = os.path.dirname(path + exportName)
+        if not os.path.exists(subpath):
+            os.makedirs(subpath)
+
         # Imp.cpp must not exist, neither in path nor in dirname
         if not os.path.exists(path + exportName + "Imp.cpp"):
             if not os.path.exists(dirname + exportName + "Imp.cpp"):

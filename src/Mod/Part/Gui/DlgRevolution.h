@@ -24,7 +24,7 @@
 #define PARTGUI_DLGREVOLUTION_H
 
 #include <Gui/InputVector.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 

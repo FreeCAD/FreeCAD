@@ -28,7 +28,7 @@
 
 #include <boost_signals2.hpp>
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
 
 

@@ -27,7 +27,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include "DlgDisplayPropertiesImp.h"
 #include "DlgInspectAppearance.h"

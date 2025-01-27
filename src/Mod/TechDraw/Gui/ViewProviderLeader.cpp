@@ -33,7 +33,7 @@
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
