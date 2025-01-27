@@ -711,9 +711,9 @@ void AboutDialog::copyToClipboard()
 
     // Add DPI information
     str << "Logical/physical DPI: "
-        << screen()->logicalDotsPerInch()
+        << QApplication::primaryScreen()->logicalDotsPerInch()
         << "/"
-        << screen()->physicalDotsPerInch()
+        << QApplication::primaryScreen()->physicalDotsPerInch()
         << "\n";
 
     // Add installed module information:
