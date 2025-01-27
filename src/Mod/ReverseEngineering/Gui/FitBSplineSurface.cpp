@@ -33,7 +33,7 @@
 #include <Base/CoordinateSystem.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 

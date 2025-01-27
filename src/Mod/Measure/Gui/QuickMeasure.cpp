@@ -35,7 +35,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Control.h>
 
 #include <Mod/Part/App/PartFeature.h>

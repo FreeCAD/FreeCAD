@@ -51,7 +51,7 @@
 #include <Gui/Document.h>
 #include <Gui/Inventor/SoAxisCrossKit.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/SplitView3DInventor.h>
 #include <Gui/Tools.h>
 #include <Gui/View3DInventorViewer.h>

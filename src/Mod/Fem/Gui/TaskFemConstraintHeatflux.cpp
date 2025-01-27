@@ -32,7 +32,7 @@
 #endif
 
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintHeatflux.h>
 #include <Mod/Part/App/PartFeature.h>
 

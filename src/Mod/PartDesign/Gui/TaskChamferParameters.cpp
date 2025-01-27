@@ -33,7 +33,7 @@
 #include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureChamfer.h>
