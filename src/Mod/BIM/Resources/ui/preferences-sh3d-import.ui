@@ -37,6 +37,9 @@
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
                 </property>
+                <property name="checked">
+                  <bool>true</bool>
+                </property>
               </widget>
             </item>
             <item>
@@ -96,6 +99,9 @@
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
                 </property>
+                <property name="checked">
+                  <bool>true</bool>
+                </property>
               </widget>
             </item>
             <item>
@@ -111,6 +117,9 @@
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
+                </property>
+                <property name="checked">
+                  <bool>true</bool>
                 </property>
               </widget>
             </item>
@@ -261,9 +270,9 @@
                     </property>
                     <property name="color" stdset="0">
                       <color>
-                        <red>255</red>
-                        <green>255</green>
-                        <blue>255</blue>
+                        <red>246</red>
+                        <green>246</green>
+                        <blue>246</blue>
                       </color>
                     </property>
                     <property name="prefEntry" stdset="0">
@@ -305,6 +314,9 @@
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
+                </property>
+                <property name="checked">
+                  <bool>true</bool>
                 </property>
               </widget>
             </item>
@@ -387,6 +399,25 @@
                   </widget>
                 </item>
               </layout>
+            </item>
+            <item>
+              <widget class="Gui::PrefCheckBox" name="checkBox_decorate_surfaces">
+                <property name="toolTip">
+                  <string>Create Facebinders, Baseboards for walls, floors and ceilings for Rooms</string>
+                </property>
+                <property name="text">
+                  <string>Decorate surfaces</string>
+                </property>
+                <property name="prefEntry" stdset="0">
+                  <cstring>sh3dDecorateSurfaces</cstring>
+                </property>
+                <property name="prefPath" stdset="0">
+                  <cstring>Mod/Arch</cstring>
+                </property>
+                <property name="checked">
+                  <bool>true</bool>
+                </property>
+              </widget>
             </item>
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_11">
