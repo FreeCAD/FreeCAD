@@ -185,17 +185,17 @@ App::DocumentObjectExecReturn *Groove::execute()
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Failed to cut base feature");
         }
-        boolOp = this->getSolid(boolOp);
-        if (boolOp.isNull())
+        TopoShape solid = this->getSolid(boolOp);
+        if (solid.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
         // store shape before refinement
         this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
-        boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
+        boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
