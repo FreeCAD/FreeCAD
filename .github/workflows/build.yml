@@ -1,0 +1,173 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 🍏 macOS (Clang - Debug)
+            os: macos-latest
+            platform: macos
+            build_type: Debug
+            build_shared: OFF
+            build_test: ON
+            validation_level: 2
+          - name: 🍏 macOS (Clang, no validation - Release)
+            os: macos-latest
+            platform: macos
+            build_type: Release
+            build_shared: OFF
+            build_test: ON
+            validation_level: 0 # build one with no validation
+          - name: 🍏 macOS (Clang, Shared - Release)
+            os: macos-latest
+            platform: macos
+            build_type: Release
+            build_shared: ON
+            build_test: ON
+            validation_level: 2
+
+          - name: 🐧 Linux (GCC - Debug)
+            os: ubuntu-latest
+            platform: linux
+            build_type: Debug
+            build_shared: OFF
+            build_test: ON
+            validation_level: 2
+          - name: 🐧 Linux (GCC, extra validation - Release)
+            os: ubuntu-latest
+            platform: linux
+            build_type: Release
+            build_shared: OFF
+            build_test: ON
+            validation_level: 1 # build one with basic validation
+          - name: 🐧 Linux (GCC, Shared - Release)
+            os: ubuntu-latest
+            platform: linux
+            build_type: Release
+            build_shared: ON
+            build_test: ON
+            validation_level: 2
+
+          - name: 🪟 Windows (MSVC - Debug)
+            os: windows-latest
+            platform: windows
+            arch: x86_64
+            build_type: Debug
+            build_debug: ON
+            build_shared: OFF
+            build_test: ON
+            validation_level: 2
+          - name: 🪟 Windows (MSVC [32-bit] - Debug)
+            os: windows-latest
+            platform: windows
+            arch: x86
+            build_type: Debug
+            build_debug: ON
+            build_shared: OFF
+            build_test: OFF
+            validation_level: 2
+          - name: 🪟 Windows (MSVC - Release)
+            os: windows-latest
+            platform: windows
+            arch: x86_64
+            build_type: Release
+            build_shared: OFF
+            build_test: ON
+            validation_level: 2
+          - name: 🪟 Windows (MSVC, Shared - Release)
+            os: windows-latest
+            platform: windows
+            arch: x86_64
+            build_type: Release
+            build_shared: ON
+            build_test: ON
+            validation_level: 2
+
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Checkout Test Data
+        uses: actions/checkout@v4
+        with:
+          repository: 'asmaloney/libE57Format-test-data'
+          path: libE57Format-test-data
+
+      - name: Install Dependencies (macOS)
+        if: matrix.platform == 'macos'
+        run: |
+          brew install ccache ninja xerces-c
+
+      - name: Install Dependencies (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ccache libxerces-c-dev ninja-build
+          sudo locale-gen fr_FR
+
+      - name: Install Dependencies (Windows)
+        if: matrix.platform == 'windows'
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          channels: conda-forge
+
+      - name: Install More Dependencies (Windows)
+        if: matrix.platform == 'windows'
+        shell: bash -el {0}
+        run: |
+          conda install conda-forge::xerces-c
+          choco upgrade ccache ninja
+          ccache --version | head -n 1
+          echo "ninja $(ninja --version)"
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          max-size: '5G'
+          key: ${{ matrix.os }}-${{ matrix.build_type }}
+
+      - name: Configure MSVC console (Windows)
+        if: matrix.platform == 'windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{ matrix.arch }}
+
+      - name: Output conda info (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+
+      - name: Configure
+        run: >
+          mkdir libE57Format-build
+
+          cmake
+          -B libE57Format-build
+          -G "Ninja"
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DE57_BUILD_SHARED=${{ matrix.build_shared }}
+          -DE57_BUILD_TEST=${{ matrix.build_test }}
+          -DE57_VALIDATION_LEVEL=${{ matrix.validation_level }}
+          -DE57FORMAT_WARNING_AS_ERROR:BOOL=ON
+          -DE57FORMAT_SANITIZE_ALL:BOOL=ON
+          .
+
+      - name: Build
+        run: cmake --build libE57Format-build
+
+      - name: Test
+        if: matrix.build_test == 'ON'
+        run: libE57Format-build/testE57
