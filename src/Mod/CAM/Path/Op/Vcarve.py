@@ -505,15 +505,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             while geom.incrementStepDownDepth(maximumUsableDepth):
                 cutWires(wires, pathlist, obj.OptimizeMovements)
 
-        # add finishing pass if enabled
+            # add finishing pass if enabled
 
-        #   if obj.FinishingPass:
-        #       geom.offset = obj.FinishingPassZOffset.Value
+            if obj.FinishingPass:
+                geom.offset = obj.FinishingPassZOffset.Value
 
-        #       for w in wires:
-        #           pWire = self._getPartEdges(obj, w, geom)
-        #           if pWire:
-        #               pathlist.extend(cutWire(pWire))
+                cutWires(wires, pathlist, obj.OptimizeMovements)
 
         self.commandlist = pathlist
 
