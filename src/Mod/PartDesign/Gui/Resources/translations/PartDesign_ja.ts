@@ -44,7 +44,7 @@ Dependent properties are then calculated.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="92"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</source>
+Positive values make the radius grow, negative shrinks.</source>
       <translation>らせんの周りに外殻を形成する円錐の角度。
 0 以外の値を設定すると、らせんは円錐形になります。
 正の値では半径が大きくなり、負の値では半径が小さくなります。</translation>
