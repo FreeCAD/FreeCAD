@@ -299,6 +299,10 @@ class _ArchSchedule:
 
         nobjs = []
         for o in objs:
+            while hasattr(o, "LinkedObject"):
+                # Support for single and nested links: go up the link
+                # chain until the main linked object is found
+                o = o.LinkedObject
             props = [p.upper() for p in o.PropertiesList]
             ok = True
             for f in filters.split(";"):
