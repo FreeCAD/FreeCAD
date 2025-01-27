@@ -36,7 +36,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-from draftobjects.layer import Layer
+from draftobjects.layer import get_layer
 from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
@@ -369,20 +369,6 @@ class ViewProviderLayer:
         self.icondata = byte_array.data().decode("latin1")
         vobj.signalChangeIcon()
 
-    def _get_layer(self, obj):
-        """Get the layer the object belongs to.
-        """
-        from draftmake.make_layer import get_layer_container
-        # First look in the LayerContainer:
-        for layer in get_layer_container().Group:
-            if utils.get_type(layer) == "Layer" and obj in layer.Group:
-                return layer
-        # If not found, look through all App::FeaturePython objects (not just layers):
-        for find in obj.Document.findObjects(Type="App::FeaturePython"):
-            if utils.get_type(find) == "Layer" and obj in find.Group:
-                return find
-        return None
-
     def canDragObject(self, obj):
         """Return True to allow dragging one object from the Layer.
 
@@ -396,7 +382,7 @@ class ViewProviderLayer:
             if hasattr(parent, "Group"):
                 old_data.append([parent, parent.Group])
         # Layers are not in the Inlist because a layer's Group is App::PropertyLinkListHidden:
-        layer = self._get_layer(obj)
+        layer = get_layer(obj)
         if layer is not None:
             old_data.append([layer, layer.Group])
         if old_data:
@@ -409,14 +395,11 @@ class ViewProviderLayer:
         """Return True to allow dragging many objects from the Layer."""
         return True
 
-    def dragObject(self, vobj, otherobj):
+    def dragObject(self, vobj, child):
         """Remove the object that was dragged from the layer."""
-        layer = vobj.Object
-        if otherobj in layer.Group:
-            group = layer.Group
-            group.remove(otherobj)
-            layer.Group = group
-            App.ActiveDocument.recompute()
+        obj = vobj.Object
+        obj.Proxy.removeObject(obj, child)
+        App.ActiveDocument.recompute()
 
     def canDropObject(self, obj):
         """Return true to allow dropping one object.
@@ -435,33 +418,14 @@ class ViewProviderLayer:
         """Return true to allow dropping many objects."""
         return True
 
-    def dropObject(self, vobj, otherobj):
-        """Add the object that was dropped on the Layer to the group and change
-        the properties of the object by calling change_view_properties.
+    def dropObject(self, vobj, child):
+        """Add the object that was dropped on the Layer to the group.
 
-        If the object being dropped is itself a `'Layer'`,
-        return immediately to prevent dropping a layer inside a layer,
-        at least for now.
+        This also results in a call to `change_view_properties` to update the
+        view properties of the child.
         """
-        if utils.get_type(otherobj) == "Layer":
-            return
-
-        # We assume a single old layer...
-
-        old_layer = self._get_layer(otherobj)
-        if old_layer is not None:
-            group = old_layer.Group
-            group.remove(otherobj)
-            old_layer.Group = group
-
-        new_layer = vobj.Object
-        if otherobj not in new_layer.Group:
-            group = new_layer.Group
-            group.append(otherobj)
-            new_layer.Group = group
-            for prop in ("LineColor", "ShapeAppearance", "LineWidth", "DrawStyle", "Visibility"):
-                self.change_view_properties(vobj, prop, old_prop=None, targets=[otherobj])
-
+        obj = vobj.Object
+        obj.Proxy.addObject(obj, child)
         App.ActiveDocument.recompute()
 
     def update_groups_after_drag_drop(self):
@@ -493,7 +457,7 @@ class ViewProviderLayer:
                     old_layer = old_parent
                     break
 
-            new_layer = self._get_layer(child)
+            new_layer = get_layer(child)
             if new_layer == old_layer:
                 continue
 
@@ -567,8 +531,8 @@ class ViewProviderLayer:
     def select_contents(self):
         """Select the contents of the layer."""
         Gui.Selection.clearSelection()
-        for layer_obj in self.Object.Group:
-            Gui.Selection.addSelection(layer_obj)
+        for obj in self.Object.Group:
+            Gui.Selection.addSelection(obj)
 
 
 class ViewProviderLayerContainer:
