@@ -234,7 +234,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def tec_changed(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
             self.material["ThermalExpansionReferenceTemperature"] = (
-                self.parameterWidget.qsb_expansion_reference_temperature.property("value").UserString
+                self.parameterWidget.qsb_expansion_reference_temperature.property(
+                    "value"
+                ).UserString
             )
 
     def sh_changed(self):
@@ -318,7 +320,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         d["Density"] = p.qsb_density.property("value").UserString
         d["ThermalConductivity"] = p.qsb_thermal_conductivity.property("value").UserString
         d["ThermalExpansionCoefficient"] = p.qsb_expansion_coefficient.property("value").UserString
-        d["ThermalExpansionReferenceTemperature"] = p.qsb_expansion_reference_temperature.property("value").UserString
+        d["ThermalExpansionReferenceTemperature"] = p.qsb_expansion_reference_temperature.property(
+            "value"
+        ).UserString
         d["SpecificHeat"] = p.qsb_specific_heat.property("value").UserString
         if self.obj.Category == "Solid":
             d["YoungsModulus"] = p.qsb_young_modulus.property("value").UserString
