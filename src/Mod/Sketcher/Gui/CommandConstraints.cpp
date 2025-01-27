@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
-#include <Gui/DlgCheckableMessageBox.h>
+#include <Gui/Dialogs/DlgCheckableMessageBox.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
@@ -81,7 +81,7 @@ bool isCreateConstraintActive(Gui::Document* doc)
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
-                if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId())
+                if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>()
                     > 0) {
                     return true;
                 }
@@ -10013,7 +10013,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
 
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
         // Now we check whether we have a constraint selected or not.
 
         // get the selection
@@ -10137,7 +10137,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
 
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
         // Now we check whether we have a constraint selected or not.
 
         // get the selection

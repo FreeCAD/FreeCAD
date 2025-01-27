@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   (c) 2009, 2010                                                        *
-# *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
-# *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2024 The FreeCAD Project Association                    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -40,7 +41,7 @@ import PySide.QtCore as QtCore
 
 import FreeCAD as App
 from draftutils import params
-from draftutils.messages import  _wrn, _err, _log
+from draftutils.messages import _wrn, _err, _log
 from draftutils.translate import translate
 
 # TODO: move the functions that require the graphical interface
@@ -71,13 +72,13 @@ def get_default_annotation_style():
         "ExtOvershoot":    ("float", params.get_param("extovershoot")),
         "FontName":        ("font",  params.get_param("textfont")),
         "FontSize":        ("float", params.get_param("textheight")),
-        "LineColor":       ("color", params.get_param("DefaultAnnoLineColor")),
+        "LineColor":       ("color", params.get_param("DefaultAnnoLineColor") | 0x000000FF),
         "LineSpacing":     ("float", params.get_param("LineSpacing")),
         "LineWidth":       ("int",   params.get_param("DefaultAnnoLineWidth")),
         "ScaleMultiplier": ("float", params.get_param("DefaultAnnoScaleMultiplier")),
         "ShowLine":        ("bool",  params.get_param("DimShowLine")),
         "ShowUnit":        ("bool",  params.get_param("showUnit")),
-        "TextColor":       ("color", params.get_param("DefaultTextColor")),
+        "TextColor":       ("color", params.get_param("DefaultTextColor") | 0x000000FF),
         "TextSpacing":     ("float", params.get_param("dimspacing")),
         "UnitOverride":    ("str",   params.get_param("overrideUnit"))
     }
@@ -90,9 +91,9 @@ def get_default_shape_style():
     return {
         "DisplayMode":     ("index",    display_mode_index, DISPLAY_MODES[display_mode_index]),
         "DrawStyle":       ("index",    draw_style_index, DRAW_STYLES[draw_style_index]),
-        "LineColor":       ("color",    params.get_param_view("DefaultShapeLineColor")),
+        "LineColor":       ("color",    params.get_param_view("DefaultShapeLineColor") | 0x000000FF),
         "LineWidth":       ("int",      params.get_param_view("DefaultShapeLineWidth")),
-        "PointColor":      ("color",    params.get_param_view("DefaultShapeVertexColor")),
+        "PointColor":      ("color",    params.get_param_view("DefaultShapeVertexColor") | 0x000000FF),
         "PointSize":       ("int",      params.get_param_view("DefaultShapePointSize")),
         "ShapeAppearance": ("material", (get_view_material(), ))
     }
@@ -101,11 +102,11 @@ def get_default_shape_style():
 def get_view_material():
     """Return a ShapeAppearance material with properties based on the preferences."""
     material = App.Material()
-    material.AmbientColor  = params.get_param_view("DefaultAmbientColor") & 0xFFFFFF00
-    material.DiffuseColor  = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
-    material.EmissiveColor = params.get_param_view("DefaultEmissiveColor") & 0xFFFFFF00
+    material.AmbientColor  = params.get_param_view("DefaultAmbientColor") | 0x000000FF
+    material.DiffuseColor  = params.get_param_view("DefaultShapeColor") | 0x000000FF
+    material.EmissiveColor = params.get_param_view("DefaultEmissiveColor") | 0x000000FF
     material.Shininess     = params.get_param_view("DefaultShapeShininess") / 100
-    material.SpecularColor = params.get_param_view("DefaultSpecularColor") & 0xFFFFFF00
+    material.SpecularColor = params.get_param_view("DefaultSpecularColor") | 0x000000FF
     material.Transparency  = params.get_param_view("DefaultShapeTransparency") / 100
     return material
 
@@ -174,7 +175,7 @@ def type_check(args_and_types, name="?"):
     for v, t in args_and_types:
         if not isinstance(v, t):
             w = "typecheck[{}]: '{}' is not {}".format(name, v, t)
-            _wrn(w)
+            _err(w)
             raise TypeError("Draft." + str(name))
 
 
@@ -833,8 +834,11 @@ getrgb = get_rgb
 def argb_to_rgba(color):
     """Change byte order of a 4 byte color int from ARGB (Qt) to RGBA (FreeCAD).
 
-    Alpha in both integers is always 255.
-    Alpha in color properties, although ignored, is always zero however.
+    Alpha in both integers should always be 255.
+
+    Alpha in color properties is not used in the 3D view, but is shown in the
+    color swatches in the Property editor. It therefore better to ensure alpha
+    is 255 (version 1.1 dev cycle).
 
     Usage:
 
@@ -845,14 +849,11 @@ def argb_to_rgba(color):
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
             .SetUnsigned("DefaultShapeColor", fc_int)
 
-        obj.ViewObject.ShapeColor = fc_int & 0xFFFFFF00
+        obj.ViewObject.ShapeColor = fc_int | 0x000000FF
 
     Related:
 
-        getRgbF() returns an RGBA tuple. 4 floats in the range 0.0 - 1.0. Alpha is always 1.
-        Alpha should be set to zero or removed before using the tuple to change a color property:
-
-        obj.ViewObject.ShapeColor = self.form.ShapeColor.property("color").getRgbF()[:3]
+        getRgbF() returns an RGBA tuple. 4 floats in the range 0.0 - 1.0. Alpha is always 1.0.
     """
     return ((color & 0xFFFFFF) << 8) + ((color & 0xFF000000) >> 24)
 
@@ -884,26 +885,105 @@ def get_rgba_tuple(color, typ=1.0):
         return color
 
 
-def filter_objects_for_modifiers(objects, isCopied=False):
-    filteredObjects = []
-    for obj in objects:
-        if hasattr(obj, "MoveBase") and obj.MoveBase and obj.Base:
+def _modifiers_process_subselection(sels, copy):
+    data_list = []
+    sel_info = []
+    for sel in sels:
+        for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+            if not ("Vertex" in sub or "Edge" in sub):
+                continue
+            if copy and "Vertex" in sub:
+                continue
+            obj = sel.Object.getSubObject(sub, 1)
+            pla = sel.Object.getSubObject(sub, 3)
+            if "Vertex" in sub:
+                vert_idx = int(sub.rpartition("Vertex")[2]) - 1
+                edge_idx = -1
+            else:
+                vert_idx = -1
+                edge_idx = int(sub.rpartition("Edge")[2]) - 1
+            data_list.append((obj, vert_idx, edge_idx, pla))
+            sel_info.append(("", sel.Object.Name, sub))
+    return data_list, sel_info
+
+
+def _modifiers_process_selection(sels, copy, scale=False, add_movable_children=False):
+    # Only when creating ghosts and if copy is False, should add_movable_children be True.
+    objects = []
+    places = []
+    sel_info = []
+    for sel in sels:
+        for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+            obj = sel.Object.getSubObject(sub, 1)
+            # Get the global placement of the parent:
+            if obj == sel.Object:
+                pla = App.Placement()
+            else:
+                pla = sel.Object.getSubObject(sub.rpartition(obj.Name)[0], 3)
+            objs = _modifiers_get_group_contents(obj)
+            if add_movable_children:
+                children = []
+                for obj in objs:
+                    children.extend(_modifiers_get_movable_children(obj))
+                objs.extend(children)
+            objs = _modifiers_filter_objects(objs, copy, scale)
+            objects.extend(objs)
+            places.extend(len(objs) * [pla])
+            if "." in sub:
+                sub = sub.rpartition(".")[0] + "."
+            elif "Face" in sub or "Edge" in sub or "Vertex" in sub:
+                sub = ""
+            sel_info.append(("", sel.Object.Name, sub))
+    return objects, places, sel_info
+
+
+def _modifiers_get_group_contents(obj):
+    from draftutils import groups
+    return groups.get_group_contents(obj, addgroups=True, spaces=True, noarchchild=True)
+
+
+def _modifiers_get_movable_children(obj):
+    result = []
+    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "getMovableChildren"):
+        children = obj.Proxy.getMovableChildren(obj)
+        result.extend(children)
+        for child in children:
+            result.extend(_modifiers_get_movable_children(child))
+    return result
+
+
+def _modifiers_filter_objects(objs, copy, scale=False):
+
+    def is_scalable(obj):
+        if hasattr(obj, "Placement") and hasattr(obj, "Shape"):
+            return True
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+            return True
+        if obj.isDerivedFrom("App::Annotation"):
+            return True
+        if obj.isDerivedFrom("Image::ImagePlane"):
+            return True
+        return False
+
+    result = []
+    for obj in objs:
+        if not copy and hasattr(obj, "MoveBase") and obj.MoveBase and obj.Base:
             parents = []
             for parent in obj.Base.InList:
                 if parent.isDerivedFrom("Part::Feature"):
                     parents.append(parent.Name)
             if len(parents) > 1:
-                warningMessage = translate("draft", "%s shares a base with %d other objects. Please check if you want to modify this.") % (obj.Name,len(parents) - 1)
-                App.Console.PrintError(warningMessage)
-                if App.GuiUp:
-                    Gui.getMainWindow().showMessage(warningMessage, 0)
-            filteredObjects.append(obj.Base)
-        elif hasattr(obj,"Placement") and obj.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
-            App.Console.PrintError(translate("draft", "%s cannot be modified because its placement is readonly.") % obj.Name)
-            continue
-        else:
-            filteredObjects.append(obj)
-    return filteredObjects
+                message = translate("draft", "%s shares a base with %d other objects. Please check if you want to modify this.") % (obj.Name,len(parents) - 1)
+                _err(message)
+            if not scale or utils.get_type(obj.Base) == "Wire":
+                result.append(obj.Base)
+        elif not copy \
+                and hasattr(obj, "Placement") \
+                and "ReadOnly" in obj.getEditorMode("Placement"):
+            _err(translate("draft", "%s cannot be modified because its placement is readonly") % obj.Name)
+        elif not scale or is_scalable(obj):
+            result.append(obj)
+    return result
 
 
 def is_closed_edge(edge_index, object):

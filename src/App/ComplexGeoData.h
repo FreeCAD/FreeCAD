@@ -28,6 +28,8 @@
 #define APP_COMPLEX_GEO_DATA_H
 
 #include <algorithm>
+#include <optional>
+
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
@@ -200,6 +202,7 @@ public:
      * The default implementation only returns false.
      */
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
+    virtual std::optional<Base::Vector3d> centerOfGravity() const;
     //@}
 
     static const std::string& elementMapPrefix();

@@ -1,7 +1,8 @@
 # ***************************************************************************
-# *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
-# *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
-# *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2024 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -40,21 +41,17 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.groups as groups
-import draftutils.todo as todo
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-import drafttaskpanels.task_scale as task_scale
-
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import groups
+from draftutils import params
+from draftutils import utils
+from draftutils import todo
 from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
+from drafttaskpanels import task_scale
 
 
 class Scale(gui_base_original.Modifier):
@@ -65,11 +62,10 @@ class Scale(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
-        return {'Pixmap': 'Draft_Scale',
-                'Accel': "S, C",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Scale", "Scale"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point.\nCTRL to snap, SHIFT to constrain, ALT to copy.")}
+        return {"Pixmap": "Draft_Scale",
+                "Accel": "S, C",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Scale", "Scale"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point.\nCTRL to snap, SHIFT to constrain, ALT to copy.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -85,18 +81,14 @@ class Scale(gui_base_original.Modifier):
             return self.proceed()
         self.ui.selectUi(on_close_call=self.finish)
         _msg(translate("draft", "Select an object to scale"))
-        self.call = self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+        self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
 
     def proceed(self):
         """Proceed with execution of the command after selection."""
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
-
-        self.selected_objects = Gui.Selection.getSelection()
-        self.selected_objects = \
-            groups.get_group_contents(self.selected_objects)
-        self.selected_subelements = Gui.Selection.getSelectionEx()
+        self.selection = Gui.Selection.getSelectionEx("", 0)
+        Gui.doCommand("selection = FreeCADGui.Selection.getSelectionEx(\"\", 0)")
         self.refs = []
         self.ui.pointUi(title=translate("draft",self.featureName), icon="Draft_Scale")
         self.ui.isRelative.hide()
@@ -111,24 +103,50 @@ class Scale(gui_base_original.Modifier):
         """Set the ghost to display."""
         for ghost in self.ghosts:
             ghost.remove()
-        if self.task and self.task.isSubelementMode.isChecked():
-            self.ghosts = self.get_subelement_ghosts()
+        if self.task is None:
+            copy = params.get_param("ScaleCopy")
+            clone = params.get_param("ScaleClone")
+            subelements = params.get_param("SubelementMode")
         else:
-            self.ghosts = [trackers.ghostTracker(self.selected_objects)]
+            copy = self.task.isCopy.isChecked()
+            clone = self.task.isClone.isChecked()
+            subelements = self.task.isSubelementMode.isChecked()
+        if subelements:
+            self.ghosts = self.get_subelement_ghosts(self.selection, copy)
+            if not self.ghosts:
+                _err(translate("draft", "No valid subelements selected"))
+        else:
+            objs, places, _ = utils._modifiers_process_selection(self.selection, (copy or clone), scale=True)
+            self.ghosts = [trackers.ghostTracker(objs, parent_places=places)]
 
-    def get_subelement_ghosts(self):
+    def get_subelement_ghosts(self, selection, copy):
         """Get ghost for the subelements (vertices, edges)."""
         import Part
-
         ghosts = []
-        for sel in Gui.Selection.getSelectionEx("", 0):
+        for sel in selection:
             for sub in sel.SubElementNames if sel.SubElementNames else [""]:
-                if "Vertex" in sub or "Edge" in sub:
+                if (not copy and "Vertex" in sub) or "Edge" in sub:
                     shape = Part.getShape(sel.Object, sub, needSubElement=True, retType=0)
                     ghosts.append(trackers.ghostTracker(shape))
         return ghosts
 
-    def pickRef(self):
+    def scale_ghosts(self, x, y, z, rel):
+        """Scale the preview of the object."""
+        delta = App.Vector(x, y, z)
+        if rel:
+            delta = self.wp.get_global_coords(delta)
+        for ghost in self.ghosts:
+            ghost.scale(delta)
+        # calculate a correction factor depending on the scaling center
+        corr = App.Vector(self.node[0])
+        corr.scale(*delta)
+        corr = (corr.sub(self.node[0])).negative()
+        for ghost in self.ghosts:
+            ghost.flip_normals(x * y * z < 0)
+            ghost.move(corr)
+            ghost.on()
+
+    def pick_ref(self):
         """Pick a point of reference."""
         self.pickmode = True
         if self.node:
@@ -174,213 +192,32 @@ class Scale(gui_base_original.Modifier):
 
         Scales the subelements, or with a clone, or just general scaling.
         """
-        self.delta = App.Vector(self.task.xValue.value(),
-                                self.task.yValue.value(),
-                                self.task.zValue.value())
-        self.center = self.node[0]
-        if self.task.isSubelementMode.isChecked():
-            self.scale_subelements()
-        elif self.task.isClone.isChecked():
-            self.scale_with_clone()
-        else:
-            self.scale_object()
-        self.finish()
+        sx = self.task.xValue.value()
+        sy = self.task.yValue.value()
+        sz = self.task.zValue.value()
+        if sx * sy * sz == 0:
+            _err(translate("draft", "Zero scale factor not allowed"))
+            self.finish()
+            return
 
-    def scale_subelements(self):
-        """Scale only the subelements if the appropriate option is set.
-
-        The subelements operations only really work with polylines (Wires)
-        because internally the functions `scale_vertex` and `scale_edge`
-        only work with polylines that have a `Points` property.
-
-        BUG: the code should not cause an error. It should check that
-        the selected object is not a rectangle or another object
-        that can't be used with `scale_vertex` and `scale_edge`.
-        """
-        Gui.addModule("Draft")
-        try:
-            if self.task.isCopy.isChecked():
-                self.commit(translate("draft", "Copy"),
-                            self.build_copy_subelements_command())
-            else:
-                self.commit(translate("draft", "Scale"),
-                            self.build_scale_subelements_command())
-        except Exception:
-            _err(translate("draft", "Some subelements could not be scaled."))
-
-    def scale_with_clone(self):
-        """Scale with clone."""
+        self.delta = App.Vector(sx, sy, sz)
         if self.task.relative.isChecked():
             self.delta = self.wp.get_global_coords(self.delta)
-
-        Gui.addModule("Draft")
-
-        _doc = 'FreeCAD.ActiveDocument.'
-        _selected = self.selected_objects
-
-        objects = '['
-        objects += ', '.join([_doc + obj.Name for obj in _selected])
-        objects += ']'
-
+        self.center = self.node[0]
         if self.task.isCopy.isChecked():
-            _cmd_name = translate("draft", "Copy")
+            cmd_name = translate("draft", "Copy")
         else:
-            _cmd_name = translate("draft", "Scale")
-
-        # the correction translation of the clone placement is
-        # (node[0] - clone.Placement.Base) - (node[0] - clone.Placement.Base)\
-        #   .scale(delta.x,delta.y,delta.z)
-        # equivalent to:
-        # (node[0] - clone.Placement.Base)\
-        #   .scale(1-delta.x,1-delta.y,1-delta.z)
-        str_node0 = DraftVecUtils.toString(self.node[0])
-        str_delta = DraftVecUtils.toString(self.delta)
-        str_delta_corr = DraftVecUtils.toString(App.Vector(1,1,1) - self.delta)
-
-        _cmd = 'Draft.make_clone'
-        _cmd += '('
-        _cmd += objects + ', '
-        _cmd += 'forcedraft=True'
-        _cmd += ')'
-        _cmd_list = ['clone = ' + _cmd,
-                     'clone.Scale = ' + str_delta,
-                     'clone_corr = (' + str_node0 + ' - clone.Placement.Base)'\
-                        + '.scale(*'+ str_delta_corr + ')',
-                     'clone.Placement.move(clone_corr)',
-                     'FreeCAD.ActiveDocument.recompute()']
-        self.commit(_cmd_name, _cmd_list)
-
-    def build_copy_subelements_command(self):
-        """Build the string to commit to copy the subelements."""
-        import Part
-
-        command = []
-        arguments = []
-        E = len("Edge")
-        for obj in self.selected_subelements:
-            for index, subelement in enumerate(obj.SubObjects):
-                if not isinstance(subelement, Part.Edge):
-                    continue
-                _edge_index = int(obj.SubElementNames[index][E:]) - 1
-                _cmd = '['
-                _cmd += 'FreeCAD.ActiveDocument.'
-                _cmd += obj.ObjectName + ', '
-                _cmd += str(_edge_index) + ', '
-                _cmd += DraftVecUtils.toString(self.delta) + ', '
-                _cmd += DraftVecUtils.toString(self.center)
-                _cmd += ']'
-                arguments.append(_cmd)
-        all_args = ', '.join(arguments)
-        command.append('Draft.copy_scaled_edges([' + all_args + '])')
-        command.append('FreeCAD.ActiveDocument.recompute()')
-        return command
-
-    def build_scale_subelements_command(self):
-        """Build the strings to commit to scale the subelements."""
-        import Part
-
-        command = []
-        V = len("Vertex")
-        E = len("Edge")
-        for obj in self.selected_subelements:
-            for index, subelement in enumerate(obj.SubObjects):
-                if isinstance(subelement, Part.Vertex):
-                    _vertex_index = int(obj.SubElementNames[index][V:]) - 1
-                    _cmd = 'Draft.scale_vertex'
-                    _cmd += '('
-                    _cmd += 'FreeCAD.ActiveDocument.'
-                    _cmd += obj.ObjectName + ', '
-                    _cmd += str(_vertex_index) + ', '
-                    _cmd += DraftVecUtils.toString(self.delta) + ', '
-                    _cmd += DraftVecUtils.toString(self.center)
-                    _cmd += ')'
-                    command.append(_cmd)
-                elif isinstance(subelement, Part.Edge):
-                    _edge_index = int(obj.SubElementNames[index][E:]) - 1
-                    _cmd = 'Draft.scale_edge'
-                    _cmd += '('
-                    _cmd += 'FreeCAD.ActiveDocument.'
-                    _cmd += obj.ObjectName + ', '
-                    _cmd += str(_edge_index) + ', '
-                    _cmd += DraftVecUtils.toString(self.delta) + ', '
-                    _cmd += DraftVecUtils.toString(self.center)
-                    _cmd += ')'
-                    command.append(_cmd)
-        command.append('FreeCAD.ActiveDocument.recompute()')
-        return command
-
-    def is_scalable(self, obj):
-        """Return True only for the supported objects.
-
-        Currently it only supports `Rectangle`, `Wire`, `Annotation`
-        and `BSpline`.
-        """
-        t = utils.getType(obj)
-        if t in ["Rectangle", "Wire", "Annotation", "BSpline","Image::ImagePlane"]:
-            # TODO: support more types in Draft.scale
-            return True
-        else:
-            return False
-
-    def scale_object(self):
-        """Scale the object."""
-        if self.task.relative.isChecked():
-            self.delta =self.wp.get_global_coords(self.delta)
-        goods = []
-        bads = []
-        for obj in self.selected_objects:
-            if self.is_scalable(obj):
-                goods.append(obj)
-            else:
-                bads.append(obj)
-        if bads:
-            if len(bads) == 1:
-                m = translate("draft", "Unable to scale object:")
-                m += " "
-                m += bads[0].Label
-            else:
-                m = translate("draft", "Unable to scale objects:")
-                m += " "
-                m += ", ".join([o.Label for o in bads])
-            m += " - " + translate("draft","This object type cannot be scaled directly. Please use the clone method.")
-            _err(m)
-        if goods:
-            _doc = 'FreeCAD.ActiveDocument.'
-            objects = '['
-            objects += ', '.join([_doc + obj.Name for obj in goods])
-            objects += ']'
-            Gui.addModule("Draft")
-
-            if self.task.isCopy.isChecked():
-                _cmd_name = translate("draft", "Copy")
-            else:
-                _cmd_name = translate("draft", "Scale")
-
-            _cmd = 'Draft.scale'
-            _cmd += '('
-            _cmd += objects + ', '
-            _cmd += 'scale=' + DraftVecUtils.toString(self.delta) + ', '
-            _cmd += 'center=' + DraftVecUtils.toString(self.center) + ', '
-            _cmd += 'copy=' + str(self.task.isCopy.isChecked())
-            _cmd += ')'
-            _cmd_list = ['ss = ' + _cmd,
-                         'FreeCAD.ActiveDocument.recompute()']
-            self.commit(_cmd_name, _cmd_list)
-
-    def scaleGhost(self, x, y, z, rel):
-        """Scale the preview of the object."""
-        delta = App.Vector(x, y, z)
-        if rel:
-            delta = self.wp.get_global_coords(delta)
-        for ghost in self.ghosts:
-            ghost.scale(delta)
-        # calculate a correction factor depending on the scaling center
-        corr = App.Vector(self.node[0].x, self.node[0].y, self.node[0].z)
-        corr.scale(delta.x, delta.y, delta.z)
-        corr = (corr.sub(self.node[0])).negative()
-        for ghost in self.ghosts:
-            ghost.move(corr)
-            ghost.on()
+            cmd_name = translate("draft", "Scale")
+        Gui.addModule("Draft")
+        cmd = "Draft.scale(selection, "
+        cmd += "scale=" + DraftVecUtils.toString(self.delta) + ", "
+        cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
+        cmd += "copy=" + str(self.task.isCopy.isChecked()) + ", "
+        cmd += "clone=" + str(self.task.isClone.isChecked()) + ", "
+        cmd += "subelements=" + str(self.task.isSubelementMode.isChecked()) + ")"
+        cmd_list = [cmd, "FreeCAD.ActiveDocument.recompute()"]
+        self.commit(cmd_name, cmd_list)
+        self.finish()
 
     def numericInput(self, numx, numy, numz):
         """Validate the entry fields in the user interface.

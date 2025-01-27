@@ -2645,7 +2645,7 @@ float ViewProviderSketch::getScaleFactor() const
 void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
     GeoListFacade& geolistfacade, bool geometrywithmemoryallocation)
 {
-    // In order to allow to tweak geometry and insert scaling factors, this function needs to
+    // In order to allow one to tweak geometry and insert scaling factors, this function needs to
     // change the geometry vector. This is highly exceptional for a drawing function and special
     // care needs to be taken. This is valid because:
     // 1. The treatment is exceptional and no other appropriate place is available to perform this
@@ -2923,8 +2923,7 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
         return;
     }
 
-    // call father
-    ViewProviderPart::onChanged(prop);
+    ViewProvider2DObject::onChanged(prop);
 }
 
 void SketcherGui::ViewProviderSketch::startRestoring()
@@ -2960,14 +2959,14 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 
 void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
-    ViewProviderPart::attach(pcFeat);
+    ViewProvider2DObject::attach(pcFeat);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     menu->addAction(tr("Edit sketch"), receiver, member);
     // Call the extensions
-    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
+    ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderSketch::setEdit(int ModNum)

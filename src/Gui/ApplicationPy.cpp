@@ -48,7 +48,7 @@
 #include "ApplicationPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "Document.h"
 #include "DocumentObserverPython.h"
 #include "DownloadManager.h"

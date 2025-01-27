@@ -755,7 +755,7 @@ class _Roof(ArchComponent.Component):
             for f in obj.Base.Shape.Faces:  # obj.Base.Shape.Solids.Faces
                 p = f.findPlane()  # Curve face (surface) seems return no Plane
                 if p:
-                    if p.Axis[2] < 0:  # z<0, i.e. normal pointing below horizon
+                    if p.Axis[2] < -1e-7:  # i.e. normal pointing below horizon
                         faces.append(f)
                 else:
                     # Not sure if it is pointing towards and/or above horizon
@@ -768,8 +768,10 @@ class _Roof(ArchComponent.Component):
 
             for f in faces:
                 solid = f.extrude(Vector(0.0, 0.0, 1000000.0))
-                solids.append(solid)
+                if not solid.isNull() and solid.isValid() and solid.Volume > 1e-3:
+                    solids.append(solid)
             compound = Part.Compound(solids)
+            compound.Placement = obj.Placement
             return compound
 
         sub_field = getattr(self, 'sub', None)

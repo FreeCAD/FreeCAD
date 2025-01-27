@@ -24,6 +24,8 @@
 #ifndef GUI_VIEWPROVIDER_ViewProviderOrigin_H
 #define GUI_VIEWPROVIDER_ViewProviderOrigin_H
 
+#include <functional>
+#include <Base/Bitmask.h>
 #include <App/PropertyGeo.h>
 
 #include "ViewProviderGeoFeatureGroup.h"
@@ -32,6 +34,18 @@
 namespace Gui {
 
 class Document;
+class ViewProviderDatum;
+
+enum class DatumElement
+{
+    // clang-format off
+    Origin = 1 << 0,
+    Axes   = 1 << 1,
+    Planes = 1 << 2
+    // clang-format on
+};
+
+using DatumElements = Base::Flags<DatumElement>;
 
 class GuiExport ViewProviderCoordinateSystem : public ViewProviderGeoFeatureGroup
 {
@@ -60,12 +74,17 @@ public:
      */
     ///@{
     /// Set temporary visibility of some of origin's objects e.g. while rotating or mirroring
-    void setTemporaryVisibility (bool axis, bool planes);
+    void setTemporaryVisibility (DatumElements elements);
     /// Returns true if the origin in temporary visibility mode
     bool isTemporaryVisibility ();
     /// Reset the visibility
     void resetTemporaryVisibility ();
     ///@}
+
+    void setTemporaryScale(double factor);
+    void resetTemporarySize();
+
+    void setPlaneLabelVisibility(bool val);
 
     bool canDragObjects() const override {
         return false;
@@ -79,9 +98,14 @@ public:
 
     // default color for origini: light-blue (50, 150, 250, 255 stored as 0xRRGGBBAA)
     static const uint32_t defaultColor = 0x3296faff;
+
 protected:
     void updateData(const App::Property*) override;
     bool onDelete(const std::vector<std::string> &) override;
+
+private:
+    using DatumObjectFunc = std::function<void(ViewProviderDatum*)>;
+    void applyDatumObjects(const DatumObjectFunc& func);
 
 private:
     SoGroup *pcGroupChildren;
@@ -90,6 +114,8 @@ private:
 };
 
 } // namespace Gui
+
+ENABLE_BITMASK_OPERATORS(Gui::DatumElement)
 
 #endif // GUI_VIEWPROVIDER_ViewProviderOrigin_H
 

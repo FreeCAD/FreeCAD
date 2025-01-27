@@ -486,7 +486,7 @@ void CmdPartDesignClone::activated(int iMsg)
 
 bool CmdPartDesignClone::isActive()
 {
-    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Part::Feature>() == 1;
 }
 
 //===========================================================================

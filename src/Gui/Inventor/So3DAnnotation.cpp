@@ -35,7 +35,40 @@
 
 using namespace Gui;
 
+SO_ELEMENT_SOURCE(SoDelayedAnnotationsElement);
+
+void SoDelayedAnnotationsElement::init(SoState* state)
+{
+    SoElement::init(state);
+}
+
+void SoDelayedAnnotationsElement::initClass()
+{
+    SO_ELEMENT_INIT_CLASS(SoDelayedAnnotationsElement, inherited);
+
+    SO_ENABLE(SoGLRenderAction, SoDelayedAnnotationsElement);
+}
+
+void SoDelayedAnnotationsElement::addDelayedPath(SoState* state, SoPath* path)
+{
+    auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
+
+    elt->paths.append(path);
+}
+
+SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
+{
+    auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
+    auto copy = elt->paths;
+
+    elt->paths.truncate(0);
+
+    return copy;
+}
+
 SO_NODE_SOURCE(So3DAnnotation);
+
+bool So3DAnnotation::render = false;
 
 So3DAnnotation::So3DAnnotation()
 {
@@ -65,25 +98,23 @@ void So3DAnnotation::GLRender(SoGLRenderAction* action)
 
 void So3DAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
 {
-    if (action->isRenderingDelayedPaths()) {
-        glClear(GL_DEPTH_BUFFER_BIT);
+    if (render) {
         inherited::GLRenderBelowPath(action);
     }
     else {
         SoCacheElement::invalidate(action->getState());
-        action->addDelayedPath(action->getCurPath()->copy());
+        SoDelayedAnnotationsElement::addDelayedPath(action->getState(), action->getCurPath()->copy());
     }
 }
 
 void So3DAnnotation::GLRenderInPath(SoGLRenderAction* action)
 {
-    if (action->isRenderingDelayedPaths()) {
-        glClear(GL_DEPTH_BUFFER_BIT);
+    if (render) {
         inherited::GLRenderInPath(action);
     }
     else {
         SoCacheElement::invalidate(action->getState());
-        action->addDelayedPath(action->getCurPath()->copy());
+        SoDelayedAnnotationsElement::addDelayedPath(action->getState(), action->getCurPath()->copy());
     }
 }
 

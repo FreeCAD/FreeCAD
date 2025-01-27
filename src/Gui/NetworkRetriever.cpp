@@ -39,7 +39,7 @@
 #include "BitmapFactory.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
-#include "ui_DlgAuthorization.h"
+#include "Dialogs/ui_DlgAuthorization.h"
 
 
 using namespace Gui;

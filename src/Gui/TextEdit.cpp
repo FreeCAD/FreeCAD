@@ -32,6 +32,7 @@
 # include <QTextCursor>
 #endif
 
+#include "CallTips.h"
 #include "TextEdit.h"
 #include "SyntaxHighlighter.h"
 #include "Tools.h"
@@ -46,6 +47,16 @@ using namespace Gui;
 TextEdit::TextEdit(QWidget* parent)
     : QPlainTextEdit(parent), cursorPosition(0), listBox(nullptr)
 {
+    // create the window for call tips
+    callTipsList = new CallTipsList(this);
+    callTipsList->setFrameStyle(QFrame::Box);
+    callTipsList->setFrameShadow(QFrame::Raised);
+    callTipsList->setLineWidth(2);
+    installEventFilter(callTipsList);
+    viewport()->installEventFilter(callTipsList);
+    callTipsList->setSelectionMode( QAbstractItemView::SingleSelection );
+    callTipsList->hide();
+
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time
     auto shortcut = new QShortcut(this);
@@ -77,7 +88,9 @@ TextEdit::~TextEdit() = default;
  */
 void TextEdit::keyPressEvent(QKeyEvent* e)
 {
+    // We want input to be appended to document before doing calltips
     QPlainTextEdit::keyPressEvent(e);
+
     // This can't be done in CompletionList::eventFilter() because we must first perform
     // the event and afterwards update the list widget
     if (listBox && listBox->isVisible()) {
@@ -94,6 +107,35 @@ void TextEdit::keyPressEvent(QKeyEvent* e)
         listBox->keyboardSearch(cursor.selectedText());
         cursor.clearSelection();
     }
+
+
+    if (e->key() == Qt::Key_Period)
+    {
+        // QTextCursor cursor = this->textCursor();
+        // In Qt 4.8 there is a strange behaviour because when pressing ":"
+        // then key is also set to 'Period' instead of 'Colon'. So we have
+        // to make sure we only handle the period.
+        if (e->text() == QLatin1String(".")) {
+            // analyse context and show available call tips
+            // TODO: idk why we need to remove the . from the input string (- 1). This shouldn't be needed
+            QString textToBeCompleted = getInputString().left(getInputStringPosition() - 1);
+            callTipsList->showTips( textToBeCompleted );
+        }
+    }
+
+    // This can't be done in CallTipsList::eventFilter() because we must first perform
+    // the event and afterwards update the list widget
+    if (callTipsList->isVisible()) {
+        callTipsList->validateCursor();
+    }
+}
+
+int TextEdit::getInputStringPosition() {
+    return textCursor().positionInBlock();
+}
+
+QString TextEdit::getInputString() {
+    return textCursor().block().text();
 }
 
 void TextEdit::wheelEvent(QWheelEvent* e)
@@ -205,6 +247,8 @@ void TextEdit::createListBox()
 namespace Gui {
 struct TextEditorP
 {
+    bool highlightLine = true;
+    bool visibleMarker = true;
     QMap<QString, QColor> colormap; // Color map
     TextEditorP()
     {
@@ -257,17 +301,33 @@ TextEditor::TextEditor(QWidget* parent)
     highlightCurrentLine();
 }
 
-void TextEditor::keyPressEvent(QKeyEvent *e)
-{
-    TextEdit::keyPressEvent( e );
-}
-
 /** Destroys the object and frees any allocated resources */
 TextEditor::~TextEditor()
 {
     getWindowParameter()->Detach(this);
     delete highlighter;
     delete d;
+}
+
+void TextEditor::setVisibleLineNumbers(bool value)
+{
+    lineNumberArea->setVisible(value);
+    d->visibleMarker = value;
+}
+
+bool TextEditor::isVisibleLineNumbers() const
+{
+    return d->visibleMarker;
+}
+
+void TextEditor::setEnabledHighlightCurrentLine(bool value)
+{
+    d->highlightLine = value;
+}
+
+bool TextEditor::isEnabledHighlightCurrentLine() const
+{
+    return d->highlightLine;
 }
 
 int TextEditor::lineNumberAreaWidth()
@@ -277,33 +337,42 @@ int TextEditor::lineNumberAreaWidth()
 
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
-    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+    int left = isVisibleLineNumbers() ? lineNumberAreaWidth() : 0;
+    setViewportMargins(left, 0, 0, 0);
 }
 
 void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
-    if (dy)
-        lineNumberArea->scroll(0, dy);
-    else
-        lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+    if (isVisibleLineNumbers()) {
+        if (dy) {
+            lineNumberArea->scroll(0, dy);
+        }
+        else {
+            lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+        }
 
-    if (rect.contains(viewport()->rect()))
-        updateLineNumberAreaWidth(0);
+        if (rect.contains(viewport()->rect())) {
+            updateLineNumberAreaWidth(0);
+        }
+    }
 }
 
 void TextEditor::resizeEvent(QResizeEvent *e)
 {
     QPlainTextEdit::resizeEvent(e);
 
-    QRect cr = contentsRect();
-    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+    if (isVisibleLineNumbers()) {
+        QRect cr = contentsRect();
+        int width = lineNumberAreaWidth();
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), width, cr.height()));
+    }
 }
 
 void TextEditor::highlightCurrentLine()
 {
     QList<QTextEdit::ExtraSelection> extraSelections;
 
-    if (!isReadOnly()) {
+    if (!isReadOnly() && isEnabledHighlightCurrentLine()) {
         QTextEdit::ExtraSelection selection;
         QColor lineColor = d->colormap[QLatin1String("Current line highlight")];
         unsigned int col = App::Color::asPackedRGB<QColor>(lineColor);
@@ -332,6 +401,9 @@ void TextEditor::drawMarker(int line, int x, int y, QPainter* p)
 
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
+    if (!isVisibleLineNumbers()) {
+        return;
+    }
     QPainter painter(lineNumberArea);
     //painter.fillRect(event->rect(), Qt::lightGray);
 
@@ -404,31 +476,17 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
 
     // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
     if (strcmp(sReason, "EnableLineNumber") == 0) {
+        int width = 0;
         QRect cr = contentsRect();
-        bool show = hPrefGrp->GetBool("EnableLineNumber", true);
-        if(show)
-            lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
-        else
-            lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), 0, cr.height()));
+        if (hPrefGrp->GetBool("EnableLineNumber", true)) {
+            width = lineNumberAreaWidth();
+        }
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), width, cr.height()));
     }
-
-    if (strcmp(sReason, "EnableBlockCursor") == 0 ||
-        strcmp(sReason, "FontSize") == 0 ||
-        strcmp(sReason, "Font") == 0) {
-        bool block = hPrefGrp->GetBool("EnableBlockCursor", false);
-        if (block)
-            setCursorWidth(QFontMetrics(font()).averageCharWidth());
-        else
-            setCursorWidth(1);
-    }
-}
-
-void TextEditor::paintEvent (QPaintEvent * e)
-{
-    TextEdit::paintEvent( e );
 }
 
 // ------------------------------------------------------------------------------
+
 PythonTextEditor::PythonTextEditor(QWidget *parent)
     : TextEditor(parent)
 {

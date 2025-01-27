@@ -221,6 +221,7 @@ class DraftToolBar:
         mw.addToolBar(self.tray)
         self.tray.setParent(mw)
         self.tray.hide()
+        self.display_point_active = False  # prevent cyclic processing of point values
 
 #---------------------------------------------------------------------------
 # General UI setup
@@ -526,15 +527,15 @@ class DraftToolBar:
         self.promptlabel.setText(translate("draft", "active command:"))
         self.cmdlabel.setText(translate("draft", "None"))
         self.cmdlabel.setToolTip(translate("draft", "Active Draft command"))
-        self.xValue.setToolTip(translate("draft", "X coordinate of next point"))
+        self.xValue.setToolTip(translate("draft", "X coordinate of point"))
         self.labelx.setText(translate("draft", "X"))
         self.labely.setText(translate("draft", "Y"))
         self.labelz.setText(translate("draft", "Z"))
-        self.yValue.setToolTip(translate("draft", "Y coordinate of next point"))
-        self.zValue.setToolTip(translate("draft", "Z coordinate of next point"))
+        self.yValue.setToolTip(translate("draft", "Y coordinate of point"))
+        self.zValue.setToolTip(translate("draft", "Z coordinate of point"))
         self.pointButton.setText(translate("draft", "Enter point"))
         self.pointButton.setToolTip(translate(
-            "draft","Enter a new point with the given coordinates"))
+            "draft","Enter a point with given coordinates"))
         self.labellength.setText(translate("draft", "Length"))
         self.labelangle.setText(translate("draft", "Angle"))
         self.lengthValue.setToolTip(translate("draft", "Length of current segment"))
@@ -966,11 +967,13 @@ class DraftToolBar:
             params.set_param("RelativeMode", bool(val))
             self.relativeMode = bool(val)
         self.checkLocal()
+        self.updateSnapper()
 
     def setGlobal(self, val):
         params.set_param("GlobalMode", bool(val))
         self.globalMode = bool(val)
         self.checkLocal()
+        self.updateSnapper()
 
     def setFill(self, val):
         params.set_param("fillmode", bool(val))
@@ -982,6 +985,9 @@ class DraftToolBar:
             params.set_param("OffsetCopyMode", bool(val))
         else:
             params.set_param("CopyMode", bool(val))
+            # if CopyMode is changed ghosts must be updated.
+            # Moveable children should not be included if CopyMode is True.
+            self.sourceCmd.set_ghosts()
 
     def setSubelementMode(self, val):
         params.set_param("SubelementMode", bool(val))
@@ -1016,7 +1022,6 @@ class DraftToolBar:
         if self.sourceCmd or self.pointcallback:
             if (self.labelRadius.isVisible()):
                 try:
-                    #rad=float(self.radiusValue.text())
                     rad = self.radius
                 except (ValueError, AttributeError):
                     print("debug: DraftGui.validatePoint: AttributeError")
@@ -1024,11 +1029,8 @@ class DraftToolBar:
                     self.sourceCmd.numericRadius(rad)
             elif (self.labelx.isVisible()):
                 try:
-                    #numx=float(self.xValue.text())
                     numx = self.x
-                    #numy=float(self.yValue.text())
                     numy = self.y
-                    #numz=float(self.zValue.text())
                     numz = self.z
                 except (ValueError, AttributeError):
                     print("debug: DraftGui.validatePoint: AttributeError")
@@ -1196,25 +1198,24 @@ class DraftToolBar:
             widget.setProperty("text",v)
             widget.setFocus()
             widget.selectAll()
-        self.updateSnapper()
 
     def updateSnapper(self):
         """updates the snapper track line if applicable"""
-        if hasattr(FreeCADGui,"Snapper"):
-            if FreeCADGui.Snapper.trackLine:
-                if FreeCADGui.Snapper.trackLine.Visible:
-                    last = FreeCAD.Vector(0,0,0)
-                    if not self.xValue.isVisible():
-                        return
-                    if self.isRelative.isChecked():
-                        if self.sourceCmd:
-                            if hasattr(self.sourceCmd,"node"):
-                                if self.sourceCmd.node:
-                                    last = self.sourceCmd.node[-1]
-                    plane = WorkingPlane.get_working_plane(update=False)
-                    delta = plane.get_global_coords(
-                        FreeCAD.Vector(self.x,self.y,self.z))
-                    FreeCADGui.Snapper.trackLine.p2(last.add(delta))
+        if not self.xValue.isVisible():
+            return
+        if hasattr(FreeCADGui,"Snapper") \
+                and FreeCADGui.Snapper.trackLine \
+                and FreeCADGui.Snapper.trackLine.Visible:
+            # code below matches portion of validatePoint
+            delta = FreeCAD.Vector(self.x, self.y, self.z)
+            plane = WorkingPlane.get_working_plane(update=False)
+            ref_vec = FreeCAD.Vector(0, 0, 0)
+            if plane and not self.globalMode:
+                delta = plane.get_global_coords(delta, as_vector=True)
+                ref_vec = plane.get_global_coords(ref_vec)
+            if self.relativeMode and self.sourceCmd.node:
+                ref_vec = self.sourceCmd.node[-1]
+            FreeCADGui.Snapper.trackLine.p2(delta + ref_vec)
 
     def setMouseMode(self, mode=True):
         """Sets self.mouse True (default) or False and sets a timer
@@ -1248,49 +1249,40 @@ class DraftToolBar:
         self.sourceCmd.createObject()
 
     def displayPoint(self, point=None, last=None, plane=None, mask=None):
-        """this function displays the passed coords in the x, y, and z widgets"""
+        """Displays point values in the widgets and updates self."""
         if not self.isTaskOn:
             return
 
-        if not plane:
-            plane = WorkingPlane.get_working_plane(update=False)
-        # get coords to display
-        if not last:
-            if self.globalMode:
-                last = FreeCAD.Vector(0,0,0)
-            else:
-                last = plane.position
-        dp = None
-        if point:
-            dp = point
-            if self.relativeMode: # and (last is not None):
-                if self.globalMode:
-                    dp = point - last
-                else:
-                    dp = plane.get_local_coords(point - last, as_vector=True)
-            else:
-                if self.globalMode:
-                    dp = point
-                else:
-                    dp = plane.get_local_coords(point)
-        # set widgets
-        if dp:
-            if self.mask in ['y','z']:
-                self.xValue.setText(display_external(dp.x,None,'Length'))
-            else:
-                self.xValue.setText(display_external(dp.x,None,'Length'))
-            if self.mask in ['x','z']:
-                self.yValue.setText(display_external(dp.y,None,'Length'))
-            else:
-                self.yValue.setText(display_external(dp.y,None,'Length'))
-            if self.mask in ['x','y']:
-                self.zValue.setText(display_external(dp.z,None,'Length'))
-            else:
-                self.zValue.setText(display_external(dp.z,None,'Length'))
+        self.display_point_active = True  # prevent cyclic processing of point values
 
-        # set length and angle
-        if last and dp and plane:
-            length, theta, phi = DraftVecUtils.get_spherical_coords(*dp)
+        if point:
+            if not plane:
+                plane = WorkingPlane.get_working_plane(update=False)
+            if not last:
+                if self.globalMode:
+                    last = FreeCAD.Vector(0,0,0)
+                else:
+                    last = plane.position
+
+            if self.relativeMode:
+                if self.globalMode:
+                    delta = point - last
+                else:
+                    delta = plane.get_local_coords(point - last, as_vector=True)
+            else:
+                if self.globalMode:
+                    delta = point
+                else:
+                    delta = plane.get_local_coords(point)
+
+            self.x = delta.x
+            self.y = delta.y
+            self.z = delta.z
+            self.xValue.setText(display_external(delta.x,None,'Length'))
+            self.yValue.setText(display_external(delta.y,None,'Length'))
+            self.zValue.setText(display_external(delta.z,None,'Length'))
+
+            length, theta, phi = DraftVecUtils.get_spherical_coords(*delta)
             theta = math.degrees(theta)
             phi = math.degrees(phi)
             self.lengthValue.setText(display_external(length,None,'Length'))
@@ -1309,24 +1301,18 @@ class DraftToolBar:
             self.xValue.setEnabled(True)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(False)
-            self.yValue.setText("0")
-            self.zValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus()
         elif (mask == "y") or (self.mask == "y"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(True)
             self.zValue.setEnabled(False)
-            self.xValue.setText("0")
-            self.zValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus("y")
         elif (mask == "z") or (self.mask == "z"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(True)
-            self.xValue.setText("0")
-            self.yValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus("z")
         else:
@@ -1336,6 +1322,7 @@ class DraftToolBar:
             self.angleValue.setEnabled(True)
             self.setFocus()
 
+        self.display_point_active = False
 
     def getDefaultColor(self, typ, rgb=False):
         """gets color from the preferences or toolbar"""
@@ -1523,38 +1510,57 @@ class DraftToolBar:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.mask = val
 
-    def changeXValue(self,d):
-        self.x = d
+    def changeXValue(self, d):
+        if self.display_point_active:
+            return
         if not self.xValue.hasFocus():
-            return None
+            return
+        self.x = d
         self.update_spherical_coords()
+        self.updateSnapper()
 
-    def changeYValue(self,d):
-        self.y = d
+    def changeYValue(self, d):
+        if self.display_point_active:
+            return
         if not self.yValue.hasFocus():
-            return None
+            return
+        self.y = d
         self.update_spherical_coords()
+        self.updateSnapper()
 
-    def changeZValue(self,d):
-        self.z = d
+    def changeZValue(self, d):
+        if self.display_point_active:
+            return
         if not self.zValue.hasFocus():
-            return None
+            return
+        self.z = d
         self.update_spherical_coords()
+        self.updateSnapper()
 
-    def changeRadiusValue(self,d):
+    def changeRadiusValue(self, d):
+        if self.display_point_active:
+            return
+        if not self.radiusValue.hasFocus():
+            return
         self.radius = d
 
-    def changeLengthValue(self,d):
-        self.lvalue = d
+    def changeLengthValue(self, d):
+        if self.display_point_active:
+            return
         if not self.lengthValue.hasFocus():
-            return None
+            return
+        self.lvalue = d
         self.update_cartesian_coords()
+        self.updateSnapper()
 
-    def changeAngleValue(self,d):
-        self.avalue = d
+    def changeAngleValue(self, d):
+        if self.display_point_active:
+            return
         if not self.angleValue.hasFocus():
-            return None
+            return
+        self.avalue = d
         self.update_cartesian_coords()
+        self.updateSnapper()
         if self.angleLock.isChecked():
             if not self.globalMode:
                 plane = WorkingPlane.get_working_plane(update=False)
@@ -1719,7 +1725,7 @@ class FacebinderTaskPanel:
 
     def addElement(self):
         if self.obj:
-            for sel in FreeCADGui.Selection.getSelectionEx():
+            for sel in FreeCADGui.Selection.getSelectionEx("", 0):
                 if sel.HasSubObjects:
                     obj = sel.Object
                     for elt in sel.SubElementNames:

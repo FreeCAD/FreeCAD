@@ -497,29 +497,32 @@
          </widget>
         </item>
         <item row="1" column="1">
-       <widget class="Gui::PrefSpinBox" name="CbLabelTextSize">
-        <property name="toolTip">
-         <string>Color Bar (used in Mesh and FEM Wbs) Label Text Size</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-        <property name="minimum">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <number>36</number>
-        </property>
-        <property name="value">
-         <number>13</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>CbLabelTextSize</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
+         <widget class="Gui::PrefSpinBox" name="CbLabelTextSize">
+          <property name="toolTip">
+           <string>Color Bar (used in Mesh and FEM Wbs) Label Text Size</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string> pt</string>
+          </property>
+          <property name="minimum">
+           <number>4</number>
+          </property>
+          <property name="maximum">
+           <number>36</number>
+          </property>
+          <property name="value">
+           <number>13</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CbLabelTextSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoFont.h>
@@ -41,6 +40,8 @@
 #include "Inventor/SoAxisCrossKit.h"
 #include "SoFCSelection.h"
 #include "ViewProviderCoordinateSystem.h"
+
+#include <Inventor/So3DAnnotation.h>
 
 
 using namespace Gui;
@@ -60,17 +61,12 @@ ViewProviderDatum::ViewProviderDatum() {
     pRoot = new SoSeparator();
     pRoot->ref();
 
-    // Create the Label node
-    pLabel = new SoText2();
-    pLabel->ref();
-
     lineThickness = 2.0;
 }
 
 
 ViewProviderDatum::~ViewProviderDatum() {
     pRoot->unref();
-    pLabel->unref();
 }
 
 
@@ -117,7 +113,7 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     visible->addChild(pRoot);
 
     // Hidden features
-    auto hidden = new SoAnnotation();
+    auto hidden = new So3DAnnotation();
 
     // Style for hidden lines
     style = new SoDrawStyle();
@@ -132,20 +128,27 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 
     sep->addChild(visible);
 
-
-    // Scale feature to the given size
-    float sz = App::GetApplication()
-        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-        ->GetFloat("LocalCoordinateSystemSize", 1.0);  // NOLINT
-
     soScale->setPart("shape", sep);
-    soScale->scaleFactor = sz;
+    resetTemporarySize();
 
     highlight->addChild(soScale);
 
     addDisplayMaskMode(highlight, "Base");
 }
 
+void ViewProviderDatum::setTemporaryScale(double factor)
+{
+    soScale->scaleFactor = soScale->scaleFactor.getValue() * factor;
+}
+
+void ViewProviderDatum::resetTemporarySize()
+{
+    float sz = App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+        ->GetFloat("LocalCoordinateSystemSize", 1.0);  // NOLINT
+
+    soScale->scaleFactor = sz;
+}
 
 void ViewProviderDatum::onChanged(const App::Property* prop) {
     ViewProviderGeometryObject::onChanged(prop);

@@ -45,6 +45,10 @@
 
 #include "ViewProvider2DObject.h"
 
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSwitch.h>
+
 
 using namespace PartGui;
 using namespace std;
@@ -317,9 +321,44 @@ void ViewProvider2DObjectGrid::updateGridExtent(float minx, float maxx, float mi
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
 
-ViewProvider2DObject::ViewProvider2DObject() = default;
+ViewProvider2DObject::ViewProvider2DObject()
+    : plane(new SoSwitch)
+{
+    ADD_PROPERTY_TYPE(ShowPlane,
+                      (false),
+                      "Display Options",
+                      (App::PropertyType)(App::Prop_None),
+                      "If true, plane related with object is additionally rendered.");
+}
 
 ViewProvider2DObject::~ViewProvider2DObject() = default;
+
+void ViewProvider2DObject::attach(App::DocumentObject* documentObject)
+{
+    ViewProviderPart::attach(documentObject);
+
+    getAnnotation()->addChild(plane);
+
+    updatePlane();
+}
+
+void ViewProvider2DObject::updateData(const App::Property* property)
+{
+    ViewProviderPart::updateData(property);
+
+    if (dynamic_cast<const Part::PropertyPartShape*>(property)) {
+        updatePlane();
+    }
+}
+
+void ViewProvider2DObject::onChanged(const App::Property* property)
+{
+    ViewProviderPart::onChanged(property);
+
+    if (property == &ShowPlane) {
+        plane->whichChild = ShowPlane.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    }
+}
 
 std::vector<std::string> ViewProvider2DObject::getDisplayModes() const
 {
@@ -338,6 +377,83 @@ std::vector<std::string> ViewProvider2DObject::getDisplayModes() const
 const char* ViewProvider2DObject::getDefaultDisplayMode() const
 {
     return "Wireframe";
+}
+
+void ViewProvider2DObject::updatePlane()
+{
+    plane->whichChild = ShowPlane.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+
+    Gui::coinRemoveAllChildren(plane);
+
+    auto shapeProperty = getObject()->getPropertyByName<Part::PropertyPartShape>("Shape");
+
+    if (!shapeProperty) {
+        return;
+    }
+
+    auto bbox = shapeProperty->getBoundingBox();
+    Base::Placement place = shapeProperty->getComplexData()->getPlacement();
+    Base::ViewOrthoProjMatrix proj(place.inverse().toMatrix());
+    Base::BoundBox2d bb = bbox.ProjectBox(&proj);
+
+    SbVec3f verts[4] = {
+        SbVec3f(bb.MinX - horizontalPlanePadding, bb.MinY - verticalPlanePadding, 0),
+        SbVec3f(bb.MinX - horizontalPlanePadding, bb.MaxY + verticalPlanePadding, 0),
+        SbVec3f(bb.MaxX + horizontalPlanePadding, bb.MaxY + verticalPlanePadding, 0),
+        SbVec3f(bb.MaxX + horizontalPlanePadding, bb.MinY - verticalPlanePadding, 0),
+    };
+
+    static const int32_t lines[6] = { 0, 1, 2, 3, 0, -1 };
+
+    auto pCoords = new SoCoordinate3();
+    pCoords->point.setNum(4);
+    pCoords->point.setValues(0, 4, verts);
+    plane->addChild(pCoords);
+
+    auto pLines = new SoIndexedLineSet();
+    pLines->coordIndex.setNum(6);
+    pLines->coordIndex.setValues(0, 6, lines);
+    plane->addChild(pLines);
+
+    // add semi transparent face
+    auto faceSeparator = new SoSeparator();
+    plane->addChild(faceSeparator);
+
+    auto material = new SoMaterial();
+    SbColor color(1.0f, 1.0f, 0.0f);
+    material->transparency.setValue(0.85f);
+    material->ambientColor.setValue(color);
+    material->diffuseColor.setValue(color);
+    faceSeparator->addChild(material);
+
+    // disable backface culling and render with two-sided lighting
+    auto shapeHints = new SoShapeHints();
+    shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    faceSeparator->addChild(shapeHints);
+
+    auto pickStyle = new SoPickStyle();
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    faceSeparator->addChild(pickStyle);
+
+    auto faceSet = new SoFaceSet();
+    auto vertexProperty = new SoVertexProperty();
+    vertexProperty->vertex.setValues(0, 4, verts);
+    faceSet->vertexProperty.setValue(vertexProperty);
+    faceSeparator->addChild(faceSet);
+
+    auto ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::BOUNDING_BOX);
+
+    auto dashed = new SoDrawStyle();
+    dashed->linePattern = 0xF0F0;
+
+    auto annotation = new SoAnnotation();
+    annotation->addChild(dashed);
+    annotation->addChild(pLines);
+
+    plane->addChild(annotation);
+    plane->addChild(ps);
 }
 
 namespace Gui {

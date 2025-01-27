@@ -3,20 +3,20 @@
 # *   Copyright (c) 2023 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
@@ -44,7 +44,7 @@ import difflib
 IFC_FILE_PATH = None  # downloaded IFC file path
 FCSTD_FILE_PATH = None  # saved FreeCAD file
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
-SINGLEDOC = False  # This allows to force singledoc mode for all tests
+SINGLEDOC = False  # This allows one to force singledoc mode for all tests
 SDU = int(SINGLEDOC)  # number of objects is different in singledoc
 # See also IFCFILECONTENT at the end of this file, retrieved from
 # https://github.com/aothms/IfcOpenHouse/IfcOpenHouse_IFC4.ifc

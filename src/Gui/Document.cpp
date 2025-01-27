@@ -2456,7 +2456,7 @@ MDIView *Document::setActiveView(const ViewProviderDocumentObject* vp, Base::Typ
 /**
  * @brief Document::setActiveWindow
  * If this document is active and the view is part of it then it will be
- * activated. If the document is not active of the view is already active
+ * activated. If the document is not active or if the view is already active
  * nothing is done.
  * @param view
  */

@@ -462,8 +462,6 @@ def apply_current_style(objs):
                 if style[prop][0] == "index":
                     if style[prop][2] in vobj.getEnumerationsOfProperty(prop):
                         setattr(vobj, prop, style[prop][2])
-                elif style[prop][0] == "color":
-                    setattr(vobj, prop, style[prop][1] & 0xFFFFFF00)
                 else:
                     setattr(vobj, prop, style[prop][1])
 
@@ -565,7 +563,7 @@ def format_object(target, origin=None):
                 obrep.DisplayMode = dm
     if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
-        col = params.get_param("constructioncolor") & 0xFFFFFF00
+        col = params.get_param("constructioncolor") | 0x000000FF
         grp = doc.getObject("Draft_Construction")
         if not grp:
             grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
@@ -675,10 +673,12 @@ def select(objs=None, gui=App.GuiUp):
 
     Parameters
     ----------
-    objs: list of App::DocumentObject, optional
+    objs: list of App::DocumentObjects or tuples, or a single object or tuple, optional
         It defaults to `None`.
-        Any type of scripted object.
-        It may be a list of objects or a single object.
+        Format for tuples:
+        `(doc.Name or "", sel.Object.Name, sel.SubElementName or "")`
+        For example (Box nested in Part):
+        `("", "Part", "Box.Edge1")`
 
     gui: bool, optional
         It defaults to the value of `App.GuiUp`, which is `True`
@@ -689,12 +689,21 @@ def select(objs=None, gui=App.GuiUp):
     """
     if gui:
         Gui.Selection.clearSelection()
-        if objs:
+        if objs is not None:
             if not isinstance(objs, list):
                 objs = [objs]
             for obj in objs:
-                if obj:
-                    Gui.Selection.addSelection(obj)
+                if not obj:
+                    continue
+                if isinstance(obj, tuple):
+                    Gui.Selection.addSelection(*obj)
+                    continue
+                try:
+                    if not obj.isAttachedToDocument():
+                        continue
+                except:
+                    continue
+                Gui.Selection.addSelection(obj)
 
 
 def load_texture(filename, size=None, gui=App.GuiUp):

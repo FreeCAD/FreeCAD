@@ -527,7 +527,7 @@
     <message>
       <location filename="../../TrajectorySimulate.ui" line="277"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../../TrajectorySimulate.ui" line="282"/>
@@ -822,7 +822,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="322"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="327"/>

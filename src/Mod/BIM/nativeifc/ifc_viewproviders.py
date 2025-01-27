@@ -3,15 +3,15 @@
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Library General Public License (LGPL)   *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
 # *   License along with this program; if not, write to the Free Software   *
@@ -380,6 +380,7 @@ class ifc_vp_object:
         from nativeifc import ifc_materials  # lazy import
         from nativeifc import ifc_layers  # lazy import
         from nativeifc import ifc_types  # lazy import
+        from nativeifc import ifc_classification  # lazy import
 
         # generic data loading
         ifc_geometry.add_geom_properties(vobj.Object)
@@ -387,6 +388,7 @@ class ifc_vp_object:
         ifc_materials.show_material(vobj.Object)
         ifc_layers.add_layers(vobj.Object)
         ifc_types.show_type(vobj.Object)
+        ifc_classification.show_classification(vobj.Object)
 
         # expand children
         if self.hasChildren(vobj.Object):

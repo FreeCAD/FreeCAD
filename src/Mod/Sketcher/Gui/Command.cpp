@@ -163,8 +163,23 @@ void CmdSketcherNewSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Attacher::eMapMode mapmode = Attacher::mmDeactivated;
+    std::string groupName;
     bool bAttach = false;
-    if (Gui::Selection().hasSelection()) {
+    bool groupSelected = false;
+    if (Gui::Selection().countObjectsOfType<App::DocumentObjectGroup>() > 0) {
+        auto selection = Gui::Selection().getSelection();
+        if (selection.size() > 1) {
+            Gui::TranslatedUserWarning(
+                getActiveGuiDocument(),
+                QObject::tr("Invalid selection"),
+                QObject::tr("Too many objects selected"));
+                return;
+        }
+
+        groupName = selection[0].FeatName;
+        groupSelected = true;
+    }
+    else if (Gui::Selection().hasSelection()) {
         Attacher::SuggestResult::eSuggestResult msgid = Attacher::SuggestResult::srOK;
         QString msg_str;
         std::vector<Attacher::eMapMode> validModes;
@@ -270,9 +285,18 @@ void CmdSketcherNewSketch::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Sketch");
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch"));
-        doCommand(Doc,
+        if (groupSelected) {
+            doCommand(Doc,
+                    "App.activeDocument().getObject('%s').addObject(App.activeDocument().addObject('Sketcher::SketchObject', '%s'))",
+                    groupName.c_str(),
+                    FeatName.c_str());
+        }
+        else {
+            doCommand(Doc,
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
+        }
+
         doCommand(Doc,
                   "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
                   "App.Rotation(%f, %f, %f, %f))",
@@ -328,7 +352,7 @@ void CmdSketcherEditSketch::activated(int iMsg)
 
 bool CmdSketcherEditSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherLeaveSketch)
@@ -539,7 +563,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
 
 bool CmdSketcherReorientSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherMapSketch)
@@ -763,12 +787,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
 bool CmdSketcherMapSketch::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Base::Type sketch_type = Base::Type::fromName("Part::Part2DObject");
     std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
-    if (doc && doc->countObjectsOfType(sketch_type) > 0 && !selobjs.empty())
-        return true;
-
-    return false;
+    return doc && doc->countObjectsOfType<Part::Part2DObject>() > 0 && !selobjs.empty();
 }
 
 DEF_STD_CMD_A(CmdSketcherViewSketch)
@@ -843,7 +863,7 @@ bool CmdSketcherValidateSketch::isActive()
 {
     if (Gui::Control().activeDialog())
         return false;
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherMirrorSketch)
@@ -970,7 +990,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 
 bool CmdSketcherMirrorSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
 }
 
 DEF_STD_CMD_A(CmdSketcherMergeSketches)
@@ -1059,7 +1079,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
 
 bool CmdSketcherMergeSketches::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 1;
 }
 
 // Acknowledgement of idea and original python macro goes to SpritKopf:

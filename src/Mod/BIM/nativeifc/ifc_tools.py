@@ -3,15 +3,15 @@
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
 # *   License along with this program; if not, write to the Free Software   *
@@ -46,6 +46,7 @@ from nativeifc import ifc_import
 from nativeifc import ifc_layers
 from nativeifc import ifc_status
 from nativeifc import ifc_export
+from nativeifc import ifc_psets
 
 from draftviewproviders import view_layer
 from PySide import QtCore
@@ -184,9 +185,11 @@ def create_ifcfile():
     param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
     user = param.GetString("prefAuthor", "")
     user = user.split("<")[0].strip()
+    org = param.GetString("prefCompany", "")
+    person = None
+    organisation = None
     if user:
         person = api_run("owner.add_person", ifcfile, family_name=user)
-    org = param.GetString("prefCompany", "")
     if org:
         organisation = api_run("owner.add_organisation", ifcfile, name=org)
     if user and org:
@@ -443,7 +446,7 @@ def get_ifcfile(obj):
         if getattr(project, "Proxy", None):
             if hasattr(project.Proxy, "ifcfile"):
                 return project.Proxy.ifcfile
-        if project.IfcFilePath:
+        if getattr(project, "IfcFilePath", None):
             ifcfile = ifcopenshell.open(project.IfcFilePath)
             if hasattr(project, "Proxy"):
                 if project.Proxy is None:
@@ -453,7 +456,7 @@ def get_ifcfile(obj):
                 project.Proxy.ifcfile = ifcfile
             return ifcfile
         else:
-            FreeCAD.Console.PrintError("Error: No IFC file attached to this project")
+            FreeCAD.Console.PrintError("Error: No IFC file attached to this project: "+project.Label)
     return None
 
 
@@ -508,11 +511,14 @@ def add_object(document, otype=None, oname="IfcObject"):
     'dimension',
     'sectionplane',
     'axis',
+    'schedule'
     or anything else for a standard IFC object"""
 
     if not document:
         return None
-    if otype == "sectionplane":
+    if otype == "schedule":
+        obj = Arch.makeSchedule()
+    elif otype == "sectionplane":
         obj = Arch.makeSectionPlane()
         obj.Proxy = ifc_objects.ifc_object(otype)
     elif otype == "axis":
@@ -746,6 +752,8 @@ def add_properties(
                         obj.addProperty("App::PropertyStringList", "Text", "Base")
                     obj.Text = [text.Literal]
                     obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
+    elif ifcentity.is_a("IfcControl"):
+        ifc_psets.show_psets(obj)
 
     # link Label2 and Description
     if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
@@ -1150,6 +1158,7 @@ def aggregate(obj, parent, mode=None):
     if not ifcfile:
         return
     product = None
+    new = False
     stepid = getattr(obj, "StepId", None)
     if stepid:
         # obj might be dragging at this point and has no project anymore
@@ -1163,7 +1172,6 @@ def aggregate(obj, parent, mode=None):
         # this object already has an associated IFC product
         print("DEBUG:", obj.Label, "is already part of the IFC document")
         newobj = obj
-        new = False
     else:
         ifcclass = None
         if mode == "opening":
@@ -1173,12 +1181,16 @@ def aggregate(obj, parent, mode=None):
             product = ifc_export.create_annotation(obj, ifcfile)
             if Draft.get_type(obj) in ["DraftText","Text"]:
                 objecttype = "text"
+        elif "CreateSpreadsheet" in obj.PropertiesList:
+            obj.Proxy.create_ifc(obj, ifcfile)
+            newobj = obj
         else:
             product = ifc_export.create_product(obj, parent, ifcfile, ifcclass)
+    if product:
         shapemode = getattr(parent, "ShapeMode", DEFAULT_SHAPEMODE)
         newobj = create_object(product, obj.Document, ifcfile, shapemode, objecttype)
         new = True
-    create_relationship(obj, newobj, parent, product, ifcfile, mode)
+        create_relationship(obj, newobj, parent, product, ifcfile, mode)
     base = getattr(obj, "Base", None)
     if base:
         # make sure the base is used only by this object before deleting
@@ -1524,6 +1536,12 @@ def get_orphan_elements(ifcfile):
     products = [
         p for p in products if not hasattr(p, "VoidsElements") or not p.VoidsElements
     ]
+    # add control elements
+    proj = ifcfile.by_type("IfcProject")[0]
+    for rel in proj.Declares:
+        for ctrl in getattr(rel,"RelatedDefinitions", []):
+            if ctrl.is_a("IfcControl"):
+                products.append(ctrl)
     groups = []
     for o in products:
         for rel in getattr(o, "HasAssignments", []):
@@ -1617,11 +1635,14 @@ def remove_tree(objs):
 def recompute(children):
     """Temporary function to recompute objects. Some objects don't get their
     shape correctly at creation"""
-    import time
-    stime = time.time()
+    #import time
+    #stime = time.time()
+    doc = None
     for c in children:
-        c.touch()
-    if not FreeCAD.ActiveDocument.Recomputing:
-        FreeCAD.ActiveDocument.recompute()
-    endtime = "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
-    print("DEBUG: Extra recomputing of",len(children),"objects took",endtime)
+        if c:
+            c.touch()
+            doc = c.Document
+    if doc:
+        doc.recompute()
+    #endtime = "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
+    #print("DEBUG: Extra recomputing of",len(children),"objects took",endtime)

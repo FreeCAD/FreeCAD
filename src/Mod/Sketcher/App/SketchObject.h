@@ -155,8 +155,10 @@ public:
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
     /// Deletes just the GeoIds indicated, it does not look for internal geometry
     int delGeometriesExclusiveList(const std::vector<int>& GeoIds);
-    /// Does the same as \a delGeometry but allows to delete several geometries in one step
+    /// Does the same as \a delGeometry but allows one to delete several geometries in one step
     int delGeometries(const std::vector<int>& GeoIds);
+    template<class InputIt>
+    int delGeometries(InputIt first, InputIt last);
     /// deletes all the elements/constraints of the sketch except for external geometry
     int deleteAllGeometry();
     /// deletes all the constraints of the sketch
@@ -175,8 +177,8 @@ public:
      * that it will solve the sketch.
      *
      * If updating the Geometry property as a consequence of a (successful) solve() is not wanted,
-     * updategeometry=false, prevents the update. This allows to update the solve status (e.g. dof),
-     * without updating the geometry (i.e. make it move to fulfil the constraints).
+     * updategeometry=false, prevents the update. This allows one to update the solve status (e.g.
+     * dof), without updating the geometry (i.e. make it move to fulfil the constraints).
      */
     int delConstraints(std::vector<int> ConstrIds, bool updategeometry = true);
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident = true);
@@ -364,8 +366,8 @@ public:
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
-    template<class geomType>
-    static Base::Vector3d getPointForGeometry(const geomType* geo, PointPos PosId)
+    template<class GeomType>
+    static Base::Vector3d getPointForGeometry(const GeomType* geo, PointPos PosId)
     {
         (void)geo;
         (void)PosId;
@@ -476,6 +478,11 @@ public:
      * \return -1 on error
      */
     int exposeInternalGeometry(int GeoId);
+    template<class GeomType>
+    int exposeInternalGeometryForType([[maybe_unused]] const int GeoId)
+    {
+        return -1;  // By default internal geometry is not supported
+    }
     /*!
      \brief Deletes all unused (not further constrained) internal geometry
      \param GeoId - the geometry having the internal geometry to delete
@@ -893,6 +900,21 @@ protected:
     void buildShape();
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
+
+    /// Replaces geometries at `oldGeoIds` with `newGeos`, lower Ids first.
+    /// If `oldGeoIds` is bigger, deletes the remaining.
+    /// If `newGeos` is bigger, adds the remaining geometries at the end.
+    /// NOTE: Does NOT move any constraints
+    void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
+
+    /// Helper functions for `deleteUnusedInternalGeometry` by cases
+    /// two foci for ellipses and arcs of ellipses and hyperbolas
+    int deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid = false);
+    /// one focus for parabolas
+    int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
+    /// b-splines need their own treatment
+    int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+
     void onDocumentRestored() override;
     void restoreFinished() override;
 
@@ -982,6 +1004,8 @@ protected:
                      int thirdGeoId = GeoEnum::GeoUndef,
                      Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
 
+public:
+    // FIXME: These may not need to be public. Decide before merging.
     std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(const Constraint* constr,
                                                               const int deletedGeoId) const;
 

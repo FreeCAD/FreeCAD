@@ -44,6 +44,7 @@ public:
     explicit PythonEditor(QWidget *parent = nullptr);
     ~PythonEditor() override;
 
+    void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason ) override;
     void toggleBreakpoint();
     void showDebugMarker(int line);
     void hideDebugMarker();
@@ -59,6 +60,7 @@ public Q_SLOTS:
      * this line is skipped.
      */
     void onUncomment();
+    void onExecuteInConsole();
     void setFileName(const QString&);
     void startDebug();
 

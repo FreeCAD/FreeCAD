@@ -61,12 +61,7 @@ void GeoFeature::transformPlacement(const Base::Placement& transform)
 
 Base::Placement GeoFeature::globalPlacement() const
 {
-    auto* group = GeoFeatureGroupExtension::getGroupOfObject(this);
-    if (group) {
-        auto ext = group->getExtensionByType<GeoFeatureGroupExtension>();
-        return ext->globalGroupPlacement() * Placement.getValue();
-    }
-    return Placement.getValue();
+    return GeoFeature::getGlobalPlacement(this);
 }
 
 const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
@@ -316,6 +311,11 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
         return plc;
     }
 
+    if (rootObj->isLink()) {
+        // Update doc in case its an external link.
+        doc = rootObj->getLinkedObject()->getDocument();
+    }
+
     for (auto& name : names) {
         App::DocumentObject* obj = doc->getObject(name.c_str());
         if (!obj) {
@@ -350,4 +350,21 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
     }
 
     return getGlobalPlacement(targetObj, prop->getValue(), subs[0]);
+}
+
+Base::Placement GeoFeature::getGlobalPlacement(const DocumentObject* obj)
+{
+    auto placementProperty = obj->getPropertyByName<App::PropertyPlacement>("Placement");
+
+    if (!placementProperty) {
+        return {};
+    }
+
+    auto* group = GeoFeatureGroupExtension::getGroupOfObject(obj);
+    if (group) {
+        auto ext = group->getExtensionByType<GeoFeatureGroupExtension>();
+        return ext->globalGroupPlacement() * placementProperty->getValue();
+    }
+
+    return placementProperty->getValue();
 }

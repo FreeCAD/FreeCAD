@@ -501,7 +501,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             switch(button){
                 case SoMouseButtonEvent::BUTTON1:
                 case SoMouseButtonEvent::BUTTON2:
-                case SoMouseButtonEvent::BUTTON3: // allows to release button3 into SELECTION mode
+                case SoMouseButtonEvent::BUTTON3: // allows one to release button3 into SELECTION mode
                     if(comboAfter & BUTTON1DOWN || comboAfter & BUTTON2DOWN) {
                         //don't leave navigation till all buttons have been released
                         if (comboAfter & BUTTON1DOWN && comboAfter & BUTTON2DOWN) {
@@ -540,8 +540,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 } else {//one mouse button - normal spinning
                     //this will also handle the single-finger drag (there's no gesture used, pseudomouse is enough)
                     //this->addToLog(event->getPosition(), event->getTime());
-                    this->spin_simplified(viewer->getSoRenderManager()->getCamera(),
-                                          posn, prevnormalized);
+                    this->spin_simplified(posn, prevnormalized);
                     processed = true;
                 }
             }

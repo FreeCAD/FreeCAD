@@ -344,8 +344,7 @@ void CmdPartCut::activated(int iMsg)
 
 bool CmdPartCut::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink)==2;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) == 2;
 }
 
 //===========================================================================
@@ -404,8 +403,7 @@ void CmdPartCommon::activated(int iMsg)
 
 bool CmdPartCommon::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -483,8 +481,7 @@ void CmdPartFuse::activated(int iMsg)
 
 bool CmdPartFuse::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -839,8 +836,7 @@ CmdPartCompound::CmdPartCompound()
 void CmdPartCompound::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    unsigned int n = getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
+    unsigned int n = getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink);
     if (n < 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one shape or more, please."));
@@ -872,8 +868,7 @@ void CmdPartCompound::activated(int iMsg)
 
 bool CmdPartCompound::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -921,7 +916,7 @@ void CmdPartSection::activated(int iMsg)
 
 bool CmdPartSection::isActive()
 {
-    return getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) == 2;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) == 2;
 }
 
 //===========================================================================
@@ -1032,7 +1027,7 @@ void CmdPartExport::activated(int iMsg)
 
 bool CmdPartExport::isActive()
 {
-    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
+    return Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1158,8 +1153,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 
 bool CmdPartMakeSolid::isActive()
 {
-    return Gui::Selection().countObjectsOfType
-        (App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
+    return Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1360,7 +1354,7 @@ void CmdPartMakeFace::activated(int iMsg)
 
 bool CmdPartMakeFace::isActive()
 {
-    return (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0 &&
+    return (Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0 &&
             !Gui::Control().activeDialog());
 }
 
@@ -1892,8 +1886,7 @@ void CmdPartThickness::activated(int iMsg)
 
 bool CmdPartThickness::isActive()
 {
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectsSelected = Gui::Selection().countObjectsOfType(partid, nullptr, Gui::ResolveMode::FollowLink) > 0;
+    bool objectsSelected = Gui::Selection().countObjectsOfType<Part::Feature>(nullptr, Gui::ResolveMode::FollowLink) > 0;
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 
@@ -1923,7 +1916,7 @@ void CmdShapeInfo::activated(int iMsg)
 bool CmdShapeInfo::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Part::Feature::getClassTypeId()) == 0)
+    if (!doc || doc->countObjectsOfType<Part::Feature>() == 0)
         return false;
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
@@ -2107,8 +2100,7 @@ void CmdColorPerFace::activated(int iMsg)
 
 bool CmdColorPerFace::isActive()
 {
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectSelected = Gui::Selection().countObjectsOfType(partid) == 1;
+    bool objectSelected = Gui::Selection().countObjectsOfType<Part::Feature>() == 1;
     return (hasActiveDocument() && !Gui::Control().activeDialog() && objectSelected);
 }
 
@@ -2243,8 +2235,8 @@ CmdPartCoordinateSystem::CmdPartCoordinateSystem()
     : Command("Part_CoordinateSystem")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a coordinate system");
-    sToolTipText = QT_TR_NOOP("A coordinate system object that can be attached to other objects.");
+    sMenuText = QT_TR_NOOP("Create coordinate system");
+    sToolTipText = QT_TR_NOOP("Create a coordinate system object that can be attached to other objects.");
     sWhatsThis = "Part_CoordinateSystem";
     sStatusTip = sToolTipText;
     sPixmap = "Std_CoordinateSystem";
@@ -2269,100 +2261,100 @@ bool CmdPartCoordinateSystem::isActive()
 }
 
 //===========================================================================
-// Part_Plane
+// Part_DatumPlane
 //===========================================================================
-DEF_STD_CMD_A(CmdPartPlane)
+DEF_STD_CMD_A(CmdPartDatumPlane)
 
-CmdPartPlane::CmdPartPlane()
-    : Command("Part_Plane")
+CmdPartDatumPlane::CmdPartDatumPlane()
+    : Command("Part_DatumPlane")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a datum plane");
-    sToolTipText = QT_TR_NOOP("A plane object that can be attached to other objects.");
-    sWhatsThis = "Part_Plane";
+    sMenuText = QT_TR_NOOP("Create datum plane");
+    sToolTipText = QT_TR_NOOP("Create a datum plane object that can be attached to other objects.");
+    sWhatsThis = "Part_DatumPlane";
     sStatusTip = sToolTipText;
     sPixmap = "Std_Plane";
 }
 
-void CmdPartPlane::activated(int iMsg)
+void CmdPartDatumPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum plane"));
 
-    std::string name = getUniqueObjectName("Plane");
+    std::string name = getUniqueObjectName("DatumPlane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
-bool CmdPartPlane::isActive()
+bool CmdPartDatumPlane::isActive()
 {
     return hasActiveDocument();
 }
 
 //===========================================================================
-// Part_Line
+// Part_DatumLine
 //===========================================================================
-DEF_STD_CMD_A(CmdPartLine)
+DEF_STD_CMD_A(CmdPartDatumLine)
 
-CmdPartLine::CmdPartLine()
-    : Command("Part_Line")
+CmdPartDatumLine::CmdPartDatumLine()
+    : Command("Part_DatumLine")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a datum line");
-    sToolTipText = QT_TR_NOOP("A line object that can be attached to other objects.");
-    sWhatsThis = "Part_Line";
+    sMenuText = QT_TR_NOOP("Create datum line");
+    sToolTipText = QT_TR_NOOP("Create a datum line object that can be attached to other objects.");
+    sWhatsThis = "Part_DatumLine";
     sStatusTip = sToolTipText;
     sPixmap = "Std_Axis";
 }
 
-void CmdPartLine::activated(int iMsg)
+void CmdPartDatumLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum line"));
 
-    std::string name = getUniqueObjectName("Line");
+    std::string name = getUniqueObjectName("DatumLine");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
-bool CmdPartLine::isActive()
+bool CmdPartDatumLine::isActive()
 {
     return hasActiveDocument();
 }
 
 //===========================================================================
-// Part_Point
+// Part_DatumPoint
 //===========================================================================
-DEF_STD_CMD_A(CmdPartPoint)
+DEF_STD_CMD_A(CmdPartDatumPoint)
 
-CmdPartPoint::CmdPartPoint()
-    : Command("Part_Point")
+CmdPartDatumPoint::CmdPartDatumPoint()
+    : Command("Part_DatumPoint")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a datum point");
-    sToolTipText = QT_TR_NOOP("A point object that can be attached to other objects.");
-    sWhatsThis = "Part_Point";
+    sMenuText = QT_TR_NOOP("Create datum point");
+    sToolTipText = QT_TR_NOOP("Create a datum point object that can be attached to other objects.");
+    sWhatsThis = "Part_DatumPoint";
     sStatusTip = sToolTipText;
     sPixmap = "Std_Point";
 }
 
-void CmdPartPoint::activated(int iMsg)
+void CmdPartDatumPoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum point"));
 
-    std::string name = getUniqueObjectName("Point");
+    std::string name = getUniqueObjectName("DatumPoint");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
-bool CmdPartPoint::isActive()
+bool CmdPartDatumPoint::isActive()
 {
     return hasActiveDocument();
 }
@@ -2378,17 +2370,17 @@ public:
         : GroupCommand("Part_Datums")
     {
         sGroup = QT_TR_NOOP("Part");
-        sMenuText = QT_TR_NOOP("Create a datum");
-        sToolTipText = QT_TR_NOOP("Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.");
+        sMenuText = QT_TR_NOOP("Create datum");
+        sToolTipText = QT_TR_NOOP("Create a datum object (coordinate system, plane, line, point) that can be attached to other objects.");
         sWhatsThis = "Part_Datums";
         sStatusTip = sToolTipText;
 
         setCheckable(false);
 
         addCommand("Part_CoordinateSystem");
-        addCommand("Part_Plane");
-        addCommand("Part_Line");
-        addCommand("Part_Point");
+        addCommand("Part_DatumPlane");
+        addCommand("Part_DatumLine");
+        addCommand("Part_DatumPoint");
     }
 
     const char* className() const override
@@ -2448,8 +2440,8 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdPartSectionCut());
 
     rcCmdMgr.addCommand(new CmdPartCoordinateSystem());
-    rcCmdMgr.addCommand(new CmdPartPlane());
-    rcCmdMgr.addCommand(new CmdPartLine());
-    rcCmdMgr.addCommand(new CmdPartPoint());
+    rcCmdMgr.addCommand(new CmdPartDatumPlane());
+    rcCmdMgr.addCommand(new CmdPartDatumLine());
+    rcCmdMgr.addCommand(new CmdPartDatumPoint());
     rcCmdMgr.addCommand(new CmdPartDatums());
 }

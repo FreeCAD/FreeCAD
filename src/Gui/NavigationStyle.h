@@ -189,6 +189,8 @@ public:
 
     SbVec3f getRotationCenter(SbBool&) const;
 
+    PyObject *getPyObject() override;
+
 protected:
     void initialize();
     void finalize();
@@ -218,7 +220,7 @@ protected:
     void doRotate(SoCamera * camera, float angle, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
     SbBool doSpin();
-    void spin_simplified(SoCamera *cam, SbVec2f curpos, SbVec2f prevpos);
+    void spin_simplified(SbVec2f curpos, SbVec2f prevpos);
     void moveCursorPosition();
     void saveCursorPosition(const SoEvent * const ev);
 
@@ -278,6 +280,8 @@ protected:
     SbRotation spinincrement;
     SbSphereSheetProjector * spinprojector;
     //@}
+
+    PyObject* pythonObject;
 
 private:
     friend class NavigationAnimator;

@@ -52,7 +52,7 @@
 #include <Base/Exception.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/DlgCheckableMessageBox.h>
+#include <Gui/Dialogs/DlgCheckableMessageBox.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 

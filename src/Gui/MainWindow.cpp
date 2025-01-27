@@ -114,7 +114,7 @@
 #include "SpaceballEvent.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "DlgObjectSelection.h"
+#include "Dialogs/DlgObjectSelection.h"
 #include <App/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
@@ -2296,7 +2296,7 @@ void MainWindow::setWindowTitle(const QString& string)
         appname = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
     }
 
-    // allow to disable version number
+    // allow one to disable version number
     ParameterGrp::handle hGen = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/General");
     bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
