@@ -266,10 +266,10 @@ App::DocumentObjectExecReturn *Loft::execute()
         // store shape before refinement
         this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
-        boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
+        boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
