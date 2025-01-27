@@ -46,13 +46,13 @@ ViewProviderExtension::~ViewProviderExtension() = default;
 
 const ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() const{
 
-    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()));
+    assert(getExtendedContainer()->isDerivedFrom<ViewProviderDocumentObject>());
     return static_cast<const ViewProviderDocumentObject*>(getExtendedContainer());
 }
 
 ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() {
 
-    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()));
+    assert(getExtendedContainer()->isDerivedFrom<ViewProviderDocumentObject>());
     return static_cast<ViewProviderDocumentObject*>(getExtendedContainer());
 }
 

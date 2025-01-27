@@ -808,7 +808,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
 
     ret.point = Base::convertTo<Base::Vector3d>(Point->getPoint());
     ViewProvider* vp = getViewer()->getViewProviderByPath(Point->getPath());
-    if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (vp && vp->isDerivedFrom<ViewProviderDocumentObject>()) {
         if (!vp->isSelectable()) {
             return ret;
         }

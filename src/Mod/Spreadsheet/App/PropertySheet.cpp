@@ -1387,7 +1387,7 @@ void PropertySheet::addDependencies(CellAddress key)
                 cellToPropertyNameMap[key].insert(propName);
 
                 // Also an alias?
-                if (!name.empty() && docObj->isDerivedFrom(Sheet::getClassTypeId())) {
+                if (!name.empty() && docObj->isDerivedFrom<Sheet>()) {
                     auto other = static_cast<Sheet*>(docObj);
                     auto j = other->cells.revAliasProp.find(name);
 
@@ -2063,7 +2063,7 @@ PropertySheet::BindingType PropertySheet::getBinding(const Range& range,
         path << ObjectIdentifier::SimpleComponent(range.from().toString().c_str());
         path << ObjectIdentifier::SimpleComponent(range.to().toString().c_str());
         auto res = owner->getExpression(path);
-        if (res.expression && res.expression->isDerivedFrom(FunctionExpression::getClassTypeId())) {
+        if (res.expression && res.expression->isDerivedFrom<FunctionExpression>()) {
             auto expr = static_cast<FunctionExpression*>(res.expression.get());
             if (href) {
                 if ((expr->getFunction() != FunctionExpression::HIDDENREF

@@ -1480,7 +1480,7 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
-    if (objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (objFeat->isDerivedFrom<TechDraw::DrawViewPart>()) {
         bool lockPosition = objFeat->LockPosition.getValue();
         lockPosition = !lockPosition;
         objFeat->LockPosition.setValue(lockPosition);

@@ -329,17 +329,19 @@ bool Sheet::exportToFile(const std::string& filename,
 
         std::stringstream field;
 
-        if (prop->isDerivedFrom((PropertyQuantity::getClassTypeId()))) {
-            field << static_cast<PropertyQuantity*>(prop)->getValue();
+        using Base::freecad_dynamic_cast;
+
+        if (auto p = freecad_dynamic_cast<PropertyQuantity>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyFloat::getClassTypeId()))) {
-            field << static_cast<PropertyFloat*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyFloat>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyInteger::getClassTypeId()))) {
-            field << static_cast<PropertyInteger*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyInteger>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyString::getClassTypeId()))) {
-            field << static_cast<PropertyString*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyString>(prop)) {
+            field << p->getValue();
         }
         else {
             assert(0);
@@ -573,7 +575,7 @@ Property* Sheet::setFloatProperty(CellAddress key, double value)
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertyFloat* floatProp;
 
-    if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
+    if (!prop || !prop->is<PropertyFloat>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -601,7 +603,7 @@ Property* Sheet::setIntegerProperty(CellAddress key, long value)
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertyInteger* intProp;
 
-    if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()) {
+    if (!prop || !prop->is<PropertyInteger>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -641,7 +643,7 @@ Property* Sheet::setQuantityProperty(CellAddress key, double value, const Base::
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertySpreadsheetQuantity* quantityProp;
 
-    if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
+    if (!prop || !prop->is<PropertySpreadsheetQuantity>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -924,7 +926,7 @@ void Sheet::recomputeCell(CellAddress p)
         cellErrors.insert(p);
         cellUpdated(p);
 
-        if (e.isDerivedFrom(Base::AbortException::getClassTypeId())) {
+        if (e.isDerivedFrom<Base::AbortException>()) {
             throw;
         }
     }

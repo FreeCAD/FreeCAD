@@ -376,9 +376,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->ToolShape) {
         App::DocumentObject* o = robObj->ToolShape.getValue<App::DocumentObject*>();
 
-        if (o
-            && (o->isDerivedFrom(Part::Feature::getClassTypeId())
-                || o->isDerivedFrom(App::VRMLObject::getClassTypeId()))) {
+        if (o && (o->isDerivedFrom<Part::Feature>() || o->isDerivedFrom<App::VRMLObject>())) {
             // Part::Feature *p = dynamic_cast<Part::Feature *>(o);
             toolShape = Gui::Application::Instance->getViewProvider(o);
             toolShape->setTransformation(

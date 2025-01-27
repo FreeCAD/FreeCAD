@@ -266,7 +266,7 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
         throw Base::ValueError("calculateShapeNormal: link is empty");
 
     //special case for sketches and the like: no matter what shape they have, use their local Z axis.
-    if (docobj->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (docobj->isDerivedFrom<Part::Part2DObject>()) {
         Base::Vector3d OZ(0.0, 0.0, 1.0);
         Base::Vector3d result;
         Base::Rotation(mat).multVec(OZ, result);

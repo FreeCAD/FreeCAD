@@ -1828,7 +1828,7 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
                     auto container = result.resolvedProperty->getContainer();
                     if (container && container != result.resolvedDocumentObject
                         && container != result.resolvedSubObject) {
-                        if (!container->isDerivedFrom(DocumentObject::getClassTypeId())) {
+                        if (!container->isDerivedFrom<DocumentObject>()) {
                             FC_WARN("Invalid property container");
                         }
                         else {

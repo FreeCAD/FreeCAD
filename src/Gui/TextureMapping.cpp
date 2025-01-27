@@ -143,7 +143,7 @@ void TextureMapping::onFileChooserFileNameSelected(const QString& s)
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             Gui::MDIView* mdi = doc->getActiveView();
-            if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
+            if (mdi && mdi->isDerivedFrom<View3DInventor>()) {
                 Gui::View3DInventorViewer* view = static_cast<View3DInventor*>(mdi)->getViewer();
                 this->grp = static_cast<SoGroup *>(view->getSceneGraph());
                 this->grp->ref();

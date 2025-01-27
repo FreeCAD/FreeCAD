@@ -315,7 +315,7 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
       text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
     }
   }
-  else if (propertyIn.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
+  else if (propertyIn.isDerivedFrom<App::PropertyLinkBase>())
   {
     if (hasRecord(&VPDObjectIn, *graphLink))
     {

@@ -82,7 +82,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     //m_baseFeat can be null
     App::DocumentObject* obj = m_annoFeat->AnnoParent.getValue();
     if (obj) {
-        if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
+        if ( obj->isDerivedFrom<TechDraw::DrawView>() )  {
             m_baseFeat = static_cast<TechDraw::DrawView*>(m_annoFeat->AnnoParent.getValue());
         }
     }
@@ -300,7 +300,7 @@ void TaskRichAnno::createAnnoFeature()
     if (!obj) {
         throw Base::RuntimeError("TaskRichAnno - new RichAnno object not found");
     }
-    if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawRichAnno>()) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
         commonFeatureUpdate();
         if (m_baseFeat) {
@@ -415,7 +415,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
 
     std::vector<Base::Vector3d> points;
     if (m_baseFeat) {
-        if (m_baseFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+        if (m_baseFeat->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
             TechDraw::DrawLeaderLine* dll = static_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
         } else {

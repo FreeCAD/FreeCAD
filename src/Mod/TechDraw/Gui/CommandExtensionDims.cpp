@@ -136,7 +136,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAc
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Prefix"));
     for (auto selected : selection) {
         auto object = selected.getObject();
-        if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+        if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
             std::string formatSpec = dim->FormatSpec.getStrValue();
             formatSpec = prefixText + formatSpec;
@@ -257,7 +257,7 @@ void execRemovePrefixChar(Gui::Command* cmd) {
     for (auto selected : selection)
     {
         auto object = selected.getObject();
-        if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+        if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
             std::string formatSpec = dim->FormatSpec.getStrValue();
             int pos = formatSpec.find("%.");
@@ -443,7 +443,7 @@ void execIncreaseDecreaseDecimal(Gui::Command* cmd, int delta) {
     std::string numStr;
     for (auto selected : selection) {
         auto object = selected.getObject();
-        if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+        if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
             std::string formatSpec = dim->FormatSpec.getStrValue();
             std::string searchStr("%.");
@@ -2349,8 +2349,8 @@ void CmdTechDrawExtensionCustomizeFormat::activated(int iMsg)
     if (!_checkSelection(this, selected, QT_TRANSLATE_NOOP("QObject","TechDraw Customize Format")))
         return;
     auto object = selected[0].getObject();
-    if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ||
-        object->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))
+    if (object->isDerivedFrom<TechDraw::DrawViewDimension>() ||
+        object->isDerivedFrom<TechDraw::DrawViewBalloon>())
         Gui::Control().showDialog(new TaskDlgCustomizeFormat(object));
 }
 
@@ -2521,7 +2521,7 @@ namespace TechDrawGui {
         std::vector<TechDraw::DrawViewDimension*> validDimension;
         for (auto selected : selection) {
             auto object = selected.getObject();
-            if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+            if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
                 auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string dimType = dim->Type.getValueAsString();
                 if (dimType == needDimType)

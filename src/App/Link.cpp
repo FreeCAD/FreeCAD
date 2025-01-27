@@ -1167,7 +1167,7 @@ int LinkBaseExtension::extensionIsElementVisible(const char* element)
 const DocumentObject* LinkBaseExtension::getContainer() const
 {
     auto ext = getExtendedContainer();
-    if (!ext || !ext->isDerivedFrom(DocumentObject::getClassTypeId())) {
+    if (!ext || !ext->isDerivedFrom<DocumentObject>()) {
         LINK_THROW(Base::RuntimeError, "Link: container not derived from document object");
     }
     return static_cast<const DocumentObject*>(ext);
@@ -1176,7 +1176,7 @@ const DocumentObject* LinkBaseExtension::getContainer() const
 DocumentObject* LinkBaseExtension::getContainer()
 {
     auto ext = getExtendedContainer();
-    if (!ext || !ext->isDerivedFrom(DocumentObject::getClassTypeId())) {
+    if (!ext || !ext->isDerivedFrom<DocumentObject>()) {
         LINK_THROW(Base::RuntimeError, "Link: container not derived from document object");
     }
     return static_cast<DocumentObject*>(ext);

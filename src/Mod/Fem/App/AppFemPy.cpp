@@ -203,13 +203,12 @@ private:
             "User parameter:BaseApp/Preferences/Mod/Fem");
 
         Py::Sequence list(object);
-        Base::Type meshId = Base::Type::fromName("Fem::FemMeshObject");
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj =
                     static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                if (obj->getTypeId().isDerivedFrom(meshId)) {
+                if (obj->isDerivedFrom<Fem::FemMeshObject>()) {
                     auto femMesh = static_cast<FemMeshObject*>(obj)->FemMesh.getValue();
                     if (file.hasExtension({"vtk", "vtu"})) {
                         // get VTK prefs

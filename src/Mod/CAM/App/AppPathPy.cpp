@@ -178,7 +178,7 @@ private:
         if (PyObject_TypeCheck(pObj, &(App::DocumentObjectPy::Type))) {
             App::DocumentObject* obj =
                 static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
-            if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Path::Feature"))) {
+            if (obj->isDerivedFrom<Path::Feature>()) {
                 const Path::Toolpath& path = static_cast<Path::Feature*>(obj)->Path.getValue();
                 std::string gcode = path.toGCode();
                 Base::ofstream ofile(file);

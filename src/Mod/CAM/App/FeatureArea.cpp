@@ -82,7 +82,7 @@ App::DocumentObjectExecReturn* FeatureArea::execute()
     }
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        if (!(*it && (*it)->isDerivedFrom(Part::Feature::getClassTypeId()))) {
+        if (!(*it && (*it)->isDerivedFrom<Part::Feature>())) {
             return new App::DocumentObjectExecReturn(
                 "Linked object is not a Part object (has no Shape).");
         }
@@ -202,7 +202,7 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes()
     if (!pObj) {
         return shapes;
     }
-    if (!pObj->isDerivedFrom(FeatureArea::getClassTypeId())) {
+    if (!pObj->isDerivedFrom<FeatureArea>()) {
         return shapes;
     }
 
@@ -250,7 +250,7 @@ App::DocumentObjectExecReturn* FeatureAreaView::execute()
         return new App::DocumentObjectExecReturn("No shape linked");
     }
 
-    if (!pObj->isDerivedFrom(FeatureArea::getClassTypeId())) {
+    if (!pObj->isDerivedFrom<FeatureArea>()) {
         return new App::DocumentObjectExecReturn("Linked object is not a FeatureArea");
     }
 

@@ -95,7 +95,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
 
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if (!obj ||
-        !obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) )  {
+        !obj->isDerivedFrom<TechDraw::DrawLeaderLine>() )  {
         Base::Console().Error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
         return;
     }

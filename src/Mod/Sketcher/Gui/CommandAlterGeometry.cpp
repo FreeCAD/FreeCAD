@@ -49,7 +49,7 @@ bool isAlterGeoActive(Gui::Document* doc)
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             return true;
         }
     }

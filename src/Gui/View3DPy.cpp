@@ -1327,7 +1327,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("z", Py::Float(pt[2]));
 
             ViewProvider *vp = getView3DInventorPtr()->getViewer()->getViewProviderByPath(Point->getPath());
-            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            if (vp && vp->isDerivedFrom<ViewProviderDocumentObject>()) {
                 if (!vp->isSelectable())
                     return ret;
                 auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
@@ -1437,7 +1437,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("z", Py::Float(pt[2]));
 
                 ViewProvider *vp = getView3DInventorPtr()->getViewer()->getViewProviderByPath(point->getPath());
-                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                if(vp && vp->isDerivedFrom<ViewProviderDocumentObject>()) {
                     if(!vp->isSelectable())
                         continue;
                     auto vpd = static_cast<ViewProviderDocumentObject*>(vp);

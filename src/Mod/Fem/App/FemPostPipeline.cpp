@@ -225,7 +225,7 @@ void FemPostPipeline::load(FemResultObject* res)
         Base::Console().Log("Result mesh object is empty.\n");
         return;
     }
-    if (!res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+    if (!res->Mesh.getValue()->isDerivedFrom<Fem::FemMeshObject>()) {
         Base::Console().Log("Result mesh object is not derived from Fem::FemMeshObject.\n");
         return;
     }

@@ -99,7 +99,7 @@ bool PropertyLinkBase::isSame(const Property& other) const
     if (&other == this) {
         return true;
     }
-    if (other.isDerivedFrom(PropertyLinkBase::getClassTypeId())
+    if (other.isDerivedFrom<PropertyLinkBase>()
         || getScope() != static_cast<const PropertyLinkBase*>(&other)->getScope()) {
         return false;
     }
@@ -692,7 +692,7 @@ void PropertyLink::resetLink()
 #ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class if it is from a document object
     if (_pcScope != LinkScope::Hidden && _pcLink && getContainer()
-        && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -741,7 +741,7 @@ App::DocumentObject* PropertyLink::getValue() const
 
 App::DocumentObject* PropertyLink::getValue(Base::Type t) const
 {
-    return (_pcLink && _pcLink->getTypeId().isDerivedFrom(t)) ? _pcLink : nullptr;
+    return (_pcLink && _pcLink->isDerivedFrom(t)) ? _pcLink : nullptr;
 }
 
 PyObject* PropertyLink::getPyObject()
@@ -817,7 +817,7 @@ Property* PropertyLink::Copy() const
 
 void PropertyLink::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyLink::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyLink>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
 
@@ -897,7 +897,7 @@ PropertyLinkList::~PropertyLinkList()
 #ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class
     if (_pcScope != LinkScope::Hidden && !_lValueList.empty() && getContainer()
-        && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -955,7 +955,7 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const& value)
     _nameMap.clear();
 
 #ifndef USE_OLD_DAG
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (getContainer() && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -1150,7 +1150,7 @@ Property* PropertyLinkList::Copy() const
 
 void PropertyLinkList::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyLinkList::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyLinkList>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
 
@@ -1299,7 +1299,7 @@ PropertyLinkSub::~PropertyLinkSub()
     // in case this property is dynamically removed
 #ifndef USE_OLD_DAG
     if (_pcLinkSub && getContainer()
-        && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -1430,7 +1430,7 @@ std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* sta
 
 App::DocumentObject* PropertyLinkSub::getValue(Base::Type t) const
 {
-    return (_pcLinkSub && _pcLinkSub->getTypeId().isDerivedFrom(t)) ? _pcLinkSub : nullptr;
+    return (_pcLinkSub && _pcLinkSub->isDerivedFrom(t)) ? _pcLinkSub : nullptr;
 }
 
 PyObject* PropertyLinkSub::getPyObject()
@@ -2054,7 +2054,7 @@ Property* PropertyLinkSub::Copy() const
 
 void PropertyLinkSub::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyLinkSub>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
     auto& link = static_cast<const PropertyLinkSub&>(from);
@@ -2178,7 +2178,7 @@ PropertyLinkSubList::~PropertyLinkSubList()
 #ifndef USE_OLD_DAG
     // maintain backlinks
     if (!_lValueList.empty() && getContainer()
-        && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -3112,7 +3112,7 @@ Property* PropertyLinkSubList::Copy() const
 
 void PropertyLinkSubList::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyLinkSubList>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
     auto& link = static_cast<const PropertyLinkSubList&>(from);
@@ -4430,7 +4430,7 @@ Property* PropertyXLink::Copy() const
 
 void PropertyXLink::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyXLink::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyXLink>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
 
@@ -4461,9 +4461,9 @@ void PropertyXLink::Paste(const Property& from)
 
 bool PropertyXLink::supportXLink(const App::Property* prop)
 {
-    return prop->isDerivedFrom(PropertyXLink::getClassTypeId())
-        || prop->isDerivedFrom(PropertyXLinkSubList::getClassTypeId())
-        || prop->isDerivedFrom(PropertyXLinkContainer::getClassTypeId());
+    return prop->isDerivedFrom<PropertyXLink>()
+        || prop->isDerivedFrom<PropertyXLinkSubList>()
+        || prop->isDerivedFrom<PropertyXLinkContainer>();
 }
 
 bool PropertyXLink::hasXLink(const App::Document* doc)
@@ -5299,7 +5299,7 @@ Property* PropertyXLinkSubList::Copy() const
 
 void PropertyXLinkSubList::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyXLinkSubList::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyXLinkSubList>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
 

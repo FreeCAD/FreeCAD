@@ -293,13 +293,13 @@ bool RecoveryWriter::shouldWrite(const std::string& name, const Base::Persistenc
 {
     // Property files of a view provider can always be written because
     // these are rather small files.
-    if (object->isDerivedFrom(App::Property::getClassTypeId())) {
+    if (object->isDerivedFrom<App::Property>()) {
         const auto* prop = static_cast<const App::Property*>(object);
         const App::PropertyContainer* parent = prop->getContainer();
-        if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId()))
+        if (parent && parent->isDerivedFrom<Gui::ViewProvider>())
             return true;
     }
-    else if (object->isDerivedFrom(Gui::Document::getClassTypeId())) {
+    else if (object->isDerivedFrom<Gui::Document>()) {
         return true;
     }
 
@@ -385,7 +385,7 @@ void RecoveryWriter::writeFiles()
             }
 
             // For properties a copy can be created and then this can be written to disk in a thread
-            if (entry.Object->isDerivedFrom(App::Property::getClassTypeId())) {
+            if (entry.Object->isDerivedFrom<App::Property>()) {
                 const auto* prop = static_cast<const App::Property*>(entry.Object);
                 QThreadPool::globalInstance()->start(new RecoveryRunnable(getModes(), DirName.c_str(), entry.FileName.c_str(), prop));
             }

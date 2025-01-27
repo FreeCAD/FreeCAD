@@ -134,7 +134,7 @@ bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
 {
     // only measure shapes
-    if (obj && obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (obj && obj->isDerivedFrom<Part::Feature>()) {
         return true;
     }
 

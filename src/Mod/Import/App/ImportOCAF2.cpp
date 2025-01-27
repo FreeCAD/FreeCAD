@@ -561,7 +561,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     if (ret) {
         ret->recomputeFeature(true);
     }
-    if (options.merge && ret && !ret->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (options.merge && ret && !ret->isDerivedFrom<Part::Feature>()) {
         auto shape = Part::Feature::getTopoShape(ret);
         auto feature =
             static_cast<Part::Feature*>(pDocument->addObject("Part::Feature", "Feature"));

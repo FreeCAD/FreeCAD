@@ -521,7 +521,7 @@ static std::vector<std::pair<long, Data::MappedName>> getElementSource(App::Docu
                     break;
                 }
             }
-            if (owner->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            if (owner->isDerivedFrom<App::GeoFeature>()) {
                 auto ownerGeoFeature =
                     static_cast<App::GeoFeature*>(owner)->getElementOwner(ret.back().second);
                 if (ownerGeoFeature) {
@@ -624,7 +624,7 @@ std::list<Data::HistoryItem> Feature::getElementHistory(App::DocumentObject* fea
                     break;
                 }
             }
-            if (feature->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            if (feature->isDerivedFrom<App::GeoFeature>()) {
                 auto ownerGeoFeature =
                     static_cast<App::GeoFeature*>(feature)->getElementOwner(element);
                 if (ownerGeoFeature) {
@@ -989,7 +989,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
             }
         }
         else {
-            if (linked->isDerivedFrom(App::Line::getClassTypeId())) {
+            if (linked->isDerivedFrom<App::Line>()) {
                 static TopoDS_Shape _shape;
                 if (_shape.IsNull()) {
                     auto line = static_cast<App::Line*>(linked);
@@ -1000,7 +1000,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                 }
                 shape = TopoShape(tag, hasher, _shape);
             }
-            else if (linked->isDerivedFrom(App::Plane::getClassTypeId())) {
+            else if (linked->isDerivedFrom<App::Plane>()) {
                 static TopoDS_Shape _shape;
                 if (_shape.IsNull()) {
                     auto plane = static_cast<App::Plane*>(linked);
@@ -1011,7 +1011,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                 }
                 shape = TopoShape(tag, hasher, _shape);
             }
-            else if (linked->isDerivedFrom(App::Point::getClassTypeId())) {
+            else if (linked->isDerivedFrom<App::Point>()) {
                 static TopoDS_Shape _shape;
                 if (_shape.IsNull()) {
                     BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));
@@ -1019,7 +1019,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                 }
                 shape = TopoShape(tag, hasher, _shape);
             }
-            else if (linked->isDerivedFrom(App::Placement::getClassTypeId())) {
+            else if (linked->isDerivedFrom<App::Placement>()) {
                 auto element = Data::findElementName(subname);
                 if (element) {
                     if (boost::iequals("x", element) || boost::iequals("x-axis", element)
@@ -1270,7 +1270,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
     // to false. So we manually apply the top level transform if asked.
 
     if (needSubElement && (!pmat || *pmat == Base::Matrix4D())
-        && obj->isDerivedFrom(Part::Feature::getClassTypeId())
+        && obj->isDerivedFrom<Part::Feature>()
         && !obj->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())) {
         // Some OCC shape making is very sensitive to shape transformation. So
         // check here if a direct sub shape is required, and bypass all extra

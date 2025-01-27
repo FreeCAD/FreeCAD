@@ -931,7 +931,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
             App::Document* doc = obj->getDocument();
             Gui::ViewProvider* view = Application::Instance->getDocument(doc)->getViewProvider(obj);
             App::Property* prop = view->getPropertyByName("Transparency");
-            if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+            if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
                 // To prevent toggling the tip of a PD body (see #11353), we check if the parent has a
                 // Tip prop.
                 const std::vector<App::DocumentObject*> parents = obj->getInList();
@@ -942,7 +942,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
                     if (parentProp) {
                         // Make sure it has a transparency prop too
                         parentProp = parentView->getPropertyByName("Transparency");
-                        if (parentProp && parentProp->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                        if (parentProp && parentProp->isDerivedFrom<App::PropertyInteger>()) {
                             view = parentView;
                         }
                     }
@@ -967,7 +967,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
     bool oneTransparent = false;
     for (auto* view : viewsToToggle) {
         App::Property* prop = view->getPropertyByName("Transparency");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
             auto* transparencyProp = dynamic_cast<App::PropertyInteger*>(prop);
             int transparency = transparencyProp->getValue();
             if (transparency != 0) {
@@ -984,7 +984,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
 
     for (auto* view : viewsToToggle) {
         App::Property* prop = view->getPropertyByName("Transparency");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
             auto* transparencyProp = dynamic_cast<App::PropertyInteger*>(prop);
             transparencyProp->setValue(transparency);
         }
@@ -1033,7 +1033,7 @@ void StdCmdToggleSelectability::activated(int iMsg)
 
         for (const auto & ft : sel) {
             ViewProvider *pr = pcDoc->getViewProviderByName(ft->getNameInDocument());
-            if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
+            if (pr && pr->isDerivedFrom<ViewProviderGeometryObject>()){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
                                  , doc->getName(), ft->getNameInDocument());
@@ -2187,7 +2187,7 @@ void StdCmdToggleNavigation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         SbBool toggle = viewer->isRedirectedToSceneGraph();
         viewer->setRedirectToSceneGraph(!toggle);
@@ -2203,7 +2203,7 @@ bool StdCmdToggleNavigation::isActive()
     if (Gui::Control().activeDialog())
         return false;
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return viewer->isEditing() && viewer->isRedirectToSceneGraphEnabled();
     }
@@ -3203,7 +3203,7 @@ void StdCmdTextureMapping::activated(int iMsg)
 bool StdCmdTextureMapping::isActive()
 {
     Gui::MDIView* view = getMainWindow()->activeWindow();
-    return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())
+    return view && view->isDerivedFrom<Gui::View3DInventor>()
                 && (!(Gui::Control().activeDialog()));
 }
 

@@ -225,7 +225,7 @@ void QGSPage::updateTemplate(bool forceUpdate)
 
         if (forceUpdate
             || (templObj && templObj->isTouched()
-                && templObj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId()))) {
+                && templObj->isDerivedFrom<TechDraw::DrawTemplate>())) {
 
             QGITemplate* qItemTemplate = getTemplate();
 
@@ -269,10 +269,10 @@ void QGSPage::setPageTemplate(TechDraw::DrawTemplate* templateFeat)
     //    Base::Console().Message("QGSP::setPageTemplate()\n");
     removeTemplate();
 
-    if (templateFeat->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
+    if (templateFeat->isDerivedFrom<TechDraw::DrawParametricTemplate>()) {
         pageTemplate = new QGIDrawingTemplate(this);
     }
-    else if (templateFeat->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+    else if (templateFeat->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
         pageTemplate = new QGISVGTemplate(this);
     }
     pageTemplate->setTemplate(templateFeat);
@@ -390,57 +390,57 @@ bool QGSPage::addView(const App::DocumentObject* obj)
 bool QGSPage::attachView(App::DocumentObject* obj)
 {
     //    Base::Console().Message("QGSP::attachView(%s)\n", obj->getNameInDocument());
-    QGIView* existing = findQViewForDocObj(obj);
-    if (existing)
+    if (findQViewForDocObj(obj)) {
         return true;
-
-    auto typeId(obj->getTypeId());
+    }
 
     QGIView* qview(nullptr);
 
-    if (typeId.isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
-        qview = addViewSection(static_cast<TechDraw::DrawViewSection*>(obj));
+    using Base::freecad_dynamic_cast;
+
+    if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSection>(obj)) {
+        qview = addViewSection(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        qview = addViewPart(static_cast<TechDraw::DrawViewPart*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewPart>(obj)) {
+        qview = addViewPart(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId())) {
-        qview = addProjectionGroup(static_cast<TechDraw::DrawProjGroup*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawProjGroup>(obj)) {
+        qview = addProjectionGroup(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
-        qview = addDrawView(static_cast<TechDraw::DrawViewCollection*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewCollection>(obj)) {
+        qview = addDrawView(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-        qview = addViewDimension(static_cast<TechDraw::DrawViewDimension*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewDimension>(obj)) {
+        qview = addViewDimension(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
-        qview = addViewBalloon(static_cast<TechDraw::DrawViewBalloon*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewBalloon>(obj)) {
+        qview = addViewBalloon(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
-        qview = addAnnotation(static_cast<TechDraw::DrawViewAnnotation*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewAnnotation>(obj)) {
+        qview = addAnnotation(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId())) {
-        qview = addDrawViewSymbol(static_cast<TechDraw::DrawViewSymbol*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSymbol>(obj)) {
+        qview = addDrawViewSymbol(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
-        qview = addDrawViewClip(static_cast<TechDraw::DrawViewClip*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewClip>(obj)) {
+        qview = addDrawViewClip(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewSpreadsheet::getClassTypeId())) {
-        qview = addDrawViewSpreadsheet(static_cast<TechDraw::DrawViewSpreadsheet*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSpreadsheet>(obj)) {
+        qview = addDrawViewSpreadsheet(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawViewImage::getClassTypeId())) {
-        qview = addDrawViewImage(static_cast<TechDraw::DrawViewImage*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewImage>(obj)) {
+        qview = addDrawViewImage(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
-        qview = addViewLeader(static_cast<TechDraw::DrawLeaderLine*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawLeaderLine>(obj)) {
+        qview = addViewLeader(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
-        qview = addRichAnno(static_cast<TechDraw::DrawRichAnno*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawRichAnno>(obj)) {
+        qview = addRichAnno(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())) {
-        qview = addWeldSymbol(static_cast<TechDraw::DrawWeldSymbol*>(obj));
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawWeldSymbol>(obj)) {
+        qview = addWeldSymbol(o);
     }
-    else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())) {
+    else if (auto o = freecad_dynamic_cast<TechDraw::DrawHatch>(obj)) {
         //Hatch is not attached like other Views (since it isn't really a View)
         return true;
     }

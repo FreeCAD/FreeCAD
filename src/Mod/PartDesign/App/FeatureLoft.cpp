@@ -75,7 +75,7 @@ Loft::getSectionShape(const char *name,
     // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single vertex - 
     // backward compatibility (#16630)
     auto subName = subs.empty() ? "" : subs.front();
-    auto useEntireSketch = obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&  subName.find("Vertex") != 0;
+    auto useEntireSketch = obj->isDerivedFrom<Part::Part2DObject>() &&  subName.find("Vertex") != 0;
     if (subs.empty() || std::find(subs.begin(), subs.end(), std::string()) != subs.end() || useEntireSketch ) {
         shapes.push_back(Part::Feature::getTopoShape(obj));
         if (shapes.back().isNull())

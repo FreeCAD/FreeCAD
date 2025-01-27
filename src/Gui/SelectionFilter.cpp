@@ -210,7 +210,7 @@ bool SelectionFilter::test(App::DocumentObject*pObj, const char*sSubName)
         return false;
 
     for (const auto& it : Ast->Objects) {
-        if (pObj->getTypeId().isDerivedFrom(it->ObjectType)) {
+        if (pObj->isDerivedFrom(it->ObjectType)) {
             if (!sSubName)
                 return true;
             if (it->SubName.empty())

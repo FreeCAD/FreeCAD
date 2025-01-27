@@ -1093,11 +1093,11 @@ std::string Cell::getFormattedQuantity()
     App::CellAddress thisCell = getAddress();
     Property* prop = owner->sheet()->getPropertyByName(thisCell.toString().c_str());
 
-    if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyString>()) {
         const App::PropertyString* stringProp = static_cast<const App::PropertyString*>(prop);
         qFormatted = QString::fromUtf8(stringProp->getValue());
     }
-    else if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyQuantity>()) {
         double rawVal = static_cast<App::PropertyQuantity*>(prop)->getValue();
         const App::PropertyQuantity* floatProp = static_cast<const App::PropertyQuantity*>(prop);
         DisplayUnit du;
@@ -1113,7 +1113,7 @@ std::string Cell::getFormattedQuantity()
             }
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyFloat>()) {
         double rawVal = static_cast<const App::PropertyFloat*>(prop)->getValue();
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);
@@ -1125,7 +1125,7 @@ std::string Cell::getFormattedQuantity()
             qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyInteger>()) {
         double rawVal = static_cast<const App::PropertyInteger*>(prop)->getValue();
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);

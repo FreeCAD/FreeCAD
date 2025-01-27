@@ -81,7 +81,7 @@ Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
     PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
     if(!pcTransformed->Originals.getSize()) {
         for(auto obj : pcTransformed->getInList()) {
-            if(obj->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
+            if(obj->isDerivedFrom<PartDesign::MultiTransform>()) {
                 auto vp = Gui::Application::Instance->getViewProvider(obj);
                 if(vp)
                     return vp->startEditing(ModNum);

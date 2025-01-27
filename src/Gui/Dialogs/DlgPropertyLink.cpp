@@ -289,15 +289,15 @@ void DlgPropertyLink::init(const App::DocumentObjectT& prop, bool tryFilter)
     std::vector<App::Document*> docs;
 
     singleSelect = false;
-    if (propLink->isDerivedFrom(App::PropertyXLinkSub::getClassTypeId())
-        || propLink->isDerivedFrom(App::PropertyLinkSub::getClassTypeId())) {
+    if (propLink->isDerivedFrom<App::PropertyXLinkSub>()
+        || propLink->isDerivedFrom<App::PropertyLinkSub>()) {
         allowSubObject = true;
         singleParent = true;
     }
-    else if (propLink->isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+    else if (propLink->isDerivedFrom<App::PropertyLink>()) {
         singleSelect = true;
     }
-    else if (propLink->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
+    else if (propLink->isDerivedFrom<App::PropertyLinkSubList>()) {
         allowSubObject = true;
     }
 
@@ -310,8 +310,8 @@ void DlgPropertyLink::init(const App::DocumentObjectT& prop, bool tryFilter)
     }
 
     bool isLinkList = false;
-    if (propLink->isDerivedFrom(App::PropertyXLinkList::getClassTypeId())
-        || propLink->isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+    if (propLink->isDerivedFrom<App::PropertyXLinkList>()
+        || propLink->isDerivedFrom<App::PropertyLinkList>()) {
         isLinkList = true;
         allowSubObject = false;
     }

@@ -86,7 +86,7 @@ PyObject* PropertyContainerPy::getPropertyTouchList(PyObject* args)
     }
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
-    if (prop && prop->isDerivedFrom(PropertyLists::getClassTypeId())) {
+    if (prop && prop->isDerivedFrom<PropertyLists>()) {
         const auto& touched = static_cast<PropertyLists*>(prop)->getTouchList();
         Py::Tuple ret(touched.size());
         int i = 0;
@@ -647,7 +647,7 @@ PyObject* PropertyContainerPy::getCustomAttributes(const char* attr) const
     }
     /// FIXME: For v0.20: Do not use stuff from Part module here!
     if (Base::streq(attr, "Shape")
-         && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+         && getPropertyContainerPtr()->isDerivedFrom<App::DocumentObject>()) {
         // Special treatment of Shape property
         static PyObject* _getShape = nullptr;
         if (!_getShape) {

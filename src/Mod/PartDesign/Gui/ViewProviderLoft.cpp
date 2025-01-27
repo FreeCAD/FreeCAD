@@ -54,7 +54,7 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        if (obj && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj && obj->isDerivedFrom<Part::Part2DObject>())
             temp.push_back(obj);
     }
 
@@ -118,7 +118,7 @@ void ViewProviderLoft::highlightSection(bool on)
         // only take the entire shape when we have a sketch selected, but
         // not a point of the sketch
         auto subName = it.second.empty() ? "" : it.second.front();
-        if (it.first->isDerivedFrom(Part::Part2DObject::getClassTypeId()) && subName.compare(0, 6, "Vertex") != 0) {
+        if (it.first->isDerivedFrom<Part::Part2DObject>() && subName.compare(0, 6, "Vertex") != 0) {
             it.second.clear();
         }
         highlightReferences(dynamic_cast<Part::Feature*>(it.first), it.second, on);

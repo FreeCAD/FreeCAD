@@ -695,7 +695,7 @@ void Document::_resetEdit()
         // the editing object gets deleted inside the above call to
         // 'finishEditing()', which will trigger our slotDeletedObject(), which
         // nullifies _editViewProvider.
-        if (d->_editViewProvider && d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if (d->_editViewProvider && d->_editViewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             auto vpd = static_cast<ViewProviderDocumentObject*>(d->_editViewProvider);
             vpd->getDocument()->signalResetEdit(*vpd);
         }
@@ -823,7 +823,7 @@ std::vector<ViewProvider*> Document::getViewProvidersOfType(const Base::Type& ty
     std::vector<ViewProvider*> Objects;
     for (std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it =
          d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it ) {
-        if (it->second->getTypeId().isDerivedFrom(typeId))
+        if (it->second->isDerivedFrom(typeId))
             Objects.push_back(it->second);
     }
     return Objects;
@@ -993,7 +993,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
     handleChildren3D(viewProvider,true);
 
-    if (viewProvider && viewProvider->getTypeId().isDerivedFrom
+    if (viewProvider && viewProvider->isDerivedFrom
         (ViewProviderDocumentObject::getClassTypeId())) {
         // go through the views
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
@@ -1034,7 +1034,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             if(d->_editingViewer
                     && d->_editingObject
                     && d->_editViewProviderParent
-                    && (Prop.isDerivedFrom(App::PropertyPlacement::getClassTypeId())
+                    && (Prop.isDerivedFrom<App::PropertyPlacement>()
                         // Issue ID 0004230 : getName() can return null in which case strstr() crashes
                         || (Prop.getName() && strstr(Prop.getName(),"Scale")))
                     && d->_editObjs.count(&Obj))
@@ -1063,7 +1063,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
 
         handleChildren3D(viewProvider);
 
-        if (viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+        if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>())
             signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
     }
 
@@ -1079,7 +1079,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
 void Document::slotRelabelObject(const App::DocumentObject& Obj)
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
         signalRelabelObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
 }
@@ -1087,7 +1087,7 @@ void Document::slotRelabelObject(const App::DocumentObject& Obj)
 void Document::slotTransactionAppend(const App::DocumentObject& obj, App::Transaction* transaction)
 {
     ViewProvider* viewProvider = getViewProvider(&obj);
-    if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
         transaction->addObjectDel(viewProvider);
     }
 }
@@ -1116,7 +1116,7 @@ void Document::slotTransactionRemove(const App::DocumentObject& obj, App::Transa
 void Document::slotActivatedObject(const App::DocumentObject& Obj)
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
         signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
 }
@@ -1749,7 +1749,7 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     App::DocumentObject* act = doc.getActiveObject();
     if (act) {
         ViewProvider* viewProvider = getViewProvider(act);
-        if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
         }
     }
@@ -2389,7 +2389,7 @@ MDIView* Document::getActiveView() const
         // hidden page has view but not in the list. By right, the view will
         // self delete, but not the case for TechDraw, especially during
         // document restore.
-        if(windows.contains(*rit) || (*rit)->isDerivedFrom(View3DInventor::getClassTypeId()))
+        if(windows.contains(*rit) || (*rit)->isDerivedFrom<View3DInventor>())
             return *rit;
     }
     return nullptr;
@@ -2434,7 +2434,7 @@ MDIView *Document::setActiveView(const ViewProviderDocumentObject* vp, Base::Typ
     if (!view || (!typeId.isBad() && !view->isDerivedFrom(typeId))) {
         view = nullptr;
         for (auto *v : d->baseViews) {
-            if (v->isDerivedFrom(MDIView::getClassTypeId()) &&
+            if (v->isDerivedFrom<MDIView>() &&
                (typeId.isBad() || v->isDerivedFrom(typeId))) {
                 view = static_cast<MDIView*>(v);
                 break;

@@ -238,7 +238,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
 QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* section,
                                                const std::vector<std::string>& subValues)
 {
-    if (section->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (section->isDerivedFrom<Part::Part2DObject>()) {
         return QString::fromUtf8(section->Label.getValue());
     }
     else if (subValues.empty()) {

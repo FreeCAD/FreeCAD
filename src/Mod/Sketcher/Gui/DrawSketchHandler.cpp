@@ -194,16 +194,14 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
 {
     std::vector<Base::Vector2d> vector2d;
 
-    const auto type = geometry->getTypeId();
-
     auto emplaceasvector2d = [&vector2d](const Base::Vector3d& point) {
         vector2d.emplace_back(point.x, point.y);
     };
 
-    auto isconic = type.isDerivedFrom(Part::GeomConic::getClassTypeId());
-    auto isbounded = type.isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId());
+    auto isconic = geometry->isDerivedFrom<Part::GeomConic>();
+    auto isbounded = geometry->isDerivedFrom<Part::GeomBoundedCurve>();
 
-    if (type == Part::GeomLineSegment::getClassTypeId()) {  // add a line
+    if (geometry->is<Part::GeomLineSegment>()) {  // add a line
         auto geo = static_cast<const Part::GeomLineSegment*>(geometry);
 
         emplaceasvector2d(geo->getStartPoint());

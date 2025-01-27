@@ -573,7 +573,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
             }
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
+    else if (prop->isDerivedFrom<App::PropertyLinkList>()
         && strcmp(prop->getName(), "Source") == 0) {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;

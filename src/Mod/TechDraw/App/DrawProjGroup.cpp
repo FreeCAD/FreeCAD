@@ -441,7 +441,7 @@ bool DrawProjGroup::canDelete(const char* viewProjType) const
             if (item == this) {
                 continue;
             }
-            if (item->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            if (item->isDerivedFrom<TechDraw::DrawView>()) {
                 return false;
             }
         }

@@ -73,9 +73,9 @@ private:
                 return;
             Part::Geometry* g1 = items[0];
             Part::Geometry* g2 = items[1];
-            if (!g1 || g1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())
+            if (!g1 || !g1->is<Part::GeomArcOfCircle>())
                 return;
-            if (!g2 || g2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
+            if (!g2 || !g2->is<Part::GeomLineSegment>())
                 return;
             Part::GeomArcOfCircle* arc = static_cast<Part::GeomArcOfCircle*>(g1);
             Part::GeomLineSegment* seg = static_cast<Part::GeomLineSegment*>(g2);

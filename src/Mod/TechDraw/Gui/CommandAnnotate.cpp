@@ -737,7 +737,7 @@ void execCenterLine(Gui::Command* cmd)
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             subNames = (*itSel).getSubNames();
         }
@@ -924,7 +924,7 @@ void exec2PointCenterLine(Gui::Command* cmd)
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             subNames = (*itSel).getSubNames();
         }
@@ -1030,10 +1030,10 @@ void execLine2Points(Gui::Command* cmd)
     }
 
     for (auto& so: selection) {
-        if (so.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if (so.getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> (so.getObject());
             subNames2D = so.getSubNames();
-        } else if (so.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        } else if (so.getObject()->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subNames3D = so.getSubNames();
             for (auto& sub3D: subNames3D) {
                 std::pair<Part::Feature*, std::string> temp;
@@ -1181,10 +1181,10 @@ void execCosmeticCircle(Gui::Command* cmd)
     }
 
     for (auto& so: selection) {
-        if (so.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if (so.getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> (so.getObject());
             subNames2D = so.getSubNames();
-        } else if (so.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        } else if (so.getObject()->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subNames3D = so.getSubNames();
             for (auto& sub3D: subNames3D) {
                 std::pair<Part::Feature*, std::string> temp;
@@ -1318,7 +1318,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
 
     for (auto& s: selection) {
         TechDraw::DrawViewPart * objFeat = static_cast<TechDraw::DrawViewPart*> (s.getObject());
-        if (!objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if (!objFeat->isDerivedFrom<TechDraw::DrawViewPart>()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                             QObject::tr("At least 1 object in selection is not a part view"));
             return;
@@ -1329,7 +1329,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
     std::vector<std::string> subNames;
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             subNames = (*itSel).getSubNames();
         }
@@ -1446,7 +1446,7 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             subNames = (*itSel).getSubNames();
         }
@@ -1639,8 +1639,8 @@ void CmdTechDrawSurfaceFinishSymbols::activated(int iMsg)
     else {
         auto objFeat = dynamic_cast<TechDraw::DrawView *>(selection.front().getObject());
         if ( !objFeat ||
-             !(objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ||
-               objFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) ) {
+             !(objFeat->isDerivedFrom<TechDraw::DrawViewPart>() ||
+               objFeat->isDerivedFrom<TechDraw::DrawLeaderLine>()) ) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("SurfaceFinishSymbols"),
                                  QObject::tr("Selected object is not a part view, nor a leader line"));
             return;

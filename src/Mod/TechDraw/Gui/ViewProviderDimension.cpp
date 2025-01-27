@@ -110,7 +110,7 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
 
 //    sPixmap = "TechDraw_Dimension";
     setPixmapForType();
-    if (getViewObject()->isDerivedFrom(TechDraw::LandmarkDimension::getClassTypeId())) {
+    if (getViewObject()->isDerivedFrom<TechDraw::LandmarkDimension>()) {
         sPixmap = "TechDraw_LandmarkDimension";
     }
 }

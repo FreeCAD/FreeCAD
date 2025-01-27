@@ -122,7 +122,7 @@ void ViewProviderFemPostFunctionProvider::updateSize()
 {
     std::vector<App::DocumentObject*> vec = claimChildren();
     for (auto it : vec) {
-        if (!it->isDerivedFrom(Fem::FemPostFunction::getClassTypeId())) {
+        if (!it->isDerivedFrom<Fem::FemPostFunction>()) {
             continue;
         }
 
