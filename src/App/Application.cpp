@@ -2061,6 +2061,7 @@ void Application::initTypes()
     App::PropertyElectricalInductance       ::init();
     App::PropertyElectricalResistance       ::init();
     App::PropertyElectricCharge             ::init();
+    App::PropertySurfaceChargeDensity       ::init();
     App::PropertyElectricCurrent            ::init();
     App::PropertyElectricPotential          ::init();
     App::PropertyElectromagneticPotential   ::init();
