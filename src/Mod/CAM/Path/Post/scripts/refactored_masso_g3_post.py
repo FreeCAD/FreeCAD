@@ -24,8 +24,8 @@
 # ***************************************************************************
 
 # ***************************************************************************
-# *  Note: refactored_masso_g3_Post.py is a modified clone of this file     *
-# *        any changes to this file should be applied to the other          *
+# *  Note: this is copy & mod of refactored_linuxcnc_post.py                *
+# *                                                                         *
 # *                                                                         *
 # ***************************************************************************
 
@@ -54,12 +54,12 @@ Values = Dict[str, Any]
 #
 TOOLTIP: str = """This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a linuxcnc 3 axis mill. This postprocessor, once placed
+real GCode suitable for a Masso G3 3 axis mill. This postprocessor, once placed
 in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
-import refactored_linuxcnc_post
-refactored_linuxcnc_post.export(object,"/path/to/file.ncc","")
+import refactored_masso_g3_post
+refactored_masso_g3_post.export(object,"/path/to/file.ncc","")
 """
 #
 # Default to metric mode
@@ -77,7 +77,7 @@ def init_values(values: Values) -> None:
     #
     values["ENABLE_COOLANT"] = True
     # the order of parameters
-    # linuxcnc doesn't want K properties on XY plane; Arcs need work.
+    # Masso G3 doesn't want K properties on XY plane; Arcs need work.
     values["PARAMETER_ORDER"] = [
         "X",
         "Y",
@@ -102,7 +102,7 @@ def init_values(values: Values) -> None:
     # This would normally show up in the usage message in the TOOLTIP_ARGS,
     # but we are suppressing the usage message, so it doesn't show up after all.
     #
-    values["MACHINE_NAME"] = "LinuxCNC"
+    values["MACHINE_NAME"] = "Masso G3"
     #
     # Any commands in this value will be output as the last commands
     # in the G-code file.
@@ -118,6 +118,12 @@ M2"""
     # safety block at the beginning of the G-code file.
     #
     values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90"""
+
+    #
+    # setting TOOL_BEFORE_CHANGE to True will output T# M6 before each tool change
+    # rather than M6  T#.
+    #
+    values["TOOL_BEFORE_CHANGE"] = type(True)
     values["UNITS"] = UNITS
 
 

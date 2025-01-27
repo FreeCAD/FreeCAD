@@ -75,6 +75,7 @@ from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
 from CAMTests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
 from CAMTests.TestRefactoredGrblPost import TestRefactoredGrblPost
 from CAMTests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
+from CAMTests.TestRefactoredMassoG3Post import TestRefactoredMassoG3Post
 from CAMTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
 from CAMTests.TestRefactoredTestPost import TestRefactoredTestPost
 from CAMTests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
@@ -130,6 +131,7 @@ False if TestMach3Mach4Post.__name__ else True
 False if TestRefactoredCentroidPost.__name__ else True
 False if TestRefactoredGrblPost.__name__ else True
 False if TestRefactoredLinuxCNCPost.__name__ else True
+False if TestRefactoredMassoG3Post.__name__ else True
 False if TestRefactoredMach3Mach4Post.__name__ else True
 False if TestRefactoredTestPost.__name__ else True
 False if TestRefactoredTestPostGCodes.__name__ else True

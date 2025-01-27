@@ -6,6 +6,7 @@
 # *   Copyright (c) 2018, 2019 Gauthier Briere                              *
 # *   Copyright (c) 2019, 2020 Schildkroet                                  *
 # *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopLLC@gmail.com>           *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -656,6 +657,11 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     parameter: str
     parameter_value: str
 
+    # Check to see if values["TOOL_BEFORE_CHANGE"] is set and value is true
+    # doing it here to reduce the number of times it is checked
+    swap_tool_change_order = False
+    if "TOOL_BEFORE_CHANGE" in values and values["TOOL_BEFORE_CHANGE"]:
+        swap_tool_change_order = True
     current_location.update(Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0}).Parameters)
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
@@ -720,9 +726,21 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
             command_line = []
         if check_for_suppressed_commands(values, gcode, command, command_line):
             command_line = []
-        # Add a line number to the front and a newline to the end of the command line
+
         if command_line:
-            gcode += f"{linenumber(values)}{format_command_line(values, command_line)}{nl}"
+            if command in ("M6", "M06") and swap_tool_change_order:
+                swapped_command_line = [
+                    command_line[1],
+                    command_line[0],
+                ]  # swap the order of the commands
+                # Add a line number to the front and a newline to the end of the command line
+                gcode += (
+                    f"{linenumber(values)}{format_command_line(values, swapped_command_line)}{nl}"
+                )
+            else:
+                # Add a line number to the front and a newline to the end of the command line
+                gcode += f"{linenumber(values)}{format_command_line(values, command_line)}{nl}"
+
         check_for_tlo(values, gcode, command, c.Parameters)
         check_for_machine_specific_commands(values, gcode, command)
 
