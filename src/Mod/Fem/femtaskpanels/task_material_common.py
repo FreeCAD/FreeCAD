@@ -159,13 +159,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.selectionWidget.finish_selection()
         return super().reject()
 
-    def isfloat(self, num):
-        try:
-            float(num)
-            return True
-        except ValueError:
-            return False
-
     # choose material ****************************************************************************
     def filter_models(self, category):
         material_filter = Materials.MaterialFilter()
@@ -177,26 +170,26 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def toggleInputFieldsReadOnly(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
-            self.parameterWidget.qsb_density.setReadOnly(False)
-            self.parameterWidget.qsb_young_modulus.setReadOnly(False)
-            self.parameterWidget.qsb_poisson_ratio.setReadOnly(False)
-            self.parameterWidget.qsb_thermal_conductivity.setReadOnly(False)
-            self.parameterWidget.qsb_expansion_coefficient.setReadOnly(False)
-            self.parameterWidget.qsb_expansion_reference_temperature.setReadOnly(False)
-            self.parameterWidget.qsb_specific_heat.setReadOnly(False)
-            self.parameterWidget.qsb_kinematic_viscosity.setReadOnly(False)
+            self.parameterWidget.qsb_density.setDisabled(False)
+            self.parameterWidget.qsb_young_modulus.setDisabled(False)
+            self.parameterWidget.qsb_poisson_ratio.setDisabled(False)
+            self.parameterWidget.qsb_thermal_conductivity.setDisabled(False)
+            self.parameterWidget.qsb_expansion_coefficient.setDisabled(False)
+            self.parameterWidget.qsb_expansion_reference_temperature.setDisabled(False)
+            self.parameterWidget.qsb_specific_heat.setDisabled(False)
+            self.parameterWidget.qsb_kinematic_viscosity.setDisabled(False)
             self.parameterWidget.wgt_material_tree.setEnabled(False)
             self.uuid = ""
             self.mat_from_input_fields()
         else:
-            self.parameterWidget.qsb_density.setReadOnly(True)
-            self.parameterWidget.qsb_young_modulus.setReadOnly(True)
-            self.parameterWidget.qsb_poisson_ratio.setReadOnly(True)
-            self.parameterWidget.qsb_thermal_conductivity.setReadOnly(True)
-            self.parameterWidget.qsb_expansion_coefficient.setReadOnly(True)
-            self.parameterWidget.qsb_expansion_reference_temperature.setReadOnly(True)
-            self.parameterWidget.qsb_specific_heat.setReadOnly(True)
-            self.parameterWidget.qsb_kinematic_viscosity.setReadOnly(True)
+            self.parameterWidget.qsb_density.setDisabled(True)
+            self.parameterWidget.qsb_young_modulus.setDisabled(True)
+            self.parameterWidget.qsb_poisson_ratio.setDisabled(True)
+            self.parameterWidget.qsb_thermal_conductivity.setDisabled(True)
+            self.parameterWidget.qsb_expansion_coefficient.setDisabled(True)
+            self.parameterWidget.qsb_expansion_reference_temperature.setDisabled(True)
+            self.parameterWidget.qsb_specific_heat.setDisabled(True)
+            self.parameterWidget.qsb_kinematic_viscosity.setDisabled(True)
             self.parameterWidget.wgt_material_tree.setEnabled(True)
             self.set_from_editor(self.material_tree.UUID)
 
@@ -234,7 +227,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def tec_changed(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
             self.material["ThermalExpansionReferenceTemperature"] = (
-                self.parameterWidget.qsb_expansion_reference_temperature.property("value").UserString
+                self.parameterWidget.qsb_expansion_reference_temperature.property(
+                    "value"
+                ).UserString
             )
 
     def sh_changed(self):
@@ -318,7 +313,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         d["Density"] = p.qsb_density.property("value").UserString
         d["ThermalConductivity"] = p.qsb_thermal_conductivity.property("value").UserString
         d["ThermalExpansionCoefficient"] = p.qsb_expansion_coefficient.property("value").UserString
-        d["ThermalExpansionReferenceTemperature"] = p.qsb_expansion_reference_temperature.property("value").UserString
+        d["ThermalExpansionReferenceTemperature"] = p.qsb_expansion_reference_temperature.property(
+            "value"
+        ).UserString
         d["SpecificHeat"] = p.qsb_specific_heat.property("value").UserString
         if self.obj.Category == "Solid":
             d["YoungsModulus"] = p.qsb_young_modulus.property("value").UserString
