@@ -1004,7 +1004,7 @@ class LevelHandler(BaseHandler):
                 # not sorted and do not form a "chain". Therefore, sort them,
                 # recreate the wire while also rounding the precision of the 
                 # Vertices in order to avoid not closing because the points
-                # are not close enougth
+                # are not close enough
                 wire = Part.Wire(Part.__sortEdges__(self._round(sv.Shape.Edges)))
                 if not wire.isClosed():
                     _wrn(f"Projected Face for {object.Label} does not produce a closed wire. Not adding to slab construction ...")
@@ -1768,8 +1768,8 @@ class WallHandler(BaseHandler):
 
         The face names are suitable for selection later on when creating 
         the Facebinders and baseboards. Note, that this must be executed
-        once the wall has been completly been constructued. If a window
-        or door is added afterward, this will have an impact on what is
+        once the wall has been completely constructed. If a window or
+        door is added afterward, this will have an impact on what is
         considered the left and right side of the wall
 
         Args:
@@ -1781,7 +1781,7 @@ class WallHandler(BaseHandler):
                 right side of the wall
         """
         # In order to handle curved walls, take the oriented line (from
-        # start to end) that pass throuh the center of gravity of the wall
+        # start to end) that pass through the center of gravity of the wall
         # Hopefully the COG of the face will always be on the correct side
         # of the COG of the wall
         wall_start = wall.BaseObjects[2].Start
@@ -1962,7 +1962,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         center = coord_sh2fc(App.Vector(x_center, y_center, z_center))
         center.z += floor.Placement.Base.z
 
-        # First create a solid representing the window countour and find the
+        # First create a solid representing the window contour and find the
         # walls containing that window
         width = dim_sh2fc(elm.get('width'))
         depth = dim_sh2fc(elm.get('depth'))
@@ -2379,8 +2379,8 @@ def _color_section(section):
 
 
 def set_shininess(obj, shininess):
-    # TODO: it seems a shininess of 0 means the wall loose its
-    # color. We leave it at the default setting untill a later time
+    # TODO: it seems a shininess of 0 means the wall looses its
+    # color. We'll leave it at the default setting until a later time
     return
     if not App.GuiUp or not shininess:
         return

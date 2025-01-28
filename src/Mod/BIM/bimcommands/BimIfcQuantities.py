@@ -318,7 +318,7 @@ class BIM_IfcQuantities:
         return txt
 
     def get_row(self, name):
-        """Returns the row number correspinding to the given object name"""
+        """Returns the row number corresponding to the given object name"""
 
         for i in range(self.qmodel.rowCount()):
             if self.qmodel.item(i).toolTip().split(" ")[0] == name:

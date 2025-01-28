@@ -2462,7 +2462,7 @@ QTableCornerButton::section {
 QHeaderView {
   background-color: transparent;
   /* text-align: bottom; */
-  margin: -1px; /* fix for misalignement*/
+  margin: -1px; /* fix for misalignment*/
       selection-background-color: @ThemeAccentColor1;
 }
 
