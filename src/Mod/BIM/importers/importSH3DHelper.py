@@ -463,6 +463,9 @@ class SH3DImporter:
         self.floors[floor.id] = floor
         self.building.addObject(floor)
 
+    def get_all_floors(self):
+        return self.floors.values()
+
     def get_floor(self, level_id):
         """Returns the Floor associated with the level_id.
 
@@ -502,7 +505,7 @@ class SH3DImporter:
         closest_space = None
         for space in self.spaces.get(floor.id, []):
             space_face = space.Base.Shape
-            space_z = space_face.CenterOfMass.z
+            space_z = space_face.CenterOfGravity.z
             projection = App.Vector(p.x, p.y, space_z)
             # Checks that:
             #   - the point's projection is inside the face
@@ -525,7 +528,7 @@ class SH3DImporter:
         Returns:
             dict: the map of all the walls
         """
-        return self.walls
+        return list(itertools.chain(*self.walls.values()))
 
     def get_walls(self, floor):
       """Returns the wall belonging to the specified level
@@ -964,7 +967,6 @@ class LevelHandler(BaseHandler):
 
         return group
 
-
     def create_slabs(self, floor):
         """Creates a Arch.Slab for the given floor.
 
@@ -1005,6 +1007,7 @@ class LevelHandler(BaseHandler):
         self.setp(slab, "App::PropertyString", "shType", "The element type", 'slab')
         self.setp(slab, "App::PropertyString", "id", "The slab's id", f"{floor.id}-slab")
         self.setp(slab, "App::PropertyString", "ReferenceFloorName", "The name of the Arch.Floor this slab belongs to", floor.Name)
+        self.setp(floor, "App::PropertyString", "ReferenceSlabName", "The name of the Slab used on this floor", slab.Name)
 
         floor.addObject(slab)
 
@@ -1734,11 +1737,11 @@ class WallHandler(BaseHandler):
         bottom_edge = None
 
         for edge in face.Edges:
-            if edge and edge.CenterOfMass and edge.CenterOfMass.z < lowest_z:
-                lowest_z = edge.CenterOfMass.z
+            if edge and edge.CenterOfGravity and edge.CenterOfGravity.z < lowest_z:
+                lowest_z = edge.CenterOfGravity.z
                 bottom_edge = edge
 
-        p_normal = face.normalAt(bottom_edge.CenterOfMass.x, bottom_edge.CenterOfMass.y)
+        p_normal = face.normalAt(bottom_edge.CenterOfGravity.x, bottom_edge.CenterOfGravity.y)
         p_normal.z = 0
         offset_vector = p_normal.normalize().multiply(baseboard_width)
         offset_bottom_edge = bottom_edge.translated(offset_vector)
@@ -1752,7 +1755,7 @@ class WallHandler(BaseHandler):
         edge3 = Part.makeLine(offset_bottom_edge.Vertexes[0].Point, bottom_edge.Vertexes[0].Point)
 
         # make sure all edges are coplanar...
-        ref_z = bottom_edge.CenterOfMass.z
+        ref_z = bottom_edge.CenterOfGravity.z
         for edge in [edge0, edge1, edge2, edge3]:
             edge.Vertexes[0].Point.z = edge.Vertexes[1].Point.z = ref_z
 
@@ -1973,65 +1976,65 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         self.setp(obj, "App::PropertyBool", "boundToWall", "", elm)
 
     def _create_door(self, floor, elm):
-        # The window in SweetHome3D is defined with a width, depth, height.
+        # The doorOrWndow in SH3D is defined with a width, depth, height.
         # Furthermore the (x.y.z) is the center point of the lower face of the
         # window. In FC the placement is defined on the face of the wall that
-        # contains the windows. The makes this calculation rather cumbersome.
+        # contains the windows and it references the corner of said face.
         x_center = float(elm.get('x'))
         y_center = float(elm.get('y'))
         z_center = float(elm.get('elevation', 0))
 
-        # This is the FC coordinate of the center point of the lower face of the
-        # window. This then needs to be moved to the proper face on the wall and
-        # offset properly with respect to the wall's face.
-        center = coord_sh2fc(App.Vector(x_center, y_center, z_center))
-        center.z += floor.Placement.Base.z
+        # The absolute coordinate of the center of the doorOrWndow's lower face
+        abs_center = coord_sh2fc(App.Vector(x_center, y_center, z_center))
+        abs_center.z += floor.Placement.Base.z
 
-        # First create a solid representing the window countour and find the
-        # walls containing that window
         width = dim_sh2fc(elm.get('width'))
         depth = dim_sh2fc(elm.get('depth'))
         height = dim_sh2fc(elm.get('height'))
-        angle = float(elm.get('angle', 0))
+        angle = math.degrees(ang_sh2fc(elm.get('angle', 0)))
 
-        corner = center.add(App.Vector(-width/2, -depth/2, -height/2))
+        # Note that we only move on the XY plane...
+        abs_corner = abs_center.add(App.Vector(-width/2, -depth/2, 0))
 
-        # Then create a box that represent the BoundingBox of the windows
-        # to find out which wall contains the window.
-        solid = Part.makeBox(width, depth, height)
-        solid.rotate(solid.CenterOfMass, Z_NORM, math.degrees(ang_sh2fc(angle)))
-        solid.translate(corner)
+        # Create a box representing the BoundingBox of the windows
+        # to find out which walls contains the window...
+        solid = Part.makeBox(width, depth, height, abs_corner)
+        solid = solid.rotate(solid.CenterOfGravity, Z_NORM, angle)
 
         # Get all the walls hosting that door/window...
-        wall_width = -DEFAULT_WALL_WIDTH
-        walls = self._get_containing_walls(floor, solid)
-        if len(walls) == 0:
-            _err(f"Missing wall for <doorOrWindow> {elm.get('id')}. Defaulting to width {DEFAULT_WALL_WIDTH} ...")
-        else:
+        # NOTE: The 'wallWidth' attribute is ignored as it is not really clear
+        #   what it is used for...
+        wall_width = depth
+        main_wall, extra_walls = self._get_containing_walls(floor, solid, elm.get('id'))
+        if main_wall:
             # NOTE:
             # The main host (the one defining the width of the door/window) is
-            # the one that contains the CenterOfMass of the windows, or maybe
+            # the one that contains the CenterOfGravity of the windows, or maybe
             # the one that has the same normal?
-            wall_width = float(walls[0].Width)
-            com = solid.CenterOfMass
-            for wall in walls:
-                if wall.Shape.isInside(com, 1, False):
-                    wall_width = float(wall.Width)
+            wall_width = main_wall.Width.Value
+        else:
+            _err(f"Missing wall for <doorOrWindow> {elm.get('id')}. Defaulting to width {wall_width} ...")
 
-        center2corner = App.Vector(-width/2, -wall_width/2, 0)
-        rotation = App.Rotation(Z_NORM, math.degrees(ang_sh2fc(angle)))
-        center2corner = rotation.multVec(center2corner)
-        corner = center.add(center2corner)
+        # Then prepare the Placement. Note that the placement is calculated
+        # with from the floor's placement (i.e. the floor_z is not taken into 
+        # account). Also note that we take the main wall width and not the
+        # width specified by the window, as we want the coordinate to be on 
+        # the wall's face.
+        rotation = App.Rotation(Z_NORM, angle)
+
+        rel_center = App.Vector(-width/2, -wall_width/2, 0)
+        rel_corner = abs_center.add(rotation.multVec(rel_center))
 
         pl = App.Placement(
-            corner,  # translation
-            App.Rotation(math.degrees(ang_sh2fc(angle)), 0, 90),  # rotation
-            ORIGIN  # rotation@coordinate
+            rel_corner,                 # translation to relative corner
+            App.Rotation(angle, 0, 90), # rotation angle. No idea how to explain this :(
+            ORIGIN                      # rotation@coordinate
         )
 
+        # Then prepare the windows characteristics
         # NOTE: the windows are not imported as meshes, but we use a simple
         #   correspondence between a catalog ID and a specific window preset from
-        #   the parts library.
+        #   the parts library. Only using Opening / Fixed / Simple Door
         catalog_id = elm.get('catalogId')
         (windowtype, ifc_type) = DOOR_MODELS.get(catalog_id, (None, None))
         if not windowtype:
@@ -2039,15 +2042,16 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             (windowtype, ifc_type) = ('Simple door', 'Door')
 
         # See the https://wiki.freecad.org/Arch_Window for details about these values
-        # Only using Opening / Fixed / Simple Door
-        h1 = min(50,height*.025) # 2.5% of frame
-        h2 = h1
+        # NOTE: These are simple heuristic to get reasonable windows
+        h1 = min(50, height*.025)     # frame is 2.5% of whole height...
+        h2 = h1                       # panel's frame is the same as frame
         h3 = 0
-        w1 = wall_width
-        w2 = min(20.0,wall_width*.2) # 20% of width
-        o1 = 0
-        o2 = (wall_width-w2)/2
+        w1 = wall_width               # frame is 100% of wall width...
+        w2 = min(20.0, wall_width*.2) # panel is 20% of wall width
+        o1 = (wall_width-w1)/2        # frame is centered
+        o2 = (wall_width-w2)/2        # panel is centered
         window = Arch.makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, pl)
+        window.Label = elm.get('name')
         window.IfcType = ifc_type
 
         mirrored = bool(elm.get('modelMirrored', False))
@@ -2059,11 +2063,16 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         if mirrored:
             window.ViewObject.Proxy.invertHinge()
 
-        window.Hosts = walls
+        # finally make sure all the walls are properly cut by the window.
+        # TODO: Missing slabs when the windows spans several floors...
+        window.Hosts = [main_wall, *extra_walls] if main_wall else extra_walls
         return window
 
-    def _get_containing_walls(self, floor, solid):
+    def _get_containing_walls(self, floor, solid, id):
         """Returns the wall(s) intersecting with the door/window.
+
+        The main wall is the one that contains the door&window 
+        CenterOfGravity.
 
         Args:
             floor (Arch.Level): the level the solid must belongs to
@@ -2073,11 +2082,34 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         Returns:
             list(Arch::Wall): the wall(s) containing the given solid
         """
+        relevant_walls = self.importer.get_walls(floor)
+        # First find out which floor the window might be have an impact on.
+        solid_zmin = solid.BoundBox.ZMin
+        solid_zmax = solid.BoundBox.ZMax
+        if solid_zmin < floor.Placement.Base.z or solid_zmax > (floor.Placement.Base.z + floor.Height.Value):
+            # determine the impacted floors
+            for other_floor in self.importer.get_all_floors():
+                if other_floor.id == floor.id:
+                    continue
+                floor_zmin = other_floor.Placement.Base.z
+                floor_zmax = other_floor.Placement.Base.z + other_floor.Height.Value
+                if (floor_zmin < solid_zmin and solid_zmin < floor_zmax) or (
+                    floor_zmin < solid_zmax and solid_zmax < floor_zmax) or (
+                    solid_zmin < floor_zmin and floor_zmax < solid_zmax):
+                    relevant_walls.extend(self.importer.get_walls(other_floor))
+                    relevant_walls.append(App.ActiveDocument.getObject(other_floor.ReferenceSlabName))
+        main_wall = None
         host_walls = []
-        for wall in self.importer.get_walls(floor):
+        solid_cog = solid.CenterOfGravity
+        for wall in relevant_walls:
+            if wall.Shape.isInside(solid_cog, 1, True):
+                # TODO: That does not work for open doors :(
+                main_wall = wall
+                # The main wall is not added to the host_walls
+                continue
             if solid.common(wall.Shape).Volume > 0:
                 host_walls.append(wall)
-        return host_walls
+        return main_wall, host_walls
 
 
 class FurnitureHandler(BaseFurnitureHandler):
