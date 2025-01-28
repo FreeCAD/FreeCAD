@@ -76,6 +76,14 @@ protected:
     std::unique_ptr<UnitsSchemas> schemas;  // NOLINT
 };
 
+TEST_F(SchemaTest, meter_decimal_1_mm_precision_6)
+{
+    const std::string result = setWithPrecision("MeterDecimal", 1.0, Unit::Length, 6);
+    const auto expect {"0.001000 m"};
+
+    EXPECT_EQ(result, expect);
+}
+
 TEST_F(SchemaTest, imperial_decimal_1_mm_default_precision)
 {
     const std::string result = set("ImperialDecimal", Unit::Length, 1.0);
