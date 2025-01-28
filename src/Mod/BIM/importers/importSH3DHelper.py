@@ -41,6 +41,7 @@ import Part
 
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
+from itertools import chain
 
 import FreeCAD as App
 
@@ -518,6 +519,14 @@ class SH3DImporter:
             self.walls[floor.id] = []
         self.walls[floor.id].append(wall)
 
+    def get_all_walls(self):
+        """Returns a map of all the walls in the building grouped by floor
+
+        Returns:
+            dict: the map of all the walls
+        """
+        return self.walls
+
     def get_walls(self, floor):
       """Returns the wall belonging to the specified level
 
@@ -928,29 +937,33 @@ class LevelHandler(BaseHandler):
 
     def _create_groups(self, floor):
         # This is a special group that does not appear in the TreeView.
-        group = floor.newObject("App::DocumentObjectGroup")
-        group.Label = f"References-{floor.Label}"
-        self.setp(floor, "App::PropertyString", "ReferenceFacesGroupName", "The DocumentObjectGroup name for all Reference Faces on this floor", group.Name)
+        group = self._create_group(floor, "ReferenceFacesGroupName", f"References-{floor.Label}")
         group.Visibility = False
         group.ViewObject.ShowInTree = False
 
         if self.importer.preferences["DECORATE_SURFACES"]:
-            group = floor.newObject("App::DocumentObjectGroup")
-            group.Label = f"Decoration-{floor.Label}-Walls"
-            self.setp(floor, "App::PropertyString", "DecorationWallsGroupName", "The DocumentObjectGroup name for all wall decorations on this floor", group.Name)
-            group = floor.newObject("App::DocumentObjectGroup")
-            group.Label = f"Decoration-{floor.Label}-Ceilings"
-            self.setp(floor, "App::PropertyString", "DecorationCeilingsGroupName", "The DocumentObjectGroup name for all ceilings decoration on this floor", group.Name)
-            group = floor.newObject("App::DocumentObjectGroup")
-            group.Label = f"Decoration-{floor.Label}-Floors"
-            self.setp(floor, "App::PropertyString", "DecorationFloorsGroupName", "The DocumentObjectGroup name for all floors decoration on this floor", group.Name)
-            group = floor.newObject("App::DocumentObjectGroup")
-            group.Label = f"Decoration-{floor.Label}-Baseboards"
-            self.setp(floor, "App::PropertyString", "DecorationBaseboardsGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
+            self._create_group(floor, "DecorationWallsGroupName", f"Decoration-{floor.Label}-Walls")
+            self._create_group(floor, "DecorationCeilingsGroupName", f"Decoration-{floor.Label}-Ceilings")
+            self._create_group(floor, "DecorationFloorsGroupName", f"Decoration-{floor.Label}-Floors")
+            self._create_group(floor, "DecorationBaseboardsGroupName", f"Decoration-{floor.Label}-Baseboards")
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
-            group = floor.newObject("App::DocumentObjectGroup", f"Furnitures-{floor.Label}")
-            self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures in this floor", group.Name)
+            self._create_group(floor, "FurnitureGroupName", f"Furnitures-{floor.Label}")
+
+    def _create_group(self, floor, prop_group_name, group_label):
+        group = None
+        if self.importer.preferences["MERGE"]:
+            if hasattr(floor, prop_group_name):
+                group_name = getattr(floor, prop_group_name)
+                group = floor.getObject(group_name)
+
+        if not group:
+            group = floor.newObject("App::DocumentObjectGroup")
+            group.Label = group_label
+            self.setp(floor, "App::PropertyString", prop_group_name, "The DocumentObjectGroup name for the group on this floor", group.Name)
+
+        return group
+
 
     def create_slabs(self, floor):
         """Creates a Arch.Slab for the given floor.
@@ -962,26 +975,38 @@ class LevelHandler(BaseHandler):
         Args:
             floor (Arch.Floor): the Arch Floor for which to create the Slab
         """
-        # Take the walls and only the spaces whose floor is actually visible.
-        objects_to_project = list(filter(lambda s: s.floorVisible, self.get_spaces(floor)))
-        objects_to_project.extend(self.get_walls(floor))
-        objects_to_fuse = self._get_object_to_fuse(floor, objects_to_project)
-        if len(objects_to_fuse) > 0:
-            if len(objects_to_fuse) > 1:
-                bf = BOPTools.BOPFeatures.BOPFeatures(App.ActiveDocument)
-                slab_base = bf.make_multi_fuse([ o.Name for o in objects_to_fuse])
-                slab_base.Label = f"{floor.Label}-footprint"
-            else:
-                slab_base = objects_to_fuse[0]
-                slab_base.Label = f"{floor.Label}-footprint"
+        slab = None
+        if self.importer.preferences["MERGE"]:
+            slab = self.get_fc_object(f"{floor.id}-slab", 'slab')
 
-            slab = Arch.makeStructure(slab_base)
+        if not slab:
+            # Take the walls and only the spaces whose floor is actually visible.
+            objects_to_project = list(filter(lambda s: s.floorVisible, self.get_spaces(floor)))
+            objects_to_project.extend(self.get_walls(floor))
+            objects_to_fuse = self._get_object_to_fuse(floor, objects_to_project)
+            if len(objects_to_fuse) > 0:
+                if len(objects_to_fuse) > 1:
+                    bf = BOPTools.BOPFeatures.BOPFeatures(App.ActiveDocument)
+                    slab_base = bf.make_multi_fuse([ o.Name for o in objects_to_fuse])
+                    slab_base.Label = f"{floor.Label}-footprint"
+                else:
+                    slab_base = objects_to_fuse[0]
+                    slab_base.Label = f"{floor.Label}-footprint"
+
+                slab = Arch.makeStructure(slab_base)
+                slab.Normal = -Z_NORM
+                slab.setExpression('Height', f"{slab_base.Name}.Shape.BoundBox.ZLength")
+            else:
+                _wrn(f"No object found for floor {floor.Label}. Creating fake slab ...")
+                slab = Part.makeBox(1,1,1)
+
             slab.Label = f"{floor.Label}-slab"
-            slab.setExpression('Height', f"{slab_base.Name}.Shape.BoundBox.ZLength")
-            slab.Normal = -Z_NORM
-            floor.addObject(slab)
-        else:
-            _wrn(f"No object found for floor {floor.Label}. No slab created.")
+
+        self.setp(slab, "App::PropertyString", "shType", "The element type", 'slab')
+        self.setp(slab, "App::PropertyString", "id", "The slab's id", f"{floor.id}-slab")
+        self.setp(slab, "App::PropertyString", "ReferenceFloorName", "The name of the Arch.Floor this slab belongs to", floor.Name)
+
+        floor.addObject(slab)
 
     def _get_object_to_fuse(self, floor, objects_to_project):
         group = floor.newObject("App::DocumentObjectGroup", f"SlabObjects-{floor.Label}")
@@ -1936,12 +1961,12 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
 
     def _set_properties(self, obj, elm):
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'doorOrWindow')
-        self.setp(obj, "App::PropertyFloat", "wallThickness", "", float(elm.get('wallThickness', 1)))
-        self.setp(obj, "App::PropertyFloat", "wallDistance", "", elm)
-        self.setp(obj, "App::PropertyFloat", "wallWidth", "", float(elm.get('wallWidth', 1)))
-        self.setp(obj, "App::PropertyFloat", "wallLeft", "", elm)
-        self.setp(obj, "App::PropertyFloat", "wallHeight", "", float(elm.get('wallHeight', 1)))
-        self.setp(obj, "App::PropertyFloat", "wallTop", "", elm)
+        self.setp(obj, "App::PropertyFloat", "wallThickness", "", dim_sh2fc(elm.get('wallThickness', 1)))
+        self.setp(obj, "App::PropertyFloat", "wallDistance", "", dim_sh2fc(elm.get('wallDistance', 0)))
+        self.setp(obj, "App::PropertyFloat", "wallWidth", "", dim_sh2fc(elm.get('wallWidth', 1)))
+        self.setp(obj, "App::PropertyFloat", "wallLeft", "", dim_sh2fc(elm.get('wallLeft', 0)))
+        self.setp(obj, "App::PropertyFloat", "wallHeight", "", dim_sh2fc(elm.get('wallHeight', 1)))
+        self.setp(obj, "App::PropertyFloat", "wallTop", "", dim_sh2fc(elm.get('wallTop', 0)))
         self.setp(obj, "App::PropertyBool", "wallCutOutOnBothSides", "", elm)
         self.setp(obj, "App::PropertyBool", "widthDepthDeformable", "", elm)
         self.setp(obj, "App::PropertyString", "cutOutShape", "", elm)
