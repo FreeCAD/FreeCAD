@@ -560,10 +560,11 @@ class ViewProviderLayerContainer:
 
         action_reassign = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Apply.svg"),
                                         translate("draft", "Reassign properties of all layers"),
+                                        menu)
         action_reassign.triggered.connect(self.reassign_props)
         menu.addAction(action_reassign)
 
-        action_merge = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),
+        action_merge = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layers.svg"),
                                      translate("draft", "Merge layer duplicates"),
                                      menu)
         action_merge.triggered.connect(self.merge_by_name)
