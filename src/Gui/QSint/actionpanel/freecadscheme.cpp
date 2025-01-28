@@ -270,8 +270,14 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
     QColor actionSelectedBg = p.color(QPalette::Active, QPalette::Light);
     QColor actionSelectedText = p.color(QPalette::Active, QPalette::ButtonText);
     QColor actionSelectedBorder = p.color(QPalette::Active, QPalette::Highlight);
+    QColor panelBackground = p.color(QPalette::Window);
+    QColor groupBackground = p.color(QPalette::Button);
 
     QString style = QString::fromLatin1(
+        "QFrame[class='panel'] {"
+            "background-color: %9;"
+        "}"
+
         "QSint--ActionGroup QFrame[class='header'] {"
             "border: 1px solid transparent;"
             "background-color: %1;"
@@ -291,6 +297,7 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
 
         "QSint--ActionGroup QFrame[class='content'] {"
             "border: 1px solid %4;"
+            "background-color: %10;"
         "}"
 
         "QSint--ActionGroup QFrame[class='content'][header='true'] {"
@@ -328,7 +335,9 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
         disabledActionText.name(),
         actionSelectedBg.name(),
         actionSelectedText.name(),
-        actionSelectedBorder.name()
+        actionSelectedBorder.name(),
+        panelBackground.name(),
+        groupBackground.name()
     );
 
     return style;
