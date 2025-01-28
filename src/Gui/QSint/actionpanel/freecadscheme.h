@@ -20,56 +20,98 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FREECADTASKPANELSCHEME_H
 #define FREECADTASKPANELSCHEME_H
 
 #include "actionpanelscheme.h"
 
+#include <QString>
+#include <QPixmap>
+#include <QPalette>
 
 namespace QSint
 {
 
-
+/**
+ * @class FreeCADPanelScheme
+ * @brief A specialized panel scheme for FreeCAD task panels.
+ */
 class QSINT_EXPORT FreeCADPanelScheme : public ActionPanelScheme
 {
 public:
     explicit FreeCADPanelScheme();
 
+    /**
+     * @brief Provides the default scheme for FreeCAD panels.
+     * @return A pointer to the default FreeCADPanelScheme instance.
+     */
     static ActionPanelScheme* defaultScheme()
     {
         static FreeCADPanelScheme scheme;
         return &scheme;
     }
 
+    /**
+     * @brief Clears the custom action style, resetting to a minimal style.
+     */
     void clearActionStyle();
+
+    /**
+     * @brief Restores the original action style.
+     */
     void restoreActionStyle();
 
 private:
-    QString builtinScheme;
-    QString minimumStyle;
-    QPixmap builtinFold;
-    QPixmap builtinFoldOver;
-    QPixmap builtinUnfold;
-    QPixmap builtinUnfoldOver;
+    QString builtinScheme;         ///< Backup of the original scheme style.
+    QPixmap builtinFold;           ///< Backup of the default fold icon.
+    QPixmap builtinFoldOver;       ///< Backup of the default hover fold icon.
+    QPixmap builtinUnfold;         ///< Backup of the default unfold icon.
+    QPixmap builtinUnfoldOver;     ///< Backup of the default hover unfold icon.
 };
 
+/**
+ * @class SystemPanelScheme
+ * @brief A system-wide default panel scheme for action panels.
+ */
 class QSINT_EXPORT SystemPanelScheme : public ActionPanelScheme
 {
 public:
     explicit SystemPanelScheme();
 
+    /**
+     * @brief Provides the default system panel scheme.
+     * @return A pointer to the default SystemPanelScheme instance.
+     */
     static ActionPanelScheme* defaultScheme()
     {
         static SystemPanelScheme scheme;
         return &scheme;
     }
 
+    /**
+     * @brief The minimal style definition shared across schemes.
+     */
+    static const QString minimumStyle;
+
 private:
+    /**
+     * @brief Draws a fold/unfold icon based on the palette.
+     * @param p The palette to use for coloring the icon.
+     * @param fold True for fold icon, false for unfold icon.
+     * @param hover True for hover effect, false otherwise.
+     * @return A QPixmap representing the icon.
+     */
     QPixmap drawFoldIcon(const QPalette& p, bool fold, bool hover) const;
+
+    /**
+     * @brief Generates a custom system style based on the palette.
+     * @param p The palette to use for generating the style.
+     * @return A QString containing the generated style.
+     */
     QString systemStyle(const QPalette& p) const;
 };
 
-}
+} // namespace QSint
 
-#endif // IISFREECADTASKPANELSCHEME_H
+#endif // FREECADTASKPANELSCHEME_H
+
