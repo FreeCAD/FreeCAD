@@ -321,8 +321,8 @@ ShapeFinder::getGlobalTransform(const App::DocumentObject& rootObject, const std
 }
 
 
-//! trys to get the global position and scale for a object with no information about the path
-//! through the tree from a root to cursor object.
+//! tries to get the global position and scale for a object with no information about the
+//! path through the tree from a root to cursor object.
 std::pair<Base::Placement, Base::Matrix4D>
 ShapeFinder::getGlobalTransform(const App::DocumentObject* cursorObject)
 {
