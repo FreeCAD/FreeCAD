@@ -263,19 +263,28 @@ QPixmap SystemPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool
 
 QString SystemPanelScheme::systemStyle(const QPalette& p) const
 {
+    QString headerBackground = p.color(QPalette::Highlight).name();
+    QString headerLabelText = p.color(QPalette::HighlightedText).name();
+    QString headerLabelTextOver = p.color(QPalette::BrightText).name();
+    QString groupBorder = p.color(QPalette::Mid).name();
+    QString disabledActionText = p.color(QPalette::Disabled, QPalette::Text).name();
+    QString actionSelectedBg = p.color(QPalette::Active, QPalette::Light).name();
+    QString actionSelectedText = p.color(QPalette::Active, QPalette::ButtonText).name();
+    QString actionSelectedBorder = p.color(QPalette::Active, QPalette::Highlight).name();
+    QString panelBackground = p.color(QPalette::Window).name();
+    QString groupBackground = p.color(QPalette::Button).name();
+
     QHash<QString, QString> replacements;
-
-    replacements["headerBackground"] = p.color(QPalette::Highlight).name();
-    replacements["headerLabelText"] = p.color(QPalette::HighlightedText).name();
-    replacements["headerLabelTextOver"] = p.color(QPalette::BrightText).name();
-    replacements["groupBorder"] = p.color(QPalette::Mid).name();
-    replacements["disabledActionText"] = p.color(QPalette::Disabled, QPalette::Text).name();
-    replacements["actionSelectedBg"] = p.color(QPalette::Active, QPalette::Light).name();
-    replacements["actionSelectedText"] = p.color(QPalette::Active, QPalette::ButtonText).name();
-    replacements["actionSelectedBorder"] = p.color(QPalette::Active, QPalette::Highlight).name();
-    replacements["panelBackground"] = p.color(QPalette::Window).name();
-    replacements["groupBackground"] = p.color(QPalette::Button).name();
-
+    replacements["headerBackground"] = headerBackground;
+    replacements["headerLabelText"] = headerLabelText;
+    replacements["headerLabelTextOver"] = headerLabelTextOver;
+    replacements["groupBorder"] = groupBorder;
+    replacements["disabledActionText"] = disabledActionText;
+    replacements["actionSelectedBg"] = actionSelectedBg;
+    replacements["actionSelectedText"] = actionSelectedText;
+    replacements["actionSelectedBorder"] = actionSelectedBorder;
+    replacements["panelBackground"] = panelBackground;
+    replacements["groupBackground"] = groupBackground;
 
     QString style = QString::fromLatin1(
         "QFrame[class='panel'] {"
