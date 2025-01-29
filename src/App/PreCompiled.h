@@ -101,6 +101,8 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 
+#include <fmt/format.h>
+
 #endif  //_PreComp_
 
 #endif  // APP_PRECOMPILED_H
