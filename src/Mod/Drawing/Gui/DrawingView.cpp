@@ -529,16 +529,7 @@ void DrawingView::printPdf()
         printer.setFullPage(true);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
-
-        QString appname = QCoreApplication::applicationName();
-        auto config = App::Application::Config();
-        QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
-        QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
-        QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
-        QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
-        printer.setCreator(
-            QString::fromUtf8("%1 Drawing %2.%3.%4%5").arg(appname, major, minor, point, suffix));
-
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         printer.setPageOrientation(m_orientation);
         QList<QListWidgetItem*> items = listWidget->selectedItems();
         if (items.size() == 1) {
