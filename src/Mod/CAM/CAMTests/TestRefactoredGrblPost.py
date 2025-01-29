@@ -72,7 +72,7 @@ class TestRefactoredGrblPost(PathTestUtils.PathTestBase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     # Setup and tear down methods called before and after each unit test
-    
+
     def setUp(self):
         """setUp()...
 
