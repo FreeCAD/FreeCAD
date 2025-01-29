@@ -211,7 +211,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AutoGroup",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_AutoGroup", "Autogroup"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to add new Draft and BIM objects to.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a layer or group to add new Draft and BIM objects to.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -335,7 +335,7 @@ class AddToConstruction(gui_base.GuiCommandNeedsSelection):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AddConstruction",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to construction group"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the construction group,\nand changes their appearance to the construction style.\nIt creates a construction group if it doesn't exist.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the construction group,\nand changes their appearance to the construction style.\nThe construction group is created if it doesn't exist.")}
 
     def Activated(self):
         """Execute when the command is called."""
