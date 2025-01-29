@@ -1732,7 +1732,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                        parent->setElementVisible(objname, !visible);
                     }
                 }
-				else {
+                else {
                     visible = obj->Visibility.getValue();
                     obj->Visibility.setValue(!visible);
                 }
@@ -2264,12 +2264,12 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
 
                 // check if the object has been deleted
                 obj = doc->getObject(info.obj.c_str());
-                if (obj && obj->isAttachedToDocument()) {
-                    droppedObjs.push_back(obj);
-                    if (propPlacement) {
-                        propPlacement->setValueIfChanged(Base::Placement(mat));
-                    }
+	        if (!obj || !obj->isAttachedToDocument()) {
+                    continue;
                 }
+                droppedObjs.push_back(obj);
+                if (propPlacement) {
+                    propPlacement->setValueIfChanged(Base::Placement(mat));
             }
             else {
                 std::ostringstream ss;
