@@ -709,6 +709,13 @@ void AboutDialog::copyToClipboard()
     str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
         << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
 
+    // Add DPI information
+    str << "Logical/physical DPI: "
+        << QApplication::primaryScreen()->logicalDotsPerInch()
+        << "/"
+        << QApplication::primaryScreen()->physicalDotsPerInch()
+        << "\n";
+
     // Add installed module information:
     auto modDir = fs::path(App::Application::getUserAppDataDir()) / "Mod";
     bool firstMod = true;
