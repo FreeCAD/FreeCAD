@@ -232,6 +232,7 @@ class Shape2DView(DraftObject):
                     cutplane.Placement = cutplane.Placement.multiply(obj.Base.Placement)
                 if objs:
                     onlysolids = True
+                    # TODO Fix this : 2025.1.26, why test obj.Base.OnlySolids if override by obj.OnlySolids
                     if hasattr(obj.Base,"OnlySolids"):
                         onlysolids = obj.Base.OnlySolids
                     if hasattr(obj,"OnlySolids"): # override base object
@@ -279,6 +280,7 @@ class Shape2DView(DraftObject):
                             if hasattr(o, "Shape"):
                                 shapes.extend(self._get_shapes(o.Shape, onlysolids))
                     clip = False
+                    # TODO Fix this : 2025.1.26, why test obj.Base.Clip if override by obj.Clip
                     if hasattr(obj.Base,"Clip"):
                         clip = obj.Base.Clip
                     if hasattr(obj,"Clip"): #override base object
@@ -316,19 +318,57 @@ class Shape2DView(DraftObject):
                         comp = Part.makeCompound(cuts)
                         obj.Shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode in ["Cutlines", "Cutfaces"]:
+                        if not cutp:  # Cutfaces and Cutlines needs cutp
+                            obj.Shape = Part.Shape()
+                            return
                         for sh in shapes:
                             if sh.Volume < 0:
                                 sh.reverse()
-                            c = sh.section(cutp)
-                            if hasattr(obj,"InPlace"):
-                                if not obj.InPlace:
-                                    c = self.getProjected(obj, c, proj)
                             faces = []
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
-                                wires = DraftGeomUtils.findWires(c.Edges)
-                                for w in wires:
-                                    if w.isClosed():
-                                        faces.append(Part.Face(w))
+                                sc = sh.common(cutp)
+                                facesOrg = None
+                                if hasattr(sc, "Faces"):
+                                    facesOrg = sc.Faces
+                                if not facesOrg:
+                                    continue
+                                if hasattr(obj,"InPlace"):
+                                    if obj.InPlace:
+                                        faces = facesOrg
+                                    # Alternative approach in https://forum.freecad.org/viewtopic.php?p=807314#p807314, not adopted
+                                    else:
+                                        for faceOrg in facesOrg:
+                                            if len(faceOrg.Wires) == 1:
+                                                wireProj = self.getProjected(obj, faceOrg, proj)
+                                                #return Compound
+                                                wireProjWire = Part.Wire(wireProj.Edges)
+                                                faceProj = Part.Face(wireProjWire)
+                                            elif len(faceOrg.Wires) == 2:
+                                                wireClosedOuter = faceOrg.OuterWire
+                                                for w in faceOrg.Wires:
+                                                    if not w.isEqual(wireClosedOuter):
+                                                        wireClosedInner = w
+                                                        break
+                                                wireProjOuter = self.getProjected(obj, wireClosedOuter, proj)
+                                                #return Compound
+                                                wireProjOuterWire = Part.Wire(wireProjOuter.Edges)
+                                                faceProj = Part.Face(wireProjOuterWire)
+                                                wireProjInner = self.getProjected(obj, wireClosedInner, proj)
+                                                #return Compound
+                                                wireProjInnerWire = Part.Wire(wireProjInner.Edges)
+                                                faceProj.cutHoles([wireProjInnerWire])  # (list of wires)
+                                            faces.append(faceProj)
+                            else:
+                                c = sh.section(cutp)
+                                if hasattr(obj,"InPlace"):
+                                    if not obj.InPlace:
+                                        c = self.getProjected(obj, c, proj)
+                            #faces = []
+                            #if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
+                            #    wires = DraftGeomUtils.findWires(c.Edges)
+                            #    for w in wires:
+                            #        if w.isClosed():
+                            #            faces.append(Part.Face(w))
                             if faces:
                                 cuts.extend(faces)
                             else:
