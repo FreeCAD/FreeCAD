@@ -740,13 +740,21 @@ void TaskTransformDialog::openCommand()
     }
 }
 
+void TaskTransformDialog::updateDraggerPlacement()
+{
+    const auto placement = vp->getObjectPlacement();
+    vp->setDraggerPlacement(placement);
+}
+
 void TaskTransformDialog::onUndo()
 {
+    updateDraggerPlacement();
     openCommand();
 }
 
 void TaskTransformDialog::onRedo()
 {
+    updateDraggerPlacement();
     openCommand();
 }
 

@@ -171,6 +171,7 @@ public:
 
 private:
     void openCommand();
+    void updateDraggerPlacement();
 
 private:
     ViewProviderDragger* vp;
