@@ -36,7 +36,6 @@
 
 #include <boost/regex.hpp>
 
-#include <App/Application.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
@@ -774,19 +773,11 @@ PyObject* ApplicationPy::sExport(PyObject * /*self*/, PyObject *args)
                         view3d->viewAll();
                     }
                     QPrinter printer(QPrinter::ScreenResolution);
-                    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+                    // setPdfVersion sets the printed PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
                     printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
                     printer.setOutputFormat(QPrinter::PdfFormat);
                     printer.setOutputFileName(fileName);
-
-                    QString appname = QCoreApplication::applicationName();
-                    auto config = App::Application::Config();
-                    QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
-                    QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
-                    QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
-                    QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
-                    printer.setCreator(QString::fromUtf8("%1 %2.%3.%4%5").arg(appname, major, minor, point, suffix));
-
+                    printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
                     view->print(&printer);
                 }
             }
