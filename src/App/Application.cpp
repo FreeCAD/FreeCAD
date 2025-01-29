@@ -38,6 +38,7 @@
 # include <boost/scope_exit.hpp>
 # include <chrono>
 # include <random>
+# include <fmt/format.h>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -1143,6 +1144,17 @@ std::string Application::getHomePath()
 std::string Application::getExecutableName()
 {
     return mConfig["ExeName"];
+}
+
+std::string Application::getNameWithVersion()
+{
+    auto appname = QCoreApplication::applicationName().toStdString();
+    auto config = App::Application::Config();
+    auto major = config["BuildVersionMajor"];
+    auto minor = config["BuildVersionMinor"];
+    auto point = config["BuildVersionPoint"];
+    auto suffix = config["BuildVersionSuffix"];
+    return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
 }
 
 std::string Application::getTempPath()

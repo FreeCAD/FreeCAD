@@ -413,6 +413,7 @@ public:
     //@{
     static std::string getHomePath();
     static std::string getExecutableName();
+    static std::string getNameWithVersion();
     /*!
      Returns the temporary directory. By default, this is set to the
      system's temporary directory but can be customized by the user.
