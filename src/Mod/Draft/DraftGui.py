@@ -1421,10 +1421,15 @@ class DraftToolBar:
         self.fontsize = fontsize
 
     def popupMenu(self,llist,ilist=None,pos=None):
-        """pops up a menu filled with the given list"""
+        """pops up a menu filled with the given list
+        
+        "---" in llist inserts a separator
+        """
         self.groupmenu = QtWidgets.QMenu()
         for i,l in enumerate(llist):
-            if ilist:
+            if "---" in l:
+                self.groupmenu.addSeparator()
+            elif ilist:
                 self.groupmenu.addAction(ilist[i],l)
             else:
                 self.groupmenu.addAction(l)
