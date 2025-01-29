@@ -256,7 +256,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
                       + ["---"] \
                       + [obj.Label for obj in lyrs] \
                       + ["---"] \
-                      + [translate("draft", "New layer")]
+                      + [translate("draft", "New layer...")]
         self.icons  = [self.ui.getIcon(":/icons/button_invalid.svg")] \
                       + [None] \
                       + [obj.ViewObject.Icon for obj in grps] \
