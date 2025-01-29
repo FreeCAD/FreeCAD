@@ -2427,16 +2427,18 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
         if (!constr->involvesGeoIdAndPosId(geoId, posId)) {
             // for these constraints remove the constraint even if it is not directly associated
             // with the given point
-            if ((constr->Type == Sketcher::Distance || constr->Type == Sketcher::DistanceX
-                 || constr->Type == Sketcher::DistanceY)
-                && (constr->First == geoId && constr->FirstPos == PointPos::none
-                    && (posId == PointPos::start || posId == PointPos::end))) {
+            const bool isOneOfDistanceTypes = constr->Type == Sketcher::Distance
+                || constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY;
+            const bool involvesEntireCurve =
+                constr->First == geoId && constr->FirstPos == PointPos::none;
+            const bool isPosAnEndpoint = posId == PointPos::start || posId == PointPos::end;
+            if (isOneOfDistanceTypes && involvesEntireCurve && isPosAnEndpoint) {
                 continue;
             }
             newVals.push_back(constr);
             continue;
         }
-        if (performAllConstraintChecksOrChanges(constr) != false) {
+        if (performAllConstraintChecksOrChanges(constr).value_or(true)) {
             newVals.push_back(constr);
         }
     }
@@ -3693,7 +3695,7 @@ bool getParamLimitsOfNewGeosForTrim(const SketchObject* obj,
                                     std::array<Base::Vector3d, 2>& cutPoints,
                                     std::vector<std::pair<double, double>>& paramsOfNewGeos)
 {
-    const auto* geoAsCurve = static_cast<const Part::GeomCurve*>(obj->getGeometry(GeoId));
+    const auto* geoAsCurve = obj->getGeometry<Part::GeomCurve>(GeoId);
     double firstParam = geoAsCurve->getFirstParameter();
     double lastParam = geoAsCurve->getLastParameter();
     double cut0Param {firstParam}, cut1Param {lastParam};
@@ -3835,7 +3837,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     // Remove internal geometry beforehand for now
     // FIXME: we should be able to transfer these to new curves smoothly
     // auto geo = getGeometry(GeoId);
-    const auto* geoAsCurve = static_cast<const Part::GeomCurve*>(getGeometry(GeoId));
+    const auto* geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
 
     //******************* Step A => Detection of intersection - Common to all Geometries
     //****************************************//
@@ -3916,7 +3918,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 std::remove_if(
                     idsOfOldConstraints.begin(),
                     idsOfOldConstraints.end(),
-                    [this, &GeoId, &allConstraints](const auto& i) {
+                    [&GeoId, &allConstraints](const auto& i) {
                         return (allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::start));
                     }),
                 idsOfOldConstraints.end());
@@ -3925,7 +3927,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             idsOfOldConstraints.erase(
                 std::remove_if(idsOfOldConstraints.begin(),
                                idsOfOldConstraints.end(),
-                               [this, &GeoId, &allConstraints](const auto& i) {
+                               [&GeoId, &allConstraints](const auto& i) {
                                    return (allConstraints[i]->involvesGeoIdAndPosId(GeoId,
                                                                                     PointPos::end));
                                }),
@@ -3935,7 +3937,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     idsOfOldConstraints.erase(
         std::remove_if(idsOfOldConstraints.begin(),
                        idsOfOldConstraints.end(),
-                       [this, &GeoId, &allConstraints](const auto& i) {
+                       [&GeoId, &allConstraints](const auto& i) {
                            return (allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::mid));
                        }),
         idsOfOldConstraints.end());
