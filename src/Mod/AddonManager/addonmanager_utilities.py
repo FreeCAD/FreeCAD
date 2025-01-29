@@ -40,6 +40,8 @@ from typing import Optional, Any
 
 from urllib.parse import urlparse
 
+from addonmanager_metadata import DocType
+
 try:
     from PySide import QtCore, QtGui, QtWidgets
 except ImportError:
@@ -215,25 +217,33 @@ def construct_git_url(repo, doc: str, raw_file: bool = True):
 def get_readme_url(repo):
     """Returns the location of the readme file"""
 
-    return construct_git_url(repo, doc="README.md")
+    readme_doc = next((doc for doc in repo.metadata.docs if doc.doc == DocType.readme), None)
+    doc = readme_doc.path if readme_doc else "README.md"
+    return construct_git_url(repo, doc)
 
 
 def get_changelog_url(repo):
     """Returns the location of the changelog file"""
 
-    return construct_git_url(repo, doc="CHANGELOG.md")
+    changelog_doc = next((doc for doc in repo.metadata.docs if doc.doc == DocType.changelog), None)
+    doc = changelog_doc.path if changelog_doc else "CHANGELOG.md"
+    return construct_git_url(repo, doc)
 
 
 def get_contrib_url(repo):
     """Returns the location of the contributing file"""
 
-    return construct_git_url(repo, doc="CONTRIBUTING.md")
+    contrib_doc = next((doc for doc in repo.metadata.docs if doc.doc == DocType.contributing), None)
+    doc = contrib_doc.path if contrib_doc else "CONTRIBUTING.md"
+    return construct_git_url(repo, doc)
 
 
 def get_license_url(repo):
     """Returns the location of a license file"""
 
-    return construct_git_url(repo, doc="LICENSE")
+    license_doc = next((doc for doc in repo.metadata.docs if doc.doc == DocType.license), None)
+    doc = license_doc.path if license_doc else "LICENSE"
+    return construct_git_url(repo, doc)
 
 
 def get_metadata_url(url):

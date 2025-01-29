@@ -88,18 +88,37 @@ class PackageDetailsController(QtCore.QObject):
         """The main entry point for this class, shows the package details and related buttons
         for the provided repo."""
         self.addon = repo
+
+        def url_exists(url: str):
+            import requests
+
+            try:
+                response = requests.head(url, allow_redirects=True)
+                return response.status_code == 200
+            except requests.RequestException:
+                return False
+
+        # NOTE: always show README tab and hide other when is a macro or
+        # the requested document files' URL don't exist
         self.readme_controller.set_addon(repo, 0)
-
         not_macro = self.addon.repo_type != Addon.Kind.MACRO
-        if not_macro:
-            # TODO: load tabs data if document exists on repo
-            self.changelog_controller.set_addon(repo, 1)
-            self.contrib_controller.set_addon(repo, 2)
-            self.license_controller.set_addon(repo, 3)
-
         self.ui.tab_widget.setTabVisible(1, not_macro)
         self.ui.tab_widget.setTabVisible(2, not_macro)
         self.ui.tab_widget.setTabVisible(3, not_macro)
+
+        if not_macro:
+            if url_exists(utils.get_changelog_url(repo)):
+                self.changelog_controller.set_addon(repo, 1)
+            else:
+                self.ui.tab_widget.setTabVisible(1, False)
+            if url_exists(utils.get_contrib_url(repo)):
+                self.contrib_controller.set_addon(repo, 2)
+            else:
+                self.ui.tab_widget.setTabVisible(2, False)
+            if url_exists(utils.get_license_url(repo)):
+                self.license_controller.set_addon(repo, 3)
+            else:
+                self.ui.tab_widget.setTabVisible(3, False)
 
         self.original_disabled_state = self.addon.is_disabled()
         if repo is not None:
