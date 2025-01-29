@@ -482,7 +482,7 @@ class SH3DImporter:
         if floor.id not in self.spaces:
             self.spaces[floor.id] = []
         self.spaces[floor.id].append(space)
-    
+
     def get_spaces(self, floor):
         return self.spaces.get(floor.id, [])
 
@@ -1002,7 +1002,7 @@ class LevelHandler(BaseHandler):
             if not wire.isClosed():
                 # Sometimes the wire is not closed because the edges are
                 # not sorted and do not form a "chain". Therefore, sort them,
-                # recreate the wire while also rounding the precision of the 
+                # recreate the wire while also rounding the precision of the
                 # Vertices in order to avoid not closing because the points
                 # are not close enough
                 wire = Part.Wire(Part.__sortEdges__(self._round(sv.Shape.Edges)))
@@ -1083,7 +1083,7 @@ class RoomHandler(BaseHandler):
             reference_face.recompute()
             floor.getObject(floor.ReferenceFacesGroupName).addObject(reference_face)
 
-            # NOTE: for room to properly display and calculate the area, the 
+            # NOTE: for room to properly display and calculate the area, the
             # Base object can not be a face but must have a height...
             footprint = App.ActiveDocument.addObject("Part::Feature", "Footprint")
             footprint.Shape = reference_face.Shape.extrude(Z_NORM)
@@ -1448,7 +1448,7 @@ class WallHandler(BaseHandler):
         # The Length property is used in the Wall to calculate volume, etc...
         # Since make Circle does not calculate this Length I calculate it here...
         self.importer.set_property(spine, "App::PropertyFloat", "Length", "The length of the Arc", length, group="Draft")
-        # The Start and End property are used in the Wall to  determine Facebinders 
+        # The Start and End property are used in the Wall to determine Facebinders
         # characteristics...
         self.importer.set_property(spine, "App::PropertyVector", "Start", "The start point of the Arc", start, group="Draft")
         self.importer.set_property(spine, "App::PropertyVector", "End", "The end point of the Arc", end, group="Draft")
@@ -1766,7 +1766,7 @@ class WallHandler(BaseHandler):
     def _get_faces(self, wall):
         """Returns the name of the left and right face for `wall`
 
-        The face names are suitable for selection later on when creating 
+        The face names are suitable for selection later on when creating
         the Facebinders and baseboards. Note, that this must be executed
         once the wall has been completely constructed. If a window or
         door is added afterward, this will have an impact on what is
