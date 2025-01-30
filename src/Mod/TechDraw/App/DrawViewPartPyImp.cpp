@@ -658,7 +658,7 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
 {
 //    Base::Console().Message("DVPPI::makeCenterLine()\n");
     PyObject* pSubs;
-    int mode = 0;
+    CenterLine::Mode mode = CenterLine::Mode::VERTICAL;
     std::vector<std::string> subs;
 
     if (!PyArg_ParseTuple(args, "O!i", &PyList_Type, &pSubs, &mode)) {
