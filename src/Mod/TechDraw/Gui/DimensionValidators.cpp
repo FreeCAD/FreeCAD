@@ -379,7 +379,7 @@ DimensionGeometryType TechDraw::isValidSingleEdge(ReferenceEntry ref)
         return isInvalid;
     }
 
-    if (geom->getGeomType() == TechDraw::GENERIC) {
+    if (geom->getGeomType() == GeomType::GENERIC) {
         TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
         if (gen1->points.size() < 2) {
             return isInvalid;
@@ -392,11 +392,11 @@ DimensionGeometryType TechDraw::isValidSingleEdge(ReferenceEntry ref)
         } else {
             return TechDraw::isDiagonal;
         }
-    } else if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+    } else if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
         return isCircle;
-    } else if (geom->getGeomType() == TechDraw::ELLIPSE || geom->getGeomType() == TechDraw::ARCOFELLIPSE) {
+    } else if (geom->getGeomType() == GeomType::ELLIPSE || geom->getGeomType() == GeomType::ARCOFELLIPSE) {
         return isEllipse;
-    } else if (geom->getGeomType() == TechDraw::BSPLINE) {
+    } else if (geom->getGeomType() == GeomType::BSPLINE) {
         TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(geom);
         if (spline->isCircle()) {
             return isBSplineCircle;
@@ -529,7 +529,7 @@ DimensionGeometryType TechDraw::isValidMultiEdge(ReferenceVector refs)
     TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
     TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
 
-    if (geom0->getGeomType() == TechDraw::GENERIC && geom1->getGeomType() == TechDraw::GENERIC) {
+    if (geom0->getGeomType() == GeomType::GENERIC && geom1->getGeomType() == GeomType::GENERIC) {
         TechDraw::GenericPtr gen0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
         TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
         if (gen0->points.size() > 2 || gen1->points.size() > 2) {//the edge is a polyline
