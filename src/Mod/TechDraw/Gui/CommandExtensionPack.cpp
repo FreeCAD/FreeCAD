@@ -1981,9 +1981,10 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
 
     // Use virtual dimension view helper to format resulting value
     TechDraw::DrawViewDimension helperDim;
+    using Format = DimensionFormatter::Format;
     std::string valueStr = helperDim.formatValue(totalLength,
                                                  QString::fromUtf8(helperDim.FormatSpec.getStrValue().data()),
-                                                 helperDim.isMultiValueSchema() ? 0 : 1);
+                                                 helperDim.isMultiValueSchema() ? Format::UNALTERED : Format::FORMATTED);
     balloon->Text.setValue("◠ " + valueStr);
 
     // Set balloon format to be referencing dimension-like
