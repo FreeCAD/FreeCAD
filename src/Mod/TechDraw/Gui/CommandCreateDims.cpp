@@ -673,7 +673,7 @@ protected:
                 return emptyVector;
             }
 
-            if (geom->getGeomType() == TechDraw::GENERIC) {
+            if (geom->getGeomType() == GeomType::GENERIC) {
                 TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
                 if (gen1->points.size() < 2) {
                     return emptyVector;
@@ -681,13 +681,13 @@ protected:
                 return selLine;
                 //Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
             }
-            else if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+            else if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 return selCircleArc;
             }
-            else if (geom->getGeomType() == TechDraw::ELLIPSE || geom->getGeomType() == TechDraw::ARCOFELLIPSE) {
+            else if (geom->getGeomType() == GeomType::ELLIPSE || geom->getGeomType() == GeomType::ARCOFELLIPSE) {
                 return selEllipseArc;
             }
-            else if (geom->getGeomType() == TechDraw::BSPLINE) {
+            else if (geom->getGeomType() == GeomType::BSPLINE) {
                 //TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(geom);
                 //if (spline->isCircle()) {
                 //    return isBSplineCircle;
@@ -981,7 +981,7 @@ protected:
         }
         if (availableDimension == AvailableDimension::SECOND) {
             createRadiusDiameterDimension(selCircleArc[0], false);
-            if (selCircleArc[0].geomEdgeType() != TechDraw::ARCOFCIRCLE) {
+            if (selCircleArc[0].geomEdgeType() != GeomType::ARCOFCIRCLE) {
                 availableDimension = AvailableDimension::RESET;
             }
         }
@@ -1015,7 +1015,7 @@ protected:
         }
         if (availableDimension == AvailableDimension::SECOND) {
             createRadiusDiameterDimension(selEllipseArc[0], false);
-            if (selEllipseArc[0].geomEdgeType() != TechDraw::ARCOFELLIPSE) {
+            if (selEllipseArc[0].geomEdgeType() != GeomType::ARCOFELLIPSE) {
                 availableDimension = AvailableDimension::RESET;
             }
         }
@@ -1074,7 +1074,7 @@ protected:
     void createRadiusDiameterDimension(ReferenceEntry ref, bool firstCstr) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
         TechDraw::BaseGeomPtr geom = partFeat->getGeomByIndex(GeoId);
-        bool isCircleGeom = (geom->getGeomType() == TechDraw::CIRCLE) || (geom->getGeomType() == TechDraw::ELLIPSE);
+        bool isCircleGeom = (geom->getGeomType() == GeomType::CIRCLE) || (geom->getGeomType() == GeomType::ELLIPSE);
 
         // Use same preference as in sketcher?
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
