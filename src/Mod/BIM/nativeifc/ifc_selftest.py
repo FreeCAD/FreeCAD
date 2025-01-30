@@ -245,14 +245,14 @@ class NativeIFCTest(unittest.TestCase):
         wall = Arch.makeWall(None, 200, 400, 20)
         wall = ifc_tools.aggregate(wall, storey)
         column = Arch.makeStructure(None, 20, 20, 200)
-        column.IfcType = "Column"
+        column.IfcClass = "Column"
         column = ifc_tools.aggregate(column, storey)
         beam = Arch.makeStructure(None, 20, 200, 20)
-        beam.IfcType = "Beam"
+        beam.IfcClass = "Beam"
         beam = ifc_tools.aggregate(beam, storey)
         rect = Draft.makeRectangle(200, 200)
         slab = Arch.makeStructure(rect, height=20)
-        slab.IfcType = "Slab"
+        slab.IfcClass = "Slab"
         slab = ifc_tools.aggregate(slab, storey)
         # TODO create door, window
         fco = len(FreeCAD.getDocument("IfcTest").Objects)

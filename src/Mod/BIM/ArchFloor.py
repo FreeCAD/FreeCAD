@@ -25,7 +25,7 @@ different Arch objects situated at a same level.
 
 The _Floor object and this module as a whole is now obsolete. It has been
 superseded by the use of the BuildingPart class, set to the "Building Storey"
-IfcType.
+IfcClass.
 """
 
 import FreeCAD
@@ -173,7 +173,7 @@ Floor creation aborted.") + "\n"
 
 
 class _Floor(ArchIFC.IfcProduct):
-    """Obsolete, superseded by the BuildingPart class, with IfcType set to "Building Storey".
+    """Obsolete, superseded by the BuildingPart class, with IfcClass set to "Building Storey".
 
     The Floor object.
 
@@ -183,7 +183,7 @@ class _Floor(ArchIFC.IfcProduct):
     The floor can be based off either a group, or a python feature. Learn more
     about groups here: https://wiki.freecad.org/Std_Group
 
-    Adds the properties of a floor, and sets its IFC type.
+    Adds the properties of a floor, and sets its IFC class.
 
     Parameters
     ----------
@@ -195,7 +195,7 @@ class _Floor(ArchIFC.IfcProduct):
         obj.Proxy = self
         self.Object = obj
         _Floor.setProperties(self,obj)
-        self.IfcType = "Building Storey"
+        self.IfcClass = "Building Storey"
 
     def setProperties(self,obj):
         """Give the object properties unique to floors.

@@ -502,7 +502,7 @@ class _Site(ArchIFC.IfcProduct):
     def __init__(self,obj):
         obj.Proxy = self
         self.setProperties(obj)
-        obj.IfcType = "Site"
+        obj.IfcClass = "Site"
         obj.CompositionType = "ELEMENT"
 
 
@@ -565,9 +565,9 @@ class _Site(ArchIFC.IfcProduct):
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython")
-        if not "IfcType" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
-            obj.IfcType = ArchIFC.IfcTypes
+        if not "IfcClass" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcClass","IFC",QT_TRANSLATE_NOOP("App::Property","The class of this object"))
+            obj.IfcClass = ArchIFC.IfcClasses
             obj.IcfType = "Site"
         if not "TimeZone" in pl:
             obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"))
@@ -1180,4 +1180,3 @@ class _ViewProviderSite:
     def loads(self,state):
 
         return None
-

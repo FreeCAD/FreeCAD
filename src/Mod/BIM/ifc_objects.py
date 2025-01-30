@@ -25,8 +25,8 @@ class ifc_object:
     def __init__(self):
         pass
     def onDocumentRestored(self, obj):
-        obj.Type = [obj.IfcType]
-        obj.Type = obj.IfcType
+        obj.Type = [obj.IfcClass]
+        obj.Type = obj.IfcClass
     def dumps(self):
         return None
     def loads(self, state):

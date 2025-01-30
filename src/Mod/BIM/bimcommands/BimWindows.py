@@ -131,8 +131,8 @@ class BIM_Windows_TaskPanel:
         wc = 0
         dc = 0
         for w in windows:
-            if hasattr(w, "IfcType"):
-                r = w.IfcType
+            if hasattr(w, "IfcClass"):
+                r = w.IfcClass
             elif hasattr(w, "IfcRole"):
                 r = w.IfcRole
             else:

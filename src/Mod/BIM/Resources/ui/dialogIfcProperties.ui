@@ -65,7 +65,7 @@
        </item>
        <item>
         <property name="text">
-         <string>IFC type</string>
+         <string>IFC class</string>
         </property>
         <property name="icon">
          <iconset theme="application-drawing">

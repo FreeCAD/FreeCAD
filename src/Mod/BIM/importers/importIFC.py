@@ -56,9 +56,9 @@ DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import
 
 # Templates and other definitions ****
-# which IFC type must create which FreeCAD type
+# which IFC class must create which FreeCAD class
 
-typesmap = {
+classesmap = {
     "Site": [
         "IfcSite"
     ],
@@ -620,9 +620,9 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
             # full Arch objects
 
-            for freecadtype,ifctypes in typesmap.items():
+            for freecadtype,ifcclasses in classesmap.items():
 
-                if ptype not in ifctypes:
+                if ptype not in ifcclasses:
                     continue
                 if clone:
                     obj = getattr(Arch,"make"+freecadtype)(name=name)
@@ -700,13 +700,13 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 except ReferenceError:
                     pass
 
-            # setting IFC type
+            # setting IFC class
 
             try:
-                if hasattr(obj,"IfcType"):
-                    obj.IfcType = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
+                if hasattr(obj,"IfcClass"):
+                    obj.IfcClass = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
             except Exception:
-                print("Unable to give IFC type ",ptype," to object ",obj.Label)
+                print("Unable to give IFC class ",ptype," to object ",obj.Label)
 
             # setting uid
 
@@ -742,8 +742,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             # non-parametric BIM objects (just Arch components with a shape)
 
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
-                for freecadtype,ifctypes in typesmap.items():
-                    if ptype in ifctypes:
+                for freecadtype,ifcclasses in classesmap.items():
+                    if ptype in ifcclasses:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
                         if ptype == "IfcBuildingStorey":
@@ -757,10 +757,10 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     if product.Description:
                         obj.Description = product.Description
                 try:
-                    if hasattr(obj,"IfcType"):
-                        obj.IfcType = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
+                    if hasattr(obj,"IfcClass"):
+                        obj.IfcClass = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
                 except Exception:
-                    print("Unable to give IFC type ",ptype," to object ",obj.Label)
+                    print("Unable to give IFC class ",ptype," to object ",obj.Label)
                 if hasattr(obj,"IfcData"):
                     a = obj.IfcData
                     a["IfcUID"] = str(guid)
@@ -780,8 +780,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             # Part shapes
 
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
-                for freecadtype,ifctypes in typesmap.items():
-                    if ptype in ifctypes:
+                for freecadtype,ifcclasses in classesmap.items():
+                    if ptype in ifcclasses:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
                         if ptype == "IfcBuildingStorey":

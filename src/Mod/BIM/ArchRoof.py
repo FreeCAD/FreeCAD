@@ -150,7 +150,7 @@ class _Roof(ArchComponent.Component):
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
-        obj.IfcType = "Roof"
+        obj.IfcClass = "Roof"
         obj.Proxy = self
 
     def setProperties(self, obj):
@@ -955,4 +955,3 @@ class _RoofTaskPanel:
                                    QtGui.QApplication.translate("Arch", "Thickness (mm)", None),
                                    QtGui.QApplication.translate("Arch", "Overhang (mm)", None),
                                    QtGui.QApplication.translate("Arch", "Height (mm)", None)])
-

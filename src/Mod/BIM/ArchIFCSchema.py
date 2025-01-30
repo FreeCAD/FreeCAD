@@ -23,7 +23,7 @@
 
 """Provides the IFC schema data as dicts, by loading the JSON schema files.
 
-Provides the data as IfcContexts, IfcProducts and IfcTypes.
+Provides the data as IfcContexts, IfcProducts and IfcClasses.
 """
 
 import os
@@ -45,4 +45,4 @@ with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets",
 
 with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets",
 "ifc_types_" + IfcVersion + ".json")) as f:
-    IfcTypes = json.load(f)
+    IfcClasses = json.load(f)

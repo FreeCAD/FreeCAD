@@ -184,11 +184,11 @@ def setAttributes(obj,ifcproduct):
 
     """sets the IFC attributes of a component"""
 
-    ifctype = ArchIFC.uncamel(ifcproduct.is_a())
+    ifcclass = ArchIFC.uncamel(ifcproduct.is_a())
     if ifcproduct.Name:
         obj.Label = ifcproduct.Name
-    if ifctype in ArchIFC.IfcTypes:
-        obj.IfcType = ifctype
+    if ifcclass in ArchIFC.IfcClasses:
+        obj.IfcClass = ifcclass
     for attr in dir(ifcproduct):
         if attr in obj.PropertiesList:
             value = getattr(ifcproduct,attr)

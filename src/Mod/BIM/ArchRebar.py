@@ -64,7 +64,7 @@ class _Rebar(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Reinforcing Bar"
+        obj.IfcClass = "Reinforcing Bar"
 
     def setProperties(self,obj):
 
@@ -570,4 +570,3 @@ def getLengthOfRebar(rebar):
     else:
         FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
         return None
-

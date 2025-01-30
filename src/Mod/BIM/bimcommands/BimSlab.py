@@ -82,7 +82,7 @@ class BIM_Slab:
                 + ",height=200)"
             )
             FreeCADGui.doCommand('s.Label = "' + translate("BIM", "Slab") + '"')
-            FreeCADGui.doCommand('s.IfcType = "Slab"')
+            FreeCADGui.doCommand('s.IfcClass = "Slab"')
             FreeCADGui.doCommand("s.Normal = FreeCAD.Vector(0,0,-1)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()

@@ -141,7 +141,7 @@ class _Wall(ArchComponent.Component):
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
-        obj.IfcType = "Wall"
+        obj.IfcClass = "Wall"
 
     def setProperties(self, obj):
         """Give the wall its wall specific properties, such as its alignment.
@@ -905,7 +905,7 @@ class _Wall(ArchComponent.Component):
 
                     elif hasattr(obj.Base, 'Proxy') and obj.ArchSketchData and \
                     hasattr(obj.Base.Proxy, 'getWallBaseShapeEdgesInfo'):
-                        wallBaseShapeEdgesInfo = obj.Base.Proxy.getWallBaseShapeEdgesInfo(obj.Base,	
+                        wallBaseShapeEdgesInfo = obj.Base.Proxy.getWallBaseShapeEdgesInfo(obj.Base,
                                                  propSetUuid=propSetUuid)
                         #get wall edges (not wires); use original edges if getWallBaseShapeEdgesInfo() provided none
                         if wallBaseShapeEdgesInfo:

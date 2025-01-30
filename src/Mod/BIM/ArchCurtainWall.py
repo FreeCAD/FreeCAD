@@ -79,7 +79,7 @@ class CurtainWall(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Curtain Wall"
+        obj.IfcClass = "Curtain Wall"
 
     def setProperties(self,obj):
 
@@ -563,4 +563,3 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
                     colors.append(panelcolor)
         if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
             obj.ViewObject.DiffuseColor = colors
-

@@ -395,18 +395,18 @@ class BIM_Preflight_TaskPanel:
                 if (
                     (Draft.getType(obj) == "Site")
                     or (hasattr(obj, "IfcRole") and (obj.IfcRole == "Site"))
-                    or (hasattr(obj, "IfcType") and (obj.IfcType == "Site"))
+                    or (hasattr(obj, "IfcClass") and (obj.IfcClass == "Site"))
                 ):
                     sites = True
                 elif (
                     (Draft.getType(obj) == "Building")
                     or (hasattr(obj, "IfcRole") and (obj.IfcRole == "Building"))
-                    or (hasattr(obj, "IfcType") and (obj.IfcType == "Building"))
+                    or (hasattr(obj, "IfcClass") and (obj.IfcClass == "Building"))
                 ):
                     buildings = True
                 elif (
                     hasattr(obj, "IfcRole") and (obj.IfcRole == "Building Storey")
-                ) or (hasattr(obj, "IfcType") and (obj.IfcType == "Building Storey")):
+                ) or (hasattr(obj, "IfcClass") and (obj.IfcClass == "Building Storey")):
                     storeys = True
             if (not sites) or (not buildings) or (not storeys):
                 msg = self.getToolTip(test)
@@ -448,7 +448,7 @@ class BIM_Preflight_TaskPanel:
                 if (
                     (Draft.getType(obj) == "Building")
                     or (hasattr(obj, "IfcRole") and (obj.IfcRole == "Building"))
-                    or (hasattr(obj, "IfcType") and (obj.IfcType == "Building"))
+                    or (hasattr(obj, "IfcClass") and (obj.IfcClass == "Building"))
                 ):
                     ok = False
                     for parent in obj.InList:
@@ -459,8 +459,8 @@ class BIM_Preflight_TaskPanel:
                                 and (parent.IfcRole == "Site")
                             )
                             or (
-                                hasattr(parent, "IfcType")
-                                and (parent.IfcType == "Site")
+                                hasattr(parent, "IfcClass")
+                                and (parent.IfcClass == "Site")
                             )
                         ):
                             if hasattr(parent, "Group") and parent.Group:
@@ -502,7 +502,7 @@ class BIM_Preflight_TaskPanel:
             msg = None
             for obj in self.getObjects():
                 if (hasattr(obj, "IfcRole") and (obj.IfcRole == "Building Storey")) or (
-                    hasattr(obj, "IfcType") and (obj.IfcType == "Building Storey")
+                    hasattr(obj, "IfcClass") and (obj.IfcClass == "Building Storey")
                 ):
                     ok = False
                     for parent in obj.InList:
@@ -510,8 +510,8 @@ class BIM_Preflight_TaskPanel:
                             hasattr(parent, "IfcRole")
                             and (parent.IfcRole == "Building")
                         ) or (
-                            hasattr(parent, "IfcType")
-                            and (parent.IfcType == "Building")
+                            hasattr(parent, "IfcClass")
+                            and (parent.IfcClass == "Building")
                         ):
                             if hasattr(parent, "Group") and parent.Group:
                                 if obj in parent.Group:
@@ -555,8 +555,8 @@ class BIM_Preflight_TaskPanel:
                     hasattr(obj, "IfcRole")
                     and (not obj.IfcRole in ["Building", "Building Storey", "Site"])
                 ) or (
-                    hasattr(obj, "IfcType")
-                    and (not obj.IfcType in ["Building", "Building Storey", "Site"])
+                    hasattr(obj, "IfcClass")
+                    and (not obj.IfcClass in ["Building", "Building Storey", "Site"])
                 ):
                     ok = False
                     ancestors = obj.InListRecursive
@@ -573,8 +573,8 @@ class BIM_Preflight_TaskPanel:
                             hasattr(parent, "IfcRole")
                             and (parent.IfcRole in ["Building Storey", "Building"])
                         ) or (
-                            hasattr(parent, "IfcType")
-                            and (parent.IfcType in ["Building Storey", "Building"])
+                            hasattr(parent, "IfcClass")
+                            and (parent.IfcClass in ["Building Storey", "Building"])
                         ):
                             ok = True
                             break
@@ -615,8 +615,8 @@ class BIM_Preflight_TaskPanel:
             msg = None
 
             for obj in self.getObjects():
-                if hasattr(obj, "IfcType"):
-                    if obj.IfcType == "Undefined":
+                if hasattr(obj, "IfcClass"):
+                    if obj.IfcClass == "Undefined":
                         self.culprits[test].append(obj)
                         undefined.append(obj)
                 elif hasattr(obj, "IfcRole"):
@@ -784,8 +784,8 @@ class BIM_Preflight_TaskPanel:
                     obj.IfcProperties, dict
                 ):
                     r = None
-                    if hasattr(obj, "IfcType"):
-                        r = obj.IfcType
+                    if hasattr(obj, "IfcClass"):
+                        r = obj.IfcClass
                     if hasattr(obj, "IfcRole"):
                         r = obj.IfcRole
                     if r and (r in psets):
@@ -802,7 +802,7 @@ class BIM_Preflight_TaskPanel:
                 msg += (
                     translate(
                         "BIM",
-                        "The objects below have a defined IFC type but do not have the associated common property set:",
+                        "The objects below have a defined IFC class but do not have the associated common property set:",
                     )
                     + "\n\n"
                 )
@@ -855,8 +855,8 @@ class BIM_Preflight_TaskPanel:
                     obj.IfcProperties, dict
                 ):
                     r = None
-                    if hasattr(obj, "IfcType"):
-                        r = obj.IfcType
+                    if hasattr(obj, "IfcClass"):
+                        r = obj.IfcClass
                     elif hasattr(obj, "IfcRole"):
                         r = obj.IfcRole
                     if r and (r != "Undefined"):

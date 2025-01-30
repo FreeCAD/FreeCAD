@@ -56,7 +56,7 @@ class _Frame(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Railing"
+        obj.IfcClass = "Railing"
 
     def setProperties(self,obj):
 
@@ -228,4 +228,3 @@ class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
             if self.Object.Profile:
                 p = [self.Object.Profile]
         return ArchComponent.ViewProviderComponent.claimChildren(self)+p
-

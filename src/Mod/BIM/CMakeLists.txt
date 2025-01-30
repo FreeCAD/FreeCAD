@@ -292,4 +292,3 @@ INSTALL(
     DESTINATION
        "${CMAKE_INSTALL_DATADIR}/Mod/BIM/Resources/icons"
 )
-

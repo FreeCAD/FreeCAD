@@ -380,20 +380,20 @@ def export(exportList, filename, colors=None, preferences=None):
         name = getText("Name",obj)
         description = getText("Description",obj)
         uid = getUID(obj,preferences)
-        ifctype = getIfcTypeFromObj(obj)
-        # print(ifctype)
+        ifcclass = getIfcClassFromObj(obj)
+        # print(ifcclass)
 
         # handle assemblies (arrays, app::parts, references, etc...)
 
         assemblyElements = []
         assemblyTypes = ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]
         is_nested_group = False
-        if preferences['GROUPS_AS_ASSEMBLIES'] and ifctype == "IfcGroup":
+        if preferences['GROUPS_AS_ASSEMBLIES'] and ifcclass == "IfcGroup":
             for p in obj.InListRecursive:
                 if not p.isDerivedFrom("App::DocumentObjectGroup"):
                     is_nested_group = True
 
-        if ifctype == "IfcArray":
+        if ifcclass == "IfcArray":
             clonedeltas = []
             if obj.ArrayType == "ortho":
                 for i in range(obj.NumberX):
@@ -405,7 +405,7 @@ def export(exportList, filename, colors=None, preferences=None):
                             if k > 0:
                                 clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX)+(j*obj.IntervalY)+(k*obj.IntervalZ))
             if clonedeltas:
-                ifctype = "IfcElementAssembly"
+                ifcclass = "IfcElementAssembly"
                 for delta in clonedeltas:
                     # print("delta: {}".format(delta))
                     representation,placement,shapetype = getRepresentation(
@@ -420,7 +420,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     subproduct = createProduct(
                         ifcfile,
                         obj.Base,
-                        getIfcTypeFromObj(obj.Base),
+                        getIfcClassFromObj(obj.Base),
                         getUID(obj.Base,preferences),
                         history,
                         getText("Name",obj.Base),
@@ -438,7 +438,7 @@ def export(exportList, filename, colors=None, preferences=None):
                                                     preferences['SCALE_FACTOR']
                     )
 
-        elif ifctype in assemblyTypes or is_nested_group:
+        elif ifcclass in assemblyTypes or is_nested_group:
             if hasattr(obj,"Group"):
                 group = obj.Group
             elif hasattr(obj,"Links"):
@@ -460,7 +460,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     subproduct = createProduct(
                         ifcfile,
                         subobj,
-                        getIfcTypeFromObj(subobj),
+                        getIfcClassFromObj(subobj),
                         getUID(subobj,preferences),
                         history,
                         getText("Name",subobj),
@@ -470,14 +470,14 @@ def export(exportList, filename, colors=None, preferences=None):
                         preferences)
                     products[subobj.Name] = subproduct
                 assemblyElements.append(subproduct)
-            ifctype = "IfcElementAssembly"
+            ifcclass = "IfcElementAssembly"
 
         # export grids
 
-        if ifctype in ["IfcAxis","IfcAxisSystem","IfcGrid"]:
+        if ifcclass in ["IfcAxis","IfcAxisSystem","IfcGrid"]:
             ifcaxes = []
             ifcpols = []
-            if ifctype == "IfcAxis":
+            if ifcclass == "IfcAxis":
                 # make sure this axis is not included in something else already
                 standalone = True
                 for p in obj.InList:
@@ -493,7 +493,7 @@ def export(exportList, filename, colors=None, preferences=None):
             if not axgroups:
                 if preferences["DEBUG"]: print("Warning! Axis system object found '{}', but no axis data found.".format(obj.Label))
                 continue
-            ifctype = "IfcGrid"
+            ifcclass = "IfcGrid"
             for axg in axgroups:
                 ifcaxg = []
                 for ax in axg:
@@ -517,7 +517,7 @@ def export(exportList, filename, colors=None, preferences=None):
             if len(ifcaxes) > 2:
                 w = ifcaxes[2]
             if u and v:
-                if preferences['DEBUG']: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
+                if preferences['DEBUG']: print(str(count).ljust(3)," : ", ifcclass, " (",str(len(ifcpols)),"axes ) : ",name)
                 xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
                 zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
                 ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
@@ -536,12 +536,12 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # gather groups
 
-        if ifctype == "IfcGroup":
+        if ifcclass == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
 
-        if ifctype not in ArchIFCSchema.IfcProducts:
-            ifctype = "IfcBuildingElementProxy"
+        if ifcclass not in ArchIFCSchema.IfcProducts:
+            ifcclass = "IfcBuildingElementProxy"
 
         # getting the representation
 
@@ -561,18 +561,18 @@ def export(exportList, filename, colors=None, preferences=None):
             skipshape=skipshape
         )
         if preferences['GET_STANDARD']:
-            if isStandardCase(obj,ifctype):
-                ifctype += "StandardCase"
+            if isStandardCase(obj,ifcclass):
+                ifcclass += "StandardCase"
 
         if preferences['DEBUG']:
-            print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
+            print(str(count).ljust(3)," : ", ifcclass, " (",shapetype,") : ",name)
 
         # creating the product
 
         product = createProduct(
             ifcfile,
             obj,
-            ifctype,
+            ifcclass,
             uid,
             history,
             name,
@@ -582,7 +582,7 @@ def export(exportList, filename, colors=None, preferences=None):
             preferences)
 
         products[obj.Name] = product
-        if ifctype in ["IfcBuilding","IfcBuildingStorey","IfcSite","IfcSpace"]:
+        if ifcclass in ["IfcBuilding","IfcBuildingStorey","IfcSite","IfcSpace"]:
             spatialelements[obj.Name] = product
 
         # associate with structural analysis object if any
@@ -977,11 +977,11 @@ def export(exportList, filename, colors=None, preferences=None):
     treated = []
     defaulthost = []
 
-    # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements first
-    # if ifc type is "Undefined" gather elements too
+    # buildingParts can be exported as any "normal" IFC class. In that case, gather their elements first
+    # if ifc class is "Undefined" gather elements too
 
     for bp in Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if bp.IfcType not in ["Site","Building","Building Storey","Space"]:
+        if bp.IfcClass not in ["Site","Building","Building Storey","Space"]:
             if bp.Name in products:
                 subs = []
                 for c in bp.Group:
@@ -1001,7 +1001,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # storeys
 
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcType") and floor.IfcType == "Building Storey"):
+        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcClass") and floor.IfcClass == "Building Storey"):
             objs = Draft.get_group_contents(floor, walls=True, addgroups=True)
             objs = Arch.pruneIncluded(objs)
             objs.remove(floor) # get_group_contents + addgroups will include the floor itself
@@ -1039,7 +1039,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # buildings
 
     for building in Draft.getObjectsOfType(objectslist,"Building")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if (Draft.getType(building) == "Building") or (hasattr(building,"IfcType") and building.IfcType == "Building"):
+        if (Draft.getType(building) == "Building") or (hasattr(building,"IfcClass") and building.IfcClass == "Building"):
             objs = Draft.get_group_contents(building, walls=True,
                                             addgroups=True)
             objs = Arch.pruneIncluded(objs)
@@ -1080,7 +1080,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
     # sites
 
-    for site in exportIFCHelper.getObjectsOfIfcType(objectslist, "Site"):
+    for site in exportIFCHelper.getObjectsOfIfcClass(objectslist, "Site"):
         objs = Draft.get_group_contents(site, walls=True, addgroups=True)
         objs = Arch.pruneIncluded(objs)
         children = []
@@ -1174,8 +1174,8 @@ def export(exportList, filename, colors=None, preferences=None):
                 if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor","BuildingPart"]):
                     untreated.append(v)
                 elif Draft.getType(FreeCAD.ActiveDocument.getObject(k)) == "BuildingPart":
-                    if not(FreeCAD.ActiveDocument.getObject(k).IfcType in ["Building","Building Storey","Site","Space"]):
-                        # if ifc type is "Undefined" the object is added to untreated
+                    if not(FreeCAD.ActiveDocument.getObject(k).IfcClass in ["Building","Building Storey","Site","Space"]):
+                        # if ifc class is "Undefined" the object is added to untreated
                         untreated.append(v)
     if untreated:
         if not defaulthost:
@@ -1611,58 +1611,58 @@ def getPropertyData(key,value,preferences):
     return pset, pname, ptype, pvalue
 
 
-def isStandardCase(obj,ifctype):
+def isStandardCase(obj,ifcclass):
 
-    if ifctype.endswith("StandardCase"):
+    if ifcclass.endswith("StandardCase"):
         return False # type is already standard case, return False so "StandardCase" is not added twice
     if hasattr(obj,"Proxy") and hasattr(obj.Proxy,"isStandardCase"):
         return obj.Proxy.isStandardCase(obj)
     return False
 
 
-def getIfcTypeFromObj(obj):
+def getIfcClassFromObj(obj):
 
     dtype = Draft.getType(obj)
-    if (dtype == "BuildingPart") and hasattr(obj,"IfcType") and (obj.IfcType == "Undefined"):
-        ifctype = "IfcBuildingElementPart"
-        obj.IfcType = "Building Element Part"
+    if (dtype == "BuildingPart") and hasattr(obj,"IfcClass") and (obj.IfcClass == "Undefined"):
+        ifcclass = "IfcBuildingElementPart"
+        obj.IfcClass = "Building Element Part"
         # export BuildingParts as Building Element Parts if their type wasn't explicitly set
-        # set IfcType in the object as well
+        # set IfcClass in the object as well
         # https://forum.freecad.org/viewtopic.php?p=662934#p662927
-    elif hasattr(obj,"IfcType"):
-        ifctype = obj.IfcType.replace(" ","")
+    elif hasattr(obj,"IfcClass"):
+        ifcclass = obj.IfcClass.replace(" ","")
     elif dtype in ["App::Part","Part::Compound"]:
-        ifctype = "IfcElementAssembly"
+        ifcclass = "IfcElementAssembly"
     elif dtype in ["App::DocumentObjectGroup"]:
-        ifctype = "IfcGroup"
+        ifcclass = "IfcGroup"
     else:
-        ifctype = dtype
+        ifcclass = dtype
 
-    if ifctype in translationtable:
-        ifctype = translationtable[ifctype]
-    if not ifctype.startswith("Ifc"):
-        ifctype = "Ifc" + ifctype
-    if "::" in ifctype:
+    if ifcclass in translationtable:
+        ifcclass = translationtable[ifcclass]
+    if not ifcclass.startswith("Ifc"):
+        ifcclass = "Ifc" + ifcclass
+    if "::" in ifcclass:
         # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
-        # this is not a ifctype at all
-        ifctype = "IfcBuildingElementPRoxy"
+        # this is not a ifcclass at all
+        ifcclass = "IfcBuildingElementPRoxy"
 
-    # print("Return value of getIfcTypeFromObj: {}".format(ifctype))
-    return ifctype
+    # print("Return value of getIfcClassFromObj: {}".format(ifcclass))
+    return ifcclass
 
 
 def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
 
-    ifctype = getIfcTypeFromObj(obj)
-    if ifctype in ["IfcSlab", "IfcFooting"]:
+    ifcclass = getIfcClassFromObj(obj)
+    if ifcclass in ["IfcSlab", "IfcFooting"]:
         kwargs.update({"PredefinedType": "NOTDEFINED"})
-    elif ifctype == "IfcBuilding":
+    elif ifcclass == "IfcBuilding":
         kwargs.update({"CompositionType": "ELEMENT"})
-    elif ifctype == "IfcBuildingStorey":
+    elif ifcclass == "IfcBuildingStorey":
         kwargs.update({"CompositionType": "ELEMENT"})
-    elif ifctype == "IfcBuildingElementProxy":
+    elif ifcclass == "IfcBuildingElementProxy":
         kwargs.update({"CompositionType": "ELEMENT"})
-    elif ifctype == "IfcSpace":
+    elif ifcclass == "IfcSpace":
         internal = "NOTDEFINED"
         if hasattr(obj,"Internal"):
             if obj.Internal:
@@ -1674,19 +1674,19 @@ def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
             "InteriorOrExteriorSpace": internal,
             "ElevationWithFlooring": obj.Shape.BoundBox.ZMin*scale
         })
-    elif ifctype == "IfcReinforcingBar":
+    elif ifcclass == "IfcReinforcingBar":
         kwargs.update({
             "NominalDiameter": obj.Diameter.Value,
             "BarLength": obj.Length.Value
         })
-    elif ifctype == "IfcBuildingStorey":
+    elif ifcclass == "IfcBuildingStorey":
         kwargs.update({"Elevation": obj.Placement.Base.z*scale})
     return kwargs
 
 
 def exportIfcAttributes(obj, kwargs, scale=0.001):
 
-    ifctype = getIfcTypeFromObj(obj)
+    ifcclass = getIfcClassFromObj(obj)
     for property in obj.PropertiesList:
         if obj.getGroupOfProperty(property) == "IFC Attributes" and obj.getPropertyByName(property):
             value = obj.getPropertyByName(property)
@@ -1694,7 +1694,7 @@ def exportIfcAttributes(obj, kwargs, scale=0.001):
                 value = float(value)
                 if "Elevation" in property:
                     value = value*scale # some properties must be changed to meters
-            if (ifctype == "IfcFurnishingElement") and (property == "PredefinedType"):
+            if (ifcclass == "IfcFurnishingElement") and (property == "PredefinedType"):
                 pass # IFC2x3 Furniture objects get converted to IfcFurnishingElement and have no PredefinedType anymore
             else:
                 kwargs.update({property: value})
@@ -2368,7 +2368,7 @@ def getBrepFlag(obj,preferences):
     return brepflag
 
 
-def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,representation,preferences):
+def createProduct(ifcfile,obj,ifcclass,uid,history,name,description,placement,representation,preferences):
     """creates a product in the given IFC file"""
 
     kwargs = {
@@ -2379,7 +2379,7 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
         "ObjectPlacement": placement,
         "Representation": representation
     }
-    if ifctype == "IfcSite":
+    if ifcclass == "IfcSite":
         kwargs.update({
             "RefLatitude":dd2dms(obj.Latitude),
             "RefLongitude":dd2dms(obj.Longitude),
@@ -2391,14 +2391,14 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
         kwargs = exportIFC2X3Attributes(obj, kwargs, preferences['SCALE_FACTOR'])
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences['SCALE_FACTOR'])
-    # in some cases object have wrong ifctypes, thus set it
+    # in some cases object have wrong ifcclasses, thus set it
     # https://forum.freecad.org/viewtopic.php?f=39&t=50085
-    if ifctype not in ArchIFCSchema.IfcProducts:
-        # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
-        ifctype = "IfcBuildingElementProxy"
-    # print("createProduct: {}".format(ifctype))
+    if ifcclass not in ArchIFCSchema.IfcProducts:
+        # print("Wrong IfcClass: IfcBuildingElementProxy is used. {}".format(ifcclass))
+        ifcclass = "IfcBuildingElementProxy"
+    # print("createProduct: {}".format(ifcclass))
     # print(kwargs)
-    product = getattr(ifcfile,"create"+ifctype)(**kwargs)
+    product = getattr(ifcfile,"create"+ifcclass)(**kwargs)
     return product
 
 

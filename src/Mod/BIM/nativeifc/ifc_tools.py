@@ -406,7 +406,7 @@ def get_children(
         children, ifcfile, expand=expand, spaces=True, assemblies=assemblies
     )
     if iftype:
-        result = [r for r in result if r.is_a(ifctype)]
+        result = [r for r in result if r.is_a(ifcclass)]
     return result
 
 
@@ -1240,14 +1240,14 @@ def deaggregate(obj, parent):
     parent.Proxy.removeObject(parent, obj)
 
 
-def get_ifctype(obj):
-    """Returns a valid IFC type from an object"""
+def get_ifcclass(obj):
+    """Returns a valid IFC class from an object"""
 
     if hasattr(obj, "Class"):
         if "ifc" in str(obj.Class).lower():
             return obj.Class
-    if hasattr(obj,"IfcType") and obj.IfcType != "Undefined":
-        return "Ifc" + obj.IfcType.replace(" ","")
+    if hasattr(obj,"IfcClass") and obj.IfcClass != "Undefined":
+        return "Ifc" + obj.IfcClass.replace(" ","")
     dtype = Draft.getType(obj)
     if dtype in ["App::Part","Part::Compound","Array"]:
         return "IfcElementAssembly"

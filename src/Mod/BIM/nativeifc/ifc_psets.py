@@ -48,7 +48,7 @@ def has_psets(obj):
 def get_psets(element):
     """Returns a dictionary of dictionaries representing the
     properties of an element in the form:
-    { pset_name : { property_name : IfcType(value), ... }, ... }"""
+    { pset_name : { property_name : IfcClass(value), ... }, ... }"""
 
     result = {}
     psets = getattr(element, "IsDefinedBy", [])
@@ -104,7 +104,7 @@ def show_psets(obj):
                 pname = "_" + pname
             ttip = (
                 ptype + ":" + oname
-            )  # setting IfcType:PropName as a tooltip to desambiguate
+            )  # setting IfcClass:PropName as a tooltip to desambiguate
             #while pname in obj.PropertiesList:
                 # print("DEBUG: property", pname, "(", value, ") already exists in", obj.Label)
             #    pname += "_"
@@ -332,8 +332,8 @@ def get_freecad_type(ptype):
     return "App::PropertyString"
 
 
-def get_ifc_type(fctype):
-    """Returns an IFC property type corresponding to a FreeCAD property type"""
+def get_ifc_class(fctype):
+    """Returns an IFC property class corresponding to a FreeCAD property type"""
 
     conv = read_properties_conversion()
     for key, values in conv.items():

@@ -28,11 +28,11 @@ import ifcopenshell
 from ifcopenshell import guid
 from draftutils import params
 
-def getObjectsOfIfcType(objects, ifcType):
+def getObjectsOfIfcClass(objects, ifcClass):
     results = []
     for object in objects:
-        if hasattr(object,"IfcType"):
-            if object.IfcType == ifcType:
+        if hasattr(object,"IfcClass"):
+            if object.IfcClass == ifcClass:
                 results.append(object)
     return results
 
@@ -219,7 +219,7 @@ class ContextCreator:
 
     def getProjectObject(self):
         try:
-            return getObjectsOfIfcType(self.objects, "Project")[0]
+            return getObjectsOfIfcClass(self.objects, "Project")[0]
         except Exception:
             return None
 

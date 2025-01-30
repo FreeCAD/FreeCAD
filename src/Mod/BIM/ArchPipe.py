@@ -60,12 +60,12 @@ class _ArchPipe(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
         # IfcPipeSegment is new in IFC4
-        from ArchIFC import IfcTypes
-        if "Pipe Segment" in IfcTypes:
-            obj.IfcType = "Pipe Segment"
+        from ArchIFC import IfcClasses
+        if "Pipe Segment" in IfcClasses:
+            obj.IfcClass = "Pipe Segment"
         else:
             # IFC2x3 does not know a Pipe Segment
-            obj.IfcType = "Building Element Proxy"
+            obj.IfcClass = "Building Element Proxy"
 
     def setProperties(self,obj):
 
@@ -279,7 +279,7 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Pipe Fitting"
+        obj.IfcClass = "Pipe Fitting"
 
     def setProperties(self,obj):
 
@@ -453,5 +453,3 @@ class _ArchPipeConnector(ArchComponent.Component):
             if pipe.OffsetEnd != offset:
                 pipe.OffsetEnd = offset
                 pipe.Proxy.execute(pipe)
-
-

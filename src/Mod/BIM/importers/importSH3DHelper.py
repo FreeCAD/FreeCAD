@@ -1090,7 +1090,7 @@ class RoomHandler(BaseHandler):
             footprint.Label = elm.get('name', 'Room') + '-footprint'
 
             space = Arch.makeSpace(footprint)
-            space.IfcType = "Space"
+            space.IfcClass = "Space"
             space.Label = elm.get('name', 'Room')
             self._set_properties(space, elm)
 
@@ -1187,7 +1187,7 @@ class WallHandler(BaseHandler):
                 _log(f"No wall created for {elm.get('id')}. Skipping!")
                 return
 
-        wall.IfcType = "Wall"
+        wall.IfcClass = "Wall"
         wall.Label = f"wall{i}"
         wall.Base.Label = f"wall{i}-wallshape"
         self._set_properties(wall, elm)
@@ -2008,10 +2008,10 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         #   correspondence between a catalog ID and a specific window preset from
         #   the parts library.
         catalog_id = elm.get('catalogId')
-        (windowtype, ifc_type) = DOOR_MODELS.get(catalog_id, (None, None))
+        (windowtype, ifc_class) = DOOR_MODELS.get(catalog_id, (None, None))
         if not windowtype:
             _wrn(f"Unknown catalogId {catalog_id} for element {elm.get('id')}. Defaulting to 'Simple Door'")
-            (windowtype, ifc_type) = ('Simple door', 'Door')
+            (windowtype, ifc_class) = ('Simple door', 'Door')
 
         # See the https://wiki.freecad.org/Arch_Window for details about these values
         # Only using Opening / Fixed / Simple Door
@@ -2023,10 +2023,10 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         o1 = 0
         o2 = (wall_width-w2)/2
         window = Arch.makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, pl)
-        window.IfcType = ifc_type
+        window.IfcClass = ifc_class
 
         mirrored = bool(elm.get('modelMirrored', False))
-        if ifc_type == 'Door' and mirrored:
+        if ifc_class == 'Door' and mirrored:
             window.OperationType = "SINGLE_SWING_RIGHT"
 
         # Adjust symbol plan, Sweet Home has the opening in the opposite side by default

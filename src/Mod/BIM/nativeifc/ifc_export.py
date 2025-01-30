@@ -143,7 +143,7 @@ def create_product(obj, parent, ifcfile, ifcclass=None):
     name = obj.Label
     description = getattr(obj, "Description", None)
     if not ifcclass:
-        ifcclass = ifc_tools.get_ifctype(obj)
+        ifcclass = ifc_tools.get_ifcclass(obj)
     representation, placement = create_representation(obj, ifcfile)
     product = ifc_tools.api_run("root.create_entity", ifcfile, ifc_class=ifcclass, name=name)
     ifc_tools.set_attribute(ifcfile, product, "Description", description)
@@ -204,7 +204,7 @@ def is_annotation(obj):
 
     if getattr(obj, "IfcClass", None) in ["IfcAnnotation", "IfcGridAxis"]:
         return True
-    if getattr(obj, "IfcType", None) == "Annotation":
+    if getattr(obj, "IfcClass", None) == "Annotation":
         return True
     if obj.isDerivedFrom("Part::Part2DObject"):
         return True

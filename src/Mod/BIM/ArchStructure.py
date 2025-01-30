@@ -118,13 +118,13 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
                 obj.Length = h
 
     if not height and not length:
-        obj.IfcType = "Building Element Proxy"
+        obj.IfcClass = "Building Element Proxy"
         obj.Label = name if name else translate("Arch","Structure")
     elif obj.Length > obj.Height:
-        obj.IfcType = "Beam"
+        obj.IfcClass = "Beam"
         obj.Label = name if name else translate("Arch","Beam")
     elif obj.Height > obj.Length:
-        obj.IfcType = "Column"
+        obj.IfcClass = "Column"
         obj.Label = name if name else translate("Arch","Column")
     return obj
 
@@ -675,7 +675,7 @@ class _Structure(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Beam"
+        obj.IfcClass = "Beam"
 
     def setProperties(self,obj):
 
@@ -901,10 +901,10 @@ class _Structure(ArchComponent.Component):
 
     def getExtrusionData(self,obj):
         """returns (shape,extrusion vector or path,placement) or None"""
-        if hasattr(obj,"IfcType"):
-            IfcType = obj.IfcType
+        if hasattr(obj,"IfcClass"):
+            IfcClass = obj.IfcClass
         else:
-            IfcType = None
+            IfcClass = None
         import Part,DraftGeomUtils
         data = ArchComponent.Component.getExtrusionData(self,obj)
         if data:
@@ -1006,7 +1006,7 @@ class _Structure(ArchComponent.Component):
                                     # TODO use Part.Shape() rather than shape.copy() ... ?
                                     baseface = f.copy()
         elif length and width and height:
-            if (length > height) and (IfcType in ["Beam", "Column"]):
+            if (length > height) and (IfcClass in ["Beam", "Column"]):
                 h2 = height/2 or 0.5
                 w2 = width/2 or 0.5
                 v1 = Vector(0,-w2,-h2)
@@ -1079,7 +1079,7 @@ class _Structure(ArchComponent.Component):
                 if not normal.Length:
                     normal = Vector(0,0,1)
                 extrusion = normal
-                if (length > height) and (IfcType in ["Beam", "Column"]):
+                if (length > height) and (IfcClass in ["Beam", "Column"]):
                     if length:
                         extrusion = normal.multiply(length)
                 else:
@@ -1097,10 +1097,10 @@ class _Structure(ArchComponent.Component):
         if not hasattr(self,"onDocRestoredDone"):
             return
 
-        if hasattr(obj,"IfcType"):
-            IfcType = obj.IfcType
+        if hasattr(obj,"IfcClass"):
+            IfcClass = obj.IfcClass
         else:
-            IfcType = None
+            IfcClass = None
         self.hideSubobjects(obj,prop)
         if prop in ["Shape","ResetNodes","NodesOffset"]:
             # ResetNodes is not a property but it allows us to use this function to force reset the nodes
@@ -1108,7 +1108,7 @@ class _Structure(ArchComponent.Component):
             extdata = self.getExtrusionData(obj)
             if extdata and not isinstance(extdata[0],list):
                 nodes = extdata[0]
-                if IfcType in ["Beam", "Column"]:
+                if IfcClass in ["Beam", "Column"]:
                     if not isinstance(extdata[1], FreeCAD.Vector):
                         nodes = extdata[1]
                     elif extdata[1].Length > 0:
@@ -1238,13 +1238,13 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                             self.lineset.coordIndex.setValues(0,len(p)+2,list(range(len(p)+1))+[-1])
                             self.faceset.coordIndex.setValues(0,len(p)+1,list(range(len(p)))+[-1])
 
-        elif prop in ["IfcType"]:
+        elif prop in ["IfcClass"]:
             if hasattr(obj.ViewObject,"NodeType"):
-                if hasattr(obj,"IfcType"):
-                    IfcType = obj.IfcType
+                if hasattr(obj,"IfcClass"):
+                    IfcClass = obj.IfcClass
                 else:
-                    IfcType = None
-                if IfcType == "Slab":
+                    IfcClass = None
+                if IfcClass == "Slab":
                     obj.ViewObject.NodeType = "Area"
                 else:
                     obj.ViewObject.NodeType = "Linear"
