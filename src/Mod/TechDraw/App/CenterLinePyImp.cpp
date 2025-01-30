@@ -153,20 +153,20 @@ Py::String CenterLinePy::getTag() const
 
 Py::Long CenterLinePy::getType() const
 {
-    int tmp = getCenterLinePtr()->m_type;
-    return Py::Long(tmp);
+    CenterLine::Type tmp = getCenterLinePtr()->m_type;
+    return Py::Long(static_cast<int>(tmp));
 }
 
 Py::Long CenterLinePy::getMode() const
 {
-    int tmp = getCenterLinePtr()->m_mode;
-    return Py::Long(tmp);
+    CenterLine::Mode tmp = getCenterLinePtr()->m_mode;
+    return Py::Long(static_cast<int>(tmp));
 }
 
 void CenterLinePy::setMode(Py::Long arg)
 {
     int temp = static_cast<int>(arg);
-    getCenterLinePtr()->m_mode = temp;
+    getCenterLinePtr()->m_mode = static_cast<CenterLine::Mode>(temp);
 }
 
 Py::Float CenterLinePy::getHorizShift() const
