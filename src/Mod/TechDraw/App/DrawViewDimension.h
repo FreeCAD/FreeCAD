@@ -29,6 +29,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "DimensionFormatter.h"
 #include "DimensionGeometry.h"
 #include "DimensionReferences.h"
 #include "DrawUtil.h"
@@ -44,9 +45,11 @@ class Measurement;
 namespace TechDraw
 {
 class DrawViewPart;
-class DimensionFormatter;
 class GeometryMatcher;
 class DimensionAutoCorrect;
+using DF = DimensionFormatter;
+
+//TODO: Cyclic dependency issue with DimensionFormatter
 
 class TechDrawExport DrawViewDimension: public TechDraw::DrawView
 {
@@ -123,11 +126,11 @@ public:
     // return PyObject as DrawViewDimensionPy
     PyObject* getPyObject() override;
 
-    virtual std::string getFormattedToleranceValue(int partial);
-    virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
-    virtual std::string getFormattedDimensionValue(int partial = 0);
+    virtual std::string getFormattedToleranceValue(DF::Format partial);
+    virtual std::pair<std::string, std::string> getFormattedToleranceValues(DF::Format partial = DF::Format::UNALTERED);
+    virtual std::string getFormattedDimensionValue(DF::Format partial = DF::Format::UNALTERED);
     virtual std::string
-    formatValue(qreal value, QString qFormatSpec, int partial = 0, bool isDim = true);
+    formatValue(qreal value, QString qFormatSpec, DF::Format partial = DF::Format::UNALTERED, bool isDim = true);
 
     virtual bool haveTolerance();
 
