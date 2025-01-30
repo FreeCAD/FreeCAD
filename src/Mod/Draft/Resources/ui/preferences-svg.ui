@@ -98,6 +98,56 @@ One unit in the SVG file will translate as one millimeter.</string>
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Mathematical precision (cruical for closed wires)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+	       <widget class="Gui::PrefSpinBox" name="spinBox_precisionSVG">
+	        <property name="minimumSize">
+	         <size>
+	          <width>140</width>
+	          <height>0</height>
+	         </size>
+	        </property>
+	        <property name="toolTip">
+	         <string>The number of decimals used in internal coordinate operations (for example 3 = 0.001).
+	Values between 3 and 5 are usually considered the best trade-off.</string>
+	        </property>
+	        <property name="maximum">
+	         <number>10</number>
+	        </property>
+	        <property name="value">
+	         <number>4</number>
+	        </property>
+	        <property name="prefEntry" stdset="0">
+	         <cstring>precisionSVG</cstring>
+	        </property>
+	        <property name="prefPath" stdset="0">
+	         <cstring>Mod/Draft</cstring>
+	        </property>
+	       </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>

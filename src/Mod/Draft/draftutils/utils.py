@@ -206,6 +206,29 @@ def precision():
     return params.get_param("precision")
 
 
+def precisionSVG():
+    """Return the precision value for SVG import from the parameter database.
+
+    It is the number of decimal places that a float will have.
+    Example
+    ::
+        precision=5, 0.12345
+        precision=4, 0.1234
+        precision=3, 0.123
+
+    Due to floating point operations there may be rounding errors.
+    Therefore, this precision number is used to round up values
+    so that all operations are consistent.
+    By default the precision is 3 decimal places.
+
+    Returns
+    -------
+    int
+        params.get_param("precisionSVG")
+    """
+    return params.get_param("precisionSVG")
+
+
 def tolerance():
     """Return a tolerance based on the precision() value
 
