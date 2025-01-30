@@ -73,6 +73,7 @@ class ifc_vp_object:
         from PySide import QtCore, QtGui  # lazy import
 
         rclass = self.Object.IfcClass.replace("StandardCase","")
+        rclass = self.Object.IfcClass.replace("Class","")
         rclass = self.Object.IfcClass.replace("Type","")
         ifcicon = ":/icons/IFC/" + rclass + ".svg"
         if QtCore.QFile.exists(ifcicon):
