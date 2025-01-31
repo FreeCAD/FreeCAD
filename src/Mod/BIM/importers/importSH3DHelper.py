@@ -77,7 +77,6 @@ except :
 # SweetHome3D is in cm while FreeCAD is in mm
 FACTOR = 10
 DEFAULT_WALL_WIDTH = 100
-TOLERANCE = float(1)
 DEFAULT_MATERIAL = App.Material(
     DiffuseColor=(1.00,0.00,0.00),
     AmbientColor=(0.33,0.33,0.33),
@@ -159,7 +158,6 @@ DOOR_MODELS = {
     'Scopia#window_4x5': ("Fixed","Window"),
 
 }
-
 
 ET_XPATH_LEVEL = 'level'
 ET_XPATH_ROOM = 'room'
@@ -2126,13 +2124,15 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         # Determine the wall's face with the same orientation. Note that
         # if the window is ever so slightly twisted with respect to the wall
         # this will probably fail.
+        right_face_normal = right_face.normalAt(0,0)
+        left_face_normal = left_face.normalAt(0,0)
         wall_face = right_face
         is_on_right = True
-        if not self._same_dir(bb_face_normal, wall_face.normalAt(0,0)):
+        if not self._same_dir(bb_face_normal, right_face_normal, 1):
             is_on_right = False
             wall_face = left_face
-            if not self._same_dir(bb_face_normal, wall_face.normalAt(0,0)):
-                _err(f"Weird: the extracted bb_normal {self._pv(bb_face_normal, True)} does not match neither the left or the right face of the wall {main_wall.Label}... The doorOrWindow might be slightly skewed. Defaulting on right face.")
+            if not self._same_dir(bb_face_normal, left_face_normal, 1):
+                _err(f"Weird: the extracted bb_normal {self._pv(bb_face_normal, True)} does not match neither the right face normal ({self._pv(right_face_normal, True)}) nor the left face normal ({self._pv(left_face_normal, True)}) of the wall {main_wall.Label}... The doorOrWindow might be slightly skewed. Defaulting on right face.")
 
         # Project the bounding_box face onto the wall
         projected_face = wall_face.makeParallelProjection(bb_face.OuterWire, bb_face_normal)
@@ -2265,13 +2265,13 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         # Note that the 'angle' refers to the angle of the face, not its normal.
         # we therefore add a '+90º' in SH3D coordinate (i.e. -90º in FC 
         # coordinate).
-        angle = round(angle)+ang_sh2fc(90) % 360
+        angle = (round(angle)+ang_sh2fc(90)) % 360
         for i, face in enumerate(dow_bounding_box.Faces):
             face_normal = face.normalAt(0,0)
             normal_angle = round(math.degrees(DraftVecUtils.angle(X_NORM, face_normal))) % 360
-            # _msg(f"#{i}/{label_prefix} {normal_angle}º <=> {angle}º")
+            if DEBUG_GEOMETRY: _msg(f"#{i}/{label_prefix} {normal_angle}º <=> {angle}º")
             if normal_angle == angle:
-                # _msg(f"Found bb#{i}/{label_prefix} (@{normal_angle}º)")
+                if DEBUG_GEOMETRY: _msg(f"Found bb#{i}/{label_prefix} (@{normal_angle}º)")
                 return face, face_normal
         return None, None
     
@@ -2401,15 +2401,16 @@ class FurnitureHandler(BaseFurnitureHandler):
         if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
             shape = Part.Shape()
             shape.makeShapeFromMesh(mesh.Topology, 1)
-            equipment = Arch.makeEquipment(name=name)
+            equipment = Arch.makeEquipment(name="Furniture")
             equipment.Shape = shape
         else:
-            equipment = App.ActiveDocument.addObject("Mesh::Feature", name)
+            equipment = App.ActiveDocument.addObject("Mesh::Feature", "Furniture")
             equipment.Mesh = mesh
 
         equipment.Placement.Base = coord_sh2fc(App.Vector(x, y, z))
         equipment.Placement.Base.z += floor.Placement.Base.z
         equipment.Placement.Base.z += mesh.BoundBox.ZLength / 2
+        equipment.Label = elm.get('name')
 
         return equipment
 
@@ -2583,10 +2584,17 @@ def ang_sh2fc(angle:float):
 def set_color_and_transparency(obj, color):
     if not App.GuiUp or not color:
         return
-    if hasattr(obj.ViewObject, "ShapeColor"):
-        obj.ViewObject.ShapeColor = hex2rgb(color)
-    if hasattr(obj.ViewObject, "Transparency"):
-        obj.ViewObject.Transparency = _hex2transparency(color)
+
+    view_object = obj.ViewObject
+    if hasattr(view_object, "ShapeAppearance"):
+        mat = view_object.ShapeAppearance[0]
+        mat.DiffuseColor = hex2rgb(color)
+        obj.ViewObject.ShapeAppearance = (mat)
+        return
+    if hasattr(view_object, "ShapeColor"):
+        view_object.ShapeColor = hex2rgb(color)
+    if hasattr(view_object, "Transparency"):
+        view_object.Transparency = _hex2transparency(color)
 
 
 def color_fc2sh(hexcode):
