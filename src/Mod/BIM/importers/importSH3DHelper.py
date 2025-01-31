@@ -125,6 +125,9 @@ DOOR_MODELS = {
     'Scopia#glassDoor2': ("Glass door","Door"),
     'Scopia#glass_door': ("Glass door","Door"),
     'Scopia#puerta': ("Simple door","Door"),
+    "PeterSmolik#door1": ("Simple door","Door"),
+    "PeterSmolik#doorGlassPanels": ("Simple door","Door"),
+    "PeterSmolik#door1": ("Simple door","Door"),
 
     'eTeks#doubleFrenchWindow126x200': ("Open 1-pane","Window"),
     'eTeks#doubleHungWindow80x122': ("Open 1-pane","Window"),
@@ -156,7 +159,8 @@ DOOR_MODELS = {
     'Scopia#window_4x3_arched': ("Open 1-pane","Window"),
     'Scopia#window_4x3': ("Open 1-pane","Window"),
     'Scopia#window_4x5': ("Open 1-pane","Window"),
-
+    'Artist373#rectangularFivePanesWindow': ("Fixed","Window"),
+    'OlaKristianHoff#window_shop': ("Fixed","Window"),
 }
 
 ET_XPATH_LEVEL = 'level'
@@ -1099,9 +1103,15 @@ class LevelHandler(BaseHandler):
             to_fuse = list(filter(lambda o: o is not None, to_fuse))
             if len(to_fuse) > 0:
                 if len(to_fuse) > 1:
-                    bf = BOPTools.BOPFeatures.BOPFeatures(App.ActiveDocument)
-                    slab_base = bf.make_multi_fuse([ o.Name for o in to_fuse])
-                    slab_base.Label = f"{floor.Label}-footprint"
+                    try:
+                        bf = BOPTools.BOPFeatures.BOPFeatures(App.ActiveDocument)
+                        slab_base = bf.make_multi_fuse([ o.Name for o in to_fuse])
+                        slab_base.Label = f"{floor.Label}-footprint"
+                        slab_base.recompute()
+                    except Exception as e:
+                        _err(f"Failed to fuse projected face to create slab for floor {floor.Label}:")
+                        _err(str(e))
+                        _err(traceback.format_exc())
                 else:
                     slab_base = to_fuse[0]
                     slab_base.Label = f"{floor.Label}-footprint"
@@ -1110,7 +1120,8 @@ class LevelHandler(BaseHandler):
                 slab.Normal = -Z_NORM
                 slab.setExpression('Height', f"{slab_base.Name}.Shape.BoundBox.ZLength")
             else:
-                _wrn(f"No object found for floor {floor.Label}. Creating fake slab ...")
+                _wrn(f"No object found for floor {floor.Label}.")
+                self.setp(floor, "App::PropertyString", "ReferenceSlabName", "The name of the Slab used on this floor", None)
                 return
 
             slab.Label = f"{floor.Label}-slab"
@@ -1856,6 +1867,9 @@ class WallHandler(BaseHandler):
         for side in ["leftSideBaseboard", "rightSideBaseboard"]:
             if hasattr(wall, f"{side}Height"):
                 face = left_face if side == "leftSideBaseboard" else right_face
+                if not face:
+                    _err(f"Weird: Invalid {side} face for wall {wall.Label}. Skipping baseboard creation")
+                    continue
                 self._create_baseboard(floor, wall, side, face)
 
     def _create_baseboard(self, floor, wall, side, face):
@@ -2053,7 +2067,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         y_center = float(elm.get('y'))
         z_center = float(elm.get('elevation', 0))
 
-        label_prefix = f"dow-{elm.get('id')[13:21]}"
+        label_prefix = f"dow-{elm.get('id')}"
 
         # The absolute coordinate of the center of the doorOrWndow's lower face
         dow_abs_center = coord_sh2fc(App.Vector(x_center, y_center, z_center))
@@ -2236,13 +2250,16 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
                     solid_zmin < floor_zmin and floor_zmax < solid_zmax):
                     # Add floor and slabs
                     relevant_walls.extend(self.importer.get_walls(other_floor))
-                    relevant_walls.append(App.ActiveDocument.getObject(other_floor.ReferenceSlabName))
+                    if other_floor.ReferenceSlabName:
+                        relevant_walls.append(App.ActiveDocument.getObject(other_floor.ReferenceSlabName))
         main_wall = None
         host_walls = []
         # Taking the CoG projection on the lower face.
         solid_cog = dow_bounding_box.CenterOfGravity
         solid_cog.z = solid_zmin
         for wall in relevant_walls:
+            if wall.Shape.isNull():
+                continue
             if wall.Shape.isInside(solid_cog, 1, True):
                 main_wall = wall
                 continue
