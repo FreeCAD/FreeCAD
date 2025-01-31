@@ -2469,7 +2469,7 @@ QTableCornerButton::section {
 
 QHeaderView {
   background-color: transparent;
-  margin: -1px; /* fix for misalignement*/
+  margin: -1px; /* fix for misalignment*/
 }
 
 QHeaderView:disabled {

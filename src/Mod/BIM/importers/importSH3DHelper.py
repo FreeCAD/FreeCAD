@@ -494,7 +494,7 @@ class SH3DImporter:
         if floor.id not in self.spaces:
             self.spaces[floor.id] = []
         self.spaces[floor.id].append(space)
-    
+
     def get_spaces(self, floor):
         return self.spaces.get(floor.id, [])
 
@@ -1234,7 +1234,7 @@ class RoomHandler(BaseHandler):
             reference_face.recompute()
             floor.getObject(floor.ReferenceFacesGroupName).addObject(reference_face)
 
-            # NOTE: for room to properly display and calculate the area, the 
+            # NOTE: for room to properly display and calculate the area, the
             # Base object can not be a face but must have a height...
             footprint = App.ActiveDocument.addObject("Part::Feature", "Footprint")
             footprint.Shape = reference_face.Shape.extrude(Z_NORM)
@@ -1607,7 +1607,7 @@ class WallHandler(BaseHandler):
         # The Length property is used in the Wall to calculate volume, etc...
         # Since make Circle does not calculate this Length I calculate it here...
         self.importer.set_property(spine, "App::PropertyFloat", "Length", "The length of the Arc", length, group="Draft")
-        # The Start and End property are used in the Wall to  determine Facebinders 
+        # The Start and End property are used in the Wall to determine Facebinders
         # characteristics...
         self.importer.set_property(spine, "App::PropertyVector", "Start", "The start point of the Arc", start, group="Draft")
         self.importer.set_property(spine, "App::PropertyVector", "End", "The end point of the Arc", end, group="Draft")
@@ -2639,8 +2639,8 @@ def _color_section(section):
 
 
 def set_shininess(obj, shininess):
-    # TODO: it seems a shininess of 0 means the wall loose its
-    # color. We leave it at the default setting untill a later time
+    # TODO: it seems a shininess of 0 means the wall looses its
+    # color. We'll leave it at the default setting until a later time
     return
     if not App.GuiUp or not shininess:
         return
