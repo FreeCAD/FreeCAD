@@ -128,6 +128,7 @@ DOOR_MODELS = {
     "PeterSmolik#door1": ("Simple door","Door"),
     "PeterSmolik#doorGlassPanels": ("Simple door","Door"),
     "PeterSmolik#door1": ("Simple door","Door"),
+    'Siath#emergencyGlassDoubleDoor': ("Simple door","Door"),
 
     'eTeks#doubleFrenchWindow126x200': ("Open 1-pane","Window"),
     'eTeks#doubleHungWindow80x122': ("Open 1-pane","Window"),
@@ -161,6 +162,8 @@ DOOR_MODELS = {
     'Scopia#window_4x5': ("Open 1-pane","Window"),
     'Artist373#rectangularFivePanesWindow': ("Fixed","Window"),
     'OlaKristianHoff#window_shop': ("Fixed","Window"),
+    'OlaKristianHoff#window_double_2x3_frame_sill': ("Fixed","Window"),
+    'OlaKristianHoff#window_deep': ("Fixed","Window"),
 }
 
 ET_XPATH_LEVEL = 'level'
@@ -1156,7 +1159,7 @@ class LevelHandler(BaseHandler):
         sv.Label = f"SV-{floor.Label}-{object_to_project.Label}"
         sv.Placement.Base.z = floor.Placement.Base.z
         sv.Visibility = False
-        sv.recompute()
+        sv.recompute(True)
         floor.getObject(floor.SlabObjectsGroupName).addObject(sv)
 
         wire = Part.Wire(sv.Shape.Edges)
@@ -1200,6 +1203,8 @@ class LevelHandler(BaseHandler):
                 App.Vector(round(v.X, decimals), round(v.Y, decimals), round(v.Z, decimals))
                 for v in vertices
             ]
+            if (new_vertices[1] - new_vertices[0]).Length < 1:
+                continue
             # Create a new edge with the rounded vertices
             new_edge = Part.Edge(Part.LineSegment(new_vertices[0], new_vertices[1]))
             new_edges.append(new_edge)
