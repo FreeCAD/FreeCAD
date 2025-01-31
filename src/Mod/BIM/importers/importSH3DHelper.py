@@ -97,7 +97,7 @@ Z_NORM = App.Vector(0, 0, 1)
 #       "Sliding 4-pane", "Awning"]
 # unzip -p all-windows.sh3d Home.xml | \
 #   grep 'catalogId=' | \
-#   sed -e 's/.*catalogId=//;s/ name=.*/: ("Fixed","Window"),/' | sort -u
+#   sed -e 's/.*catalogId=//;s/ name=.*/: ("Open 1-pane","Window"),/' | sort -u
 # unzip -p all-doors.sh3d Home.xml | \
 #   grep 'catalogId=' | \
 #   sed -e 's/.*catalogId=//;s/ name=.*/: ("Simple door","Door")/' | sort -u
@@ -126,36 +126,36 @@ DOOR_MODELS = {
     'Scopia#glass_door': ("Glass door","Door"),
     'Scopia#puerta': ("Simple door","Door"),
 
-    'eTeks#doubleFrenchWindow126x200': ("Fixed","Window"),
-    'eTeks#doubleHungWindow80x122': ("Fixed","Window"),
-    'eTeks#doubleOutwardOpeningWindow': ("Fixed","Window"),
-    'eTeks#doubleWindow126x123': ("Fixed","Window"),
-    'eTeks#doubleWindow126x163': ("Fixed","Window"),
-    'eTeks#fixedTriangleWindow85x85': ("Fixed","Window"),
+    'eTeks#doubleFrenchWindow126x200': ("Open 1-pane","Window"),
+    'eTeks#doubleHungWindow80x122': ("Open 1-pane","Window"),
+    'eTeks#doubleOutwardOpeningWindow': ("Open 1-pane","Window"),
+    'eTeks#doubleWindow126x123': ("Open 1-pane","Window"),
+    'eTeks#doubleWindow126x163': ("Open 1-pane","Window"),
+    'eTeks#fixedTriangleWindow85x85': ("Open 1-pane","Window"),
     'eTeks#fixedWindow85x123': ("Fixed","Window"),
-    'eTeks#frenchWindow85x200': ("Fixed","Window"),
-    'eTeks#halfRoundWindow': ("Fixed","Window"),
-    'eTeks#roundWindow': ("Fixed","Window"),
-    'eTeks#sliderWindow126x200': ("Fixed","Window"),
-    'eTeks#window85x123': ("Fixed","Window"),
-    'eTeks#window85x163': ("Fixed","Window"),
-    'Kator Legaz#window-01': ("Fixed","Window"),
-    'Kator Legaz#window-08-02': ("Fixed","Window"),
-    'Kator Legaz#window-08': ("Fixed","Window"),
-    'Scopia#turn-window': ("Fixed","Window"),
-    'Scopia#window_2x1_medium_with_large_pane': ("Fixed","Window"),
-    'Scopia#window_2x1_with_sliders': ("Fixed","Window"),
-    'Scopia#window_2x3_arched': ("Fixed","Window"),
-    'Scopia#window_2x3': ("Fixed","Window"),
-    'Scopia#window_2x3_regular': ("Fixed","Window"),
-    'Scopia#window_2x4_arched': ("Fixed","Window"),
-    'Scopia#window_2x4': ("Fixed","Window"),
-    'Scopia#window_2x6': ("Fixed","Window"),
-    'Scopia#window_3x1': ("Fixed","Window"),
-    'Scopia#window_4x1': ("Fixed","Window"),
-    'Scopia#window_4x3_arched': ("Fixed","Window"),
-    'Scopia#window_4x3': ("Fixed","Window"),
-    'Scopia#window_4x5': ("Fixed","Window"),
+    'eTeks#frenchWindow85x200': ("Open 1-pane","Window"),
+    'eTeks#halfRoundWindow': ("Open 1-pane","Window"),
+    'eTeks#roundWindow': ("Open 1-pane","Window"),
+    'eTeks#sliderWindow126x200': ("Open 1-pane","Window"),
+    'eTeks#window85x123': ("Open 1-pane","Window"),
+    'eTeks#window85x163': ("Open 1-pane","Window"),
+    'Kator Legaz#window-01': ("Open 1-pane","Window"),
+    'Kator Legaz#window-08-02': ("Open 1-pane","Window"),
+    'Kator Legaz#window-08': ("Open 1-pane","Window"),
+    'Scopia#turn-window': ("Open 1-pane","Window"),
+    'Scopia#window_2x1_medium_with_large_pane': ("Open 1-pane","Window"),
+    'Scopia#window_2x1_with_sliders': ("Open 1-pane","Window"),
+    'Scopia#window_2x3_arched': ("Open 1-pane","Window"),
+    'Scopia#window_2x3': ("Open 1-pane","Window"),
+    'Scopia#window_2x3_regular': ("Open 1-pane","Window"),
+    'Scopia#window_2x4_arched': ("Open 1-pane","Window"),
+    'Scopia#window_2x4': ("Open 1-pane","Window"),
+    'Scopia#window_2x6': ("Open 1-pane","Window"),
+    'Scopia#window_3x1': ("Open 1-pane","Window"),
+    'Scopia#window_4x1': ("Open 1-pane","Window"),
+    'Scopia#window_4x3_arched': ("Open 1-pane","Window"),
+    'Scopia#window_4x3': ("Open 1-pane","Window"),
+    'Scopia#window_4x5': ("Open 1-pane","Window"),
 
 }
 
@@ -882,6 +882,8 @@ class BaseHandler:
         return self.importer.get_walls(floor)
 
     def get_wall_spine(self, wall):
+        if not hasattr(wall, 'BaseObjects'):
+            _err(f"Wall {wall.Label} has no BaseObjects to get the Spine from...")
         return wall.BaseObjects[2]
 
     def get_faces(self, wall):
@@ -2176,7 +2178,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         window = Arch.makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, pl)
         window.Label = elm.get('name')
         window.IfcType = ifc_type
-        window.Opening = 30 if is_opened else 0
+        if is_opened: window.Opening = 30
 
         # Adjust symbol plan, Sweet Home has the opening in the opposite side by default
         window.ViewObject.Proxy.invertOpening()
@@ -2218,7 +2220,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
               any could be found and a list of any other Arch element that 
               might be host of that 
         """
-        relevant_walls = self.importer.get_walls(floor)
+        relevant_walls = [*self.importer.get_walls(floor)]
         # First find out which floor the window might be have an impact on.
         solid_zmin = dow_bounding_box.BoundBox.ZMin
         solid_zmax = dow_bounding_box.BoundBox.ZMax
