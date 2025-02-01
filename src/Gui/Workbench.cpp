@@ -463,6 +463,9 @@ void Workbench::removeTaskWatcher()
 std::list<std::string> Workbench::listToolbars() const
 {
     std::unique_ptr<ToolBarItem> tb(setupToolBars());
+    setupCustomToolbars(tb.get(), "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb.get());
+
     std::list<std::string> bars;
     QList<ToolBarItem*> items = tb->getItems();
     for (const auto & item : items) {
@@ -474,6 +477,8 @@ std::list<std::string> Workbench::listToolbars() const
 std::list<std::pair<std::string, std::list<std::string>>> Workbench::getToolbarItems() const
 {
     std::unique_ptr<ToolBarItem> tb(setupToolBars());
+    setupCustomToolbars(tb.get(), "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb.get());
 
     std::list<std::pair<std::string, std::list<std::string>>> itemsList;
     QList<ToolBarItem*> items = tb->getItems();
@@ -492,6 +497,9 @@ std::list<std::pair<std::string, std::list<std::string>>> Workbench::getToolbarI
 std::list<std::string> Workbench::listMenus() const
 {
     std::unique_ptr<MenuItem> mb(setupMenuBar());
+    addPermanentMenuItems(mb.get());
+    WorkbenchManipulator::changeMenuBar(mb.get());
+
     std::list<std::string> menus;
     QList<MenuItem*> items = mb->getItems();
     for (const auto & item : items) {
