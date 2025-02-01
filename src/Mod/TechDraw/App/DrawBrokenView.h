@@ -60,8 +60,7 @@ class TechDrawExport DrawBrokenView: public TechDraw::DrawViewPart
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawBrokenView);
 
 public:
-    enum BreakType
-    {
+    enum class BreakType : int {
         NONE,
         ZIGZAG,
         SIMPLE

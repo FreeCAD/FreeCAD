@@ -34,6 +34,7 @@
 #include <Base/Parameter.h>
 
 #include "Preferences.h"
+#include "DrawBrokenView.h"
 #include "LineGenerator.h"
 
 //getters for parameters used in multiple places.
@@ -593,9 +594,10 @@ bool Preferences::useExactMatchOnDims()
     return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
 }
 
-int Preferences::BreakType()
+DrawBrokenView::BreakType Preferences::BreakType()
 {
-    return getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+    int temp = getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+    return static_cast<DrawBrokenView::BreakType>(temp);
 }
 
 

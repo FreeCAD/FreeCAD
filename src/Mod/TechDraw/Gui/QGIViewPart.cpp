@@ -1043,7 +1043,7 @@ void QGIViewPart::drawBreakLines()
         return;
     }
 
-    auto breakType = vp->BreakLineType.getValue();
+    DrawBrokenView::BreakType breakType = static_cast<DrawBrokenView::BreakType>(vp->BreakLineType.getValue());
     auto breaks = dbv->Breaks.getValues();
     for (auto& breakObj : breaks) {
         QGIBreakLine* breakLine = new QGIBreakLine();
