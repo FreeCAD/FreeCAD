@@ -95,7 +95,7 @@ public:
 
     static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox,
                                     double scale);
-    static TopoDS_Edge makeLine(Base::Vector3d start, Base::Vector3d end);
+    static TopoDS_Edge makeLine(const Base::Vector3d& start, const Base::Vector3d& end);
     static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
     static std::string prefGeomHatchFile();
