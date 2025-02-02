@@ -1389,7 +1389,7 @@ def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
             tempface, tempobj = get_subvolume(old_obj)
             if tempobj:
                 opening = ifc_export.create_product(tempobj, parent, ifcfile, "IfcOpeningElement")
-                set_attribute(ifcfile, product, "Name", "Opening")
+                set_attribute(ifcfile, opening, "Name", "Opening")
                 old_obj.Document.removeObject(tempobj.Name)
                 if tempface:
                     old_obj.Document.removeObject(tempface.Name)
