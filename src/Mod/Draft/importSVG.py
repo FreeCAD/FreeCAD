@@ -1067,8 +1067,65 @@ def getrgb(color):
     return "#" + r + g + b
 
 
+
+class FaceTreeNode:
+    face     : Part.Face
+    children : list
+    parent   : object
+    name     : str
+    
+    def __init__(self, parent=None, face=None, name=""):
+        super().__init__()
+        self.parent = parent
+        self.face = face
+        self.name = name
+        self.children = [] 
+      
+    def insert (self, face, name):
+        for node in self.children:
+            if  node.face.Area > face.Area:
+                if (face.distToShape(node.face)[0] == 0.0 and 
+                    face.Wires[0].distToShape(node.face.Wires[0])[0] != 0.0):
+                    node.insert(face, name)
+                    return
+            else:
+                if (node.face.distToShape(face)[0] == 0.0 and
+                    node.face.Wires[0].distToShape(face.Wires[0])[0] != 0.0):
+                    self.children.remove(node);
+                    new = FaceTreeNode(self, face, name)
+                    new.children.append(node)
+                    self.children.append(new)
+                    return
+        new = FaceTreeNode(self, face, name)
+        self.children.append(new)
+     
+    def construct(self):
+        result = self.face
+        if not result:
+            for node in self.children:
+                node.construct()
+        else:
+            new_children = []
+            for node in self.children:
+                result = result.cut(node.face)
+                for subnode in node.children:
+                    subnode.construct()
+                    new_children.append(subnode)
+            self.children = new_children
+            self.face = result
+                
+    def traverse(self, function):
+        function(self)
+        for node in self.children:
+            node.traverse(function)   
+        
+            
+
+
 class svgHandler(xml.sax.ContentHandler):
     """Parse SVG files and create FreeCAD objects."""
+    
+    facetree : FaceTreeNode
 
     def __init__(self):
         super().__init__()
@@ -1084,6 +1141,7 @@ class svgHandler(xml.sax.ContentHandler):
         self.symbols = {}
         self.currentsymbol = None
         self.svgdpi = 1.0
+        self.facetree = FaceTreeNode(None)
 
         global Part
 
@@ -1107,6 +1165,36 @@ class svgHandler(xml.sax.ContentHandler):
                 v.LineWidth = self.width
             if self.fill:
                 v.ShapeColor = self.fill
+     
+    def addFaceToDoc(self, node):
+        if not node.face:
+            return
+        
+        node.face = self.applyTrans(node.face)
+        obj = self.doc.addObject("Part::Feature", node.name)
+        obj.Shape = node.face
+        self.format(obj)
+        if self.currentsymbol:
+            self.symbols[self.currentsymbol].append(obj)
+            
+            
+        if duh_ze_logs:
+            _msg("Final Path {} Vertexes:".format(node.name))
+            for v in node.face.Vertexes:
+                _msg("  {:.{pr}f}/{:.{pr}f}".format(v.X, v.Y, pr = Draft.precisionSVG()))
+            _msg("Final Path Edges:")
+            for e in node.face.Edges:
+                if (len(e.Vertexes) > 1):
+                    _msg("  {:.{pr}f}/{:.{pr}f} -> {:.{pr}f}/{:.{pr}f} (len={:.{pr}f})".
+                         format(e.Vertexes[0].X, e.Vertexes[0].Y, 
+                                e.Vertexes[1].X, e.Vertexes[1].Y, 
+                                math.sqrt((e.Vertexes[0].X - e.Vertexes[1].X)**2 + 
+                                          (e.Vertexes[0].Y - e.Vertexes[1].Y)**2),
+                                pr = Draft.precisionSVG()))
+        
+
+               
+
 
     def startElement(self, name, attrs):
         """Re-organize data into a nice clean dictionary.
@@ -1331,23 +1419,23 @@ class svgHandler(xml.sax.ContentHandler):
                 data['d'] = []
             
             shapes = parsePath(data)
-            for sh in shapes:
+            cnt = 0;
+            for sh in shapes:                               
                 # The path should be closed by now
                 # sh = makewire(path, True)
                 sh = makewire(sh, checkclosed=True)
+                _msg("New Wire. Orientation: {}".format(sh.Wires[0].Orientation))
                 if self.fill and len(sh.Wires) == 1 and sh.Wires[0].isClosed():
                     try:
                         sh = Part.Face(sh)
                         if sh.isValid() is False:
                             sh.fix(1e-6, 0, 1)
-                        sh = self.applyTrans(sh)
-                        obj = self.doc.addObject("Part::Feature", pathname)
-                        obj.Shape = sh
-                        self.format(obj)
-                        if self.currentsymbol:
-                            self.symbols[self.currentsymbol].append(obj)
+                        self.facetree.insert(sh, pathname + "_" + str(++cnt))
                     except:
                         _msg("Failed to make a shape from path '{}'. This Path will be discarded.".format(pathname))
+            self.facetree.construct()
+            self.facetree.traverse(self.addFaceToDoc)
+            self.facetree = FaceTreeNode(None)            
 
         # Process rects
         if name == "rect":
