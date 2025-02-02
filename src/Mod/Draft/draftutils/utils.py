@@ -183,56 +183,6 @@ def type_check(args_and_types, name="?"):
 typecheck = type_check
 
 
-def get_param_type(param):
-    """Return the type of the parameter entered.
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    Returns
-    -------
-    str or None
-        The returned string could be `'int'`, `'string'`, `'float'`,
-        `'bool'`, `'unsigned'`, depending on the parameter.
-        It returns `None` for unhandled situations.
-    """
-    if param in ("dimsymbol", "dimPrecision",
-                 "precision", "defaultWP", "snapRange", "gridEvery",
-                 "linewidth", "modconstrain", "modsnap",
-                 "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "DefaultAnnoDisplayMode", "DefaultAnnoLineWidth",
-                 "DefaultDrawStyle", "DefaultDisplayMode",
-                 "gridSize", "gridTransparency"):
-        return "int"
-    elif param in ("constructiongroupname", "textfont",
-                   "patternFile", "snapModes",
-                   "FontFile", "ClonePrefix", "overrideUnit",
-                   "labeltype", "gridSpacing") or "inCommandShortcut" in param:
-        return "string"
-    elif param in ("textheight", "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot", "HatchPatternSize",
-                   "LineSpacing", "DefaultAnnoScaleMultiplier"):
-        return "float"
-    elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "MakeFaceMode", "DimShowLine",
-                   "SvgLinesBlack", "dxfStdSize", "SnapBarShowOnlyDuringCommands",
-                   "alwaysShowGrid", "renderPolylineWidth",
-                   "showPlaneTracker", "UsePartPrimitives",
-                   "DiscretizeEllipses", "showUnit", "coloredGridAxes",
-                   "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
-        return "bool"
-    elif param in ("color", "constructioncolor", "snapcolor",
-                   "gridColor", "DefaultTextColor", "DefaultAnnoLineColor"):
-        return "unsigned"
-    else:
-        return None
-
-
-getParamType = get_param_type
-
-
 def get_param(param, default=None):
     """Return a parameter value from the current parameter database.
 
@@ -260,43 +210,14 @@ def get_param(param, default=None):
     Returns
     -------
     int, or str, or float, or bool
-        Depending on `param` and its type, by returning `ParameterGrp.GetInt`,
-        `ParameterGrp.GetString`, `ParameterGrp.GetFloat`,
-        `ParameterGrp.GetBool`, or `ParameterGrp.GetUnsinged`.
+        Depending on `param` and its type.
     """
-    draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
-    view_params = "User parameter:BaseApp/Preferences/View"
-
-    p = App.ParamGet(draft_params)
-    v = App.ParamGet(view_params)
-    t = get_param_type(param)
-    # print("getting param ",param, " of type ",t, " default: ",str(default))
-    if t == "int":
-        if default is None:
-            default = 0
-        if param == "linewidth":
-            return v.GetInt("DefaultShapeLineWidth", default)
-        return p.GetInt(param, default)
-    elif t == "string":
-        if default is None:
-            default = ""
-        return p.GetString(param, default)
-    elif t == "float":
-        if default is None:
-            default = 0
-        return p.GetFloat(param, default)
-    elif t == "bool":
-        if default is None:
-            default = False
-        return p.GetBool(param, default)
-    elif t == "unsigned":
-        if default is None:
-            default = 0
-        if param == "color":
-            return v.GetUnsigned("DefaultShapeLineColor", default)
-        return p.GetUnsigned(param, default)
+    if param == "linewidth":
+        return params.get_param("DefaultShapeLineWidth", path="View")
+    elif param == "color":
+        return params.get_param("DefaultShapeLineColor", path="View")
     else:
-        return None
+        return params.get_param(param)
 
 
 getParam = get_param
@@ -327,29 +248,14 @@ def set_param(param, value):
         `ParameterGrp.SetString`, `ParameterGrp.SetFloat`,
         `ParameterGrp.SetBool`, or `ParameterGrp.SetUnsinged`.
     """
-    draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
-    view_params = "User parameter:BaseApp/Preferences/View"
+    if param == "linewidth":
+        return params.set_param("DefaultShapeLineWidth", value, path="View")
+    elif param == "color":
+        return params.set_param("DefaultShapeLineColor", value, path="View")
+    else:
+        return params.set_param(param, value)
 
-    p = App.ParamGet(draft_params)
-    v = App.ParamGet(view_params)
-    t = get_param_type(param)
 
-    if t == "int":
-        if param == "linewidth":
-            v.SetInt("DefaultShapeLineWidth", value)
-        else:
-            p.SetInt(param, value)
-    elif t == "string":
-        p.SetString(param, value)
-    elif t == "float":
-        p.SetFloat(param, value)
-    elif t == "bool":
-        p.SetBool(param, value)
-    elif t == "unsigned":
-        if param == "color":
-            v.SetUnsigned("DefaultShapeLineColor", value)
-        else:
-            p.SetUnsigned(param, value)
 
 
 setParam = set_param
