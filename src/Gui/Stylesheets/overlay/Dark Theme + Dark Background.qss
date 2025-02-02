@@ -53,9 +53,23 @@ Gui--PropertyEditor--PropertyEditor {
  }
 
  QSint--ActionGroup QFrame[class="content"] {
-   border-bottom-left-radius: 5px;
-   border-bottom-right-radius: 5px;
+  border-bottom: 1.5px solid #020202;
+  border-left: 1px solid #020202;
+  border-right: 1.5px solid #020202;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
  }
+
+QSint--ActionGroup QFrame[class="header"] {
+  border: 1px solid #020202;
+  border-right: 1.5px solid #020202;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
 
  Gui--OverlayTabWidget::tab-bar:top,
  Gui--OverlayTabWidget::tab-bar:bottom {
@@ -93,7 +107,7 @@ Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton:checked {
   border: 1px solid #696969;
   border-radius: 2px;
-  background-color: #696969;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #252525, stop:1 #333333);
 }
 
 Gui--OverlayToolButton:checked:hover {

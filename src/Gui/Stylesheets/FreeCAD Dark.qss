@@ -851,7 +851,7 @@ QPlainTextEdit {
   background-color: #3c3c3c;
   color: white;
   border-radius: 2px;
-  border: 0px solid #020202;
+  border: 1px solid #020202;
 }
 
 QPlainTextEdit:focus {
@@ -1248,8 +1248,7 @@ QPushButton:disabled {
 }
 
 QPushButton:checked {
-  border: 1px solid  @ThemeAccentColor1;
-  outline: none;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #252525, stop:1 #333333);
 }
 
 QPushButton:focus {
@@ -1264,6 +1263,7 @@ QPushButton:checked:disabled {
 }
 
 QPushButton:checked:selected {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #252525, stop:1 #333333);
   border: 1px solid  @ThemeAccentColor1;
 }
 
@@ -1489,7 +1489,7 @@ QComboBox:hover {
 }
 
 QComboBox:focus {
-  border: 1px solid #020202;
+  border: 1px solid @ThemeAccentColor2;
   border-radius: 2px;
   /* border: 1px solid @ThemeAccentColor2; */
 }
@@ -1566,7 +1566,7 @@ Gui--PropertyEditor--PropertyEditor {
 
 /* Action group */
 QFrame[class="panel"] {
-background-color: rgba(60, 60, 60, 0.50);
+/* background-color: rgba(60, 60, 60, 0.50); */
 }
 
 QSint--ActionGroup {
@@ -1575,7 +1575,7 @@ margin: 0px; /* if not reset, it might create problems with QPushButtons and oth
 }
 
 QSint--ActionGroup QGroupBox {
-  border: 1px solid #696969;
+  border: 1px solid #252525;
   background-color: transparent;
   padding-bottom: 3px;
 }
@@ -1597,18 +1597,15 @@ border-color: rgba(0,0,0,60);
 
 /* Panel header */
 QSint--ActionGroup QFrame[class="header"] {
-border-top: 1px solid #020202;
-border-left: 1px solid #020202;
-border-right: 1px solid #020202;
-/*background-color: #d4d4d4; /* Task Panel Header background color */
-background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #000000, stop:1 @ThemeAccentColor3);
+border: 1px solid #020202;
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #444444, stop:1 #333333);
 border-top-left-radius: 3px;
 border-top-right-radius: 3px;
 border-bottom-left-radius: 0px;
 border-bottom-right-radius: 0px;
 margin: 0px;
 padding: 0px;
-color: #cdf5ff;
+color: #ffffff;
 }
 
 QSint--ActionGroup QFrame[class="header"]:hover {
@@ -1628,29 +1625,29 @@ padding: 0px;
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="false"] {
   width: 30px;
   height: 30px;
-  image: url(qss:images_classic/qsint_header_unfold_lightgray.png);
+  image: url(qss:images_classic/arrow-down-lightgray.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel:hover[fold="false"] {
   width: 30px;
   height: 30px;
-  image: url(qss:images_classic/qsint_header_unfold_white.png);
+  image: url(qss:images_classic/arrow-down-white.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"] {
   width: 30px;
   height: 30px;
-  image: url(qss:images_classic/qsint_header_fold_lightgray.png);
+  image: url(qss:images_classic/arrow-up-white.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"]:hover {
   width: 30px;
   height: 30px;
-  image: url(qss:images_classic/qsint_header_fold_white.png);
+  image: url(qss:images_classic/arrow-up-white.png);
 }
 
 QSint--ActionGroup QFrame[class="content"] {
-background-color: @ThemeAccentColor3; /* Task Panel background color */
+background-color: #202020; /* Task Panel background color */
 margin: 0px;
 padding: 0px;
 border-bottom: 1px solid #020202;
@@ -1941,8 +1938,12 @@ QTabWidget::pane:right {
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtabwidget-and-qtabbar
 
 --------------------------------------------------------------------------- */
-QTabBar, QDockWidget QTabBar {
+QDockWidget QTabBar { /*tabbar in dockwidget */
   qproperty-drawBase: 0;
+}
+
+QTabBar {
+  qproperty-drawBase: 1;   /*tabbar for files. */
   /* background-color: #333333; */
   /* left: 5px; move to the right by 5px - removed for fix */
 }
@@ -2469,7 +2470,7 @@ QTableCornerButton::section {
 
 QHeaderView {
   background-color: transparent;
-  margin: -1px; /* fix for misalignment*/
+  margin: -1px; /* fix for misalignement*/
 }
 
 QHeaderView:disabled {
