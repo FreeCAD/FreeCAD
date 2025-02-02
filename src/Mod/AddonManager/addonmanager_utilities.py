@@ -50,8 +50,10 @@ import addonmanager_freecad_interface as fci
 try:
     from freecad.utils import get_python_exe
 except ImportError:
+
     def get_python_exe():
         return shutil.which("python")
+
 
 if fci.FreeCADGui:
 

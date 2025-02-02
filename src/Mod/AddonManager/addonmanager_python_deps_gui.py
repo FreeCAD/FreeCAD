@@ -33,6 +33,7 @@ import subprocess
 import sys
 from functools import partial
 from typing import Dict, Iterable, List, Tuple, TypedDict
+from addonmanager_utilities import create_pip_call
 
 import addonmanager_freecad_interface as fci
 
@@ -123,26 +124,21 @@ def call_pip(args: List[str]) -> List[str]:
     """Tries to locate the appropriate Python executable and run pip with version checking
     disabled. Fails if Python can't be found or if pip is not installed."""
 
-    python_exe = get_python_exe()
-    pip_failed = False
-    if python_exe:
-        call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
-        call_args.extend(args)
-        proc = None
-        try:
-            proc = utils.run_interruptable_subprocess(call_args)
-        except subprocess.CalledProcessError:
-            pip_failed = True
+    try:
+        call_args = create_pip_call(args)
+    except RuntimeError as exception:
+        raise PipFailed() from exception
 
-        if not pip_failed:
-            data = proc.stdout
-            return data.split("\n")
-        elif proc:
-            raise PipFailed(proc.stderr)
-        else:
-            raise PipFailed("pip timed out")
-    else:
-        raise PipFailed("Could not locate Python executable on this system")
+    try:
+        proc = utils.run_interruptable_subprocess(call_args)
+    except subprocess.CalledProcessError as exception:
+        raise PipFailed("pip timed out") from exception
+
+    if proc.returncode != 0:
+        raise PipFailed(proc.stderr)
+
+    data = proc.stdout
+    return data.split("\n")
 
 
 def parse_pip_list_output(all_packages, outdated_packages) -> Dict[str, Dict[str, str]]:
