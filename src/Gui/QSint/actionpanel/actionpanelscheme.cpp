@@ -29,6 +29,10 @@ const QString ActionPanelScheme::minimumStyle = QString::fromLatin1(
     "QSint--ActionGroup QToolButton[class='action']:hover {"
         "text-decoration: underline;"
     "}"
+
+    "QSint--ActionGroup QFrame[class='content'][header='true'] {"
+        "border-top: none;"
+    "}"
 );
 
 QString ActionPanelScheme::systemStyle(const QPalette& p)
@@ -77,10 +81,6 @@ QString ActionPanelScheme::systemStyle(const QPalette& p)
         "QSint--ActionGroup QFrame[class='content'] {"
             "border: 1px solid {groupBorder};"
             "background-color: {groupBackground};"
-        "}"
-
-        "QSint--ActionGroup QFrame[class='content'][header='true'] {"
-            "border-top: none;"
         "}"
 
         "QSint--ActionGroup QToolButton[class='action']:!enabled {"
