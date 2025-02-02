@@ -434,7 +434,6 @@ set(Gui_RES_SRCS
     Icons/resource.qrc
     Language/translation.qrc
     ${FreeCAD_TR_QRC}
-    QSint/actionpanel/schemes.qrc
 )
 
 qt_add_resources(Gui_QRC_SRCS ${Gui_RES_SRCS})
@@ -851,8 +850,6 @@ SET(qsintActionPanel_SRCS
     QSint/actionpanel/taskgroup_p.h
     QSint/actionpanel/taskheader_p.cpp
     QSint/actionpanel/taskheader_p.h
-    QSint/actionpanel/freecadscheme.cpp
-    QSint/actionpanel/freecadscheme.h
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
