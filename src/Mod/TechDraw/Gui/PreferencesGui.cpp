@@ -34,6 +34,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Gui/Selection/Selection.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/LineGenerator.h>
 
@@ -156,9 +157,10 @@ QColor PreferencesGui::leaderQColor()
     return fcColor.asValue<QColor>();
 }
 
-int PreferencesGui::dimArrowStyle()
+ArrowType PreferencesGui::dimArrowStyle()
 {
-    return Preferences::getPreferenceGroup("Dimensions")->GetInt("ArrowStyle", 0);
+    int temp = Preferences::getPreferenceGroup("Dimensions")->GetInt("ArrowStyle", 0);
+    return static_cast<ArrowType>(temp);
 }
 
 double PreferencesGui::dimArrowSize()
