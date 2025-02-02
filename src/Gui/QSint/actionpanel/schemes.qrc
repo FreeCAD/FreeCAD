@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>default/Fold.png</file>
-        <file>default/FoldOver.png</file>
-        <file>default/Unfold.png</file>
-        <file>default/UnfoldOver.png</file>
-    </qresource>
-</RCC>

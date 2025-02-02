@@ -47,7 +47,7 @@
 
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
 #include <Gui/QSint/actionpanel/taskheader_p.h>
-#include <Gui/QSint/actionpanel/freecadscheme.h>
+#include <Gui/QSint/actionpanel/actionpanelscheme.h>
 
 
 using namespace Gui::TaskView;
@@ -279,7 +279,7 @@ TaskView::TaskView(QWidget *parent)
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());
     taskPanel->setSizePolicy(sizePolicy);
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
     this->setWidget(taskPanel);
     setWidgetResizable(true);
@@ -603,7 +603,7 @@ void TaskView::showDialog(TaskDialog *dlg)
         taskPanel->addWidget(ActiveCtrl);
     }
 
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
     if (!dlg->needsFullSpace())
         taskPanel->addStretch();
@@ -764,7 +764,7 @@ void TaskView::addTaskWatcher()
     }
 #endif
 
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::saveCurrentWidth()
@@ -870,14 +870,14 @@ void TaskView::clicked (QAbstractButton * button)
 
 void TaskView::clearActionStyle()
 {
-    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->clearActionStyle();
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::restoreActionStyle()
 {
-    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->restoreActionStyle();
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->restoreActionStyle();
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 
