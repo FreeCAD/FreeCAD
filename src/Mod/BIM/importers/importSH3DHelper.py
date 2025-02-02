@@ -38,6 +38,7 @@ import DraftVecUtils
 import Mesh
 import MeshPart
 import Part
+import TechDraw
 
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
@@ -129,6 +130,8 @@ DOOR_MODELS = {
     "PeterSmolik#doorGlassPanels": ("Simple door","Door"),
     "PeterSmolik#door1": ("Simple door","Door"),
     'Siath#emergencyGlassDoubleDoor': ("Simple door","Door"),
+    'OlaKristianHoff#door_window_thick_double_2x4': ("Simple door","Door"),
+    'Mchnz#craftsmanDoorClosed': ("Simple door","Door"),
 
     'eTeks#doubleFrenchWindow126x200': ("Open 1-pane","Window"),
     'eTeks#doubleHungWindow80x122': ("Open 1-pane","Window"),
@@ -160,10 +163,11 @@ DOOR_MODELS = {
     'Scopia#window_4x3_arched': ("Open 1-pane","Window"),
     'Scopia#window_4x3': ("Open 1-pane","Window"),
     'Scopia#window_4x5': ("Open 1-pane","Window"),
-    'Artist373#rectangularFivePanesWindow': ("Fixed","Window"),
-    'OlaKristianHoff#window_shop': ("Fixed","Window"),
-    'OlaKristianHoff#window_double_2x3_frame_sill': ("Fixed","Window"),
-    'OlaKristianHoff#window_deep': ("Fixed","Window"),
+    'Artist373#rectangularFivePanesWindow': ("Open 1-pane","Window"),
+    'OlaKristianHoff#window_shop': ("Open 1-pane","Window"),
+    'OlaKristianHoff#window_double_2x3_frame_sill': ("Open 1-pane","Window"),
+    'OlaKristianHoff#window_deep': ("Open 1-pane","Window"),
+    'OlaKristianHoff#fixed_window_2x2': ("Fixed","Window"),
 }
 
 ET_XPATH_LEVEL = 'level'
@@ -176,6 +180,30 @@ ET_XPATH_OBSERVER_CAMERA = 'observerCamera'
 ET_XPATH_CAMERA = 'camera'
 ET_XPATH_DUMMY_SLAB = 'DummySlab'
 ET_XPATH_DUMMY_DECORATE = 'DummyDecorate'
+
+class Transaction(object):
+
+    def __init__(self, title, doc= None):
+        if doc is None:
+            doc = App.ActiveDocument
+        self.title = title
+        self.document = doc
+
+    def __enter__(self):
+        self.document.openTransaction(self.title)
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        if exc_value is None:
+            self.document.commitTransaction()
+        else:
+            if DEBUG_GEOMETRY:
+                _err(f"Transactino failed but DEBUG_GEOMETRY is set. Commiting transaction anyway.")
+                self.document.commitTransaction()
+            else:
+                self.document.abortTransaction()
+            _err(f"'{self.title}' failed")
+            _err(str(exc_value))
+            # _err(traceback.format_exc())
 
 
 class SH3DImporter:
@@ -646,8 +674,8 @@ class SH3DImporter:
         edge1 = Part.makeLine(NO, NE)
         edge2 = Part.makeLine(NE, SE)
         edge3 = Part.makeLine(SE, SO)
-        # ground = App.ActiveDocument.addObject("Part::Feature", "Ground")
-        ground_face = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
+        with Transaction(f"Creating ground mesh"):
+            ground_face = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
 
         ground =  App.ActiveDocument.addObject("Mesh::Feature", "Ground")
         ground.Mesh = MeshPart.meshFromShape(Shape=ground_face, LinearDeflection=0.1, AngularDeflection=0.523599, Relative=False)
@@ -674,8 +702,8 @@ class SH3DImporter:
                 progress. Set to false when importing a group of elements.
                 Defaults to True.
         """
-        xpaths = list(self.handlers.keys())
         elements = parent.findall(xpath)
+        # Is it a real tag name or an xpath expression?
         tag_name = xpath[3:] if xpath.startswith('.') else xpath
 
         total_steps, current_step, total_elements = self._get_progress_info(xpath, elements)
@@ -686,14 +714,8 @@ class SH3DImporter:
         def _process(tuple):
             (i, elm) = tuple
             _msg(f"Importing {tag_name}#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
-            try:
-                # if elm.get('visible', 'true') == 'true': 
-                    self.handlers[xpath].process(parent, i, elm)
-                # else: _msg(f"Skipping invisible element {tag_name}#{elm.get('id)')}")
-            except Exception as e:
-                _err(f"Failed to import <{tag_name}>#{i} ({elm.get('id', elm.get('name'))}):")
-                _err(str(e))
-                _err(traceback.format_exc())
+            with Transaction(f"Importing {tag_name}#{i}"):
+                self.handlers[xpath].process(parent, i, elm)
             if self.progress_bar:
                 self.progress_bar.next()
             self.current_object_count = self.current_object_count + 1
@@ -783,12 +805,8 @@ class SH3DImporter:
         def _create_slab(tuple):
             (i, floor) = tuple
             _msg(f"Creating slab#{i} for floor '{floor.Label}' ...")
-            try:
+            with Transaction(f"Creating slab#{i} for floor '{floor.Label}'"):
                 handler.create_slabs(floor)
-            except Exception as e:
-                _err(f"Failed to create slab#{i} for floor '{floor.Label}':")
-                _err(str(e))
-                _err(traceback.format_exc())
             if self.progress_bar:
                 self.progress_bar.next()
         list(map(_create_slab, enumerate(floors)))
@@ -973,6 +991,9 @@ class BaseHandler:
         v = edge.Vertexes
         return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}]"
 
+    def _pes(self, edges, print_z: bool = False):
+        return '->'.join(list(map(lambda e: self._pe(e, print_z), edges)))
+
     def _pv(self, v, print_z: bool = False, ndigits: None = None):
         # Print an Vector in a condensed way
         if not v:
@@ -1054,12 +1075,14 @@ class LevelHandler(BaseHandler):
     def _create_groups(self, floor):
         # This is a special group that does not appear in the TreeView.
         group = self._create_group(floor, "ReferenceFacesGroupName", f"References-{floor.Label}")
-        group.Visibility = False
-        group.ViewObject.ShowInTree = False
+        if not DEBUG_GEOMETRY:
+            group.Visibility = False
+            group.ViewObject.ShowInTree = False
 
         group = self._create_group(floor, "SlabObjectsGroupName", f"SlabObjects-{floor.Label}")
-        group.Visibility = False
-        group.ViewObject.ShowInTree = False
+        if not DEBUG_GEOMETRY:
+            group.Visibility = False
+            group.ViewObject.ShowInTree = False
 
         if self.importer.preferences["DECORATE_SURFACES"]:
             self._create_group(floor, "DecorationWallsGroupName", f"Decoration-{floor.Label}-Walls")
@@ -1100,23 +1123,18 @@ class LevelHandler(BaseHandler):
 
         if not slab:
             # Take the walls and only the spaces whose floor is actually visible.
-            to_project = list(filter(lambda s: s.floorVisible, self.get_spaces(floor)))
-            to_project.extend(self.get_walls(floor))
-            to_fuse = list(map(lambda o:self._fuse(floor, o), to_project))
-            to_fuse = list(filter(lambda o: o is not None, to_fuse))
-            if len(to_fuse) > 0:
-                if len(to_fuse) > 1:
-                    try:
-                        bf = BOPTools.BOPFeatures.BOPFeatures(App.ActiveDocument)
-                        slab_base = bf.make_multi_fuse([ o.Name for o in to_fuse])
-                        slab_base.Label = f"{floor.Label}-footprint"
-                        slab_base.recompute()
-                    except Exception as e:
-                        _err(f"Failed to fuse projected face to create slab for floor {floor.Label}:")
-                        _err(str(e))
-                        _err(traceback.format_exc())
+            projections = list(map(lambda s: s.ReferenceFace, filter(lambda s: s.floorVisible, self.get_spaces(floor))))
+            projections.extend(self.get_walls(floor))
+            extrusions = list(map(lambda o:self._extrude(floor, o), projections))
+            extrusions = list(filter(lambda o: o is not None, extrusions))
+            if len(extrusions) > 0:
+                if len(extrusions) > 1:
+                    bf = BOPTools.BOPFeatures.BOPFeatures(App.ActiveDocument)
+                    slab_base = bf.make_multi_fuse([ o.Name for o in extrusions])
+                    slab_base.Label = f"{floor.Label}-footprint"
+                    slab_base.recompute()
                 else:
-                    slab_base = to_fuse[0]
+                    slab_base = extrusions[0]
                     slab_base.Label = f"{floor.Label}-footprint"
 
                 slab = Arch.makeStructure(slab_base)
@@ -1142,73 +1160,27 @@ class LevelHandler(BaseHandler):
 
         floor.addObject(slab)
 
-    def _fuse(self, floor, object_to_project):
+    def _extrude(self, floor, obj_to_extrude):
         """Return the Part.Extrude suitable for fusion by the make_multi_fuse tool.
 
         Args:
             floor (Arch.Floor): the Arch Floor for which to create the Slab
-            object_to_project (Part): the space or wall to project onto the XY
+            obj_to_extrude (Part): the space or wall to project onto the XY
               plane to create the slab
 
         Returns:
             Part.Feature: the extrusion used to later to fuse.
         """
-
-        object_to_project.recompute()
-        sv = Draft.make_shape2dview(object_to_project, Z_NORM)
-        sv.Label = f"SV-{floor.Label}-{object_to_project.Label}"
-        sv.Placement.Base.z = floor.Placement.Base.z
-        sv.Visibility = False
-        sv.recompute(True)
-        floor.getObject(floor.SlabObjectsGroupName).addObject(sv)
-
-        wire = Part.Wire(sv.Shape.Edges)
-        if not wire.isClosed():
-            # Sometimes the wire is not closed because the edges are
-            # not sorted and do not form a "chain". Therefore, sort them,
-            # recreate the wire while also rounding the precision of the 
-            # Vertices in order to avoid not closing because the points
-            # are not close enougth
-            # TODO: Check DraftVecUtils.equals to check vectors up to precision
-            wire = Part.Wire(Part.__sortEdges__(self._round(sv.Shape.Edges)))
-            if not wire.isClosed():
-                _err(f"Projected Face for {object_to_project.Label} does not produce a closed wire. Not adding to slab construction ...")
-                if DEBUG_GEOMETRY: self._debug_shape(wire, f"{object_to_project.Label}-sv-wire", RED)
-                return None
-
-        face = Part.Face(wire)
+        obj_to_extrude.recompute(True)
+        projection = TechDraw.project(obj_to_extrude.Shape, Z_NORM)[0]
+        face = Part.Face(Part.Wire(projection.Edges))
         extrude = face.extrude(-Z_NORM*floor.floorThickness.Value)
         part = Part.show(extrude, "Footprint")
-        part.Label = f"Extrude-{floor.Label}-{object_to_project.Label}-footprint"
+        part.Label = f"Extrude-{floor.Label}-{obj_to_extrude.Label}-footprint"
         part.recompute()
         part.Visibility = False
         part.ViewObject.ShowInTree = False
         return part
-
-    def _round(self, edges, decimals=2):
-        """
-        Rounds the coordinates of all vertices in a list of edges to the specified number of decimals.
-
-        :param edges: A list of Part.Edge objects.
-        :param decimals: Number of decimal places to round to (default: 2).
-        :return: A list of edges with rounded vertices.
-        """
-        new_edges = []
-
-        for edge in edges:
-            vertices = edge.Vertexes
-            if len(vertices) != 2:  # Line or similar
-                raise ValueError("Unsupported edge type: Only straight edges are handled.")
-            new_vertices = [
-                App.Vector(round(v.X, decimals), round(v.Y, decimals), round(v.Z, decimals))
-                for v in vertices
-            ]
-            if (new_vertices[1] - new_vertices[0]).Length < 1:
-                continue
-            # Create a new edge with the rounded vertices
-            new_edge = Part.Edge(Part.LineSegment(new_vertices[0], new_vertices[1]))
-            new_edges.append(new_edge)
-        return new_edges
 
 
 class RoomHandler(BaseHandler):
@@ -1237,33 +1209,42 @@ class RoomHandler(BaseHandler):
 
         # A Room is composed of a space with a Face as the base object
         if not space:
+            name = elm.get('name', 'Room')
+
             floor_z = dim_fc2sh(floor.Placement.Base.z)
             points = [ coord_sh2fc(App.Vector(float(p.get('x')), float(p.get('y')), floor_z)) for p in elm.findall('point') ]
             # remove consecutive identical points
             points = [points[i] for i in range(len(points)) if i == 0 or points[i] != points[i - 1]]
-
-            # Create a reference face that can be used later on to create
-            # the floor & ceiling decoration...
+            # and close the wire
+            points.append(points[0])
+            # Offset to avoid self-intersecting wires
+            reference_wire = Part.makePolygon(points)
+            if DEBUG_GEOMETRY: self._debug_shape(reference_wire, f"{name}-reference-wire", RED)
+            reference_wire = self._get_offset_wire(reference_wire)
+            if DEBUG_GEOMETRY: self._debug_shape(reference_wire, f"{name}-reference-wire-offset", RED)
+            points = [v.Point for v in reference_wire.Vertexes]
             reference_face = Draft.make_wire(points, closed=True, face=True, support=None)
-            reference_face.Label = elm.get('name', 'Room') + '-reference'
+            reference_face.Label = f"{name}-reference"
             reference_face.Visibility = False
             reference_face.recompute()
+
             floor.getObject(floor.ReferenceFacesGroupName).addObject(reference_face)
 
             # NOTE: for room to properly display and calculate the area, the
             # Base object can not be a face but must have a height...
             footprint = App.ActiveDocument.addObject("Part::Feature", "Footprint")
             footprint.Shape = reference_face.Shape.extrude(Z_NORM)
-            footprint.Label = elm.get('name', 'Room') + '-footprint'
+            footprint.Label = f"{name}-footprint"
+            self.setp(footprint, "App::PropertyLink", "ReferenceFace", "The Reference Part.Wire", reference_face)
 
             space = Arch.makeSpace(footprint)
             space.IfcType = "Space"
-            space.Label = elm.get('name', 'Room')
+            space.Label = name
             self._set_properties(space, elm)
 
             space.setExpression('ElevationWithFlooring', f"{footprint.Name}.Shape.BoundBox.ZMin")
-            self.setp(space, "App::PropertyLink", "ReferenceFace", "The Reference Part.Face", reference_face)
             self.setp(space, "App::PropertyString", "ReferenceFloorName", "The name of the Arch.Floor this room belongs to", floor.Name)
+            self.setp(space, "App::PropertyLink", "ReferenceFace", "The Reference Part.Wire", reference_face)
 
         self.importer.add_space(floor, space)
 
@@ -1291,6 +1272,81 @@ class RoomHandler(BaseHandler):
         self.setp(obj, "App::PropertyString", "ceilingColor", "The room's ceiling color", ceiling_color)
         self.setp(obj, "App::PropertyPercent", "ceilingShininess", "The room's ceiling shininess", percent_sh2fc(elm.get('ceilingShininess', 0)))
         self.setp(obj, "App::PropertyBool", "ceilingFlat", "", elm)
+
+    def _get_offset_wire(self, wire, inward=True):
+        """Return an inward (or outward) offset wire to avoid self intersection.
+
+        This will return a non self-intersecting wire offseted either inward
+        or outward from the original wire.
+
+        Args:
+            wire (Part.Wire): the original self-intersecting wire.
+
+        Returns:
+            Part.Wire: a non self intersecting wire
+        """
+        edges = wire.Edges
+        self_intersect = self._self_intersect(edges)
+        if not self_intersect:
+            return wire
+
+        offset_wire = wire.copy()
+        offset_vector = self._get_offset_vector(edges[0], inward)
+        multiplier = 1
+        while self_intersect and multiplier < 5:
+            # Self intersecting wire can not be properly extruded to
+            # create rooms. We offset the wire inward until it stop
+            # self intersecting.
+            offset_wire = DraftGeomUtils.offsetWire(wire, offset_vector*multiplier)
+            self_intersect =  self._self_intersect(offset_wire.Edges)
+            multiplier += 1
+        else:
+            if self_intersect:
+                return self._get_offset_wire(wire, False)
+        return offset_wire
+
+    def _self_intersect(self, edges):
+        """Returns whether a list of edges self intersect.
+
+        Returns True if at least one pair of edge intersect.
+
+        Args:
+            edges (list): list of Part.Edge to test
+
+        Returns:
+            bool: True if at least one pair of edge intersect.
+            list(tuple): a list of tuple of v1, e1, v2, e2 where v1 is the 
+                intersection on the first edge e1, and v2 is the intersection 
+                on the second edge e2.
+        """
+        for i in range(len(edges)):
+            for j in range(i + 1, len(edges)):  # Avoid duplicate checks
+                e1 = edges[i]
+                e2 = edges[j]
+                (dist, vectors, _) = e1.distToShape(e2)
+                if dist > 0:
+                    continue
+                for (v1, v2) in vectors:
+                    # Check that the intersections are not extremities
+                    # If both v1 and v2 are extremities then the edges 
+                    # are connected which is not really a self-intersecting
+                    # situation.
+                    if v1 not in [v.Point for v in e1.Vertexes] or v2 not in [v.Point for v in e2.Vertexes]:
+                        return True
+        return False
+
+    def _get_offset_vector(self, edge, inward):
+        """Returns the normal vector at start, either inward facing or outward.
+
+        Args:
+            edge (Part.Edge): The edge for which to find the normal at
+            inward (bool): whether to get take the cross or the inverse.
+
+        Returns:
+            Vector: the normal vector
+        """
+        tangent = edge.tangentAt(edge.FirstParameter).normalize()
+        return App.Rotation(Z_NORM, -90 if inward else 90).multVec(tangent)
 
     def post_process(self, obj):
         if self.importer.preferences["DECORATE_SURFACES"]:
