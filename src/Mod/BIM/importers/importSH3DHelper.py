@@ -43,6 +43,7 @@ import TechDraw
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
 from itertools import chain
+from scipy.spatial import ConvexHull
 
 import FreeCAD as App
 
@@ -77,6 +78,7 @@ except :
 
 # SweetHome3D is in cm while FreeCAD is in mm
 FACTOR = 10
+TOLERANCE = 1
 DEFAULT_WALL_WIDTH = 100
 DEFAULT_MATERIAL = App.Material(
     DiffuseColor=(1.00,0.00,0.00),
@@ -146,6 +148,7 @@ DOOR_MODELS = {
     'eTeks#sliderWindow126x200': ("Open 1-pane","Window"),
     'eTeks#window85x123': ("Open 1-pane","Window"),
     'eTeks#window85x163': ("Open 1-pane","Window"),
+    'eTeks#serviceHatch': ("Fixed","Window"),
     'Kator Legaz#window-01': ("Open 1-pane","Window"),
     'Kator Legaz#window-08-02': ("Open 1-pane","Window"),
     'Kator Legaz#window-08': ("Open 1-pane","Window"),
@@ -168,6 +171,7 @@ DOOR_MODELS = {
     'OlaKristianHoff#window_double_2x3_frame_sill': ("Open 1-pane","Window"),
     'OlaKristianHoff#window_deep': ("Open 1-pane","Window"),
     'OlaKristianHoff#fixed_window_2x2': ("Fixed","Window"),
+    'OlaKristianHoff#window_double_3x3': ("Open 1-pane","Window"),
 }
 
 ET_XPATH_LEVEL = 'level'
@@ -195,15 +199,11 @@ class Transaction(object):
     def __exit__(self, exc_type, exc_value, exc_traceback):
         if exc_value is None:
             self.document.commitTransaction()
+        elif DEBUG_GEOMETRY:
+            _err(f"Transactino failed but DEBUG_GEOMETRY is set. Commiting transaction anyway.")
+            self.document.commitTransaction()
         else:
-            if DEBUG_GEOMETRY:
-                _err(f"Transactino failed but DEBUG_GEOMETRY is set. Commiting transaction anyway.")
-                self.document.commitTransaction()
-            else:
-                self.document.abortTransaction()
-            _err(f"'{self.title}' failed")
-            _err(str(exc_value))
-            # _err(traceback.format_exc())
+            self.document.abortTransaction()
 
 
 class SH3DImporter:
@@ -388,6 +388,7 @@ class SH3DImporter:
             'DEFAULT_GROUND_COLOR': color_fc2sh(get_param_arch("sh3dDefaultGroundColor")),
             'DEFAULT_SKY_COLOR': color_fc2sh(get_param_arch("sh3dDefaultSkyColor")),
             'DECORATE_SURFACES': get_param_arch("sh3dDecorateSurfaces"),
+            'DEFAULT_FURNITURE_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFurnitureColor")),
         }
 
     def _setup_handlers(self):
@@ -415,7 +416,6 @@ class SH3DImporter:
             self.handlers[ET_XPATH_CAMERA] = camera_handler
 
     def _refresh(self):
-        # App.ActiveDocument.recompute()
         if App.GuiUp:
             Gui.updateGui()
 
@@ -529,6 +529,9 @@ class SH3DImporter:
         if floor.id not in self.spaces:
             self.spaces[floor.id] = []
         self.spaces[floor.id].append(space)
+
+    def get_all_spaces(self):
+        return list(itertools.chain(*self.spaces.values()))
 
     def get_spaces(self, floor):
         return self.spaces.get(floor.id, [])
@@ -663,6 +666,7 @@ class SH3DImporter:
         return self.handlers['level'].create_default_floor()
 
     def _create_ground_mesh(self, elm):
+        self.building.recompute(True)
         bb = self.building.Shape.BoundBox
         dx = bb.XLength/2
         dy = bb.YLength/2
@@ -674,8 +678,7 @@ class SH3DImporter:
         edge1 = Part.makeLine(NO, NE)
         edge2 = Part.makeLine(NE, SE)
         edge3 = Part.makeLine(SE, SO)
-        with Transaction(f"Creating ground mesh"):
-            ground_face = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
+        ground_face = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
 
         ground =  App.ActiveDocument.addObject("Mesh::Feature", "Ground")
         ground.Mesh = MeshPart.meshFromShape(Shape=ground_face, LinearDeflection=0.1, AngularDeflection=0.523599, Relative=False)
@@ -705,27 +708,33 @@ class SH3DImporter:
         elements = parent.findall(xpath)
         # Is it a real tag name or an xpath expression?
         tag_name = xpath[3:] if xpath.startswith('.') else xpath
-
-        total_steps, current_step, total_elements = self._get_progress_info(xpath, elements)
+        total_steps, current_step = self._get_progress_info(xpath)
+        total_elements = len(elements)
         if self.progress_bar:
             self.progress_bar.stop()
             self.progress_bar.start(f"Step {current_step}/{total_steps}: importing {total_elements} '{tag_name}' elements. Please wait ...", total_elements)
-            _msg(f"Importing {total_elements} '{tag_name}' elements ...")
+        _msg(f"Importing {total_elements} '{tag_name}' elements ...")
+        handler = self.handlers[xpath]
         def _process(tuple):
             (i, elm) = tuple
             _msg(f"Importing {tag_name}#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
-            with Transaction(f"Importing {tag_name}#{i}"):
-                self.handlers[xpath].process(parent, i, elm)
-            if self.progress_bar:
-                self.progress_bar.next()
+            try:
+                # with Transaction(f"Importing {tag_name}#{i}"):
+                    handler.process(parent, i, elm)
+            except Exception as e:
+                _err(f"Importing {tag_name}#{i} failed")
+                _err(str(e))
+                _err(traceback.format_exc())
+
+            if self.progress_bar: self.progress_bar.next()
             self.current_object_count = self.current_object_count + 1
         list(map(_process, enumerate(elements)))
 
-    def _get_progress_info(self, xpath, elements):
+    def _get_progress_info(self, xpath):
         xpaths = list(self.handlers.keys())
         total_steps = len(xpaths)
         current_step = xpaths.index(xpath)+1
-        return total_steps, current_step, len(elements)
+        return total_steps, current_step
 
     def _set_site_properties(self, elm):
         # All information in environment?, backgroundImage?, print?, compass
@@ -796,27 +805,32 @@ class SH3DImporter:
 
     def _create_slabs(self):
         floors = self.floors.values()
-        total_steps, current_step, total_elements = self._get_progress_info(ET_XPATH_DUMMY_SLAB, floors)
+        all_walls = self.get_all_walls()
+        all_spaces = self.get_all_spaces()
+        total_steps, current_step = self._get_progress_info(ET_XPATH_DUMMY_SLAB)
+        total_elements = len(floors)
         if self.progress_bar:
             self.progress_bar.stop()
-            self.progress_bar.start(f"Step {current_step}/{total_steps}: Creating {total_elements} 'slab' elements. Please wait ...", total_elements)
-            _msg(f"Creating {total_elements} 'slab' elements ...")
+            self.progress_bar.start(f"Step {current_step}/{total_steps}: Creating {total_elements} 'slab' elements. Please wait ...", len(all_walls) + len(all_spaces))
+
+        _msg(f"Creating {total_elements} 'slab' elements ...")
         handler = self.handlers[ET_XPATH_LEVEL]
         def _create_slab(tuple):
             (i, floor) = tuple
             _msg(f"Creating slab#{i} for floor '{floor.Label}' ...")
-            with Transaction(f"Creating slab#{i} for floor '{floor.Label}'"):
-                handler.create_slabs(floor)
-            if self.progress_bar:
-                self.progress_bar.next()
+            try:
+                # with Transaction(f"Creating slab#{i} for floor '{floor.Label}'"):
+                    handler.create_slabs(floor, self.progress_bar)
+            except Exception as e:
+                _err(f"Creating slab#{i} for floor '{floor.Label}' failed")
+                _err(str(e))
+                _err(traceback.format_exc())
         list(map(_create_slab, enumerate(floors)))
 
     def _decorate_surfaces(self):
 
-        all_spaces = self.spaces.values()
-        all_spaces = list(itertools.chain(*all_spaces))
-        all_walls = self.walls.values()
-        all_walls = list(itertools.chain(*all_walls))
+        all_walls = self.get_all_walls()
+        all_spaces = self.get_all_spaces()
 
         total_elements = len(all_spaces)+len(all_walls)
 
@@ -1107,7 +1121,7 @@ class LevelHandler(BaseHandler):
 
         return group
 
-    def create_slabs(self, floor):
+    def create_slabs(self, floor, progress_bar):
         """Creates a Arch.Slab for the given floor.
 
         Creating a slab consists in projecting all the structures of that
@@ -1121,11 +1135,40 @@ class LevelHandler(BaseHandler):
         if self.importer.preferences["MERGE"]:
             slab = self.get_fc_object(f"{floor.id}-slab", 'slab')
 
+        def _extrude(obj_to_extrude):
+            """Return the Part.Extrude suitable for fusion by the make_multi_fuse tool.
+
+            Args:
+                floor (Arch.Floor): the Arch Floor for which to create the Slab
+                obj_to_extrude (Part): the space or wall to project onto the XY
+                plane to create the slab
+
+            Returns:
+                Part.Feature: the extrusion used to later to fuse.
+            """
+            if self.importer.preferences["DEBUG"]:
+                _log(f"Extruding {obj_to_extrude.Label} ...")
+            obj_to_extrude.recompute(True)
+            projection = TechDraw.project(obj_to_extrude.Shape, Z_NORM)[0]
+            face = Part.Face(Part.Wire(projection.Edges))
+            extrude = face.extrude(-Z_NORM*floor.floorThickness.Value)
+            part = Part.show(extrude, "Extrusion")
+            # part.Placement.Base.z = floor.Placement.Base.z
+            part.Label = f"{floor.Label}-{obj_to_extrude.Label}-extrusion"
+            part.recompute(True)
+            part.Visibility = False
+            part.ViewObject.ShowInTree = False
+
+            if progress_bar:
+                progress_bar.next()
+
+            return part
+
         if not slab:
-            # Take the walls and only the spaces whose floor is actually visible.
+            # Take the spaces whose floor is actually visible, and all the walls
             projections = list(map(lambda s: s.ReferenceFace, filter(lambda s: s.floorVisible, self.get_spaces(floor))))
-            projections.extend(self.get_walls(floor))
-            extrusions = list(map(lambda o:self._extrude(floor, o), projections))
+            projections.extend(list(map(lambda w: w.ReferenceFace, self.get_walls(floor))))
+            extrusions = list(map(_extrude, projections))
             extrusions = list(filter(lambda o: o is not None, extrusions))
             if len(extrusions) > 0:
                 if len(extrusions) > 1:
@@ -1138,6 +1181,7 @@ class LevelHandler(BaseHandler):
                     slab_base.Label = f"{floor.Label}-footprint"
 
                 slab = Arch.makeStructure(slab_base)
+                slab.Placement.Base.z = floor.Placement.Base.z
                 slab.Normal = -Z_NORM
                 slab.setExpression('Height', f"{slab_base.Name}.Shape.BoundBox.ZLength")
             else:
@@ -1159,28 +1203,6 @@ class LevelHandler(BaseHandler):
         self.setp(floor, "App::PropertyString", "ReferenceSlabName", "The name of the Slab used on this floor", slab.Name)
 
         floor.addObject(slab)
-
-    def _extrude(self, floor, obj_to_extrude):
-        """Return the Part.Extrude suitable for fusion by the make_multi_fuse tool.
-
-        Args:
-            floor (Arch.Floor): the Arch Floor for which to create the Slab
-            obj_to_extrude (Part): the space or wall to project onto the XY
-              plane to create the slab
-
-        Returns:
-            Part.Feature: the extrusion used to later to fuse.
-        """
-        obj_to_extrude.recompute(True)
-        projection = TechDraw.project(obj_to_extrude.Shape, Z_NORM)[0]
-        face = Part.Face(Part.Wire(projection.Edges))
-        extrude = face.extrude(-Z_NORM*floor.floorThickness.Value)
-        part = Part.show(extrude, "Footprint")
-        part.Label = f"Extrude-{floor.Label}-{obj_to_extrude.Label}-footprint"
-        part.recompute()
-        part.Visibility = False
-        part.ViewObject.ShowInTree = False
-        return part
 
 
 class RoomHandler(BaseHandler):
@@ -1412,7 +1434,10 @@ class WallHandler(BaseHandler):
 
         wall.IfcType = "Wall"
         wall.Label = f"wall{i}"
-        wall.Base.Label = f"wall{i}-wallshape"
+        wall.Base.Label = f"wall{i}-volume"
+        wall.BaseObjects[0].Label = f"wall{i}-start"
+        wall.BaseObjects[1].Label = f"wall{i}-end"
+        wall.BaseObjects[2].Label = f"wall{i}-spine"
         self._set_properties(wall, elm)
         self._set_baseboard_properties(wall, elm)
         self.setp(wall, "App::PropertyString", "ReferenceFloorName", "The Name of the Arch.Floor this walls belongs to", floor.Name)
@@ -1502,6 +1527,10 @@ class WallHandler(BaseHandler):
                 next_wall_details)
 
         base_object = None
+        App.ActiveDocument.recompute([section_start, section_end, spine])
+        if self.importer.preferences["DEBUG"]:
+            _log(f"_create_wall(): wall => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
+
         sweep = self._make_sweep(section_start, section_end, spine)
         # Sometimes the Part::Sweep creates a "twisted" sweep which
         # result in a broken wall. The solution is to use a compound
@@ -1525,8 +1554,15 @@ class WallHandler(BaseHandler):
             wall.ViewObject.DrawStyle = 'Dotted'
             wall.ViewObject.LineColor = ORANGE
             wall.ViewObject.LineWidth = 2
-            part = self._debug_point(spine.Start, f"{wall.Label}-start")
+            part = self._debug_point(spine.Start, f"{wall.Name}-start")
             part.Visibility = True
+
+        reference_face = self._get_reference_face(wall, is_wall_straight)
+        if reference_face:
+            self.setp(wall, "App::PropertyLink", "ReferenceFace", "The Reference Part.Wire", reference_face)
+            floor.getObject(floor.ReferenceFacesGroupName).addObject(reference_face)
+        else:
+            _err(f"Failed to get the reference face for wall {wall.Name}. Slab might fail!")
 
         # Keep track of base objects. Used to decorate walls
         self.importer.set_property(wall, "App::PropertyLinkList", "BaseObjects", "The different base objects whose sweep failed. Kept for compatibility reasons", [section_start, section_end, spine])
@@ -1549,7 +1585,6 @@ class WallHandler(BaseHandler):
         Returns:
             Part::Sweep: the Part::Sweep
         """
-        App.ActiveDocument.recompute([section_start, section_end, spine])
         sweep = App.ActiveDocument.addObject('Part::Sweep', "WallShape")
         sweep.Sections = [section_start, section_end]
         sweep.Spine = spine
@@ -1574,7 +1609,6 @@ class WallHandler(BaseHandler):
         Returns:
             Compound: the compound
         """
-        App.ActiveDocument.recompute([section_start, section_end, spine])
         ruled_surface = App.ActiveDocument.addObject('Part::RuledSurface')
         ruled_surface.Curve1 = section_start
         ruled_surface.Curve2 = section_end
@@ -1636,12 +1670,7 @@ class WallHandler(BaseHandler):
 
         section_start = self._get_section(wall_details, True, prev_wall_details)
         section_end = self._get_section(wall_details, False, next_wall_details)
-
         spine = Draft.makeLine(start, end)
-        spine.Label = f"Spine"
-        App.ActiveDocument.recompute([section_start, section_end, spine])
-        if self.importer.preferences["DEBUG"]:
-            _log(f"_create_straight_segment(): wall {self._pv(start)}->{self._pv(end)} => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
 
         return section_start, section_end, spine
 
@@ -1683,11 +1712,6 @@ class WallHandler(BaseHandler):
         # characteristics...
         self.importer.set_property(spine, "App::PropertyVector", "Start", "The start point of the Arc", start, group="Draft")
         self.importer.set_property(spine, "App::PropertyVector", "End", "The end point of the Arc", end, group="Draft")
-
-        spine.Label = f"Spine"
-        App.ActiveDocument.recompute([section_start, section_end, spine])
-        if self.importer.preferences["DEBUG"]:
-            _log(f"_create_curved_segment(): wall {self._pv(start)}->{self._pv(end)} => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
 
         return section_start, section_end, spine
 
@@ -1744,11 +1768,10 @@ class WallHandler(BaseHandler):
             Draft.rotate([section], z_rotation, ORIGIN, Z_NORM)
             Draft.move([section], center)
 
-        if self.importer.preferences["DEBUG"]:
-            section.recompute()
+        section.recompute()
+        if DEBUG_GEOMETRY:
             _color_section(section)
 
-        section.Label = "Section-start" if at_start else "Section-end"
         return section
 
     def _get_intersection_edge(self, lside, rside, sibling_lside, sibling_rside):
@@ -1857,6 +1880,51 @@ class WallHandler(BaseHandler):
             Vector: the normalized vector of the plane's normal
         """
         return (b - a).cross(c - a).normalize()
+
+    def _get_reference_face(self, wall, is_wall_straight):
+        """Returns the reference face for a wall.
+
+        There are some strange situation when the bottom face is self-intersecting.
+        This will result in an invalid extrude and will therefore fail the slab
+        creation. This solved by creating a convex hull. Note that this mitigation
+        is only used for straight walls. Curved walls do not seem to be affected
+        by the problem.
+
+        Args:
+            wall (Arch.Wall): the wall for which to create the referene face
+
+        Returns:
+            Part.Wire: the wire for the reference face
+        """
+        # Extract the reference face for later use (when creating the slab)
+        bottom_faces = list(filter(lambda f: Z_NORM.isEqual(-f.normalAt(0,0),1e-6), wall.Base.Shape.Faces))
+
+        if len(bottom_faces) == 0:
+            return None
+
+        if len(bottom_faces) > 1:
+            _wrn(f"Base object for wall {wall.Name} has several bottom facing reference faces! Defaulting to 1st one.")
+
+        face = bottom_faces.pop(0)
+
+        if is_wall_straight:
+            # In order to make sure that the edges are not self-intersecting
+            # create a convex hull and use these points instead. Maybe 
+            # overkill for a 4 point wall, however not sure how to invert 
+            # edges.
+            points = list(map(lambda v: v.Point, face.Vertexes))
+            point_coords = np.array([[p.x, p.y] for p in points])
+            new_points = [points[i] for i in ConvexHull(point_coords).vertices]
+            new_points.append(new_points[0])
+            reference_face = Draft.make_wire(new_points, closed=True, face=True, support=None)
+        else:
+            reference_face = App.ActiveDocument.addObject("Part::Feature", "Face")
+            reference_face.Shape = face
+
+        reference_face.Label = f"{wall.Name}-reference"
+        reference_face.Visibility = False
+        reference_face.recompute()
+        return reference_face
 
     def post_process(self, obj):
         if self.importer.preferences["DECORATE_SURFACES"]:
@@ -2410,7 +2478,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         if not feature:
             feature = self._create_equipment(floor, elm)
 
-        color = elm.get('color', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+        color = elm.get('color', self.importer.preferences["DEFAULT_FURNITURE_COLOR"])
         set_color_and_transparency(feature, color)
 
         self.setp(feature, "App::PropertyString", "shType", "The element type", 'pieceOfFurniture')
@@ -2450,9 +2518,9 @@ class FurnitureHandler(BaseFurnitureHandler):
         pitch = float(elm.get('pitch', 0.0))  # X SH3D Axis
         roll = float(elm.get('roll', 0.0))    # Y SH3D Axis
         angle = float(elm.get('angle', 0.0))  # Z SH3D Axis
-        name = elm.get('name')
+        name = elm.get('name', elm.get('id', "NA"))
         model_rotation = elm.get('modelRotation', None)
-        mirrored = bool(elm.get('modelMirrored', "false") == "true")
+        model_mirrored = bool(elm.get('modelMirrored', "false") == "true")
 
         # The meshes are normalized, centered, facing up.
         # Center, Scale, X Rotation && Z Rotation (in FC axes), Move
@@ -2468,13 +2536,15 @@ class FurnitureHandler(BaseFurnitureHandler):
                 App.Vector(rij[3], rij[4], rij[5]),
                 App.Vector(rij[6], rij[7], rij[8])
                 )
-            _msg(f"{elm.get('id')}: modelRotation is not yet implemented ...")
+            _wrn(f"{name}: modelRotation is not yet implemented ...")
         transform.scale(width/bb.XLength, height/bb.YLength, depth/bb.ZLength)
         # NOTE: the model is facing up, thus y and z are inverted
         transform.rotateX(math.pi/2)
         transform.rotateX(-pitch)
         transform.rotateY(roll)
         transform.rotateZ(ang_sh2fc(angle))
+        if model_mirrored:
+            transform.scale(-1, 1, 1) # Mirror along X
 
         mesh.transform(transform)
 
@@ -2668,7 +2738,11 @@ def set_color_and_transparency(obj, color):
     view_object = obj.ViewObject
     if hasattr(view_object, "ShapeAppearance"):
         mat = view_object.ShapeAppearance[0]
-        mat.DiffuseColor = hex2rgb(color)
+        rgb_color = hex2rgb(color)
+        mat.DiffuseColor = rgb_color
+        mat.AmbientColor = rgb_color
+        mat.SpecularColor = rgb_color
+        # mat.EmissiveColor = rgb_color
         obj.ViewObject.ShapeAppearance = (mat)
         return
     if hasattr(view_object, "ShapeColor"):
