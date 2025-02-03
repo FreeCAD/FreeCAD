@@ -86,6 +86,9 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"ShowFPS");
     OnChange(*hGrp,"ShowNaviCube");
+    OnChange(*hGrp,"AxisXColor");
+    OnChange(*hGrp,"AxisYColor");
+    OnChange(*hGrp,"AxisZColor");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
@@ -339,6 +342,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"ShowNaviCube") == 0) {
         for (auto _viewer : _viewers) {
             _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube", true));
+        }
+    }
+    else if (strcmp(Reason,"AxisXColor") == 0 || strcmp(Reason,"AxisYColor") == 0 || strcmp(Reason,"AxisZColor") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->updateColors();
         }
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
