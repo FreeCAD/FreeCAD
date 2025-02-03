@@ -1286,8 +1286,7 @@ QDialogButtonBox QPushButton {
   min-width: 80px;
 }
 
-QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
-QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
+QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton {
   min-width: 20px;
 }
 
@@ -1700,8 +1699,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ffffff, stop:1 #fefefe);
-  border: 1px solid @ThemeAccentColor2;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #d8d8d8, stop:1 #efefef);
 }
 
 /* QToolButtons with a menu found in Sketcher task panel*/
@@ -1732,16 +1730,22 @@ QSint--ActionGroup QToolButton#filterButton QListWidget {
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:hover{
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ffffff, stop:1 #fefefe);
+  color: black;
 }
 QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
   border: 1px solid @ThemeAccentColor2;
 }
 
-QSint--ActionGroup QFrame[class="content"] QToolButton:disabled,
-QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
+QSint--ActionGroup QFrame[class="content"] QToolButton:disabled{
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #e2e2e2, stop:1 #ededed);
   color: #646464;
   border: 1px solid #ababab;
+}
+
+QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
+  border: 1px solid  @ThemeAccentColor1;
+  color: #646464;
+  outline: none;
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
