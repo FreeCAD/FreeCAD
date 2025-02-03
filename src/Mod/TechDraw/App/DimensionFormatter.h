@@ -48,7 +48,7 @@ public:
     QStringList getPrefixSuffixSpec(const QString& fSpec) const;
     std::string getDefaultFormatSpec(bool isToleranceFormat) const;
     bool isTooSmall(const double value, const QString& formatSpec) const;
-    QString formatValueToSpec(const double value, const QString& formatSpecifier) const;
+    QString formatValueToSpec(const double value, QString formatSpecifier) const;
     bool isNumericFormat(const QString& formatSpecifier) const;
 
 private:

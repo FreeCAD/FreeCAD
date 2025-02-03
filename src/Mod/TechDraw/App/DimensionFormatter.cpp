@@ -308,23 +308,59 @@ std::string DimensionFormatter::getFormattedDimensionValue(const int partial) co
 }
 
 // format the value using the formatSpec. Also, handle the non-standard format-
-// specifier '%w', which has the following rules: works as %f, but no trailing zeros
-QString DimensionFormatter::formatValueToSpec(const double value, const QString& formatSpecifier) const
+// specifiers '%w', which works as %f but without trailing zeros
+// and '%r', which round the value to the given precision.
+QString DimensionFormatter::formatValueToSpec(const double value, QString formatSpecifier) const
 {
     QString formattedValue;
-    if (formatSpecifier.contains(QRegularExpression(QStringLiteral("%.*[wW]")))) {
-        QString fs = formatSpecifier;
-        fs.replace(QRegularExpression(QStringLiteral("%(.*)w")), QStringLiteral("%\\1f"));
-        fs.replace(QRegularExpression(QStringLiteral("%(.*)W")), QStringLiteral("%\\1F"));
-        formattedValue = QString::asprintf(fs.toStdString().c_str(), value);
-        // First, try to cut trailing zeros, if AFTER decimal dot there are nonzero numbers
-        // Second, try to cut also decimal dot and zeros, if there are just zeros after it
-        formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
-        formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
-    } else {
+
+    constexpr auto format = [](QString f, double value){
+        return QString::asprintf(f.toStdString().c_str(), value);
+    };
+
+    QRegularExpression wrRegExp(QStringLiteral("%(?<dec>.*)(?<spec>[wWrR])"));
+    QRegularExpressionMatch wrMatch = wrRegExp.match(formatSpecifier);
+
+    if (! wrMatch.hasMatch()) {
         if (isNumericFormat(formatSpecifier)) {
-            formattedValue = QString::asprintf(formatSpecifier.toStdString().c_str(), value);
+            formattedValue = format(formatSpecifier, value);
         }
+        return formattedValue;
+    }
+
+    QString spec = wrMatch.captured(QStringLiteral("spec")).toLower();
+    QString dec = wrMatch.captured(QStringLiteral("dec"));
+
+    if (spec == QStringLiteral("w")) {
+        formattedValue = format(QStringLiteral("%") + dec + QStringLiteral("f"), value);
+        // First, cut trailing zeros
+        while(formattedValue.endsWith(QStringLiteral("0")))
+        {
+            formattedValue.chop(1);
+        }
+        // Second, try to cut also decimal dot
+        if(formattedValue.endsWith(QStringLiteral(".")))
+        {
+            formattedValue.chop(1);
+        }
+    }
+    else if (spec == QStringLiteral("r")) {
+        // round the value to the given precision
+        double rounder = dec.toDouble();
+        double roundValue = std::ceil(value / rounder) * rounder;
+        // format the result with the same decimal count than the rounder
+        int dotIndex = dec.indexOf(QStringLiteral("."));
+        int nDecimals = 0;
+        if (dotIndex >= 0){
+            // remove trailing zeros to avoid decimal overwriting
+            while(dec.endsWith(QStringLiteral("0")))
+            {
+                dec.chop(1);
+            }
+            nDecimals = dec.size() - dotIndex - 1;
+        }
+        formatSpecifier = QStringLiteral("%.") + QString::number(nDecimals) + QStringLiteral("f");
+        formattedValue = format(formatSpecifier, roundValue);
     }
 
     return formattedValue;
@@ -346,7 +382,7 @@ QStringList DimensionFormatter::getPrefixSuffixSpec(const QString& fSpec) const
 {
     QStringList result;
     //find the %x.y tag in FormatSpec
-    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
+    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgrwAEFGRW]")); //printf double format spec
     QRegularExpressionMatch rxMatch;
     int pos = fSpec.indexOf(rxFormat, 0, &rxMatch);
     if (pos != -1)  {
@@ -412,7 +448,7 @@ bool DimensionFormatter::isTooSmall(const double value, const QString& formatSpe
         return false;
     }
 
-    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*([0-9]*)[aefgwAEFGW]")); //printf double format spec
+    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*([0-9]*)[aefgrwAEFGRW]")); //printf double format spec
     QRegularExpressionMatch rxMatch = rxFormat.match(formatSpec);
     if (rxMatch.hasMatch()) {
         QString decimalGroup = rxMatch.captured(1);
