@@ -13,17 +13,18 @@ namespace QSint
 
 
 const QString ActionPanelScheme::minimumStyle = QString::fromLatin1(
+    "QSint--ActionGroup QFrame[class='header'] {"
+        "border: none;"
+    "}"
+
     "QSint--ActionGroup QToolButton[class='header'] {"
-        "text-align: left;"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
+        "border: none;"
         "font-weight: bold;"
+        "text-align: center;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action'] {"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
-        "text-align: left;"
+        "border: none;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
@@ -31,70 +32,27 @@ const QString ActionPanelScheme::minimumStyle = QString::fromLatin1(
     "}"
 
     "QSint--ActionGroup QFrame[class='content'][header='true'] {"
-        "border-top: none;"
+        "border: none;"
     "}"
+
 );
 
 QString ActionPanelScheme::systemStyle(const QPalette& p)
 {
-    QString headerBackground = p.color(QPalette::Highlight).name();
-    QString headerLabelText = p.color(QPalette::HighlightedText).name();
-    QString headerLabelTextOver = p.color(QPalette::BrightText).name();
-    QString groupBorder = p.color(QPalette::Mid).name();
-    QString disabledActionText = p.color(QPalette::Disabled, QPalette::Text).name();
-    QString actionSelectedBg = p.color(QPalette::Active, QPalette::Light).name();
-    QString actionSelectedText = p.color(QPalette::Active, QPalette::ButtonText).name();
-    QString actionSelectedBorder = p.color(QPalette::Active, QPalette::Highlight).name();
-    QString panelBackground = p.color(QPalette::Window).name();
-    QString groupBackground = p.color(QPalette::Button).name();
+    const QColor& highlightColor = p.color(QPalette::Highlight);
+    QColor headerBackground = highlightColor.darker(150);
+    const QColor& groupBackground = p.color(QPalette::Button);
 
     QHash<QString, QString> replacements;
-    replacements["headerBackground"] = headerBackground;
-    replacements["headerLabelText"] = headerLabelText;
-    replacements["headerLabelTextOver"] = headerLabelTextOver;
-    replacements["groupBorder"] = groupBorder;
-    replacements["disabledActionText"] = disabledActionText;
-    replacements["actionSelectedBg"] = actionSelectedBg;
-    replacements["actionSelectedText"] = actionSelectedText;
-    replacements["actionSelectedBorder"] = actionSelectedBorder;
-    replacements["panelBackground"] = panelBackground;
-    replacements["groupBackground"] = groupBackground;
+    replacements["headerBackground"] = headerBackground.name();
+    replacements["groupBackground"] = groupBackground.name();;
 
     QString style = QString::fromLatin1(
-        "QFrame[class='panel'] {"
-            "background-color: {panelBackground};"
-        "}"
-
         "QSint--ActionGroup QFrame[class='header'] {"
-            "border: 1px solid {headerBackground};"
             "background-color: {headerBackground};"
         "}"
-
-        "QSint--ActionGroup QToolButton[class='header'] {"
-            "color: {headerLabelText};"
-        "}"
-
-        "QSint--ActionGroup QToolButton[class='header']:hover {"
-            "color: {headerLabelTextOver};"
-        "}"
-
         "QSint--ActionGroup QFrame[class='content'] {"
-            "border: 1px solid {groupBorder};"
             "background-color: {groupBackground};"
-        "}"
-
-        "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-            "color: {disabledActionText};"
-        "}"
-
-        "QSint--ActionGroup QToolButton[class='action']:focus {"
-            "color: {actionSelectedText};"
-            "border: 1px dotted {actionSelectedBorder};"
-        "}"
-
-        "QSint--ActionGroup QToolButton[class='action']:on {"
-            "background-color: {actionSelectedBg};"
-            "color: {actionSelectedText};"
         "}"
     );
 

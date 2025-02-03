@@ -15,35 +15,6 @@ namespace QSint
 {
 
 
-const char* ActionLabelStyle =
-    "QSint--ActionLabel[class='action'] {"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
-        "color: #0033ff;"
-        "text-align: left;"
-        "font: 11px;"
-    "}"
-
-    "QSint--ActionLabel[class='action']:!enabled {"
-        "color: #999999;"
-    "}"
-
-    "QSint--ActionLabel[class='action']:hover {"
-        "color: #0099ff;"
-        "text-decoration: underline;"
-    "}"
-
-    "QSint--ActionLabel[class='action']:focus {"
-        "border: 1px dotted black;"
-    "}"
-
-    "QSint--ActionLabel[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
-    "}"
-;
-
-
 ActionLabel::ActionLabel(QWidget *parent) :
     QToolButton(parent)
 {
@@ -65,8 +36,6 @@ void ActionLabel::init()
     setCursor(Qt::PointingHandCursor);
 
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-    setStyleSheet(QString(ActionLabelStyle));
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
