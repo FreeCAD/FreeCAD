@@ -382,12 +382,13 @@ void TaskFemConstraintTransform::addToSelection()
                     }
                 }
                 if (Objects.empty()) {
-                    QMessageBox::warning(
-                        this,
-                        tr("Selection error"),
-                        tr("Only transformable faces can be selected! Apply displacement boundary "
-                           "condition to surface first then apply local coordinate system to "
-                           "surface"));
+                    QMessageBox::warning(this,
+                                         tr("Selection error"),
+                                         tr("Only transformable faces can be selected! Apply a "
+                                            "displacement boundary "
+                                            "condition or a force load to a face first then apply "
+                                            "local coordinate system to "
+                                            "the face."));
                     Gui::Selection().clearSelection();
                     return;
                 }
