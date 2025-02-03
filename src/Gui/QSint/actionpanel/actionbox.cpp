@@ -13,60 +13,6 @@
 namespace QSint
 {
 
-
-const char* ActionBoxStyle =
-    "QSint--ActionBox {"
-        "background-color: white;"
-        "border: 1px solid white;"
-        "border-radius: 3px;"
-        "text-align: left;"
-    "}"
-
-    "QSint--ActionBox:hover {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-        "border: 1px solid #DAF2FC;"
-    "}"
-
-
-    "QSint--ActionBox QSint--ActionLabel[class='header'] {"
-        "text-align: left;"
-        "font: 14px;"
-        "color: #006600;"
-        "background-color: transparent;"
-        "border: none;"
-    "}"
-
-    "QSint--ActionBox QSint--ActionLabel[class='header']:hover {"
-        "color: #00cc00;"
-        "text-decoration: underline;"
-    "}"
-
-
-    "QSint--ActionBox QSint--ActionLabel[class='action'] {"
-        "background-color: transparent;"
-        "border: none;"
-        "color: #0033ff;"
-        "text-align: left;"
-        "font: 11px;"
-    "}"
-
-    "QSint--ActionBox QSint--ActionLabel[class='action']:!enabled {"
-        "color: #999999;"
-    "}"
-
-    "QSint--ActionBox QSint--ActionLabel[class='action']:hover {"
-        "color: #0099ff;"
-        "text-decoration: underline;"
-    "}"
-
-    "QSint--ActionBox QSint--ActionLabel[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
-    "}"
-
-;
-
-
 ActionBox::ActionBox(QWidget *parent) :
     QFrame(parent)
 {
@@ -91,8 +37,6 @@ ActionBox::ActionBox(const QPixmap & icon, const QString & headerText, QWidget *
 void ActionBox::init()
 {
     setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Maximum);
-
-    setStyleSheet(QString(ActionBoxStyle));
 
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
 
