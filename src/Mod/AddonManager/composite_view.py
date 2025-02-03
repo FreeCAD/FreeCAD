@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Provides a class for showing the list view and detail view at the same time. """
+"""Provides a class for showing the list view and detail view at the same time."""
 
 import base64
 

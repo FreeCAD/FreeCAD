@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 """Post Process command that will make use of the Output File and Post
-Processor entries in PathJob """
+Processor entries in PathJob"""
 
 
 import FreeCAD

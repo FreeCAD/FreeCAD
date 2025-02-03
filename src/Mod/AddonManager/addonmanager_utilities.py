@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Utilities to work across different platforms, providers and python versions """
+"""Utilities to work across different platforms, providers and python versions"""
 
 from datetime import datetime
 from typing import Optional, Any
