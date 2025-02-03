@@ -53,9 +53,9 @@ Gui--PropertyEditor--PropertyEditor {
  }
 
  QSint--ActionGroup QFrame[class="content"] {
-  border-bottom: 1.5px solid #020202;
+  border-bottom: 1px solid #020202;
   border-left: 1px solid #020202;
-  border-right: 1.5px solid #020202;
+  border-right: 1px solid #020202;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   border-bottom-left-radius: 3px;
@@ -64,7 +64,7 @@ Gui--PropertyEditor--PropertyEditor {
 
 QSint--ActionGroup QFrame[class="header"] {
   border: 1px solid #020202;
-  border-right: 1.5px solid #020202;
+  border-right: 1px solid #020202;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border-bottom-left-radius: 0px;

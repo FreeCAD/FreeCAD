@@ -71,12 +71,24 @@ Gui--PropertyEditor--PropertyEditor {
    background-color: transparent;
    border: transparent;
  }
-
  QSint--ActionGroup QFrame[class="content"] {
-   border-bottom-left-radius: 5px;
-   border-bottom-right-radius: 5px;
+  border-bottom: 1px solid #020202;
+  border-left: 1px solid #020202;
+  border-right: 1px solid #020202;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
  }
 
+QSint--ActionGroup QFrame[class="header"] {
+  border: 1px solid #020202;
+  border-right: 1px solid #020202;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
  Gui--OverlayTabWidget::tab-bar:top,
  Gui--OverlayTabWidget::tab-bar:bottom {
      left: 10px;

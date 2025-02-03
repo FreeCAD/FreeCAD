@@ -51,9 +51,9 @@ Gui--OverlayTabWidget::pane {
 }
 
 QSint--ActionGroup QFrame[class="content"] {
-  border-bottom: 1.5px solid #ababab;
+  border-bottom: 1px solid #ababab;
   border-left: 1px solid #ababab;
-  border-right: 1.5px solid #ababab;
+  border-right: 1px solid #ababab;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   border-bottom-left-radius: 3px;
@@ -62,7 +62,7 @@ QSint--ActionGroup QFrame[class="content"] {
 
 QSint--ActionGroup QFrame[class="header"] {
   border: 1px solid #ababab;
-  border-right: 1.5px solid #ababab;
+  border-right: 1px solid #ababab;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border-bottom-left-radius: 0px;

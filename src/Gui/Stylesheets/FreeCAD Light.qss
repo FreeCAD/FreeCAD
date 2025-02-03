@@ -954,39 +954,11 @@ QToolBar::separator:vertical {
   image: url(qss:images_classic/vsepartoolbar-lightgray.png);
 }
 
-/* undo button */
-
-QToolBar[objectName="Edit"] > QToolButton::menu-arrow {
-  background-image: url(qss:images_classic/arrow-down-lightgray.png);
-  background-position: center center;
-  background-repeat: none;
-  subcontrol-origin: padding;
-  subcontrol-position: bottom right;
-  height: 6px;
-}
-
-QToolBar[objectName="Edit"] > QToolButton::menu-arrow:hover {
-  background-image: url(qss:images_classic/arrow-down-black.png);
-  background-position: center center;
-  background-repeat: none;
-  subcontrol-origin: padding;
-  subcontrol-position: bottom right;
-  height: 6px;
-}
-
-QToolBar[objectName="Edit"] > QToolButton::menu-arrow:open {
-  background-image: url(qss:images_classic/arrow-down-black.png);
-  background-position: center center;
-  background-repeat: none;
-  subcontrol-origin: padding;
-  subcontrol-position: bottom right;
-  height: 6px;
-}
-
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working Qproperty works but breaks when you move the toolbar see also */
 QToolButton#qt_toolbar_ext_button {
-background-repeat: none;
-background-position: center center;
+  background-repeat: none;
+  background-position: center center;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ffffff, stop:1 #fefefe);
 }
 
 QToolButton#qt_toolbar_ext_button:hover {
@@ -997,6 +969,29 @@ QToolButton#qt_toolbar_ext_button:on {
   background-color: transparent;
 }
 
+/* undo button */
+
+
+QToolBar[objectName="Edit"] > QToolButton {
+  padding-right:14px;
+}
+
+QToolBar[objectName="Edit"] > QToolButton::menu-arrow {
+  background-image: url(qss:images_classic/arrow-down-lightgray.png);
+  background-position: center center;
+  background-repeat: none;
+  subcontrol-origin: padding;
+  subcontrol-position: center center;
+  height: 6px;
+}
+
+QToolBar[objectName="Edit"] > QToolButton::menu-arrow:hover {
+  background-image: url(qss:images_classic/arrow-down-black.png);
+}
+
+QToolBar[objectName="Edit"] > QToolButton::menu-arrow:open {
+  background-image: url(qss:images_classic/arrow-down-black.png);
+}
 
 /* QAbstractSpinBox -------------------------------------------------------
 
@@ -1568,7 +1563,7 @@ Gui--PropertyEditor--PropertyEditor {
 
 /* Action group */
 QFrame[class="panel"] {
-/* background-color: rgba(237, 237, 237, 0.5); Not sure why this was added, but there was reason. */
+/* background-color: rgba(237, 237, 237, 0.5); This was added to fix passtrue on overlay in properties, seems to be fixed in new QT*/
 }
 
 QSint--ActionGroup {
@@ -1608,11 +1603,6 @@ border-bottom-right-radius: 0px;
 margin: 0px;
 padding: 0px;
 color: #000000;
-}
-
-QSint--ActionGroup QFrame[class="header"]:hover {
-  /* background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #ffffff stop:1 #313d61); */
-  color: #000000;
 }
 
 QSint--ActionGroup QToolButton[class="header"] {
