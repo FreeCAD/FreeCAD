@@ -784,6 +784,7 @@ void MainWindow::closeActiveWindow ()
 
 int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckbox) {
     QMessageBox box(parent?parent:this);
+    box.setObjectName(QStringLiteral("confirmSave"));
     box.setIcon(QMessageBox::Question);
     box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved document"));
@@ -798,7 +799,7 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
     box.setDefaultButton(QMessageBox::Save);
     box.setEscapeButton(QMessageBox::Cancel);
 
-    QCheckBox checkBox(QObject::tr("Apply answer to all"));
+    QCheckBox checkBox(QObject::tr("Apply to all"));
     ParameterGrp::handle hGrp;
     if(addCheckbox) {
          hGrp = App::GetApplication().GetUserParameter().
