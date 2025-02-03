@@ -33,7 +33,7 @@
 #include <App/DocumentObject.h>
 #include <App/Datums.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintForce.h>
 #include <Mod/Fem/App/FemTools.h>

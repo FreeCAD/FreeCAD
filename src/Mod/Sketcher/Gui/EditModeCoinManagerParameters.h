@@ -40,6 +40,8 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
+#include <App/Color.h>
+#include <Gui/ViewParams.h>
 #include <Gui/Inventor/SmSwitchboard.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -147,6 +149,20 @@ struct DrawingParameters
     unsigned int InternalPattern = 0b1111110011111100;      // pattern of internal edges
     unsigned int ExternalPattern = 0b1111110011111100;      // pattern of external edges
     //@}
+
+    DrawingParameters()
+    {
+        unsigned long colorLong;
+        App::Color color;
+
+        colorLong = Gui::ViewParams::instance()->getAxisXColor();
+        color = App::Color(static_cast<uint32_t>(colorLong));
+        CrossColorH = SbColor(color.r, color.g, color.b);
+
+        colorLong = Gui::ViewParams::instance()->getAxisYColor();
+        color = App::Color(static_cast<uint32_t>(colorLong));
+        CrossColorV = SbColor(color.r, color.g, color.b);
+    }
 };
 
 /** @brief      Struct for storing references to the scenegraph nodes necessary for geometry layers

@@ -30,7 +30,7 @@
 
 #include <App/Document.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintGear.h>
 #include <Mod/Fem/App/FemTools.h>

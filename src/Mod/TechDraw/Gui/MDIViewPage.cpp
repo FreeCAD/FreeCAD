@@ -51,8 +51,8 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Window.h>
@@ -457,6 +457,22 @@ void MDIViewPage::viewAll()
     m_vpPage->getQGVPage()->fitInView(m_scene->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
 
+QString MDIViewPage::defaultFileName()
+{
+    const std::string separator{"_"};
+
+    auto doc = getPage()->getDocument();
+    std::string docLabel{doc->Label.getValue()};
+    std::string pageLabel{getPage()->Label.getValue()};
+    auto pageTemplate = dynamic_cast<TechDraw::DrawTemplate*>(getPage()->Template.getValue());
+    auto textMap = pageTemplate->EditableTexts.getValues();
+    auto drawingNumber = textMap["drawing_number"];
+    auto revision = textMap["revision_index"];
+    auto defaultName = docLabel + separator + pageLabel + separator + drawingNumber + separator + revision;
+
+    return QString::fromStdString(defaultName);
+}
+
 void MDIViewPage::saveSVG(std::string filename)
 {
     auto vpp = getViewProviderPage();
@@ -474,7 +490,7 @@ void MDIViewPage::saveSVG()
     filter << QObject::tr("All Files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
-                                         QString(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
     }
@@ -490,15 +506,16 @@ void MDIViewPage::saveDXF(std::string filename)
 
 void MDIViewPage::saveDXF()
 {
-    QString defaultDir;
-    QString fileName = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8("DXF (*.dxf)"));
-    if (fileName.isEmpty()) {
+    QStringList filter;
+    filter << QStringLiteral("DXF (*.dxf)");
+    filter << QObject::tr("All Files (*.*)");
+    QString fn =
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
+                                         defaultFileName(), filter.join(QLatin1String(";;")));
+    if (fn.isEmpty()) {
         return;
     }
-
-    std::string sFileName = fileName.toUtf8().constData();
+    std::string sFileName = fn.toUtf8().constData();
     saveDXF(sFileName);
 }
 
@@ -513,15 +530,16 @@ void MDIViewPage::savePDF(std::string filename)
 
 void MDIViewPage::savePDF()
 {
-    QString defaultDir;
-    QString fileName = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save PDF file")), defaultDir,
-        QString::fromUtf8("PDF (*.pdf)"));
-    if (fileName.isEmpty()) {
+    QStringList filter;
+    filter << QStringLiteral("PDF (*.pdf)");
+    filter << QObject::tr("All Files (*.*)");
+    QString fn =
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as PDF"),
+                                         defaultFileName(), filter.join(QLatin1String(";;")));
+    if (fn.isEmpty()) {
         return;
     }
-
-    std::string sFileName = fileName.toUtf8().constData();
+    std::string sFileName = fn.toUtf8().constData();
     savePDF(sFileName);
 }
 

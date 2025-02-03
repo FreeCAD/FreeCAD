@@ -43,8 +43,11 @@ public:
     /// destructor
     ~ViewProviderSymbol() override;
 
+    App::PropertyBool LegacyScaling;
+
     bool useNewSelectionModel() const override {return false;}
     void updateData(const App::Property*) override;
+    void onChanged(const App::Property* prop) override;
 
     TechDraw::DrawViewSymbol* getViewObject() const override;
 };

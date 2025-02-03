@@ -25,7 +25,7 @@
 
 #include <App/Link.h>
 
-#include "SoFCUnifiedSelection.h"
+#include "Selection/SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "ViewProviderFeaturePython.h"

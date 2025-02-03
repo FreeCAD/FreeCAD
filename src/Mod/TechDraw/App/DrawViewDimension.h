@@ -94,6 +94,8 @@ public:
     App::PropertyVectorList BoxCorners;
     App::PropertyBool UseActualArea;
 
+    App::PropertyBool ShowUnits;
+
     enum RefType
     {
         invalidRef,

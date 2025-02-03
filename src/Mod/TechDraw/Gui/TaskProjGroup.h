@@ -116,6 +116,7 @@ private:
     TechDraw::DrawView* view;
     TechDraw::DrawProjGroup* multiView;
     bool m_createMode;
+    std::string m_viewName;
 
     bool blockUpdate{true};
     bool blockCheckboxes;

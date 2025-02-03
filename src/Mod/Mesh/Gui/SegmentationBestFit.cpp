@@ -35,7 +35,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
 #include <Mod/Mesh/App/MeshFeature.h>

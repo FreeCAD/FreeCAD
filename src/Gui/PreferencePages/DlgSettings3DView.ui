@@ -123,6 +123,117 @@ in the corner -- in % of height/width of viewport</string>
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="xAxisLabel">
+          <property name="text">
+           <string>X-axis color</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefColorButton" name="xAxisColor">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AxisXColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>204</red>
+            <green>51</green>
+            <blue>51</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="yAxisLabel">
+          <property name="text">
+           <string>Y-axis color</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefColorButton" name="yAxisColor">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AxisYColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>51</red>
+            <green>204</green>
+            <blue>51</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="zAxisLabel">
+          <property name="text">
+           <string>Z-axis color</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefColorButton" name="zAxisColor">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AxisZColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>51</red>
+            <green>51</green>
+            <blue>204</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_ShowAxisCross">
         <property name="toolTip">
          <string>Axis cross will be shown by default at file

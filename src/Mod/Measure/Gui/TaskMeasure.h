@@ -39,7 +39,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 namespace Gui
 {

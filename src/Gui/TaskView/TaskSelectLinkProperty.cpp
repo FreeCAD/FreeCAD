@@ -26,8 +26,8 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
 
 #include "ui_TaskSelectLinkProperty.h"
 #include "TaskSelectLinkProperty.h"
