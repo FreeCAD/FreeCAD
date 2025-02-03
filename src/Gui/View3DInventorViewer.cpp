@@ -2444,7 +2444,32 @@ void View3DInventorViewer::renderScene()
         stream.precision(1);
         stream.setf(std::ios::fixed | std::ios::showpoint);
         stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
-        draw2DString(stream.str().c_str(), SbVec2s(10, 10), SbVec2f(0.1F, 0.1F));  // NOLINT
+        ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft");
+        std::string overlayLeftWidgets = hGrpOverlayL->GetASCII("Widgets", "");
+        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+        unsigned long axisLetterColor = hGrpView->GetUnsigned("AxisLetterColor", 4294902015); //default FPS color (yellow)
+        QColor color = App::Color::fromPackedRGBA<QColor>(axisLetterColor);
+        double fColRed = float(color.redF());
+        double fColGreen = float(color.greenF());
+        double fColBlue = float(color.blueF());
+        if (overlayLeftWidgets == "") {
+            draw2DString(stream.str().c_str(),
+                         SbVec2s(10, 10),
+                         SbVec2f(0.1F, 0.1F),
+                         fColRed,
+                         fColGreen,
+                         fColBlue);  // NOLINT
+        }
+        else {
+            draw2DString(stream.str().c_str(),
+                         SbVec2s(10, 10),
+                         SbVec2f(1.1F, 0.1F),
+                         fColRed,
+                         fColGreen,
+                         fColBlue);  // NOLINT
+        }
     }
 
     if (naviCubeEnabled) {

@@ -103,7 +103,7 @@ in the corner -- in % of height/width of viewport</string>
         <item row="1" column="3">
          <widget class="Gui::PrefColorButton" name="axisLetterColor">
           <property name="toolTip">
-           <string>Axis letter color</string>
+           <string>Axis letter and FPS counter color</string>
           </property>
           <property name="color" stdset="0">
            <color>

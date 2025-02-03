@@ -637,7 +637,10 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition()
 void
 SIM::Coin3D::Quarter::SoQTQuarterAdaptor::draw2DString(const char* str,
                                                        SbVec2s glsize,
-                                                       SbVec2f position)
+                                                       SbVec2f position,
+                                                       double colRed = 1.0F,
+                                                       double colGreen = 1.0F,
+                                                       double colBlue = 0.0F) // retains yellow as default color
 {
     // Store GL state.
     glPushAttrib(GL_ENABLE_BIT|GL_CURRENT_BIT);
@@ -668,7 +671,7 @@ SIM::Coin3D::Quarter::SoQTQuarterAdaptor::draw2DString(const char* str,
 //   glRasterPos2f(position[0], position[1] - 1);
 //   printString(str);
 
-    glColor3f(1.0, 1.0, 0.0);
+    glColor3f(colRed, colGreen, colBlue);
     glRasterPos2f(position[0], position[1]);
     printString(str);
 
