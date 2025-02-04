@@ -9,6 +9,7 @@
 
 #include <QApplication>
 #include <QStyleOptionToolButton>
+#include <QAction>
 
 namespace QSint
 {
@@ -65,6 +66,32 @@ QSize ActionLabel::sizeHint() const
 QSize ActionLabel::minimumSizeHint() const
 {
     return sizeHint();
+}
+
+void ActionLabel::setDefaultAction(QAction *action)
+{
+    if (defaultAction()) {
+        disconnect(defaultAction(), &QAction::changed, this, &ActionLabel::updateActionText);
+    }
+
+    QToolButton::setDefaultAction(action);
+
+    if (action) {
+        connect(action, &QAction::changed, this, &ActionLabel::updateActionText);
+        updateActionText();  // Ensure the text is updated immediately
+    }
+}
+
+void ActionLabel::updateActionText()
+{
+    if (defaultAction()) {
+        setText(defaultAction()->text());
+    }
+}
+
+void ActionLabel::setText(const QString &text)
+{
+    QToolButton::setText(" " + text.trimmed());
 }
 
 } // namespace QSint

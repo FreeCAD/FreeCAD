@@ -11,7 +11,6 @@
 #include <QToolButton>
 #include "qsint_global.h"
 
-
 namespace QSint
 {
 
@@ -83,6 +82,9 @@ public:
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
+    void setDefaultAction(QAction *action);
+    void updateActionText();
+    void setText(const QString &text);
 
 protected:
     void init();
