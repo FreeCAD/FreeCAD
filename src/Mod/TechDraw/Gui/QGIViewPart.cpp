@@ -70,6 +70,7 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 using namespace std;
 using DU = DrawUtil;
+using FillMode = QGIFace::FillMode;
 
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
@@ -277,7 +278,7 @@ void QGIViewPart::drawAllFaces(void)
         QGIFace* newFace = drawFace(face, iFace);
         if (faceColor.isValid()) {
             newFace->setFillColor(faceColor);
-            newFace->setFillMode(faceColor.alpha() ? QGIFace::PlainFill : QGIFace::NoFill);
+            newFace->setFillMode(faceColor.alpha() ? FillMode::PlainFill : FillMode::NoFill);
         }
 
         TechDraw::DrawHatch* fHatch = faceIsHatched(iFace, regularHatches);
@@ -285,7 +286,7 @@ void QGIViewPart::drawAllFaces(void)
         if (fGeom) {
             // geometric hatch (from PAT hatch specification)
             newFace->isHatched(true);
-            newFace->setFillMode(QGIFace::GeomHatchFill);
+            newFace->setFillMode(FillMode::GeomHatchFill);
             std::vector<LineSet> lineSets = fGeom->getTrimmedLines(iFace);
             if (!lineSets.empty()) {
                 // this face has geometric hatch lines
@@ -315,10 +316,10 @@ void QGIViewPart::drawAllFaces(void)
             }
             if (fHatch->isSvgHatch()) {
                 // svg tile hatch
-                newFace->setFillMode(QGIFace::SvgFill);
+                newFace->setFillMode(FillMode::SvgFill);
             } else {
                 //bitmap hatch
-                newFace->setFillMode(QGIFace::BitmapFill);
+                newFace->setFillMode(FillMode::BitmapFill);
             }
 
             // get the properties from the hatch viewprovider
