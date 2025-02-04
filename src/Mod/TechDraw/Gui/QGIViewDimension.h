@@ -56,6 +56,7 @@ class QGIDimLines;
 class QGIViewDimension;
 class QGCustomSvg;
 class ViewProviderDimension;
+enum class DragState;
 
 class QGIDatumLabel : public QGraphicsObject
 {
@@ -150,7 +151,7 @@ private:
     double posX;
     double posY;
 
-    int m_dragState;
+    DragState m_dragState;
 
 private:
 };

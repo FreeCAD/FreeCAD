@@ -40,12 +40,11 @@ QT_END_NAMESPACE
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "Enums.h"
+
 namespace TechDrawGui
 {
-
-#define DECORNODRAG 0
-#define DECORDRAGSTARTED 1
-#define DECORDRAGGING 2
+//enum class DragState : int;
 
 class TechDrawGuiExport QGIDecoration : public QGraphicsItemGroup
 {
@@ -92,7 +91,7 @@ protected:
     Qt::PenStyle m_styleCurrent;
     Qt::BrushStyle m_brushCurrent;
 
-    int m_dragState;
+    DragState m_dragState;
 
 private:
 };
