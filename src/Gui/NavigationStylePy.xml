@@ -13,6 +13,11 @@
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
       <UserDocu>This is the base class for navigation styles</UserDocu>
     </Documentation>
+    <Methode Name="setSpinningEnabled">
+      <Documentation>
+        <UserDocu>Sets if spinning is enabled</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

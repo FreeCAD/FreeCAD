@@ -128,6 +128,9 @@ public:
     SbBool isSpinningAnimationEnabled() const;
     SbBool isAnimating() const;
     SbBool isSpinning() const;
+    SbBool isSpinningEnabled() const;
+    void setSpinningEnabled(SbBool enable);
+
     void startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait = false) const;
     void stopAnimating() const;
 
@@ -276,6 +279,7 @@ protected:
     /** @name Spinning data */
     //@{
     SbBool spinningAnimationEnabled;
+    SbBool spinningEnabled;
     int spinsamplecounter;
     SbRotation spinincrement;
     SbSphereSheetProjector * spinprojector;
