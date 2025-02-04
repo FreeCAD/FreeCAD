@@ -396,7 +396,7 @@ def assign_groups(children, ifcfile=None):
 
 
 def get_children(
-    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False, iftype=None
+    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False, ifctype=None
 ):
     """Returns the direct descendants of an object"""
 
@@ -417,7 +417,7 @@ def get_children(
     result = filter_elements(
         children, ifcfile, expand=expand, spaces=True, assemblies=assemblies
     )
-    if iftype:
+    if ifctype:
         result = [r for r in result if r.is_a(ifctype)]
     return result
 
