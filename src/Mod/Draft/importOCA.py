@@ -44,7 +44,7 @@ import FreeCAD, os, Part, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 from draftutils import params
-from builtins import open as pyopen
+from draftutils.utils import pyopen
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
