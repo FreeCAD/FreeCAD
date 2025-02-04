@@ -20,20 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-import importlib
 import os
 import time
 
 import FreeCAD
-from nativeifc import ifc_tools
-from nativeifc import ifc_psets
-from nativeifc import ifc_materials
-from nativeifc import ifc_layers
-from nativeifc import ifc_status
+
+from . import ifc_tools
+from . import ifc_psets
+from . import ifc_materials
+from . import ifc_layers
+from . import ifc_status
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    import Arch_rc
+    import Arch_rc  # needed to load the Arch icons, noqa: F401
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -145,7 +145,6 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
     ask = PARAMS.GetBool("AskAgain", False)
     if ask and FreeCAD.GuiUp:
         import FreeCADGui
-        from PySide import QtGui
 
         dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogImport.ui")
         dlg.checkSwitchWB.hide()  # TODO see what to do with this...
@@ -188,7 +187,6 @@ def get_project_type(silent=False):
         return ptype
     if ask and FreeCAD.GuiUp:
         import FreeCADGui
-        from PySide import QtGui
 
         dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogCreateProject.ui")
         result = dlg.exec_()

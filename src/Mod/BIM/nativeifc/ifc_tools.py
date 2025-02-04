@@ -33,14 +33,13 @@ translate = FreeCAD.Qt.translate
 
 try:
     import ifcopenshell
-    from ifcopenshell import geom
-    from ifcopenshell import api
-    from ifcopenshell import template
-    from ifcopenshell.util import element
-    from ifcopenshell.util import attribute
-    from ifcopenshell.util import schema
-    from ifcopenshell.util import placement
-    from ifcopenshell.util import unit
+    import ifcopenshell.api
+    import ifcopenshell.geom
+    import ifcopenshell.util.attribute
+    import ifcopenshell.util.element
+    import ifcopenshell.util.placement
+    import ifcopenshell.util.schema
+    import ifcopenshell.util.unit
 except ImportError as e:
     import FreeCAD
     FreeCAD.Console.PrintError(
@@ -52,13 +51,13 @@ except ImportError as e:
     )
     raise e
 
-from nativeifc import ifc_objects
-from nativeifc import ifc_viewproviders
-from nativeifc import ifc_import
-from nativeifc import ifc_layers
-from nativeifc import ifc_status
-from nativeifc import ifc_export
-from nativeifc import ifc_psets
+from . import ifc_objects
+from . import ifc_viewproviders
+from . import ifc_import
+from . import ifc_layers
+from . import ifc_status
+from . import ifc_export
+from . import ifc_psets
 
 from draftviewproviders import view_layer
 import ArchBuildingPart
