@@ -141,6 +141,7 @@ class MetadataValidators:
         else:
             found_repo = False
             found_readme = False
+            # TODO: add changelog contributing
             for url in urls:
                 if url.type == "repository":
                     found_repo = True

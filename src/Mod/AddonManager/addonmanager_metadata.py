@@ -26,6 +26,7 @@ https://wiki.FreeCAD.org/Package_metadata"""
 
 from __future__ import annotations
 
+import requests
 from dataclasses import dataclass, field
 from enum import IntEnum, auto
 from typing import Tuple, Dict, List, Optional
@@ -51,6 +52,23 @@ class Contact:
 class License:
     name: str
     file: str = ""
+
+
+class DocType(IntEnum):
+    changelog = 0
+    contributing = auto()
+    license = auto()
+    readme = auto()
+    picture = auto()  # TODO: for gallery
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+@dataclass
+class Doc:
+    doc: DocType
+    path: str
 
 
 class UrlType(IntEnum):
@@ -203,6 +221,7 @@ class Metadata:
     maintainer: List[Contact] = field(default_factory=list)
     license: List[License] = field(default_factory=list)
     url: List[Url] = field(default_factory=list)
+    docs: List[Doc] = field(default_factory=list)
     author: List[Contact] = field(default_factory=list)
     depend: List[Dependency] = field(default_factory=list)
     conflict: List[Dependency] = field(default_factory=list)
@@ -261,6 +280,14 @@ class MetadataReader:
             return MetadataReader.from_bytes(data)
 
     @staticmethod
+    def from_url(url: str) -> Metadata:
+        """A convenience function for loading the Metadata from a raw URL"""
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.content
+        return MetadataReader.from_bytes(data)
+
+    @staticmethod
     def from_bytes(data: bytes) -> Metadata:
         """Read XML data from bytes and use it to construct Metadata"""
         element_tree = ET.fromstring(data)
@@ -306,10 +333,14 @@ class MetadataReader:
             metadata.__dict__[tag].append(MetadataReader._parse_contact(child))
         elif tag == "license":
             # List of licenses
-            metadata.license.append(MetadataReader._parse_license(child))
+            lic = MetadataReader._parse_license(child)
+            metadata.license.append(lic)
+            metadata.docs.append(Doc(doc=DocType.license, path=lic.file))
         elif tag == "url":
             # List of urls
             metadata.url.append(MetadataReader._parse_url(child))
+        elif tag == "doc":
+            metadata.docs.append(MetadataReader._parse_doc(child))
         elif tag in ["depend", "conflict", "replace"]:
             # Lists of dependencies
             metadata.__dict__[tag].append(MetadataReader._parse_dependency(child))
@@ -338,6 +369,12 @@ class MetadataReader:
             if url_type == UrlType.repository:
                 branch = child.attrib["branch"] if "branch" in child.attrib else ""
         return Url(location=child.text, type=url_type, branch=branch)
+
+    @staticmethod
+    def _parse_doc(child: ET.Element) -> Doc:
+        if "type" in child.attrib and child.attrib["type"] in DocType.__dict__:
+            doc_type = DocType[child.attrib["type"]]
+        return Doc(doc=doc_type, path=child.text)
 
     @staticmethod
     def _parse_dependency(child: ET.Element) -> Dependency:
