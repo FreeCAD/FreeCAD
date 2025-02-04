@@ -1457,14 +1457,13 @@ class DraftToolBar:
         self.sourceCmd.proceed(str(action.text()))
 
     def setRadiusValue(self,val,unit=None):
-        #print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)
-        if  not isinstance(val, (int, float)):       #??some code passes strings or ???
+        # print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)
+        if  not isinstance(val, (int, float)):  # some code passes strings
             t = val
         elif unit:
-            t= display_external(val,None, unit)
+            t = display_external(val, None, unit)
         else:
-            print("Error: setRadiusValue called for number without Dimension")
-            t = display_external(val,None, None)
+            t = display_external(val, None, None)
         self.radiusValue.setText(t)
         self.radiusValue.setFocus()
 
