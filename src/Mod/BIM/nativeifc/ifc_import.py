@@ -200,15 +200,14 @@ def get_project_type(silent=False):
 # convenience functions
 
 def toggle_lock_on():
-
     ifc_status.on_toggle_lock(True, noconvert=True, setchecked=True)
 
-def toggle_lock_off():
 
+def toggle_lock_off():
     ifc_status.on_toggle_lock(False, noconvert=True, setchecked=True)
 
-def unset_modified():
 
+def unset_modified():
     try:
         FreeCADGui.ActiveDocument.Modified = False
     except AttributeError:
