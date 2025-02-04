@@ -1285,9 +1285,11 @@ QDialogButtonBox QPushButton {
   min-width: 80px;
 }
 
-QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton {
+QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
+QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
   min-width: 20px;
 }
+
 /* QToolButton ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
