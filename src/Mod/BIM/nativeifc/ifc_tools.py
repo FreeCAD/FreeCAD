@@ -1580,8 +1580,8 @@ def get_orphan_elements(ifcfile):
     ]
     # add control elements
     proj = ifcfile.by_type("IfcProject")[0]
-    for rel in proj.Declares:
-        for ctrl in getattr(rel,"RelatedDefinitions", []):
+    for rel in getattr(proj, "Declares", []):
+        for ctrl in getattr(rel, "RelatedDefinitions", []):
             if ctrl.is_a("IfcControl"):
                 products.append(ctrl)
     groups = []
