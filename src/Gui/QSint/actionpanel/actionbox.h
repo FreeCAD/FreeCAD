@@ -172,7 +172,7 @@ public:
     explicit ActionBox(QWidget *parent = nullptr);
     /** Constructor.
       */
-    explicit ActionBox(const QString & headerText, QWidget *parent = nullptr);
+    ActionBox(const QString & headerText, QWidget *parent = nullptr);
     /** Constructor.
       */
     explicit ActionBox(const QPixmap & icon, const QString & headerText, QWidget *parent = nullptr);
@@ -204,7 +204,7 @@ public:
     /** Creates action items from the \a actions list and returns the list of action items.
       \since 0.2
       */
-    QList<ActionLabel*> createItems(QList<QAction*> actions);
+    QList<ActionLabel*> createItems(const QList<QAction*> actions);
 
     /** Adds an action with \a text to the ActionBox and returns action item.
       */
@@ -245,7 +245,7 @@ public:
     QSize minimumSizeHint() const override;
 
 protected:
-    void init();
+    void init(const QString &headerText = QString());
 
     QVBoxLayout *dataLayout;
     QLabel *iconLabel;

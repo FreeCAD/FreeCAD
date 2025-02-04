@@ -13,8 +13,8 @@
 namespace QSint
 {
 
-ActionBox::ActionBox(QWidget *parent) :
-    QFrame(parent)
+ActionBox::ActionBox(QWidget *parent)
+    : QFrame(parent)
 {
     init();
 }
@@ -22,25 +22,23 @@ ActionBox::ActionBox(QWidget *parent) :
 ActionBox::ActionBox(const QString & headerText, QWidget *parent) :
     QFrame(parent)
 {
-    init();
-    headerLabel->setText(headerText);
+    init(headerText);
 }
 
 ActionBox::ActionBox(const QPixmap & icon, const QString & headerText, QWidget *parent) :
     QFrame(parent)
 {
-    init();
-    headerLabel->setText(headerText);
+    init(headerText);
     setIcon(icon);
 }
 
-void ActionBox::init()
+void ActionBox::init(const QString &headerText)
 {
-    setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Maximum);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
-    QHBoxLayout *mainLayout = new QHBoxLayout(this);
+    auto *mainLayout = new QHBoxLayout(this);
 
-    QVBoxLayout *iconLayout = new QVBoxLayout();
+    auto *iconLayout = new QVBoxLayout();
     mainLayout->addLayout(iconLayout);
 
     iconLabel = new QLabel(this);
@@ -50,7 +48,7 @@ void ActionBox::init()
     dataLayout = new QVBoxLayout();
     mainLayout->addLayout(dataLayout);
 
-    headerLabel = createItem("");
+    headerLabel = createItem(headerText);
     headerLabel->setProperty("class", "header");
 }
 
@@ -92,9 +90,8 @@ QList<ActionLabel*> ActionBox::createItems(QList<QAction*> actions)
 
     QLayout *l = createHBoxLayout();
 
-    Q_FOREACH (QAction *action, actions) {
-        ActionLabel *act = createItem(action, l);
-        if (act)
+    for (QAction *action : actions) {
+        if (auto *act = createItem(action, l))
             list.append(act);
     }
 
@@ -106,7 +103,6 @@ ActionLabel* ActionBox::createItem(const QString & text, QLayout * l)
     ActionLabel *act = new ActionLabel(this);
     act->setText(text);
     act->setProperty("class", "action");
-    act->setStyleSheet("");
 
     if (l)
         l->addWidget(act);
