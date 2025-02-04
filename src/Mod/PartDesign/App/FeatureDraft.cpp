@@ -126,9 +126,13 @@ App::DocumentObjectExecReturn *Draft::execute()
     App::DocumentObject* refDirection = PullDirection.getValue();
     if (refDirection) {
         if (refDirection->isDerivedFrom<PartDesign::Line>()) {
-                    PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
-                    Base::Vector3d d = line->getDirection();
-                    pullDirection = gp_Dir(d.x, d.y, d.z);
+            PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
+            Base::Vector3d d = line->getDirection();
+            pullDirection = gp_Dir(d.x, d.y, d.z);
+        } else if (refDirection->isDerivedFrom<App::Line>()) {
+            App::Line* line = static_cast<App::Line*>(refDirection);
+            Base::Vector3d d = line->getDirection();
+            pullDirection = gp_Dir(d.x, d.y, d.z);
         } else if (refDirection->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = PullDirection.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())
