@@ -44,7 +44,6 @@ QT_END_NAMESPACE
 
 namespace TechDrawGui
 {
-//enum class DragState : int;
 
 class TechDrawGuiExport QGIDecoration : public QGraphicsItemGroup
 {
