@@ -79,7 +79,7 @@ def insert(
     stime = time.time()
     try:
         document = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         document = FreeCAD.newDocument()
     if singledoc is None:
         singledoc = PARAMS.GetBool("SingleDoc", True)
@@ -211,5 +211,5 @@ def unset_modified():
 
     try:
         FreeCADGui.ActiveDocument.Modified = False
-    except:
+    except AttributeError:
         pass
