@@ -30,7 +30,7 @@
 
 #include <Base/Parameter.h>
 #include <Base/Tools2D.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ToolHandler.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>

@@ -75,7 +75,6 @@ const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullp
 /* "None" profile */
 
 const char* Hole::HoleCutType_None_Enums[]           = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr };
-const char* Hole::ThreadSize_None_Enums[]            = { "None", nullptr };
 const char* Hole::ThreadClass_None_Enums[]           = { "None", nullptr };
 
 /* Sources:
@@ -84,7 +83,7 @@ const char* Hole::ThreadClass_None_Enums[]           = { "None", nullptr };
 
 */
 
-const Hole::ThreadDescription Hole::threadDescription[][171] =
+const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
 {
     /* None */
     {
@@ -615,20 +614,20 @@ const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
         { "1 1/2", 39.7, 41.3, 44.0 }
 };
 
+std::vector<std::string> getThreadDesignations(const int threadType) {
+    std::vector<std::string> designations;
+    for (const auto& thread : Hole::threadDescription[threadType]) {
+        designations.push_back(thread.designation);
+    }
+    return designations;
+}
+
 /* ISO coarse metric enums */
 std::vector<std::string> Hole::HoleCutType_ISOmetric_Enums = {
     "None",
     "Counterbore",
     "Countersink",
     "Counterdrill"};
-const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1",   "M1.1", "M1.2", "M1.4", "M1.6",
-                                                     "M1.8", "M2",   "M2.2", "M2.5", "M3",
-                                                     "M3.5", "M4",   "M4.5", "M5",   "M6",
-                                                     "M7",   "M8",   "M9",   "M10",  "M11",
-                                                     "M12",  "M14",  "M16",  "M18",  "M20",
-                                                     "M22",  "M24",  "M27",  "M30",  "M33",
-                                                     "M36",  "M39",  "M42",  "M45",  "M48",
-                                                     "M52",  "M56",  "M60",  "M64",  "M68",  nullptr };
 const char* Hole::ThreadClass_ISOmetric_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", nullptr };
 
 std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums = {
@@ -636,50 +635,6 @@ std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums = {
     "Counterbore",
     "Countersink",
     "Counterdrill"};
-const char* Hole::ThreadSize_ISOmetricfine_Enums[]   = {
-    "M1x0.2",      "M1.1x0.2",    "M1.2x0.2",    "M1.4x0.2",
-    "M1.6x0.2",    "M1.8x0.2",    "M2x0.25",     "M2.2x0.25",
-    "M2.5x0.35",   "M3x0.35",     "M3.5x0.35",
-    "M4x0.5",      "M4.5x0.5",    "M5x0.5",      "M5.5x0.5",
-    "M6x0.75",     "M7x0.75",     "M8x0.75",     "M8x1.0",
-    "M9x0.75",     "M9x1.0",      "M10x0.75",    "M10x1.0",
-    "M10x1.25",    "M11x0.75",    "M11x1.0",     "M12x1.0",
-    "M12x1.25",    "M12x1.5",     "M14x1.0",     "M14x1.25",
-    "M14x1.5",     "M15x1.0",     "M15x1.5",     "M16x1.0",
-    "M16x1.5",     "M17x1.0",     "M17x1.5",     "M18x1.0",
-    "M18x1.5",     "M18x2.0",     "M20x1.0",     "M20x1.5",
-    "M20x2.0",     "M22x1.0",     "M22x1.5",     "M22x2.0",
-    "M24x1.0",     "M24x1.5",     "M24x2.0",     "M25x1.0",
-    "M25x1.5",     "M25x2.0",     "M27x1.0",     "M27x1.5",
-    "M27x2.0",     "M28x1.0",     "M28x1.5",     "M28x2.0",
-    "M30x1.0",     "M30x1.5",     "M30x2.0",     "M30x3.0",
-    "M32x1.5",     "M32x2.0",     "M33x1.5",     "M33x2.0",
-    "M33x3.0",     "M35x1.5",     "M35x2.0",     "M36x1.5",
-    "M36x2.0",     "M36x3.0",     "M39x1.5",     "M39x2.0",
-    "M39x3.0",     "M40x1.5",     "M40x2.0",     "M40x3.0",
-    "M42x1.5",     "M42x2.0",     "M42x3.0",     "M42x4.0",
-    "M45x1.5",     "M45x2.0",     "M45x3.0",     "M45x4.0",
-    "M48x1.5",     "M48x2.0",     "M48x3.0",     "M48x4.0",
-    "M50x1.5",     "M50x2.0",     "M50x3.0",     "M52x1.5",
-    "M52x2.0",     "M52x3.0",     "M52x4.0",     "M55x1.5",
-    "M55x2.0",     "M55x3.0",     "M55x4.0",     "M56x1.5",
-    "M56x2.0",     "M56x3.0",     "M56x4.0",     "M58x1.5",
-    "M58x2.0",     "M58x3.0",     "M58x4.0",     "M60x1.5",
-    "M60x2.0",     "M60x3.0",     "M60x4.0",     "M62x1.5",
-    "M62x2.0",     "M62x3.0",     "M62x4.0",     "M64x1.5",
-    "M64x2.0",     "M64x3.0",     "M64x4.0",     "M65x1.5",
-    "M65x2.0",     "M65x3.0",     "M65x4.0",     "M68x1.5",
-    "M68x2.0",     "M68x3.0",     "M68x4.0",     "M70x1.5",
-    "M70x2.0",     "M70x3.0",     "M70x4.0",     "M70x6.0",
-    "M72x1.5",     "M72x2.0",     "M72x3.0",     "M72x4.0",
-    "M72x6.0",     "M75x1.5",     "M75x2.0",     "M75x3.0",
-    "M75x4.0",     "M75x6.0",     "M76x1.5",     "M76x2.0",
-    "M76x3.0",     "M76x4.0",     "M76x6.0",     "M80x1.5",
-    "M80x2.0",     "M80x3.0",     "M80x4.0",     "M80x6.0",
-    "M85x2.0",     "M85x3.0",     "M85x4.0",     "M85x6.0",
-    "M90x2.0",     "M90x3.0",     "M90x4.0",     "M90x6.0",
-    "M95x2.0",     "M95x3.0",     "M95x4.0",     "M95x6.0",
-    "M100x2.0",    "M100x3.0",    "M100x4.0",    "M100x6.0", nullptr };
 const char* Hole::ThreadClass_ISOmetricfine_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", nullptr };
 
 // ISO 965-1:2013 ISO general purpose metric screw threads - Tolerances - Part 1
@@ -747,67 +702,28 @@ const double Hole::ThreadRunout[ThreadRunout_size][2] = {
 
 /* UTS coarse */
 const char* Hole::HoleCutType_UNC_Enums[]  = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
-const char* Hole::ThreadSize_UNC_Enums[]   = { "#1", "#2", "#3", "#4", "#5", "#6",
-                                               "#8",  "#10", "#12",
-                                               "1/4", "5/16", "3/8", "7/16", "1/2", "9/16",
-                                               "5/8", "3/4", "7/8", "1", "1 1/8", "1 1/4",
-                                               "1 3/8", "1 1/2", "1 3/4", "2", "2 1/4",
-                                               "2 1/2", "2 3/4", "3", "3 1/4", "3 1/2",
-                                               "3 3/4", "4", nullptr };
 const char* Hole::ThreadClass_UNC_Enums[]  = { "1B", "2B", "3B", nullptr };
 
 /* UTS fine */
 const char* Hole::HoleCutType_UNF_Enums[]  = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
-const char* Hole::ThreadSize_UNF_Enums[]   = { "#0", "#1", "#2", "#3", "#4", "#5", "#6",
-                                               "#8", "#10", "#12",
-                                               "1/4", "5/16", "3/8", "7/16", "1/2", "9/16",
-                                               "5/8", "3/4", "7/8", "1", "1 1/8", "1 1/4",
-                                               "1 3/8", "1 1/2", nullptr };
 const char* Hole::ThreadClass_UNF_Enums[]  = { "1B", "2B", "3B", nullptr };
 
 /* UTS extrafine */
 const char* Hole::HoleCutType_UNEF_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
-const char* Hole::ThreadSize_UNEF_Enums[]  = { "#12", "1/4", "5/16", "3/8", "7/16", "1/2",
-                                               "9/16", "5/8", "11/16", "3/4", "13/16", "7/8",
-                                               "15/16", "1", "1 1/16", "1 1/8", "1 1/4",
-                                               "1 5/16", "1 3/8", "1 7/16", "1 1/2", "1 9/16",
-                                               "1 5/8", "1 11/16", nullptr };
 const char* Hole::ThreadClass_UNEF_Enums[] = { "1B", "2B", "3B", nullptr };
 
 /* NPT */
 const char* Hole::HoleCutType_NPT_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
-const char* Hole::ThreadSize_NPT_Enums[]  = {  "1/16", "1/8", "1/4", "3/8", "1/2", "3/4",
-                                               "1", "1 1/4", "1 1/2",
-                                               "2", "2 1/2",
-                                               "3", "3 1/2",
-                                               "4", "5", "6", "8", "10", "12", nullptr };
 
 /* BSP */
 const char* Hole::HoleCutType_BSP_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
-const char* Hole::ThreadSize_BSP_Enums[]  = {  "1/16", "1/8", "1/4", "3/8", "1/2", "5/8", "3/4", "7/8",
-                                               "1", "1 1/8", "1 1/4", "1 3/8", "1 1/2", "1 3/4",
-                                               "2", "2 1/4", "2 1/2", "2 3/4",
-                                               "3", "3 1/2", "4", "4 1/2",
-                                               "5", "5 1/2", "6", nullptr };
 
 /* BSW */
 const char* Hole::HoleCutType_BSW_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
-const char* Hole::ThreadSize_BSW_Enums[]  = {  "1/8", "3/16", "1/4", "5/16", "3/8", "7/16",
-                                               "1/2", "9/16", "5/8", "11/16", "3/4", "7/8",
-                                               "1", "1 1/8", "1 1/4", "1 1/2", "1 3/4",
-                                               "2", "2 1/4", "2 1/2", "2 3/4",
-                                               "3", "3 1/4", "3 1/2", "3 3/4",
-                                               "4", "4 1/2", "5", "5 1/2", "6", nullptr };
 const char* Hole::ThreadClass_BSW_Enums[] = { "Medium", "Normal", nullptr };
 
 /* BSF */
 const char* Hole::HoleCutType_BSF_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
-const char* Hole::ThreadSize_BSF_Enums[]  = {  "3/16", "7/32", "1/4", "9/32", "5/16", "3/8", "7/16",
-                                               "1/2", "9/16", "5/8", "11/16", "3/4", "7/8",
-                                               "1", "1 1/8", "1 1/4", "1 3/8", "1 1/2", "1 5/8", "1 3/4",
-                                               "2", "2 1/4", "2 1/2", "2 3/4",
-                                               "3", "3 1/4", "3 1/2", "3 3/4",
-                                               "4", "4 1/4", nullptr };
 const char* Hole::ThreadClass_BSF_Enums[] = { "Medium", "Normal", nullptr };
 
 const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", nullptr};
@@ -832,7 +748,7 @@ Hole::Hole()
     ThreadType.setEnums(ThreadTypeEnums);
 
     ADD_PROPERTY_TYPE(ThreadSize, (0L), "Hole", App::Prop_None, "Thread size");
-    ThreadSize.setEnums(ThreadSize_None_Enums);
+    ThreadSize.setEnums(getThreadDesignations(ThreadType.getValue()));
 
     ADD_PROPERTY_TYPE(ThreadClass, (0L), "Hole", App::Prop_None, "Thread class");
     ThreadClass.setEnums(ThreadClass_None_Enums);
@@ -1444,13 +1360,14 @@ void Hole::onChanged(const App::Property* prop)
 {
     if (prop == &ThreadType) {
         std::string type, holeCutTypeStr;
-        if (ThreadType.isValid())
+        if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
+            ThreadSize.setEnums(getThreadDesignations(ThreadType.getValue()));
+        }
         if (HoleCutType.isValid())
             holeCutTypeStr = HoleCutType.getValueAsString();
 
         if (type == "None") {
-            ThreadSize.setEnums(ThreadSize_None_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_None_Enums);
             Threaded.setReadOnly(true);
@@ -1468,7 +1385,6 @@ void Hole::onChanged(const App::Property* prop)
             UseCustomThreadClearance.setValue(false);
         }
         else if (type == "ISOMetricProfile") {
-            ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
             ThreadFit.setEnums(ClearanceMetricEnums);
@@ -1486,7 +1402,6 @@ void Hole::onChanged(const App::Property* prop)
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "ISOMetricFineProfile") {
-            ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
             ThreadFit.setEnums(ClearanceMetricEnums);
@@ -1504,7 +1419,6 @@ void Hole::onChanged(const App::Property* prop)
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "UNC") {
-            ThreadSize.setEnums(ThreadSize_UNC_Enums);
             ThreadClass.setEnums(ThreadClass_UNC_Enums);
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
@@ -1522,7 +1436,6 @@ void Hole::onChanged(const App::Property* prop)
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "UNF") {
-            ThreadSize.setEnums(ThreadSize_UNF_Enums);
             ThreadClass.setEnums(ThreadClass_UNF_Enums);
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
@@ -1540,7 +1453,6 @@ void Hole::onChanged(const App::Property* prop)
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "UNEF") {
-            ThreadSize.setEnums(ThreadSize_UNEF_Enums);
             ThreadClass.setEnums(ThreadClass_UNEF_Enums);
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
@@ -1558,7 +1470,6 @@ void Hole::onChanged(const App::Property* prop)
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "BSP") {
-            ThreadSize.setEnums(ThreadSize_BSP_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_BSP_Enums);
             Threaded.setReadOnly(false);
@@ -1572,7 +1483,6 @@ void Hole::onChanged(const App::Property* prop)
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "NPT") {
-            ThreadSize.setEnums(ThreadSize_NPT_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_NPT_Enums);
             Threaded.setReadOnly(false);
@@ -1586,7 +1496,6 @@ void Hole::onChanged(const App::Property* prop)
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "BSW") {
-            ThreadSize.setEnums(ThreadSize_BSW_Enums);
             ThreadClass.setEnums(ThreadClass_BSW_Enums);
             HoleCutType.setEnums(HoleCutType_BSW_Enums);
             Threaded.setReadOnly(false);
@@ -1600,7 +1509,6 @@ void Hole::onChanged(const App::Property* prop)
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "BSF") {
-            ThreadSize.setEnums(ThreadSize_BSF_Enums);
             ThreadClass.setEnums(ThreadClass_BSF_Enums);
             HoleCutType.setEnums(HoleCutType_BSF_Enums);
             Threaded.setReadOnly(false);

@@ -54,10 +54,10 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/QuantitySpinBox.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Window.h>

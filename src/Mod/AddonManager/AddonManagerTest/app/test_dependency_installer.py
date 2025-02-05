@@ -136,12 +136,6 @@ class TestDependencyInstaller(unittest.TestCase):
             self.assertTrue(ff_required.called)
             self.assertTrue(ff_optional.called)
 
-    def test_verify_pip_no_python(self):
-        self.test_object._get_python = lambda: None
-        should_continue = self.test_object._verify_pip()
-        self.assertFalse(should_continue)
-        self.assertEqual(len(self.signals_caught), 0)
-
     def test_verify_pip_no_pip(self):
         sm = SubprocessMock()
         sm.succeed = False

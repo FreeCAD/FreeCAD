@@ -42,7 +42,7 @@
 #include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
 #include <Gui/PythonWrapper.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Window.h>
 

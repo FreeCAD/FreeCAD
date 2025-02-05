@@ -32,7 +32,7 @@
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/PartDesign/App/FeatureLoft.h>
 
 #include "ui_TaskLoftParameters.h"

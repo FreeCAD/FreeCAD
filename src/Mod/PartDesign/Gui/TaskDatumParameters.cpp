@@ -34,7 +34,7 @@
 #include <App/Part.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
 

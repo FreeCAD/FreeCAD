@@ -42,7 +42,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/DocumentObserver.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/AttachExtension.h>

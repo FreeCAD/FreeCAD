@@ -39,6 +39,7 @@
 
 #include <Base/Interpreter.h>
 #include <App/Document.h>
+#include <App/Application.h>
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
@@ -264,6 +265,7 @@ void MDIView::printPdf()
         printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }

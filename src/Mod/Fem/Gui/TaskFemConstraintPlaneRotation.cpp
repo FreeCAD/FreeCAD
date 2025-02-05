@@ -34,7 +34,7 @@
 
 #include <App/DocumentObject.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintPlaneRotation.h>
 #include <Mod/Fem/App/FemTools.h>

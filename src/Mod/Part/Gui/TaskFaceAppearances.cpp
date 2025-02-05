@@ -49,7 +49,7 @@
 #include <Gui/Dialogs/DlgMaterialPropertiesImp.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>

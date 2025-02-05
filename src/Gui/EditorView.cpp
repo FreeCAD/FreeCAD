@@ -511,6 +511,7 @@ void EditorView::printPdf()
         printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         d->textEdit->document()->print(&printer);
     }
 }

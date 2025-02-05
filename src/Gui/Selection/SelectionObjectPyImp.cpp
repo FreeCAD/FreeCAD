@@ -31,8 +31,8 @@
 
 
 // inclusion of the generated files (generated out of SelectionObjectPy.xml)
-#include "SelectionObjectPy.h"
-#include "SelectionObjectPy.cpp"
+#include "Selection/SelectionObjectPy.h"
+#include "Selection/SelectionObjectPy.cpp"
 
 
 using namespace Gui;

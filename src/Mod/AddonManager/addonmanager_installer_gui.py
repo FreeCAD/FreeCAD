@@ -77,14 +77,26 @@ class AddonInstallerGUI(QtCore.QObject):
         self.installer.failure.connect(self._installation_failed)
 
     def __del__(self):
-        if self.worker_thread and hasattr(self.worker_thread, "quit"):
-            self.worker_thread.quit()
-            self.worker_thread.wait(500)
-            if self.worker_thread.isRunning():
+        self._stop_thread(self.worker_thread)
+        self._stop_thread(self.dependency_worker_thread)
+
+    @staticmethod
+    def _stop_thread(thread: QtCore.QThread):
+        if thread and hasattr(thread, "quit"):
+            if thread.isRunning():
+                FreeCAD.Console.PrintMessage(
+                    "INTERNAL ERROR: a QThread is still running when it should have finished"
+                )
+
+                thread.requestInterruption()
+                thread.wait(100)
+            thread.quit()
+            thread.wait(500)
+            if thread.isRunning():
                 FreeCAD.Console.PrintError(
                     "INTERNAL ERROR: Thread did not quit() cleanly, using terminate()\n"
                 )
-                self.worker_thread.terminate()
+                thread.terminate()
 
     def run(self):
         """Instructs this class to begin displaying the necessary dialogs to guide a user through
@@ -300,13 +312,11 @@ class AddonInstallerGUI(QtCore.QObject):
         self.dependency_installer.no_python_exe.connect(self._report_no_python_exe)
         self.dependency_installer.no_pip.connect(self._report_no_pip)
         self.dependency_installer.failure.connect(self._report_dependency_failure)
-        self.dependency_installer.finished.connect(self._cleanup_dependency_worker)
-        self.dependency_installer.finished.connect(self._report_dependency_success)
+        self.dependency_installer.finished.connect(self._dependencies_finished)
 
         self.dependency_worker_thread = QtCore.QThread(self)
         self.dependency_installer.moveToThread(self.dependency_worker_thread)
         self.dependency_worker_thread.started.connect(self.dependency_installer.run)
-        self.dependency_installer.finished.connect(self.dependency_worker_thread.quit)
 
         self.dependency_installation_dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Information,
@@ -318,16 +328,6 @@ class AddonInstallerGUI(QtCore.QObject):
         self.dependency_installation_dialog.rejected.connect(self._cancel_dependency_installation)
         self.dependency_installation_dialog.show()
         self.dependency_worker_thread.start()
-
-    def _cleanup_dependency_worker(self) -> None:
-        return
-        self.dependency_worker_thread.quit()
-        self.dependency_worker_thread.wait(500)
-        if self.dependency_worker_thread.isRunning():
-            FreeCAD.Console.PrintError(
-                "INTERNAL ERROR: Thread did not quit() cleanly, using terminate()\n"
-            )
-            self.dependency_worker_thread.terminate()
 
     def _report_no_python_exe(self) -> None:
         """Callback for the dependency installer failing to locate a Python executable."""
@@ -408,6 +408,11 @@ class AddonInstallerGUI(QtCore.QObject):
         if self.dependency_installation_dialog is not None:
             self.dependency_installation_dialog.hide()
         self.install()
+
+    def _dependencies_finished(self, success: bool):
+        if success:
+            self._report_dependency_success()
+        self.dependency_worker_thread.quit()
 
     def _dependency_dialog_ignore_clicked(self) -> None:
         """Callback for when dependencies are ignored."""

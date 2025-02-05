@@ -43,6 +43,7 @@ import FreeCAD as App
 from draftutils import params
 from draftutils.messages import _wrn, _err, _log
 from draftutils.translate import translate
+from builtins import open
 
 # TODO: move the functions that require the graphical interface
 # This module should not import any graphical commands; those should be
@@ -1196,5 +1197,11 @@ def use_instead(function, version=""):
         _wrn(translate("draft", "This function will be deprecated in {}. Please use '{}'.") .format(version, function))
     else:
         _wrn(translate("draft", "This function will be deprecated. Please use '{}'.") .format(function))
+
+
+def pyopen(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None):
+    if encoding is None:
+        encoding = 'utf-8'
+    return open(file, mode, buffering, encoding, errors, newline, closefd, opener)
 
 ## @}

@@ -29,7 +29,7 @@
 
 #include <Gui/DockWindow.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include "DAGModel.h"
 

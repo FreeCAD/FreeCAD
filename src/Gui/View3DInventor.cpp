@@ -50,6 +50,8 @@
 # include <Inventor/SoPickedPoint.h>
 #endif
 
+
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <Base/Builder3D.h>
@@ -257,6 +259,7 @@ void View3DInventor::printPdf()
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }

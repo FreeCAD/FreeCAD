@@ -5,7 +5,7 @@
     Name="SelectionObjectPy"
     Twin="SelectionObject"
     TwinPointer="SelectionObject"
-    Include="Gui/SelectionObject.h"
+    Include="Gui/Selection/SelectionObject.h"
     Namespace="Gui"
     Delete="true"
     FatherInclude="Base/BaseClassPy.h"
