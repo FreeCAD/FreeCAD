@@ -23,22 +23,34 @@
 """This is the main NativeIFC module"""
 
 import os
-
-# heavyweight libraries - ifc_tools should always be lazy loaded
-
 import FreeCAD
 import Draft
 import Arch
 
-import ifcopenshell
-from ifcopenshell import geom
-from ifcopenshell import api
-from ifcopenshell import template
-from ifcopenshell.util import element
-from ifcopenshell.util import attribute
-from ifcopenshell.util import schema
-from ifcopenshell.util import placement
-from ifcopenshell.util import unit
+translate = FreeCAD.Qt.translate
+
+# heavyweight libraries - ifc_tools should always be lazy loaded
+
+try:
+    import ifcopenshell
+    from ifcopenshell import geom
+    from ifcopenshell import api
+    from ifcopenshell import template
+    from ifcopenshell.util import element
+    from ifcopenshell.util import attribute
+    from ifcopenshell.util import schema
+    from ifcopenshell.util import placement
+    from ifcopenshell.util import unit
+except ImportError as e:
+    import FreeCAD
+    FreeCAD.Console.PrintError(
+        translate(
+            "BIM",
+            "IfcOpenShell was not found on this system. IFC support is disabled",
+        )
+        + "\n"
+    )
+    raise e
 
 from nativeifc import ifc_objects
 from nativeifc import ifc_viewproviders
