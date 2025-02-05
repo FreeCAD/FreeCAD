@@ -61,13 +61,7 @@ from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
-import builtins
-#redefine pyopen as open with encoding='utf-8'
-def utf8_open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None):
-    if encoding is None:
-        encoding = 'utf-8'
-    return builtins.open(file, mode, buffering, encoding, errors, newline, closefd, opener)
-pyopen = utf8_open
+from draftutils.utils import pyopen
 
 if FreeCAD.GuiUp:
     from PySide import QtWidgets

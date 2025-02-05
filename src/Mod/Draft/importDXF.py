@@ -67,7 +67,7 @@ from Draft import LinearDimension
 from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
-from builtins import open as pyopen
+from draftutils.utils import pyopen
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -1928,13 +1928,24 @@ def addObject(shape, name="Shape", layer=None):
         newob = shape
     if layer:
         lay = locateLayer(layer)
+        # For old style layers, which are just groups
         if hasattr(lay, "Group"):
+            pass
+        # For new Draft Layers
+        elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "Group"):
+            lay = lay.Proxy
+        else:
+            lay = None
+
+        if lay != None:
             if lay not in layerObjects:
                 l = []
                 layerObjects[lay] = l
             else:
                 l = layerObjects[lay]
             l.append(newob)
+
+
 
     formatObject(newob)
     return newob
