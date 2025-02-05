@@ -72,7 +72,7 @@ TaskMeasure::TaskMeasure()
 
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), delta).toBool();
+    delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
     mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave).toBool();
     if (settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool()) {
         Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
