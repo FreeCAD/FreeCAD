@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -33,9 +34,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import os
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft
 import Draft_rc
 from draftguitools import gui_base
+from draftmake import make_layer
+from draftobjects import layer
 from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
@@ -60,12 +62,12 @@ class Layer(gui_base.GuiCommandSimplest):
     """GuiCommand to create a Layer object in the document."""
 
     def __init__(self):
-        super().__init__(name=translate("draft", "Layer"))
+        super().__init__(name="Draft_Layer")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Layer",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "New layer"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual properties.")}
 
     def Activated(self):
@@ -75,11 +77,99 @@ class Layer(gui_base.GuiCommandSimplest):
         """
         super().Activated()
 
-        self.doc.openTransaction("Create Layer")
+        self.doc.openTransaction(translate("draft", "Create layer"))
         Gui.addModule("Draft")
-        Gui.doCommand("_layer_ = Draft.make_layer(name=None, line_color=None, shape_color=None, line_width=None, draw_style=None, transparency=None)")
+        Gui.doCommand("layer = Draft.make_layer(name=None, line_color=None, shape_color=None, line_width=None, draw_style=None, transparency=None)")
         Gui.doCommand("FreeCAD.ActiveDocument.recompute()")
         self.doc.commitTransaction()
+
+
+class AddToLayer(gui_base.GuiCommandNeedsSelection):
+    """GuiCommand for the Draft_AddToLayer tool."""
+
+    def __init__(self):
+        super().__init__(name="Draft_AddToLayer")
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        return {"Pixmap": "Draft_AddToLayer",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Add to layer..."),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Adds the selected objects to a layer, or removes them from any layer.")}
+
+    def Activated(self):
+        """Execute when the command is called."""
+        super().Activated()
+
+        if not hasattr(Gui, "draftToolBar"):
+            return
+
+        self.ui = Gui.draftToolBar
+        objs = [obj for obj in App.ActiveDocument.Objects if utils.get_type(obj) == "Layer"]
+        objs.sort(key=lambda obj: obj.Label)
+        self.objects = [None] \
+                       + [None] \
+                       + objs
+        self.labels  = [translate("draft", "Remove from layer")] \
+                       + ["---"] \
+                       + [obj.Label for obj in objs] \
+                       + ["---"] \
+                       + [translate("draft", "Add to new layer...")]
+        self.icons   = [self.ui.getIcon(":/icons/list-remove.svg")] \
+                       + [None] \
+                       + [obj.ViewObject.Icon for obj in objs] \
+                       + [None] \
+                       + [self.ui.getIcon(":/icons/list-add.svg")]
+        self.ui.sourceCmd = self
+        self.ui.popupMenu(self.labels, self.icons)
+
+    def proceed(self, option):
+        self.ui.sourceCmd = None
+
+        if option == self.labels[0]:
+            # "Remove from layer"
+            changed = False
+            for obj in Gui.Selection.getSelection():
+                lyr = layer.get_layer(obj)
+                if lyr is not None:
+                    if not changed:
+                        self.doc.openTransaction(translate("draft", "Remove from layer"))
+                        changed = True
+                    lyr.Proxy.removeObject(lyr, obj)
+            if changed:
+                self.doc.commitTransaction()
+                self.doc.recompute()
+            return
+
+        if option == self.labels[-1]:
+            # "Add to new layer..."
+            from PySide import QtWidgets
+            txt, ok = QtWidgets.QInputDialog.getText(
+                None,
+                translate("draft", "Create new layer"),
+                translate("draft", "Layer name:"),
+                text=translate("draft", "Layer", "Object label")
+            )
+            if not ok:
+                return
+            if not txt:
+                return
+            self.doc.openTransaction(translate("draft", "Add to new layer"))
+            lyr = make_layer.make_layer(name=txt, line_color=None, shape_color=None,
+                                        line_width=None, draw_style=None, transparency=None)
+            for obj in Gui.Selection.getSelection():
+                lyr.Proxy.addObject(lyr, obj)
+            self.doc.commitTransaction()
+            self.doc.recompute()
+            return
+
+        # Layer has been selected
+        i = self.labels.index(option)
+        lyr = self.objects[i]
+        self.doc.openTransaction(translate("draft", "Add to layer"))
+        for obj in Gui.Selection.getSelection():
+            lyr.Proxy.addObject(lyr, obj)
+        self.doc.commitTransaction()
+        self.doc.recompute()
 
 
 class LayerManager:
@@ -156,11 +246,12 @@ class LayerManager:
 
         doc = App.ActiveDocument
         changed = False
+        trans_name = translate("draft", "Layers change")
 
         # delete layers
         for name in self.deleteList:
             if not changed:
-                doc.openTransaction("Layers change")
+                doc.openTransaction(trans_name)
                 changed = True
             doc.removeObject(name)
 
@@ -174,17 +265,17 @@ class LayerManager:
                 obj = doc.getObject(name)
             if not obj:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
-                obj = Draft.make_layer(name=None, line_color=None, shape_color=None,
-                                       line_width=None, draw_style=None, transparency=None)
+                obj = make_layer.make_layer(name=None, line_color=None, shape_color=None,
+                                            line_width=None, draw_style=None, transparency=None)
             vobj = obj.ViewObject
 
             # visibility
             checked = self.model.item(row, 0).checkState() == QtCore.Qt.Checked
             if checked != vobj.Visibility:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
                 vobj.Visibility = checked
 
@@ -193,7 +284,7 @@ class LayerManager:
             # Setting Label="" is possible in the Property editor but we avoid it here:
             if label and obj.Label != label:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
                 obj.Label = label
 
@@ -202,7 +293,7 @@ class LayerManager:
             # Setting LineWidth=0 is possible in the Property editor but we avoid it here:
             if width and vobj.LineWidth != width:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
                 vobj.LineWidth = width
 
@@ -210,7 +301,7 @@ class LayerManager:
             style = self.model.item(row, 3).text()
             if style is not None and vobj.DrawStyle != style:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
                 vobj.DrawStyle = style
 
@@ -218,7 +309,7 @@ class LayerManager:
             color = self.model.item(row, 4).data(QtCore.Qt.UserRole)
             if color is not None and vobj.LineColor[:3] != color:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
                 vobj.LineColor = color
 
@@ -226,7 +317,7 @@ class LayerManager:
             color = self.model.item(row, 5).data(QtCore.Qt.UserRole)
             if color is not None and vobj.ShapeColor[:3] != color:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
                 vobj.ShapeColor = color
 
@@ -234,7 +325,7 @@ class LayerManager:
             transparency = self.model.item(row, 6).data(QtCore.Qt.DisplayRole)
             if transparency is not None and vobj.Transparency != transparency:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
                 vobj.Transparency = transparency
 
@@ -242,7 +333,7 @@ class LayerManager:
             color = self.model.item(row, 7).data(QtCore.Qt.UserRole)
             if color is not None and vobj.LinePrintColor[:3] != color:
                 if not changed:
-                    doc.openTransaction("Layers change")
+                    doc.openTransaction(trans_name)
                     changed = True
                 vobj.LinePrintColor = color
 
@@ -284,7 +375,7 @@ class LayerManager:
         self.dialog.tree.setColumnWidth(1,128) # name column
 
         # populate
-        objs = [obj for obj in App.ActiveDocument.Objects if Draft.getType(obj) == "Layer"]
+        objs = [obj for obj in App.ActiveDocument.Objects if utils.get_type(obj) == "Layer"]
         objs.sort(key=lambda o:o.Label)
         for obj in objs:
             self.addItem(obj)
@@ -504,6 +595,7 @@ if App.GuiUp:
 
 
 Gui.addCommand('Draft_Layer', Layer())
+Gui.addCommand('Draft_AddToLayer', AddToLayer())
 Gui.addCommand('Draft_LayerManager', LayerManager())
 
 ## @}
