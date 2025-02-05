@@ -136,15 +136,15 @@ viewType (String): override the view provider type directly, only effective when
         <UserDocu>Remove an object from the document</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="copyObject">
+    <Methode Name="copyObject" Keyword="true">
       <Documentation>
           <UserDocu>
-copyObject(object, with_dependencies=False, return_all=False)
+copyObject(object, recursive=False, return_all=False)
 Copy an object or objects from another document to this document.
 
 object: can either a single object or sequence of objects
-with_dependencies: if True, all internal dependent objects are copied too.
-return_all: if True, return all copied objects, or else return only the copied
+recursive: if True, also recursively copies internal objects.
+return_all: if True, returns all copied objects, or else return only the copied
             object corresponding to the input objects.
           </UserDocu>
       </Documentation>
