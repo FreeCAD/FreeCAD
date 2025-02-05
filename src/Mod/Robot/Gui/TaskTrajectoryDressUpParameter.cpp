@@ -27,7 +27,7 @@
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Placement.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include "TaskTrajectoryDressUpParameter.h"
 #include "ui_TaskTrajectoryDressUpParameter.h"

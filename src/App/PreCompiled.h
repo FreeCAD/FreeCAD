@@ -102,6 +102,8 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/scope_exit.hpp>
 
+#include <fmt/format.h>
+
 #endif  //_PreComp_
 
 #endif  // APP_PRECOMPILED_H

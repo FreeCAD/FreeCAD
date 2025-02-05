@@ -42,6 +42,7 @@
 #include "QGCustomSvg.h"
 #include "QGDisplayArea.h"
 #include "Rez.h"
+#include "ViewProviderSymbol.h"
 
 
 using namespace TechDrawGui;
@@ -110,8 +111,14 @@ void QGIViewSymbol::drawSvg()
         return;
     }
 
+    auto vp = getViewProvider(viewSymbol);
+    auto vps = dynamic_cast<ViewProviderSymbol*>(vp);
+    if (!vp || !vps) {
+        return;
+    }
+
     double scaling{1};
-    if (Preferences::useLegacySvgScaling()) {
+    if (vps->LegacyScaling.getValue()) {
         scaling = legacyScaler(viewSymbol);
     } else {
         scaling = symbolScaler(viewSymbol);
@@ -206,18 +213,15 @@ double QGIViewSymbol::symbolScaler(TechDraw::DrawViewSymbol* feature) const
         matchUnits = matchHeight.captured(1);
     }
 
-    if (matchUnits.isEmpty() ||
-        matchUnits == pxToken) {
-        scaling *= rezfactor;
-    }
+    // if there are no units specified, or the units are px, we just draw the symbol
 
     if (matchUnits == mmToken) {
         auto svgSize = m_svgItem->renderer()->defaultSize();
-        auto vpSize = m_svgItem->renderer()->viewBox();
+        auto vportSize = m_svgItem->renderer()->viewBox();
         // wf: this calculation works, but I don't know why. :(
         // hints here: https://stackoverflow.com/questions/49866474/get-svg-size-from-qsvgrenderer
         // and here: https://stackoverflow.com/questions/7544921/qt-qgraphicssvgitem-renders-too-big-0-5-unit-on-each-side
-        scaling *= rezfactor * vpSize.width() / svgSize.width();
+        scaling *= rezfactor * vportSize.width() / svgSize.width();
     }
 
     return scaling;

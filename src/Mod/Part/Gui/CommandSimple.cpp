@@ -34,8 +34,8 @@
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/WaitCursor.h>
 
 #include "DlgPartCylinderImp.h"

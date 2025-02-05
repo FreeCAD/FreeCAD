@@ -615,7 +615,7 @@
        x="821"
        y="581.2"
        style="text-align:center;text-anchor:middle"
-       freecadeditable="sheet_number"
+       freecad:editable="sheet_number"
        freecad:autofill="sheet"><tspan
          id="tspan4">X / Y</tspan></text>
     <text

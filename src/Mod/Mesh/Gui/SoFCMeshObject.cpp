@@ -53,7 +53,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/SoFCInteractiveElement.h>
-#include <Gui/SoFCSelectionAction.h>
+#include <Gui/Selection/SoFCSelectionAction.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Core/Grid.h>

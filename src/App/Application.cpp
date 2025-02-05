@@ -38,6 +38,7 @@
 # include <boost/scope_exit.hpp>
 # include <chrono>
 # include <random>
+# include <fmt/format.h>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -453,7 +454,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
 }
 
-Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
+Document* Application::newDocument(const char * Name, const char * UserName, DocumentCreateFlags CreateFlags)
 {
     auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
         bool defaultName = (!Name || Name[0] == '\0');
@@ -487,10 +488,10 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     auto tuple = getNameAndLabel(Name, UserName);
     std::string name = std::get<0>(tuple);
     std::string userName = std::get<1>(tuple);
-    name = getUniqueDocumentName(name.c_str(), tempDoc);
+    name = getUniqueDocumentName(name.c_str(), CreateFlags.temporary);
 
     // return the temporary document if it exists
-    if (tempDoc) {
+    if (CreateFlags.temporary) {
         auto it = DocMap.find(name);
         if (it != DocMap.end() && it->second->testStatus(Document::TempDoc))
             return it->second;
@@ -498,7 +499,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
 
     // create the FreeCAD document
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
-    newDoc->setStatus(Document::TempDoc, tempDoc);
+    newDoc->setStatus(Document::TempDoc, CreateFlags.temporary);
 
     auto oldActiveDoc = _pActiveDoc;
     auto doc = newDoc.release(); // now owned by the Application
@@ -539,13 +540,13 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
     }
 
-    signalNewDocument(*_pActiveDoc, createView);
+    signalNewDocument(*_pActiveDoc, CreateFlags.createView);
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
 
     // set the old document active again if the new is temporary
-    if (tempDoc && oldActiveDoc)
+    if (CreateFlags.temporary && oldActiveDoc)
         setActiveDocument(oldActiveDoc);
 
     return doc;
@@ -701,9 +702,9 @@ public:
     }
 };
 
-Document* Application::openDocument(const char * FileName, bool createView) {
+Document* Application::openDocument(const char * FileName, DocumentCreateFlags createFlags) {
     std::vector<std::string> filenames(1,FileName);
-    auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createView);
+    auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createFlags);
     if(!docs.empty())
         return docs.front();
     return nullptr;
@@ -748,7 +749,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                                                   const std::vector<std::string> *paths,
                                                   const std::vector<std::string> *labels,
                                                   std::vector<std::string> *errs,
-                                                  bool createView)
+                                                  DocumentCreateFlags createFlags)
 {
     std::vector<Document*> res(filenames.size(), nullptr);
     if (filenames.empty())
@@ -812,7 +813,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                         label = (*labels)[count].c_str();
                 }
 
-                auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, createView, std::move(objNames));
+                auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, createFlags, std::move(objNames));
                 FC_DURATION_PLUS(timing.d1,t1);
                 if (doc) {
                     timings[doc].d1 += timing.d1;
@@ -951,7 +952,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
 Document* Application::openDocumentPrivate(const char * FileName,
         const char *propFileName, const char *label,
-        bool isMainDoc, bool createView,
+        bool isMainDoc, DocumentCreateFlags createFlags,
         std::vector<std::string> &&objNames)
 {
     FileInfo File(FileName);
@@ -1022,8 +1023,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
     // to only contain valid ASCII characters but the user name will be kept.
     if(!label)
         label = name.c_str();
-    Document* newDoc = newDocument(name.c_str(),label,isMainDoc && createView);
 
+    Document* newDoc = newDocument(name.c_str(), label, createFlags);
     newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 
     try {
@@ -1143,6 +1144,17 @@ std::string Application::getHomePath()
 std::string Application::getExecutableName()
 {
     return mConfig["ExeName"];
+}
+
+std::string Application::getNameWithVersion()
+{
+    auto appname = QCoreApplication::applicationName().toStdString();
+    auto config = App::Application::Config();
+    auto major = config["BuildVersionMajor"];
+    auto minor = config["BuildVersionMinor"];
+    auto point = config["BuildVersionPoint"];
+    auto suffix = config["BuildVersionSuffix"];
+    return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
 }
 
 std::string Application::getTempPath()

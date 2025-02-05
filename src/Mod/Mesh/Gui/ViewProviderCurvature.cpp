@@ -51,10 +51,10 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/SoFCColorBarNotifier.h>
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
 

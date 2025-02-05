@@ -569,7 +569,7 @@ void DlgMacroExecuteImp::onToolbarButtonClicked()
         QAbstractButton* doNotShowAgainButton =
             msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
         msgBox.setText(tr("Guided Walkthrough"));
-        msgBox.setObjectName(QString::fromLatin1("macroGuideWalkthrough"));
+        msgBox.setObjectName(QStringLiteral("macroGuideWalkthrough"));
         msgBox.setInformativeText(tr("This will guide you in setting up this macro in a custom \
 global toolbar.  Instructions will be in red text inside the dialog.\n\
 \n\

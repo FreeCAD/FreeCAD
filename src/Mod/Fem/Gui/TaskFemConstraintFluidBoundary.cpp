@@ -37,7 +37,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemConstraintFluidBoundary.h>

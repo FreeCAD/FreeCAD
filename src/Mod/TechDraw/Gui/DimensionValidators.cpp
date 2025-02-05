@@ -29,7 +29,7 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Measure/App/ShapeFinder.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/ShapeExtractor.h>

@@ -70,6 +70,7 @@ import numpy as np
 disableCompression = False  # Compress object data before sending to JS
 base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&()*+-:;/=>?@[]^_,.{|}~`"  # safe str chars for js in all cases
 baseFloat = ",.-0123456789"
+threejs_version = "0.172.0"
 
 
 def getHTMLTemplate():
@@ -110,23 +111,31 @@ def getHTMLTemplate():
                 select { width: 170px; }
             </style>
         </head>
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://cdn.jsdelivr.net/npm/three@$threejs_version/build/three.module.js",
+                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@$threejs_version/examples/jsm/"
+                }
+            }
+        </script>
         <body>
             <canvas id="mainCanvas"></canvas>
             <canvas id="arrowCanvas"></canvas>
             <script type="module">
                 // Direct from mrdoob: https://www.jsdelivr.com/package/npm/three
-                import * as THREE from            'https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.module.js';
-                import { OrbitControls } from     'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/controls/OrbitControls.js';
-                import { GUI } from               'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/libs/dat.gui.module.js';
-                import { Line2 } from             'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/lines/Line2.js';
-                import { LineMaterial } from      'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/lines/LineMaterial.js';
-                import { LineGeometry } from      'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/lines/LineGeometry.js';
-                import { EdgeSplitModifier } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/modifiers/EdgeSplitModifier.js';
+                import * as THREE from 'three'
+                import { OrbitControls } from     'three/addons/controls/OrbitControls.js';
+                import { GUI } from               'three/addons/libs/lil-gui.module.min.js';
+                import { Line2 } from             'three/addons/lines/Line2.js';
+                import { LineMaterial } from      'three/addons/lines/LineMaterial.js';
+                import { LineGeometry } from      'three/addons/lines/LineGeometry.js';
+                import { EdgeSplitModifier } from 'three/addons/modifiers/EdgeSplitModifier.js';
 
                 const data = $data;
 
                 // Z is up for FreeCAD
-                THREE.Object3D.DefaultUp = new THREE.Vector3(0, 0, 1);
+                THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0, 0, 1);
 
                 const defaultWireColor = new THREE.Color('rgb(0,0,0)');
                 const defaultWireLineWidth = 2; // in pixels
@@ -215,7 +224,13 @@ def getHTMLTemplate():
                         obj.facesToFacets = obj.facesToFacets.map(x => baseDecode(x));
                     }
                 }
-
+                else {
+                    for (const obj of data.objects) {
+                        obj.verts = obj.verts.map(x => parseFloat(x));
+                        obj.wires = obj.wires.map(w => w.map(x => parseFloat(x)))
+                        obj.facesToFacets = obj.facesToFacets.map(w => w.map(x => parseFloat(x)));
+                    }
+                }
                 // Get bounds for global clipping
                 const globalMaxMin = [{min: null, max: null},
                                       {min: null, max: null},
@@ -289,7 +304,6 @@ def getHTMLTemplate():
                         color: color,
                         side: THREE.DoubleSide,
                         vertexColors: false,
-                        flatShading: false,
                         opacity: opacity,
                         transparent: opacity != 1.0,
                         fog: false
@@ -361,12 +375,17 @@ def getHTMLTemplate():
                         data: obj,
                         faces: faces,
                         wires: wires,
-                        wirematerial: wirematerial
+                        wirematerial: wirematerial,
+                        gui_link: null
                     });
                 }
 
                 // ---- GUI Init ----
-                const gui = new GUI({ width: 300 });
+                const gui = new GUI({ width: 300, closeFolders: true });
+                const addFolder = GUI.prototype.addFolder;
+                GUI.prototype.addFolder = function(...args) {
+                    return addFolder.call(this, ...args).close();
+                }
                 const guiparams = {
                     wiretype: 'Normal',
                     wirewidth: defaultWireLineWidth,
@@ -406,7 +425,9 @@ def getHTMLTemplate():
                         if (guiparams.wiretype == 'None') {
                             m.visible = false;
                         } else {
-                            m.visible = true;
+                            if ((obj.faces.length == 0) | scene.getObjectByName(obj.faces[0]).material.visible){
+                                m.visible = true;
+                            }
                         }
                         m.linewidth = guiparams.wirewidth;
                         m.color = new THREE.Color(guiparams.wirecolor);
@@ -474,10 +495,12 @@ def getHTMLTemplate():
                     // Ignore objects with no vertices
                     if (obj.data.verts.length > 0) {
                         const guiObjData = {
-                            obj: obj, color: obj.data.color, opacity: obj.data.opacity };
+                            obj: obj, color: obj.data.color, opacity: obj.data.opacity, show: true };
                         const guiObject = guiObjects.addFolder(obj.data.name);
                         guiObject.addColor(guiObjData, 'color').name('Color').onChange(GUIObjectChange);
                         guiObject.add(guiObjData, 'opacity').min(0.0).max(1.0).step(0.05).name('Opacity').onChange(GUIObjectChange);
+                        guiObject.add(guiObjData, 'show').onChange(GUIObjectChange).listen();
+                        obj.gui_link = guiObjData
                     }
                 }
 
@@ -491,14 +514,22 @@ def getHTMLTemplate():
                             m.opacity = v;
                             m.transparent = (v != 1.0);
                         }
+                        if (this.property == 'show') {
+                            m.visible = v
+                        }
                     }
                     if (this.property == 'opacity') {
                         const m = this.object.obj.wirematerial;
                         m.opacity = v;
                         m.transparent = (v != 1.0);
                     }
+                    if (this.property == 'show') {
+                        const m = this.object.obj.wirematerial;
+                        m.visible = v
+                    }
                     requestRender();
                 }
+
 
                 // Make simple orientation arrows and box - REF: http://jsfiddle.net/b97zd1a3/16/
                 const arrowCanvas = document.querySelector('#arrowCanvas');
@@ -526,8 +557,7 @@ def getHTMLTemplate():
                     new THREE.Vector3(0, 0, 1), arrowPos, 60, 0x20207F, 20, 10));
                 arrowScene.add(new THREE.Mesh(
                     new THREE.BoxGeometry(40, 40, 40),
-                    new THREE.MeshLambertMaterial(
-                        { color: 0xaaaaaa, flatShading: false })
+                    new THREE.MeshLambertMaterial({ color: 0xaaaaaa })
                 ));
                 arrowScene.add(new THREE.HemisphereLight(0xC7E8FF, 0xFFE3B3, 1.2));
 
@@ -577,6 +607,7 @@ def getHTMLTemplate():
                 persControls.addEventListener('change', requestRender);
                 orthControls.addEventListener('change', requestRender);
                 renderer.domElement.addEventListener('mousemove', onMouseMove);
+                renderer.domElement.addEventListener('dblclick', onMouseDblClick);
                 window.addEventListener('resize', onMainCanvasResize, false);
 
                 onMainCanvasResize();
@@ -610,7 +641,45 @@ def getHTMLTemplate():
                     requestRender();
                 }
 
-                // XXX use mouse click to toggle the gui for the selected object?
+                // Use mouse double click to toggle the gui for the selected object
+                function onMouseDblClick(e){
+                    let c = false;
+                    if (cameraType == 'Orthographic') {
+                        c = orthCamera;
+                    }
+                    if (cameraType == 'Perspective') {
+                        c = persCamera;
+                    }
+                    if (!c) {
+                        return;
+                    }
+
+                    const raycaster = new THREE.Raycaster();
+                    raycaster.setFromCamera(new THREE.Vector2(
+                        (e.clientX / canvas.clientWidth) * 2 - 1,
+                        -(e.clientY / canvas.clientHeight) * 2 + 1),
+                                            c);
+                    const intersects = raycaster.intersectObjects(raycasterObj);
+
+                    for (const i of intersects) {
+                        const m = i.object;
+                        if (!m.material.visible){continue};
+                        for (const obj of objects) {
+                            for (const face_uuid of obj.faces) {
+                                if (face_uuid == m.uuid) {
+                                    obj.gui_link.show = false
+                                    obj.wirematerial.visible = false
+                                    for (const face of obj.faces) {
+                                        scene.getObjectByName(face).material.visible = false
+                                    }
+                                    requestRender();
+                                    return
+                                }
+                            }
+                        }
+                    }
+                }
+
 
                 function onMouseMove(e)  {
                     let c = false;
@@ -634,7 +703,7 @@ def getHTMLTemplate():
                     let chosen = '';
                     for (const i of intersects) {
                         const m = i.object.material;
-                        if (m.opacity > 0) {
+                        if ((m.opacity > 0) & m.visible) {
                             if (m.emissive.getHex() == 0x000000) {
                                 m.emissive.setHex( 0x777777 );
                                 m.needsUpdate = true;
@@ -833,10 +902,10 @@ def export(
     data["baseFloat"] = baseFloat
 
     html = html.replace("$data", json.dumps(data, separators=(",", ":")))  # Shape Data
+    html = html.replace("$threejs_version", threejs_version)
 
-    outfile = pyopen(filename, "w")
-    outfile.write(html)
-    outfile.close()
+    with pyopen(filename, "w", encoding="utf-8") as outfile:
+        outfile.write(html)
     FreeCAD.Console.PrintMessage(translate("Arch", "Successfully written") + f" {filename}\n")
 
 

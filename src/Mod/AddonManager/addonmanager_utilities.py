@@ -25,18 +25,15 @@
 """ Utilities to work across different platforms, providers and python versions """
 
 from datetime import datetime
-from typing import Optional, Any
-import ctypes
+from typing import Optional, Any, List
 import os
 import platform
-import re
 import shutil
 import stat
 import subprocess
 import time
 import re
 import ctypes
-from typing import Optional, Any
 
 from urllib.parse import urlparse
 
@@ -49,6 +46,14 @@ except ImportError:
         from PySide2 import QtCore, QtGui, QtWidgets
 
 import addonmanager_freecad_interface as fci
+
+try:
+    from freecad.utils import get_python_exe
+except ImportError:
+
+    def get_python_exe():
+        return shutil.which("python")
+
 
 if fci.FreeCADGui:
 
@@ -495,3 +500,20 @@ def get_main_am_window():
             return widget.centralWidget()
     # Why is this code even getting called?
     return None
+
+
+def create_pip_call(args: List[str]) -> List[str]:
+    """Choose the correct mechanism for calling pip on each platform. It currently supports
+    either `python -m pip` (most environments) or `freecad.pip` (Snap packages). Returns a list
+    of arguments suitable for passing directly to subprocess.Popen and related functions."""
+    snap_package = os.getenv("SNAP_REVISION")
+    if snap_package:
+        call_args = ["freecad.pip", "--disable-pip-version-check"]
+        call_args.extend(args)
+    else:
+        python_exe = get_python_exe()
+        if not python_exe:
+            raise (RuntimeError("Could not locate Python executable on this system"))
+        call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
+        call_args.extend(args)
+    return call_args

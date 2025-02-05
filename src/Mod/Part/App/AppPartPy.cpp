@@ -425,7 +425,8 @@ public:
             "read(string) -- Load the file and return the shape."
         );
         add_varargs_method("show",&Module::show,
-            "show(shape,[string]) -- Add the shape to the active document or create one if no document exists."
+            "show(shape,[string]) -- Add the shape to the active document or create one if no document exists.\n"
+            "Returns document object."
         );
         add_varargs_method("getFacets",&Module::getFacets,
             "getFacets(shape): simplified mesh generation"

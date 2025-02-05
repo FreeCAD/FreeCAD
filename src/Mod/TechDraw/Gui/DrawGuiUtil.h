@@ -29,7 +29,7 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 

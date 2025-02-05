@@ -27,7 +27,7 @@
 #include <Base/Unit.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <boost_signals2.hpp>
 
 
