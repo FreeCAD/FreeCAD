@@ -155,9 +155,9 @@ class PathArray(DraftLink):
         When fixed spacing modes are used, this is the spacing distance
         used. If UseSpacingPattern is also enabled, this is the unit length
         of "1.0" in the spacing pattern (so, default pattern of [1.0, 2.0]
-        with default SpacingUnit of 20mm means a spacing pattern of 
+        with default SpacingUnit of 20mm means a spacing pattern of
         20mm, 40mm).
-        
+
     UseSpacingPattern: bool
         Default is False.
         Enables the SpacingPattern for uneven distribution of objects.
@@ -166,7 +166,7 @@ class PathArray(DraftLink):
     SpacingPattern: float list
         Default is [1.0, 2.0]
         When UseSpacingPattern is True, this list contains the proportions
-        of distances between consecutive object pairs. Can be used in any 
+        of distances between consecutive object pairs. Can be used in any
         spacing mode. In "fixed spacing" modes SpacingPattern is multiplied
         by SpacingUnit. In flexible spacing modes ("fixed count"), spacing
         pattern defines the proportion of distances.
@@ -302,8 +302,8 @@ class PathArray(DraftLink):
                             "AlignMode",
                             "Alignment",
                             _tip)
-            obj.AlignMode = ['Original', 'Frenet', 'Tangent']
-            obj.AlignMode = 'Original'
+            obj.AlignMode = ["Original", "Frenet", "Tangent"]
+            obj.AlignMode = "Original"
 
         if "ReversePath" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Walk the path backwards.")
@@ -324,7 +324,7 @@ class PathArray(DraftLink):
             obj.Align = False
 
     def set_spacing_properties(self, obj, properties):
-        
+
         if "Count" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Number of copies to create")
             obj.addProperty("App::PropertyInteger",
@@ -363,7 +363,7 @@ class PathArray(DraftLink):
                             "UseSpacingPattern",
                             "Spacing",
                             _tip)
-            obj.UseSpacingPattern = False        
+            obj.UseSpacingPattern = False
 
         if "SpacingPattern" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Spacing is multiplied by a corresponding number in this sequence.")
@@ -475,8 +475,9 @@ class PathArray(DraftLink):
 
         Note that when the array is created, some properties will change
         more than once in a seemingly random order.
-        """       
+        """
         # The minus sign removes the Hidden property (show).
+
         if prop == "SpacingMode":
 
             # Check if all referenced properties are available:
@@ -500,16 +501,16 @@ class PathArray(DraftLink):
                 obj.setPropertyStatus("SpacingUnit", "-Hidden")
 
         if prop == "UseSpacingPattern":
-            for pr in ("UseSpacingPattern", "SpacingPattern"):
-                if not hasattr(obj, pr):
-                    return
-                
+
+            # Check if referenced property is available:
+            if not hasattr(obj, "SpacingPattern"):
+                return
+
             if obj.UseSpacingPattern:
                 obj.setPropertyStatus("SpacingPattern", "-Hidden")
             else:
                 obj.setPropertyStatus("SpacingPattern", "Hidden")
-    
-        # The minus sign removes the Hidden property (show).
+
         if prop in ("Align", "AlignMode"):
 
             # Check if all referenced properties are available:
@@ -542,21 +543,16 @@ class PathArray(DraftLink):
         super().onDocumentRestored(obj)
         # Run updates in order:
         self.ensure_updated(obj)
-        
+
     def ensure_updated(self, obj):
-        # Fuse property was added in v1.0, v1.0 props should be OK if it is present.
-        # ReversePath was added together with SpacingModes and SpacingPatterns.
-        if hasattr(obj, "Fuse") and hasattr(obj, "ReversePath"):
+        # ReversePath was added together with several Spacing properties in v1.1.
+        # V1.1 props should be OK if it is present.
+        if hasattr(obj, "ReversePath"):
             return
 
-        # "Count" has been moved to a different subsection with introduction of Spacing.
-        # It doesn't seem like subsections are editable, so remove and add it again:
-        movingCount = hasattr(obj, "Count")
-        savedCount = 0
-        if movingCount:
-            _wrn(obj.Label + ", " + translate("draft", "moving 'Count' to 'Spacing' subsection"))
-            savedCount = obj.Count
-            obj.removeProperty("Count")
+        # Fuse property was added in v1.0. Check if it is already present to
+        # correctly issue warning.
+        fuse_was_present = hasattr(obj, "Fuse")
 
         self.set_properties(obj)
         if hasattr(obj, "PathObj"):
@@ -571,10 +567,12 @@ class PathArray(DraftLink):
             _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'Xlate' property to 'ExtraTranslation'"))
             obj.ExtraTranslation = obj.Xlate
             obj.removeProperty("Xlate")
-        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        if not fuse_was_present:
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        obj.setGroupOfProperty("Count", "Spacing")
+        _wrn("v1.1, " + obj.Label + ", " + translate("draft", "moved 'Count' to 'Spacing' subsection"))
+        _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added 'ReversePath', 'SpacingMode', 'SpacingUnit', 'UseSpacingPattern' and 'SpacingPattern' properties"))
 
-        if movingCount:
-            obj.Count = savedCount
 
 # Alias for compatibility with v0.18 and earlier
 _PathArray = PathArray
@@ -584,8 +582,8 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
                        mode="Original", forceNormal=False,
                        normalOverride=None,
                        startOffset=0.0, endOffset=0.0,
-                       reversePath=False, 
-                       spacingMode="Fixed count", 
+                       reversePath=False,
+                       spacingMode="Fixed count",
                        spacingUnit=20.0,
                        useSpacingPattern=False,
                        spacingPattern=[1, 1, 1, 1]):
@@ -609,7 +607,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
     # if ReversePath is on, walk the path backwards:
     if reversePath:
         path = path[::-1]
-    
+
     # find cumulative edge end distance
     totalDist = 0
     ends = []
@@ -639,9 +637,9 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
 
     totalDist = totalDist - startOffset - endOffset
 
-    useFlexibleSpacing = spacingMode in ("Fixed count")
+    useFlexibleSpacing = spacingMode == "Fixed count"
     useFixedSpacing = spacingMode in ("Fixed spacing", "Fixed count and spacing")
-    
+
     stopAfterCount = spacingMode in ("Fixed count", "Fixed count and spacing")
     stopAfterDistance = spacingMode in ("Fixed spacing", "Fixed count and spacing")
 
@@ -650,18 +648,18 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
     if spacingUnit == 0:
         _wrn(translate("draft", "Spacing unit of 0 is not allowed, using default"))
         spacingUnit = totalDist
-    
+
     # negative spacing steps are not defined
     spacingPattern = [abs(w) for w in spacingPattern]
-    
+
     # protect from infinite loop when pattern weights are all zeros
     if sum(spacingPattern) == 0:
         spacingPattern = [spacingUnit]
 
     isClosedPath = DraftGeomUtils.isReallyClosed(pathwire) and not (startOffset or endOffset)
-    
+
     count = max(count, 1)
-    
+
     if useFlexibleSpacing:
         # Spaces between objects will stretch to fill available length
 
@@ -674,7 +672,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
             sumWeights = sum(fullSpacingPattern)
             distPerWeightUnit = totalDist / sumWeights
             steps = [distPerWeightUnit * weigth for weigth in fullSpacingPattern]
-        
+
         else:
             # Available lenght will be evenly divided (the original spacing method):
             steps = [totalDist / segCount]
@@ -723,10 +721,10 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         # End conditions:
         if stopAfterDistance and travel > endTravel: break
         if stopAfterCount and i >= count: break
-        
+
         # Failsafe:
         if i > 10_000:
-            _wrn(translate("draft", "Operation would generate too many objects. Aborting")) 
+            _wrn(translate("draft", "Operation would generate too many objects. Aborting"))
             return placements[0:1]
 
     return placements
@@ -772,7 +770,7 @@ def calculate_placement(globalRotation,
     # vector. Calculating this binormal would not make sense in the mentioned
     # cases. And in all other cases calculating it is not necessary as
     # App.Rotation() will ignore it.
-    
+
     if mode in ("Original", "Tangent"):
         n = normal
         if n.isEqual(nullv, tol):
@@ -784,7 +782,7 @@ def calculate_placement(globalRotation,
             if n_nor.isEqual(t_nor, tol) or n_nor.isEqual(t_nor.negative(), tol):
                 _wrn(translate("draft", "Tangent and normal vectors are parallel. Normal replaced by a default axis."))
                 n = t
-            
+
         if overrideNormal:
             onPathRotation = App.Rotation(t, nullv, n, "XZY") # priority = "XZY"
         else:
@@ -806,7 +804,7 @@ def calculate_placement(globalRotation,
             if n_nor.isEqual(t_nor, tol) or n_nor.isEqual(t_nor.negative(), tol):
                 _wrn(translate("draft", "Tangent and normal vectors are parallel. Normal replaced by a default axis."))
                 n = t
-        
+
         onPathRotation = App.Rotation(t, n, nullv, "XYZ") # priority = "XYZ"
 
     else:
@@ -815,7 +813,7 @@ def calculate_placement(globalRotation,
 
     placement.Rotation = onPathRotation.multiply(globalRotation)
     placement.Base = RefPt + placement.Rotation.multVec(xlate)
-    
+
     return placement
 
 
