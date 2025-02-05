@@ -40,8 +40,6 @@
 # include <GL/glext.h>
 #endif
 
-#include <App/Color.h>
-
 #include "SoQTQuarterAdaptor.h"
 
 // NOLINTBEGIN

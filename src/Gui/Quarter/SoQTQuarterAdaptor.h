@@ -27,6 +27,8 @@
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
+#include <App/Color.h>
+
 #include "QuarterWidget.h"
 
 
