@@ -913,8 +913,8 @@ void execComplexSection(Gui::Command* cmd)
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* profileObject(nullptr);
     std::vector<std::string> profileSubs;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = cmd->getSelection().getSelectionEx(
         nullptr, App::DocumentObject::getClassTypeId(), resolve, single);
     for (auto& sel : selection) {
@@ -1069,8 +1069,8 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                    resolve, single);
     for (auto& sel : selection) {
@@ -1970,8 +1970,8 @@ void getSelectedShapes(Gui::Command* cmd,
                       App::DocumentObject* faceObj,
                       std::string& faceName)
 {
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                    resolve, single);
     for (auto& sel : selection) {
