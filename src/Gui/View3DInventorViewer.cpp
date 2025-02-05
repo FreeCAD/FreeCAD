@@ -2459,7 +2459,7 @@ void View3DInventorViewer::renderScene()
             hGrpView->GetUnsigned("AxisLetterColor", 4294902015);  // default FPS color (yellow)
         draw2DString(stream.str().c_str(),
                      SbVec2s(10, 10),
-                     SbVec2f((overlayLeftWidgets == "" ? 0.1f : 1.1f), 0.1f),
+                     SbVec2f((overlayLeftWidgets.empty() ? 0.1f : 1.1f), 0.1f),
                      App::Color(static_cast<uint32_t>(axisLetterColor)));  // NOLINT
     }
 
