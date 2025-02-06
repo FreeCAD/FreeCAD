@@ -136,9 +136,9 @@ protected:
 
     QPixmap m_foldPixmap;
 
-    TaskHeader *myHeader = nullptr;
-    TaskGroup *myGroup = nullptr;
-    QWidget *myDummy = nullptr;
+    std::unique_ptr<TaskHeader> myHeader;
+    std::unique_ptr<TaskGroup> myGroup;
+    std::unique_ptr<QWidget> myDummy;
     ActionPanelScheme *myScheme = nullptr;
 };
 

@@ -17,7 +17,7 @@ namespace QSint
 
 ActionGroup::ActionGroup(QWidget *parent)
     : QWidget(parent),
-      myHeader(new TaskHeader(QPixmap(), "", false, this))
+      myHeader(std::make_unique<TaskHeader>(QPixmap(), "", false, this))
 {
     myHeader->setVisible(false);
     init(false);
@@ -25,24 +25,19 @@ ActionGroup::ActionGroup(QWidget *parent)
 
 ActionGroup::ActionGroup(const QString &title, bool expandable, QWidget *parent)
     : QWidget(parent),
-      myHeader(new TaskHeader(QPixmap(), title, expandable, this))
+      myHeader(std::make_unique<TaskHeader>(QPixmap(), title, expandable, this))
 {
     init(true);
 }
 
 ActionGroup::ActionGroup(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
     : QWidget(parent),
-      myHeader(new TaskHeader(icon, title, expandable, this))
+      myHeader(std::make_unique<TaskHeader>(icon, title, expandable, this))
 {
     init(true);
 }
 
-ActionGroup::~ActionGroup()
-{
-    delete myHeader;
-    delete myGroup;
-    delete myDummy;
-}
+ActionGroup::~ActionGroup() = default;
 
 void ActionGroup::init(bool hasHeader)
 {
@@ -53,16 +48,16 @@ void ActionGroup::init(bool hasHeader)
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
-    layout->addWidget(myHeader);
+    layout->addWidget(myHeader.get());
 
-    myGroup = new TaskGroup(this, hasHeader);
-    layout->addWidget(myGroup);
+    myGroup = std::make_unique<TaskGroup>(this, hasHeader);
+    layout->addWidget(myGroup.get());
 
-    myDummy = new QWidget(this);
-    layout->addWidget(myDummy);
+    myDummy = std::make_unique<QWidget>(this);
+    layout->addWidget(myDummy.get());
     myDummy->hide();
 
-    connect(myHeader, &TaskHeader::activated, this, &ActionGroup::showHide);
+    connect(myHeader.get(), &TaskHeader::activated, this, &ActionGroup::showHide);
 }
 
 void ActionGroup::setScheme(ActionPanelScheme *scheme)
