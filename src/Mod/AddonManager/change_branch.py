@@ -21,6 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+"""The Change Branch dialog and utility classes and methods"""
+
 import os
 from typing import Dict
 
@@ -35,12 +37,15 @@ except ImportError:
     try:
         from PySide6 import QtWidgets, QtCore
     except ImportError:
-        from PySide2 import QtWidgets, QtCore
+        from PySide2 import QtWidgets, QtCore  # pylint: disable=deprecated-module
 
 translate = fci.translate
 
 
 class ChangeBranchDialog(QtWidgets.QWidget):
+    """A dialog that displays available git branches and allows the user to select one to change
+    to. Includes code that does that change, as well as some modal dialogs to warn them of the
+    possible consequences and display various error messages."""
 
     branch_changed = QtCore.Signal(str, str)
 
@@ -80,6 +85,9 @@ class ChangeBranchDialog(QtWidgets.QWidget):
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
 
     def exec(self):
+        """Run the Change Branch dialog and its various sub-dialogs. May result in the branch
+        being changed. Code that cares if that happens should connect to the branch_changed
+        signal."""
         if self.ui.exec() == QtWidgets.QDialog.Accepted:
 
             selection = self.ui.tableView.selectedIndexes()
@@ -120,9 +128,9 @@ class ChangeBranchDialog(QtWidgets.QWidget):
                 if result == QtWidgets.QMessageBox.Cancel:
                     return
 
-            self._change_branch(self.item_model.path, ref)
+            self.change_branch(self.item_model.path, ref)
 
-    def _change_branch(self, path: str, ref: Dict[str, str]) -> None:
+    def change_branch(self, path: str, ref: Dict[str, str]) -> None:
         """Change the git clone in `path` to git ref `ref`. Emits the branch_changed signal
         on success."""
         remote_name = ref["ref_name"]
@@ -168,6 +176,10 @@ class ChangeBranchDialog(QtWidgets.QWidget):
 
 
 class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
+    """The data for the dialog comes from git: this model handles the git interactions and
+    returns branch information as its rows. Use user data in the RefAccessRole to get information
+    about the git refs. RefAccessRole data is a dictionary defined by the GitManager class as the
+    results of a `get_branches_with_info()` call."""
 
     branches = []
     DataSortRole = QtCore.Qt.UserRole
@@ -184,54 +196,61 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
         self._remove_tracking_duplicates()
 
     def rowCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -> int:
+        """Returns the number of rows in the model, e.g. the number of branches."""
         if parent.isValid():
             return 0
         return len(self.branches)
 
     def columnCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -> int:
+        """Returns the number of columns in the model, e.g. the number of entries in the git ref
+        structure (currently 3, 'ref_name', 'upstream', and 'date')."""
         if parent.isValid():
             return 0
         return 3  # Local name, remote name, date
 
     def data(self, index: QtCore.QModelIndex, role: int = QtCore.Qt.DisplayRole):
+        """The data access method for this model. Supports four roles: ToolTipRole, DisplayRole,
+        DataSortRole, and RefAccessRole."""
         if not index.isValid():
             return None
         row = index.row()
         column = index.column()
         if role == QtCore.Qt.ToolTipRole:
-            tooltip = self.branches[row]["author"] + ": " + self.branches[row]["subject"]
-            return tooltip
-        elif role == QtCore.Qt.DisplayRole:
-            dd = self.branches[row]
-            if column == 2:
-                if dd["date"] is not None:
-                    q_date = QtCore.QDateTime.fromString(
-                        dd["date"], QtCore.Qt.DateFormat.RFC2822Date
-                    )
-                    return QtCore.QLocale().toString(q_date, QtCore.QLocale.ShortFormat)
-                return None
-            elif column == 0:
-                return dd["ref_name"]
-            elif column == 1:
-                return dd["upstream"]
-            else:
-                return None
-        elif role == ChangeBranchDialogModel.DataSortRole:
-            if column == 2:
-                if self.branches[row]["date"] is not None:
-                    q_date = QtCore.QDateTime.fromString(
-                        self.branches[row]["date"], QtCore.Qt.DateFormat.RFC2822Date
-                    )
-                    return q_date
-                return None
-            elif column == 0:
-                return self.branches[row]["ref_name"]
-            elif column == 1:
-                return self.branches[row]["upstream"]
-            else:
-                return None
-        elif role == ChangeBranchDialogModel.RefAccessRole:
+            return self.branches[row]["author"] + ": " + self.branches[row]["subject"]
+        if role == QtCore.Qt.DisplayRole:
+            return self._data_display_role(column, row)
+        if role == ChangeBranchDialogModel.DataSortRole:
+            return self._data_sort_role(column, row)
+        if role == ChangeBranchDialogModel.RefAccessRole:
             return self.branches[row]
+        return None
+
+    def _data_display_role(self, column, row):
+        dd = self.branches[row]
+        if column == 2:
+            if dd["date"] is not None:
+                q_date = QtCore.QDateTime.fromString(dd["date"], QtCore.Qt.DateFormat.RFC2822Date)
+                return QtCore.QLocale().toString(q_date, QtCore.QLocale.ShortFormat)
+            return None
+        if column == 0:
+            return dd["ref_name"]
+        if column == 1:
+            return dd["upstream"]
+        return None
+
+    def _data_sort_role(self, column, row):
+        if column == 2:
+            if self.branches[row]["date"] is not None:
+                q_date = QtCore.QDateTime.fromString(
+                    self.branches[row]["date"], QtCore.Qt.DateFormat.RFC2822Date
+                )
+                return q_date
+            return None
+        if column == 0:
+            return self.branches[row]["ref_name"]
+        if column == 1:
+            return self.branches[row]["upstream"]
+        return None
 
     def headerData(
         self,
@@ -239,6 +258,7 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
         orientation: QtCore.Qt.Orientation,
         role: int = QtCore.Qt.DisplayRole,
     ):
+        """Returns the header information for the data in this model."""
         if orientation == QtCore.Qt.Vertical:
             return None
         if role != QtCore.Qt.DisplayRole:
@@ -255,14 +275,13 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
                 "Remote tracking",
                 "Table header for git remote tracking branch name",
             )
-        elif section == 2:
+        if section == 2:
             return translate(
                 "AddonsInstaller",
                 "Last Updated",
                 "Table header for git update date",
             )
-        else:
-            return None
+        return None
 
     def _remove_tracking_duplicates(self):
         remote_tracking_branches = []
@@ -280,12 +299,12 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
 
 
 class ChangeBranchDialogFilter(QtCore.QSortFilterProxyModel):
+    """Uses the DataSortRole in the model to provide a comparison method to sort the data."""
+
     def lessThan(self, left: QtCore.QModelIndex, right: QtCore.QModelIndex):
+        """Compare two git refs according to the DataSortRole in the model."""
         left_data = self.sourceModel().data(left, ChangeBranchDialogModel.DataSortRole)
         right_data = self.sourceModel().data(right, ChangeBranchDialogModel.DataSortRole)
         if left_data is None or right_data is None:
-            if right_data is not None:
-                return True
-            else:
-                return False
+            return right_data is not None
         return left_data < right_data

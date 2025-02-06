@@ -21,6 +21,10 @@
 # *                                                                         *
 # ***************************************************************************
 
+"""Test the Change Branch GUI code"""
+
+# pylint: disable=wrong-import-position, deprecated-module, too-many-return-statements
+
 import sys
 import unittest
 from unittest.mock import patch, Mock, MagicMock
@@ -28,7 +32,7 @@ from unittest.mock import patch, Mock, MagicMock
 # So that when run standalone, the Addon Manager classes imported below are available
 sys.path.append("../..")
 
-from AddonManagerTest.gui.gui_mocks import DialogWatcher, DialogInteractor, AsynchronousMonitor
+from AddonManagerTest.gui.gui_mocks import DialogWatcher, AsynchronousMonitor
 
 from change_branch import ChangeBranchDialog
 
@@ -45,11 +49,14 @@ except ImportError:
 
 
 class MockFilter(QtCore.QSortFilterProxyModel):
+    """Replaces a filter with a non-filter that simply always returns whatever it's given"""
+
     def mapToSource(self, something):
         return something
 
 
 class MockChangeBranchDialogModel(QtCore.QAbstractTableModel):
+    """Replace a data-connected model with a static one for testing"""
 
     branches = [
         {"ref_name": "ref1", "upstream": "us1"},
@@ -64,16 +71,20 @@ class MockChangeBranchDialogModel(QtCore.QAbstractTableModel):
         super().__init__(parent)
 
     def rowCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -> int:
+        """Number of rows: should always return 3"""
         if parent.isValid():
             return 0
         return len(self.branches)
 
     def columnCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -> int:
+        """Number of columns (identical to non-mocked version)"""
         if parent.isValid():
             return 0
         return 3  # Local name, remote name, date
 
     def data(self, index: QtCore.QModelIndex, role: int = QtCore.Qt.DisplayRole):
+        """Mock returns static untranslated strings for DisplayRole, no tooltips at all, and
+        otherwise matches the non-mock version"""
         if not index.isValid():
             return None
         row = index.row()
@@ -81,16 +92,16 @@ class MockChangeBranchDialogModel(QtCore.QAbstractTableModel):
         if role == QtCore.Qt.DisplayRole:
             if column == 2:
                 return "date"
-            elif column == 0:
+            if column == 0:
                 return "ref_name"
-            elif column == 1:
+            if column == 1:
                 return "upstream"
-            else:
-                return None
-        elif role == MockChangeBranchDialogModel.DataSortRole:
             return None
-        elif role == MockChangeBranchDialogModel.RefAccessRole:
+        if role == MockChangeBranchDialogModel.DataSortRole:
+            return None
+        if role == MockChangeBranchDialogModel.RefAccessRole:
             return self.branches[row]
+        return None
 
     def headerData(
         self,
@@ -98,6 +109,7 @@ class MockChangeBranchDialogModel(QtCore.QAbstractTableModel):
         orientation: QtCore.Qt.Orientation,
         role: int = QtCore.Qt.DisplayRole,
     ):
+        """Mock returns untranslated strings for DisplayRole, and no tooltips at all"""
         if orientation == QtCore.Qt.Vertical:
             return None
         if role != QtCore.Qt.DisplayRole:
@@ -106,16 +118,18 @@ class MockChangeBranchDialogModel(QtCore.QAbstractTableModel):
             return "Local"
         if section == 1:
             return "Remote tracking"
-        elif section == 2:
+        if section == 2:
             return "Last Updated"
-        else:
-            return None
+        return None
 
     def currentBranch(self) -> str:
+        """Mock returns a static string stored in the class: that string could be modified to
+        return something else by tests that require it."""
         return self.current_branch
 
 
 class TestChangeBranchGui(unittest.TestCase):
+    """Tests for the ChangeBranch GUI code"""
 
     MODULE = "test_change_branch"  # file name without extension
 
@@ -128,6 +142,7 @@ class TestChangeBranchGui(unittest.TestCase):
     @patch("change_branch.ChangeBranchDialogModel", new=MockChangeBranchDialogModel)
     @patch("change_branch.initialize_git", new=Mock(return_value=None))
     def test_no_git(self):
+        """If git is not present, a dialog saying so is presented"""
         # Arrange
         gui = ChangeBranchDialog("/some/path")
         ref = {"ref_name": "foo/bar", "upstream": "us1"}
@@ -137,7 +152,7 @@ class TestChangeBranchGui(unittest.TestCase):
         )
 
         # Act
-        gui._change_branch("/foo/bar/baz", ref)
+        gui.change_branch("/foo/bar/baz", ref)
 
         # Assert
         self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
@@ -145,6 +160,7 @@ class TestChangeBranchGui(unittest.TestCase):
     @patch("change_branch.ChangeBranchDialogModel", new=MockChangeBranchDialogModel)
     @patch("change_branch.initialize_git")
     def test_git_failed(self, init_git: MagicMock):
+        """If git fails when attempting to change branches, a dialog saying so is presented"""
         # Arrange
         git_manager = MagicMock()
         git_manager.checkout = MagicMock()
@@ -158,7 +174,7 @@ class TestChangeBranchGui(unittest.TestCase):
         )
 
         # Act
-        gui._change_branch("/foo/bar/baz", ref)
+        gui.change_branch("/foo/bar/baz", ref)
 
         # Assert
         self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
@@ -166,8 +182,8 @@ class TestChangeBranchGui(unittest.TestCase):
     @patch("change_branch.ChangeBranchDialogModel", new=MockChangeBranchDialogModel)
     @patch("change_branch.initialize_git", new=MagicMock)
     def test_branch_change_succeeded(self):
-        # If nothing gets thrown, then the process is assumed to have worked, and the appropriate
-        # signal is emitted.
+        """If nothing gets thrown, then the process is assumed to have worked, and the appropriate
+        signal is emitted."""
 
         # Arrange
         gui = ChangeBranchDialog("/some/path")
@@ -175,7 +191,7 @@ class TestChangeBranchGui(unittest.TestCase):
         monitor = AsynchronousMonitor(gui.branch_changed)
 
         # Act
-        gui._change_branch("/foo/bar/baz", ref)
+        gui.change_branch("/foo/bar/baz", ref)
 
         # Assert
         monitor.wait_for_at_most(10)  # Should be effectively instantaneous
@@ -185,6 +201,8 @@ class TestChangeBranchGui(unittest.TestCase):
     @patch("change_branch.ChangeBranchDialogModel", new=MockChangeBranchDialogModel)
     @patch("change_branch.initialize_git", new=MagicMock)
     def test_warning_is_shown_when_dialog_is_accepted(self):
+        """If the dialog is accepted (e.g. a branch change is requested) then a warning dialog is
+        displayed, and gives the opportunity to cancel. If cancelled, no signal is emitted."""
         # Arrange
         gui = ChangeBranchDialog("/some/path")
         gui.ui.exec = MagicMock()
@@ -197,12 +215,14 @@ class TestChangeBranchGui(unittest.TestCase):
             translate("AddonsInstaller", "DANGER: Developer feature"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
+        monitor = AsynchronousMonitor(gui.branch_changed)
 
         # Act
         gui.exec()
 
         # Assert
         self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertFalse(monitor.good())  # The watcher cancelled the op, so no signal is emitted
 
 
 if __name__ == "__main__":

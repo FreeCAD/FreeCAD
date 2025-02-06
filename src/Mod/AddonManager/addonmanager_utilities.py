@@ -24,6 +24,8 @@
 
 """Utilities to work across different platforms, providers and python versions"""
 
+# pylint: disable=deprecated-module, ungrouped-imports
+
 from datetime import datetime
 from typing import Optional, Any, List
 import os
@@ -52,6 +54,7 @@ try:
 except ImportError:
 
     def get_python_exe():
+        """Use shutil.which to find python executable"""
         return shutil.which("python")
 
 
@@ -61,9 +64,17 @@ if fci.FreeCADGui:
     # loop running this is not possible, so fall back to requests (if available), or the native
     # Python urllib.request (if requests is not available).
     import NetworkManager  # Requires an event loop, so is only available with the GUI
+
+    requests = None
+    ssl = None
+    urllib = None
 else:
+    NetworkManager = None
     try:
         import requests
+
+        ssl = None
+        urllib = None
     except ImportError:
         requests = None
         import urllib.request
@@ -85,11 +96,14 @@ else:
         except ImportError:
 
             def loadUi(ui_file: str):
+                """If there are no available versions of QtUiTools, then raise an error if this
+                method is used."""
                 raise RuntimeError("Cannot use QUiLoader without PySide or FreeCAD")
 
     if has_loader:
 
         def loadUi(ui_file: str) -> QtWidgets.QWidget:
+            """Load a Qt UI from an on-disk file."""
             q_ui_file = QtCore.QFile(ui_file)
             q_ui_file.open(QtCore.QFile.OpenModeFlag.ReadOnly)
             loader = QUiLoader()
@@ -135,10 +149,13 @@ def symlink(source, link_name):
 
 
 def rmdir(path: str) -> bool:
+    """Remove a directory or symlink, even if it is read-only."""
     try:
         if os.path.islink(path):
             os.unlink(path)  # Remove symlink
         else:
+            # NOTE: the onerror argument was deprecated in Python 3.12, replaced by onexc -- replace
+            # when earlier versions are no longer supported.
             shutil.rmtree(path, onerror=remove_readonly)
     except (WindowsError, PermissionError, OSError):
         return False
@@ -213,7 +230,7 @@ def get_zip_url(repo):
 
 
 def recognized_git_location(repo) -> bool:
-    """Returns whether this repo is based at a known git repo location: works with github, gitlab,
+    """Returns whether this repo is based at a known git repo location: works with GitHub, gitlab,
     framagit, and salsa.debian.org"""
 
     parsed_url = urlparse(repo.url)
@@ -395,7 +412,7 @@ def is_float(element: Any) -> bool:
 
 
 def get_pip_target_directory():
-    # Get the default location to install new pip packages
+    """Get the default location to install new pip packages"""
     major, minor, _ = platform.python_version_tuple()
     vendor_path = os.path.join(
         fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
@@ -417,7 +434,12 @@ def blocking_get(url: str, method=None) -> bytes:
     succeeded, or an empty string if it failed, or returned no data. The method argument is
     provided mainly for testing purposes."""
     p = b""
-    if fci.FreeCADGui and method is None or method == "networkmanager":
+    if (
+        fci.FreeCADGui
+        and method is None
+        or method == "networkmanager"
+        and NetworkManager is not None
+    ):
         NetworkManager.InitializeNetworkManager()
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url, 10000)  # 10 second timeout
         if p:
@@ -462,13 +484,13 @@ def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.Com
             # one second timeout allows interrupting the run once per second
             stdout, stderr = p.communicate(timeout=1)
             return_code = p.returncode
-        except subprocess.TimeoutExpired:
+        except subprocess.TimeoutExpired as timeout_exception:
             if (
                 hasattr(QtCore, "QThread")
                 and QtCore.QThread.currentThread().isInterruptionRequested()
             ):
                 p.kill()
-                raise ProcessInterrupted()
+                raise ProcessInterrupted() from timeout_exception
             if time.time() - start_time >= timeout_secs:  # The real timeout
                 p.kill()
                 stdout, stderr = p.communicate()
@@ -481,9 +503,10 @@ def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.Com
 
 
 def process_date_string_to_python_datetime(date_string: str) -> datetime:
-    """For modern macros the expected date format is ISO 8601, YYYY-MM-DD. For older macros this standard was not always
-    used, and various orderings and separators were used. This function tries to match the majority of those older
-    macros. Commonly-used separators are periods, slashes, and dashes."""
+    """For modern macros the expected date format is ISO 8601, YYYY-MM-DD. For older macros this
+    standard was not always used, and various orderings and separators were used. This function
+    tries to match the majority of those older macros. Commonly-used separators are periods,
+    slashes, and dashes."""
 
     def raise_error(bad_string: str, root_cause: Exception = None):
         raise ValueError(
@@ -499,19 +522,19 @@ def process_date_string_to_python_datetime(date_string: str) -> datetime:
         # The earliest possible year an addon can be created or edited is 2001:
         if split_result[0] > 2000:
             return datetime(split_result[0], split_result[1], split_result[2])
-        elif split_result[2] > 2000:
-            # Generally speaking it's not possible to distinguish between DD-MM and MM-DD, so try the first, and
-            # only if that fails try the second
+        if split_result[2] > 2000:
+            # Generally speaking it's not possible to distinguish between DD-MM and MM-DD, so try
+            # the first, and only if that fails try the second
             if split_result[1] <= 12:
                 return datetime(split_result[2], split_result[1], split_result[0])
             return datetime(split_result[2], split_result[0], split_result[1])
-        else:
-            raise ValueError(f"Invalid year in date string '{date_string}'")
+        raise ValueError(f"Invalid year in date string '{date_string}'")
     except ValueError as exception:
         raise_error(date_string, exception)
 
 
 def get_main_am_window():
+    """Find the Addon Manager's main window in the Qt widget hierarchy."""
     windows = QtWidgets.QApplication.topLevelWidgets()
     for widget in windows:
         if widget.objectName() == "AddonManager_Main_Window":
@@ -540,7 +563,7 @@ def create_pip_call(args: List[str]) -> List[str]:
     else:
         python_exe = get_python_exe()
         if not python_exe:
-            raise (RuntimeError("Could not locate Python executable on this system"))
+            raise RuntimeError("Could not locate Python executable on this system")
         call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
         call_args.extend(args)
     return call_args
