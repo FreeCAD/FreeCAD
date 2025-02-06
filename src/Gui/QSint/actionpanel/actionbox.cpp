@@ -8,25 +8,28 @@
 #include "actionbox.h"
 
 #include <QVariant>
-
+#include <memory>
 
 namespace QSint
 {
 
 ActionBox::ActionBox(QWidget *parent)
-    : QFrame(parent)
+    : QFrame(parent),
+      dataLayout(std::make_unique<QVBoxLayout>())
 {
     init();
 }
 
-ActionBox::ActionBox(const QString & headerText, QWidget *parent) :
-    QFrame(parent)
+ActionBox::ActionBox(const QString & headerText, QWidget *parent)
+    : QFrame(parent),
+      dataLayout(std::make_unique<QVBoxLayout>() )
 {
     init(headerText);
 }
 
-ActionBox::ActionBox(const QPixmap & icon, const QString & headerText, QWidget *parent) :
-    QFrame(parent)
+ActionBox::ActionBox(const QPixmap & icon, const QString & headerText, QWidget *parent)
+    : QFrame(parent),
+      dataLayout(std::make_unique<QVBoxLayout>())
 {
     init(headerText);
     setIcon(icon);
@@ -45,8 +48,7 @@ void ActionBox::init(const QString &headerText)
     iconLayout->addWidget(iconLabel);
     iconLayout->addStretch();
 
-    dataLayout = new QVBoxLayout();
-    mainLayout->addLayout(dataLayout);
+    mainLayout->addLayout(dataLayout.get());
 
     headerLabel = createItem(headerText);
     headerLabel->setProperty("class", "header");
@@ -174,6 +176,5 @@ QSize ActionBox::minimumSizeHint() const
 {
     return {150,65};
 }
-
 
 } // namespace

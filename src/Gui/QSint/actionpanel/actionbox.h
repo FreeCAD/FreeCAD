@@ -230,7 +230,7 @@ public:
 
     /** Returns default layout used for actions (typically it's QVBoxLayout).
       */
-    inline QLayout* itemLayout() const { return dataLayout; }
+    inline QLayout* itemLayout() const { return dataLayout.get(); }
 
     /** Adds layout \a l to the default layout.
       */
@@ -247,9 +247,10 @@ public:
 protected:
     void init(const QString &headerText = QString());
 
-    QVBoxLayout *dataLayout;
-    QLabel *iconLabel;
-    ActionLabel *headerLabel;
+    std::unique_ptr<QVBoxLayout> dataLayout;
+    QLabel *iconLabel = nullptr;
+    ActionLabel *headerLabel = nullptr;
+
 };
 
 
