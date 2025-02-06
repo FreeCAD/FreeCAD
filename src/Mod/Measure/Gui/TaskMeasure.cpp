@@ -543,6 +543,7 @@ void TaskMeasure::autoSaveChanged(bool checked)
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     settings.setValue(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave);
+    settings.endGroup();
 }
 
 void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
@@ -557,6 +558,7 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
         Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
         settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
     }
+    settings.endGroup();
 }
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode)
