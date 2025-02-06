@@ -530,8 +530,8 @@ void TaskMeasure::showDeltaChanged(int checkState)
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), delta);
-    settings.endGroup();  
-    settings.sync();  //immediate write to the settings file
+    settings.endGroup();
+    settings.sync();  // immediate write to the settings file
 
     this->update();
 }
