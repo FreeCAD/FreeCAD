@@ -69,6 +69,21 @@ else:
         import urllib.request
         import ssl
 
+if fci.FreeCADGui:
+    loadUi = fci.loadUi
+else:
+    try:
+        from PySide6.QtUiTools import QUiLoader
+    except ImportError:
+        from PySide2.QtUiTools import QUiLoader
+
+    def loadUi(ui_file: str) -> QtWidgets.QWidget:
+        q_ui_file = QtCore.QFile(ui_file)
+        q_ui_file.open(QtCore.QFile.OpenModeFlag.ReadOnly)
+        loader = QUiLoader()
+        return loader.load(ui_file)
+
+
 #  @package AddonManager_utilities
 #  \ingroup ADDONMANAGER
 #  \brief Utilities to work across different platforms, providers and python versions

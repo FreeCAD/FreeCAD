@@ -49,6 +49,8 @@ try:
 
     if FreeCAD.GuiUp:
         import FreeCADGui
+
+        loadUi = FreeCADGui.PySideUic.loadUi
     else:
         FreeCADGui = None
 
@@ -63,7 +65,7 @@ except ImportError:
         return string
 
     def Version():
-        return 0, 22, 0, "dev"
+        return 1, 1, 0, "dev"
 
     class ConsoleReplacement:
         """If FreeCAD's Console is not available, create a replacement by redirecting FreeCAD
