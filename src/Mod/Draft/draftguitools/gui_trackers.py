@@ -1446,7 +1446,7 @@ class boxTracker(Tracker):
 
 
 class radiusTracker(Tracker):
-    """A tracker that displays a transparent sphere to inicate a radius."""
+    """A tracker that displays a transparent sphere to indicate a radius."""
 
     def __init__(self, position=FreeCAD.Vector(0, 0, 0), radius=1):
         self.trans = coin.SoTransform()
