@@ -46,11 +46,13 @@ try:
     getUserMacroDir = FreeCAD.getUserMacroDir
     getUserCachePath = FreeCAD.getUserCachePath
     translate = FreeCAD.Qt.translate
+    loadUi = None
 
     if FreeCAD.GuiUp:
         import FreeCADGui
 
-        loadUi = FreeCADGui.PySideUic.loadUi
+        if hasattr(FreeCADGui, "PySideUic"):
+            loadUi = FreeCADGui.PySideUic.loadUi
     else:
         FreeCADGui = None
 

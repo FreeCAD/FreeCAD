@@ -72,16 +72,28 @@ else:
 if fci.FreeCADGui:
     loadUi = fci.loadUi
 else:
+    has_loader = False
     try:
         from PySide6.QtUiTools import QUiLoader
-    except ImportError:
-        from PySide2.QtUiTools import QUiLoader
 
-    def loadUi(ui_file: str) -> QtWidgets.QWidget:
-        q_ui_file = QtCore.QFile(ui_file)
-        q_ui_file.open(QtCore.QFile.OpenModeFlag.ReadOnly)
-        loader = QUiLoader()
-        return loader.load(ui_file)
+        has_loader = True
+    except ImportError:
+        try:
+            from PySide2.QtUiTools import QUiLoader
+
+            has_loader = True
+        except ImportError:
+
+            def loadUi(ui_file: str):
+                raise RuntimeError("Cannot use QUiLoader without PySide or FreeCAD")
+
+    if has_loader:
+
+        def loadUi(ui_file: str) -> QtWidgets.QWidget:
+            q_ui_file = QtCore.QFile(ui_file)
+            q_ui_file.open(QtCore.QFile.OpenModeFlag.ReadOnly)
+            loader = QUiLoader()
+            return loader.load(ui_file)
 
 
 #  @package AddonManager_utilities
