@@ -80,6 +80,7 @@ TaskMeasure::TaskMeasure()
     else {
         Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
     }
+    settings.endGroup();
 
     showDelta = new QCheckBox();
     showDelta->setChecked(delta);
@@ -529,6 +530,8 @@ void TaskMeasure::showDeltaChanged(int checkState)
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), delta);
+    settings.endGroup();  
+    settings.sync();  //immediate write to the settings file
 
     this->update();
 }
