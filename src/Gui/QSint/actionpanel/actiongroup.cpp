@@ -115,7 +115,6 @@ void ActionGroup::showHide()
 
         myGroup->hide();
         myDummy->setFixedSize(myGroup->size());
-        myDummy->show();
 
         QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processHide);
     }
@@ -127,6 +126,7 @@ void ActionGroup::showHide()
 
         QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processShow);
     }
+    myDummy->show();
 }
 
 void ActionGroup::processHide()
