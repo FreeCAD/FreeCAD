@@ -26,8 +26,6 @@ class TaskGroup : public QFrame
 public:
   TaskGroup(QWidget *parent, bool hasHeader = false);
 
-  void setScheme(ActionPanelScheme *scheme);
-
   inline QBoxLayout* groupLayout()
   {
     return (QBoxLayout*)layout();
