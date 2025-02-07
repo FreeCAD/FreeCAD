@@ -388,7 +388,7 @@ PyObject* DocumentPy::addObject(PyObject* args, PyObject* kwd)
                 pyvp = Py::Object(view);
             }
             if (pyvp.isNone()) {
-                pyvp = Py::Int(1);
+                pyvp = Py::Long(1);
             }
             // 'pyvp' is the python class with the implementation for ViewProvider
             if (pyvp.hasAttr("__vobject__")) {
@@ -695,7 +695,7 @@ PyObject* DocumentPy::recompute(PyObject* args)
             return nullptr;
         }
 
-        return Py::new_reference_to(Py::Int(objectCount));
+        return Py::new_reference_to(Py::Long(objectCount));
     }
     PY_CATCH;
 }
@@ -890,30 +890,30 @@ Py::List DocumentPy::getRootObjectsIgnoreLinks() const
     return res;
 }
 
-Py::Int DocumentPy::getUndoMode() const
+Py::Long DocumentPy::getUndoMode() const
 {
-    return Py::Int(getDocumentPtr()->getUndoMode());
+    return Py::Long(getDocumentPtr()->getUndoMode());
 }
 
-void DocumentPy::setUndoMode(Py::Int arg)
+void DocumentPy::setUndoMode(Py::Long arg)
 {
     getDocumentPtr()->setUndoMode(arg);
 }
 
 
-Py::Int DocumentPy::getUndoRedoMemSize() const
+Py::Long DocumentPy::getUndoRedoMemSize() const
 {
-    return Py::Int((long)getDocumentPtr()->getUndoMemSize());
+    return Py::Long((long)getDocumentPtr()->getUndoMemSize());
 }
 
-Py::Int DocumentPy::getUndoCount() const
+Py::Long DocumentPy::getUndoCount() const
 {
-    return Py::Int((long)getDocumentPtr()->getAvailableUndos());
+    return Py::Long((long)getDocumentPtr()->getAvailableUndos());
 }
 
-Py::Int DocumentPy::getRedoCount() const
+Py::Long DocumentPy::getRedoCount() const
 {
-    return Py::Int((long)getDocumentPtr()->getAvailableRedos());
+    return Py::Long((long)getDocumentPtr()->getAvailableRedos());
 }
 
 Py::List DocumentPy::getUndoNames() const

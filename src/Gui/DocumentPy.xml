@@ -233,7 +233,7 @@ obj : Gui.ViewProvider</UserDocu>
       <Documentation>
         <UserDocu>Current edit mode. Only meaningful when there is a current object in edit.</UserDocu>
       </Documentation>
-    <Parameter Name="EditMode" Type="Int" />
+    <Parameter Name="EditMode" Type="Long" />
     </Attribute>
     <Attribute Name="Document" ReadOnly="true">
       <Documentation>

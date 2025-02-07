@@ -81,14 +81,14 @@ Py::List Array2DPy::getArray() const
     return list;
 }
 
-Py::Int Array2DPy::getRows() const
+Py::Long Array2DPy::getRows() const
 {
-    return Py::Int(getMaterial2DArrayPtr()->rows());
+    return Py::Long(getMaterial2DArrayPtr()->rows());
 }
 
-Py::Int Array2DPy::getColumns() const
+Py::Long Array2DPy::getColumns() const
 {
-    return Py::Int(getMaterial2DArrayPtr()->columns());
+    return Py::Long(getMaterial2DArrayPtr()->columns());
 }
 
 PyObject* Array2DPy::getRow(PyObject* args)
