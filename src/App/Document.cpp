@@ -998,7 +998,7 @@ void Document::Save(Base::Writer& writer) const
 
 void Document::Restore(Base::XMLReader& reader)
 {
-    int i;
+    int i {0};
     d->hashers.clear();
     d->touchedObjs.clear();
     addStringHasher(d->Hasher);
@@ -1455,7 +1455,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
         // correctly unmap the names.
         auto pos = name.find('@');
         std::string _obj_name;
-        const char* obj_name;
+        const char* obj_name {nullptr};
         if (pos != std::string::npos) {
             _obj_name = name.substr(0, pos);
             obj_name = _obj_name.c_str();
@@ -2401,7 +2401,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             obj->getPropertyList(props);
             for (auto prop : props) {
                 auto link = freecad_cast<PropertyLinkBase*>(prop);
-                int res;
+                int res {0};
                 std::string errMsg;
                 if (link && ((res = link->checkRestore(&errMsg)) != 0)) {
                     d->touchedObjs.insert(obj);
