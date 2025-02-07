@@ -9,11 +9,11 @@ import generateBase.generateTools
 
 class TemplateFeature(template.ModelTemplate):
     def Generate(self):
-        file = open(self.path + self.feature.Name + "Imp.cpp", "w")
+        file = open(self.outputDir + self.feature.Name + "Imp.cpp", "w")
         generateBase.generateTools.replace(self.TemplateImplement, locals(), file)
-        file = open(self.path + self.feature.Name + ".cpp", "w")
+        file = open(self.outputDir + self.feature.Name + ".cpp", "w")
         generateBase.generateTools.replace(self.TemplateModule, locals(), file)
-        file = open(self.path + self.feature.Name + ".h", "w")
+        file = open(self.outputDir + self.feature.Name + ".h", "w")
         generateBase.generateTools.replace(self.TemplateHeader, locals(), file)
         # file.write( generateBase.generateTools.replace(self.Template,locals()))
 

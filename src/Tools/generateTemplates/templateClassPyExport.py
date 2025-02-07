@@ -14,9 +14,9 @@ class TemplateClassPyExport(template.ModelTemplate):
         # self.ParentNamespace = "Base"
         # self.Namespace = "Base"
         encoding = sys.getfilesystemencoding()
-        path = self.path
         exportName = self.export.Name
-        dirname = self.dirname
+        inputDir = self.inputDir
+        outputDir = self.outputDir
 
         def escapeString(s, indent=4):
             """Escapes a string for use as literal in C++ code"""
@@ -26,22 +26,30 @@ class TemplateClassPyExport(template.ModelTemplate):
             s = s.replace("\n", f'\\n"\n{" "*indent}"')
             return s
 
-        print("TemplateClassPyExport", path + exportName)
+        print("TemplateClassPyExport", outputDir + exportName)
 
         # Create the subdir it necessary
-        subpath = os.path.dirname(path + exportName)
+        subpath = os.path.dirname(outputDir + exportName)
         if not os.path.exists(subpath):
             os.makedirs(subpath)
 
-        # Imp.cpp must not exist, neither in path nor in dirname
-        if not os.path.exists(path + exportName + "Imp.cpp"):
-            if not os.path.exists(dirname + exportName + "Imp.cpp"):
-                file = open(path + exportName + "Imp.cpp", "wb")
+        # Imp.cpp must not exist, neither in outputDir nor in inputDir
+        outputImp = outputDir + exportName + "Imp.cpp"
+        if not os.path.exists(outputImp):
+            if not os.path.exists(inputDir + exportName + "Imp.cpp"):
+                file = open(outputImp, "wb")
+                print("TemplateClassPyExport", "TemplateImplement", file.name)
                 generateBase.generateTools.replace(self.TemplateImplement, locals(), file)
                 file.close()
-        with open(path + exportName + ".cpp", "wb") as file:
+
+        outputCpp = outputDir + exportName + ".cpp"
+        with open(outputCpp, "wb") as file:
+            print("TemplateClassPyExport", "TemplateModule", file.name)
             generateBase.generateTools.replace(self.TemplateModule, locals(), file)
-        with open(path + exportName + ".h", "wb") as file:
+
+        outputHeader = outputDir + exportName + ".h"
+        with open(outputHeader, "wb") as file:
+            print("TemplateClassPyExport", "TemplateHeader", file.name)
             generateBase.generateTools.replace(self.TemplateHeader, locals(), file)
             # file.write( generateBase.generateTools.replace(self.Template,locals()))
 

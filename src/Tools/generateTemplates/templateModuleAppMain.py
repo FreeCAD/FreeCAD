@@ -9,7 +9,7 @@ import generateBase.generateTools
 
 class TemplateModuleAppMain(template.ModelTemplate):
     def Generate(self):
-        file = open(self.path + "/App" + self.module.Name + ".cpp", "w")
+        file = open(self.outputDir + "/App" + self.module.Name + ".cpp", "w")
         generateBase.generateTools.replace(self.Template, locals(), file)
         # file.write( generateBase.generateTools.replace(self.Template,locals()))
 

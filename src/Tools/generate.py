@@ -31,27 +31,27 @@ Version:
 # Globals
 
 
-def generate(filename, path):
+def generate(filename, outputPath):
     # load model
     GenerateModelInst = generateBase.generateModel_Module.parse(filename)
 
     if len(GenerateModelInst.Module) != 0:
         Module = generateTemplates.templateModule.TemplateModule()
-        Module.path = path
+        Module.outputDir = outputPath
         Module.module = GenerateModelInst.Module[0]
         Module.Generate()
         print("Done generating: " + GenerateModelInst.Module[0].Name)
     else:
         Export = generateTemplates.templateClassPyExport.TemplateClassPyExport()
-        Export.path = path + "/"
-        Export.dirname = os.path.dirname(filename) + "/"
+        Export.outputDir = outputPath + "/"
+        Export.inputDir = os.path.dirname(filename) + "/"
         Export.export = GenerateModelInst.PythonExport[0]
         Export.Generate()
         print("Done generating: " + GenerateModelInst.PythonExport[0].Name)
 
 
 def main():
-    defaultPath = ""
+    outputPath = ""
 
     class generateOutput:
         def write(self, data):
@@ -75,7 +75,7 @@ def main():
             sys.stderr.write(Usage)
             sys.exit()
         if o in ("-o", "--outputPath"):
-            defaultPath = a
+            outputPath = a
 
     # running through the files
     if len(args) == 0:
@@ -83,12 +83,11 @@ def main():
     else:
         for i in args:
             filename = os.path.abspath(i)
-            if defaultPath == "":
-                head, tail = os.path.split(filename)
-                print(head, tail)
+            if outputPath == "":
+                head, _ = os.path.split(filename)
                 generate(filename, head)
             else:
-                generate(filename, defaultPath)
+                generate(filename, outputPath)
 
 
 if __name__ == "__main__":

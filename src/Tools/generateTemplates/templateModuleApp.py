@@ -9,12 +9,12 @@ import generateBase.generateTools
 
 class TemplateModuleApp(template.ModelTemplate):
     def Generate(self):
-        AppPath = self.path + "/App/"
+        AppPath = self.outputDir + "/App/"
         generateBase.generateTools.ensureDir(AppPath)
 
         # the main module files
         AppMain = templateModuleAppMain.TemplateModuleAppMain()
-        AppMain.path = AppPath
+        AppMain.outputDir = AppPath
         AppMain.module = self.module
         AppMain.Generate()
 
@@ -22,7 +22,7 @@ class TemplateModuleApp(template.ModelTemplate):
         generateBase.generateTools.ensureDir(AppPath + "Features/")
         for i in self.module.Content.Feature:
             AppFeature = templateModuleAppFeature.TemplateFeature()
-            AppFeature.path = AppPath + "Features/"
+            AppFeature.outputDir = AppPath + "Features/"
             AppFeature.module = self.module
             AppFeature.feature = i
             AppFeature.Generate()

@@ -9,7 +9,7 @@ import generateBase.generateTools
 
 class TemplateCPPFile(template.ModelTemplate):
     def Generate(self):
-        generateBase.generateTools.ensureDir(self.path)
+        generateBase.generateTools.ensureDir(self.outputDir)
         print("Generate() App Dir")
 
 
