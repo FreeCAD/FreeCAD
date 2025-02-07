@@ -1668,10 +1668,8 @@ unsigned int Document::getMemSize() const
     unsigned int size = 0;
 
     // size of the DocObjects in the document
-    for (auto it = d->objectArray.begin();
-         it != d->objectArray.end();
-         ++it) {
-        size += (*it)->getMemSize();
+    for (auto & it : d->objectArray) {
+        size += it->getMemSize();
     }
 
     size += d->Hasher->getMemSize();
