@@ -505,7 +505,7 @@ void Document::_commitTransaction(bool notify)
         }
         return;
     }
-    else if (d->committing) {
+    if (d->committing) {
         // for a recursive call return without printing a warning
         return;
     }
@@ -572,9 +572,7 @@ bool Document::hasPendingTransaction() const
     if (d->activeUndoTransaction) {
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 int Document::getTransactionID(bool undo, unsigned pos) const
@@ -696,9 +694,7 @@ int Document::getAvailableUndos(int id) const
     if (d->activeUndoTransaction) {
         return static_cast<int>(mUndoTransactions.size() + 1);
     }
-    else {
-        return static_cast<int>(mUndoTransactions.size());
-    }
+    return static_cast<int>(mUndoTransactions.size());
 }
 
 int Document::getAvailableRedos(int id) const
@@ -2443,7 +2439,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             // partial document touched, signal full reload
             return false;
         }
-        else if (!d->touchedObjs.count(obj)) {
+        if (!d->touchedObjs.count(obj)) {
             obj->purgeTouched();
         }
 
@@ -2574,7 +2570,7 @@ void Document::getLinksTo(std::set<DocumentObject*>& links,
                 if ((options & GetLinkExternal) && linked->getDocument() == o->getDocument()) {
                     continue;
                 }
-                else if (options & GetLinkedObject) {
+                if (options & GetLinkedObject) {
                     links.insert(linked);
                 }
                 else {
@@ -3512,15 +3508,11 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
             recompute({Feat}, true, &hasError);
             return !hasError;
         }
-        else {
-            _recomputeFeature(Feat);
-            signalRecomputedObject(*Feat);
-            return Feat->isValid();
-        }
+        _recomputeFeature(Feat);
+        signalRecomputedObject(*Feat);
+        return Feat->isValid();
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 DocumentObject* Document::addObject(const char* sType,
@@ -4216,9 +4208,7 @@ DocumentObject* Document::getObject(const char* Name) const
     if (pos != d->objectMap.end()) {
         return pos->second;
     }
-    else {
-        return nullptr;
-    }
+    return nullptr;
 }
 
 DocumentObject* Document::getObjectByID(long id) const
@@ -4268,23 +4258,21 @@ std::string Document::getUniqueObjectName(const char* Name) const
         // if not, name is OK
         return CleanName;
     }
-    else {
-        // remove also trailing digits from clean name which is to avoid to create lengthy names
-        // like 'Box001001'
-        if (!testStatus(KeepTrailingDigits)) {
-            std::string::size_type index = CleanName.find_last_not_of("0123456789");
-            if (index + 1 < CleanName.size()) {
-                CleanName = CleanName.substr(0, index + 1);
-            }
+    // remove also trailing digits from clean name which is to avoid to create lengthy names
+    // like 'Box001001'
+    if (!testStatus(KeepTrailingDigits)) {
+        std::string::size_type index = CleanName.find_last_not_of("0123456789");
+        if (index + 1 < CleanName.size()) {
+            CleanName = CleanName.substr(0, index + 1);
         }
-
-        std::vector<std::string> names;
-        names.reserve(d->objectMap.size());
-        for (pos = d->objectMap.begin(); pos != d->objectMap.end(); ++pos) {
-            names.push_back(pos->first);
-        }
-        return Base::Tools::getUniqueName(CleanName, names, 3);
     }
+
+    std::vector<std::string> names;
+    names.reserve(d->objectMap.size());
+    for (pos = d->objectMap.begin(); pos != d->objectMap.end(); ++pos) {
+        names.push_back(pos->first);
+    }
+    return Base::Tools::getUniqueName(CleanName, names, 3);
 }
 
 std::string Document::getStandardObjectName(const char* Name, int d) const
