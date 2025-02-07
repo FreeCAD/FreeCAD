@@ -4269,7 +4269,8 @@ void DocumentP::findAllPathsAt(const std::vector<Node>& all_nodes,
     }
 
     for (size_t i = 0; i < all_nodes[id].size(); i++) {
-        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp);
+        const Path& tmp2(tmp);
+        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
     }
 }
 
