@@ -141,13 +141,13 @@ static bool globalIsRelabeling;
 
 DocumentP::DocumentP()
 {
-    static std::random_device _RD;
-    static std::mt19937 _RGEN(_RD());
-    static std::uniform_int_distribution<> _RDIST(0, 5000);
+    static std::random_device rd;
+    static std::mt19937 rgen(rd());
+    static std::uniform_int_distribution<> rdist(0, 5000);
     // Set some random offset to reduce likelihood of ID collision when
     // copying shape from other document. It is probably better to randomize
     // on each object ID.
-    lastObjectId = _RDIST(_RGEN);
+    lastObjectId = rdist(rgen);
     StatusBits.set((size_t)Document::Closable, true);
     StatusBits.set((size_t)Document::KeepTrailingDigits, true);
     StatusBits.set((size_t)Document::Restoring, false);
@@ -1192,7 +1192,7 @@ struct DocExportStatus
     std::set<const App::DocumentObject*> objs;
 };
 
-static DocExportStatus _ExportStatus;
+static DocExportStatus exportStatus;
 
 // Exception-safe exporting status setter
 class DocumentExporting
@@ -1200,14 +1200,14 @@ class DocumentExporting
 public:
     explicit DocumentExporting(const std::vector<App::DocumentObject*>& objs)
     {
-        _ExportStatus.status = Document::Exporting;
-        _ExportStatus.objs.insert(objs.begin(), objs.end());
+        exportStatus.status = Document::Exporting;
+        exportStatus.objs.insert(objs.begin(), objs.end());
     }
 
     ~DocumentExporting()
     {
-        _ExportStatus.status = Document::NotExporting;
-        _ExportStatus.objs.clear();
+        exportStatus.status = Document::NotExporting;
+        exportStatus.objs.clear();
     }
 };
 
@@ -1218,9 +1218,9 @@ public:
 // implementation can easily be changed here if necessary.
 Document::ExportStatus Document::isExporting(const App::DocumentObject* obj) const
 {
-    if (_ExportStatus.status != Document::NotExporting
-        && (!obj || _ExportStatus.objs.find(obj) != _ExportStatus.objs.end())) {
-        return _ExportStatus.status;
+    if (exportStatus.status != Document::NotExporting
+        && (!obj || exportStatus.objs.find(obj) != exportStatus.objs.end())) {
+        return exportStatus.status;
     }
     return Document::NotExporting;
 }
@@ -1377,7 +1377,7 @@ struct DepInfo
     int canLoadPartial = 0;
 };
 
-static void _loadDeps(const std::string& name,
+static void loadDeps(const std::string& name,
                       std::unordered_map<std::string, bool>& objs,
                       const std::unordered_map<std::string, DepInfo>& deps)
 {
@@ -1408,7 +1408,7 @@ static void _loadDeps(const std::string& name,
         if (found != objs.end() && found->second) {
             continue;
         }
-        _loadDeps(dep, objs, deps);
+        loadDeps(dep, objs, deps);
     }
 }
 
@@ -1454,7 +1454,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             strings.emplace_back(v.first.c_str());
         }
         for (auto& name : strings) {
-            _loadDeps(name, d->partialLoadObjects, deps);
+            loadDeps(name, d->partialLoadObjects, deps);
         }
         if (Cnt > static_cast<int>(d->partialLoadObjects.size())) {
             setStatus(Document::PartialDoc, true);
@@ -2650,7 +2650,7 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
 // assumption is broken by the introduction of PropertyXLink which can link to
 // external object.
 //
-static void _buildDependencyList(const std::vector<App::DocumentObject*>& objectArray,
+static void buildDependencyList(const std::vector<App::DocumentObject*>& objectArray,
                                  int options,
                                  std::vector<App::DocumentObject*>* depObjs,
                                  DependencyList* depList,
@@ -2718,7 +2718,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objectArray
 {
     std::vector<App::DocumentObject*> ret;
     if (!(options & DepSort)) {
-        _buildDependencyList(objectArray, options, &ret, nullptr, nullptr);
+        buildDependencyList(objectArray, options, &ret, nullptr, nullptr);
         return ret;
     }
 
@@ -2726,7 +2726,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objectArray
     std::map<DocumentObject*, Vertex> objectMap;
     std::map<Vertex, DocumentObject*> vertexMap;
 
-    _buildDependencyList(objectArray, options, nullptr, &depList, &objectMap);
+    buildDependencyList(objectArray, options, nullptr, &depList, &objectMap);
 
     for (auto& v : objectMap) {
         vertexMap[v.second] = v.first;
@@ -4493,7 +4493,7 @@ bool Document::mustExecute() const
 {
     if (PropertyXLink::hasXLink(this)) {
         bool touched = false;
-        _buildDependencyList(d->objectArray, false, nullptr, nullptr, nullptr, &touched);
+        buildDependencyList(d->objectArray, false, nullptr, nullptr, nullptr, &touched);
         return touched;
     }
 
