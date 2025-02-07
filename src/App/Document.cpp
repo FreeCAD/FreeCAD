@@ -863,11 +863,10 @@ Document::Document(const char* documentName)
         "User parameter:BaseApp/Preferences/Document")};
     auto index = static_cast<int>(paramGrp->GetInt("prefLicenseType", 0));
     const char* name = "";
-    const char* url = "";
     std::string licenseUrl = "";
     if (index >= 0 && index < App::countOfLicenses) {
         name = App::licenseItems.at(index).at(App::posnOfFullName);
-        url = App::licenseItems.at(index).at(App::posnOfUrl);
+        auto url = App::licenseItems.at(index).at(App::posnOfUrl);
         licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
     }
     ADD_PROPERTY_TYPE(License, (name), 0, Prop_None, "License string of the Item");
@@ -2104,11 +2103,11 @@ bool Document::saveToFile(const char* filename) const
         fn += ".";
         fn += uuid;
     }
-    Base::FileInfo tmp(fn);
 
 
     // open extra scope to close ZipWriter properly
     {
+        Base::FileInfo tmp(fn);
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
 
         Base::ZipWriter writer(file);
@@ -2968,11 +2967,11 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
     bool canAbort = hGrp->GetBool("CanAbortRecompute", true);
 
     std::set<App::DocumentObject*> filter;
-    size_t idx = 0;
 
     FC_TIME_INIT(t2);
 
     try {
+        size_t idx = 0;
         // maximum two passes to allow some form of dependency inversion
         for (int passes = 0; passes < 2 && idx < topoSortedObjects.size(); ++passes) {
             std::unique_ptr<Base::SequencerLauncher> seq;
@@ -3678,7 +3677,7 @@ void Document::removeObject(const char* sName)
     }
     else {
         // if not saved in undo -> delete object
-        signalTransactionRemove(*pos->second, 0);
+        signalTransactionRemove(*pos->second, nullptr);
     }
 
     // Before deleting we must nullify all dependent objects
@@ -3791,7 +3790,7 @@ void Document::_removeObject(DocumentObject* pcObject)
     }
     else {
         // for a rollback delete the object
-        signalTransactionRemove(*pcObject, 0);
+        signalTransactionRemove(*pcObject, nullptr);
         breakDependency(pcObject, true);
     }
     // TODO: Transaction::addObjectName could potentially have freed (deleted) pcObject so some of the following
