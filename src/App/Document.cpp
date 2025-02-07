@@ -140,12 +140,12 @@ PROPERTY_SOURCE(App::Document, App::PropertyContainer)
 
 bool Document::testStatus(Status pos) const
 {
-    return d->StatusBits.test((size_t)pos);
+    return d->StatusBits.test(static_cast<size_t>(pos));
 }
 
 void Document::setStatus(Status pos, bool on)
 {
-    d->StatusBits.set((size_t)pos, on);
+    d->StatusBits.set(static_cast<size_t>(pos), on);
 }
 
 // bool _has_cycle_dfs(const DependencyList & g, vertex_t u, default_color_type * color)
@@ -695,7 +695,7 @@ int Document::getAvailableRedos(int id) const
         for (auto rit = mRedoTransactions.rbegin(); *rit != it->second; ++rit) {
             ++i;
         }
-        assert(i < (int)mRedoTransactions.size());
+        assert(i < static_cast<int>(mRedoTransactions.size()));
         return i + 1;
     }
     return static_cast<int>(mRedoTransactions.size());
@@ -1142,7 +1142,7 @@ std::pair<bool, int> Document::addStringHasher(const StringHasherRef& hasher) co
         return std::make_pair(false, 0);
     }
     auto ret =
-        d->hashers.left.insert(HasherMap::left_map::value_type(hasher, (int)d->hashers.size()));
+        d->hashers.left.insert(HasherMap::left_map::value_type(hasher, static_cast<int>(d->hashers.size())));
     if (ret.second) {
         hasher->clearMarks();
     }
@@ -1439,7 +1439,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
         for (auto& name : objs) {
             _loadDeps(name, d->partialLoadObjects, deps);
         }
-        if (Cnt > (int)d->partialLoadObjects.size()) {
+        if (Cnt > static_cast<int>(d->partialLoadObjects.size())) {
             setStatus(Document::PartialDoc, true);
         }
         else {
@@ -1841,7 +1841,7 @@ private:
                     }
                 }
 
-                if (!backup.empty() && (int)backup.size() >= numberOfFiles) {
+                if (!backup.empty() && static_cast<int>(backup.size()) >= numberOfFiles) {
                     // delete the oldest backup file we found
                     Base::FileInfo del = backup.front();
                     for (const Base::FileInfo& it : backup) {
@@ -1911,7 +1911,7 @@ private:
                             std::transform(fextUp.begin(),
                                            fextUp.end(),
                                            fextUp.begin(),
-                                           (int (*)(int))toupper);
+                                           static_cast<int (*)(int)>(toupper));
                             // re-enforcing identification of the backup file
 
 
@@ -1930,7 +1930,7 @@ private:
                         }
                     }
 
-                    if (!backup.empty() && (int)backup.size() >= numberOfFiles) {
+                    if (!backup.empty() && static_cast<int>(backup.size()) >= numberOfFiles) {
                         std::sort(backup.begin(), backup.end(), fileComparisonByDate);
                         // delete the oldest backup file we found
                         // Base::FileInfo del = backup.front();
@@ -2605,7 +2605,7 @@ void Document::getLinksTo(std::set<DocumentObject*>& links,
                 else {
                     links.insert(o);
                 }
-                if (maxCount && maxCount <= (int)links.size()) {
+                if (maxCount && maxCount <= static_cast<int>(links.size())) {
                     return;
                 }
             }
@@ -2629,7 +2629,7 @@ void Document::getLinksTo(std::set<DocumentObject*>& links,
             }
             for (App::DocumentObject* link : iter->second) {
                 if (links.insert(link).second) {
-                    if (maxCount && maxCount <= (int)links.size()) {
+                    if (maxCount && maxCount <= static_cast<int>(links.size())) {
                         return;
                     }
                     next.push_back(link);
