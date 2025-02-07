@@ -34,13 +34,6 @@ void ActionPanel::setScheme(ActionPanelScheme *scheme)
     myScheme = scheme;
     setStyleSheet(myScheme->actionStyle);
 
-    // Set scheme for children
-    for (QObject *obj : children()) {
-        if (auto *group = qobject_cast<ActionGroup*>(obj)) {
-            group->setScheme(scheme);
-        }
-    }
-
     update();
 }
 

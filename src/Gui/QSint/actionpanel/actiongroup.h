@@ -74,14 +74,6 @@ public:
      */
     QBoxLayout* groupLayout();
 
-
-    /**
-     * @brief Sets the scheme for the panel and all its child groups.
-     *
-     * By default, `ActionPanelScheme::defaultScheme()` is used.
-     */
-    void setScheme(ActionPanelScheme *scheme);
-
     /**
      * @brief Checks if the group can collapse or expand.
      */

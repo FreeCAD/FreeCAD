@@ -60,14 +60,6 @@ void ActionGroup::init(bool hasHeader)
     connect(myHeader.get(), &TaskHeader::activated, this, &ActionGroup::showHide);
 }
 
-void ActionGroup::setScheme(ActionPanelScheme *scheme)
-{
-    myScheme = scheme;
-    myHeader->setScheme(scheme);
-    myGroup->setScheme(scheme);
-    update();
-}
-
 QBoxLayout* ActionGroup::groupLayout()
 {
     return myGroup->groupLayout();
