@@ -345,7 +345,7 @@ public:
     /// Returns true if the DocumentObject is contained in this document
     bool isIn(const DocumentObject* pFeat) const;
     /// Returns a Name of an Object or 0
-    const char *getObjectName(DocumentObject* pFeat) const;
+    const char *getObjectName(const DocumentObject* pFeat) const;
     /// Returns a Name for a new Object or empty if proposedName is null or empty.
     std::string getUniqueObjectName(const char* proposedName) const;
     /// Returns a name different from any of the Labels of any objects in this document, based on the given modelName.
@@ -446,11 +446,11 @@ public:
      */
     void openTransaction(const char* name = nullptr);
     /// Rename the current transaction if the id matches
-    void renameTransaction(const char* name, int id);
+    void renameTransaction(const char* name, int id) const;
     /// Commit the Command transaction. Do nothing If there is no Command transaction open.
     void commitTransaction();
     /// Abort the actually running transaction.
-    void abortTransaction();
+    void abortTransaction() const;
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
     /// Return the undo/redo transaction ID starting from the back
@@ -484,7 +484,7 @@ public:
     /// redo/undo or rollback
     bool isPerformingTransaction() const;
     /// \internal add or remove property from a transactional object
-    void addOrRemovePropertyOfObject(TransactionalObject*, Property* prop, bool add);
+    void addOrRemovePropertyOfObject(TransactionalObject*, const Property* prop, bool add);
     //@}
 
     /** @name dependency stuff */
@@ -492,7 +492,7 @@ public:
     /// write GraphViz file
     void writeDependencyGraphViz(std::ostream& out);
     /// checks if the graph is directed and has no cycles
-    bool checkOnCycle();
+    static bool checkOnCycle();
     /// get a list of all objects linking to the given object
     std::vector<DocumentObject*> getInList(const DocumentObject* me) const;
 
@@ -685,7 +685,7 @@ template<typename T>
 inline std::vector<T*> Document::getObjectsOfType() const
 {
     std::vector<T*> type;
-    std::vector<DocumentObject*> obj = this->getObjectsOfType(T::getClassTypeId());
+    const std::vector<DocumentObject*> obj = this->getObjectsOfType(T::getClassTypeId());
     type.reserve(obj.size());
     for (auto it : obj) {
         type.push_back(static_cast<T*>(it));
