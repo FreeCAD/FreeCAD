@@ -40,11 +40,8 @@ AdditionalFolderModel::AdditionalFolderModel(QObject* parent)
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
 
-    _additionalFolderDirectory = QDir(
-        QString::fromUtf8(
-            _parameterGroup->GetASCII( "AdditionalFolder", defaultPath.c_str()).c_str()
-        )
-    );
+    _additionalFolderDirectory = QDir(QString::fromUtf8(
+        _parameterGroup->GetASCII("AdditionalFolder", defaultPath.c_str()).c_str()));
 }
 
 void AdditionalFolderModel::loadAdditional()
@@ -55,8 +52,9 @@ void AdditionalFolderModel::loadAdditional()
         Base::Console().Warning("Cannot read %s",
                                 _additionalFolderDirectory.absolutePath().toStdString().c_str());
     }
-    auto entries = _additionalFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
-                                                QDir::SortFlag::Name);
+    auto entries =
+        _additionalFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
+                                             QDir::SortFlag::Name);
     for (const auto& entry : entries) {
         addFile(_additionalFolderDirectory.filePath(entry));
     }
