@@ -475,7 +475,7 @@ void Document::_commitTransaction(bool notify)
         }
         return;
     }
-    else if (d->committing) {
+    if (d->committing) {
         // for a recursive call return without printing a warning
         return;
     }
@@ -542,9 +542,7 @@ bool Document::hasPendingTransaction() const
     if (d->activeUndoTransaction) {
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 int Document::getTransactionID(bool undo, unsigned pos) const
@@ -668,9 +666,7 @@ int Document::getAvailableUndos(int id) const
     if (d->activeUndoTransaction) {
         return static_cast<int>(mUndoTransactions.size() + 1);
     }
-    else {
-        return static_cast<int>(mUndoTransactions.size());
-    }
+    return static_cast<int>(mUndoTransactions.size());
 }
 
 int Document::getAvailableRedos(int id) const
@@ -2444,7 +2440,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             // partial document touched, signal full reload
             return false;
         }
-        else if (!d->touchedObjs.contains(obj)) {
+        if (!d->touchedObjs.contains(obj)) {
             obj->purgeTouched();
         }
 
@@ -2583,7 +2579,7 @@ void Document::getLinksTo(std::set<DocumentObject*>& links,
                 if ((options & GetLinkExternal) && linked->getDocument() == o->getDocument()) {
                     continue;
                 }
-                else if (options & GetLinkedObject) {
+                if (options & GetLinkedObject) {
                     links.insert(linked);
                 }
                 else {
@@ -3366,11 +3362,9 @@ bool Document::recomputeFeature(DocumentObject* feature, bool recursive)
         recompute({feature}, true, &hasError);
         return !hasError;
     }
-    else {
-        _recomputeFeature(feature);
-        signalRecomputedObject(*feature);
-        return feature->isValid();
-    }
+    _recomputeFeature(feature);
+    signalRecomputedObject(*feature);
+    return feature->isValid();
 }
 
 DocumentObject* Document::addObject(const char* sType,
@@ -4066,9 +4060,7 @@ DocumentObject* Document::getObject(const char* Name) const
     if (pos != d->objectMap.end()) {
         return pos->second;
     }
-    else {
-        return nullptr;
-    }
+    return nullptr;
 }
 
 DocumentObject* Document::getObjectByID(long id) const
