@@ -317,6 +317,7 @@ public:
 
     /** Copy objects from another document to this document
      *
+     * @param objs
      * @param recursive: if true, then all objects this object depends on are
      * copied as well. By default \a recursive is false.
      *
@@ -397,6 +398,9 @@ public:
      *
      * @param objs: specify a sub set of objects to recompute. If empty, then
      * all object in this document is checked for recompute
+     * @param force
+     * @param hasError
+     * @param options
      */
     int recompute(const std::vector<DocumentObject*>& objs = {},
                   bool force = false,
@@ -566,7 +570,7 @@ public:
      *
      * @param links: holds the links found
      * @param obj: the linked object. If NULL, then all links are returned.
-     * @param option: @sa GetLinkOption
+     * @param options: @sa GetLinkOption
      * @param maxCount: limit the number of links returned, 0 means no limit
      * @param objs: optional objects to search for, if empty, then all objects
      * of this document are searched.
