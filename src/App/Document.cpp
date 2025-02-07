@@ -1387,8 +1387,8 @@ static void _loadDeps(const std::string& name,
     objs[name] = true;
     // If cannot load partial, then recurse to load all children dependency
     for (auto& dep : it->second.deps) {
-        auto it = objs.find(dep);
-        if (it != objs.end() && it->second) {
+        auto found = objs.find(dep);
+        if (found != objs.end() && found->second) {
             continue;
         }
         _loadDeps(dep, objs, deps);
@@ -1431,12 +1431,12 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             }
             reader.readEndElement(FC_ELEMENT_OBJECT_DEPS);
         }
-        std::vector<std::string> objs;
-        objs.reserve(d->partialLoadObjects.size());
+        std::vector<std::string> strings;
+        strings.reserve(d->partialLoadObjects.size());
         for (auto& v : d->partialLoadObjects) {
-            objs.emplace_back(v.first.c_str());
+            strings.emplace_back(v.first.c_str());
         }
-        for (auto& name : objs) {
+        for (auto& name : strings) {
             _loadDeps(name, d->partialLoadObjects, deps);
         }
         if (Cnt > static_cast<int>(d->partialLoadObjects.size())) {
@@ -1900,7 +1900,7 @@ private:
                 boost::replace_all(saveBackupDateFormat, ".", "-");
                 {
                     // Remove all extra backups
-                    std::string fn = fi.fileName();
+                    std::string filename = fi.fileName();
                     Base::FileInfo di(fi.dirPath());
                     std::vector<Base::FileInfo> backup;
                     std::vector<Base::FileInfo> files = di.getDirectoryContent();
@@ -1918,8 +1918,8 @@ private:
 
                             // old case : the name starts with the full name of the project and
                             // follows with numbers
-                            if ((startsWith(file, fn) && (file.length() > fn.length())
-                                 && checkDigits(file.substr(fn.length())))
+                            if ((startsWith(file, filename) && (file.length() > filename.length())
+                                 && checkDigits(file.substr(filename.length())))
                                 ||
                                 // .FCBak case : The bame starts with the base name of the project +
                                 // "."
@@ -1958,7 +1958,7 @@ private:
 
                 // create a new backup file
                 {
-                    int ext = 1;
+                    int ext2 = 1;
                     if (useFCBakExtension) {
                         std::stringstream str;
                         Base::TimeInfo ti = fi.lastModified();
@@ -1988,28 +1988,28 @@ private:
                         }
 
                         if (!done) {
-                            while (ext < numberOfFiles + 10) {
-                                if (renameFileNoErase(fi, fn + std::to_string(ext) + ".FCBak")) {
+                            while (ext2 < numberOfFiles + 10) {
+                                if (renameFileNoErase(fi, fn + std::to_string(ext2) + ".FCBak")) {
                                     break;
                                 }
-                                ext++;
+                                ext2++;
                             }
                         }
                     }
                     else {
                         // changed but simpler and solves also the delay sometimes introduced by
                         // google drive
-                        while (ext < numberOfFiles + 10) {
+                        while (ext2 < numberOfFiles + 10) {
                             // linux just replace the file if exists, and then the existence is to
                             // be tested before rename
-                            if (renameFileNoErase(fi, fi.filePath() + std::to_string(ext))) {
+                            if (renameFileNoErase(fi, fi.filePath() + std::to_string(ext2))) {
                                 break;
                             }
-                            ext++;
+                            ext2++;
                         }
                     }
 
-                    if (ext >= numberOfFiles + 10) {
+                    if (ext2 >= numberOfFiles + 10) {
                         Base::Console().error(
                             "File not saved: Cannot rename project file to backup file\n");
                         // throw Base::FileException("File not saved: Cannot rename project file to
@@ -2205,17 +2205,17 @@ bool Document::saveToFile(const char* filename) const
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                 ->GetASCII("SaveBackupDateFormat", "%Y%m%d-%H%M%S");
 
-        BackupPolicy policy;
+        BackupPolicy backupPolicy;
         if (useFCBakExtension) {
-            policy.setPolicy(BackupPolicy::TimeStamp);
-            policy.useBackupExtension(useFCBakExtension);
-            policy.setDateFormat(saveBackupDateFormat);
+            backupPolicy.setPolicy(BackupPolicy::TimeStamp);
+            backupPolicy.useBackupExtension(useFCBakExtension);
+            backupPolicy.setDateFormat(saveBackupDateFormat);
         }
         else {
-            policy.setPolicy(BackupPolicy::Standard);
+            backupPolicy.setPolicy(BackupPolicy::Standard);
         }
-        policy.setNumberOfFiles(count_bak);
-        policy.apply(fn, nativePath);
+        backupPolicy.setNumberOfFiles(count_bak);
+        backupPolicy.apply(fn, nativePath);
     }
 
     signalFinishSave(*this, filename);
@@ -2701,33 +2701,33 @@ static void _buildDependencyList(const std::vector<App::DocumentObject*>& object
     for (auto obj : objectArray) {
         objs.push_back(obj);
         while (!objs.empty()) {
-            auto obj = objs.front();
+            auto objF = objs.front();
             objs.pop_front();
-            if (!obj || !obj->isAttachedToDocument()) {
+            if (!objF || !objF->isAttachedToDocument()) {
                 continue;
             }
 
-            auto it = outLists.find(obj);
+            auto it = outLists.find(objF);
             if (it != outLists.end()) {
                 continue;
             }
 
             if (touchCheck) {
-                if (obj->isTouched() || obj->mustExecute()) {
+                if (objF->isTouched() || objF->mustExecute()) {
                     // early termination on touch check
                     *touchCheck = true;
                     return;
                 }
             }
             if (depObjs) {
-                depObjs->push_back(obj);
+                depObjs->push_back(objF);
             }
             if (objectMap && depList) {
-                (*objectMap)[obj] = add_vertex(*depList);
+                (*objectMap)[objF] = add_vertex(*depList);
             }
 
-            auto& outList = outLists[obj];
-            outList = obj->getOutList(op);
+            auto& outList = outLists[objF];
+            outList = objF->getOutList(op);
             objs.insert(objs.end(), outList.begin(), outList.end());
         }
     }
@@ -2926,9 +2926,9 @@ void Document::renameObjectIdentifiers(
         ++it;
     }
 
-    for (auto it : d->objectArray) {
-        if (selector(it)) {
-            it->renameObjectIdentifiers(extendedPaths);
+    for (const auto object : d->objectArray) {
+        if (selector(object)) {
+            object->renameObjectIdentifiers(extendedPaths);
         }
     }
 }
@@ -3109,9 +3109,9 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
     }
 
     for (auto doc : GetApplication().getDocuments()) {
-        decltype(doc->d->pendingRemove) objs;
-        objs.swap(doc->d->pendingRemove);
-        for (auto& o : objs) {
+        decltype(doc->d->pendingRemove) objects;
+        objects.swap(doc->d->pendingRemove);
+        for (auto& o : objects) {
             try {
                 if (auto obj = o.getObject()) {
                     obj->getDocument()->removeObject(obj->getNameInDocument());
