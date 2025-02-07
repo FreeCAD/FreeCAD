@@ -1048,7 +1048,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });
@@ -1125,7 +1125,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });

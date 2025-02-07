@@ -264,12 +264,12 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         args.setItem(0, Py::Object(object->getPyObject(), true));
         if(!subname) subname = "";
         args.setItem(1,Py::String(subname));
-        args.setItem(2,Py::Int(pyObj?2:1));
+        args.setItem(2,Py::Long(pyObj?2:1));
         Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
         args.setItem(3,Py::asObject(pyMat));
         args.setItem(4,Py::Boolean(transform));
-        args.setItem(5,Py::Int(depth));
+        args.setItem(5,Py::Long(depth));
 
         Py::Object res(Base::pyCall(py_getSubObject.ptr(),args.ptr()));
         if(res.isNone()) {
@@ -320,7 +320,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
     try {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        args.setItem(1, Py::Int(reason));
+        args.setItem(1, Py::Long(reason));
         Py::Object res(Base::pyCall(py_getSubObjects.ptr(),args.ptr()));
         if(!res.isTrue())
             return true;
@@ -359,7 +359,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
         args.setItem(2,Py::asObject(pyMat));
         args.setItem(3,Py::Boolean(transform));
-        args.setItem(4,Py::Int(depth));
+        args.setItem(4,Py::Long(depth));
 
         Py::Object res(Base::pyCall(py_getLinkedObject.ptr(),args.ptr()));
         if(!res.isTrue()) {
@@ -432,7 +432,7 @@ int FeaturePythonImp::isElementVisible(const char *element) const {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1,Py::String(element?element:""));
-        return Py::Int(Base::pyCall(py_isElementVisible.ptr(),args.ptr()));
+        return Py::Long(Base::pyCall(py_isElementVisible.ptr(),args.ptr()));
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -453,7 +453,7 @@ int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1,Py::String(element?element:""));
         args.setItem(2,Py::Boolean(visible));
-        return Py::Int(Base::pyCall(py_setElementVisible.ptr(),args.ptr()));
+        return Py::Long(Base::pyCall(py_setElementVisible.ptr(),args.ptr()));
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -534,7 +534,7 @@ int FeaturePythonImp::canLoadPartial() const {
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Int ret(Base::pyCall(py_canLoadPartial.ptr(),args.ptr()));
+        Py::Long ret(Base::pyCall(py_canLoadPartial.ptr(),args.ptr()));
         return ret;
     }
     catch (Py::Exception&) {

@@ -40,13 +40,13 @@ base64: indicate if the input 'txt' is base64 encoded binary data
             <Documentation>
                 <UserDocu>Return count of used hashes</UserDocu>
             </Documentation>
-            <Parameter Name="Count" Type="Int" />
+            <Parameter Name="Count" Type="Long" />
         </Attribute>
         <Attribute Name="Size" ReadOnly="true">
             <Documentation>
                 <UserDocu>Return the size of the hashes</UserDocu>
             </Documentation>
-            <Parameter Name="Size" Type="Int"/>
+            <Parameter Name="Size" Type="Long"/>
         </Attribute>
         <Attribute Name="SaveAll">
             <Documentation>
@@ -58,7 +58,7 @@ base64: indicate if the input 'txt' is base64 encoded binary data
             <Documentation>
                 <UserDocu>Data length exceed this threshold will be hashed before storing</UserDocu>
             </Documentation>
-            <Parameter Name="Threshold" Type="Int"/>
+            <Parameter Name="Threshold" Type="Long"/>
         </Attribute>
         <Attribute Name="Table" ReadOnly="true">
             <Documentation>

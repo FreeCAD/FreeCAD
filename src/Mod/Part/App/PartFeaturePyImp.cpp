@@ -65,7 +65,7 @@ PyObject *PartFeaturePy::getElementHistory(PyObject *args, PyObject *kwds) {
                 } else
                     ret.setItem(0, Py::Object(history.obj->getPyObject(), true));
             } else
-                ret.setItem(0, Py::Int(history.tag));
+                ret.setItem(0, Py::Long(history.tag));
             tmp.clear();
             ret.setItem(1, Py::String(history.element.appendToBuffer(tmp)));
             Py::List intermedates;

@@ -301,25 +301,25 @@ sort: whether to topologically sort the return list
       <Documentation>
         <UserDocu>The Undo mode of the Document (0 = no Undo, 1 = Undo/Redo)</UserDocu>
       </Documentation>
-      <Parameter Name="UndoMode" Type="Int" />
+      <Parameter Name="UndoMode" Type="Long" />
     </Attribute>
     <Attribute Name="UndoRedoMemSize" ReadOnly="true">
       <Documentation>
         <UserDocu>The size of the Undo stack in byte</UserDocu>
       </Documentation>
-      <Parameter Name="UndoRedoMemSize" Type="Int" />
+      <Parameter Name="UndoRedoMemSize" Type="Long" />
     </Attribute>
     <Attribute Name="UndoCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of possible Undos</UserDocu>
       </Documentation>
-      <Parameter Name="UndoCount" Type="Int" />
+      <Parameter Name="UndoCount" Type="Long" />
     </Attribute>
     <Attribute Name="RedoCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of possible Redos</UserDocu>
       </Documentation>
-      <Parameter Name="RedoCount" Type="Int"/>
+      <Parameter Name="RedoCount" Type="Long"/>
     </Attribute>
     <Attribute Name="UndoNames" ReadOnly="true">
       <Documentation>
