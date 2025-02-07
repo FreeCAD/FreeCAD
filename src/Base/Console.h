@@ -715,72 +715,70 @@ public:
              Base::IntendedRecipient = Base::IntendedRecipient::All,
              Base::ContentType = Base::ContentType::Untranslated,
              typename... Args>
-    inline void Send(const std::string& notifiername, const char* pMsg, Args&&... args);
+    void Send(const std::string& notifiername, const char* pMsg, Args&&... args);
 
     /// Prints a Message
     template<typename... Args>
-    inline void Message(const char* pMsg, Args&&... args);
+    void Message(const char* pMsg, Args&&... args);
     /// Prints a warning Message
     template<typename... Args>
-    inline void Warning(const char* pMsg, Args&&... args);
+    void Warning(const char* pMsg, Args&&... args);
     /// Prints a error Message
     template<typename... Args>
-    inline void Error(const char* pMsg, Args&&... args);
+    void Error(const char* pMsg, Args&&... args);
     /// Prints a log Message
     template<typename... Args>
-    inline void Log(const char* pMsg, Args&&... args);
+    void Log(const char* pMsg, Args&&... args);
     /// Prints a Critical Message
     template<typename... Args>
-    inline void Critical(const char* pMsg, Args&&... args);
+    void Critical(const char* pMsg, Args&&... args);
     /// Sends a User Notification
     template<typename... Args>
-    inline void UserNotification(const char* pMsg, Args&&... args);
+    void UserNotification(const char* pMsg, Args&&... args);
     /// Sends an already translated User Notification
     template<typename... Args>
-    inline void UserTranslatedNotification(const char* pMsg, Args&&... args);
+    void UserTranslatedNotification(const char* pMsg, Args&&... args);
 
 
     /// Prints a Message with source indication
     template<typename... Args>
-    inline void Message(const std::string& notifier, const char* pMsg, Args&&... args);
+    void Message(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a warning Message with source indication
     template<typename... Args>
-    inline void Warning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void Warning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    inline void DeveloperWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void DeveloperWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    inline void UserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void UserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    inline void
-    TranslatedUserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void TranslatedUserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a error Message with source indication
     template<typename... Args>
-    inline void Error(const std::string& notifier, const char* pMsg, Args&&... args);
+    void Error(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    inline void DeveloperError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void DeveloperError(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    inline void UserError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void UserError(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    inline void TranslatedUserError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void TranslatedUserError(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a log Message with source indication
     template<typename... Args>
-    inline void Log(const std::string& notifier, const char* pMsg, Args&&... args);
+    void Log(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a Critical Message with source indication
     template<typename... Args>
-    inline void Critical(const std::string& notifier, const char* pMsg, Args&&... args);
+    void Critical(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Sends a User Notification with source indication
     template<typename... Args>
-    inline void UserNotification(const std::string& notifier, const char* pMsg, Args&&... args);
+    void UserNotification(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Sends an already translated User Notification with source indication
     template<typename... Args>
-    inline void
-    UserTranslatedNotification(const std::string& notifier, const char* pMsg, Args&&... args);
+    void UserTranslatedNotification(const std::string& notifier, const char* pMsg, Args&&... args);
 
     // Notify a message directly to observers
     template<Base::LogStyle,
              Base::IntendedRecipient = Base::IntendedRecipient::All,
              Base::ContentType = Base::ContentType::Untranslated>
-    inline void Notify(const std::string& notifiername, const std::string& msg);
+    void Notify(const std::string& notifiername, const std::string& msg);
 
     /// Attaches an Observer to FCConsole
     void AttachObserver(ILogger* pcObserver);
@@ -825,7 +823,7 @@ public:
         _defaultLogLevel = level;
     }
 
-    inline int LogLevel(int level) const
+    int LogLevel(int level) const
     {
         return level < 0 ? _defaultLogLevel : level;
     }
@@ -841,7 +839,7 @@ public:
     void Refresh();
     void EnableRefresh(bool enable);
 
-    inline constexpr FreeCAD_ConsoleMsgType getConsoleMsg(Base::LogStyle style);
+    constexpr FreeCAD_ConsoleMsgType getConsoleMsg(Base::LogStyle style);
 
 private:
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
@@ -911,7 +909,7 @@ inline ConsoleSingleton& Console()
     return ConsoleSingleton::Instance();
 }
 
-inline constexpr ConsoleSingleton::FreeCAD_ConsoleMsgType
+constexpr ConsoleSingleton::FreeCAD_ConsoleMsgType
 ConsoleSingleton::getConsoleMsg(Base::LogStyle style)
 {
     constexpr std::array msgTypes {// In order of Base::LogStyle
@@ -1004,35 +1002,33 @@ public:
  *  @see UserTranslatedNotification
  */
 template<typename... Args>
-inline void Base::ConsoleSingleton::Message(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Message(const char* pMsg, Args&&... args)
 {
     Message(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void
-Base::ConsoleSingleton::Message(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Message(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     Send<Base::LogStyle::Message>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::Warning(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Warning(const char* pMsg, Args&&... args)
 {
     Warning(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void
-Base::ConsoleSingleton::Warning(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Warning(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     Send<Base::LogStyle::Warning>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::DeveloperWarning(const std::string& notifier,
-                                                     const char* pMsg,
-                                                     Args&&... args)
+void Base::ConsoleSingleton::DeveloperWarning(const std::string& notifier,
+                                              const char* pMsg,
+                                              Args&&... args)
 {
     Send<Base::LogStyle::Warning,
          Base::IntendedRecipient::Developer,
@@ -1040,8 +1036,9 @@ inline void Base::ConsoleSingleton::DeveloperWarning(const std::string& notifier
 }
 
 template<typename... Args>
-inline void
-Base::ConsoleSingleton::UserWarning(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::UserWarning(const std::string& notifier,
+                                         const char* pMsg,
+                                         Args&&... args)
 {
     Send<Base::LogStyle::Warning, Base::IntendedRecipient::User, Base::ContentType::Untranslated>(
         notifier,
@@ -1050,9 +1047,9 @@ Base::ConsoleSingleton::UserWarning(const std::string& notifier, const char* pMs
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::TranslatedUserWarning(const std::string& notifier,
-                                                          const char* pMsg,
-                                                          Args&&... args)
+void Base::ConsoleSingleton::TranslatedUserWarning(const std::string& notifier,
+                                                   const char* pMsg,
+                                                   Args&&... args)
 {
     Send<Base::LogStyle::Warning, Base::IntendedRecipient::User, Base::ContentType::Translated>(
         notifier,
@@ -1061,22 +1058,21 @@ inline void Base::ConsoleSingleton::TranslatedUserWarning(const std::string& not
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::Error(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Error(const char* pMsg, Args&&... args)
 {
     Error(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void
-Base::ConsoleSingleton::Error(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Error(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     Send<Base::LogStyle::Error>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::DeveloperError(const std::string& notifier,
-                                                   const char* pMsg,
-                                                   Args&&... args)
+void Base::ConsoleSingleton::DeveloperError(const std::string& notifier,
+                                            const char* pMsg,
+                                            Args&&... args)
 {
     Send<Base::LogStyle::Error,
          Base::IntendedRecipient::Developer,
@@ -1084,8 +1080,9 @@ inline void Base::ConsoleSingleton::DeveloperError(const std::string& notifier,
 }
 
 template<typename... Args>
-inline void
-Base::ConsoleSingleton::UserError(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::UserError(const std::string& notifier,
+                                       const char* pMsg,
+                                       Args&&... args)
 {
     Send<Base::LogStyle::Error, Base::IntendedRecipient::User, Base::ContentType::Untranslated>(
         notifier,
@@ -1094,9 +1091,9 @@ Base::ConsoleSingleton::UserError(const std::string& notifier, const char* pMsg,
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::TranslatedUserError(const std::string& notifier,
-                                                        const char* pMsg,
-                                                        Args&&... args)
+void Base::ConsoleSingleton::TranslatedUserError(const std::string& notifier,
+                                                 const char* pMsg,
+                                                 Args&&... args)
 {
     Send<Base::LogStyle::Error, Base::IntendedRecipient::User, Base::ContentType::Translated>(
         notifier,
@@ -1105,28 +1102,27 @@ inline void Base::ConsoleSingleton::TranslatedUserError(const std::string& notif
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::Critical(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Critical(const char* pMsg, Args&&... args)
 {
     Critical(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void
-Base::ConsoleSingleton::Critical(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Critical(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     Send<Base::LogStyle::Critical>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::UserNotification(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::UserNotification(const char* pMsg, Args&&... args)
 {
     UserNotification(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::UserNotification(const std::string& notifier,
-                                                     const char* pMsg,
-                                                     Args&&... args)
+void Base::ConsoleSingleton::UserNotification(const std::string& notifier,
+                                              const char* pMsg,
+                                              Args&&... args)
 {
     Send<Base::LogStyle::Notification,
          Base::IntendedRecipient::User,
@@ -1134,15 +1130,15 @@ inline void Base::ConsoleSingleton::UserNotification(const std::string& notifier
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::UserTranslatedNotification(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::UserTranslatedNotification(const char* pMsg, Args&&... args)
 {
     UserTranslatedNotification(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::UserTranslatedNotification(const std::string& notifier,
-                                                               const char* pMsg,
-                                                               Args&&... args)
+void Base::ConsoleSingleton::UserTranslatedNotification(const std::string& notifier,
+                                                        const char* pMsg,
+                                                        Args&&... args)
 {
     Send<Base::LogStyle::Notification,
          Base::IntendedRecipient::User,
@@ -1150,14 +1146,13 @@ inline void Base::ConsoleSingleton::UserTranslatedNotification(const std::string
 }
 
 template<typename... Args>
-inline void Base::ConsoleSingleton::Log(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Log(const char* pMsg, Args&&... args)
 {
     Log(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-inline void
-Base::ConsoleSingleton::Log(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Log(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     Send<Base::LogStyle::Log>(notifier, pMsg, std::forward<Args>(args)...);
 }
@@ -1166,8 +1161,7 @@ template<Base::LogStyle category,
          Base::IntendedRecipient recipient /*= Base::IntendedRecipient::All*/,
          Base::ContentType contenttype /*= Base::ContentType::Untranslated*/,
          typename... Args>
-inline void
-Base::ConsoleSingleton::Send(const std::string& notifiername, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::Send(const std::string& notifiername, const char* pMsg, Args&&... args)
 {
     std::string format = fmt::sprintf(pMsg, args...);
 
@@ -1185,7 +1179,7 @@ Base::ConsoleSingleton::Send(const std::string& notifiername, const char* pMsg, 
 template<Base::LogStyle category,
          Base::IntendedRecipient recipient /*= Base::IntendedRecipient::All*/,
          Base::ContentType contenttype /*= Base::ContentType::Untranslated*/>
-inline void Base::ConsoleSingleton::Notify(const std::string& notifiername, const std::string& msg)
+void Base::ConsoleSingleton::Notify(const std::string& notifiername, const std::string& msg)
 {
     notifyPrivate(category, recipient, contenttype, notifiername, msg);
 }
