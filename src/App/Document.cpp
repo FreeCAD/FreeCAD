@@ -322,7 +322,7 @@ std::vector<std::string> Document::getAvailableUndoNames() const
     if (d->activeUndoTransaction) {
         vList.push_back(d->activeUndoTransaction->Name);
     }
-    for (std::list<Transaction*>::const_reverse_iterator It = mUndoTransactions.rbegin();
+    for (auto It = mUndoTransactions.rbegin();
          It != mUndoTransactions.rend();
          ++It) {
         vList.push_back((**It).Name);
@@ -333,7 +333,7 @@ std::vector<std::string> Document::getAvailableUndoNames() const
 std::vector<std::string> Document::getAvailableRedoNames() const
 {
     std::vector<std::string> vList;
-    for (std::list<Transaction*>::const_reverse_iterator It = mRedoTransactions.rbegin();
+    for (auto It = mRedoTransactions.rbegin();
          It != mRedoTransactions.rend();
          ++It) {
         vList.push_back((**It).Name);
@@ -963,7 +963,7 @@ Document::~Document()
     // But we must still invalidate the Python object because it doesn't need to be
     // destructed right now because the interpreter can own several references to it.
     Base::PyGILStateLocker lock;
-    Base::PyObjectBase* doc = static_cast<Base::PyObjectBase*>(d->DocumentPythonObject.ptr());
+    auto* doc = static_cast<Base::PyObjectBase*>(d->DocumentPythonObject.ptr());
     // Call before decrementing the reference counter, otherwise a heap error can occur
     doc->setInvalid();
 
@@ -1668,7 +1668,7 @@ unsigned int Document::getMemSize() const
     unsigned int size = 0;
 
     // size of the DocObjects in the document
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin();
+    for (auto it = d->objectArray.begin();
          it != d->objectArray.end();
          ++it) {
         size += (*it)->getMemSize();
@@ -2778,7 +2778,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objectArray
         return ret;
     }
 
-    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin(); i != make_order.rend(); ++i) {
+    for (auto i = make_order.rbegin(); i != make_order.rend(); ++i) {
         ret.push_back(vertexMap[*i]);
     }
     return ret;
@@ -2882,7 +2882,7 @@ void Document::renameObjectIdentifiers(
 {
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
 
-    std::map<App::ObjectIdentifier, App::ObjectIdentifier>::const_iterator it = paths.begin();
+    auto it = paths.begin();
     while (it != paths.end()) {
         extendedPaths[it->first.canonicalPath()] = it->second.canonicalPath();
         ++it;
@@ -3873,7 +3873,7 @@ void Document::removeObject(const char* sName)
         }
     }
 
-    for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin();
+    for (auto obj = d->objectArray.begin();
          obj != d->objectArray.end();
          ++obj) {
         if (*obj == pos->second) {
@@ -3957,7 +3957,7 @@ void Document::_removeObject(DocumentObject* pcObject)
     d->objectIdMap.erase(pcObject->_Id);
     d->objectMap.erase(pos);
 
-    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin();
+    for (auto it = d->objectArray.begin();
          it != d->objectArray.end();
          ++it) {
         if (*it == pcObject) {
@@ -4456,10 +4456,10 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
     DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
 
     for (const Path& it : all_paths) {
-        Path::const_iterator jt = std::find(it.begin(), it.end(), index_to);
+        auto jt = std::find(it.begin(), it.end(), index_to);
         if (jt != it.end()) {
             std::list<App::DocumentObject*> path;
-            for (Path::const_iterator kt = it.begin(); kt != jt; ++kt) {
+            for (auto kt = it.begin(); kt != jt; ++kt) {
                 path.push_back(d->objectArray[*kt]);
             }
 
