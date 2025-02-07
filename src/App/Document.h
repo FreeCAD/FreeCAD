@@ -35,7 +35,6 @@
 
 #include <map>
 #include <vector>
-#include <QString>
 
 namespace Base
 {
@@ -676,7 +675,7 @@ std::vector<T*> Document::getObjectsOfType() const
 template<typename T>
 int Document::countObjectsOfType() const
 {
-    static_assert(std::is_base_of<DocumentObject, T>::value,
+    static_assert(std::is_base_of_v<DocumentObject, T>,
                   "T must be derived from App::DocumentObject");
     return this->countObjectsOfType(T::getClassTypeId());
 }
