@@ -970,7 +970,7 @@ Document::~Document()
     // remove Transient directory
     try {
         const Base::FileInfo TransDir(TransientDir.getValue());
-        auto [[maybe_unused]] res = TransDir.deleteDirectoryRecursive();
+        [[maybe_unused]] auto  res = TransDir.deleteDirectoryRecursive();
     }
     catch (const Base::Exception& e) {
         std::cerr << "Removing transient directory failed: " << e.what() << '\n';
@@ -1838,7 +1838,7 @@ private:
                         }
                     }
 
-                    auto [[maybe_unused]] res = del.deleteFile();
+                    [[maybe_unused]] auto res = del.deleteFile();
                     fn = del.filePath();
                 }
                 else {
@@ -1853,7 +1853,7 @@ private:
                 }
             }
             else {
-                auto [[maybe_unused]] res = fi.deleteFile();
+                [[maybe_unused]] auto res = fi.deleteFile();
             }
         }
 
@@ -2005,7 +2005,7 @@ private:
             }
             else {
                 try {
-                    auto [[maybe_unused]] res = fi.deleteFile();
+                    [[maybe_unused]] auto res = fi.deleteFile();
                 }
                 catch (...) {
                     Base::Console().Warning("Cannot remove backup file: %s\n",
@@ -4075,7 +4075,7 @@ Document::importLinks(const std::vector<DocumentObject*>& objs)
     MergeDocuments mimeView(this);
     depObjs = mimeView.importObjects(str);
     str.close();
-    auto [[maybe_unused]] res = fi.deleteFile();
+    [[maybe_unused]] auto res = fi.deleteFile();
 
     const auto& nameMap = mimeView.getNameMap();
 
