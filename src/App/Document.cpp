@@ -1063,7 +1063,7 @@ void Document::Save(Base::Writer& writer) const
 
 void Document::Restore(Base::XMLReader& reader)
 {
-    int i, Cnt;
+    int i;
     d->hashers.clear();
     d->touchedObjs.clear();
     addStringHasher(d->Hasher);
@@ -1115,7 +1115,7 @@ void Document::Restore(Base::XMLReader& reader)
     if (scheme == 2) {
         // read the feature types
         reader.readElement("Features");
-        Cnt = reader.getAttributeAsInteger("Count");
+        int Cnt = reader.getAttributeAsInteger("Count");
         for (i = 0; i < Cnt; i++) {
             reader.readElement("Feature");
             string type = reader.getAttribute("type");
@@ -1699,8 +1699,9 @@ unsigned int Document::getMemSize() const
     unsigned int size = 0;
 
     // size of the DocObjects in the document
-    std::vector<DocumentObject*>::const_iterator it;
-    for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin();
+         it != d->objectArray.end();
+         ++it) {
         size += (*it)->getMemSize();
     }
 
