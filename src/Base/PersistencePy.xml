@@ -26,7 +26,7 @@ Class to dump and restore the content of an object.</UserDocu>
       <Documentation>
         <UserDocu>Memory size of the object in bytes.</UserDocu>
       </Documentation>
-      <Parameter Name="MemSize" Type="Int"/>
+      <Parameter Name="MemSize" Type="Long"/>
     </Attribute>
     <Methode Name="dumpContent" Keyword="true" Const="true">
             <Documentation>

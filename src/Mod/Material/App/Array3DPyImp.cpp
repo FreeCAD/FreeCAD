@@ -83,14 +83,14 @@ Py::List Array3DPy::getArray() const
     return list;
 }
 
-Py::Int Array3DPy::getColumns() const
+Py::Long Array3DPy::getColumns() const
 {
-    return Py::Int(getMaterial3DArrayPtr()->columns());
+    return Py::Long(getMaterial3DArrayPtr()->columns());
 }
 
-Py::Int Array3DPy::getDepth() const
+Py::Long Array3DPy::getDepth() const
 {
-    return Py::Int(getMaterial3DArrayPtr()->depth());
+    return Py::Long(getMaterial3DArrayPtr()->depth());
 }
 
 PyObject* Array3DPy::getRows(PyObject* args)

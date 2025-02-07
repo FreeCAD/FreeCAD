@@ -267,7 +267,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject *args)
             status.set(it->second, value);
         }
         else if (item.isNumeric()) {
-            int v = Py::Int(item);
+            int v = Py::Long(item);
             if (v < 0) {
                 value = false;
                 v = -v;
@@ -323,7 +323,7 @@ PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
                 }
             }
             if (!found)
-                ret.append(Py::Int(static_cast<long>(i)));
+                ret.append(Py::Long(static_cast<long>(i)));
         }
     }
     return Py::new_reference_to(ret);
