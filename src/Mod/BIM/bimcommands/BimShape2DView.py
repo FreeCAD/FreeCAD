@@ -132,7 +132,6 @@ class BIM_Shape2DCut(BIM_Shape2DView):
                 commitlist.append("sv" + str(n) + ".ProjectionMode = \"Cutfaces\"")
                 n += 1
             commitlist.append("FreeCAD.ActiveDocument.recompute()")
-            commitlist.append("FreeCAD.ActiveDocument.recompute()")
             self.commit(translate("draft", "Create 2D Cut"),
                         commitlist)
         self.finish()
