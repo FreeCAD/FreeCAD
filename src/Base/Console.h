@@ -364,7 +364,7 @@ using PyMethodDef = struct PyMethodDef;
             std::stringstream _str;                                                                \
             _instance.prefix(_str, _file, _line) << _msg;                                          \
             if (_instance.add_eol)                                                                 \
-                _str << std::endl;                                                                 \
+                _str << '\n';                                                                      \
             Base::Console()._func(_notifier, _str.str().c_str());                                  \
             if (_instance.refresh)                                                                 \
                 Base::Console().Refresh();                                                         \
