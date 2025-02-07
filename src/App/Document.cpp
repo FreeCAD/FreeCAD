@@ -153,14 +153,6 @@ void Document::setStatus(Status pos, bool on)
 
 bool Document::checkOnCycle()
 {
-#if 0
-  std::vector < default_color_type > color(num_vertices(_DepList), white_color);
-  graph_traits < DependencyList >::vertex_iterator vi, vi_end;
-  for (tie(vi, vi_end) = vertices(_DepList); vi != vi_end; ++vi)
-    if (color[*vi] == white_color)
-      if (_has_cycle_dfs(_DepList, *vi, &color[0]))
-        return true;
-#endif
     return false;
 }
 
@@ -2956,7 +2948,6 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
     signalBeforeRecompute(*this);
 
-#if 0
     //////////////////////////////////////////////////////////////////////////
     // FIXME Comment by Realthunder:
     // the topologicalSrot() below cannot handle partial recompute, haven't got
@@ -2966,18 +2957,20 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
     // it report for cyclic dependency.
     //////////////////////////////////////////////////////////////////////////
 
-    // get the sorted vector of all dependent objects and go though it from the end
-    auto depObjs = getDependencyList(objs.empty()?d->objectArray:objs);
-    vector<DocumentObject*> topoSortedObjects = topologicalSort(depObjs);
-    if (topoSortedObjects.size() != depObjs.size()){
-        cerr << "App::Document::recompute(): cyclic dependency detected" << '\n';
-        topoSortedObjects = d->partialTopologicalSort(depObjs);
-    }
-    std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
-#else
+    /*   // get the sorted vector of all dependent objects and go though it from the end
+       auto depObjs = getDependencyList(objs.empty()?d->objectArray:objs);
+       vector<DocumentObject*> topoSortedObjects = topologicalSort(depObjs);
+       if (topoSortedObjects.size() != depObjs.size()){
+           cerr << "App::Document::recompute(): cyclic dependency detected" << '\n';
+           topoSortedObjects = d->partialTopologicalSort(depObjs);
+       }
+       std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
+   */
+
+    // alt:
     auto topoSortedObjects =
         getDependencyList(objs.empty() ? d->objectArray : objs, DepSort | options);
-#endif
+
     for (auto obj : topoSortedObjects) {
         obj->setStatus(ObjectStatus::PendingRecompute, true);
     }
