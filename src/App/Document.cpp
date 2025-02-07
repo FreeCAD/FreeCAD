@@ -590,7 +590,7 @@ int Document::getTransactionID(bool undo, unsigned pos) const
 
 bool Document::isTransactionEmpty() const
 {
-    if (d->activeUndoTransaction) {
+    return !d->activeUndoTransaction;
         // Transactions are now only created when there are actual changes.
         // Empty transaction is now significant for marking external changes. It
         // is used to match ID with transactions in external documents and
@@ -598,10 +598,6 @@ bool Document::isTransactionEmpty() const
 
         // return d->activeUndoTransaction->isEmpty();
 
-        return false;
-    }
-
-    return true;
 }
 
 void Document::clearDocument()
