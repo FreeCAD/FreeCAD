@@ -380,7 +380,7 @@ jobs:
           blackFails=0
           pip install --break-system-packages black
           set +e
-          black --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
+          black --line-length 100 --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
           exitCode=$?
           set -e
           # If black has run successfully, write the Log to the console with the Problem Matchers
