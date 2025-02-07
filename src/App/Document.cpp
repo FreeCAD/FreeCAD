@@ -1231,12 +1231,12 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
     d->hashers.clear();
 }
 
-#define FC_ATTR_DEPENDENCIES "Dependencies"
-#define FC_ELEMENT_OBJECT_DEPS "ObjectDeps"
-#define FC_ATTR_DEP_COUNT "Count"
-#define FC_ATTR_DEP_OBJ_NAME "Name"
-#define FC_ATTR_DEP_ALLOW_PARTIAL "AllowPartial"
-#define FC_ELEMENT_OBJECT_DEP "Dep"
+constexpr auto fcAttrDependencies {"Dependencies"};
+constexpr auto fcElementObjectDeps {"ObjectDeps"};
+constexpr auto fcAttrDepCount {"Count"};
+constexpr auto fcAttrDepObjName {"Name"};
+constexpr auto fcAttrDepAllowPartial {"AllowPartial"};
+constexpr auto fcElementObjectDep {"Dep"};
 
 void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                             Base::Writer& writer) const
@@ -1245,7 +1245,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
     writer.incInd();  // indentation for 'Objects count'
     writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size();
     if (isExporting(nullptr) == 0U) {
-        writer.Stream() << "\" " FC_ATTR_DEPENDENCIES "=\"1";
+        writer.Stream() << "\" " << fcAttrDependencies << "=\"1";
     }
     writer.Stream() << "\">" << '\n';
 
@@ -1256,8 +1256,8 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
             const auto& outList =
                 o->getOutList(DocumentObject::OutListNoHidden | DocumentObject::OutListNoXLinked);
             writer.Stream() << writer.ind()
-                            << "<" FC_ELEMENT_OBJECT_DEPS " " FC_ATTR_DEP_OBJ_NAME "=\""
-                            << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\""
+                            << "<" << fcElementObjectDeps << " " << fcAttrDepObjName << "=\""
+                            << o->getNameInDocument() << "\" " << fcAttrDepCount << "=\""
                             << outList.size();
             if (outList.empty()) {
                 writer.Stream() << "\"/>" << '\n';
@@ -1265,18 +1265,18 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
             }
             int partial = o->canLoadPartial();
             if (partial > 0) {
-                writer.Stream() << "\" " FC_ATTR_DEP_ALLOW_PARTIAL << "=\"" << partial;
+                writer.Stream() << "\" " << fcAttrDepAllowPartial << "=\"" << partial;
             }
             writer.Stream() << "\">" << '\n';
             writer.incInd();
             for (auto dep : outList) {
                 auto name = dep ? dep->getNameInDocument() : "";
                 writer.Stream() << writer.ind()
-                                << "<" FC_ELEMENT_OBJECT_DEP " " FC_ATTR_DEP_OBJ_NAME "=\""
+                                << "<" << fcElementObjectDep << " " << fcAttrDepObjName << "=\""
                                 << (name ? name : "") << "\"/>" << '\n';
             }
             writer.decInd();
-            writer.Stream() << writer.ind() << "</" FC_ELEMENT_OBJECT_DEPS ">" << '\n';
+            writer.Stream() << writer.ind() << "</" << fcElementObjectDeps << ">" << '\n';
         }
     }
 
@@ -1383,30 +1383,30 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
     reader.readElement("Objects");
     int Cnt = static_cast<int>(reader.getAttribute<long>("Count"));
 
-    if (!reader.hasAttribute(FC_ATTR_DEPENDENCIES)) {
+    if (!reader.hasAttribute(fcAttrDependencies)) {
         d->partialLoadObjects.clear();
     }
     else if (!d->partialLoadObjects.empty()) {
         std::unordered_map<std::string, DepInfo> deps;
         for (int i = 0; i < Cnt; i++) {
-            reader.readElement(FC_ELEMENT_OBJECT_DEPS);
-            int dcount = static_cast<int>(reader.getAttribute<long>(FC_ATTR_DEP_COUNT));
+            reader.readElement(fcElementObjectDeps);
+            int dcount = static_cast<int>(reader.getAttribute<long>(fcAttrDepCount));
             if (dcount == 0) {
                 continue;
             }
-            auto& info = deps[reader.getAttribute<const char*>(FC_ATTR_DEP_OBJ_NAME)];
-            if (reader.hasAttribute(FC_ATTR_DEP_ALLOW_PARTIAL)) {
+            auto& info = deps[reader.getAttribute<const char*>(fcAttrDepObjName)];
+            if (reader.hasAttribute(fcAttrDepAllowPartial)) {
                 info.canLoadPartial =
-                    static_cast<int>(reader.getAttribute<long>(FC_ATTR_DEP_ALLOW_PARTIAL));
+                    static_cast<int>(reader.getAttribute<long>(fcAttrDepAllowPartial));
             }
             for (int j = 0; j < dcount; ++j) {
-                reader.readElement(FC_ELEMENT_OBJECT_DEP);
-                const char* name = reader.getAttribute<const char*>(FC_ATTR_DEP_OBJ_NAME);
+                reader.readElement(fcElementObjectDep);
+                const char* name = reader.getAttribute<const char*>(fcAttrDepObjName);
                 if (!Base::Tools::isNullOrEmpty(name)) {
                     info.deps.insert(name);
                 }
             }
-            reader.readEndElement(FC_ELEMENT_OBJECT_DEPS);
+            reader.readEndElement(fcElementObjectDeps);
         }
         std::vector<std::string> strings;
         strings.reserve(d->partialLoadObjects.size());
