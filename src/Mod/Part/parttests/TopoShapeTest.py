@@ -774,7 +774,11 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         cut1 = self.doc.Cut.Shape
         # Assert elementMap
-        refkeys = ['Vertex6', 'Vertex5', 'Edge7', 'Edge8', 'Edge9', 'Edge5', 'Edge6', 'Face4', 'Face2', 'Edge1', 'Vertex4', 'Edge4', 'Vertex3', 'Edge2', 'Edge3', 'Face1', 'Face5', 'Face3', 'Vertex1', 'Vertex2']
+        refkeys = [
+            'Vertex6', 'Vertex5', 'Edge7', 'Edge8', 'Edge9', 'Edge5', 'Edge6', 'Face4', 'Face2',
+            'Edge1', 'Vertex4', 'Edge4', 'Vertex3', 'Edge2', 'Edge3', 'Face1', 'Face5', 'Face3',
+            'Vertex1', 'Vertex2'
+        ]
         if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertKeysInMap(cut1.ElementReverseMap, refkeys )
         self.assertEqual(len(cut1.ElementReverseMap.keys()),len(refkeys))
@@ -790,7 +794,14 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         cut1 = self.doc.Cut.Shape
         # Assert elementMap
-        refkeys = ['Vertex3', 'Vertex4', 'Vertex8', 'Vertex10', 'Vertex7', 'Vertex9', 'Vertex13', 'Vertex14', 'Vertex18', 'Vertex20', 'Vertex17', 'Vertex19', 'Edge3', 'Edge15', 'Edge9', 'Edge12', 'Edge13', 'Edge11', 'Edge8', 'Edge17', 'Edge18', 'Edge19', 'Edge30', 'Edge24', 'Edge27', 'Edge28', 'Edge29', 'Edge25', 'Edge26', 'Edge23', 'Face7', 'Face4', 'Face8', 'Face14', 'Face13', 'Face11', 'Face12', 'Face10', 'Edge22', 'Vertex12', 'Edge20', 'Vertex11', 'Edge21', 'Edge16', 'Face9', 'Vertex15', 'Vertex16']
+        refkeys = [
+            'Vertex3', 'Vertex4', 'Vertex8', 'Vertex10', 'Vertex7', 'Vertex9', 'Vertex13',
+            'Vertex14', 'Vertex18', 'Vertex20', 'Vertex17', 'Vertex19', 'Edge3', 'Edge15', 'Edge9',
+            'Edge12', 'Edge13', 'Edge11', 'Edge8', 'Edge17', 'Edge18', 'Edge19', 'Edge30', 'Edge24',
+            'Edge27', 'Edge28', 'Edge29', 'Edge25', 'Edge26', 'Edge23', 'Face7', 'Face4', 'Face8',
+            'Face14', 'Face13', 'Face11', 'Face12', 'Face10', 'Edge22', 'Vertex12', 'Edge20',
+            'Vertex11', 'Edge21', 'Edge16', 'Face9', 'Vertex15', 'Vertex16'
+        ]
         if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertKeysInMap(cut1.ElementReverseMap, refkeys )
         self.assertEqual(len(cut1.ElementReverseMap.keys()),len(refkeys))

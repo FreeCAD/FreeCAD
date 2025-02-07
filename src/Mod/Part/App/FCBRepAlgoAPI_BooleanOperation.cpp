@@ -88,7 +88,7 @@ void FCBRepAlgoAPI_BooleanOperation::RecursiveAddArguments(const TopoDS_Shape& t
         if (it.Value().ShapeType() == TopAbs_COMPOUND) {
             RecursiveAddArguments(it.Value());
         } else {
-            if (!myArguments.Size()) {
+            if (myArguments.IsEmpty()) {
                 myArguments.Append(it.Value());
             } else {
                 myTools.Append(it.Value());
@@ -102,11 +102,12 @@ void FCBRepAlgoAPI_BooleanOperation::Build() {
     if (myOperation == BOPAlgo_CUT && myArguments.Size() == 1 && myTools.Size() == 1 && myTools.First().ShapeType() == TopAbs_COMPOUND) {
         TopTools_ListOfShape myOriginalArguments = myArguments;
         TopTools_ListOfShape myOriginalTools = myTools;
-        TopTools_ListOfShape currentTools, currentArguments;
+        TopTools_ListOfShape currentTools;
+        TopTools_ListOfShape currentArguments;
         myArguments = currentArguments;
         myTools = currentTools;
         RecursiveAddArguments(myOriginalTools.First());
-        if (myTools.Size()) {
+        if (!myTools.IsEmpty()) {
             myOperation = BOPAlgo_FUSE; // fuse tools together
             Build();
             myOperation = BOPAlgo_CUT; // restore
@@ -130,7 +131,7 @@ void FCBRepAlgoAPI_BooleanOperation::Build() {
     }
 }
 
-const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const TopoDS_Shape& theArgument) {
+TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const TopoDS_Shape& theArgument) {
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
@@ -143,7 +144,7 @@ const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const To
         if (IsDone()) {
             builder.Add(comp, myShape);
         } else {
-            return TopoDS_Shape();
+            return {};
         }
     }
     return comp;
