@@ -1848,7 +1848,7 @@ private:
                         }
                     }
 
-                    del.deleteFile();
+                    auto [[maybe_unused]] res = del.deleteFile();
                     fn = del.filePath();
                 }
                 else {
@@ -1863,7 +1863,7 @@ private:
                 }
             }
             else {
-                fi.deleteFile();
+                auto [[maybe_unused]] res = fi.deleteFile();
             }
         }
 
@@ -2016,7 +2016,7 @@ private:
             }
             else {
                 try {
-                    fi.deleteFile();
+                    auto [[maybe_unused]] res = fi.deleteFile();
                 }
                 catch (...) {
                     Base::Console().Warning("Cannot remove backup file: %s\n",
@@ -4091,7 +4091,7 @@ Document::importLinks(const std::vector<App::DocumentObject*>& objArray)
     MergeDocuments mimeView(this);
     objs = mimeView.importObjects(str);
     str.close();
-    fi.deleteFile();
+    auto [[maybe_unused]] res = fi.deleteFile();
 
     const auto& nameMap = mimeView.getNameMap();
 
