@@ -1746,7 +1746,7 @@ public:
         Standard,
         TimeStamp
     };
-    BackupPolicy() : policy(Standard), saveBackupDateFormat("%Y%m%d-%H%M%S"), useFCBakExtension(true), numberOfFiles(1)
+    BackupPolicy()
     {}
     ~BackupPolicy() = default;
     void setPolicy(Policy p)
@@ -2045,10 +2045,10 @@ private:
     }
 
 private:
-    Policy policy;
-    int numberOfFiles;
-    bool useFCBakExtension;
-    std::string saveBackupDateFormat;
+    Policy policy {Standard};
+    int numberOfFiles {1};
+    bool useFCBakExtension {true};
+    std::string saveBackupDateFormat {"%Y%m%d-%H%M%S"};
 };
 }  // namespace App
 
