@@ -531,10 +531,7 @@ void Document::_abortTransaction()
 
 bool Document::hasPendingTransaction() const
 {
-    if (d->activeUndoTransaction) {
-        return true;
-    }
-    return false;
+    return d->activeUndoTransaction != nullptr;
 }
 
 int Document::getTransactionID(bool undo, unsigned pos) const
@@ -550,9 +547,7 @@ int Document::getTransactionID(bool undo, unsigned pos) const
             return 0;
         }
         auto rit = mUndoTransactions.rbegin();
-        for (; pos != 0U; ++rit, --pos) {
-            continue;
-        }
+        for (; pos != 0U; ++rit, --pos) {}
         return (*rit)->getID();
     }
     if (pos >= mRedoTransactions.size()) {
@@ -565,7 +560,7 @@ int Document::getTransactionID(bool undo, unsigned pos) const
 
 bool Document::isTransactionEmpty() const
 {
-    if (d->activeUndoTransaction) {
+    return !d->activeUndoTransaction;
         // Transactions are now only created when there are actual changes.
         // Empty transaction is now significant for marking external changes. It
         // is used to match ID with transactions in external documents and
@@ -573,10 +568,6 @@ bool Document::isTransactionEmpty() const
 
         // return d->activeUndoTransaction->isEmpty();
 
-        return false;
-    }
-
-    return true;
 }
 
 void Document::clearDocument()
@@ -2612,7 +2603,6 @@ void Document::getLinksTo(std::set<DocumentObject*>& links,
         }
         current = std::move(next);
     }
-    return;
 }
 
 bool Document::hasLinksTo(const DocumentObject* obj) const
