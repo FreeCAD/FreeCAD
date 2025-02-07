@@ -352,9 +352,9 @@ public:
     findObjects(const Base::Type& typeId, const char* objname, const char* label) const;
     /// Returns an array with the correct types already.
     template<typename T>
-    inline std::vector<T*> getObjectsOfType() const;
+    std::vector<T*> getObjectsOfType() const;
     template<typename T>
-    inline int countObjectsOfType() const;
+    int countObjectsOfType() const;
     int countObjectsOfType(const char* typeName) const;
     /// get the number of objects in the document
     int countObjects() const;
@@ -658,7 +658,7 @@ private:
 };
 
 template<typename T>
-inline std::vector<T*> Document::getObjectsOfType() const
+std::vector<T*> Document::getObjectsOfType() const
 {
     std::vector<T*> type;
     const std::vector<DocumentObject*> obj = this->getObjectsOfType(T::getClassTypeId());
@@ -670,7 +670,7 @@ inline std::vector<T*> Document::getObjectsOfType() const
 }
 
 template<typename T>
-inline int Document::countObjectsOfType() const
+int Document::countObjectsOfType() const
 {
     static_assert(std::is_base_of<DocumentObject, T>::value,
                   "T must be derived from App::DocumentObject");
