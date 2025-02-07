@@ -4162,7 +4162,8 @@ std::vector<DocumentObject*>
 Document::findObjects(const Base::Type& typeId, const char* objname, const char* label) const
 {
     boost::cmatch what;
-    boost::regex rx_name, rx_label;
+    boost::regex rx_name;
+    boost::regex rx_label;
 
     if (objname) {
         rx_name.set_expression(objname);
