@@ -21,8 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a class for adding a single content item, as well as auxiliary classes for
-its dependent dialog boxes. """
+"""Contains a class for adding a single content item, as well as auxiliary classes for
+its dependent dialog boxes."""
 
 import os
 from typing import Optional, Tuple, List

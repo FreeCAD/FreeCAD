@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines a class derived from QWidget for displaying the bar at the top of the addons list. """
+"""Defines a class derived from QWidget for displaying the bar at the top of the addons list."""
 
 from enum import IntEnum, auto
 
