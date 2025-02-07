@@ -111,7 +111,6 @@ static bool globalIsRelabeling;
 
 DocumentP::DocumentP()
 {
-    Hasher = new StringHasher;
     static std::random_device _RD;
     static std::mt19937 _RGEN(_RD());
     static std::uniform_int_distribution<> _RDIST(0, 5000);
@@ -119,19 +118,9 @@ DocumentP::DocumentP()
     // copying shape from other document. It is probably better to randomize
     // on each object ID.
     lastObjectId = _RDIST(_RGEN);
-    activeObject = nullptr;
-    activeUndoTransaction = nullptr;
-    iTransactionMode = 0;
-    rollback = false;
-    undoing = false;
-    committing = false;
-    opentransaction = false;
     StatusBits.set((size_t)Document::Closable, true);
     StatusBits.set((size_t)Document::KeepTrailingDigits, true);
     StatusBits.set((size_t)Document::Restoring, false);
-    iUndoMode = 0;
-    UndoMemSize = 0;
-    UndoMaxStackSize = 20;
 }
 
 }  // namespace App
@@ -832,7 +821,7 @@ void Document::setTransactionMode(int iMode)
 // constructor
 //--------------------------------------------------------------------------
 Document::Document(const char* documentName)
-    : myName(documentName)
+    : d(new DocumentP), myName(documentName)
 {
     // Remark: In a constructor we should never increment a Python object as we cannot be sure
     // if the Python interpreter gets a reference of it. E.g. if we increment but Python don't
@@ -841,7 +830,6 @@ Document::Document(const char* documentName)
     // Remark: We force the document Python object to own the DocumentPy instance, thus we don't
     // have to care about ref counting any more.
     setAutoCreated(false);
-    d = new DocumentP;
     Base::PyGILStateLocker lock;
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
@@ -1778,13 +1766,8 @@ public:
         Standard,
         TimeStamp
     };
-    BackupPolicy()
-    {
-        policy = Standard;
-        numberOfFiles = 1;
-        useFCBakExtension = true;
-        saveBackupDateFormat = "%Y%m%d-%H%M%S";
-    }
+    BackupPolicy() : policy(Standard), saveBackupDateFormat("%Y%m%d-%H%M%S"), useFCBakExtension(true), numberOfFiles(1)
+    {}
     ~BackupPolicy() = default;
     void setPolicy(Policy p)
     {
