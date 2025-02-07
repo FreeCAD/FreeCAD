@@ -154,7 +154,7 @@ macro(generate_from_xml BASE_NAME)
     )
 endmacro(generate_from_xml)
 
-macro(generate_from_py BASE_NAME OUTPUT_FILE)
+macro(generate_embed_from_py BASE_NAME OUTPUT_FILE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
 		file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
 		file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.py" SOURCE_NATIVE_PATH)
@@ -165,7 +165,7 @@ macro(generate_from_py BASE_NAME OUTPUT_FILE)
 				DEPENDS "${TOOL_PATH}"
 				WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
 				COMMENT "Building files out of ${BASE_NAME}.py")
-endmacro(generate_from_py)
+endmacro(generate_embed_from_py)
 
 macro(generate_from_any INPUT_FILE OUTPUT_FILE VARIABLE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
