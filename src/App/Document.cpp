@@ -957,7 +957,7 @@ Document::~Document()
         TransDir.deleteDirectoryRecursive();
     }
     catch (const Base::Exception& e) {
-        std::cerr << "Removing transient directory failed: " << e.what() << std::endl;
+        std::cerr << "Removing transient directory failed: " << e.what() << '\n';
     }
     delete d;
 }
@@ -1010,7 +1010,7 @@ void Document::Save(Base::Writer& writer) const
 
     // writing the features types
     writeObjects(d->objectArray, writer);
-    writer.Stream() << "</Document>" << endl;
+    writer.Stream() << "</Document>" << '\n';
 }
 
 void Document::Restore(Base::XMLReader& reader)
@@ -1217,19 +1217,19 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
 
     Base::ZipWriter writer(out);
     writer.putNextEntry("Document.xml");
-    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl;
+    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << '\n';
     writer.Stream() << R"(<Document SchemaVersion="4" ProgramVersion=")"
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"] << R"(" FileVersion="1">)"
-                    << endl;
+                    << '\n';
     // Add this block to have the same layout as for normal documents
-    writer.Stream() << "<Properties Count=\"0\">" << endl;
-    writer.Stream() << "</Properties>" << endl;
+    writer.Stream() << "<Properties Count=\"0\">" << '\n';
+    writer.Stream() << "</Properties>" << '\n';
 
     // writing the object types
     writeObjects(obj, writer);
-    writer.Stream() << "</Document>" << endl;
+    writer.Stream() << "</Document>" << '\n';
 
     // Hook for others to add further data.
     signalExportObjects(obj, writer);
@@ -1255,7 +1255,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
     if (!isExporting(nullptr)) {
         writer.Stream() << "\" " FC_ATTR_DEPENDENCIES "=\"1";
     }
-    writer.Stream() << "\">" << endl;
+    writer.Stream() << "\">" << '\n';
 
     writer.incInd();  // indentation for 'Object type'
 
@@ -1268,23 +1268,23 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                             << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\""
                             << outList.size();
             if (outList.empty()) {
-                writer.Stream() << "\"/>" << endl;
+                writer.Stream() << "\"/>" << '\n';
                 continue;
             }
             int partial = o->canLoadPartial();
             if (partial > 0) {
                 writer.Stream() << "\" " FC_ATTR_DEP_ALLOW_PARTIAL << "=\"" << partial;
             }
-            writer.Stream() << "\">" << endl;
+            writer.Stream() << "\">" << '\n';
             writer.incInd();
             for (auto dep : outList) {
                 auto name = dep ? dep->getNameInDocument() : "";
                 writer.Stream() << writer.ind()
                                 << "<" FC_ELEMENT_OBJECT_DEP " " FC_ATTR_DEP_OBJ_NAME "=\""
-                                << (name ? name : "") << "\"/>" << endl;
+                                << (name ? name : "") << "\"/>" << '\n';
             }
             writer.decInd();
-            writer.Stream() << writer.ind() << "</" FC_ELEMENT_OBJECT_DEPS ">" << endl;
+            writer.Stream() << writer.ind() << "</" FC_ELEMENT_OBJECT_DEPS ">" << '\n';
         }
     }
 
@@ -1312,14 +1312,14 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                 writer.Stream() << "Error=\"" << Property::encodeAttribute(desc) << "\" ";
             }
         }
-        writer.Stream() << "/>" << endl;
+        writer.Stream() << "/>" << '\n';
     }
 
     writer.decInd();  // indentation for 'Object type'
-    writer.Stream() << writer.ind() << "</Objects>" << endl;
+    writer.Stream() << writer.ind() << "</Objects>" << '\n';
 
     // writing the features itself
-    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << obj.size() << "\">" << endl;
+    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << obj.size() << "\">" << '\n';
 
     writer.incInd();  // indentation for 'Object name'
     for (it = obj.begin(); it != obj.end(); ++it) {
@@ -1328,13 +1328,13 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
             writer.Stream() << " Extensions=\"True\"";
         }
 
-        writer.Stream() << ">" << endl;
+        writer.Stream() << ">" << '\n';
         (*it)->Save(writer);
-        writer.Stream() << writer.ind() << "</Object>" << endl;
+        writer.Stream() << writer.ind() << "</Object>" << '\n';
     }
 
     writer.decInd();  // indentation for 'Object name'
-    writer.Stream() << writer.ind() << "</ObjectData>" << endl;
+    writer.Stream() << writer.ind() << "</ObjectData>" << '\n';
     writer.decInd();  // indentation for 'Objects count'
 }
 
@@ -2141,11 +2141,11 @@ bool Document::saveToFile(const char* filename) const
             writer.setMode("BinaryBrep");
         }
 
-        writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
-                        << "<!--" << endl
+        writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << '\n'
+                        << "<!--" << '\n'
                         << " FreeCAD Document, see https://www.freecad.org for more information..."
-                        << endl
-                        << "-->" << endl;
+                        << '\n'
+                        << "-->" << '\n';
         Document::Save(writer);
 
         // Special handling for Gui document.
@@ -2763,7 +2763,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objectArray
 
             FC_ERR("Dependency cycles: ");
             std::ostringstream ss;
-            ss << std::endl;
+            ss << '\n';
             for (auto& v : components) {
                 if (v.second.size() == 1) {
                     // For components with only one member, we still need to
@@ -2775,7 +2775,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objectArray
                     // Try search the object in its own out list
                     for (auto obj : it->second->getOutList()) {
                         if (obj == it->second) {
-                            ss << std::endl << it->second->getFullName() << std::endl;
+                            ss << '\n' << it->second->getFullName() << '\n';
                             break;
                         }
                     }
@@ -2788,11 +2788,11 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objectArray
                         continue;
                     }
                     if (i % 6 == 0) {
-                        ss << std::endl;
+                        ss << '\n';
                     }
                     ss << it->second->getFullName() << ", ";
                 }
-                ss << std::endl;
+                ss << '\n';
             }
             FC_ERR(ss.str());
             FC_THROWM(Base::RuntimeError, e.what());
@@ -2968,7 +2968,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
     auto depObjs = getDependencyList(objs.empty()?d->objectArray:objs);
     vector<DocumentObject*> topoSortedObjects = topologicalSort(depObjs);
     if (topoSortedObjects.size() != depObjs.size()){
-        cerr << "App::Document::recompute(): cyclic dependency detected" << endl;
+        cerr << "App::Document::recompute(): cyclic dependency detected" << '\n';
         topoSortedObjects = d->partialTopologicalSort(depObjs);
     }
     std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
@@ -3249,7 +3249,7 @@ DocumentP::topologicalSort(const std::vector<App::DocumentObject*>& objects) con
                               });
 
     if (rootObjeIt == countMap.end()) {
-        cerr << "Document::topologicalSort: cyclic dependency detected (no root object)" << endl;
+        cerr << "Document::topologicalSort: cyclic dependency detected (no root object)" << '\n';
         return ret;
     }
 
