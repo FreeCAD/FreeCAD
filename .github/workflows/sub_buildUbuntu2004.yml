@@ -223,6 +223,20 @@ jobs:
           testCommand: FreeCADCmd -t 0
           logFile: ${{ env.logdir }}TestCLIInstall.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+      - name: FreeCAD CLI PD tests on install with AllowCompound enabled
+        timeout-minutes: 5
+        uses: ./.github/workflows/actions/runPythonTests
+        with:
+          testDescription: "CLI PD tests on install with AllowCompound enabled"
+          testCommand: |
+            cat > /tmp/enable_pd_compound.py <<EOF
+            import FreeCAD
+            pd_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
+            pd_params.SetBool("AllowCompoundDefault", True)
+            EOF
+            FreeCADCmd --safe-mode --run-test TestPartDesignApp /tmp/enable_pd_compound.py
+          logFile: ${{ env.logdir }}TestCLIPDInstall.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on install
         timeout-minutes: 15
         uses: ./.github/workflows/actions/runPythonTests
