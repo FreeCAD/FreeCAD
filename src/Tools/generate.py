@@ -51,6 +51,7 @@ def generate(filename, outputPath):
 
 
 def main():
+    verbose = False
     outputPath = ""
 
     class generateOutput:
@@ -60,10 +61,8 @@ def main():
         def flush(self):  # mandatory for file-like objects
             pass
 
-    sys.stdout = generateOutput()
-
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "ho:", ["help", "outputPath="])
+        opts, args = getopt.getopt(sys.argv[1:], "hvo:", ["help", "verbose", "outputPath="])
     except getopt.GetoptError:
         # print help information and exit:
         sys.stderr.write(Usage)
@@ -76,6 +75,11 @@ def main():
             sys.exit()
         if o in ("-o", "--outputPath"):
             outputPath = a
+        if o in ("-v", "--verbose"):
+            verbose = True
+
+    if not verbose:
+        sys.stdout = generateOutput()
 
     # running through the files
     if len(args) == 0:
