@@ -3,9 +3,9 @@
 # (c) 2006 Jürgen Riegel  GPL
 
 import os, sys, getopt
-import generateBase.generateModel_Module
-import generateTemplates.templateModule
-import generateTemplates.templateClassPyExport
+import model.generateModel_Module
+import templates.templateModule
+import templates.templateClassPyExport
 
 Usage = """generate - generates a FreeCAD Module out of an XML model
 
@@ -33,16 +33,16 @@ Version:
 
 def generate(filename, outputPath):
     # load model
-    GenerateModelInst = generateBase.generateModel_Module.parse(filename)
+    GenerateModelInst = model.generateModel_Module.parse(filename)
 
     if len(GenerateModelInst.Module) != 0:
-        Module = generateTemplates.templateModule.TemplateModule()
+        Module = templates.templateModule.TemplateModule()
         Module.outputDir = outputPath
         Module.module = GenerateModelInst.Module[0]
         Module.Generate()
         print("Done generating: " + GenerateModelInst.Module[0].Name)
     else:
-        Export = generateTemplates.templateClassPyExport.TemplateClassPyExport()
+        Export = templates.templateClassPyExport.TemplateClassPyExport()
         Export.outputDir = outputPath + "/"
         Export.inputDir = os.path.dirname(filename) + "/"
         Export.export = GenerateModelInst.PythonExport[0]

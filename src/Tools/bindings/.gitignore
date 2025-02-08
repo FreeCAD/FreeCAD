@@ -1,2 +1,3 @@
 # ignore the pyc files created while compile
-*.pyc
+model/*.pyc
+templates/*.pyc

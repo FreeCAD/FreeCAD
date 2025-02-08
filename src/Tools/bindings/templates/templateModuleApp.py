@@ -3,14 +3,14 @@
 # (c) 2007 Juergen Riegel
 
 from . import template, templateModuleAppMain, templateModuleAppFeature
-import generateBase.generateModel_Module
-import generateBase.generateTools
+import model.generateModel_Module
+import model.generateTools
 
 
 class TemplateModuleApp(template.ModelTemplate):
     def Generate(self):
         AppPath = self.outputDir + "/App/"
-        generateBase.generateTools.ensureDir(AppPath)
+        model.generateTools.ensureDir(AppPath)
 
         # the main module files
         AppMain = templateModuleAppMain.TemplateModuleAppMain()
@@ -19,7 +19,7 @@ class TemplateModuleApp(template.ModelTemplate):
         AppMain.Generate()
 
         # Features
-        generateBase.generateTools.ensureDir(AppPath + "Features/")
+        model.generateTools.ensureDir(AppPath + "Features/")
         for i in self.module.Content.Feature:
             AppFeature = templateModuleAppFeature.TemplateFeature()
             AppFeature.outputDir = AppPath + "Features/"
