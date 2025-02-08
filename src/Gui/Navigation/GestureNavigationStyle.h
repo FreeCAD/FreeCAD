@@ -23,7 +23,7 @@
 #ifndef GESTURENAVIGATIONSTYLE2_H
 #define GESTURENAVIGATIONSTYLE2_H
 
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 
 #include <queue>
 #include <memory>

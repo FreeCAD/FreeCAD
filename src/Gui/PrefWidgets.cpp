@@ -169,6 +169,15 @@ void PrefWidget::failedToRestore(const QString& name) const
 PrefSpinBox::PrefSpinBox ( QWidget * parent )
   : QSpinBox(parent), PrefWidget()
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+}
+
+void PrefSpinBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QSpinBox::wheelEvent(event);
+    else
+        event->ignore();
 }
 
 PrefSpinBox::~PrefSpinBox() = default;
@@ -201,6 +210,15 @@ void PrefSpinBox::savePreferences()
 PrefDoubleSpinBox::PrefDoubleSpinBox ( QWidget * parent )
   : QDoubleSpinBox(parent), PrefWidget()
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+}
+
+void PrefDoubleSpinBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QDoubleSpinBox::wheelEvent(event);
+    else
+        event->ignore();    
 }
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox() = default;
@@ -332,6 +350,15 @@ void PrefFileChooser::savePreferences()
 PrefComboBox::PrefComboBox ( QWidget * parent )
   : QComboBox(parent), PrefWidget()
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+}
+
+void PrefComboBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QComboBox::wheelEvent(event);
+    else
+        event->ignore();      
 }
 
 PrefComboBox::~PrefComboBox() = default;
@@ -566,6 +593,15 @@ void PrefColorButton::savePreferences()
 PrefUnitSpinBox::PrefUnitSpinBox ( QWidget * parent )
   : QuantitySpinBox(parent), PrefWidget()
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+}
+
+void PrefUnitSpinBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QuantitySpinBox::wheelEvent(event);
+    else
+        event->ignore();        
 }
 
 PrefUnitSpinBox::~PrefUnitSpinBox() = default;
@@ -662,6 +698,7 @@ PrefQuantitySpinBox::PrefQuantitySpinBox (QWidget * parent)
   : QuantitySpinBox(parent)
   , d_ptr(new PrefQuantitySpinBoxPrivate())
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 }
 
 PrefQuantitySpinBox::~PrefQuantitySpinBox() = default;
@@ -706,6 +743,14 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
             lineEdit()->setText(prop.toString());
         }
     }
+}
+
+void PrefQuantitySpinBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QuantitySpinBox::wheelEvent(event);
+    else
+        event->ignore();        
 }
 
 void PrefQuantitySpinBox::restorePreferences()

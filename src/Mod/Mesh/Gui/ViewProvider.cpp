@@ -69,11 +69,11 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Flag.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/SoFCDB.h>
 #include <Gui/SoFCOffscreenRenderer.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/SoFCSelectionAction.h>
+#include <Gui/Selection/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>

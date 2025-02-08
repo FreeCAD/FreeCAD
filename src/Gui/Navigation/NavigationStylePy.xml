@@ -5,7 +5,7 @@
     Name="NavigationStylePy"
     Twin="NavigationStyle"
     TwinPointer="NavigationStyle"
-    Include="Gui/NavigationStyle.h"
+    Include="Gui/Navigation/NavigationStyle.h"
     Namespace="Gui"
     FatherInclude="Base/BaseClassPy.h"
     FatherNamespace="Base">

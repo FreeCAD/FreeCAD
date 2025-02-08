@@ -32,7 +32,7 @@
 #include <Gui/Control.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Spreadsheet/App/Sheet.h>

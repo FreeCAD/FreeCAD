@@ -292,7 +292,7 @@ class BIM_Views:
                         top.addChild(i)
                     vm.viewtree.addTopLevelItem(top)
 
-                # set TreeVinew Item selected if obj is selected
+                # set TreeView Item selected if obj is selected
                 bold = QtGui.QFont()
                 bold.setBold(True)
                 objSelected = FreeCADGui.Selection.getSelection()

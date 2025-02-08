@@ -1,5 +1,4 @@
 /***************************************************************************
- *   Copyright (c) 2005 Werner Mayer <werner.wm.mayer@gmx.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,18 +19,33 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 
-#include "regexpdialog.h"
-#include <qapplication.h>
+// inclusion of the generated files (generated out of NavigationStylePy.xml)
+#include "Navigation/NavigationStylePy.h"
+#include "Navigation/NavigationStylePy.cpp"
 
 
-int main(int argc, char** argv)
+using namespace Gui;
+
+/** @class NavigationStylePy
+ * The NavigationStyle Python class provides additional methods for manipulation of
+ * navigation style objects.
+ * @see NavigationStyle
+ */
+
+// returns a string which represent the object e.g. when printed in python
+std::string NavigationStylePy::representation() const
 {
-    QApplication app(argc, argv);
+    return {"<NavigationStyle object>"};
+}
 
-    RegExpDialog dialog(0);
-    app.setActiveWindow(&dialog);
-    dialog.exec();
+PyObject* NavigationStylePy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
 
+int NavigationStylePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
     return 0;
 }

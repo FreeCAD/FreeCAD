@@ -283,7 +283,7 @@ public:
                 continue;
             int count = pcSwitches[i]->getNumChildren();
             if((index<0 && i==LinkView::SnapshotChild) || !count)
-                pcSwitches[i]->whichChild = -1;
+                pcSwitches[i]->whichChild = SO_SWITCH_NONE;
             else if(count>pcLinked->getDefaultMode())
                 pcSwitches[i]->whichChild = pcLinked->getDefaultMode();
             else
@@ -313,12 +313,8 @@ public:
         }
     }
 
-    // VC2013 has trouble with template argument dependent lookup in
+    // MSVC has trouble with template argument dependent lookup in
     // namespace. Have to put the below functions in global namespace.
-    //
-    // However, gcc seems to behave the opposite, hence the conditional
-    // compilation  here.
-    //
 #if defined(_MSC_VER)
     friend void Gui::intrusive_ptr_add_ref(LinkInfo *px);
     friend void Gui::intrusive_ptr_release(LinkInfo *px);
@@ -334,7 +330,7 @@ public:
         for(int idx : indices) {
             if(!pcSwitches[idx])
                 continue;
-            if(pcSwitches[idx]->whichChild.getValue()==-1)
+            if(pcSwitches[idx]->whichChild.getValue()==SO_SWITCH_NONE)
                 return false;
         }
         return true;
@@ -348,7 +344,7 @@ public:
             if(!pcSwitches[idx])
                 continue;
             if(!visible)
-                pcSwitches[idx]->whichChild = -1;
+                pcSwitches[idx]->whichChild = SO_SWITCH_NONE;
             else if(pcSwitches[idx]->getNumChildren()>pcLinked->getDefaultMode())
                 pcSwitches[idx]->whichChild = pcLinked->getDefaultMode();
         }
@@ -389,7 +385,7 @@ public:
         pcLinkedSwitch.reset();
 
         coinRemoveAllChildren(pcSnapshot);
-        pcModeSwitch->whichChild = -1;
+        pcModeSwitch->whichChild = SO_SWITCH_NONE;
         coinRemoveAllChildren(pcModeSwitch);
 
         SoSwitch *pcUpdateSwitch = pcModeSwitch;
@@ -1142,7 +1138,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         auto &info = *nodeArray[i];
         info.isGroup = false;
         info.groupIndex = -1;
-        info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:-1;
+        info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:SO_SWITCH_NONE;
         info.link(obj);
         if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
             info.isGroup = true;
@@ -1193,7 +1189,7 @@ void LinkView::setTransform(int index, const Base::Matrix4D &mat) {
 
 void LinkView::setElementVisible(int idx, bool visible) {
     if(idx>=0 && idx<(int)nodeArray.size())
-        nodeArray[idx]->pcSwitch->whichChild = visible?0:-1;
+        nodeArray[idx]->pcSwitch->whichChild = visible?0:SO_SWITCH_NONE;
 }
 
 bool LinkView::isElementVisible(int idx) const {

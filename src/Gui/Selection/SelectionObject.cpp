@@ -27,7 +27,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/SelectionObjectPy.h>
+#include <Gui/Selection/SelectionObjectPy.h>
 
 #include "SelectionObject.h"
 #include "Selection.h"

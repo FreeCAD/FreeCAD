@@ -149,12 +149,13 @@ PyMethodDef Application::Methods[] = {
     {"openDocument",
      reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(Application::sOpenDocument)),
      METH_VARARGS | METH_KEYWORDS,
-     "openDocument(filepath,hidden=False) -> object\n"
+     "openDocument(filepath,hidden=False,temporary=False) -> object\n"
      "Create a document and load the project file into the document.\n\n"
      "filepath: file path to an existing file. If the file doesn't exist\n"
      "          or the file cannot be loaded an I/O exception is thrown.\n"
      "          In this case the document is kept alive.\n"
-     "hidden: whether to hide document 3D view."},
+     "hidden: whether to hide document 3D view.\n"
+     "temporary: whether to hide document in the tree view."},
     //  {"saveDocument",   (PyCFunction) Application::sSaveDocument, METH_VARARGS,
     //   "saveDocument(string) -- Save the document to a file."},
     //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
@@ -339,23 +340,30 @@ PyObject* Application::sOpenDocument(PyObject* /*self*/, PyObject* args, PyObjec
 {
     char* Name;
     PyObject* hidden = Py_False;
-    static const std::array<const char*, 3> kwlist {"name", "hidden", nullptr};
+    PyObject* temporary = Py_False;
+    static const std::array<const char*, 4> kwlist {"name", "hidden", "temporary", nullptr};
     if (!Base::Wrapped_ParseTupleAndKeywords(args,
                                              kwd,
-                                             "et|O!",
+                                             "et|O!O!",
                                              kwlist,
                                              "utf-8",
                                              &Name,
                                              &PyBool_Type,
-                                             &hidden)) {
+                                             &hidden,
+                                             &PyBool_Type,
+                                             &temporary)) {
         return nullptr;
     }
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     try {
+        DocumentCreateFlags createFlags;
+        createFlags.createView = !Base::asBoolean(hidden);
+        createFlags.temporary = Base::asBoolean(temporary);
+
         // return new document
         return (GetApplication()
-                    .openDocument(EncodedName.c_str(), !Base::asBoolean(hidden))
+                    .openDocument(EncodedName.c_str(), createFlags)
                     ->getPyObject());
     }
     catch (const Base::Exception& e) {
@@ -393,11 +401,13 @@ PyObject* Application::sNewDocument(PyObject* /*self*/, PyObject* args, PyObject
 
     PY_TRY
     {
+        DocumentCreateFlags createFlags;
+        createFlags.createView = !Base::asBoolean(hidden);
+        createFlags.temporary = Base::asBoolean(temp);
+
         App::Document* doc = GetApplication().newDocument(docName,
                                                           usrName,
-                                                          !Base::asBoolean(hidden),
-                                                          Base::asBoolean(temp));
-        PyMem_Free(docName);
+                                                          createFlags);
         PyMem_Free(usrName);
         return doc->getPyObject();
     }

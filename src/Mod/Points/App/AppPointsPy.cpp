@@ -55,7 +55,7 @@ public:
         add_varargs_method("show",
                            &Module::show,
                            "show(points,[string]) -- Add the points to the active document or "
-                           "create one if no document exists.");
+                           "create one if no document exists.  Returns document object.");
         initialize("This module is the Points module.");  // register with Python
     }
 

@@ -159,6 +159,8 @@ public:
 
     static bool useLegacySvgScaling();
 
+    static bool showUnits();
+
 };
 
 

@@ -34,7 +34,7 @@
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
 #include <Gui/DockWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TreeItemMode.h>
 
 class QLineEdit;

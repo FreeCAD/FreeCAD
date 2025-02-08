@@ -40,7 +40,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MouseSelection.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>

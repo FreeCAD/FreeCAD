@@ -82,7 +82,7 @@ public:
         add_varargs_method("show",
                            &Module::show,
                            "show(shape,[string]) -- Add the mesh to the active document or create "
-                           "one if no document exists.");
+                           "one if no document exists.  Returns document object.");
         add_varargs_method("createBox", &Module::createBox, "Create a solid mesh box");
         add_varargs_method("createPlane", &Module::createPlane, "Create a mesh XY plane normal +Z");
         add_varargs_method("createSphere", &Module::createSphere, "Create a tessellated sphere");
@@ -311,8 +311,7 @@ private:
         }
         // copy the data
         pcFeature->Mesh.setValue(*mo);
-
-        return Py::None();
+        return Py::asObject(pcFeature->getPyObject());
     }
     Py::Object createBox(const Py::Tuple& args)
     {

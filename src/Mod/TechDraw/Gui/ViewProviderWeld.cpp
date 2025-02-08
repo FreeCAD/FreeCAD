@@ -32,7 +32,7 @@
 #include <App/DocumentObject.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include "PreferencesGui.h"
 #include "TaskWeldingSymbol.h"

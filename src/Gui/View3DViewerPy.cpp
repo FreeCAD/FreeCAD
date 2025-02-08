@@ -32,7 +32,7 @@
 #include <Base/MatrixPy.h>
 
 #include "PythonWrapper.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "View3DViewerPy.h"
 #include "View3DInventorViewer.h"
 

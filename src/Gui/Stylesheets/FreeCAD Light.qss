@@ -1289,7 +1289,8 @@ QDialogButtonBox QPushButton {
   min-width: 80px;
 }
 
-QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton {
+QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
+QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
   min-width: 20px;
 }
 
@@ -1395,12 +1396,12 @@ QToolButton::menu-arrow {
   /* background-color: transparent; */
 }
 QToolButton::menu-arrow:open {
-  image: url(qss:images_classic/arrow-Down-black.png);
+  image: url(qss:images_classic/arrow-down-black.png);
   width: 18px;
   height: 18px;
 }
 QToolButton::menu-arrow:hover {
-  image: url(qss:images_classic/arrow-Down-black.png);
+  image: url(qss:images_classic/arrow-down-black.png);
   width: 18px;
   height: 18px;
 }

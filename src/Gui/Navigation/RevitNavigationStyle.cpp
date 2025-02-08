@@ -26,7 +26,7 @@
 # include <QApplication>
 #endif
 
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
 
 
@@ -34,17 +34,17 @@ using namespace Gui;
 
 // ----------------------------------------------------------------------------------
 
-/* TRANSLATOR Gui::CADNavigationStyle */
+/* TRANSLATOR Gui::RevitNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::CADNavigationStyle, Gui::UserNavigationStyle)
+TYPESYSTEM_SOURCE(Gui::RevitNavigationStyle, Gui::UserNavigationStyle)
 
-CADNavigationStyle::CADNavigationStyle() : lockButton1(false)
+RevitNavigationStyle::RevitNavigationStyle() : lockButton1(false)
 {
 }
 
-CADNavigationStyle::~CADNavigationStyle() = default;
+RevitNavigationStyle::~RevitNavigationStyle() = default;
 
-const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
+const char* RevitNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
@@ -52,17 +52,22 @@ const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::PANNING:
         return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Press middle+left or middle+right button");
+        return QT_TR_NOOP("Press SHIFT and middle mouse button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button or keep middle button depressed\n"
-                          "while doing a left or right click and move the mouse up or down");
+        return QT_TR_NOOP("Scroll middle mouse button");
     default:
         return "No description";
     }
 }
 
-SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
+SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
+    // Events when in "ready-to-seek" mode are ignored, except those
+    // which influence the seek mode itself -- these are handled further
+    // up the inheritance hierarchy.
+    if (this->isSeekMode()) {
+        return inherited::processSoEvent(ev);
+    }
     // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
@@ -98,17 +103,17 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const auto * const event = static_cast<const SoKeyboardEvent *>(ev);
+        const auto event = static_cast<const SoKeyboardEvent *>(ev);
         processed = processKeyboardEvent(event);
     }
 
     // Mouse Button / Spaceball Button handling
     if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const auto * const event = (const SoMouseButtonEvent *) ev;
+        const auto event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
-        // SoDebugError::postInfo("processSoEvent", "button = %d", button);
+        //SoDebugError::postInfo("processSoEvent", "button = %d", button);
         switch (button) {
         case SoMouseButtonEvent::BUTTON1:
             this->lockrecenter = true;
@@ -126,11 +131,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed = true;
             }
             else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                if (tmp.getValue() < dci) {
-                    newmode = NavigationStyle::ZOOMING;
-                }
                 processed = true;
             }
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
@@ -149,7 +149,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (!press && (hasDragged || hasPanned || hasZoomed)) {
                 processed = true;
             }
-            if (!press && !viewer->isEditing()) {
+            else if (!press && !viewer->isEditing()) {
                 if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
@@ -164,14 +164,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 newmode = NavigationStyle::DRAGGING;
                 saveCursorPosition(ev);
                 this->centerTime = ev->getTime();
-                processed = true;
-            }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                if (tmp.getValue() < dci) {
-                    newmode = NavigationStyle::ZOOMING;
-                }
                 processed = true;
             }
             this->button2down = press;
@@ -201,7 +193,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
-        const auto * const event = (const SoLocation2Event *) ev;
+        const auto event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
@@ -221,7 +213,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const auto * const event = static_cast<const SoMotion3Event *>(ev);
+        const auto event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -254,6 +246,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
         break;
     case BUTTON1DOWN:
+    case CTRLDOWN|BUTTON1DOWN:
         // make sure not to change the selection when stopping spinning
         if (curmode == NavigationStyle::SPINNING
             || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
@@ -263,41 +256,29 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             newmode = NavigationStyle::SELECTION;
         }
         break;
+    case BUTTON1DOWN|BUTTON2DOWN:
     case BUTTON3DOWN:
-        if (curmode == NavigationStyle::SPINNING) { break; }
-        else if (newmode == NavigationStyle::ZOOMING) { break; }
-        newmode = NavigationStyle::PANNING;
-
-        if (curmode == NavigationStyle::DRAGGING) {
-            if (doSpin()) {
-                newmode = NavigationStyle::SPINNING;
-                break;
-            }
-        }
-        break;
-    case CTRLDOWN|BUTTON2DOWN:
         newmode = NavigationStyle::PANNING;
         break;
-    case SHIFTDOWN|BUTTON2DOWN:
+    case SHIFTDOWN|BUTTON3DOWN:
         if (newmode != NavigationStyle::DRAGGING) {
             saveCursorPosition(ev);
         }
         newmode = NavigationStyle::DRAGGING;
         break;
     case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
+    case CTRLDOWN|BUTTON3DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;
 
-        // There are many cases we don't handle that just falls through to
-        // the default case, like SHIFTDOWN, CTRLDOWN, CTRLDOWN|SHIFTDOWN,
-        // SHIFTDOWN|BUTTON3DOWN, SHIFTDOWN|CTRLDOWN|BUTTON3DOWN, etc.
-        // This is a feature, not a bug. :-)
-        //
-        // mortene.
-
     default:
-        // The default will make a spin stop and otherwise not do
-        // anything.
+        // Reset mode to IDLE when button 3 is released
+        // This stops the DRAGGING when button 3 is released but SHIFT is still pressed
+        // This stops the ZOOMING when button 3 is released but CTRL is still pressed
+        if ((curmode == NavigationStyle::DRAGGING || curmode == NavigationStyle::ZOOMING)
+            && !this->button3down) {
+            newmode = NavigationStyle::IDLE;
+        }
         break;
     }
 
@@ -323,6 +304,5 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     // hierarchy.
     if (!processed)
         processed = inherited::processSoEvent(ev);
-
     return processed;
 }

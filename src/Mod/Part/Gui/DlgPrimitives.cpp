@@ -45,7 +45,7 @@
 #include <Gui/Command.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/FeaturePartBox.h>

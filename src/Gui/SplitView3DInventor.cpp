@@ -36,7 +36,7 @@
 #include "Application.h"
 #include "Camera.h"
 #include "Document.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCSelectionAction.h"
 #include "View3DInventorViewer.h"
 #include "View3DPy.h"

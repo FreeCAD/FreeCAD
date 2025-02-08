@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines the Addon class to encapsulate information about FreeCAD Addons """
+"""Defines the Addon class to encapsulate information about FreeCAD Addons"""
 
 import os
 import re
