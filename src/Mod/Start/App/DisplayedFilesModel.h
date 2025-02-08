@@ -21,8 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_DISPLAYEDFILESMODEL_H
-#define FREECAD_START_DISPLAYEDFILESMODEL_H
+#ifndef FREECAD_START_DISPLAYED_FILES_MODEL_H
+#define FREECAD_START_DISPLAYED_FILES_MODEL_H
 
 #include <QAbstractListModel>
 #include <Base/Parameter.h>
@@ -69,10 +69,8 @@ protected:
     /// DisplayedFilesModelRoles enumeration
     QHash<int, QByteArray> roleNames() const override;
 
-    /// Destroy and recreate the cache of info about the files. Should be connected to a signal
-    /// indicating when some piece of information about the files has changed. Does NOT generate
-    /// a new list of files, only re-caches the existing ones.
-    void reCacheFileInfo();
+    /// Process a new thumbnail produces by some sort of worker thread
+    void processNewThumbnail(const QString& file, const QByteArray& thumbnail);
 
 private:
     std::vector<FileStats> _fileInfoCache;
@@ -81,4 +79,4 @@ private:
 
 }  // namespace Start
 
-#endif  // FREECAD_START_DISPLAYEDFILESMODEL_H
+#endif  // FREECAD_START_DISPLAYED_FILES_MODEL_H

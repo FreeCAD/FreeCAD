@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
-#    Copyright (c) 2024 The FreeCAD Project Association AISBL               *
+ *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,43 +21,31 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef START_PRECOMPILED_H
-#define START_PRECOMPILED_H
+#ifndef FREECAD_FILEUTILITIES_H
+#define FREECAD_FILEUTILITIES_H
 
-#include <FCConfig.h>
+class QString;
+class QDir;
 
-#ifdef _MSC_VER
-#pragma warning(disable : 5208)
-#endif
+namespace Start
+{
 
-#ifdef _PreComp_
+QString getThumbnailsImage();
 
-// standard
-#include <cinttypes>
-#include <cmath>
-#include <iomanip>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <unordered_map>
+QString getThumbnailsName();
 
-// boost
-#include <boost/algorithm/string/predicate.hpp>
+QDir getThumbnailsParentDir();
 
-// Qt (should never include GUI files, only QtCore)
-#include <QByteArray>
-#include <QCryptographicHash>
-#include <QDateTime>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <QMutexLocker>
-#include <QStandardPaths>
-#include <QString>
-#include <QThreadPool>
-#include <QTimeZone>
-#include <QUrl>
+QString getThumbnailsDir();
 
-#endif  // _PreComp_
-#endif  // START_PRECOMPILED_H
+void createThumbnailsDir();
+
+QString getMD5Hash(const QString& path);
+
+QString getUniquePNG(const QString& path);
+
+bool useCachedPNG(const QString& image, const QString& project);
+
+}  // namespace Start
+
+#endif  // FREECAD_FILEUTILITIES_H

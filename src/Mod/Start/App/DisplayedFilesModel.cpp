@@ -26,29 +26,31 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <QByteArray>
 #include <QCryptographicHash>
-#include <QDateTime>
-#include <QDir>
-#include <QFile>
 #include <QFileInfo>
 #include <QProcess>
-#include <QStandardPaths>
+#include <QTimeZone>
+#include <QThreadPool>
 #include <QUrl>
 #endif
 
 #include "DisplayedFilesModel.h"
+
+
+#include "FileUtilities.h"
+#include "ThumbnailSource.h"
 #include <App/Application.h>
 #include <App/ProjectFile.h>
 #include <Base/FileInfo.h>
-#include <Base/Stream.h>
 #include <Base/TimeInfo.h>
+#include <Base/Stream.h>
+
 
 using namespace Start;
 
 
 namespace
 {
-
-std::string humanReadableSize(unsigned int bytes)
+std::string humanReadableSize(const unsigned int bytes)
 {
     static const std::vector<std::string> siPrefix {
         "b",
@@ -90,133 +92,32 @@ FileStats fileInfoFromFreeCADFile(const std::string& path)
     return result;
 }
 
-std::string getThumbnailsImage()
-{
-    return "thumbnails/Thumbnail.png";
-}
-
-QString getThumbnailsName()
-{
-#if defined(Q_OS_LINUX)
-    return QStringLiteral("thumbnails/normal");
-#else
-    return QStringLiteral("FreeCADStartThumbnails");
-#endif
-}
-
-QDir getThumnailsParentDir()
-{
-    return {QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
-}
-
-QString getThumbnailsDir()
-{
-    QDir dir = getThumnailsParentDir();
-    return dir.absoluteFilePath(getThumbnailsName());
-}
-
-void createThumbnailsDir()
-{
-    QString name = getThumbnailsName();
-    QDir dir(getThumnailsParentDir());
-    if (!dir.exists(name)) {
-        dir.mkpath(name);
-    }
-}
-
-QString getMD5Hash(const std::string& path)
-{
-    // Use MD5 hash as specified here:
-    // https://specifications.freedesktop.org/thumbnail-spec/0.8.0/thumbsave.html
-    QUrl url(QString::fromStdString(path));
-    url.setScheme(QStringLiteral("file"));
-    QCryptographicHash hash(QCryptographicHash::Md5);
-    hash.addData(url.toEncoded());
-    QByteArray ba = hash.result().toHex();
-    return QString::fromLatin1(ba);
-}
-
-QString getUniquePNG(const std::string& path)
-{
-    QDir dir = getThumbnailsDir();
-    QString md5 = getMD5Hash(path) + QLatin1String(".png");
-    return dir.absoluteFilePath(md5);
-}
-
-bool useCachedPNG(const std::string& image, const std::string& project)
-{
-    Base::FileInfo f1(image);
-    Base::FileInfo f2(project);
-    if (!f1.exists()) {
-        return false;
-    }
-    if (!f2.exists()) {
-        return false;
-    }
-
-    return f1.lastModified() > f2.lastModified();
-}
-
 /// Load the thumbnail image data (if any) that is stored in an FCStd file.
 /// \returns The image bytes, or an empty QByteArray (if no thumbnail was stored)
-QByteArray loadFCStdThumbnail(const std::string& pathToFCStdFile)
+QByteArray loadFCStdThumbnail(const QString& pathToFCStdFile)
 {
-    App::ProjectFile proj(pathToFCStdFile);
-    if (proj.loadDocument()) {
+    if (App::ProjectFile proj(pathToFCStdFile.toStdString()); proj.loadDocument()) {
         try {
-            std::string thumbnailFile = getUniquePNG(pathToFCStdFile).toStdString();
+            const QString thumbnailFile = getUniquePNG(pathToFCStdFile);
             if (!useCachedPNG(thumbnailFile, pathToFCStdFile)) {
-                static std::string thumb = getThumbnailsImage();
-                if (proj.containsFile(thumb)) {
+                static const QString thumb = getThumbnailsImage();
+                if (proj.containsFile(thumb.toStdString())) {
                     createThumbnailsDir();
-                    Base::FileInfo fi(thumbnailFile);
+                    const Base::FileInfo fi(thumbnailFile.toStdString());
                     Base::ofstream str(fi, std::ios::out | std::ios::binary);
-                    proj.readInputFileDirect(thumb, str);
+                    proj.readInputFileDirect(thumb.toStdString(), str);
                     str.close();
                 }
             }
 
-            auto inputFile = QFile(QString::fromStdString(thumbnailFile));
-            if (inputFile.exists()) {
+            if (auto inputFile = QFile(thumbnailFile); inputFile.exists()) {
                 inputFile.open(QIODevice::OpenModeFlag::ReadOnly);
                 return inputFile.readAll();
             }
         }
         catch (...) {
+            Base::Console().Log("Failed to load thumbnail for %s", pathToFCStdFile.toStdString());
         }
-    }
-    return {};
-}
-
-/// Attempt to generate a thumbnail image from a file using f3d or load from cache
-/// \returns The image bytes, or an empty QByteArray (if thumbnail generation fails)
-QByteArray getF3dThumbnail(const std::string& pathToFile)
-{
-    QString thumbnailPath = getUniquePNG(pathToFile);
-    if (!useCachedPNG(thumbnailPath.toStdString(), pathToFile)) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Start");
-        auto f3d = QString::fromUtf8(hGrp->GetASCII("f3d", "f3d").c_str());
-        const int resolution = 128;
-        QStringList args;
-        args << QLatin1String("--config=thumbnail") << QLatin1String("--load-plugins=occt")
-             << QLatin1String("--verbose=quiet") << QLatin1String("--output=") + thumbnailPath
-             << QLatin1String("--resolution=") + QString::number(resolution) + QLatin1String(",")
-                + QString::number(resolution)
-             << QString::fromStdString(pathToFile);
-
-        QProcess process;
-        process.start(f3d, args);
-        process.waitForFinished();
-        if (process.exitCode() != 0) {
-            return {};
-        }
-    }
-
-    QFile thumbnailFile(thumbnailPath);
-    if (thumbnailFile.exists()) {
-        thumbnailFile.open(QIODevice::OpenModeFlag::ReadOnly);
-        return thumbnailFile.readAll();
     }
     return {};
 }
@@ -224,12 +125,17 @@ QByteArray getF3dThumbnail(const std::string& pathToFile)
 FileStats getFileInfo(const std::string& path)
 {
     FileStats result;
-    Base::FileInfo file(path);
+    const Base::FileInfo file(path);
     if (file.hasExtension("FCStd")) {
         result = fileInfoFromFreeCADFile(path);
     }
     else {
-        file.lastModified();
+        Base::TimeInfo lastModified = file.lastModified();
+        std::string lmString = QDateTime::fromSecsSinceEpoch(lastModified.getTime_t())
+                                   .toTimeZone(QTimeZone::utc())
+                                   .toString(Qt::ISODate)
+                                   .toStdString();
+        result.insert(std::make_pair(DisplayedFilesModelRoles::modifiedTime, lmString));
     }
     result.insert(std::make_pair(DisplayedFilesModelRoles::path, path));
     result.insert(std::make_pair(DisplayedFilesModelRoles::size, humanReadableSize(file.size())));
@@ -241,14 +147,12 @@ bool freecadCanOpen(const QString& extension)
 {
     std::string ext = extension.toStdString();
     auto importTypes = App::GetApplication().getImportTypes();
-    return std::find_if(importTypes.begin(),
-                        importTypes.end(),
-                        [&ext](const auto& item) {
-                            return boost::iequals(item, ext);
-                        })
+    return std::ranges::find_if(importTypes,
+                                [&ext](const auto& item) {
+                                    return boost::iequals(item, ext);
+                                })
         != importTypes.end();
 }
-
 }  // namespace
 
 DisplayedFilesModel::DisplayedFilesModel(QObject* parent)
@@ -262,15 +166,14 @@ int DisplayedFilesModel::rowCount(const QModelIndex& parent) const
     return static_cast<int>(_fileInfoCache.size());
 }
 
-QVariant DisplayedFilesModel::data(const QModelIndex& index, int roleAsInt) const
+QVariant DisplayedFilesModel::data(const QModelIndex& index, int role) const
 {
-    int row = index.row();
+    const int row = index.row();
     if (row < 0 || row >= static_cast<int>(_fileInfoCache.size())) {
         return {};
     }
-    auto mapEntry = _fileInfoCache.at(row);
-    auto role = static_cast<DisplayedFilesModelRoles>(roleAsInt);
-    switch (role) {
+    const auto mapEntry = _fileInfoCache.at(row);
+    switch (const auto roleAsType = static_cast<DisplayedFilesModelRoles>(role)) {
         case DisplayedFilesModelRoles::author:  // NOLINT(bugprone-branch-clone)
             [[fallthrough]];
         case DisplayedFilesModelRoles::baseName:
@@ -288,15 +191,14 @@ QVariant DisplayedFilesModel::data(const QModelIndex& index, int roleAsInt) cons
         case DisplayedFilesModelRoles::path:
             [[fallthrough]];
         case DisplayedFilesModelRoles::size:
-            if (mapEntry.find(role) != mapEntry.end()) {
-                return QString::fromStdString(mapEntry.at(role));
+            if (mapEntry.contains(roleAsType)) {
+                return QString::fromStdString(mapEntry.at(roleAsType));
             }
-            else {
-                return {};
-            }
+            return {};
         case DisplayedFilesModelRoles::image: {
-            auto path = QString::fromStdString(mapEntry.at(DisplayedFilesModelRoles::path));
-            if (_imageCache.contains(path)) {
+            if (const auto path =
+                    QString::fromStdString(mapEntry.at(DisplayedFilesModelRoles::path));
+                _imageCache.contains(path)) {
                 return _imageCache[path];
             }
             break;
@@ -304,16 +206,19 @@ QVariant DisplayedFilesModel::data(const QModelIndex& index, int roleAsInt) cons
         default:
             break;
     }
-    switch (roleAsInt) {
+    switch (role) {
         case Qt::ItemDataRole::ToolTipRole:
             return QString::fromStdString(mapEntry.at(DisplayedFilesModelRoles::path));
+        default:
+            // No other role gets handled
+            break;
     }
     return {};
 }
 
 void DisplayedFilesModel::addFile(const QString& filePath)
 {
-    QFileInfo qfi(filePath);
+    const QFileInfo qfi(filePath);
     if (!qfi.isReadable()) {
         return;
     }
@@ -323,17 +228,28 @@ void DisplayedFilesModel::addFile(const QString& filePath)
     }
 
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
-    if (qfi.suffix().toLower() == QLatin1String("fcstd")) {
-        auto thumbnail = loadFCStdThumbnail(filePath.toStdString());
-        if (!thumbnail.isEmpty()) {
+    const auto lowercaseExtension = qfi.suffix().toLower();
+    const QStringList ignoredExtensions {QLatin1String("fcmacro"),
+                                         QLatin1String("py"),
+                                         QLatin1String("pyi"),
+                                         QLatin1String("csv"),
+                                         QLatin1String("txt")};
+    if (lowercaseExtension == QLatin1String("fcstd")) {
+        if (const auto thumbnail = loadFCStdThumbnail(filePath); !thumbnail.isEmpty()) {
             _imageCache.insert(filePath, thumbnail);
         }
     }
+    else if (ignoredExtensions.contains(lowercaseExtension)) {
+        // Don't try to generate a thumbnail for things like this: FreeCAD can read them, but
+        // there's not much point in showing anything besides a generic icon
+    }
     else {
-        auto thumbnail = getF3dThumbnail(filePath.toStdString());
-        if (!thumbnail.isEmpty()) {
-            _imageCache.insert(filePath, thumbnail);
-        }
+        const auto runner = new ThumbnailSource(filePath);
+        connect(runner->signals(),
+                &ThumbnailSourceSignals::thumbnailAvailable,
+                this,
+                &DisplayedFilesModel::processNewThumbnail);
+        QThreadPool::globalInstance()->start(runner);
     }
 }
 
@@ -345,16 +261,23 @@ void DisplayedFilesModel::clear()
 QHash<int, QByteArray> DisplayedFilesModel::roleNames() const
 {
     static QHash<int, QByteArray> nameMap {
-        std::make_pair(int(DisplayedFilesModelRoles::author), "author"),
-        std::make_pair(int(DisplayedFilesModelRoles::baseName), "baseName"),
-        std::make_pair(int(DisplayedFilesModelRoles::company), "company"),
-        std::make_pair(int(DisplayedFilesModelRoles::creationTime), "creationTime"),
-        std::make_pair(int(DisplayedFilesModelRoles::description), "description"),
-        std::make_pair(int(DisplayedFilesModelRoles::image), "image"),
-        std::make_pair(int(DisplayedFilesModelRoles::license), "license"),
-        std::make_pair(int(DisplayedFilesModelRoles::modifiedTime), "modifiedTime"),
-        std::make_pair(int(DisplayedFilesModelRoles::path), "path"),
-        std::make_pair(int(DisplayedFilesModelRoles::size), "size"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::author), "author"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::baseName), "baseName"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::company), "company"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::creationTime), "creationTime"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::description), "description"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::image), "image"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::license), "license"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::modifiedTime), "modifiedTime"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::path), "path"),
+        std::make_pair(static_cast<int>(DisplayedFilesModelRoles::size), "size"),
     };
     return nameMap;
+}
+
+void DisplayedFilesModel::processNewThumbnail(const QString& file, const QByteArray& thumbnail)
+{
+    if (!thumbnail.isEmpty()) {
+        _imageCache.insert(file, thumbnail);
+    }
 }

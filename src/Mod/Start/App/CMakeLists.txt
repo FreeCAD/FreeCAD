@@ -41,10 +41,14 @@ SET(Start_SRCS
         ExamplesModel.h
         CustomFolderModel.cpp
         CustomFolderModel.h
+        FileUtilities.cpp
+        FileUtilities.h
         PreCompiled.cpp
         PreCompiled.h
         RecentFilesModel.cpp
-        RecentFilesModel.h)
+        RecentFilesModel.h
+        ThumbnailSource.cpp
+        ThumbnailSource.h)
 
 add_library(Start SHARED ${Start_SRCS})
 target_link_libraries(Start ${Start_LIBS})
