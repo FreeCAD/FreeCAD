@@ -56,10 +56,6 @@ else:
         return text
     # \endcond
 
-# This will keep the construction geometries visible.
-# Helpful when solving problems.
-DEBUG_GEOMETRY = False
-
 # Used to make section edges more visible (https://coolors.co/5bc0eb-fde74c-9bc53d-e55934-fa7921)
 DEBUG_EDGES_COLORS = ["5bc0eb", "fde74c", "9bc53d", "e55934", "fa7921"]
 DEBUG_POINT_COLORS = ["011627", "ff0022", "41ead4", "fdfffc", "b91372"]
@@ -80,6 +76,7 @@ except :
 FACTOR = 10
 TOLERANCE = 1
 DEFAULT_WALL_WIDTH = 100
+TWO_PI = 2* math.pi
 DEFAULT_MATERIAL = App.Material(
     DiffuseColor=(1.00,0.00,0.00),
     AmbientColor=(0.33,0.33,0.33),
@@ -304,7 +301,7 @@ class SH3DImporter:
         else:
             # Has the default floor already been created from a
             # previous import?
-            if self.preferences["DEBUG"]: _log("No level defined. Using default level ...")
+            if self.preferences["DEBUG_GEOMETRY"]: _log("No level defined. Using default level ...")
             self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
 
         # Importing <room> elements ...
@@ -371,7 +368,6 @@ class SH3DImporter:
     def _get_preferences(self):
         """Retrieve the SH3D preferences available in Mod/Arch."""
         self.preferences = {
-            'DEBUG': get_param_arch("sh3dDebug"),
             'IMPORT_DOORS_AND_WINDOWS': get_param_arch("sh3dImportDoorsAndWindows"),
             'IMPORT_FURNITURES': get_param_arch("sh3dImportFurnitures"),
             'IMPORT_LIGHTS': get_param_arch("sh3dImportLights") and RENDER_IS_AVAILABLE,
@@ -389,6 +385,7 @@ class SH3DImporter:
             'DEFAULT_SKY_COLOR': color_fc2sh(get_param_arch("sh3dDefaultSkyColor")),
             'DECORATE_SURFACES': get_param_arch("sh3dDecorateSurfaces"),
             'DEFAULT_FURNITURE_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFurnitureColor")),
+            'DEBUG_GEOMETRY': get_param_arch("sh3dDebugGeometry"),
         }
 
     def _setup_handlers(self):
@@ -437,7 +434,7 @@ class SH3DImporter:
         if valid_values:
             setattr(obj, name, valid_values)
         if value is None:
-            if self.preferences["DEBUG"]:_log(f"Setting obj.{name}=None")
+            if self.preferences["DEBUG_GEOMETRY"]:_log(f"Setting obj.{name}=None")
             return
         if type(value) is ET.Element or type(value) is type(dict()):
             if type_ == "App::PropertyString":
@@ -452,7 +449,7 @@ class SH3DImporter:
                 value = int(value.get(name, 0))
             elif type_ == "App::PropertyBool":
                 value = value.get(name, "true") == "true"
-        if self.preferences["DEBUG"]:
+        if self.preferences["DEBUG_GEOMETRY"]:
             _log(f"Setting @{obj}.{name} = {value}")
         setattr(obj, name, value)
 
@@ -495,10 +492,10 @@ class SH3DImporter:
             fc_object = self.fc_objects[id]
             if sh_type:
                 assert fc_object.shType == sh_type, f"Invalid shType: expected {sh_type}, got {fc_object.shType}"
-            if self.preferences["DEBUG"]:
+            if self.preferences["DEBUG_GEOMETRY"]:
                 _log(translate("BIM", f"Merging imported element '{id}' with existing element of type '{type(fc_object)}'"))
             return fc_object
-        if self.preferences["DEBUG"]:
+        if self.preferences["DEBUG_GEOMETRY"]:
             _log(translate("BIM", f"No element found with id '{id}' and type '{sh_type}'"))
         return None
 
@@ -597,7 +594,7 @@ class SH3DImporter:
         if self.preferences["IMPORT_CAMERAS"] and not doc.getObject("Cameras"):
             _log(f"Creating Cameras group ...")
             doc.addObject("App::DocumentObjectGroup", "Cameras")
-        if DEBUG_GEOMETRY:
+        if self.preferences["DEBUG_GEOMETRY"]:
             _log(f"Creating DEBUG_GEOMETRY group ...")
             doc.addObject("App::DocumentObjectGroup", "DEBUG_GEOMETRY")
 
@@ -796,7 +793,7 @@ class SH3DImporter:
             self.set_property(self.site, "App::PropertyFloat", "latitude", "The compass's latitude", compass)
             self.set_property(self.site, "App::PropertyString", "timeZone", "The compass's TimeZone", compass)
             self.set_property(self.site, "App::PropertyBool", "visible", "Whether the compass is visible", compass)
-            self.site.Declination = ang_sh2fc(math.degrees(float(self.site.northDirection)))
+            self.site.Declination = math.degrees(ang_sh2fc(float(self.site.northDirection)))
             self.site.Longitude = math.degrees(float(self.site.longitude))
             self.site.Latitude = math.degrees(float(self.site.latitude))
             self.site.EPWFile = '' # https://www.ladybug.tools/epwmap/ or https://climate.onebuilding.org
@@ -1026,6 +1023,15 @@ class BaseHandler:
         App.ActiveDocument.DEBUG_GEOMETRY.addObject(part)
         return part
 
+    def _debug_vector(self, vector, label, color=RED, at=ORIGIN):
+        part = Draft.make_line(ORIGIN, vector)
+        part.Placement.Base = at
+        part.Label = label
+        part.ViewObject.LineWidth = 5
+        part.ViewObject.LineColor = color
+        App.ActiveDocument.DEBUG_GEOMETRY.addObject(part)
+        return part
+
     def _debug_shape(self, shape, label, color=GREEN, transparency=.75):
         part = Part.show(shape)
         part.Label = label
@@ -1037,6 +1043,14 @@ class BaseHandler:
         part.ViewObject.ShapeAppearance = (material)
         App.ActiveDocument.DEBUG_GEOMETRY.addObject(part)
         return part
+
+    def _debug_mesh(self, mesh, label, transform=None, color=GREEN):
+        shape = Part.Shape()
+        new_mesh = mesh.copy()
+        if transform:
+            new_mesh.transform(transform)
+        shape.makeShapeFromMesh(new_mesh.Topology, 1)
+        self._debug_shape(shape, label, color)
 
 
 class LevelHandler(BaseHandler):
@@ -1089,12 +1103,12 @@ class LevelHandler(BaseHandler):
     def _create_groups(self, floor):
         # This is a special group that does not appear in the TreeView.
         group = self._create_group(floor, "ReferenceFacesGroupName", f"References-{floor.Label}")
-        if not DEBUG_GEOMETRY:
+        if not self.importer.preferences["DEBUG_GEOMETRY"]:
             group.Visibility = False
             group.ViewObject.ShowInTree = False
 
         group = self._create_group(floor, "SlabObjectsGroupName", f"SlabObjects-{floor.Label}")
-        if not DEBUG_GEOMETRY:
+        if not self.importer.preferences["DEBUG_GEOMETRY"]:
             group.Visibility = False
             group.ViewObject.ShowInTree = False
 
@@ -1146,7 +1160,7 @@ class LevelHandler(BaseHandler):
             Returns:
                 Part.Feature: the extrusion used to later to fuse.
             """
-            if self.importer.preferences["DEBUG"]:
+            if self.importer.preferences["DEBUG_GEOMETRY"]:
                 _log(f"Extruding {obj_to_extrude.Label} ...")
             obj_to_extrude.recompute(True)
             projection = TechDraw.project(obj_to_extrude.Shape, Z_NORM)[0]
@@ -1191,7 +1205,7 @@ class LevelHandler(BaseHandler):
 
             slab.Label = f"{floor.Label}-slab"
 
-            if DEBUG_GEOMETRY:
+            if self.importer.preferences["DEBUG_GEOMETRY"]:
                 slab.ViewObject.DisplayMode = 'Wireframe'
                 slab.ViewObject.DrawStyle = 'Dotted'
                 slab.ViewObject.LineColor = ORANGE
@@ -1221,6 +1235,8 @@ class RoomHandler(BaseHandler):
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
+        debug_geometry = self.importer.preferences["DEBUG_GEOMETRY"]
+
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <room> '{elm.get('id')}' ..."
@@ -1241,9 +1257,9 @@ class RoomHandler(BaseHandler):
             points.append(points[0])
             # Offset to avoid self-intersecting wires
             reference_wire = Part.makePolygon(points)
-            if DEBUG_GEOMETRY: self._debug_shape(reference_wire, f"{name}-reference-wire", RED)
+            if debug_geometry: self._debug_shape(reference_wire, f"{name}-reference-wire", RED)
             reference_wire = self._get_offset_wire(reference_wire)
-            if DEBUG_GEOMETRY: self._debug_shape(reference_wire, f"{name}-reference-wire-offset", RED)
+            if debug_geometry: self._debug_shape(reference_wire, f"{name}-reference-wire-offset", RED)
             points = [v.Point for v in reference_wire.Vertexes]
             reference_face = Draft.make_wire(points, closed=True, face=True, support=None)
             reference_face.Label = f"{name}-reference"
@@ -1505,6 +1521,8 @@ class WallHandler(BaseHandler):
         Returns:
             Arch::Wall: the newly created wall
         """
+        debug_geometry = self.importer.preferences["DEBUG_GEOMETRY"]
+
         wall_details = self._get_wall_details(floor, elm)
         assert wall_details is not None, f"Fail to get details of wall {elm.get('id')}. Bailing out! {elm} / {wall_details}"
 
@@ -1528,7 +1546,7 @@ class WallHandler(BaseHandler):
 
         base_object = None
         App.ActiveDocument.recompute([section_start, section_end, spine])
-        if self.importer.preferences["DEBUG"]:
+        if debug_geometry:
             _log(f"_create_wall(): wall => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
 
         sweep = self._make_sweep(section_start, section_end, spine)
@@ -1549,13 +1567,12 @@ class WallHandler(BaseHandler):
         else:
             wall = Arch.makeWall(sweep)
 
-        if DEBUG_GEOMETRY:
+        if debug_geometry:
             wall.ViewObject.DisplayMode = 'Wireframe'
             wall.ViewObject.DrawStyle = 'Dotted'
             wall.ViewObject.LineColor = ORANGE
             wall.ViewObject.LineWidth = 2
-            part = self._debug_point(spine.Start, f"{wall.Name}-start")
-            part.Visibility = True
+            self._debug_point(spine.Start, f"{wall.Name}-start")
 
         reference_face = self._get_reference_face(wall, is_wall_straight)
         if reference_face:
@@ -1668,8 +1685,11 @@ class WallHandler(BaseHandler):
         """
         (start, end, _, _, _, _) = wall_details
 
-        section_start = self._get_section(wall_details, True, prev_wall_details)
-        section_end = self._get_section(wall_details, False, next_wall_details)
+        a1, a2, _ = self._get_normal_angles(wall_details)
+
+        section_start = self._get_section(wall_details, True, prev_wall_details, a1, a2)
+        section_end = self._get_section(wall_details, False, next_wall_details, a1, a2)
+
         spine = Draft.makeLine(start, end)
 
         return section_start, section_end, spine
@@ -1685,25 +1705,27 @@ class WallHandler(BaseHandler):
         Returns:
             Rectangle, Rectangle, spine: both section and the arc for the wall
         # """
-        (start, end, _, _, _, arc_extent) = wall_details
-
-        section_start = self._get_section(wall_details, True, prev_wall_details)
-        section_end = self._get_section(wall_details, False, next_wall_details)
+        (start, end, _, _, _, _) = wall_details
 
         a1, a2, (invert_angle, center, radius) = self._get_normal_angles(wall_details)
+
+        section_start = self._get_section(wall_details, True, prev_wall_details, a1, a2)
+        section_end = self._get_section(wall_details, False, next_wall_details, a1, a2)
+
+        if self.importer.preferences["DEBUG_GEOMETRY"]:
+            self._debug_vector(start-center, "start-center", GREEN, center)
+            self._debug_vector(end-center, "end-center", BLUE, center)
 
         placement = App.Placement(center, App.Rotation())
         # BEWARE: makeCircle always draws counter-clockwise (i.e. in positive
         # direction in xYz coordinate system). We therefore need to invert
         # the start and end angle (as in SweetHome the wall is drawn in
         # clockwise fashion).
-        length = 0
+        length = abs(radius * math.radians(a2 - a1))
         if invert_angle:
             spine = Draft.makeCircle(radius, placement, False, a1, a2)
-            length = abs(radius * math.radians(a2 - a1))
         else:
             spine = Draft.makeCircle(radius, placement, False, a2, a1)
-            length = abs(radius * math.radians(a1 - a2))
 
         # The Length property is used in the Wall to calculate volume, etc...
         # Since make Circle does not calculate this Length I calculate it here...
@@ -1715,7 +1737,7 @@ class WallHandler(BaseHandler):
 
         return section_start, section_end, spine
 
-    def _get_section(self, wall_details, at_start, sibling_details):
+    def _get_section(self, wall_details, at_start, sibling_details, a1, a2):
         """Returns a rectangular section at the specified coordinate.
 
         Returns a Rectangle that is then used as a section in the Part::Sweep
@@ -1733,6 +1755,7 @@ class WallHandler(BaseHandler):
         Returns:
             Rectangle: the section properly positioned
         """
+        debug_geometry = self.importer.preferences["DEBUG_GEOMETRY"]
         if self.importer.preferences["JOIN_ARCH_WALL"] and sibling_details:
             # In case the walls are to be joined we determine the intersection
             # of both wall which depends on their respective thickness.
@@ -1748,19 +1771,18 @@ class WallHandler(BaseHandler):
             i_start_z = i_start + App.Vector(0, 0, height)
             i_end_z = i_end + App.Vector(0, 0, height)
 
-            if self.importer.preferences["DEBUG"]:
+            if debug_geometry:
                 _log(f"Joining wall {self._pv(end-start)}@{self._pv(start)} and wall {self._pv(s_end-s_start)}@{self._pv(s_start)}")
                 _log(f"    wall: {self._pe(lside)},{self._pe(rside)}")
                 _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
                 _log(f"intersec: {self._pv(i_start)},{self._pv(i_end)}")
             section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z], face=True)
-            if self.importer.preferences["DEBUG"]:
+            if debug_geometry:
                 _log(f"section: {section}")
         else:
             (start, end, thickness, height_start, height_end, _) = wall_details
             height = height_start if at_start else height_end
             center = start if at_start else end
-            a1, a2, _ = self._get_normal_angles(wall_details)
             z_rotation = a1 if at_start else a2
             section = Draft.makeRectangle(thickness, height, face=True)
             Draft.move([section], App.Vector(-thickness/2, 0, 0))
@@ -1769,7 +1791,7 @@ class WallHandler(BaseHandler):
             Draft.move([section], center)
 
         section.recompute()
-        if DEBUG_GEOMETRY:
+        if debug_geometry:
             _color_section(section)
 
         return section
@@ -1813,13 +1835,14 @@ class WallHandler(BaseHandler):
             Vector: the center of the circle for a curved wall section
             float: the radius of said circle
         """
-        (start, end, thickness, height_start, height_end, arc_extent) = wall_details
+        (start, end, _, _, _, arc_extent) = wall_details
 
         angle_start = angle_end = 0
         invert_angle = False
         center = radius = None
         if arc_extent == 0:
-            angle_start = angle_end = 90-math.degrees(DraftVecUtils.angle(end-start, X_NORM))
+            # Straight Wall...
+            angle_start = angle_end = 90 - norm_deg_ang(DraftVecUtils.angle(end-start, X_NORM))
         else:
             # Calculate the circle that pases through the center of both rectangle
             #   and has the correct angle between p1 and p2
@@ -1830,7 +1853,10 @@ class WallHandler(BaseHandler):
             # We take the center that preserve the arc_extent orientation (in FC
             #   coordinate). The orientation is calculated from start to end
             center = circles[0].Center
-            if np.sign(arc_extent) != np.sign(DraftVecUtils.angle(start-center, end-center, Z_NORM)):
+            angle = norm_deg_ang(DraftVecUtils.angle(start-center, end-center, Z_NORM))
+            if self.importer.preferences["DEBUG_GEOMETRY"]:
+                _msg(f"arc_extent={norm_deg_ang(arc_extent)}, angle={angle}")
+            if norm_deg_ang(arc_extent) != angle:
                 invert_angle = True
                 center = circles[1].Center
 
@@ -1838,8 +1864,8 @@ class WallHandler(BaseHandler):
             radius1 = start - center
             radius2 = end - center
 
-            angle_start = math.degrees(DraftVecUtils.angle(X_NORM, radius1, Z_NORM))
-            angle_end = math.degrees(DraftVecUtils.angle(X_NORM, radius2, Z_NORM))
+            angle_start = norm_deg_ang(DraftVecUtils.angle(X_NORM, radius1, Z_NORM))
+            angle_end = norm_deg_ang(DraftVecUtils.angle(X_NORM, radius2, Z_NORM))
 
         return angle_start, angle_end, (invert_angle, center, radius)
 
@@ -1861,7 +1887,7 @@ class WallHandler(BaseHandler):
         edge = DraftGeomUtils.edg(start, end)
         lside = DraftGeomUtils.offset(edge, loffset)
         rside = DraftGeomUtils.offset(edge, roffset)
-        if self.importer.preferences["DEBUG"]:
+        if self.importer.preferences["DEBUG_GEOMETRY"]:
             _log(f"_get_sides(): wall {self._pv(end-start)}@{self._pv(start)} => normal={self._pv(normal)}, lside={self._pe(lside)}, rside={self._pe(rside)}")
         return lside, rside
 
@@ -2020,7 +2046,7 @@ class WallHandler(BaseHandler):
         offset_vector = p_normal.normalize().multiply(baseboard_width)
         offset_bottom_edge = bottom_edge.translated(offset_vector)
 
-        if self.importer.preferences["DEBUG"]:
+        if self.importer.preferences["DEBUG_GEOMETRY"]:
             _log(f"Creating {side} for {wall.Label} from edge {self._pe(bottom_edge, True)} to {self._pe(offset_bottom_edge, True)} (normal={self._pv(p_normal, True, 4)})")
 
         edge0 = bottom_edge.copy()
@@ -2186,6 +2212,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         self.setp(obj, "App::PropertyBool", "boundToWall", "", elm)
 
     def _create_door(self, floor, elm):
+        debug_geometry = self.importer.preferences["DEBUG_GEOMETRY"]
         # The doorOrWndow in SH3D is defined with a width, depth, height.
         # Furthermore the (x.y.z) is the center point of the lower face of the
         # window. In FC the placement is defined on the face of the wall that
@@ -2204,7 +2231,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         width = dim_sh2fc(elm.get('width'))
         depth = dim_sh2fc(elm.get('depth'))
         height = dim_sh2fc(elm.get('height'))
-        angle = math.degrees(ang_sh2fc(elm.get('angle', 0)))
+        angle = norm_deg_ang(ang_sh2fc(elm.get('angle', 0)))
 
         # Note that we only move on the XY plane since we assume that
         # only the right and left face will be used for supporting the
@@ -2217,7 +2244,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         # to find out which walls contains the window...
         dow_bounding_box = Part.makeBox(width, depth, height, dow_abs_corner)
         dow_bounding_box = dow_bounding_box.rotate(dow_bounding_box.CenterOfGravity, Z_NORM, angle)
-        if DEBUG_GEOMETRY:
+        if debug_geometry:
             self._debug_shape(dow_bounding_box, f"{label_prefix}-bb", BLUE)
             self._debug_point(dow_bounding_box.CenterOfGravity, f"{label_prefix}-bb-cog")
 
@@ -2238,7 +2265,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         else:
             if len(extra_walls) == 0:
                 _err(f"No hosting wall for doorOrWindow#{elm.get('id')}. Bailing out!")
-                if DEBUG_GEOMETRY: self._debug_shape(dow_bounding_box, f"{label_prefix}-no-hosting-wall", RED)
+                if debug_geometry: self._debug_shape(dow_bounding_box, f"{label_prefix}-no-hosting-wall", RED)
                 return None
             # Hum probably open doorOrWndow?
             is_opened = True
@@ -2248,42 +2275,46 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
                 _wrn(f"No main hosting wall for doorOrWindow#{elm.get('id')}. Defaulting to first hosting wall#{main_wall.Label} (w/ width {wall_width}) ...")
 
         # Get the left and right face for the main_wall
-        (_, left_face, _, right_face) = self.get_faces(main_wall)
+        (_, wall_lface, _, wall_rface) = self.get_faces(main_wall)
 
         # The general process is as follow: 
-        # 1- Find the face of the bounding box whose normal has the correct
+        # 1- Find the bounding box face whose normal is properly oriented
         #    with respect to the doorOrWindow (+90º)
         # 2- Find the wall face with the same orientation.
         # 3- Project the bounding box face onto the wall face.
         # 4- From projection extract the placement of the window.
 
         # Determine the bounding box face
-        bb_face, bb_face_normal = self._get_bb_face(dow_bounding_box, angle)
+        bb_face, bb_face_normal = self._get_bb_face(dow_bounding_box, angle, label_prefix)
         if not bb_face:
-            _err(f"Weird: BoundingBox for element {elm.get('id')} does not match any face on main wall {main_wall.Label}. Not creating window")
-            if DEBUG_GEOMETRY: self._debug_shape(dow_bounding_box, f"{label_prefix}-missing-wall-face#{main_wall.Label}", RED)
+            _err(f"Weird: None of BoundingBox's faces for doorOrWindow#{elm.get('id')} has the expected angle ({angle}º). Can't create window.")
+            if debug_geometry: self._debug_shape(dow_bounding_box, f"{label_prefix}-missing-bb-face#{main_wall.Label}", RED)
             return None
-        elif DEBUG_GEOMETRY:
+        elif debug_geometry:
           self._debug_shape(bb_face, f"{label_prefix}-bb-face", MAGENTA)
 
         # Determine the wall's face with the same orientation. Note that
         # if the window is ever so slightly twisted with respect to the wall
         # this will probably fail.
-        right_face_normal = right_face.normalAt(0,0)
-        left_face_normal = left_face.normalAt(0,0)
-        wall_face = right_face
+        # In order to get the proper wall's Face, we calculate the normal to the
+        # wall's face at the bb_face CenterOfGravity. This is to avoid problems
+        # with curved walls
+        # First get the u,v parameter of the bb_face CoG onto each of the wall faces
+        # Then get the normal at these parameter on each of the wall faces
+        wall_rface_normal = wall_rface.normalAt(*(wall_rface.Surface.parameter(bb_face.CenterOfGravity)))
+        wall_lface_normal = wall_lface.normalAt(*(wall_lface.Surface.parameter(bb_face.CenterOfGravity)))
+        wall_face = wall_rface
         is_on_right = True
-        if not self._same_dir(bb_face_normal, right_face_normal, 1):
+        if not self._same_dir(bb_face_normal, wall_rface_normal, 1):
             is_on_right = False
-            wall_face = left_face
-            if not self._same_dir(bb_face_normal, left_face_normal, 1):
-                _err(f"Weird: the extracted bb_normal {self._pv(bb_face_normal, True)} does not match neither the right face normal ({self._pv(right_face_normal, True)}) nor the left face normal ({self._pv(left_face_normal, True)}) of the wall {main_wall.Label}... The doorOrWindow might be slightly skewed. Defaulting on right face.")
+            wall_face = wall_lface
+            if not self._same_dir(bb_face_normal, wall_lface_normal, 1):
+                _err(f"Weird: the extracted bb_normal {self._pv(bb_face_normal, True)} does not match neither the right face normal ({self._pv(wall_rface_normal, True)}) nor the left face normal ({self._pv(wall_lface_normal, True)}) of the wall {main_wall.Label}... The doorOrWindow might be slightly skewed. Defaulting to left face.")
 
         # Project the bounding_box face onto the wall
         projected_face = wall_face.makeParallelProjection(bb_face.OuterWire, bb_face_normal)
-        if DEBUG_GEOMETRY:
-            part = self._debug_shape(wall_face, f"{label_prefix}-bb-projected-onto#{main_wall.Label}", MAGENTA)
-            part.Visibility = False
+        if debug_geometry:
+            self._debug_shape(wall_face, f"{label_prefix}-bb-projected-onto#{main_wall.Label}", MAGENTA)
             self._debug_shape(projected_face, f"{label_prefix}-bb-projection#{main_wall.Label}", RED)
 
         # Determine the base vertex that I later use for the doorOrWindow 
@@ -2295,9 +2326,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
           App.Rotation(angle, 0, 90), # Yaw, pitch, roll
           ORIGIN                      # rotation@point
         )
-        if DEBUG_GEOMETRY:
-            part = self._debug_point(pl.Base, f"{label_prefix}-pl-base", MAGENTA)
-            part.ViewObject.PointSize = 10
+        if debug_geometry: self._debug_point(pl.Base, f"{label_prefix}-pl-base", MAGENTA)
 
         # Then prepare the windows characteristics
         # NOTE: the windows are not imported as meshes, but we use a simple
@@ -2410,19 +2439,22 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         Returns:
             Part.Face: the correct face or None
         """
+        debug_geometry = self.importer.preferences["DEBUG_GEOMETRY"]
         # Note that the 'angle' refers to the angle of the face, not its normal.
         # we therefore add a '+90º' in SH3D coordinate (i.e. -90º in FC 
         # coordinate).
-        angle = (round(angle)+ang_sh2fc(90)) % 360
+        # XXX: Can it be speed up by assuming that left and right are always
+        #   Face2 and Face4???
+        angle = (angle - 90) % 360 # make sure positive ccw angle
         for i, face in enumerate(dow_bounding_box.Faces):
-            face_normal = face.normalAt(0,0)
-            normal_angle = round(math.degrees(DraftVecUtils.angle(X_NORM, face_normal))) % 360
-            if DEBUG_GEOMETRY: _msg(f"#{i}/{label_prefix} {normal_angle}º <=> {angle}º")
+            face_normal = face.normalAt(0,0) # The face is flat. can use u = v = 0
+            normal_angle = norm_deg_ang(DraftVecUtils.angle(X_NORM, face_normal))
+            if debug_geometry: _msg(f"#{i}/{label_prefix} {normal_angle}º <=> {angle}º")
             if normal_angle == angle:
-                if DEBUG_GEOMETRY: _msg(f"Found bb#{i}/{label_prefix} (@{normal_angle}º)")
+                if debug_geometry: _msg(f"Found bb#{i}/{label_prefix} (@{normal_angle}º)")
                 return face, face_normal
         return None, None
-    
+
     def _same_dir(self, v1, v2, tol=1e-6):
         return (v1.normalize() - v2.normalize()).Length < tol
 
@@ -2477,9 +2509,13 @@ class FurnitureHandler(BaseFurnitureHandler):
 
         if not feature:
             feature = self._create_equipment(floor, elm)
+            if not feature:
+                return
 
         color = elm.get('color', self.importer.preferences["DEFAULT_FURNITURE_COLOR"])
         set_color_and_transparency(feature, color)
+
+        feature.ViewObject.DisplayMode = 'Flat Lines'
 
         self.setp(feature, "App::PropertyString", "shType", "The element type", 'pieceOfFurniture')
         self.set_furniture_common_properties(feature, elm)
@@ -2491,75 +2527,135 @@ class FurnitureHandler(BaseFurnitureHandler):
             group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
             self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures on this floor", group.Name)
 
-        if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
-            p = feature.Shape.BoundBox.Center
-        else:
-            p = feature.Mesh.BoundBox.Center
+        # if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
+        #     p = feature.Shape.BoundBox.Center
+        # else:
+        #     p = feature.Mesh.BoundBox.Center
 
-        space = self.get_space(floor, p)
-        if space:
-            space.Group = space.Group + [feature]
-        else:
-            _log(f"No space found to enclose {feature.Label}. Adding to generic group.")
-            floor.getObject(floor.FurnitureGroupName).addObject(feature)
+        # space = self.get_space(floor, p)
+        # if space:
+        #     space.Group = space.Group + [feature]
+        # else:
+        #     _log(f"No space found to enclose {feature.Label}. Adding to generic group.")
+        #     floor.getObject(floor.FurnitureGroupName).addObject(feature)
+        floor.getObject(floor.FurnitureGroupName).addObject(feature)
 
         # We add the object to the list of known object that can then
         # be referenced elsewhere in the SH3D model (i.e. lights).
         self.importer.add_fc_objects(feature)
 
     def _create_equipment(self, floor, elm):
-        width = dim_sh2fc(float(elm.get('width')))
-        depth = dim_sh2fc(float(elm.get('depth')))
-        height = dim_sh2fc(float(elm.get('height')))
+        debug_geometry = self.importer.preferences["DEBUG_GEOMETRY"]
+
         x = float(elm.get('x', 0))
         y = float(elm.get('y', 0))
         z = float(elm.get('elevation', 0.0))
-        height_in_plan = elm.get('heightInPlan', 0.0)
-        pitch = float(elm.get('pitch', 0.0))  # X SH3D Axis
-        roll = float(elm.get('roll', 0.0))    # Y SH3D Axis
-        angle = float(elm.get('angle', 0.0))  # Z SH3D Axis
-        name = elm.get('name', elm.get('id', "NA"))
-        model_rotation = elm.get('modelRotation', None)
-        model_mirrored = bool(elm.get('modelMirrored', "false") == "true")
 
-        # The meshes are normalized, centered, facing up.
-        # Center, Scale, X Rotation && Z Rotation (in FC axes), Move
+        # REF:
+        # -  SweetHome3D/src/com/eteks/sweethome3d/model/HomePieceOfFurniture#readObject()
+        width = dim_sh2fc(elm.get('width'))
+        depth = dim_sh2fc(elm.get('depth'))
+        height = dim_sh2fc(elm.get('height'))
+
+        width_in_plan = dim_sh2fc(elm.get('widthInPlan', dim_fc2sh(width)))
+        depth_in_plan = dim_sh2fc(elm.get('depthInPlan', dim_fc2sh(depth)))
+        height_in_plan = dim_sh2fc(elm.get('heightInPlan', dim_fc2sh(height)))
+
+        # drop_on_top_elevation = float(elm.get('dropOnTopElevation', 1.0))
+        # horizontally_rotatable = elm.get('horizontallyRotatable', True)
+        model_rotation = elm.get('modelRotation', None)
+        model_mirrored = elm.get('modelMirrored', "false") == "true"
+        model_centered_at_origin = elm.get('modelCenteredAtOrigin', "false") == "true"
+
+        pitch = norm_rad_ang(elm.get('pitch', 0.0))
+        roll = norm_rad_ang(elm.get('roll', 0.0))
+        angle = ang_sh2fc(elm.get('angle', 0.0))
+
+        name = elm.get('name', elm.get('id', "NA"))
+
         mesh = self._get_mesh(elm)
+
+        if len(mesh.Points) == 0:
+            # Until https://github.com/FreeCAD/FreeCAD/issues/19456 is solved...
+            _wrn(f"Import of pieceOfFurniture#{name} resulted in an empty Mesh. Skipping.")
+            return None
+
         bb = mesh.BoundBox
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-original", None, MAGENTA)
+
+        # REF:
+        # - SweetHome3D/src/com/eteks/sweethome3d/j3d/ModelManager#getNormalizedTransform()
+        # - SweetHome3D/src/com/eteks/sweethome3d/j3d/ModelManager#getPieceOfFurnitureNormalizedModelTransformation()
         transform = App.Matrix()
-        # In FC the reference is the "upper left" corner
+
+        # Centering the model
         transform.move(-bb.Center)
+        if debug_geometry:
+            self._debug_point(bb.Center, f"{name}-center", MAGENTA)
+            self._debug_mesh(mesh, f"{name}-centered", transform, MAGENTA)
+
         if model_rotation:
             rij = [ float(v) for v in model_rotation.split() ]
-            rotation = App.Rotation(
-                App.Vector(rij[0], rij[1], rij[2]),
-                App.Vector(rij[3], rij[4], rij[5]),
-                App.Vector(rij[6], rij[7], rij[8])
+            rotation = App.Matrix(
+                App.Vector(rij[0], rij[3], rij[6]),
+                App.Vector(rij[1], rij[4], rij[7]),
+                App.Vector(rij[2], rij[5], rij[8])
                 )
-            _wrn(f"{name}: modelRotation is not yet implemented ...")
-        transform.scale(width/bb.XLength, height/bb.YLength, depth/bb.ZLength)
-        # NOTE: the model is facing up, thus y and z are inverted
-        transform.rotateX(math.pi/2)
-        transform.rotateX(-pitch)
+            # XXX: Is that the correct order?
+            transform = rotation.multiply(transform)
+            if debug_geometry: self._debug_mesh(mesh, f"{name}-rotated", transform, MAGENTA)
+
+        xy_rotated = True if pitch != 0 or roll != 0 else False
+        transform.rotateX(math.pi/2-pitch)
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-pitch", transform)
         transform.rotateY(roll)
-        transform.rotateZ(ang_sh2fc(angle))
-        if model_mirrored:
-            transform.scale(-1, 1, 1) # Mirror along X
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-roll", transform)
+
+        # The scaling is calculated using the models coordinate system.
+        # We use a simple box to calculate the scale factors for each axis.
+        normalized_model = Part.makeBox(bb.XLength, bb.YLength, bb.ZLength)
+        normalized_bb = normalized_model.transformGeometry(transform).BoundBox
+        if xy_rotated:
+            scale = App.Vector(width_in_plan / normalized_bb.XLength, depth_in_plan / normalized_bb.YLength, height_in_plan / normalized_bb.ZLength)
+        else:
+            scale = App.Vector(width / normalized_bb.XLength, depth / normalized_bb.YLength, height / normalized_bb.ZLength)
+        transform.scale(scale)
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-scaled", transform, MAGENTA)
+
+        transform.scale(-1 if model_mirrored else 1, 1, 1) # Mirror along X
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-mirrored", transform)
+
+        transform.rotateZ(angle)
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-yaw", transform, MAGENTA)
+
+
+        # Let's simulate the move
+        center_coord = coord_sh2fc(App.Vector(x, y, z))
+        transform.move(center_coord)
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-xy-moved", transform, MAGENTA)
+        transform.move(-center_coord)
 
         mesh.transform(transform)
 
+        new_bb = None
         if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
             shape = Part.Shape()
             shape.makeShapeFromMesh(mesh.Topology, 1)
             equipment = Arch.makeEquipment(name="Furniture")
             equipment.Shape = shape
+            new_bb = shape.BoundBox
         else:
             equipment = App.ActiveDocument.addObject("Mesh::Feature", "Furniture")
             equipment.Mesh = mesh
+            new_bb = mesh.BoundBox
 
-        equipment.Placement.Base = coord_sh2fc(App.Vector(x, y, z))
-        equipment.Placement.Base.z += floor.Placement.Base.z
-        equipment.Placement.Base.z += mesh.BoundBox.ZLength / 2
+        z_offset = 0.0
+        if not model_centered_at_origin:
+            # Let's add 
+            z_offset = new_bb.ZLength / 2.0
+
+        equipment.Placement.Base = center_coord
+        equipment.Placement.Base.z += floor.Placement.Base.z + z_offset
         equipment.Label = elm.get('name')
 
         return equipment
@@ -2720,7 +2816,8 @@ def ang_sh2fc(angle:float):
     """Convert SweetHome angle (º) to FreeCAD angle (º)
 
     SweetHome angles are clockwise positive while FreeCAD are anti-clockwise
-    positive
+    positive. Further more angle in FreeCAD are always positive between 0º and
+    360º.
 
     Args:
         angle (float): The angle in SweetHome
@@ -2728,7 +2825,31 @@ def ang_sh2fc(angle:float):
     Returns:
         float: the FreeCAD angle
     """
-    return -float(angle)
+    return norm_rad_ang(-float(angle))
+
+
+def norm_deg_ang(angle:float):
+    """Normalize a radian angle into a degree angle..
+
+    Args:
+        angle (float): The angle in radian
+
+    Returns:
+        float: a normalized angle
+    """
+    return round(math.degrees(float(angle)) % 360)
+
+def norm_rad_ang(angle:float):
+    """Normalize a radian angle into a radian angle..
+
+    Args:
+        angle (float): The angle in radian
+
+    Returns:
+        float: a normalized angle
+    """
+    return (float(angle) % TWO_PI + TWO_PI) % TWO_PI
+
 
 
 def set_color_and_transparency(obj, color):
@@ -2742,7 +2863,7 @@ def set_color_and_transparency(obj, color):
         mat.DiffuseColor = rgb_color
         mat.AmbientColor = rgb_color
         mat.SpecularColor = rgb_color
-        # mat.EmissiveColor = rgb_color
+        mat.EmissiveColor = (128,128,128,1)
         obj.ViewObject.ShapeAppearance = (mat)
         return
     if hasattr(view_object, "ShapeColor"):
