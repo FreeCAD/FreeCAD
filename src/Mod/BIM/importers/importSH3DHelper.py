@@ -42,8 +42,6 @@ import TechDraw
 
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
-from itertools import chain
-from scipy.spatial import ConvexHull
 
 import FreeCAD as App
 
@@ -1939,9 +1937,7 @@ class WallHandler(BaseHandler):
             # overkill for a 4 point wall, however not sure how to invert 
             # edges.
             points = list(map(lambda v: v.Point, face.Vertexes))
-            point_coords = np.array([[p.x, p.y] for p in points])
-            new_points = [points[i] for i in ConvexHull(point_coords).vertices]
-            new_points.append(new_points[0])
+            new_points = convex_hull(points)
             reference_face = Draft.make_wire(new_points, closed=True, face=True, support=None)
         else:
             reference_face = App.ActiveDocument.addObject("Part::Feature", "Face")
@@ -2924,3 +2920,52 @@ def set_shininess(obj, shininess):
 def percent_sh2fc(percent):
     # percent goes from 0 -> 1 in SH3d and 0 -> 100 in FC
     return int(float(percent)*100)
+
+
+def cross_product(o, a, b):
+    """Computes the cross product of vectors OA and OB."""
+    return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+
+def convex_hull(points, tol=1e-6):
+    """Return the convex hull of a series of Point
+
+    Computes the convex hull using Andrew's monotone chain algorithm (NumPy version).
+
+    Args:
+        points (list): the list of point for which to find the convex hull
+
+    Returns:
+        list: the point forming the convex hull
+    """
+    default_z = points[0].z
+    point_coords = np.array([[p.x, p.y] for p in points], dtype=np.float64)
+    point_coords = point_coords[np.lexsort((point_coords[:, 1], point_coords[:, 0]))]  # Sort by x, then y
+
+    def build_half_hull(sorted_points):
+        hull = []
+        for p in sorted_points:
+            while len(hull) >= 2 and cross_product(hull[-2], hull[-1], p) <= tol:
+                hull.pop()
+            hull.append(tuple(p))
+        return hull
+
+    lower = build_half_hull(point_coords)
+    upper = build_half_hull(point_coords[::-1])
+
+    # Remove duplicates
+    new_points = [App.Vector(p[0], p[1], default_z) for p in np.array(lower[:-1] + upper[:-1])]
+    return new_points
+
+# def _convex_hull(points):
+#     """Return the convex hull of a series of Point
+#
+#     Args:
+#         points (list): the list of point
+#
+#     Returns:
+#         list: the point forming the convex hull
+#     """
+#     point_coords = np.array([[p.x, p.y] for p in points])
+#     new_points = [points[i] for i in scipy.spatial.ConvexHull(point_coords).vertices]
+#     return new_points[0]
+
