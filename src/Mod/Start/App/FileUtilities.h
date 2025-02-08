@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
-#    Copyright (c) 2024 The FreeCAD Project Association AISBL               *
+ *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,50 +21,47 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef START_PRECOMPILED_H
-#define START_PRECOMPILED_H
+#ifndef FREECAD_FILEUTILITIES_H
+#define FREECAD_FILEUTILITIES_H
 
-#include <FCConfig.h>
+#include "Base/FileInfo.h"
+#include "Mod/Start/StartGlobal.h"
 
-#ifdef _MSC_VER
-#pragma warning(disable : 5208)
+#include <qglobal.h>
+#include <QDir>
+#include <QStandardPaths>
+
+class QString;
+
+namespace Start
+{
+
+const QLatin1String defaultThumbnailPath("thumbnails/Thumbnail.png");
+
+const QLatin1String defaultThumbnailName
+#if defined(Q_OS_LINUX)
+    ("thumbnails/normal");
+#else
+    ("FreeCADStartThumbnails");
 #endif
 
-#ifdef _PreComp_
+const QDir thumbnailsParentDir {
+    QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
 
-// standard
-#include <cinttypes>
-#include <cmath>
-#include <iomanip>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <unordered_map>
+const QDir thumbnailsDir {thumbnailsParentDir.absoluteFilePath(defaultThumbnailName)};
 
-// boost
-#include <boost/algorithm/string/predicate.hpp>
+StartExport void createThumbnailsDir();
 
-// fmt
-#include <fmt/format.h>
+StartExport QString getMD5Hash(const QString& path);
 
-// Qt (should never include GUI files, only QtCore)
-#include <QByteArray>
-#include <QCryptographicHash>
-#include <QDateTime>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <QMetaObject>
-#include <QMutexLocker>
-#include <QObject>
-#include <QProcess>
-#include <QStandardPaths>
-#include <QString>
-#include <QThreadPool>
-#include <QTimeZone>
-#include <QTimer>
-#include <QUrl>
+StartExport QString getPathToCachedThumbnail(const QString& path);
 
-#endif  // _PreComp_
-#endif  // START_PRECOMPILED_H
+StartExport bool useCachedThumbnail(const QString& image, const QString& project);
+
+StartExport std::string humanReadableSize(std::uint64_t bytes);
+
+StartExport std::string getLastModifiedAsString(const Base::FileInfo& file);
+
+}  // namespace Start
+
+#endif  // FREECAD_FILEUTILITIES_H
