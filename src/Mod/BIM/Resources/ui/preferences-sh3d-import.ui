@@ -43,16 +43,15 @@
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_2">
+              <widget class="Gui::PrefCheckBox" name="checkBox_debugGeometry">
                 <property name="toolTip">
-                  <string>Shows verbose debug messages during import of SH3D files in the Report
-                    view panel. Log level message must be allowed for this setting to have an effect.</string>
+                  <string>DEBUG: keep the construction geometries in the ActiveDocument. Useful when debugging a failed import</string>
                 </property>
                 <property name="text">
-                  <string>Show debug messages</string>
+                  <string>Debug Geometry</string>
                 </property>
                 <property name="prefEntry" stdset="0">
-                  <cstring>sh3dDebug</cstring>
+                  <cstring>sh3dDebugGeometry</cstring>
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
