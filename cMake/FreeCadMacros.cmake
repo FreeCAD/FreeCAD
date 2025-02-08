@@ -125,6 +125,7 @@ ENDMACRO(fc_target_copy_resource_flat)
 
 # It would be a bit cleaner to generate these files in ${CMAKE_CURRENT_BINARY_DIR}
 
+# To be removed once all instances are migrated to generate_from_py
 macro(generate_from_xml BASE_NAME)
     set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
     file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
@@ -153,6 +154,35 @@ macro(generate_from_xml BASE_NAME)
         COMMENT "Building ${BASE_NAME}.h/.cpp out of ${BASE_NAME}.xml"
     )
 endmacro(generate_from_xml)
+
+macro(generate_from_py BASE_NAME)
+    set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
+    file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
+    file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.pyi" SOURCE_NATIVE_PATH)
+
+    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp" )
+
+    # BASE_NAME may include also a path name
+    GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
+    file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
+    if(NOT EXISTS "${SOURCE_CPP_PATH}")
+        # assures the source files are generated at least once
+        message(STATUS "${SOURCE_CPP_PATH}")
+        execute_process(COMMAND "${PYTHON_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
+                        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" COMMAND_ERROR_IS_FATAL ANY
+        )
+    endif()
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}_.h" "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}_.cpp"
+        COMMAND ${PYTHON_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.pyi
+        MAIN_DEPENDENCY "${BASE_NAME}.pyi"
+        DEPENDS
+        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"
+        "${TOOL_PATH}"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        COMMENT "Building ${BASE_NAME}.h/.cpp out of ${BASE_NAME}.pyi"
+    )
+endmacro(generate_from_py)
 
 macro(generate_embed_from_py BASE_NAME OUTPUT_FILE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
