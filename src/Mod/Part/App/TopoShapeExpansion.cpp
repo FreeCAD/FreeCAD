@@ -2203,8 +2203,8 @@ TopoShape& TopoShape::makeElementRuledSurface(const std::vector<TopoShape>& shap
     // if both shapes are sub-elements of one common shape then the fill
     // algorithm leads to problems if the shape has set a placement. The
     // workaround is to copy the sub-shape
-    S1 = S1.makeElementCopy();
-    S2 = S2.makeElementCopy();
+    S1.setTransform(S1.getTransform());
+    S2.setTransform(S2.getTransform());
 
     if (orientation == 0) {
         // Automatic
@@ -3427,7 +3427,7 @@ TopoShape::makeElementCopy(const TopoShape& shape, const char* op, bool copyGeom
 
     TopoShape tmp(shape);
     tmp.setShape(BRepBuilderAPI_Copy(shape.getShape(), copyGeom, copyMesh).Shape(), false);
-    tmp.setTransform(shape.getTransform());
+
     if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
         initCache();

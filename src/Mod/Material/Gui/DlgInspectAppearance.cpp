@@ -29,7 +29,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderDocumentObject.h>
 

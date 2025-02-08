@@ -33,7 +33,7 @@
 
 #include <App/Document.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include <Mod/Fem/App/FemConstraintBearing.h>
 #include <Mod/Fem/App/FemTools.h>

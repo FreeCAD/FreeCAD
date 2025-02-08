@@ -556,19 +556,6 @@ void QGIDatumLabel::setToleranceString()
     updateFrameRect();
 }
 
-void QGIDatumLabel::setUnitString(QString text)
-{
-    prepareGeometryChange();
-    if (text.isEmpty()) {
-        m_unitText->hide();
-    }
-    else {
-        m_unitText->setPlainText(text);
-        m_unitText->show();
-    }
-    updateFrameRect();
-}
-
 
 int QGIDatumLabel::getPrecision()
 {

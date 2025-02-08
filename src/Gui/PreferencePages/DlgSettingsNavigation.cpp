@@ -34,7 +34,7 @@
 #include <Base/Tools.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DSettings.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 

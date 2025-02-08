@@ -24,7 +24,7 @@
 #ifndef GUI_NAVIGATIONANIMATION_H
 #define GUI_NAVIGATIONANIMATION_H
 
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <QVariantAnimation>

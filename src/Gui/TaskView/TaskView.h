@@ -28,7 +28,7 @@
 #include <QScrollArea>
 
 #include <Gui/QSint/include/QSint>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include "TaskWatcher.h"
 
 

@@ -255,7 +255,7 @@ void MaterialTreeWidget::editorClicked(bool checked)
         setMaterial(material->getUUID());
     }
 
-    // Gui::Application::Instance->commandManager().runCommandByName("Materials_Edit");
+    // Gui::Application::Instance->commandManager().runCommandByName("Material_Edit");
     // Toggle the open state
     // setExpanded(!m_expanded);
 }

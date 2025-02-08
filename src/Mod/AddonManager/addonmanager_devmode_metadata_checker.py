@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Metadata validation functions """
+"""Metadata validation functions"""
 
 from typing import List
 

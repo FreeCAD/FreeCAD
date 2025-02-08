@@ -45,8 +45,8 @@
 #include <Gui/Notifications.h>
 #include <Gui/PrefWidgets.h>
 #include <Gui/QuantitySpinBox.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/Gui/AttacherTexts.h>

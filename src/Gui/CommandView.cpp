@@ -68,7 +68,7 @@
 #include "Inventor/SoAxisCrossKit.h"
 #include "Macro.h"
 #include "MainWindow.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "OverlayParams.h"
 #include "OverlayManager.h"
 #include "SceneInspector.h"

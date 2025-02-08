@@ -33,7 +33,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/LineGenerator.h>
 

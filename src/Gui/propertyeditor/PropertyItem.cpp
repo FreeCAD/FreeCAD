@@ -58,7 +58,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Placement.h>
 #include <Gui/QuantitySpinBox.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/SpinBox.h>
 #include <Gui/VectorListEditor.h>
 #include <Gui/ViewProviderDocumentObject.h>

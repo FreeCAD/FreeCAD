@@ -40,8 +40,8 @@
 #include <Base/Parameter.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
-#include <Gui/NavigationStyle.h>
-#include <Gui/Selection.h>
+#include <Gui/Navigation/NavigationStyle.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 

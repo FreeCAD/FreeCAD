@@ -107,7 +107,7 @@
 #include "MainWindow.h"
 #include "Multisample.h"
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "Selection.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
@@ -126,8 +126,8 @@
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderLink.h"
-#include "NavigationAnimator.h"
-#include "NavigationAnimation.h"
+#include "Navigation/NavigationAnimator.h"
+#include "Navigation/NavigationAnimation.h"
 #include "Utilities.h"
 
 #include <Inventor/So3DAnnotation.h>
@@ -486,8 +486,6 @@ void View3DInventorViewer::init()
     // increase refcount before passing it to setScenegraph(), to avoid
     // premature destruction
     pcViewProviderRoot->ref();
-    // is not really working with Coin3D.
-    //redrawOverlayOnSelectionChange(pcSelection);
     setSceneGraph(pcViewProviderRoot);
     // Event callback node
     pEventCallback = new SoEventCallback();
@@ -569,7 +567,11 @@ void View3DInventorViewer::init()
     //filter a few qt events
     viewerEventFilter = new ViewerEventFilter;
     installEventFilter(viewerEventFilter);
-    getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+    if (hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
+    }
     getEventFilter()->registerInputDevice(new GesturesDevice(this));
 
     try{
@@ -588,6 +590,8 @@ void View3DInventorViewer::init()
 
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
+
+    updateColors();
 }
 
 View3DInventorViewer::~View3DInventorViewer()
@@ -804,7 +808,7 @@ bool View3DInventorViewer::searchNode(SoNode* node) const
     searchAction.setInterest(SoSearchAction::FIRST);
     searchAction.apply(this->getSceneGraph());
     SoPath* selectionPath = searchAction.getPath();
-    return selectionPath ? true : false;
+    return selectionPath != nullptr;
 }
 
 bool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
@@ -3706,6 +3710,25 @@ void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
     recolor(ZPM_PIXEL_MASK, ZPM_pixel_data, ZPM_WIDTH, ZPM_HEIGHT, ZPM_BYTES_PER_PIXEL);
 }
 
+void View3DInventorViewer::updateColors()
+{
+    unsigned long colorLong;
+
+    colorLong = Gui::ViewParams::instance()->getAxisXColor();
+    m_xColor = App::Color(static_cast<uint32_t>(colorLong));
+    colorLong = Gui::ViewParams::instance()->getAxisYColor();
+    m_yColor = App::Color(static_cast<uint32_t>(colorLong));
+    colorLong = Gui::ViewParams::instance()->getAxisZColor();
+    m_zColor = App::Color(static_cast<uint32_t>(colorLong));
+
+    naviCube->updateColors();
+
+    if(hasAxisCross()) {
+        setAxisCross(false);  // Force redraw
+        setAxisCross(true);
+    }
+}
+
 void View3DInventorViewer::drawAxisCross()
 {
     // NOLINTBEGIN
@@ -3813,10 +3836,10 @@ void View3DInventorViewer::drawAxisCross()
             glPushMatrix();
 
             if (i == XAXIS) {                        // X axis.
-                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
-                    glColor3f(0.500F, 0.5F, 0.5F);
+                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)  // What is this
+                    glColor3f(0.500F, 0.5F, 0.5F);  // Why different colors??
                 else
-                    glColor3f(0.500F, 0.125F, 0.125F);
+                    glColor3f(m_xColor.r, m_xColor.g, m_xColor.b);
             }
             else if (i == YAXIS) {                   // Y axis.
                 glRotatef(90, 0, 0, 1);
@@ -3824,7 +3847,7 @@ void View3DInventorViewer::drawAxisCross()
                 if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
                     glColor3f(0.400F, 0.4F, 0.4F);
                 else
-                    glColor3f(0.125F, 0.500F, 0.125F);
+                    glColor3f(m_yColor.r, m_yColor.g, m_yColor.b);
             }
             else {                                        // Z axis.
                 glRotatef(-90, 0, 1, 0);
@@ -3832,7 +3855,7 @@ void View3DInventorViewer::drawAxisCross()
                 if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
                     glColor3f(0.300F, 0.3F, 0.3F);
                 else
-                    glColor3f(0.125F, 0.125F, 0.500F);
+                    glColor3f(m_zColor.r, m_zColor.g, m_zColor.b);
             }
 
             drawArrow();

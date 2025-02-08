@@ -123,6 +123,7 @@ public:
   ~PrefSpinBox() override;
 
 protected:
+    void wheelEvent(QWheelEvent *event) override;
   // restore from/save to parameters
   void restorePreferences() override;
   void savePreferences() override;
@@ -143,6 +144,7 @@ public:
   ~PrefDoubleSpinBox() override;
 
 protected:
+    void wheelEvent(QWheelEvent *event) override;
   // restore from/save to parameters
   void restorePreferences() override;
   void savePreferences() override;
@@ -236,6 +238,7 @@ public:
   ~PrefComboBox() override;
 
 protected:
+    void wheelEvent(QWheelEvent *event) override;
   // restore from/save to parameters
   void restorePreferences() override;
   void savePreferences() override;
@@ -351,6 +354,7 @@ public:
     ~PrefUnitSpinBox() override;
 
 protected:
+    void wheelEvent(QWheelEvent *event) override;
     // restore from/save to parameters
     void restorePreferences() override;
     void savePreferences() override;
@@ -391,6 +395,7 @@ public:
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event) override;
+    void wheelEvent(QWheelEvent *event) override;
     // restore from/save to parameters
     void restorePreferences() override;
     void savePreferences() override;

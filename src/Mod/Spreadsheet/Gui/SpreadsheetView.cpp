@@ -30,6 +30,7 @@
 #include <QTextDocument>
 #endif
 
+#include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
@@ -307,6 +308,7 @@ void SheetView::printPdf()
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }

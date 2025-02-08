@@ -50,6 +50,8 @@
 # include <Inventor/SoPickedPoint.h>
 #endif
 
+
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <Base/Builder3D.h>
@@ -65,7 +67,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCDB.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCVectorizeSVGAction.h"
@@ -257,6 +259,7 @@ void View3DInventor::printPdf()
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }

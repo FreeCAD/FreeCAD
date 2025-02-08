@@ -76,6 +76,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     ui->setupUi(this);
 
     m_page = view->findParentPage();
+    m_viewName = view->getNameInDocument();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
     auto* dvp = static_cast<ViewProviderPage*>(vp);
@@ -797,8 +798,13 @@ bool TaskProjGroup::apply()
 
 bool TaskProjGroup::accept()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(view->getDocument());
+    Gui::Document* doc = Gui::Application::Instance->getDocument(m_page->getDocument());
     if (!doc) {
+        return false;
+    }
+    auto viewCheck = m_page->getDocument()->getObject(m_viewName.c_str());
+    if (!viewCheck) {
+        // view has been deleted while this dialog is open
         return false;
     }
 
@@ -814,8 +820,14 @@ bool TaskProjGroup::accept()
 
 bool TaskProjGroup::reject()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(view->getDocument());
+    Gui::Document* doc = Gui::Application::Instance->getDocument(m_page->getDocument());
     if (!doc) {
+        return false;
+    }
+
+    auto viewCheck = m_page->getDocument()->getObject(m_viewName.c_str());
+    if (!viewCheck) {
+        // view has been deleted while this dialog is open
         return false;
     }
 

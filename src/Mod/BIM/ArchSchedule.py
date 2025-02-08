@@ -271,7 +271,10 @@ class _ArchSchedule:
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
                         objs = objs[0].Group
                 objs = Draft.get_group_contents(objs)
-                objs = Arch.pruneIncluded(objs,strict=True,silent=True)
+                objs = self.expandArrays(objs)
+                # Remove included objects (e.g. walls that are part of another wall,
+                # base geometry, etc)
+                objs = Arch.pruneIncluded(objs, strict=True, silent=True)
                 # Remove all schedules and spreadsheets:
                 objs = [o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]]
 
@@ -580,6 +583,51 @@ class _ArchSchedule:
         if state:
             self.Type = state
 
+    def getIfcClass(self, obj):
+        """gets the IFC class of this object"""
+
+        if hasattr(obj, "IfcType"):
+            return obj.IfcType
+        elif hasattr(obj, "IfcRole"):
+            return obj.IfcRole
+        elif hasattr(obj, "IfcClass"):
+            return obj.IfcClass
+        else:
+            return None
+
+    def getArray(self, obj):
+        "returns a count number if this object needs to be duplicated"
+
+        import Draft
+
+        elementCount = 0
+
+        # The given object can belong to multiple arrays
+        # o is a potential parent array of the given object
+        for o in obj.InList:
+            if Draft.getType(o) == "Array":
+                elementCount += o.Count
+
+        return elementCount
+
+    def expandArrays(self, objs):
+        """Expands array elements in the given list of objects"""
+
+        expandedobjs = []
+
+        for obj in objs:
+            ifcClass = self.getIfcClass(obj)
+            # This filters out the array object itself, which has no IFC class,
+            # but leaves the array elements, which do have an IFC class.
+            if ifcClass:
+                expandedobjs.append(obj)
+                # If the object is in an array, add it and the rest of its elements
+                # to the list.
+                array = self.getArray(obj)
+                for i in range(1, array): # The first element (0) was already added
+                    expandedobjs.append(obj)
+
+        return expandedobjs
 
 class _ViewProviderArchSchedule:
 
