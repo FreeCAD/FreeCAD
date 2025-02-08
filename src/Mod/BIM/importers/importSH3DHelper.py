@@ -2863,7 +2863,7 @@ def set_color_and_transparency(obj, color):
         mat.DiffuseColor = rgb_color
         mat.AmbientColor = rgb_color
         mat.SpecularColor = rgb_color
-        mat.EmissiveColor = (128,128,128,1)
+        mat.EmissiveColor = (0.0,0.0,0.0,1.0)
         obj.ViewObject.ShapeAppearance = (mat)
         return
     if hasattr(view_object, "ShapeColor"):
@@ -2914,13 +2914,11 @@ def _color_section(section):
 def set_shininess(obj, shininess):
     # TODO: it seems a shininess of 0 means the wall looses its
     # color. We'll leave it at the default setting until a later time
-    return
     if not App.GuiUp or not shininess:
         return
     if hasattr(obj.ViewObject, "ShapeAppearance"):
-        mat = obj.ViewObject.ShapeAppearance[0]
-        mat.Shininess = float(shininess)/100
-        obj.ViewObject.ShapeAppearance = mat
+        obj.ViewObject.ShapeAppearance[0].Shininess = float(shininess)
+        # obj.ViewObject.ShapeAppearance = mat
 
 
 def percent_sh2fc(percent):
