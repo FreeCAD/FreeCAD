@@ -174,6 +174,9 @@ inline XStr::~XStr()
     XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm);
 }
 
+// Uses the compiler to create a cache of transcoded string literals so that each subsequent call
+// can re-use the data from the lambda's initial creation. Permits the same usage as 
+// XStr("literal").unicodeForm()
 #define XStrLiteral(literal)                                                                       \
     ([]() -> const XStr& {                                                                         \
         static const XStr str {literal};                                                           \
@@ -216,6 +219,9 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
 
 inline XUTF8Str::~XUTF8Str() = default;
 
+// Uses the compiler to create a cache of transcoded string literals so that each subsequent call
+// can re-use the data from the lambda's initial creation. Permits the same usage as 
+// XStr("literal").unicodeForm()
 #define XUTF8StrLiteral(literal)                                                                   \
     ([]() -> const XUTF8Str& {                                                                     \
         static const XUTF8Str str {literal};                                                       \
