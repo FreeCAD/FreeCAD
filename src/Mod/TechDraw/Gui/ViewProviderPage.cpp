@@ -291,21 +291,25 @@ void ViewProviderPage::hide(void)
 bool ViewProviderPage::showMDIViewPage()
 {
     if (m_mdiView.isNull()) {
+        // if our tab has been closed, or if this is first time
         createMDIViewPage();
         m_graphicsScene->addChildrenToPage();
         m_graphicsScene->updateTemplate(true);
         m_graphicsScene->redrawAllViews();
         m_graphicsScene->fixOrphans(true);
+
+        m_mdiView->viewAll();
+        m_mdiView->showMaximized();
     }
     else {
+        // we already have a tab, so just tidy up and switch to it
         m_graphicsScene->redrawAllViews();
         m_graphicsScene->fixOrphans(true);
         m_graphicsView->update();
+        Gui::getMainWindow()->setActiveWindow(m_mdiView);
     }
-    m_graphicsView->centerOnPage();
 
-    m_mdiView->viewAll();
-    m_mdiView->showMaximized();
+    m_graphicsView->centerOnPage();
 
     setGrid();
 
