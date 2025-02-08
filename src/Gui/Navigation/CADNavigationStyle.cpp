@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,10 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
 #endif
 
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
 
 
@@ -33,38 +34,35 @@ using namespace Gui;
 
 // ----------------------------------------------------------------------------------
 
-/* TRANSLATOR Gui::TouchpadNavigationStyle */
+/* TRANSLATOR Gui::CADNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::TouchpadNavigationStyle, Gui::UserNavigationStyle)
+TYPESYSTEM_SOURCE(Gui::CADNavigationStyle, Gui::UserNavigationStyle)
 
-TouchpadNavigationStyle::TouchpadNavigationStyle() = default;
+CADNavigationStyle::CADNavigationStyle() : lockButton1(false)
+{
+}
 
-TouchpadNavigationStyle::~TouchpadNavigationStyle() = default;
+CADNavigationStyle::~CADNavigationStyle() = default;
 
-const char* TouchpadNavigationStyle::mouseButtons(ViewerMode mode)
+const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
         return QT_TR_NOOP("Press left mouse button");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press SHIFT button");
+        return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Press ALT button");
+        return QT_TR_NOOP("Press middle+left or middle+right button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Press CTRL and SHIFT buttons");
+        return QT_TR_NOOP("Scroll middle mouse button or keep middle button depressed\n"
+                          "while doing a left or right click and move the mouse up or down");
     default:
         return "No description";
     }
 }
 
-SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
+SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
-    // Events when in "ready-to-seek" mode are ignored, except those
-    // which influence the seek mode itself -- these are handled further
-    // up the inheritance hierarchy.
-    if (this->isSeekMode()) {
-        return inherited::processSoEvent(ev);
-    }
     // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
@@ -100,13 +98,13 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const auto event = static_cast<const SoKeyboardEvent *>(ev);
+        const auto * const event = static_cast<const SoKeyboardEvent *>(ev);
         processed = processKeyboardEvent(event);
     }
 
     // Mouse Button / Spaceball Button handling
     if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const auto event = (const SoMouseButtonEvent *) ev;
+        const auto * const event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -127,6 +125,14 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->centerTime = ev->getTime();
                 processed = true;
             }
+            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
+                SbTime tmp = (ev->getTime() - this->centerTime);
+                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
+                if (tmp.getValue() < dci) {
+                    newmode = NavigationStyle::ZOOMING;
+                }
+                processed = true;
+            }
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                 processed = true;
             }
@@ -143,7 +149,7 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (!press && (hasDragged || hasPanned || hasZoomed)) {
                 processed = true;
             }
-            else if (!press && !viewer->isEditing()) {
+            if (!press && !viewer->isEditing()) {
                 if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
@@ -160,7 +166,32 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->centerTime = ev->getTime();
                 processed = true;
             }
+            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
+                SbTime tmp = (ev->getTime() - this->centerTime);
+                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
+                if (tmp.getValue() < dci) {
+                    newmode = NavigationStyle::ZOOMING;
+                }
+                processed = true;
+            }
             this->button2down = press;
+            break;
+        case SoMouseButtonEvent::BUTTON3:
+            if (press) {
+                this->centerTime = ev->getTime();
+                setupPanningPlane(getCamera());
+                this->lockrecenter = false;
+            }
+            else {
+                SbTime tmp = (ev->getTime() - this->centerTime);
+                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
+                // is it just a middle click?
+                if (tmp.getValue() < dci && !this->lockrecenter) {
+                    lookAtPoint(pos);
+                    processed = true;
+                }
+            }
+            this->button3down = press;
             break;
         default:
             break;
@@ -170,17 +201,14 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
-        const auto event = (const SoLocation2Event *) ev;
+        const auto * const event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::PANNING) {
-            if (!blockPan) {
-                float ratio = vp.getViewportAspectRatio();
-                panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
-            }
-            blockPan = false;
+            float ratio = vp.getViewportAspectRatio();
+            panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
@@ -193,7 +221,7 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const auto event = static_cast<const SoMotion3Event *>(ev);
+        const auto * const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -201,68 +229,83 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     enum {
         BUTTON1DOWN = 1 << 0,
-        BUTTON2DOWN = 1 << 1,
+        BUTTON3DOWN = 1 << 1,
         CTRLDOWN =    1 << 2,
         SHIFTDOWN =   1 << 3,
-        ALTDOWN =     1 << 4
+        BUTTON2DOWN = 1 << 4
     };
     unsigned int combo =
         (this->button1down ? BUTTON1DOWN : 0) |
         (this->button2down ? BUTTON2DOWN : 0) |
+        (this->button3down ? BUTTON3DOWN : 0) |
         (this->ctrldown ? CTRLDOWN : 0) |
-        (this->shiftdown ? SHIFTDOWN : 0) |
-        (this->altdown ? ALTDOWN : 0);
+        (this->shiftdown ? SHIFTDOWN : 0);
 
     switch (combo) {
     case 0:
         if (curmode == NavigationStyle::SPINNING) { break; }
         newmode = NavigationStyle::IDLE;
+        // The left mouse button has been released right now
+        if (this->lockButton1) {
+            this->lockButton1 = false;
+            if (curmode != NavigationStyle::SELECTION) {
+                processed = true;
+            }
+        }
         break;
     case BUTTON1DOWN:
         // make sure not to change the selection when stopping spinning
-        if (curmode == NavigationStyle::SPINNING)
+        if (curmode == NavigationStyle::SPINNING
+            || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
             newmode = NavigationStyle::IDLE;
-        else
-            newmode = NavigationStyle::SELECTION;
-        break;
-    case CTRLDOWN:
-        newmode = NavigationStyle::IDLE;
-        break;
-    case SHIFTDOWN:
-        // Shift + left mouse click enables dragging.
-        // If the mouse is released the event should not be forwarded to the base
-        // class that eventually performs a selection.
-        if (newmode == NavigationStyle::DRAGGING) {
-            processed = true;
         }
+        else {
+            newmode = NavigationStyle::SELECTION;
+        }
+        break;
+    case BUTTON3DOWN:
+        if (curmode == NavigationStyle::SPINNING) { break; }
+        else if (newmode == NavigationStyle::ZOOMING) { break; }
         newmode = NavigationStyle::PANNING;
 
-        if (currentmode != NavigationStyle::PANNING) {
-            blockPan = true;
+        if (curmode == NavigationStyle::DRAGGING) {
+            if (doSpin()) {
+                newmode = NavigationStyle::SPINNING;
+                break;
+            }
         }
         break;
-    case ALTDOWN:
+    case CTRLDOWN|BUTTON2DOWN:
+        newmode = NavigationStyle::PANNING;
+        break;
+    case SHIFTDOWN|BUTTON2DOWN:
         if (newmode != NavigationStyle::DRAGGING) {
             saveCursorPosition(ev);
         }
         newmode = NavigationStyle::DRAGGING;
         break;
-    case CTRLDOWN|SHIFTDOWN:
-    case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
-        // Left mouse button doesn't change the zoom
-        // behaviour but when pressing or releasing it then do not forward the
-        // event to the base class that eventually performs a selection.
-        if (newmode == NavigationStyle::ZOOMING) {
-            processed = true;
-        }
+    case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;
+
+        // There are many cases we don't handle that just falls through to
+        // the default case, like SHIFTDOWN, CTRLDOWN, CTRLDOWN|SHIFTDOWN,
+        // SHIFTDOWN|BUTTON3DOWN, SHIFTDOWN|CTRLDOWN|BUTTON3DOWN, etc.
+        // This is a feature, not a bug. :-)
+        //
+        // mortene.
+
     default:
+        // The default will make a spin stop and otherwise not do
+        // anything.
         break;
     }
 
+    // If the selection button is pressed together with another button
+    // and the other button is released, don't switch to selection mode.
     // Process when selection button is pressed together with other buttons that could trigger different actions.
-    if (this->button1down && (this->button2down || this->button3down || this->altdown)) {
+    if (this->button1down && (this->button2down || this->button3down)) {
+        this->lockButton1 = true;
         processed = true;
     }
 
@@ -280,5 +323,6 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
     // hierarchy.
     if (!processed)
         processed = inherited::processSoEvent(ev);
+
     return processed;
 }

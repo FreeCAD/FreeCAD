@@ -24,7 +24,7 @@
 #ifndef GUI_NAVIGATIONANIMATOR_H
 #define GUI_NAVIGATIONANIMATOR_H
 
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include <QObject>
 #include <memory>
 

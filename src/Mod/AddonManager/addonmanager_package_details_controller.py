@@ -248,18 +248,6 @@ class PackageDetailsController(QtCore.QObject):
     def branch_changed(self, old_branch: str, name: str) -> None:
         """Displays a dialog confirming the branch changed, and tries to access the
         metadata file from that branch."""
-        QtWidgets.QMessageBox.information(
-            self.ui,
-            translate("AddonsInstaller", "Success"),
-            translate(
-                "AddonsInstaller",
-                "Branch change succeeded.\n"
-                "Moved\n"
-                "from: {}\n"
-                "to: {}\n"
-                "Please restart to use the new version.",
-            ).format(old_branch, name),
-        )
         # See if this branch has a package.xml file:
         basedir = fci.getUserAppDataDir()
         path_to_metadata = os.path.join(basedir, "Mod", self.addon.name, "package.xml")
@@ -275,6 +263,18 @@ class PackageDetailsController(QtCore.QObject):
         self.addon.set_status(Addon.Status.PENDING_RESTART)
         self.ui.set_new_branch(name)
         self.update_status.emit(self.addon)
+        QtWidgets.QMessageBox.information(
+            self.ui,
+            translate("AddonsInstaller", "Success"),
+            translate(
+                "AddonsInstaller",
+                "Branch change succeeded.\n"
+                "Moved\n"
+                "from: {}\n"
+                "to: {}\n"
+                "Please restart to use the new version.",
+            ).format(old_branch, name),
+        )
 
     def display_repo_status(self, addon):
         self.update_status.emit(self.addon)
