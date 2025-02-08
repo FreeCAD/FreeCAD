@@ -149,6 +149,8 @@ QPixmap FileCardDelegate::generateThumbnail(const QString& path) const
     auto thumbnailSize =
         static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
     if (path.endsWith(QLatin1String(".fcstd"), Qt::CaseSensitivity::CaseInsensitive)) {
+        // This is a fallback, the model will have pulled the thumbnail out of the FCStd file if it
+        // existed.
         QImageReader reader(QLatin1String(":/icons/freecad-doc.svg"));
         reader.setScaledSize({thumbnailSize, thumbnailSize});
         return QPixmap::fromImage(reader.read());
