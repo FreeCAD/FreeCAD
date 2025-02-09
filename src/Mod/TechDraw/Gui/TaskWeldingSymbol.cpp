@@ -371,7 +371,7 @@ void TaskWeldingSymbol::onWeldingChanged()
 void TaskWeldingSymbol::onDirectorySelected(const QString& newDir)
 {
 //    Base::Console().Message("TWS::onDirectorySelected(%s)\n", qPrintable(newDir));
-    m_currDir = newDir + QString::fromUtf8("/");
+    m_currDir = newDir + QStringLiteral("/");
 }
 
 void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,

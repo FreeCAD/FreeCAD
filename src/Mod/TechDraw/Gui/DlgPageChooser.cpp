@@ -73,7 +73,7 @@ void DlgPageChooser::fillList(std::vector<std::string> labels, std::vector<std::
     for (; i < labelCount; i++) {
         qLabel = QString::fromStdString(labels[i]);
         qName = QString::fromStdString(names[i]);
-        qText = QString::fromUtf8("%1 (%2)").arg(qLabel, qName);
+        qText = QStringLiteral("%1 (%2)").arg(qLabel, qName);
         item = new QListWidgetItem(qText, ui->lwPages);
         item->setData(Qt::UserRole, qName);
     }
