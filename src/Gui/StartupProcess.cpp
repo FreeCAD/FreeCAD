@@ -135,7 +135,7 @@ void StartupProcess::setStyleSheetPaths()
         (App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
             << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
             << QLatin1String(":/stylesheets");
-    QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
+    QDir::setSearchPaths(QStringLiteral("qss"), qssPaths);
     // setup the search paths for Qt overlay style sheets
     QStringList qssOverlayPaths;
     qssOverlayPaths << QString::fromUtf8((App::Application::getUserAppDataDir()
@@ -152,7 +152,7 @@ void StartupProcess::setImagePaths()
     imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())
             << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
             << QLatin1String(":/icons");
-    QDir::setSearchPaths(QString::fromLatin1("images"), imagePaths);
+    QDir::setSearchPaths(QStringLiteral("images"), imagePaths);
 }
 
 void StartupProcess::registerEventType()
@@ -165,7 +165,7 @@ void StartupProcess::setThemePaths()
 {
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
-                            << QString::fromLatin1(":/icons/FreeCAD-default"));
+                            << QStringLiteral(":/icons/FreeCAD-default"));
 #endif
 
     ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(

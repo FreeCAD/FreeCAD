@@ -468,7 +468,7 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
     const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
-    d->info = QString::fromLatin1("Python %1 on %2\n"
+    d->info = QStringLiteral("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
     .arg(QString::fromLatin1(version), QString::fromLatin1(platform));
     d->output = d->info;
@@ -609,7 +609,7 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               if (!inputStrg.isEmpty())
               {
                   d->history.append( QLatin1String("# ") + inputStrg );  //< put commented string to history ...
-                  inputLineBegin.insertText( QString::fromLatin1("# ") ); //< and comment it on console
+                  inputLineBegin.insertText( QStringLiteral("# ") ); //< and comment it on console
                   setTextCursor( inputLineBegin );
                   printPrompt(d->interpreter->hasPendingInput()          //< print adequate prompt
                       ? PythonConsole::Incomplete
@@ -753,10 +753,10 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
       switch (mode)
       {
       case PythonConsole::Incomplete:
-          cursor.insertText(QString::fromLatin1("... "));
+          cursor.insertText(QStringLiteral("... "));
           break;
       case PythonConsole::Complete:
-          cursor.insertText(QString::fromLatin1(">>> "));
+          cursor.insertText(QStringLiteral(">>> "));
           break;
       default:
           break;
@@ -806,7 +806,7 @@ void PythonConsole::runSource(const QString& line)
     }
 
     if (d->interpreter->isOccupied()) {
-        insertPythonError(QString::fromLatin1("Previous command still running!"));
+        insertPythonError(QStringLiteral("Previous command still running!"));
         return;
     }
 
@@ -1000,7 +1000,7 @@ void PythonConsole::dropEvent (QDropEvent * e)
         for (int i=0; i<ctActions; i++) {
             QString action;
             dataStream >> action;
-            printStatement(QString::fromLatin1("Gui.runCommand(\"%1\")").arg(action));
+            printStatement(QStringLiteral("Gui.runCommand(\"%1\")").arg(action));
         }
 
         e->setDropAction(Qt::CopyAction);
@@ -1305,7 +1305,7 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
     a = menu.addAction(tr("&Copy"), this, &PythonConsole::copy);
-    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+C")));
+    a->setShortcut(QKeySequence(QStringLiteral("CTRL+C")));
     a->setEnabled(textCursor().hasSelection());
 
     a = menu.addAction(tr("&Copy command"), this, &PythonConsole::onCopyCommand);
@@ -1325,12 +1325,12 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     menu.addSeparator();
 
     a = menu.addAction(tr("&Paste"), this, &PythonConsole::paste);
-    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+V")));
+    a->setShortcut(QKeySequence(QStringLiteral("CTRL+V")));
     const QMimeData *md = QApplication::clipboard()->mimeData();
     a->setEnabled( mayPasteHere && md && canInsertFromMimeData(md));
 
     a = menu.addAction(tr("Select All"), this, &PythonConsole::selectAll);
-    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+A")));
+    a->setShortcut(QKeySequence(QStringLiteral("CTRL+A")));
     a->setEnabled(!document()->isEmpty());
 
     a = menu.addAction(tr("Clear console"), this, &PythonConsole::onClearConsole);
@@ -1365,7 +1365,7 @@ void PythonConsole::onSaveHistoryAs()
     QString cMacroPath = QString::fromUtf8(getDefaultParameter()->GetGroup( "Macro" )->
         GetASCII("MacroPath",App::Application::getUserMacroDir().c_str()).c_str());
     QString fn = FileDialog::getSaveFileName(this, tr("Save History"), cMacroPath,
-        QString::fromLatin1("%1 (*.FCMacro *.py)").arg(tr("Macro Files")));
+        QStringLiteral("%1 (*.FCMacro *.py)").arg(tr("Macro Files")));
     if (!fn.isEmpty()) {
         int dot = fn.indexOf(QLatin1Char('.'));
         if (dot != -1) {
@@ -1385,7 +1385,7 @@ void PythonConsole::onSaveHistoryAs()
 void PythonConsole::onInsertFileName()
 {
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), tr("Insert file name"), QString(),
-        QString::fromLatin1("%1 (*.*)").arg(tr("All Files")));
+        QStringLiteral("%1 (*.*)").arg(tr("All Files")));
     if ( !fn.isEmpty() ) {
         insertPlainText(fn);
     }

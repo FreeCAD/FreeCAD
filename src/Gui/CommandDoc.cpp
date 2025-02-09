@@ -638,7 +638,7 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
-    QString format = QString::fromLatin1("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
+    QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export graph"), QString(), format);
     if (!fn.isEmpty()) {
         QFile file(fn);
@@ -679,7 +679,7 @@ void StdCmdNew::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmd;
-    cmd = QString::fromLatin1("App.newDocument()");
+    cmd = QStringLiteral("App.newDocument()");
     runCommand(Command::Doc,cmd.toUtf8());
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
 
@@ -1401,7 +1401,7 @@ void StdCmdDelete::activated(int iMsg)
                             else
                                 label = QLatin1String(parent->getNameInDocument());
                             if(parent->Label.getStrValue() != parent->getNameInDocument())
-                                label += QString::fromLatin1(" (%1)").arg(
+                                label += QStringLiteral(" (%1)").arg(
                                         QString::fromUtf8(parent->Label.getValue()));
                             affectedLabels.insert(label);
                             if(affectedLabels.size()>=10) {
@@ -1467,7 +1467,7 @@ void StdCmdDelete::activated(int iMsg)
         e.ReportException();
     } catch (...) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
-                QString::fromLatin1("Unknown error"));
+                QStringLiteral("Unknown error"));
     }
     commitCommand();
     Gui::getMainWindow()->setUpdatesEnabled(true);

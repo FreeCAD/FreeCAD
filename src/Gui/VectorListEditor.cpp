@@ -116,7 +116,7 @@ QVariant VectorTableModel::data(const QModelIndex &index, int role) const
                 d = vectors[r].z;
 
             if (role == Qt::DisplayRole) {
-                QString str = QString::fromLatin1("%1").arg(d, 0, 'f', decimals);
+                QString str = QStringLiteral("%1").arg(d, 0, 'f', decimals);
                 return str;
             }
 

@@ -65,7 +65,7 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
     QStringList formats;
     QList<QByteArray> qtformats = QImageReader::supportedImageFormats();
     for (const auto & it : qtformats) {
-        formats << QString::fromLatin1("*.%1").arg(QLatin1String(it));
+        formats << QStringLiteral("*.%1").arg(QLatin1String(it));
     }
 
     ui->fileChooser->setFilter(tr("Image files (%1)").arg(formats.join(QLatin1String(" "))));

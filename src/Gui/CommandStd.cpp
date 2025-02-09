@@ -358,7 +358,7 @@ void StdCmdRestartInSafeMode::activated(int iMsg)
         {
             QStringList args = QApplication::arguments();
             args.pop_front();
-            auto const safeModeArgument = QString::fromLatin1("--safe-mode");
+            auto const safeModeArgument = QStringLiteral("--safe-mode");
             if (!args.contains(safeModeArgument)) {
                 args.append(safeModeArgument);
             }
@@ -534,7 +534,7 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
 void StdCmdOnlineHelp::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::getMainWindow()->showDocumentation(QString::fromLatin1("Online_Help_Startpage"));
+    Gui::getMainWindow()->showDocumentation(QStringLiteral("Online_Help_Startpage"));
 }
 
 //===========================================================================
@@ -885,8 +885,8 @@ Gui::Action * StdCmdUserEditMode::createAction()
         QAction* act = pcAction->addAction(QString());
         auto modeName = QString::fromStdString(uem.second.first).remove(QChar::fromLatin1('&'));
         act->setCheckable(true);
-        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("Std_UserEditMode")+modeName)));
-        act->setObjectName(QString::fromLatin1("Std_UserEditMode")+modeName);
+        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QStringLiteral("Std_UserEditMode")+modeName)));
+        act->setObjectName(QStringLiteral("Std_UserEditMode")+modeName);
         act->setWhatsThis(QString::fromLatin1(getWhatsThis()));
         act->setToolTip(QString::fromStdString(uem.second.second));
 

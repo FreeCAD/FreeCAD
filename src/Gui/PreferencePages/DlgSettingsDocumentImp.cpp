@@ -48,7 +48,7 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     ui->prefSaveTransaction->hide();
     ui->prefDiscardTransaction->hide();
 
-    QString tip = QString::fromLatin1("<html><head/><body><p>%1</p>"
+    QString tip = QStringLiteral("<html><head/><body><p>%1</p>"
                                       "<p>%2: %Y%m%d-%H%M%S</p>"
                                       "<p>%3: <a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">C++ strftime</a>"
                                       "</p></body></html>").arg(tr("The format of the date to use."), tr("Default"), tr("Format"));
