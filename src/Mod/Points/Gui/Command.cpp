@@ -81,7 +81,7 @@ void CmdPointsImport::activated(int iMsg)
         Gui::getMainWindow(),
         QString(),
         QString(),
-        QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+        QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
             .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
     if (fn.isEmpty()) {
         return;
@@ -170,7 +170,7 @@ void CmdPointsExport::activated(int iMsg)
             Gui::getMainWindow(),
             QString(),
             QString(),
-            QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+            QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
                 .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
         if (fn.isEmpty()) {
             break;
