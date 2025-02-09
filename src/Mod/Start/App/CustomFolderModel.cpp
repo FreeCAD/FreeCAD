@@ -26,13 +26,13 @@
 #include <QDir>
 #endif
 
-#include "AdditionalFolderModel.h"
+#include "CustomFolderModel.h"
 #include <App/Application.h>
 
 using namespace Start;
 
 
-AdditionalFolderModel::AdditionalFolderModel(QObject* parent)
+CustomFolderModel::CustomFolderModel(QObject* parent)
     : DisplayedFilesModel(parent)
 {
     std::string defaultPath = App::GetApplication().Config()["UserHomePath"];
@@ -40,24 +40,30 @@ AdditionalFolderModel::AdditionalFolderModel(QObject* parent)
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
 
-    _additionalFolderDirectory = QDir(QString::fromUtf8(
-        _parameterGroup->GetASCII("AdditionalFolder", defaultPath.c_str()).c_str()));
+    _customFolderDirectory = QDir(QString::fromUtf8(
+        _parameterGroup->GetASCII("CustomFolder", defaultPath.c_str()).c_str()));
 }
 
-void AdditionalFolderModel::loadAdditional()
+void CustomFolderModel::loadAdditional()
 {
     beginResetModel();
     clear();
+<<<<<<< HEAD:src/Mod/Start/App/AdditionalFolderModel.cpp
     if (!_additionalFolderDirectory.isReadable()) {
         Base::Console().Warning(
             "BaseApp/Preferences/Mod/Start/AdditionalFolder: cannot read additional folder %s\n",
             _additionalFolderDirectory.absolutePath().toStdString().c_str());
+=======
+    if (!_customFolderDirectory.isReadable()) {
+        Base::Console().Warning("BaseApp/Preferences/Mod/Start/CustomFolder: cannot read custom folder '%s'\n",
+                                _customFolderDirectory.absolutePath().toStdString().c_str());
+>>>>>>> 292b1352e1 (Rename Additional to Custom folder):src/Mod/Start/App/CustomFolderModel.cpp
     }
     auto entries =
-        _additionalFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
+        _customFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
                                              QDir::SortFlag::Name);
     for (const auto& entry : entries) {
-        addFile(_additionalFolderDirectory.filePath(entry));
+        addFile(_customFolderDirectory.filePath(entry));
     }
     endResetModel();
 }

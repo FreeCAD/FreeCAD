@@ -185,7 +185,7 @@ StartView::StartView(QWidget* parent)
     , _newFileLabel {nullptr}
     , _examplesLabel {nullptr}
     , _recentFilesLabel {nullptr}
-    , _additionalFolderLabel {nullptr}
+    , _customFolderLabel {nullptr}
     , _showOnStartupCheckBox {nullptr}
 {
     setObjectName(QLatin1String("StartView"));
@@ -196,44 +196,41 @@ StartView::StartView(QWidget* parent)
     auto additionalFolder = hGrp->GetASCII("AdditionalFolder", "");  // NOLINT
     auto showCustomFolder = hGrp->GetASCII("ShowCustomFolder", "");  // NOLINT
     auto migrateCustomFolder = false;
-    auto showAdditionalFolder = false;
-    // auto showCustomFolderExists = QDir(QString::fromUtf8(showCustomFolder.c_str()));
-    // auto additionalFolderExists = QDir(QString::fromUtf8(additionalFolder.c_str()));
+    auto showCustomFolder = false;
 
     // Check if the ShowCustomFolder parameter from the old Start Workbench
-    // is set. If set, use its value and migrate it to AdditionalFolder.
-    // If both are defined, AdditionalFolder takes precedence.
-    if (additionalFolder.empty() and showCustomFolder.empty()) {
-        showAdditionalFolder = false;
+    // is set. If set, use its value and migrate it to CustomFolder.
+    // If both are defined, CustomFolder takes precedence.
+    if (customFolder.empty() and legacyCustomFolder.empty()) {
+        showCustomFolder = false;
     }
-    else if (!additionalFolder.empty() and showCustomFolder.empty()) {
-        showAdditionalFolder = true;
+    else if (!customFolder.empty() and legacyCustomFolder.empty()) {
+        showCustomFolder = true;
     }
-    else if (additionalFolder.empty() and !showCustomFolder.empty()) {
-        additionalFolder = showCustomFolder;
-        hGrp->SetASCII("AdditionalFolder", additionalFolder.c_str());
+    else if (customFolder.empty() and !legacyCustomFolder.empty()) {
+        customFolder = legacyCustomFolder;
+        hGrp->SetASCII("CustomFolder", customFolder.c_str());
 
         migrateCustomFolder = true;
-        showAdditionalFolder = true;
+        showCustomFolder = true;
     }
     else {
-
         migrateCustomFolder = true;
-        showAdditionalFolder = true;
+        showCustomFolder = true;
     }
 
     if (migrateCustomFolder) {
         hGrp->RemoveASCII("ShowCustomFolder");
-        Base::Console().Warning("v1.1: renamed ShowCustomFolder parameter to AdditionalFolder\n");
+        Base::Console().Warning("v1.1: renamed ShowCustomFolder parameter to CustomFolder\n");
     }
 
-    if (showAdditionalFolder) {
-        auto additionalFolderDirectory = QDir(QString::fromUtf8(additionalFolder.c_str()));
-        if (!additionalFolderDirectory.exists()) {
+    if (showCustomFolder) {
+        auto customFolderDirectory = QDir(QString::fromUtf8(customFolder.c_str()));
+        if (!customFolderDirectory.exists()) {
             Base::Console().Warning(
-                "BaseApp/Preferences/Mod/Start/AdditionalFolder: '%s' does not exist\n",
-                additionalFolderDirectory.absolutePath().toStdString().c_str());
-            showAdditionalFolder = false;
+                "BaseApp/Preferences/Mod/Start/CustomFolder: '%s' does not exist\n",
+                customFolderDirectory.absolutePath().toStdString().c_str());
+            showCustomFolder = false;
         }
     }
 
@@ -289,14 +286,14 @@ StartView::StartView(QWidget* parent)
     connect(recentFilesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
     documentsContentLayout->addWidget(recentFilesListWidget);
 
-    auto additionalFolderListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
-    additionalFolderListWidget->setVisible(showAdditionalFolder);
-    _additionalFolderLabel = gsl::owner<QLabel*>(new QLabel());
-    _additionalFolderLabel->setVisible(showAdditionalFolder);
-    documentsContentLayout->addWidget(_additionalFolderLabel);
+    auto customFolderListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
+    customFolderListWidget->setVisible(showCustomFolder);
+    _customFolderLabel = gsl::owner<QLabel*>(new QLabel());
+    _customFolderLabel->setVisible(showCustomFolder);
+    documentsContentLayout->addWidget(_customFolderLabel);
 
-    connect(additionalFolderListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
-    documentsContentLayout->addWidget(additionalFolderListWidget);
+    connect(customFolderListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
+    documentsContentLayout->addWidget(customFolderListWidget);
 
     auto examplesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
     examplesListWidget->setVisible(showExamples);
@@ -334,7 +331,7 @@ StartView::StartView(QWidget* parent)
     // Set startup widget according to the first start parameter
     auto firstStart = hGrp->GetBool("FirstStart2024", true);  // NOLINT
     _contents->setCurrentWidget(firstStart ? firstStartScrollArea : documentsWidget);
-    configureAdditionalFolderListWidget(additionalFolderListWidget);
+    configureCustomFolderListWidget(customFolderListWidget);
     configureExamplesListWidget(examplesListWidget);
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
 
@@ -424,11 +421,11 @@ void StartView::configureExamplesListWidget(QListView* examplesListWidget)
 }
 
 
-void StartView::configureAdditionalFolderListWidget(QListView* additionalFolderListWidget)
+void StartView::configureCustomFolderListWidget(QListView* customFolderListWidget)
 {
-    _additionalFolderModel.loadAdditional();
-    additionalFolderListWidget->setModel(&_additionalFolderModel);
-    configureFileCardWidget(additionalFolderListWidget);
+    _customFolderModel.loadAdditional();
+    customFolderListWidget->setModel(&_customFolderModel);
+    configureFileCardWidget(customFolderListWidget);
 }
 
 
@@ -591,7 +588,7 @@ void StartView::retranslateUi()
     _newFileLabel->setText(h1Start + tr("New File") + h1End);
     _examplesLabel->setText(h1Start + tr("Examples") + h1End);
     _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
-    _additionalFolderLabel->setText(h1Start + tr("Custom Folder") + h1End);
+    _customFolderLabel->setText(h1Start + tr("Custom Folder") + h1End);
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _openFirstStart->setText(tr("Open first start setup"));

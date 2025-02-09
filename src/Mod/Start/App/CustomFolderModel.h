@@ -21,8 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_ADDITIONALFOLDERMODEL_H
-#define FREECAD_START_ADDITIONALFOLDERMODEL_H
+#ifndef FREECAD_START_CUSTOMFOLDERMODEL_H
+#define FREECAD_START_CUSTOMFOLDERMODEL_H
 
 #include <QAbstractListModel>
 #include <QDir>
@@ -36,19 +36,19 @@ namespace Start
 
 /// A model for displaying a list of files including a thumbnail or icon, plus various file
 /// statistics.
-class StartExport AdditionalFolderModel: public DisplayedFilesModel
+class StartExport CustomFolderModel: public DisplayedFilesModel
 {
     Q_OBJECT
 public:
-    explicit AdditionalFolderModel(QObject* parent = nullptr);
+    explicit CustomFolderModel(QObject* parent = nullptr);
 
     void loadAdditional();
 
 private:
-    QDir _additionalFolderDirectory;
+    QDir _customFolderDirectory;
     Base::Reference<ParameterGrp> _parameterGroup;
 };
 
 }  // namespace Start
 
-#endif  // FREECAD_START_ADDITIONALFOLDERMODEL_H
+#endif  // FREECAD_START_CUSTOMFOLDERMODEL_H
