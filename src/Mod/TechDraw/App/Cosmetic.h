@@ -81,22 +81,14 @@ public:
     TechDraw::BaseGeomPtr m_geometry;
     LineFormat m_format;
 
-    boost::uuids::uuid getTag() const;
-    std::string getTagAsString() const override;
-
 protected:
-    //Uniqueness
-    void createNewTag();
-    boost::uuids::uuid tag;
-
     Py::Object PythonObject;
-
 };
 
 //********** GeomFormat ********************************************************
 
 // format specifier for geometric edges (Edge5)
-class TechDrawExport GeomFormat: public Base::Persistence
+class TechDrawExport GeomFormat: public Base::Persistence, public TechDraw::Tag
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -123,14 +115,7 @@ public:
     int m_geomIndex;            //connection to edgeGeom
     LineFormat m_format;
 
-    //Uniqueness
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString() const;
-
 protected:
-    void createNewTag();
-
-    boost::uuids::uuid tag;
     Py::Object PythonObject;
 };
 
