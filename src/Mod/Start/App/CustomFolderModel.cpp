@@ -48,16 +48,10 @@ void CustomFolderModel::loadAdditional()
 {
     beginResetModel();
     clear();
-<<<<<<< HEAD:src/Mod/Start/App/AdditionalFolderModel.cpp
-    if (!_additionalFolderDirectory.isReadable()) {
-        Base::Console().Warning(
-            "BaseApp/Preferences/Mod/Start/AdditionalFolder: cannot read additional folder %s\n",
-            _additionalFolderDirectory.absolutePath().toStdString().c_str());
-=======
     if (!_customFolderDirectory.isReadable()) {
-        Base::Console().Warning("BaseApp/Preferences/Mod/Start/CustomFolder: cannot read custom folder '%s'\n",
-                                _customFolderDirectory.absolutePath().toStdString().c_str());
->>>>>>> 292b1352e1 (Rename Additional to Custom folder):src/Mod/Start/App/CustomFolderModel.cpp
+        Base::Console().Warning(
+            "BaseApp/Preferences/Mod/Start/CustomFolder: cannot read custom folder %s\n",
+            _customFolderDirectory.absolutePath().toStdString().c_str());
     }
     auto entries =
         _customFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,

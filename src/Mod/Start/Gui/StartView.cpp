@@ -191,10 +191,10 @@ StartView::StartView(QWidget* parent)
     setObjectName(QLatin1String("StartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);          // NOLINT
-    auto showExamples = hGrp->GetBool("ShowExamples", true);         // NOLINT
-    auto additionalFolder = hGrp->GetASCII("AdditionalFolder", "");  // NOLINT
-    auto showCustomFolder = hGrp->GetASCII("ShowCustomFolder", "");  // NOLINT
+    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);            // NOLINT
+    auto showExamples = hGrp->GetBool("ShowExamples", true);           // NOLINT
+    auto customFolder = hGrp->GetASCII("CustomFolder", "");            // NOLINT
+    auto legacyCustomFolder = hGrp->GetASCII("ShowCustomFolder", "");  // NOLINT
     auto migrateCustomFolder = false;
     auto showCustomFolder = false;
 
