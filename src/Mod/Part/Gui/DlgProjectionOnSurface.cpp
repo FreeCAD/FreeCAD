@@ -1556,8 +1556,7 @@ TaskProjectOnSurface::TaskProjectOnSurface(App::Document* doc)
 {
     setDocumentName(doc->getName());
     doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Project on surface"));
-    auto obj = doc->addObject("Part::ProjectOnSurface", "Projection");
-    auto feature = dynamic_cast<Part::ProjectOnSurface*>(obj);
+    auto feature = doc->addObject<Part::ProjectOnSurface>("Projection");
     widget = new DlgProjectOnSurface(feature);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
                                          widget->windowTitle(), true, nullptr);

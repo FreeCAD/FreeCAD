@@ -295,8 +295,7 @@ void SegmentationManual::createSegment()
             algo.GetFacetsFlag(facets, MeshCore::MeshFacet::SELECTED);
 
             std::unique_ptr<Mesh::MeshObject> segment(mesh.meshFromSegment(facets));
-            Mesh::Feature* feaSegm =
-                static_cast<Mesh::Feature*>(adoc->addObject("Mesh::Feature", "Segment"));
+            auto* feaSegm = adoc->addObject<Mesh::Feature>("Segment");
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaMesh->clearFacetSelection();

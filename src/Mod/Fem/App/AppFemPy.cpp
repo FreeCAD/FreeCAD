@@ -168,8 +168,7 @@ private:
 #ifdef FC_USE_VTK
             if (FemPostPipeline::canRead(file)) {
 
-                FemPostPipeline* pcFeature = static_cast<FemPostPipeline*>(
-                    pcDoc->addObject("Fem::FemPostPipeline", file.fileNamePure().c_str()));
+                auto* pcFeature = pcDoc->addObject<FemPostPipeline>(file.fileNamePure().c_str());
 
                 pcFeature->Label.setValue(file.fileNamePure().c_str());
                 pcFeature->read(file);

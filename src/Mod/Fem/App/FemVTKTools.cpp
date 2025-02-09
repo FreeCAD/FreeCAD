@@ -619,7 +619,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         }
     }
 
-    App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
+    auto* mesh = pcDoc->addObject<Fem::FemMeshObject>("ResultMesh");
     std::unique_ptr<FemMesh> fmesh(new FemMesh());
     importVTKMesh(dataset, fmesh.get());
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValuePtr(fmesh.release());

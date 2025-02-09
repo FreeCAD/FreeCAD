@@ -1630,7 +1630,7 @@ void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh,
     removeFacets(indices);
     auto doc = App::GetApplication().getActiveDocument();
     const char* name = pcObject->getNameInDocument();
-    auto splitMesh = dynamic_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", name));
+    auto splitMesh = doc->addObject<Mesh::Feature>(name);
     // Note: deletes also kernel
     splitMesh->Mesh.setValuePtr(kernel);
     getObject()->purgeTouched();

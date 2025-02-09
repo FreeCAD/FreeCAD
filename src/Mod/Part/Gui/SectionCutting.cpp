@@ -1019,13 +1019,10 @@ std::vector<App::DocumentObject*> createLinks(App::Document* doc, const std::vec
 
         // if the object is part of an App::Part container,
         // the link needs to get the container placement
-        auto parents = itCuts->getInList();
-        if (!parents.empty()) {
+        if (auto parents = itCuts->getInList(); !parents.empty()) {
             for (auto parent : parents) {
                 if (auto pcPartParent = dynamic_cast<App::Part*>(parent)) {
-                    auto placement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
-                                      pcPartParent->getPropertyByName("Placement"));
-                    if (placement) {
+                    if (auto placement = pcPartParent->getPropertyByName<App::PropertyPlacement>("Placement")) {
                         pcLink->Placement.setValue(placement->getValue());
                     }
                 }
@@ -2421,7 +2418,7 @@ App::DocumentObject* SectionCut::createBooleanFragments(
 Part::Compound* SectionCut::createCompound(const std::vector<App::DocumentObject*>& links,
                                            int transparency)
 {
-    auto CutCompoundPart = dynamic_cast<Part::Compound*>(doc->addObject("Part::Compound", CompoundName));
+    auto CutCompoundPart = doc->addObject<Part::Compound>(CompoundName);
     if (!CutCompoundPart) {
         throw Base::RuntimeError((std::string("SectionCut error: ") + std::string(CompoundName)
             + std::string(" could not be added\n")).c_str());

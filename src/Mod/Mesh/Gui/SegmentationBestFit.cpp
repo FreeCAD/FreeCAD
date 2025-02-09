@@ -505,8 +505,7 @@ void SegmentationBestFit::accept()
 
     std::string internalname = "Segments_";
     internalname += myMesh->getNameInDocument();
-    App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(
-        document->addObject("App::DocumentObjectGroup", internalname.c_str()));
+    auto* group = document->addObject<App::DocumentObjectGroup>(internalname.c_str());
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
