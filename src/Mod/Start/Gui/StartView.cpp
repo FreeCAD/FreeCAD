@@ -191,46 +191,30 @@ StartView::StartView(QWidget* parent)
     setObjectName(QLatin1String("StartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);            // NOLINT
-    auto showExamples = hGrp->GetBool("ShowExamples", true);           // NOLINT
-    auto customFolder = hGrp->GetASCII("CustomFolder", "");            // NOLINT
-    auto legacyCustomFolder = hGrp->GetASCII("ShowCustomFolder", "");  // NOLINT
-    auto migrateCustomFolder = false;
-    auto showCustomFolder = false;
+    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);   // NOLINT
+    auto showExamples = hGrp->GetBool("ShowExamples", true);  // NOLINT
 
-    // Check if the ShowCustomFolder parameter from the old Start Workbench
-    // is set. If set, use its value and migrate it to CustomFolder.
-    if (customFolder.empty() && legacyCustomFolder.empty()) {
-        migrateCustomFolder = false;
-        showCustomFolder = false;
-    }
-    else if (!customFolder.empty() && legacyCustomFolder.empty()) {
-        migrateCustomFolder = false;
-        showCustomFolder = true;
-    }
-    else if (customFolder.empty() && !legacyCustomFolder.empty()) {
-        migrateCustomFolder = true;
-        showCustomFolder = true;
-    }
-    else {  // Both are defined, CustomFolder takes precedence
-        legacyCustomFolder = customFolder;
-        migrateCustomFolder = true;
-        showCustomFolder = true;
-    }
-
-    if (migrateCustomFolder) {
-        hGrp->SetASCII("CustomFolder", legacyCustomFolder.c_str());
+    // Migrate legacy property, can be removed in later releases
+    std::string legacyCustomFolder(hGrp->GetASCII("ShowCustomFolder", ""));
+    if (!legacyCustomFolder.empty()) {
+        hGrp->SetASCII("CustomFolder", legacyCustomFolder);
         hGrp->RemoveASCII("ShowCustomFolder");
         Base::Console().Warning("v1.1: renamed ShowCustomFolder parameter to CustomFolder\n");
     }
+    // End of migration code
 
-    if (showCustomFolder) {
+    // Verify that the folder specified in preferences is available before showing it
+    std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
+    bool showCustomFolder = false;
+    if (!customFolder.empty()) {
         auto customFolderDirectory = QDir(QString::fromStdString(customFolder));
-        if (!customFolderDirectory.exists()) {
+        if (customFolderDirectory.exists()) {
+            showCustomFolder = true;
+        }
+        else {
             Base::Console().Warning(
                 "BaseApp/Preferences/Mod/Start/CustomFolder: '%s' does not exist\n",
                 customFolderDirectory.absolutePath().toStdString().c_str());
-            showCustomFolder = false;
         }
     }
 
