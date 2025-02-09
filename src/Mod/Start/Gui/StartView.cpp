@@ -200,26 +200,26 @@ StartView::StartView(QWidget* parent)
 
     // Check if the ShowCustomFolder parameter from the old Start Workbench
     // is set. If set, use its value and migrate it to CustomFolder.
-    // If both are defined, CustomFolder takes precedence.
     if (customFolder.empty() and legacyCustomFolder.empty()) {
+        migrateCustomFolder = false;
         showCustomFolder = false;
     }
     else if (!customFolder.empty() and legacyCustomFolder.empty()) {
+        migrateCustomFolder = false;
         showCustomFolder = true;
     }
     else if (customFolder.empty() and !legacyCustomFolder.empty()) {
-        customFolder = legacyCustomFolder;
-        hGrp->SetASCII("CustomFolder", customFolder.c_str());
-
         migrateCustomFolder = true;
         showCustomFolder = true;
     }
-    else {
+    else {  // Both are defined, CustomFolder takes precedence
+        legacyCustomFolder = customFolder;
         migrateCustomFolder = true;
         showCustomFolder = true;
     }
 
     if (migrateCustomFolder) {
+        hGrp->SetASCII("CustomFolder", legacyCustomFolder.c_str());
         hGrp->RemoveASCII("ShowCustomFolder");
         Base::Console().Warning("v1.1: renamed ShowCustomFolder parameter to CustomFolder\n");
     }
