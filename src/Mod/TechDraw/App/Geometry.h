@@ -414,7 +414,6 @@ class TechDrawExport Vertex
     protected:
         //Uniqueness
         void createNewTag();
-        void assignTag(const TechDraw::Vertex* v);
 
         Base::Vector3d pnt;
         ExtractionType extractType;       //obs?

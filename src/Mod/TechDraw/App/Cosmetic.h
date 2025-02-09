@@ -87,7 +87,6 @@ public:
 protected:
     //Uniqueness
     void createNewTag();
-    void assignTag(const TechDraw::CosmeticEdge* ce);
     boost::uuids::uuid tag;
 
     Py::Object PythonObject;
@@ -130,7 +129,6 @@ public:
 
 protected:
     void createNewTag();
-    void assignTag(const TechDraw::GeomFormat* gf);
 
     boost::uuids::uuid tag;
     Py::Object PythonObject;
