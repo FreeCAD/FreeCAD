@@ -1093,14 +1093,6 @@ void CenterLine::createNewTag()
     tag = gen();
 }
 
-void CenterLine::assignTag(const TechDraw::CenterLine* ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("CenterLine tag can not be assigned as types do not match.");
-}
-
 CenterLine *CenterLine::clone() const
 {
     CenterLine* cpy = this->copy();

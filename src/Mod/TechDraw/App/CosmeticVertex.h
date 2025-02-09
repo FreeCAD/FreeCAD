@@ -84,7 +84,6 @@ public:
 protected:
     //Uniqueness
     void createNewTag();
-    void assignTag(const TechDraw::CosmeticVertex* cv);
 
     boost::uuids::uuid tag;
 

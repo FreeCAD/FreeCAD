@@ -183,7 +183,6 @@ protected:
     void initialize();
 
     void createNewTag();
-    void assignTag(const TechDraw::CenterLine* cl);
 
     boost::uuids::uuid tag;
 

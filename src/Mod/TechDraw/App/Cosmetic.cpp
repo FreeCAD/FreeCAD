@@ -328,14 +328,6 @@ void CosmeticEdge::createNewTag()
     tag = gen();
 }
 
-void CosmeticEdge::assignTag(const TechDraw::CosmeticEdge* ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("CosmeticEdge tag can not be assigned as types do not match.");
-}
-
 CosmeticEdge* CosmeticEdge::clone() const
 {
     Base::Console().Message("CE::clone()\n");
@@ -502,14 +494,6 @@ void GeomFormat::createNewTag()
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
 
     tag = gen();
-}
-
-void GeomFormat::assignTag(const TechDraw::GeomFormat* ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("GeomFormat tag can not be assigned as types do not match.");
 }
 
 GeomFormat *GeomFormat::clone() const

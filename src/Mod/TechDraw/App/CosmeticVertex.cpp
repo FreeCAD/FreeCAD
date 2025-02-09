@@ -255,14 +255,6 @@ void CosmeticVertex::createNewTag()
     tag = gen();
 }
 
-void CosmeticVertex::assignTag(const TechDraw::CosmeticVertex* cv)
-{
-    if(cv->getTypeId() == this->getTypeId())
-        this->tag = cv->tag;
-    else
-        throw Base::TypeError("CosmeticVertex tag can not be assigned as types do not match.");
-}
-
 CosmeticVertex* CosmeticVertex::copy() const
 {
 //    Base::Console().Message("CV::copy()\n");
