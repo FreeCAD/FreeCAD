@@ -120,8 +120,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     bool attached = false;
     for (; statusIt != status.end(); ++statusIt, ++objIt) {
         QListWidgetItem* item = new QListWidgetItem(
-            QString::fromLatin1("%1 (%2)").arg(QString::fromUtf8((*objIt)->Label.getValue()),
-                                               getFeatureStatusString(*statusIt)));
+                QStringLiteral("%1 (%2)").arg(QString::fromUtf8((*objIt)->Label.getValue()),
+                getFeatureStatusString(*statusIt)));
         item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument()));
         ui->listWidget->addItem(item);
 
