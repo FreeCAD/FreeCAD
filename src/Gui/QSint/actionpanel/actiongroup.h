@@ -19,7 +19,6 @@ namespace QSint
 
 
 class ActionLabel;
-class ActionPanelScheme;
 class TaskHeader;
 class TaskGroup;
 
@@ -109,6 +108,13 @@ public:
 
     QSize minimumSizeHint() const override;
 
+    enum FoldEffect
+    {
+        NoFolding,
+        ShrunkFolding,
+        SlideFolding
+    };
+
 public Q_SLOTS:
     void showHide();
 
@@ -131,7 +137,6 @@ protected:
     std::unique_ptr<TaskHeader> myHeader;
     std::unique_ptr<TaskGroup> myGroup;
     std::unique_ptr<QWidget> myDummy;
-    ActionPanelScheme *myScheme = nullptr;
 };
 
 } // namespace QSint

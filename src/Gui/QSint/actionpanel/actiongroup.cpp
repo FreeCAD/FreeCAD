@@ -11,6 +11,8 @@
 #include <QPainter>
 #include <QVBoxLayout>
 #include <QTimer>
+#include <QApplication>
+#include <QStyle>
 
 namespace QSint
 {
@@ -42,7 +44,6 @@ ActionGroup::~ActionGroup() = default;
 void ActionGroup::init(bool hasHeader)
 {
     m_foldStep = 0;
-    myScheme = ActionPanelScheme::defaultScheme();
 
     auto *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -58,6 +59,7 @@ void ActionGroup::init(bool hasHeader)
     myDummy->hide();
 
     connect(myHeader.get(), &TaskHeader::activated, this, &ActionGroup::showHide);
+
 }
 
 QBoxLayout* ActionGroup::groupLayout()
@@ -94,24 +96,22 @@ void ActionGroup::showHide()
 
     if (myGroup->isVisible())
     {
-        m_foldPixmap = myGroup->transparentRender();
         m_tempHeight = m_fullHeight = myGroup->height();
-        m_foldDelta = m_fullHeight / myScheme->groupFoldSteps;
-        m_foldStep = myScheme->groupFoldSteps;
+        m_foldDelta = m_fullHeight / 20; // foldsteps
+        m_foldStep = 20;
         m_foldDirection = -1;
 
         myGroup->hide();
         myDummy->setFixedSize(myGroup->size());
-
-        QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processHide);
+        QTimer::singleShot(15, this, &ActionGroup::processHide);
     }
     else
     {
-        m_foldStep = myScheme->groupFoldSteps;
+        m_foldStep = 20;
         m_foldDirection = 1;
         m_tempHeight = 0;
 
-        QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processShow);
+        QTimer::singleShot(15, this, &ActionGroup::processShow);
     }
     myDummy->show();
 }
@@ -131,7 +131,7 @@ void ActionGroup::processHide()
     myDummy->setFixedHeight(m_tempHeight);
     setFixedHeight(myDummy->height() + myHeader->height());
 
-    QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processHide);
+    QTimer::singleShot(15, this, &ActionGroup::processHide);
 }
 
 void ActionGroup::processShow()
@@ -152,7 +152,7 @@ void ActionGroup::processShow()
     myDummy->setFixedHeight(m_tempHeight);
     setFixedHeight(myDummy->height() + myHeader->height());
 
-    QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processShow);
+    QTimer::singleShot(15, this, &ActionGroup::processShow);
 }
 
 void ActionGroup::paintEvent(QPaintEvent *event)
@@ -160,25 +160,31 @@ void ActionGroup::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     QPainter p(this);
 
+    int foldsteps = 20;
+    bool groupFoldThaw = true; // Change opacity gradually
+    FoldEffect groupFoldEffect = NoFolding;
+
+    if (m_foldPixmap.isNull()) return;
+
     if (myDummy->isVisible())
     {
-        if (myScheme->groupFoldThaw)
+        if (groupFoldThaw)
         {
             double opacity = (m_foldDirection < 0)
-                                 ? static_cast<double>(m_foldStep) / myScheme->groupFoldSteps
-                                 : static_cast<double>(myScheme->groupFoldSteps - m_foldStep) / myScheme->groupFoldSteps;
+                                 ? static_cast<double>(m_foldStep) / foldsteps
+                                 : static_cast<double>(foldsteps - m_foldStep) / foldsteps;
             p.setOpacity(opacity);
         }
 
-        switch (myScheme->groupFoldEffect)
+        switch (groupFoldEffect)
         {
-            case ActionPanelScheme::ShrunkFolding:
+            case ShrunkFolding:
                 p.drawPixmap(myDummy->pos(), m_foldPixmap.scaled(myDummy->size()));
                 break;
-            case ActionPanelScheme::SlideFolding:
+            case SlideFolding:
                 p.drawPixmap(myDummy->pos(), m_foldPixmap,
                              QRect(0, m_foldPixmap.height() - myDummy->height(),
-                                   m_foldPixmap.width(), myDummy->width()));
+                                   m_foldPixmap.width(), myDummy->height()));
                 break;
             default:
                 p.drawPixmap(myDummy->pos(), m_foldPixmap);
