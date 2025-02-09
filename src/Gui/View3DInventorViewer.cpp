@@ -2456,6 +2456,26 @@ void View3DInventorViewer::renderScene()
     if (naviCubeEnabled) {
         naviCube->drawNaviCube();
     }
+
+    // Workaround for inconsistent QT behavior related to handling custom OpenGL widgets that
+    // leave non opaque alpha values in final output.
+    // On wayland that can cause window to become transparent or blurry trail effect in the
+    // parts that contain partially transparent objects.
+    //
+    // At the end of rendering clear alpha value, so that it doesn't matter how rest of the
+    // compositing stack at QT and desktop level would interpret transparent pixels.
+    //
+    // Related issues:
+    // https://bugreports.qt.io/browse/QTBUG-110014
+    // https://bugreports.qt.io/browse/QTBUG-132197
+    // https://bugreports.qt.io/browse/QTBUG-119214
+    // https://github.com/FreeCAD/FreeCAD/issues/8341
+    // https://github.com/FreeCAD/FreeCAD/issues/6177
+    glPushAttrib(GL_COLOR_BUFFER_BIT);
+    glColorMask(false, false, false, true);
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPopAttrib();
 }
 
 void View3DInventorViewer::setSeekMode(bool on)
