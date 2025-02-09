@@ -245,7 +245,7 @@ void QuickMeasure::printResult()
         print(tr("Minimum distance: %1").arg(lengthStr(measurement->length())));
     }
     else {
-        print(QString::fromLatin1(""));
+        print(QStringLiteral(""));
     }
 }
 
