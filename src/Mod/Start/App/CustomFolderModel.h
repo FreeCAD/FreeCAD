@@ -46,7 +46,6 @@ public:
 
 private:
     QDir _customFolderDirectory;
-    Base::Reference<ParameterGrp> _parameterGroup;
 };
 
 }  // namespace Start

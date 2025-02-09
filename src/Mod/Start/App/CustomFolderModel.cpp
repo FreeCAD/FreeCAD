@@ -36,12 +36,13 @@ CustomFolderModel::CustomFolderModel(QObject* parent)
     : DisplayedFilesModel(parent)
 {
     std::string defaultPath = App::GetApplication().Config()["UserHomePath"];
+    Base::Reference<ParameterGrp> parameterGroup;
 
-    _parameterGroup = App::GetApplication().GetParameterGroupByPath(
+    parameterGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
 
     _customFolderDirectory = QDir(
-        QString::fromUtf8(_parameterGroup->GetASCII("CustomFolder", defaultPath.c_str()).c_str()));
+        QString::fromUtf8(parameterGroup->GetASCII("CustomFolder", defaultPath.c_str()).c_str()));
 }
 
 void CustomFolderModel::loadAdditional()
