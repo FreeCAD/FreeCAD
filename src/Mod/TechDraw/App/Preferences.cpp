@@ -594,10 +594,10 @@ bool Preferences::useExactMatchOnDims()
     return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
 }
 
-DrawBrokenView::BreakType Preferences::BreakType()
+TechDraw::BreakType Preferences::BreakType()
 {
     int temp = getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
-    return static_cast<DrawBrokenView::BreakType>(temp);
+    return static_cast<TechDraw::BreakType>(temp);
 }
 
 

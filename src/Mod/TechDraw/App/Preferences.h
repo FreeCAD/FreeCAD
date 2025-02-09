@@ -29,8 +29,6 @@
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "DrawBrokenView.h"
-
 class QColor;
 class QString;
 
@@ -41,6 +39,7 @@ class Color;
 
 namespace TechDraw
 {
+enum class BreakType : int;
 
 //getters for parameters used in multiple places.
 class TechDrawExport Preferences
@@ -137,7 +136,7 @@ public:
     static bool showSectionLine();
     static bool includeCutLine();
 
-    static DrawBrokenView::BreakType BreakType();
+    static TechDraw::BreakType BreakType();
 
     static bool useExactMatchOnDims();
 

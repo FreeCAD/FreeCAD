@@ -131,7 +131,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
 
     // properties that affect BrokenViews
-    BreakLineType.setEnums(DrawBrokenView::BreakTypeEnums);
+    BreakLineType.setEnums(TechDraw::BreakTypeEnums);
     ADD_PROPERTY_TYPE(BreakLineType, (static_cast<int>(Preferences::BreakType())), bvgroup, App::Prop_None,
                         "Adjusts the type of break line depiction on broken views");
     ADD_PROPERTY_TYPE(BreakLineStyle, (Preferences::BreakLineStyle()), bvgroup, App::Prop_None,

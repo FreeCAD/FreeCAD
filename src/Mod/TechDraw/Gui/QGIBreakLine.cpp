@@ -71,21 +71,21 @@ QGIBreakLine::QGIBreakLine()
 
 void QGIBreakLine::draw()
 {
-    if (breakType() == DrawBrokenView::BreakType::NONE) {
+    if (breakType() == TechDraw::BreakType::NONE) {
         // none
         m_background->hide();
         m_line0->hide();
         m_line1->hide();
     }
 
-    if (breakType() == DrawBrokenView::BreakType::ZIGZAG) {
+    if (breakType() == TechDraw::BreakType::ZIGZAG) {
         drawLargeZigZag();
         m_background->show();
         m_line0->show();
         m_line1->show();
     }
 
-    if (breakType() == DrawBrokenView::BreakType::SIMPLE) {
+    if (breakType() == TechDraw::BreakType::SIMPLE) {
         // simple line from pref
         drawSimpleLines();
         m_background->hide();
