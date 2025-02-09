@@ -197,7 +197,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Trimming");
+        return QStringLiteral("Sketcher_Pointer_Trimming");
     }
 
 private:
