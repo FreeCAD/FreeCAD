@@ -1,28 +1,33 @@
-/***************************************************************************
- *   Copyright (c) 2025 Alfredo Monclus <alfredomonclus@gmail.com>         *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 51 Franklin Street,      *
- *   Fifth Floor, Boston, MA  02110-1301, USA                              *
- *                                                                         *
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2025 Alfredo Monclus <alfredomonclus@gmail.com>          *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
  ***************************************************************************/
 
 // This custom widget adds the missing ellipsize functionality in QT5
 
+#include "PreCompiled.h"
+
 #include "ElideLabel.h"
+
+namespace Gui {
 
 ElideLabel::ElideLabel(QWidget *parent)
     : QLabel(parent) {
@@ -34,20 +39,25 @@ void ElideLabel::paintEvent(QPaintEvent *event) {
     painter.setPen(palette().color(QPalette::WindowText));
     painter.setFont(font());
 
-    QFontMetrics fm(font());
-    QString text = this->text();
-    int availableWidth = width() - 4;  // Account for padding
+    constexpr int padding = 4;
+    QFontMetrics fm(painter.fontMetrics());
 
-    QString elidedText = fm.elidedText(text, Qt::ElideRight, availableWidth);
+    int availableWidth = width() - padding * 2;
+    if (availableWidth < 0) {
+        return;
+    }
 
-    painter.drawText(2, 2, availableWidth, height(), Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+    QString elidedText = fm.elidedText(text(), Qt::ElideRight, availableWidth);
+
+    QRect textRect = rect().adjusted(padding, 0, -padding, 0);
+    painter.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
 
 QSize ElideLabel::sizeHint() const {
     QFontMetrics fm(font());
     int width = fm.horizontalAdvance(this->text());
     int height = fm.height();
-    return QSize(width, height);
+    return {width, height};
 }
 
 QSize ElideLabel::minimumSizeHint() const {
@@ -55,5 +65,9 @@ QSize ElideLabel::minimumSizeHint() const {
     QString minimumText = QStringLiteral("A...");
     int width = fm.horizontalAdvance(minimumText);
     int height = fm.height();
-    return QSize(width, height);
+    return {width, height};
 }
+
+}  // namespace Gui
+
+#include "moc_ElideLabel.cpp" // NOLINT

@@ -68,8 +68,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadType->addItem(tr("UTS extra fine"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("ANSI pipes"), QByteArray("None"));
     ui->ThreadType->addItem(tr("ISO/BSP pipes"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("BS"));
-    ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("BS"));
+    ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("None"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
@@ -465,9 +465,7 @@ void TaskHoleParameters::setCutDiagram()
         baseFileName += "_flat";
     }
 
-    ui->cutDiagram->setSvg(
-        QString::fromUtf8((":images/" + baseFileName + ".svg").c_str())
-    );
+    ui->cutDiagram->setSvg(QString::fromUtf8((":images/" + baseFileName + ".svg").c_str()));
 }
 
 void TaskHoleParameters::holeCutCustomValuesChanged()
@@ -794,259 +792,145 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
 {
     auto hole = getObject<PartDesign::Hole>();
     if (!hole) {
-        // happens when aborting the command
-        return;
+        return; // happens when aborting the command
     }
     bool ro = Prop.isReadOnly();
 
     Base::Console().Log("Parameter %s was updated\n", Prop.getName());
 
+    auto updateCheckable = [&](QCheckBox* widget, bool value) {
+        [[maybe_unused]] QSignalBlocker blocker(widget);
+        widget->setChecked(value);
+        widget->setDisabled(ro);
+    };
+
+    auto updateRadio = [&](QRadioButton* widget, bool value) {
+        [[maybe_unused]] QSignalBlocker blocker(widget);
+        widget->setChecked(value);
+        widget->setDisabled(ro);
+    };
+
+    auto updateComboBox = [&](QComboBox* widget, int value) {
+        [[maybe_unused]] QSignalBlocker blocker(widget);
+        widget->setCurrentIndex(value);
+        widget->setDisabled(ro);
+    };
+
+    auto updateSpinBox = [&](Gui::PrefQuantitySpinBox* widget, double value) {
+        [[maybe_unused]] QSignalBlocker blocker(widget);
+        widget->setValue(value);
+        widget->setDisabled(ro);
+    };
+
     if (&Prop == &hole->Threaded) {
         ui->Threaded->setEnabled(true);
-        if (ui->Threaded->isChecked() ^ hole->Threaded.getValue()) {
-            ui->Threaded->blockSignals(true);
-            ui->Threaded->setChecked(hole->Threaded.getValue());
-            ui->Threaded->blockSignals(false);
-        }
-        ui->Threaded->setDisabled(ro);
+        updateCheckable(ui->Threaded, hole->Threaded.getValue());
     }
     else if (&Prop == &hole->ThreadType) {
         ui->ThreadType->setEnabled(true);
+        updateComboBox(ui->ThreadType, hole->ThreadType.getValue());
 
-        ui->ThreadSize->blockSignals(true);
-        ui->ThreadSize->clear();
-        std::vector<std::string> cursor = hole->ThreadSize.getEnumVector();
-        for (const auto& it : cursor) {
-            ui->ThreadSize->addItem(QString::fromStdString(it));
-        }
-        ui->ThreadSize->setCurrentIndex(hole->ThreadSize.getValue());
-        ui->ThreadSize->blockSignals(false);
+        // Thread type also updates related properties
+        auto updateComboBoxItems = [&](QComboBox* widget, const auto& values, int selected) {
+            QSignalBlocker blocker(widget);
+            widget->clear();
+            for (const auto& it : values) {
+                widget->addItem(QString::fromStdString(it));
+            }
+            widget->setCurrentIndex(selected);
+        };
 
-        // Thread type also updates HoleCutType and ThreadClass
-        ui->HoleCutType->blockSignals(true);
-        ui->HoleCutType->clear();
-        cursor = hole->HoleCutType.getEnumVector();
-        for (const auto& it : cursor) {
-            ui->HoleCutType->addItem(QString::fromStdString(it));
-        }
-        ui->HoleCutType->setCurrentIndex(hole->HoleCutType.getValue());
-        ui->HoleCutType->blockSignals(false);
-
-        ui->ThreadClass->blockSignals(true);
-        ui->ThreadClass->clear();
-        cursor = hole->ThreadClass.getEnumVector();
-        for (const auto& it : cursor) {
-            ui->ThreadClass->addItem(QString::fromStdString(it));
-        }
-        ui->ThreadClass->setCurrentIndex(hole->ThreadClass.getValue());
-        ui->ThreadClass->blockSignals(false);
-
-        if (ui->ThreadType->currentIndex() != hole->ThreadType.getValue()) {
-            ui->ThreadType->blockSignals(true);
-            ui->ThreadType->setCurrentIndex(hole->ThreadType.getValue());
-            ui->ThreadType->blockSignals(false);
-        }
-        ui->ThreadType->setDisabled(ro);
+        updateComboBoxItems(ui->ThreadSize, hole->ThreadSize.getEnumVector(), hole->ThreadSize.getValue());
+        updateComboBoxItems(ui->HoleCutType, hole->HoleCutType.getEnumVector(), hole->HoleCutType.getValue());
+        updateComboBoxItems(ui->ThreadClass, hole->ThreadClass.getEnumVector(), hole->ThreadClass.getValue());
     }
     else if (&Prop == &hole->ThreadSize) {
         ui->ThreadSize->setEnabled(true);
-        if (ui->ThreadSize->currentIndex() != hole->ThreadSize.getValue()) {
-            ui->ThreadSize->blockSignals(true);
-            ui->ThreadSize->setCurrentIndex(hole->ThreadSize.getValue());
-            ui->ThreadSize->blockSignals(false);
-        }
-        ui->ThreadSize->setDisabled(ro);
+        updateComboBox(ui->ThreadSize, hole->ThreadSize.getValue());
     }
     else if (&Prop == &hole->ThreadClass) {
         ui->ThreadClass->setEnabled(true);
-        if (ui->ThreadClass->currentIndex() != hole->ThreadClass.getValue()) {
-            ui->ThreadClass->blockSignals(true);
-            ui->ThreadClass->setCurrentIndex(hole->ThreadClass.getValue());
-            ui->ThreadClass->blockSignals(false);
-        }
-        ui->ThreadClass->setDisabled(ro);
+        updateComboBox(ui->ThreadClass, hole->ThreadClass.getValue());
     }
     else if (&Prop == &hole->ThreadFit) {
         ui->ThreadFit->setEnabled(true);
-        if (ui->ThreadFit->currentIndex() != hole->ThreadFit.getValue()) {
-            ui->ThreadFit->blockSignals(true);
-            ui->ThreadFit->setCurrentIndex(hole->ThreadFit.getValue());
-            ui->ThreadFit->blockSignals(false);
-        }
-        ui->ThreadFit->setDisabled(ro);
+        updateComboBox(ui->ThreadFit, hole->ThreadFit.getValue());
     }
     else if (&Prop == &hole->Diameter) {
         ui->Diameter->setEnabled(true);
-        if (ui->Diameter->value().getValue() != hole->Diameter.getValue()) {
-            ui->Diameter->blockSignals(true);
-            ui->Diameter->setValue(hole->Diameter.getValue());
-            ui->Diameter->blockSignals(false);
-        }
-        ui->Diameter->setDisabled(ro);
+        updateSpinBox(ui->Diameter, hole->Diameter.getValue());
     }
     else if (&Prop == &hole->ThreadDirection) {
         ui->directionRightHand->setEnabled(true);
         ui->directionLeftHand->setEnabled(true);
+
         std::string direction(hole->ThreadDirection.getValueAsString());
-        if (direction == "Right" && !ui->directionRightHand->isChecked()) {
-            ui->directionRightHand->blockSignals(true);
-            ui->directionRightHand->setChecked(true);
-            ui->directionRightHand->blockSignals(false);
-        }
-        if (direction == "Left" && !ui->directionLeftHand->isChecked()) {
-            ui->directionLeftHand->blockSignals(true);
-            ui->directionLeftHand->setChecked(true);
-            ui->directionLeftHand->blockSignals(false);
-        }
-        ui->directionRightHand->setDisabled(ro);
-        ui->directionLeftHand->setDisabled(ro);
+        updateRadio(ui->directionRightHand, direction == "Right");
+        updateRadio(ui->directionLeftHand, direction == "Left");
     }
     else if (&Prop == &hole->HoleCutType) {
         ui->HoleCutType->setEnabled(true);
-        if (ui->HoleCutType->currentIndex() != hole->HoleCutType.getValue()) {
-            ui->HoleCutType->blockSignals(true);
-            ui->HoleCutType->setCurrentIndex(hole->HoleCutType.getValue());
-            ui->HoleCutType->blockSignals(false);
-        }
-        ui->HoleCutType->setDisabled(ro);
+        updateComboBox(ui->HoleCutType, hole->HoleCutType.getValue());
     }
     else if (&Prop == &hole->HoleCutDiameter) {
         ui->HoleCutDiameter->setEnabled(true);
-        if (ui->HoleCutDiameter->value().getValue() != hole->HoleCutDiameter.getValue()) {
-            ui->HoleCutDiameter->blockSignals(true);
-            ui->HoleCutDiameter->setValue(hole->HoleCutDiameter.getValue());
-            ui->HoleCutDiameter->blockSignals(false);
-        }
-        ui->HoleCutDiameter->setDisabled(ro);
+        updateSpinBox(ui->HoleCutDiameter, hole->HoleCutDiameter.getValue());
     }
     else if (&Prop == &hole->HoleCutDepth) {
         ui->HoleCutDepth->setEnabled(true);
-        if (ui->HoleCutDepth->value().getValue() != hole->HoleCutDepth.getValue()) {
-            ui->HoleCutDepth->blockSignals(true);
-            ui->HoleCutDepth->setValue(hole->HoleCutDepth.getValue());
-            ui->HoleCutDepth->blockSignals(false);
-        }
-        ui->HoleCutDepth->setDisabled(ro);
+        updateSpinBox(ui->HoleCutDepth, hole->HoleCutDepth.getValue());
     }
     else if (&Prop == &hole->HoleCutCountersinkAngle) {
         ui->HoleCutCountersinkAngle->setEnabled(true);
-        if (ui->HoleCutCountersinkAngle->value().getValue()
-            != hole->HoleCutCountersinkAngle.getValue()) {
-            ui->HoleCutCountersinkAngle->blockSignals(true);
-            ui->HoleCutCountersinkAngle->setValue(hole->HoleCutCountersinkAngle.getValue());
-            ui->HoleCutCountersinkAngle->blockSignals(false);
-        }
-        ui->HoleCutCountersinkAngle->setDisabled(ro);
+        updateSpinBox(ui->HoleCutCountersinkAngle, hole->HoleCutCountersinkAngle.getValue());
     }
     else if (&Prop == &hole->DepthType) {
         ui->DepthType->setEnabled(true);
-        if (ui->DepthType->currentIndex() != hole->DepthType.getValue()) {
-            ui->DepthType->blockSignals(true);
-            ui->DepthType->setCurrentIndex(hole->DepthType.getValue());
-            ui->DepthType->blockSignals(false);
-        }
-        ui->DepthType->setDisabled(ro);
+        updateComboBox(ui->DepthType, hole->DepthType.getValue());
     }
     else if (&Prop == &hole->Depth) {
         ui->Depth->setEnabled(true);
-        if (ui->Depth->value().getValue() != hole->Depth.getValue()) {
-            ui->Depth->blockSignals(true);
-            ui->Depth->setValue(hole->Depth.getValue());
-            ui->Depth->blockSignals(false);
-        }
-        ui->Depth->setDisabled(ro);
+        updateSpinBox(ui->Depth, hole->Depth.getValue());
     }
     else if (&Prop == &hole->DrillPoint) {
-        std::string drillPoint(hole->DrillPoint.getValueAsString());
         ui->DrillPointAngled->setEnabled(true);
-        if (ui->DrillPointAngled->isChecked() ^ (drillPoint == "Angled")) {
-            ui->DrillPointAngled->blockSignals(true);
-            ui->DrillPointAngled->setChecked(drillPoint == "Angled");
-            ui->DrillPointAngled->blockSignals(false);
-        }
-        ui->DrillPointAngled->setDisabled(ro);
+        updateCheckable(ui->DrillPointAngled, hole->DrillPoint.getValueAsString() == std::string("Angled"));
     }
     else if (&Prop == &hole->DrillPointAngle) {
         ui->DrillPointAngle->setEnabled(true);
-        if (ui->DrillPointAngle->value().getValue() != hole->DrillPointAngle.getValue()) {
-            ui->DrillPointAngle->blockSignals(true);
-            ui->DrillPointAngle->setValue(hole->DrillPointAngle.getValue());
-            ui->DrillPointAngle->blockSignals(false);
-        }
-        ui->DrillPointAngle->setDisabled(ro);
+        updateSpinBox(ui->DrillPointAngle, hole->DrillPointAngle.getValue());
     }
     else if (&Prop == &hole->DrillForDepth) {
         ui->DrillForDepth->setEnabled(true);
-        if (ui->DrillForDepth->isChecked() ^ hole->DrillForDepth.getValue()) {
-            ui->DrillForDepth->blockSignals(true);
-            ui->DrillForDepth->setChecked(hole->DrillForDepth.getValue());
-            ui->DrillForDepth->blockSignals(false);
-        }
-        ui->DrillForDepth->setDisabled(ro);
+        updateCheckable(ui->DrillForDepth, hole->DrillForDepth.getValue());
     }
     else if (&Prop == &hole->Tapered) {
         ui->Tapered->setEnabled(true);
-        if (ui->Tapered->isChecked() ^ hole->Tapered.getValue()) {
-            ui->Tapered->blockSignals(true);
-            ui->Tapered->setChecked(hole->Tapered.getValue());
-            ui->Tapered->blockSignals(false);
-        }
-        ui->Tapered->setDisabled(ro);
+        updateCheckable(ui->Tapered, hole->Tapered.getValue());
     }
     else if (&Prop == &hole->TaperedAngle) {
         ui->TaperedAngle->setEnabled(true);
-        if (ui->TaperedAngle->value().getValue() != hole->TaperedAngle.getValue()) {
-            ui->TaperedAngle->blockSignals(true);
-            ui->TaperedAngle->setValue(hole->TaperedAngle.getValue());
-            ui->TaperedAngle->blockSignals(false);
-        }
-        ui->TaperedAngle->setDisabled(ro);
+        updateSpinBox(ui->TaperedAngle, hole->TaperedAngle.getValue());
     }
     else if (&Prop == &hole->ModelThread) {
         ui->ModelThread->setEnabled(true);
-        if (ui->ModelThread->isChecked() ^ hole->ModelThread.getValue()) {
-            ui->ModelThread->blockSignals(true);
-            ui->ModelThread->setChecked(hole->ModelThread.getValue());
-            ui->ModelThread->blockSignals(false);
-        }
-        ui->ModelThread->setDisabled(ro);
+        updateCheckable(ui->ModelThread, hole->ModelThread.getValue());
     }
     else if (&Prop == &hole->UseCustomThreadClearance) {
         ui->UseCustomThreadClearance->setEnabled(true);
-        if (ui->UseCustomThreadClearance->isChecked() ^ hole->UseCustomThreadClearance.getValue()) {
-            ui->UseCustomThreadClearance->blockSignals(true);
-            ui->UseCustomThreadClearance->setChecked(hole->UseCustomThreadClearance.getValue());
-            ui->UseCustomThreadClearance->blockSignals(false);
-        }
-        ui->UseCustomThreadClearance->setDisabled(ro);
+        updateCheckable(ui->UseCustomThreadClearance, hole->UseCustomThreadClearance.getValue());
     }
     else if (&Prop == &hole->CustomThreadClearance) {
         ui->CustomThreadClearance->setEnabled(true);
-        if (ui->CustomThreadClearance->value().getValue()
-            != hole->CustomThreadClearance.getValue()) {
-            ui->CustomThreadClearance->blockSignals(true);
-            ui->CustomThreadClearance->setValue(hole->CustomThreadClearance.getValue());
-            ui->CustomThreadClearance->blockSignals(false);
-        }
-        ui->CustomThreadClearance->setDisabled(ro);
+        updateSpinBox(ui->CustomThreadClearance, hole->CustomThreadClearance.getValue());
     }
     else if (&Prop == &hole->ThreadDepthType) {
         ui->ThreadDepthType->setEnabled(true);
-        if (ui->ThreadDepthType->currentIndex() != hole->ThreadDepthType.getValue()) {
-            ui->ThreadDepthType->blockSignals(true);
-            ui->ThreadDepthType->setCurrentIndex(hole->ThreadDepthType.getValue());
-            ui->ThreadDepthType->blockSignals(false);
-        }
-        ui->ThreadDepthType->setDisabled(ro);
+        updateComboBox(ui->ThreadDepthType, hole->ThreadDepthType.getValue());
     }
     else if (&Prop == &hole->ThreadDepth) {
         ui->ThreadDepth->setEnabled(true);
-        if (ui->ThreadDepth->value().getValue() != hole->ThreadDepth.getValue()) {
-            ui->ThreadDepth->blockSignals(true);
-            ui->ThreadDepth->setValue(hole->ThreadDepth.getValue());
-            ui->ThreadDepth->blockSignals(false);
-        }
-        ui->ThreadDepth->setDisabled(ro);
+        updateSpinBox(ui->ThreadDepth, hole->ThreadDepth.getValue());
     }
 }
 
@@ -1149,11 +1033,7 @@ Base::Quantity TaskHoleParameters::getDepth() const
 
 long TaskHoleParameters::getDrillPoint() const
 {
-    
-    if (ui->DrillPointAngled->isChecked()) {
-        return 1;
-    }
-    return 0;
+    return ui->DrillPointAngled->isChecked() ? 1 : 0;
 }
 
 Base::Quantity TaskHoleParameters::getDrillPointAngle() const

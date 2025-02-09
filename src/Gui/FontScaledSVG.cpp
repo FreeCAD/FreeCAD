@@ -1,28 +1,33 @@
-/***************************************************************************
- *   Copyright (c) 2025 Alfredo Monclus <alfredomonclus@gmail.com>         *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 51 Franklin Street,      *
- *   Fifth Floor, Boston, MA  02110-1301, USA                              *
- *                                                                         *
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2025 Alfredo Monclus <alfredomonclus@gmail.com>          *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
  ***************************************************************************/
 
 // This custom widget scales an svg according to fonts
 
+#include "PreCompiled.h"
+
 #include "FontScaledSVG.h"
+
+namespace Gui {
 
 FontScaledSVG::FontScaledSVG(QWidget *parent)
     : QWidget(parent), m_svgRenderer(new QSvgRenderer(this)) {
@@ -56,10 +61,13 @@ void FontScaledSVG::updateScaledSize() {
 
     QFontMetrics metrics(font());
     qreal spacing = metrics.lineSpacing();
-    int baseFactor = 18;
+    constexpr int baseFactor = 18;
     qreal scalingFactor = spacing / baseFactor;
 
     QSize targetSize = baseSize * scalingFactor;
     setFixedSize(targetSize);
 }
 
+}  // namespace Gui
+
+#include "moc_FontScaledSVG.cpp" // NOLINT
