@@ -434,7 +434,7 @@ bool TaskDlgFemConstraintForce::accept()
         std::string scale = "1";
 
         if (!dirname.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(dirname));
             buf = buf.arg(QString::fromStdString(dirobj));
             Gui::Command::doCommand(Gui::Command::Doc,
