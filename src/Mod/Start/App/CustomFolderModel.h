@@ -42,7 +42,7 @@ class StartExport CustomFolderModel: public DisplayedFilesModel
 public:
     explicit CustomFolderModel(QObject* parent = nullptr);
 
-    void loadAdditional();
+    void loadCustomFolder();
 
 private:
     QDir _customFolderDirectory;

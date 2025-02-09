@@ -35,17 +35,15 @@ using namespace Start;
 CustomFolderModel::CustomFolderModel(QObject* parent)
     : DisplayedFilesModel(parent)
 {
-    std::string defaultPath = App::GetApplication().Config()["UserHomePath"];
-    Base::Reference<ParameterGrp> parameterGroup;
 
-    parameterGroup = App::GetApplication().GetParameterGroupByPath(
+    Base::Reference<ParameterGrp> parameterGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
 
-    _customFolderDirectory = QDir(
-        QString::fromUtf8(parameterGroup->GetASCII("CustomFolder", defaultPath.c_str()).c_str()));
+    _customFolderDirectory =
+        QDir(QString::fromStdString(parameterGroup->GetASCII("CustomFolder", "")));
 }
 
-void CustomFolderModel::loadAdditional()
+void CustomFolderModel::loadCustomFolder()
 {
     beginResetModel();
     clear();

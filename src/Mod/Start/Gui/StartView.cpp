@@ -200,15 +200,15 @@ StartView::StartView(QWidget* parent)
 
     // Check if the ShowCustomFolder parameter from the old Start Workbench
     // is set. If set, use its value and migrate it to CustomFolder.
-    if (customFolder.empty() and legacyCustomFolder.empty()) {
+    if (customFolder.empty() && legacyCustomFolder.empty()) {
         migrateCustomFolder = false;
         showCustomFolder = false;
     }
-    else if (!customFolder.empty() and legacyCustomFolder.empty()) {
+    else if (!customFolder.empty() && legacyCustomFolder.empty()) {
         migrateCustomFolder = false;
         showCustomFolder = true;
     }
-    else if (customFolder.empty() and !legacyCustomFolder.empty()) {
+    else if (customFolder.empty() && !legacyCustomFolder.empty()) {
         migrateCustomFolder = true;
         showCustomFolder = true;
     }
@@ -225,7 +225,7 @@ StartView::StartView(QWidget* parent)
     }
 
     if (showCustomFolder) {
-        auto customFolderDirectory = QDir(QString::fromUtf8(customFolder.c_str()));
+        auto customFolderDirectory = QDir(QString::fromStdString(customFolder));
         if (!customFolderDirectory.exists()) {
             Base::Console().Warning(
                 "BaseApp/Preferences/Mod/Start/CustomFolder: '%s' does not exist\n",
@@ -423,7 +423,7 @@ void StartView::configureExamplesListWidget(QListView* examplesListWidget)
 
 void StartView::configureCustomFolderListWidget(QListView* customFolderListWidget)
 {
-    _customFolderModel.loadAdditional();
+    _customFolderModel.loadCustomFolder();
     customFolderListWidget->setModel(&_customFolderModel);
     configureFileCardWidget(customFolderListWidget);
 }
