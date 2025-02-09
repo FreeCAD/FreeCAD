@@ -191,9 +191,51 @@ StartView::StartView(QWidget* parent)
     setObjectName(QLatin1String("StartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);                   // NOLINT
-    auto showExamples = hGrp->GetBool("ShowExamples", true);                  // NOLINT
-    auto showAdditionalFolder = hGrp->GetBool("showAdditionalFolder", true);  // NOLINT
+    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);   // NOLINT
+    auto showExamples = hGrp->GetBool("ShowExamples", true);  // NOLINT
+    auto additionalFolder = hGrp->GetASCII("AdditionalFolder", "");  // NOLINT
+    auto showCustomFolder = hGrp->GetASCII("ShowCustomFolder", "");  // NOLINT
+    auto migrateCustomFolder = false;
+    auto showAdditionalFolder = false;
+    //auto showCustomFolderExists = QDir(QString::fromUtf8(showCustomFolder.c_str()));
+    //auto additionalFolderExists = QDir(QString::fromUtf8(additionalFolder.c_str()));
+
+    // Check if the ShowCustomFolder parameter from the old Start Workbench
+    // is set. If set, use its value and migrate it to AdditionalFolder.
+    // If both are defined, AdditionalFolder takes precedence.
+    if (additionalFolder.empty() and showCustomFolder.empty()) {
+        showAdditionalFolder = false;
+    }
+    else if (!additionalFolder.empty() and showCustomFolder.empty()) {
+        showAdditionalFolder = true;
+    }
+    else if (additionalFolder.empty() and !showCustomFolder.empty()) {
+        additionalFolder = showCustomFolder;
+        hGrp->SetASCII("AdditionalFolder", additionalFolder.c_str());
+
+        migrateCustomFolder = true;
+        showAdditionalFolder = true;
+    }
+    else {
+
+        migrateCustomFolder = true;
+        showAdditionalFolder = true;
+    }
+
+    if (migrateCustomFolder) {
+        hGrp->RemoveASCII("ShowCustomFolder");
+        Base::Console().Warning("v1.1: renamed ShowCustomFolder parameter to AdditionalFolder\n");
+    }
+
+    if (showAdditionalFolder) {
+        auto additionalFolderDirectory = QDir(QString::fromUtf8(additionalFolder.c_str()));
+        if (!additionalFolderDirectory.exists()) {
+            Base::Console().Warning("BaseApp/Preferences/Mod/Start/AdditionalFolder: '%s' does not exist\n",
+                                    additionalFolderDirectory.absolutePath().toStdString().c_str());
+        showAdditionalFolder = false;
+        }
+
+    }
 
     // First start page
     auto firstStartScrollArea = gsl::owner<QScrollArea*>(new QScrollArea());
@@ -549,7 +591,7 @@ void StartView::retranslateUi()
     _newFileLabel->setText(h1Start + tr("New File") + h1End);
     _examplesLabel->setText(h1Start + tr("Examples") + h1End);
     _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
-    _additionalFolderLabel->setText(h1Start + tr("Additional Folders") + h1End);
+    _additionalFolderLabel->setText(h1Start + tr("Custom Folder") + h1End);
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _openFirstStart->setText(tr("Open first start setup"));

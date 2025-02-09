@@ -49,7 +49,7 @@ void AdditionalFolderModel::loadAdditional()
     beginResetModel();
     clear();
     if (!_additionalFolderDirectory.isReadable()) {
-        Base::Console().Warning("Cannot read %s",
+        Base::Console().Warning("BaseApp/Preferences/Mod/Start/AdditionalFolder: cannot read additional folder %s\n",
                                 _additionalFolderDirectory.absolutePath().toStdString().c_str());
     }
     auto entries =
