@@ -345,11 +345,11 @@ void StartView::configureNewFileButtons(QLayout* layout) const
                                                       tr("Create a new empty FreeCAD file"),
                                                       QLatin1String(":/icons/document-new.svg")}));
     auto openFile =
-        gsl::owner<NewFileButton*>(new NewFileButton({tr("Open file"),
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("Open File"),
                                                       tr("Open an existing CAD file or 3D model"),
                                                       QLatin1String(":/icons/document-open.svg")}));
     auto partDesign = gsl::owner<NewFileButton*>(
-        new NewFileButton({tr("Parametric part"),
+        new NewFileButton({tr("Parametric Part"),
                            tr("Create a part with the Part Design workbench"),
                            QLatin1String(":/icons/PartDesignWorkbench.svg")}));
     auto assembly = gsl::owner<NewFileButton*>(
@@ -357,8 +357,8 @@ void StartView::configureNewFileButtons(QLayout* layout) const
                            tr("Create an assembly project"),
                            QLatin1String(":/icons/AssemblyWorkbench.svg")}));
     auto draft = gsl::owner<NewFileButton*>(
-        new NewFileButton({tr("2D draft"),
-                           tr("Create a 2D draft with the Draft workbench"),
+        new NewFileButton({tr("2D Draft"),
+                           tr("Create a 2D Draft with the Draft workbench"),
                            QLatin1String(":/icons/DraftWorkbench.svg")}));
     auto arch =
         gsl::owner<NewFileButton*>(new NewFileButton({tr("BIM/Architecture"),
@@ -585,10 +585,10 @@ void StartView::retranslateUi()
     const QLatin1String h1Start("<h1>");
     const QLatin1String h1End("</h1>");
 
-    _newFileLabel->setText(h1Start + tr("New file") + h1End);
+    _newFileLabel->setText(h1Start + tr("New File") + h1End);
     _examplesLabel->setText(h1Start + tr("Examples") + h1End);
-    _recentFilesLabel->setText(h1Start + tr("Recent files") + h1End);
-    _customFolderLabel->setText(h1Start + tr("Custom folder") + h1End);
+    _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
+    _customFolderLabel->setText(h1Start + tr("Custom Folder") + h1End);
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _openFirstStart->setText(tr("Open first start setup"));
