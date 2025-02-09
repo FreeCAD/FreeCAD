@@ -2158,7 +2158,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             double numberOfThreaders = 3; // number of self threaders to create
             double boreHoleMargin = 0.15;  // how much wider we'll bore out the hole
             double selfThreaderHeight = 0.4;  // how deep into the hole bore do the self threaders protrude
-            double edgeCutToolMargin = 5.0; // how much wider the edge cut tool is than the base cyclinder when creating our shape
+            double edgeCutToolMargin = 5.0; // how much wider the edge cut tool is than the base cylinder when creating our shape
             double taperLength = 3.0; // how long the threaders are tapered
             double boreHoleRadius = (Diameter.getValue() + boreHoleMargin) / 2.0; // the radius of our hole
             double edgeCutToolRadius = boreHoleRadius + edgeCutToolMargin; // the radius of our edge cut tool
@@ -2170,11 +2170,11 @@ App::DocumentObjectExecReturn* Hole::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not get active document for debugging."));
             }            
 
-            // we will create a base cyclinder, then an edge cut tool
+            // we will create a base cylinder, then an edge cut tool
             // we will move the edge cut tool around the perimeter the hole and cut 
-            // it from the initial cyclinder resulting in our final tool
+            // it from the initial cylinder resulting in our final tool
 
-            // our points when drawing the wire for our initial cyclinder
+            // our points when drawing the wire for our initial cylinder
             gp_Pnt firstPoint(0, 0, 0);
             gp_Pnt lastPoint(0, 0, 0);
 
@@ -2219,20 +2219,20 @@ App::DocumentObjectExecReturn* Hole::execute()
             if (!RevolMaker.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Could not revolve sketch"));
 
-            // our initial cyclinder
-            TopoDS_Shape initialCyclinder = RevolMaker.Shape();
+            // our initial cylinder
+            TopoDS_Shape initialCylinder = RevolMaker.Shape();
             if (protoHole.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Resulting shape is empty"));
 
             // for debugging only.  To be removed.
             if (selfThreadingDebug) {
                 Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "InitialCylinder"));
-                feature->Shape.setValue(initialCyclinder);
+                feature->Shape.setValue(initialCylinder);
                 feature->Visibility.setValue(false);
             }
 
             // now create our edge cut tool to make our tapered edge cuts from 
-            // the initial cyclinder
+            // the initial cylinder
             BRepBuilderAPI_MakeWire mkWireEdgeCutTool;                    
             
             // reset our first point to the origin
@@ -2345,24 +2345,24 @@ App::DocumentObjectExecReturn* Hole::execute()
                 }
 
                 // cut the edge cut tool from our initial cylinder
-                BRepAlgoAPI_Cut cutMaker(initialCyclinder, translatedTool);
+                BRepAlgoAPI_Cut cutMaker(initialCylinder, translatedTool);
                 if (!cutMaker.IsDone()) {
                     throw std::runtime_error("Cut operation failed");
                 }
 
                 // set our initial cylinder to the newly cut shape
-                initialCyclinder = cutMaker.Shape();
+                initialCylinder = cutMaker.Shape();
             }
 
             // for debugging only.  To be removed.
             if (selfThreadingDebug) { 
                 Part::Feature* feature = static_cast<Part::Feature*>(document->addObject("Part::Feature", "FinalTool"));
-                feature->Shape.setValue(initialCyclinder);
+                feature->Shape.setValue(initialCylinder);
                 feature->Visibility.setValue(false);
             }
 
             // our finalized cutting tool is now the hole prototype
-            protoHole = initialCyclinder;
+            protoHole = initialCylinder;
         }
         
         std::vector<TopoShape> holes;
