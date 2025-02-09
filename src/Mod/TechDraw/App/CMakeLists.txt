@@ -174,6 +174,8 @@ SET(TechDraw_SRCS
     MattingPropEnum.h
     Preferences.cpp
     Preferences.h
+    Tag.cpp
+    Tag.h
     TechDrawExport.cpp
     TechDrawExport.h
     ProjectionAlgos.cpp
