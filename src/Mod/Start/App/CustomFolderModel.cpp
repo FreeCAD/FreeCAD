@@ -40,8 +40,8 @@ CustomFolderModel::CustomFolderModel(QObject* parent)
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
 
-    _customFolderDirectory = QDir(QString::fromUtf8(
-        _parameterGroup->GetASCII("CustomFolder", defaultPath.c_str()).c_str()));
+    _customFolderDirectory = QDir(
+        QString::fromUtf8(_parameterGroup->GetASCII("CustomFolder", defaultPath.c_str()).c_str()));
 }
 
 void CustomFolderModel::loadAdditional()
@@ -53,9 +53,8 @@ void CustomFolderModel::loadAdditional()
             "BaseApp/Preferences/Mod/Start/CustomFolder: cannot read custom folder %s\n",
             _customFolderDirectory.absolutePath().toStdString().c_str());
     }
-    auto entries =
-        _customFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
-                                             QDir::SortFlag::Name);
+    auto entries = _customFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
+                                                    QDir::SortFlag::Name);
     for (const auto& entry : entries) {
         addFile(_customFolderDirectory.filePath(entry));
     }
