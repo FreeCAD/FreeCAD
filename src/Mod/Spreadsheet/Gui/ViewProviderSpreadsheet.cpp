@@ -167,8 +167,7 @@ SheetView* ViewProviderSheet::showSpreadsheetView()
         Gui::Document* doc = Gui::Application::Instance->getDocument(this->pcObject->getDocument());
         view = new SheetView(doc, this->pcObject, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap(":icons/Spreadsheet.svg"));
-        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue())
-                             + QString::fromLatin1("[*]"));
+        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue()) + QStringLiteral("[*]"));
         Gui::getMainWindow()->addWindow(view);
         startEditing();
     }
