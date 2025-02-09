@@ -355,7 +355,7 @@ void CrossSections::apply()
             s += "_cs";
             Gui::Command::runCommand(
                 Gui::Command::App,
-                QString::fromLatin1(
+                QStringLiteral(
                     "points=FreeCAD.getDocument(\"%1\").%2.Mesh.crossSections(%3, %4, %5)\n"
                     "wires=[]\n"
                     "for i in points:\n"
@@ -369,7 +369,7 @@ void CrossSections::apply()
 
             Gui::Command::runCommand(
                 Gui::Command::App,
-                QString::fromLatin1(
+                QStringLiteral(
                     "comp=Part.Compound(wires)\n"
                     "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
                     "slice.Shape=comp\n"
