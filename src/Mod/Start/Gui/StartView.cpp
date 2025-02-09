@@ -191,14 +191,14 @@ StartView::StartView(QWidget* parent)
     setObjectName(QLatin1String("StartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);   // NOLINT
-    auto showExamples = hGrp->GetBool("ShowExamples", true);  // NOLINT
+    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);          // NOLINT
+    auto showExamples = hGrp->GetBool("ShowExamples", true);         // NOLINT
     auto additionalFolder = hGrp->GetASCII("AdditionalFolder", "");  // NOLINT
     auto showCustomFolder = hGrp->GetASCII("ShowCustomFolder", "");  // NOLINT
     auto migrateCustomFolder = false;
     auto showAdditionalFolder = false;
-    //auto showCustomFolderExists = QDir(QString::fromUtf8(showCustomFolder.c_str()));
-    //auto additionalFolderExists = QDir(QString::fromUtf8(additionalFolder.c_str()));
+    // auto showCustomFolderExists = QDir(QString::fromUtf8(showCustomFolder.c_str()));
+    // auto additionalFolderExists = QDir(QString::fromUtf8(additionalFolder.c_str()));
 
     // Check if the ShowCustomFolder parameter from the old Start Workbench
     // is set. If set, use its value and migrate it to AdditionalFolder.
@@ -230,11 +230,11 @@ StartView::StartView(QWidget* parent)
     if (showAdditionalFolder) {
         auto additionalFolderDirectory = QDir(QString::fromUtf8(additionalFolder.c_str()));
         if (!additionalFolderDirectory.exists()) {
-            Base::Console().Warning("BaseApp/Preferences/Mod/Start/AdditionalFolder: '%s' does not exist\n",
-                                    additionalFolderDirectory.absolutePath().toStdString().c_str());
-        showAdditionalFolder = false;
+            Base::Console().Warning(
+                "BaseApp/Preferences/Mod/Start/AdditionalFolder: '%s' does not exist\n",
+                additionalFolderDirectory.absolutePath().toStdString().c_str());
+            showAdditionalFolder = false;
         }
-
     }
 
     // First start page

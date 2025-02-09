@@ -49,8 +49,9 @@ void AdditionalFolderModel::loadAdditional()
     beginResetModel();
     clear();
     if (!_additionalFolderDirectory.isReadable()) {
-        Base::Console().Warning("BaseApp/Preferences/Mod/Start/AdditionalFolder: cannot read additional folder %s\n",
-                                _additionalFolderDirectory.absolutePath().toStdString().c_str());
+        Base::Console().Warning(
+            "BaseApp/Preferences/Mod/Start/AdditionalFolder: cannot read additional folder %s\n",
+            _additionalFolderDirectory.absolutePath().toStdString().c_str());
     }
     auto entries =
         _additionalFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
