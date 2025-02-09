@@ -326,9 +326,9 @@ bool Mirroring::accept()
         int pos = label.indexOf(rx);
         if (pos > -1)
             label = label.left(pos);
-        label.append(QString::fromLatin1(" (Mirror #%1)").arg(++count));
+        label.append(QStringLiteral(" (Mirror #%1)").arg(++count));
 
-        QString code = QString::fromLatin1(
+        QString code = QStringLiteral(
             "__doc__=FreeCAD.getDocument(\"%1\")\n"
             "__doc__.addObject(\"Part::Mirroring\")\n"
             "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"
