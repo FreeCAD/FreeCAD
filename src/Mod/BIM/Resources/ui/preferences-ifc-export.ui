@@ -265,7 +265,7 @@ If this is your case, you can disable this and then all profiles will be exporte
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_17">
         <property name="toolTip">
-         <string>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
+         <string>Some IFC classes such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</string>
         </property>
         <property name="text">

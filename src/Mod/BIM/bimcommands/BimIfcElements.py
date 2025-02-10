@@ -57,11 +57,11 @@ class BIM_IfcElements:
         try:
             import ArchIFC
 
-            self.ifctypes = ArchIFC.IfcTypes
+            self.ifcclasses = ArchIFC.IfcClasses
         except (ImportError, AttributeError):
             import ArchComponent
 
-            self.ifctypes = ArchComponent.IfcRoles
+            self.ifcclasses = ArchComponent.IfcRoles
         for obj in FreeCAD.ActiveDocument.Objects:
             mat = ""
             role = self.getRole(obj)
@@ -79,7 +79,7 @@ class BIM_IfcElements:
         self.form.tree.setModel(self.model)
         self.form.tree.setUniformRowHeights(True)
         self.form.tree.setItemDelegate(IfcElementsDelegate(dialog=self))
-        self.form.globalMode.addItems([" "] + self.ifctypes)
+        self.form.globalMode.addItems([" "] + self.ifcclasses)
         self.form.groupMode.setItemIcon(2, QtGui.QIcon(":/icons/Arch_Material.svg"))
         self.form.groupMode.setItemIcon(3, QtGui.QIcon(":/icons/Document.svg"))
         self.form.globalMaterial.addItem(" ")
@@ -134,7 +134,7 @@ class BIM_IfcElements:
         self.model.setHorizontalHeaderLabels(
             [
                 translate("BIM", "Label"),
-                translate("BIM", "IFC type"),
+                translate("BIM", "IFC class"),
                 translate("BIM", "Material"),
             ]
         )
@@ -357,8 +357,8 @@ class BIM_IfcElements:
                     self.form.tree.setFirstColumnSpanned(i, idx, True)
 
     def getRole(self, obj):
-        if hasattr(obj, "IfcType"):
-            return obj.IfcType
+        if hasattr(obj, "IfcClass"):
+            return obj.IfcClass
         elif hasattr(obj, "IfcRole"):
             return obj.IfcRole
         else:
@@ -379,7 +379,7 @@ class BIM_IfcElements:
 
         for index in sel:
             if index.column() == 1:
-                if index.data() in self.ifctypes:
+                if index.data() in self.ifcclasses:
                     if mode:
                         if index.data() != mode:
                             mode = None
@@ -397,7 +397,7 @@ class BIM_IfcElements:
                 else:
                     mat = m
         if mode:
-            self.form.globalMode.setCurrentIndex(self.ifctypes.index(mode) + 1)
+            self.form.globalMode.setCurrentIndex(self.ifcclasses.index(mode) + 1)
         else:
             self.form.globalMode.setCurrentIndex(0)
         if mat:
@@ -408,7 +408,7 @@ class BIM_IfcElements:
     def onObjectTypeChanged(self, index=-1):
         changed = False
         if index >= 1:
-            role = self.ifctypes[index - 1]
+            role = self.ifcclasses[index - 1]
             sel = self.form.tree.selectedIndexes()
             for index in sel:
                 if index.column() == 1:
@@ -519,11 +519,11 @@ class BIM_IfcElements:
                         FreeCAD.ActiveDocument.openTransaction("Change IFC role")
                         changed = True
                     obj.IfcRole = role
-                elif hasattr(obj, "IfcType") and (obj.IfcType != role):
+                elif hasattr(obj, "IfcClass") and (obj.IfcClass != role):
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Change IFC type")
+                        FreeCAD.ActiveDocument.openTransaction("Change IFC class")
                         changed = True
-                    obj.IfcType = role
+                    obj.IfcClass = role
                 if mat and hasattr(obj, "Material"):
                     mobj = FreeCAD.ActiveDocument.getObject(mat)
                     if mobj:
@@ -558,7 +558,7 @@ if FreeCAD.GuiUp:
             try:
                 import ArchIFC
 
-                self.roles = ArchIFC.IfcTypes
+                self.roles = ArchIFC.IfcClasses
             except (ImportError, AttributeError):
                 import ArchComponent
 

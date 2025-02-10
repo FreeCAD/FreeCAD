@@ -514,10 +514,10 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             obj.Offset = o1
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype.lower():
-                obj.IfcType = "Door"
+                obj.IfcClass = "Door"
                 obj.Label = translate("Arch","Door")
             elif "opening" in windowtype.lower():
-                obj.IfcType = "Opening Element"
+                obj.IfcClass = "Opening Element"
                 obj.Label = translate("Arch","Opening")
             FreeCAD.ActiveDocument.recompute()
             return obj

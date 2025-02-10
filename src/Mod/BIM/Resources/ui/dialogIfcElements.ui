@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC class and material associated with any BIM object in this document. Double-click the IFC class to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -54,7 +54,7 @@
        </item>
        <item>
         <property name="text">
-         <string>IFC type</string>
+         <string>IFC class</string>
         </property>
         <property name="icon">
          <iconset theme="application-drawing">
@@ -100,14 +100,14 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>change type to:</string>
+        <string>Change IFC class to:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>change material to:</string>
+        <string>Change material to:</string>
        </property>
       </widget>
      </item>

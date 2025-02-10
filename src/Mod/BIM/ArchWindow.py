@@ -97,7 +97,7 @@ class _Window(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Window"
+        obj.IfcClass = "Window"
         obj.MoveWithHost = True
 
         # Add features in the SketchArch External Add-on
@@ -1404,6 +1404,3 @@ class _ArchWindowTaskPanel:
 
         if self.obj:
             self.obj.ViewObject.Proxy.invertHinge()
-
-
-

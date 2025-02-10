@@ -153,15 +153,15 @@ class _Equipment(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.Proxy = self
         self.setProperties(obj)
-        from ArchIFC import IfcTypes
-        if "Furniture" in IfcTypes:
+        from ArchIFC import IfcClasses
+        if "Furniture" in IfcClasses:
             # IfcFurniture is new in IFC4
-            obj.IfcType = "Furniture"
-        elif "Furnishing Element" in IfcTypes:
+            obj.IfcClass = "Furniture"
+        elif "Furnishing Element" in IfcClasses:
             # IFC2x3 does know a IfcFurnishingElement
-            obj.IfcType = "Furnishing Element"
+            obj.IfcClass = "Furnishing Element"
         else:
-            obj.IfcType = "Building Element Proxy"
+            obj.IfcClass = "Building Element Proxy"
         # Add features in the SketchArch External Add-on, if present
         self.addSketchArchFeatures(obj)
 
@@ -305,4 +305,3 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.setValues([[p.x,p.y,p.z] for p in obj.SnapPoints])
             else:
                 self.coords.point.deleteValues(0)
-

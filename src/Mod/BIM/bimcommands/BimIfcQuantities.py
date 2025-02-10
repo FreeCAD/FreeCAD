@@ -98,7 +98,7 @@ class BIM_IfcQuantities:
         try:
             import ArchIFC
 
-            self.ifcroles = ArchIFC.IfcTypes
+            self.ifcroles = ArchIFC.IfcClasses
         except (ImportError, AttributeError):
             import ArchComponent
 
@@ -360,12 +360,12 @@ class BIM_IfcQuantities:
     def getRole(self, obj):
         """gets the IFC class of this object"""
 
-        if hasattr(obj, "IfcType"):
-            return obj.IfcType
+        if hasattr(obj, "IfcClass"):
+            return obj.IfcClass
         elif hasattr(obj, "IfcRole"):
             return obj.IfcRole
-        elif hasattr(obj, "IfcClass"):
-            return obj.IfcClass
+        elif hasattr(obj, "IfcType"):
+            return obj.IfcType
         else:
             return None
 

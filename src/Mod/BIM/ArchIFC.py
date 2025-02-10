@@ -39,7 +39,7 @@ else:
 def uncamel(t):
     return ''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:]
 
-IfcTypes = [uncamel(t) for t in ArchIFCSchema.IfcProducts.keys()]
+IfcClasses = [uncamel(t) for t in ArchIFCSchema.IfcProducts.keys()]
 
 class IfcRoot:
     """This class defines the common methods and properties for managing IFC data.
@@ -66,9 +66,9 @@ class IfcRoot:
         if not "IfcData" in obj.PropertiesList:
             obj.addProperty("App::PropertyMap","IfcData","IFC",QT_TRANSLATE_NOOP("App::Property","IFC data"))
 
-        if not "IfcType" in obj.PropertiesList:
-            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
-            obj.IfcType = self.getCanonicalisedIfcTypes()
+        if not "IfcClass" in obj.PropertiesList:
+            obj.addProperty("App::PropertyEnumeration","IfcClass","IFC",QT_TRANSLATE_NOOP("App::Property","The class of this object"))
+            obj.IfcClass = self.getCanonicalisedIfcClasses()
 
         if not "IfcProperties" in obj.PropertiesList:
             obj.addProperty("App::PropertyMap","IfcProperties","IFC",QT_TRANSLATE_NOOP("App::Property","IFC properties of this object"))
@@ -78,9 +78,9 @@ class IfcRoot:
     def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
 
-        If the object's IfcType has changed, change the object's properties
+        If the object's IfcClass has changed, change the object's properties
         that relate to IFC attributes in order to match the IFC schema
-        definition of the new IFC type.
+        definition of the new IFC class.
 
         If a property changes that is in the "IFC Attributes" group, also
         change the value stored in the IfcData property's JSON.
@@ -91,7 +91,7 @@ class IfcRoot:
             The name of the property that has changed.
         """
 
-        if prop == "IfcType":
+        if prop == "IfcClass":
             self.setupIfcAttributes(obj)
             self.setupIfcComplexAttributes(obj)
         if prop in obj.PropertiesList:
@@ -101,7 +101,7 @@ class IfcRoot:
     def setupIfcAttributes(self, obj):
         """Set up the IFC attributes in the object's properties.
 
-        Add the attributes specified in the object's IFC type schema, to the
+        Add the attributes specified in the object's IFC class schema, to the
         object's properties. Do not re-add them if they're already present.
         Also remove old IFC attribute properties that no longer appear in the
         schema for backwards compatibility.
@@ -113,52 +113,52 @@ class IfcRoot:
         https://standards.buildingsmart.org/IFC/RELEASE/IFC4/FINAL/HTML/schema/chapter-3.htm#attribute
         """
 
-        ifcTypeSchema = self.getIfcTypeSchema(obj.IfcType)
-        if ifcTypeSchema is None:
+        IfcClassSchema = self.getIfcClassSchema(obj.IfcClass)
+        if IfcClassSchema is None:
             return
-        self.purgeUnusedIfcAttributesFromPropertiesList(ifcTypeSchema, obj)
-        self.addIfcAttributes(ifcTypeSchema, obj)
+        self.purgeUnusedIfcAttributesFromPropertiesList(IfcClassSchema, obj)
+        self.addIfcAttributes(IfcClassSchema, obj)
 
     def setupIfcComplexAttributes(self, obj):
-        """Add the IFC type's complex attributes to the object.
+        """Add the IFC class's complex attributes to the object.
 
-        Get the object's IFC type schema, and add the schema for the type's
+        Get the object's IFC class schema, and add the schema for the class's
         complex attributes within the IfcData property.
         """
 
-        ifcTypeSchema = self.getIfcTypeSchema(obj.IfcType)
-        if ifcTypeSchema is None:
+        IfcClassSchema = self.getIfcClassSchema(obj.IfcClass)
+        if IfcClassSchema is None:
             return
         IfcData = obj.IfcData
         if "complex_attributes" not in IfcData:
             IfcData["complex_attributes"] = "{}"
         ifcComplexAttributes = json.loads(IfcData["complex_attributes"])
-        for attribute in ifcTypeSchema["complex_attributes"]:
+        for attribute in IfcClassSchema["complex_attributes"]:
             if attribute["name"] not in ifcComplexAttributes:
                 ifcComplexAttributes[attribute["name"]] = {}
         IfcData["complex_attributes"] = json.dumps(ifcComplexAttributes)
         obj.IfcData = IfcData
 
-    def getIfcTypeSchema(self, IfcType):
-        """Get the schema of the IFC type provided.
+    def getIfcClassSchema(self, IfcClass):
+        """Get the schema of the IFC class provided.
 
-        If the IFC type is undefined, return the schema of the
+        If the IFC class is undefined, return the schema of the
         IfcBuildingElementProxy.
 
         Parameter
         ---------
-        IfcType: str
-            The IFC type whose schema you want.
+        IfcClass: str
+            The IFC class whose schema you want.
 
         Returns
         -------
         dict
-            Returns the schema of the type as a dict.
+            Returns the schema of the class as a dict.
         None
-            Returns None if the IFC type does not exist.
+            Returns None if the IFC class does not exist.
         """
-        name = "Ifc" + IfcType.replace(" ", "")
-        if IfcType == "Undefined":
+        name = "Ifc" + IfcClass.replace(" ", "")
+        if IfcClass == "Undefined":
             name = "IfcBuildingElementProxy"
         if name in self.getIfcSchema():
             return self.getIfcSchema()[name]
@@ -177,18 +177,18 @@ class IfcRoot:
 
         return {}
 
-    def getCanonicalisedIfcTypes(self):
-        """Get the names of IFC types, converted to the form used in Arch.
+    def getCanonicalisedIfcClasses(self):
+        """Get the names of IFC classes, converted to the form used in Arch.
 
-        Change the names of all IFC types to a more human readable form which
-        is used instead throughout Arch instead of the raw type names. The
+        Change the names of all IFC classes to a more human readable form which
+        is used instead throughout Arch instead of the raw class names. The
         names have the "Ifc" stripped from the start of their name, and spaces
         inserted between the words.
 
         Returns
         -------
         list of str
-            The list of every IFC type name in their form used in Arch. List
+            The list of every IFC class name in their form used in Arch. List
             will have names in the same order as they appear in the schema's
             JSON, as per the .keys() method of dicts.
 
@@ -196,7 +196,7 @@ class IfcRoot:
         schema = self.getIfcSchema()
         return [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in schema.keys()]
 
-    def getIfcAttributeSchema(self, ifcTypeSchema, name):
+    def getIfcAttributeSchema(self, IfcClassSchema, name):
         """Get the schema of an IFC attribute with the given name.
 
         Convert the IFC attribute's name from the human readable version Arch
@@ -205,8 +205,8 @@ class IfcRoot:
 
         Parameters
         ----------
-        ifcTypeSchema: dict
-            The schema of the IFC type to access the attribute of.
+        IfcClassSchema: dict
+            The schema of the IFC class to access the attribute of.
         name: str
             The name the attribute has in Arch.
 
@@ -215,17 +215,17 @@ class IfcRoot:
         dict
             Returns the schema of the attribute.
         None
-            Returns None if the IFC type does not have the attribute requested.
+            Returns None if the IFC class does not have the attribute requested.
 
         """
 
-        for attribute in ifcTypeSchema["attributes"]:
+        for attribute in IfcClassSchema["attributes"]:
             if attribute["name"].replace(' ', '') == name:
                 return attribute
         return None
 
-    def addIfcAttributes(self, ifcTypeSchema, obj):
-        """Add the attributes of the IFC type's schema to the object's properties.
+    def addIfcAttributes(self, IfcClassSchema, obj):
+        """Add the attributes of the IFC class's schema to the object's properties.
 
         Add the attributes as properties of the object. Also add the
         attribute's schema within the object's IfcData property. Do so using
@@ -245,11 +245,11 @@ class IfcRoot:
 
         Parameters
         ----------
-        ifcTypeSchema: dict
-            The schema of the IFC type.
+        IfcClassSchema: dict
+            The schema of the IFC class.
         """
 
-        for attribute in ifcTypeSchema["attributes"]:
+        for attribute in IfcClassSchema["attributes"]:
             if attribute["name"] in obj.PropertiesList \
                 or attribute["name"] == "RefLatitude" \
                 or attribute["name"] == "RefLongitude" \
@@ -259,7 +259,7 @@ class IfcRoot:
             self.addIfcAttributeValueExpressions(obj, attribute)
 
     def addIfcAttribute(self, obj, attribute):
-        """Add an IFC type's attribute to the object, within its properties.
+        """Add an IFC class's attribute to the object, within its properties.
 
         Add the attribute's schema to the object's IfcData property, as an
         item under its "attributes" array.
@@ -290,7 +290,7 @@ class IfcRoot:
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
             setattr(obj, attribute["name"], attribute["enum_values"])
         else:
-            propertyType = "App::" + ArchIFCSchema.IfcTypes[attribute["type"]]["property"]
+            propertyType = "App::" + ArchIFCSchema.IfcClasses[attribute["type"]]["property"]
             obj.addProperty(propertyType,
                             attribute["name"],
                             "IFC Attributes",
@@ -407,11 +407,11 @@ class IfcRoot:
 
         return json.loads(obj.IfcData["complex_attributes"])[attributeName]
 
-    def purgeUnusedIfcAttributesFromPropertiesList(self, ifcTypeSchema, obj):
+    def purgeUnusedIfcAttributesFromPropertiesList(self, IfcClassSchema, obj):
         """Remove properties representing IFC attributes if they no longer appear.
 
         Remove the property representing an IFC attribute, if it does not
-        appear in the schema of the IFC type provided. Also, remove the
+        appear in the schema of the IFC class provided. Also, remove the
         property if its attribute is an enum type, presumably for backwards
         compatibility.
 
@@ -422,7 +422,7 @@ class IfcRoot:
         for property in obj.PropertiesList:
             if obj.getGroupOfProperty(property) != "IFC Attributes":
                 continue
-            ifcAttribute = self.getIfcAttributeSchema(ifcTypeSchema, property)
+            ifcAttribute = self.getIfcAttributeSchema(IfcClassSchema, property)
             if ifcAttribute is None or ifcAttribute["is_enum"] is True:
                 obj.removeProperty(property)
 
@@ -433,16 +433,16 @@ class IfcRoot:
         if "Role" in obj.PropertiesList:
             r = obj.Role
             obj.removeProperty("Role")
-            if r in IfcTypes:
-                obj.IfcType = r
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcType\n")
+            if r in IfcClasses:
+                obj.IfcClass = r
+                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcClass\n")
 
         if "IfcRole" in obj.PropertiesList:
             r = obj.IfcRole
             obj.removeProperty("IfcRole")
-            if r in IfcTypes:
-                obj.IfcType = r
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" IfcRole property to IfcType\n")
+            if r in IfcClasses:
+                obj.IfcClass = r
+                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" IfcRole property to IfcClass\n")
 
         if "IfcAttributes"in obj.PropertiesList:
             obj.IfcData = obj.IfcAttributes
@@ -460,12 +460,12 @@ class IfcProduct(IfcRoot):
     """
 
     def getIfcSchema(self):
-        """Get the IFC schema of all IFC types that inherit from IfcProducts.
+        """Get the IFC schema of all IFC classes that inherit from IfcProducts.
 
         Returns
         -------
         dict
-            The schema of all the types relevant to this class.
+            The schema of all the classes relevant to this class.
         """
         return ArchIFCSchema.IfcProducts
 
@@ -479,7 +479,7 @@ class IfcContext(IfcRoot):
     """
 
     def getIfcSchema(self):
-        """Get the IFC schema of all IFC types that inherit from IfcContexts.
+        """Get the IFC schema of all IFC classes that inherit from IfcContexts.
 
         Returns
         -------

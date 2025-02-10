@@ -272,7 +272,7 @@ class _Building(ArchFloor._Floor):
 
         ArchFloor._Floor.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Building"
+        obj.IfcClass = "Building"
 
     def setProperties(self,obj):
 

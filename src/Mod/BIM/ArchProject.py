@@ -64,7 +64,7 @@ class _Project(ArchIFC.IfcContext):
     def __init__(self, obj):
         obj.Proxy = self
         self.setProperties(obj)
-        obj.IfcType = "Project"
+        obj.IfcClass = "Project"
 
     def setProperties(self, obj):
         """Give the object properties unique to projects.

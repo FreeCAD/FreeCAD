@@ -110,7 +110,7 @@ def makeBuildingPart(objectslist=None,baseobj=None,name=None):
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
     obj.Label = name if name else translate("Arch","BuildingPart")
     ArchBuildingPart.BuildingPart(obj)
-    obj.IfcType = "Building Element Part"
+    obj.IfcClass = "Building Element Part"
     if FreeCAD.GuiUp:
         ArchBuildingPart.ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
@@ -127,7 +127,7 @@ def makeFloor(objectslist=None,baseobj=None,name=None):
 
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Level")
-    obj.IfcType = "Building Storey"
+    obj.IfcClass = "Building Storey"
     obj.CompositionType = "ELEMENT"
     return obj
 
@@ -139,7 +139,7 @@ def makeBuilding(objectslist=None,baseobj=None,name=None):
     import ArchBuildingPart
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Building")
-    obj.IfcType = "Building"
+    obj.IfcClass = "Building"
     obj.CompositionType = "ELEMENT"
     t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
@@ -156,7 +156,7 @@ def make2DDrawing(objectslist=None,baseobj=None,name=None):
 
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Drawing")
-    obj.IfcType = "Annotation"
+    obj.IfcClass = "Annotation"
     obj.ObjectType = "DRAWING"
     obj.setEditorMode("Area",2)
     obj.setEditorMode("Height",2)
@@ -185,10 +185,10 @@ def convertFloors(floor=None):
         if Draft.getType(obj) in ["Floor","Building"]:
             nobj = makeBuildingPart(obj.Group)
             if Draft.getType(obj) == "Floor":
-                nobj.IfcType = "Building Storey"
+                nobj.IfcClass = "Building Storey"
                 nobj.CompositionType = "ELEMENT"
             else:
-                nobj.IfcType = "Building"
+                nobj.IfcClass = "Building"
                 nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
                 nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)

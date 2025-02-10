@@ -201,7 +201,7 @@ class BIM_Views:
                     ):
                         if (
                             t in ["Building", "IfcBuilding"]
-                            or getattr(obj, "IfcType", "") == "Building"
+                            or getattr(obj, "IfcClass", "") == "Building"
                         ):
                             building, _ = getTreeViewItem(obj)
                             subObjs = obj.Group
@@ -232,12 +232,12 @@ class BIM_Views:
 
                         if (
                             t in ["Building Storey", "IfcBuildingStorey"]
-                            or getattr(obj, "IfcType", "") == "Building Storey"
+                            or getattr(obj, "IfcClass", "") == "Building Storey"
                         ):
                             if (
                                 Draft.getType(getParent(obj))
                                 in ["Building", "IfcBuilding"]
-                                or getattr(getParent(obj), "IfcType", "") == "Building"
+                                or getattr(getParent(obj), "IfcClass", "") == "Building"
                             ):
                                 continue
                             lv, lvH = getTreeViewItem(obj)
@@ -251,7 +251,7 @@ class BIM_Views:
                     if obj and (t == "WorkingPlaneProxy"):
                         if (
                             obj.getParent()
-                            and obj.getParent().IfcType == "Building Storey"
+                            and obj.getParent().IfcClass == "Building Storey"
                         ):
                             continue
                         wp, _ = getTreeViewItem(obj)
@@ -591,19 +591,19 @@ def show(item, column=None):
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", True)
             if Draft.getType(obj) == "BuildingPart":
-                if obj.IfcType == "Building Storey":
+                if obj.IfcClass == "Building Storey":
                     # hide all other storeys
                     obj.ViewObject.Visibility = True
-                    bldgs = [o for o in obj.InList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building"]
+                    bldgs = [o for o in obj.InList if Draft.getType(o) == "BuildingPart" and o.IfcClass == "Building"]
                     if len(bldgs) == 1:
                         bldg = bldgs[0]
-                        storeys = [o for o in bldg.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
+                        storeys = [o for o in bldg.OutList if Draft.getType(o) == "BuildingPart" and o.IfcClass == "Building Storey"]
                         for storey in storeys:
                             if storey != obj:
                                 storey.ViewObject.Visibility = False
-                elif obj.IfcType == "Building":
+                elif obj.IfcClass == "Building":
                     # show all storeys
-                    storeys = [o for o in obj.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
+                    storeys = [o for o in obj.OutList if Draft.getType(o) == "BuildingPart" and o.IfcClass == "Building Storey"]
                     for storey in storeys:
                         storey.ViewObject.Visibility = True
             elif Draft.getType(obj) == "IfcBuildingStorey":
@@ -615,7 +615,7 @@ def show(item, column=None):
                     for storey in storeys:
                         if storey != obj:
                             storey.ViewObject.Visibility = False
-            elif obj.IfcType == "IfcBuilding":
+            elif obj.IfcClass == "IfcBuilding":
                 # show all storeys
                 storeys = [o for o in obj.OutList if Draft.getType(o) == "IfcBuildingStorey"]
                 for storey in storeys:
@@ -652,7 +652,7 @@ def isView(obj):
                     return True
     if getattr(obj,"DrawingView",False):
         return True
-    if getattr(obj, "IfcType", None) == "Annotation":
+    if getattr(obj, "IfcClass", None) == "Annotation":
         if getattr(obj, "ObjectType", "").upper() == "DRAWING":
             return True
     if getattr(obj, "Class", None) == "IfcAnnotation":

@@ -1050,9 +1050,9 @@ class Component(ArchIFC.IfcProduct):
                     obj.PerimeterLength = sum([e.Length for e in border_edges])
 
     def isStandardCase(self,obj):
-        """Determine if the component is a standard case of its IFC type.
+        """Determine if the component is a standard case of its IFC class.
 
-        Not all IFC types have a standard case.
+        Not all IFC classes have a standard case.
 
         If an object is a standard case or not varies between the different
         types. Each type has its own rules to define what is a standard case.
@@ -1060,7 +1060,7 @@ class Component(ArchIFC.IfcProduct):
         Rotated objects, or objects with Additions or Subtractions are not
         standard cases.
 
-        All objects whose IfcType is suffixed with the string " Sandard Case"
+        All objects whose IfcClass is suffixed with the string " Sandard Case"
         are automatically a standard case.
 
         Parameters
@@ -1075,10 +1075,10 @@ class Component(ArchIFC.IfcProduct):
         """
 
         # Standard Case has been set manually by the user
-        if obj.IfcType.endswith("Standard Case"):
+        if obj.IfcClass.endswith("Standard Case"):
             return True
         # Try to guess
-        if obj.IfcType + " Standard Case" in ArchIFC.IfcTypes:
+        if obj.IfcClass + " Standard Case" in ArchIFC.IfcClasses:
             # this type has a standard case
             if obj.Additions or obj.Subtractions:
                 return False
@@ -1087,7 +1087,7 @@ class Component(ArchIFC.IfcProduct):
                 return False
             if obj.CloneOf:
                 return obj.CloneOf.Proxy.isStandardCase(obj.CloneOf)
-            if obj.IfcType == "Wall":
+            if obj.IfcClass == "Wall":
                 # rules:
                 # - vertically extruded
                 # - single baseline or no baseline
@@ -1095,7 +1095,7 @@ class Component(ArchIFC.IfcProduct):
                     if hasattr(obj,"Normal"):
                         if obj.Normal in [FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1)]:
                             return True
-            elif obj.IfcType in ["Beam","Column","Slab"]:
+            elif obj.IfcClass in ["Beam","Column","Slab"]:
                 # rules:
                 # - have a single-wire profile or no profile
                 # - extrusion direction is perpendicular to the profile
@@ -2000,7 +2000,7 @@ class ComponentTaskPanel:
         import ArchIFCSchema
 
         # get presets
-        self.ptypes = list(ArchIFCSchema.IfcTypes)
+        self.ptypes = list(ArchIFCSchema.IfcClasses)
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")

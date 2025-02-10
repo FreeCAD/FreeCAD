@@ -64,7 +64,7 @@ class _Panel(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Plate"
+        obj.IfcClass = "Plate"
 
     def setProperties(self,obj):
 
@@ -1077,6 +1077,3 @@ class SheetTaskPanel(ArchComponent.ComponentTaskPanel):
 
         FreeCADGui.Control.closeDialog()
         FreeCADGui.runCommand("Draft_Edit")
-
-
-

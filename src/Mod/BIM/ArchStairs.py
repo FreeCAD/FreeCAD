@@ -60,7 +60,7 @@ class _Stairs(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Stair"
+        obj.IfcClass = "Stair"
 
     def setProperties(self,obj):
 
@@ -1337,5 +1337,3 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
                 lst.extend(obj.Subtractions)
             return lst
         return []
-
-

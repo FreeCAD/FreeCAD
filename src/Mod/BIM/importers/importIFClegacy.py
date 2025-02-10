@@ -46,7 +46,7 @@ APPLYFIX = True # if true, the ifcopenshell bug-fixing function is applied when 
 # end config
 
 # supported ifc products (export only):
-supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "IfcBeamStandardCase",
+supportedIfcClasses = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "IfcBeamStandardCase",
                      "IfcChimney", "IfcColumn", "IfcColumnStandardCase", "IfcCovering", "IfcCurtainWall",
                      "IfcDoor", "IfcDoorStandardCase", "IfcMember", "IfcMemberStandardCase", "IfcPlate",
                      "IfcPlateStandardCase", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcRoof",
@@ -428,12 +428,12 @@ def read(filename,skip=None):
     return None
 
 
-def getCleanName(name,ifcid,ifctype):
+def getCleanName(name,ifcid,ifcclass):
     "Get a clean name from an ifc object"
-    #print("getCleanName called",name,ifcid,ifctype)
+    #print("getCleanName called",name,ifcid,ifcclass)
     n = name
     if not n:
-        n = ifctype
+        n = ifcclass
     if PREFIX_NUMBERS:
         n = "ID"+str(ifcid)+" "+n
     #for c in ",.!?;:":
@@ -526,7 +526,7 @@ def makeWindow(entity,shape=None,name="Window"):
         return None
 
 
-def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
+def makeStructure(entity,shape=None,ifcclass=None,name="Structure"):
     "makes a structure in the freecad document"
     try:
         if shape:
@@ -539,15 +539,15 @@ def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
                 body.Mesh = shape
             structure = Arch.makeStructure(body,name=name)
             structure.Label = name
-            if ifctype == "IfcBeam":
+            if ifcclass == "IfcBeam":
                 structure.Role = "Beam"
-            elif ifctype == "IfcColumn":
+            elif ifcclass == "IfcColumn":
                 structure.Role = "Column"
-            elif ifctype == "IfcSlab":
+            elif ifcclass == "IfcSlab":
                 structure.Role = "Slab"
-            elif ifctype == "IfcFooting":
+            elif ifcclass == "IfcFooting":
                 structure.Role = "Foundation"
-            if DEBUG: print("    made structure object  ",entity,":",structure," (type: ",ifctype,")")
+            if DEBUG: print("    made structure object  ",entity,":",structure," (type: ",ifcclass,")")
             return structure
 
         # use internal parser
@@ -995,19 +995,19 @@ def export(exportList,filename):
         descr = None
         extra = None
 
-        # setting the IFC type
+        # setting the IFC class
         if hasattr(obj,"Role"):
-            ifctype = obj.Role.replace(" ","")
+            ifcclass = obj.Role.replace(" ","")
         elif otype == "Foundation":
-            ifctype = "Footing"
+            ifcclass = "Footing"
         elif otype == "Rebar":
-            ifctype = "ReinforcingBar"
+            ifcclass = "ReinforcingBar"
         elif otype == "Undefined":
-            ifctype = "BuildingElementProxy"
+            ifcclass = "BuildingElementProxy"
         elif otype.startswith("Part::"):
-            ifctype = "BuildingElementProxy"
+            ifcclass = "BuildingElementProxy"
         else:
-            ifctype = otype
+            ifcclass = otype
 
         # getting the "Force BREP" flag
         brepflag = False
@@ -1016,7 +1016,7 @@ def export(exportList,filename):
                 if obj.IfcAttributes["FlagForceBrep"] == "True":
                     brepflag = True
 
-        if DEBUG: print("Adding " + obj.Label + " as Ifc" + ifctype)
+        if DEBUG: print("Adding " + obj.Label + " as Ifc" + ifcclass)
 
         # writing IFC data
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
@@ -1077,15 +1077,15 @@ def export(exportList,filename):
                 representation = [ifc.addFacetedBrep(f, color=color) for f in fdata]
 
             # create ifc object
-            ifctype = "Ifc" + ifctype
+            ifcclass = "Ifc" + ifcclass
             if hasattr(obj,"Description"):
                 descr = obj.Description
             if otype == "Wall":
                 if gdata:
                     if gdata[0] == "polyline":
-                        ifctype = "IfcWallStandardCase"
+                        ifcclass = "IfcWallStandardCase"
             elif otype == "Structure":
-                if ifctype in ["IfcSlab","IfcFooting"]:
+                if ifcclass in ["IfcSlab","IfcFooting"]:
                     extra = ["NOTDEFINED"]
             elif otype == "Window":
                 extra = [obj.Width.Value*scaling, obj.Height.Value*scaling]
@@ -1093,12 +1093,12 @@ def export(exportList,filename):
                 extra = ["ELEMENT","INTERNAL",getIfcElevation(obj)]
             elif otype.startswith("Part::"):
                 extra = ["ELEMENT"]
-            if not ifctype in supportedIfcTypes:
-                if DEBUG: print("   Type ",ifctype," is not supported yet. Exporting as IfcBuildingElementProxy instead")
-                ifctype = "IfcBuildingElementProxy"
+            if not ifcclass in supportedIfcClasses:
+                if DEBUG: print("   Type ",ifcclass," is not supported yet. Exporting as IfcBuildingElementProxy instead")
+                ifcclass = "IfcBuildingElementProxy"
                 extra = ["ELEMENT"]
 
-            product = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
+            product = ifc.addProduct( ifcclass, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
 
             if product:
                 # removing openings
@@ -1113,7 +1113,7 @@ def export(exportList,filename):
                 spacer = ""
                 for i in range(36-len(obj.Label)):
                     spacer += " "
-                txt.append(obj.Label + spacer + ifctype)
+                txt.append(obj.Label + spacer + ifcclass)
 
                 # adding object to group, if any
                 for g in groups.keys():
@@ -1996,9 +1996,9 @@ class IfcWriter(object):
                 self.Project.set_argument(2,str(value))
         self.__dict__.__setitem__(key,value)
 
-    def findByName(self,ifctype,name):
-        "finds an entity of a given ifctype by name"
-        objs = self._fileobject.by_type(ifctype)
+    def findByName(self,ifcclass,name):
+        "finds an entity of a given ifcclass by name"
+        objs = self._fileobject.by_type(ifcclass)
         for obj in objs:
             if hasattr(obj,"get_argument_count"):
                 l = obj.get_argument_count()
@@ -2197,11 +2197,11 @@ class IfcWriter(object):
         isi = create(self._fileobject,"IfcStyledItem",[rep,[psa],None])
         return isi
 
-    def addProfile(self,ifctype,data,curvetype="AREA"):
-        """addProfile(ifctype,data): creates a 2D profile of the given type, with the given
+    def addProfile(self,ifcclass,data,curvetype="AREA"):
+        """addProfile(ifcclass,data): creates a 2D profile of the given type, with the given
         data as arguments, which must be formatted correctly according to the type."""
 
-        # Expected ifctype and corresponding data formatting:
+        # Expected ifcclass and corresponding data formatting:
         # IfcPolyLine: [ (0,0,0), (2,1,0), (3,3,0) ] # list of points
         # IfcCompositeCurve: [ ["line",[ (0,0,0), (2,1,0) ] ], # list of points
         #                      ["arc", (0,0,0), 15, [0.76, 3.1416], True, "PARAMETER"] # center, radius, [trim1, trim2], SameSense, trimtype
@@ -2209,11 +2209,11 @@ class IfcWriter(object):
         # IfcCircleProfileDef: [ (0,0,0), 15 ] # center, radius
         # IfcEllipseProfileDef: [ (0,0,0), 15, 7 ] # center, radiusX, radiusY
 
-        if ifctype == "IfcPolyline":
+        if ifcclass == "IfcPolyline":
             pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)[:2]) for p in data]
             pol = create(self._fileobject,"IfcPolyline",[pts])
             profile = create(self._fileobject,"IfcArbitraryClosedProfileDef",[curvetype,None,pol])
-        elif ifctype == "IfcCompositeCurve":
+        elif ifcclass == "IfcCompositeCurve":
             curves = []
             for curve in data:
                 cur = None
@@ -2240,7 +2240,7 @@ class IfcWriter(object):
             if not isinstance(data,list):
                 data = [data]
             p = self.addPlacement(local=False,flat=True)
-            profile = create(self._fileobject,ifctype,[curvetype,None,p]+data)
+            profile = create(self._fileobject,ifcclass,[curvetype,None,p]+data)
         return profile
 
     def addExtrusion(self,profile,extrusion,placement=None):

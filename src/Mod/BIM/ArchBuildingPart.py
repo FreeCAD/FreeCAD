@@ -332,7 +332,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         area = 0
         if hasattr(obj,"Group"):
             for child in obj.Group:
-                if (Draft.get_type(child) in ["Space","BuildingPart"]) and hasattr(child,"IfcType"):
+                if (Draft.get_type(child) in ["Space","BuildingPart"]) and hasattr(child,"IfcClass"):
                     area += child.Area.Value
         return area
 
@@ -526,11 +526,11 @@ class ViewProviderBuildingPart:
 
         import Arch_rc
         if hasattr(self,"Object"):
-            if self.Object.IfcType == "Building Storey":
+            if self.Object.IfcClass == "Building Storey":
                 return ":/icons/Arch_Floor_Tree.svg"
-            elif self.Object.IfcType == "Building":
+            elif self.Object.IfcClass == "Building":
                 return ":/icons/Arch_Building_Tree.svg"
-            elif self.Object.IfcType == "Annotation":
+            elif self.Object.IfcClass == "Annotation":
                 return ":/icons/BIM_ArchView.svg"
         return ":/icons/Arch_BuildingPart_Tree.svg"
 
@@ -929,7 +929,7 @@ class ViewProviderBuildingPart:
             Draft.formatObject(nobj,self.Object)
             nobj.Placement = self.Object.Placement
             nobj.Placement.move(FreeCAD.Vector(0,0,height))
-            nobj.IfcType = self.Object.IfcType
+            nobj.IfcClass = self.Object.IfcClass
             nobj.Height = height
             nobj.Label = self.Object.Label
             nobj.Group = ng

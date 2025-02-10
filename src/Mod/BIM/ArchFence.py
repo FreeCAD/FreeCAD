@@ -48,8 +48,8 @@ class _Fence(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
-        # Does a IfcType exist?
-        # obj.IfcType = "Fence"
+        # Does a IfcClass exist?
+        # obj.IfcClass = "Fence"
         obj.MoveWithHost = False
 
     def setProperties(self, obj):

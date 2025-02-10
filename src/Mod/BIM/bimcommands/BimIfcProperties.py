@@ -58,7 +58,7 @@ class BIM_IfcProperties:
         try:
             import ArchIFC
 
-            self.ifcroles = ArchIFC.IfcTypes
+            self.ifcroles = ArchIFC.IfcClasses
         except (ImportError, AttributeError):
             import ArchComponent
 
@@ -87,7 +87,7 @@ class BIM_IfcProperties:
         try:
             import ArchIFCSchema
 
-            self.ptypes = list(ArchIFCSchema.IfcTypes.keys())
+            self.ptypes = list(ArchIFCSchema.IfcClasses.keys())
         except (ImportError, AttributeError):
             import ArchComponent
 
@@ -202,7 +202,7 @@ class BIM_IfcProperties:
         self.model.setHorizontalHeaderLabels(
             [
                 translate("BIM", "Label"),
-                translate("BIM", "IFC type"),
+                translate("BIM", "IFC class"),
                 translate("BIM", "Search results"),
             ]
         )
@@ -221,12 +221,12 @@ class BIM_IfcProperties:
         self.form.tree.setColumnWidth(0, 300)
 
     def getRole(self, obj):
-        if hasattr(obj, "IfcType"):
-            return obj.IfcType
+        if hasattr(obj, "IfcClass"):
+            return obj.IfcClass
         elif hasattr(obj, "IfcRole"):
             return obj.IfcRole
-        elif hasattr(obj, "IfcClass"):
-            return obj.IfcClass
+        elif hasattr(obj, "IfcType"):
+            return obj.IfcType
         else:
             return None
 

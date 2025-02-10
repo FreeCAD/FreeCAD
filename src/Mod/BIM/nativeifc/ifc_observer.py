@@ -197,7 +197,7 @@ class ifc_observer:
         del self.docname
         del self.objname
         if obj.isDerivedFrom("Part::Feature") \
-        or "IfcType" in obj.PropertiesList \
+        or "IfcClass" in obj.PropertiesList \
         or "CreateSpreadsheet" in obj.PropertiesList:
             FreeCAD.Console.PrintLog("Converting " + obj.Label + " to IFC\n")
             from nativeifc import ifc_geometry  # lazy loading

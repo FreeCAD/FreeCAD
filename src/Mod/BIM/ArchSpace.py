@@ -211,7 +211,7 @@ class _Space(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Space"
+        obj.IfcClass = "Space"
         obj.CompositionType = "ELEMENT"
 
     def setProperties(self,obj):

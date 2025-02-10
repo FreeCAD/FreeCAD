@@ -60,7 +60,7 @@ class Truss(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Beam"
+        obj.IfcClass = "Beam"
 
     def setProperties(self,obj):
 
@@ -328,4 +328,3 @@ class ViewProviderTruss(ArchComponent.ViewProviderComponent):
 
         import Arch_rc
         return ":/icons/Arch_Truss_Tree.svg"
-
