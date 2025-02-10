@@ -51,7 +51,7 @@ using App::Application;
 using Base::Console;
 
 const char sBanner[] =
-    "(C) 2001-2024 FreeCAD contributors\n"
+    "(C) 2001-2025 FreeCAD contributors\n"
     "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
 
 int main(int argc, char** argv)
