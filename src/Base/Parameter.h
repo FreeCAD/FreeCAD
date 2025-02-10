@@ -172,71 +172,55 @@ public:
      *  @param[in] Name The name of the attribute.
      *  @param[in] Value The value to be set.
      */
-     void SetAttribute (
-        ParamType Type , 
-        const char * Name , 
-        const char * Value
-    );
-    
+    void SetAttribute(ParamType Type, const char* Name, const char* Value);
+
     /**
      *  Removes an attribute.
-     * 
+     *
      *  @param[in] Type The type of the attribute.
      *  @param[in] Name The name of the attribute.
      */
-    void RemoveAttribute (
-        ParamType Type , 
-        const char * Name
-    );
+    void RemoveAttribute(ParamType Type, const char* Name);
 
     /**
      *  Returns the value of the attribute.
-     * 
-     *  If the attribute can't be found, \n 
+     *
+     *  If the attribute can't be found, \n
      *  the fallback value is returned.
-     * 
+     *
      *  @param[in] Type The type of the attribute.
      *  @param[in] Name The name of the attribute.
      *  @param[out] Value The value of attribute or the fallback value.
      *  @param[in] Default The fallback value.
      */
-    const char * GetAttribute (
-        ParamType Type , 
-        const char * Name , 
-        std::string & Value , 
-        const char * Default
-    ) const ;
-    
+    const char*
+    GetAttribute(ParamType Type, const char* Name, std::string& Value, const char* Default) const;
+
     /**
      *  Returns all attributes with the given type.
-     * 
-     *  Optionally filters them to only include attributes \n 
+     *
+     *  Optionally filters them to only include attributes \n
      *  with names that contain a certain string.
-     * 
+     *
      *  @param[in] Type The type of attributes to be returned
      *  @param[in] sFilter String that has to be present in the names of the attributes.
      *  @returns Vector of attribute name & value pairs.
      */
-    std::vector< std::pair< std::string , std::string > >
-    GetAttributeMap ( 
-        ParamType Type , 
-        const char * sFilter = nullptr
-    ) const ;
+    std::vector<std::pair<std::string, std::string>>
+    GetAttributeMap(ParamType Type, const char* sFilter = nullptr) const;
 
 
     /**
      *  Returns all parameters.
-     * 
-     *  Optionally filters them to only include attributes \n 
+     *
+     *  Optionally filters them to only include attributes \n
      *  with names that contain a certain string.
-     * 
+     *
      *  @param[in] sFilter String that has to be present in the names of the attributes.
      *  @returns Vector of attribute type & name pairs.
      */
-    std::vector< std::pair< ParamType , std::string > >
-    GetParameterNames ( 
-        const char * sFilter = nullptr
-    ) const ;
+    std::vector<std::pair<ParamType, std::string>>
+    GetParameterNames(const char* sFilter = nullptr) const;
 
     //@}
 
