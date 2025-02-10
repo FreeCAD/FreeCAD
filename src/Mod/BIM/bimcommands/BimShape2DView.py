@@ -61,6 +61,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         # print(objs, faces)
         commitlist = []
         FreeCADGui.addModule("Draft")
+        fn = "sv"
         if len(objs) == 1 and faces:
             _cmd = "Draft.make_shape2dview"
             _cmd += "("
@@ -81,11 +82,13 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
                 commitlist.append("sv" + str(n) + " = " + _cmd)
                 commitlist.append("sv" + str(n) + ".InPlace = False")
                 n += 1
+            fn = "sv" + str(n)
         if commitlist:
             commitlist.append("FreeCAD.ActiveDocument.recompute()")
             self.commit(translate("draft", "Create 2D view"),
                         commitlist)
         self.finish()
+        return fn
 
 
 class BIM_Shape2DCut(BIM_Shape2DView):
@@ -93,13 +96,13 @@ class BIM_Shape2DCut(BIM_Shape2DView):
     def GetResources(self):
         d = super().GetResources()
         d["Pixmap"] = "Arch_View_Cut"
-        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section cut")
+        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DCut", "Section cut")
         d['Accel'] = "V, C"
         return d
 
     def proceed(self):
-        super().proceed()
-        FreeCADGui.doCommand("sv.ProjectionMode = \"Cutfaces\"")
+        fn = super().proceed()
+        FreeCADGui.doCommand(fn + ".ProjectionMode = \"Cutfaces\"")
 
 
 FreeCADGui.addCommand("BIM_Shape2DView", BIM_Shape2DView())

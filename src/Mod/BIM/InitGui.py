@@ -101,6 +101,7 @@ class BIMWorkbench(Workbench):
             "Arch_Grid",
             "Arch_SectionPlane",
             "BIM_DrawingView",
+            "BIM_RCP",
             "BIM_Shape2DView",
             "BIM_Shape2DCut",
             "BIM_TDPage",
