@@ -46,6 +46,7 @@ public:
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
     App::PropertyLength Arrowsize;
+    App::PropertyEnumeration  ArrowStyle;
     App::PropertyLength LineWidth;
     App::PropertyColor  Color;
 
