@@ -44,6 +44,7 @@
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 
 #include "PreferencesGui.h"
@@ -80,6 +81,12 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Arrowsize, (Preferences::dimArrowSize()),
                                      group, (App::PropertyType)(App::Prop_None),
                                                                      "Arrow size in units");
+
+    ArrowStyle.setEnums(ArrowPropEnum::ArrowTypeEnums);
+    ADD_PROPERTY_TYPE(ArrowStyle, (PreferencesGui::dimArrowStyle()),
+                                    group, (App::PropertyType)(App::Prop_None),
+                                   "Arrow end symbol - point, filled arrow, etc");
+
     ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None),
                                                         "Dimension line width");
     ADD_PROPERTY_TYPE(Color, (prefColor()), group, App::Prop_None, "Color of the dimension");

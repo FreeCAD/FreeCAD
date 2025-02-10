@@ -48,6 +48,7 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include "QGIViewDimension.h"
 #include "PreferencesGui.h"
@@ -1459,14 +1460,18 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
             continue;
         }
 
-        // some dimensions must use point ends (area). The point style is 3.
-        arrow->setStyle(forcePoint ? 3 : QGIArrow::getPrefArrowStyle());
         auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+        if (!vp) {
+            return;
+        }
+
+        // some dimensions must use point ends (area). The point style is 3.
+        arrow->setStyle(forcePoint ? static_cast<long>(ArrowType::DOT) : vp->ArrowStyle.getValue());
         auto arrowSize = vp->Arrowsize.getValue();
         arrow->setSize(arrowSize);
         arrow->setFlipped(flipped);
 
-        if (QGIArrow::getPrefArrowStyle() != 7) {// if not "None"
+        if (vp->ArrowStyle.getValue() != ArrowType::NONE) {// if not "None"
             arrow->draw();
             arrow->show();
         }
