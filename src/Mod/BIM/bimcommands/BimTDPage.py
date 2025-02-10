@@ -64,7 +64,6 @@ class BIM_TDPage:
             "SVG file (*.svg)",
         )
         if filename:
-            filename = filename[0]
             name = os.path.splitext(os.path.basename(filename))[0]
             FreeCAD.ActiveDocument.openTransaction("Create page")
             page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
